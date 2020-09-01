@@ -146,7 +146,7 @@ cdef api void call_cy_NestedContainers_mapList(
     unique_ptr[cmap[cint32_t,vector[cint32_t]]] foo
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_foo = _module_types.Map__i32_List__i32.create(_module_types.move(foo))
+    arg_foo = _module_types.Map__i32_List__i32.create(_module_types.__fbthrift_move(foo))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -198,7 +198,7 @@ cdef api void call_cy_NestedContainers_mapSet(
     unique_ptr[cmap[cint32_t,cset[cint32_t]]] foo
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_foo = _module_types.Map__i32_Set__i32.create(_module_types.move(foo))
+    arg_foo = _module_types.Map__i32_Set__i32.create(_module_types.__fbthrift_move(foo))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -250,7 +250,7 @@ cdef api void call_cy_NestedContainers_listMap(
     unique_ptr[vector[cmap[cint32_t,cint32_t]]] foo
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_foo = _module_types.List__Map__i32_i32.create(_module_types.move(foo))
+    arg_foo = _module_types.List__Map__i32_i32.create(_module_types.__fbthrift_move(foo))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -302,7 +302,7 @@ cdef api void call_cy_NestedContainers_listSet(
     unique_ptr[vector[cset[cint32_t]]] foo
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_foo = _module_types.List__Set__i32.create(_module_types.move(foo))
+    arg_foo = _module_types.List__Set__i32.create(_module_types.__fbthrift_move(foo))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -354,7 +354,7 @@ cdef api void call_cy_NestedContainers_turtles(
     unique_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] foo
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(_module_types.move(foo))
+    arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(_module_types.__fbthrift_move(foo))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

@@ -60,7 +60,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
             MyIncludedInt = <cint64_t> MyIncludedInt
 
-        self._cpp_obj = move(MyStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           NULL,
           NULL,
           MyIncludedField,
@@ -77,30 +77,30 @@ cdef class MyStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[3] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if MyIncludedField is ___NOTSET:
             __isNOTSET[0] = True
             MyIncludedField = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyOtherIncludedField is ___NOTSET:
             __isNOTSET[1] = True
             MyOtherIncludedField = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyIncludedInt is ___NOTSET:
             __isNOTSET[2] = True
             MyIncludedInt = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if MyIncludedField is not None:
@@ -116,15 +116,15 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
             MyIncludedInt = <cint64_t> MyIncludedInt
 
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move(MyStruct._make_instance(
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           MyIncludedField,
           MyOtherIncludedField,
           MyIncludedInt,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -168,7 +168,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.MyIncludedInt = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -188,9 +188,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def MyIncludedField(self):
@@ -227,7 +227,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(move_shared(cpp_obj))
+        return MyStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

@@ -88,7 +88,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <cint64_t> MyIntField
 
-        self._cpp_obj = move(MyStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           NULL,
           NULL,
           MyIntField,
@@ -103,23 +103,23 @@ cdef class MyStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if MyIntField is ___NOTSET:
             __isNOTSET[0] = True
             MyIntField = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyStringField is ___NOTSET:
             __isNOTSET[1] = True
             MyStringField = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if MyIntField is not None:
@@ -131,14 +131,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(MyStringField, str):
                 raise TypeError(f'MyStringField is not a { str !r}.')
 
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move(MyStruct._make_instance(
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           MyIntField,
           MyStringField,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -173,7 +173,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.MyStringField = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -191,9 +191,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def MyIntField(self):
@@ -220,7 +220,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(move_shared(cpp_obj))
+        return MyStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

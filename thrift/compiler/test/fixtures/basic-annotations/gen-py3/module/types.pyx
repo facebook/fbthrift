@@ -82,7 +82,7 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         MyStructNestedAnnotation self, *,
         str name=None
     ):
-        self._cpp_obj = move(MyStructNestedAnnotation._make_instance(
+        self._cpp_obj = __fbthrift_move(MyStructNestedAnnotation._make_instance(
           NULL,
           NULL,
           name,
@@ -95,29 +95,29 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if name is ___NOTSET:
             __isNOTSET[0] = True
             name = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if name is not None:
             if not isinstance(name, str):
                 raise TypeError(f'name is not a { str !r}.')
 
-        inst = <MyStructNestedAnnotation>MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
-        inst._cpp_obj = move(MyStructNestedAnnotation._make_instance(
+        __fbthrift_inst = <MyStructNestedAnnotation>MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStructNestedAnnotation._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           name,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMyStructNestedAnnotation] _make_instance(
@@ -143,7 +143,7 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
             deref(c_inst).__isset.name = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -159,9 +159,9 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStructNestedAnnotation] cpp_obj):
-        inst = <MyStructNestedAnnotation>MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyStructNestedAnnotation>MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def name(self):
@@ -182,7 +182,7 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStructNestedAnnotation] cpp_obj = make_shared[cMyStructNestedAnnotation](
             deref(self._cpp_obj)
         )
-        return MyStructNestedAnnotation.create(move_shared(cpp_obj))
+        return MyStructNestedAnnotation.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -271,7 +271,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
                 raise TypeError(f'count is not a { int !r}.')
             count = <cint64_t> count
 
-        self._cpp_obj = move(MyStructAnnotation._make_instance(
+        self._cpp_obj = __fbthrift_move(MyStructAnnotation._make_instance(
           NULL,
           NULL,
           count,
@@ -290,37 +290,37 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[4] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if count is ___NOTSET:
             __isNOTSET[0] = True
             count = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if name is ___NOTSET:
             __isNOTSET[1] = True
             name = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if extra is ___NOTSET:
             __isNOTSET[2] = True
             extra = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if nest is ___NOTSET:
             __isNOTSET[3] = True
             nest = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if count is not None:
@@ -340,8 +340,8 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
             if not isinstance(nest, MyStructNestedAnnotation):
                 raise TypeError(f'nest is not a { MyStructNestedAnnotation !r}.')
 
-        inst = <MyStructAnnotation>MyStructAnnotation.__new__(MyStructAnnotation)
-        inst._cpp_obj = move(MyStructAnnotation._make_instance(
+        __fbthrift_inst = <MyStructAnnotation>MyStructAnnotation.__new__(MyStructAnnotation)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStructAnnotation._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           count,
@@ -349,7 +349,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
           extra,
           nest,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMyStructAnnotation] _make_instance(
@@ -401,7 +401,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
             deref(c_inst).__isset.nest = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -423,9 +423,9 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStructAnnotation] cpp_obj):
-        inst = <MyStructAnnotation>MyStructAnnotation.__new__(MyStructAnnotation)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyStructAnnotation>MyStructAnnotation.__new__(MyStructAnnotation)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def count(self):
@@ -468,7 +468,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStructAnnotation] cpp_obj = make_shared[cMyStructAnnotation](
             deref(self._cpp_obj)
         )
-        return MyStructAnnotation.create(move_shared(cpp_obj))
+        return MyStructAnnotation.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -559,7 +559,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'major is not a { int !r}.')
             major = <cint64_t> major
 
-        self._cpp_obj = move(MyStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           NULL,
           NULL,
           major,
@@ -582,51 +582,51 @@ cdef class MyStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[6] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if major is ___NOTSET:
             __isNOTSET[0] = True
             major = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if package is ___NOTSET:
             __isNOTSET[1] = True
             package = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if annotation_with_quote is ___NOTSET:
             __isNOTSET[2] = True
             annotation_with_quote = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if class_ is ___NOTSET:
             __isNOTSET[3] = True
             class_ = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
         if annotation_with_trailing_comma is ___NOTSET:
             __isNOTSET[4] = True
             annotation_with_trailing_comma = None
         else:
             __isNOTSET[4] = False
-            changes = True
+            __fbthrift_changed = True
 
         if empty_annotations is ___NOTSET:
             __isNOTSET[5] = True
             empty_annotations = None
         else:
             __isNOTSET[5] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if major is not None:
@@ -654,8 +654,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(empty_annotations, str):
                 raise TypeError(f'empty_annotations is not a { str !r}.')
 
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move(MyStruct._make_instance(
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           major,
@@ -665,7 +665,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           annotation_with_trailing_comma,
           empty_annotations,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -736,7 +736,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.empty_annotations = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -762,9 +762,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def major(self):
@@ -815,7 +815,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(move_shared(cpp_obj))
+        return MyStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -902,7 +902,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
                 raise TypeError(f'id is not a { int !r}.')
             id = <cint64_t> id
 
-        self._cpp_obj = move(SecretStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(SecretStruct._make_instance(
           NULL,
           NULL,
           id,
@@ -917,23 +917,23 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if id is ___NOTSET:
             __isNOTSET[0] = True
             id = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if password is ___NOTSET:
             __isNOTSET[1] = True
             password = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if id is not None:
@@ -945,14 +945,14 @@ cdef class SecretStruct(thrift.py3.types.Struct):
             if not isinstance(password, str):
                 raise TypeError(f'password is not a { str !r}.')
 
-        inst = <SecretStruct>SecretStruct.__new__(SecretStruct)
-        inst._cpp_obj = move(SecretStruct._make_instance(
+        __fbthrift_inst = <SecretStruct>SecretStruct.__new__(SecretStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(SecretStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           id,
           password,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cSecretStruct] _make_instance(
@@ -987,7 +987,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.password = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -1005,9 +1005,9 @@ cdef class SecretStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cSecretStruct] cpp_obj):
-        inst = <SecretStruct>SecretStruct.__new__(SecretStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <SecretStruct>SecretStruct.__new__(SecretStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def id(self):
@@ -1034,7 +1034,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cSecretStruct] cpp_obj = make_shared[cSecretStruct](
             deref(self._cpp_obj)
         )
-        return SecretStruct.create(move_shared(cpp_obj))
+        return SecretStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

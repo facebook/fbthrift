@@ -85,10 +85,10 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] move "std::move"(unique_ptr[vector[std_unordered_map[cint32_t,string]]])
-    cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] move_shared "std::move"(shared_ptr[vector[std_unordered_map[cint32_t,string]]])
-    cdef shared_ptr[std_unordered_map[cint32_t,string]] move "std::move"(unique_ptr[std_unordered_map[cint32_t,string]])
-    cdef shared_ptr[std_unordered_map[cint32_t,string]] move_shared "std::move"(shared_ptr[std_unordered_map[cint32_t,string]])
+    cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] __fbthrift_move "std::move"(unique_ptr[vector[std_unordered_map[cint32_t,string]]])
+    cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[std_unordered_map[cint32_t,string]]])
+    cdef shared_ptr[std_unordered_map[cint32_t,string]] __fbthrift_move "std::move"(unique_ptr[std_unordered_map[cint32_t,string]])
+    cdef shared_ptr[std_unordered_map[cint32_t,string]] __fbthrift_move_shared "std::move"(shared_ptr[std_unordered_map[cint32_t,string]])
 cdef extern from "<utility>" nogil:
     pass  
     shared_ptr[std_unordered_map[cint32_t,string]] reference_shared_ptr_List__std_unordered_map__Map__i32_string "::thrift::py3::reference_shared_ptr<std::unordered_map<int32_t,std::string>>"(...)

@@ -54,15 +54,15 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[cint32_t]] c_items):
-        inst = <List__i32>List__i32.__new__(List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__i32>List__i32.__new__(List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__i32 self):
         cdef shared_ptr[vector[cint32_t]] cpp_obj = make_shared[vector[cint32_t]](
             deref(self._cpp_obj)
         )
-        return List__i32.create(move_shared(cpp_obj))
+        return List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *:
@@ -86,7 +86,7 @@ cdef class List__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__i32.create(move_shared(c_inst))
+            return List__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -220,15 +220,15 @@ cdef class Map__i32_List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,vector[cint32_t]]] c_items):
-        inst = <Map__i32_List__i32>Map__i32_List__i32.__new__(Map__i32_List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__i32_List__i32>Map__i32_List__i32.__new__(Map__i32_List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__i32_List__i32 self):
         cdef shared_ptr[cmap[cint32_t,vector[cint32_t]]] cpp_obj = make_shared[cmap[cint32_t,vector[cint32_t]]](
             deref(self._cpp_obj)
         )
-        return Map__i32_List__i32.create(move_shared(cpp_obj))
+        return Map__i32_List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,vector[cint32_t]]] _make_instance(object items) except *:
@@ -361,15 +361,15 @@ cdef class Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cset[cint32_t]] c_items):
-        inst = <Set__i32>Set__i32.__new__(Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Set__i32>Set__i32.__new__(Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Set__i32 self):
         cdef shared_ptr[cset[cint32_t]] cpp_obj = make_shared[cset[cint32_t]](
             deref(self._cpp_obj)
         )
-        return Set__i32.create(move_shared(cpp_obj))
+        return Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *:
@@ -502,7 +502,7 @@ cdef class Set__i32(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__i32):
@@ -521,7 +521,7 @@ cdef class Set__i32(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__i32):
@@ -543,7 +543,7 @@ cdef class Set__i32(thrift.py3.types.Container):
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__i32):
@@ -567,7 +567,7 @@ cdef class Set__i32(thrift.py3.types.Container):
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -610,15 +610,15 @@ cdef class Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cset[cint32_t]]] c_items):
-        inst = <Map__i32_Set__i32>Map__i32_Set__i32.__new__(Map__i32_Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__i32_Set__i32>Map__i32_Set__i32.__new__(Map__i32_Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__i32_Set__i32 self):
         cdef shared_ptr[cmap[cint32_t,cset[cint32_t]]] cpp_obj = make_shared[cmap[cint32_t,cset[cint32_t]]](
             deref(self._cpp_obj)
         )
-        return Map__i32_Set__i32.create(move_shared(cpp_obj))
+        return Map__i32_Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cset[cint32_t]]] _make_instance(object items) except *:
@@ -751,15 +751,15 @@ cdef class Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cint32_t]] c_items):
-        inst = <Map__i32_i32>Map__i32_i32.__new__(Map__i32_i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__i32_i32>Map__i32_i32.__new__(Map__i32_i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__i32_i32 self):
         cdef shared_ptr[cmap[cint32_t,cint32_t]] cpp_obj = make_shared[cmap[cint32_t,cint32_t]](
             deref(self._cpp_obj)
         )
-        return Map__i32_i32.create(move_shared(cpp_obj))
+        return Map__i32_i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *:
@@ -891,15 +891,15 @@ cdef class List__Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[cmap[cint32_t,cint32_t]]] c_items):
-        inst = <List__Map__i32_i32>List__Map__i32_i32.__new__(List__Map__i32_i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__Map__i32_i32>List__Map__i32_i32.__new__(List__Map__i32_i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__Map__i32_i32 self):
         cdef shared_ptr[vector[cmap[cint32_t,cint32_t]]] cpp_obj = make_shared[vector[cmap[cint32_t,cint32_t]]](
             deref(self._cpp_obj)
         )
-        return List__Map__i32_i32.create(move_shared(cpp_obj))
+        return List__Map__i32_i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[cmap[cint32_t,cint32_t]]] _make_instance(object items) except *:
@@ -924,7 +924,7 @@ cdef class List__Map__i32_i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__Map__i32_i32.create(move_shared(c_inst))
+            return List__Map__i32_i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1073,15 +1073,15 @@ cdef class List__Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[cset[cint32_t]]] c_items):
-        inst = <List__Set__i32>List__Set__i32.__new__(List__Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__Set__i32>List__Set__i32.__new__(List__Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__Set__i32 self):
         cdef shared_ptr[vector[cset[cint32_t]]] cpp_obj = make_shared[vector[cset[cint32_t]]](
             deref(self._cpp_obj)
         )
-        return List__Set__i32.create(move_shared(cpp_obj))
+        return List__Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[cset[cint32_t]]] _make_instance(object items) except *:
@@ -1106,7 +1106,7 @@ cdef class List__Set__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__Set__i32.create(move_shared(c_inst))
+            return List__Set__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1255,15 +1255,15 @@ cdef class Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]] c_items):
-        inst = <Map__i32_Map__i32_Set__i32>Map__i32_Map__i32_Set__i32.__new__(Map__i32_Map__i32_Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__i32_Map__i32_Set__i32>Map__i32_Map__i32_Set__i32.__new__(Map__i32_Map__i32_Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__i32_Map__i32_Set__i32 self):
         cdef shared_ptr[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]] cpp_obj = make_shared[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]](
             deref(self._cpp_obj)
         )
-        return Map__i32_Map__i32_Set__i32.create(move_shared(cpp_obj))
+        return Map__i32_Map__i32_Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]] _make_instance(object items) except *:
@@ -1396,15 +1396,15 @@ cdef class List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]] c_items):
-        inst = <List__Map__i32_Map__i32_Set__i32>List__Map__i32_Map__i32_Set__i32.__new__(List__Map__i32_Map__i32_Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__Map__i32_Map__i32_Set__i32>List__Map__i32_Map__i32_Set__i32.__new__(List__Map__i32_Map__i32_Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__Map__i32_Map__i32_Set__i32 self):
         cdef shared_ptr[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]] cpp_obj = make_shared[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]](
             deref(self._cpp_obj)
         )
-        return List__Map__i32_Map__i32_Set__i32.create(move_shared(cpp_obj))
+        return List__Map__i32_Map__i32_Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]] _make_instance(object items) except *:
@@ -1429,7 +1429,7 @@ cdef class List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__Map__i32_Map__i32_Set__i32.create(move_shared(c_inst))
+            return List__Map__i32_Map__i32_Set__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1578,15 +1578,15 @@ cdef class List__List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] c_items):
-        inst = <List__List__Map__i32_Map__i32_Set__i32>List__List__Map__i32_Map__i32_Set__i32.__new__(List__List__Map__i32_Map__i32_Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__List__Map__i32_Map__i32_Set__i32>List__List__Map__i32_Map__i32_Set__i32.__new__(List__List__Map__i32_Map__i32_Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__List__Map__i32_Map__i32_Set__i32 self):
         cdef shared_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] cpp_obj = make_shared[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]](
             deref(self._cpp_obj)
         )
-        return List__List__Map__i32_Map__i32_Set__i32.create(move_shared(cpp_obj))
+        return List__List__Map__i32_Map__i32_Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] _make_instance(object items) except *:
@@ -1611,7 +1611,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__List__Map__i32_Map__i32_Set__i32.create(move_shared(c_inst))
+            return List__List__Map__i32_Map__i32_Set__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

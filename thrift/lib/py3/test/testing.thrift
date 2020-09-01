@@ -221,6 +221,9 @@ struct Reserved {
   2: i32 nonlocal (py3.name = "nonlocal_"), // ditto
   3: string ok ,    // not a keyword
   4: bool cpdef (py3.name = 'is_cpdef'),
+  5: string move,  // not a keyword
+  6: string inst,  // not a keyword
+  7: string changes,  // not a keyword
 }
 
 union ReservedUnion {

@@ -64,12 +64,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cEmpty] move(unique_ptr[cEmpty])
-    cdef shared_ptr[cEmpty] move_shared "std::move"(shared_ptr[cEmpty])
-    cdef unique_ptr[cEmpty] move_unique "std::move"(unique_ptr[cEmpty])
-    cdef shared_ptr[cNada] move(unique_ptr[cNada])
-    cdef shared_ptr[cNada] move_shared "std::move"(shared_ptr[cNada])
-    cdef unique_ptr[cNada] move_unique "std::move"(unique_ptr[cNada])
+    cdef shared_ptr[cEmpty] __fbthrift_move "std::move"(unique_ptr[cEmpty])
+    cdef shared_ptr[cEmpty] __fbthrift_move_shared "std::move"(shared_ptr[cEmpty])
+    cdef unique_ptr[cEmpty] __fbthrift_move_unique "std::move"(unique_ptr[cEmpty])
+    cdef shared_ptr[cNada] __fbthrift_move "std::move"(unique_ptr[cNada])
+    cdef shared_ptr[cNada] __fbthrift_move_shared "std::move"(shared_ptr[cNada])
+    cdef unique_ptr[cNada] __fbthrift_move_unique "std::move"(unique_ptr[cNada])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Empty>"(shared_ptr[cEmpty])

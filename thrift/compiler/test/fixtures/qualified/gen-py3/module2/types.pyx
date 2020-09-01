@@ -56,7 +56,7 @@ cdef class Struct(thrift.py3.types.Struct):
         _module0_types.Struct first=None,
         _module1_types.Struct second=None
     ):
-        self._cpp_obj = move(Struct._make_instance(
+        self._cpp_obj = __fbthrift_move(Struct._make_instance(
           NULL,
           NULL,
           first,
@@ -71,23 +71,23 @@ cdef class Struct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if first is ___NOTSET:
             __isNOTSET[0] = True
             first = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if second is ___NOTSET:
             __isNOTSET[1] = True
             second = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if first is not None:
@@ -98,14 +98,14 @@ cdef class Struct(thrift.py3.types.Struct):
             if not isinstance(second, _module1_types.Struct):
                 raise TypeError(f'second is not a { _module1_types.Struct !r}.')
 
-        inst = <Struct>Struct.__new__(Struct)
-        inst._cpp_obj = move(Struct._make_instance(
+        __fbthrift_inst = <Struct>Struct.__new__(Struct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(Struct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           first,
           second,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cStruct] _make_instance(
@@ -140,7 +140,7 @@ cdef class Struct(thrift.py3.types.Struct):
             deref(c_inst).__isset.second = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -158,9 +158,9 @@ cdef class Struct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
-        inst = <Struct>Struct.__new__(Struct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <Struct>Struct.__new__(Struct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def first(self):
@@ -191,7 +191,7 @@ cdef class Struct(thrift.py3.types.Struct):
         cdef shared_ptr[cStruct] cpp_obj = make_shared[cStruct](
             deref(self._cpp_obj)
         )
-        return Struct.create(move_shared(cpp_obj))
+        return Struct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -278,7 +278,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
                 raise TypeError(f'id is not a { int !r}.')
             id = <cint32_t> id
 
-        self._cpp_obj = move(BigStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(BigStruct._make_instance(
           NULL,
           NULL,
           s,
@@ -293,23 +293,23 @@ cdef class BigStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if s is ___NOTSET:
             __isNOTSET[0] = True
             s = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if id is ___NOTSET:
             __isNOTSET[1] = True
             id = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if s is not None:
@@ -321,14 +321,14 @@ cdef class BigStruct(thrift.py3.types.Struct):
                 raise TypeError(f'id is not a { int !r}.')
             id = <cint32_t> id
 
-        inst = <BigStruct>BigStruct.__new__(BigStruct)
-        inst._cpp_obj = move(BigStruct._make_instance(
+        __fbthrift_inst = <BigStruct>BigStruct.__new__(BigStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(BigStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           s,
           id,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cBigStruct] _make_instance(
@@ -363,7 +363,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.id = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -381,9 +381,9 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cBigStruct] cpp_obj):
-        inst = <BigStruct>BigStruct.__new__(BigStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <BigStruct>BigStruct.__new__(BigStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def s(self):
@@ -412,7 +412,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cBigStruct] cpp_obj = make_shared[cBigStruct](
             deref(self._cpp_obj)
         )
-        return BigStruct.create(move_shared(cpp_obj))
+        return BigStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

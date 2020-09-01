@@ -79,12 +79,12 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
     cdef shared_ptr[cStruct] reference_shared_ptr_s "::thrift::py3::reference_shared_ptr<::module2::Struct>"(shared_ptr[cBigStruct]&, cStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cStruct] move(unique_ptr[cStruct])
-    cdef shared_ptr[cStruct] move_shared "std::move"(shared_ptr[cStruct])
-    cdef unique_ptr[cStruct] move_unique "std::move"(unique_ptr[cStruct])
-    cdef shared_ptr[cBigStruct] move(unique_ptr[cBigStruct])
-    cdef shared_ptr[cBigStruct] move_shared "std::move"(shared_ptr[cBigStruct])
-    cdef unique_ptr[cBigStruct] move_unique "std::move"(unique_ptr[cBigStruct])
+    cdef shared_ptr[cStruct] __fbthrift_move "std::move"(unique_ptr[cStruct])
+    cdef shared_ptr[cStruct] __fbthrift_move_shared "std::move"(shared_ptr[cStruct])
+    cdef unique_ptr[cStruct] __fbthrift_move_unique "std::move"(unique_ptr[cStruct])
+    cdef shared_ptr[cBigStruct] __fbthrift_move "std::move"(unique_ptr[cBigStruct])
+    cdef shared_ptr[cBigStruct] __fbthrift_move_shared "std::move"(shared_ptr[cBigStruct])
+    cdef unique_ptr[cBigStruct] __fbthrift_move_unique "std::move"(unique_ptr[cBigStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const ::module2::Struct>"(shared_ptr[cStruct])

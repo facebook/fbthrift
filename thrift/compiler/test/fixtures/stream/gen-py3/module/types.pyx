@@ -52,7 +52,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __init__(
         FooEx self
     ):
-        self._cpp_obj = move(FooEx._make_instance(
+        self._cpp_obj = __fbthrift_move(FooEx._make_instance(
           NULL,
           NULL,
         ))
@@ -72,7 +72,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
 
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -87,10 +87,10 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cFooEx] cpp_obj):
-        inst = <FooEx>FooEx.__new__(FooEx, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = move_shared(cpp_obj)
-        _builtins.Exception.__init__(inst, )
-        return inst
+        __fbthrift_inst = <FooEx>FooEx.__new__(FooEx, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, )
+        return __fbthrift_inst
 
 
     def __hash__(FooEx self):
@@ -102,7 +102,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cFooEx] cpp_obj = make_shared[cFooEx](
             deref(self._cpp_obj)
         )
-        return FooEx.create(move_shared(cpp_obj))
+        return FooEx.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -144,9 +144,9 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
 
     @staticmethod
     cdef create(cClientBufferedStream[cint32_t]& c_obj, __RpcOptions rpc_options):
-        inst = ClientBufferedStream__i32(rpc_options)
-        inst._gen = make_unique[cClientBufferedStreamWrapper[cint32_t]](c_obj)
-        return inst
+        __fbthrift_inst = ClientBufferedStream__i32(rpc_options)
+        __fbthrift_inst._gen = make_unique[cClientBufferedStreamWrapper[cint32_t]](c_obj)
+        return __fbthrift_inst
 
     @staticmethod
     cdef void callback(
@@ -192,13 +192,13 @@ cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStr
 
     @staticmethod
     cdef create(cResponseAndClientBufferedStream[cint32_t, cint32_t]& c_obj, __RpcOptions rpc_options):
-        inst = ResponseAndClientBufferedStream__i32_i32()
-        inst._stream = ClientBufferedStream__i32.create(
+        __fbthrift_inst = ResponseAndClientBufferedStream__i32_i32()
+        __fbthrift_inst._stream = ClientBufferedStream__i32.create(
             c_obj.stream, rpc_options,
         )
         cdef cint32_t _value = c_obj.response
-        inst._response = _value
-        return inst
+        __fbthrift_inst._response = _value
+        return __fbthrift_inst
 
     def __iter__(self):
         yield self._response

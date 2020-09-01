@@ -210,7 +210,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         decorated_struct self, *,
         str field=None
     ):
-        self._cpp_obj = move(decorated_struct._make_instance(
+        self._cpp_obj = __fbthrift_move(decorated_struct._make_instance(
           NULL,
           NULL,
           field,
@@ -223,29 +223,29 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if field is ___NOTSET:
             __isNOTSET[0] = True
             field = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if field is not None:
             if not isinstance(field, str):
                 raise TypeError(f'field is not a { str !r}.')
 
-        inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
-        inst._cpp_obj = move(decorated_struct._make_instance(
+        __fbthrift_inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(decorated_struct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           field,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cdecorated_struct] _make_instance(
@@ -271,7 +271,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
             deref(c_inst).__isset.field = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -287,9 +287,9 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cdecorated_struct] cpp_obj):
-        inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def field(self):
@@ -310,7 +310,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         cdef shared_ptr[cdecorated_struct] cpp_obj = make_shared[cdecorated_struct](
             deref(self._cpp_obj)
         )
-        return decorated_struct.create(move_shared(cpp_obj))
+        return decorated_struct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -398,7 +398,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         fieldG=None,
         fieldH=None
     ):
-        self._cpp_obj = move(ContainerStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(ContainerStruct._make_instance(
           NULL,
           NULL,
           fieldA,
@@ -425,69 +425,69 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[8] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if fieldA is ___NOTSET:
             __isNOTSET[0] = True
             fieldA = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if fieldB is ___NOTSET:
             __isNOTSET[1] = True
             fieldB = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if fieldC is ___NOTSET:
             __isNOTSET[2] = True
             fieldC = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if fieldD is ___NOTSET:
             __isNOTSET[3] = True
             fieldD = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
         if fieldE is ___NOTSET:
             __isNOTSET[4] = True
             fieldE = None
         else:
             __isNOTSET[4] = False
-            changes = True
+            __fbthrift_changed = True
 
         if fieldF is ___NOTSET:
             __isNOTSET[5] = True
             fieldF = None
         else:
             __isNOTSET[5] = False
-            changes = True
+            __fbthrift_changed = True
 
         if fieldG is ___NOTSET:
             __isNOTSET[6] = True
             fieldG = None
         else:
             __isNOTSET[6] = False
-            changes = True
+            __fbthrift_changed = True
 
         if fieldH is ___NOTSET:
             __isNOTSET[7] = True
             fieldH = None
         else:
             __isNOTSET[7] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
-        inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
-        inst._cpp_obj = move(ContainerStruct._make_instance(
+        __fbthrift_inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(ContainerStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           fieldA,
@@ -499,7 +499,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
           fieldG,
           fieldH,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cContainerStruct] _make_instance(
@@ -588,7 +588,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.fieldH = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -618,9 +618,9 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cContainerStruct] cpp_obj):
-        inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def fieldA(self):
@@ -699,7 +699,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cContainerStruct] cpp_obj = make_shared[cContainerStruct](
             deref(self._cpp_obj)
         )
-        return ContainerStruct.create(move_shared(cpp_obj))
+        return ContainerStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -772,7 +772,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         CppTypeStruct self, *,
         fieldA=None
     ):
-        self._cpp_obj = move(CppTypeStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(CppTypeStruct._make_instance(
           NULL,
           NULL,
           fieldA,
@@ -785,25 +785,25 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if fieldA is ___NOTSET:
             __isNOTSET[0] = True
             fieldA = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
-        inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
-        inst._cpp_obj = move(CppTypeStruct._make_instance(
+        __fbthrift_inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(CppTypeStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           fieldA,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cCppTypeStruct] _make_instance(
@@ -829,7 +829,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.fieldA = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -845,9 +845,9 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cCppTypeStruct] cpp_obj):
-        inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def fieldA(self):
@@ -870,7 +870,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cCppTypeStruct] cpp_obj = make_shared[cCppTypeStruct](
             deref(self._cpp_obj)
         )
-        return CppTypeStruct.create(move_shared(cpp_obj))
+        return CppTypeStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -956,7 +956,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <cint64_t> MyIntField
 
-        self._cpp_obj = move(VirtualStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(VirtualStruct._make_instance(
           NULL,
           NULL,
           MyIntField,
@@ -969,16 +969,16 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if MyIntField is ___NOTSET:
             __isNOTSET[0] = True
             MyIntField = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if MyIntField is not None:
@@ -986,13 +986,13 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <cint64_t> MyIntField
 
-        inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
-        inst._cpp_obj = move(VirtualStruct._make_instance(
+        __fbthrift_inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(VirtualStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           MyIntField,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cVirtualStruct] _make_instance(
@@ -1018,7 +1018,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.MyIntField = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -1034,9 +1034,9 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cVirtualStruct] cpp_obj):
-        inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def MyIntField(self):
@@ -1057,7 +1057,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cVirtualStruct] cpp_obj = make_shared[cVirtualStruct](
             deref(self._cpp_obj)
         )
-        return VirtualStruct.create(move_shared(cpp_obj))
+        return VirtualStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1139,7 +1139,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         MyForwardRefEnum a=None,
         MyForwardRefEnum b=None
     ):
-        self._cpp_obj = move(MyStructWithForwardRefEnum._make_instance(
+        self._cpp_obj = __fbthrift_move(MyStructWithForwardRefEnum._make_instance(
           NULL,
           NULL,
           a,
@@ -1154,23 +1154,23 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if a is ___NOTSET:
             __isNOTSET[0] = True
             a = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if b is ___NOTSET:
             __isNOTSET[1] = True
             b = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if a is not None:
@@ -1181,14 +1181,14 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
             if not isinstance(b, MyForwardRefEnum):
                 raise TypeError(f'field b value: { b !r} is not of the enum type { MyForwardRefEnum }.')
 
-        inst = <MyStructWithForwardRefEnum>MyStructWithForwardRefEnum.__new__(MyStructWithForwardRefEnum)
-        inst._cpp_obj = move(MyStructWithForwardRefEnum._make_instance(
+        __fbthrift_inst = <MyStructWithForwardRefEnum>MyStructWithForwardRefEnum.__new__(MyStructWithForwardRefEnum)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStructWithForwardRefEnum._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           a,
           b,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMyStructWithForwardRefEnum] _make_instance(
@@ -1223,7 +1223,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -1241,9 +1241,9 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum] cpp_obj):
-        inst = <MyStructWithForwardRefEnum>MyStructWithForwardRefEnum.__new__(MyStructWithForwardRefEnum)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyStructWithForwardRefEnum>MyStructWithForwardRefEnum.__new__(MyStructWithForwardRefEnum)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def a(self):
@@ -1270,7 +1270,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStructWithForwardRefEnum] cpp_obj = make_shared[cMyStructWithForwardRefEnum](
             deref(self._cpp_obj)
         )
-        return MyStructWithForwardRefEnum.create(move_shared(cpp_obj))
+        return MyStructWithForwardRefEnum.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1357,7 +1357,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
                 raise TypeError(f'a is not a { int !r}.')
             a = <cint32_t> a
 
-        self._cpp_obj = move(TrivialNumeric._make_instance(
+        self._cpp_obj = __fbthrift_move(TrivialNumeric._make_instance(
           NULL,
           NULL,
           a,
@@ -1372,23 +1372,23 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if a is ___NOTSET:
             __isNOTSET[0] = True
             a = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if b is ___NOTSET:
             __isNOTSET[1] = True
             b = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if a is not None:
@@ -1400,14 +1400,14 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
             if not isinstance(b, bool):
                 raise TypeError(f'b is not a { bool !r}.')
 
-        inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
-        inst._cpp_obj = move(TrivialNumeric._make_instance(
+        __fbthrift_inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(TrivialNumeric._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           a,
           b,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cTrivialNumeric] _make_instance(
@@ -1442,7 +1442,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -1460,9 +1460,9 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cTrivialNumeric] cpp_obj):
-        inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def a(self):
@@ -1489,7 +1489,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         cdef shared_ptr[cTrivialNumeric] cpp_obj = make_shared[cTrivialNumeric](
             deref(self._cpp_obj)
         )
-        return TrivialNumeric.create(move_shared(cpp_obj))
+        return TrivialNumeric.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1576,7 +1576,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
                 raise TypeError(f'z is not a { int !r}.')
             z = <cint32_t> z
 
-        self._cpp_obj = move(TrivialNestedWithDefault._make_instance(
+        self._cpp_obj = __fbthrift_move(TrivialNestedWithDefault._make_instance(
           NULL,
           NULL,
           z,
@@ -1591,23 +1591,23 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if z is ___NOTSET:
             __isNOTSET[0] = True
             z = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if n is ___NOTSET:
             __isNOTSET[1] = True
             n = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if z is not None:
@@ -1619,14 +1619,14 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
             if not isinstance(n, TrivialNumeric):
                 raise TypeError(f'n is not a { TrivialNumeric !r}.')
 
-        inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
-        inst._cpp_obj = move(TrivialNestedWithDefault._make_instance(
+        __fbthrift_inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(TrivialNestedWithDefault._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           z,
           n,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cTrivialNestedWithDefault] _make_instance(
@@ -1661,7 +1661,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
             deref(c_inst).__isset.n = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -1679,9 +1679,9 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cTrivialNestedWithDefault] cpp_obj):
-        inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def z(self):
@@ -1710,7 +1710,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         cdef shared_ptr[cTrivialNestedWithDefault] cpp_obj = make_shared[cTrivialNestedWithDefault](
             deref(self._cpp_obj)
         )
-        return TrivialNestedWithDefault.create(move_shared(cpp_obj))
+        return TrivialNestedWithDefault.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1792,7 +1792,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
         str a=None,
         b=None
     ):
-        self._cpp_obj = move(ComplexString._make_instance(
+        self._cpp_obj = __fbthrift_move(ComplexString._make_instance(
           NULL,
           NULL,
           a,
@@ -1807,37 +1807,37 @@ cdef class ComplexString(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if a is ___NOTSET:
             __isNOTSET[0] = True
             a = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if b is ___NOTSET:
             __isNOTSET[1] = True
             b = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if a is not None:
             if not isinstance(a, str):
                 raise TypeError(f'a is not a { str !r}.')
 
-        inst = <ComplexString>ComplexString.__new__(ComplexString)
-        inst._cpp_obj = move(ComplexString._make_instance(
+        __fbthrift_inst = <ComplexString>ComplexString.__new__(ComplexString)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(ComplexString._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           a,
           b,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cComplexString] _make_instance(
@@ -1872,7 +1872,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -1890,9 +1890,9 @@ cdef class ComplexString(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cComplexString] cpp_obj):
-        inst = <ComplexString>ComplexString.__new__(ComplexString)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <ComplexString>ComplexString.__new__(ComplexString)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def a(self):
@@ -1921,7 +1921,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
         cdef shared_ptr[cComplexString] cpp_obj = make_shared[cComplexString](
             deref(self._cpp_obj)
         )
-        return ComplexString.create(move_shared(cpp_obj))
+        return ComplexString.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -2003,7 +2003,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         str z=None,
         ComplexString n=None
     ):
-        self._cpp_obj = move(ComplexNestedWithDefault._make_instance(
+        self._cpp_obj = __fbthrift_move(ComplexNestedWithDefault._make_instance(
           NULL,
           NULL,
           z,
@@ -2018,23 +2018,23 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if z is ___NOTSET:
             __isNOTSET[0] = True
             z = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if n is ___NOTSET:
             __isNOTSET[1] = True
             n = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if z is not None:
@@ -2045,14 +2045,14 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
             if not isinstance(n, ComplexString):
                 raise TypeError(f'n is not a { ComplexString !r}.')
 
-        inst = <ComplexNestedWithDefault>ComplexNestedWithDefault.__new__(ComplexNestedWithDefault)
-        inst._cpp_obj = move(ComplexNestedWithDefault._make_instance(
+        __fbthrift_inst = <ComplexNestedWithDefault>ComplexNestedWithDefault.__new__(ComplexNestedWithDefault)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(ComplexNestedWithDefault._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           z,
           n,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cComplexNestedWithDefault] _make_instance(
@@ -2087,7 +2087,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
             deref(c_inst).__isset.n = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -2105,9 +2105,9 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cComplexNestedWithDefault] cpp_obj):
-        inst = <ComplexNestedWithDefault>ComplexNestedWithDefault.__new__(ComplexNestedWithDefault)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <ComplexNestedWithDefault>ComplexNestedWithDefault.__new__(ComplexNestedWithDefault)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def z(self):
@@ -2136,7 +2136,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         cdef shared_ptr[cComplexNestedWithDefault] cpp_obj = make_shared[cComplexNestedWithDefault](
             deref(self._cpp_obj)
         )
-        return ComplexNestedWithDefault.create(move_shared(cpp_obj))
+        return ComplexNestedWithDefault.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -2246,7 +2246,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
                 raise TypeError(f'tiny is not a { int !r}.')
             tiny = <cint8_t> tiny
 
-        self._cpp_obj = move(MinPadding._make_instance(
+        self._cpp_obj = __fbthrift_move(MinPadding._make_instance(
           NULL,
           NULL,
           small,
@@ -2267,44 +2267,44 @@ cdef class MinPadding(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[5] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if small is ___NOTSET:
             __isNOTSET[0] = True
             small = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if big is ___NOTSET:
             __isNOTSET[1] = True
             big = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if medium is ___NOTSET:
             __isNOTSET[2] = True
             medium = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if biggish is ___NOTSET:
             __isNOTSET[3] = True
             biggish = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
         if tiny is ___NOTSET:
             __isNOTSET[4] = True
             tiny = None
         else:
             __isNOTSET[4] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if small is not None:
@@ -2332,8 +2332,8 @@ cdef class MinPadding(thrift.py3.types.Struct):
                 raise TypeError(f'tiny is not a { int !r}.')
             tiny = <cint8_t> tiny
 
-        inst = <MinPadding>MinPadding.__new__(MinPadding)
-        inst._cpp_obj = move(MinPadding._make_instance(
+        __fbthrift_inst = <MinPadding>MinPadding.__new__(MinPadding)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MinPadding._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           small,
@@ -2342,7 +2342,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
           biggish,
           tiny,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMinPadding] _make_instance(
@@ -2394,7 +2394,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
             deref(c_inst).tiny = tiny
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -2413,9 +2413,9 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMinPadding] cpp_obj):
-        inst = <MinPadding>MinPadding.__new__(MinPadding)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MinPadding>MinPadding.__new__(MinPadding)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def small(self):
@@ -2460,7 +2460,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
         cdef shared_ptr[cMinPadding] cpp_obj = make_shared[cMinPadding](
             deref(self._cpp_obj)
         )
-        return MinPadding.create(move_shared(cpp_obj))
+        return MinPadding.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -2554,7 +2554,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'majorVer is not a { int !r}.')
             majorVer = <cint64_t> majorVer
 
-        self._cpp_obj = move(MyStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           NULL,
           NULL,
           MyIntField,
@@ -2573,37 +2573,37 @@ cdef class MyStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[4] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if MyIntField is ___NOTSET:
             __isNOTSET[0] = True
             MyIntField = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyStringField is ___NOTSET:
             __isNOTSET[1] = True
             MyStringField = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if majorVer is ___NOTSET:
             __isNOTSET[2] = True
             majorVer = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if data is ___NOTSET:
             __isNOTSET[3] = True
             data = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if MyIntField is not None:
@@ -2624,8 +2624,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(data, MyDataItem):
                 raise TypeError(f'data is not a { MyDataItem !r}.')
 
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move(MyStruct._make_instance(
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           MyIntField,
@@ -2633,7 +2633,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           majorVer,
           data,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -2686,7 +2686,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.data = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -2708,9 +2708,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def MyIntField(self):
@@ -2762,7 +2762,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(move_shared(cpp_obj))
+        return MyStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -2832,7 +2832,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     def __init__(
         MyDataItem self, *
     ):
-        self._cpp_obj = move(MyDataItem._make_instance(
+        self._cpp_obj = __fbthrift_move(MyDataItem._make_instance(
           NULL,
           NULL,
         ))
@@ -2858,7 +2858,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
             pass
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -2873,9 +2873,9 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyDataItem] cpp_obj):
-        inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
 
     def __hash__(MyDataItem self):
@@ -2896,7 +2896,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         cdef shared_ptr[cMyDataItem] cpp_obj = make_shared[cMyDataItem](
             deref(self._cpp_obj)
         )
-        return MyDataItem.create(move_shared(cpp_obj))
+        return MyDataItem.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -2972,7 +2972,7 @@ cdef class Renaming(thrift.py3.types.Struct):
                 raise TypeError(f'foo is not a { int !r}.')
             foo = <cint64_t> foo
 
-        self._cpp_obj = move(Renaming._make_instance(
+        self._cpp_obj = __fbthrift_move(Renaming._make_instance(
           NULL,
           NULL,
           foo,
@@ -2985,16 +2985,16 @@ cdef class Renaming(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if foo is ___NOTSET:
             __isNOTSET[0] = True
             foo = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if foo is not None:
@@ -3002,13 +3002,13 @@ cdef class Renaming(thrift.py3.types.Struct):
                 raise TypeError(f'foo is not a { int !r}.')
             foo = <cint64_t> foo
 
-        inst = <Renaming>Renaming.__new__(Renaming)
-        inst._cpp_obj = move(Renaming._make_instance(
+        __fbthrift_inst = <Renaming>Renaming.__new__(Renaming)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(Renaming._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           foo,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cRenaming] _make_instance(
@@ -3034,7 +3034,7 @@ cdef class Renaming(thrift.py3.types.Struct):
             deref(c_inst).__isset.foo = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -3050,9 +3050,9 @@ cdef class Renaming(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cRenaming] cpp_obj):
-        inst = <Renaming>Renaming.__new__(Renaming)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <Renaming>Renaming.__new__(Renaming)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def foo(self):
@@ -3073,7 +3073,7 @@ cdef class Renaming(thrift.py3.types.Struct):
         cdef shared_ptr[cRenaming] cpp_obj = make_shared[cRenaming](
             deref(self._cpp_obj)
         )
-        return Renaming.create(move_shared(cpp_obj))
+        return Renaming.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -3155,7 +3155,7 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         bytes binary_field=None,
         list_field=None
     ):
-        self._cpp_obj = move(AnnotatedTypes._make_instance(
+        self._cpp_obj = __fbthrift_move(AnnotatedTypes._make_instance(
           NULL,
           NULL,
           binary_field,
@@ -3170,37 +3170,37 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if binary_field is ___NOTSET:
             __isNOTSET[0] = True
             binary_field = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if list_field is ___NOTSET:
             __isNOTSET[1] = True
             list_field = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if binary_field is not None:
             if not isinstance(binary_field, bytes):
                 raise TypeError(f'binary_field is not a { bytes !r}.')
 
-        inst = <AnnotatedTypes>AnnotatedTypes.__new__(AnnotatedTypes)
-        inst._cpp_obj = move(AnnotatedTypes._make_instance(
+        __fbthrift_inst = <AnnotatedTypes>AnnotatedTypes.__new__(AnnotatedTypes)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(AnnotatedTypes._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           binary_field,
           list_field,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cAnnotatedTypes] _make_instance(
@@ -3235,7 +3235,7 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
             deref(c_inst).__isset.list_field = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -3253,9 +3253,9 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedTypes] cpp_obj):
-        inst = <AnnotatedTypes>AnnotatedTypes.__new__(AnnotatedTypes)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <AnnotatedTypes>AnnotatedTypes.__new__(AnnotatedTypes)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def binary_field(self):
@@ -3284,7 +3284,7 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         cdef shared_ptr[cAnnotatedTypes] cpp_obj = make_shared[cAnnotatedTypes](
             deref(self._cpp_obj)
         )
-        return AnnotatedTypes.create(move_shared(cpp_obj))
+        return AnnotatedTypes.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -3358,7 +3358,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         ForwardUsageStruct ForwardUsageStruct=None,
         ForwardUsageByRef ForwardUsageByRef=None
     ):
-        self._cpp_obj = move(ForwardUsageRoot._make_instance(
+        self._cpp_obj = __fbthrift_move(ForwardUsageRoot._make_instance(
           NULL,
           NULL,
           ForwardUsageStruct,
@@ -3373,23 +3373,23 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[2] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if ForwardUsageStruct is ___NOTSET:
             __isNOTSET[0] = True
             ForwardUsageStruct = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if ForwardUsageByRef is ___NOTSET:
             __isNOTSET[1] = True
             ForwardUsageByRef = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if ForwardUsageStruct is not None:
@@ -3400,14 +3400,14 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
             if not isinstance(ForwardUsageByRef, ForwardUsageByRef):
                 raise TypeError(f'ForwardUsageByRef is not a { ForwardUsageByRef !r}.')
 
-        inst = <ForwardUsageRoot>ForwardUsageRoot.__new__(ForwardUsageRoot)
-        inst._cpp_obj = move(ForwardUsageRoot._make_instance(
+        __fbthrift_inst = <ForwardUsageRoot>ForwardUsageRoot.__new__(ForwardUsageRoot)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(ForwardUsageRoot._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           ForwardUsageStruct,
           ForwardUsageByRef,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cForwardUsageRoot] _make_instance(
@@ -3439,7 +3439,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
             deref(c_inst).ForwardUsageByRef = make_unique[cForwardUsageByRef](deref((<ForwardUsageByRef?>ForwardUsageByRef)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -3456,9 +3456,9 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cForwardUsageRoot] cpp_obj):
-        inst = <ForwardUsageRoot>ForwardUsageRoot.__new__(ForwardUsageRoot)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <ForwardUsageRoot>ForwardUsageRoot.__new__(ForwardUsageRoot)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def ForwardUsageStruct(self):
@@ -3493,7 +3493,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         cdef shared_ptr[cForwardUsageRoot] cpp_obj = make_shared[cForwardUsageRoot](
             deref(self._cpp_obj)
         )
-        return ForwardUsageRoot.create(move_shared(cpp_obj))
+        return ForwardUsageRoot.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -3574,7 +3574,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         ForwardUsageStruct self, *,
         ForwardUsageRoot foo=None
     ):
-        self._cpp_obj = move(ForwardUsageStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(ForwardUsageStruct._make_instance(
           NULL,
           NULL,
           foo,
@@ -3587,29 +3587,29 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if foo is ___NOTSET:
             __isNOTSET[0] = True
             foo = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if foo is not None:
             if not isinstance(foo, ForwardUsageRoot):
                 raise TypeError(f'foo is not a { ForwardUsageRoot !r}.')
 
-        inst = <ForwardUsageStruct>ForwardUsageStruct.__new__(ForwardUsageStruct)
-        inst._cpp_obj = move(ForwardUsageStruct._make_instance(
+        __fbthrift_inst = <ForwardUsageStruct>ForwardUsageStruct.__new__(ForwardUsageStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(ForwardUsageStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           foo,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cForwardUsageStruct] _make_instance(
@@ -3634,7 +3634,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.foo = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -3650,9 +3650,9 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cForwardUsageStruct] cpp_obj):
-        inst = <ForwardUsageStruct>ForwardUsageStruct.__new__(ForwardUsageStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <ForwardUsageStruct>ForwardUsageStruct.__new__(ForwardUsageStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def foo(self):
@@ -3677,7 +3677,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cForwardUsageStruct] cpp_obj = make_shared[cForwardUsageStruct](
             deref(self._cpp_obj)
         )
-        return ForwardUsageStruct.create(move_shared(cpp_obj))
+        return ForwardUsageStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -3758,7 +3758,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         ForwardUsageByRef self, *,
         ForwardUsageRoot foo=None
     ):
-        self._cpp_obj = move(ForwardUsageByRef._make_instance(
+        self._cpp_obj = __fbthrift_move(ForwardUsageByRef._make_instance(
           NULL,
           NULL,
           foo,
@@ -3771,29 +3771,29 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if foo is ___NOTSET:
             __isNOTSET[0] = True
             foo = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if foo is not None:
             if not isinstance(foo, ForwardUsageRoot):
                 raise TypeError(f'foo is not a { ForwardUsageRoot !r}.')
 
-        inst = <ForwardUsageByRef>ForwardUsageByRef.__new__(ForwardUsageByRef)
-        inst._cpp_obj = move(ForwardUsageByRef._make_instance(
+        __fbthrift_inst = <ForwardUsageByRef>ForwardUsageByRef.__new__(ForwardUsageByRef)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(ForwardUsageByRef._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           foo,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cForwardUsageByRef] _make_instance(
@@ -3818,7 +3818,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
             deref(c_inst).__isset.foo = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -3834,9 +3834,9 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cForwardUsageByRef] cpp_obj):
-        inst = <ForwardUsageByRef>ForwardUsageByRef.__new__(ForwardUsageByRef)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <ForwardUsageByRef>ForwardUsageByRef.__new__(ForwardUsageByRef)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def foo(self):
@@ -3861,7 +3861,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         cdef shared_ptr[cForwardUsageByRef] cpp_obj = make_shared[cForwardUsageByRef](
             deref(self._cpp_obj)
         )
-        return ForwardUsageByRef.create(move_shared(cpp_obj))
+        return ForwardUsageByRef.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -3941,7 +3941,7 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
     def __init__(
         NoexceptMoveEmpty self, *
     ):
-        self._cpp_obj = move(NoexceptMoveEmpty._make_instance(
+        self._cpp_obj = __fbthrift_move(NoexceptMoveEmpty._make_instance(
           NULL,
           NULL,
         ))
@@ -3967,7 +3967,7 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
             pass
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -3982,9 +3982,9 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveEmpty] cpp_obj):
-        inst = <NoexceptMoveEmpty>NoexceptMoveEmpty.__new__(NoexceptMoveEmpty)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <NoexceptMoveEmpty>NoexceptMoveEmpty.__new__(NoexceptMoveEmpty)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
 
     def __hash__(NoexceptMoveEmpty self):
@@ -4000,7 +4000,7 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
         cdef shared_ptr[cNoexceptMoveEmpty] cpp_obj = make_shared[cNoexceptMoveEmpty](
             deref(self._cpp_obj)
         )
-        return NoexceptMoveEmpty.create(move_shared(cpp_obj))
+        return NoexceptMoveEmpty.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -4086,7 +4086,7 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
                 raise TypeError(f'boolField is not a { int !r}.')
             boolField = <cint64_t> boolField
 
-        self._cpp_obj = move(NoexceptMoveSimpleStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(NoexceptMoveSimpleStruct._make_instance(
           NULL,
           NULL,
           boolField,
@@ -4099,16 +4099,16 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if boolField is ___NOTSET:
             __isNOTSET[0] = True
             boolField = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if boolField is not None:
@@ -4116,13 +4116,13 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
                 raise TypeError(f'boolField is not a { int !r}.')
             boolField = <cint64_t> boolField
 
-        inst = <NoexceptMoveSimpleStruct>NoexceptMoveSimpleStruct.__new__(NoexceptMoveSimpleStruct)
-        inst._cpp_obj = move(NoexceptMoveSimpleStruct._make_instance(
+        __fbthrift_inst = <NoexceptMoveSimpleStruct>NoexceptMoveSimpleStruct.__new__(NoexceptMoveSimpleStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(NoexceptMoveSimpleStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           boolField,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cNoexceptMoveSimpleStruct] _make_instance(
@@ -4148,7 +4148,7 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.boolField = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -4164,9 +4164,9 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveSimpleStruct] cpp_obj):
-        inst = <NoexceptMoveSimpleStruct>NoexceptMoveSimpleStruct.__new__(NoexceptMoveSimpleStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <NoexceptMoveSimpleStruct>NoexceptMoveSimpleStruct.__new__(NoexceptMoveSimpleStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def boolField(self):
@@ -4187,7 +4187,7 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cNoexceptMoveSimpleStruct] cpp_obj = make_shared[cNoexceptMoveSimpleStruct](
             deref(self._cpp_obj)
         )
-        return NoexceptMoveSimpleStruct.create(move_shared(cpp_obj))
+        return NoexceptMoveSimpleStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -4281,7 +4281,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <cint64_t> MyIntField
 
-        self._cpp_obj = move(NoexceptMoveComplexStruct._make_instance(
+        self._cpp_obj = __fbthrift_move(NoexceptMoveComplexStruct._make_instance(
           NULL,
           NULL,
           MyBoolField,
@@ -4310,72 +4310,72 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[9] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if MyBoolField is ___NOTSET:
             __isNOTSET[0] = True
             MyBoolField = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyIntField is ___NOTSET:
             __isNOTSET[1] = True
             MyIntField = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyStringField is ___NOTSET:
             __isNOTSET[2] = True
             MyStringField = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyStringField2 is ___NOTSET:
             __isNOTSET[3] = True
             MyStringField2 = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyBinaryField is ___NOTSET:
             __isNOTSET[4] = True
             MyBinaryField = None
         else:
             __isNOTSET[4] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyBinaryField2 is ___NOTSET:
             __isNOTSET[5] = True
             MyBinaryField2 = None
         else:
             __isNOTSET[5] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyBinaryField3 is ___NOTSET:
             __isNOTSET[6] = True
             MyBinaryField3 = None
         else:
             __isNOTSET[6] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyBinaryListField4 is ___NOTSET:
             __isNOTSET[7] = True
             MyBinaryListField4 = None
         else:
             __isNOTSET[7] = False
-            changes = True
+            __fbthrift_changed = True
 
         if MyMapEnumAndInt is ___NOTSET:
             __isNOTSET[8] = True
             MyMapEnumAndInt = None
         else:
             __isNOTSET[8] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if MyBoolField is not None:
@@ -4407,8 +4407,8 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
             if not isinstance(MyBinaryField3, bytes):
                 raise TypeError(f'MyBinaryField3 is not a { bytes !r}.')
 
-        inst = <NoexceptMoveComplexStruct>NoexceptMoveComplexStruct.__new__(NoexceptMoveComplexStruct)
-        inst._cpp_obj = move(NoexceptMoveComplexStruct._make_instance(
+        __fbthrift_inst = <NoexceptMoveComplexStruct>NoexceptMoveComplexStruct.__new__(NoexceptMoveComplexStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(NoexceptMoveComplexStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           MyBoolField,
@@ -4421,7 +4421,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
           MyBinaryListField4,
           MyMapEnumAndInt,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cNoexceptMoveComplexStruct] _make_instance(
@@ -4516,7 +4516,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.MyMapEnumAndInt = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -4547,9 +4547,9 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveComplexStruct] cpp_obj):
-        inst = <NoexceptMoveComplexStruct>NoexceptMoveComplexStruct.__new__(NoexceptMoveComplexStruct)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <NoexceptMoveComplexStruct>NoexceptMoveComplexStruct.__new__(NoexceptMoveComplexStruct)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def MyBoolField(self):
@@ -4624,7 +4624,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cNoexceptMoveComplexStruct] cpp_obj = make_shared[cNoexceptMoveComplexStruct](
             deref(self._cpp_obj)
         )
-        return NoexceptMoveComplexStruct.create(move_shared(cpp_obj))
+        return NoexceptMoveComplexStruct.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -4714,7 +4714,7 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
                 raise TypeError(f'i32_field is not a { int !r}.')
             i32_field = <cint32_t> i32_field
 
-        self._cpp_obj = move(NoExceptMoveUnion._make_instance(
+        self._cpp_obj = __fbthrift_move(NoExceptMoveUnion._make_instance(
           NULL,
           string_field,
           i32_field,
@@ -4756,17 +4756,17 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     def __bool__(self):
         return self.type is not __NoExceptMoveUnionType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cNoExceptMoveUnion] cpp_obj):
-        inst = <NoExceptMoveUnion>NoExceptMoveUnion.__new__(NoExceptMoveUnion)
-        inst._cpp_obj = move_shared(cpp_obj)
-        inst._load_cache()
-        return inst
+        __fbthrift_inst = <NoExceptMoveUnion>NoExceptMoveUnion.__new__(NoExceptMoveUnion)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._load_cache()
+        return __fbthrift_inst
 
     @property
     def string_field(self):
@@ -4809,7 +4809,7 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
         cdef shared_ptr[cNoExceptMoveUnion] cpp_obj = make_shared[cNoExceptMoveUnion](
             deref(self._cpp_obj)
         )
-        return NoExceptMoveUnion.create(move_shared(cpp_obj))
+        return NoExceptMoveUnion.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -4901,7 +4901,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
                 raise TypeError(f'not_a_container is not a { int !r}.')
             not_a_container = <cint32_t> not_a_container
 
-        self._cpp_obj = move(AllocatorAware._make_instance(
+        self._cpp_obj = __fbthrift_move(AllocatorAware._make_instance(
           NULL,
           NULL,
           aa_list,
@@ -4922,44 +4922,44 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[5] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if aa_list is ___NOTSET:
             __isNOTSET[0] = True
             aa_list = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if aa_set is ___NOTSET:
             __isNOTSET[1] = True
             aa_set = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if aa_map is ___NOTSET:
             __isNOTSET[2] = True
             aa_map = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if aa_string is ___NOTSET:
             __isNOTSET[3] = True
             aa_string = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
         if not_a_container is ___NOTSET:
             __isNOTSET[4] = True
             not_a_container = None
         else:
             __isNOTSET[4] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if aa_string is not None:
@@ -4971,8 +4971,8 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
                 raise TypeError(f'not_a_container is not a { int !r}.')
             not_a_container = <cint32_t> not_a_container
 
-        inst = <AllocatorAware>AllocatorAware.__new__(AllocatorAware)
-        inst._cpp_obj = move(AllocatorAware._make_instance(
+        __fbthrift_inst = <AllocatorAware>AllocatorAware.__new__(AllocatorAware)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(AllocatorAware._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           aa_list,
@@ -4981,7 +4981,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
           aa_string,
           not_a_container,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cAllocatorAware] _make_instance(
@@ -5043,7 +5043,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
             deref(c_inst).__isset.not_a_container = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -5067,9 +5067,9 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware] cpp_obj):
-        inst = <AllocatorAware>AllocatorAware.__new__(AllocatorAware)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <AllocatorAware>AllocatorAware.__new__(AllocatorAware)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def aa_list(self):
@@ -5120,7 +5120,7 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         cdef shared_ptr[cAllocatorAware] cpp_obj = make_shared[cAllocatorAware](
             deref(self._cpp_obj)
         )
-        return AllocatorAware.create(move_shared(cpp_obj))
+        return AllocatorAware.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -5206,7 +5206,7 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
                 raise TypeError(f'not_a_container is not a { int !r}.')
             not_a_container = <cint32_t> not_a_container
 
-        self._cpp_obj = move(AllocatorAware2._make_instance(
+        self._cpp_obj = __fbthrift_move(AllocatorAware2._make_instance(
           NULL,
           NULL,
           not_a_container,
@@ -5219,16 +5219,16 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[1] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if not_a_container is ___NOTSET:
             __isNOTSET[0] = True
             not_a_container = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if not_a_container is not None:
@@ -5236,13 +5236,13 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
                 raise TypeError(f'not_a_container is not a { int !r}.')
             not_a_container = <cint32_t> not_a_container
 
-        inst = <AllocatorAware2>AllocatorAware2.__new__(AllocatorAware2)
-        inst._cpp_obj = move(AllocatorAware2._make_instance(
+        __fbthrift_inst = <AllocatorAware2>AllocatorAware2.__new__(AllocatorAware2)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(AllocatorAware2._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           not_a_container,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cAllocatorAware2] _make_instance(
@@ -5268,7 +5268,7 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
             deref(c_inst).__isset.not_a_container = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -5284,9 +5284,9 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware2] cpp_obj):
-        inst = <AllocatorAware2>AllocatorAware2.__new__(AllocatorAware2)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <AllocatorAware2>AllocatorAware2.__new__(AllocatorAware2)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def not_a_container(self):
@@ -5307,7 +5307,7 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
         cdef shared_ptr[cAllocatorAware2] cpp_obj = make_shared[cAllocatorAware2](
             deref(self._cpp_obj)
         )
-        return AllocatorAware2.create(move_shared(cpp_obj))
+        return AllocatorAware2.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -5391,15 +5391,15 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[cint32_t,string]] c_items):
-        inst = <std_unordered_map__Map__i32_string>std_unordered_map__Map__i32_string.__new__(std_unordered_map__Map__i32_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <std_unordered_map__Map__i32_string>std_unordered_map__Map__i32_string.__new__(std_unordered_map__Map__i32_string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(std_unordered_map__Map__i32_string self):
         cdef shared_ptr[std_unordered_map[cint32_t,string]] cpp_obj = make_shared[std_unordered_map[cint32_t,string]](
             deref(self._cpp_obj)
         )
-        return std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
+        return std_unordered_map__Map__i32_string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _make_instance(object items) except *:
@@ -5530,15 +5530,15 @@ cdef class List__i64(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[cint64_t]] c_items):
-        inst = <List__i64>List__i64.__new__(List__i64)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__i64>List__i64.__new__(List__i64)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__i64 self):
         cdef shared_ptr[vector[cint64_t]] cpp_obj = make_shared[vector[cint64_t]](
             deref(self._cpp_obj)
         )
-        return List__i64.create(move_shared(cpp_obj))
+        return List__i64.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *:
@@ -5562,7 +5562,7 @@ cdef class List__i64(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__i64.create(move_shared(c_inst))
+            return List__i64.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -5696,15 +5696,15 @@ cdef class Map__binary_i64(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,cint64_t]] c_items):
-        inst = <Map__binary_i64>Map__binary_i64.__new__(Map__binary_i64)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__binary_i64>Map__binary_i64.__new__(Map__binary_i64)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__binary_i64 self):
         cdef shared_ptr[cmap[string,cint64_t]] cpp_obj = make_shared[cmap[string,cint64_t]](
             deref(self._cpp_obj)
         )
-        return Map__binary_i64.create(move_shared(cpp_obj))
+        return Map__binary_i64.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[string,cint64_t]] _make_instance(object items) except *:
@@ -5835,15 +5835,15 @@ cdef class List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[cint32_t]] c_items):
-        inst = <List__i32>List__i32.__new__(List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__i32>List__i32.__new__(List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__i32 self):
         cdef shared_ptr[vector[cint32_t]] cpp_obj = make_shared[vector[cint32_t]](
             deref(self._cpp_obj)
         )
-        return List__i32.create(move_shared(cpp_obj))
+        return List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *:
@@ -5867,7 +5867,7 @@ cdef class List__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__i32.create(move_shared(c_inst))
+            return List__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -6001,15 +6001,15 @@ cdef class std_list__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[std_list[cint32_t]] c_items):
-        inst = <std_list__List__i32>std_list__List__i32.__new__(std_list__List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <std_list__List__i32>std_list__List__i32.__new__(std_list__List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(std_list__List__i32 self):
         cdef shared_ptr[std_list[cint32_t]] cpp_obj = make_shared[std_list[cint32_t]](
             deref(self._cpp_obj)
         )
-        return std_list__List__i32.create(move_shared(cpp_obj))
+        return std_list__List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[std_list[cint32_t]] _make_instance(object items) except *:
@@ -6033,7 +6033,7 @@ cdef class std_list__List__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return std_list__List__i32.create(move_shared(c_inst))
+            return std_list__List__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -6167,15 +6167,15 @@ cdef class std_deque__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[std_deque[cint32_t]] c_items):
-        inst = <std_deque__List__i32>std_deque__List__i32.__new__(std_deque__List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <std_deque__List__i32>std_deque__List__i32.__new__(std_deque__List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(std_deque__List__i32 self):
         cdef shared_ptr[std_deque[cint32_t]] cpp_obj = make_shared[std_deque[cint32_t]](
             deref(self._cpp_obj)
         )
-        return std_deque__List__i32.create(move_shared(cpp_obj))
+        return std_deque__List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[std_deque[cint32_t]] _make_instance(object items) except *:
@@ -6199,7 +6199,7 @@ cdef class std_deque__List__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return std_deque__List__i32.create(move_shared(c_inst))
+            return std_deque__List__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -6333,15 +6333,15 @@ cdef class folly_fbvector__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[folly_fbvector[cint32_t]] c_items):
-        inst = <folly_fbvector__List__i32>folly_fbvector__List__i32.__new__(folly_fbvector__List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <folly_fbvector__List__i32>folly_fbvector__List__i32.__new__(folly_fbvector__List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(folly_fbvector__List__i32 self):
         cdef shared_ptr[folly_fbvector[cint32_t]] cpp_obj = make_shared[folly_fbvector[cint32_t]](
             deref(self._cpp_obj)
         )
-        return folly_fbvector__List__i32.create(move_shared(cpp_obj))
+        return folly_fbvector__List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[folly_fbvector[cint32_t]] _make_instance(object items) except *:
@@ -6365,7 +6365,7 @@ cdef class folly_fbvector__List__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return folly_fbvector__List__i32.create(move_shared(c_inst))
+            return folly_fbvector__List__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -6499,15 +6499,15 @@ cdef class folly_small_vector__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[folly_small_vector[cint32_t]] c_items):
-        inst = <folly_small_vector__List__i32>folly_small_vector__List__i32.__new__(folly_small_vector__List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <folly_small_vector__List__i32>folly_small_vector__List__i32.__new__(folly_small_vector__List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(folly_small_vector__List__i32 self):
         cdef shared_ptr[folly_small_vector[cint32_t]] cpp_obj = make_shared[folly_small_vector[cint32_t]](
             deref(self._cpp_obj)
         )
-        return folly_small_vector__List__i32.create(move_shared(cpp_obj))
+        return folly_small_vector__List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[folly_small_vector[cint32_t]] _make_instance(object items) except *:
@@ -6531,7 +6531,7 @@ cdef class folly_small_vector__List__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return folly_small_vector__List__i32.create(move_shared(c_inst))
+            return folly_small_vector__List__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -6665,15 +6665,15 @@ cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_set[cint32_t]] c_items):
-        inst = <folly_sorted_vector_set__Set__i32>folly_sorted_vector_set__Set__i32.__new__(folly_sorted_vector_set__Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <folly_sorted_vector_set__Set__i32>folly_sorted_vector_set__Set__i32.__new__(folly_sorted_vector_set__Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(folly_sorted_vector_set__Set__i32 self):
         cdef shared_ptr[folly_sorted_vector_set[cint32_t]] cpp_obj = make_shared[folly_sorted_vector_set[cint32_t]](
             deref(self._cpp_obj)
         )
-        return folly_sorted_vector_set__Set__i32.create(move_shared(cpp_obj))
+        return folly_sorted_vector_set__Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_set[cint32_t]] _make_instance(object items) except *:
@@ -6806,7 +6806,7 @@ cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
+        return folly_sorted_vector_set__Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, folly_sorted_vector_set__Set__i32):
@@ -6825,7 +6825,7 @@ cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
+        return folly_sorted_vector_set__Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, folly_sorted_vector_set__Set__i32):
@@ -6847,7 +6847,7 @@ cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
+        return folly_sorted_vector_set__Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, folly_sorted_vector_set__Set__i32):
@@ -6871,7 +6871,7 @@ cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
+        return folly_sorted_vector_set__Set__i32.create(__fbthrift_move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -6914,15 +6914,15 @@ cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_map[cint32_t,string]] c_items):
-        inst = <folly_sorted_vector_map__Map__i32_string>folly_sorted_vector_map__Map__i32_string.__new__(folly_sorted_vector_map__Map__i32_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <folly_sorted_vector_map__Map__i32_string>folly_sorted_vector_map__Map__i32_string.__new__(folly_sorted_vector_map__Map__i32_string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(folly_sorted_vector_map__Map__i32_string self):
         cdef shared_ptr[folly_sorted_vector_map[cint32_t,string]] cpp_obj = make_shared[folly_sorted_vector_map[cint32_t,string]](
             deref(self._cpp_obj)
         )
-        return folly_sorted_vector_map__Map__i32_string.create(move_shared(cpp_obj))
+        return folly_sorted_vector_map__Map__i32_string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_map[cint32_t,string]] _make_instance(object items) except *:
@@ -7053,15 +7053,15 @@ cdef class std_list_int32_t__List__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[std_list_int32_t] c_items):
-        inst = <std_list_int32_t__List__i32>std_list_int32_t__List__i32.__new__(std_list_int32_t__List__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <std_list_int32_t__List__i32>std_list_int32_t__List__i32.__new__(std_list_int32_t__List__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(std_list_int32_t__List__i32 self):
         cdef shared_ptr[std_list_int32_t] cpp_obj = make_shared[std_list_int32_t](
             deref(self._cpp_obj)
         )
-        return std_list_int32_t__List__i32.create(move_shared(cpp_obj))
+        return std_list_int32_t__List__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[std_list_int32_t] _make_instance(object items) except *:
@@ -7085,7 +7085,7 @@ cdef class std_list_int32_t__List__i32(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return std_list_int32_t__List__i32.create(move_shared(c_inst))
+            return std_list_int32_t__List__i32.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -7219,15 +7219,15 @@ cdef class Map__string_i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,cint32_t]] c_items):
-        inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__string_i32 self):
         cdef shared_ptr[cmap[string,cint32_t]] cpp_obj = make_shared[cmap[string,cint32_t]](
             deref(self._cpp_obj)
         )
-        return Map__string_i32.create(move_shared(cpp_obj))
+        return Map__string_i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[string,cint32_t]] _make_instance(object items) except *:
@@ -7358,15 +7358,15 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[std_unordered_map[cint32_t,string]]] c_items):
-        inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__std_unordered_map__Map__i32_string self):
         cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] cpp_obj = make_shared[vector[std_unordered_map[cint32_t,string]]](
             deref(self._cpp_obj)
         )
-        return List__std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
+        return List__std_unordered_map__Map__i32_string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _make_instance(object items) except *:
@@ -7391,7 +7391,7 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__std_unordered_map__Map__i32_string.create(move_shared(c_inst))
+            return List__std_unordered_map__Map__i32_string.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -7540,15 +7540,15 @@ cdef class List__binary(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[string]] c_items):
-        inst = <List__binary>List__binary.__new__(List__binary)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__binary>List__binary.__new__(List__binary)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__binary self):
         cdef shared_ptr[vector[string]] cpp_obj = make_shared[vector[string]](
             deref(self._cpp_obj)
         )
-        return List__binary.create(move_shared(cpp_obj))
+        return List__binary.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *:
@@ -7573,7 +7573,7 @@ cdef class List__binary(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__binary.create(move_shared(c_inst))
+            return List__binary.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -7707,15 +7707,15 @@ cdef class Map__MyEnumA_string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cMyEnumA,string]] c_items):
-        inst = <Map__MyEnumA_string>Map__MyEnumA_string.__new__(Map__MyEnumA_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__MyEnumA_string>Map__MyEnumA_string.__new__(Map__MyEnumA_string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__MyEnumA_string self):
         cdef shared_ptr[cmap[cMyEnumA,string]] cpp_obj = make_shared[cmap[cMyEnumA,string]](
             deref(self._cpp_obj)
         )
-        return Map__MyEnumA_string.create(move_shared(cpp_obj))
+        return Map__MyEnumA_string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *:
@@ -7845,15 +7845,15 @@ cdef class Set__i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cset[cint32_t]] c_items):
-        inst = <Set__i32>Set__i32.__new__(Set__i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Set__i32>Set__i32.__new__(Set__i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Set__i32 self):
         cdef shared_ptr[cset[cint32_t]] cpp_obj = make_shared[cset[cint32_t]](
             deref(self._cpp_obj)
         )
-        return Set__i32.create(move_shared(cpp_obj))
+        return Set__i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *:
@@ -7986,7 +7986,7 @@ cdef class Set__i32(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__i32):
@@ -8005,7 +8005,7 @@ cdef class Set__i32(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__i32):
@@ -8027,7 +8027,7 @@ cdef class Set__i32(thrift.py3.types.Container):
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__i32):
@@ -8051,7 +8051,7 @@ cdef class Set__i32(thrift.py3.types.Container):
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i32.create(move_shared(shretval))
+        return Set__i32.create(__fbthrift_move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -8094,15 +8094,15 @@ cdef class Map__i32_i32(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cint32_t]] c_items):
-        inst = <Map__i32_i32>Map__i32_i32.__new__(Map__i32_i32)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__i32_i32>Map__i32_i32.__new__(Map__i32_i32)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__i32_i32 self):
         cdef shared_ptr[cmap[cint32_t,cint32_t]] cpp_obj = make_shared[cmap[cint32_t,cint32_t]](
             deref(self._cpp_obj)
         )
-        return Map__i32_i32.create(move_shared(cpp_obj))
+        return Map__i32_i32.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *:

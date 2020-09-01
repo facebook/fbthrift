@@ -101,7 +101,7 @@ cdef class Color(thrift.py3.types.Struct):
             if not isinstance(alpha, (float, int)):
                 raise TypeError(f'alpha is not a { float !r}.')
 
-        self._cpp_obj = move(Color._make_instance(
+        self._cpp_obj = __fbthrift_move(Color._make_instance(
           NULL,
           NULL,
           red,
@@ -120,37 +120,37 @@ cdef class Color(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[4] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if red is ___NOTSET:
             __isNOTSET[0] = True
             red = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if green is ___NOTSET:
             __isNOTSET[1] = True
             green = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if blue is ___NOTSET:
             __isNOTSET[2] = True
             blue = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if alpha is ___NOTSET:
             __isNOTSET[3] = True
             alpha = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if red is not None:
@@ -169,8 +169,8 @@ cdef class Color(thrift.py3.types.Struct):
             if not isinstance(alpha, (float, int)):
                 raise TypeError(f'alpha is not a { float !r}.')
 
-        inst = <Color>Color.__new__(Color)
-        inst._cpp_obj = move(Color._make_instance(
+        __fbthrift_inst = <Color>Color.__new__(Color)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(Color._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           red,
@@ -178,7 +178,7 @@ cdef class Color(thrift.py3.types.Struct):
           blue,
           alpha,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cColor] _make_instance(
@@ -231,7 +231,7 @@ cdef class Color(thrift.py3.types.Struct):
             deref(c_inst).__isset.alpha = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -253,9 +253,9 @@ cdef class Color(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cColor] cpp_obj):
-        inst = <Color>Color.__new__(Color)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <Color>Color.__new__(Color)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def red(self):
@@ -294,7 +294,7 @@ cdef class Color(thrift.py3.types.Struct):
         cdef shared_ptr[cColor] cpp_obj = make_shared[cColor](
             deref(self._cpp_obj)
         )
-        return Color.create(move_shared(cpp_obj))
+        return Color.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -379,7 +379,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         str name=None,
         pbool hasAC=None
     ):
-        self._cpp_obj = move(Vehicle._make_instance(
+        self._cpp_obj = __fbthrift_move(Vehicle._make_instance(
           NULL,
           NULL,
           color,
@@ -400,44 +400,44 @@ cdef class Vehicle(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[5] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if color is ___NOTSET:
             __isNOTSET[0] = True
             color = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if licensePlate is ___NOTSET:
             __isNOTSET[1] = True
             licensePlate = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if description is ___NOTSET:
             __isNOTSET[2] = True
             description = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if name is ___NOTSET:
             __isNOTSET[3] = True
             name = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
         if hasAC is ___NOTSET:
             __isNOTSET[4] = True
             hasAC = None
         else:
             __isNOTSET[4] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if color is not None:
@@ -460,8 +460,8 @@ cdef class Vehicle(thrift.py3.types.Struct):
             if not isinstance(hasAC, bool):
                 raise TypeError(f'hasAC is not a { bool !r}.')
 
-        inst = <Vehicle>Vehicle.__new__(Vehicle)
-        inst._cpp_obj = move(Vehicle._make_instance(
+        __fbthrift_inst = <Vehicle>Vehicle.__new__(Vehicle)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(Vehicle._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           color,
@@ -470,7 +470,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
           name,
           hasAC,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cVehicle] _make_instance(
@@ -529,7 +529,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
             deref(c_inst).__isset.hasAC = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -553,9 +553,9 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cVehicle] cpp_obj):
-        inst = <Vehicle>Vehicle.__new__(Vehicle)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <Vehicle>Vehicle.__new__(Vehicle)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def color(self):
@@ -608,7 +608,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         cdef shared_ptr[cVehicle] cpp_obj = make_shared[cVehicle](
             deref(self._cpp_obj)
         )
-        return Vehicle.create(move_shared(cpp_obj))
+        return Vehicle.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -713,7 +713,7 @@ cdef class Person(thrift.py3.types.Struct):
                 raise TypeError(f'bestFriend is not a { int !r}.')
             bestFriend = <cint64_t> bestFriend
 
-        self._cpp_obj = move(Person._make_instance(
+        self._cpp_obj = __fbthrift_move(Person._make_instance(
           NULL,
           NULL,
           id,
@@ -744,79 +744,79 @@ cdef class Person(thrift.py3.types.Struct):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[10] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         if id is ___NOTSET:
             __isNOTSET[0] = True
             id = None
         else:
             __isNOTSET[0] = False
-            changes = True
+            __fbthrift_changed = True
 
         if name is ___NOTSET:
             __isNOTSET[1] = True
             name = None
         else:
             __isNOTSET[1] = False
-            changes = True
+            __fbthrift_changed = True
 
         if age is ___NOTSET:
             __isNOTSET[2] = True
             age = None
         else:
             __isNOTSET[2] = False
-            changes = True
+            __fbthrift_changed = True
 
         if address is ___NOTSET:
             __isNOTSET[3] = True
             address = None
         else:
             __isNOTSET[3] = False
-            changes = True
+            __fbthrift_changed = True
 
         if favoriteColor is ___NOTSET:
             __isNOTSET[4] = True
             favoriteColor = None
         else:
             __isNOTSET[4] = False
-            changes = True
+            __fbthrift_changed = True
 
         if friends is ___NOTSET:
             __isNOTSET[5] = True
             friends = None
         else:
             __isNOTSET[5] = False
-            changes = True
+            __fbthrift_changed = True
 
         if bestFriend is ___NOTSET:
             __isNOTSET[6] = True
             bestFriend = None
         else:
             __isNOTSET[6] = False
-            changes = True
+            __fbthrift_changed = True
 
         if petNames is ___NOTSET:
             __isNOTSET[7] = True
             petNames = None
         else:
             __isNOTSET[7] = False
-            changes = True
+            __fbthrift_changed = True
 
         if afraidOfAnimal is ___NOTSET:
             __isNOTSET[8] = True
             afraidOfAnimal = None
         else:
             __isNOTSET[8] = False
-            changes = True
+            __fbthrift_changed = True
 
         if vehicles is ___NOTSET:
             __isNOTSET[9] = True
             vehicles = None
         else:
             __isNOTSET[9] = False
-            changes = True
+            __fbthrift_changed = True
 
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
 
         if id is not None:
@@ -850,8 +850,8 @@ cdef class Person(thrift.py3.types.Struct):
             if not isinstance(afraidOfAnimal, Animal):
                 raise TypeError(f'field afraidOfAnimal value: { afraidOfAnimal !r} is not of the enum type { Animal }.')
 
-        inst = <Person>Person.__new__(Person)
-        inst._cpp_obj = move(Person._make_instance(
+        __fbthrift_inst = <Person>Person.__new__(Person)
+        __fbthrift_inst._cpp_obj = __fbthrift_move(Person._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           id,
@@ -865,7 +865,7 @@ cdef class Person(thrift.py3.types.Struct):
           afraidOfAnimal,
           vehicles,
         ))
-        return inst
+        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cPerson] _make_instance(
@@ -964,7 +964,7 @@ cdef class Person(thrift.py3.types.Struct):
             deref(c_inst).__isset.vehicles = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -998,9 +998,9 @@ cdef class Person(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cPerson] cpp_obj):
-        inst = <Person>Person.__new__(Person)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <Person>Person.__new__(Person)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
     @property
     def id(self):
@@ -1099,7 +1099,7 @@ cdef class Person(thrift.py3.types.Struct):
         cdef shared_ptr[cPerson] cpp_obj = make_shared[cPerson](
             deref(self._cpp_obj)
         )
-        return Person.create(move_shared(cpp_obj))
+        return Person.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1183,15 +1183,15 @@ cdef class Set__i64(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cset[cint64_t]] c_items):
-        inst = <Set__i64>Set__i64.__new__(Set__i64)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Set__i64>Set__i64.__new__(Set__i64)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Set__i64 self):
         cdef shared_ptr[cset[cint64_t]] cpp_obj = make_shared[cset[cint64_t]](
             deref(self._cpp_obj)
         )
-        return Set__i64.create(move_shared(cpp_obj))
+        return Set__i64.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cset[cint64_t]] _make_instance(object items) except *:
@@ -1324,7 +1324,7 @@ cdef class Set__i64(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i64.create(move_shared(shretval))
+        return Set__i64.create(__fbthrift_move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__i64):
@@ -1343,7 +1343,7 @@ cdef class Set__i64(thrift.py3.types.Container):
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i64.create(move_shared(shretval))
+        return Set__i64.create(__fbthrift_move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__i64):
@@ -1365,7 +1365,7 @@ cdef class Set__i64(thrift.py3.types.Container):
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i64.create(move_shared(shretval))
+        return Set__i64.create(__fbthrift_move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__i64):
@@ -1389,7 +1389,7 @@ cdef class Set__i64(thrift.py3.types.Container):
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return Set__i64.create(move_shared(shretval))
+        return Set__i64.create(__fbthrift_move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -1432,15 +1432,15 @@ cdef class Map__Animal_string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cAnimal,string]] c_items):
-        inst = <Map__Animal_string>Map__Animal_string.__new__(Map__Animal_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__Animal_string>Map__Animal_string.__new__(Map__Animal_string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__Animal_string self):
         cdef shared_ptr[cmap[cAnimal,string]] cpp_obj = make_shared[cmap[cAnimal,string]](
             deref(self._cpp_obj)
         )
-        return Map__Animal_string.create(move_shared(cpp_obj))
+        return Map__Animal_string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cAnimal,string]] _make_instance(object items) except *:
@@ -1570,15 +1570,15 @@ cdef class List__Vehicle(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[cVehicle]] c_items):
-        inst = <List__Vehicle>List__Vehicle.__new__(List__Vehicle)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__Vehicle>List__Vehicle.__new__(List__Vehicle)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__Vehicle self):
         cdef shared_ptr[vector[cVehicle]] cpp_obj = make_shared[vector[cVehicle]](
             deref(self._cpp_obj)
         )
-        return List__Vehicle.create(move_shared(cpp_obj))
+        return List__Vehicle.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[cVehicle]] _make_instance(object items) except *:
@@ -1601,7 +1601,7 @@ cdef class List__Vehicle(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__Vehicle.create(move_shared(c_inst))
+            return List__Vehicle.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

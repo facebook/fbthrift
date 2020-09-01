@@ -57,9 +57,9 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
     cdef shared_ptr[_transitive_types.cFoo] reference_shared_ptr_MyTransitiveField "::thrift::py3::reference_shared_ptr<::cpp2::Foo>"(shared_ptr[cIncluded]&, _transitive_types.cFoo&)
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cIncluded] move(unique_ptr[cIncluded])
-    cdef shared_ptr[cIncluded] move_shared "std::move"(shared_ptr[cIncluded])
-    cdef unique_ptr[cIncluded] move_unique "std::move"(unique_ptr[cIncluded])
+    cdef shared_ptr[cIncluded] __fbthrift_move "std::move"(unique_ptr[cIncluded])
+    cdef shared_ptr[cIncluded] __fbthrift_move_shared "std::move"(shared_ptr[cIncluded])
+    cdef unique_ptr[cIncluded] __fbthrift_move_unique "std::move"(unique_ptr[cIncluded])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cIncluded] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Included>"(shared_ptr[cIncluded])

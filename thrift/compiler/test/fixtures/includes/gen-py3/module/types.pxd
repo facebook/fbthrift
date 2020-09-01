@@ -61,9 +61,9 @@ cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     cdef shared_ptr[_includes_types.cIncluded] reference_shared_ptr_MyOtherIncludedField "::thrift::py3::reference_shared_ptr<::cpp2::Included>"(shared_ptr[cMyStruct]&, _includes_types.cIncluded&)
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
-    cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
-    cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyStruct] __fbthrift_move "std::move"(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyStruct] __fbthrift_move_shared "std::move"(shared_ptr[cMyStruct])
+    cdef unique_ptr[cMyStruct] __fbthrift_move_unique "std::move"(unique_ptr[cMyStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])

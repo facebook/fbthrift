@@ -54,15 +54,15 @@ cdef class List__string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[string]] c_items):
-        inst = <List__string>List__string.__new__(List__string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__string>List__string.__new__(List__string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__string self):
         cdef shared_ptr[vector[string]] cpp_obj = make_shared[vector[string]](
             deref(self._cpp_obj)
         )
-        return List__string.create(move_shared(cpp_obj))
+        return List__string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *:
@@ -87,7 +87,7 @@ cdef class List__string(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__string.create(move_shared(c_inst))
+            return List__string.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -221,15 +221,15 @@ cdef class Map__i64_List__string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[cmap[cint64_t,vector[string]]] c_items):
-        inst = <Map__i64_List__string>Map__i64_List__string.__new__(Map__i64_List__string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <Map__i64_List__string>Map__i64_List__string.__new__(Map__i64_List__string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(Map__i64_List__string self):
         cdef shared_ptr[cmap[cint64_t,vector[string]]] cpp_obj = make_shared[cmap[cint64_t,vector[string]]](
             deref(self._cpp_obj)
         )
-        return Map__i64_List__string.create(move_shared(cpp_obj))
+        return Map__i64_List__string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[cmap[cint64_t,vector[string]]] _make_instance(object items) except *:

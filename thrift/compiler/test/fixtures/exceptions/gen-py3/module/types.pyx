@@ -50,7 +50,7 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
     def __init__(
         Banal self
     ):
-        self._cpp_obj = move(Banal._make_instance(
+        self._cpp_obj = __fbthrift_move(Banal._make_instance(
           NULL,
           NULL,
         ))
@@ -70,7 +70,7 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
 
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -85,10 +85,10 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cBanal] cpp_obj):
-        inst = <Banal>Banal.__new__(Banal, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = move_shared(cpp_obj)
-        _builtins.Exception.__init__(inst, )
-        return inst
+        __fbthrift_inst = <Banal>Banal.__new__(Banal, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, )
+        return __fbthrift_inst
 
 
     def __hash__(Banal self):
@@ -100,7 +100,7 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cBanal] cpp_obj = make_shared[cBanal](
             deref(self._cpp_obj)
         )
-        return Banal.create(move_shared(cpp_obj))
+        return Banal.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -144,7 +144,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
         Fiery self,
         str message=None
     ):
-        self._cpp_obj = move(Fiery._make_instance(
+        self._cpp_obj = __fbthrift_move(Fiery._make_instance(
           NULL,
           NULL,
           message,
@@ -168,7 +168,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).message = thrift.py3.types.move(thrift.py3.types.bytes_to_string(message.encode('utf-8')))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -183,10 +183,10 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cFiery] cpp_obj):
-        inst = <Fiery>Fiery.__new__(Fiery, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = move_shared(cpp_obj)
-        _builtins.Exception.__init__(inst, inst.message)
-        return inst
+        __fbthrift_inst = <Fiery>Fiery.__new__(Fiery, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.message)
+        return __fbthrift_inst
 
     @property
     def message(self):
@@ -209,7 +209,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cFiery] cpp_obj = make_shared[cFiery](
             deref(self._cpp_obj)
         )
-        return Fiery.create(move_shared(cpp_obj))
+        return Fiery.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -253,7 +253,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
         Serious self,
         str sonnet=None
     ):
-        self._cpp_obj = move(Serious._make_instance(
+        self._cpp_obj = __fbthrift_move(Serious._make_instance(
           NULL,
           NULL,
           sonnet,
@@ -278,7 +278,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).__isset.sonnet = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -294,10 +294,10 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cSerious] cpp_obj):
-        inst = <Serious>Serious.__new__(Serious, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = move_shared(cpp_obj)
-        _builtins.Exception.__init__(inst, inst.sonnet)
-        return inst
+        __fbthrift_inst = <Serious>Serious.__new__(Serious, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.sonnet)
+        return __fbthrift_inst
 
     @property
     def sonnet(self):
@@ -322,7 +322,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cSerious] cpp_obj = make_shared[cSerious](
             deref(self._cpp_obj)
         )
-        return Serious.create(move_shared(cpp_obj))
+        return Serious.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -367,7 +367,7 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
         str error_message=None,
         str internal_error_message=None
     ):
-        self._cpp_obj = move(ComplexFieldNames._make_instance(
+        self._cpp_obj = __fbthrift_move(ComplexFieldNames._make_instance(
           NULL,
           NULL,
           error_message,
@@ -397,7 +397,7 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).__isset.internal_error_message = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -415,10 +415,10 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cComplexFieldNames] cpp_obj):
-        inst = <ComplexFieldNames>ComplexFieldNames.__new__(ComplexFieldNames, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = move_shared(cpp_obj)
-        _builtins.Exception.__init__(inst, inst.error_message, inst.internal_error_message)
-        return inst
+        __fbthrift_inst = <ComplexFieldNames>ComplexFieldNames.__new__(ComplexFieldNames, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.error_message, __fbthrift_inst.internal_error_message)
+        return __fbthrift_inst
 
     @property
     def error_message(self):
@@ -446,7 +446,7 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cComplexFieldNames] cpp_obj = make_shared[cComplexFieldNames](
             deref(self._cpp_obj)
         )
-        return ComplexFieldNames.create(move_shared(cpp_obj))
+        return ComplexFieldNames.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -491,7 +491,7 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
         str error_message=None,
         str internal_error_message=None
     ):
-        self._cpp_obj = move(CustomFieldNames._make_instance(
+        self._cpp_obj = __fbthrift_move(CustomFieldNames._make_instance(
           NULL,
           NULL,
           error_message,
@@ -521,7 +521,7 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).__isset.internal_error_message = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -539,10 +539,10 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cCustomFieldNames] cpp_obj):
-        inst = <CustomFieldNames>CustomFieldNames.__new__(CustomFieldNames, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = move_shared(cpp_obj)
-        _builtins.Exception.__init__(inst, inst.error_message, inst.internal_error_message)
-        return inst
+        __fbthrift_inst = <CustomFieldNames>CustomFieldNames.__new__(CustomFieldNames, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.error_message, __fbthrift_inst.internal_error_message)
+        return __fbthrift_inst
 
     @property
     def error_message(self):
@@ -570,7 +570,7 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cCustomFieldNames] cpp_obj = make_shared[cCustomFieldNames](
             deref(self._cpp_obj)
         )
-        return CustomFieldNames.create(move_shared(cpp_obj))
+        return CustomFieldNames.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

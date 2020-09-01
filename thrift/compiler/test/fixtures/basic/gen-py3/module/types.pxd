@@ -109,15 +109,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
     cdef shared_ptr[cMyDataItem] reference_shared_ptr_myDataItem "::thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyUnion]&, cMyDataItem&)
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
-    cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
-    cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
-    cdef shared_ptr[cMyDataItem] move(unique_ptr[cMyDataItem])
-    cdef shared_ptr[cMyDataItem] move_shared "std::move"(shared_ptr[cMyDataItem])
-    cdef unique_ptr[cMyDataItem] move_unique "std::move"(unique_ptr[cMyDataItem])
-    cdef shared_ptr[cMyUnion] move(unique_ptr[cMyUnion])
-    cdef shared_ptr[cMyUnion] move_shared "std::move"(shared_ptr[cMyUnion])
-    cdef unique_ptr[cMyUnion] move_unique "std::move"(unique_ptr[cMyUnion])
+    cdef shared_ptr[cMyStruct] __fbthrift_move "std::move"(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyStruct] __fbthrift_move_shared "std::move"(shared_ptr[cMyStruct])
+    cdef unique_ptr[cMyStruct] __fbthrift_move_unique "std::move"(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyDataItem] __fbthrift_move "std::move"(unique_ptr[cMyDataItem])
+    cdef shared_ptr[cMyDataItem] __fbthrift_move_shared "std::move"(shared_ptr[cMyDataItem])
+    cdef unique_ptr[cMyDataItem] __fbthrift_move_unique "std::move"(unique_ptr[cMyDataItem])
+    cdef shared_ptr[cMyUnion] __fbthrift_move "std::move"(unique_ptr[cMyUnion])
+    cdef shared_ptr[cMyUnion] __fbthrift_move_shared "std::move"(shared_ptr[cMyUnion])
+    cdef unique_ptr[cMyUnion] __fbthrift_move_unique "std::move"(unique_ptr[cMyUnion])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])

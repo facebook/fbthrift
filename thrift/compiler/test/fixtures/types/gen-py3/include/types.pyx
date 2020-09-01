@@ -54,15 +54,15 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[cint32_t,string]] c_items):
-        inst = <std_unordered_map__Map__i32_string>std_unordered_map__Map__i32_string.__new__(std_unordered_map__Map__i32_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <std_unordered_map__Map__i32_string>std_unordered_map__Map__i32_string.__new__(std_unordered_map__Map__i32_string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(std_unordered_map__Map__i32_string self):
         cdef shared_ptr[std_unordered_map[cint32_t,string]] cpp_obj = make_shared[std_unordered_map[cint32_t,string]](
             deref(self._cpp_obj)
         )
-        return std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
+        return std_unordered_map__Map__i32_string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _make_instance(object items) except *:
@@ -193,15 +193,15 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[vector[std_unordered_map[cint32_t,string]]] c_items):
-        inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__(List__std_unordered_map__Map__i32_string self):
         cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] cpp_obj = make_shared[vector[std_unordered_map[cint32_t,string]]](
             deref(self._cpp_obj)
         )
-        return List__std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
+        return List__std_unordered_map__Map__i32_string.create(__fbthrift_move_shared(cpp_obj))
 
     @staticmethod
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _make_instance(object items) except *:
@@ -226,7 +226,7 @@ cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__std_unordered_map__Map__i32_string.create(move_shared(c_inst))
+            return List__std_unordered_map__Map__i32_string.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

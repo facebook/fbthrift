@@ -54,10 +54,10 @@ cdef class Map__i64_List__string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[cint64_t,vector[string]]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[string]] move "std::move"(unique_ptr[vector[string]])
-    cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
-    cdef shared_ptr[cmap[cint64_t,vector[string]]] move "std::move"(unique_ptr[cmap[cint64_t,vector[string]]])
-    cdef shared_ptr[cmap[cint64_t,vector[string]]] move_shared "std::move"(shared_ptr[cmap[cint64_t,vector[string]]])
+    cdef shared_ptr[vector[string]] __fbthrift_move "std::move"(unique_ptr[vector[string]])
+    cdef shared_ptr[vector[string]] __fbthrift_move_shared "std::move"(shared_ptr[vector[string]])
+    cdef shared_ptr[cmap[cint64_t,vector[string]]] __fbthrift_move "std::move"(unique_ptr[cmap[cint64_t,vector[string]]])
+    cdef shared_ptr[cmap[cint64_t,vector[string]]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[cint64_t,vector[string]]])
 cdef extern from "<utility>" nogil:
     pass  
     shared_ptr[vector[string]] reference_shared_ptr_Map__i64_List__string "::thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)

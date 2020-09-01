@@ -133,7 +133,7 @@ cdef api void call_cy_SomeService_bounce_map(
     unique_ptr[_module_types.std_unordered_map[cint32_t,string]] m
 ):
     __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(move_promise__module_types_std_unordered_map__cint32_t_string(cPromise))
-    arg_m = _module_types.std_unordered_map__Map__i32_string.create(_module_types.move(m))
+    arg_m = _module_types.std_unordered_map__Map__i32_string.create(_module_types.__fbthrift_move(m))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -186,7 +186,7 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     unique_ptr[vector[cint64_t]] r
 ):
     __promise = Promise_cmap__binary_cint64_t.create(move_promise_cmap__binary_cint64_t(cPromise))
-    arg_r = _module_types.List__i64.create(_module_types.move(r))
+    arg_r = _module_types.List__i64.create(_module_types.__fbthrift_move(r))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

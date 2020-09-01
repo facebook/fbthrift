@@ -83,7 +83,7 @@ cdef class Empty(thrift.py3.types.Struct):
     def __init__(
         Empty self, *
     ):
-        self._cpp_obj = move(Empty._make_instance(
+        self._cpp_obj = __fbthrift_move(Empty._make_instance(
           NULL,
           NULL,
         ))
@@ -109,7 +109,7 @@ cdef class Empty(thrift.py3.types.Struct):
             pass
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -124,9 +124,9 @@ cdef class Empty(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] cpp_obj):
-        inst = <Empty>Empty.__new__(Empty)
-        inst._cpp_obj = move_shared(cpp_obj)
-        return inst
+        __fbthrift_inst = <Empty>Empty.__new__(Empty)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        return __fbthrift_inst
 
 
     def __hash__(Empty self):
@@ -142,7 +142,7 @@ cdef class Empty(thrift.py3.types.Struct):
         cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
             deref(self._cpp_obj)
         )
-        return Empty.create(move_shared(cpp_obj))
+        return Empty.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -225,7 +225,7 @@ cdef class Nada(thrift.py3.types.Union):
     def __init__(
         self, *
     ):
-        self._cpp_obj = move(Nada._make_instance(
+        self._cpp_obj = __fbthrift_move(Nada._make_instance(
           NULL,
         ))
         self._load_cache()
@@ -244,17 +244,17 @@ cdef class Nada(thrift.py3.types.Union):
         cdef bint any_set = False
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     def __bool__(self):
         return self.type is not __NadaType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cNada] cpp_obj):
-        inst = <Nada>Nada.__new__(Nada)
-        inst._cpp_obj = move_shared(cpp_obj)
-        inst._load_cache()
-        return inst
+        __fbthrift_inst = <Nada>Nada.__new__(Nada)
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._load_cache()
+        return __fbthrift_inst
 
 
     def __hash__(Nada self):
@@ -281,7 +281,7 @@ cdef class Nada(thrift.py3.types.Union):
         cdef shared_ptr[cNada] cpp_obj = make_shared[cNada](
             deref(self._cpp_obj)
         )
-        return Nada.create(move_shared(cpp_obj))
+        return Nada.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

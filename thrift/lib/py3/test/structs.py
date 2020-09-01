@@ -145,11 +145,22 @@ class StructTests(unittest.TestCase):
             Runtime(int_list_val=["foo", "bar", "baz"])  # type: ignore
 
     def test_reserved(self) -> None:
-        x = Reserved(from_="hello", nonlocal_=3, ok="bye", is_cpdef=True)
+        x = Reserved(
+            from_="hello",
+            nonlocal_=3,
+            ok="bye",
+            is_cpdef=True,
+            move="Qh4xe1",
+            inst="foo",
+            changes="bar",
+        )
         self.assertEqual(x.from_, "hello")
         self.assertEqual(x.nonlocal_, 3)
         self.assertEqual(x.ok, "bye")
         self.assertEqual(x.is_cpdef, True)
+        self.assertEqual(x.move, "Qh4xe1")
+        self.assertEqual(x.inst, "foo")
+        self.assertEqual(x.changes, "bar")
 
     def test_ordering(self) -> None:
         x = Runtime(bool_val=False, enum_val=Color.red, int_list_val=[64, 128])

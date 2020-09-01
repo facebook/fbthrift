@@ -163,9 +163,9 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
 
 {{#program:structs}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-    cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}])
-    cdef shared_ptr[c{{struct:name}}] move_shared "std::move"(shared_ptr[c{{struct:name}}])
-    cdef unique_ptr[c{{struct:name}}] move_unique "std::move"(unique_ptr[c{{struct:name}}]){{/program:structs}}
+    cdef shared_ptr[c{{struct:name}}] __fbthrift_move "std::move"(unique_ptr[c{{struct:name}}])
+    cdef shared_ptr[c{{struct:name}}] __fbthrift_move_shared "std::move"(shared_ptr[c{{struct:name}}])
+    cdef unique_ptr[c{{struct:name}}] __fbthrift_move_unique "std::move"(unique_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
 {{#first?}}cdef extern from "<memory>" namespace "std" nogil:{{/first?}}
@@ -239,8 +239,8 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
 
 {{/program:containerTypes}}{{#program:moveContainerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-    cdef shared_ptr[{{> types/CythonCppType}}] move "std::move"(unique_ptr[{{> types/CythonCppType}}])
-    cdef shared_ptr[{{> types/CythonCppType}}] move_shared "std::move"(shared_ptr[{{> types/CythonCppType}}]){{!
+    cdef shared_ptr[{{> types/CythonCppType}}] __fbthrift_move "std::move"(unique_ptr[{{> types/CythonCppType}}])
+    cdef shared_ptr[{{> types/CythonCppType}}] __fbthrift_move_shared "std::move"(shared_ptr[{{> types/CythonCppType}}]){{!
 }}{{/program:moveContainerTypes}}
 {{#program:containerTypes}}
 {{#first?}}

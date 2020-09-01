@@ -133,7 +133,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/type:cythonTypeNoneable?}}
         {{/field:type}}
         {{/struct:fields}}
-        self._cpp_obj = move({{struct:name}}._make_instance(
+        self._cpp_obj = __fbthrift_move({{struct:name}}._make_instance(
           NULL,
           NULL,{{#struct:fields}}
           {{field:py_name}},{{/struct:fields}}
@@ -154,18 +154,18 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
         cdef bint[{{struct:size}}] __isNOTSET  # so make_instance is typed
 
-        changes = False
+        __fbthrift_changed = False
         {{#struct:fields}}
         if {{field:py_name}} is ___NOTSET:
             __isNOTSET[{{field:index}}] = True
             {{field:py_name}} = None
         else:
             __isNOTSET[{{field:index}}] = False
-            changes = True
+            __fbthrift_changed = True
 
         {{/struct:fields}}
 
-        if not changes:
+        if not __fbthrift_changed:
             return self
         {{/struct:fields?}}
         {{#struct:fields}}
@@ -192,13 +192,13 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/field:type}}
         {{/struct:fields}}
         {{#struct:fields?}}
-        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        inst._cpp_obj = move({{struct:name}}._make_instance(
+        __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
+        __fbthrift_inst._cpp_obj = __fbthrift_move({{struct:name}}._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,{{#struct:fields}}
           {{field:py_name}},{{/struct:fields}}
         ))
-        return inst
+        return __fbthrift_inst
         {{/struct:fields?}}
     {{/struct:exception?}}
 
@@ -276,7 +276,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/field:type}}{{/struct:fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         cpp_obj = deref(self._cpp_obj)
@@ -318,12 +318,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
-        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}}{{#struct:exception?}}, (<bytes>deref(cpp_obj).what()).decode('utf-8'){{/struct:exception?}})
-        inst._cpp_obj = move_shared(cpp_obj)
+        __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}}{{#struct:exception?}}, (<bytes>deref(cpp_obj).what()).decode('utf-8'){{/struct:exception?}})
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
         {{#struct:exception?}}
-        _builtins.Exception.__init__(inst, {{#struct:fields}}inst.{{field:py_name}}{{^last?}}, {{/last?}}{{/struct:fields}})
+        _builtins.Exception.__init__(__fbthrift_inst, {{#struct:fields}}__fbthrift_inst.{{field:py_name}}{{^last?}}, {{/last?}}{{/struct:fields}})
         {{/struct:exception?}}
-        return inst
+        return __fbthrift_inst
 
     {{#struct:fields}}
     @property
@@ -427,7 +427,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{/type:cythonTypeNoneable?}}
         {{/field:type}}
         {{/struct:fields}}
-        self._cpp_obj = move({{struct:name}}._make_instance(
+        self._cpp_obj = __fbthrift_move({{struct:name}}._make_instance(
           NULL,{{#struct:fields}}
           {{field:py_name}},{{/struct:fields}}
         ))
@@ -504,17 +504,17 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{/field:type}}{{/struct:fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return move_unique(c_inst)
+        return __fbthrift_move_unique(c_inst)
 
     def __bool__(self):
         return self.type is not __{{struct:name}}Type.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
-        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        inst._cpp_obj = move_shared(cpp_obj)
-        inst._load_cache()
-        return inst
+        __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._load_cache()
+        return __fbthrift_inst
 
     {{#struct:fields}}
     @property
@@ -563,7 +563,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         cdef shared_ptr[c{{struct:name}}] cpp_obj = make_shared[c{{struct:name}}](
             deref(self._cpp_obj)
         )
-        return {{struct:name}}.create(move_shared(cpp_obj))
+        return {{struct:name}}.create(__fbthrift_move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -673,15 +673,15 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
 
     @staticmethod
     cdef create(shared_ptr[{{> types/CythonCppType}}] c_items):
-        inst = <{{> types/CythonPythonType}}>{{> types/CythonPythonType}}.__new__({{> types/CythonPythonType}})
-        inst._cpp_obj = move_shared(c_items)
-        return inst
+        __fbthrift_inst = <{{> types/CythonPythonType}}>{{> types/CythonPythonType}}.__new__({{> types/CythonPythonType}})
+        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        return __fbthrift_inst
 
     def __copy__({{> types/CythonPythonType}} self):
         cdef shared_ptr[{{> types/CythonCppType}}] cpp_obj = make_shared[{{> types/CythonCppType}}](
             deref(self._cpp_obj)
         )
-        return {{> types/CythonPythonType}}.create(move_shared(cpp_obj))
+        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(cpp_obj))
 
 {{#type:list?}}
     @staticmethod
@@ -726,7 +726,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return {{> types/CythonPythonType}}.create(move_shared(c_inst))
+            return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1067,7 +1067,7 @@ Sequence.register({{> types/CythonPythonType}})
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -1086,7 +1086,7 @@ Sequence.register({{> types/CythonPythonType}})
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -1108,7 +1108,7 @@ Sequence.register({{> types/CythonPythonType}})
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -1132,7 +1132,7 @@ Sequence.register({{> types/CythonPythonType}})
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -1401,9 +1401,9 @@ cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
 
     @staticmethod
     cdef create(cClientBufferedStream[{{ > types/CythonCppType}}]& c_obj, __RpcOptions rpc_options):
-        inst = ClientBufferedStream__{{type:flat_name}}(rpc_options)
-        inst._gen = make_unique[cClientBufferedStreamWrapper[{{> types/CythonCppType}}]](c_obj)
-        return inst
+        __fbthrift_inst = ClientBufferedStream__{{type:flat_name}}(rpc_options)
+        __fbthrift_inst._gen = make_unique[cClientBufferedStreamWrapper[{{> types/CythonCppType}}]](c_obj)
+        return __fbthrift_inst
 
     @staticmethod
     cdef void callback(
@@ -1458,15 +1458,15 @@ cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}
     cdef create(cResponseAndClientBufferedStream[{{!
             }}{{#type:streamFirstResponseType}}{{ > types/CythonCppType}}{{/type:streamFirstResponseType}}, {{!
             }}{{#type:streamElemType}}{{ > types/CythonCppType}}{{/type:streamElemType}}]& c_obj, __RpcOptions rpc_options):
-        inst = ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}()
-        inst._stream = ClientBufferedStream__{{#type:streamElemType}}{{type:flat_name}}{{/type:streamElemType}}.create(
+        __fbthrift_inst = ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}()
+        __fbthrift_inst._stream = ClientBufferedStream__{{#type:streamElemType}}{{type:flat_name}}{{/type:streamElemType}}.create(
             c_obj.stream, rpc_options,
         )
 {{#type:streamFirstResponseType}}
         cdef {{> types/CythonCppType}} _value = c_obj.response
-        inst._response = {{> stream/CythonCppValueToPythonValue}}
+        __fbthrift_inst._response = {{> stream/CythonCppValueToPythonValue}}
 {{/type:streamFirstResponseType}}
-        return inst
+        return __fbthrift_inst
 
     def __iter__(self):
         yield self._response
