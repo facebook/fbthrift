@@ -20,56 +20,56 @@ struct TccStructTraits<::cpp2::ComplexUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::ListUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::DataUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::Val> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::ValUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::VirtualComplexUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::NonCopyableStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::NonCopyableUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 
 } // namespace detail

@@ -19,8 +19,7 @@ namespace detail {
 void TccStructTraits<::cpp2::Banal>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
 }
 
 } // namespace detail
@@ -76,12 +75,21 @@ namespace detail {
 void TccStructTraits<::cpp2::Fiery>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "message") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 1;
+  static constexpr folly::StringPiece _names[] = {
+    "message",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -144,12 +152,21 @@ namespace detail {
 void TccStructTraits<::cpp2::Serious>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "sonnet") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 1;
+  static constexpr folly::StringPiece _names[] = {
+    "sonnet",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -220,16 +237,24 @@ namespace detail {
 void TccStructTraits<::cpp2::ComplexFieldNames>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "error_message") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "internal_error_message") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 2;
+  static constexpr folly::StringPiece _names[] = {
+    "error_message",
+    "internal_error_message",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -310,16 +335,24 @@ namespace detail {
 void TccStructTraits<::cpp2::CustomFieldNames>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "error_message") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "internal_error_message") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 2;
+  static constexpr folly::StringPiece _names[] = {
+    "error_message",
+    "internal_error_message",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail

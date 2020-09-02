@@ -27,91 +27,91 @@ struct TccStructTraits<::cpp2::MyUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::MyField> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::MyStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::RecursiveStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithContainers> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithSharedConst> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::Empty> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithRef> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithRefTypeUnique> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithRefTypeShared> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithRefTypeSharedConst> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 
 } // namespace detail

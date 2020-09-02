@@ -20,14 +20,14 @@ struct TccStructTraits<::module2::Struct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
 struct TccStructTraits<::module2::BigStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 
 } // namespace detail

@@ -20,7 +20,7 @@ struct TccStructTraits<::matching_module_name::MyStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
-      apache::thrift::protocol::TType& _ftype);
+      apache::thrift::protocol::TType& _ftype) noexcept;
 };
 
 } // namespace detail

@@ -52,8 +52,7 @@ namespace detail {
 void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
 }
 
 } // namespace detail
@@ -109,24 +108,30 @@ namespace detail {
 void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyIntField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "MyStringField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyDataField") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "myEnum") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 4;
+  static constexpr folly::StringPiece _names[] = {
+    "MyIntField",
+    "MyStringField",
+    "MyDataField",
+    "myEnum",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+    3,
+    4,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I64,
+    TType::T_STRING,
+    TType::T_STRUCT,
+    TType::T_I32,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -246,20 +251,27 @@ namespace detail {
 void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "myEnum") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "myStruct") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "myDataItem") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 3;
+  static constexpr folly::StringPiece _names[] = {
+    "myEnum",
+    "myStruct",
+    "myDataItem",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+    3,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I32,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail

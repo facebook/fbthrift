@@ -52,12 +52,21 @@ namespace detail {
 void TccStructTraits<::cpp2::A>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "useless_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 1;
+  static constexpr folly::StringPiece _names[] = {
+    "useless_field",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I32,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail

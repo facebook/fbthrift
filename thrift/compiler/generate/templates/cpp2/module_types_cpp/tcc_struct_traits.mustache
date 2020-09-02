@@ -23,14 +23,29 @@ namespace detail {
 void TccStructTraits<<% > common/namespace_cpp2%><%struct:name%>>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  <%#struct:fields%><%#field:type%>
-  else if (_fname == "<%field:name%>") {
-    fid = <%field:key%>;
-    _ftype = apache::thrift::protocol::<% > module_types_tcc/struct_type%>;
-  }
-  <%/field:type%><%/struct:fields%>
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  <%#struct:fields?%>
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = <%struct:fields_size%>;
+  static constexpr folly::StringPiece _names[] = {
+    <%#struct:fields%>
+    "<%field:name%>",
+    <%/struct:fields%>
+  };
+  static constexpr int16_t _ids[] = {
+    <%#struct:fields%>
+    <%field:key%>,
+    <%/struct:fields%>
+  };
+  static constexpr TType _types[] = {
+    <%#struct:fields%><%#field:type%>
+    TType::<% > module_types_tcc/struct_type%>,
+    <%/field:type%><%/struct:fields%>
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
+  <%/struct:fields?%>
 }
 
 } // namespace detail

@@ -787,6 +787,7 @@ class mstch_cpp2_struct : public mstch_struct {
     register_methods(
         this,
         {
+            {"struct:fields_size", &mstch_cpp2_struct::fields_size},
             {"struct:filtered_fields", &mstch_cpp2_struct::filtered_fields},
             {"struct:fields_in_layout_order",
              &mstch_cpp2_struct::fields_in_layout_order},
@@ -821,6 +822,9 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_allocator", &mstch_cpp2_struct::cpp_allocator},
             {"struct:cpp_allocator_via", &mstch_cpp2_struct::cpp_allocator_via},
         });
+  }
+  mstch::node fields_size() {
+    return std::to_string(strct_->get_members().size());
   }
   mstch::node filtered_fields() {
     auto has_annotation = [](t_field const* field, std::string const& name) {

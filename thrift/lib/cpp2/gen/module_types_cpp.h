@@ -21,13 +21,30 @@
 
 #include <folly/Indestructible.h>
 #include <folly/Portability.h>
+#include <folly/Range.h>
 #include <folly/Traits.h>
+
+#include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
 namespace st {
+
+struct translate_field_name_table {
+  size_t size;
+  folly::StringPiece const* names;
+  int16_t const* ids;
+  protocol::TType const* types;
+};
+
+void translate_field_name(
+    folly::StringPiece fname,
+    int16_t& fid,
+    protocol::TType& ftype,
+    translate_field_name_table const& table) noexcept;
 
 namespace {
 

@@ -19,32 +19,36 @@ namespace detail {
 void TccStructTraits<::cpp2::ComplexUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "intValue") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "stringValue") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "intListValue") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "stringListValue") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "typedefValue") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "stringRef") {
-    fid = 14;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 6;
+  static constexpr folly::StringPiece _names[] = {
+    "intValue",
+    "stringValue",
+    "intListValue",
+    "stringListValue",
+    "typedefValue",
+    "stringRef",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    5,
+    2,
+    3,
+    9,
+    14,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I64,
+    TType::T_STRING,
+    TType::T_LIST,
+    TType::T_LIST,
+    TType::T_MAP,
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -202,16 +206,24 @@ namespace detail {
 void TccStructTraits<::cpp2::ListUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "intListValue") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "stringListValue") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 2;
+  static constexpr folly::StringPiece _names[] = {
+    "intListValue",
+    "stringListValue",
+  };
+  static constexpr int16_t _ids[] = {
+    2,
+    3,
+  };
+  static constexpr TType _types[] = {
+    TType::T_LIST,
+    TType::T_LIST,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -325,16 +337,24 @@ namespace detail {
 void TccStructTraits<::cpp2::DataUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "binaryData") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "stringData") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 2;
+  static constexpr folly::StringPiece _names[] = {
+    "binaryData",
+    "stringData",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -448,20 +468,27 @@ namespace detail {
 void TccStructTraits<::cpp2::Val>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "strVal") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "intVal") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "typedefValue") {
-    fid = 9;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 3;
+  static constexpr folly::StringPiece _names[] = {
+    "strVal",
+    "intVal",
+    "typedefValue",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+    9,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+    TType::T_I32,
+    TType::T_MAP,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -560,16 +587,24 @@ namespace detail {
 void TccStructTraits<::cpp2::ValUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "v1") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "v2") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 2;
+  static constexpr folly::StringPiece _names[] = {
+    "v1",
+    "v2",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -707,16 +742,24 @@ namespace detail {
 void TccStructTraits<::cpp2::VirtualComplexUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "thingOne") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "thingTwo") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 2;
+  static constexpr folly::StringPiece _names[] = {
+    "thingOne",
+    "thingTwo",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -830,12 +873,21 @@ namespace detail {
 void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "num") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 1;
+  static constexpr folly::StringPiece _names[] = {
+    "num",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I64,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -906,12 +958,21 @@ namespace detail {
 void TccStructTraits<::cpp2::NonCopyableUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "s") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 1;
+  static constexpr folly::StringPiece _names[] = {
+    "s",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRUCT,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail

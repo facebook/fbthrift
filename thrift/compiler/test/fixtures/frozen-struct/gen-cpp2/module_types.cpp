@@ -52,32 +52,36 @@ namespace detail {
 void TccStructTraits<::some::ns::ModuleA>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i32Field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "strField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "listField") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "mapField") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "inclAField") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "inclBField") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 6;
+  static constexpr folly::StringPiece _names[] = {
+    "i32Field",
+    "strField",
+    "listField",
+    "mapField",
+    "inclAField",
+    "inclBField",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I32,
+    TType::T_STRING,
+    TType::T_LIST,
+    TType::T_MAP,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
@@ -262,16 +266,24 @@ namespace detail {
 void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i32Field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "inclEnumB") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 2;
+  static constexpr folly::StringPiece _names[] = {
+    "i32Field",
+    "inclEnumB",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I32,
+    TType::T_I32,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
 }
 
 } // namespace detail
