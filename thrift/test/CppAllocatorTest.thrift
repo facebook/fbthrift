@@ -38,15 +38,15 @@ struct AAStruct {
   1: i32 foo;
 } (cpp.allocator="::ScopedStatefulAlloc")
 
-struct NoAllocatorVia  {
+struct NoAllocatorVia {
   1: AAStruct (cpp.use_allocator) foo;
 } (cpp.allocator="::ScopedStatefulAlloc")
 
-struct YesAllocatorVia  {
+struct YesAllocatorVia {
   1: AAStruct (cpp.use_allocator) foo;
 } (cpp.allocator="::ScopedStatefulAlloc", cpp.allocator_via="foo")
 
-struct HasContainerFields  {
+struct HasContainerFields {
   1: list<i32>
     (cpp.use_allocator, cpp.template = "::StatefulAllocVector") aa_list;
   2: set<i32> (cpp.use_allocator, cpp.template = "::StatefulAllocSet") aa_set;
@@ -57,6 +57,20 @@ struct HasContainerFields  {
 typedef map<i32, i32>
   (cpp.use_allocator, cpp.template = "::StatefulAllocMap") StatefulAllocIntMap
 
+typedef map<i32, StatefulAllocIntMap>
+  (cpp.use_allocator, cpp.template = "::StatefulAllocMap") StatefulAllocMapMap
+
+typedef set<i32>
+  (cpp.use_allocator, cpp.template = "::StatefulAllocSet") StatefulAllocIntSet
+
+typedef map<i32, StatefulAllocIntSet>
+  (cpp.use_allocator, cpp.template = "::StatefulAllocMap") StatefulAllocMapSet
+
 struct UsesTypedef {
   1: StatefulAllocIntMap aa_map;
 } (cpp.allocator="::ScopedStatefulAlloc", cpp.allocator_via="aa_map")
+
+struct HasNestedContainerFields {
+  1: StatefulAllocMapMap aa_map_of_map;
+  2: StatefulAllocMapSet aa_map_of_set;
+} (cpp.allocator="::ScopedStatefulAlloc")

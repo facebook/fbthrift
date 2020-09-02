@@ -93,3 +93,26 @@ TEST(CppAllocatorTest, UsesTypedef) {
   UsesTypedef s(alloc);
   EXPECT_EQ(alloc, s.get_allocator());
 }
+
+TEST(CppAllocatorTest, DeserializeNested) {
+  using serializer = apache::thrift::CompactSerializer;
+
+  HasNestedContainerFields s1;
+  s1.aa_map_of_map_ref() = {{42, {{42, 42}}}};
+  s1.aa_map_of_set_ref() = {{42, {42}}};
+
+  auto str = serializer::serialize<std::string>(s1);
+
+  ScopedStatefulAlloc alloc(42);
+  HasNestedContainerFields s2(alloc);
+
+  EXPECT_EQ(s2.get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_map_of_map_ref()->get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_map_of_set_ref()->get_allocator(), alloc);
+
+  serializer::deserialize(str, s2);
+  EXPECT_EQ(s2.aa_map_of_map_ref()->get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_map_of_map_ref()->at(42).get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_map_of_set_ref()->get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_map_of_set_ref()->at(42).get_allocator(), alloc);
+}
