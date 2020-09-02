@@ -21,17 +21,17 @@ value returned by the coroutine into the appropriate format to be returned
 to the client.
 
 }}{{#type:iobuf?}}{{!
-  }}{{#program:stack_arguments?}}deref{{/program:stack_arguments?}}{{!
+  }}{{#function:stack_arguments?}}deref{{/function:stack_arguments?}}{{!
   }}((<__iobuf.IOBuf>result).c_clone()){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}{{^program:stack_arguments?}}make_unique[unique_ptr[__iobuf.cIOBuf]]({{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[unique_ptr[__iobuf.cIOBuf]]({{/function:stack_arguments?}}{{!
     }}((<__iobuf.IOBuf>result).c_clone()){{!
-  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}{{#program:stack_arguments?}}{{> types/CythonCppType}}({{/program:stack_arguments?}}{{!
-  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
+  }}{{#function:stack_arguments?}}{{> types/CythonCppType}}({{/function:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
   }}move(<string>result)){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
@@ -43,19 +43,19 @@ to the client.
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
 }}{{#type:float?}}<float> result{{/type:float?}}{{!
 }}{{#type:string?}}{{!
-  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
     }}<string?> result.encode('UTF-8'){{!
-  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
     }}<string?> result{{!
-  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
     }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!
-  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:streamresponse?}}{{!
   }}{{#type:streamHasFirstResponse?}}createEmptyResponseAndServerStream[{{!
@@ -68,9 +68,9 @@ to the client.
   }}() # server streaming support is not implemented yet
 {{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{!
-  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
     }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!
-  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:container?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
 }}{{#type:enum?}}<{{> types/CythonCppType}}><int>result{{/type:enum?}}{{!

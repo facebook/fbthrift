@@ -33,8 +33,8 @@ need to be moved to the called function.
 }}{{#type:binary?}}{{field:py_name}} = {{!
     }}{{^type:iobufRef?}}std::move({{field:py_name}}){{/type:iobufRef?}}{{!
     }}{{#type:iobufRef?}}{{!
-        }}{{#program:stack_arguments?}}{{field:py_name}}->clone(){{/program:stack_arguments?}}{{!
-        }}{{^program:stack_arguments?}}std::move({{field:py_name}}){{/program:stack_arguments?}}{{!
+        }}{{#function:stack_arguments?}}{{field:py_name}}->clone(){{/function:stack_arguments?}}{{!
+        }}{{^function:stack_arguments?}}std::move({{field:py_name}}){{/function:stack_arguments?}}{{!
     }}{{/type:iobufRef?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{field:py_name}} = std::move({{field:py_name}}){{/type:struct?}}{{!

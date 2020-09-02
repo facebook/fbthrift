@@ -24,6 +24,6 @@ Cpp type for returnType in services
   }}{{#type:streamElemType}}{{ >types/CppValueType}}{{/type:streamElemType}}>{{!
 }}{{/type:streamresponse?}}{{!
 }}{{^type:streamresponse?}}{{!
-  }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
-  }}{{#program:stack_arguments?}}{{> types/CppValueType}}{{/program:stack_arguments?}}{{!
+  }}{{^function:stack_arguments?}}{{> types/CppArgType}}{{/function:stack_arguments?}}{{!
+  }}{{#function:stack_arguments?}}{{> types/CppValueType}}{{/function:stack_arguments?}}{{!
 }}{{/type:streamresponse?}}

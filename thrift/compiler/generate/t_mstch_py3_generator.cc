@@ -418,7 +418,6 @@ class mstch_py3_program : public mstch_program {
              &mstch_py3_program::hasServiceFunctions},
             {"program:includeNamespaces",
              &mstch_py3_program::includeNamespaces},
-            {"program:stack_arguments?", &mstch_py3_program::isStackArguments},
             {"program:cppIncludes", &mstch_py3_program::getCppIncludes},
             {"program:containerTypes", &mstch_py3_program::getContainerTypes},
             {"program:customTemplates", &mstch_py3_program::getCustomTemplates},
@@ -443,10 +442,6 @@ class mstch_py3_program : public mstch_program {
   mstch::node getContainerTypes() {
     type_py3_generator<true> generator{program_};
     return generate_elements(containers_, &generator, generators_, cache_);
-  }
-
-  mstch::node isStackArguments() {
-    return cpp2::is_stack_arguments(cache_->parsed_options_);
   }
 
   mstch::node getCppIncludes() {
@@ -708,11 +703,15 @@ class mstch_py3_function : public mstch_function {
         this,
         {
             {"function:eb", &mstch_py3_function::event_based},
+            {"function:stack_arguments?", &mstch_py3_function::stack_arguments},
         });
   }
   mstch::node event_based() {
     return function_->annotations_.count("thread") &&
         function_->annotations_.at("thread") == "eb";
+  }
+  mstch::node stack_arguments() {
+    return cpp2::is_stack_arguments(cache_->parsed_options_);
   }
 };
 

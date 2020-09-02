@@ -54,8 +54,8 @@ class {{service:name}}Wrapper : {{!
     {{#service:functions}}{{^function:returns_sink?}}
     void async_{{#function:eb}}eb{{/function:eb}}{{^function:eb}}tm{{/function:eb}}_{{function:name}}({{> services/CppHandlerCallbackType}} callback{{#function:args}}
         , {{#field:type}}{{!
-                }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
-                }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
+                }}{{^function:stack_arguments?}}{{> types/CppArgType}}{{/function:stack_arguments?}}{{!
+                }}{{#function:stack_arguments?}}{{> types/CppStackArgType}}{{/function:stack_arguments?}}{{!
             }}{{/field:type}} {{field:py_name}}{{#last?}}
     {{/last?}}{{/function:args}}) override;
 {{/function:returns_sink?}}{{/service:functions}}};
