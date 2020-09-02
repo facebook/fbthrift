@@ -27,18 +27,21 @@ executing.
 }}
 
 cdef extern from "<utility>" namespace "std":
-{{#program:returnTypes}}
+{{#program:unique_functions_by_return_type}}
+{{#function:returnType}}
     cdef cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}] move_promise_{{> types/CythonCppTypeIdent}} "std::move"(
         cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}])
-{{/program:returnTypes}}
-{{^program:returnTypes}}
+{{/function:returnType}}
+{{/program:unique_functions_by_return_type}}
+{{^program:unique_functions_by_return_type}}
     pass
-{{/program:returnTypes}}
-{{#program:returnTypes}}
+{{/program:unique_functions_by_return_type}}
+{{#program:unique_functions_by_return_type}}
+{{#function:returnType}}
 
 @cython.auto_pickle(False)
 cdef class Promise_{{> types/CythonCppTypeIdent}}:
@@ -55,4 +58,5 @@ cdef class Promise_{{> types/CythonCppTypeIdent}}:
         }}Promise_{{> types/CythonCppTypeIdent}})
         inst.cPromise = move_promise_{{> types/CythonCppTypeIdent}}(cPromise)
         return inst
-{{/program:returnTypes}}
+{{/function:returnType}}
+{{/program:unique_functions_by_return_type}}

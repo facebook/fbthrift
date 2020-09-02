@@ -410,7 +410,8 @@ class mstch_py3_program : public mstch_program {
     register_methods(
         this,
         {
-            {"program:returnTypes", &mstch_py3_program::getReturnTypes},
+            {"program:unique_functions_by_return_type",
+             &mstch_py3_program::unique_functions_by_return_type},
             {"program:cppNamespaces", &mstch_py3_program::getCpp2Namespace},
             {"program:py3Namespaces", &mstch_py3_program::getPy3Namespace},
             {"program:hasServiceFunctions?",
@@ -455,14 +456,14 @@ class mstch_py3_program : public mstch_program {
     }
     return a;
   }
-  mstch::node getReturnTypes() {
-    std::vector<const t_type*> types;
-    for (auto& kv : returnTypes_) {
-      types.push_back(kv.second);
+  mstch::node unique_functions_by_return_type() {
+    std::vector<const t_function*> functions;
+    for (auto& kv : uniqueFunctionsByReturnType_) {
+      functions.push_back(kv.second);
     }
 
     return generate_elements(
-        types, generators_->type_generator_.get(), generators_, cache_);
+        functions, generators_->function_generator_.get(), generators_, cache_);
   }
 
   mstch::node getCustomTemplates() {
@@ -594,8 +595,7 @@ class mstch_py3_program : public mstch_program {
           streamExceptions_.emplace(visit_type(field->get_type()), exType);
         }
         const t_type* returnType = function->get_returntype();
-        returnTypes_.emplace(
-            visit_type(returnType), returnType->get_true_type());
+        uniqueFunctionsByReturnType_.emplace(visit_type(returnType), function);
       }
     }
   }
@@ -690,7 +690,7 @@ class mstch_py3_program : public mstch_program {
   std::vector<const t_type*> customTypes_;
   std::unordered_set<std::string> seenTypeNames_;
   std::map<std::string, Namespace> includeNamespaces_;
-  std::map<std::string, const t_type*> returnTypes_;
+  std::map<std::string, t_function const*> uniqueFunctionsByReturnType_;
   std::vector<const t_type*> responseAndStreamTypes_;
   std::map<std::string, const t_type*> streamTypes_;
   std::map<std::string, const t_type*> streamExceptions_;
