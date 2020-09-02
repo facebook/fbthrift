@@ -59,15 +59,15 @@ except ModuleNotFoundError:
     pass
 
 try:
-    from thrift.py3.serializer import Protocol, serialize, deserialize  # noqa: 401
+    from thrift.py3.serializer import serialize, deserialize  # noqa: 401
 
-    __all__.extend(["Protocol", "serialize", "deserialize"])
+    __all__.extend(["serialize", "deserialize"])
 except ModuleNotFoundError:
     pass
 
 try:
-    from thrift.py3.common import Priority, RpcOptions  # noqa: 401
+    from thrift.py3.common import Priority, RpcOptions, Protocol  # noqa: 401
 
-    __all__.extend(["Priority", "RpcOptions"])
+    __all__.extend(["Priority", "Protocol", "RpcOptions"])
 except ModuleNotFoundError:
     pass

@@ -32,7 +32,7 @@ from libcpp cimport bool
 
 # This is just here to make the cython compile happy.
 from asyncio import InvalidStateError as asyncio_InvalidStateError
-from thrift.py3.common cimport PROTOCOL_TYPES
+from thrift.py3.common cimport Protocol as cProtocol
 from folly.executor cimport AsyncioExecutor
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h":
@@ -58,7 +58,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "::thrift::py3":
         const uint16_t port,
         const uint32_t connect_timeout,
         ClientType,
-        PROTOCOL_TYPES,
+        cProtocol,
         string&& endpoint,
     )
 
@@ -66,7 +66,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "::thrift::py3":
         string&& path,
         const uint32_t connect_timeout,
         ClientType,
-        PROTOCOL_TYPES,
+        cProtocol,
     )
     cdef void destroyInEventBaseThread(cRequestChannel_ptr)
     cdef unique_ptr[cClientWrapper] makeClientWrapper[T, U](cRequestChannel_ptr channel)

@@ -19,7 +19,7 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 from libc.stdint cimport uint32_t, uint16_t
 from folly.iobuf cimport cIOBuf, cIOBufQueue
-from thrift.py3.common cimport PROTOCOL_TYPES
+from thrift.py3.common cimport Protocol as cProtocol
 
 
 cdef extern from "thrift/lib/cpp2/protocol/Protocol.h":
@@ -48,7 +48,7 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift:
 
     cdef cppclass cTHeader "apache::thrift::transport::THeader":
         cTHeader() nogil except +
-        void setProtocolId(PROTOCOL_TYPES)
+        void setProtocolId(cProtocol)
         uint16_t getProtocolId()
         void setTransform(Transform)
         unique_ptr[cIOBuf] addHeader(unique_ptr[cIOBuf], map[string, string])

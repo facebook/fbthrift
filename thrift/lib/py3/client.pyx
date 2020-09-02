@@ -16,7 +16,6 @@ import sys
 cimport cython
 from thrift.py3.exceptions cimport create_py_exception
 from thrift.py3.common import Protocol
-from thrift.py3.common cimport Protocol2PROTOCOL_TYPES
 cimport thrift.py3.ssl as thrift_ssl
 from libcpp.string cimport string
 from libc.stdint cimport uint64_t
@@ -167,7 +166,6 @@ def get_client(
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)
     cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
-    cdef PROTOCOL_TYPES proto = Protocol2PROTOCOL_TYPES(protocol)
     cdef string cstr
 
     endpoint = b''
@@ -205,7 +203,7 @@ def get_client(
         fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelUnix(move_string(fspath), _timeout_ms, client_type, proto),
+            createThriftChannelUnix(move_string(fspath), _timeout_ms, client_type, protocol),
             requestchannel_callback,
             <PyObject *> client
         )
@@ -220,7 +218,7 @@ def get_client(
                 _timeout_ms,
                 _ssl_timeout_ms,
                 client_type,
-                proto,
+                protocol,
                 move_string(endpoint)
             ),
             requestchannel_callback,
@@ -235,7 +233,7 @@ def get_client(
                 port,
                 _timeout_ms,
                 client_type,
-                proto,
+                protocol,
                 move_string(endpoint)
             ),
             requestchannel_callback,

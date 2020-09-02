@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from enum import Enum
 import os
-from typing import Union, Any
+from enum import Enum
+from typing import Any, Union
 
 Path = Union[str, bytes, os.PathLike[Any]]
 

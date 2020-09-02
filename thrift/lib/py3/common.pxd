@@ -21,32 +21,11 @@ from thrift.py3.std_libcpp cimport milliseconds
 
 
 cdef extern from "thrift/lib/cpp/protocol/TProtocolTypes.h" namespace "apache::thrift::protocol":
-    cdef enum PROTOCOL_TYPES:
-        T_BINARY_PROTOCOL,
-        T_JSON_PROTOCOL,
-        T_COMPACT_PROTOCOL,
-        T_DEBUG_PROTOCOL,
-        T_VIRTUAL_PROTOCOL,
-        T_SIMPLE_JSON_PROTOCOL,
-
-
-cpdef enum Protocol:
-    COMPACT = 0
-    BINARY = 1
-    JSON = 3
-    COMPACT_JSON = 4
-
-
-cdef inline PROTOCOL_TYPES Protocol2PROTOCOL_TYPES(object proto):
-    cdef int value = proto.value
-    if value == 0:
-        return PROTOCOL_TYPES.T_COMPACT_PROTOCOL
-    elif value == 1:
-        return PROTOCOL_TYPES.T_BINARY_PROTOCOL
-    elif value == 3:
-        return PROTOCOL_TYPES.T_SIMPLE_JSON_PROTOCOL
-    elif value == 4:
-        return PROTOCOL_TYPES.T_JSON_PROTOCOL
+    cpdef enum Protocol "apache::thrift::protocol::PROTOCOL_TYPES":
+        BINARY "apache::thrift::protocol::T_BINARY_PROTOCOL"
+        COMPACT_JSON "apache::thrift::protocol::T_JSON_PROTOCOL"
+        COMPACT "apache::thrift::protocol::T_COMPACT_PROTOCOL"
+        JSON "apache::thrift::protocol::T_SIMPLE_JSON_PROTOCOL"
 
 
 cdef extern from "thrift/lib/cpp/concurrency/Thread.h":
