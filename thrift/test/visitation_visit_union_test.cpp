@@ -15,7 +15,7 @@
  */
 
 #include <folly/portability/GTest.h>
-#include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h> // @manual=:union_field_ref-cpp2-visitation
+#include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
 using namespace std;
 
 namespace apache {
