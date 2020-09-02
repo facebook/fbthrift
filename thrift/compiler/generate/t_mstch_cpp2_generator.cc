@@ -558,7 +558,8 @@ class mstch_cpp2_type : public mstch_type {
         resolved_type_->annotations_.count("cpp2.declare_equal_to");
   }
   mstch::node cpp_use_allocator() {
-    return type_->annotations_.count("cpp.use_allocator") != 0;
+    return resolved_type_->annotations_.count("cpp.use_allocator") ||
+        type_->annotations_.count("cpp.use_allocator");
   }
   mstch::node is_non_empty_struct() {
     if (resolved_type_->is_struct() || resolved_type_->is_xception()) {

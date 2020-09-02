@@ -87,3 +87,9 @@ TEST(CppAllocatorTest, Deserialize) {
   EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
   EXPECT_EQ(s2.aa_map_ref()->get_allocator(), alloc);
 }
+
+TEST(CppAllocatorTest, UsesTypedef) {
+  ScopedStatefulAlloc alloc(42);
+  UsesTypedef s(alloc);
+  EXPECT_EQ(alloc, s.get_allocator());
+}

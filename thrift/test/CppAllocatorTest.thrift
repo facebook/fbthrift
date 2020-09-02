@@ -53,3 +53,10 @@ struct HasContainerFields  {
   3: map<i32, i32>
     (cpp.use_allocator, cpp.template = "::StatefulAllocMap") aa_map;
 } (cpp.allocator="::ScopedStatefulAlloc")
+
+typedef map<i32, i32>
+  (cpp.use_allocator, cpp.template = "::StatefulAllocMap") StatefulAllocIntMap
+
+struct UsesTypedef {
+  1: StatefulAllocIntMap aa_map;
+} (cpp.allocator="::ScopedStatefulAlloc", cpp.allocator_via="aa_map")
