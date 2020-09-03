@@ -128,4 +128,17 @@ struct ValueHelper<type::set<V>> {
   }
 };
 
+template <typename K, typename V>
+struct ValueHelper<type::map<K, V>> {
+  template <typename C>
+  static void set(Value& result, C&& value) {
+    auto& result_map = result.mapValue_ref().ensure();
+    for (auto& entry : value) {
+      Value key;
+      ValueHelper<K>::set(key, entry.first);
+      ValueHelper<V>::set(result_map[key], forward_elem<C>(entry.second));
+    }
+  }
+};
+
 } // namespace apache::thrift::conformance::detail

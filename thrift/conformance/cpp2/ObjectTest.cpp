@@ -184,5 +184,30 @@ TEST(ObjectTest, Set) {
   }
 }
 
+TEST(ObjectTest, Map) {
+  std::map<std::string, int> data = {{"one", 1}, {"four", 4}, {"two", 2}};
+  Value value = asValueStruct<type::map<type::string_t, type::byte_t>>(data);
+  ASSERT_EQ(value.getType(), Value::mapValue);
+  ASSERT_EQ(value.get_mapValue().size(), data.size());
+  for (const auto& entry : data) {
+    auto itr =
+        value.get_mapValue().find(asValueStruct<type::string_t>(entry.first));
+    ASSERT_NE(itr, value.get_mapValue().end());
+    EXPECT_EQ(itr->second, asValueStruct<type::byte_t>(entry.second));
+  }
+
+  // Works with other containers.
+  std::vector<std::pair<std::string, int>> otherData(data.begin(), data.end());
+  value = asValueStruct<type::map<type::string_t, type::byte_t>>(otherData);
+  ASSERT_EQ(value.getType(), Value::mapValue);
+  ASSERT_EQ(value.get_mapValue().size(), data.size());
+  for (const auto& entry : data) {
+    auto itr =
+        value.get_mapValue().find(asValueStruct<type::string_t>(entry.first));
+    ASSERT_NE(itr, value.get_mapValue().end());
+    EXPECT_EQ(itr->second, asValueStruct<type::byte_t>(entry.second));
+  }
+}
+
 } // namespace
 } // namespace apache::thrift::conformance
