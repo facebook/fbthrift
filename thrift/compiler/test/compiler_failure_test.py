@@ -62,19 +62,8 @@ class CompilerFailureTest(unittest.TestCase):
         os.chdir(self.tmp)
         self.maxDiff = None
 
-    def run_thrift(self, *args):
-        argsx = [thrift, "--gen", "mstch_cpp2"]
-        argsx.extend(args)
-        pipe = subprocess.PIPE
-        p = subprocess.Popen(argsx, stdout=pipe, stderr=pipe)
-        out, err = p.communicate()
-        out = out.decode(sys.getdefaultencoding())
-        err = err.decode(sys.getdefaultencoding())
-        err = err.replace("{}/".format(self.tmp), "")
-        return p.returncode, out, err
-
-    def run_thrift_stack_arguments(self, *args):
-        argsx = [thrift, "--gen", "mstch_cpp2:stack_arguments"]
+    def run_thrift(self, *args, gen="mstch_cpp2"):
+        argsx = [thrift, "--gen", gen]
         argsx.extend(args)
         pipe = subprocess.PIPE
         p = subprocess.Popen(argsx, stdout=pipe, stderr=pipe)
@@ -353,7 +342,9 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift_stack_arguments("foo.thrift")
+        GEN = "mstch_cpp2:stack_arguments"
+
+        ret, out, err = self.run_thrift("foo.thrift", gen=GEN)
 
         self.assertEqual(ret, 0)
 
@@ -363,7 +354,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift_stack_arguments("foo.thrift")
+        ret, out, err = self.run_thrift("foo.thrift", gen=GEN)
 
         self.assertEqual(ret, 1)
         self.assertEqual(err, "[FAILURE:foo.thrift:2] SumService:sum use of "
@@ -375,7 +366,7 @@ class CompilerFailureTest(unittest.TestCase):
             }
         """))
 
-        ret, out, err = self.run_thrift_stack_arguments("foo.thrift")
+        ret, out, err = self.run_thrift("foo.thrift", gen=GEN)
 
         self.assertEqual(ret, 0)
 
@@ -438,3 +429,23 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(err, "[FAILURE:foo.thrift:6] The type 'TooForward' "
             "is not defined yet. Types must be defined before the usage in "
             "constant values.\n")
+
+    def test_too_many_splits(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct Foo { 1: i32 field }
+            struct Bar { 1: i32 field }
+            exception Baz { 1: i32 field }
+            enum E { f = 0 }
+            service SumService {
+                i32 sum(1: i32 num1, 2: i32 num2);
+            }
+        """))
+
+        ret, out, err = self.run_thrift("foo.thrift", gen='mstch_cpp2:types_cpp_splits=4')
+        self.assertEqual(ret, 0)
+
+        ret, out, err = self.run_thrift("foo.thrift", gen='mstch_cpp2:types_cpp_splits=5')
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(err, "[FAILURE:foo.thrift] types_cpp_splits=5 is misconfigured: "
+                "it can not be greater than number of object, which is 4.\n")

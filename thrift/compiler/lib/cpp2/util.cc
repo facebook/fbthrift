@@ -180,6 +180,14 @@ bool is_stack_arguments(std::map<std::string, std::string> const& options) {
   return options.count("stack_arguments") != 0;
 }
 
+int32_t get_split_count(std::map<std::string, std::string> const& options) {
+  auto iter = options.find("types_cpp_splits");
+  if (iter == options.end()) {
+    return 0;
+  }
+  return std::stoi(iter->second);
+}
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

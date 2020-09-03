@@ -1314,8 +1314,9 @@ class mstch_cpp2_program : public mstch_program {
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_program(program, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      boost::optional<int32_t> split_id = boost::none)
+      : mstch_program(program, generators, cache, pos), split_id_(split_id) {
     register_methods(
         this,
         {
@@ -1676,17 +1677,54 @@ class mstch_cpp2_program : public mstch_program {
   }
 
  private:
-  std::unique_ptr<std::vector<t_struct*>> sorted_objects_;
+  boost::optional<std::vector<t_struct*>> objects_;
+  boost::optional<std::vector<t_enum*>> enums_;
+  const boost::optional<int32_t> split_id_;
 
-  const std::vector<t_struct*>& get_program_objects() override {
-    if (!sorted_objects_) {
-      init_sorted_objects();
+  const std::vector<t_enum*>& get_program_enums() override {
+    if (!enums_) {
+      init_objects_enums();
     }
-    return *sorted_objects_;
+
+    return *enums_;
   }
 
-  void init_sorted_objects() {
-    auto edges = [this](t_struct* obj) {
+  const std::vector<t_struct*>& get_program_objects() override {
+    if (!objects_) {
+      init_objects_enums();
+    }
+
+    return *objects_;
+  }
+
+  void init_objects_enums() {
+    int32_t split_count = cpp2::get_split_count(cache_->parsed_options_);
+
+    if (!split_id_ || split_count == 0) {
+      split_count = 1;
+    }
+
+    const auto& prog_objects = program_->get_objects();
+    const auto& prog_enums = program_->get_enums();
+
+    objects_.emplace();
+    enums_.emplace();
+
+    const size_t cnt = prog_objects.size() + prog_enums.size();
+    for (size_t i = split_id_.value_or(0); i < cnt; i += split_count) {
+      if (i < prog_objects.size()) {
+        objects_->push_back(prog_objects[i]);
+      } else {
+        enums_->push_back(prog_enums[i - prog_objects.size()]);
+      }
+    }
+    objects_ = gen_sorted_objects(program_, *objects_);
+  }
+
+  static std::vector<t_struct*> gen_sorted_objects(
+      const t_program* program,
+      const std::vector<t_struct*>& objects) {
+    auto edges = [program](t_struct* obj) {
       std::vector<t_struct*> deps;
       for (auto* f : obj->get_members()) {
         // Ignore ref fields.
@@ -1701,7 +1739,7 @@ class mstch_cpp2_program : public mstch_program {
           if (type->is_struct()) {
             auto* strct = dynamic_cast<t_struct*>(type);
             // We're only interested in types defined in the current program.
-            if (strct->get_program() == program_) {
+            if (strct->get_program() == program) {
               deps.emplace_back(strct);
             }
           }
@@ -1725,11 +1763,7 @@ class mstch_cpp2_program : public mstch_program {
 
       return deps;
     };
-    sorted_objects_ =
-        std::make_unique<std::vector<t_struct*>>(topological_sort<t_struct*>(
-            program_->get_objects().begin(),
-            program_->get_objects().end(),
-            std::move(edges)));
+    return topological_sort<t_struct*>(objects.begin(), objects.end(), edges);
   }
 };
 
@@ -1915,6 +1949,14 @@ class program_cpp2_generator : public program_generator {
     return std::make_shared<mstch_cpp2_program>(
         program, generators, cache, pos);
   }
+  std::shared_ptr<mstch_base> generate_with_split_id(
+      t_program const* program,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      int32_t split_id) const {
+    return std::make_shared<mstch_cpp2_program>(
+        program, generators, cache, ELEMENT_POSITION::NONE, split_id);
+  }
 };
 
 t_mstch_cpp2_generator::t_mstch_cpp2_generator(
@@ -2068,8 +2110,23 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
   render_to_file(cache_->programs_[id], "module_types.h", name + "_types.h");
   render_to_file(
       cache_->programs_[id], "module_types.tcc", name + "_types.tcc");
-  render_to_file(
-      cache_->programs_[id], "module_types.cpp", name + "_types.cpp");
+
+  if (auto split_count = cpp2::get_split_count(parsed_options_)) {
+    auto digit = to_string(split_count - 1).size();
+    for (int split_id = 0; split_id < split_count; ++split_id) {
+      auto s = to_string(split_id);
+      s = string(digit - s.size(), '0') + s;
+      render_to_file(
+          program_cpp2_generator{}.generate_with_split_id(
+              program, generators_, cache_, split_id),
+          "module_types.cpp",
+          name + "_types." + s + ".split.cpp");
+    }
+  } else {
+    render_to_file(
+        cache_->programs_[id], "module_types.cpp", name + "_types.cpp");
+  }
+
   render_to_file(
       cache_->programs_[id],
       "module_types_custom_protocol.h",
@@ -2249,11 +2306,34 @@ bool service_method_validator::visit(t_service* service) {
   }
   return true;
 }
+class splits_validator : public validator {
+ public:
+  explicit splits_validator(int split_count) : split_count_(split_count) {}
+
+  using validator::visit;
+  bool visit(t_program* program) override {
+    set_program(program);
+    const int32_t object_count =
+        program->get_objects().size() + program->get_enums().size();
+    if (split_count_ != 0 && split_count_ > object_count) {
+      add_error(
+          boost::none,
+          "types_cpp_splits=" + to_string(split_count_) +
+              " is misconfigured: it can not be greater than number of object, which is " +
+              to_string(object_count) + ".");
+    }
+    return true;
+  }
+
+ private:
+  int32_t split_count_;
+};
 } // namespace
 
 void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
   l.add<annotation_validator>();
   l.add<service_method_validator>(this->parsed_options_);
+  l.add<splits_validator>(cpp2::get_split_count(parsed_options_));
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");

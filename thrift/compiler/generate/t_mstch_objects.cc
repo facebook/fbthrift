@@ -629,7 +629,7 @@ mstch::node mstch_program::structs() {
 mstch::node mstch_program::enums() {
   std::string id = program_->get_name() + get_program_namespace(program_);
   return generate_elements_cached(
-      program_->get_enums(),
+      get_program_enums(),
       generators_->enum_generator_.get(),
       cache_->enums_,
       id,
@@ -675,6 +675,9 @@ mstch::node mstch_program::constants() {
 
 const std::vector<t_struct*>& mstch_program::get_program_objects() {
   return program_->get_objects();
+}
+const std::vector<t_enum*>& mstch_program::get_program_enums() {
+  return program_->get_enums();
 }
 
 } // namespace compiler

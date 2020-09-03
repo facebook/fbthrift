@@ -64,6 +64,8 @@ bool is_cpp_ref(const t_field* f);
 
 bool is_stack_arguments(std::map<std::string, std::string> const& options);
 
+int32_t get_split_count(std::map<std::string, std::string> const& options);
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

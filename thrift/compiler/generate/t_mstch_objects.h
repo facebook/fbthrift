@@ -1192,6 +1192,7 @@ class mstch_program : public mstch_base {
   t_program const* program_;
 
   virtual const std::vector<t_struct*>& get_program_objects();
+  virtual const std::vector<t_enum*>& get_program_enums();
 };
 
 } // namespace compiler
