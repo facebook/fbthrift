@@ -52,50 +52,119 @@ TEST(InteractionTest, NoIDPropagated) {
   EXPECT_EQ(out, "");
 }
 
-TEST(InteractionTest, IDPropagated) {
+TEST(InteractionTest, Register) {
   ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
   folly::EventBase eb;
   HandlerGenericAsyncClient client(
       RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
           new folly::AsyncSocket(&eb, runner.getAddress()))));
 
-  RpcOptions rpcOpts;
-  rpcOpts.setExistingInteraction(42);
-  std::string out;
-  client.sync_get_string(rpcOpts, out);
-  EXPECT_EQ(out, "42");
-}
-
-TEST(InteractionTest, CreatePropagated) {
-  ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
-  folly::EventBase eb;
-  HandlerGenericAsyncClient client(
-      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
-          new folly::AsyncSocket(&eb, runner.getAddress()))));
+  folly::via(
+      &eb, [&] { client.getChannel()->registerInteraction("Transaction", 42); })
+      .getVia(&eb);
 
   RpcOptions rpcOpts;
-  rpcOpts.setNewInteraction("Transaction", 42);
+  rpcOpts.setInteractionId(42);
   std::string out;
   client.sync_get_string(rpcOpts, out);
   EXPECT_EQ(out, "42Transaction");
 }
 
-TEST(InteractionTest, Terminate) {
+TEST(InteractionTest, Create) {
   ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
   folly::EventBase eb;
   HandlerGenericAsyncClient client(
       RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
           new folly::AsyncSocket(&eb, runner.getAddress()))));
 
+  auto id = folly::via(
+                &eb,
+                [channel = client.getChannel()] {
+                  return channel->createInteraction("Transaction");
+                })
+                .getVia(&eb);
   RpcOptions rpcOpts;
-  rpcOpts.setNewInteraction("Transaction", 42);
+  rpcOpts.setInteractionId(id);
+  std::string out;
+  client.sync_get_string(rpcOpts, out);
+  EXPECT_EQ(out, "1Transaction");
+}
+
+TEST(InteractionTest, TerminateUsed) {
+  ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
+
+  folly::via(
+      &eb,
+      [&, channel = client.getChannel()] {
+        channel->registerInteraction("Transaction", 42);
+      })
+      .getVia(&eb);
+
+  RpcOptions rpcOpts;
+  rpcOpts.setInteractionId(42);
   std::string out;
   client.sync_get_string(rpcOpts, out);
 
-  eb.runInEventBaseThread(
-      [channel = client.getChannelShared(), ka = folly::getKeepAliveToken(eb)] {
+  folly::getKeepAliveToken(eb).add(
+      [channel = client.getChannelShared()](auto&&) {
         channel->terminateInteraction(42);
       });
+}
+
+TEST(InteractionTest, TerminateUnused) {
+  ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
+
+  std::string out;
+  client.sync_get_string(out); // sends setup frame
+
+  folly::via(
+      &eb,
+      [&, channel = client.getChannel()] {
+        channel->registerInteraction("Transaction", 42);
+        channel->terminateInteraction(42);
+      })
+      .getVia(&eb);
+
+  // This is a contract violation. Don't do it!
+  RpcOptions rpcOpts;
+  rpcOpts.setInteractionId(42);
+  client.sync_get_string(rpcOpts, out);
+
+  // This checks that we clean up unused interactions in the map
+  EXPECT_EQ(out, "42");
+}
+
+TEST(InteractionTest, TerminateWithoutSetup) {
+  ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
+
+  folly::via(
+      &eb,
+      [&, channel = client.getChannel()] {
+        channel->registerInteraction("Transaction", 42);
+        channel->terminateInteraction(42);
+      })
+      .getVia(&eb);
+
+  // This is a contract violation. Don't do it!
+  RpcOptions rpcOpts;
+  rpcOpts.setInteractionId(42);
+  std::string out;
+  client.sync_get_string(rpcOpts, out);
+
+  // This checks that we clean up unused interactions in the map
+  EXPECT_EQ(out, "42");
 }
 
 TEST(InteractionTest, TerminatePRC) {
@@ -106,11 +175,12 @@ TEST(InteractionTest, TerminatePRC) {
       });
 
   RpcOptions rpcOpts;
-  auto id = client->getChannel()->getNextInteractionId();
-  rpcOpts.setExistingInteraction(id);
+
+  auto id = client->getChannel()->createInteraction("Transaction");
+  rpcOpts.setInteractionId(id);
   std::string out;
   client->sync_get_string(rpcOpts, out);
-  EXPECT_EQ(out, std::to_string(id));
+  EXPECT_EQ(out, std::to_string(id) + "Transaction");
 
   client->getChannel()->terminateInteraction(id);
 }

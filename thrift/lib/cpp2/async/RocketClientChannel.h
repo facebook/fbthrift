@@ -144,11 +144,12 @@ class RocketClientChannel final : public ClientChannel {
 
   void setAutoCompressSizeLimit(int32_t size);
 
-  // channel is not opinionated - id is caller-provided
+  // must be called from evb thread
   void terminateInteraction(int64_t id) override;
 
-  // caller must choose their own id - this returns 0
-  int64_t getNextInteractionId() override;
+  // supports nesting
+  // must be called from evb thread
+  void registerInteraction(folly::StringPiece name, int64_t forceId) override;
 
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};
@@ -164,6 +165,8 @@ class RocketClientChannel final : public ClientChannel {
     uint32_t inflightRequests{0};
   };
   const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
+
+  folly::F14FastMap<int64_t, std::string> pendingInteractions_;
 
   RocketClientChannel(
       folly::AsyncTransport::UniquePtr socket,

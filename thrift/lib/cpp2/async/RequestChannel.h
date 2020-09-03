@@ -148,8 +148,13 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
   virtual void terminateInteraction(int64_t id);
 
-  // returns 0 if the channel doesn't care
-  virtual int64_t getNextInteractionId();
+  // registers a new interaction with the channel
+  // returns id of created interaction (always nonzero)
+  virtual int64_t createInteraction(folly::StringPiece name);
+
+  // registers an interaction with a nested channel
+  // only some channels can be nested; the rest call terminate here
+  virtual void registerInteraction(folly::StringPiece name, int64_t id);
 };
 
 template <>

@@ -149,11 +149,17 @@ void RequestChannel::sendRequestSink(
 
 void RequestChannel::terminateInteraction(int64_t) {
   folly::terminate_with<std::runtime_error>(
-      "This channel does not support interactions");
+      "This channel doesn't support interactions");
 }
-int64_t RequestChannel::getNextInteractionId() {
+int64_t RequestChannel::createInteraction(folly::StringPiece name) {
+  static std::atomic<int64_t> nextId{0};
+  int64_t id = 1 + nextId.fetch_add(1, std::memory_order_relaxed);
+  registerInteraction(name, id);
+  return id;
+}
+void RequestChannel::registerInteraction(folly::StringPiece, int64_t) {
   folly::terminate_with<std::runtime_error>(
-      "This channel does not support interactions");
+      "This channel doesn't support interactions");
 }
 
 } // namespace thrift

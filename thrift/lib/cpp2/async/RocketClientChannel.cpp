@@ -891,6 +891,20 @@ bool RocketClientChannel::preSendValidation(
     metadata.clientTimeoutMs_ref().reset();
     metadata.queueTimeoutMs_ref().reset();
   }
+
+  if (auto interactionId = rpcOptions.getInteractionId()) {
+    evb_->dcheckIsInEventBaseThread();
+    if (auto* name = folly::get_ptr(pendingInteractions_, interactionId)) {
+      InteractionCreate create;
+      create.set_interactionId(interactionId);
+      create.set_interactionName(std::move(*name));
+      metadata.interactionCreate_ref() = std::move(create);
+      pendingInteractions_.erase(interactionId);
+    } else {
+      metadata.interactionId_ref() = interactionId;
+    }
+  }
+
   return true;
 }
 
@@ -986,14 +1000,27 @@ void RocketClientChannel::unsetOnDetachable() {
 }
 
 void RocketClientChannel::terminateInteraction(int64_t id) {
+  evb_->dcheckIsInEventBaseThread();
+  auto pending = pendingInteractions_.find(id);
+  if (pending != pendingInteractions_.end()) {
+    pendingInteractions_.erase(pending);
+    return;
+  }
   // guard needed for onDetachable callback implementation
   auto guard = std::make_unique<SingleRequestNoResponseCallback>(
       nullptr, inflightGuard());
   rclient_->terminateInteraction(id, std::move(guard));
 }
 
-int64_t RocketClientChannel::getNextInteractionId() {
-  return 0;
+void RocketClientChannel::registerInteraction(
+    folly::StringPiece name,
+    int64_t id) {
+  CHECK(!name.empty());
+  CHECK_GT(id, 0);
+  evb_->dcheckIsInEventBaseThread();
+
+  auto res = pendingInteractions_.insert({id, name.str()});
+  DCHECK(res.second);
 }
 
 constexpr std::chrono::seconds RocketClientChannel::kDefaultRpcTimeout;

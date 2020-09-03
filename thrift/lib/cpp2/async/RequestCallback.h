@@ -558,26 +558,13 @@ class RpcOptions {
   }
 
   // For TILES, primarily used by ServiceRouter
-  RpcOptions& setExistingInteraction(int64_t id) {
+  RpcOptions& setInteractionId(int64_t id) {
     DCHECK_GT(id, 0);
-    DCHECK(!interactionCreate_);
     interactionId_ = id;
-    return *this;
-  }
-  RpcOptions& setNewInteraction(std::string name, int64_t id) {
-    DCHECK_GT(id, 0);
-    DCHECK(!name.empty());
-    DCHECK(!interactionId_);
-    interactionCreate_.emplace();
-    interactionCreate_->interactionName_ref() = std::move(name);
-    interactionCreate_->interactionId_ref() = id;
     return *this;
   }
   int64_t getInteractionId() const {
     return interactionId_;
-  }
-  const folly::Optional<InteractionCreate>& getInteractionCreate() const {
-    return interactionCreate_;
   }
 
  private:
@@ -590,7 +577,6 @@ class RpcOptions {
   bool enablePageAlignment_{false};
   int32_t chunkBufferSize_{100};
   int64_t interactionId_{0};
-  folly::Optional<InteractionCreate> interactionCreate_;
 
   std::string routingKey_;
   std::string shardId_;

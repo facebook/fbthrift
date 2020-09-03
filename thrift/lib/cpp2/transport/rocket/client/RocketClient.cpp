@@ -1138,6 +1138,11 @@ void RocketClient::OnEventBaseDestructionCallback::
 void RocketClient::terminateInteraction(
     int64_t id,
     std::unique_ptr<RequestFnfCallback> guard) {
+  if (setupFrame_) {
+    // we haven't sent any requests so don't need to send the termination
+    return;
+  }
+
   auto g = makeRequestCountGuard();
   InteractionTerminate term;
   term.set_interactionId(id);
@@ -1151,7 +1156,7 @@ void RocketClient::terminateInteraction(
        g = std::move(g),
        guard = std::move(guard),
        ka = folly::getKeepAliveToken(evb_)](transport::TTransportException ex) {
-        FB_LOG_EVERY_MS(DFATAL, 1000)
+        FB_LOG_EVERY_MS(WARNING, 1000)
             << "terminateInteraction failed: " << ex.what();
       });
 }

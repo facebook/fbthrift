@@ -25,24 +25,33 @@ namespace thrift {
 namespace {
 struct InteractionState {
   folly::Executor::KeepAlive<folly::EventBase> keepAlive;
+  std::string name;
 };
+
+static void maybeCreateInteraction(
+    const RpcOptions& options,
+    PooledRequestChannel::Impl& channel) {
+  if (auto id = options.getInteractionId()) {
+    auto* state = reinterpret_cast<InteractionState*>(id);
+    if (!state->name.empty()) {
+      channel.registerInteraction(std::move(state->name), id);
+      state->name.clear();
+    }
+  }
+}
 } // namespace
 
 folly::EventBase& PooledRequestChannel::getEvb(const RpcOptions& options) {
-  InteractionState* state;
   if (options.getInteractionId()) {
-    state = reinterpret_cast<InteractionState*>(options.getInteractionId());
-  } else if (options.getInteractionCreate()) {
-    state = reinterpret_cast<InteractionState*>(
-        options.getInteractionCreate()->get_interactionId());
-  } else {
-    auto executor = executor_.lock();
-    if (!executor) {
-      throw std::logic_error("IO executor already destroyed.");
-    }
-    return *executor->getEventBase();
+    return *reinterpret_cast<InteractionState*>(options.getInteractionId())
+                ->keepAlive.get();
   }
-  return *state->keepAlive.get();
+
+  auto executor = executor_.lock();
+  if (!executor) {
+    throw std::logic_error("IO executor already destroyed.");
+  }
+  return *executor->getEventBase();
 }
 
 uint16_t PooledRequestChannel::getProtocolId() {
@@ -133,6 +142,7 @@ void PooledRequestChannel::sendRequestResponse(
        request = std::move(request),
        header = std::move(header),
        cob = std::move(cob)](Impl& channel) mutable {
+        maybeCreateInteraction(options, channel);
         channel.sendRequestResponse(
             options,
             methodNameStr,
@@ -159,6 +169,7 @@ void PooledRequestChannel::sendRequestNoResponse(
        request = std::move(request),
        header = std::move(header),
        cob = std::move(cob)](Impl& channel) mutable {
+        maybeCreateInteraction(options, channel);
         channel.sendRequestNoResponse(
             options,
             methodNameStr,
@@ -181,6 +192,7 @@ void PooledRequestChannel::sendRequestStream(
        request = std::move(request),
        header = std::move(header),
        cob](Impl& channel) mutable {
+        maybeCreateInteraction(options, channel);
         channel.sendRequestStream(
             options, methodNameStr, std::move(request), std::move(header), cob);
       },
@@ -199,26 +211,19 @@ void PooledRequestChannel::sendRequestSink(
        request = std::move(request),
        header = std::move(header),
        cob](Impl& channel) mutable {
+        maybeCreateInteraction(options, channel);
         channel.sendRequestSink(
             options, methodNameStr, std::move(request), std::move(header), cob);
       },
       getEvb(options));
 }
 
-int64_t PooledRequestChannel::getNextInteractionId() {
+int64_t PooledRequestChannel::createInteraction(folly::StringPiece name) {
+  CHECK(!name.empty());
+
   auto& evb = getEvb({});
-
-  if (folly::kIsDebug) {
-    sendRequestImpl(
-        [](Impl& channel) mutable {
-          CHECK_EQ(channel.getNextInteractionId(), 0)
-              << "Cannot nest multiple channels opinionated about interaction id";
-        },
-        evb);
-  }
-
   return reinterpret_cast<int64_t>(
-      new InteractionState{getKeepAliveToken(evb)});
+      new InteractionState{getKeepAliveToken(evb), name.str()});
 }
 
 void PooledRequestChannel::terminateInteraction(int64_t id) {
