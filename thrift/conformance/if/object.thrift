@@ -37,8 +37,8 @@ union Value {
   6: i64  i64Value;
 
   // Floats.
-  7: float f32Value;
-  8: double f64Value;
+  7: float floatValue;
+  8: double doubleValue;
 
   // Strings.
   9: string stringValue;
