@@ -13,3 +13,5 @@ from thrift.py3.reflection cimport (
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients)
 
 cdef __InterfaceSpec get_reflection__MyServiceFast(bint for_clients)
+
+cdef __InterfaceSpec get_reflection__DbMixedStackArguments(bint for_clients)

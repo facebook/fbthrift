@@ -172,3 +172,47 @@ class MyServiceFastInterface(
     pass
 
 
+_DbMixedStackArgumentsInterfaceT = _typing.TypeVar('_DbMixedStackArgumentsInterfaceT', bound='DbMixedStackArgumentsInterface')
+
+
+class DbMixedStackArgumentsInterface(
+    ServiceInterface,
+    metaclass=ABCMeta,
+):
+
+    @staticmethod
+    def pass_context_getDataByKey0(
+        fn: _typing.Callable[
+                [_DbMixedStackArgumentsInterfaceT, RequestContext, str],
+                _typing.Coroutine[_typing.Any, _typing.Any, bytes]
+        ]
+    ) -> _typing.Callable[
+        [_DbMixedStackArgumentsInterfaceT, str],
+        _typing.Coroutine[_typing.Any, _typing.Any, bytes]
+    ]: ...
+
+    @abstractmethod
+    async def getDataByKey0(
+        self,
+        key: str
+    ) -> bytes: ...
+
+    @staticmethod
+    def pass_context_getDataByKey1(
+        fn: _typing.Callable[
+                [_DbMixedStackArgumentsInterfaceT, RequestContext, str],
+                _typing.Coroutine[_typing.Any, _typing.Any, bytes]
+        ]
+    ) -> _typing.Callable[
+        [_DbMixedStackArgumentsInterfaceT, str],
+        _typing.Coroutine[_typing.Any, _typing.Any, bytes]
+    ]: ...
+
+    @abstractmethod
+    async def getDataByKey1(
+        self,
+        key: str
+    ) -> bytes: ...
+    pass
+
+

@@ -12,6 +12,9 @@
 namespace cpp2 {
 class MyServiceSvIf;
 } // namespace cpp2
+namespace cpp2 {
+class DbMixedStackArgumentsSvIf;
+} // namespace cpp2
 
 namespace apache {
 namespace thrift {
@@ -49,6 +52,14 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
   static void gen_getDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_putDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_lobDataById(ThriftMetadata& metadata, ThriftService& context);
+};
+template <>
+class ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_getDataByKey0(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_getDataByKey1(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

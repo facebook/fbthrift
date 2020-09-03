@@ -211,6 +211,55 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(ThriftMetadata& metadata, Thrif
   module.name_ref() = "module";
   context.module_ref() = std::move(module);
 }
+void ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf>::gen_getDataByKey0(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "getDataByKey0";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  ::apache::thrift::metadata::ThriftField module_DbMixedStackArguments_getDataByKey0_key_1;
+  module_DbMixedStackArguments_getDataByKey0_key_1.id = 1;
+  module_DbMixedStackArguments_getDataByKey0_key_1.name = "key";
+  module_DbMixedStackArguments_getDataByKey0_key_1.is_optional = false;
+  auto module_DbMixedStackArguments_getDataByKey0_key_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
+  module_DbMixedStackArguments_getDataByKey0_key_1_type->writeAndGenType(module_DbMixedStackArguments_getDataByKey0_key_1.type, metadata);
+  func.arguments.push_back(std::move(module_DbMixedStackArguments_getDataByKey0_key_1));
+  func.is_oneway_ref() = false;
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf>::gen_getDataByKey1(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "getDataByKey1";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  ::apache::thrift::metadata::ThriftField module_DbMixedStackArguments_getDataByKey1_key_1;
+  module_DbMixedStackArguments_getDataByKey1_key_1.id = 1;
+  module_DbMixedStackArguments_getDataByKey1_key_1.name = "key";
+  module_DbMixedStackArguments_getDataByKey1_key_1.is_optional = false;
+  auto module_DbMixedStackArguments_getDataByKey1_key_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
+  module_DbMixedStackArguments_getDataByKey1_key_1_type->writeAndGenType(module_DbMixedStackArguments_getDataByKey1_key_1.type, metadata);
+  func.arguments.push_back(std::move(module_DbMixedStackArguments_getDataByKey1_key_1));
+  func.is_oneway_ref() = false;
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_DbMixedStackArguments;
+  module_DbMixedStackArguments.name = "module.DbMixedStackArguments";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf>::gen_getDataByKey0,
+    ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf>::gen_getDataByKey1,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_DbMixedStackArguments);
+  }
+  context.service_info_ref() = std::move(module_DbMixedStackArguments);
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.name_ref() = "module";
+  context.module_ref() = std::move(module);
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

@@ -8,6 +8,7 @@
 #pragma once
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/MyServiceFast.h>
+#include <src/gen-cpp2/DbMixedStackArguments.h>
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
@@ -63,6 +64,19 @@ class MyServiceFastClientWrapper : public ::thrift::py3::ClientWrapper {
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,
       std::string arg_data);
+};
+
+
+class DbMixedStackArgumentsClientWrapper : public ::thrift::py3::ClientWrapper {
+  public:
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
+
+    folly::Future<std::string> getDataByKey0(
+      apache::thrift::RpcOptions& rpcOptions,
+      std::string arg_key);
+    folly::Future<std::string> getDataByKey1(
+      apache::thrift::RpcOptions& rpcOptions,
+      std::string arg_key);
 };
 
 

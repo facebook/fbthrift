@@ -79,3 +79,22 @@ class MyServiceFast(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
+
+
+_DbMixedStackArgumentsT = _typing.TypeVar('_DbMixedStackArgumentsT', bound='DbMixedStackArguments')
+
+
+class DbMixedStackArguments(thrift.py3.client.Client):
+
+    async def getDataByKey0(
+        self,
+        key: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> bytes: ...
+
+    async def getDataByKey1(
+        self,
+        key: str,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> bytes: ...
+

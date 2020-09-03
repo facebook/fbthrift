@@ -847,6 +847,185 @@ pub mod services {
             }
         }
     }
+
+    pub mod db_mixed_stack_arguments {
+
+        #[derive(Clone, Debug)]
+        pub enum GetDataByKey0Exn {
+            Success(::std::vec::Vec<::std::primitive::u8>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for GetDataByKey0Exn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                GetDataByKey0Exn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for GetDataByKey0Exn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for GetDataByKey0Exn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("GetDataByKey0");
+                match self {
+                    GetDataByKey0Exn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::String,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    GetDataByKey0Exn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for GetDataByKey0Exn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::String, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(GetDataByKey0Exn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "GetDataByKey0Exn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "GetDataByKey0Exn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+
+        #[derive(Clone, Debug)]
+        pub enum GetDataByKey1Exn {
+            Success(::std::vec::Vec<::std::primitive::u8>),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for GetDataByKey1Exn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                GetDataByKey1Exn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::GetTType for GetDataByKey1Exn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for GetDataByKey1Exn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                p.write_struct_begin("GetDataByKey1");
+                match self {
+                    GetDataByKey1Exn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::String,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    GetDataByKey1Exn::ApplicationException(_) => panic!(
+                        "Bad union Alt field {} id {}",
+                        "ApplicationException",
+                        -2147483648i32,
+                    ),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for GetDataByKey1Exn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = ::std::option::Option::None;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::String, 0i32), false) => {
+                            once = true;
+                            alt = ::std::option::Option::Some(GetDataByKey1Exn::Success(::fbthrift::Deserialize::read(p)?));
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "GetDataByKey1Exn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "GetDataByKey1Exn"),
+                    )
+                    .into(),
+                )
+            }
+        }
+    }
 }
 
 pub mod client {
@@ -1335,6 +1514,220 @@ pub mod client {
             T: ::fbthrift::Transport + ::std::marker::Sync,
         {
             MyService::new(protocol, transport)
+        }
+    }
+    pub struct DbMixedStackArgumentsImpl<P, T> {
+        transport: T,
+        _phantom: ::std::marker::PhantomData<fn() -> P>,
+    }
+
+    impl<P, T> DbMixedStackArgumentsImpl<P, T> {
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            Self {
+                transport,
+                _phantom: ::std::marker::PhantomData,
+            }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
+        }
+    }
+
+    pub trait DbMixedStackArguments: ::std::marker::Send {
+        fn getDataByKey0(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>> + ::std::marker::Send + 'static>>;
+        fn getDataByKey1(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>>;
+    }
+
+    impl<P, T> DbMixedStackArguments for DbMixedStackArgumentsImpl<P, T>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+    {        fn getDataByKey0(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "getDataByKey0",
+                ::fbthrift::MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
+                |p| {
+                    p.write_struct_begin("args");
+                    p.write_field_begin("arg_key", ::fbthrift::TType::String, 1i16);
+                    ::fbthrift::Serialize::write(&arg_key, p);
+                    p.write_field_end();
+                    p.write_field_stop();
+                    p.write_struct_end();
+                },
+            ));
+            self.transport()
+                .call(request)
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::db_mixed_stack_arguments::GetDataByKey0Exn = ::fbthrift::Deserialize::read(p)?;
+                                match exn {
+                                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(x) => ::std::result::Result::Ok(x),
+                                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::ApplicationException(ae) => {
+                                        ::std::result::Result::Err(crate::errors::db_mixed_stack_arguments::GetDataByKey0Error::ApplicationException(ae))
+                                    }
+                                }
+                            }
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::db_mixed_stack_arguments::GetDataByKey0Error::ApplicationException(ae))
+                            }
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::db_mixed_stack_arguments::GetDataByKey0Error::ThriftError(err))
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn getDataByKey1(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>> {
+            use ::fbthrift::{ProtocolReader as _, ProtocolWriter as _};
+            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "getDataByKey1",
+                ::fbthrift::MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
+                |p| {
+                    p.write_struct_begin("args");
+                    p.write_field_begin("arg_key", ::fbthrift::TType::String, 1i16);
+                    ::fbthrift::Serialize::write(&arg_key, p);
+                    p.write_field_end();
+                    p.write_field_stop();
+                    p.write_struct_end();
+                },
+            ));
+            self.transport()
+                .call(request)
+                .map_err(::std::convert::From::from)
+                .and_then(|reply| ::futures::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            ::fbthrift::MessageType::Reply => {
+                                let exn: crate::services::db_mixed_stack_arguments::GetDataByKey1Exn = ::fbthrift::Deserialize::read(p)?;
+                                match exn {
+                                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(x) => ::std::result::Result::Ok(x),
+                                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::ApplicationException(ae) => {
+                                        ::std::result::Result::Err(crate::errors::db_mixed_stack_arguments::GetDataByKey1Error::ApplicationException(ae))
+                                    }
+                                }
+                            }
+                            ::fbthrift::MessageType::Exception => {
+                                let ae: ::fbthrift::ApplicationException = ::fbthrift::Deserialize::read(p)?;
+                                ::std::result::Result::Err(crate::errors::db_mixed_stack_arguments::GetDataByKey1Error::ApplicationException(ae))
+                            }
+                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                ::std::result::Result::Err(crate::errors::db_mixed_stack_arguments::GetDataByKey1Error::ThriftError(err))
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+    }
+
+    impl<'a, T> DbMixedStackArguments for T
+    where
+        T: ::std::convert::AsRef<dyn DbMixedStackArguments + 'a>,
+        T: ::std::marker::Send,
+    {
+        fn getDataByKey0(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>> + ::std::marker::Send + 'static>> {
+            self.as_ref().getDataByKey0(
+                arg_key,
+            )
+        }
+        fn getDataByKey1(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>> {
+            self.as_ref().getDataByKey1(
+                arg_key,
+            )
+        }
+    }
+
+    pub struct make_DbMixedStackArguments;
+
+    /// To be called by user directly setting up a client. Avoids
+    /// needing ClientFactory trait in scope, avoids unidiomatic
+    /// make_Trait name.
+    ///
+    /// ```
+    /// use bgs::client::BuckGraphService;
+    ///
+    /// let protocol = BinaryProtocol::new();
+    /// let transport = HttpClient::new();
+    /// let client = BuckGraphService::new(protocol, transport);
+    /// ```
+    impl dyn DbMixedStackArguments {
+        pub fn new<P, T>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl DbMixedStackArguments + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+        {
+            let _ = protocol;
+            ::std::sync::Arc::new(DbMixedStackArgumentsImpl::<P, T>::new(transport))
+        }
+    }
+
+    /// The same thing, but to be called from generic contexts where we are
+    /// working with a type parameter `C: ClientFactory` to produce clients.
+    impl ::fbthrift::ClientFactory for make_DbMixedStackArguments {
+        type Api = dyn DbMixedStackArguments + ::std::marker::Send + ::std::marker::Sync + 'static;
+
+        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport + ::std::marker::Sync,
+        {
+            DbMixedStackArguments::new(protocol, transport)
         }
     }
 }
@@ -1863,6 +2256,273 @@ pub mod server {
             bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
     }
+    #[::async_trait::async_trait]
+    pub trait DbMixedStackArguments: ::std::marker::Send + ::std::marker::Sync + 'static {
+        async fn getDataByKey0(
+            &self,
+            _key: ::std::string::String,
+        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> {
+            ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "DbMixedStackArguments",
+                    "getDataByKey0",
+                ),
+            ))
+        }
+        async fn getDataByKey1(
+            &self,
+            _key: ::std::string::String,
+        ) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> {
+            ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "DbMixedStackArguments",
+                    "getDataByKey1",
+                ),
+            ))
+        }
+    }
+
+    #[derive(Clone, Debug)]
+    pub struct DbMixedStackArgumentsProcessor<P, H, R> {
+        service: H,
+        supa: ::fbthrift::NullServiceProcessor<P, R>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
+    }
+
+    impl<P, H, R> DbMixedStackArgumentsProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        H: DbMixedStackArguments,
+    {
+        pub fn new(service: H) -> Self {
+            Self {
+                service,
+                supa: ::fbthrift::NullServiceProcessor::new(),
+                _phantom: ::std::marker::PhantomData,
+            }
+        }
+
+        pub fn into_inner(self) -> H {
+            self.service
+        }
+
+        async fn handle_getDataByKey0<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
+            let mut field_key = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_key = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            let res = self.service.getDataByKey0(
+                field_key.ok_or_else(|| {
+                    ::fbthrift::ApplicationException::missing_arg(
+                        "getDataByKey0",
+                        "key",
+                    )
+                })?,
+            ).await;
+            let res = match res {
+                ::std::result::Result::Ok(res) => {
+                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(res)
+                }
+                ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
+                }
+                ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(_)) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "getDataByKey0",
+                    )
+                }
+            };
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "getDataByKey0",
+                ::fbthrift::MessageType::Reply,
+                seqid,
+                |p| ::fbthrift::Serialize::write(&res, p),
+            ));
+            ::std::result::Result::Ok(res)
+        }
+
+        async fn handle_getDataByKey1<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::ProtocolReader as _;
+            let mut field_key = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_key = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            let res = self.service.getDataByKey1(
+                field_key.ok_or_else(|| {
+                    ::fbthrift::ApplicationException::missing_arg(
+                        "getDataByKey1",
+                        "key",
+                    )
+                })?,
+            ).await;
+            let res = match res {
+                ::std::result::Result::Ok(res) => {
+                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(res)
+                }
+                ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::ApplicationException(aexn)) => {
+                    return ::std::result::Result::Err(aexn.into())
+                }
+                ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(_)) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "getDataByKey1",
+                    )
+                }
+            };
+            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                p,
+                "getDataByKey1",
+                ::fbthrift::MessageType::Reply,
+                seqid,
+                |p| ::fbthrift::Serialize::write(&res, p),
+            ));
+            ::std::result::Result::Ok(res)
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for DbMixedStackArgumentsProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        H: DbMixedStackArguments,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+    {
+        type RequestContext = R;
+
+        #[inline]
+        fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
+            match name {
+                b"getDataByKey0" => ::std::result::Result::Ok(0usize),
+                b"getDataByKey1" => ::std::result::Result::Ok(1usize),
+                _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
+            }
+        }
+
+        async fn handle_method(
+            &self,
+            idx: ::std::primitive::usize,
+            _p: &mut P::Deserializer,
+            _r: &R,
+            _seqid: ::std::primitive::u32,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            match idx {
+                0usize => self.handle_getDataByKey0(_p, _r, _seqid).await,
+                1usize => self.handle_getDataByKey1(_p, _r, _seqid).await,
+                bad => panic!(
+                    "{}: unexpected method idx {}",
+                    "DbMixedStackArgumentsProcessor",
+                    bad
+                ),
+            }
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for DbMixedStackArgumentsProcessor<P, H, R>
+    where
+        P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
+        P::Deserializer: ::std::marker::Send,
+        P::Frame: ::std::marker::Send + 'static,
+        H: DbMixedStackArguments,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+    {
+        type Handler = H;
+        type RequestContext = R;
+
+        async fn call(
+            &self,
+            req: ::fbthrift::ProtocolDecoded<P>,
+            req_ctxt: &R,
+        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::fbthrift::{BufExt as _, ProtocolReader as _, ServiceProcessor as _};
+            let mut p = P::deserializer(req);
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
+            if mty != ::fbthrift::MessageType::Call {
+                return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                    ::fbthrift::ApplicationExceptionErrorCode::InvalidMessageType,
+                    format!("message type {:?} not handled", mty)
+                )));
+            }
+            let idx = match idx {
+                ::std::result::Result::Ok(idx) => idx,
+                ::std::result::Result::Err(_) => {
+                    let cur = P::into_buffer(p).reset();
+                    return self.supa.call(cur, req_ctxt).await;
+                }
+            };
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
+            p.read_message_end()?;
+            match res {
+                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
+                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
+                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
+                        let res = ::fbthrift::serialize!(P, |p| {
+                            ::fbthrift::protocol::write_message(
+                                p,
+                                "DbMixedStackArgumentsProcessor",
+                                ::fbthrift::MessageType::Exception,
+                                seqid,
+                                |p| ::fbthrift::Serialize::write(&ae, p),
+                            )
+                        });
+                        ::std::result::Result::Ok(res)
+                    }
+                    _ => ::std::result::Result::Err(err),
+                },
+            }
+        }
+    }
+
+    pub fn make_DbMixedStackArguments_server<F, H, R>(
+        proto: ::fbthrift::ProtocolID,
+        handler: H,
+    ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
+    where
+        F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
+        H: DbMixedStackArguments,
+        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+    {
+        match proto {
+            ::fbthrift::ProtocolID::BinaryProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(DbMixedStackArgumentsProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
+            }
+            ::fbthrift::ProtocolID::CompactProtocol => {
+                ::std::result::Result::Ok(::std::boxed::Box::new(DbMixedStackArgumentsProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
+            }
+            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
+        }
+    }
 }
 
 /// Client mocks. For every service, a struct mock::TheService that implements
@@ -2015,6 +2675,43 @@ pub mod mock {
             let mut closure = self.lobDataById.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_id.clone(), arg_data.to_owned())))
+        }
+    }
+
+
+    pub struct DbMixedStackArguments<'mock> {
+        pub getDataByKey0: r#impl::db_mixed_stack_arguments::getDataByKey0<'mock>,
+        pub getDataByKey1: r#impl::db_mixed_stack_arguments::getDataByKey1<'mock>,
+        _marker: ::std::marker::PhantomData<&'mock ()>,
+    }
+
+    impl dyn super::client::DbMixedStackArguments {
+        pub fn mock<'mock>() -> DbMixedStackArguments<'mock> {
+            DbMixedStackArguments {
+                getDataByKey0: r#impl::db_mixed_stack_arguments::getDataByKey0::unimplemented(),
+                getDataByKey1: r#impl::db_mixed_stack_arguments::getDataByKey1::unimplemented(),
+                _marker: ::std::marker::PhantomData,
+            }
+        }
+    }
+
+    #[::async_trait::async_trait]
+    impl<'mock> super::client::DbMixedStackArguments for DbMixedStackArguments<'mock> {
+        fn getDataByKey0(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.getDataByKey0.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::string::String) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_key.to_owned())))
+        }
+        fn getDataByKey1(
+            &self,
+            arg_key: &::std::primitive::str,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.getDataByKey1.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut(::std::string::String) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_key.to_owned())))
         }
     }
 
@@ -2255,6 +2952,86 @@ pub mod mock {
                 }
             }
         }
+        pub mod db_mixed_stack_arguments {
+
+            pub struct getDataByKey0<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::string::String) -> ::std::result::Result<
+                        ::std::vec::Vec<::std::primitive::u8>,
+                        crate::errors::db_mixed_stack_arguments::GetDataByKey0Error,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> getDataByKey0<'mock> {
+                pub fn unimplemented() -> Self {
+                    getDataByKey0 {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::string::String| panic!(
+                            "{}::{} is not mocked",
+                            "DbMixedStackArguments",
+                            "getDataByKey0",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ::std::vec::Vec<::std::primitive::u8>) {
+                    self.mock(move |_: ::std::string::String| value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::string::String) -> ::std::vec::Vec<::std::primitive::u8> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |key| ::std::result::Result::Ok(mock(key)));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::string::String| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+
+            pub struct getDataByKey1<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut(::std::string::String) -> ::std::result::Result<
+                        ::std::vec::Vec<::std::primitive::u8>,
+                        crate::errors::db_mixed_stack_arguments::GetDataByKey1Error,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> getDataByKey1<'mock> {
+                pub fn unimplemented() -> Self {
+                    getDataByKey1 {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::string::String| panic!(
+                            "{}::{} is not mocked",
+                            "DbMixedStackArguments",
+                            "getDataByKey1",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ::std::vec::Vec<::std::primitive::u8>) {
+                    self.mock(move |_: ::std::string::String| value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::string::String) -> ::std::vec::Vec<::std::primitive::u8> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |key| ::std::result::Result::Ok(mock(key)));
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |_: ::std::string::String| ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
+        }
     }
 }
 
@@ -2272,6 +3049,14 @@ pub mod errors {
         pub type PutDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         pub type LobDataByIdError = ::fbthrift::NonthrowingFunctionError;
+
+    }
+
+    pub mod db_mixed_stack_arguments {
+
+        pub type GetDataByKey0Error = ::fbthrift::NonthrowingFunctionError;
+
+        pub type GetDataByKey1Error = ::fbthrift::NonthrowingFunctionError;
 
     }
 

@@ -10,3 +10,6 @@ cimport thrift.py3.client
 cdef class MyService(thrift.py3.client.Client):
     pass
 
+cdef class DbMixedStackArguments(thrift.py3.client.Client):
+    pass
+

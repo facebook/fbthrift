@@ -144,3 +144,52 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
         )
     )
     return spec
+
+
+cdef __InterfaceSpec get_reflection__DbMixedStackArguments(bint for_clients):
+    cdef __InterfaceSpec spec = __InterfaceSpec.create(
+        name="DbMixedStackArguments",
+        annotations={
+        },
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="getDataByKey0",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="key",
+                    type=str,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=bytes,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="getDataByKey1",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="key",
+                    type=str,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=bytes,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    return spec

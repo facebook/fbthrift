@@ -33,6 +33,13 @@ cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
+cdef extern from "src/gen-cpp2/DbMixedStackArguments.h" namespace "::cpp2":
+  cdef cppclass cDbMixedStackArgumentsAsyncClient "::cpp2::DbMixedStackArgumentsAsyncClient":
+      pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cDbMixedStackArgumentsClientWrapper] move(unique_ptr[cDbMixedStackArgumentsClientWrapper])
+
 cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
   cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
     pass
@@ -54,4 +61,14 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
+
+
+  cdef cppclass cDbMixedStackArgumentsClientWrapper "::cpp2::DbMixedStackArgumentsClientWrapper":
+    void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
+
+    cFollyFuture[string] getDataByKey0(cRpcOptions, 
+      string arg_key,)
+    cFollyFuture[string] getDataByKey1(cRpcOptions, 
+      string arg_key,)
 

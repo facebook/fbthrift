@@ -18,3 +18,9 @@ cdef class MyServiceInterface(ServiceInterface):
     cdef bint _for_cython_lobDataById
     pass
 
+cdef class DbMixedStackArgumentsInterface(ServiceInterface):
+    # these are to avoid weird Cython multiple inheritance issue
+    cdef bint _for_cython_getDataByKey0
+    cdef bint _for_cython_getDataByKey1
+    pass
+

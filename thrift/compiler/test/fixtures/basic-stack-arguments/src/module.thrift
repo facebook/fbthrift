@@ -37,3 +37,8 @@ service MyServiceFast {
   void putDataById(1: i64 id, 2: string data) (thread='eb')
   oneway void lobDataById(1: i64 id, 2: string data) (thread='eb')
 }
+
+service DbMixedStackArguments {
+  binary getDataByKey0(1: string key),
+  binary getDataByKey1(1: string key),
+}

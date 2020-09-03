@@ -48,6 +48,7 @@ import module.types as _module_types
 cimport module.services_reflection as _services_reflection
 
 from module.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrapper
+from module.clients_wrapper cimport cDbMixedStackArgumentsAsyncClient, cDbMixedStackArgumentsClientWrapper
 
 
 cdef void MyService_ping_callback(
@@ -125,6 +126,32 @@ cdef void MyService_lobDataById_callback(
     else:
         try:
             pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void DbMixedStackArguments_getDataByKey0_callback(
+    cFollyTry[string]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void DbMixedStackArguments_getDataByKey1_callback(
+    cFollyTry[string]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(result.value())
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -297,4 +324,69 @@ cdef class MyService(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyService(for_clients=True)
+
+cdef object _DbMixedStackArguments_annotations = _py_types.MappingProxyType({
+})
+
+
+@cython.auto_pickle(False)
+cdef class DbMixedStackArguments(thrift.py3.client.Client):
+    annotations = _DbMixedStackArguments_annotations
+
+    cdef const type_info* _typeid(DbMixedStackArguments self):
+        return &typeid(cDbMixedStackArgumentsAsyncClient)
+
+    cdef bind_client(DbMixedStackArguments self, cRequestChannel_ptr&& channel):
+        self._client = makeClientWrapper[cDbMixedStackArgumentsAsyncClient, cDbMixedStackArgumentsClientWrapper](
+            thrift.py3.client.move(channel)
+        )
+
+    @cython.always_allow_keywords(True)
+    def getDataByKey0(
+            DbMixedStackArguments self,
+            str key not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[string](
+            self._executor,
+            down_cast_ptr[cDbMixedStackArgumentsClientWrapper, cClientWrapper](self._client.get()).getDataByKey0(rpc_options._cpp_obj, 
+                key.encode('UTF-8'),
+            ),
+            DbMixedStackArguments_getDataByKey0_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def getDataByKey1(
+            DbMixedStackArguments self,
+            str key not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[string](
+            self._executor,
+            down_cast_ptr[cDbMixedStackArgumentsClientWrapper, cClientWrapper](self._client.get()).getDataByKey1(rpc_options._cpp_obj, 
+                key.encode('UTF-8'),
+            ),
+            DbMixedStackArguments_getDataByKey1_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__DbMixedStackArguments(for_clients=True)
 

@@ -13,3 +13,6 @@ cdef class MyService(thrift.py3.client.Client):
 cdef class MyServiceFast(thrift.py3.client.Client):
     pass
 
+cdef class DbMixedStackArguments(thrift.py3.client.Client):
+    pass
+

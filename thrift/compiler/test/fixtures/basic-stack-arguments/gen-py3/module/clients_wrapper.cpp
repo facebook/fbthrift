@@ -154,4 +154,38 @@ MyServiceFastClientWrapper::lobDataById(
   return _future;
 }
 
+folly::Future<std::string>
+DbMixedStackArgumentsClientWrapper::getDataByKey0(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::string arg_key) {
+  folly::Promise<std::string> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::DbMixedStackArgumentsAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_getDataByKey0, channel_);
+  client->getDataByKey0(
+    rpcOptions,
+    std::move(callback),
+    arg_key
+  );
+  return _future;
+}
+
+folly::Future<std::string>
+DbMixedStackArgumentsClientWrapper::getDataByKey1(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::string arg_key) {
+  folly::Promise<std::string> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::DbMixedStackArgumentsAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_getDataByKey1, channel_);
+  client->getDataByKey1(
+    rpcOptions,
+    std::move(callback),
+    arg_key
+  );
+  return _future;
+}
+
 } // namespace cpp2

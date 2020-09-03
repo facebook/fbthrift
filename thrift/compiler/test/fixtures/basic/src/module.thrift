@@ -47,3 +47,8 @@ service MyService {
   void putDataById(1: i64 id, 2: string data)
   oneway void lobDataById(1: i64 id, 2: string data)
 }
+
+service DbMixedStackArguments {
+  binary getDataByKey0(1: string key),
+  binary getDataByKey1(1: string key),
+}

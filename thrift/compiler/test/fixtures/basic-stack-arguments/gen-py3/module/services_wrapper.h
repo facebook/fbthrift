@@ -8,6 +8,7 @@
 #pragma once
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/MyServiceFast.h>
+#include <src/gen-cpp2/DbMixedStackArguments.h>
 #include <folly/python/futures.h>
 #include <Python.h>
 
@@ -63,4 +64,21 @@ class MyServiceFastWrapper : virtual public MyServiceFastSvIf {
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object, folly::Executor *exc);
+
+
+class DbMixedStackArgumentsWrapper : virtual public DbMixedStackArgumentsSvIf {
+  protected:
+    PyObject *if_object;
+    folly::Executor *executor;
+  public:
+    explicit DbMixedStackArgumentsWrapper(PyObject *if_object, folly::Executor *exc);
+    void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
+        , const std::string& key
+    ) override;
+    void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
+        , const std::string& key
+    ) override;
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> DbMixedStackArgumentsInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2

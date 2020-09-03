@@ -150,6 +150,37 @@
           "throws" : []
         }
       }
+    },
+    "DbMixedStackArguments" : {
+      "lineno" : 51,
+      "functions" : {
+        "DbMixedStackArguments.getDataByKey0" : {
+          "return_type" : {
+            "type_enum" : "STRING",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "DbMixedStackArguments.getDataByKey1" : {
+          "return_type" : {
+            "type_enum" : "STRING",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        }
+      }
     }
   }
 }

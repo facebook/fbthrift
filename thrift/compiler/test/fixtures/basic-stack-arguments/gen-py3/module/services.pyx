@@ -57,15 +57,28 @@ import types as _py_types
 
 from module.services_wrapper cimport cMyServiceInterface
 from module.services_wrapper cimport cMyServiceFastInterface
+from module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 
 cdef extern from "<utility>" namespace "std":
+    cdef cFollyPromise[string] move_promise_binary "std::move"(
+        cFollyPromise[string])
     cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
     cdef cFollyPromise[string] move_promise_string "std::move"(
         cFollyPromise[string])
     cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
+
+@cython.auto_pickle(False)
+cdef class Promise_binary:
+    cdef cFollyPromise[string] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[string] cPromise):
+        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
+        inst.cPromise = move_promise_binary(cPromise)
+        return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_cbool:
@@ -212,6 +225,44 @@ cdef class MyServiceFastInterface(
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyServiceFast(for_clients=False)
+
+cdef object _DbMixedStackArguments_annotations = _py_types.MappingProxyType({
+})
+
+
+@cython.auto_pickle(False)
+cdef class DbMixedStackArgumentsInterface(
+    ServiceInterface
+):
+    annotations = _DbMixedStackArguments_annotations
+
+    def __cinit__(self):
+        self._cpp_obj = cDbMixedStackArgumentsInterface(
+            <PyObject *> self,
+            get_executor()
+        )
+
+    @staticmethod
+    def pass_context_getDataByKey0(fn):
+        return pass_context(fn)
+
+    async def getDataByKey0(
+            self,
+            key):
+        raise NotImplementedError("async def getDataByKey0 is not implemented")
+
+    @staticmethod
+    def pass_context_getDataByKey1(fn):
+        return pass_context(fn)
+
+    async def getDataByKey1(
+            self,
+            key):
+        raise NotImplementedError("async def getDataByKey1 is not implemented")
+
+    @classmethod
+    def __get_reflection__(cls):
+        return _services_reflection.get_reflection__DbMixedStackArguments(for_clients=False)
 
 
 
@@ -654,4 +705,108 @@ async def MyServiceFast_lobDataById_coro(
         ))
     else:
         promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[string] cPromise,
+    string key
+):
+    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    arg_key = key.data().decode('UTF-8')
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        DbMixedStackArguments_getDataByKey0_coro(
+            self,
+            __context,
+            __promise,
+            arg_key
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def DbMixedStackArguments_getDataByKey0_coro(
+    object self,
+    object ctx,
+    Promise_binary promise,
+    key
+):
+    try:
+        if ctx and getattr(self.getDataByKey0, "pass_context", False):
+            result = await self.getDataByKey0(ctx,
+                      key)
+        else:
+            result = await self.getDataByKey0(
+                      key)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getDataByKey0:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<string?> result)
+
+cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[string] cPromise,
+    string key
+):
+    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    arg_key = key.data().decode('UTF-8')
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        DbMixedStackArguments_getDataByKey1_coro(
+            self,
+            __context,
+            __promise,
+            arg_key
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def DbMixedStackArguments_getDataByKey1_coro(
+    object self,
+    object ctx,
+    Promise_binary promise,
+    key
+):
+    try:
+        if ctx and getattr(self.getDataByKey1, "pass_context", False):
+            result = await self.getDataByKey1(ctx,
+                      key)
+        else:
+            result = await self.getDataByKey1(
+                      key)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getDataByKey1:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<string?> result)
 
