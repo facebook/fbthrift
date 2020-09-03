@@ -164,7 +164,7 @@ deserialize_known_length_map(
   }
 
   bool sorted = true;
-  typename Map::container_type tmp;
+  typename Map::container_type tmp(map.get_allocator());
   reserve_if_possible(&tmp, map_size);
   tmp.emplace_back();
   kr(tmp[0].first);
@@ -229,7 +229,7 @@ deserialize_known_length_set(
   }
 
   bool sorted = true;
-  typename Set::container_type tmp;
+  typename Set::container_type tmp(set.get_allocator());
   reserve_if_possible(&tmp, set_size);
   tmp.emplace_back();
   vr(tmp[0]);

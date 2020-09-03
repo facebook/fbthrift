@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 
+#include "folly/sorted_vector_types.h"
+
 template <class T>
 struct ThrowingAllocator : private std::allocator<T> {
   using value_type = T;
@@ -121,3 +123,11 @@ using StatefulAllocSet = std::set<T, std::less<T>, ScopedStatefulAlloc>;
 
 template <class K, class V>
 using StatefulAllocMap = std::map<K, V, std::less<K>, ScopedStatefulAlloc>;
+
+template <class T>
+using StatefulAllocSortedVectorSet =
+    folly::sorted_vector_set<T, std::less<T>, ScopedStatefulAlloc>;
+
+template <class K, class V>
+using StatefulAllocSortedVectorMap =
+    folly::sorted_vector_map<K, V, std::less<K>, ScopedStatefulAlloc>;

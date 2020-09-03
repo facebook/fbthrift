@@ -74,3 +74,10 @@ struct HasNestedContainerFields {
   1: StatefulAllocMapMap aa_map_of_map;
   2: StatefulAllocMapSet aa_map_of_set;
 } (cpp.allocator="::ScopedStatefulAlloc")
+
+struct HasSortedUniqueConstructibleFields {
+  1: set<i32>
+    (cpp.use_allocator, cpp.template = "::StatefulAllocSortedVectorSet") aa_set
+  2: map<i32, i32>
+    (cpp.use_allocator, cpp.template = "::StatefulAllocSortedVectorMap") aa_map
+} (cpp.allocator="::ScopedStatefulAlloc")

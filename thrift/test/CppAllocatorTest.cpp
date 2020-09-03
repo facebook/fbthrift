@@ -116,3 +116,29 @@ TEST(CppAllocatorTest, DeserializeNested) {
   EXPECT_EQ(s2.aa_map_of_set_ref()->get_allocator(), alloc);
   EXPECT_EQ(s2.aa_map_of_set_ref()->at(42).get_allocator(), alloc);
 }
+
+TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
+  using serializer = apache::thrift::CompactSerializer;
+
+  HasSortedUniqueConstructibleFields s1;
+  s1.aa_set_ref() = {1, 2, 3};
+  s1.aa_map_ref() = {{1, 1}, {2, 2}, {3, 3}};
+
+  auto str = serializer::serialize<std::string>(s1);
+
+  ScopedStatefulAlloc alloc(42);
+  HasSortedUniqueConstructibleFields s2(alloc);
+  EXPECT_EQ(s2.get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_map_ref()->get_allocator(), alloc);
+
+  serializer::deserialize(str, s2);
+  EXPECT_EQ(s2.aa_set_ref(), (StatefulAllocSortedVectorSet<int32_t>{1, 2, 3}));
+  EXPECT_EQ(
+      s2.aa_map_ref(),
+      (StatefulAllocSortedVectorMap<int32_t, int32_t>{{1, 1}, {2, 2}, {3, 3}}));
+
+  EXPECT_EQ(s2.get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
+  EXPECT_EQ(s2.aa_map_ref()->get_allocator(), alloc);
+}
