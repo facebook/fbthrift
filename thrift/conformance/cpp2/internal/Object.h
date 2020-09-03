@@ -115,4 +115,17 @@ struct ValueHelper<type::list<V>> {
   }
 };
 
+template <typename V>
+struct ValueHelper<type::set<V>> {
+  template <typename C>
+  static void set(Value& result, C&& value) {
+    auto& result_set = result.setValue_ref().ensure();
+    for (auto& elem : value) {
+      Value elem_val;
+      ValueHelper<V>::set(elem_val, forward_elem<C>(elem));
+      result_set.emplace(std::move(elem_val));
+    }
+  }
+};
+
 } // namespace apache::thrift::conformance::detail

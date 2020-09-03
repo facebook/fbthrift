@@ -26,6 +26,13 @@ using namespace ::testing;
 namespace apache::thrift::conformance {
 namespace {
 
+template <typename C>
+decltype(auto) at(C& container, size_t i) {
+  auto itr = container.begin();
+  std::advance(itr, i);
+  return *itr;
+}
+
 TEST(ObjectTest, TypeEnforced) {
   // Always a bool when bool_t is used, without ambiguity.
   // Pointers implicitly converts to bools.
@@ -154,6 +161,27 @@ TEST(ObjectTest, List_Move) {
   ASSERT_EQ(value.get_listValue().size(), 2);
   EXPECT_EQ(value.get_listValue()[0].get_stringValue(), "hi");
   EXPECT_EQ(value.get_listValue()[1].get_stringValue(), "bye");
+}
+
+TEST(ObjectTest, Set) {
+  std::set<int> data = {1, 4, 2};
+  Value value = asValueStruct<type::set<type::i16_t>>(data);
+  ASSERT_EQ(value.getType(), Value::setValue);
+  ASSERT_EQ(value.get_setValue().size(), data.size());
+  for (size_t i = 0; i < data.size(); ++i) {
+    EXPECT_EQ(
+        at(value.get_setValue(), i), asValueStruct<type::i16_t>(at(data, i)));
+  }
+
+  // Works with other containers
+  value = asValueStruct<type::set<type::i16_t>>(
+      std::vector<int>(data.begin(), data.end()));
+  ASSERT_EQ(value.getType(), Value::setValue);
+  ASSERT_EQ(value.get_setValue().size(), data.size());
+  for (size_t i = 0; i < data.size(); ++i) {
+    EXPECT_EQ(
+        at(value.get_setValue(), i), asValueStruct<type::i16_t>(at(data, i)));
+  }
 }
 
 } // namespace
