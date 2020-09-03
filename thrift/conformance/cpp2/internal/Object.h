@@ -18,11 +18,17 @@
 
 #include <type_traits>
 
+#include <fatal/type/same_reference_as.h>
 #include <folly/CPortability.h>
 #include <thrift/conformance/cpp2/ThriftTypes.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
 
 namespace apache::thrift::conformance::detail {
+
+template <typename C, typename T>
+decltype(auto) forward_elem(T& elem) {
+  return std::forward<typename fatal::same_reference_as<T, C>::type>(elem);
+}
 
 template <typename TT, typename = void>
 struct ValueHelper;
@@ -95,6 +101,17 @@ template <>
 struct ValueHelper<type::binary_t> {
   FOLLY_ERASE static void set(Value& result, std::string value) {
     result.set_binaryValue(std::move(value));
+  }
+};
+
+template <typename V>
+struct ValueHelper<type::list<V>> {
+  template <typename C>
+  static void set(Value& result, C&& value) {
+    auto& result_list = result.listValue_ref().ensure();
+    for (auto& elem : value) {
+      ValueHelper<V>::set(result_list.emplace_back(), forward_elem<C>(elem));
+    }
   }
 };
 

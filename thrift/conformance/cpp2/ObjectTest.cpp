@@ -16,6 +16,9 @@
 
 #include <thrift/conformance/cpp2/Object.h>
 
+#include <set>
+
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 using namespace ::testing;
@@ -102,6 +105,55 @@ TEST(ObjectTest, Binary) {
   Value value = asValueStruct<type::binary_t>("hi");
   ASSERT_EQ(value.getType(), Value::binaryValue);
   EXPECT_EQ(value.get_binaryValue(), "hi");
+}
+
+TEST(ObjectTest, List) {
+  std::vector<int> data = {1, 4, 2};
+  Value value = asValueStruct<type::list<type::i16_t>>(data);
+  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.get_listValue().size(), data.size());
+  for (size_t i = 0; i < data.size(); ++i) {
+    EXPECT_EQ(value.get_listValue()[i], asValueStruct<type::i16_t>(data[i]));
+  }
+
+  // Works with other containers
+  value = asValueStruct<type::list<type::i16_t>>(
+      std::set<int>(data.begin(), data.end()));
+  std::sort(data.begin(), data.end());
+  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.get_listValue().size(), data.size());
+  for (size_t i = 0; i < data.size(); ++i) {
+    EXPECT_EQ(value.get_listValue()[i], asValueStruct<type::i16_t>(data[i]));
+  }
+}
+
+TEST(ObjectTest, List_Move) {
+  // Validate the premise of the test.
+  std::string s1 = "hi";
+  std::string s2 = std::move(s1);
+  EXPECT_EQ(s1, "");
+  EXPECT_EQ(s2, "hi");
+
+  std::vector<std::string> data;
+  data.emplace_back("hi");
+  data.emplace_back("bye");
+
+  Value value = asValueStruct<type::list<type::string_t>>(data);
+  // The strings are unchanged
+  EXPECT_THAT(data, ::testing::ElementsAre("hi", "bye"));
+  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.get_listValue().size(), 2);
+  EXPECT_EQ(value.get_listValue()[0].get_stringValue(), "hi");
+  EXPECT_EQ(value.get_listValue()[1].get_stringValue(), "bye");
+
+  value = asValueStruct<type::list<type::string_t>>(std::move(data));
+
+  // The strings have been moved.
+  EXPECT_THAT(data, ::testing::ElementsAre("", ""));
+  ASSERT_EQ(value.getType(), Value::listValue);
+  ASSERT_EQ(value.get_listValue().size(), 2);
+  EXPECT_EQ(value.get_listValue()[0].get_stringValue(), "hi");
+  EXPECT_EQ(value.get_listValue()[1].get_stringValue(), "bye");
 }
 
 } // namespace
