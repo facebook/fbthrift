@@ -20,8 +20,7 @@
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-
-using namespace ::testing;
+#include <thrift/conformance/cpp2/Protocol.h>
 
 namespace apache::thrift::conformance {
 namespace {
@@ -207,6 +206,17 @@ TEST(ObjectTest, Map) {
     ASSERT_NE(itr, value.get_mapValue().end());
     EXPECT_EQ(itr->second, asValueStruct<type::byte_t>(entry.second));
   }
+}
+
+TEST(ObjectTest, Struct) {
+  // TODO(afuller): Use a struct that covers more cases.
+  Protocol protocol = createProtocol("hi");
+  Value value = asValueStruct<type::union_t>(protocol);
+  ASSERT_EQ(value.getType(), Value::objectValue);
+  const Object& object = value.get_objectValue();
+  EXPECT_EQ(object.members_ref()->size(), 1);
+  EXPECT_EQ(
+      object.members_ref()->at("custom"), asValueStruct<type::string_t>("hi"));
 }
 
 } // namespace

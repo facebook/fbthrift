@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <stack>
 #include <type_traits>
 
 #include <fatal/type/same_reference_as.h>
@@ -95,12 +96,34 @@ struct ValueHelper<type::string_t> {
   FOLLY_ERASE static void set(Value& result, std::string value) {
     result.set_stringValue(std::move(value));
   }
+  FOLLY_ERASE static void set(Value& result, const char* value) {
+    set(result, std::string(value));
+  }
+  FOLLY_ERASE static void set(Value& result, folly::StringPiece value) {
+    set(result, std::string(value));
+  }
+  FOLLY_ERASE static void set(Value& result, std::string_view value) {
+    set(result, std::string(value));
+  }
 };
 
 template <>
 struct ValueHelper<type::binary_t> {
   FOLLY_ERASE static void set(Value& result, std::string value) {
     result.set_binaryValue(std::move(value));
+  }
+  FOLLY_ERASE static void set(Value& result, const char* value) {
+    set(result, std::string(value));
+  }
+  FOLLY_ERASE static void set(Value& result, folly::ByteRange value) {
+    set(result, std::string(value));
+  }
+  static void set(Value& result, const folly::IOBuf& value) {
+    folly::IOBufQueue queue;
+    queue.append(value);
+    std::string strValue;
+    queue.appendToString(strValue);
+    set(result, std::move(strValue));
   }
 };
 
@@ -138,6 +161,189 @@ struct ValueHelper<type::map<K, V>> {
       ValueHelper<K>::set(key, entry.first);
       ValueHelper<V>::set(result_map[key], forward_elem<C>(entry.second));
     }
+  }
+};
+
+class BaseObjectAdapter {
+ public:
+  static constexpr ProtocolType protocolType() {
+    return {};
+  }
+  static constexpr bool kUsesFieldNames() {
+    return true;
+  }
+  static constexpr bool kOmitsContainerSizes() {
+    return false;
+  }
+  static constexpr bool kSortKeys() {
+    return false;
+  }
+};
+
+class ObjectWriter : public BaseObjectAdapter {
+ public:
+  ObjectWriter(Value* target) {
+    assert(target != nullptr);
+    cur_.emplace(target);
+  }
+
+  uint32_t writeStructBegin(const char* /*name*/) {
+    beginValue().objectValue_ref().ensure();
+    return 0;
+  }
+  uint32_t writeStructEnd() {
+    return endValue(Value::objectValue);
+  }
+
+  uint32_t
+  writeFieldBegin(const char* name, TType /*fieldType*/, int16_t /*fieldId*/) {
+    auto result = cur(Value::objectValue)
+                      .mutable_objectValue()
+                      .members_ref()
+                      ->emplace(name, Value());
+    assert(result.second);
+    cur_.push(&result.first->second);
+    return 0;
+  }
+
+  uint32_t writeFieldEnd() {
+    assert(!cur_.empty());
+    cur_.pop();
+    return 0;
+  }
+
+  uint32_t writeFieldStop() {
+    return 0;
+  }
+
+  uint32_t
+  writeMapBegin(const TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) {
+    beginValue().mapValue_ref().ensure();
+    return 0;
+  }
+
+  uint32_t writeMapEnd() {
+    return endValue(Value::mapValue);
+  }
+
+  uint32_t writeListBegin(TType /*elemType*/, uint32_t size) {
+    beginValue().listValue_ref().ensure().reserve(size);
+    return 0;
+  }
+
+  uint32_t writeListEnd() {
+    return endValue(Value::listValue);
+  }
+
+  uint32_t writeSetBegin(TType /*elemType*/, uint32_t /*size*/) {
+    beginValue().setValue_ref().ensure();
+    return 0;
+  }
+
+  uint32_t writeSetEnd() {
+    return endValue(Value::setValue);
+  }
+
+  uint32_t writeBool(bool value) {
+    ValueHelper<type::bool_t>::set(beginValue(), value);
+    return endValue(Value::boolValue);
+  }
+
+  uint32_t writeByte(int8_t value) {
+    ValueHelper<type::byte_t>::set(beginValue(), value);
+    return endValue(Value::byteValue);
+  }
+
+  uint32_t writeI16(int16_t value) {
+    ValueHelper<type::i16_t>::set(beginValue(), value);
+    return endValue(Value::i16Value);
+  }
+
+  uint32_t writeI32(int32_t value) {
+    ValueHelper<type::i32_t>::set(beginValue(), value);
+    return endValue(Value::i32Value);
+  }
+
+  uint32_t writeI64(int64_t value) {
+    ValueHelper<type::i64_t>::set(beginValue(), value);
+    return endValue(Value::i64Value);
+  }
+
+  uint32_t writeFloat(float value) {
+    ValueHelper<type::float_t>::set(beginValue(), value);
+    return endValue(Value::floatValue);
+  }
+
+  int32_t writeDouble(double value) {
+    ValueHelper<type::double_t>::set(beginValue(), value);
+    return endValue(Value::doubleValue);
+  }
+
+  uint32_t writeString(folly::StringPiece value) {
+    ValueHelper<type::string_t>::set(beginValue(), value);
+    return endValue(Value::stringValue);
+  }
+
+  uint32_t writeBinary(folly::ByteRange value) {
+    ValueHelper<type::binary_t>::set(beginValue(), value);
+    return endValue(Value::binaryValue);
+  }
+
+  uint32_t writeBinary(const folly::IOBuf& value) {
+    ValueHelper<type::binary_t>::set(beginValue(), value);
+    return endValue(Value::binaryValue);
+  }
+
+  uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str) {
+    assert(str != nullptr);
+    if (!str) {
+      return 0;
+    }
+    return writeBinary(*str);
+  }
+
+  uint32_t writeBinary(folly::StringPiece value) {
+    return writeBinary(folly::ByteRange(value));
+  }
+
+ protected:
+  std::stack<Value*> cur_;
+
+  void checkCur(Value::Type required) {
+    assert(cur().getType() == required);
+  }
+
+  Value& cur(Value::Type required) {
+    checkCur(required);
+    return *cur_.top();
+  }
+
+  Value& cur() {
+    assert(!cur_.empty());
+    return *cur_.top();
+  }
+
+  Value& beginValue() {
+    checkCur(Value::__EMPTY__);
+    return cur();
+  }
+
+  uint32_t endValue(Value::Type required) {
+    checkCur(required);
+    return 0;
+  }
+};
+
+// Specialization for all structured types.
+template <typename TT>
+struct ValueHelper<TT, std::enable_if_t<structured_types::contains<TT>>> {
+  template <typename T>
+  static void set(Value& result, T&& value) {
+    // TODO(afuller): Using the Visitor reflection API + ValueHelper instead.
+    // This method loses type information (the enum or struct type for
+    // example).
+    ObjectWriter writer(&result);
+    value.write(&writer);
   }
 };
 
