@@ -44,14 +44,14 @@ void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(apache::thrif
   args.get<<%field:index%>>().value = &uarg_<%field:cpp_name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  <%#type:stack_arguments?%>
+  <%#function:stack_arguments?%>
   <% > types/type%> uarg_<%field:cpp_name%>;
   args.get<<%field:index%>>().value = &uarg_<%field:cpp_name%>;
-  <%/type:stack_arguments?%>
-  <%^type:stack_arguments?%>
+  <%/function:stack_arguments?%>
+  <%^function:stack_arguments?%>
   auto uarg_<%field:cpp_name%> = std::make_unique<<% > types/type%>>();
   args.get<<%field:index%>>().value = uarg_<%field:cpp_name%>.get();
-  <%/type:stack_arguments?%>
+  <%/function:stack_arguments?%>
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args%>
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", ctx));

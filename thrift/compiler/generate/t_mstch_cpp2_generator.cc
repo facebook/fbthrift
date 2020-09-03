@@ -450,7 +450,6 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
             {"type:namespace_cpp2", &mstch_cpp2_type::namespace_cpp2},
-            {"type:stack_arguments?", &mstch_cpp2_type::stack_arguments},
             {"type:sync_methods_return_try?",
              &mstch_cpp2_type::sync_methods_return_try},
             {"type:cpp_declare_hash", &mstch_cpp2_type::cpp_declare_hash},
@@ -570,9 +569,6 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node namespace_cpp2() {
     return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
-  }
-  mstch::node stack_arguments() {
-    return cpp2::is_stack_arguments(cache_->parsed_options_);
   }
   mstch::node sync_methods_return_try() {
     return cache_->parsed_options_.count("sync_methods_return_try") != 0;
@@ -1151,6 +1147,8 @@ class mstch_cpp2_function : public mstch_function {
             {"function:coroutine?", &mstch_cpp2_function::coroutine},
             {"function:eb", &mstch_cpp2_function::event_based},
             {"function:cpp_name", &mstch_cpp2_function::cpp_name},
+            {"function:stack_arguments?",
+             &mstch_cpp2_function::stack_arguments},
         });
   }
   mstch::node coroutine() {
@@ -1162,6 +1160,9 @@ class mstch_cpp2_function : public mstch_function {
   }
   mstch::node cpp_name() {
     return get_cpp_name(function_);
+  }
+  mstch::node stack_arguments() {
+    return cpp2::is_stack_arguments(cache_->parsed_options_);
   }
 };
 

@@ -17,12 +17,12 @@
 %><%#function:args%><%#field:type%><%!
   %><%^first?%>, <%/first?%><%!
 %><%#type:resolves_to_complex_return?%><%!
-%><%#type:stack_arguments?%><%!
+%><%#function:stack_arguments?%><%!
   %><%field:cpp_name%><%!
-%><%/type:stack_arguments?%><%!
-%><%^type:stack_arguments?%><%!
+%><%/function:stack_arguments?%><%!
+%><%^function:stack_arguments?%><%!
   %>std::move(<%field:cpp_name%>)<%!
-%><%/type:stack_arguments?%><%!
+%><%/function:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
     %><%field:cpp_name%><%!

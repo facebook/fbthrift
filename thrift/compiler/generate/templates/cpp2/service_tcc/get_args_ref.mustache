@@ -16,12 +16,12 @@
 
 %><%#function:args%><%#field:type%><%!
 %><%#type:resolves_to_complex_return?%><%!
-%><%^type:stack_arguments?%><%!
+%><%^function:stack_arguments?%><%!
   %>, std::move(uarg_<%field:cpp_name%>)<%!
-%><%/type:stack_arguments?%><%!
-%><%#type:stack_arguments?%><%!
+%><%/function:stack_arguments?%><%!
+%><%#function:stack_arguments?%><%!
   %>, args.get<<%field:index%>>().ref()<%!
-%><%/type:stack_arguments?%><%!
+%><%/function:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %>, args.get<<%field:index%>>().ref()<%!
