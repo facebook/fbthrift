@@ -133,7 +133,9 @@ template <typename T>
 struct sorted_unique_constructible : sorted_unique_constructible_<void, T> {};
 
 FOLLY_CREATE_MEMBER_INVOKER(emplace_hint_invoker, emplace_hint);
-FOLLY_CREATE_HAS_MEMBER_TYPE_TRAITS(has_key_compare, key_compare);
+
+template <typename T>
+using detect_key_compare = typename T::key_compare;
 
 template <typename T>
 using map_emplace_hint_is_invocable = folly::is_invocable<
@@ -627,7 +629,8 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         elem_methods::ttype_value,
         folly::to_narrow(folly::to_unsigned(out.size())));
 
-    if (!has_key_compare<Type>::value && protocol.kSortKeys()) {
+    if (!folly::is_detected_v<detect_key_compare, Type> &&
+        protocol.kSortKeys()) {
       std::vector<typename Type::const_iterator> iters;
       iters.reserve(out.size());
       for (auto it = out.begin(); it != out.end(); ++it) {
@@ -739,7 +742,8 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     xfer += protocol.writeMapBegin(
         key_methods::ttype_value, mapped_methods::ttype_value, out.size());
 
-    if (!has_key_compare<Type>::value && protocol.kSortKeys()) {
+    if (!folly::is_detected_v<detect_key_compare, Type> &&
+        protocol.kSortKeys()) {
       std::vector<typename Type::const_iterator> iters;
       iters.reserve(out.size());
       for (auto it = out.begin(); it != out.end(); ++it) {
