@@ -122,1521 +122,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::SimpleStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 2;
-  static constexpr folly::StringPiece _names[] = {
-    "age",
-    "name",
-  };
-  static constexpr int16_t _ids[] = {
-    1,
-    2,
-  };
-  static constexpr TType _types[] = {
-    TType::T_I64,
-    TType::T_STRING,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
-namespace cpp2 {
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, int64_t age__arg, ::std::string name__arg) :
-    age(std::move(age__arg)),
-    name(std::move(name__arg)) {
-  __isset.age = true;
-  __isset.name = true;
-}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-void SimpleStruct::__clear() {
-  // clear all fields
-  age = 60LL;
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("Batman");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.age == rhs.age)) {
-    return false;
-  }
-  if (!(lhs.name == rhs.name)) {
-    return false;
-  }
-  return true;
-}
-
-bool SimpleStruct::operator<(const SimpleStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.age == rhs.age)) {
-    return lhs.age < rhs.age;
-  }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
-  }
-  return false;
-}
-
-
-void swap(SimpleStruct& a, SimpleStruct& b) {
-  using ::std::swap;
-  swap(a.age, b.age);
-  swap(a.name, b.name);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-template void SimpleStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t SimpleStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t SimpleStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SimpleStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void SimpleStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t SimpleStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t SimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t SimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-
-
-} // cpp2
-namespace apache {
-namespace thrift {
-namespace detail {
-
-void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
-namespace cpp2 {
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-void MyDataItem::__clear() {
-  // clear all fields
-}
-
-bool MyDataItem::operator==(const MyDataItem& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  return true;
-}
-
-bool MyDataItem::operator<(const MyDataItem& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  return false;
-}
-
-
-void swap(MyDataItem& a, MyDataItem& b) {
-  using ::std::swap;
-  (void)a;
-  (void)b;
-}
-
-template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyDataItem::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyDataItem::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-
-
-} // cpp2
-namespace apache {
-namespace thrift {
-namespace detail {
-
-void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 28;
-  static constexpr folly::StringPiece _names[] = {
-    "MyIntField",
-    "MyStringField",
-    "MyDataField",
-    "myEnum",
-    "MyBoolField",
-    "MyByteField",
-    "MyShortField",
-    "MyLongField",
-    "MyDoubleField",
-    "lDouble",
-    "lShort",
-    "lInteger",
-    "lLong",
-    "lString",
-    "lBool",
-    "lByte",
-    "mShortString",
-    "mIntegerString",
-    "mStringMyStruct",
-    "mStringBool",
-    "mIntegerInteger",
-    "mIntegerBool",
-    "sShort",
-    "sMyStruct",
-    "sLong",
-    "sString",
-    "sByte",
-    "mListList",
-  };
-  static constexpr int16_t _ids[] = {
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-  };
-  static constexpr TType _types[] = {
-    TType::T_I64,
-    TType::T_STRING,
-    TType::T_STRUCT,
-    TType::T_I32,
-    TType::T_BOOL,
-    TType::T_BYTE,
-    TType::T_I16,
-    TType::T_I64,
-    TType::T_DOUBLE,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_MAP,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
-namespace cpp2 {
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct() :
-      MyIntField(0),
-      myEnum( ::cpp2::MyEnum::MyValue1),
-      MyBoolField(0),
-      MyByteField(0),
-      MyShortField(0),
-      MyLongField(0),
-      MyDoubleField(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-
-MyStruct::~MyStruct() {}
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg, bool MyBoolField__arg, int8_t MyByteField__arg, int16_t MyShortField__arg, int64_t MyLongField__arg, double MyDoubleField__arg, ::std::vector<double> lDouble__arg, ::std::vector<int16_t> lShort__arg, ::std::vector<int32_t> lInteger__arg, ::std::vector<int64_t> lLong__arg, ::std::vector<::std::string> lString__arg, ::std::vector<bool> lBool__arg, ::std::vector<int8_t> lByte__arg, ::std::map<int16_t, ::std::string> mShortString__arg, ::std::map<int32_t, ::std::string> mIntegerString__arg, ::std::map<::std::string,  ::cpp2::MyStruct> mStringMyStruct__arg, ::std::map<::std::string, bool> mStringBool__arg, ::std::map<int32_t, int32_t> mIntegerInteger__arg, ::std::map<int32_t, bool> mIntegerBool__arg, ::std::set<int16_t> sShort__arg, ::std::set< ::cpp2::MyStruct> sMyStruct__arg, ::std::set<int64_t> sLong__arg, ::std::set<::std::string> sString__arg, ::std::set<int8_t> sByte__arg, ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>> mListList__arg) :
-    MyIntField(std::move(MyIntField__arg)),
-    MyStringField(std::move(MyStringField__arg)),
-    MyDataField(std::move(MyDataField__arg)),
-    myEnum(std::move(myEnum__arg)),
-    MyBoolField(std::move(MyBoolField__arg)),
-    MyByteField(std::move(MyByteField__arg)),
-    MyShortField(std::move(MyShortField__arg)),
-    MyLongField(std::move(MyLongField__arg)),
-    MyDoubleField(std::move(MyDoubleField__arg)),
-    lDouble(std::move(lDouble__arg)),
-    lShort(std::move(lShort__arg)),
-    lInteger(std::move(lInteger__arg)),
-    lLong(std::move(lLong__arg)),
-    lString(std::move(lString__arg)),
-    lBool(std::move(lBool__arg)),
-    lByte(std::move(lByte__arg)),
-    mShortString(std::move(mShortString__arg)),
-    mIntegerString(std::move(mIntegerString__arg)),
-    mStringMyStruct(std::move(mStringMyStruct__arg)),
-    mStringBool(std::move(mStringBool__arg)),
-    mIntegerInteger(std::move(mIntegerInteger__arg)),
-    mIntegerBool(std::move(mIntegerBool__arg)),
-    sShort(std::move(sShort__arg)),
-    sMyStruct(std::move(sMyStruct__arg)),
-    sLong(std::move(sLong__arg)),
-    sString(std::move(sString__arg)),
-    sByte(std::move(sByte__arg)),
-    mListList(std::move(mListList__arg)) {
-  __isset.MyIntField = true;
-  __isset.MyStringField = true;
-  __isset.MyDataField = true;
-  __isset.myEnum = true;
-  __isset.MyBoolField = true;
-  __isset.MyByteField = true;
-  __isset.MyShortField = true;
-  __isset.MyLongField = true;
-  __isset.MyDoubleField = true;
-  __isset.lDouble = true;
-  __isset.lShort = true;
-  __isset.lInteger = true;
-  __isset.lLong = true;
-  __isset.lString = true;
-  __isset.lBool = true;
-  __isset.lByte = true;
-  __isset.mShortString = true;
-  __isset.mIntegerString = true;
-  __isset.mStringMyStruct = true;
-  __isset.mStringBool = true;
-  __isset.mIntegerInteger = true;
-  __isset.mIntegerBool = true;
-  __isset.sShort = true;
-  __isset.sMyStruct = true;
-  __isset.sLong = true;
-  __isset.sString = true;
-  __isset.sByte = true;
-  __isset.mListList = true;
-}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-void MyStruct::__clear() {
-  // clear all fields
-  MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  myEnum =  ::cpp2::MyEnum::MyValue1;
-  MyBoolField = 0;
-  MyByteField = 0;
-  MyShortField = 0;
-  MyLongField = 0;
-  MyDoubleField = 0;
-  lDouble.clear();
-  lShort.clear();
-  lInteger.clear();
-  lLong.clear();
-  lString.clear();
-  lBool.clear();
-  lByte.clear();
-  mShortString.clear();
-  mIntegerString.clear();
-  mStringMyStruct.clear();
-  mStringBool.clear();
-  mIntegerInteger.clear();
-  mIntegerBool.clear();
-  sShort.clear();
-  sMyStruct.clear();
-  sLong.clear();
-  sString.clear();
-  sByte.clear();
-  mListList.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-bool MyStruct::operator==(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return false;
-  }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return false;
-  }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
-    return false;
-  }
-  if (!(lhs.myEnum == rhs.myEnum)) {
-    return false;
-  }
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
-    return false;
-  }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
-    return false;
-  }
-  if (!(lhs.MyShortField == rhs.MyShortField)) {
-    return false;
-  }
-  if (!(lhs.MyLongField == rhs.MyLongField)) {
-    return false;
-  }
-  if (!(lhs.MyDoubleField == rhs.MyDoubleField)) {
-    return false;
-  }
-  if (!(lhs.lDouble == rhs.lDouble)) {
-    return false;
-  }
-  if (!(lhs.lShort == rhs.lShort)) {
-    return false;
-  }
-  if (!(lhs.lInteger == rhs.lInteger)) {
-    return false;
-  }
-  if (!(lhs.lLong == rhs.lLong)) {
-    return false;
-  }
-  if (!(lhs.lString == rhs.lString)) {
-    return false;
-  }
-  if (!(lhs.lBool == rhs.lBool)) {
-    return false;
-  }
-  if (!(lhs.lByte == rhs.lByte)) {
-    return false;
-  }
-  if (!(lhs.mShortString == rhs.mShortString)) {
-    return false;
-  }
-  if (!(lhs.mIntegerString == rhs.mIntegerString)) {
-    return false;
-  }
-  if (!(lhs.mStringMyStruct == rhs.mStringMyStruct)) {
-    return false;
-  }
-  if (!(lhs.mStringBool == rhs.mStringBool)) {
-    return false;
-  }
-  if (!(lhs.mIntegerInteger == rhs.mIntegerInteger)) {
-    return false;
-  }
-  if (!(lhs.mIntegerBool == rhs.mIntegerBool)) {
-    return false;
-  }
-  if (!(lhs.sShort == rhs.sShort)) {
-    return false;
-  }
-  if (!(lhs.sMyStruct == rhs.sMyStruct)) {
-    return false;
-  }
-  if (!(lhs.sLong == rhs.sLong)) {
-    return false;
-  }
-  if (!(lhs.sString == rhs.sString)) {
-    return false;
-  }
-  if (!(lhs.sByte == rhs.sByte)) {
-    return false;
-  }
-  if (!(lhs.mListList == rhs.mListList)) {
-    return false;
-  }
-  return true;
-}
-
-bool MyStruct::operator<(const MyStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
-  }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
-  }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
-    return lhs.MyDataField < rhs.MyDataField;
-  }
-  if (!(lhs.myEnum == rhs.myEnum)) {
-    return lhs.myEnum < rhs.myEnum;
-  }
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
-    return lhs.MyBoolField < rhs.MyBoolField;
-  }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
-    return lhs.MyByteField < rhs.MyByteField;
-  }
-  if (!(lhs.MyShortField == rhs.MyShortField)) {
-    return lhs.MyShortField < rhs.MyShortField;
-  }
-  if (!(lhs.MyLongField == rhs.MyLongField)) {
-    return lhs.MyLongField < rhs.MyLongField;
-  }
-  if (!(lhs.MyDoubleField == rhs.MyDoubleField)) {
-    return lhs.MyDoubleField < rhs.MyDoubleField;
-  }
-  if (!(lhs.lDouble == rhs.lDouble)) {
-    return lhs.lDouble < rhs.lDouble;
-  }
-  if (!(lhs.lShort == rhs.lShort)) {
-    return lhs.lShort < rhs.lShort;
-  }
-  if (!(lhs.lInteger == rhs.lInteger)) {
-    return lhs.lInteger < rhs.lInteger;
-  }
-  if (!(lhs.lLong == rhs.lLong)) {
-    return lhs.lLong < rhs.lLong;
-  }
-  if (!(lhs.lString == rhs.lString)) {
-    return lhs.lString < rhs.lString;
-  }
-  if (!(lhs.lBool == rhs.lBool)) {
-    return lhs.lBool < rhs.lBool;
-  }
-  if (!(lhs.lByte == rhs.lByte)) {
-    return lhs.lByte < rhs.lByte;
-  }
-  if (!(lhs.mShortString == rhs.mShortString)) {
-    return lhs.mShortString < rhs.mShortString;
-  }
-  if (!(lhs.mIntegerString == rhs.mIntegerString)) {
-    return lhs.mIntegerString < rhs.mIntegerString;
-  }
-  if (!(lhs.mStringMyStruct == rhs.mStringMyStruct)) {
-    return lhs.mStringMyStruct < rhs.mStringMyStruct;
-  }
-  if (!(lhs.mStringBool == rhs.mStringBool)) {
-    return lhs.mStringBool < rhs.mStringBool;
-  }
-  if (!(lhs.mIntegerInteger == rhs.mIntegerInteger)) {
-    return lhs.mIntegerInteger < rhs.mIntegerInteger;
-  }
-  if (!(lhs.mIntegerBool == rhs.mIntegerBool)) {
-    return lhs.mIntegerBool < rhs.mIntegerBool;
-  }
-  if (!(lhs.sShort == rhs.sShort)) {
-    return lhs.sShort < rhs.sShort;
-  }
-  if (!(lhs.sMyStruct == rhs.sMyStruct)) {
-    return lhs.sMyStruct < rhs.sMyStruct;
-  }
-  if (!(lhs.sLong == rhs.sLong)) {
-    return lhs.sLong < rhs.sLong;
-  }
-  if (!(lhs.sString == rhs.sString)) {
-    return lhs.sString < rhs.sString;
-  }
-  if (!(lhs.sByte == rhs.sByte)) {
-    return lhs.sByte < rhs.sByte;
-  }
-  if (!(lhs.mListList == rhs.mListList)) {
-    return lhs.mListList < rhs.mListList;
-  }
-  return false;
-}
-
-const  ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
-  return MyDataField;
-}
-
- ::cpp2::MyDataItem MyStruct::get_MyDataField() && {
-  return std::move(MyDataField);
-}
-
-const ::std::vector<double>& MyStruct::get_lDouble() const& {
-  return lDouble;
-}
-
-::std::vector<double> MyStruct::get_lDouble() && {
-  return std::move(lDouble);
-}
-
-const ::std::vector<int16_t>& MyStruct::get_lShort() const& {
-  return lShort;
-}
-
-::std::vector<int16_t> MyStruct::get_lShort() && {
-  return std::move(lShort);
-}
-
-const ::std::vector<int32_t>& MyStruct::get_lInteger() const& {
-  return lInteger;
-}
-
-::std::vector<int32_t> MyStruct::get_lInteger() && {
-  return std::move(lInteger);
-}
-
-const ::std::vector<int64_t>& MyStruct::get_lLong() const& {
-  return lLong;
-}
-
-::std::vector<int64_t> MyStruct::get_lLong() && {
-  return std::move(lLong);
-}
-
-const ::std::vector<::std::string>& MyStruct::get_lString() const& {
-  return lString;
-}
-
-::std::vector<::std::string> MyStruct::get_lString() && {
-  return std::move(lString);
-}
-
-const ::std::vector<bool>& MyStruct::get_lBool() const& {
-  return lBool;
-}
-
-::std::vector<bool> MyStruct::get_lBool() && {
-  return std::move(lBool);
-}
-
-const ::std::vector<int8_t>& MyStruct::get_lByte() const& {
-  return lByte;
-}
-
-::std::vector<int8_t> MyStruct::get_lByte() && {
-  return std::move(lByte);
-}
-
-const ::std::map<int16_t, ::std::string>& MyStruct::get_mShortString() const& {
-  return mShortString;
-}
-
-::std::map<int16_t, ::std::string> MyStruct::get_mShortString() && {
-  return std::move(mShortString);
-}
-
-const ::std::map<int32_t, ::std::string>& MyStruct::get_mIntegerString() const& {
-  return mIntegerString;
-}
-
-::std::map<int32_t, ::std::string> MyStruct::get_mIntegerString() && {
-  return std::move(mIntegerString);
-}
-
-const ::std::map<::std::string,  ::cpp2::MyStruct>& MyStruct::get_mStringMyStruct() const& {
-  return mStringMyStruct;
-}
-
-::std::map<::std::string,  ::cpp2::MyStruct> MyStruct::get_mStringMyStruct() && {
-  return std::move(mStringMyStruct);
-}
-
-const ::std::map<::std::string, bool>& MyStruct::get_mStringBool() const& {
-  return mStringBool;
-}
-
-::std::map<::std::string, bool> MyStruct::get_mStringBool() && {
-  return std::move(mStringBool);
-}
-
-const ::std::map<int32_t, int32_t>& MyStruct::get_mIntegerInteger() const& {
-  return mIntegerInteger;
-}
-
-::std::map<int32_t, int32_t> MyStruct::get_mIntegerInteger() && {
-  return std::move(mIntegerInteger);
-}
-
-const ::std::map<int32_t, bool>& MyStruct::get_mIntegerBool() const& {
-  return mIntegerBool;
-}
-
-::std::map<int32_t, bool> MyStruct::get_mIntegerBool() && {
-  return std::move(mIntegerBool);
-}
-
-const ::std::set<int16_t>& MyStruct::get_sShort() const& {
-  return sShort;
-}
-
-::std::set<int16_t> MyStruct::get_sShort() && {
-  return std::move(sShort);
-}
-
-const ::std::set< ::cpp2::MyStruct>& MyStruct::get_sMyStruct() const& {
-  return sMyStruct;
-}
-
-::std::set< ::cpp2::MyStruct> MyStruct::get_sMyStruct() && {
-  return std::move(sMyStruct);
-}
-
-const ::std::set<int64_t>& MyStruct::get_sLong() const& {
-  return sLong;
-}
-
-::std::set<int64_t> MyStruct::get_sLong() && {
-  return std::move(sLong);
-}
-
-const ::std::set<::std::string>& MyStruct::get_sString() const& {
-  return sString;
-}
-
-::std::set<::std::string> MyStruct::get_sString() && {
-  return std::move(sString);
-}
-
-const ::std::set<int8_t>& MyStruct::get_sByte() const& {
-  return sByte;
-}
-
-::std::set<int8_t> MyStruct::get_sByte() && {
-  return std::move(sByte);
-}
-
-const ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>>& MyStruct::get_mListList() const& {
-  return mListList;
-}
-
-::std::map<::std::vector<int32_t>, ::std::vector<int32_t>> MyStruct::get_mListList() && {
-  return std::move(mListList);
-}
-
-
-void swap(MyStruct& a, MyStruct& b) {
-  using ::std::swap;
-  swap(a.MyIntField, b.MyIntField);
-  swap(a.MyStringField, b.MyStringField);
-  swap(a.MyDataField, b.MyDataField);
-  swap(a.myEnum, b.myEnum);
-  swap(a.MyBoolField, b.MyBoolField);
-  swap(a.MyByteField, b.MyByteField);
-  swap(a.MyShortField, b.MyShortField);
-  swap(a.MyLongField, b.MyLongField);
-  swap(a.MyDoubleField, b.MyDoubleField);
-  swap(a.lDouble, b.lDouble);
-  swap(a.lShort, b.lShort);
-  swap(a.lInteger, b.lInteger);
-  swap(a.lLong, b.lLong);
-  swap(a.lString, b.lString);
-  swap(a.lBool, b.lBool);
-  swap(a.lByte, b.lByte);
-  swap(a.mShortString, b.mShortString);
-  swap(a.mIntegerString, b.mIntegerString);
-  swap(a.mStringMyStruct, b.mStringMyStruct);
-  swap(a.mStringBool, b.mStringBool);
-  swap(a.mIntegerInteger, b.mIntegerInteger);
-  swap(a.mIntegerBool, b.mIntegerBool);
-  swap(a.sShort, b.sShort);
-  swap(a.sMyStruct, b.sMyStruct);
-  swap(a.sLong, b.sLong);
-  swap(a.sString, b.sString);
-  swap(a.sByte, b.sByte);
-  swap(a.mListList, b.mListList);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
-    "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
-    "inconsistent use of nimble option");
-
-} // cpp2
-namespace apache {
-namespace thrift {
-namespace detail {
-
-void TccStructTraits<::cpp2::ComplexNestedStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 18;
-  static constexpr folly::StringPiece _names[] = {
-    "setOfSetOfInt",
-    "listofListOfListOfListOfEnum",
-    "listOfListOfMyStruct",
-    "setOfListOfListOfLong",
-    "setOfSetOfsetOfLong",
-    "mapStructListOfListOfLong",
-    "mKeyStructValInt",
-    "listOfMapKeyIntValInt",
-    "listOfMapKeyStrValList",
-    "mapKeySetValLong",
-    "mapKeyListValLong",
-    "mapKeyMapValMap",
-    "mapKeySetValMap",
-    "NestedMaps",
-    "mapKeyIntValList",
-    "mapKeyIntValSet",
-    "mapKeySetValInt",
-    "mapKeyListValSet",
-  };
-  static constexpr int16_t _ids[] = {
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-  };
-  static constexpr TType _types[] = {
-    TType::T_SET,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
-namespace cpp2 {
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexNestedStruct::ComplexNestedStruct() {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-
-ComplexNestedStruct::~ComplexNestedStruct() {}
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::std::set<::std::set<int32_t>> setOfSetOfInt__arg, ::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>> listofListOfListOfListOfEnum__arg, ::std::vector<::std::vector< ::cpp2::MyStruct>> listOfListOfMyStruct__arg, ::std::set<::std::vector<::std::vector<int64_t>>> setOfListOfListOfLong__arg, ::std::set<::std::set<::std::set<int64_t>>> setOfSetOfsetOfLong__arg, ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>> mapStructListOfListOfLong__arg, ::std::map< ::cpp2::MyStruct, int32_t> mKeyStructValInt__arg, ::std::vector<::std::map<int32_t, int32_t>> listOfMapKeyIntValInt__arg, ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>> listOfMapKeyStrValList__arg, ::std::map<::std::set<int32_t>, int64_t> mapKeySetValLong__arg, ::std::map<::std::vector<::std::string>, int32_t> mapKeyListValLong__arg, ::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>> mapKeyMapValMap__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap__arg, ::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>> NestedMaps__arg, ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>> mapKeyIntValList__arg, ::std::map<int32_t, ::std::set<bool>> mapKeyIntValSet__arg, ::std::map<::std::set<bool>,  ::cpp2::MyEnum> mapKeySetValInt__arg, ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet__arg) :
-    setOfSetOfInt(std::move(setOfSetOfInt__arg)),
-    listofListOfListOfListOfEnum(std::move(listofListOfListOfListOfEnum__arg)),
-    listOfListOfMyStruct(std::move(listOfListOfMyStruct__arg)),
-    setOfListOfListOfLong(std::move(setOfListOfListOfLong__arg)),
-    setOfSetOfsetOfLong(std::move(setOfSetOfsetOfLong__arg)),
-    mapStructListOfListOfLong(std::move(mapStructListOfListOfLong__arg)),
-    mKeyStructValInt(std::move(mKeyStructValInt__arg)),
-    listOfMapKeyIntValInt(std::move(listOfMapKeyIntValInt__arg)),
-    listOfMapKeyStrValList(std::move(listOfMapKeyStrValList__arg)),
-    mapKeySetValLong(std::move(mapKeySetValLong__arg)),
-    mapKeyListValLong(std::move(mapKeyListValLong__arg)),
-    mapKeyMapValMap(std::move(mapKeyMapValMap__arg)),
-    mapKeySetValMap(std::move(mapKeySetValMap__arg)),
-    NestedMaps(std::move(NestedMaps__arg)),
-    mapKeyIntValList(std::move(mapKeyIntValList__arg)),
-    mapKeyIntValSet(std::move(mapKeyIntValSet__arg)),
-    mapKeySetValInt(std::move(mapKeySetValInt__arg)),
-    mapKeyListValSet(std::move(mapKeyListValSet__arg)) {
-  __isset.setOfSetOfInt = true;
-  __isset.listofListOfListOfListOfEnum = true;
-  __isset.listOfListOfMyStruct = true;
-  __isset.setOfListOfListOfLong = true;
-  __isset.setOfSetOfsetOfLong = true;
-  __isset.mapStructListOfListOfLong = true;
-  __isset.mKeyStructValInt = true;
-  __isset.listOfMapKeyIntValInt = true;
-  __isset.listOfMapKeyStrValList = true;
-  __isset.mapKeySetValLong = true;
-  __isset.mapKeyListValLong = true;
-  __isset.mapKeyMapValMap = true;
-  __isset.mapKeySetValMap = true;
-  __isset.NestedMaps = true;
-  __isset.mapKeyIntValList = true;
-  __isset.mapKeyIntValSet = true;
-  __isset.mapKeySetValInt = true;
-  __isset.mapKeyListValSet = true;
-}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-void ComplexNestedStruct::__clear() {
-  // clear all fields
-  setOfSetOfInt.clear();
-  listofListOfListOfListOfEnum.clear();
-  listOfListOfMyStruct.clear();
-  setOfListOfListOfLong.clear();
-  setOfSetOfsetOfLong.clear();
-  mapStructListOfListOfLong.clear();
-  mKeyStructValInt.clear();
-  listOfMapKeyIntValInt.clear();
-  listOfMapKeyStrValList.clear();
-  mapKeySetValLong.clear();
-  mapKeyListValLong.clear();
-  mapKeyMapValMap.clear();
-  mapKeySetValMap.clear();
-  NestedMaps.clear();
-  mapKeyIntValList.clear();
-  mapKeyIntValSet.clear();
-  mapKeySetValInt.clear();
-  mapKeyListValSet.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-bool ComplexNestedStruct::operator==(const ComplexNestedStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.setOfSetOfInt == rhs.setOfSetOfInt)) {
-    return false;
-  }
-  if (!(lhs.listofListOfListOfListOfEnum == rhs.listofListOfListOfListOfEnum)) {
-    return false;
-  }
-  if (!(lhs.listOfListOfMyStruct == rhs.listOfListOfMyStruct)) {
-    return false;
-  }
-  if (!(lhs.setOfListOfListOfLong == rhs.setOfListOfListOfLong)) {
-    return false;
-  }
-  if (!(lhs.setOfSetOfsetOfLong == rhs.setOfSetOfsetOfLong)) {
-    return false;
-  }
-  if (!(lhs.mapStructListOfListOfLong == rhs.mapStructListOfListOfLong)) {
-    return false;
-  }
-  if (!(lhs.mKeyStructValInt == rhs.mKeyStructValInt)) {
-    return false;
-  }
-  if (!(lhs.listOfMapKeyIntValInt == rhs.listOfMapKeyIntValInt)) {
-    return false;
-  }
-  if (!(lhs.listOfMapKeyStrValList == rhs.listOfMapKeyStrValList)) {
-    return false;
-  }
-  if (!(lhs.mapKeySetValLong == rhs.mapKeySetValLong)) {
-    return false;
-  }
-  if (!(lhs.mapKeyListValLong == rhs.mapKeyListValLong)) {
-    return false;
-  }
-  if (!(lhs.mapKeyMapValMap == rhs.mapKeyMapValMap)) {
-    return false;
-  }
-  if (!(lhs.mapKeySetValMap == rhs.mapKeySetValMap)) {
-    return false;
-  }
-  if (!(lhs.NestedMaps == rhs.NestedMaps)) {
-    return false;
-  }
-  if (!(lhs.mapKeyIntValList == rhs.mapKeyIntValList)) {
-    return false;
-  }
-  if (!(lhs.mapKeyIntValSet == rhs.mapKeyIntValSet)) {
-    return false;
-  }
-  if (!(lhs.mapKeySetValInt == rhs.mapKeySetValInt)) {
-    return false;
-  }
-  if (!(lhs.mapKeyListValSet == rhs.mapKeyListValSet)) {
-    return false;
-  }
-  return true;
-}
-
-bool ComplexNestedStruct::operator<(const ComplexNestedStruct& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.setOfSetOfInt == rhs.setOfSetOfInt)) {
-    return lhs.setOfSetOfInt < rhs.setOfSetOfInt;
-  }
-  if (!(lhs.listofListOfListOfListOfEnum == rhs.listofListOfListOfListOfEnum)) {
-    return lhs.listofListOfListOfListOfEnum < rhs.listofListOfListOfListOfEnum;
-  }
-  if (!(lhs.listOfListOfMyStruct == rhs.listOfListOfMyStruct)) {
-    return lhs.listOfListOfMyStruct < rhs.listOfListOfMyStruct;
-  }
-  if (!(lhs.setOfListOfListOfLong == rhs.setOfListOfListOfLong)) {
-    return lhs.setOfListOfListOfLong < rhs.setOfListOfListOfLong;
-  }
-  if (!(lhs.setOfSetOfsetOfLong == rhs.setOfSetOfsetOfLong)) {
-    return lhs.setOfSetOfsetOfLong < rhs.setOfSetOfsetOfLong;
-  }
-  if (!(lhs.mapStructListOfListOfLong == rhs.mapStructListOfListOfLong)) {
-    return lhs.mapStructListOfListOfLong < rhs.mapStructListOfListOfLong;
-  }
-  if (!(lhs.mKeyStructValInt == rhs.mKeyStructValInt)) {
-    return lhs.mKeyStructValInt < rhs.mKeyStructValInt;
-  }
-  if (!(lhs.listOfMapKeyIntValInt == rhs.listOfMapKeyIntValInt)) {
-    return lhs.listOfMapKeyIntValInt < rhs.listOfMapKeyIntValInt;
-  }
-  if (!(lhs.listOfMapKeyStrValList == rhs.listOfMapKeyStrValList)) {
-    return lhs.listOfMapKeyStrValList < rhs.listOfMapKeyStrValList;
-  }
-  if (!(lhs.mapKeySetValLong == rhs.mapKeySetValLong)) {
-    return lhs.mapKeySetValLong < rhs.mapKeySetValLong;
-  }
-  if (!(lhs.mapKeyListValLong == rhs.mapKeyListValLong)) {
-    return lhs.mapKeyListValLong < rhs.mapKeyListValLong;
-  }
-  if (!(lhs.mapKeyMapValMap == rhs.mapKeyMapValMap)) {
-    return lhs.mapKeyMapValMap < rhs.mapKeyMapValMap;
-  }
-  if (!(lhs.mapKeySetValMap == rhs.mapKeySetValMap)) {
-    return lhs.mapKeySetValMap < rhs.mapKeySetValMap;
-  }
-  if (!(lhs.NestedMaps == rhs.NestedMaps)) {
-    return lhs.NestedMaps < rhs.NestedMaps;
-  }
-  if (!(lhs.mapKeyIntValList == rhs.mapKeyIntValList)) {
-    return lhs.mapKeyIntValList < rhs.mapKeyIntValList;
-  }
-  if (!(lhs.mapKeyIntValSet == rhs.mapKeyIntValSet)) {
-    return lhs.mapKeyIntValSet < rhs.mapKeyIntValSet;
-  }
-  if (!(lhs.mapKeySetValInt == rhs.mapKeySetValInt)) {
-    return lhs.mapKeySetValInt < rhs.mapKeySetValInt;
-  }
-  if (!(lhs.mapKeyListValSet == rhs.mapKeyListValSet)) {
-    return lhs.mapKeyListValSet < rhs.mapKeyListValSet;
-  }
-  return false;
-}
-
-const ::std::set<::std::set<int32_t>>& ComplexNestedStruct::get_setOfSetOfInt() const& {
-  return setOfSetOfInt;
-}
-
-::std::set<::std::set<int32_t>> ComplexNestedStruct::get_setOfSetOfInt() && {
-  return std::move(setOfSetOfInt);
-}
-
-const ::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>>& ComplexNestedStruct::get_listofListOfListOfListOfEnum() const& {
-  return listofListOfListOfListOfEnum;
-}
-
-::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>> ComplexNestedStruct::get_listofListOfListOfListOfEnum() && {
-  return std::move(listofListOfListOfListOfEnum);
-}
-
-const ::std::vector<::std::vector< ::cpp2::MyStruct>>& ComplexNestedStruct::get_listOfListOfMyStruct() const& {
-  return listOfListOfMyStruct;
-}
-
-::std::vector<::std::vector< ::cpp2::MyStruct>> ComplexNestedStruct::get_listOfListOfMyStruct() && {
-  return std::move(listOfListOfMyStruct);
-}
-
-const ::std::set<::std::vector<::std::vector<int64_t>>>& ComplexNestedStruct::get_setOfListOfListOfLong() const& {
-  return setOfListOfListOfLong;
-}
-
-::std::set<::std::vector<::std::vector<int64_t>>> ComplexNestedStruct::get_setOfListOfListOfLong() && {
-  return std::move(setOfListOfListOfLong);
-}
-
-const ::std::set<::std::set<::std::set<int64_t>>>& ComplexNestedStruct::get_setOfSetOfsetOfLong() const& {
-  return setOfSetOfsetOfLong;
-}
-
-::std::set<::std::set<::std::set<int64_t>>> ComplexNestedStruct::get_setOfSetOfsetOfLong() && {
-  return std::move(setOfSetOfsetOfLong);
-}
-
-const ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>& ComplexNestedStruct::get_mapStructListOfListOfLong() const& {
-  return mapStructListOfListOfLong;
-}
-
-::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>> ComplexNestedStruct::get_mapStructListOfListOfLong() && {
-  return std::move(mapStructListOfListOfLong);
-}
-
-const ::std::map< ::cpp2::MyStruct, int32_t>& ComplexNestedStruct::get_mKeyStructValInt() const& {
-  return mKeyStructValInt;
-}
-
-::std::map< ::cpp2::MyStruct, int32_t> ComplexNestedStruct::get_mKeyStructValInt() && {
-  return std::move(mKeyStructValInt);
-}
-
-const ::std::vector<::std::map<int32_t, int32_t>>& ComplexNestedStruct::get_listOfMapKeyIntValInt() const& {
-  return listOfMapKeyIntValInt;
-}
-
-::std::vector<::std::map<int32_t, int32_t>> ComplexNestedStruct::get_listOfMapKeyIntValInt() && {
-  return std::move(listOfMapKeyIntValInt);
-}
-
-const ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>& ComplexNestedStruct::get_listOfMapKeyStrValList() const& {
-  return listOfMapKeyStrValList;
-}
-
-::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>> ComplexNestedStruct::get_listOfMapKeyStrValList() && {
-  return std::move(listOfMapKeyStrValList);
-}
-
-const ::std::map<::std::set<int32_t>, int64_t>& ComplexNestedStruct::get_mapKeySetValLong() const& {
-  return mapKeySetValLong;
-}
-
-::std::map<::std::set<int32_t>, int64_t> ComplexNestedStruct::get_mapKeySetValLong() && {
-  return std::move(mapKeySetValLong);
-}
-
-const ::std::map<::std::vector<::std::string>, int32_t>& ComplexNestedStruct::get_mapKeyListValLong() const& {
-  return mapKeyListValLong;
-}
-
-::std::map<::std::vector<::std::string>, int32_t> ComplexNestedStruct::get_mapKeyListValLong() && {
-  return std::move(mapKeyListValLong);
-}
-
-const ::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>>& ComplexNestedStruct::get_mapKeyMapValMap() const& {
-  return mapKeyMapValMap;
-}
-
-::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>> ComplexNestedStruct::get_mapKeyMapValMap() && {
-  return std::move(mapKeyMapValMap);
-}
-
-const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& ComplexNestedStruct::get_mapKeySetValMap() const& {
-  return mapKeySetValMap;
-}
-
-::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> ComplexNestedStruct::get_mapKeySetValMap() && {
-  return std::move(mapKeySetValMap);
-}
-
-const ::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>>& ComplexNestedStruct::get_NestedMaps() const& {
-  return NestedMaps;
-}
-
-::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>> ComplexNestedStruct::get_NestedMaps() && {
-  return std::move(NestedMaps);
-}
-
-const ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>& ComplexNestedStruct::get_mapKeyIntValList() const& {
-  return mapKeyIntValList;
-}
-
-::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>> ComplexNestedStruct::get_mapKeyIntValList() && {
-  return std::move(mapKeyIntValList);
-}
-
-const ::std::map<int32_t, ::std::set<bool>>& ComplexNestedStruct::get_mapKeyIntValSet() const& {
-  return mapKeyIntValSet;
-}
-
-::std::map<int32_t, ::std::set<bool>> ComplexNestedStruct::get_mapKeyIntValSet() && {
-  return std::move(mapKeyIntValSet);
-}
-
-const ::std::map<::std::set<bool>,  ::cpp2::MyEnum>& ComplexNestedStruct::get_mapKeySetValInt() const& {
-  return mapKeySetValInt;
-}
-
-::std::map<::std::set<bool>,  ::cpp2::MyEnum> ComplexNestedStruct::get_mapKeySetValInt() && {
-  return std::move(mapKeySetValInt);
-}
-
-const ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>>& ComplexNestedStruct::get_mapKeyListValSet() const& {
-  return mapKeyListValSet;
-}
-
-::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>> ComplexNestedStruct::get_mapKeyListValSet() && {
-  return std::move(mapKeyListValSet);
-}
-
-
-void swap(ComplexNestedStruct& a, ComplexNestedStruct& b) {
-  using ::std::swap;
-  swap(a.setOfSetOfInt, b.setOfSetOfInt);
-  swap(a.listofListOfListOfListOfEnum, b.listofListOfListOfListOfEnum);
-  swap(a.listOfListOfMyStruct, b.listOfListOfMyStruct);
-  swap(a.setOfListOfListOfLong, b.setOfListOfListOfLong);
-  swap(a.setOfSetOfsetOfLong, b.setOfSetOfsetOfLong);
-  swap(a.mapStructListOfListOfLong, b.mapStructListOfListOfLong);
-  swap(a.mKeyStructValInt, b.mKeyStructValInt);
-  swap(a.listOfMapKeyIntValInt, b.listOfMapKeyIntValInt);
-  swap(a.listOfMapKeyStrValList, b.listOfMapKeyStrValList);
-  swap(a.mapKeySetValLong, b.mapKeySetValLong);
-  swap(a.mapKeyListValLong, b.mapKeyListValLong);
-  swap(a.mapKeyMapValMap, b.mapKeyMapValMap);
-  swap(a.mapKeySetValMap, b.mapKeySetValMap);
-  swap(a.NestedMaps, b.NestedMaps);
-  swap(a.mapKeyIntValList, b.mapKeyIntValList);
-  swap(a.mapKeyIntValSet, b.mapKeyIntValSet);
-  swap(a.mapKeySetValInt, b.mapKeySetValInt);
-  swap(a.mapKeyListValSet, b.mapKeyListValSet);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-template void ComplexNestedStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t ComplexNestedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t ComplexNestedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ComplexNestedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void ComplexNestedStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t ComplexNestedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t ComplexNestedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t ComplexNestedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::vector<::std::vector< ::cpp2::MyStruct>>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::cpp2::MyStruct, int32_t>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>>,
-    "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::vector<::std::vector< ::cpp2::MyStruct>>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::cpp2::MyStruct, int32_t>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexNestedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>>,
-    "inconsistent use of nimble option");
-
-} // cpp2
-namespace apache {
-namespace thrift {
-namespace detail {
-
-void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 6;
-  static constexpr folly::StringPiece _names[] = {
-    "myEnum",
-    "myStruct",
-    "myDataItem",
-    "complexNestedStruct",
-    "longValue",
-    "intValue",
-  };
-  static constexpr int16_t _ids[] = {
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-  };
-  static constexpr TType _types[] = {
-    TType::T_I32,
-    TType::T_STRUCT,
-    TType::T_STRUCT,
-    TType::T_STRUCT,
-    TType::T_I64,
-    TType::T_I32,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
-namespace apache { namespace thrift {
-
-constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
-folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
-
-char const* TEnumTraits<::cpp2::MyUnion::Type>::findName(type value) {
-  using factory = detail::TEnumMapFactory<::cpp2::MyUnion::Type>;
-  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
-      factory::makeValuesToNamesMap()};
-  auto found = map->find(value);
-  return found == map->end() ? nullptr : found->second;
-}
-
-bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) {
-  using factory = detail::TEnumMapFactory<::cpp2::MyUnion::Type>;
-  static folly::Indestructible<factory::NamesToValuesMapType> const map{
-      factory::makeNamesToValuesMap()};
-  auto found = map->find(name);
-  return found == map->end() ? false : (*out = found->second, true);
-}
-}} // apache::thrift
-namespace cpp2 {
-
-void MyUnion::__clear() {
-  // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
-    case Type::myEnum:
-    {
-      destruct(value_.myEnum);
-      break;
-    }
-    case Type::myStruct:
-    {
-      destruct(value_.myStruct);
-      break;
-    }
-    case Type::myDataItem:
-    {
-      destruct(value_.myDataItem);
-      break;
-    }
-    case Type::complexNestedStruct:
-    {
-      destruct(value_.complexNestedStruct);
-      break;
-    }
-    case Type::longValue:
-    {
-      destruct(value_.longValue);
-      break;
-    }
-    case Type::intValue:
-    {
-      destruct(value_.intValue);
-      break;
-    }
-    default:
-    {
-      assert(false);
-      break;
-    }
-  }
-  type_ = Type::__EMPTY__;
-}
-
-bool MyUnion::operator==(const MyUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
-    case Type::myEnum:
-    {
-      return value_.myEnum == rhs.value_.myEnum;
-    }
-    case Type::myStruct:
-    {
-      return value_.myStruct == rhs.value_.myStruct;
-    }
-    case Type::myDataItem:
-    {
-      return value_.myDataItem == rhs.value_.myDataItem;
-    }
-    case Type::complexNestedStruct:
-    {
-      return value_.complexNestedStruct == rhs.value_.complexNestedStruct;
-    }
-    case Type::longValue:
-    {
-      return value_.longValue == rhs.value_.longValue;
-    }
-    case Type::intValue:
-    {
-      return value_.intValue == rhs.value_.intValue;
-    }
-    default:
-    {
-      return true;
-    }
-  }
-}
-
-bool MyUnion::operator<(const MyUnion& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (lhs.type_ != rhs.type_) {
-    return lhs.type_ < rhs.type_;
-  }
-  switch (lhs.type_) {
-    case Type::myEnum:
-      return lhs.value_.myEnum < rhs.value_.myEnum;
-    case Type::myStruct:
-      return lhs.value_.myStruct < rhs.value_.myStruct;
-    case Type::myDataItem:
-      return lhs.value_.myDataItem < rhs.value_.myDataItem;
-    case Type::complexNestedStruct:
-      return lhs.value_.complexNestedStruct < rhs.value_.complexNestedStruct;
-    case Type::longValue:
-      return lhs.value_.longValue < rhs.value_.longValue;
-    case Type::intValue:
-      return lhs.value_.intValue < rhs.value_.intValue;
-    default:
-      return false;
-  }
-}
-
-void swap(MyUnion& a, MyUnion& b) {
-  MyUnion temp(std::move(a));
-  a = std::move(b);
-  b = std::move(temp);
-}
-
-template void MyUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
-    "inconsistent use of json option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
-    "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyUnion,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
-    "inconsistent use of nimble option");
-
-} // cpp2
-namespace apache {
-namespace thrift {
-namespace detail {
-
 void TccStructTraits<::cpp2::defaultStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -2170,6 +655,229 @@ static_assert(
         defaultStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
         ::std::map<int32_t, ::std::vector< ::cpp2::SimpleStruct>>>,
+    "inconsistent use of nimble option");
+
+} // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 6;
+  static constexpr folly::StringPiece _names[] = {
+    "myEnum",
+    "myStruct",
+    "myDataItem",
+    "complexNestedStruct",
+    "longValue",
+    "intValue",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+  };
+  static constexpr TType _types[] = {
+    TType::T_I32,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_I64,
+    TType::T_I32,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
+folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::MyUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::MyUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::MyUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
+namespace cpp2 {
+
+void MyUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::myEnum:
+    {
+      destruct(value_.myEnum);
+      break;
+    }
+    case Type::myStruct:
+    {
+      destruct(value_.myStruct);
+      break;
+    }
+    case Type::myDataItem:
+    {
+      destruct(value_.myDataItem);
+      break;
+    }
+    case Type::complexNestedStruct:
+    {
+      destruct(value_.complexNestedStruct);
+      break;
+    }
+    case Type::longValue:
+    {
+      destruct(value_.longValue);
+      break;
+    }
+    case Type::intValue:
+    {
+      destruct(value_.intValue);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool MyUnion::operator==(const MyUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::myEnum:
+    {
+      return value_.myEnum == rhs.value_.myEnum;
+    }
+    case Type::myStruct:
+    {
+      return value_.myStruct == rhs.value_.myStruct;
+    }
+    case Type::myDataItem:
+    {
+      return value_.myDataItem == rhs.value_.myDataItem;
+    }
+    case Type::complexNestedStruct:
+    {
+      return value_.complexNestedStruct == rhs.value_.complexNestedStruct;
+    }
+    case Type::longValue:
+    {
+      return value_.longValue == rhs.value_.longValue;
+    }
+    case Type::intValue:
+    {
+      return value_.intValue == rhs.value_.intValue;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+bool MyUnion::operator<(const MyUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::myEnum:
+      return lhs.value_.myEnum < rhs.value_.myEnum;
+    case Type::myStruct:
+      return lhs.value_.myStruct < rhs.value_.myStruct;
+    case Type::myDataItem:
+      return lhs.value_.myDataItem < rhs.value_.myDataItem;
+    case Type::complexNestedStruct:
+      return lhs.value_.complexNestedStruct < rhs.value_.complexNestedStruct;
+    case Type::longValue:
+      return lhs.value_.longValue < rhs.value_.longValue;
+    case Type::intValue:
+      return lhs.value_.intValue < rhs.value_.intValue;
+    default:
+      return false;
+  }
+}
+
+void swap(MyUnion& a, MyUnion& b) {
+  MyUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void MyUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyStruct>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyDataItem>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::ComplexNestedStruct>,
+    "inconsistent use of json option");
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyStruct>,
+    "inconsistent use of nimble option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::MyDataItem>,
+    "inconsistent use of nimble option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+         ::cpp2::ComplexNestedStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2

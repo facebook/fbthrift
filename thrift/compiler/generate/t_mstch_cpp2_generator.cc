@@ -1698,14 +1698,17 @@ class mstch_cpp2_program : public mstch_program {
   }
 
   void init_objects_enums() {
-    int32_t split_count = cpp2::get_split_count(cache_->parsed_options_);
-
-    if (!split_id_ || split_count == 0) {
-      split_count = 1;
-    }
-
     const auto& prog_objects = program_->get_objects();
     const auto& prog_enums = program_->get_enums();
+
+    if (!split_id_) {
+      objects_ = gen_sorted_objects(program_, prog_objects);
+      enums_ = prog_enums;
+      return;
+    }
+
+    int32_t split_count =
+        std::max(cpp2::get_split_count(cache_->parsed_options_), 1);
 
     objects_.emplace();
     enums_.emplace();
@@ -1718,7 +1721,6 @@ class mstch_cpp2_program : public mstch_program {
         enums_->push_back(prog_enums[i - prog_objects.size()]);
       }
     }
-    objects_ = gen_sorted_objects(program_, *objects_);
   }
 
   static std::vector<t_struct*> gen_sorted_objects(
