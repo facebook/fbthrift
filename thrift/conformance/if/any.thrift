@@ -15,6 +15,14 @@
  */
 
 namespace cpp2 apache.thrift.conformance
+namespace php thrift
+namespace py thrift.conformance.any
+namespace py.asyncio thrift_asyncio.conformance.any
+namespace py3 thrift.conformance
+namespace java.swift org.apache.thrift.conformance
+namespace go thrift.conformance.any
+
+cpp_include "<folly/io/IOBuf.h>"
 
 include "thrift/conformance/if/protocol.thrift"
 

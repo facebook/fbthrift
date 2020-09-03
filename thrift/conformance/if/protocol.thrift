@@ -15,6 +15,12 @@
  */
 
 namespace cpp2 apache.thrift.conformance
+namespace php thrift
+namespace py thrift.conformance.protocol
+namespace py.asyncio thrift_asyncio.conformance.protocol
+namespace py3 thrift.conformance
+namespace java.swift org.apache.thrift.conformance
+namespace go thrift.conformance.protocol
 
 // Standard protocols.
 enum StandardProtocol {
