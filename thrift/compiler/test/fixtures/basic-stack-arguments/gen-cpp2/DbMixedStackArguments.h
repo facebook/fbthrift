@@ -27,9 +27,9 @@ namespace cpp2 {
 class DbMixedStackArgumentsSvAsyncIf {
  public:
   virtual ~DbMixedStackArgumentsSvAsyncIf() {}
-  virtual void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& key) = 0;
-  virtual folly::Future<::std::string> future_getDataByKey0(const ::std::string& key) = 0;
-  virtual folly::SemiFuture<::std::string> semifuture_getDataByKey0(const ::std::string& key) = 0;
+  virtual void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> key) = 0;
+  virtual folly::Future<std::unique_ptr<::std::string>> future_getDataByKey0(std::unique_ptr<::std::string> key) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataByKey0(std::unique_ptr<::std::string> key) = 0;
   virtual void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& key) = 0;
   virtual folly::Future<::std::string> future_getDataByKey1(const ::std::string& key) = 0;
   virtual folly::SemiFuture<::std::string> semifuture_getDataByKey1(const ::std::string& key) = 0;
@@ -41,10 +41,10 @@ class DbMixedStackArgumentsSvIf : public DbMixedStackArgumentsSvAsyncIf, public 
  public:
   typedef DbMixedStackArgumentsAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual void getDataByKey0(::std::string& /*_return*/, const ::std::string& /*key*/);
-  folly::Future<::std::string> future_getDataByKey0(const ::std::string& key) override;
-  folly::SemiFuture<::std::string> semifuture_getDataByKey0(const ::std::string& key) override;
-  void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& key) override;
+  virtual void getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/);
+  folly::Future<std::unique_ptr<::std::string>> future_getDataByKey0(std::unique_ptr<::std::string> key) override;
+  folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataByKey0(std::unique_ptr<::std::string> key) override;
+  void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> key) override;
   virtual void getDataByKey1(::std::string& /*_return*/, const ::std::string& /*key*/);
   folly::Future<::std::string> future_getDataByKey1(const ::std::string& key) override;
   folly::SemiFuture<::std::string> semifuture_getDataByKey1(const ::std::string& key) override;
@@ -53,7 +53,7 @@ class DbMixedStackArgumentsSvIf : public DbMixedStackArgumentsSvAsyncIf, public 
 
 class DbMixedStackArgumentsSvNull : public DbMixedStackArgumentsSvIf {
  public:
-  void getDataByKey0(::std::string& /*_return*/, const ::std::string& /*key*/) override;
+  void getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) override;
   void getDataByKey1(::std::string& /*_return*/, const ::std::string& /*key*/) override;
 };
 

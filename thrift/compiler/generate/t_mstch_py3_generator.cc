@@ -590,7 +590,9 @@ class mstch_py3_program : public mstch_program {
           streamExceptions_.emplace(visit_type(field->get_type()), exType);
         }
         const t_type* returnType = function->get_returntype();
-        uniqueFunctionsByReturnType_.emplace(visit_type(returnType), function);
+        auto sa = cpp2::is_stack_arguments(cache_->parsed_options_, *function);
+        uniqueFunctionsByReturnType_.insert(
+            {{visit_type(returnType), sa}, function});
       }
     }
   }
@@ -685,7 +687,8 @@ class mstch_py3_program : public mstch_program {
   std::vector<const t_type*> customTypes_;
   std::unordered_set<std::string> seenTypeNames_;
   std::map<std::string, Namespace> includeNamespaces_;
-  std::map<std::string, t_function const*> uniqueFunctionsByReturnType_;
+  std::map<std::tuple<std::string, bool>, t_function const*>
+      uniqueFunctionsByReturnType_;
   std::vector<const t_type*> responseAndStreamTypes_;
   std::map<std::string, const t_type*> streamTypes_;
   std::map<std::string, const t_type*> streamExceptions_;
@@ -711,7 +714,7 @@ class mstch_py3_function : public mstch_function {
         function_->annotations_.at("thread") == "eb";
   }
   mstch::node stack_arguments() {
-    return cpp2::is_stack_arguments(cache_->parsed_options_);
+    return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
   }
 };
 

@@ -61,6 +61,8 @@ from module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 
 cdef extern from "<utility>" namespace "std":
+    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
+        cFollyPromise[unique_ptr[string]])
     cdef cFollyPromise[string] move_promise_binary "std::move"(
         cFollyPromise[string])
     cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
@@ -69,6 +71,16 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[string])
     cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
+
+@cython.auto_pickle(False)
+cdef class Promise_binary:
+    cdef cFollyPromise[unique_ptr[string]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
+        inst.cPromise = move_promise_binary(cPromise)
+        return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_binary:
@@ -709,11 +721,11 @@ async def MyServiceFast_lobDataById_coro(
 cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[string] cPromise,
-    string key
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[string] key
 ):
     __promise = Promise_binary.create(move_promise_binary(cPromise))
-    arg_key = key.data().decode('UTF-8')
+    arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -756,7 +768,7 @@ async def DbMixedStackArguments_getDataByKey0_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(<string?> result)
+        promise.cPromise.setValue(make_unique[string](<string?> result))
 
 cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     object self,

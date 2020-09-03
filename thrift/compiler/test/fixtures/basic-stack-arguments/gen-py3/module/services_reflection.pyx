@@ -246,7 +246,7 @@ cdef __InterfaceSpec get_reflection__DbMixedStackArguments(bint for_clients):
             exceptions=(
             ),
             annotations={
-            },
+                """cpp.stack_arguments""": """0""",            },
         )
     )
     spec.add_method(

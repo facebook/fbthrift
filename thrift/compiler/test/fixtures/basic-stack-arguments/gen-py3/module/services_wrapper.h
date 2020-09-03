@@ -72,8 +72,8 @@ class DbMixedStackArgumentsWrapper : virtual public DbMixedStackArgumentsSvIf {
     folly::Executor *executor;
   public:
     explicit DbMixedStackArgumentsWrapper(PyObject *if_object, folly::Executor *exc);
-    void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
-        , const std::string& key
+    void async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
+        , std::unique_ptr<std::string> key
     ) override;
     void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
         , const std::string& key

@@ -22,6 +22,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -62,7 +63,9 @@ std::string const& get_cpp_type(const t_type* type);
  */
 bool is_cpp_ref(const t_field* f);
 
-bool is_stack_arguments(std::map<std::string, std::string> const& options);
+bool is_stack_arguments(
+    std::map<std::string, std::string> const& options,
+    t_function const& function);
 
 int32_t get_split_count(std::map<std::string, std::string> const& options);
 

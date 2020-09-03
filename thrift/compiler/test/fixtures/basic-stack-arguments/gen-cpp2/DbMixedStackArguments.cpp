@@ -15,22 +15,22 @@ std::unique_ptr<apache::thrift::AsyncProcessor> DbMixedStackArgumentsSvIf::getPr
 }
 
 
-void DbMixedStackArgumentsSvIf::getDataByKey0(::std::string& /*_return*/, const ::std::string& /*key*/) {
+void DbMixedStackArgumentsSvIf::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataByKey0");
 }
 
-folly::SemiFuture<::std::string> DbMixedStackArgumentsSvIf::semifuture_getDataByKey0(const ::std::string& key) {
-  return apache::thrift::detail::si::semifuture_returning([&](::std::string& _return) { getDataByKey0(_return, key); });
+folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::semifuture_getDataByKey0(std::unique_ptr<::std::string> key) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { getDataByKey0(_return, std::move(key)); });
 }
 
-folly::Future<::std::string> DbMixedStackArgumentsSvIf::future_getDataByKey0(const ::std::string& key) {
-  return apache::thrift::detail::si::future(semifuture_getDataByKey0(key), getThreadManager());
+folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey0(std::unique_ptr<::std::string> key) {
+  return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(key)), getThreadManager());
 }
 
 
-void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& key) {
+void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> key) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_getDataByKey0(key);
+    return future_getDataByKey0(std::move(key));
   });
 }
 
@@ -53,7 +53,7 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::t
   });
 }
 
-void DbMixedStackArgumentsSvNull::getDataByKey0(::std::string& /*_return*/, const ::std::string& /*key*/) {}
+void DbMixedStackArgumentsSvNull::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {}
 
 void DbMixedStackArgumentsSvNull::getDataByKey1(::std::string& /*_return*/, const ::std::string& /*key*/) {}
 

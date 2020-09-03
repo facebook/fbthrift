@@ -231,8 +231,8 @@ DbMixedStackArgumentsWrapper::DbMixedStackArgumentsWrapper(PyObject *obj, folly:
 
 
 void DbMixedStackArgumentsWrapper::async_tm_getDataByKey0(
-  std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
-    , const std::string& key
+  std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
+    , std::unique_ptr<std::string> key
 ) {
   auto ctx = callback->getConnectionContext();
   folly::via(
@@ -240,13 +240,13 @@ void DbMixedStackArgumentsWrapper::async_tm_getDataByKey0(
     [this, ctx,
      callback = std::move(callback),
 key = std::move(key)    ]() mutable {
-        auto [promise, future] = folly::makePromiseContract<std::string>();
+        auto [promise, future] = folly::makePromiseContract<std::unique_ptr<std::string>>();
         call_cy_DbMixedStackArguments_getDataByKey0(
             this->if_object,
             ctx,
             std::move(promise),
             std::move(key)        );
-        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::string>&& t) {
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<std::unique_ptr<std::string>>&& t) {
           (void)t;
           callback->complete(std::move(t));
         });

@@ -176,8 +176,12 @@ bool is_cpp_ref(const t_field* f) {
       f->annotations_.count("cpp2.ref_type") || is_implicit_ref(f->get_type());
 }
 
-bool is_stack_arguments(std::map<std::string, std::string> const& options) {
-  return options.count("stack_arguments") != 0;
+bool is_stack_arguments(
+    std::map<std::string, std::string> const& options,
+    t_function const& function) {
+  auto it = function.annotations_.find("cpp.stack_arguments");
+  auto ptr = it == function.annotations_.end() ? nullptr : &it->second;
+  return ptr ? *ptr != "0" : options.count("stack_arguments") != 0;
 }
 
 int32_t get_split_count(std::map<std::string, std::string> const& options) {

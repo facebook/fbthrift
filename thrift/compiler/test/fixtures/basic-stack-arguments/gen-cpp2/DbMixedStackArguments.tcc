@@ -26,8 +26,8 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   DbMixedStackArguments_getDataByKey0_pargs args;
-  ::std::string uarg_key;
-  args.get<0>().value = &uarg_key;
+  auto uarg_key = std::make_unique<::std::string>();
+  args.get<0>().value = uarg_key.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DbMixedStackArguments.getDataByKey0", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
@@ -38,11 +38,11 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::string>>(std::move(req), std::move(ctxStack), return_getDataByKey0<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataByKey0<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_getDataByKey0<ProtocolIn_,ProtocolOut_>, throw_wrapped_getDataByKey0<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
-  iface_->async_tm_getDataByKey0(std::move(callback), args.get<0>().ref());
+  iface_->async_tm_getDataByKey0(std::move(callback), std::move(uarg_key));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

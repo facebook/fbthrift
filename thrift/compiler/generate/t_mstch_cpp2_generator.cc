@@ -1162,7 +1162,7 @@ class mstch_cpp2_function : public mstch_function {
     return get_cpp_name(function_);
   }
   mstch::node stack_arguments() {
-    return cpp2::is_stack_arguments(cache_->parsed_options_);
+    return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
   }
 };
 
@@ -2284,7 +2284,7 @@ bool service_method_validator::visit(t_service* service) {
     if (!is_coro) {
       continue;
     }
-    bool is_sa = cpp2::is_stack_arguments(options_);
+    bool is_sa = cpp2::is_stack_arguments(options_, *func);
     if (!is_sa) {
       continue;
     }

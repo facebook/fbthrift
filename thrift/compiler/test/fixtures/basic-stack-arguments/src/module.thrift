@@ -39,6 +39,6 @@ service MyServiceFast {
 }
 
 service DbMixedStackArguments {
-  binary getDataByKey0(1: string key),
+  binary getDataByKey0(1: string key) (cpp.stack_arguments = "0"),
   binary getDataByKey1(1: string key),
 }
