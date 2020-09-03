@@ -35,7 +35,7 @@ void testMessage(
     bool binary = false) {
   Bonk b;
   Bonk bin;
-  b.message = "";
+  *b.message_ref() = "";
 
   THeader header;
   if (flag) {
@@ -49,9 +49,9 @@ void testMessage(
 
   for (int i = 0; i < iters; i++) {
     if (easyMessage) {
-      b.message += "t";
+      *b.message_ref() += "t";
     } else {
-      b.message += 66 + rand() % 24;
+      *b.message_ref() += 66 + rand() % 24;
     }
     folly::IOBufQueue out;
     if (binary) {
@@ -171,9 +171,9 @@ TEST(chained, zstd) {
 TEST(sdf, sdfsd) {
   Bonk b;
   Bonk bin;
-  b.message = "";
+  *b.message_ref() = "";
   for (int i = 0; i < 10000; i++) {
-    b.message += 66 + rand() % 24;
+    *b.message_ref() += 66 + rand() % 24;
   }
 
   THeader header;

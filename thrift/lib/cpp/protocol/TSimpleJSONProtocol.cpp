@@ -135,9 +135,9 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
 
     // find the corresponding StructField object and field id of the field
     for (auto ite = fields->begin(); ite != fields->end(); ++ite) {
-      if (ite->second.name == tmpStr) {
+      if (*ite->second.name_ref() == tmpStr) {
         fieldId = ite->first;
-        fieldType = getTypeIdFromTypeNum(ite->second.type);
+        fieldType = getTypeIdFromTypeNum(*ite->second.type_ref());
 
         // set the nextType_ if the field type is a compound type
         // e.g. list<i64>, mySimpleStruct
@@ -147,8 +147,8 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
         // but this allows only calling setNextStructType() on the
         // base type
         auto& field = ite->second;
-        if (isCompoundType(field.type)) {
-          nextType_ = getDataTypeFromTypeNum(field.type);
+        if (isCompoundType(*field.type_ref())) {
+          nextType_ = getDataTypeFromTypeNum(*field.type_ref());
         }
 
         return result;
@@ -377,9 +377,9 @@ TType TSimpleJSONProtocol::guessTypeIdFromFirstByte() {
 }
 
 DataType* TSimpleJSONProtocol::getDataTypeFromTypeNum(int64_t typeNum) {
-  auto ite = schema_.dataTypes.find(typeNum);
+  auto ite = schema_.dataTypes_ref()->find(typeNum);
 
-  if (ite == schema_.dataTypes.cend()) {
+  if (ite == schema_.dataTypes_ref()->cend()) {
     throw TProtocolException(
         TProtocolException::INVALID_DATA,
         "Type id not found, schema is corrupted");

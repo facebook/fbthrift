@@ -59,8 +59,8 @@ TEST_F(StructTest, equal_to) {
     Basic a;
     Basic b;
 
-    a.def_field = 3;
-    b.def_field = 3;
+    *a.def_field_ref() = 3;
+    *b.def_field_ref() = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
@@ -72,11 +72,11 @@ TEST_F(StructTest, equal_to) {
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.def_field = 4;
+    *a.def_field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.def_field = 4;
+    *b.def_field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -147,8 +147,8 @@ TEST_F(StructTest, equal_to_binary) {
     BasicBinaries a;
     BasicBinaries b;
 
-    a.def_field = "hello";
-    b.def_field = "hello";
+    *a.def_field_ref() = "hello";
+    *b.def_field_ref() = "hello";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
@@ -160,11 +160,11 @@ TEST_F(StructTest, equal_to_binary) {
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.def_field = "world";
+    *a.def_field_ref() = "world";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.def_field = "world";
+    *b.def_field_ref() = "world";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -319,8 +319,8 @@ TEST_F(StructTest, less) {
     Basic a;
     Basic b;
 
-    b.def_field = 3;
-    a.def_field = 3;
+    *b.def_field_ref() = 3;
+    *a.def_field_ref() = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
@@ -332,11 +332,11 @@ TEST_F(StructTest, less) {
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.def_field = 4;
+    *b.def_field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.def_field = 4;
+    *a.def_field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }
@@ -407,8 +407,8 @@ TEST_F(StructTest, less_binary) {
     BasicBinaries a;
     BasicBinaries b;
 
-    b.def_field = "hello";
-    a.def_field = "hello";
+    *b.def_field_ref() = "hello";
+    *a.def_field_ref() = "hello";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
@@ -420,11 +420,11 @@ TEST_F(StructTest, less_binary) {
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.def_field = "world";
+    *b.def_field_ref() = "world";
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.def_field = "world";
+    *a.def_field_ref() = "world";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }
@@ -578,8 +578,8 @@ TEST_F(StructTest, less_refs_shared) {
 
 TEST_F(StructTest, custom_indirection) {
   IOBufIndirection a;
-  a.foo.raw = folly::IOBuf(folly::IOBuf::COPY_BUFFER, "test");
-  a.bar.raw = "test2";
+  a.foo_ref()->raw = folly::IOBuf(folly::IOBuf::COPY_BUFFER, "test");
+  a.bar_ref()->raw = "test2";
   IOBufIndirection b = a;
   EXPECT_EQ(a, b);
 }
@@ -593,13 +593,13 @@ TEST_F(StructTest, small_sorted_vector) {
   EXPECT_TRUE((std::is_same<decltype(Type::map_field), Map>::value));
 
   Type o;
-  o.set_field.insert({1, 3, 5});
-  o.map_field.insert({{1, 4}, {3, 12}, {5, 20}});
+  o.set_field_ref()->insert({1, 3, 5});
+  o.map_field_ref()->insert({{1, 4}, {3, 12}, {5, 20}});
   auto a = serializer::deserialize<HasSmallSortedVector>(
       serializer::serialize<std::string>(o));
   EXPECT_EQ(o, a);
-  EXPECT_EQ(o.set_field, a.set_field);
-  EXPECT_EQ(o.map_field, a.map_field);
+  EXPECT_EQ(*o.set_field_ref(), *a.set_field_ref());
+  EXPECT_EQ(*o.map_field_ref(), *a.map_field_ref());
 }
 
 TEST_F(StructTest, noexcept_move_annotation) {

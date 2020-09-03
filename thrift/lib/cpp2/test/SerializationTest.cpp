@@ -29,8 +29,8 @@ using namespace apache::thrift::test;
 
 TestStruct makeTestStruct() {
   TestStruct s;
-  s.s = "test";
-  s.i = 48;
+  *s.s_ref() = "test";
+  *s.i_ref() = 48;
   return s;
 }
 
@@ -218,12 +218,12 @@ TestStructRecursive makeTestStructRecursive(size_t levels) {
   unique_ptr<TestStructRecursive> s;
   for (size_t i = levels; i > 0; --i) {
     auto t = make_unique<TestStructRecursive>();
-    t->tag = fmt::format("level-{}", i);
+    *t->tag_ref() = fmt::format("level-{}", i);
     t->cdr = std::move(s);
     s = std::move(t);
   }
   TestStructRecursive ret;
-  ret.tag = "level-0";
+  *ret.tag_ref() = "level-0";
   ret.cdr = std::move(s);
   return ret;
 }
@@ -335,7 +335,7 @@ void testIOBufSharingUnmanagedBuffer() {
   char tmp[kBufSize];
   memcpy(tmp, "hello", 5);
   TestStructIOBuf s;
-  s.buf = folly::IOBuf(folly::IOBuf::WRAP_BUFFER, tmp, sizeof(tmp));
+  *s.buf_ref() = folly::IOBuf(folly::IOBuf::WRAP_BUFFER, tmp, sizeof(tmp));
 
   for (unsigned int i = 0; i < 4; ++i) {
     ExternalBufferSharing serializationSharing =
@@ -350,32 +350,35 @@ void testIOBufSharingUnmanagedBuffer() {
     Serializer::deserialize(q.front(), s2, deserializationSharing);
 
     size_t size = 0;
-    for (auto& br : s2.buf) {
+    for (auto& br : *s2.buf_ref()) {
       if (br.empty()) {
         continue;
       }
       if (i == 3) {
         // Expect only one non-empty buffer, which must be ours
         EXPECT_EQ(size, 0);
-        EXPECT_EQ(s.buf.data(), br.data());
-        EXPECT_EQ(s.buf.length(), br.size());
+        EXPECT_EQ(s.buf_ref()->data(), br.data());
+        EXPECT_EQ(s.buf_ref()->length(), br.size());
       } else {
-        EXPECT_NE(s.buf.data(), br.data());
+        EXPECT_NE(s.buf_ref()->data(), br.data());
       }
       size += br.size();
     }
-    EXPECT_EQ(s.buf.length(), size);
-    s2.buf.coalesce();
-    EXPECT_EQ(0, memcmp(s2.buf.data(), s.buf.data(), s.buf.length()));
+    EXPECT_EQ(s.buf_ref()->length(), size);
+    s2.buf_ref()->coalesce();
+    EXPECT_EQ(
+        0,
+        memcmp(
+            s2.buf_ref()->data(), s.buf_ref()->data(), s.buf_ref()->length()));
   }
 }
 
 template <class Serializer>
 void testIOBufSharingManagedBuffer() {
   TestStructIOBuf s;
-  s.buf = folly::IOBuf(folly::IOBuf::CREATE, kBufSize);
-  memcpy(s.buf.writableTail(), "hello", 5);
-  s.buf.append(kBufSize);
+  *s.buf_ref() = folly::IOBuf(folly::IOBuf::CREATE, kBufSize);
+  memcpy(s.buf_ref()->writableTail(), "hello", 5);
+  s.buf_ref()->append(kBufSize);
 
   for (unsigned int i = 0; i < 4; ++i) {
     ExternalBufferSharing serializationSharing =
@@ -390,14 +393,14 @@ void testIOBufSharingManagedBuffer() {
     Serializer::deserialize(q.front(), s2, deserializationSharing);
 
     size_t size = 0;
-    for (auto& br : s2.buf) {
+    for (auto& br : *s2.buf_ref()) {
       if (br.empty()) {
         continue;
       }
       // Expect only one non-empty buffer, which must be ours
       EXPECT_EQ(size, 0);
-      EXPECT_EQ(s.buf.data(), br.data());
-      EXPECT_EQ(s.buf.length(), br.size());
+      EXPECT_EQ(s.buf_ref()->data(), br.data());
+      EXPECT_EQ(s.buf_ref()->length(), br.size());
       size += br.size();
     }
   }
@@ -425,21 +428,22 @@ TEST(SerializationTest, UnsignedIntStruct) {
   TestUnsignedIntStruct s;
 
   static_assert(
-      std::is_same<decltype(s.u8), uint8_t>::value, "Unexpected type for s.u8");
+      std::is_same<decltype(s.u8_ref())::value_type, uint8_t>::value,
+      "Unexpected type for s.u8");
   static_assert(
-      std::is_same<decltype(s.u16), uint16_t>::value,
+      std::is_same<decltype(s.u16_ref())::value_type, uint16_t>::value,
       "Unexpected type for s.u16");
   static_assert(
-      std::is_same<decltype(s.u32), uint32_t>::value,
+      std::is_same<decltype(s.u32_ref())::value_type, uint32_t>::value,
       "Unexpected type for s.u32");
   static_assert(
-      std::is_same<decltype(s.u64), uint64_t>::value,
+      std::is_same<decltype(s.u64_ref())::value_type, uint64_t>::value,
       "Unexpected type for s.u64");
 
-  s.u8 = 128U;
-  s.u16 = 32768U;
-  s.u32 = 2147483648UL;
-  s.u64 = 9223372036854775808ULL;
+  *s.u8_ref() = 128U;
+  *s.u16_ref() = 32768U;
+  *s.u32_ref() = 2147483648UL;
+  *s.u64_ref() = 9223372036854775808ULL;
 
   folly::IOBufQueue q;
   CompactSerializer::serialize(s, &q);
@@ -481,13 +485,14 @@ TEST(SerializationTest, UnsignedInt32ListStruct) {
   TestUnsignedInt32ListStruct s;
 
   static_assert(
-      std::is_same<decltype(s.l), std::vector<uint32_t>>::value,
+      std::is_same<decltype(s.l_ref())::value_type, std::vector<uint32_t>>::
+          value,
       "Unexpected type for s.l");
 
-  s.l.push_back(1073741824UL);
-  s.l.push_back(2147483648UL);
-  s.l.push_back(3221225472UL);
-  s.l.push_back(4294967295UL);
+  s.l_ref()->push_back(1073741824UL);
+  s.l_ref()->push_back(2147483648UL);
+  s.l_ref()->push_back(3221225472UL);
+  s.l_ref()->push_back(4294967295UL);
 
   folly::IOBufQueue q;
   CompactSerializer::serialize(s, &q);
@@ -502,13 +507,15 @@ TEST(SerializationTest, UnsignedIntMap) {
   TestUnsignedIntMapStruct s;
 
   static_assert(
-      std::is_same<decltype(s.m), std::map<uint32_t, uint64_t>>::value,
+      std::is_same<
+          decltype(s.m_ref())::value_type,
+          std::map<uint32_t, uint64_t>>::value,
       "Unexpected type for s.m");
 
-  s.m[1073741824UL] = 4611686018427387904ULL;
-  s.m[2147483648UL] = 9223372036854775808ULL;
-  s.m[3221225472UL] = 13835058055282163712ULL;
-  s.m[4294967295UL] = 18446744073709551615ULL;
+  s.m_ref()[1073741824UL] = 4611686018427387904ULL;
+  s.m_ref()[2147483648UL] = 9223372036854775808ULL;
+  s.m_ref()[3221225472UL] = 13835058055282163712ULL;
+  s.m_ref()[4294967295UL] = 18446744073709551615ULL;
 
   folly::IOBufQueue q;
   CompactSerializer::serialize(s, &q);
@@ -523,10 +530,10 @@ template <class Serializer, class ProtocolWriter>
 void testSerializedSizeZC() {
   for (size_t testSize : {10, 5000}) {
     TestStructIOBuf s;
-    s.buf = folly::IOBuf(IOBuf::CREATE, testSize);
-    s.i = 0x7fffffff;
-    memset(s.buf.writableTail(), 'a', testSize);
-    s.buf.append(testSize);
+    *s.buf_ref() = folly::IOBuf(IOBuf::CREATE, testSize);
+    *s.i_ref() = 0x7fffffff;
+    memset(s.buf_ref()->writableTail(), 'a', testSize);
+    s.buf_ref()->append(testSize);
     folly::IOBufQueue q;
     Serializer::serialize(s, &q);
     auto iob = q.move();

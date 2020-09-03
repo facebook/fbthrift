@@ -43,8 +43,8 @@ int main(int argc, char* argv[]) {
   try {
     // Send a chat message via a Thrift request.
     auto sendRequest = example::chatroom::SendMessageRequest();
-    sendRequest.message = "This is an example!";
-    sendRequest.sender = getenv("USER");
+    *sendRequest.message_ref() = "This is an example!";
+    *sendRequest.sender_ref() = getenv("USER");
     client->sync_sendMessage(sendRequest);
 
     // Get chat response messages via another Thrift request.
@@ -53,9 +53,9 @@ int main(int argc, char* argv[]) {
     client->sync_getMessages(response, getRequest);
 
     // Print all the messages so far.
-    for (auto& messagesList : response.messages) {
-      LOG(INFO) << "Message: " << messagesList.message
-                << " Sender: " << messagesList.sender;
+    for (auto& messagesList : *response.messages_ref()) {
+      LOG(INFO) << "Message: " << *messagesList.message_ref()
+                << " Sender: " << *messagesList.sender_ref();
     }
   } catch (apache::thrift::transport::TTransportException& ex) {
     LOG(ERROR) << "Request failed " << ex.what();

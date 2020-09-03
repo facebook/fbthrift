@@ -67,8 +67,8 @@ void Client::runSynchronously(
   while (std::chrono::steady_clock::now() < deadline) {
     eventBase->runInEventBaseThread([this]() {
       BackendRequest request;
-      request.time_per_request = FLAGS_time_per_request_us;
-      request.consumeCPU = false;
+      *request.time_per_request_ref() = FLAGS_time_per_request_us;
+      *request.consumeCPU_ref() = false;
 
       auto sendTime = std::chrono::steady_clock::now();
       this->client_->future_doWork(request)

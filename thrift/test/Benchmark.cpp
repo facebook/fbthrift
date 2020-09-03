@@ -64,21 +64,21 @@ BENCHMARK(runTestRead_BinaryProtocolReader, iters) {
 int main(int argc, char** argv) {
   folly::Init init(&argc, &argv);
 
-  ooe.im_true = true;
-  ooe.im_false = false;
-  ooe.a_bite = 0xd6;
-  ooe.integer16 = 27000;
-  ooe.integer32 = 1 << 24;
-  ooe.integer64 = (uint64_t)6000 * 1000 * 1000;
-  ooe.double_precision = M_PI;
-  ooe.some_characters = "JSON THIS! \"\1";
-  ooe.zomg_unicode = "\xd7\n\a\t";
-  ooe.base64 = "\1\2\3\255";
-  ooe.string_string_map["one"] = "two";
-  ooe.string_string_hash_map["three"] = "four";
-  ooe.float_precision = (float)12.345;
-  ooe.rank_map[567419810] = (float)0.211184;
-  ooe.rank_map[507959914] = (float)0.080382;
+  *ooe.im_true_ref() = true;
+  *ooe.im_false_ref() = false;
+  *ooe.a_bite_ref() = 0xd6;
+  *ooe.integer16_ref() = 27000;
+  *ooe.integer32_ref() = 1 << 24;
+  *ooe.integer64_ref() = (uint64_t)6000 * 1000 * 1000;
+  *ooe.double_precision_ref() = M_PI;
+  *ooe.some_characters_ref() = "JSON THIS! \"\1";
+  *ooe.zomg_unicode_ref() = "\xd7\n\a\t";
+  *ooe.base64_ref() = "\1\2\3\255";
+  ooe.string_string_map_ref()["one"] = "two";
+  ooe.string_string_hash_map_ref()["three"] = "four";
+  *ooe.float_precision_ref() = (float)12.345;
+  ooe.rank_map_ref()[567419810] = (float)0.211184;
+  ooe.rank_map_ref()[507959914] = (float)0.080382;
 
   folly::runBenchmarks();
 

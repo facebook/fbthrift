@@ -39,10 +39,10 @@ int16_t MemorySchema::Helper::add(MemoryLayout&& layout) {
 }
 
 void MemorySchema::initFromSchema(Schema&& schema) {
-  if (!schema.layouts.empty()) {
-    layouts.resize(schema.layouts.size());
+  if (!schema.layouts_ref()->empty()) {
+    layouts.resize(schema.layouts_ref()->size());
 
-    for (const auto& layoutKvp : schema.layouts) {
+    for (const auto& layoutKvp : *schema.layouts_ref()) {
       const auto id = layoutKvp.first;
       const auto& layout = layoutKvp.second;
 
@@ -50,22 +50,22 @@ void MemorySchema::initFromSchema(Schema&& schema) {
       // schema.layouts.size().
       auto& memLayout = layouts.at(id);
 
-      memLayout.setSize(layout.size);
-      memLayout.setBits(layout.bits);
+      memLayout.setSize(*layout.size_ref());
+      memLayout.setBits(*layout.bits_ref());
 
-      for (const auto& fieldKvp : layout.fields) {
+      for (const auto& fieldKvp : *layout.fields_ref()) {
         MemoryField memField;
         const auto& fieldId = fieldKvp.first;
         const auto& field = fieldKvp.second;
 
         memField.setId(fieldId);
-        memField.setLayoutId(field.layoutId);
-        memField.setOffset(field.offset);
+        memField.setLayoutId(*field.layoutId_ref());
+        memField.setOffset(*field.offset_ref());
         memLayout.addField(std::move(memField));
       }
     }
   }
-  setRootLayoutId(schema.rootLayout);
+  setRootLayoutId(*schema.rootLayout_ref());
 }
 
 void convert(Schema&& schema, MemorySchema& memSchema) {
@@ -75,16 +75,16 @@ void convert(Schema&& schema, MemorySchema& memSchema) {
 void convert(const MemorySchema& memSchema, Schema& schema) {
   std::size_t i = 0;
   for (const auto& memLayout : memSchema.getLayouts()) {
-    auto& newLayout = schema.layouts[i];
+    auto& newLayout = schema.layouts_ref()[i];
 
-    newLayout.size = memLayout.getSize();
-    newLayout.bits = memLayout.getBits();
+    *newLayout.size_ref() = memLayout.getSize();
+    *newLayout.bits_ref() = memLayout.getBits();
 
     for (const auto& field : memLayout.getFields()) {
-      auto& newField = newLayout.fields[field.getId()];
+      auto& newField = newLayout.fields_ref()[field.getId()];
 
-      newField.layoutId = field.getLayoutId();
-      newField.offset = field.getOffset();
+      *newField.layoutId_ref() = field.getLayoutId();
+      *newField.offset_ref() = field.getOffset();
     }
     ++i;
   }
@@ -93,8 +93,8 @@ void convert(const MemorySchema& memSchema, Schema& schema) {
   // Type information is discarded when transforming from memSchema to
   // schema, so force this bit to true.
   //
-  schema.relaxTypeChecks = true;
-  schema.rootLayout = memSchema.getRootLayoutId();
+  *schema.relaxTypeChecks_ref() = true;
+  *schema.rootLayout_ref() = memSchema.getRootLayoutId();
 }
 
 } // namespace schema

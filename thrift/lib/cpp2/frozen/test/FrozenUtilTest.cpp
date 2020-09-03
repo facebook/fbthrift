@@ -53,7 +53,7 @@ TEST(FrozenUtil, FutureVersion) {
 
   {
     schema::Schema schema;
-    schema.fileVersion = 1000;
+    *schema.fileVersion_ref() = 1000;
     schema.__isset.fileVersion = true;
 
     std::string schemaStr;

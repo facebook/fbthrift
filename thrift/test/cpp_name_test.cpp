@@ -37,7 +37,7 @@ TEST(cpp_name_test, rename) {
   auto s = MyStruct();
   s.unique_name_ref() = 42;
   s.opt_unique_name_ref() = 4; // chosen by fair dice roll
-  EXPECT_EQ(42, s.unique_name);
+  EXPECT_EQ(42, *s.unique_name_ref());
   EXPECT_EQ(42, s.get_unique_name());
   EXPECT_EQ(4, *s.get_opt_unique_name());
   EXPECT_EQ(4, *s.opt_unique_name_ref());
@@ -52,7 +52,7 @@ TEST(cpp_name_test, json_serialization) {
       json, R"({"conflicting_name": 42, "opt_conflicting_name": 4})");
   auto out = MyStruct();
   SimpleJSONSerializer::deserialize(json, out);
-  EXPECT_EQ(out.unique_name, 42);
+  EXPECT_EQ(*out.unique_name_ref(), 42);
   EXPECT_EQ(*out.opt_unique_name_ref(), 4);
 }
 

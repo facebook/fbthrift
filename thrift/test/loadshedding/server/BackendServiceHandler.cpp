@@ -27,19 +27,20 @@ void BackendServiceHandler::doWork(
     BackendResponse& response,
     std::unique_ptr<BackendRequest> request) {
   auto wakeup = std::chrono::steady_clock::now() +
-      std::chrono::microseconds(request->time_per_request);
+      std::chrono::microseconds(*request->time_per_request_ref());
 
-  if (request->consumeCPU) {
+  if (*request->consumeCPU_ref()) {
     auto cycle = 0;
     while (std::chrono::steady_clock::now() < wakeup) {
       cycle++;
     }
-    response.status = "Consumed CPU for " + std::to_string(cycle) + " cycles.";
+    *response.status_ref() =
+        "Consumed CPU for " + std::to_string(cycle) + " cycles.";
   } else {
     std::this_thread::sleep_for(
-        std::chrono::microseconds(request->time_per_request));
-    response.status =
-        "Slept for " + std::to_string(request->time_per_request) + " ms.";
+        std::chrono::microseconds(*request->time_per_request_ref()));
+    *response.status_ref() = "Slept for " +
+        std::to_string(*request->time_per_request_ref()) + " ms.";
   }
   requestCount_++;
 }

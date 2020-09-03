@@ -119,7 +119,7 @@ TEST(FrozenUtilTest, Sparse) {
 
 TEST(FrozenUtilTest, KeepMapped) {
   Person p;
-  p.nums = {9, 8, 7};
+  *p.nums_ref() = {9, 8, 7};
   p.id = 123;
   p.name = "Tom";
 

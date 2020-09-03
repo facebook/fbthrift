@@ -130,7 +130,8 @@ void serializeRootLayout(const Layout<T>& layout, std::string& out) {
   saveRoot(layout, memSchema);
   schema::convert(memSchema, schema);
 
-  schema.fileVersion = schema::frozen_constants::kCurrentFrozenFileVersion();
+  *schema.fileVersion_ref() =
+      schema::frozen_constants::kCurrentFrozenFileVersion();
   out.clear();
   CompactSerializer::serialize(schema, &out);
 }
@@ -140,9 +141,9 @@ void deserializeRootLayout(folly::ByteRange& range, Layout<T>& layoutOut) {
   schema::Schema schema;
   size_t schemaSize = CompactSerializer::deserialize(range, schema);
 
-  if (schema.fileVersion >
+  if (*schema.fileVersion_ref() >
       schema::frozen_constants::kCurrentFrozenFileVersion()) {
-    throw FrozenFileForwardIncompatible(schema.fileVersion);
+    throw FrozenFileForwardIncompatible(*schema.fileVersion_ref());
   }
 
   schema::MemorySchema memSchema;

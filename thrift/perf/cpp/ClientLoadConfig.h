@@ -94,9 +94,10 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
    */
   template <typename T>
   void makeBigStruct(T& bigstruct) {
-    bigstruct.stringField = std::string(this->pickStructFieldSize(), 'a');
+    *bigstruct.stringField_ref() =
+        std::string(this->pickStructFieldSize(), 'a');
     for (int i = 0; i < 100; i++) {
-      bigstruct.stringList.push_back(
+      bigstruct.stringList_ref()->push_back(
           std::string(this->pickStructFieldSize(), 'a'));
     }
   }

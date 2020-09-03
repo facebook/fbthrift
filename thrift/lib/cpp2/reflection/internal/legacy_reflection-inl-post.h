@@ -42,12 +42,12 @@ inline datatype_t* registering_datatype_prep(
     schema_t& schema,
     folly::StringPiece rname,
     id_t rid) {
-  auto& dt = schema.dataTypes[rid];
-  if (!dt.name.empty()) {
+  auto& dt = schema.dataTypes_ref()[rid];
+  if (!dt.name_ref()->empty()) {
     return nullptr; // this datatype has already been registered
   }
-  dt.name = rname.str();
-  schema.names[dt.name] = rid;
+  *dt.name_ref() = rname.str();
+  schema.names_ref()[*dt.name_ref()] = rid;
   return &dt;
 }
 
@@ -232,10 +232,10 @@ struct impl_structure_util {
       optionality opt,
       std::string& name,
       size_t n_annots) {
-    field.isRequired = opt != optionality::optional;
-    field.type = type;
-    field.name = name;
-    field.order = index;
+    *field.isRequired_ref() = opt != optionality::optional;
+    *field.type_ref() = type;
+    *field.name_ref() = name;
+    *field.order_ref() = index;
     auto annotations = field.annotations_ref();
     if (n_annots > 0) {
       annotations = {};
@@ -312,10 +312,10 @@ struct impl<T, type_class::variant> {
       using member_name = typename MemberInfo::metadata::name;
       type_helper::register_into(schema);
       auto& f = (*dt.fields_ref())[MemberInfo::metadata::id::value];
-      f.isRequired = true;
-      f.type = type_helper::id();
-      f.name = fatal::to_instance<std::string, member_name>();
-      f.order = Index;
+      *f.isRequired_ref() = true;
+      *f.type_ref() = type_helper::id();
+      *f.name_ref() = fatal::to_instance<std::string, member_name>();
+      *f.order_ref() = Index;
     }
   };
   static constexpr auto rname =

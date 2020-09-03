@@ -30,28 +30,28 @@ thrift::benchmark::Empty create<thrift::benchmark::Empty>() {
 template <>
 thrift::benchmark::SmallInt create<thrift::benchmark::SmallInt>() {
   thrift::benchmark::SmallInt d;
-  d.smallint = 5;
+  *d.smallint_ref() = 5;
   return d;
 }
 
 template <>
 thrift::benchmark::BigInt create<thrift::benchmark::BigInt>() {
   thrift::benchmark::BigInt d;
-  d.bigint = 0x1234567890abcdefL;
+  *d.bigint_ref() = 0x1234567890abcdefL;
   return d;
 }
 
 template <>
 thrift::benchmark::SmallString create<thrift::benchmark::SmallString>() {
   thrift::benchmark::SmallString d;
-  d.str = "small string";
+  *d.str_ref() = "small string";
   return d;
 }
 
 template <>
 thrift::benchmark::BigString create<thrift::benchmark::BigString>() {
   thrift::benchmark::BigString d;
-  d.str = std::string(10000, 'a');
+  *d.str_ref() = std::string(10000, 'a');
   return d;
 }
 
@@ -60,7 +60,7 @@ thrift::benchmark::BigBinary create<thrift::benchmark::BigBinary>() {
   auto buf = folly::IOBuf::create(10000);
   buf->append(10000);
   thrift::benchmark::BigBinary d;
-  d.bin = std::move(buf);
+  *d.bin_ref() = std::move(buf);
   return d;
 }
 
@@ -69,17 +69,17 @@ thrift::benchmark::LargeBinary create<thrift::benchmark::LargeBinary>() {
   auto buf = folly::IOBuf::create(10000000);
   buf->append(10000000);
   thrift::benchmark::LargeBinary d;
-  d.bin = std::move(buf);
+  *d.bin_ref() = std::move(buf);
   return d;
 }
 
 template <>
 thrift::benchmark::Mixed create<thrift::benchmark::Mixed>() {
   thrift::benchmark::Mixed d;
-  d.int32 = 5;
-  d.int64 = 12345;
-  d.b = true;
-  d.str = "hellohellohellohello";
+  *d.int32_ref() = 5;
+  *d.int64_ref() = 12345;
+  *d.b_ref() = true;
+  *d.str_ref() = "hellohellohellohello";
   return d;
 }
 
@@ -91,7 +91,7 @@ thrift::benchmark::SmallListInt create<thrift::benchmark::SmallListInt>() {
     vec.push_back(std::rand());
   }
   thrift::benchmark::SmallListInt d;
-  d.lst = std::move(vec);
+  *d.lst_ref() = std::move(vec);
   return d;
 }
 
@@ -103,7 +103,7 @@ thrift::benchmark::BigListInt create<thrift::benchmark::BigListInt>() {
     vec.push_back(std::rand());
   }
   thrift::benchmark::BigListInt d;
-  d.lst = std::move(vec);
+  *d.lst_ref() = std::move(vec);
   return d;
 }
 
@@ -112,7 +112,7 @@ thrift::benchmark::BigListMixed create<thrift::benchmark::BigListMixed>() {
   std::vector<thrift::benchmark::Mixed> vec(
       10000, create<thrift::benchmark::Mixed>());
   thrift::benchmark::BigListMixed d;
-  d.lst = std::move(vec);
+  *d.lst_ref() = std::move(vec);
   return d;
 }
 
@@ -121,7 +121,7 @@ thrift::benchmark::LargeListMixed create<thrift::benchmark::LargeListMixed>() {
   std::vector<thrift::benchmark::Mixed> vec(
       1000000, create<thrift::benchmark::Mixed>());
   thrift::benchmark::LargeListMixed d;
-  d.lst = std::move(vec);
+  *d.lst_ref() = std::move(vec);
   return d;
 }
 
@@ -130,7 +130,7 @@ thrift::benchmark::LargeMapInt create<thrift::benchmark::LargeMapInt>() {
   std::srand(1);
   thrift::benchmark::LargeMapInt l;
   for (int i = 0; i < 1000000; i++) {
-    l.m[i] = std::rand();
+    l.m_ref()[i] = std::rand();
   }
   return l;
 }
@@ -139,7 +139,7 @@ template <>
 thrift::benchmark::NestedMapRaw create<thrift::benchmark::NestedMapRaw>() {
   thrift::benchmark::NestedMapRaw map;
   populateMap([&](int i, int j, int k, int l, int m, int v) {
-    map.m[i][j][k][l][m] = v;
+    map.m_ref()[i][j][k][l][m] = v;
   });
   return map;
 }
@@ -149,7 +149,7 @@ thrift::benchmark::SortedVecNestedMapRaw
 create<thrift::benchmark::SortedVecNestedMapRaw>() {
   thrift::benchmark::SortedVecNestedMapRaw map;
   populateMap([&](int i, int j, int k, int l, int m, int v) {
-    map.m[i][j][k][l][m] = v;
+    map.m_ref()[i][j][k][l][m] = v;
   });
   return map;
 }
@@ -158,7 +158,7 @@ template <>
 thrift::benchmark::NestedMap create<thrift::benchmark::NestedMap>() {
   thrift::benchmark::NestedMap map;
   populateMap([&](int i, int j, int k, int l, int m, int v) {
-    map.m[i].m[j].m[k].m[l].m[m] = v;
+    map.m[i].m[j].m[k].m[l].m_ref()[m] = v;
   });
   return map;
 }
@@ -168,7 +168,7 @@ thrift::benchmark::SortedVecNestedMap
 create<thrift::benchmark::SortedVecNestedMap>() {
   thrift::benchmark::SortedVecNestedMap map;
   populateMap([&](int i, int j, int k, int l, int m, int v) {
-    map.m[i].m[j].m[k].m[l].m[m] = v;
+    map.m[i].m[j].m[k].m[l].m_ref()[m] = v;
   });
   return map;
 }
@@ -176,106 +176,106 @@ create<thrift::benchmark::SortedVecNestedMap>() {
 template <>
 thrift::benchmark::LargeMixed create<thrift::benchmark::LargeMixed>() {
   thrift::benchmark::LargeMixed d;
-  d.var1 = 5;
-  d.var2 = 12345;
-  d.var3 = true;
-  d.var4 = "hello";
-  d.var5 = 5;
-  d.var6 = 12345;
-  d.var7 = true;
-  d.var8 = "hello";
-  d.var9 = 5;
-  d.var10 = 12345;
-  d.var11 = true;
-  d.var12 = "hello";
-  d.var13 = 5;
-  d.var14 = 12345;
-  d.var15 = true;
-  d.var16 = "hello";
-  d.var17 = 5;
-  d.var18 = 12345;
-  d.var19 = true;
-  d.var20 = "hello";
-  d.var21 = 5;
-  d.var22 = 12345;
-  d.var23 = true;
-  d.var24 = "hello";
-  d.var25 = 5;
-  d.var26 = 12345;
-  d.var27 = true;
-  d.var28 = "hello";
-  d.var29 = 5;
-  d.var30 = 12345;
-  d.var31 = true;
-  d.var32 = "hello";
-  d.var33 = 5;
-  d.var34 = 12345;
-  d.var35 = true;
-  d.var36 = "hello";
-  d.var37 = 5;
-  d.var38 = 12345;
-  d.var39 = true;
-  d.var40 = "hello";
-  d.var41 = 5;
-  d.var42 = 12345;
-  d.var43 = true;
-  d.var44 = "hello";
-  d.var45 = 5;
-  d.var46 = 12345;
-  d.var47 = true;
-  d.var48 = "hello";
-  d.var49 = 5;
-  d.var50 = 12345;
-  d.var51 = true;
-  d.var52 = "hello";
-  d.var53 = 5;
-  d.var54 = 12345;
-  d.var55 = true;
-  d.var56 = "hello";
-  d.var57 = 5;
-  d.var58 = 12345;
-  d.var59 = true;
-  d.var60 = "hello";
-  d.var61 = 5;
-  d.var62 = 12345;
-  d.var63 = true;
-  d.var64 = "hello";
-  d.var65 = 5;
-  d.var66 = 12345;
-  d.var67 = true;
-  d.var68 = "hello";
-  d.var69 = 5;
-  d.var70 = 12345;
-  d.var71 = true;
-  d.var72 = "hello";
-  d.var73 = 5;
-  d.var74 = 12345;
-  d.var75 = true;
-  d.var76 = "hello";
-  d.var77 = 5;
-  d.var78 = 12345;
-  d.var79 = true;
-  d.var80 = "hello";
-  d.var81 = 5;
-  d.var82 = 12345;
-  d.var83 = true;
-  d.var84 = "hello";
-  d.var85 = 5;
-  d.var86 = 12345;
-  d.var87 = true;
-  d.var88 = "hello";
-  d.var89 = 5;
-  d.var90 = 12345;
-  d.var91 = true;
-  d.var92 = "hello";
-  d.var93 = 5;
-  d.var94 = 12345;
-  d.var95 = true;
-  d.var96 = "hello";
-  d.var97 = 5;
-  d.var98 = 12345;
-  d.var99 = true;
-  d.var100 = "hello";
+  *d.var1_ref() = 5;
+  *d.var2_ref() = 12345;
+  *d.var3_ref() = true;
+  *d.var4_ref() = "hello";
+  *d.var5_ref() = 5;
+  *d.var6_ref() = 12345;
+  *d.var7_ref() = true;
+  *d.var8_ref() = "hello";
+  *d.var9_ref() = 5;
+  *d.var10_ref() = 12345;
+  *d.var11_ref() = true;
+  *d.var12_ref() = "hello";
+  *d.var13_ref() = 5;
+  *d.var14_ref() = 12345;
+  *d.var15_ref() = true;
+  *d.var16_ref() = "hello";
+  *d.var17_ref() = 5;
+  *d.var18_ref() = 12345;
+  *d.var19_ref() = true;
+  *d.var20_ref() = "hello";
+  *d.var21_ref() = 5;
+  *d.var22_ref() = 12345;
+  *d.var23_ref() = true;
+  *d.var24_ref() = "hello";
+  *d.var25_ref() = 5;
+  *d.var26_ref() = 12345;
+  *d.var27_ref() = true;
+  *d.var28_ref() = "hello";
+  *d.var29_ref() = 5;
+  *d.var30_ref() = 12345;
+  *d.var31_ref() = true;
+  *d.var32_ref() = "hello";
+  *d.var33_ref() = 5;
+  *d.var34_ref() = 12345;
+  *d.var35_ref() = true;
+  *d.var36_ref() = "hello";
+  *d.var37_ref() = 5;
+  *d.var38_ref() = 12345;
+  *d.var39_ref() = true;
+  *d.var40_ref() = "hello";
+  *d.var41_ref() = 5;
+  *d.var42_ref() = 12345;
+  *d.var43_ref() = true;
+  *d.var44_ref() = "hello";
+  *d.var45_ref() = 5;
+  *d.var46_ref() = 12345;
+  *d.var47_ref() = true;
+  *d.var48_ref() = "hello";
+  *d.var49_ref() = 5;
+  *d.var50_ref() = 12345;
+  *d.var51_ref() = true;
+  *d.var52_ref() = "hello";
+  *d.var53_ref() = 5;
+  *d.var54_ref() = 12345;
+  *d.var55_ref() = true;
+  *d.var56_ref() = "hello";
+  *d.var57_ref() = 5;
+  *d.var58_ref() = 12345;
+  *d.var59_ref() = true;
+  *d.var60_ref() = "hello";
+  *d.var61_ref() = 5;
+  *d.var62_ref() = 12345;
+  *d.var63_ref() = true;
+  *d.var64_ref() = "hello";
+  *d.var65_ref() = 5;
+  *d.var66_ref() = 12345;
+  *d.var67_ref() = true;
+  *d.var68_ref() = "hello";
+  *d.var69_ref() = 5;
+  *d.var70_ref() = 12345;
+  *d.var71_ref() = true;
+  *d.var72_ref() = "hello";
+  *d.var73_ref() = 5;
+  *d.var74_ref() = 12345;
+  *d.var75_ref() = true;
+  *d.var76_ref() = "hello";
+  *d.var77_ref() = 5;
+  *d.var78_ref() = 12345;
+  *d.var79_ref() = true;
+  *d.var80_ref() = "hello";
+  *d.var81_ref() = 5;
+  *d.var82_ref() = 12345;
+  *d.var83_ref() = true;
+  *d.var84_ref() = "hello";
+  *d.var85_ref() = 5;
+  *d.var86_ref() = 12345;
+  *d.var87_ref() = true;
+  *d.var88_ref() = "hello";
+  *d.var89_ref() = 5;
+  *d.var90_ref() = 12345;
+  *d.var91_ref() = true;
+  *d.var92_ref() = "hello";
+  *d.var93_ref() = 5;
+  *d.var94_ref() = 12345;
+  *d.var95_ref() = true;
+  *d.var96_ref() = "hello";
+  *d.var97_ref() = 5;
+  *d.var98_ref() = 12345;
+  *d.var99_ref() = true;
+  *d.var100_ref() = "hello";
   return d;
 }
 
@@ -283,18 +283,18 @@ template <>
 thrift::benchmark::MixedInt create<thrift::benchmark::MixedInt>() {
   std::srand(1);
   thrift::benchmark::MixedInt d;
-  d.var1 = std::rand();
-  d.var2 = std::rand();
-  d.var3 = std::rand();
-  d.var4 = std::rand();
-  d.var5 = std::rand();
-  d.var6 = std::rand();
-  d.var7 = std::rand();
-  d.var8 = std::rand();
-  d.var9 = std::rand();
-  d.varx = std::rand();
-  d.vary = std::rand();
-  d.varz = std::rand();
+  *d.var1_ref() = std::rand();
+  *d.var2_ref() = std::rand();
+  *d.var3_ref() = std::rand();
+  *d.var4_ref() = std::rand();
+  *d.var5_ref() = std::rand();
+  *d.var6_ref() = std::rand();
+  *d.var7_ref() = std::rand();
+  *d.var8_ref() = std::rand();
+  *d.var9_ref() = std::rand();
+  *d.varx_ref() = std::rand();
+  *d.vary_ref() = std::rand();
+  *d.varz_ref() = std::rand();
   return d;
 }
 
@@ -304,24 +304,24 @@ create<thrift::benchmark::BigListMixedInt>() {
   std::vector<thrift::benchmark::MixedInt> vec(
       10000, create<thrift::benchmark::MixedInt>());
   thrift::benchmark::BigListMixedInt d;
-  d.lst = std::move(vec);
+  *d.lst_ref() = std::move(vec);
   return d;
 }
 
 template <>
 thrift::benchmark::ComplexStruct create<thrift::benchmark::ComplexStruct>() {
   thrift::benchmark::ComplexStruct d;
-  d.var1 = create<thrift::benchmark::Empty>();
-  d.var2 = create<thrift::benchmark::SmallInt>();
-  d.var3 = create<thrift::benchmark::BigInt>();
-  d.var4 = create<thrift::benchmark::SmallString>();
-  d.var5 = create<thrift::benchmark::BigString>();
-  d.var6 = create<thrift::benchmark::Mixed>();
-  d.var7 = create<thrift::benchmark::SmallListInt>();
-  d.var8 = create<thrift::benchmark::BigListInt>();
-  d.var9 = create<thrift::benchmark::LargeListMixed>();
-  d.var10 = create<thrift::benchmark::LargeMapInt>();
-  d.var11 = create<thrift::benchmark::LargeMixed>();
-  d.var12 = create<thrift::benchmark::NestedMap>();
+  *d.var1_ref() = create<thrift::benchmark::Empty>();
+  *d.var2_ref() = create<thrift::benchmark::SmallInt>();
+  *d.var3_ref() = create<thrift::benchmark::BigInt>();
+  *d.var4_ref() = create<thrift::benchmark::SmallString>();
+  *d.var5_ref() = create<thrift::benchmark::BigString>();
+  *d.var6_ref() = create<thrift::benchmark::Mixed>();
+  *d.var7_ref() = create<thrift::benchmark::SmallListInt>();
+  *d.var8_ref() = create<thrift::benchmark::BigListInt>();
+  *d.var9_ref() = create<thrift::benchmark::LargeListMixed>();
+  *d.var10_ref() = create<thrift::benchmark::LargeMapInt>();
+  *d.var11_ref() = create<thrift::benchmark::LargeMixed>();
+  *d.var12_ref() = create<thrift::benchmark::NestedMap>();
   return d;
 }

@@ -23,7 +23,7 @@ using namespace apache::thrift::test;
 TEST(ExceptionTest, test_default_constructor) {
   try {
     MyException e;
-    e.msg = "what!!!";
+    *e.msg_ref() = "what!!!";
     throw e;
   } catch (const std::exception& ex) {
     EXPECT_EQ(ex.what(), std::string{"what!!!"});

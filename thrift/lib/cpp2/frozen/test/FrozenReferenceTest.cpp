@@ -28,14 +28,14 @@ using namespace testing;
 
 std::unique_ptr<Person> makePerson(const std::string& name) {
   auto p = std::make_unique<Person>();
-  p->name = name;
+  *p->name_ref() = name;
   return p;
 }
 
 std::unique_ptr<Node> makeNode(int64_t id, const std::string& content) {
   auto n = std::make_unique<Node>();
-  n->id = id;
-  n->content = content;
+  *n->id_ref() = id;
+  *n->content_ref() = content;
   return n;
 }
 
@@ -44,7 +44,7 @@ void fillTree(std::unique_ptr<Node>& node, int min, int max) {
     return;
   int mid = (max + min) / 2;
   node = std::make_unique<Node>();
-  node->id = mid;
+  *node->id_ref() = mid;
   fillTree(node->left, min, mid);
   fillTree(node->right, mid + 1, max);
 }
@@ -60,16 +60,16 @@ TEST(Frozen, simple_ref) {
   t.c2u_opt = makePerson("c2u_opt");
   t.c2r_opt = makePerson("c2r_opt");
   // unset default ref fields have default value
-  EXPECT_EQ(t.c2s->name, "");
-  EXPECT_EQ(t.c2u->name, "");
+  EXPECT_EQ(*t.c2s->name_ref(), "");
+  EXPECT_EQ(*t.c2u->name_ref(), "");
   // unset optional ref field is nullptr
   EXPECT_EQ(t.c1r_opt, nullptr);
 
   auto f = freeze(t);
   // empty pointers
-  EXPECT_EQ(f.c2s()->name(), t.c2s->name);
+  EXPECT_EQ(f.c2s()->name(), *t.c2s->name_ref());
   EXPECT_EQ(f.c2s()->name(), "");
-  EXPECT_EQ(f.c2u()->name(), t.c2u->name);
+  EXPECT_EQ(f.c2u()->name(), *t.c2u->name_ref());
   EXPECT_EQ(f.c2u()->name(), "");
 
   EXPECT_EQ(f.c1r()->name(), "c1r");
@@ -82,9 +82,9 @@ TEST(Frozen, simple_ref) {
 
   auto str = freezeToString(t);
   auto f2 = mapFrozen<SimpleRef>(std::move(str));
-  EXPECT_EQ(f2.c2s()->name(), t.c2s->name);
+  EXPECT_EQ(f2.c2s()->name(), *t.c2s->name_ref());
   EXPECT_EQ(f2.c2s()->name(), "");
-  EXPECT_EQ(f2.c2u()->name(), t.c2u->name);
+  EXPECT_EQ(f2.c2u()->name(), *t.c2u->name_ref());
   EXPECT_EQ(f2.c2u()->name(), "");
   EXPECT_EQ(f2.c1r()->name(), "c1r");
   EXPECT_EQ(f2.c2r()->name(), "c2r");
@@ -97,10 +97,10 @@ TEST(Frozen, simple_ref) {
 
 TEST(Frozen, recursive_node_ref) {
   Node root;
-  root.id = 8;
+  *root.id_ref() = 8;
   root.left = makeNode(3, s1);
   root.right = makeNode(5, s2);
-  root.content = s2;
+  *root.content_ref() = s2;
   EXPECT_EQ(root.left->left, nullptr);
 
   auto f = freeze(root);
@@ -143,7 +143,7 @@ TEST(Frozen, recursive_node_ref) {
 
 TEST(Frozen, instance_cycle_1) {
   auto a = std::make_shared<LinkedListNode>();
-  a->id = 1;
+  *a->id_ref() = 1;
   a->next = a;
 
   // Note: It's possible to freeze the shared_ptr directly, not *a.
@@ -160,9 +160,9 @@ TEST(Frozen, instance_cycle_1) {
 
 TEST(Frozen, instance_cycle_2) {
   auto a = std::make_shared<LinkedListNode>();
-  a->id = 1;
+  *a->id_ref() = 1;
   auto b = std::make_shared<LinkedListNode>();
-  b->id = 2;
+  *b->id_ref() = 2;
 
   a->next = b;
   b->next = a;
@@ -218,14 +218,14 @@ TEST(Frozen, list_size) {
   for (size_t i = 1; i <= 100; ++i) {
     current->next = std::make_unique<LinkedListNode>();
     current = current->next.get();
-    current->id = i;
+    *current->id_ref() = i;
   }
   EXPECT_EQ(frozenSize(first), 201);
 }
 
 TEST(Frozen, shared_ref) {
   SharedRef t;
-  t.id = 9527;
+  *t.id_ref() = 9527;
   std::shared_ptr<Person> that = makePerson(s2);
   t.p1 = that;
   t.p2 = that;
@@ -244,7 +244,7 @@ TEST(Frozen, shared_ref) {
 
 TEST(Frozen, shared_ref_schema_evolution) {
   SharedRef t;
-  t.id = 9527;
+  *t.id_ref() = 9527;
   std::shared_ptr<Person> that = makePerson(s2);
   t.p1 = that;
   t.p2 = that;

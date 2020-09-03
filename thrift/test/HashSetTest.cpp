@@ -22,17 +22,17 @@ using namespace apache::thrift::test;
 
 TEST(HashSetTest, example) {
   foo f;
-  f.bar.insert(5);
-  EXPECT_EQ(1, f.bar.count(5));
-  f.bar.insert(6);
-  EXPECT_EQ(1, f.bar.count(6));
+  f.bar_ref()->insert(5);
+  EXPECT_EQ(1, f.bar_ref()->count(5));
+  f.bar_ref()->insert(6);
+  EXPECT_EQ(1, f.bar_ref()->count(6));
 
-  f.bar.erase(5);
-  EXPECT_EQ(0, f.bar.count(5));
+  f.bar_ref()->erase(5);
+  EXPECT_EQ(0, f.bar_ref()->count(5));
 
-  f.baz.insert("cool");
-  EXPECT_EQ(1, f.baz.count("cool"));
+  f.baz_ref()->insert("cool");
+  EXPECT_EQ(1, f.baz_ref()->count("cool"));
 
-  f.baz.erase("cool");
-  EXPECT_EQ(0, f.baz.count("cool"));
+  f.baz_ref()->erase("cool");
+  EXPECT_EQ(0, f.baz_ref()->count("cool"));
 }

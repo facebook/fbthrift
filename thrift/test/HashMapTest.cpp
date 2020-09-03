@@ -22,17 +22,17 @@ using namespace apache::thrift::test;
 
 TEST(HashMapTest, example) {
   foo f;
-  f.bar[5] = 6;
-  EXPECT_EQ(6, f.bar[5]);
-  f.bar[6] = 7;
-  EXPECT_EQ(7, f.bar[6]);
+  f.bar_ref()[5] = 6;
+  EXPECT_EQ(6, f.bar_ref()[5]);
+  f.bar_ref()[6] = 7;
+  EXPECT_EQ(7, f.bar_ref()[6]);
 
-  f.bar[5] = 7;
-  EXPECT_EQ(7, f.bar[5]);
+  f.bar_ref()[5] = 7;
+  EXPECT_EQ(7, f.bar_ref()[5]);
 
-  f.baz["cool"] = 50;
-  EXPECT_EQ(50, f.baz["cool"]);
+  f.baz_ref()["cool"] = 50;
+  EXPECT_EQ(50, f.baz_ref()["cool"]);
 
-  f.baz["cool"] = 30;
-  EXPECT_EQ(30, f.baz["cool"]);
+  f.baz_ref()["cool"] = 30;
+  EXPECT_EQ(30, f.baz_ref()["cool"]);
 }

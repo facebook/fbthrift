@@ -40,7 +40,7 @@ FATAL_DATA_MEMBER_GETTER(audit_id_getter, audit_id);
 struct print_audit_id_visitor {
   template <typename T>
   void impl(std::true_type, T const& member, char const* name) const {
-    print("audit id for ", name, ": ", member.audit_id);
+    print("audit id for ", name, ": ", *member.audit_id_ref());
   }
 
   template <typename T>

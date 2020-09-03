@@ -87,20 +87,20 @@ TEST(constants, examples) {
   EXPECT_TRUE(pod_2.__isset.b);
   EXPECT_TRUE(pod_2.__isset.c);
   EXPECT_TRUE(pod_2.__isset.d);
-  EXPECT_TRUE(pod_2.c.__isset.a);
-  EXPECT_TRUE(pod_2.c.__isset.b);
+  EXPECT_TRUE(pod_2.c_ref()->__isset.a);
+  EXPECT_TRUE(pod_2.c_ref()->__isset.b);
   EXPECT_EQ(pod2, pod_2);
 
   auto const& pod_3 = test_constants::pod_3();
   EXPECT_TRUE(pod_3.__isset.a);
   EXPECT_TRUE(pod_3.__isset.b);
   EXPECT_TRUE(pod_3.__isset.c);
-  EXPECT_TRUE(pod_3.c.__isset.a);
-  EXPECT_FALSE(pod_3.c.__isset.b);
-  EXPECT_TRUE(pod_3.c.__isset.c);
-  EXPECT_FALSE(pod_3.c.__isset.d);
-  EXPECT_FALSE(pod_3.c.c.__isset.a);
-  EXPECT_TRUE(pod_3.c.c.__isset.b);
+  EXPECT_TRUE(pod_3.c_ref()->__isset.a);
+  EXPECT_FALSE(pod_3.c_ref()->__isset.b);
+  EXPECT_TRUE(pod_3.c_ref()->__isset.c);
+  EXPECT_FALSE(pod_3.c_ref()->__isset.d);
+  EXPECT_FALSE(pod_3.c_ref()->c_ref()->__isset.a);
+  EXPECT_TRUE(pod_3.c_ref()->c_ref()->__isset.b);
 
   EXPECT_EQ(union1::Type::i, test_constants::u_1_1().getType());
   EXPECT_EQ(97, test_constants::u_1_1().get_i());

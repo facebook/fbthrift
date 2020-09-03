@@ -45,24 +45,24 @@ TYPED_TEST(MultiProtocolTest, test_structs_populate) {
     this->debug_buffer();
     serializer_read(b, this->reader);
 
-    ASSERT_EQ(a.field1, b.field1);
-    ASSERT_EQ(a.field2, b.field2);
-    ASSERT_EQ(a.field3, b.field3);
-    ASSERT_EQ(a.field4, b.field4);
-    ASSERT_EQ(a.field5, b.field5);
-    ASSERT_EQ(a.field6, b.field6);
-    ASSERT_EQ(a.field7, b.field7);
-    ASSERT_EQ(a.field8, b.field8);
-    ASSERT_EQ(a.field9, b.field9);
+    ASSERT_EQ(*a.field1_ref(), *b.field1_ref());
+    ASSERT_EQ(*a.field2_ref(), *b.field2_ref());
+    ASSERT_EQ(*a.field3_ref(), *b.field3_ref());
+    ASSERT_EQ(*a.field4_ref(), *b.field4_ref());
+    ASSERT_EQ(*a.field5_ref(), *b.field5_ref());
+    ASSERT_EQ(*a.field6_ref(), *b.field6_ref());
+    ASSERT_EQ(*a.field7_ref(), *b.field7_ref());
+    ASSERT_EQ(*a.field8_ref(), *b.field8_ref());
+    ASSERT_EQ(*a.field9_ref(), *b.field9_ref());
     ASSERT_EQ(*(a.field10), *(b.field10));
 
-    auto abuf = a.field11.coalesce();
-    auto bbuf = b.field11.coalesce();
+    auto abuf = a.field11_ref()->coalesce();
+    auto bbuf = b.field11_ref()->coalesce();
 
     ASSERT_EQ(abuf.size(), bbuf.size());
     ASSERT_EQ(abuf, bbuf);
 
-    ASSERT_EQ(a.field12, b.field12);
+    ASSERT_EQ(*a.field12_ref(), *b.field12_ref());
     if (a.field13) {
       ASSERT_EQ(*(a.field13), *(b.field13));
     } else {

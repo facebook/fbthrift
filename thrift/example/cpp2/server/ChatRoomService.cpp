@@ -28,7 +28,7 @@ void ChatRoomServiceHandler::getMessages(
     std::unique_ptr<GetMessagesRequest> req) {
   int64_t idx = 0;
   if (auto token = req->token_ref()) {
-    idx = token->index;
+    idx = *token->index_ref();
   }
 
   int64_t i = idx;
@@ -36,24 +36,24 @@ void ChatRoomServiceHandler::getMessages(
     int size = lockedMessage.size();
     int count = 0;
     while (i < size && count < FLAGS_max_messages_per_get) {
-      resp.messages.push_back(lockedMessage[i]);
+      resp.messages_ref()->push_back(lockedMessage[i]);
       ++i;
       ++count;
     }
   });
 
   IndexToken token;
-  token.index = i;
-  resp.token = token;
+  *token.index_ref() = i;
+  *resp.token_ref() = token;
 }
 
 void ChatRoomServiceHandler::sendMessage(
     std::unique_ptr<SendMessageRequest> req) {
   Message msg;
-  msg.message = req->message;
-  msg.sender = req->sender;
+  *msg.message_ref() = *req->message_ref();
+  *msg.sender_ref() = *req->sender_ref();
 
-  msg.timestamp = (int64_t)time(nullptr);
+  *msg.timestamp_ref() = (int64_t)time(nullptr);
 
   messageBuffer_.withWLock([&](auto& lockedMessage) { //
     lockedMessage.push_back(msg);

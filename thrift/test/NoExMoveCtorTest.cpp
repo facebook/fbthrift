@@ -28,12 +28,12 @@ TEST(TNoExceptMoveCtorTest, simple) {
   // NOTE: gcc may not do real "move" if std::string is too small
   size_t textSize = 2000;
   Simple c2s1;
-  c2s1.d = "some text here";
-  c2s1.d.resize(textSize);
+  *c2s1.d_ref() = "some text here";
+  c2s1.d_ref()->resize(textSize);
   c2s1.__isset.i = true;
   Simple c2s2{std::move(c2s1)};
-  EXPECT_EQ(c2s1.d.size(), 0);
-  EXPECT_EQ(c2s2.d.size(), textSize);
+  EXPECT_EQ(c2s1.d_ref()->size(), 0);
+  EXPECT_EQ(c2s2.d_ref()->size(), textSize);
   EXPECT_TRUE(c2s2.__isset.i);
 
   // Check thrift struct default move ctor not "noexcept" if a STL data

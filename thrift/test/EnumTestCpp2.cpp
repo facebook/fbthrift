@@ -60,8 +60,8 @@ TEST(EnumTestCpp2, test_enum) {
 
 TEST(EnumTestCpp2, test_enum_constant) {
   MyStruct ms;
-  EXPECT_TRUE(ms.me2_2 == MyEnum2::ME2_2);
-  EXPECT_TRUE(ms.me3_n2 == MyEnum3::ME3_N2);
+  EXPECT_TRUE(*ms.me2_2_ref() == MyEnum2::ME2_2);
+  EXPECT_TRUE(*ms.me3_n2_ref() == MyEnum3::ME3_N2);
 }
 
 TEST(EnumTestCpp2, test_enum_names) {
@@ -113,8 +113,8 @@ TEST(EnumTestCpp2, test_unscoped) {
 
 TEST(EnumTestCpp2, test_enum_forward_reference) {
   MyStructWithForwardRefEnum obj;
-  EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.a);
-  EXPECT_EQ(MyForwardRefEnum::NONZERO, obj.b);
+  EXPECT_EQ(MyForwardRefEnum::NONZERO, *obj.a_ref());
+  EXPECT_EQ(MyForwardRefEnum::NONZERO, *obj.b_ref());
 }
 
 namespace {

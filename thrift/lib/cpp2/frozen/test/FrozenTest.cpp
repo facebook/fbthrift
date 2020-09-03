@@ -44,15 +44,15 @@ std::string toString(const Layout<T>& x) {
 
 EveryLayout stressValue2 = [] {
   EveryLayout x;
-  x.aBool = true;
-  x.aInt = 2;
-  x.aList = {3, 5};
-  x.aSet = {7, 11};
-  x.aHashSet = {13, 17};
-  x.aMap = {{19, 23}, {29, 31}};
-  x.aHashMap = {{37, 41}, {43, 47}};
+  *x.aBool_ref() = true;
+  *x.aInt_ref() = 2;
+  *x.aList_ref() = {3, 5};
+  *x.aSet_ref() = {7, 11};
+  *x.aHashSet_ref() = {13, 17};
+  *x.aMap_ref() = {{19, 23}, {29, 31}};
+  *x.aHashMap_ref() = {{37, 41}, {43, 47}};
   x.optInt_ref() = 53;
-  x.aFloat = 59.61;
+  *x.aFloat_ref() = 59.61;
   x.optMap_ref() = {{2, 4}, {3, 9}};
   return x;
 }();
@@ -73,45 +73,45 @@ Layout<T> layout(const T& x, size_t& size) {
 
 auto tom1 = [] {
   Pet1 max;
-  max.name = "max";
+  *max.name_ref() = "max";
   Pet1 ed;
-  ed.name = "ed";
+  *ed.name_ref() = "ed";
   Person1 tom;
-  tom.name = "tom";
-  tom.height = 1.82f;
+  *tom.name_ref() = "tom";
+  *tom.height_ref() = 1.82f;
   tom.age_ref() = 30;
-  tom.pets.push_back(max);
-  tom.pets.push_back(ed);
+  tom.pets_ref()->push_back(max);
+  tom.pets_ref()->push_back(ed);
   return tom;
 }();
 auto tom2 = [] {
   Pet2 max;
-  max.name = "max";
+  *max.name_ref() = "max";
   Pet2 ed;
-  ed.name = "ed";
+  *ed.name_ref() = "ed";
   Person2 tom;
-  tom.name = "tom";
-  tom.weight = 169;
+  *tom.name_ref() = "tom";
+  *tom.weight_ref() = 169;
   tom.age_ref() = 30;
-  tom.pets.push_back(max);
-  tom.pets.push_back(ed);
+  tom.pets_ref()->push_back(max);
+  tom.pets_ref()->push_back(ed);
   return tom;
 }();
 
 TEST(Frozen, EndToEnd) {
   auto view = freeze(tom1);
-  EXPECT_EQ(tom1.name, view.name());
+  EXPECT_EQ(*tom1.name_ref(), view.name());
   ASSERT_TRUE(view.name_ref().has_value());
-  EXPECT_EQ(tom1.name, *view.name_ref());
+  EXPECT_EQ(*tom1.name_ref(), *view.name_ref());
   ASSERT_TRUE(view.age().has_value());
   EXPECT_EQ(*tom1.age_ref(), view.age().value());
-  EXPECT_EQ(tom1.height, view.height());
-  EXPECT_EQ(view.pets()[0].name(), tom1.pets[0].name);
-  auto& pets = tom1.pets;
+  EXPECT_EQ(*tom1.height_ref(), view.height());
+  EXPECT_EQ(view.pets()[0].name(), *tom1.pets[0].name_ref());
+  auto& pets = *tom1.pets_ref();
   auto fpets = view.pets();
   ASSERT_EQ(pets.size(), fpets.size());
-  for (size_t i = 0; i < tom1.pets.size(); ++i) {
-    EXPECT_EQ(pets[i].name, fpets[i].name());
+  for (size_t i = 0; i < tom1.pets_ref()->size(); ++i) {
+    EXPECT_EQ(*pets[i].name_ref(), fpets[i].name());
   }
   Layout<Person1> layout;
   LayoutRoot::layout(tom1, layout);
@@ -127,8 +127,8 @@ TEST(Frozen, Comparison) {
   // name is optional now, and was __isset=true, so we don't write it
   ASSERT_TRUE(view2.age().has_value());
   EXPECT_EQ(*tom2.age_ref(), view2.age().value());
-  EXPECT_EQ(tom2.name, view2.name());
-  EXPECT_EQ(tom2.name.size(), view2.name().size());
+  EXPECT_EQ(*tom2.name_ref(), view2.name());
+  EXPECT_EQ(tom2.name_ref()->size(), view2.name().size());
   auto ttom2 = view2.thaw();
   EXPECT_EQ(tom2, ttom2) << debugString(tom2) << debugString(ttom2);
 }
@@ -222,13 +222,13 @@ TEST(Frozen, EmbeddedSchema) {
     folly::StringPiece charRange(&storage[start], storage.size() - start);
     folly::ByteRange bytes(charRange);
     auto view = person2.view({bytes.begin(), 0});
-    EXPECT_EQ(tom1.name, view.name());
+    EXPECT_EQ(*tom1.name_ref(), view.name());
     ASSERT_EQ(tom1.__isset.age, view.age().has_value());
     if (auto age = tom1.age_ref()) {
       EXPECT_EQ(*age, view.age().value());
     }
-    EXPECT_EQ(tom1.pets[0].name, view.pets()[0].name());
-    EXPECT_EQ(tom1.pets[1].name, view.pets()[1].name());
+    EXPECT_EQ(*tom1.pets[0].name_ref(), view.pets()[0].name());
+    EXPECT_EQ(*tom1.pets[1].name_ref(), view.pets()[1].name());
   }
 }
 
@@ -312,10 +312,10 @@ TEST(Frozen, VectorString) {
 TEST(Frozen, BigMap) {
   PlaceTest t;
   for (int i = 0; i < 1000; ++i) {
-    auto& place = t.places[i * i * i % 757368944];
-    place.name = folly::to<std::string>(i);
+    auto& place = t.places_ref()[i * i * i % 757368944];
+    *place.name_ref() = folly::to<std::string>(i);
     for (int j = 0; j < 200; ++j) {
-      ++place.popularityByHour[rand() % (24 * 7)];
+      ++place.popularityByHour_ref()[rand() % (24 * 7)];
     }
   }
   folly::IOBufQueue bq(folly::IOBufQueue::cacheChainLength());
@@ -333,15 +333,15 @@ Tiny tiny1 = [] {
 Tiny tiny2 = [] {
   Tiny obj;
   obj.a = "two";
-  obj.b = "set";
+  *obj.b_ref() = "set";
   return obj;
 }();
 Tiny tiny4 = [] {
   Tiny obj;
   obj.a = "four";
-  obj.b = "itty";
-  obj.c = "bitty";
-  obj.d = "strings";
+  *obj.b_ref() = "itty";
+  *obj.c_ref() = "bitty";
+  *obj.d_ref() = "strings";
   return obj;
 }();
 
@@ -374,18 +374,18 @@ TEST(Frozen, SchemaSaving) {
 
 TEST(Frozen, Enum) {
   Person1 he, she;
-  he.gender = Gender::Male;
-  she.gender = Gender::Female;
+  *he.gender_ref() = Gender::Male;
+  *she.gender_ref() = Gender::Female;
   EXPECT_EQ(he, freeze(he).thaw());
   EXPECT_EQ(she, freeze(she).thaw());
 }
 
 TEST(Frozen, EnumAsKey) {
   EnumAsKeyTest thriftObj;
-  thriftObj.enumSet.insert(Gender::Male);
-  thriftObj.enumMap.emplace(Gender::Female, 1219);
-  thriftObj.outsideEnumSet.insert(Animal::DOG);
-  thriftObj.outsideEnumMap.emplace(Animal::CAT, 7779);
+  thriftObj.enumSet_ref()->insert(Gender::Male);
+  thriftObj.enumMap_ref()->emplace(Gender::Female, 1219);
+  thriftObj.outsideEnumSet_ref()->insert(Animal::DOG);
+  thriftObj.outsideEnumMap_ref()->emplace(Animal::CAT, 7779);
 
   auto frozenObj = freeze(thriftObj);
   EXPECT_THAT(frozenObj.enumSet(), Contains(Gender::Male));
@@ -431,8 +431,8 @@ TEST(Frozen, ThawPart) {
   auto ed = f.pets()[1].thaw();
   EXPECT_EQ(typeid(max), typeid(Pet1));
   EXPECT_EQ(typeid(ed), typeid(Pet1));
-  EXPECT_EQ(max.name, "max");
-  EXPECT_EQ(ed.name, "ed");
+  EXPECT_EQ(*max.name_ref(), "max");
+  EXPECT_EQ(*ed.name_ref(), "ed");
 }
 
 TEST(Frozen, SchemaConversion) {

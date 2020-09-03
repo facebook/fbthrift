@@ -157,12 +157,12 @@ TEST_F(TerseUnionTestFixture, SerializeDeserializeTest) {
   serializeDeserialize(u);
 
   I32Stuff i32St;
-  i32St.a = 100;
+  *i32St.a_ref() = 100;
   u.set_i32_field(i32St);
   serializeDeserialize(u);
 
   StringStuff stringSt;
-  stringSt.a = "str";
+  *stringSt.a_ref() = "str";
   u.set_string_field(stringSt);
   serializeDeserialize(u);
 }
@@ -185,10 +185,10 @@ TEST(NonCopyableUnion, Simple) {
 
 TEST(NonCopyableUnion, NoncopyableMember) {
   NonCopyableStruct s;
-  s.num = 42;
+  *s.num_ref() = 42;
   NonCopyableUnion u;
   u.set_ncs(std::move(s));
-  EXPECT_EQ(u.get_ncs().num, 42);
+  EXPECT_EQ(*u.get_ncs().num_ref(), 42);
 }
 
 TEST(NoExceptMoveUnion, Constructor) {

@@ -39,5 +39,5 @@ TEST(FatalLegacyReflectionTest, schema) {
   ASSERT_TRUE(std::is_unsigned<decltype(type::ui16_field)>::value) << "sanity";
   constexpr auto name = "struct fatal_legacy_reflection.SampleStruct";
   auto schema = legacy_reflection<type>::schema();
-  EXPECT_THAT(schema.names, testing::Contains(testing::Key(name)));
+  EXPECT_THAT(*schema.names_ref(), testing::Contains(testing::Key(name)));
 }

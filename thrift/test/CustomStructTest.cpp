@@ -29,22 +29,22 @@ using namespace thrift::test;
 Container createContainer() {
   Container c;
 
-  c.myStruct.data_ = "Goodnight Moon";
-  c.myUnion1.data_ = "Llama llama";
-  c.myUnion2.data_ = "36";
+  c.myStruct_ref()->data_ = "Goodnight Moon";
+  c.myUnion1_ref()->data_ = "Llama llama";
+  c.myUnion2_ref()->data_ = "36";
 
-  c.myStructList.emplace_back("Ship");
-  c.myStructList.emplace_back("The Cat in the Hat");
+  c.myStructList_ref()->emplace_back("Ship");
+  c.myStructList_ref()->emplace_back("The Cat in the Hat");
 
-  c.myUnionList.emplace_back("4601");
-  c.myUnionList.emplace_back("-1");
-  c.myUnionList.emplace_back("Alice's Adventures in Wonderland");
+  c.myUnionList_ref()->emplace_back("4601");
+  c.myUnionList_ref()->emplace_back("-1");
+  c.myUnionList_ref()->emplace_back("Alice's Adventures in Wonderland");
 
-  c.myStructMap.emplace(10, MyCustomStruct("When the Elephant Walks"));
-  c.myUnionMap.emplace(20, c.myUnion2);
+  c.myStructMap_ref()->emplace(10, MyCustomStruct("When the Elephant Walks"));
+  c.myUnionMap_ref()->emplace(20, *c.myUnion2_ref());
 
-  c.myRevStructMap[c.myStruct] = "Margaret Wise Brown";
-  c.myRevUnionMap[c.myUnion1] = "Anna Dewdney";
+  c.myRevStructMap_ref()[*c.myStruct_ref()] = "Margaret Wise Brown";
+  c.myRevUnionMap_ref()[*c.myUnion1_ref()] = "Anna Dewdney";
 
   return c;
 }

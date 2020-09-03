@@ -41,40 +41,40 @@ BenchmarkObject smallStrings;
 BenchmarkObject largeStrings;
 
 void initData() {
-  intStructs.intStructs.reserve(kElementCount);
+  intStructs.intStructs_ref()->reserve(kElementCount);
   for (size_t i = 0; i < kElementCount; ++i) {
     IntOnly x;
-    x.x = i;
-    intStructs.intStructs.push_back(std::move(x));
+    *x.x_ref() = i;
+    intStructs.intStructs_ref()->push_back(std::move(x));
   }
 
-  smallStringStructs.stringStructs.reserve(kElementCount);
+  smallStringStructs.stringStructs_ref()->reserve(kElementCount);
   for (size_t i = 0; i < kElementCount; ++i) {
     StringOnly x;
-    x.x.assign(100, 'x');
-    smallStringStructs.stringStructs.push_back(std::move(x));
+    x.x_ref()->assign(100, 'x');
+    smallStringStructs.stringStructs_ref()->push_back(std::move(x));
   }
 
-  largeStringStructs.stringStructs.reserve(kLargeElementCount);
+  largeStringStructs.stringStructs_ref()->reserve(kLargeElementCount);
   for (size_t i = 0; i < kLargeElementCount; ++i) {
     StringOnly x;
-    x.x.assign(1 << 20, 'x');
-    largeStringStructs.stringStructs.push_back(std::move(x));
+    x.x_ref()->assign(1 << 20, 'x');
+    largeStringStructs.stringStructs_ref()->push_back(std::move(x));
   }
 
-  ints.ints.reserve(kElementCount);
+  ints.ints_ref()->reserve(kElementCount);
   for (size_t i = 0; i < kElementCount; ++i) {
-    ints.ints.push_back(i);
+    ints.ints_ref()->push_back(i);
   }
 
-  smallStrings.strings.reserve(kElementCount);
+  smallStrings.strings_ref()->reserve(kElementCount);
   for (size_t i = 0; i < kElementCount; ++i) {
-    smallStrings.strings.emplace_back(100, 'x');
+    smallStrings.strings_ref()->emplace_back(100, 'x');
   }
 
-  largeStrings.strings.reserve(kLargeElementCount);
+  largeStrings.strings_ref()->reserve(kLargeElementCount);
   for (size_t i = 0; i < kLargeElementCount; ++i) {
-    largeStrings.strings.emplace_back(1 << 20, 'x');
+    largeStrings.strings_ref()->emplace_back(1 << 20, 'x');
   }
 }
 

@@ -140,12 +140,12 @@ TEST(FrozenVectorTypes, DistinctCheckingShouldPass) {
 
 template <class TestType>
 void populate(TestType& x) {
-  x.aList.push_back(1);
-  x.aSet.insert(2);
-  x.aMap[3] = 4;
-  x.aHashSet.insert(5);
-  x.aHashMap[6] = 7;
-  x.fbVector.push_back(8);
+  x.aList_ref()->push_back(1);
+  x.aSet_ref()->insert(2);
+  x.aMap_ref()[3] = 4;
+  x.aHashSet_ref()->insert(5);
+  x.aHashMap_ref()[6] = 7;
+  x.fbVector_ref()->push_back(8);
 }
 
 template <class T>

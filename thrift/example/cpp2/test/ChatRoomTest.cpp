@@ -76,8 +76,8 @@ TEST_F(ChatRoomTest, AsyncCall) {
   folly::Baton<> sendBaton;
   auto sendCb = std::make_unique<AsyncCallback>(&sendResult, &sendBaton);
   SendMessageRequest sendRequest;
-  sendRequest.message = "This is an example!";
-  sendRequest.sender = "UnitTest";
+  *sendRequest.message_ref() = "This is an example!";
+  *sendRequest.sender_ref() = "UnitTest";
   client_->sendMessage(std::move(sendCb), sendRequest);
   sendBaton.wait();
 
@@ -92,7 +92,7 @@ TEST_F(ChatRoomTest, AsyncCall) {
 
   // Receive Result
   client_->recv_getMessages(response, getResult);
-  EXPECT_EQ(response.messages.size(), 1);
+  EXPECT_EQ(response.messages_ref()->size(), 1);
 
   // Repeat
   ClientReceiveState sendResult2;
@@ -108,27 +108,31 @@ TEST_F(ChatRoomTest, AsyncCall) {
 
   // Receive Result
   client_->recv_getMessages(response, getResult2);
-  EXPECT_EQ(response.messages.size(), 2);
+  EXPECT_EQ(response.messages_ref()->size(), 2);
 }
 
 TEST_F(ChatRoomTest, FuturesCall) {
   // Send RPC to Server
   SendMessageRequest sendRequest;
-  sendRequest.message = "This is an example!";
-  sendRequest.sender = "UnitTest";
+  *sendRequest.message_ref() = "This is an example!";
+  *sendRequest.sender_ref() = "UnitTest";
   client_->future_sendMessage(sendRequest).get();
 
   // Send RPC to get Results
   GetMessagesRequest getRequest;
   auto response = client_->future_getMessages(getRequest).get();
-  EXPECT_EQ(response.messages.size(), 1);
-  EXPECT_EQ(response.messages.front().message, sendRequest.message);
-  EXPECT_EQ(response.messages.front().sender, sendRequest.sender);
+  EXPECT_EQ(response.messages_ref()->size(), 1);
+  EXPECT_EQ(
+      *response.messages_ref()->front().message_ref(),
+      *sendRequest.message_ref());
+  EXPECT_EQ(
+      *response.messages_ref()->front().sender_ref(),
+      *sendRequest.sender_ref());
 
   // Repeat
   client_->future_sendMessage(sendRequest).get();
   response = client_->future_getMessages(getRequest).get();
-  EXPECT_EQ(response.messages.size(), 2);
+  EXPECT_EQ(response.messages_ref()->size(), 2);
 }
 
 } // namespace thrift

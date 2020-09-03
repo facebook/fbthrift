@@ -26,15 +26,15 @@ using namespace apache::thrift::test;
 
 EveryLayout stressValue2 = [] {
   EveryLayout x;
-  x.aBool = true;
-  x.aInt = 2;
-  x.aList = {3, 5};
-  x.aSet = {7, 11};
-  x.aHashSet = {13, 17};
-  x.aMap = {{19, 23}, {29, 31}};
-  x.aHashMap = {{37, 41}, {43, 47}};
+  *x.aBool_ref() = true;
+  *x.aInt_ref() = 2;
+  *x.aList_ref() = {3, 5};
+  *x.aSet_ref() = {7, 11};
+  *x.aHashSet_ref() = {13, 17};
+  *x.aMap_ref() = {{19, 23}, {29, 31}};
+  *x.aHashMap_ref() = {{37, 41}, {43, 47}};
   x.optInt_ref() = 53;
-  x.aFloat = 59.61;
+  *x.aFloat_ref() = 59.61;
   x.optMap_ref() = {{2, 4}, {3, 9}};
   return x;
 }();

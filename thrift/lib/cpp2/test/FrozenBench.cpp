@@ -37,8 +37,8 @@ Team testValue() {
     Person p;
     p.id = id;
     p.__isset.nums = true;
-    p.nums.insert(i);
-    p.nums.insert(-i);
+    p.nums_ref()->insert(i);
+    p.nums_ref()->insert(-i);
     folly::toAppend("Person ", i, &p.name);
     (*team.peopleById_ref())[p.id] = p;
     auto& peopleByNameEntry = (*team.peopleByName_ref())[p.name];

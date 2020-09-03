@@ -39,8 +39,8 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
     apache::thrift::CompactProtocolWriter writer;
 
     TypeParam obj;
-    obj.num = cpp2::Cpp2OpsNative_constants::num_test_value();
-    obj.str = cpp2::Cpp2OpsNative_constants::str_test_value();
+    *obj.num_ref() = cpp2::Cpp2OpsNative_constants::num_test_value();
+    *obj.str_ref() = cpp2::Cpp2OpsNative_constants::str_test_value();
 
     // This is mainly to test that it compiles...
     EXPECT_NE(
@@ -64,8 +64,8 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
     apache::thrift::Cpp2Ops<TypeParam>::read(&reader, &obj);
     EXPECT_EQ(size, reader.getCursorPosition());
 
-    EXPECT_EQ(cpp2::Cpp2OpsNative_constants::num_test_value(), obj.num);
-    EXPECT_EQ(cpp2::Cpp2OpsNative_constants::str_test_value(), obj.str);
+    EXPECT_EQ(cpp2::Cpp2OpsNative_constants::num_test_value(), *obj.num_ref());
+    EXPECT_EQ(cpp2::Cpp2OpsNative_constants::str_test_value(), *obj.str_ref());
   }
 }
 

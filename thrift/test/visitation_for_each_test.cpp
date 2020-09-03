@@ -31,20 +31,21 @@ namespace cpp_reflection {
 TEST(struct1, test_metadata) {
   struct1 s;
   for_each_field(s, [i = 0](auto& meta, auto&& ref) mutable {
-    EXPECT_EQ(meta.id, 1 << i);
-    EXPECT_EQ(meta.name, "field" + to_string(i));
+    EXPECT_EQ(*meta.id_ref(), 1 << i);
+    EXPECT_EQ(*meta.name_ref(), "field" + to_string(i));
     EXPECT_EQ(
-        meta.type.getType(),
+        meta.type_ref()->getType(),
         (vector{
-            meta.type.t_primitive,
-            meta.type.t_primitive,
-            meta.type.t_enum,
-            meta.type.t_enum,
-            meta.type.t_union,
-            meta.type.t_union,
+            meta.type_ref()->t_primitive,
+            meta.type_ref()->t_primitive,
+            meta.type_ref()->t_enum,
+            meta.type_ref()->t_enum,
+            meta.type_ref()->t_union,
+            meta.type_ref()->t_union,
         })[i]);
     EXPECT_EQ(
-        meta.is_optional, (vector{false, true, false, false, true, false})[i]);
+        *meta.is_optional_ref(),
+        (vector{false, true, false, false, true, false})[i]);
     EXPECT_EQ(
         type_index(typeid(ref)),
         (vector<type_index>{
@@ -124,9 +125,9 @@ TEST(hasRefUnique, test_cpp_ref_unique) {
       "anOptionalUnion",
   };
   for_each_field(s, [&, i = 0](auto& meta, auto&& ref) mutable {
-    EXPECT_EQ(meta.name, names[i++]);
+    EXPECT_EQ(*meta.name_ref(), names[i++]);
     if constexpr (is_same_v<decltype(*ref), deque<string>&>) {
-      if (meta.is_optional) {
+      if (*meta.is_optional_ref()) {
         ref.reset(new decltype(names)(names));
       }
     }
@@ -149,7 +150,7 @@ TEST(hasRefUnique, test_cpp_ref_unique) {
 TEST(struct1, test_reference_type) {
   struct1 s;
   for_each_field(s, [](auto& meta, auto&& ref) {
-    switch (meta.id) {
+    switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), int32_t&>));
         break;
@@ -169,11 +170,11 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE((is_same_v<decltype(*ref), union2&>));
         break;
       default:
-        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+        EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
   for_each_field(move(s), [](auto& meta, auto&& ref) {
-    switch (meta.id) {
+    switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), int32_t&&>));
         break;
@@ -193,12 +194,12 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE((is_same_v<decltype(*ref), union2&&>));
         break;
       default:
-        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+        EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
   const struct1 t;
   for_each_field(t, [](auto& meta, auto&& ref) {
-    switch (meta.id) {
+    switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), const int32_t&>));
         break;
@@ -218,11 +219,11 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE((is_same_v<decltype(*ref), const union2&>));
         break;
       default:
-        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+        EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
   for_each_field(move(t), [](auto& meta, auto&& ref) {
-    switch (meta.id) {
+    switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), const int32_t&&>));
         break;
@@ -242,7 +243,7 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE((is_same_v<decltype(*ref), const union2&&>));
         break;
       default:
-        EXPECT_TRUE(false) << meta.name << " " << meta.id;
+        EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
 }
@@ -278,8 +279,8 @@ TEST(struct1, test_two_structs_assignment) {
         r1 = 30;
         r2 = 40;
 
-        EXPECT_EQ(meta.name, "field0");
-        EXPECT_EQ(meta.is_optional, false);
+        EXPECT_EQ(*meta.name_ref(), "field0");
+        EXPECT_EQ(*meta.is_optional_ref(), false);
       },
       [](auto& meta,
          optional_field_ref<string&> r1,
@@ -289,8 +290,8 @@ TEST(struct1, test_two_structs_assignment) {
         r1 = "33";
         r2 = "44";
 
-        EXPECT_EQ(meta.name, "field1");
-        EXPECT_EQ(meta.is_optional, true);
+        EXPECT_EQ(*meta.name_ref(), "field1");
+        EXPECT_EQ(*meta.is_optional_ref(), true);
       },
       [](auto&&...) {});
   for_each_field(s, t, run);
@@ -309,10 +310,10 @@ namespace cpp_reflection_no_metadata {
 TEST(struct1_no_metadata, test_metadata) {
   struct1 s;
   for_each_field(s, [i = 0](auto& meta, auto&& ref) mutable {
-    EXPECT_EQ(meta.id, 0);
-    EXPECT_EQ(meta.name, "");
-    EXPECT_EQ(int(meta.type.getType()), 0);
-    EXPECT_EQ(meta.is_optional, false);
+    EXPECT_EQ(*meta.id_ref(), 0);
+    EXPECT_EQ(*meta.name_ref(), "");
+    EXPECT_EQ(int(meta.type_ref()->getType()), 0);
+    EXPECT_EQ(*meta.is_optional_ref(), false);
     EXPECT_EQ(
         type_index(typeid(ref)),
         (vector<type_index>{

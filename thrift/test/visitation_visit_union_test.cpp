@@ -28,10 +28,10 @@ TEST(UnionFieldTest, basic) {
   static const string str = "foo";
   a.str_ref() = str;
   visit_union(a, [](auto&& meta, auto&& v) {
-    EXPECT_EQ(meta.name, "str");
-    EXPECT_EQ(meta.type.getType(), meta.type.t_primitive);
-    EXPECT_EQ(meta.id, 2);
-    EXPECT_EQ(meta.is_optional, false);
+    EXPECT_EQ(*meta.name_ref(), "str");
+    EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_primitive);
+    EXPECT_EQ(*meta.id_ref(), 2);
+    EXPECT_EQ(*meta.is_optional_ref(), false);
     if constexpr (std::is_same_v<decltype(v), string&>) {
       EXPECT_EQ(v, str);
     } else {
@@ -42,10 +42,10 @@ TEST(UnionFieldTest, basic) {
   static const int64_t int64 = 42LL << 42;
   a.int64_ref() = int64;
   visit_union(a, [](auto&& meta, auto&& v) {
-    EXPECT_EQ(meta.name, "int64");
-    EXPECT_EQ(meta.type.getType(), meta.type.t_primitive);
-    EXPECT_EQ(meta.id, 1);
-    EXPECT_EQ(meta.is_optional, false);
+    EXPECT_EQ(*meta.name_ref(), "int64");
+    EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_primitive);
+    EXPECT_EQ(*meta.id_ref(), 1);
+    EXPECT_EQ(*meta.is_optional_ref(), false);
     EXPECT_EQ(typeid(v), typeid(int64_t));
     if constexpr (std::is_same_v<decltype(v), int64_t&>) {
       EXPECT_EQ(v, int64);
@@ -57,10 +57,10 @@ TEST(UnionFieldTest, basic) {
   static const vector<int32_t> list_i32 = {3, 1, 2};
   a.list_i32_ref() = list_i32;
   visit_union(a, [](auto&& meta, auto&& v) {
-    EXPECT_EQ(meta.name, "list_i32");
-    EXPECT_EQ(meta.type.getType(), meta.type.t_list);
-    EXPECT_EQ(meta.id, 4);
-    EXPECT_EQ(meta.is_optional, false);
+    EXPECT_EQ(*meta.name_ref(), "list_i32");
+    EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_list);
+    EXPECT_EQ(*meta.id_ref(), 4);
+    EXPECT_EQ(*meta.is_optional_ref(), false);
     if constexpr (std::is_same_v<decltype(v), vector<int32_t>&>) {
       EXPECT_EQ(v, list_i32);
     } else {

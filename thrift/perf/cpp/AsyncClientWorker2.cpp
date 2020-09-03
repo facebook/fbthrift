@@ -418,7 +418,7 @@ void AsyncRunner2::genericCob(
           client->recv_throwError(rstate);
           T_ERROR("throwError() didn't throw any exception");
         } catch (const LoadError& error) {
-          DCHECK_EQ(error.code, opData->code);
+          DCHECK_EQ(*error.code_ref(), opData->code);
         }
         break;
       case apache::thrift::test::ClientLoadConfig::OP_THROW_UNEXPECTED:

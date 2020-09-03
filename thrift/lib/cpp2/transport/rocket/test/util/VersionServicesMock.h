@@ -67,19 +67,19 @@ class OldServiceMock : public OldVersionSvIf {
   apache::thrift::ResponseAndServerStream<Message, Message>
   ResponseandStreamToRequestResponse() override {
     Message response;
-    response.message = "Message";
+    *response.message_ref() = "Message";
     response.__isset.message = true;
     return {std::move(response),
             apache::thrift::ServerStream<Message>::createEmpty()};
   }
 
   void RequestResponseToStream(Message& response) override {
-    response.message = "Message";
+    *response.message_ref() = "Message";
     response.__isset.message = true;
   }
 
   void RequestResponseToResponseandStream(Message& response) override {
-    response.message = "Message";
+    *response.message_ref() = "Message";
     response.__isset.message = true;
   }
 

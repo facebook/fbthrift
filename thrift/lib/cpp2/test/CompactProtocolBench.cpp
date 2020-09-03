@@ -37,8 +37,8 @@ const size_t kMultExp = 0;
 
 Shallow makeShallow() {
   Shallow data;
-  data.one = 750ll;
-  data.two = 750ll << 22;
+  *data.one_ref() = 750ll;
+  *data.two_ref() = 750ll << 22;
   return data;
 }
 
@@ -49,11 +49,11 @@ Deep makeDeep(size_t triplesz) {
     for (size_t j = 0; j < triplesz; ++j) {
       Deep2 data2;
       for (size_t k = 0; k < triplesz; ++k) {
-        data2.datas.push_back(fmt::format("omg[{}, {}, {}]", i, j, k));
+        data2.datas_ref()->push_back(fmt::format("omg[{}, {}, {}]", i, j, k));
       }
-      data1.deeps.push_back(move(data2));
+      data1.deeps_ref()->push_back(move(data2));
     }
-    data.deeps.push_back(move(data1));
+    data.deeps_ref()->push_back(move(data1));
   }
   return data;
 }

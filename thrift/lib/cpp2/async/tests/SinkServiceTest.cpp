@@ -76,7 +76,7 @@ TEST_F(SinkServiceTest, SinkThrowStruct) {
               co_yield 0;
               co_yield 1;
               SinkException e;
-              e.reason = "test";
+              *e.reason_ref() = "test";
               throw e;
             }()),
             SinkThrew);
@@ -116,7 +116,7 @@ TEST_F(SinkServiceTest, SinkFinalThrowStruct) {
           }());
         } catch (const FinalException& ex) {
           throwed = true;
-          EXPECT_EQ("test", ex.reason);
+          EXPECT_EQ("test", *ex.reason_ref());
         }
         EXPECT_TRUE(throwed);
       });
@@ -160,7 +160,7 @@ TEST_F(SinkServiceTest, SinkInitialThrows) {
         try {
           co_await client.co_initialThrow();
         } catch (const MyException& ex) {
-          EXPECT_EQ("reason", ex.reason);
+          EXPECT_EQ("reason", *ex.reason_ref());
         }
       });
 }

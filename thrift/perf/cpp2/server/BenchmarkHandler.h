@@ -42,15 +42,15 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     stats_->registerCounter(ks_Download_);
     stats_->registerCounter(ks_Upload_);
 
-    chunk_.data.unshare();
-    chunk_.data.reserve(0, FLAGS_chunk_size);
-    auto buffer = chunk_.data.writableData();
+    chunk_.data_ref()->unshare();
+    chunk_.data_ref()->reserve(0, FLAGS_chunk_size);
+    auto buffer = chunk_.data_ref()->writableData();
     // Make it real data to eliminate network optimizations on sending all 0's.
     srand(time(nullptr));
     for (uint32_t i = 0; i < FLAGS_chunk_size; ++i) {
       buffer[i] = (uint8_t)(rand() % 26 + 'A');
     }
-    chunk_.data.append(FLAGS_chunk_size);
+    chunk_.data_ref()->append(FLAGS_chunk_size);
   }
 
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override {

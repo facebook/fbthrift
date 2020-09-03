@@ -139,7 +139,7 @@ bool TestSinkService::isSinkUnSubscribed() {
 apache::thrift::ResponseAndSinkConsumer<bool, int32_t, bool>
 TestSinkService::initialThrow() {
   MyException ex;
-  ex.reason = "reason";
+  *ex.reason_ref() = "reason";
   throw ex;
 }
 
@@ -173,7 +173,7 @@ apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::sinkThrow() {
           }
         } catch (const SinkException& ex) {
           throwed = true;
-          EXPECT_EQ("test", ex.reason);
+          EXPECT_EQ("test", *ex.reason_ref());
         } catch (const std::exception& ex) {
           LOG(ERROR) << "catched unexpected exception " << ex.what();
         }
@@ -188,7 +188,7 @@ apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::sinkFinalThrow() {
   return apache::thrift::SinkConsumer<int32_t, bool>{
       [](folly::coro::AsyncGenerator<int32_t&&>) -> folly::coro::Task<bool> {
         FinalException ex;
-        ex.reason = "test";
+        *ex.reason_ref() = "test";
         throw ex;
       },
       10 /* buffer size */

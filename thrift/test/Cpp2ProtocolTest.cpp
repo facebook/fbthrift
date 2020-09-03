@@ -41,26 +41,26 @@ map<string, vector<set<map<int, int>>>> nested_foo = {
 
 template <typename Object>
 void testOoe(Object& ooe) {
-  ASSERT_EQ(ooe.im_true, true);
-  ASSERT_EQ(ooe.im_false, false);
-  ASSERT_EQ((uint8_t)ooe.a_bite, 0xd6);
-  ASSERT_EQ(ooe.integer16, 27000);
-  ASSERT_EQ(ooe.integer32, 1 << 24);
-  ASSERT_EQ(ooe.integer64, (uint64_t)6000 * 1000 * 1000);
-  ASSERT_EQ(ooe.double_precision, M_PI);
-  ASSERT_EQ(ooe.float_precision, (float)12.345);
-  ASSERT_EQ(ooe.some_characters, "JSON THIS! \"\1");
-  ASSERT_EQ(ooe.zomg_unicode, "\xd7\n\a\t");
-  ASSERT_EQ(ooe.base64, "\1\2\3\255");
-  ASSERT_EQ(ooe.rank_map.size(), 2);
-  ASSERT_EQ(ooe.rank_map[567419810], (float)0.211184);
-  ASSERT_EQ(ooe.rank_map[507959914], (float)0.080382);
+  ASSERT_EQ(*ooe.im_true_ref(), true);
+  ASSERT_EQ(*ooe.im_false_ref(), false);
+  ASSERT_EQ((uint8_t)*ooe.a_bite_ref(), 0xd6);
+  ASSERT_EQ(*ooe.integer16_ref(), 27000);
+  ASSERT_EQ(*ooe.integer32_ref(), 1 << 24);
+  ASSERT_EQ(*ooe.integer64_ref(), (uint64_t)6000 * 1000 * 1000);
+  ASSERT_EQ(*ooe.double_precision_ref(), M_PI);
+  ASSERT_EQ(*ooe.float_precision_ref(), (float)12.345);
+  ASSERT_EQ(*ooe.some_characters_ref(), "JSON THIS! \"\1");
+  ASSERT_EQ(*ooe.zomg_unicode_ref(), "\xd7\n\a\t");
+  ASSERT_EQ(*ooe.base64_ref(), "\1\2\3\255");
+  ASSERT_EQ(ooe.rank_map_ref()->size(), 2);
+  ASSERT_EQ(ooe.rank_map_ref()[567419810], (float)0.211184);
+  ASSERT_EQ(ooe.rank_map_ref()[507959914], (float)0.080382);
 }
 
 template <typename Object>
 void testNested(Object& obj) {
-  ASSERT_EQ(nested_foo, obj.foo);
-  ASSERT_EQ(42, obj.bar);
+  ASSERT_EQ(nested_foo, *obj.foo_ref());
+  ASSERT_EQ(42, *obj.bar_ref());
 }
 
 void testObj(OneOfEach& obj) {
@@ -106,20 +106,20 @@ void runSkipTest() {
   protReader.setInput(buf.get());
   NotNested notNested;
   notNested.read(&protReader);
-  ASSERT_EQ(42, notNested.bar);
+  ASSERT_EQ(42, *notNested.bar_ref());
 }
 
 template <typename Cpp2Writer, typename Cpp2Reader>
 void runDoubleTest() {
   Doubles dbls;
-  dbls.inf = HUGE_VAL;
-  dbls.neginf = -HUGE_VAL;
-  dbls.nan = NAN;
-  dbls.repeating = 9.0 / 11.0;
-  dbls.big = std::numeric_limits<double>::max();
-  dbls.small = std::numeric_limits<double>::epsilon();
-  dbls.zero = 0.0;
-  dbls.negzero = -0.0;
+  *dbls.inf_ref() = HUGE_VAL;
+  *dbls.neginf_ref() = -HUGE_VAL;
+  *dbls.nan_ref() = NAN;
+  *dbls.repeating_ref() = 9.0 / 11.0;
+  *dbls.big_ref() = std::numeric_limits<double>::max();
+  *dbls.small_ref() = std::numeric_limits<double>::epsilon();
+  *dbls.zero_ref() = 0.0;
+  *dbls.negzero_ref() = -0.0;
 
   Cpp2Writer prot;
   Cpp2Reader protReader;
@@ -134,14 +134,14 @@ void runDoubleTest() {
   Doubles dbls2;
   dbls2.read(&protReader);
 
-  ASSERT_EQ(std::numeric_limits<double>::infinity(), dbls2.inf);
-  ASSERT_EQ(-std::numeric_limits<double>::infinity(), dbls2.neginf);
-  ASSERT_TRUE(std::isnan(dbls2.nan));
-  ASSERT_EQ(9.0 / 11.0, dbls2.repeating);
-  ASSERT_EQ(std::numeric_limits<double>::max(), dbls2.big);
-  ASSERT_EQ(std::numeric_limits<double>::epsilon(), dbls2.small);
-  ASSERT_EQ(0.0, dbls2.zero);
-  ASSERT_EQ(-0.0, dbls2.zero);
+  ASSERT_EQ(std::numeric_limits<double>::infinity(), *dbls2.inf_ref());
+  ASSERT_EQ(-std::numeric_limits<double>::infinity(), *dbls2.neginf_ref());
+  ASSERT_TRUE(std::isnan(*dbls2.nan_ref()));
+  ASSERT_EQ(9.0 / 11.0, *dbls2.repeating_ref());
+  ASSERT_EQ(std::numeric_limits<double>::max(), *dbls2.big_ref());
+  ASSERT_EQ(std::numeric_limits<double>::epsilon(), *dbls2.small_ref());
+  ASSERT_EQ(0.0, *dbls2.zero_ref());
+  ASSERT_EQ(-0.0, *dbls2.zero_ref());
 }
 
 TEST(protocol2, binary) {
@@ -191,9 +191,9 @@ TEST(protocol2, simpleJsonNullField) {
   Doubles dbls;
   auto nchars = dbls.read(&protReader);
 
-  ASSERT_EQ(dbls.big, 10.0);
-  ASSERT_EQ(dbls.small, 0.0);
-  ASSERT_EQ(dbls.zero, 0.0);
+  ASSERT_EQ(*dbls.big_ref(), 10.0);
+  ASSERT_EQ(*dbls.small_ref(), 0.0);
+  ASSERT_EQ(*dbls.zero_ref(), 0.0);
   ASSERT_EQ(nchars, json.length());
 }
 
@@ -249,9 +249,9 @@ void testCustomBuffers() {
 
   std::string binString(
       reinterpret_cast<const char*>(testBytes), sizeof(testBytes));
-  a.bin_field = binString;
-  a.iobuf_ptr_field = folly::IOBuf::copyBuffer(testByteRange2);
-  a.iobuf_field = folly::IOBuf::wrapBufferAsValue(testByteRange3);
+  *a.bin_field_ref() = binString;
+  *a.iobuf_ptr_field_ref() = folly::IOBuf::copyBuffer(testByteRange2);
+  *a.iobuf_field_ref() = folly::IOBuf::wrapBufferAsValue(testByteRange3);
 
   a.write(&writer);
   auto underlying = buf.move();
@@ -260,9 +260,9 @@ void testCustomBuffers() {
   BufferStruct b;
   b.read(&reader);
 
-  ASSERT_EQ(b.bin_field, binString);
-  ASSERT_EQ(b.iobuf_ptr_field->coalesce(), testByteRange2);
-  ASSERT_EQ(b.iobuf_field.coalesce(), testByteRange3);
+  ASSERT_EQ(*b.bin_field_ref(), binString);
+  ASSERT_EQ((*b.iobuf_ptr_field_ref())->coalesce(), testByteRange2);
+  ASSERT_EQ(b.iobuf_field_ref()->coalesce(), testByteRange3);
 }
 TEST(protocol2, customBufferContainersSimpleJson) {
   testCustomBuffers<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>();
@@ -281,24 +281,24 @@ int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-  ooe.im_true = true;
-  ooe.im_false = false;
-  ooe.a_bite = 0xd6;
-  ooe.integer16 = 27000;
-  ooe.integer32 = 1 << 24;
-  ooe.integer64 = (uint64_t)6000 * 1000 * 1000;
-  ooe.double_precision = M_PI;
-  ooe.float_precision = (float)12.345;
-  ooe.some_characters = "JSON THIS! \"\1";
-  ooe.zomg_unicode = "\xd7\n\a\t";
-  ooe.base64 = "\1\2\3\255";
-  ooe.string_string_map["one"] = "two";
-  ooe.string_string_hash_map["three"] = "four";
-  ooe.rank_map[567419810] = (float)0.211184;
-  ooe.rank_map[507959914] = (float)0.080382;
+  *ooe.im_true_ref() = true;
+  *ooe.im_false_ref() = false;
+  *ooe.a_bite_ref() = 0xd6;
+  *ooe.integer16_ref() = 27000;
+  *ooe.integer32_ref() = 1 << 24;
+  *ooe.integer64_ref() = (uint64_t)6000 * 1000 * 1000;
+  *ooe.double_precision_ref() = M_PI;
+  *ooe.float_precision_ref() = (float)12.345;
+  *ooe.some_characters_ref() = "JSON THIS! \"\1";
+  *ooe.zomg_unicode_ref() = "\xd7\n\a\t";
+  *ooe.base64_ref() = "\1\2\3\255";
+  ooe.string_string_map_ref()["one"] = "two";
+  ooe.string_string_hash_map_ref()["three"] = "four";
+  ooe.rank_map_ref()[567419810] = (float)0.211184;
+  ooe.rank_map_ref()[507959914] = (float)0.080382;
 
-  nested.foo = nested_foo;
-  nested.bar = 42;
+  *nested.foo_ref() = nested_foo;
+  *nested.bar_ref() = 42;
 
   return RUN_ALL_TESTS();
 }

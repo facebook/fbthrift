@@ -47,11 +47,11 @@ void IOBufPtrTestService::async_tm_combine(
     std::unique_ptr<Request> req) {
   folly::IOBufQueue queue;
   queue.append("(");
-  queue.append(std::move(req->one));
+  queue.append(std::move(*req->one_ref()));
   queue.append(")+(");
-  queue.append(std::move(req->two));
+  queue.append(std::move(*req->two_ref()));
   queue.append(")+(");
-  queue.append(req->three.clone());
+  queue.append(req->three_ref()->clone());
   queue.append(")");
   callback->result(std::make_unique<IOBufPtr>(queue.move()));
 }
@@ -129,15 +129,15 @@ TEST_F(IOBufPtrTest, Simple) {
   }
   {
     Request req;
-    req.one = folly::IOBuf::wrapBuffer("meow", 4);
-    req.two = folly::IOBuf::wrapBuffer("woof", 4);
+    *req.one_ref() = folly::IOBuf::wrapBuffer("meow", 4);
+    *req.two_ref() = folly::IOBuf::wrapBuffer("woof", 4);
     EXPECT_TRUE(
         apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(
-            req.one, req.one));
+            *req.one_ref(), *req.one_ref()));
     EXPECT_FALSE(
         apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(
-            req.one, req.two));
-    req.three = folly::IOBuf(folly::IOBuf::WRAP_BUFFER, "oink", 4);
+            *req.one_ref(), *req.two_ref()));
+    *req.three_ref() = folly::IOBuf(folly::IOBuf::WRAP_BUFFER, "oink", 4);
     IOBufPtr resp;
     client()->sync_combine(resp, req);
     EXPECT_EQ("(meow)+(woof)+(oink)", resp->moveToFbString());

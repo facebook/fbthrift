@@ -22,10 +22,10 @@ using namespace apache::thrift::test;
 
 TEST(FloatTest, example) {
   foo f;
-  f.bar = 5;
-  EXPECT_EQ(5, f.bar);
-  EXPECT_EQ(1, f.baz);
-  EXPECT_EQ((float)12.345, f.baz1);
-  f.baz = (float)12.345;
-  EXPECT_EQ((float)12.345, f.baz);
+  *f.bar_ref() = 5;
+  EXPECT_EQ(5, *f.bar_ref());
+  EXPECT_EQ(1, *f.baz_ref());
+  EXPECT_EQ((float)12.345, *f.baz1_ref());
+  *f.baz_ref() = (float)12.345;
+  EXPECT_EQ((float)12.345, *f.baz_ref());
 }

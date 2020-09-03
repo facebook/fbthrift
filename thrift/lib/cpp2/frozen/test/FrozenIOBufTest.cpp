@@ -34,8 +34,8 @@ ByteRange test2Range(test2, sizeof(test2));
 
 TEST(FrozenIOBuf, Thrift2) {
   Binaries b2;
-  b2.normal = testString.str();
-  b2.iobufptr = IOBuf::copyBuffer(testRange.data(), testRange.size());
+  *b2.normal_ref() = testString.str();
+  *b2.iobufptr_ref() = IOBuf::copyBuffer(testRange.data(), testRange.size());
 
   auto fb2 = freeze(b2);
   EXPECT_EQ(testString, fb2.normal());
@@ -47,7 +47,7 @@ TEST(FrozenIOBuf, IOBufChain) {
   auto buf1 = IOBuf::copyBuffer(testRange.data(), testRange.size());
   auto buf2 = IOBuf::copyBuffer(test2Range.data(), test2Range.size());
   buf1->appendChain(std::move(buf2));
-  b2.iobufptr = std::move(buf1);
+  *b2.iobufptr_ref() = std::move(buf1);
 
   auto fb2 = freeze(b2);
   EXPECT_EQ(0, fb2.normal().size());
@@ -60,7 +60,7 @@ TEST(FrozenIOBuf, IOBufChain) {
 TEST(FrozenIOBuf, IOBufValue) {
   std::string input = "hello";
   Binaries bin;
-  bin.iobuf = IOBuf(IOBuf::COPY_BUFFER, input);
+  *bin.iobuf_ref() = IOBuf(IOBuf::COPY_BUFFER, input);
 
   auto fbin = freeze(bin);
   EXPECT_EQ(input.size(), fbin.iobuf().size());

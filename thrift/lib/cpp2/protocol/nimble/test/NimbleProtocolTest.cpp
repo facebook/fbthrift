@@ -159,17 +159,17 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
 
   for (size_t i = 0; i < smallest; i++) {
     BasicTypes basicTypes;
-    basicTypes.myByte = array1[i];
-    basicTypes.myInt16 = array2[i];
-    basicTypes.myInt32 = array3[i];
-    basicTypes.myInt64 = array4[i];
-    basicTypes.myBool = array5[i];
-    basicTypes.myUint8 = array6[i];
-    basicTypes.myUint16 = array7[i];
-    basicTypes.myUint32 = array8[i];
-    basicTypes.myUint64 = array9[i];
-    basicTypes.myFloat = array10[i];
-    basicTypes.myDouble = array11[i];
+    *basicTypes.myByte_ref() = array1[i];
+    *basicTypes.myInt16_ref() = array2[i];
+    *basicTypes.myInt32_ref() = array3[i];
+    *basicTypes.myInt64_ref() = array4[i];
+    *basicTypes.myBool_ref() = array5[i];
+    *basicTypes.myUint8_ref() = array6[i];
+    *basicTypes.myUint16_ref() = array7[i];
+    *basicTypes.myUint32_ref() = array8[i];
+    *basicTypes.myUint64_ref() = array9[i];
+    *basicTypes.myFloat_ref() = array10[i];
+    *basicTypes.myDouble_ref() = array11[i];
 
     NimbleProtocolWriter writer;
     basicTypes.write(&writer);
@@ -181,24 +181,26 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
     BasicTypes decodedBasicTypes;
     decodedBasicTypes.read(&reader);
 
-    EXPECT_EQ(basicTypes.myByte, decodedBasicTypes.myByte);
-    EXPECT_EQ(basicTypes.myInt16, decodedBasicTypes.myInt16);
-    EXPECT_EQ(basicTypes.myInt32, decodedBasicTypes.myInt32);
-    EXPECT_EQ(basicTypes.myInt64, decodedBasicTypes.myInt64);
-    EXPECT_EQ(basicTypes.myBool, decodedBasicTypes.myBool);
-    EXPECT_EQ(basicTypes.myUint8, decodedBasicTypes.myUint8);
-    EXPECT_EQ(basicTypes.myUint16, decodedBasicTypes.myUint16);
-    EXPECT_EQ(basicTypes.myUint32, decodedBasicTypes.myUint32);
-    EXPECT_EQ(basicTypes.myUint64, decodedBasicTypes.myUint64);
-    if (std::isnan(basicTypes.myFloat)) {
-      EXPECT_TRUE(std::isnan(decodedBasicTypes.myFloat));
+    EXPECT_EQ(*basicTypes.myByte_ref(), *decodedBasicTypes.myByte_ref());
+    EXPECT_EQ(*basicTypes.myInt16_ref(), *decodedBasicTypes.myInt16_ref());
+    EXPECT_EQ(*basicTypes.myInt32_ref(), *decodedBasicTypes.myInt32_ref());
+    EXPECT_EQ(*basicTypes.myInt64_ref(), *decodedBasicTypes.myInt64_ref());
+    EXPECT_EQ(*basicTypes.myBool_ref(), *decodedBasicTypes.myBool_ref());
+    EXPECT_EQ(*basicTypes.myUint8_ref(), *decodedBasicTypes.myUint8_ref());
+    EXPECT_EQ(*basicTypes.myUint16_ref(), *decodedBasicTypes.myUint16_ref());
+    EXPECT_EQ(*basicTypes.myUint32_ref(), *decodedBasicTypes.myUint32_ref());
+    EXPECT_EQ(*basicTypes.myUint64_ref(), *decodedBasicTypes.myUint64_ref());
+    if (std::isnan(*basicTypes.myFloat_ref())) {
+      EXPECT_TRUE(std::isnan(*decodedBasicTypes.myFloat_ref()));
     } else {
-      EXPECT_FLOAT_EQ(basicTypes.myFloat, decodedBasicTypes.myFloat);
+      EXPECT_FLOAT_EQ(
+          *basicTypes.myFloat_ref(), *decodedBasicTypes.myFloat_ref());
     }
-    if (std::isnan(basicTypes.myDouble)) {
-      EXPECT_TRUE(std::isnan(decodedBasicTypes.myDouble));
+    if (std::isnan(*basicTypes.myDouble_ref())) {
+      EXPECT_TRUE(std::isnan(*decodedBasicTypes.myDouble_ref()));
     } else {
-      EXPECT_DOUBLE_EQ(basicTypes.myDouble, decodedBasicTypes.myDouble);
+      EXPECT_DOUBLE_EQ(
+          *basicTypes.myDouble_ref(), *decodedBasicTypes.myDouble_ref());
     }
   }
 }
@@ -230,8 +232,8 @@ TEST(NimbleProtocolTest, StringTypesTest) {
 
   for (auto& str : binaryBytes) {
     StringTypes strTypes;
-    strTypes.myStr = str;
-    strTypes.myBinary = str;
+    *strTypes.myStr_ref() = str;
+    *strTypes.myBinary_ref() = str;
     NimbleProtocolWriter writer;
     strTypes.write(&writer);
 
@@ -241,8 +243,8 @@ TEST(NimbleProtocolTest, StringTypesTest) {
 
     StringTypes decodedStrTypes;
     decodedStrTypes.read(&reader);
-    EXPECT_EQ(strTypes.myStr, decodedStrTypes.myStr);
-    EXPECT_EQ(strTypes.myBinary, decodedStrTypes.myBinary);
+    EXPECT_EQ(*strTypes.myStr_ref(), *decodedStrTypes.myStr_ref());
+    EXPECT_EQ(*strTypes.myBinary_ref(), *decodedStrTypes.myBinary_ref());
   }
 }
 
@@ -250,7 +252,7 @@ TEST(NimbleProtocolTest, BinaryTypeTest) {
   // test IOBuf
   StringTypes strTypes;
   auto buf = folly::IOBuf::copyBuffer("Testing;; Foo bar rand0m $tring.");
-  strTypes.myIOBuf = std::move(buf);
+  *strTypes.myIOBuf_ref() = std::move(buf);
   NimbleProtocolWriter writer;
   strTypes.write(&writer);
 
@@ -261,18 +263,18 @@ TEST(NimbleProtocolTest, BinaryTypeTest) {
   StringTypes decodedStrTypes;
   decodedStrTypes.read(&reader);
   EXPECT_EQ(
-      strTypes.myIOBuf->computeChainDataLength(),
-      decodedStrTypes.myIOBuf->computeChainDataLength());
+      (*strTypes.myIOBuf_ref())->computeChainDataLength(),
+      (*decodedStrTypes.myIOBuf_ref())->computeChainDataLength());
   // content of the IOBufs should be the same
-  strTypes.myIOBuf->coalesce();
+  (*strTypes.myIOBuf_ref())->coalesce();
   std::string orig = std::string(
-      reinterpret_cast<const char*>(strTypes.myIOBuf->data()),
-      strTypes.myIOBuf->length());
+      reinterpret_cast<const char*>((*strTypes.myIOBuf_ref())->data()),
+      (*strTypes.myIOBuf_ref())->length());
 
-  decodedStrTypes.myIOBuf->coalesce();
+  (*decodedStrTypes.myIOBuf_ref())->coalesce();
   std::string decoded = std::string(
-      reinterpret_cast<const char*>(decodedStrTypes.myIOBuf->data()),
-      decodedStrTypes.myIOBuf->length());
+      reinterpret_cast<const char*>((*decodedStrTypes.myIOBuf_ref())->data()),
+      (*decodedStrTypes.myIOBuf_ref())->length());
   EXPECT_EQ(orig, decoded);
 }
 
@@ -364,15 +366,15 @@ TEST(NimbleProtocolTest, ContainerTest) {
 
   for (int i = 0; i < kNumContainers; i++) {
     ContainerTypes containerTypes;
-    containerTypes.myIntMap = intMaps[i];
-    containerTypes.myStringMap = stringMaps[i];
-    containerTypes.myMap = myMaps[i];
-    containerTypes.myIntList = intLists[i];
-    containerTypes.myStringList = stringLists[i];
-    containerTypes.myListOfList = listOfLists[i];
-    containerTypes.myI16Set = I16Sets[i];
-    containerTypes.myStringSet = stringSet[i];
-    containerTypes.myListOfMap = listOfMaps[i];
+    *containerTypes.myIntMap_ref() = intMaps[i];
+    *containerTypes.myStringMap_ref() = stringMaps[i];
+    *containerTypes.myMap_ref() = myMaps[i];
+    *containerTypes.myIntList_ref() = intLists[i];
+    *containerTypes.myStringList_ref() = stringLists[i];
+    *containerTypes.myListOfList_ref() = listOfLists[i];
+    *containerTypes.myI16Set_ref() = I16Sets[i];
+    *containerTypes.myStringSet_ref() = stringSet[i];
+    *containerTypes.myListOfMap_ref() = listOfMaps[i];
     NimbleProtocolWriter writer;
     containerTypes.write(&writer);
 
@@ -382,15 +384,20 @@ TEST(NimbleProtocolTest, ContainerTest) {
 
     ContainerTypes decodedType;
     decodedType.read(&reader);
-    EXPECT_EQ(containerTypes.myIntMap, decodedType.myIntMap);
-    EXPECT_EQ(containerTypes.myStringMap, decodedType.myStringMap);
-    EXPECT_EQ(containerTypes.myMap, decodedType.myMap);
-    EXPECT_EQ(containerTypes.myIntList, decodedType.myIntList);
-    EXPECT_EQ(containerTypes.myStringList, decodedType.myStringList);
-    EXPECT_EQ(containerTypes.myListOfList, decodedType.myListOfList);
-    EXPECT_EQ(containerTypes.myI16Set, decodedType.myI16Set);
-    EXPECT_EQ(containerTypes.myStringSet, decodedType.myStringSet);
-    EXPECT_EQ(containerTypes.myListOfMap, decodedType.myListOfMap);
+    EXPECT_EQ(*containerTypes.myIntMap_ref(), *decodedType.myIntMap_ref());
+    EXPECT_EQ(
+        *containerTypes.myStringMap_ref(), *decodedType.myStringMap_ref());
+    EXPECT_EQ(*containerTypes.myMap_ref(), *decodedType.myMap_ref());
+    EXPECT_EQ(*containerTypes.myIntList_ref(), *decodedType.myIntList_ref());
+    EXPECT_EQ(
+        *containerTypes.myStringList_ref(), *decodedType.myStringList_ref());
+    EXPECT_EQ(
+        *containerTypes.myListOfList_ref(), *decodedType.myListOfList_ref());
+    EXPECT_EQ(*containerTypes.myI16Set_ref(), *decodedType.myI16Set_ref());
+    EXPECT_EQ(
+        *containerTypes.myStringSet_ref(), *decodedType.myStringSet_ref());
+    EXPECT_EQ(
+        *containerTypes.myListOfMap_ref(), *decodedType.myListOfMap_ref());
   }
 }
 
@@ -398,7 +405,7 @@ TEST(NimbleProtocolTest, BigStringTest) {
   // test with a string longer than 2**28
   uint32_t stringSize = 1U << 30;
   StringTypes strTypes;
-  strTypes.myStr = std::string(stringSize, '1');
+  *strTypes.myStr_ref() = std::string(stringSize, '1');
   NimbleProtocolWriter writer;
   strTypes.write(&writer);
 
@@ -408,13 +415,13 @@ TEST(NimbleProtocolTest, BigStringTest) {
 
   StringTypes decodedStrTypes;
   decodedStrTypes.read(&reader);
-  EXPECT_EQ(strTypes.myStr, decodedStrTypes.myStr);
+  EXPECT_EQ(*strTypes.myStr_ref(), *decodedStrTypes.myStr_ref());
 }
 
 TEST(NimbleProtocolTest, BigListTest) {
   // test with a list whose size is greater than 2**24
   ContainerTypes containerTypes;
-  containerTypes.myIntList = std::vector<int32_t>(1U << 24, 0);
+  *containerTypes.myIntList_ref() = std::vector<int32_t>(1U << 24, 0);
   NimbleProtocolWriter writer;
   containerTypes.write(&writer);
 
@@ -424,48 +431,50 @@ TEST(NimbleProtocolTest, BigListTest) {
 
   ContainerTypes decodedType;
   decodedType.read(&reader);
-  EXPECT_EQ(containerTypes.myIntList, decodedType.myIntList);
+  EXPECT_EQ(*containerTypes.myIntList_ref(), *decodedType.myIntList_ref());
 }
 
 TEST(NimbleProtocolTest, StructOfStructsTest) {
   // some test structs
   BasicTypes basicTypes;
-  basicTypes.myByte = folly::Random::rand32(256) - 128;
-  basicTypes.myInt16 = folly::Random::rand32(65536) - 32768;
-  basicTypes.myInt32 = folly::Random::rand32() - 2147483648;
-  basicTypes.myInt64 = folly::Random::rand64(INT64_MIN, INT64_MAX);
-  basicTypes.myBool = folly::Random::rand32(1);
-  basicTypes.myUint8 = folly::Random::rand32(256);
-  basicTypes.myUint16 = folly::Random::rand32(65536);
-  basicTypes.myUint32 = folly::Random::rand32();
-  basicTypes.myUint64 = folly::Random::rand64();
-  basicTypes.myFloat = 0.0001;
-  basicTypes.myDouble = std::numeric_limits<double>::infinity();
+  *basicTypes.myByte_ref() = folly::Random::rand32(256) - 128;
+  *basicTypes.myInt16_ref() = folly::Random::rand32(65536) - 32768;
+  *basicTypes.myInt32_ref() = folly::Random::rand32() - 2147483648;
+  *basicTypes.myInt64_ref() = folly::Random::rand64(INT64_MIN, INT64_MAX);
+  *basicTypes.myBool_ref() = folly::Random::rand32(1);
+  *basicTypes.myUint8_ref() = folly::Random::rand32(256);
+  *basicTypes.myUint16_ref() = folly::Random::rand32(65536);
+  *basicTypes.myUint32_ref() = folly::Random::rand32();
+  *basicTypes.myUint64_ref() = folly::Random::rand64();
+  *basicTypes.myFloat_ref() = 0.0001;
+  *basicTypes.myDouble_ref() = std::numeric_limits<double>::infinity();
 
   StringTypes strTypes;
-  strTypes.myStr = "somerandomestring with *@(!)$+_characters:>,<";
-  strTypes.myBinary = "test random string";
+  *strTypes.myStr_ref() = "somerandomestring with *@(!)$+_characters:>,<";
+  *strTypes.myBinary_ref() = "test random string";
 
   ContainerTypes containerTypes;
-  containerTypes.myIntMap = {{6, 10012}, {7901, 54298}, {-21, 342001}};
-  containerTypes.myStringMap = {{"foo", "oops"}, {"bar", "20"}, {"baz", "meh"}};
-  containerTypes.myMap = {{3, "yo"}, {50, "heh"}};
-  containerTypes.myIntList = {1, 2, 312, 8773, -15};
-  containerTypes.myStringList = {
+  *containerTypes.myIntMap_ref() = {{6, 10012}, {7901, 54298}, {-21, 342001}};
+  *containerTypes.myStringMap_ref() = {
+      {"foo", "oops"}, {"bar", "20"}, {"baz", "meh"}};
+  *containerTypes.myMap_ref() = {{3, "yo"}, {50, "heh"}};
+  *containerTypes.myIntList_ref() = {1, 2, 312, 8773, -15};
+  *containerTypes.myStringList_ref() = {
       "foooo", "$!someRandomeStringgg", "socialImpact^", "bar", "examples&1"};
-  containerTypes.myListOfList = {{341.5, 0.00001, -12.3456},
-                                 {25.109, -0.111, 7129.00101},
-                                 {512.17171, 0.0100241, -42.32}};
-  containerTypes.myI16Set = {1212, -332, 19, 0, -1, 6667};
-  containerTypes.myStringSet = {"slkje", "ye21!(&", "apps@", "avengers"};
-  containerTypes.myListOfMap = {{{3, "yo"}, {50, "heh"}},
-                                {{65, "yoyoyo"}, {189, "heh>!@$S666"}}};
+  *containerTypes.myListOfList_ref() = {{341.5, 0.00001, -12.3456},
+                                        {25.109, -0.111, 7129.00101},
+                                        {512.17171, 0.0100241, -42.32}};
+  *containerTypes.myI16Set_ref() = {1212, -332, 19, 0, -1, 6667};
+  *containerTypes.myStringSet_ref() = {"slkje", "ye21!(&", "apps@", "avengers"};
+  *containerTypes.myListOfMap_ref() = {{{3, "yo"}, {50, "heh"}},
+                                       {{65, "yoyoyo"}, {189, "heh>!@$S666"}}};
   StructOfStruct structOfStructs;
-  structOfStructs.basicTypes = basicTypes;
-  structOfStructs.strTypes = strTypes;
-  structOfStructs.containerTypes = containerTypes;
-  structOfStructs.myStr = "omg!#@#TTS1";
-  structOfStructs.myMap = {{"so many tests", 3198099}, {"ohhahaha", -1992948}};
+  *structOfStructs.basicTypes_ref() = basicTypes;
+  *structOfStructs.strTypes_ref() = strTypes;
+  *structOfStructs.containerTypes_ref() = containerTypes;
+  *structOfStructs.myStr_ref() = "omg!#@#TTS1";
+  *structOfStructs.myMap_ref() = {{"so many tests", 3198099},
+                                  {"ohhahaha", -1992948}};
 
   NimbleProtocolWriter writer;
   structOfStructs.write(&writer);
@@ -476,12 +485,18 @@ TEST(NimbleProtocolTest, StructOfStructsTest) {
 
   StructOfStruct decodedStruct;
   decodedStruct.read(&reader);
-  EXPECT_EQ(structOfStructs.basicTypes, decodedStruct.basicTypes);
-  EXPECT_EQ(structOfStructs.strTypes.myStr, decodedStruct.strTypes.myStr);
-  EXPECT_EQ(structOfStructs.strTypes.myBinary, decodedStruct.strTypes.myBinary);
-  EXPECT_EQ(structOfStructs.containerTypes, decodedStruct.containerTypes);
-  EXPECT_EQ(structOfStructs.myStr, decodedStruct.myStr);
-  EXPECT_EQ(structOfStructs.myMap, decodedStruct.myMap);
+  EXPECT_EQ(*structOfStructs.basicTypes_ref(), *decodedStruct.basicTypes_ref());
+  EXPECT_EQ(
+      *structOfStructs.strTypes_ref()->myStr_ref(),
+      *decodedStruct.strTypes_ref()->myStr_ref());
+  EXPECT_EQ(
+      *structOfStructs.strTypes_ref()->myBinary_ref(),
+      *decodedStruct.strTypes_ref()->myBinary_ref());
+  EXPECT_EQ(
+      *structOfStructs.containerTypes_ref(),
+      *decodedStruct.containerTypes_ref());
+  EXPECT_EQ(*structOfStructs.myStr_ref(), *decodedStruct.myStr_ref());
+  EXPECT_EQ(*structOfStructs.myMap_ref(), *decodedStruct.myMap_ref());
 }
 
 TEST(NimbleProtocolTest, UnionTest) {

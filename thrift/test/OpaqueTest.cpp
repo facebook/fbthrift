@@ -27,13 +27,13 @@ using namespace apache::thrift::test;
 template <class T>
 T getTestStruct() {
   T a;
-  a.d1 = OpaqueDouble1{123.0};
-  a.d2 = OpaqueDouble2{234.0};
+  *a.d1_ref() = OpaqueDouble1{123.0};
+  *a.d2_ref() = OpaqueDouble2{234.0};
   for (int i = 1; i <= 5; ++i) {
-    a.dmap[i] = OpaqueDouble1{9000.0 + i};
+    a.dmap_ref()[i] = OpaqueDouble1{9000.0 + i};
   }
   for (int i = 1; i <= 5; ++i) {
-    a.ids.push_back(NonConvertibleId{111 * i});
+    a.ids_ref()->push_back(NonConvertibleId{111 * i});
   }
   return a;
 }

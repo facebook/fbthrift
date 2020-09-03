@@ -53,7 +53,7 @@ const auto& get_struct_metadata() {
 template <class T>
 const auto& get_field_metadata(size_t idx) {
   static const folly::Indestructible<metadata::ThriftField> empty;
-  const auto& fields = get_struct_metadata<T>().fields;
+  const auto& fields = *get_struct_metadata<T>().fields_ref();
   return idx < fields.size() ? fields[idx] : *empty;
 }
 

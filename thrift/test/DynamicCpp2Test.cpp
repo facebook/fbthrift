@@ -134,7 +134,7 @@ TEST_P(RoundtripTestFixture, RoundtripDynamics) {
 
 TEST_P(RoundtripTestFixture, RoundtripContainer) {
   Container expected;
-  expected.data = GetParam();
+  *expected.data_ref() = GetParam();
 
   BinaryProtocolWriter protWriter;
   size_t bufSize = Cpp2Ops<Container>::serializedSize(&protWriter, &expected);
@@ -147,8 +147,8 @@ TEST_P(RoundtripTestFixture, RoundtripContainer) {
   protReader.setInput(buf.get());
   Container actual;
   Cpp2Ops<Container>::read(&protReader, &actual);
-  EXPECT_EQ(expected, actual) << "Expected: " << toJson(*expected.data)
-                              << " Actual: " << toJson(*actual.data);
+  EXPECT_EQ(expected, actual) << "Expected: " << toJson(**expected.data_ref())
+                              << " Actual: " << toJson(**actual.data_ref());
 }
 
 TEST_P(RoundtripTestFixture, SerializeOverHandler) {

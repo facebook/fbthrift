@@ -50,96 +50,98 @@ std::string adjust(std::string input) {
 
 TEST(fatal_pretty_print, pretty_print) {
   structA a1;
-  a1.a = 99;
-  a1.b = "abc";
+  *a1.a_ref() = 99;
+  *a1.b_ref() = "abc";
   structA a2;
-  a2.a = 1001;
-  a2.b = "foo";
+  *a2.a_ref() = 1001;
+  *a2.b_ref() = "foo";
   structA a3;
-  a3.a = 654;
-  a3.b = "bar";
+  *a3.a_ref() = 654;
+  *a3.b_ref() = "bar";
   structA a4;
-  a4.a = 9791;
-  a4.b = "baz";
+  *a4.a_ref() = 9791;
+  *a4.b_ref() = "baz";
   structA a5;
-  a5.a = 111;
-  a5.b = "gaz";
+  *a5.a_ref() = 111;
+  *a5.b_ref() = "gaz";
 
   structB b1;
-  b1.c = 1.23;
-  b1.d = true;
+  *b1.c_ref() = 1.23;
+  *b1.d_ref() = true;
   structB b2;
-  b2.c = 9.8;
-  b2.d = false;
+  *b2.c_ref() = 9.8;
+  *b2.d_ref() = false;
   structB b3;
-  b3.c = 10.01;
-  b3.d = true;
+  *b3.c_ref() = 10.01;
+  *b3.d_ref() = true;
   structB b4;
-  b4.c = 159.73;
-  b4.d = false;
+  *b4.c_ref() = 159.73;
+  *b4.d_ref() = false;
   structB b5;
-  b5.c = 468.02;
-  b5.d = true;
+  *b5.c_ref() = 468.02;
+  *b5.d_ref() = true;
 
   structC c1;
-  c1.a = 47;
-  c1.b = "hello, world";
-  c1.c = 132.98;
-  c1.d = true;
+  *c1.a_ref() = 47;
+  *c1.b_ref() = "hello, world";
+  *c1.c_ref() = 132.98;
+  *c1.d_ref() = true;
 
-  c1.e = enum1::field1;
-  c1.f = enum2::field0_2;
-  c1.g.set_us("this is a test");
+  *c1.e_ref() = enum1::field1;
+  *c1.f_ref() = enum2::field0_2;
+  c1.g_ref()->set_us("this is a test");
 
   // c1.h intentionally left empty
-  c1.i.set_a(a1);
+  c1.i_ref()->set_a(a1);
 
   // c1.j intentionally left empty
-  c1.j1 = {2, 4, 6, 8};
-  c1.j2 = {enum1::field0, enum1::field1, enum1::field2};
-  c1.j3 = {a1, a2, a3, a4};
+  *c1.j1_ref() = {2, 4, 6, 8};
+  *c1.j2_ref() = {enum1::field0, enum1::field1, enum1::field2};
+  *c1.j3_ref() = {a1, a2, a3, a4};
 
   // c1.k intentionally left empty
-  c1.k1 = {3, 5, 7, 9};
-  c1.k2 = {enum2::field0_2, enum2::field1_2, enum2::field2_2};
-  c1.k3 = {b1, b2, b3, b4};
+  *c1.k1_ref() = {3, 5, 7, 9};
+  *c1.k2_ref() = {enum2::field0_2, enum2::field1_2, enum2::field2_2};
+  *c1.k3_ref() = {b1, b2, b3, b4};
 
   // c1.l intentionally left empty
-  c1.l1 = {{2, 3}, {4, 5}, {6, 7}, {8, 9}};
-  c1.l2 = {{12, enum1::field0}, {34, enum1::field1}, {56, enum1::field2}};
-  c1.l3 = {{89, b1}, {78, b2}, {67, b3}, {56, b4}};
+  *c1.l1_ref() = {{2, 3}, {4, 5}, {6, 7}, {8, 9}};
+  *c1.l2_ref() = {
+      {12, enum1::field0}, {34, enum1::field1}, {56, enum1::field2}};
+  *c1.l3_ref() = {{89, b1}, {78, b2}, {67, b3}, {56, b4}};
 
-  c1.m1 = {{enum1::field0, 3}, {enum1::field1, 5}, {enum1::field2, 7}};
-  c1.m2 = {
+  *c1.m1_ref() = {{enum1::field0, 3}, {enum1::field1, 5}, {enum1::field2, 7}};
+  *c1.m2_ref() = {
       {enum1::field0, enum2::field0_2},
       {enum1::field1, enum2::field1_2},
       {enum1::field2, enum2::field2_2},
   };
-  c1.m3 = {{enum1::field0, b1}, {enum1::field1, b2}, {enum1::field2, b3}};
+  *c1.m3_ref() = {
+      {enum1::field0, b1}, {enum1::field1, b2}, {enum1::field2, b3}};
 
-  c1.n1["abc"] = 3;
-  c1.n1["def"] = 5;
-  c1.n1["ghi"] = 7;
-  c1.n1["jkl"] = 9;
-  c1.n2["mno"] = enum1::field0;
-  c1.n2["pqr"] = enum1::field1;
-  c1.n2["stu"] = enum1::field2;
-  c1.n3["vvv"] = b1;
-  c1.n3["www"] = b2;
-  c1.n3["xxx"] = b3;
-  c1.n3["yyy"] = b4;
+  c1.n1_ref()["abc"] = 3;
+  c1.n1_ref()["def"] = 5;
+  c1.n1_ref()["ghi"] = 7;
+  c1.n1_ref()["jkl"] = 9;
+  c1.n2_ref()["mno"] = enum1::field0;
+  c1.n2_ref()["pqr"] = enum1::field1;
+  c1.n2_ref()["stu"] = enum1::field2;
+  c1.n3_ref()["vvv"] = b1;
+  c1.n3_ref()["www"] = b2;
+  c1.n3_ref()["xxx"] = b3;
+  c1.n3_ref()["yyy"] = b4;
 
-  c1.o1[a1] = 3;
-  c1.o1[a2] = 5;
-  c1.o1[a3] = 7;
-  c1.o1[a4] = 9;
-  c1.o2[a1] = enum1::field0;
-  c1.o2[a2] = enum1::field1;
-  c1.o2[a3] = enum1::field2;
-  c1.o3[a1] = b1;
-  c1.o3[a2] = b2;
-  c1.o3[a3] = b3;
-  c1.o3[a4] = b4;
+  c1.o1_ref()[a1] = 3;
+  c1.o1_ref()[a2] = 5;
+  c1.o1_ref()[a3] = 7;
+  c1.o1_ref()[a4] = 9;
+  c1.o2_ref()[a1] = enum1::field0;
+  c1.o2_ref()[a2] = enum1::field1;
+  c1.o2_ref()[a3] = enum1::field2;
+  c1.o3_ref()[a1] = b1;
+  c1.o3_ref()[a2] = b2;
+  c1.o3_ref()[a3] = b3;
+  c1.o3_ref()[a4] = b4;
 
   TEST_IMPL(
       "<struct>{\n"

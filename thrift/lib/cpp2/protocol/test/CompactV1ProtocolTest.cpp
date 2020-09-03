@@ -75,9 +75,13 @@ TEST_F(CompactV1ProtocolTest, double_byteswap) {
   EXPECT_EQ(serialized.size(), get<1>(deserialized_size));
   uint64_t double_rep;
   std::memcpy(
-      &double_rep, &get<0>(deserialized_size).myDouble, sizeof(double_rep));
+      &double_rep,
+      &(*get<0>(deserialized_size).myDouble_ref()),
+      sizeof(double_rep));
   double_rep = folly::Endian::swap(double_rep);
   std::memcpy(
-      &get<0>(deserialized_size).myDouble, &double_rep, sizeof(double_rep));
+      &(*get<0>(deserialized_size).myDouble_ref()),
+      &double_rep,
+      sizeof(double_rep));
   EXPECT_EQ(orig, get<0>(deserialized_size));
 }

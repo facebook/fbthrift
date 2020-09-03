@@ -356,21 +356,21 @@ TEST(Frozen, SpillBug) {
 // Define hash and equal_to for User
 namespace std {
 size_t hash<User>::operator()(const User& user) const {
-  auto h = folly::hash::fnv64_buf(&user.uid, sizeof(user.uid));
-  h = folly::hash::fnv64_buf(&user.name, sizeof(user.name), h);
+  auto h = folly::hash::fnv64_buf(&(*user.uid_ref()), sizeof(*user.uid_ref()));
+  h = folly::hash::fnv64_buf(&(*user.name_ref()), sizeof(*user.name_ref()), h);
   return h;
 }
 
 bool equal_to<User>::operator()(const User& lhs, const User& rhs) const {
-  return lhs.uid == rhs.uid && lhs.name == rhs.name;
+  return *lhs.uid_ref() == *rhs.uid_ref() && *lhs.name_ref() == *rhs.name_ref();
 }
 } // namespace std
 
 TEST(FrozenMap, StructAsKey) {
   auto user = [](int64_t uid, std::string name) {
     User u;
-    u.uid = uid;
-    u.name = name;
+    *u.uid_ref() = uid;
+    *u.name_ref() = name;
     return u;
   };
 

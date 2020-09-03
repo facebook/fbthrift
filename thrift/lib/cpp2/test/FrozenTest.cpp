@@ -47,8 +47,8 @@ Team testValue() {
     auto id = hasher(i);
     Person p;
     p.id = id;
-    p.nums.insert(i);
-    p.nums.insert(-i);
+    p.nums_ref()->insert(i);
+    p.nums_ref()->insert(-i);
     p.dob_ref() = randomDouble(1e9);
     folly::toAppend("Person ", i, &p.name);
     (*team.peopleById_ref())[p.id] = p;
@@ -68,7 +68,7 @@ TEST(Frozen, Basic) {
   EXPECT_EQ(team.peopleById_ref()->at(hasher(4)).name, "Person 4");
   EXPECT_EQ(team.peopleById_ref()->at(hasher(5)).name, "Person 5");
   EXPECT_EQ(team.peopleByName_ref()->at("Person 3").id, 3);
-  EXPECT_EQ(team.peopleByName_ref()->begin()->second.nums.count(-1), 1);
+  EXPECT_EQ(team.peopleByName_ref()->begin()->second.nums_ref()->count(-1), 1);
   EXPECT_EQ(team.projects_ref()->count("alpha"), 1);
   EXPECT_EQ(team.projects_ref()->count("beta"), 1);
 
@@ -115,11 +115,13 @@ TEST(Frozen, Basic) {
 
 TEST(Frozen, FieldOrdering) {
   Pod p;
-  p.a = 0x012345;
-  p.b = 0x0678;
-  p.c = 0x09;
-  EXPECT_LT(static_cast<void*>(&p.a), static_cast<void*>(&p.b));
-  EXPECT_LT(static_cast<void*>(&p.b), static_cast<void*>(&p.c));
+  *p.a_ref() = 0x012345;
+  *p.b_ref() = 0x0678;
+  *p.c_ref() = 0x09;
+  EXPECT_LT(
+      static_cast<void*>(&(*p.a_ref())), static_cast<void*>(&(*p.b_ref())));
+  EXPECT_LT(
+      static_cast<void*>(&(*p.b_ref())), static_cast<void*>(&(*p.c_ref())));
   auto pf = freeze(p);
   auto& f = *pf;
   EXPECT_EQ(sizeof(f.__isset), 1);

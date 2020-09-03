@@ -30,68 +30,68 @@ namespace cpp_reflection {
 
 struct3 test_data() {
   structA a1;
-  a1.a = 99;
-  a1.b = "abc";
+  *a1.a_ref() = 99;
+  *a1.b_ref() = "abc";
   structA a2;
-  a2.a = 1001;
-  a2.b = "foo";
+  *a2.a_ref() = 1001;
+  *a2.b_ref() = "foo";
   structA a3;
-  a3.a = 654;
-  a3.b = "bar";
+  *a3.a_ref() = 654;
+  *a3.b_ref() = "bar";
   structA a4;
-  a4.a = 9791;
-  a4.b = "baz";
+  *a4.a_ref() = 9791;
+  *a4.b_ref() = "baz";
   structA a5;
-  a5.a = 111;
-  a5.b = "gaz";
+  *a5.a_ref() = 111;
+  *a5.b_ref() = "gaz";
 
   structB b1;
-  b1.c = 1.23;
-  b1.d = true;
+  *b1.c_ref() = 1.23;
+  *b1.d_ref() = true;
   structB b2;
-  b2.c = 9.8;
-  b2.d = false;
+  *b2.c_ref() = 9.8;
+  *b2.d_ref() = false;
   structB b3;
-  b3.c = 10.01;
-  b3.d = true;
+  *b3.c_ref() = 10.01;
+  *b3.d_ref() = true;
   structB b4;
-  b4.c = 159.73;
-  b4.d = false;
+  *b4.c_ref() = 159.73;
+  *b4.d_ref() = false;
   structB b5;
-  b5.c = 468.02;
-  b5.d = true;
+  *b5.c_ref() = 468.02;
+  *b5.d_ref() = true;
 
   struct3 pod;
 
-  pod.fieldA = 141;
-  pod.fieldB = "this is a test";
-  pod.fieldC = enum1::field0;
-  pod.fieldD = enum2::field1_2;
-  pod.fieldE.set_ud(5.6);
-  pod.fieldF.set_us_2("this is a variant");
-  pod.fieldG.field0 = 98;
-  pod.fieldG.field1_ref() = "hello, world";
-  pod.fieldG.field2 = enum1::field2;
-  pod.fieldG.field3 = enum2::field0_2;
-  pod.fieldG.field4_ref() = {};
-  pod.fieldG.field4_ref()->set_ui(19937);
-  pod.fieldG.field5.set_ue_2(enum1::field1);
+  *pod.fieldA_ref() = 141;
+  *pod.fieldB_ref() = "this is a test";
+  *pod.fieldC_ref() = enum1::field0;
+  *pod.fieldD_ref() = enum2::field1_2;
+  pod.fieldE_ref()->set_ud(5.6);
+  pod.fieldF_ref()->set_us_2("this is a variant");
+  pod.fieldG_ref()->field0 = 98;
+  pod.fieldG_ref()->field1_ref() = "hello, world";
+  *pod.fieldG_ref()->field2_ref() = enum1::field2;
+  pod.fieldG_ref()->field3 = enum2::field0_2;
+  pod.fieldG_ref()->field4_ref() = {};
+  pod.fieldG_ref()->field4_ref()->set_ui(19937);
+  pod.fieldG_ref()->field5_ref()->set_ue_2(enum1::field1);
   // fieldH intentionally left empty
-  pod.fieldI = {3, 5, 7, 9};
-  pod.fieldJ = {"a", "b", "c", "d"};
-  pod.fieldK = {};
-  pod.fieldL.push_back(a1);
-  pod.fieldL.push_back(a2);
-  pod.fieldL.push_back(a3);
-  pod.fieldL.push_back(a4);
-  pod.fieldL.push_back(a5);
-  pod.fieldM = {2, 4, 6, 8};
-  pod.fieldN = {"w", "x", "y", "z"};
-  pod.fieldO = {};
-  pod.fieldP = {b1, b2, b3, b4, b5};
-  pod.fieldQ = {{"a1", a1}, {"a2", a2}, {"a3", a3}};
-  pod.fieldR = {};
-  pod.fieldS = {{"123", "456"}, {"abc", "ABC"}, {"def", "DEF"}};
+  *pod.fieldI_ref() = {3, 5, 7, 9};
+  *pod.fieldJ_ref() = {"a", "b", "c", "d"};
+  *pod.fieldK_ref() = {};
+  pod.fieldL_ref()->push_back(a1);
+  pod.fieldL_ref()->push_back(a2);
+  pod.fieldL_ref()->push_back(a3);
+  pod.fieldL_ref()->push_back(a4);
+  pod.fieldL_ref()->push_back(a5);
+  *pod.fieldM_ref() = {2, 4, 6, 8};
+  *pod.fieldN_ref() = {"w", "x", "y", "z"};
+  *pod.fieldO_ref() = {};
+  *pod.fieldP_ref() = {b1, b2, b3, b4, b5};
+  *pod.fieldQ_ref() = {{"a1", a1}, {"a2", a2}, {"a3", a3}};
+  *pod.fieldR_ref() = {};
+  *pod.fieldS_ref() = {{"123", "456"}, {"abc", "ABC"}, {"def", "DEF"}};
 
   return pod;
 }
@@ -133,14 +133,14 @@ TEST(fatal_debug, equal) {
 TEST(Equal, Failure) {
   auto pod = test_data();
   struct3 pod1, pod2;
-  pod1.fieldR["a"].c = 1;
-  pod1.fieldR["b"].c = 2;
-  pod1.fieldR["c"].c = 3;
-  pod1.fieldR["d"].c = 4;
-  pod2.fieldR["d"].c = 4;
-  pod2.fieldR["c"].c = 3;
-  pod2.fieldR["b"].c = 2;
-  pod2.fieldR["a"].c = 1;
+  *pod1.fieldR["a"].c_ref() = 1;
+  *pod1.fieldR["b"].c_ref() = 2;
+  *pod1.fieldR["c"].c_ref() = 3;
+  *pod1.fieldR["d"].c_ref() = 4;
+  *pod2.fieldR["d"].c_ref() = 4;
+  *pod2.fieldR["c"].c_ref() = 3;
+  *pod2.fieldR["b"].c_ref() = 2;
+  *pod2.fieldR["a"].c_ref() = 1;
   EXPECT_THRIFT_EQ(pod1, pod2);
   // This is just to test that the ThriftEq matcher works:
   using apache::thrift::ThriftEq;
@@ -149,60 +149,60 @@ TEST(Equal, Failure) {
 
 TEST(fatal_debug, fieldA) {
   auto pod = test_data();
-  pod.fieldA = 90;
+  *pod.fieldA_ref() = 90;
   TEST_IMPL(pod, test_data(), "$.fieldA");
-  pod.fieldA = 141;
+  *pod.fieldA_ref() = 141;
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldB) {
   auto pod = test_data();
-  pod.fieldB = "should mismatch";
+  *pod.fieldB_ref() = "should mismatch";
   TEST_IMPL(pod, test_data(), "$.fieldB");
-  pod.fieldB = "this is a test";
+  *pod.fieldB_ref() = "this is a test";
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldC) {
   auto pod = test_data();
-  pod.fieldC = enum1::field2;
+  *pod.fieldC_ref() = enum1::field2;
   TEST_IMPL(pod, test_data(), "$.fieldC");
-  pod.fieldC = enum1::field0;
+  *pod.fieldC_ref() = enum1::field0;
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldE) {
   auto pod = test_data();
-  pod.fieldE.set_ui(5);
+  pod.fieldE_ref()->set_ui(5);
   TEST_IMPL(
       pod, test_data(), "$.fieldE.ui" /* missing */, "$.fieldE.ud" /* extra */);
-  pod.fieldE.__clear();
+  pod.fieldE_ref()->__clear();
   TEST_IMPL(pod, test_data(), "$.fieldE.ud" /* extra */);
-  pod.fieldE.set_ud(4);
+  pod.fieldE_ref()->set_ud(4);
   TEST_IMPL(pod, test_data(), "$.fieldE.ud" /* changed */);
-  pod.fieldE.set_ud(5.6);
+  pod.fieldE_ref()->set_ud(5.6);
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldH) {
   auto pod = test_data();
-  pod.fieldH.set_ui_2(3);
+  pod.fieldH_ref()->set_ui_2(3);
   TEST_IMPL(pod, test_data(), "$.fieldH.ui_2" /* extra */);
-  pod.fieldH.__clear();
+  pod.fieldH_ref()->__clear();
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldI) {
   auto pod = test_data();
-  pod.fieldI[0] = 4;
+  pod.fieldI_ref()[0] = 4;
   TEST_IMPL(pod, test_data(), "$.fieldI[0]");
-  pod.fieldI[0] = 3;
+  pod.fieldI_ref()[0] = 3;
   TEST_IMPL(pod, test_data());
-  pod.fieldI[2] = 10;
+  pod.fieldI_ref()[2] = 10;
   TEST_IMPL(pod, test_data(), "$.fieldI[2]");
-  pod.fieldI.push_back(11);
+  pod.fieldI_ref()->push_back(11);
   TEST_IMPL(pod, test_data(), "$.fieldI[2]", "$.fieldI[4]");
-  pod.fieldI.clear();
+  pod.fieldI_ref()->clear();
   TEST_IMPL(
       pod,
       test_data(),
@@ -214,7 +214,7 @@ TEST(fatal_debug, fieldI) {
 
 TEST(fatal_debug, fieldM) {
   auto pod = test_data();
-  pod.fieldM.clear();
+  pod.fieldM_ref()->clear();
   TEST_IMPL(
       pod,
       test_data(),
@@ -222,10 +222,10 @@ TEST(fatal_debug, fieldM) {
       "$.fieldM[4]" /* extra */,
       "$.fieldM[6]" /* extra */,
       "$.fieldM[8]" /* extra */);
-  pod.fieldM.insert(11);
-  pod.fieldM.insert(12);
-  pod.fieldM.insert(13);
-  pod.fieldM.insert(14);
+  pod.fieldM_ref()->insert(11);
+  pod.fieldM_ref()->insert(12);
+  pod.fieldM_ref()->insert(13);
+  pod.fieldM_ref()->insert(14);
   TEST_IMPL(
       pod,
       test_data(),
@@ -237,13 +237,13 @@ TEST(fatal_debug, fieldM) {
       "$.fieldM[4]" /* extra */,
       "$.fieldM[6]" /* extra */,
       "$.fieldM[8]" /* extra */);
-  pod.fieldM = test_data().fieldM;
+  *pod.fieldM_ref() = *test_data().fieldM_ref();
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldQ) {
   auto pod = test_data();
-  pod.fieldQ.clear();
+  pod.fieldQ_ref()->clear();
   TEST_IMPL(
       pod,
       test_data(),
@@ -251,17 +251,17 @@ TEST(fatal_debug, fieldQ) {
       "$.fieldQ[\"a2\"]" /* extra */,
       "$.fieldQ[\"a3\"]" /* extra */);
   structA a1;
-  a1.a = 1;
-  a1.b = "1";
+  *a1.a_ref() = 1;
+  *a1.b_ref() = "1";
   structA a2;
-  a2.a = 2;
-  a2.b = "2";
+  *a2.a_ref() = 2;
+  *a2.b_ref() = "2";
   structA a3;
-  a3.a = 3;
-  a3.b = "3";
-  pod.fieldQ["A1"] = a1;
-  pod.fieldQ["A2"] = a2;
-  pod.fieldQ["A3"] = a3;
+  *a3.a_ref() = 3;
+  *a3.b_ref() = "3";
+  pod.fieldQ_ref()["A1"] = a1;
+  pod.fieldQ_ref()["A2"] = a2;
+  pod.fieldQ_ref()["A3"] = a3;
   TEST_IMPL(
       pod,
       test_data(),
@@ -271,53 +271,53 @@ TEST(fatal_debug, fieldQ) {
       "$.fieldQ[\"a1\"]" /* extra */,
       "$.fieldQ[\"a2\"]" /* extra */,
       "$.fieldQ[\"a3\"]" /* extra */);
-  pod.fieldQ = test_data().fieldQ;
+  *pod.fieldQ_ref() = *test_data().fieldQ_ref();
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldG_field0) {
   auto pod = test_data();
-  pod.fieldG.field0 = 12;
+  pod.fieldG_ref()->field0 = 12;
   TEST_IMPL(pod, test_data(), "$.fieldG.field0");
-  pod.fieldG.field0 = 98;
+  pod.fieldG_ref()->field0 = 98;
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldG_field1) {
   auto pod = test_data();
-  pod.fieldG.field1_ref() = "should mismatch";
+  pod.fieldG_ref()->field1_ref() = "should mismatch";
   TEST_IMPL(pod, test_data(), "$.fieldG.field1");
-  pod.fieldG.field1_ref() = "hello, world";
+  pod.fieldG_ref()->field1_ref() = "hello, world";
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldG_field2) {
   auto pod = test_data();
-  pod.fieldG.field2 = enum1::field1;
+  *pod.fieldG_ref()->field2_ref() = enum1::field1;
   TEST_IMPL(pod, test_data(), "$.fieldG.field2");
-  pod.fieldG.field2 = enum1::field2;
+  *pod.fieldG_ref()->field2_ref() = enum1::field2;
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldG_field5) {
   auto pod = test_data();
-  pod.fieldG.field5.set_ui_2(5);
+  pod.fieldG_ref()->field5_ref()->set_ui_2(5);
   TEST_IMPL(
       pod,
       test_data(),
       "$.fieldG.field5.ui_2" /* missing */,
       "$.fieldG.field5.ue_2" /* extra */);
-  pod.fieldG.field5.__clear();
+  pod.fieldG_ref()->field5_ref()->__clear();
   TEST_IMPL(pod, test_data(), "$.fieldG.field5.ue_2" /* extra */);
-  pod.fieldG.field5.set_ue_2(enum1::field0);
+  pod.fieldG_ref()->field5_ref()->set_ue_2(enum1::field0);
   TEST_IMPL(pod, test_data(), "$.fieldG.field5.ue_2" /* changed */);
-  pod.fieldG.field5.set_ue_2(enum1::field1);
+  pod.fieldG_ref()->field5_ref()->set_ue_2(enum1::field1);
   TEST_IMPL(pod, test_data());
 }
 
 TEST(fatal_debug, fieldS) {
   auto pod = test_data();
-  pod.fieldS = {{"123", "456"}, {"abc", "ABC"}, {"ghi", "GHI"}};
+  *pod.fieldS_ref() = {{"123", "456"}, {"abc", "ABC"}, {"ghi", "GHI"}};
   TEST_IMPL(
       pod,
       test_data(),
@@ -327,9 +327,9 @@ TEST(fatal_debug, fieldS) {
 
 TEST(fatal_debug, struct_binary) {
   struct_binary lhs;
-  lhs.bi = "hello";
+  *lhs.bi_ref() = "hello";
   struct_binary rhs;
-  rhs.bi = "world";
+  *rhs.bi_ref() = "world";
 
   TEST_IMPL(lhs, rhs, "$.bi");
 }

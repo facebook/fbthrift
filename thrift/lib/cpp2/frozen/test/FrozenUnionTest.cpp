@@ -79,8 +79,8 @@ TEST(FrozenUnion, union_contains_set) {
 TEST(FrozenUnion, union_contains_sturct) {
   TestUnion u;
   Member thatStruct;
-  thatStruct.adId = 2010;
-  thatStruct.name = "Tiger";
+  *thatStruct.adId_ref() = 2010;
+  *thatStruct.name_ref() = "Tiger";
   std::vector<int64_t> thatCreativeIds{9, 5, 376, 28};
   thatStruct.creativeIds_ref() = thatCreativeIds;
 
@@ -97,7 +97,7 @@ TEST(FrozenUnion, union_contains_sturct) {
 TEST(FrozenUnion, union_contains_cpp_shared_ref) {
   TestUnion u;
   auto max = std::make_shared<Pet1>();
-  max->name = "max";
+  *max->name_ref() = "max";
   max->age_ref() = 7;
   max->vegan_ref() = true;
 
@@ -114,9 +114,9 @@ TEST(FrozenUnion, union_contains_cpp_unique_ref) {
   TestUnion u;
   Tiny tiny;
   tiny.a = "aaa";
-  tiny.b = "bbb";
-  tiny.c = "ccc";
-  tiny.d = "ddd";
+  *tiny.b_ref() = "bbb";
+  *tiny.c_ref() = "ccc";
+  *tiny.d_ref() = "ddd";
 
   u.set_aTiny(tiny);
   auto f = freeze(u);
@@ -131,8 +131,8 @@ TEST(FrozenUnion, union_contains_cpp_unique_ref) {
 TEST(FrozenUnion, union_contains_cpp_ref_true) {
   TestUnion u;
   Place place;
-  place.name = "somewhere";
-  place.popularityByHour[37] = 21;
+  *place.name_ref() = "somewhere";
+  place.popularityByHour_ref()[37] = 21;
 
   u.set_aPlace(std::move(place));
   auto f = freeze(u);
@@ -145,19 +145,19 @@ TEST(FrozenUnion, union_contains_cpp_ref_true) {
 TEST(FrozenUnion, union_as_member) {
   TestUnion u;
   Member thatStruct;
-  thatStruct.adId = 2015;
-  thatStruct.name = "Jayden";
+  *thatStruct.adId_ref() = 2015;
+  *thatStruct.name_ref() = "Jayden";
   std::vector<int64_t> thatCreativeIds{9, 5, 376, 28};
   thatStruct.creativeIds_ref() = thatCreativeIds;
   u.set_aStruct(thatStruct);
 
   Big big;
   big.anOptionalString_ref() = "so good!!";
-  big.anId = 9527;
+  *big.anId_ref() = 9527;
   std::vector<int64_t> thatList{19, 15, 1376, 7, 128};
   big.anOptionalList_ref() = thatList;
-  big.aTestUnion = u;
-  big.aString =
+  *big.aTestUnion_ref() = u;
+  *big.aString_ref() =
       "Run fast then you can catch the snowflake and keep it forever.";
 
   auto f = freeze(big);
