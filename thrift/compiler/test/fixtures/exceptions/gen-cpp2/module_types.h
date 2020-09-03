@@ -139,9 +139,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Banal >;
+  friend void swap(Banal& a, Banal& b);
 };
-
-void swap(Banal& a, Banal& b);
 
 template <class Protocol_>
 uint32_t Banal::read(Protocol_* iprot) {
@@ -264,9 +263,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Fiery >;
+  friend void swap(Fiery& a, Fiery& b);
 };
-
-void swap(Fiery& a, Fiery& b);
 
 template <class Protocol_>
 uint32_t Fiery::read(Protocol_* iprot) {
@@ -400,9 +398,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Serious >;
+  friend void swap(Serious& a, Serious& b);
 };
-
-void swap(Serious& a, Serious& b);
 
 template <class Protocol_>
 uint32_t Serious::read(Protocol_* iprot) {
@@ -577,9 +574,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ComplexFieldNames >;
+  friend void swap(ComplexFieldNames& a, ComplexFieldNames& b);
 };
-
-void swap(ComplexFieldNames& a, ComplexFieldNames& b);
 
 template <class Protocol_>
 uint32_t ComplexFieldNames::read(Protocol_* iprot) {
@@ -754,9 +750,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< CustomFieldNames >;
+  friend void swap(CustomFieldNames& a, CustomFieldNames& b);
 };
-
-void swap(CustomFieldNames& a, CustomFieldNames& b);
 
 template <class Protocol_>
 uint32_t CustomFieldNames::read(Protocol_* iprot) {

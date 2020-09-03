@@ -281,9 +281,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< BasicTypes >;
+  friend void swap(BasicTypes& a, BasicTypes& b);
 };
-
-void swap(BasicTypes& a, BasicTypes& b);
 
 template <class Protocol_>
 uint32_t BasicTypes::read(Protocol_* iprot) {

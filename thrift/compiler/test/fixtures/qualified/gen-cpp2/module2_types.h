@@ -201,9 +201,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Struct >;
+  friend void swap(Struct& a, Struct& b);
 };
-
-void swap(Struct& a, Struct& b);
 
 template <class Protocol_>
 uint32_t Struct::read(Protocol_* iprot) {
@@ -358,9 +357,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< BigStruct >;
+  friend void swap(BigStruct& a, BigStruct& b);
 };
-
-void swap(BigStruct& a, BigStruct& b);
 
 template <class Protocol_>
 uint32_t BigStruct::read(Protocol_* iprot) {

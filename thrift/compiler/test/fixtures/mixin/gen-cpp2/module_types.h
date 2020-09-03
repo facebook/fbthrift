@@ -189,9 +189,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Mixin1 >;
+  friend void swap(Mixin1& a, Mixin1& b);
 };
-
-void swap(Mixin1& a, Mixin1& b);
 
 template <class Protocol_>
 uint32_t Mixin1::read(Protocol_* iprot) {
@@ -355,9 +354,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Mixin2 >;
+  friend void swap(Mixin2& a, Mixin2& b);
 };
-
-void swap(Mixin2& a, Mixin2& b);
 
 template <class Protocol_>
 uint32_t Mixin2::read(Protocol_* iprot) {
@@ -480,9 +478,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Mixin3Base >;
+  friend void swap(Mixin3Base& a, Mixin3Base& b);
 };
-
-void swap(Mixin3Base& a, Mixin3Base& b);
 
 template <class Protocol_>
 uint32_t Mixin3Base::read(Protocol_* iprot) {
@@ -693,9 +690,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Foo >;
+  friend void swap(Foo& a, Foo& b);
 };
-
-void swap(Foo& a, Foo& b);
 
 template <class Protocol_>
 uint32_t Foo::read(Protocol_* iprot) {

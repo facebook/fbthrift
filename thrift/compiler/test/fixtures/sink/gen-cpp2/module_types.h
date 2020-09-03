@@ -189,9 +189,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< InitialResponse >;
+  friend void swap(InitialResponse& a, InitialResponse& b);
 };
-
-void swap(InitialResponse& a, InitialResponse& b);
 
 template <class Protocol_>
 uint32_t InitialResponse::read(Protocol_* iprot) {
@@ -314,9 +313,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< FinalResponse >;
+  friend void swap(FinalResponse& a, FinalResponse& b);
 };
-
-void swap(FinalResponse& a, FinalResponse& b);
 
 template <class Protocol_>
 uint32_t FinalResponse::read(Protocol_* iprot) {
@@ -439,9 +437,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< SinkPayload >;
+  friend void swap(SinkPayload& a, SinkPayload& b);
 };
-
-void swap(SinkPayload& a, SinkPayload& b);
 
 template <class Protocol_>
 uint32_t SinkPayload::read(Protocol_* iprot) {
@@ -564,9 +561,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< CompatibleWithKeywordSink >;
+  friend void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b);
 };
-
-void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b);
 
 template <class Protocol_>
 uint32_t CompatibleWithKeywordSink::read(Protocol_* iprot) {
@@ -693,9 +689,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< InitialException >;
+  friend void swap(InitialException& a, InitialException& b);
 };
-
-void swap(InitialException& a, InitialException& b);
 
 template <class Protocol_>
 uint32_t InitialException::read(Protocol_* iprot) {
@@ -822,9 +817,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< SinkException1 >;
+  friend void swap(SinkException1& a, SinkException1& b);
 };
-
-void swap(SinkException1& a, SinkException1& b);
 
 template <class Protocol_>
 uint32_t SinkException1::read(Protocol_* iprot) {
@@ -947,9 +941,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< SinkException2 >;
+  friend void swap(SinkException2& a, SinkException2& b);
 };
-
-void swap(SinkException2& a, SinkException2& b);
 
 template <class Protocol_>
 uint32_t SinkException2::read(Protocol_* iprot) {

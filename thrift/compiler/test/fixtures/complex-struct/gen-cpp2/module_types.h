@@ -883,9 +883,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStructFloatFieldThrowExp >;
+  friend void swap(MyStructFloatFieldThrowExp& a, MyStructFloatFieldThrowExp& b);
 };
-
-void swap(MyStructFloatFieldThrowExp& a, MyStructFloatFieldThrowExp& b);
 
 template <class Protocol_>
 uint32_t MyStructFloatFieldThrowExp::read(Protocol_* iprot) {
@@ -1040,9 +1039,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStructMapFloatThrowExp >;
+  friend void swap(MyStructMapFloatThrowExp& a, MyStructMapFloatThrowExp& b);
 };
-
-void swap(MyStructMapFloatThrowExp& a, MyStructMapFloatThrowExp& b);
 
 template <class Protocol_>
 uint32_t MyStructMapFloatThrowExp::read(Protocol_* iprot) {
@@ -1118,9 +1116,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+  friend void swap(MyDataItem& a, MyDataItem& b);
 };
-
-void swap(MyDataItem& a, MyDataItem& b);
 
 template <class Protocol_>
 uint32_t MyDataItem::read(Protocol_* iprot) {
@@ -2226,9 +2223,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend void swap(MyStruct& a, MyStruct& b);
 };
-
-void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
@@ -2390,9 +2386,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< SimpleStruct >;
+  friend void swap(SimpleStruct& a, SimpleStruct& b);
 };
-
-void swap(SimpleStruct& a, SimpleStruct& b);
 
 template <class Protocol_>
 uint32_t SimpleStruct::read(Protocol_* iprot) {
@@ -3125,9 +3120,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ComplexNestedStruct >;
+  friend void swap(ComplexNestedStruct& a, ComplexNestedStruct& b);
 };
-
-void swap(ComplexNestedStruct& a, ComplexNestedStruct& b);
 
 template <class Protocol_>
 uint32_t ComplexNestedStruct::read(Protocol_* iprot) {
@@ -3688,9 +3682,8 @@ class MyUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyUnion >;
+  friend void swap(MyUnion& a, MyUnion& b);
 };
-
-void swap(MyUnion& a, MyUnion& b);
 
 template <class Protocol_>
 uint32_t MyUnion::read(Protocol_* iprot) {
@@ -4588,9 +4581,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< defaultStruct >;
+  friend void swap(defaultStruct& a, defaultStruct& b);
 };
-
-void swap(defaultStruct& a, defaultStruct& b);
 
 template <class Protocol_>
 uint32_t defaultStruct::read(Protocol_* iprot) {
@@ -5013,9 +5005,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStructTypeDef >;
+  friend void swap(MyStructTypeDef& a, MyStructTypeDef& b);
 };
-
-void swap(MyStructTypeDef& a, MyStructTypeDef& b);
 
 template <class Protocol_>
 uint32_t MyStructTypeDef::read(Protocol_* iprot) {
@@ -5450,9 +5441,8 @@ class MyUnionFloatFieldThrowExp final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyUnionFloatFieldThrowExp >;
+  friend void swap(MyUnionFloatFieldThrowExp& a, MyUnionFloatFieldThrowExp& b);
 };
-
-void swap(MyUnionFloatFieldThrowExp& a, MyUnionFloatFieldThrowExp& b);
 
 template <class Protocol_>
 uint32_t MyUnionFloatFieldThrowExp::read(Protocol_* iprot) {
@@ -5685,9 +5675,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< TypeRemapped >;
+  friend void swap(TypeRemapped& a, TypeRemapped& b);
 };
-
-void swap(TypeRemapped& a, TypeRemapped& b);
 
 template <class Protocol_>
 uint32_t TypeRemapped::read(Protocol_* iprot) {
@@ -5767,9 +5756,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< emptyXcep >;
+  friend void swap(emptyXcep& a, emptyXcep& b);
 };
-
-void swap(emptyXcep& a, emptyXcep& b);
 
 template <class Protocol_>
 uint32_t emptyXcep::read(Protocol_* iprot) {
@@ -5917,9 +5905,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< reqXcep >;
+  friend void swap(reqXcep& a, reqXcep& b);
 };
-
-void swap(reqXcep& a, reqXcep& b);
 
 template <class Protocol_>
 uint32_t reqXcep::read(Protocol_* iprot) {
@@ -6090,9 +6077,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< optXcep >;
+  friend void swap(optXcep& a, optXcep& b);
 };
-
-void swap(optXcep& a, optXcep& b);
 
 template <class Protocol_>
 uint32_t optXcep::read(Protocol_* iprot) {
@@ -6405,9 +6391,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< complexException >;
+  friend void swap(complexException& a, complexException& b);
 };
-
-void swap(complexException& a, complexException& b);
 
 template <class Protocol_>
 uint32_t complexException::read(Protocol_* iprot) {

@@ -268,9 +268,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStructNestedAnnotation >;
+  friend void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b);
 };
-
-void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b);
 
 template <class Protocol_>
 uint32_t MyStructNestedAnnotation::read(Protocol_* iprot) {
@@ -510,9 +509,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStructAnnotation >;
+  friend void swap(MyStructAnnotation& a, MyStructAnnotation& b);
 };
-
-void swap(MyStructAnnotation& a, MyStructAnnotation& b);
 
 template <class Protocol_>
 uint32_t MyStructAnnotation::read(Protocol_* iprot) {
@@ -844,9 +842,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend void swap(MyStruct& a, MyStruct& b);
 };
-
-void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
@@ -1007,9 +1004,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< SecretStruct >;
+  friend void swap(SecretStruct& a, SecretStruct& b);
 };
-
-void swap(SecretStruct& a, SecretStruct& b);
 
 template <class Protocol_>
 uint32_t SecretStruct::read(Protocol_* iprot) {

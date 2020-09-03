@@ -719,9 +719,8 @@ class ComplexUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ComplexUnion >;
+  friend void swap(ComplexUnion& a, ComplexUnion& b);
 };
-
-void swap(ComplexUnion& a, ComplexUnion& b);
 
 template <class Protocol_>
 uint32_t ComplexUnion::read(Protocol_* iprot) {
@@ -1016,9 +1015,8 @@ class ListUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ListUnion >;
+  friend void swap(ListUnion& a, ListUnion& b);
 };
-
-void swap(ListUnion& a, ListUnion& b);
 
 template <class Protocol_>
 uint32_t ListUnion::read(Protocol_* iprot) {
@@ -1313,9 +1311,8 @@ class DataUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< DataUnion >;
+  friend void swap(DataUnion& a, DataUnion& b);
 };
-
-void swap(DataUnion& a, DataUnion& b);
 
 template <class Protocol_>
 uint32_t DataUnion::read(Protocol_* iprot) {
@@ -1512,9 +1509,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Val >;
+  friend void swap(Val& a, Val& b);
 };
-
-void swap(Val& a, Val& b);
 
 template <class Protocol_>
 uint32_t Val::read(Protocol_* iprot) {
@@ -1809,9 +1805,8 @@ class ValUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ValUnion >;
+  friend void swap(ValUnion& a, ValUnion& b);
 };
-
-void swap(ValUnion& a, ValUnion& b);
 
 template <class Protocol_>
 uint32_t ValUnion::read(Protocol_* iprot) {
@@ -2107,9 +2102,8 @@ class VirtualComplexUnion  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< VirtualComplexUnion >;
+  friend void swap(VirtualComplexUnion& a, VirtualComplexUnion& b);
 };
-
-void swap(VirtualComplexUnion& a, VirtualComplexUnion& b);
 
 template <class Protocol_>
 uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
@@ -2223,9 +2217,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< NonCopyableStruct >;
+  friend void swap(NonCopyableStruct& a, NonCopyableStruct& b);
 };
-
-void swap(NonCopyableStruct& a, NonCopyableStruct& b);
 
 template <class Protocol_>
 uint32_t NonCopyableStruct::read(Protocol_* iprot) {
@@ -2400,9 +2393,8 @@ class NonCopyableUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< NonCopyableUnion >;
+  friend void swap(NonCopyableUnion& a, NonCopyableUnion& b);
 };
-
-void swap(NonCopyableUnion& a, NonCopyableUnion& b);
 
 template <class Protocol_>
 uint32_t NonCopyableUnion::read(Protocol_* iprot) {

@@ -199,9 +199,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< A >;
+  friend void swap(A& a, A& b);
 };
-
-void swap(A& a, A& b);
 
 template <class Protocol_>
 uint32_t A::read(Protocol_* iprot) {

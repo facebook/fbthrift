@@ -410,9 +410,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Color >;
+  friend void swap(Color& a, Color& b);
 };
-
-void swap(Color& a, Color& b);
 
 template <class Protocol_>
 uint32_t Color::read(Protocol_* iprot) {
@@ -704,9 +703,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Vehicle >;
+  friend void swap(Vehicle& a, Vehicle& b);
 };
-
-void swap(Vehicle& a, Vehicle& b);
 
 template <class Protocol_>
 uint32_t Vehicle::read(Protocol_* iprot) {
@@ -1187,9 +1185,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Person >;
+  friend void swap(Person& a, Person& b);
 };
-
-void swap(Person& a, Person& b);
 
 template <class Protocol_>
 uint32_t Person::read(Protocol_* iprot) {

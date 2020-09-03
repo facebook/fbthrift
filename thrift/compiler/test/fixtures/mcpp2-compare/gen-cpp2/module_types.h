@@ -1195,9 +1195,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Empty >;
+  friend void swap(Empty& a, Empty& b);
 };
-
-void swap(Empty& a, Empty& b);
 
 template <class Protocol_>
 uint32_t Empty::read(Protocol_* iprot) {
@@ -1316,9 +1315,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ASimpleStruct >;
+  friend void swap(ASimpleStruct& a, ASimpleStruct& b);
 };
-
-void swap(ASimpleStruct& a, ASimpleStruct& b);
 
 template <class Protocol_>
 uint32_t ASimpleStruct::read(Protocol_* iprot) {
@@ -1439,9 +1437,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ASimpleStructNoexcept >;
+  friend void swap(ASimpleStructNoexcept& a, ASimpleStructNoexcept& b);
 };
-
-void swap(ASimpleStructNoexcept& a, ASimpleStructNoexcept& b);
 
 template <class Protocol_>
 uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
@@ -1875,9 +1872,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend void swap(MyStruct& a, MyStruct& b);
 };
-
-void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
@@ -2159,9 +2155,8 @@ class SimpleUnion  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< SimpleUnion >;
+  friend void swap(SimpleUnion& a, SimpleUnion& b);
 };
-
-void swap(SimpleUnion& a, SimpleUnion& b);
 
 template <class Protocol_>
 uint32_t SimpleUnion::read(Protocol_* iprot) {
@@ -4263,9 +4258,8 @@ class ComplexUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ComplexUnion >;
+  friend void swap(ComplexUnion& a, ComplexUnion& b);
 };
-
-void swap(ComplexUnion& a, ComplexUnion& b);
 
 template <class Protocol_>
 uint32_t ComplexUnion::read(Protocol_* iprot) {
@@ -4894,9 +4888,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< AnException >;
+  friend void swap(AnException& a, AnException& b);
 };
-
-void swap(AnException& a, AnException& b);
 
 template <class Protocol_>
 uint32_t AnException::read(Protocol_* iprot) {
@@ -5095,9 +5088,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< AnotherException >;
+  friend void swap(AnotherException& a, AnotherException& b);
 };
-
-void swap(AnotherException& a, AnotherException& b);
 
 template <class Protocol_>
 uint32_t AnotherException::read(Protocol_* iprot) {
@@ -6843,9 +6835,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< containerStruct >;
+  friend void swap(containerStruct& a, containerStruct& b);
 };
-
-void swap(containerStruct& a, containerStruct& b);
 
 template <class Protocol_>
 uint32_t containerStruct::read(Protocol_* iprot) {
@@ -7041,9 +7032,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyIncludedStruct >;
+  friend void swap(MyIncludedStruct& a, MyIncludedStruct& b);
 };
-
-void swap(MyIncludedStruct& a, MyIncludedStruct& b);
 
 template <class Protocol_>
 uint32_t MyIncludedStruct::read(Protocol_* iprot) {
@@ -8176,9 +8166,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< AnnotatedStruct >;
+  friend void swap(AnnotatedStruct& a, AnnotatedStruct& b);
 };
-
-void swap(AnnotatedStruct& a, AnnotatedStruct& b);
 
 template <class Protocol_>
 uint32_t AnnotatedStruct::read(Protocol_* iprot) {
@@ -8331,9 +8320,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ComplexContainerStruct >;
+  friend void swap(ComplexContainerStruct& a, ComplexContainerStruct& b);
 };
-
-void swap(ComplexContainerStruct& a, ComplexContainerStruct& b);
 
 template <class Protocol_>
 uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
@@ -8490,9 +8478,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< FloatStruct >;
+  friend void swap(FloatStruct& a, FloatStruct& b);
 };
-
-void swap(FloatStruct& a, FloatStruct& b);
 
 template <class Protocol_>
 uint32_t FloatStruct::read(Protocol_* iprot) {
@@ -8759,9 +8746,8 @@ class FloatUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< FloatUnion >;
+  friend void swap(FloatUnion& a, FloatUnion& b);
 };
-
-void swap(FloatUnion& a, FloatUnion& b);
 
 template <class Protocol_>
 uint32_t FloatUnion::read(Protocol_* iprot) {
@@ -8872,9 +8858,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< AllRequiredNoExceptMoveCtrStruct >;
+  friend void swap(AllRequiredNoExceptMoveCtrStruct& a, AllRequiredNoExceptMoveCtrStruct& b);
 };
-
-void swap(AllRequiredNoExceptMoveCtrStruct& a, AllRequiredNoExceptMoveCtrStruct& b);
 
 template <class Protocol_>
 uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {

@@ -102,9 +102,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Empty >;
+  friend void swap(Empty& a, Empty& b);
 };
-
-void swap(Empty& a, Empty& b);
 
 template <class Protocol_>
 uint32_t Empty::read(Protocol_* iprot) {
@@ -245,9 +244,8 @@ class Nada final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Nada >;
+  friend void swap(Nada& a, Nada& b);
 };
-
-void swap(Nada& a, Nada& b);
 
 template <class Protocol_>
 uint32_t Nada::read(Protocol_* iprot) {

@@ -1476,9 +1476,8 @@ class union1 final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< union1 >;
+  friend void swap(union1& a, union1& b);
 };
-
-void swap(union1& a, union1& b);
 
 template <class Protocol_>
 uint32_t union1::read(Protocol_* iprot) {
@@ -1885,9 +1884,8 @@ class union2 final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< union2 >;
+  friend void swap(union2& a, union2& b);
 };
-
-void swap(union2& a, union2& b);
 
 template <class Protocol_>
 uint32_t union2::read(Protocol_* iprot) {
@@ -2294,9 +2292,8 @@ class union3 final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< union3 >;
+  friend void swap(union3& a, union3& b);
 };
-
-void swap(union3& a, union3& b);
 
 template <class Protocol_>
 uint32_t union3::read(Protocol_* iprot) {
@@ -2457,9 +2454,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< structA >;
+  friend void swap(structA& a, structA& b);
 };
-
-void swap(structA& a, structA& b);
 
 template <class Protocol_>
 uint32_t structA::read(Protocol_* iprot) {
@@ -2943,9 +2939,8 @@ class unionA final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< unionA >;
+  friend void swap(unionA& a, unionA& b);
 };
-
-void swap(unionA& a, unionA& b);
 
 template <class Protocol_>
 uint32_t unionA::read(Protocol_* iprot) {
@@ -3102,9 +3097,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< structB >;
+  friend void swap(structB& a, structB& b);
 };
-
-void swap(structB& a, structB& b);
 
 template <class Protocol_>
 uint32_t structB::read(Protocol_* iprot) {
@@ -4280,9 +4274,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< structC >;
+  friend void swap(structC& a, structC& b);
 };
-
-void swap(structC& a, structC& b);
 
 template <class Protocol_>
 uint32_t structC::read(Protocol_* iprot) {
@@ -4580,9 +4573,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct1 >;
+  friend void swap(struct1& a, struct1& b);
 };
-
-void swap(struct1& a, struct1& b);
 
 template <class Protocol_>
 uint32_t struct1::read(Protocol_* iprot) {
@@ -4928,9 +4920,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct2 >;
+  friend void swap(struct2& a, struct2& b);
 };
-
-void swap(struct2& a, struct2& b);
 
 template <class Protocol_>
 uint32_t struct2::read(Protocol_* iprot) {
@@ -5672,9 +5663,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct3 >;
+  friend void swap(struct3& a, struct3& b);
 };
-
-void swap(struct3& a, struct3& b);
 
 template <class Protocol_>
 uint32_t struct3::read(Protocol_* iprot) {
@@ -5879,9 +5869,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct4 >;
+  friend void swap(struct4& a, struct4& b);
 };
-
-void swap(struct4& a, struct4& b);
 
 template <class Protocol_>
 uint32_t struct4::read(Protocol_* iprot) {
@@ -6148,9 +6137,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct5 >;
+  friend void swap(struct5& a, struct5& b);
 };
-
-void swap(struct5& a, struct5& b);
 
 template <class Protocol_>
 uint32_t struct5::read(Protocol_* iprot) {
@@ -6273,9 +6261,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct_binary >;
+  friend void swap(struct_binary& a, struct_binary& b);
 };
-
-void swap(struct_binary& a, struct_binary& b);
 
 template <class Protocol_>
 uint32_t struct_binary::read(Protocol_* iprot) {
@@ -6466,9 +6453,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< dep_A_struct >;
+  friend void swap(dep_A_struct& a, dep_A_struct& b);
 };
-
-void swap(dep_A_struct& a, dep_A_struct& b);
 
 template <class Protocol_>
 uint32_t dep_A_struct::read(Protocol_* iprot) {
@@ -6659,9 +6645,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< dep_B_struct >;
+  friend void swap(dep_B_struct& a, dep_B_struct& b);
 };
-
-void swap(dep_B_struct& a, dep_B_struct& b);
 
 template <class Protocol_>
 uint32_t dep_B_struct::read(Protocol_* iprot) {
@@ -6780,9 +6765,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< annotated >;
+  friend void swap(annotated& a, annotated& b);
 };
-
-void swap(annotated& a, annotated& b);
 
 template <class Protocol_>
 uint32_t annotated::read(Protocol_* iprot) {
@@ -8687,9 +8671,8 @@ class union_with_special_names final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< union_with_special_names >;
+  friend void swap(union_with_special_names& a, union_with_special_names& b);
 };
-
-void swap(union_with_special_names& a, union_with_special_names& b);
 
 template <class Protocol_>
 uint32_t union_with_special_names::read(Protocol_* iprot) {
@@ -9834,9 +9817,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct_with_special_names >;
+  friend void swap(struct_with_special_names& a, struct_with_special_names& b);
 };
-
-void swap(struct_with_special_names& a, struct_with_special_names& b);
 
 template <class Protocol_>
 uint32_t struct_with_special_names::read(Protocol_* iprot) {
@@ -10111,9 +10093,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct_with_indirections >;
+  friend void swap(struct_with_indirections& a, struct_with_indirections& b);
 };
-
-void swap(struct_with_indirections& a, struct_with_indirections& b);
 
 template <class Protocol_>
 uint32_t struct_with_indirections::read(Protocol_* iprot) {

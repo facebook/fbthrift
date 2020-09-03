@@ -649,9 +649,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< decorated_struct >;
+  friend void swap(decorated_struct& a, decorated_struct& b);
 };
-
-void swap(decorated_struct& a, decorated_struct& b);
 
 template <class Protocol_>
 uint32_t decorated_struct::read(Protocol_* iprot) {
@@ -1024,9 +1023,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ContainerStruct >;
+  friend void swap(ContainerStruct& a, ContainerStruct& b);
 };
-
-void swap(ContainerStruct& a, ContainerStruct& b);
 
 template <class Protocol_>
 uint32_t ContainerStruct::read(Protocol_* iprot) {
@@ -1143,9 +1141,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< CppTypeStruct >;
+  friend void swap(CppTypeStruct& a, CppTypeStruct& b);
 };
-
-void swap(CppTypeStruct& a, CppTypeStruct& b);
 
 template <class Protocol_>
 uint32_t CppTypeStruct::read(Protocol_* iprot) {
@@ -1267,9 +1264,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< VirtualStruct >;
+  friend void swap(VirtualStruct& a, VirtualStruct& b);
 };
-
-void swap(VirtualStruct& a, VirtualStruct& b);
 
 template <class Protocol_>
 uint32_t VirtualStruct::read(Protocol_* iprot) {
@@ -1426,9 +1422,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStructWithForwardRefEnum >;
+  friend void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b);
 };
-
-void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b);
 
 template <class Protocol_>
 uint32_t MyStructWithForwardRefEnum::read(Protocol_* iprot) {
@@ -1585,9 +1580,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< TrivialNumeric >;
+  friend void swap(TrivialNumeric& a, TrivialNumeric& b);
 };
-
-void swap(TrivialNumeric& a, TrivialNumeric& b);
 
 template <class Protocol_>
 uint32_t TrivialNumeric::read(Protocol_* iprot) {
@@ -1743,9 +1737,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< TrivialNestedWithDefault >;
+  friend void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b);
 };
-
-void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b);
 
 template <class Protocol_>
 uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
@@ -1904,9 +1897,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ComplexString >;
+  friend void swap(ComplexString& a, ComplexString& b);
 };
-
-void swap(ComplexString& a, ComplexString& b);
 
 template <class Protocol_>
 uint32_t ComplexString::read(Protocol_* iprot) {
@@ -2067,9 +2059,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ComplexNestedWithDefault >;
+  friend void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b);
 };
-
-void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b);
 
 template <class Protocol_>
 uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
@@ -2302,9 +2293,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MinPadding >;
+  friend void swap(MinPadding& a, MinPadding& b);
 };
-
-void swap(MinPadding& a, MinPadding& b);
 
 template <class Protocol_>
 uint32_t MinPadding::read(Protocol_* iprot) {
@@ -2362,9 +2352,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+  friend void swap(MyDataItem& a, MyDataItem& b);
 };
-
-void swap(MyDataItem& a, MyDataItem& b);
 
 template <class Protocol_>
 uint32_t MyDataItem::read(Protocol_* iprot) {
@@ -2581,9 +2570,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend void swap(MyStruct& a, MyStruct& b);
 };
-
-void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
@@ -2702,9 +2690,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Renaming >;
+  friend void swap(Renaming& a, Renaming& b);
 };
-
-void swap(Renaming& a, Renaming& b);
 
 template <class Protocol_>
 uint32_t Renaming::read(Protocol_* iprot) {
@@ -2863,9 +2850,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< AnnotatedTypes >;
+  friend void swap(AnnotatedTypes& a, AnnotatedTypes& b);
 };
-
-void swap(AnnotatedTypes& a, AnnotatedTypes& b);
 
 template <class Protocol_>
 uint32_t AnnotatedTypes::read(Protocol_* iprot) {
@@ -2983,9 +2969,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ForwardUsageStruct >;
+  friend void swap(ForwardUsageStruct& a, ForwardUsageStruct& b);
 };
-
-void swap(ForwardUsageStruct& a, ForwardUsageStruct& b);
 
 template <class Protocol_>
 uint32_t ForwardUsageStruct::read(Protocol_* iprot) {
@@ -3114,9 +3099,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ForwardUsageRoot >;
+  friend void swap(ForwardUsageRoot& a, ForwardUsageRoot& b);
 };
-
-void swap(ForwardUsageRoot& a, ForwardUsageRoot& b);
 
 template <class Protocol_>
 uint32_t ForwardUsageRoot::read(Protocol_* iprot) {
@@ -3234,9 +3218,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< ForwardUsageByRef >;
+  friend void swap(ForwardUsageByRef& a, ForwardUsageByRef& b);
 };
-
-void swap(ForwardUsageByRef& a, ForwardUsageByRef& b);
 
 template <class Protocol_>
 uint32_t ForwardUsageByRef::read(Protocol_* iprot) {
@@ -3311,9 +3294,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< NoexceptMoveEmpty >;
+  friend void swap(NoexceptMoveEmpty& a, NoexceptMoveEmpty& b);
 };
-
-void swap(NoexceptMoveEmpty& a, NoexceptMoveEmpty& b);
 
 template <class Protocol_>
 uint32_t NoexceptMoveEmpty::read(Protocol_* iprot) {
@@ -3434,9 +3416,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< NoexceptMoveSimpleStruct >;
+  friend void swap(NoexceptMoveSimpleStruct& a, NoexceptMoveSimpleStruct& b);
 };
-
-void swap(NoexceptMoveSimpleStruct& a, NoexceptMoveSimpleStruct& b);
 
 template <class Protocol_>
 uint32_t NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
@@ -3870,9 +3851,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< NoexceptMoveComplexStruct >;
+  friend void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b);
 };
-
-void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b);
 
 template <class Protocol_>
 uint32_t NoexceptMoveComplexStruct::read(Protocol_* iprot) {
@@ -4153,9 +4133,8 @@ class NoExceptMoveUnion final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< NoExceptMoveUnion >;
+  friend void swap(NoExceptMoveUnion& a, NoExceptMoveUnion& b);
 };
-
-void swap(NoExceptMoveUnion& a, NoExceptMoveUnion& b);
 
 template <class Protocol_>
 uint32_t NoExceptMoveUnion::read(Protocol_* iprot) {
@@ -4459,9 +4438,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< AllocatorAware >;
+  friend void swap(AllocatorAware& a, AllocatorAware& b);
 };
-
-void swap(AllocatorAware& a, AllocatorAware& b);
 
 template <class Protocol_>
 uint32_t AllocatorAware::read(Protocol_* iprot) {
@@ -4600,9 +4578,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< AllocatorAware2 >;
+  friend void swap(AllocatorAware2& a, AllocatorAware2& b);
 };
-
-void swap(AllocatorAware2& a, AllocatorAware2& b);
 
 template <class Protocol_>
 uint32_t AllocatorAware2::read(Protocol_* iprot) {

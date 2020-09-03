@@ -471,9 +471,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Internship >;
+  friend void swap(Internship& a, Internship& b);
 };
-
-void swap(Internship& a, Internship& b);
 
 template <class Protocol_>
 uint32_t Internship::read(Protocol_* iprot) {
@@ -613,9 +612,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< Range >;
+  friend void swap(Range& a, Range& b);
 };
-
-void swap(Range& a, Range& b);
 
 template <class Protocol_>
 uint32_t Range::read(Protocol_* iprot) {
@@ -777,9 +775,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct1 >;
+  friend void swap(struct1& a, struct1& b);
 };
-
-void swap(struct1& a, struct1& b);
 
 template <class Protocol_>
 uint32_t struct1::read(Protocol_* iprot) {
@@ -1012,9 +1009,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct2 >;
+  friend void swap(struct2& a, struct2& b);
 };
-
-void swap(struct2& a, struct2& b);
 
 template <class Protocol_>
 uint32_t struct2::read(Protocol_* iprot) {
@@ -1211,9 +1207,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct3 >;
+  friend void swap(struct3& a, struct3& b);
 };
-
-void swap(struct3& a, struct3& b);
 
 template <class Protocol_>
 uint32_t struct3::read(Protocol_* iprot) {
@@ -1418,9 +1413,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< struct4 >;
+  friend void swap(struct4& a, struct4& b);
 };
-
-void swap(struct4& a, struct4& b);
 
 template <class Protocol_>
 uint32_t struct4::read(Protocol_* iprot) {
@@ -1687,9 +1681,8 @@ class union1 final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< union1 >;
+  friend void swap(union1& a, union1& b);
 };
-
-void swap(union1& a, union1& b);
 
 template <class Protocol_>
 uint32_t union1::read(Protocol_* iprot) {
@@ -2110,9 +2103,8 @@ class union2 final  {
   void readNoXfer(Protocol_* iprot);
 
   friend class ::apache::thrift::Cpp2Ops< union2 >;
+  friend void swap(union2& a, union2& b);
 };
-
-void swap(union2& a, union2& b);
 
 template <class Protocol_>
 uint32_t union2::read(Protocol_* iprot) {
