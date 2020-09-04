@@ -69,8 +69,8 @@ struct ValueHelper<type::i64_t> {
   }
 };
 
-template <>
-struct ValueHelper<type::enum_t> {
+template <typename ET>
+struct ValueHelper<ET, if_base_type<ET, BaseType::Enum>> {
   template <typename E>
   FOLLY_ERASE static void set(Value& result, E value) {
     result.set_i32Value(static_cast<int32_t>(value));
@@ -336,7 +336,7 @@ class ObjectWriter : public BaseObjectAdapter {
 
 // Specialization for all structured types.
 template <typename TT>
-struct ValueHelper<TT, std::enable_if_t<structured_types::contains<TT>>> {
+struct ValueHelper<TT, if_structured<TT>> {
   template <typename T>
   static void set(Value& result, T&& value) {
     // TODO(afuller): Using the Visitor reflection API + ValueHelper instead.

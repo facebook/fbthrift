@@ -76,15 +76,15 @@ TEST(ObjectTest, I64) {
 
 TEST(ObjectTest, Enum) {
   enum class MyEnum { kValue = 7 };
-  Value value = asValueStruct<type::enum_t>(MyEnum::kValue);
+  Value value = asValueStruct<type::enum_c>(MyEnum::kValue);
   ASSERT_EQ(value.getType(), Value::i32Value);
   EXPECT_EQ(value.get_i32Value(), 7);
 
-  value = asValueStruct<type::enum_t>(static_cast<MyEnum>(2));
+  value = asValueStruct<type::enum_c>(static_cast<MyEnum>(2));
   ASSERT_EQ(value.getType(), Value::i32Value);
   EXPECT_EQ(value.get_i32Value(), 2);
 
-  value = asValueStruct<type::enum_t>(21u);
+  value = asValueStruct<type::enum_c>(21u);
   ASSERT_EQ(value.getType(), Value::i32Value);
   EXPECT_EQ(value.get_i32Value(), 21);
 }
@@ -211,7 +211,7 @@ TEST(ObjectTest, Map) {
 TEST(ObjectTest, Struct) {
   // TODO(afuller): Use a struct that covers more cases.
   Protocol protocol = createProtocol("hi");
-  Value value = asValueStruct<type::union_t>(protocol);
+  Value value = asValueStruct<type::union_c>(protocol);
   ASSERT_EQ(value.getType(), Value::objectValue);
   const Object& object = value.get_objectValue();
   EXPECT_EQ(object.members_ref()->size(), 1);
