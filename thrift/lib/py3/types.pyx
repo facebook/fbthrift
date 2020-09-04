@@ -382,7 +382,9 @@ cdef class EnumMeta(type):
         except AttributeError:
             raise KeyError(name)
 
-    def __getattr__(cls, name):
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name == "mro":
+            return super().__getattribute__(name)
         return cls.__get_by_name(name)
 
     def __iter__(cls):
@@ -425,7 +427,9 @@ cdef class CompiledEnum:
     cdef get_by_name(self, str name):
         return NotImplemented
 
-    def __getattr__(self, name):
+    def __getattribute__(self, str name not None):
+        if name.startswith("__") or name in ("name", "value"):
+            return super().__getattribute__(name)
         return self.get_by_name(name)
 
     def __repr__(self):
