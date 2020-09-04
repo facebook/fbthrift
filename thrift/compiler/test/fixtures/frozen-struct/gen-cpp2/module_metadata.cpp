@@ -19,27 +19,27 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 void EnumMetadata<::some::ns::EnumB>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums.emplace("module.EnumB", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums_ref()->emplace("module.EnumB", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name = "module.EnumB";
+  enum_metadata.name_ref() = "module.EnumB";
   using EnumTraits = TEnumTraits<::some::ns::EnumB>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.ModuleA", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.ModuleA", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ModuleA = res.first->second;
-  module_ModuleA.name = "module.ModuleA";
-  module_ModuleA.is_union = false;
+  module_ModuleA.name_ref() = "module.ModuleA";
+  module_ModuleA.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ModuleA_fields[] = {
     std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
@@ -51,23 +51,23 @@ StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module_ModuleA_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_ModuleA.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_ModuleA.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.ModuleB", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.ModuleB", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ModuleB = res.first->second;
-  module_ModuleB.name = "module.ModuleB";
-  module_ModuleB.is_union = false;
+  module_ModuleB.name_ref() = "module.ModuleB";
+  module_ModuleB.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ModuleB_fields[] = {
     std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
@@ -75,11 +75,11 @@ StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module_ModuleB_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_ModuleB.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_ModuleB.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }

@@ -23,88 +23,88 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapList(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "mapList";
+  func.name_ref() = "mapList";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_NestedContainers_mapList_foo_1;
-  module_NestedContainers_mapList_foo_1.id = 1;
-  module_NestedContainers_mapList_foo_1.name = "foo";
-  module_NestedContainers_mapList_foo_1.is_optional = false;
+  module_NestedContainers_mapList_foo_1.id_ref() = 1;
+  module_NestedContainers_mapList_foo_1.name_ref() = "foo";
+  module_NestedContainers_mapList_foo_1.is_optional_ref() = false;
   auto module_NestedContainers_mapList_foo_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
-  module_NestedContainers_mapList_foo_1_type->writeAndGenType(module_NestedContainers_mapList_foo_1.type, metadata);
-  func.arguments.push_back(std::move(module_NestedContainers_mapList_foo_1));
+  module_NestedContainers_mapList_foo_1_type->writeAndGenType(*module_NestedContainers_mapList_foo_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_NestedContainers_mapList_foo_1));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapSet(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "mapSet";
+  func.name_ref() = "mapSet";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_NestedContainers_mapSet_foo_1;
-  module_NestedContainers_mapSet_foo_1.id = 1;
-  module_NestedContainers_mapSet_foo_1.name = "foo";
-  module_NestedContainers_mapSet_foo_1.is_optional = false;
+  module_NestedContainers_mapSet_foo_1.id_ref() = 1;
+  module_NestedContainers_mapSet_foo_1.name_ref() = "foo";
+  module_NestedContainers_mapSet_foo_1.is_optional_ref() = false;
   auto module_NestedContainers_mapSet_foo_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
-  module_NestedContainers_mapSet_foo_1_type->writeAndGenType(module_NestedContainers_mapSet_foo_1.type, metadata);
-  func.arguments.push_back(std::move(module_NestedContainers_mapSet_foo_1));
+  module_NestedContainers_mapSet_foo_1_type->writeAndGenType(*module_NestedContainers_mapSet_foo_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_NestedContainers_mapSet_foo_1));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listMap(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "listMap";
+  func.name_ref() = "listMap";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_NestedContainers_listMap_foo_1;
-  module_NestedContainers_listMap_foo_1.id = 1;
-  module_NestedContainers_listMap_foo_1.name = "foo";
-  module_NestedContainers_listMap_foo_1.is_optional = false;
+  module_NestedContainers_listMap_foo_1.id_ref() = 1;
+  module_NestedContainers_listMap_foo_1.name_ref() = "foo";
+  module_NestedContainers_listMap_foo_1.is_optional_ref() = false;
   auto module_NestedContainers_listMap_foo_1_type = std::make_unique<List>(std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
-  module_NestedContainers_listMap_foo_1_type->writeAndGenType(module_NestedContainers_listMap_foo_1.type, metadata);
-  func.arguments.push_back(std::move(module_NestedContainers_listMap_foo_1));
+  module_NestedContainers_listMap_foo_1_type->writeAndGenType(*module_NestedContainers_listMap_foo_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_NestedContainers_listMap_foo_1));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listSet(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "listSet";
+  func.name_ref() = "listSet";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_NestedContainers_listSet_foo_1;
-  module_NestedContainers_listSet_foo_1.id = 1;
-  module_NestedContainers_listSet_foo_1.name = "foo";
-  module_NestedContainers_listSet_foo_1.is_optional = false;
+  module_NestedContainers_listSet_foo_1.id_ref() = 1;
+  module_NestedContainers_listSet_foo_1.name_ref() = "foo";
+  module_NestedContainers_listSet_foo_1.is_optional_ref() = false;
   auto module_NestedContainers_listSet_foo_1_type = std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
-  module_NestedContainers_listSet_foo_1_type->writeAndGenType(module_NestedContainers_listSet_foo_1.type, metadata);
-  func.arguments.push_back(std::move(module_NestedContainers_listSet_foo_1));
+  module_NestedContainers_listSet_foo_1_type->writeAndGenType(*module_NestedContainers_listSet_foo_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_NestedContainers_listSet_foo_1));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_turtles(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "turtles";
+  func.name_ref() = "turtles";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_NestedContainers_turtles_foo_1;
-  module_NestedContainers_turtles_foo_1.id = 1;
-  module_NestedContainers_turtles_foo_1.name = "foo";
-  module_NestedContainers_turtles_foo_1.is_optional = false;
+  module_NestedContainers_turtles_foo_1.id_ref() = 1;
+  module_NestedContainers_turtles_foo_1.name_ref() = "foo";
+  module_NestedContainers_turtles_foo_1.is_optional_ref() = false;
   auto module_NestedContainers_turtles_foo_1_type = std::make_unique<List>(std::make_unique<List>(std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))))));
-  module_NestedContainers_turtles_foo_1_type->writeAndGenType(module_NestedContainers_turtles_foo_1.type, metadata);
-  func.arguments.push_back(std::move(module_NestedContainers_turtles_foo_1));
+  module_NestedContainers_turtles_foo_1_type->writeAndGenType(*module_NestedContainers_turtles_foo_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_NestedContainers_turtles_foo_1));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_NestedContainers;
-  module_NestedContainers.name = "module.NestedContainers";
+  module_NestedContainers.name_ref() = "module.NestedContainers";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapList,
     ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapSet,

@@ -21,70 +21,70 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Banal", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.Banal", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Banal = res.first->second;
-  module_Banal.name = "module.Banal";
-  module_Banal.is_union = false;
+  module_Banal.name_ref() = "module.Banal";
+  module_Banal.is_union_ref() = false;
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Fiery", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.Fiery", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Fiery = res.first->second;
-  module_Fiery.name = "module.Fiery";
-  module_Fiery.is_union = false;
+  module_Fiery.name_ref() = "module.Fiery";
+  module_Fiery.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Fiery_fields[] = {
     std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_Fiery_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_Fiery.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_Fiery.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Serious", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.Serious", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Serious = res.first->second;
-  module_Serious.name = "module.Serious";
-  module_Serious.is_union = false;
+  module_Serious.name_ref() = "module.Serious";
+  module_Serious.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Serious_fields[] = {
     std::make_tuple(1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_Serious_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_Serious.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_Serious.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.ComplexFieldNames", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.ComplexFieldNames", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_ComplexFieldNames = res.first->second;
-  module_ComplexFieldNames.name = "module.ComplexFieldNames";
-  module_ComplexFieldNames.is_union = false;
+  module_ComplexFieldNames.name_ref() = "module.ComplexFieldNames";
+  module_ComplexFieldNames.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ComplexFieldNames_fields[] = {
     std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
@@ -92,23 +92,23 @@ StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module_ComplexFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_ComplexFieldNames.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_ComplexFieldNames.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.CustomFieldNames", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.CustomFieldNames", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_CustomFieldNames = res.first->second;
-  module_CustomFieldNames.name = "module.CustomFieldNames";
-  module_CustomFieldNames.is_union = false;
+  module_CustomFieldNames.name_ref() = "module.CustomFieldNames";
+  module_CustomFieldNames.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_CustomFieldNames_fields[] = {
     std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
@@ -116,70 +116,70 @@ StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module_CustomFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_CustomFieldNames.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_CustomFieldNames.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 
 void ExceptionMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.Banal", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.Banal", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_Banal = res.first->second;
-  module_Banal.name = "module.Banal";
+  module_Banal.name_ref() = "module.Banal";
 }
 void ExceptionMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.Fiery", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.Fiery", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_Fiery = res.first->second;
-  module_Fiery.name = "module.Fiery";
+  module_Fiery.name_ref() = "module.Fiery";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Fiery_fields[] = {
     std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_Fiery_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_Fiery.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_Fiery.fields_ref()->push_back(std::move(field));
   }
 }
 void ExceptionMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.Serious", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.Serious", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_Serious = res.first->second;
-  module_Serious.name = "module.Serious";
+  module_Serious.name_ref() = "module.Serious";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Serious_fields[] = {
     std::make_tuple(1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_Serious_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_Serious.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_Serious.fields_ref()->push_back(std::move(field));
   }
 }
 void ExceptionMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.ComplexFieldNames", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.ComplexFieldNames", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_ComplexFieldNames = res.first->second;
-  module_ComplexFieldNames.name = "module.ComplexFieldNames";
+  module_ComplexFieldNames.name_ref() = "module.ComplexFieldNames";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ComplexFieldNames_fields[] = {
     std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
@@ -187,20 +187,20 @@ void ExceptionMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata)
   };
   for (const auto& f : module_ComplexFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_ComplexFieldNames.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_ComplexFieldNames.fields_ref()->push_back(std::move(field));
   }
 }
 void ExceptionMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.CustomFieldNames", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.CustomFieldNames", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_CustomFieldNames = res.first->second;
-  module_CustomFieldNames.name = "module.CustomFieldNames";
+  module_CustomFieldNames.name_ref() = "module.CustomFieldNames";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_CustomFieldNames_fields[] = {
     std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
@@ -208,102 +208,102 @@ void ExceptionMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) 
   };
   for (const auto& f : module_CustomFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_CustomFieldNames.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_CustomFieldNames.fields_ref()->push_back(std::move(field));
   }
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doBland(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "doBland";
+  func.name_ref() = "doBland";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "doRaise";
+  func.name_ref() = "doRaise";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_b_1;
-  module_Raiser_doRaise_b_1.id = 1;
-  module_Raiser_doRaise_b_1.name = "b";
-  module_Raiser_doRaise_b_1.is_optional = false;
+  module_Raiser_doRaise_b_1.id_ref() = 1;
+  module_Raiser_doRaise_b_1.name_ref() = "b";
+  module_Raiser_doRaise_b_1.is_optional_ref() = false;
   auto module_Raiser_doRaise_b_1_type = std::make_unique<Struct< ::cpp2::Banal>>("module.Banal");
-  module_Raiser_doRaise_b_1_type->writeAndGenType(module_Raiser_doRaise_b_1.type, metadata);
-  func.exceptions.push_back(std::move(module_Raiser_doRaise_b_1));
+  module_Raiser_doRaise_b_1_type->writeAndGenType(*module_Raiser_doRaise_b_1.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_Raiser_doRaise_b_1));
   ExceptionMetadata< ::cpp2::Banal>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_f_2;
-  module_Raiser_doRaise_f_2.id = 2;
-  module_Raiser_doRaise_f_2.name = "f";
-  module_Raiser_doRaise_f_2.is_optional = false;
+  module_Raiser_doRaise_f_2.id_ref() = 2;
+  module_Raiser_doRaise_f_2.name_ref() = "f";
+  module_Raiser_doRaise_f_2.is_optional_ref() = false;
   auto module_Raiser_doRaise_f_2_type = std::make_unique<Struct< ::cpp2::Fiery>>("module.Fiery");
-  module_Raiser_doRaise_f_2_type->writeAndGenType(module_Raiser_doRaise_f_2.type, metadata);
-  func.exceptions.push_back(std::move(module_Raiser_doRaise_f_2));
+  module_Raiser_doRaise_f_2_type->writeAndGenType(*module_Raiser_doRaise_f_2.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_Raiser_doRaise_f_2));
   ExceptionMetadata< ::cpp2::Fiery>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_s_3;
-  module_Raiser_doRaise_s_3.id = 3;
-  module_Raiser_doRaise_s_3.name = "s";
-  module_Raiser_doRaise_s_3.is_optional = false;
+  module_Raiser_doRaise_s_3.id_ref() = 3;
+  module_Raiser_doRaise_s_3.name_ref() = "s";
+  module_Raiser_doRaise_s_3.is_optional_ref() = false;
   auto module_Raiser_doRaise_s_3_type = std::make_unique<Struct< ::cpp2::Serious>>("module.Serious");
-  module_Raiser_doRaise_s_3_type->writeAndGenType(module_Raiser_doRaise_s_3.type, metadata);
-  func.exceptions.push_back(std::move(module_Raiser_doRaise_s_3));
+  module_Raiser_doRaise_s_3_type->writeAndGenType(*module_Raiser_doRaise_s_3.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_Raiser_doRaise_s_3));
   ExceptionMetadata< ::cpp2::Serious>::gen(metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get200(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "get200";
+  func.name_ref() = "get200";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "get500";
+  func.name_ref() = "get500";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_f_1;
-  module_Raiser_get500_f_1.id = 1;
-  module_Raiser_get500_f_1.name = "f";
-  module_Raiser_get500_f_1.is_optional = false;
+  module_Raiser_get500_f_1.id_ref() = 1;
+  module_Raiser_get500_f_1.name_ref() = "f";
+  module_Raiser_get500_f_1.is_optional_ref() = false;
   auto module_Raiser_get500_f_1_type = std::make_unique<Struct< ::cpp2::Fiery>>("module.Fiery");
-  module_Raiser_get500_f_1_type->writeAndGenType(module_Raiser_get500_f_1.type, metadata);
-  func.exceptions.push_back(std::move(module_Raiser_get500_f_1));
+  module_Raiser_get500_f_1_type->writeAndGenType(*module_Raiser_get500_f_1.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_Raiser_get500_f_1));
   ExceptionMetadata< ::cpp2::Fiery>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_b_2;
-  module_Raiser_get500_b_2.id = 2;
-  module_Raiser_get500_b_2.name = "b";
-  module_Raiser_get500_b_2.is_optional = false;
+  module_Raiser_get500_b_2.id_ref() = 2;
+  module_Raiser_get500_b_2.name_ref() = "b";
+  module_Raiser_get500_b_2.is_optional_ref() = false;
   auto module_Raiser_get500_b_2_type = std::make_unique<Struct< ::cpp2::Banal>>("module.Banal");
-  module_Raiser_get500_b_2_type->writeAndGenType(module_Raiser_get500_b_2.type, metadata);
-  func.exceptions.push_back(std::move(module_Raiser_get500_b_2));
+  module_Raiser_get500_b_2_type->writeAndGenType(*module_Raiser_get500_b_2.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_Raiser_get500_b_2));
   ExceptionMetadata< ::cpp2::Banal>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_s_3;
-  module_Raiser_get500_s_3.id = 3;
-  module_Raiser_get500_s_3.name = "s";
-  module_Raiser_get500_s_3.is_optional = false;
+  module_Raiser_get500_s_3.id_ref() = 3;
+  module_Raiser_get500_s_3.name_ref() = "s";
+  module_Raiser_get500_s_3.is_optional_ref() = false;
   auto module_Raiser_get500_s_3_type = std::make_unique<Struct< ::cpp2::Serious>>("module.Serious");
-  module_Raiser_get500_s_3_type->writeAndGenType(module_Raiser_get500_s_3.type, metadata);
-  func.exceptions.push_back(std::move(module_Raiser_get500_s_3));
+  module_Raiser_get500_s_3_type->writeAndGenType(*module_Raiser_get500_s_3.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_Raiser_get500_s_3));
   ExceptionMetadata< ::cpp2::Serious>::gen(metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_Raiser;
-  module_Raiser.name = "module.Raiser";
+  module_Raiser.name_ref() = "module.Raiser";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::RaiserSvIf>::gen_doBland,
     ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise,

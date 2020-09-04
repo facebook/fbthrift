@@ -19,61 +19,61 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 void EnumMetadata<::a::different::ns::AnEnum>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums.emplace("includes.AnEnum", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums_ref()->emplace("includes.AnEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name = "includes.AnEnum";
+  enum_metadata.name_ref() = "includes.AnEnum";
   using EnumTraits = TEnumTraits<::a::different::ns::AnEnum>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("includes.AStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("includes.AStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& includes_AStruct = res.first->second;
-  includes_AStruct.name = "includes.AStruct";
-  includes_AStruct.is_union = false;
+  includes_AStruct.name_ref() = "includes.AStruct";
+  includes_AStruct.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   includes_AStruct_fields[] = {
     std::make_tuple(1, "FieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
   };
   for (const auto& f : includes_AStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    includes_AStruct.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    includes_AStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::a::different::ns::AStructB>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("includes.AStructB", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("includes.AStructB", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& includes_AStructB = res.first->second;
-  includes_AStructB.name = "includes.AStructB";
-  includes_AStructB.is_union = false;
+  includes_AStructB.name_ref() = "includes.AStructB";
+  includes_AStructB.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   includes_AStructB_fields[] = {
     std::make_tuple(1, "FieldA", false, std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct")),
   };
   for (const auto& f : includes_AStructB_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    includes_AStructB.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    includes_AStructB.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }

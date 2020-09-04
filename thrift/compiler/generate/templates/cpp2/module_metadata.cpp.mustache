@@ -31,15 +31,15 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 <%#program:enums%>
 void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums.emplace("<%program:name%>.<%enum:name%>", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums_ref()->emplace("<%program:name%>.<%enum:name%>", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name = "<%program:name%>.<%enum:name%>";
+  enum_metadata.name_ref() = "<%program:name%>.<%enum:name%>";
   using EnumTraits = TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 <%/program:enums%>
@@ -47,13 +47,13 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata
 <%#program:structs%>
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& <%struct:metadata_name%> = res.first->second;
-  <%struct:metadata_name%>.name = "<%program:name%>.<%struct:name%>";
-  <%struct:metadata_name%>.is_union = <%struct:union?%>;
+  <%struct:metadata_name%>.name_ref() = "<%program:name%>.<%struct:name%>";
+  <%struct:metadata_name%>.is_union_ref() = <%struct:union?%>;
 <%#struct:fields?%>
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   <%struct:metadata_name%>_fields[] = {
@@ -63,11 +63,11 @@ StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata&
   };
   for (const auto& f : <%struct:metadata_name%>_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    <%struct:metadata_name%>.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    <%struct:metadata_name%>.fields_ref()->push_back(std::move(field));
   }
 <%/struct:fields?%>
   return res.first->second;
@@ -77,12 +77,12 @@ StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata&
 <%#program:structs%>
 <%#struct:exception?%>
 void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& <%struct:metadata_name%> = res.first->second;
-  <%struct:metadata_name%>.name = "<%program:name%>.<%struct:name%>";
+  <%struct:metadata_name%>.name_ref() = "<%program:name%>.<%struct:name%>";
 <%#struct:fields?%>
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   <%struct:metadata_name%>_fields[] = {
@@ -92,11 +92,11 @@ void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftM
   };
   for (const auto& f : <%struct:metadata_name%>_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    <%struct:metadata_name%>.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    <%struct:metadata_name%>.fields_ref()->push_back(std::move(field));
   }
 <%/struct:fields?%>
 }
@@ -107,18 +107,18 @@ void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftM
 void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "<%function:name%>";
+  func.name_ref() = "<%function:name%>";
 <%#function:returnType%>
   auto func_ret_type = <% > metadata/type_gen%>;
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
 <%/function:returnType%>
 <%#function:args%>
   <% > metadata/func_field_gen%>
-func.arguments.push_back(std::move(<% > metadata/func_field_name%>));
+func.arguments_ref()->push_back(std::move(<% > metadata/func_field_name%>));
 <%/function:args%>
 <%#function:exceptions%>
   <% > metadata/func_field_gen%>
-func.exceptions.push_back(std::move(<% > metadata/func_field_name%>));
+func.exceptions_ref()->push_back(std::move(<% > metadata/func_field_name%>));
 <%#field:type%>
 <%#type:struct?%>
   ExceptionMetadata<<% > common/type_namespace_cpp2%><%type:name%>>::gen(metadata);
@@ -126,14 +126,14 @@ func.exceptions.push_back(std::move(<% > metadata/func_field_name%>));
 <%/field:type%>
 <%/function:exceptions%>
   func.is_oneway_ref() = <%function:oneway?%>;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 <%/service:functions%>
 
 void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService <%service:metadata_name%>;
-  <%service:metadata_name%>.name = "<%program:name%>.<%service:name%>";
+  <%service:metadata_name%>.name_ref() = "<%program:name%>.<%service:name%>";
 <%#service:functions?%>
   static const ThriftFunctionGenerator functions[] = {
 <%#service:functions%>
@@ -150,7 +150,7 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
   ThriftServiceContext <%service:metadata_name%>_parent_context;
   ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(metadata, <%service:metadata_name%>_parent_context);
   auto <%service:metadata_name%>_parent_name = <%service:metadata_name%>_parent_context.get_service_info().get_name();
-  metadata.services.emplace(std::move(<%service:metadata_name%>_parent_name), std::move(<%service:metadata_name%>_parent_context.service_info));
+  metadata.services_ref()->emplace(std::move(<%service:metadata_name%>_parent_name), std::move(*<%service:metadata_name%>_parent_context.service_info_ref()));
 <%/service:extends%>
 <%/service:extends?%>
   context.service_info_ref() = std::move(<%service:metadata_name%>);

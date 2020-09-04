@@ -19,27 +19,27 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 void EnumMetadata<::cpp2::Metasyntactic>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums.emplace("module.Metasyntactic", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums_ref()->emplace("module.Metasyntactic", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name = "module.Metasyntactic";
+  enum_metadata.name_ref() = "module.Metasyntactic";
   using EnumTraits = TEnumTraits<::cpp2::Metasyntactic>;
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
-    enum_metadata.elements.emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.SomeStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.SomeStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SomeStruct = res.first->second;
-  module_SomeStruct.name = "module.SomeStruct";
-  module_SomeStruct.is_union = false;
+  module_SomeStruct.name_ref() = "module.SomeStruct";
+  module_SomeStruct.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_SomeStruct_fields[] = {
     std::make_tuple(1, "reasonable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic")),
@@ -49,11 +49,11 @@ StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module_SomeStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_SomeStruct.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_SomeStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }

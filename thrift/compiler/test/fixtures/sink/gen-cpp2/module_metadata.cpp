@@ -21,293 +21,293 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.InitialResponse", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.InitialResponse", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_InitialResponse = res.first->second;
-  module_InitialResponse.name = "module.InitialResponse";
-  module_InitialResponse.is_union = false;
+  module_InitialResponse.name_ref() = "module.InitialResponse";
+  module_InitialResponse.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_InitialResponse_fields[] = {
     std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_InitialResponse_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_InitialResponse.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_InitialResponse.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.FinalResponse", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.FinalResponse", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FinalResponse = res.first->second;
-  module_FinalResponse.name = "module.FinalResponse";
-  module_FinalResponse.is_union = false;
+  module_FinalResponse.name_ref() = "module.FinalResponse";
+  module_FinalResponse.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_FinalResponse_fields[] = {
     std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_FinalResponse_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_FinalResponse.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_FinalResponse.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.SinkPayload", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.SinkPayload", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SinkPayload = res.first->second;
-  module_SinkPayload.name = "module.SinkPayload";
-  module_SinkPayload.is_union = false;
+  module_SinkPayload.name_ref() = "module.SinkPayload";
+  module_SinkPayload.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_SinkPayload_fields[] = {
     std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_SinkPayload_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_SinkPayload.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_SinkPayload.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.CompatibleWithKeywordSink", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.CompatibleWithKeywordSink", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_CompatibleWithKeywordSink = res.first->second;
-  module_CompatibleWithKeywordSink.name = "module.CompatibleWithKeywordSink";
-  module_CompatibleWithKeywordSink.is_union = false;
+  module_CompatibleWithKeywordSink.name_ref() = "module.CompatibleWithKeywordSink";
+  module_CompatibleWithKeywordSink.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_CompatibleWithKeywordSink_fields[] = {
     std::make_tuple(1, "sink", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_CompatibleWithKeywordSink_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_CompatibleWithKeywordSink.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_CompatibleWithKeywordSink.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.InitialException", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.InitialException", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_InitialException = res.first->second;
-  module_InitialException.name = "module.InitialException";
-  module_InitialException.is_union = false;
+  module_InitialException.name_ref() = "module.InitialException";
+  module_InitialException.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_InitialException_fields[] = {
     std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_InitialException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_InitialException.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_InitialException.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.SinkException1", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.SinkException1", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SinkException1 = res.first->second;
-  module_SinkException1.name = "module.SinkException1";
-  module_SinkException1.is_union = false;
+  module_SinkException1.name_ref() = "module.SinkException1";
+  module_SinkException1.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_SinkException1_fields[] = {
     std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_SinkException1_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_SinkException1.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_SinkException1.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.SinkException2", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("module.SinkException2", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_SinkException2 = res.first->second;
-  module_SinkException2.name = "module.SinkException2";
-  module_SinkException2.is_union = false;
+  module_SinkException2.name_ref() = "module.SinkException2";
+  module_SinkException2.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_SinkException2_fields[] = {
     std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
   };
   for (const auto& f : module_SinkException2_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_SinkException2.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_SinkException2.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }
 
 void ExceptionMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.InitialException", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.InitialException", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_InitialException = res.first->second;
-  module_InitialException.name = "module.InitialException";
+  module_InitialException.name_ref() = "module.InitialException";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_InitialException_fields[] = {
     std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_InitialException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_InitialException.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_InitialException.fields_ref()->push_back(std::move(field));
   }
 }
 void ExceptionMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.SinkException1", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.SinkException1", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_SinkException1 = res.first->second;
-  module_SinkException1.name = "module.SinkException1";
+  module_SinkException1.name_ref() = "module.SinkException1";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_SinkException1_fields[] = {
     std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_SinkException1_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_SinkException1.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_SinkException1.fields_ref()->push_back(std::move(field));
   }
 }
 void ExceptionMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.SinkException2", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions_ref()->emplace("module.SinkException2", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_SinkException2 = res.first->second;
-  module_SinkException2.name = "module.SinkException2";
+  module_SinkException2.name_ref() = "module.SinkException2";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_SinkException2_fields[] = {
     std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
   };
   for (const auto& f : module_SinkException2_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    module_SinkException2.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_SinkException2.fields_ref()->push_back(std::move(field));
   }
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_method(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "method";
+  func.name_ref() = "method";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodAndReponse(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "methodAndReponse";
+  func.name_ref() = "methodAndReponse";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"), std::make_unique<Struct< ::cpp2::InitialResponse>>("module.InitialResponse"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodThrow(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "methodThrow";
+  func.name_ref() = "methodThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_SinkService_methodThrow_ex_1;
-  module_SinkService_methodThrow_ex_1.id = 1;
-  module_SinkService_methodThrow_ex_1.name = "ex";
-  module_SinkService_methodThrow_ex_1.is_optional = false;
+  module_SinkService_methodThrow_ex_1.id_ref() = 1;
+  module_SinkService_methodThrow_ex_1.name_ref() = "ex";
+  module_SinkService_methodThrow_ex_1.is_optional_ref() = false;
   auto module_SinkService_methodThrow_ex_1_type = std::make_unique<Struct< ::cpp2::InitialException>>("module.InitialException");
-  module_SinkService_methodThrow_ex_1_type->writeAndGenType(module_SinkService_methodThrow_ex_1.type, metadata);
-  func.exceptions.push_back(std::move(module_SinkService_methodThrow_ex_1));
+  module_SinkService_methodThrow_ex_1_type->writeAndGenType(*module_SinkService_methodThrow_ex_1.type_ref(), metadata);
+  func.exceptions_ref()->push_back(std::move(module_SinkService_methodThrow_ex_1));
   ExceptionMetadata< ::cpp2::InitialException>::gen(metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodSinkThrow(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "methodSinkThrow";
+  func.name_ref() = "methodSinkThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodFinalThrow(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "methodFinalThrow";
+  func.name_ref() = "methodFinalThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodBothThrow(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "methodBothThrow";
+  func.name_ref() = "methodBothThrow";
   auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_SinkService;
-  module_SinkService.name = "module.SinkService";
+  module_SinkService.name_ref() = "module.SinkService";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_method,
     ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodAndReponse,

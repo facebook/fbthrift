@@ -720,7 +720,7 @@ const char* service_with_special_namesAsyncProcessor::getServiceName() {
 }
 
 void service_with_special_namesAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<service_with_special_namesSvIf>::gen(response.metadata, response.context);
+  ::apache::thrift::detail::md::ServiceMetadata<service_with_special_namesSvIf>::gen(*response.metadata_ref(), *response.context_ref());
 }
 
 void service_with_special_namesAsyncProcessor::processSerializedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -23,17 +23,17 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 void ServiceMetadata<::cpp2::MyRootSvIf>::gen_do_root(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "do_root";
+  func.name_ref() = "do_root";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::cpp2::MyRootSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyRoot;
-  module_MyRoot.name = "module.MyRoot";
+  module_MyRoot.name_ref() = "module.MyRoot";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::MyRootSvIf>::gen_do_root,
   };
@@ -48,17 +48,17 @@ void ServiceMetadata<::cpp2::MyRootSvIf>::gen(ThriftMetadata& metadata, ThriftSe
 void ServiceMetadata<::cpp2::MyNodeSvIf>::gen_do_mid(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "do_mid";
+  func.name_ref() = "do_mid";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::cpp2::MyNodeSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyNode;
-  module_MyNode.name = "module.MyNode";
+  module_MyNode.name_ref() = "module.MyNode";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::MyNodeSvIf>::gen_do_mid,
   };
@@ -69,7 +69,7 @@ void ServiceMetadata<::cpp2::MyNodeSvIf>::gen(ThriftMetadata& metadata, ThriftSe
   ThriftServiceContext module_MyRoot_parent_context;
   ServiceMetadata<::cpp2::MyRootSvIf>::gen(metadata, module_MyRoot_parent_context);
   auto module_MyRoot_parent_name = module_MyRoot_parent_context.get_service_info().get_name();
-  metadata.services.emplace(std::move(module_MyRoot_parent_name), std::move(module_MyRoot_parent_context.service_info));
+  metadata.services_ref()->emplace(std::move(module_MyRoot_parent_name), std::move(*module_MyRoot_parent_context.service_info_ref()));
   context.service_info_ref() = std::move(module_MyNode);
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "module";
@@ -78,17 +78,17 @@ void ServiceMetadata<::cpp2::MyNodeSvIf>::gen(ThriftMetadata& metadata, ThriftSe
 void ServiceMetadata<::cpp2::MyLeafSvIf>::gen_do_leaf(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "do_leaf";
+  func.name_ref() = "do_leaf";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::cpp2::MyLeafSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyLeaf;
-  module_MyLeaf.name = "module.MyLeaf";
+  module_MyLeaf.name_ref() = "module.MyLeaf";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::MyLeafSvIf>::gen_do_leaf,
   };
@@ -99,7 +99,7 @@ void ServiceMetadata<::cpp2::MyLeafSvIf>::gen(ThriftMetadata& metadata, ThriftSe
   ThriftServiceContext module_MyNode_parent_context;
   ServiceMetadata<::cpp2::MyNodeSvIf>::gen(metadata, module_MyNode_parent_context);
   auto module_MyNode_parent_name = module_MyNode_parent_context.get_service_info().get_name();
-  metadata.services.emplace(std::move(module_MyNode_parent_name), std::move(module_MyNode_parent_context.service_info));
+  metadata.services_ref()->emplace(std::move(module_MyNode_parent_name), std::move(*module_MyNode_parent_context.service_info_ref()));
   context.service_info_ref() = std::move(module_MyLeaf);
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "module";

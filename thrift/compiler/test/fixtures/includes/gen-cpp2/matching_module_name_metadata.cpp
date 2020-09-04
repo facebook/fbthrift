@@ -21,24 +21,24 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::matching_module_name::MyStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("matching_module_name.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs_ref()->emplace("matching_module_name.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& matching_module_name_MyStruct = res.first->second;
-  matching_module_name_MyStruct.name = "matching_module_name.MyStruct";
-  matching_module_name_MyStruct.is_union = false;
+  matching_module_name_MyStruct.name_ref() = "matching_module_name.MyStruct";
+  matching_module_name_MyStruct.is_union_ref() = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   matching_module_name_MyStruct_fields[] = {
     std::make_tuple(1, "OtherStructField", false, std::make_unique<Struct< ::matching_module_name::OtherStruct>>("matching_module_name.OtherStruct")),
   };
   for (const auto& f : matching_module_name_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id = std::get<0>(f);
-    field.name = std::get<1>(f);
-    field.is_optional = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(field.type, metadata);
-    matching_module_name_MyStruct.fields.push_back(std::move(field));
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    matching_module_name_MyStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
 }

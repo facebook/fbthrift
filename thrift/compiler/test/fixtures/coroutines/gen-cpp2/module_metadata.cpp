@@ -23,81 +23,81 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "ping";
+  func.name_ref() = "ping";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getRandomData(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "getRandomData";
+  func.name_ref() = "getRandomData";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_hasDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "hasDataById";
+  func.name_ref() = "hasDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_hasDataById_id_1;
-  module_MyService_hasDataById_id_1.id = 1;
-  module_MyService_hasDataById_id_1.name = "id";
-  module_MyService_hasDataById_id_1.is_optional = false;
+  module_MyService_hasDataById_id_1.id_ref() = 1;
+  module_MyService_hasDataById_id_1.name_ref() = "id";
+  module_MyService_hasDataById_id_1.is_optional_ref() = false;
   auto module_MyService_hasDataById_id_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
-  module_MyService_hasDataById_id_1_type->writeAndGenType(module_MyService_hasDataById_id_1.type, metadata);
-  func.arguments.push_back(std::move(module_MyService_hasDataById_id_1));
+  module_MyService_hasDataById_id_1_type->writeAndGenType(*module_MyService_hasDataById_id_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_MyService_hasDataById_id_1));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "getDataById";
+  func.name_ref() = "getDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_getDataById_id_1;
-  module_MyService_getDataById_id_1.id = 1;
-  module_MyService_getDataById_id_1.name = "id";
-  module_MyService_getDataById_id_1.is_optional = false;
+  module_MyService_getDataById_id_1.id_ref() = 1;
+  module_MyService_getDataById_id_1.name_ref() = "id";
+  module_MyService_getDataById_id_1.is_optional_ref() = false;
   auto module_MyService_getDataById_id_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
-  module_MyService_getDataById_id_1_type->writeAndGenType(module_MyService_getDataById_id_1.type, metadata);
-  func.arguments.push_back(std::move(module_MyService_getDataById_id_1));
+  module_MyService_getDataById_id_1_type->writeAndGenType(*module_MyService_getDataById_id_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_MyService_getDataById_id_1));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_putDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name = "putDataById";
+  func.name_ref() = "putDataById";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   ::apache::thrift::metadata::ThriftField module_MyService_putDataById_id_1;
-  module_MyService_putDataById_id_1.id = 1;
-  module_MyService_putDataById_id_1.name = "id";
-  module_MyService_putDataById_id_1.is_optional = false;
+  module_MyService_putDataById_id_1.id_ref() = 1;
+  module_MyService_putDataById_id_1.name_ref() = "id";
+  module_MyService_putDataById_id_1.is_optional_ref() = false;
   auto module_MyService_putDataById_id_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
-  module_MyService_putDataById_id_1_type->writeAndGenType(module_MyService_putDataById_id_1.type, metadata);
-  func.arguments.push_back(std::move(module_MyService_putDataById_id_1));
+  module_MyService_putDataById_id_1_type->writeAndGenType(*module_MyService_putDataById_id_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_MyService_putDataById_id_1));
   ::apache::thrift::metadata::ThriftField module_MyService_putDataById_data_2;
-  module_MyService_putDataById_data_2.id = 2;
-  module_MyService_putDataById_data_2.name = "data";
-  module_MyService_putDataById_data_2.is_optional = false;
+  module_MyService_putDataById_data_2.id_ref() = 2;
+  module_MyService_putDataById_data_2.name_ref() = "data";
+  module_MyService_putDataById_data_2.is_optional_ref() = false;
   auto module_MyService_putDataById_data_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  module_MyService_putDataById_data_2_type->writeAndGenType(module_MyService_putDataById_data_2.type, metadata);
-  func.arguments.push_back(std::move(module_MyService_putDataById_data_2));
+  module_MyService_putDataById_data_2_type->writeAndGenType(*module_MyService_putDataById_data_2.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_MyService_putDataById_data_2));
   func.is_oneway_ref() = false;
-  service.functions.push_back(std::move(func));
+  service.functions_ref()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyService;
-  module_MyService.name = "module.MyService";
+  module_MyService.name_ref() = "module.MyService";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::cpp2::MyServiceSvIf>::gen_ping,
     ServiceMetadata<::cpp2::MyServiceSvIf>::gen_getRandomData,
