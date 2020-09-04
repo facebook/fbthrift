@@ -13,11 +13,7 @@
 # limitations under the License.
 
 from thrift.py3.types cimport Struct
-from thrift.py3.types import Struct
-from libcpp.memory cimport unique_ptr
-from folly.iobuf import IOBuf
 from folly.iobuf cimport IOBuf
-import folly.iobuf as _iobuf
 cimport folly.iobuf as _iobuf
 from thrift.py3.common import Protocol
 from thrift.py3.exceptions import Error

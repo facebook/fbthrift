@@ -223,38 +223,14 @@ cdef class AStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__AStruct()
 
     cdef __iobuf.IOBuf _serialize(AStruct self, __Protocol proto):
-        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
-        cdef cAStruct* cpp_obj = self._cpp_obj.get()
-        if proto == __Protocol.COMPACT:
-            with nogil:
-                serializer.CompactSerialize[cAStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.BINARY:
-            with nogil:
-                serializer.BinarySerialize[cAStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.JSON:
-            with nogil:
-                serializer.JSONSerialize[cAStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.COMPACT_JSON:
-            with nogil:
-                serializer.CompactJSONSerialize[cAStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        return __iobuf.from_unique_ptr(queue.move())
+        return __iobuf.from_unique_ptr(
+            serializer.cserialize[cAStruct](self._cpp_obj.get(), proto).move()
+        )
 
     cdef cuint32_t _deserialize(AStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cAStruct]()
-        cdef cAStruct* cpp_obj = self._cpp_obj.get()
-        if proto == __Protocol.COMPACT:
-            with nogil:
-                needed = serializer.CompactDeserialize[cAStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.BINARY:
-            with nogil:
-                needed = serializer.BinaryDeserialize[cAStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.JSON:
-            with nogil:
-                needed = serializer.JSONDeserialize[cAStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.COMPACT_JSON:
-            with nogil:
-                needed = serializer.CompactJSONDeserialize[cAStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        needed = serializer.cdeserialize[cAStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
     def __reduce__(self):
@@ -405,38 +381,14 @@ cdef class AStructB(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__AStructB()
 
     cdef __iobuf.IOBuf _serialize(AStructB self, __Protocol proto):
-        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
-        cdef cAStructB* cpp_obj = self._cpp_obj.get()
-        if proto == __Protocol.COMPACT:
-            with nogil:
-                serializer.CompactSerialize[cAStructB](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.BINARY:
-            with nogil:
-                serializer.BinarySerialize[cAStructB](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.JSON:
-            with nogil:
-                serializer.JSONSerialize[cAStructB](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.COMPACT_JSON:
-            with nogil:
-                serializer.CompactJSONSerialize[cAStructB](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        return __iobuf.from_unique_ptr(queue.move())
+        return __iobuf.from_unique_ptr(
+            serializer.cserialize[cAStructB](self._cpp_obj.get(), proto).move()
+        )
 
     cdef cuint32_t _deserialize(AStructB self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cAStructB]()
-        cdef cAStructB* cpp_obj = self._cpp_obj.get()
-        if proto == __Protocol.COMPACT:
-            with nogil:
-                needed = serializer.CompactDeserialize[cAStructB](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.BINARY:
-            with nogil:
-                needed = serializer.BinaryDeserialize[cAStructB](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.JSON:
-            with nogil:
-                needed = serializer.JSONDeserialize[cAStructB](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto == __Protocol.COMPACT_JSON:
-            with nogil:
-                needed = serializer.CompactJSONDeserialize[cAStructB](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        needed = serializer.cdeserialize[cAStructB](buf, self._cpp_obj.get(), proto)
         return needed
 
     def __reduce__(self):

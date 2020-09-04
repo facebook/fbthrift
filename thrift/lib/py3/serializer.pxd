@@ -22,21 +22,9 @@ from folly.iobuf cimport cIOBuf, cIOBufQueue
 from thrift.py3.common cimport Protocol as cProtocol
 
 
-cdef extern from "thrift/lib/cpp2/protocol/Protocol.h":
-    enum cExternalBufferSharing "apache::thrift::ExternalBufferSharing":
-        COPY_EXTERNAL_BUFFER "apache::thrift::COPY_EXTERNAL_BUFFER"
-        SHARE_EXTERNAL_BUFFER "apache::thrift::SHARE_EXTERNAL_BUFFER"
-
-
-cdef extern from "<thrift/lib/cpp2/protocol/Serializer.h>" nogil:
-    void CompactSerialize "apache::thrift::CompactSerializer::serialize"[T](const T& obj, cIOBufQueue* out, cExternalBufferSharing) except+
-    uint32_t CompactDeserialize "apache::thrift::CompactSerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
-    void BinarySerialize "apache::thrift::BinarySerializer::serialize"[T](const T& obj, cIOBufQueue* out, cExternalBufferSharing) except+
-    uint32_t BinaryDeserialize "apache::thrift::BinarySerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
-    void JSONSerialize "apache::thrift::SimpleJSONSerializer::serialize"[T](const T& obj, cIOBufQueue* out, cExternalBufferSharing) except+
-    uint32_t JSONDeserialize "apache::thrift::SimpleJSONSerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
-    void CompactJSONSerialize "apache::thrift::JSONSerializer::serialize"[T](const T& obj, cIOBufQueue* out, cExternalBufferSharing) except+
-    uint32_t CompactJSONDeserialize "apache::thrift::JSONSerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
+cdef extern from "thrift/lib/py3/serializer.h" namespace "::thrift::py3" nogil:
+    cIOBufQueue cserialize "::thrift::py3::serialize"[T](const T* obj, cProtocol protocol) except +
+    uint32_t cdeserialize"::thrift::py3::deserialize"[T](const cIOBuf* buf, T* obj, cProtocol protocol) except +
 
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift::transport::THeader":
