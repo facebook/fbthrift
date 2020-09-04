@@ -14,7 +14,7 @@
 
 # distutils: language=c++
 from cpython.bytes cimport PyBytes_AsStringAndSize
-from cpython.object cimport PyObject, PyTypeObject, Py_LT, Py_EQ
+from cpython.object cimport PyObject, PyTypeObject
 from folly.iobuf cimport cIOBuf, IOBuf
 from folly.range cimport StringPiece as cStringPiece, Range as cRange
 from libc.stdint cimport uint32_t
@@ -22,7 +22,6 @@ from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.pair cimport pair
-from collections.abc import Iterable
 
 from thrift.py3.std_libcpp cimport string_view, optional, sv_to_str
 from thrift.py3.common cimport Protocol
@@ -108,6 +107,18 @@ cdef class Container:
     cdef object __weakref__
 
 
+cdef class List(Container):
+    pass
+
+
+cdef class Set(Container):
+    pass
+
+
+cdef class Map(Container):
+    pass
+
+
 cdef class CompiledEnum:
     cdef object __weakref__
     cdef readonly int value
@@ -142,30 +153,6 @@ cdef extern from "<string>" namespace "std" nogil:
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef string move(string)
-
-
-cdef inline object list_compare(object first, object second, int op):
-    """ Take either Py_EQ or Py_LT, everything else is derived """
-    if not (isinstance(first, Iterable) and isinstance(second, Iterable)):
-        if op == Py_EQ:
-            return False
-        else:
-            return NotImplemented
-
-    if op == Py_EQ:
-        if len(first) != len(second):
-            return False
-
-    for x, y in zip(first, second):
-        if x != y:
-            if op == Py_LT:
-                return x < y
-            else:
-                return False
-
-    if op == Py_LT:
-        return len(first) < len(second)
-    return True
 
 
 cdef inline string bytes_to_string(bytes b) except*:

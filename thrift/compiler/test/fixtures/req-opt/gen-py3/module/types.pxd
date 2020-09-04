@@ -91,14 +91,14 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef create(shared_ptr[cFoo])
 
 
-cdef class List__bool(thrift.py3.types.Container):
+cdef class List__bool(thrift.py3.types.List):
     cdef shared_ptr[vector[cbool]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cbool]])
     @staticmethod
     cdef shared_ptr[vector[cbool]] _make_instance(object items) except *
 
-cdef class List__i32(thrift.py3.types.Container):
+cdef class List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cint32_t]])

@@ -35,7 +35,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
@@ -319,7 +318,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class List__bool(thrift.py3.types.Container):
+cdef class List__bool(thrift.py3.types.List):
     def __init__(self, items=None):
         if isinstance(items, List__bool):
             self._cpp_obj = (<List__bool> items)._cpp_obj
@@ -338,6 +337,9 @@ cdef class List__bool(thrift.py3.types.Container):
         )
         return List__bool.create(__fbthrift_move_shared(cpp_obj))
 
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
     @staticmethod
     cdef shared_ptr[vector[cbool]] _make_instance(object items) except *:
         cdef shared_ptr[vector[cbool]] c_inst = make_shared[vector[cbool]]()
@@ -347,9 +349,6 @@ cdef class List__bool(thrift.py3.types.Container):
                     raise TypeError(f"{item!r} is not of type bool")
                 deref(c_inst).push_back(item)
         return c_inst
-
-    def __add__(object self, object other):
-        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cbool]] c_inst
@@ -371,34 +370,6 @@ cdef class List__bool(thrift.py3.types.Container):
             citem = deref(self._cpp_obj)[index]
             return citem
 
-    def __len__(self):
-        return deref(self._cpp_obj).size()
-
-    def __eq__(self, other):
-        return thrift.py3.types.list_compare(self, other, Py_EQ)
-
-    def __ne__(self, other):
-        return not thrift.py3.types.list_compare(self, other, Py_EQ)
-
-    def __lt__(self, other):
-        return thrift.py3.types.list_compare(self, other, Py_LT)
-
-    def __gt__(self, other):
-        return thrift.py3.types.list_compare(other, self, Py_LT)
-
-    def __le__(self, other):
-        result = thrift.py3.types.list_compare(other, self, Py_LT)
-        return not result if result is not NotImplemented else NotImplemented
-
-    def __ge__(self, other):
-        result = thrift.py3.types.list_compare(self, other, Py_LT)
-        return not result if result is not NotImplemented else NotImplemented
-
-    def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash(tuple(self))
-        return self.__hash
-
     def __contains__(self, item):
         if not self or item is None:
             return False
@@ -415,11 +386,6 @@ cdef class List__bool(thrift.py3.types.Container):
             citem = deref(loc)
             yield citem
             inc(loc)
-
-    def __repr__(self):
-        if not self:
-            return 'i[]'
-        return f'i[{", ".join(map(repr, self))}]'
 
     def __reversed__(self):
         if not self:
@@ -473,9 +439,6 @@ cdef class List__bool(thrift.py3.types.Container):
         return <cint64_t> std_libcpp.count[vector[cbool].iterator, cbool](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
 
-    def __reduce__(self):
-        return (List__bool, (list(self), ))
-
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__List__bool()
@@ -484,7 +447,7 @@ cdef class List__bool(thrift.py3.types.Container):
 Sequence.register(List__bool)
 
 @__cython.auto_pickle(False)
-cdef class List__i32(thrift.py3.types.Container):
+cdef class List__i32(thrift.py3.types.List):
     def __init__(self, items=None):
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj
@@ -503,6 +466,9 @@ cdef class List__i32(thrift.py3.types.Container):
         )
         return List__i32.create(__fbthrift_move_shared(cpp_obj))
 
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *:
         cdef shared_ptr[vector[cint32_t]] c_inst = make_shared[vector[cint32_t]]()
@@ -513,9 +479,6 @@ cdef class List__i32(thrift.py3.types.Container):
                 item = <cint32_t> item
                 deref(c_inst).push_back(item)
         return c_inst
-
-    def __add__(object self, object other):
-        return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[vector[cint32_t]] c_inst
@@ -537,34 +500,6 @@ cdef class List__i32(thrift.py3.types.Container):
             citem = deref(self._cpp_obj)[index]
             return citem
 
-    def __len__(self):
-        return deref(self._cpp_obj).size()
-
-    def __eq__(self, other):
-        return thrift.py3.types.list_compare(self, other, Py_EQ)
-
-    def __ne__(self, other):
-        return not thrift.py3.types.list_compare(self, other, Py_EQ)
-
-    def __lt__(self, other):
-        return thrift.py3.types.list_compare(self, other, Py_LT)
-
-    def __gt__(self, other):
-        return thrift.py3.types.list_compare(other, self, Py_LT)
-
-    def __le__(self, other):
-        result = thrift.py3.types.list_compare(other, self, Py_LT)
-        return not result if result is not NotImplemented else NotImplemented
-
-    def __ge__(self, other):
-        result = thrift.py3.types.list_compare(self, other, Py_LT)
-        return not result if result is not NotImplemented else NotImplemented
-
-    def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash(tuple(self))
-        return self.__hash
-
     def __contains__(self, item):
         if not self or item is None:
             return False
@@ -581,11 +516,6 @@ cdef class List__i32(thrift.py3.types.Container):
             citem = deref(loc)
             yield citem
             inc(loc)
-
-    def __repr__(self):
-        if not self:
-            return 'i[]'
-        return f'i[{", ".join(map(repr, self))}]'
 
     def __reversed__(self):
         if not self:
@@ -638,9 +568,6 @@ cdef class List__i32(thrift.py3.types.Container):
             return 0
         return <cint64_t> std_libcpp.count[vector[cint32_t].iterator, cint32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
-
-    def __reduce__(self):
-        return (List__i32, (list(self), ))
 
     @staticmethod
     def __get_reflection__():

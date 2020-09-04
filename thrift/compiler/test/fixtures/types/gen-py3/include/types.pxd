@@ -70,14 +70,14 @@ cdef extern from * nogil:
 
 
 
-cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
+cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[cint32_t,string]])
     @staticmethod
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _make_instance(object items) except *
 
-cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
+cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.List):
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[std_unordered_map[cint32_t,string]]])

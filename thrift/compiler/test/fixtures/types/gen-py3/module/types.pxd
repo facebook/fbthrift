@@ -1315,119 +1315,119 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
     cdef create(shared_ptr[cAllocatorAware2])
 
 
-cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
+cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[cint32_t,string]])
     @staticmethod
     cdef shared_ptr[std_unordered_map[cint32_t,string]] _make_instance(object items) except *
 
-cdef class List__i64(thrift.py3.types.Container):
+cdef class List__i64(thrift.py3.types.List):
     cdef shared_ptr[vector[cint64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cint64_t]])
     @staticmethod
     cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *
 
-cdef class Map__binary_i64(thrift.py3.types.Container):
+cdef class Map__binary_i64(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cint64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,cint64_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,cint64_t]] _make_instance(object items) except *
 
-cdef class List__i32(thrift.py3.types.Container):
+cdef class List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
-cdef class std_list__List__i32(thrift.py3.types.Container):
+cdef class std_list__List__i32(thrift.py3.types.List):
     cdef shared_ptr[std_list[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_list[cint32_t]])
     @staticmethod
     cdef shared_ptr[std_list[cint32_t]] _make_instance(object items) except *
 
-cdef class std_deque__List__i32(thrift.py3.types.Container):
+cdef class std_deque__List__i32(thrift.py3.types.List):
     cdef shared_ptr[std_deque[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_deque[cint32_t]])
     @staticmethod
     cdef shared_ptr[std_deque[cint32_t]] _make_instance(object items) except *
 
-cdef class folly_fbvector__List__i32(thrift.py3.types.Container):
+cdef class folly_fbvector__List__i32(thrift.py3.types.List):
     cdef shared_ptr[folly_fbvector[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_fbvector[cint32_t]])
     @staticmethod
     cdef shared_ptr[folly_fbvector[cint32_t]] _make_instance(object items) except *
 
-cdef class folly_small_vector__List__i32(thrift.py3.types.Container):
+cdef class folly_small_vector__List__i32(thrift.py3.types.List):
     cdef shared_ptr[folly_small_vector[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_small_vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[folly_small_vector[cint32_t]] _make_instance(object items) except *
 
-cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
+cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[folly_sorted_vector_set[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_set[cint32_t]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_set[cint32_t]] _make_instance(object items) except *
 
-cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Container):
+cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[folly_sorted_vector_map[cint32_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_map[cint32_t,string]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_map[cint32_t,string]] _make_instance(object items) except *
 
-cdef class std_list_int32_t__List__i32(thrift.py3.types.Container):
+cdef class std_list_int32_t__List__i32(thrift.py3.types.List):
     cdef shared_ptr[std_list_int32_t] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_list_int32_t])
     @staticmethod
     cdef shared_ptr[std_list_int32_t] _make_instance(object items) except *
 
-cdef class Map__string_i32(thrift.py3.types.Container):
+cdef class Map__string_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[string,cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,cint32_t]] _make_instance(object items) except *
 
-cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
+cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.List):
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[std_unordered_map[cint32_t,string]]])
     @staticmethod
     cdef shared_ptr[vector[std_unordered_map[cint32_t,string]]] _make_instance(object items) except *
 
-cdef class List__binary(thrift.py3.types.Container):
+cdef class List__binary(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
-cdef class Map__MyEnumA_string(thrift.py3.types.Container):
+cdef class Map__MyEnumA_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cMyEnumA,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cMyEnumA,string]])
     @staticmethod
     cdef shared_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *
 
-cdef class Set__i32(thrift.py3.types.Container):
+cdef class Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[cint32_t]])
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
-cdef class Map__i32_i32(thrift.py3.types.Container):
+cdef class Map__i32_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cint32_t]])

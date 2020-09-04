@@ -433,21 +433,21 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
     cdef create(shared_ptr[cNonCopyableUnion])
 
 
-cdef class List__i64(thrift.py3.types.Container):
+cdef class List__i64(thrift.py3.types.List):
     cdef shared_ptr[vector[cint64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cint64_t]])
     @staticmethod
     cdef shared_ptr[vector[cint64_t]] _make_instance(object items) except *
 
-cdef class List__string(thrift.py3.types.Container):
+cdef class List__string(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
-cdef class Map__i16_string(thrift.py3.types.Container):
+cdef class Map__i16_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint16_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cint16_t,string]])

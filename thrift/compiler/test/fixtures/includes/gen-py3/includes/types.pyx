@@ -35,7 +35,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins

@@ -39,70 +39,70 @@ cdef extern from "src/gen-py3/module/types.h":
 
 
 
-cdef class List__i32(thrift.py3.types.Container):
+cdef class List__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cint32_t]])
     @staticmethod
     cdef shared_ptr[vector[cint32_t]] _make_instance(object items) except *
 
-cdef class Map__i32_List__i32(thrift.py3.types.Container):
+cdef class Map__i32_List__i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,vector[cint32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,vector[cint32_t]]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,vector[cint32_t]]] _make_instance(object items) except *
 
-cdef class Set__i32(thrift.py3.types.Container):
+cdef class Set__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[cint32_t]])
     @staticmethod
     cdef shared_ptr[cset[cint32_t]] _make_instance(object items) except *
 
-cdef class Map__i32_Set__i32(thrift.py3.types.Container):
+cdef class Map__i32_Set__i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,cset[cint32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cset[cint32_t]]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cset[cint32_t]]] _make_instance(object items) except *
 
-cdef class Map__i32_i32(thrift.py3.types.Container):
+cdef class Map__i32_i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cint32_t]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
 
-cdef class List__Map__i32_i32(thrift.py3.types.Container):
+cdef class List__Map__i32_i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cmap[cint32_t,cint32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cmap[cint32_t,cint32_t]]])
     @staticmethod
     cdef shared_ptr[vector[cmap[cint32_t,cint32_t]]] _make_instance(object items) except *
 
-cdef class List__Set__i32(thrift.py3.types.Container):
+cdef class List__Set__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cset[cint32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cset[cint32_t]]])
     @staticmethod
     cdef shared_ptr[vector[cset[cint32_t]]] _make_instance(object items) except *
 
-cdef class Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
+cdef class Map__i32_Map__i32_Set__i32(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]])
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]] _make_instance(object items) except *
 
-cdef class List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
+cdef class List__Map__i32_Map__i32_Set__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]])
     @staticmethod
     cdef shared_ptr[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]] _make_instance(object items) except *
 
-cdef class List__List__Map__i32_Map__i32_Set__i32(thrift.py3.types.Container):
+cdef class List__List__Map__i32_Map__i32_Set__i32(thrift.py3.types.List):
     cdef shared_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]])

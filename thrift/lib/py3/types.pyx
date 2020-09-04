@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable, Mapping
 import enum
+import itertools
 import warnings
 cimport cython
 
+from cpython.object cimport Py_LT, Py_EQ
 from cython.operator cimport dereference as deref, postincrement as inc
 from folly.cast cimport down_cast_ptr
 from folly.iobuf import IOBuf
@@ -30,6 +33,31 @@ cdef __NotSet NOTSET = __NotSet.__new__(__NotSet)
 
 # This isn't exposed to the module dict
 Object = cython.fused_type(Struct, GeneratedError)
+
+
+
+cdef list_compare(object first, object second, int op):
+    """ Take either Py_EQ or Py_LT, everything else is derived """
+    if not (isinstance(first, Iterable) and isinstance(second, Iterable)):
+        if op == Py_EQ:
+            return False
+        else:
+            return NotImplemented
+
+    if op == Py_EQ:
+        if len(first) != len(second):
+            return False
+
+    for x, y in zip(first, second):
+        if x != y:
+            if op == Py_LT:
+                return x < y
+            else:
+                return False
+
+    if op == Py_LT:
+        return len(first) < len(second)
+    return True
 
 
 @cython.internal
@@ -83,7 +111,127 @@ cdef class Container:
     """
     Base class for all thrift containers
     """
-    pass
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+
+@cython.auto_pickle(False)
+cdef class List(Container):
+    """
+    Base class for all thrift lists
+    """
+
+    def __hash__(self):
+        return super().__hash__()
+
+    def __add__(self, other):
+        return type(self)(itertools.chain(self, other))
+
+    def __eq__(self, other):
+        return list_compare(self, other, Py_EQ)
+
+    def __ne__(self, other):
+        return not list_compare(self, other, Py_EQ)
+
+    def __lt__(self, other):
+        return list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reduce__(self):
+        return (type(self), (list(self), ))
+
+
+@cython.auto_pickle(False)
+cdef class Set(Container):
+    """
+    Base class for all thrift sets
+    """
+
+    def __reduce__(self):
+        return (type(self), (set(self), ))
+
+    def __repr__(self):
+        if not self:
+            return 'iset()'
+        return f'i{{{", ".join(map(repr, self))}}}'
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+
+@cython.auto_pickle(False)
+cdef class Map(Container):
+    """
+    Base class for all thrift maps
+    """
+
+    def __eq__(self, other):
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return False
+        if len(self) != len(other):
+            return False
+
+        for key in self:
+            if key not in other:
+                return False
+            if other[key] != self[key]:
+                return False
+
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+    def __reduce__(self):
+        return (type(self), (dict(self), ))
+
+    def keys(self):
+        return self.__iter__()
 
 
 @cython.auto_pickle(False)

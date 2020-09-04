@@ -230,7 +230,11 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 {{/program:structs}}
 
 {{#program:containerTypes}}
-cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
+cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
+        }}{{#type:list?}}List{{/type:list?}}{{!
+        }}{{#type:set?}}Set{{/type:set?}}{{!
+        }}{{#type:map?}}Map{{/type:map?}}{{!
+        }}):
     cdef shared_ptr[{{> types/CythonCppType}}] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[{{> types/CythonCppType}}])
