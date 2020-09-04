@@ -147,19 +147,25 @@ void RequestChannel::sendRequestSink(
           "This channel doesn't support sink RPC"));
 }
 
-void RequestChannel::terminateInteraction(int64_t) {
+void RequestChannel::terminateInteraction(InteractionId) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
 }
-int64_t RequestChannel::createInteraction(folly::StringPiece name) {
+InteractionId RequestChannel::createInteraction(folly::StringPiece name) {
   static std::atomic<int64_t> nextId{0};
   int64_t id = 1 + nextId.fetch_add(1, std::memory_order_relaxed);
   registerInteraction(name, id);
-  return id;
+  return createInteractionId(id);
 }
 void RequestChannel::registerInteraction(folly::StringPiece, int64_t) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
+}
+InteractionId RequestChannel::createInteractionId(int64_t id) {
+  return InteractionId(id);
+}
+void RequestChannel::releaseInteractionId(InteractionId&& id) {
+  id.release();
 }
 
 } // namespace thrift

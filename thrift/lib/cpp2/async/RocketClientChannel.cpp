@@ -999,17 +999,19 @@ void RocketClientChannel::unsetOnDetachable() {
   }
 }
 
-void RocketClientChannel::terminateInteraction(int64_t id) {
+void RocketClientChannel::terminateInteraction(InteractionId id) {
   evb_->dcheckIsInEventBaseThread();
   auto pending = pendingInteractions_.find(id);
   if (pending != pendingInteractions_.end()) {
     pendingInteractions_.erase(pending);
+    releaseInteractionId(std::move(id));
     return;
   }
   // guard needed for onDetachable callback implementation
   auto guard = std::make_unique<SingleRequestNoResponseCallback>(
       nullptr, inflightGuard());
   rclient_->terminateInteraction(id, std::move(guard));
+  releaseInteractionId(std::move(id));
 }
 
 void RocketClientChannel::registerInteraction(

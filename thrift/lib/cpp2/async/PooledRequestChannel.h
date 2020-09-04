@@ -100,10 +100,10 @@ class PooledRequestChannel : public RequestChannel {
   uint16_t getProtocolId() override;
 
   // may be called from any thread
-  void terminateInteraction(int64_t id) override;
+  void terminateInteraction(InteractionId id) override;
 
   // may be called from any thread
-  int64_t createInteraction(folly::StringPiece name) override;
+  InteractionId createInteraction(folly::StringPiece name) override;
 
  protected:
   template <typename SendFunc>

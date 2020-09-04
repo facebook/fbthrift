@@ -218,25 +218,29 @@ void PooledRequestChannel::sendRequestSink(
       getEvb(options));
 }
 
-int64_t PooledRequestChannel::createInteraction(folly::StringPiece name) {
+InteractionId PooledRequestChannel::createInteraction(folly::StringPiece name) {
   CHECK(!name.empty());
-
   auto& evb = getEvb({});
-  return reinterpret_cast<int64_t>(
-      new InteractionState{getKeepAliveToken(evb), name.str()});
+  return createInteractionId(reinterpret_cast<int64_t>(
+      new InteractionState{getKeepAliveToken(evb), name.str()}));
 }
 
-void PooledRequestChannel::terminateInteraction(int64_t id) {
+void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
+  int64_t id = idWrapper;
   std::unique_ptr<InteractionState> state(
       reinterpret_cast<InteractionState*>(id));
-  std::move(state->keepAlive).add([id, implPtr = impl_](auto&& keepAlive) {
-    auto* channel = implPtr->get(*keepAlive);
-    if (channel) {
-      channel->terminateInteraction(id);
-    }
-    // channel is only null if nothing was ever sent on that evb,
-    // in which case server doesn't know about this interaction
-  });
+  std::move(state->keepAlive)
+      .add([id = std::move(idWrapper),
+            implPtr = impl_](auto&& keepAlive) mutable {
+        auto* channel = implPtr->get(*keepAlive);
+        if (channel) {
+          channel->terminateInteraction(std::move(id));
+        } else {
+          // channel is only null if nothing was ever sent on that evb,
+          // in which case server doesn't know about this interaction
+          releaseInteractionId(std::move(id));
+        }
+      });
 }
 
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {

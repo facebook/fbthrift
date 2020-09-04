@@ -145,11 +145,11 @@ class RocketClientChannel final : public ClientChannel {
   void setAutoCompressSizeLimit(int32_t size);
 
   // must be called from evb thread
-  void terminateInteraction(int64_t id) override;
+  void terminateInteraction(InteractionId id) override;
 
   // supports nesting
   // must be called from evb thread
-  void registerInteraction(folly::StringPiece name, int64_t forceId) override;
+  void registerInteraction(folly::StringPiece name, int64_t id) override;
 
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};

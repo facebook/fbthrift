@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
+#include <thrift/lib/cpp2/async/Interaction.h>
 
 namespace apache {
 namespace thrift {
@@ -558,9 +559,9 @@ class RpcOptions {
   }
 
   // For TILES, primarily used by ServiceRouter
-  RpcOptions& setInteractionId(int64_t id) {
-    DCHECK_GT(id, 0);
+  RpcOptions& setInteractionId(const InteractionId& id) {
     interactionId_ = id;
+    DCHECK_GT(interactionId_, 0);
     return *this;
   }
   int64_t getInteractionId() const {

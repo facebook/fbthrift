@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RpcTypes.h>
@@ -146,15 +147,19 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
   virtual uint16_t getProtocolId() = 0;
 
-  virtual void terminateInteraction(int64_t id);
+  virtual void terminateInteraction(InteractionId id);
 
   // registers a new interaction with the channel
   // returns id of created interaction (always nonzero)
-  virtual int64_t createInteraction(folly::StringPiece name);
+  virtual InteractionId createInteraction(folly::StringPiece name);
 
   // registers an interaction with a nested channel
   // only some channels can be nested; the rest call terminate here
   virtual void registerInteraction(folly::StringPiece name, int64_t id);
+
+ protected:
+  static InteractionId createInteractionId(int64_t id);
+  static void releaseInteractionId(InteractionId&& id);
 };
 
 template <>
