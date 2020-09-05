@@ -99,8 +99,8 @@ const ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::floatTypedef>>>& 
 
 void swap(MyStructMapFloatThrowExp& a, MyStructMapFloatThrowExp& b) {
   using ::std::swap;
-  swap(a.myLongField, b.myLongField);
-  swap(a.mapListOfFloats, b.mapListOfFloats);
+  swap(a.myLongField_ref().value(), b.myLongField_ref().value());
+  swap(a.mapListOfFloats_ref().value(), b.mapListOfFloats_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -571,28 +571,28 @@ const ::std::map<::std::string, ::std::map<int32_t,  ::cpp2::MyEnum>>& defaultSt
 
 void swap(defaultStruct& a, defaultStruct& b) {
   using ::std::swap;
-  swap(a.myLongDFset, b.myLongDFset);
-  swap(a.myLongDF, b.myLongDF);
-  swap(a.portDFset, b.portDFset);
-  swap(a.portNum, b.portNum);
-  swap(a.myBinaryDFset, b.myBinaryDFset);
-  swap(a.myBinary, b.myBinary);
-  swap(a.myByteDFSet, b.myByteDFSet);
-  swap(a.myByte, b.myByte);
-  swap(a.myDoubleDFset, b.myDoubleDFset);
-  swap(a.myDoubleDFZero, b.myDoubleDFZero);
-  swap(a.myDouble, b.myDouble);
-  swap(a.field3, b.field3);
-  swap(a.myList, b.myList);
-  swap(a.mySet, b.mySet);
-  swap(a.simpleStruct, b.simpleStruct);
-  swap(a.listStructDFset, b.listStructDFset);
-  swap(a.myUnion, b.myUnion);
-  swap(a.listUnionDFset, b.listUnionDFset);
-  swap(a.mapNestlistStructDfSet, b.mapNestlistStructDfSet);
-  swap(a.mapJavaTypeDFset, b.mapJavaTypeDFset);
-  swap(a.emptyMap, b.emptyMap);
-  swap(a.enumMapDFset, b.enumMapDFset);
+  swap(a.myLongDFset_ref().value(), b.myLongDFset_ref().value());
+  swap(a.myLongDF_ref().value(), b.myLongDF_ref().value());
+  swap(a.portDFset_ref().value(), b.portDFset_ref().value());
+  swap(a.portNum_ref().value(), b.portNum_ref().value());
+  swap(a.myBinaryDFset_ref().value(), b.myBinaryDFset_ref().value());
+  swap(a.myBinary_ref().value(), b.myBinary_ref().value());
+  swap(a.myByteDFSet_ref().value(), b.myByteDFSet_ref().value());
+  swap(a.myByte_ref().value(), b.myByte_ref().value());
+  swap(a.myDoubleDFset_ref().value(), b.myDoubleDFset_ref().value());
+  swap(a.myDoubleDFZero_ref().value(), b.myDoubleDFZero_ref().value());
+  swap(a.myDouble_ref().value(), b.myDouble_ref().value());
+  swap(a.field3_ref().value(), b.field3_ref().value());
+  swap(a.myList_ref().value(), b.myList_ref().value());
+  swap(a.mySet_ref().value(), b.mySet_ref().value());
+  swap(a.simpleStruct_ref().value(), b.simpleStruct_ref().value());
+  swap(a.listStructDFset_ref().value(), b.listStructDFset_ref().value());
+  swap(a.myUnion_ref().value(), b.myUnion_ref().value());
+  swap(a.listUnionDFset_ref().value(), b.listUnionDFset_ref().value());
+  swap(a.mapNestlistStructDfSet_ref().value(), b.mapNestlistStructDfSet_ref().value());
+  swap(a.mapJavaTypeDFset_ref().value(), b.mapJavaTypeDFset_ref().value());
+  swap(a.emptyMap_ref().value(), b.emptyMap_ref().value());
+  swap(a.enumMapDFset_ref().value(), b.enumMapDFset_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1000,10 +1000,10 @@ const ::std::map<int32_t,  ::cpp2::FMap>& TypeRemapped::get_ioMap() const& {
 
 void swap(TypeRemapped& a, TypeRemapped& b) {
   using ::std::swap;
-  swap(a.lsMap, b.lsMap);
-  swap(a.ioMap, b.ioMap);
-  swap(a.BigInteger, b.BigInteger);
-  swap(a.binaryTestBuffer, b.binaryTestBuffer);
+  swap(a.lsMap_ref().value(), b.lsMap_ref().value());
+  swap(a.ioMap_ref().value(), b.ioMap_ref().value());
+  swap(a.BigInteger_ref().value(), b.BigInteger_ref().value());
+  swap(a.binaryTestBuffer_ref().value(), b.binaryTestBuffer_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

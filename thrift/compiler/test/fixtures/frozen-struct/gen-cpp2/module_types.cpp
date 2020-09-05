@@ -212,12 +212,12 @@ const  ::some::ns::IncludedB& ModuleA::get_inclBField() const& {
 
 void swap(ModuleA& a, ModuleA& b) {
   using ::std::swap;
-  swap(a.i32Field, b.i32Field);
-  swap(a.strField, b.strField);
-  swap(a.listField, b.listField);
-  swap(a.mapField, b.mapField);
-  swap(a.inclAField, b.inclAField);
-  swap(a.inclBField, b.inclBField);
+  swap(a.i32Field_ref().value(), b.i32Field_ref().value());
+  swap(a.strField_ref().value(), b.strField_ref().value());
+  swap(a.listField_ref().value(), b.listField_ref().value());
+  swap(a.mapField_ref().value(), b.mapField_ref().value());
+  swap(a.inclAField_ref().value(), b.inclAField_ref().value());
+  swap(a.inclBField_ref().value(), b.inclBField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -338,8 +338,8 @@ bool ModuleB::operator<(const ModuleB& rhs) const {
 
 void swap(ModuleB& a, ModuleB& b) {
   using ::std::swap;
-  swap(a.i32Field, b.i32Field);
-  swap(a.inclEnumB, b.inclEnumB);
+  swap(a.i32Field_ref().value(), b.i32Field_ref().value());
+  swap(a.inclEnumB_ref().value(), b.inclEnumB_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -17,6 +17,7 @@
 #include <string>
 #include <unordered_map>
 
+#include <folly/Traits.h>
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -44,13 +45,14 @@ OpaqueTestStruct getTestStruct() {
 
 template <typename T>
 void checkTypedefs() {
-  EXPECT_FALSE((std::is_same<double, decltype(T::d1)>::value));
-  EXPECT_FALSE((std::is_same<double, decltype(T::d2)>::value));
+  EXPECT_FALSE((std::is_same<double, decltype(*T().d1_ref())>::value));
+  EXPECT_FALSE((std::is_same<double, decltype(*T().d2_ref())>::value));
   EXPECT_FALSE(
-      (std::is_same<double, decltype(T::dmap.begin()->second)>::value));
-  EXPECT_FALSE((std::is_same<int64_t, decltype(T::ids[0])>::value));
-  EXPECT_TRUE((
-      std::is_same<decltype(T::d1), decltype(T::dmap.begin()->second)>::value));
+      (std::is_same<double, decltype(T().dmap_ref()->begin()->second)>::value));
+  EXPECT_FALSE((std::is_same<int64_t, decltype(T().ids_ref()[0])>::value));
+  EXPECT_TRUE((std::is_same<
+               folly::remove_cvref_t<decltype(*T().d1_ref())>,
+               decltype(T().dmap_ref()->begin()->second)>::value));
 }
 
 TEST(Opaque, Typedefs) {

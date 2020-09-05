@@ -267,8 +267,8 @@ bool MyField::operator<(const MyField& rhs) const {
 void swap(MyField& a, MyField& b) {
   using ::std::swap;
   swap(a.opt_value_ref().value_unchecked(), b.opt_value_ref().value_unchecked());
-  swap(a.value, b.value);
-  swap(a.req_value, b.req_value);
+  swap(a.value_ref().value(), b.value_ref().value());
+  swap(a.req_value_ref().value(), b.req_value_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -592,8 +592,8 @@ const  ::cpp2::MyField& StructWithUnion::get_f() const& {
 void swap(StructWithUnion& a, StructWithUnion& b) {
   using ::std::swap;
   swap(a.u, b.u);
-  swap(a.aDouble, b.aDouble);
-  swap(a.f, b.f);
+  swap(a.aDouble_ref().value(), b.aDouble_ref().value());
+  swap(a.f_ref().value(), b.f_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -74,7 +74,7 @@ bool Foo::operator<(const Foo& rhs) const {
 
 void swap(Foo& a, Foo& b) {
   using ::std::swap;
-  swap(a.bar, b.bar);
+  swap(a.bar_ref().value(), b.bar_ref().value());
 }
 
 template void Foo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

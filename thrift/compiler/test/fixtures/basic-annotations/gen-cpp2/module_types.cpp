@@ -112,7 +112,7 @@ bool MyStructNestedAnnotation::operator<(const MyStructNestedAnnotation& rhs) co
 
 void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b) {
   using ::std::swap;
-  swap(a.name, b.name);
+  swap(a.name_ref().value(), b.name_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -241,10 +241,10 @@ const  ::cpp2::MyStructNestedAnnotation& MyStructAnnotation::get_nest() const& {
 
 void swap(MyStructAnnotation& a, MyStructAnnotation& b) {
   using ::std::swap;
-  swap(a.count, b.count);
-  swap(a.name, b.name);
+  swap(a.count_ref().value(), b.count_ref().value());
+  swap(a.name_ref().value(), b.name_ref().value());
   swap(a.extra_ref().value_unchecked(), b.extra_ref().value_unchecked());
-  swap(a.nest, b.nest);
+  swap(a.nest_ref().value(), b.nest_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -409,12 +409,12 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
-  swap(a.majorVer, b.majorVer);
-  swap(a.package, b.package);
-  swap(a.annotation_with_quote, b.annotation_with_quote);
-  swap(a.class_, b.class_);
-  swap(a.annotation_with_trailing_comma, b.annotation_with_trailing_comma);
-  swap(a.empty_annotations, b.empty_annotations);
+  swap(a.majorVer_ref().value(), b.majorVer_ref().value());
+  swap(a.package_ref().value(), b.package_ref().value());
+  swap(a.annotation_with_quote_ref().value(), b.annotation_with_quote_ref().value());
+  swap(a.class__ref().value(), b.class__ref().value());
+  swap(a.annotation_with_trailing_comma_ref().value(), b.annotation_with_trailing_comma_ref().value());
+  swap(a.empty_annotations_ref().value(), b.empty_annotations_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -511,8 +511,8 @@ bool SecretStruct::operator<(const SecretStruct& rhs) const {
 
 void swap(SecretStruct& a, SecretStruct& b) {
   using ::std::swap;
-  swap(a.id, b.id);
-  swap(a.password, b.password);
+  swap(a.id_ref().value(), b.id_ref().value());
+  swap(a.password_ref().value(), b.password_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

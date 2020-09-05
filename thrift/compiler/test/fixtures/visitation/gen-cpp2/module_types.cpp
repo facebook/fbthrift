@@ -700,8 +700,8 @@ bool structA::operator<(const structA& rhs) const {
 
 void swap(structA& a, structA& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -983,8 +983,8 @@ bool structB::operator<(const structB& rhs) const {
 
 void swap(structB& a, structB& b) {
   using ::std::swap;
-  swap(a.c, b.c);
-  swap(a.d, b.d);
+  swap(a.c_ref().value(), b.c_ref().value());
+  swap(a.d_ref().value(), b.d_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1621,36 +1621,36 @@ const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflec
 
 void swap(structC& a, structC& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
-  swap(a.c, b.c);
-  swap(a.d, b.d);
-  swap(a.e, b.e);
-  swap(a.f, b.f);
-  swap(a.g, b.g);
-  swap(a.h, b.h);
-  swap(a.i, b.i);
-  swap(a.j, b.j);
-  swap(a.j1, b.j1);
-  swap(a.j2, b.j2);
-  swap(a.j3, b.j3);
-  swap(a.k, b.k);
-  swap(a.k1, b.k1);
-  swap(a.k2, b.k2);
-  swap(a.k3, b.k3);
-  swap(a.l, b.l);
-  swap(a.l1, b.l1);
-  swap(a.l2, b.l2);
-  swap(a.l3, b.l3);
-  swap(a.m1, b.m1);
-  swap(a.m2, b.m2);
-  swap(a.m3, b.m3);
-  swap(a.n1, b.n1);
-  swap(a.n2, b.n2);
-  swap(a.n3, b.n3);
-  swap(a.o1, b.o1);
-  swap(a.o2, b.o2);
-  swap(a.o3, b.o3);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
+  swap(a.c_ref().value(), b.c_ref().value());
+  swap(a.d_ref().value(), b.d_ref().value());
+  swap(a.e_ref().value(), b.e_ref().value());
+  swap(a.f_ref().value(), b.f_ref().value());
+  swap(a.g_ref().value(), b.g_ref().value());
+  swap(a.h_ref().value(), b.h_ref().value());
+  swap(a.i_ref().value(), b.i_ref().value());
+  swap(a.j_ref().value(), b.j_ref().value());
+  swap(a.j1_ref().value(), b.j1_ref().value());
+  swap(a.j2_ref().value(), b.j2_ref().value());
+  swap(a.j3_ref().value(), b.j3_ref().value());
+  swap(a.k_ref().value(), b.k_ref().value());
+  swap(a.k1_ref().value(), b.k1_ref().value());
+  swap(a.k2_ref().value(), b.k2_ref().value());
+  swap(a.k3_ref().value(), b.k3_ref().value());
+  swap(a.l_ref().value(), b.l_ref().value());
+  swap(a.l1_ref().value(), b.l1_ref().value());
+  swap(a.l2_ref().value(), b.l2_ref().value());
+  swap(a.l3_ref().value(), b.l3_ref().value());
+  swap(a.m1_ref().value(), b.m1_ref().value());
+  swap(a.m2_ref().value(), b.m2_ref().value());
+  swap(a.m3_ref().value(), b.m3_ref().value());
+  swap(a.n1_ref().value(), b.n1_ref().value());
+  swap(a.n2_ref().value(), b.n2_ref().value());
+  swap(a.n3_ref().value(), b.n3_ref().value());
+  swap(a.o1_ref().value(), b.o1_ref().value());
+  swap(a.o2_ref().value(), b.o2_ref().value());
+  swap(a.o3_ref().value(), b.o3_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1951,12 +1951,12 @@ const  ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
 
 void swap(struct1& a, struct1& b) {
   using ::std::swap;
-  swap(a.field0, b.field0);
+  swap(a.field0_ref().value(), b.field0_ref().value());
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2, b.field2);
-  swap(a.field3, b.field3);
+  swap(a.field2_ref().value(), b.field2_ref().value());
+  swap(a.field3_ref().value(), b.field3_ref().value());
   swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
-  swap(a.field5, b.field5);
+  swap(a.field5_ref().value(), b.field5_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2171,13 +2171,13 @@ const  ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
 
 void swap(struct2& a, struct2& b) {
   using ::std::swap;
-  swap(a.fieldA, b.fieldA);
-  swap(a.fieldB, b.fieldB);
-  swap(a.fieldC, b.fieldC);
-  swap(a.fieldD, b.fieldD);
-  swap(a.fieldE, b.fieldE);
-  swap(a.fieldF, b.fieldF);
-  swap(a.fieldG, b.fieldG);
+  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
+  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
+  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
+  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
+  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
+  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
+  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2624,24 +2624,24 @@ const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>& struct3:
 
 void swap(struct3& a, struct3& b) {
   using ::std::swap;
-  swap(a.fieldA, b.fieldA);
-  swap(a.fieldB, b.fieldB);
-  swap(a.fieldC, b.fieldC);
-  swap(a.fieldD, b.fieldD);
-  swap(a.fieldE, b.fieldE);
-  swap(a.fieldF, b.fieldF);
-  swap(a.fieldG, b.fieldG);
-  swap(a.fieldH, b.fieldH);
-  swap(a.fieldI, b.fieldI);
-  swap(a.fieldJ, b.fieldJ);
-  swap(a.fieldK, b.fieldK);
-  swap(a.fieldL, b.fieldL);
-  swap(a.fieldM, b.fieldM);
-  swap(a.fieldN, b.fieldN);
-  swap(a.fieldO, b.fieldO);
-  swap(a.fieldP, b.fieldP);
-  swap(a.fieldQ, b.fieldQ);
-  swap(a.fieldR, b.fieldR);
+  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
+  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
+  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
+  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
+  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
+  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
+  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
+  swap(a.fieldH_ref().value(), b.fieldH_ref().value());
+  swap(a.fieldI_ref().value(), b.fieldI_ref().value());
+  swap(a.fieldJ_ref().value(), b.fieldJ_ref().value());
+  swap(a.fieldK_ref().value(), b.fieldK_ref().value());
+  swap(a.fieldL_ref().value(), b.fieldL_ref().value());
+  swap(a.fieldM_ref().value(), b.fieldM_ref().value());
+  swap(a.fieldN_ref().value(), b.fieldN_ref().value());
+  swap(a.fieldO_ref().value(), b.fieldO_ref().value());
+  swap(a.fieldP_ref().value(), b.fieldP_ref().value());
+  swap(a.fieldQ_ref().value(), b.fieldQ_ref().value());
+  swap(a.fieldR_ref().value(), b.fieldR_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2885,9 +2885,9 @@ bool struct4::operator<(const struct4& rhs) const {
 
 void swap(struct4& a, struct4& b) {
   using ::std::swap;
-  swap(a.field0, b.field0);
+  swap(a.field0_ref().value(), b.field0_ref().value());
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2, b.field2);
+  swap(a.field2_ref().value(), b.field2_ref().value());
   swap(a.field3, b.field3);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
@@ -3057,11 +3057,11 @@ const  ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
 
 void swap(struct5& a, struct5& b) {
   using ::std::swap;
-  swap(a.field0, b.field0);
+  swap(a.field0_ref().value(), b.field0_ref().value());
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
-  swap(a.field2, b.field2);
-  swap(a.field3, b.field3);
-  swap(a.field4, b.field4);
+  swap(a.field2_ref().value(), b.field2_ref().value());
+  swap(a.field3_ref().value(), b.field3_ref().value());
+  swap(a.field4_ref().value(), b.field4_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3170,7 +3170,7 @@ bool struct_binary::operator<(const struct_binary& rhs) const {
 
 void swap(struct_binary& a, struct_binary& b) {
   using ::std::swap;
-  swap(a.bi, b.bi);
+  swap(a.bi_ref().value(), b.bi_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3295,9 +3295,9 @@ const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
 
 void swap(dep_A_struct& a, dep_A_struct& b) {
   using ::std::swap;
-  swap(a.b, b.b);
-  swap(a.c, b.c);
-  swap(a.i_a, b.i_a);
+  swap(a.b_ref().value(), b.b_ref().value());
+  swap(a.c_ref().value(), b.c_ref().value());
+  swap(a.i_a_ref().value(), b.i_a_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3446,9 +3446,9 @@ const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
 
 void swap(dep_B_struct& a, dep_B_struct& b) {
   using ::std::swap;
-  swap(a.b, b.b);
-  swap(a.c, b.c);
-  swap(a.i_a, b.i_a);
+  swap(a.b_ref().value(), b.b_ref().value());
+  swap(a.c_ref().value(), b.c_ref().value());
+  swap(a.i_a_ref().value(), b.i_a_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3557,7 +3557,7 @@ bool annotated::operator<(const annotated& rhs) const {
 
 void swap(annotated& a, annotated& b) {
   using ::std::swap;
-  swap(a.a, b.a);
+  swap(a.a_ref().value(), b.a_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -4461,34 +4461,34 @@ bool struct_with_special_names::operator<(const struct_with_special_names& rhs) 
 
 void swap(struct_with_special_names& a, struct_with_special_names& b) {
   using ::std::swap;
-  swap(a.get, b.get);
-  swap(a.getter, b.getter);
-  swap(a.lists, b.lists);
-  swap(a.maps, b.maps);
-  swap(a.name, b.name);
-  swap(a.name_to_value, b.name_to_value);
-  swap(a.names, b.names);
-  swap(a.prefix_tree, b.prefix_tree);
-  swap(a.sets, b.sets);
-  swap(a.setter, b.setter);
-  swap(a.str, b.str);
-  swap(a.strings, b.strings);
-  swap(a.type, b.type);
-  swap(a.value, b.value);
-  swap(a.value_to_name, b.value_to_name);
-  swap(a.values, b.values);
-  swap(a.id, b.id);
-  swap(a.ids, b.ids);
-  swap(a.descriptor, b.descriptor);
-  swap(a.descriptors, b.descriptors);
-  swap(a.key, b.key);
-  swap(a.keys, b.keys);
-  swap(a.annotation, b.annotation);
-  swap(a.annotations, b.annotations);
-  swap(a.member, b.member);
-  swap(a.members, b.members);
-  swap(a.field, b.field);
-  swap(a.fields, b.fields);
+  swap(a.get_ref().value(), b.get_ref().value());
+  swap(a.getter_ref().value(), b.getter_ref().value());
+  swap(a.lists_ref().value(), b.lists_ref().value());
+  swap(a.maps_ref().value(), b.maps_ref().value());
+  swap(a.name_ref().value(), b.name_ref().value());
+  swap(a.name_to_value_ref().value(), b.name_to_value_ref().value());
+  swap(a.names_ref().value(), b.names_ref().value());
+  swap(a.prefix_tree_ref().value(), b.prefix_tree_ref().value());
+  swap(a.sets_ref().value(), b.sets_ref().value());
+  swap(a.setter_ref().value(), b.setter_ref().value());
+  swap(a.str_ref().value(), b.str_ref().value());
+  swap(a.strings_ref().value(), b.strings_ref().value());
+  swap(a.type_ref().value(), b.type_ref().value());
+  swap(a.value_ref().value(), b.value_ref().value());
+  swap(a.value_to_name_ref().value(), b.value_to_name_ref().value());
+  swap(a.values_ref().value(), b.values_ref().value());
+  swap(a.id_ref().value(), b.id_ref().value());
+  swap(a.ids_ref().value(), b.ids_ref().value());
+  swap(a.descriptor_ref().value(), b.descriptor_ref().value());
+  swap(a.descriptors_ref().value(), b.descriptors_ref().value());
+  swap(a.key_ref().value(), b.key_ref().value());
+  swap(a.keys_ref().value(), b.keys_ref().value());
+  swap(a.annotation_ref().value(), b.annotation_ref().value());
+  swap(a.annotations_ref().value(), b.annotations_ref().value());
+  swap(a.member_ref().value(), b.member_ref().value());
+  swap(a.members_ref().value(), b.members_ref().value());
+  swap(a.field_ref().value(), b.field_ref().value());
+  swap(a.fields_ref().value(), b.fields_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -4632,11 +4632,11 @@ bool struct_with_indirections::operator<(const struct_with_indirections& rhs) co
 
 void swap(struct_with_indirections& a, struct_with_indirections& b) {
   using ::std::swap;
-  swap(a.real, b.real);
-  swap(a.fake, b.fake);
-  swap(a.number, b.number);
-  swap(a.result, b.result);
-  swap(a.phrase, b.phrase);
+  swap(a.real_ref().value(), b.real_ref().value());
+  swap(a.fake_ref().value(), b.fake_ref().value());
+  swap(a.number_ref().value(), b.number_ref().value());
+  swap(a.result_ref().value(), b.result_ref().value());
+  swap(a.phrase_ref().value(), b.phrase_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

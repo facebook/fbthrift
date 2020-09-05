@@ -87,7 +87,7 @@ const  ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() con
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
-  swap(a.OtherStructField, b.OtherStructField);
+  swap(a.OtherStructField_ref().value(), b.OtherStructField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

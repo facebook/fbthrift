@@ -119,9 +119,9 @@ const  ::cpp2::Included& MyStruct::get_MyOtherIncludedField() const& {
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIncludedField, b.MyIncludedField);
-  swap(a.MyOtherIncludedField, b.MyOtherIncludedField);
-  swap(a.MyIncludedInt, b.MyIncludedInt);
+  swap(a.MyIncludedField_ref().value(), b.MyIncludedField_ref().value());
+  swap(a.MyOtherIncludedField_ref().value(), b.MyOtherIncludedField_ref().value());
+  swap(a.MyIncludedInt_ref().value(), b.MyIncludedInt_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

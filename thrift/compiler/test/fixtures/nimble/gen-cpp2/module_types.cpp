@@ -114,10 +114,10 @@ bool BasicTypes::operator<(const BasicTypes& rhs) const {
 
 void swap(BasicTypes& a, BasicTypes& b) {
   using ::std::swap;
-  swap(a.first, b.first);
+  swap(a.first_ref().value(), b.first_ref().value());
   swap(a.second_ref().value_unchecked(), b.second_ref().value_unchecked());
   swap(a.third_ref().value_unchecked(), b.third_ref().value_unchecked());
-  swap(a.isTrue, b.isTrue);
+  swap(a.isTrue_ref().value(), b.isTrue_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

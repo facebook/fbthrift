@@ -211,10 +211,10 @@ const  ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField, b.MyIntField);
-  swap(a.MyStringField, b.MyStringField);
-  swap(a.MyDataField, b.MyDataField);
-  swap(a.myEnum, b.myEnum);
+  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
+  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
+  swap(a.MyDataField_ref().value(), b.MyDataField_ref().value());
+  swap(a.myEnum_ref().value(), b.myEnum_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -156,10 +156,10 @@ const ::std::set<int32_t>& SomeStruct::get_tags() const& {
 
 void swap(SomeStruct& a, SomeStruct& b) {
   using ::std::swap;
-  swap(a.reasonable, b.reasonable);
-  swap(a.fine, b.fine);
-  swap(a.questionable, b.questionable);
-  swap(a.tags, b.tags);
+  swap(a.reasonable_ref().value(), b.reasonable_ref().value());
+  swap(a.fine_ref().value(), b.fine_ref().value());
+  swap(a.questionable_ref().value(), b.questionable_ref().value());
+  swap(a.tags_ref().value(), b.tags_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

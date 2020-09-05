@@ -79,7 +79,7 @@ bool ReflectionStruct::operator<(const ReflectionStruct& rhs) const {
 
 void swap(ReflectionStruct& a, ReflectionStruct& b) {
   using ::std::swap;
-  swap(a.fieldA, b.fieldA);
+  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

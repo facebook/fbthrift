@@ -58,8 +58,8 @@ int main() {
 
   hm.big_ref()->push_back(ooe);
   hm.big_ref()->push_back(*n.my_ooe_ref());
-  *hm.big[0].a_bite_ref() = 0x22;
-  *hm.big[1].a_bite_ref() = 0x33;
+  *hm.big_ref()[0].a_bite_ref() = 0x22;
+  *hm.big_ref()[1].a_bite_ref() = 0x33;
 
   std::vector<std::string> stage1;
   stage1.push_back("and a one");
@@ -112,7 +112,7 @@ int main() {
 
   assert(hm == hm2);
 
-  *hm2.big[0].a_bite_ref() = 0xFF;
+  *hm2.big_ref()[0].a_bite_ref() = 0xFF;
 
   assert(hm != hm2);
 

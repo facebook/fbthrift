@@ -25,21 +25,23 @@
 using namespace ::apache::thrift::frozen;
 using namespace ::test::frozen2;
 
-#define ASSERT_VIEW_EQ(OBJ, MAPPED, NAME) \
-  ASSERT_EQ(ViewHelper<decltype(MAPPED.NAME())>::thaw(MAPPED.NAME()), OBJ.NAME)
+#define ASSERT_VIEW_EQ(OBJ, MAPPED, NAME)                       \
+  ASSERT_EQ(                                                    \
+      ViewHelper<decltype(MAPPED.NAME())>::thaw(MAPPED.NAME()), \
+      *OBJ.NAME##_ref())
 
 TEST(ViewHelperTest, TestThaw) {
   TestStruct strct;
-  strct.i32Field = 0xBAD;
-  strct.strField = "foo";
-  strct.doubleField = 1.5;
-  strct.boolField = true;
-  strct.listField = {"bar", "baz"};
-  strct.mapField = {
+  strct.i32Field_ref() = 0xBAD;
+  strct.strField_ref() = "foo";
+  strct.doubleField_ref() = 1.5;
+  strct.boolField_ref() = true;
+  strct.listField_ref() = {"bar", "baz"};
+  strct.mapField_ref() = {
       {0, "a"},
       {1, "b"},
   };
-  strct.enumField = TestEnum::Foo;
+  strct.enumField_ref() = TestEnum::Foo;
 
   std::string frozen;
   freezeToString(strct, frozen);

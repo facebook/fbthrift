@@ -108,15 +108,15 @@ FieldPosition BlockLayout::maximize() {
 FieldPosition
 BlockLayout::layout(LayoutRoot& root, const T& x, LayoutPosition self) {
   FieldPosition pos = startFieldPosition();
-  FROZEN_LAYOUT_FIELD(mask);
-  FROZEN_LAYOUT_FIELD(offset);
+  FROZEN_LAYOUT_FIELD_REQ(mask);
+  FROZEN_LAYOUT_FIELD_REQ(offset);
   return pos;
 }
 
 void BlockLayout::freeze(FreezeRoot& root, const T& x, FreezePosition self)
     const {
-  FROZEN_FREEZE_FIELD(mask);
-  FROZEN_FREEZE_FIELD(offset);
+  FROZEN_FREEZE_FIELD_REQ(mask);
+  FROZEN_FREEZE_FIELD_REQ(offset);
 }
 
 void BlockLayout::print(std::ostream& os, int level) const {

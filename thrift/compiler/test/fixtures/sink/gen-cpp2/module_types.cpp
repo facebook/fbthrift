@@ -79,7 +79,7 @@ bool InitialResponse::operator<(const InitialResponse& rhs) const {
 
 void swap(InitialResponse& a, InitialResponse& b) {
   using ::std::swap;
-  swap(a.content, b.content);
+  swap(a.content_ref().value(), b.content_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -164,7 +164,7 @@ bool FinalResponse::operator<(const FinalResponse& rhs) const {
 
 void swap(FinalResponse& a, FinalResponse& b) {
   using ::std::swap;
-  swap(a.content, b.content);
+  swap(a.content_ref().value(), b.content_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -249,7 +249,7 @@ bool SinkPayload::operator<(const SinkPayload& rhs) const {
 
 void swap(SinkPayload& a, SinkPayload& b) {
   using ::std::swap;
-  swap(a.content, b.content);
+  swap(a.content_ref().value(), b.content_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -334,7 +334,7 @@ bool CompatibleWithKeywordSink::operator<(const CompatibleWithKeywordSink& rhs) 
 
 void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b) {
   using ::std::swap;
-  swap(a.sink, b.sink);
+  swap(a.sink_ref().value(), b.sink_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -419,7 +419,7 @@ bool InitialException::operator<(const InitialException& rhs) const {
 
 void swap(InitialException& a, InitialException& b) {
   using ::std::swap;
-  swap(a.reason, b.reason);
+  swap(a.reason_ref().value(), b.reason_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -504,7 +504,7 @@ bool SinkException1::operator<(const SinkException1& rhs) const {
 
 void swap(SinkException1& a, SinkException1& b) {
   using ::std::swap;
-  swap(a.reason, b.reason);
+  swap(a.reason_ref().value(), b.reason_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -589,7 +589,7 @@ bool SinkException2::operator<(const SinkException2& rhs) const {
 
 void swap(SinkException2& a, SinkException2& b) {
   using ::std::swap;
-  swap(a.reason, b.reason);
+  swap(a.reason_ref().value(), b.reason_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

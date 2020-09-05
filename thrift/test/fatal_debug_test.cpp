@@ -133,14 +133,14 @@ TEST(fatal_debug, equal) {
 TEST(Equal, Failure) {
   auto pod = test_data();
   struct3 pod1, pod2;
-  *pod1.fieldR["a"].c_ref() = 1;
-  *pod1.fieldR["b"].c_ref() = 2;
-  *pod1.fieldR["c"].c_ref() = 3;
-  *pod1.fieldR["d"].c_ref() = 4;
-  *pod2.fieldR["d"].c_ref() = 4;
-  *pod2.fieldR["c"].c_ref() = 3;
-  *pod2.fieldR["b"].c_ref() = 2;
-  *pod2.fieldR["a"].c_ref() = 1;
+  *pod1.fieldR_ref()["a"].c_ref() = 1;
+  *pod1.fieldR_ref()["b"].c_ref() = 2;
+  *pod1.fieldR_ref()["c"].c_ref() = 3;
+  *pod1.fieldR_ref()["d"].c_ref() = 4;
+  *pod2.fieldR_ref()["d"].c_ref() = 4;
+  *pod2.fieldR_ref()["c"].c_ref() = 3;
+  *pod2.fieldR_ref()["b"].c_ref() = 2;
+  *pod2.fieldR_ref()["a"].c_ref() = 1;
   EXPECT_THRIFT_EQ(pod1, pod2);
   // This is just to test that the ThriftEq matcher works:
   using apache::thrift::ThriftEq;

@@ -107,8 +107,8 @@ const  ::module1::Struct& Struct::get_second() const& {
 
 void swap(Struct& a, Struct& b) {
   using ::std::swap;
-  swap(a.first, b.first);
-  swap(a.second, b.second);
+  swap(a.first_ref().value(), b.first_ref().value());
+  swap(a.second_ref().value(), b.second_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -237,8 +237,8 @@ const  ::module2::Struct& BigStruct::get_s() const& {
 
 void swap(BigStruct& a, BigStruct& b) {
   using ::std::swap;
-  swap(a.s, b.s);
-  swap(a.id, b.id);
+  swap(a.s_ref().value(), b.s_ref().value());
+  swap(a.id_ref().value(), b.id_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

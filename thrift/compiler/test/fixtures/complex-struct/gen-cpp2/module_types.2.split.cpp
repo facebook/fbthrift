@@ -576,34 +576,34 @@ const ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>>& MyStruct::get_
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField, b.MyIntField);
-  swap(a.MyStringField, b.MyStringField);
-  swap(a.MyDataField, b.MyDataField);
-  swap(a.myEnum, b.myEnum);
-  swap(a.MyBoolField, b.MyBoolField);
-  swap(a.MyByteField, b.MyByteField);
-  swap(a.MyShortField, b.MyShortField);
-  swap(a.MyLongField, b.MyLongField);
-  swap(a.MyDoubleField, b.MyDoubleField);
-  swap(a.lDouble, b.lDouble);
-  swap(a.lShort, b.lShort);
-  swap(a.lInteger, b.lInteger);
-  swap(a.lLong, b.lLong);
-  swap(a.lString, b.lString);
-  swap(a.lBool, b.lBool);
-  swap(a.lByte, b.lByte);
-  swap(a.mShortString, b.mShortString);
-  swap(a.mIntegerString, b.mIntegerString);
-  swap(a.mStringMyStruct, b.mStringMyStruct);
-  swap(a.mStringBool, b.mStringBool);
-  swap(a.mIntegerInteger, b.mIntegerInteger);
-  swap(a.mIntegerBool, b.mIntegerBool);
-  swap(a.sShort, b.sShort);
-  swap(a.sMyStruct, b.sMyStruct);
-  swap(a.sLong, b.sLong);
-  swap(a.sString, b.sString);
-  swap(a.sByte, b.sByte);
-  swap(a.mListList, b.mListList);
+  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
+  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
+  swap(a.MyDataField_ref().value(), b.MyDataField_ref().value());
+  swap(a.myEnum_ref().value(), b.myEnum_ref().value());
+  swap(a.MyBoolField_ref().value(), b.MyBoolField_ref().value());
+  swap(a.MyByteField_ref().value(), b.MyByteField_ref().value());
+  swap(a.MyShortField_ref().value(), b.MyShortField_ref().value());
+  swap(a.MyLongField_ref().value(), b.MyLongField_ref().value());
+  swap(a.MyDoubleField_ref().value(), b.MyDoubleField_ref().value());
+  swap(a.lDouble_ref().value(), b.lDouble_ref().value());
+  swap(a.lShort_ref().value(), b.lShort_ref().value());
+  swap(a.lInteger_ref().value(), b.lInteger_ref().value());
+  swap(a.lLong_ref().value(), b.lLong_ref().value());
+  swap(a.lString_ref().value(), b.lString_ref().value());
+  swap(a.lBool_ref().value(), b.lBool_ref().value());
+  swap(a.lByte_ref().value(), b.lByte_ref().value());
+  swap(a.mShortString_ref().value(), b.mShortString_ref().value());
+  swap(a.mIntegerString_ref().value(), b.mIntegerString_ref().value());
+  swap(a.mStringMyStruct_ref().value(), b.mStringMyStruct_ref().value());
+  swap(a.mStringBool_ref().value(), b.mStringBool_ref().value());
+  swap(a.mIntegerInteger_ref().value(), b.mIntegerInteger_ref().value());
+  swap(a.mIntegerBool_ref().value(), b.mIntegerBool_ref().value());
+  swap(a.sShort_ref().value(), b.sShort_ref().value());
+  swap(a.sMyStruct_ref().value(), b.sMyStruct_ref().value());
+  swap(a.sLong_ref().value(), b.sLong_ref().value());
+  swap(a.sString_ref().value(), b.sString_ref().value());
+  swap(a.sByte_ref().value(), b.sByte_ref().value());
+  swap(a.mListList_ref().value(), b.mListList_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -845,15 +845,15 @@ const ::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>>& MyStructTypeDef:
 
 void swap(MyStructTypeDef& a, MyStructTypeDef& b) {
   using ::std::swap;
-  swap(a.myLongField, b.myLongField);
-  swap(a.myLongTypeDef, b.myLongTypeDef);
-  swap(a.myStringField, b.myStringField);
-  swap(a.myStringTypedef, b.myStringTypedef);
-  swap(a.myMapField, b.myMapField);
-  swap(a.myMapTypedef, b.myMapTypedef);
-  swap(a.myListField, b.myListField);
-  swap(a.myListTypedef, b.myListTypedef);
-  swap(a.myMapListOfTypeDef, b.myMapListOfTypeDef);
+  swap(a.myLongField_ref().value(), b.myLongField_ref().value());
+  swap(a.myLongTypeDef_ref().value(), b.myLongTypeDef_ref().value());
+  swap(a.myStringField_ref().value(), b.myStringField_ref().value());
+  swap(a.myStringTypedef_ref().value(), b.myStringTypedef_ref().value());
+  swap(a.myMapField_ref().value(), b.myMapField_ref().value());
+  swap(a.myMapTypedef_ref().value(), b.myMapTypedef_ref().value());
+  swap(a.myListField_ref().value(), b.myListField_ref().value());
+  swap(a.myListTypedef_ref().value(), b.myListTypedef_ref().value());
+  swap(a.myMapListOfTypeDef_ref().value(), b.myMapListOfTypeDef_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1277,12 +1277,12 @@ const ::std::map<int64_t, ::std::string>& complexException::get_lsMap() const& {
 
 void swap(complexException& a, complexException& b) {
   using ::std::swap;
-  swap(a.message, b.message);
-  swap(a.listStrings, b.listStrings);
-  swap(a.errorEnum, b.errorEnum);
+  swap(a.message_ref().value(), b.message_ref().value());
+  swap(a.listStrings_ref().value(), b.listStrings_ref().value());
+  swap(a.errorEnum_ref().value(), b.errorEnum_ref().value());
   swap(a.unionError_ref().value_unchecked(), b.unionError_ref().value_unchecked());
-  swap(a.structError, b.structError);
-  swap(a.lsMap, b.lsMap);
+  swap(a.structError_ref().value(), b.structError_ref().value());
+  swap(a.lsMap_ref().value(), b.lsMap_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

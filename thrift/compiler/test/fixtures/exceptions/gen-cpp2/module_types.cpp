@@ -130,7 +130,7 @@ bool Fiery::operator<(const Fiery& rhs) const {
 
 void swap(Fiery& a, Fiery& b) {
   using ::std::swap;
-  swap(a.message, b.message);
+  swap(a.message_ref().value(), b.message_ref().value());
 }
 
 template void Fiery::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -309,8 +309,8 @@ bool ComplexFieldNames::operator<(const ComplexFieldNames& rhs) const {
 
 void swap(ComplexFieldNames& a, ComplexFieldNames& b) {
   using ::std::swap;
-  swap(a.error_message, b.error_message);
-  swap(a.internal_error_message, b.internal_error_message);
+  swap(a.error_message_ref().value(), b.error_message_ref().value());
+  swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -407,8 +407,8 @@ bool CustomFieldNames::operator<(const CustomFieldNames& rhs) const {
 
 void swap(CustomFieldNames& a, CustomFieldNames& b) {
   using ::std::swap;
-  swap(a.error_message, b.error_message);
-  swap(a.internal_error_message, b.internal_error_message);
+  swap(a.error_message_ref().value(), b.error_message_ref().value());
+  swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

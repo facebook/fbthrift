@@ -148,10 +148,10 @@ bool Color::operator<(const Color& rhs) const {
 
 void swap(Color& a, Color& b) {
   using ::std::swap;
-  swap(a.red, b.red);
-  swap(a.green, b.green);
-  swap(a.blue, b.blue);
-  swap(a.alpha, b.alpha);
+  swap(a.red_ref().value(), b.red_ref().value());
+  swap(a.green_ref().value(), b.green_ref().value());
+  swap(a.blue_ref().value(), b.blue_ref().value());
+  swap(a.alpha_ref().value(), b.alpha_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -300,7 +300,7 @@ const  ::cpp2::Color& Vehicle::get_color() const& {
 
 void swap(Vehicle& a, Vehicle& b) {
   using ::std::swap;
-  swap(a.color, b.color);
+  swap(a.color_ref().value(), b.color_ref().value());
   swap(a.licensePlate_ref().value_unchecked(), b.licensePlate_ref().value_unchecked());
   swap(a.description_ref().value_unchecked(), b.description_ref().value_unchecked());
   swap(a.name_ref().value_unchecked(), b.name_ref().value_unchecked());
@@ -552,8 +552,8 @@ const ::std::vector< ::cpp2::Vehicle>* Person::get_vehicles() const& {
 
 void swap(Person& a, Person& b) {
   using ::std::swap;
-  swap(a.id, b.id);
-  swap(a.name, b.name);
+  swap(a.id_ref().value(), b.id_ref().value());
+  swap(a.name_ref().value(), b.name_ref().value());
   swap(a.age_ref().value_unchecked(), b.age_ref().value_unchecked());
   swap(a.address_ref().value_unchecked(), b.address_ref().value_unchecked());
   swap(a.favoriteColor_ref().value_unchecked(), b.favoriteColor_ref().value_unchecked());

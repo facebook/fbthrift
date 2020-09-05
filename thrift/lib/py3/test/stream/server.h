@@ -51,15 +51,15 @@ class StreamTestService : public StreamTestServiceSvIf {
       included::Included>
   returnresponseandstream(std::unique_ptr<included::Included> foo) override {
     included::Included resp;
-    resp.from = 100;
-    resp.to = 200;
+    resp.from_ref() = 100;
+    resp.to_ref() = 200;
     auto stream = folly::coro::co_invoke(
         [foo = std::move(foo)]() mutable
         -> folly::coro::AsyncGenerator<included::Included&&> {
-          for (auto i = foo->from; i < foo->to; ++i) {
+          for (auto i = *foo->from_ref(); i < *foo->to_ref(); ++i) {
             included::Included p;
-            p.from = foo->from;
-            p.to = i;
+            p.from_ref() = *foo->from_ref();
+            p.to_ref() = i;
             co_yield std::move(p);
           }
         });

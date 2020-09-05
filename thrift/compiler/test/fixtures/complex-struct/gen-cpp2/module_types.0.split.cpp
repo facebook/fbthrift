@@ -148,10 +148,10 @@ bool MyStructFloatFieldThrowExp::operator<(const MyStructFloatFieldThrowExp& rhs
 
 void swap(MyStructFloatFieldThrowExp& a, MyStructFloatFieldThrowExp& b) {
   using ::std::swap;
-  swap(a.myLongField, b.myLongField);
-  swap(a.MyByteField, b.MyByteField);
-  swap(a.myStringField, b.myStringField);
-  swap(a.myFloatField, b.myFloatField);
+  swap(a.myLongField_ref().value(), b.myLongField_ref().value());
+  swap(a.MyByteField_ref().value(), b.MyByteField_ref().value());
+  swap(a.myStringField_ref().value(), b.myStringField_ref().value());
+  swap(a.myFloatField_ref().value(), b.myFloatField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -248,8 +248,8 @@ bool SimpleStruct::operator<(const SimpleStruct& rhs) const {
 
 void swap(SimpleStruct& a, SimpleStruct& b) {
   using ::std::swap;
-  swap(a.age, b.age);
-  swap(a.name, b.name);
+  swap(a.age_ref().value(), b.age_ref().value());
+  swap(a.name_ref().value(), b.name_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -745,24 +745,24 @@ const ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::st
 
 void swap(ComplexNestedStruct& a, ComplexNestedStruct& b) {
   using ::std::swap;
-  swap(a.setOfSetOfInt, b.setOfSetOfInt);
-  swap(a.listofListOfListOfListOfEnum, b.listofListOfListOfListOfEnum);
-  swap(a.listOfListOfMyStruct, b.listOfListOfMyStruct);
-  swap(a.setOfListOfListOfLong, b.setOfListOfListOfLong);
-  swap(a.setOfSetOfsetOfLong, b.setOfSetOfsetOfLong);
-  swap(a.mapStructListOfListOfLong, b.mapStructListOfListOfLong);
-  swap(a.mKeyStructValInt, b.mKeyStructValInt);
-  swap(a.listOfMapKeyIntValInt, b.listOfMapKeyIntValInt);
-  swap(a.listOfMapKeyStrValList, b.listOfMapKeyStrValList);
-  swap(a.mapKeySetValLong, b.mapKeySetValLong);
-  swap(a.mapKeyListValLong, b.mapKeyListValLong);
-  swap(a.mapKeyMapValMap, b.mapKeyMapValMap);
-  swap(a.mapKeySetValMap, b.mapKeySetValMap);
-  swap(a.NestedMaps, b.NestedMaps);
-  swap(a.mapKeyIntValList, b.mapKeyIntValList);
-  swap(a.mapKeyIntValSet, b.mapKeyIntValSet);
-  swap(a.mapKeySetValInt, b.mapKeySetValInt);
-  swap(a.mapKeyListValSet, b.mapKeyListValSet);
+  swap(a.setOfSetOfInt_ref().value(), b.setOfSetOfInt_ref().value());
+  swap(a.listofListOfListOfListOfEnum_ref().value(), b.listofListOfListOfListOfEnum_ref().value());
+  swap(a.listOfListOfMyStruct_ref().value(), b.listOfListOfMyStruct_ref().value());
+  swap(a.setOfListOfListOfLong_ref().value(), b.setOfListOfListOfLong_ref().value());
+  swap(a.setOfSetOfsetOfLong_ref().value(), b.setOfSetOfsetOfLong_ref().value());
+  swap(a.mapStructListOfListOfLong_ref().value(), b.mapStructListOfListOfLong_ref().value());
+  swap(a.mKeyStructValInt_ref().value(), b.mKeyStructValInt_ref().value());
+  swap(a.listOfMapKeyIntValInt_ref().value(), b.listOfMapKeyIntValInt_ref().value());
+  swap(a.listOfMapKeyStrValList_ref().value(), b.listOfMapKeyStrValList_ref().value());
+  swap(a.mapKeySetValLong_ref().value(), b.mapKeySetValLong_ref().value());
+  swap(a.mapKeyListValLong_ref().value(), b.mapKeyListValLong_ref().value());
+  swap(a.mapKeyMapValMap_ref().value(), b.mapKeyMapValMap_ref().value());
+  swap(a.mapKeySetValMap_ref().value(), b.mapKeySetValMap_ref().value());
+  swap(a.NestedMaps_ref().value(), b.NestedMaps_ref().value());
+  swap(a.mapKeyIntValList_ref().value(), b.mapKeyIntValList_ref().value());
+  swap(a.mapKeyIntValSet_ref().value(), b.mapKeyIntValSet_ref().value());
+  swap(a.mapKeySetValInt_ref().value(), b.mapKeySetValInt_ref().value());
+  swap(a.mapKeyListValSet_ref().value(), b.mapKeyListValSet_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -913,8 +913,8 @@ bool reqXcep::operator<(const reqXcep& rhs) const {
 
 void swap(reqXcep& a, reqXcep& b) {
   using ::std::swap;
-  swap(a.message, b.message);
-  swap(a.errorCode, b.errorCode);
+  swap(a.message_ref().value(), b.message_ref().value());
+  swap(a.errorCode_ref().value(), b.errorCode_ref().value());
 }
 
 template void reqXcep::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

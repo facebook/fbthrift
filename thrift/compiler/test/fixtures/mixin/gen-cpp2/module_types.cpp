@@ -79,7 +79,7 @@ bool Mixin1::operator<(const Mixin1& rhs) const {
 
 void swap(Mixin1& a, Mixin1& b) {
   using ::std::swap;
-  swap(a.field1, b.field1);
+  swap(a.field1_ref().value(), b.field1_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -184,7 +184,7 @@ const  ::cpp2::Mixin1& Mixin2::get_m1() const& {
 
 void swap(Mixin2& a, Mixin2& b) {
   using ::std::swap;
-  swap(a.m1, b.m1);
+  swap(a.m1_ref().value(), b.m1_ref().value());
   swap(a.field2_ref().value_unchecked(), b.field2_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
@@ -282,7 +282,7 @@ bool Mixin3Base::operator<(const Mixin3Base& rhs) const {
 
 void swap(Mixin3Base& a, Mixin3Base& b) {
   using ::std::swap;
-  swap(a.field3, b.field3);
+  swap(a.field3_ref().value(), b.field3_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -407,9 +407,9 @@ const  ::cpp2::Mixin3& Foo::get_m3() const& {
 
 void swap(Foo& a, Foo& b) {
   using ::std::swap;
-  swap(a.field4, b.field4);
-  swap(a.m2, b.m2);
-  swap(a.m3, b.m3);
+  swap(a.field4_ref().value(), b.field4_ref().value());
+  swap(a.m2_ref().value(), b.m2_ref().value());
+  swap(a.m3_ref().value(), b.m3_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

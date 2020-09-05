@@ -16,11 +16,11 @@
 
 %><%!
 
-For the Thrift field foo, this generates the field name:
-  foo
-if it's non-optional or
+For the Thrift field foo this generates:
+  foo_ref().value()
+if it's non-optional and
   foo_ref().value_unchecked()
-if it's optional.
+otherwise.
 
 %><%!
   %><%^field:cpp_ref?%><%!
@@ -28,7 +28,7 @@ if it's optional.
       %><%field:cpp_name%>_ref().value_unchecked()<%!
     %><%/field:optional?%><%!
     %><%^field:optional?%><%!
-      %><%field:cpp_name%><%!
+      %><%field:cpp_name%>_ref().value()<%!
     %><%/field:optional?%><%!
   %><%/field:cpp_ref?%><%!
   %><%#field:cpp_ref?%><%!

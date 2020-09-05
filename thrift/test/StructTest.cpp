@@ -17,6 +17,7 @@
 #include <thrift/test/gen-cpp2/structs_terse_types.h>
 #include <thrift/test/gen-cpp2/structs_types.h>
 
+#include <folly/Traits.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
@@ -589,8 +590,12 @@ TEST_F(StructTest, small_sorted_vector) {
   using Map = SmallSortedVectorMap<int32_t, int32_t>;
   using serializer = apache::thrift::BinarySerializer;
   using Type = HasSmallSortedVector;
-  EXPECT_TRUE((std::is_same<decltype(Type::set_field), Set>::value));
-  EXPECT_TRUE((std::is_same<decltype(Type::map_field), Map>::value));
+  EXPECT_TRUE((std::is_same<
+               folly::remove_cvref_t<decltype(*Type().set_field_ref())>,
+               Set>::value));
+  EXPECT_TRUE((std::is_same<
+               folly::remove_cvref_t<decltype(*Type().map_field_ref())>,
+               Map>::value));
 
   Type o;
   o.set_field_ref()->insert({1, 3, 5});

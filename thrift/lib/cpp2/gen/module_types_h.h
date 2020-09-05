@@ -89,6 +89,15 @@ struct invoke_reffer_thru {
           invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked()) {
     return invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked();
   }
+
+  template <typename... A>
+  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
+      noexcept(*invoke_reffer<Tag>{}(static_cast<A&&>(a)...)))
+      -> decltype(
+          invoke_reffer<Tag>{}(static_cast<A&&>(a)...).is_set(),
+          *invoke_reffer<Tag>{}(static_cast<A&&>(a)...)) {
+    return *invoke_reffer<Tag>{}(static_cast<A&&>(a)...);
+  }
 };
 
 template <typename Tag>

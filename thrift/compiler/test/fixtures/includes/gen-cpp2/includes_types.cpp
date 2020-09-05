@@ -99,8 +99,8 @@ const  ::cpp2::Foo& Included::get_MyTransitiveField() const& {
 
 void swap(Included& a, Included& b) {
   using ::std::swap;
-  swap(a.MyIntField, b.MyIntField);
-  swap(a.MyTransitiveField, b.MyTransitiveField);
+  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
+  swap(a.MyTransitiveField_ref().value(), b.MyTransitiveField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

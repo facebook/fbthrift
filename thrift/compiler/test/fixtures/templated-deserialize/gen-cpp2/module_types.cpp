@@ -124,8 +124,8 @@ bool SmallStruct::operator<(const SmallStruct& rhs) const {
 
 void swap(SmallStruct& a, SmallStruct& b) {
   using ::std::swap;
-  swap(a.small_A, b.small_A);
-  swap(a.small_B, b.small_B);
+  swap(a.small_A_ref().value(), b.small_A_ref().value());
+  swap(a.small_B_ref().value(), b.small_B_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -713,23 +713,23 @@ const ::std::vector< ::cpp2::IndirectionC>& containerStruct::get_fieldP() const&
 
 void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
-  swap(a.fieldA, b.fieldA);
-  swap(a.fieldB, b.fieldB);
-  swap(a.fieldC, b.fieldC);
-  swap(a.fieldD, b.fieldD);
-  swap(a.fieldE, b.fieldE);
-  swap(a.fieldF, b.fieldF);
-  swap(a.fieldG, b.fieldG);
-  swap(a.fieldH, b.fieldH);
-  swap(a.fieldI, b.fieldI);
-  swap(a.fieldJ, b.fieldJ);
-  swap(a.fieldK, b.fieldK);
-  swap(a.fieldL, b.fieldL);
-  swap(a.fieldM, b.fieldM);
-  swap(a.fieldN, b.fieldN);
-  swap(a.fieldO, b.fieldO);
-  swap(a.fieldP, b.fieldP);
-  swap(a.fieldQ, b.fieldQ);
+  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
+  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
+  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
+  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
+  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
+  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
+  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
+  swap(a.fieldH_ref().value(), b.fieldH_ref().value());
+  swap(a.fieldI_ref().value(), b.fieldI_ref().value());
+  swap(a.fieldJ_ref().value(), b.fieldJ_ref().value());
+  swap(a.fieldK_ref().value(), b.fieldK_ref().value());
+  swap(a.fieldL_ref().value(), b.fieldL_ref().value());
+  swap(a.fieldM_ref().value(), b.fieldM_ref().value());
+  swap(a.fieldN_ref().value(), b.fieldN_ref().value());
+  swap(a.fieldO_ref().value(), b.fieldO_ref().value());
+  swap(a.fieldP_ref().value(), b.fieldP_ref().value());
+  swap(a.fieldQ_ref().value(), b.fieldQ_ref().value());
   swap(a.fieldR, b.fieldR);
   swap(a.fieldS, b.fieldS);
   swap(a.fieldT, b.fieldT);

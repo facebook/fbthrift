@@ -211,7 +211,7 @@ bool decorated_struct::operator<(const decorated_struct& rhs) const {
 
 void swap(decorated_struct& a, decorated_struct& b) {
   using ::std::swap;
-  swap(a.field, b.field);
+  swap(a.field_ref().value(), b.field_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -420,14 +420,14 @@ const  ::apache::thrift::fixtures::types::SomeMap& ContainerStruct::get_fieldH()
 
 void swap(ContainerStruct& a, ContainerStruct& b) {
   using ::std::swap;
-  swap(a.fieldA, b.fieldA);
-  swap(a.fieldB, b.fieldB);
-  swap(a.fieldC, b.fieldC);
-  swap(a.fieldD, b.fieldD);
-  swap(a.fieldE, b.fieldE);
-  swap(a.fieldF, b.fieldF);
-  swap(a.fieldG, b.fieldG);
-  swap(a.fieldH, b.fieldH);
+  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
+  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
+  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
+  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
+  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
+  swap(a.fieldF_ref().value(), b.fieldF_ref().value());
+  swap(a.fieldG_ref().value(), b.fieldG_ref().value());
+  swap(a.fieldH_ref().value(), b.fieldH_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -520,7 +520,7 @@ std::list<int32_t> CppTypeStruct::get_fieldA() && {
 
 void swap(CppTypeStruct& a, CppTypeStruct& b) {
   using ::std::swap;
-  swap(a.fieldA, b.fieldA);
+  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -605,7 +605,7 @@ bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
 
 void swap(VirtualStruct& a, VirtualStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField, b.MyIntField);
+  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -702,8 +702,8 @@ bool MyStructWithForwardRefEnum::operator<(const MyStructWithForwardRefEnum& rhs
 
 void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -800,8 +800,8 @@ bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
 
 void swap(TrivialNumeric& a, TrivialNumeric& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -906,8 +906,8 @@ const  ::apache::thrift::fixtures::types::TrivialNumeric& TrivialNestedWithDefau
 
 void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b) {
   using ::std::swap;
-  swap(a.z, b.z);
-  swap(a.n, b.n);
+  swap(a.z_ref().value(), b.z_ref().value());
+  swap(a.n_ref().value(), b.n_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1024,8 +1024,8 @@ const ::std::map<::std::string, int32_t>& ComplexString::get_b() const& {
 
 void swap(ComplexString& a, ComplexString& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1130,8 +1130,8 @@ const  ::apache::thrift::fixtures::types::ComplexString& ComplexNestedWithDefaul
 
 void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b) {
   using ::std::swap;
-  swap(a.z, b.z);
-  swap(a.n, b.n);
+  swap(a.z_ref().value(), b.z_ref().value());
+  swap(a.n_ref().value(), b.n_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1267,11 +1267,11 @@ bool MinPadding::operator<(const MinPadding& rhs) const {
 
 void swap(MinPadding& a, MinPadding& b) {
   using ::std::swap;
-  swap(a.small, b.small);
-  swap(a.big, b.big);
-  swap(a.medium, b.medium);
-  swap(a.biggish, b.biggish);
-  swap(a.tiny, b.tiny);
+  swap(a.small_ref().value(), b.small_ref().value());
+  swap(a.big_ref().value(), b.big_ref().value());
+  swap(a.medium_ref().value(), b.medium_ref().value());
+  swap(a.biggish_ref().value(), b.biggish_ref().value());
+  swap(a.tiny_ref().value(), b.tiny_ref().value());
 }
 
 template void MinPadding::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1404,10 +1404,10 @@ const  ::apache::thrift::fixtures::types::MyDataItem& MyStruct::get_data() const
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField, b.MyIntField);
-  swap(a.MyStringField, b.MyStringField);
-  swap(a.majorVer, b.majorVer);
-  swap(a.data, b.data);
+  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
+  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
+  swap(a.majorVer_ref().value(), b.majorVer_ref().value());
+  swap(a.data_ref().value(), b.data_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1504,7 +1504,7 @@ bool Renaming::operator<(const Renaming& rhs) const {
 
 void swap(Renaming& a, Renaming& b) {
   using ::std::swap;
-  swap(a.bar, b.bar);
+  swap(a.bar_ref().value(), b.bar_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1596,8 +1596,8 @@ const  ::apache::thrift::fixtures::types::SomeListOfTypeMap& AnnotatedTypes::get
 
 void swap(AnnotatedTypes& a, AnnotatedTypes& b) {
   using ::std::swap;
-  swap(a.binary_field, b.binary_field);
-  swap(a.list_field, b.list_field);
+  swap(a.binary_field_ref().value(), b.binary_field_ref().value());
+  swap(a.list_field_ref().value(), b.list_field_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2101,7 +2101,7 @@ bool NoexceptMoveSimpleStruct::operator<(const NoexceptMoveSimpleStruct& rhs) co
 
 void swap(NoexceptMoveSimpleStruct& a, NoexceptMoveSimpleStruct& b) {
   using ::std::swap;
-  swap(a.boolField, b.boolField);
+  swap(a.boolField_ref().value(), b.boolField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2331,15 +2331,15 @@ const ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>& No
 
 void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b) {
   using ::std::swap;
-  swap(a.MyBoolField, b.MyBoolField);
-  swap(a.MyIntField, b.MyIntField);
-  swap(a.MyStringField, b.MyStringField);
-  swap(a.MyStringField2, b.MyStringField2);
-  swap(a.MyBinaryField, b.MyBinaryField);
+  swap(a.MyBoolField_ref().value(), b.MyBoolField_ref().value());
+  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
+  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
+  swap(a.MyStringField2_ref().value(), b.MyStringField2_ref().value());
+  swap(a.MyBinaryField_ref().value(), b.MyBinaryField_ref().value());
   swap(a.MyBinaryField2_ref().value_unchecked(), b.MyBinaryField2_ref().value_unchecked());
-  swap(a.MyBinaryField3, b.MyBinaryField3);
-  swap(a.MyBinaryListField4, b.MyBinaryListField4);
-  swap(a.MyMapEnumAndInt, b.MyMapEnumAndInt);
+  swap(a.MyBinaryField3_ref().value(), b.MyBinaryField3_ref().value());
+  swap(a.MyBinaryListField4_ref().value(), b.MyBinaryListField4_ref().value());
+  swap(a.MyMapEnumAndInt_ref().value(), b.MyMapEnumAndInt_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2635,11 +2635,11 @@ const ::std::map<int32_t, int32_t>& AllocatorAware::get_aa_map() const& {
 
 void swap(AllocatorAware& a, AllocatorAware& b) {
   using ::std::swap;
-  swap(a.aa_list, b.aa_list);
-  swap(a.aa_set, b.aa_set);
-  swap(a.aa_map, b.aa_map);
-  swap(a.aa_string, b.aa_string);
-  swap(a.not_a_container, b.not_a_container);
+  swap(a.aa_list_ref().value(), b.aa_list_ref().value());
+  swap(a.aa_set_ref().value(), b.aa_set_ref().value());
+  swap(a.aa_map_ref().value(), b.aa_map_ref().value());
+  swap(a.aa_string_ref().value(), b.aa_string_ref().value());
+  swap(a.not_a_container_ref().value(), b.not_a_container_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2724,7 +2724,7 @@ bool AllocatorAware2::operator<(const AllocatorAware2& rhs) const {
 
 void swap(AllocatorAware2& a, AllocatorAware2& b) {
   using ::std::swap;
-  swap(a.not_a_container, b.not_a_container);
+  swap(a.not_a_container_ref().value(), b.not_a_container_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -106,7 +106,7 @@ TEST(Frozen, EndToEnd) {
   ASSERT_TRUE(view.age().has_value());
   EXPECT_EQ(*tom1.age_ref(), view.age().value());
   EXPECT_EQ(*tom1.height_ref(), view.height());
-  EXPECT_EQ(view.pets()[0].name(), *tom1.pets[0].name_ref());
+  EXPECT_EQ(view.pets()[0].name(), *tom1.pets_ref()[0].name_ref());
   auto& pets = *tom1.pets_ref();
   auto fpets = view.pets();
   ASSERT_EQ(pets.size(), fpets.size());
@@ -227,8 +227,8 @@ TEST(Frozen, EmbeddedSchema) {
     if (auto age = tom1.age_ref()) {
       EXPECT_EQ(*age, view.age().value());
     }
-    EXPECT_EQ(*tom1.pets[0].name_ref(), view.pets()[0].name());
-    EXPECT_EQ(*tom1.pets[1].name_ref(), view.pets()[1].name());
+    EXPECT_EQ(*tom1.pets_ref()[0].name_ref(), view.pets()[0].name());
+    EXPECT_EQ(*tom1.pets_ref()[1].name_ref(), view.pets()[1].name());
   }
 }
 

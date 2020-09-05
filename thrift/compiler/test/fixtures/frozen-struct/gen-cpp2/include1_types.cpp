@@ -91,8 +91,8 @@ bool IncludedA::operator<(const IncludedA& rhs) const {
 
 void swap(IncludedA& a, IncludedA& b) {
   using ::std::swap;
-  swap(a.i32Field, b.i32Field);
-  swap(a.strField, b.strField);
+  swap(a.i32Field_ref().value(), b.i32Field_ref().value());
+  swap(a.strField_ref().value(), b.strField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

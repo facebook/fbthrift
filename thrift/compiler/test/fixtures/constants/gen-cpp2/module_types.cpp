@@ -201,8 +201,8 @@ bool Internship::operator<(const Internship& rhs) const {
 
 void swap(Internship& a, Internship& b) {
   using ::std::swap;
-  swap(a.weeks, b.weeks);
-  swap(a.title, b.title);
+  swap(a.weeks_ref().value(), b.weeks_ref().value());
+  swap(a.title_ref().value(), b.title_ref().value());
   swap(a.employer_ref().value_unchecked(), b.employer_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
@@ -294,8 +294,8 @@ bool Range::operator<(const Range& rhs) const {
 
 void swap(Range& a, Range& b) {
   using ::std::swap;
-  swap(a.min, b.min);
-  swap(a.max, b.max);
+  swap(a.min_ref().value(), b.min_ref().value());
+  swap(a.max_ref().value(), b.max_ref().value());
 }
 
 template void Range::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -389,8 +389,8 @@ bool struct1::operator<(const struct1& rhs) const {
 
 void swap(struct1& a, struct1& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -527,10 +527,10 @@ const ::std::vector<int32_t>& struct2::get_d() const& {
 
 void swap(struct2& a, struct2& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
-  swap(a.c, b.c);
-  swap(a.d, b.d);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
+  swap(a.c_ref().value(), b.c_ref().value());
+  swap(a.d_ref().value(), b.d_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -659,9 +659,9 @@ const  ::cpp2::struct2& struct3::get_c() const& {
 
 void swap(struct3& a, struct3& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
-  swap(a.c, b.c);
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.b_ref().value(), b.b_ref().value());
+  swap(a.c_ref().value(), b.c_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -782,7 +782,7 @@ bool struct4::operator<(const struct4& rhs) const {
 
 void swap(struct4& a, struct4& b) {
   using ::std::swap;
-  swap(a.a, b.a);
+  swap(a.a_ref().value(), b.a_ref().value());
   swap(a.b_ref().value_unchecked(), b.b_ref().value_unchecked());
   swap(a.c_ref().value_unchecked(), b.c_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

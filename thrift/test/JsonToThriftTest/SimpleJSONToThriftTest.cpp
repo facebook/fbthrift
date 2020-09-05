@@ -294,22 +294,22 @@ TEST(SimpleJSONToThriftTest, Whitespace) {
   EXPECT_EQ(thriftComplexObj.b_ref()[2], 1);
 
   EXPECT_TRUE(!thriftComplexObj.c_ref()["key1"].__isset.a);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].b_ref(), 8);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].b_ref(), 8);
   EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.b);
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(thriftComplexObj.c_ref()["key1"].c, 16);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].d_ref(), 32);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].d_ref(), 32);
   EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.d);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].e_ref(), 64);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].e_ref(), 64);
   EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.e);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].f_ref(), 0.99);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].f_ref(), 0.99);
   EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.f);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].g_ref(), "Hello");
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].g_ref(), "Hello");
   EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.g);
 
   EXPECT_EQ(thriftComplexObj.c_ref()["key2"].c, 20);
-  EXPECT_EQ(*thriftComplexObj.c["key2"].d_ref(), 320);
-  EXPECT_EQ(*thriftComplexObj.c["key2"].f_ref(), 0.001);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key2"].d_ref(), 320);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key2"].f_ref(), 0.001);
 }
 // fields in JSON that are not present in the thrift type spec
 TEST(SimpleJSONToThriftTest, MissingField) {
@@ -455,15 +455,15 @@ TEST(SimpleJSONToThriftTest, ComplexTypeTest) {
   EXPECT_EQ(thriftComplexObj.b_ref()[1], 2);
   EXPECT_EQ(thriftComplexObj.b_ref()[2], 1);
 
-  EXPECT_EQ(*thriftComplexObj.c["key1"].b_ref(), 8);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].b_ref(), 8);
   EXPECT_EQ(thriftComplexObj.c_ref()["key1"].c, 16);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].d_ref(), 32);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].e_ref(), 64);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].f_ref(), 0.99);
-  EXPECT_EQ(*thriftComplexObj.c["key1"].g_ref(), "Hello");
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].d_ref(), 32);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].e_ref(), 64);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].f_ref(), 0.99);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].g_ref(), "Hello");
   EXPECT_EQ(thriftComplexObj.c_ref()["key2"].c, 20);
-  EXPECT_EQ(*thriftComplexObj.c["key2"].d_ref(), 320);
-  EXPECT_EQ(*thriftComplexObj.c["key2"].f_ref(), 0.001);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key2"].d_ref(), 320);
+  EXPECT_EQ(*thriftComplexObj.c_ref()["key2"].f_ref(), 0.001);
 }
 
 TEST(SimpleJSONToThriftTest, SetTypeTest) {
@@ -483,9 +483,9 @@ TEST(SimpleJSONToThriftTest, MixedStructTest) {
   myMixedStruct thriftMixedObj;
   deserializeJSON(thriftMixedObj, jsonT);
   EXPECT_EQ(thriftMixedObj.a_ref()[0], 1);
-  EXPECT_EQ(*thriftMixedObj.b[0].a_ref(), 1);
+  EXPECT_EQ(*thriftMixedObj.b_ref()[0].a_ref(), 1);
   EXPECT_EQ(thriftMixedObj.c_ref()["hello"], 1);
-  EXPECT_EQ(*thriftMixedObj.d["hello"].a_ref(), 1);
+  EXPECT_EQ(*thriftMixedObj.d_ref()["hello"].a_ref(), 1);
   EXPECT_TRUE(thriftMixedObj.e_ref()->find(1) != thriftMixedObj.e_ref()->end());
 }
 

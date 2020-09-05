@@ -560,9 +560,9 @@ const  ::cpp2::containerTypedef& Val::get_typedefValue() const& {
 
 void swap(Val& a, Val& b) {
   using ::std::swap;
-  swap(a.strVal, b.strVal);
-  swap(a.intVal, b.intVal);
-  swap(a.typedefValue, b.typedefValue);
+  swap(a.strVal_ref().value(), b.strVal_ref().value());
+  swap(a.intVal_ref().value(), b.intVal_ref().value());
+  swap(a.typedefValue_ref().value(), b.typedefValue_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -933,7 +933,7 @@ bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
 
 void swap(NonCopyableStruct& a, NonCopyableStruct& b) {
   using ::std::swap;
-  swap(a.num, b.num);
+  swap(a.num_ref().value(), b.num_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

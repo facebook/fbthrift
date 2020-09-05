@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/reflection/legacy_reflection.h>
 
+#include <folly/Traits.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
@@ -35,8 +36,12 @@ TEST(FatalLegacyReflectionTest, name) {
 
 TEST(FatalLegacyReflectionTest, schema) {
   using type = SampleStruct;
-  ASSERT_FALSE(std::is_unsigned<decltype(type::i16_field)>::value) << "sanity";
-  ASSERT_TRUE(std::is_unsigned<decltype(type::ui16_field)>::value) << "sanity";
+  ASSERT_FALSE(std::is_unsigned<
+               folly::remove_cvref_t<decltype(*type().i16_field_ref())>>::value)
+      << "sanity";
+  ASSERT_TRUE(std::is_unsigned<
+              folly::remove_cvref_t<decltype(*type().ui16_field_ref())>>::value)
+      << "sanity";
   constexpr auto name = "struct fatal_legacy_reflection.SampleStruct";
   auto schema = legacy_reflection<type>::schema();
   EXPECT_THAT(*schema.names_ref(), testing::Contains(testing::Key(name)));

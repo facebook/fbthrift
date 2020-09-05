@@ -158,7 +158,7 @@ template <>
 thrift::benchmark::NestedMap create<thrift::benchmark::NestedMap>() {
   thrift::benchmark::NestedMap map;
   populateMap([&](int i, int j, int k, int l, int m, int v) {
-    map.m[i].m[j].m[k].m[l].m_ref()[m] = v;
+    map.m_ref()[i].m_ref()[j].m_ref()[k].m_ref()[l].m_ref()[m] = v;
   });
   return map;
 }
@@ -168,7 +168,7 @@ thrift::benchmark::SortedVecNestedMap
 create<thrift::benchmark::SortedVecNestedMap>() {
   thrift::benchmark::SortedVecNestedMap map;
   populateMap([&](int i, int j, int k, int l, int m, int v) {
-    map.m[i].m[j].m[k].m[l].m_ref()[m] = v;
+    map.m_ref()[i].m_ref()[j].m_ref()[k].m_ref()[l].m_ref()[m] = v;
   });
   return map;
 }

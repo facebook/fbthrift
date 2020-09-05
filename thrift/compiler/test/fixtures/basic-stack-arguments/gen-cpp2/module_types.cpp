@@ -124,8 +124,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
-  swap(a.MyIntField, b.MyIntField);
-  swap(a.MyStringField, b.MyStringField);
+  swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
+  swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

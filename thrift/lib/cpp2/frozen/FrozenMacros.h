@@ -112,12 +112,13 @@
   }
 
 #define FROZEN_LAYOUT_FIELD(NAME) \
-  pos = root.layoutField(self, pos, this->NAME##Field, x.NAME);
+  pos = root.layoutField(self, pos, this->NAME##Field, *x.NAME##_ref());
 #define FROZEN_LAYOUT_FIELD_OPT(NAME) \
   pos = root.layoutOptionalField(self, pos, this->NAME##Field, x.NAME##_ref());
-#define FROZEN_LAYOUT_FIELD_REQ FROZEN_LAYOUT_FIELD
-#define FROZEN_LAYOUT_FIELD_UNIQUE_REF FROZEN_LAYOUT_FIELD
-#define FROZEN_LAYOUT_FIELD_SHARED_REF FROZEN_LAYOUT_FIELD
+#define FROZEN_LAYOUT_FIELD_REQ(NAME) \
+  pos = root.layoutField(self, pos, this->NAME##Field, x.NAME);
+#define FROZEN_LAYOUT_FIELD_UNIQUE_REF FROZEN_LAYOUT_FIELD_REQ
+#define FROZEN_LAYOUT_FIELD_SHARED_REF FROZEN_LAYOUT_FIELD_REQ
 #define FROZEN_LAYOUT(TYPE, ...)                           \
   FieldPosition Layout<TYPE>::layout(                      \
       LayoutRoot& root, const T& x, LayoutPosition self) { \
@@ -127,12 +128,13 @@
   }
 
 #define FROZEN_FREEZE_FIELD(NAME) \
-  root.freezeField(self, this->NAME##Field, x.NAME);
+  root.freezeField(self, this->NAME##Field, *x.NAME##_ref());
 #define FROZEN_FREEZE_FIELD_OPT(NAME) \
   root.freezeOptionalField(self, this->NAME##Field, x.NAME##_ref());
-#define FROZEN_FREEZE_FIELD_REQ FROZEN_FREEZE_FIELD
-#define FROZEN_FREEZE_FIELD_UNIQUE_REF FROZEN_FREEZE_FIELD
-#define FROZEN_FREEZE_FIELD_SHARED_REF FROZEN_FREEZE_FIELD
+#define FROZEN_FREEZE_FIELD_REQ(NAME) \
+  root.freezeField(self, this->NAME##Field, x.NAME);
+#define FROZEN_FREEZE_FIELD_UNIQUE_REF FROZEN_FREEZE_FIELD_REQ
+#define FROZEN_FREEZE_FIELD_SHARED_REF FROZEN_FREEZE_FIELD_REQ
 
 #define FROZEN_FREEZE(TYPE, ...)                                               \
   void Layout<TYPE>::freeze(FreezeRoot& root, const T& x, FreezePosition self) \
@@ -140,8 +142,8 @@
     __VA_ARGS__;                                                               \
   }
 
-#define FROZEN_THAW_FIELD(NAME)                 \
-  thawField(self, this->NAME##Field, out.NAME); \
+#define FROZEN_THAW_FIELD(NAME)                          \
+  thawField(self, this->NAME##Field, *out.NAME##_ref()); \
   out.__isset.NAME = !this->NAME##Field.layout.empty();
 #define FROZEN_THAW_FIELD_OPT(NAME) \
   thawField(self, this->NAME##Field, out.NAME##_ref());

@@ -112,7 +112,7 @@ bool AStruct::operator<(const AStruct& rhs) const {
 
 void swap(AStruct& a, AStruct& b) {
   using ::std::swap;
-  swap(a.FieldA, b.FieldA);
+  swap(a.FieldA_ref().value(), b.FieldA_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

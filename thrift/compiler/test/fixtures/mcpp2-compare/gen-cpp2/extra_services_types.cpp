@@ -292,18 +292,18 @@ const ::std::set<int32_t>* containerStruct2::get_opt_fieldC() const& {
 
 void swap(containerStruct2& a, containerStruct2& b) {
   using ::std::swap;
-  swap(a.fieldA, b.fieldA);
-  swap(a.req_fieldA, b.req_fieldA);
+  swap(a.fieldA_ref().value(), b.fieldA_ref().value());
+  swap(a.req_fieldA_ref().value(), b.req_fieldA_ref().value());
   swap(a.opt_fieldA_ref().value_unchecked(), b.opt_fieldA_ref().value_unchecked());
-  swap(a.fieldB, b.fieldB);
-  swap(a.req_fieldB, b.req_fieldB);
+  swap(a.fieldB_ref().value(), b.fieldB_ref().value());
+  swap(a.req_fieldB_ref().value(), b.req_fieldB_ref().value());
   swap(a.opt_fieldB_ref().value_unchecked(), b.opt_fieldB_ref().value_unchecked());
-  swap(a.fieldC, b.fieldC);
-  swap(a.req_fieldC, b.req_fieldC);
+  swap(a.fieldC_ref().value(), b.fieldC_ref().value());
+  swap(a.req_fieldC_ref().value(), b.req_fieldC_ref().value());
   swap(a.opt_fieldC_ref().value_unchecked(), b.opt_fieldC_ref().value_unchecked());
-  swap(a.fieldD, b.fieldD);
-  swap(a.fieldE, b.fieldE);
-  swap(a.req_fieldE, b.req_fieldE);
+  swap(a.fieldD_ref().value(), b.fieldD_ref().value());
+  swap(a.fieldE_ref().value(), b.fieldE_ref().value());
+  swap(a.req_fieldE_ref().value(), b.req_fieldE_ref().value());
   swap(a.opt_fieldE_ref().value_unchecked(), b.opt_fieldE_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);

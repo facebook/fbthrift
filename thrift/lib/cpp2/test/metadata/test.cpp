@@ -71,15 +71,15 @@ TEST_F(ServiceMetadataTest, ExceptionTest) {
   EXPECT_EQ(response_.get_context().get_module().get_name(), "exception_test");
   auto ex = metadata.exceptions_ref()->at("exception_test.RuntimeException");
   EXPECT_EQ(*ex.name_ref(), "exception_test.RuntimeException");
-  EXPECT_EQ(*ex.fields[0].id_ref(), 1);
-  EXPECT_EQ(*ex.fields[0].name_ref(), "reason");
+  EXPECT_EQ(*ex.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*ex.fields_ref()[0].name_ref(), "reason");
   EXPECT_EQ(
       ex.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       ex.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*ex.fields[1].id_ref(), 2);
-  EXPECT_EQ(*ex.fields[1].name_ref(), "level");
+  EXPECT_EQ(*ex.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*ex.fields_ref()[1].name_ref(), "level");
   EXPECT_EQ(
       ex.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
@@ -95,22 +95,22 @@ TEST_F(ServiceMetadataTest, SimpleStructsTest) {
 
   auto s1 = metadata.structs_ref()->at("simple_structs_test.Country");
   EXPECT_EQ(*s1.name_ref(), "simple_structs_test.Country");
-  EXPECT_EQ(*s1.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s1.fields[0].name_ref(), "name");
+  EXPECT_EQ(*s1.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s1.fields_ref()[0].name_ref(), "name");
   EXPECT_EQ(
       s1.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s1.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s1.fields[1].id_ref(), 3);
-  EXPECT_EQ(*s1.fields[1].name_ref(), "capital");
+  EXPECT_EQ(*s1.fields_ref()[1].id_ref(), 3);
+  EXPECT_EQ(*s1.fields_ref()[1].name_ref(), "capital");
   EXPECT_EQ(
       s1.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s1.fields_ref()[1].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s1.fields[2].id_ref(), 10);
-  EXPECT_EQ(*s1.fields[2].name_ref(), "population");
+  EXPECT_EQ(*s1.fields_ref()[2].id_ref(), 10);
+  EXPECT_EQ(*s1.fields_ref()[2].name_ref(), "population");
   EXPECT_EQ(
       s1.fields_ref()[2].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
@@ -119,22 +119,22 @@ TEST_F(ServiceMetadataTest, SimpleStructsTest) {
 
   auto s2 = metadata.structs_ref()->at("simple_structs_test.City");
   EXPECT_EQ(*s2.name_ref(), "simple_structs_test.City");
-  EXPECT_EQ(*s2.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s2.fields[0].name_ref(), "name");
+  EXPECT_EQ(*s2.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s2.fields_ref()[0].name_ref(), "name");
   EXPECT_EQ(
       s2.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s2.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s2.fields[1].id_ref(), 2);
-  EXPECT_EQ(*s2.fields[1].name_ref(), "country");
+  EXPECT_EQ(*s2.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*s2.fields_ref()[1].name_ref(), "country");
   EXPECT_EQ(
       s2.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s2.fields_ref()[1].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s2.fields[2].id_ref(), 3);
-  EXPECT_EQ(*s2.fields[2].name_ref(), "population");
+  EXPECT_EQ(*s2.fields_ref()[2].id_ref(), 3);
+  EXPECT_EQ(*s2.fields_ref()[2].name_ref(), "population");
   EXPECT_EQ(
       s2.fields_ref()[2].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
@@ -159,19 +159,19 @@ TEST_F(ServiceMetadataTest, StructUnionTest) {
   auto u1 = metadata.structs_ref()->at("struct_union_test.Pet");
   EXPECT_EQ(*u1.name_ref(), "struct_union_test.Pet");
   EXPECT_EQ(*u1.is_union_ref(), true);
-  EXPECT_EQ(*u1.fields[0].id_ref(), 1);
-  EXPECT_EQ(*u1.fields[0].name_ref(), "dog");
+  EXPECT_EQ(*u1.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*u1.fields_ref()[0].name_ref(), "dog");
   EXPECT_EQ(
       u1.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(
-      *u1.fields[0].type_ref()->get_t_struct().name_ref(),
+      *u1.fields_ref()[0].type_ref()->get_t_struct().name_ref(),
       "struct_union_test.Dog");
-  EXPECT_EQ(*u1.fields[1].id_ref(), 2);
-  EXPECT_EQ(*u1.fields[1].name_ref(), "cat");
+  EXPECT_EQ(*u1.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*u1.fields_ref()[1].name_ref(), "cat");
   EXPECT_EQ(
       u1.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(
-      *u1.fields[1].type_ref()->get_t_struct().name_ref(),
+      *u1.fields_ref()[1].type_ref()->get_t_struct().name_ref(),
       "struct_union_test.Cat");
 }
 
@@ -192,28 +192,28 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
 
   auto s1 = metadata.structs_ref()->at("nested_structs_test.Country");
   EXPECT_EQ(*s1.name_ref(), "nested_structs_test.Country");
-  EXPECT_EQ(*s1.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s1.fields[0].name_ref(), "name");
+  EXPECT_EQ(*s1.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s1.fields_ref()[0].name_ref(), "name");
   EXPECT_EQ(
       s1.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s1.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s1.fields[1].id_ref(), 2);
-  EXPECT_EQ(*s1.fields[1].name_ref(), "continent");
+  EXPECT_EQ(*s1.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*s1.fields_ref()[1].name_ref(), "continent");
   EXPECT_EQ(s1.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_enum);
   EXPECT_EQ(
-      *s1.fields[1].type_ref()->get_t_enum().name_ref(),
+      *s1.fields_ref()[1].type_ref()->get_t_enum().name_ref(),
       "nested_structs_test.Continent");
-  EXPECT_EQ(*s1.fields[2].id_ref(), 3);
-  EXPECT_EQ(*s1.fields[2].name_ref(), "capital");
+  EXPECT_EQ(*s1.fields_ref()[2].id_ref(), 3);
+  EXPECT_EQ(*s1.fields_ref()[2].name_ref(), "capital");
   EXPECT_EQ(
       s1.fields_ref()[2].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s1.fields_ref()[2].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s1.fields[3].id_ref(), 4);
-  EXPECT_EQ(*s1.fields[3].name_ref(), "population");
+  EXPECT_EQ(*s1.fields_ref()[3].id_ref(), 4);
+  EXPECT_EQ(*s1.fields_ref()[3].name_ref(), "population");
   EXPECT_EQ(
       s1.fields_ref()[3].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
@@ -222,33 +222,33 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
 
   auto s2 = metadata.structs_ref()->at("nested_structs_test.City");
   EXPECT_EQ(*s2.name_ref(), "nested_structs_test.City");
-  EXPECT_EQ(*s2.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s2.fields[0].name_ref(), "name");
+  EXPECT_EQ(*s2.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s2.fields_ref()[0].name_ref(), "name");
   EXPECT_EQ(
       s2.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s2.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s2.fields[1].id_ref(), 2);
-  EXPECT_EQ(*s2.fields[1].name_ref(), "country");
+  EXPECT_EQ(*s2.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*s2.fields_ref()[1].name_ref(), "country");
   EXPECT_EQ(
       s2.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(
-      *s2.fields[1].type_ref()->get_t_struct().name_ref(),
+      *s2.fields_ref()[1].type_ref()->get_t_struct().name_ref(),
       "nested_structs_test.Country");
 
   auto s3 = metadata.structs_ref()->at("nested_structs_test.Foo");
   EXPECT_EQ(*s3.name_ref(), "nested_structs_test.Foo");
-  EXPECT_EQ(*s3.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s3.fields[0].name_ref(), "bar");
+  EXPECT_EQ(*s3.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s3.fields_ref()[0].name_ref(), "bar");
   EXPECT_EQ(
       s3.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s3.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s3.fields[1].id_ref(), 2);
-  EXPECT_EQ(*s3.fields[1].name_ref(), "foos");
-  auto listType = *s3.fields[1].type_ref();
+  EXPECT_EQ(*s3.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*s3.fields_ref()[1].name_ref(), "foos");
+  auto listType = *s3.fields_ref()[1].type_ref();
   EXPECT_EQ(listType.getType(), ThriftType::Type::t_list);
   auto elemType = listType.get_t_list().valueType.get();
   auto ttypedef = elemType->get_t_typedef();
@@ -274,31 +274,32 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
   // In-file structs
   auto s1 = metadata.structs_ref()->at("include_test.Example");
   EXPECT_EQ(*s1.name_ref(), "include_test.Example");
-  EXPECT_EQ(*s1.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s1.fields[0].name_ref(), "includedEnum");
+  EXPECT_EQ(*s1.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s1.fields_ref()[0].name_ref(), "includedEnum");
   EXPECT_EQ(s1.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_enum);
   EXPECT_EQ(
-      *s1.fields[0].type_ref()->get_t_enum().name_ref(), "enum_test.Continent");
-  EXPECT_EQ(*s1.fields[1].id_ref(), 2);
-  EXPECT_EQ(*s1.fields[1].name_ref(), "includedException");
+      *s1.fields_ref()[0].type_ref()->get_t_enum().name_ref(),
+      "enum_test.Continent");
+  EXPECT_EQ(*s1.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*s1.fields_ref()[1].name_ref(), "includedException");
   EXPECT_EQ(
       s1.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(
-      *s1.fields[1].type_ref()->get_t_struct().name_ref(),
+      *s1.fields_ref()[1].type_ref()->get_t_struct().name_ref(),
       "exception_test.RuntimeException");
-  EXPECT_EQ(*s1.fields[2].id_ref(), 3);
-  EXPECT_EQ(*s1.fields[2].name_ref(), "includedStruct");
+  EXPECT_EQ(*s1.fields_ref()[2].id_ref(), 3);
+  EXPECT_EQ(*s1.fields_ref()[2].name_ref(), "includedStruct");
   EXPECT_EQ(
       s1.fields_ref()[2].type_ref()->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(
-      *s1.fields[2].type_ref()->get_t_struct().name_ref(),
+      *s1.fields_ref()[2].type_ref()->get_t_struct().name_ref(),
       "simple_structs_test.Country");
-  EXPECT_EQ(*s1.fields[3].id_ref(), 4);
-  EXPECT_EQ(*s1.fields[3].name_ref(), "includedTypedef");
+  EXPECT_EQ(*s1.fields_ref()[3].id_ref(), 4);
+  EXPECT_EQ(*s1.fields_ref()[3].name_ref(), "includedTypedef");
   EXPECT_EQ(
       s1.fields_ref()[3].type_ref()->getType(), ThriftType::Type::t_typedef);
   EXPECT_EQ(
-      *s1.fields[3].type_ref()->get_t_typedef().name_ref(),
+      *s1.fields_ref()[3].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.StringMap");
   auto utype1 =
       s1.fields_ref()[3].type_ref()->get_t_typedef().underlyingType.get();
@@ -311,12 +312,12 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
   EXPECT_EQ(valType1->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       valType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s1.fields[4].id_ref(), 5);
-  EXPECT_EQ(*s1.fields[4].name_ref(), "coolString");
+  EXPECT_EQ(*s1.fields_ref()[4].id_ref(), 5);
+  EXPECT_EQ(*s1.fields_ref()[4].name_ref(), "coolString");
   EXPECT_EQ(
       s1.fields_ref()[4].type_ref()->getType(), ThriftType::Type::t_typedef);
   EXPECT_EQ(
-      *s1.fields[4].type_ref()->get_t_typedef().name_ref(),
+      *s1.fields_ref()[4].type_ref()->get_t_typedef().name_ref(),
       "include_test.CoolString");
   auto utype2 =
       s1.fields_ref()[4].type_ref()->get_t_typedef().underlyingType.get();
@@ -337,22 +338,22 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
   // Included structs
   auto s2 = metadata.structs_ref()->at("simple_structs_test.Country");
   EXPECT_EQ(*s2.name_ref(), "simple_structs_test.Country");
-  EXPECT_EQ(*s2.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s2.fields[0].name_ref(), "name");
+  EXPECT_EQ(*s2.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s2.fields_ref()[0].name_ref(), "name");
   EXPECT_EQ(
       s2.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s2.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s2.fields[1].id_ref(), 3);
-  EXPECT_EQ(*s2.fields[1].name_ref(), "capital");
+  EXPECT_EQ(*s2.fields_ref()[1].id_ref(), 3);
+  EXPECT_EQ(*s2.fields_ref()[1].name_ref(), "capital");
   EXPECT_EQ(
       s2.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s2.fields_ref()[1].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s2.fields[2].id_ref(), 10);
-  EXPECT_EQ(*s2.fields[2].name_ref(), "population");
+  EXPECT_EQ(*s2.fields_ref()[2].id_ref(), 10);
+  EXPECT_EQ(*s2.fields_ref()[2].name_ref(), "population");
   EXPECT_EQ(
       s2.fields_ref()[2].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
@@ -361,22 +362,22 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
 
   auto s3 = metadata.structs_ref()->at("simple_structs_test.City");
   EXPECT_EQ(*s3.name_ref(), "simple_structs_test.City");
-  EXPECT_EQ(*s3.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s3.fields[0].name_ref(), "name");
+  EXPECT_EQ(*s3.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s3.fields_ref()[0].name_ref(), "name");
   EXPECT_EQ(
       s3.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s3.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s3.fields[1].id_ref(), 2);
-  EXPECT_EQ(*s3.fields[1].name_ref(), "country");
+  EXPECT_EQ(*s3.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*s3.fields_ref()[1].name_ref(), "country");
   EXPECT_EQ(
       s3.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       s3.fields_ref()[1].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*s3.fields[2].id_ref(), 3);
-  EXPECT_EQ(*s3.fields[2].name_ref(), "population");
+  EXPECT_EQ(*s3.fields_ref()[2].id_ref(), 3);
+  EXPECT_EQ(*s3.fields_ref()[2].name_ref(), "population");
   EXPECT_EQ(
       s3.fields_ref()[2].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
@@ -386,15 +387,15 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
   // Included exceptions
   auto ex1 = metadata.exceptions_ref()->at("exception_test.RuntimeException");
   EXPECT_EQ(*ex1.name_ref(), "exception_test.RuntimeException");
-  EXPECT_EQ(*ex1.fields[0].id_ref(), 1);
-  EXPECT_EQ(*ex1.fields[0].name_ref(), "reason");
+  EXPECT_EQ(*ex1.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*ex1.fields_ref()[0].name_ref(), "reason");
   EXPECT_EQ(
       ex1.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
       ex1.fields_ref()[0].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  EXPECT_EQ(*ex1.fields[1].id_ref(), 2);
-  EXPECT_EQ(*ex1.fields[1].name_ref(), "level");
+  EXPECT_EQ(*ex1.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*ex1.fields_ref()[1].name_ref(), "level");
   EXPECT_EQ(
       ex1.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_primitive);
   EXPECT_EQ(
@@ -411,12 +412,12 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
   EXPECT_EQ(*s1.name_ref(), "typedef_test.Types");
 
   // map<string,string>
-  EXPECT_EQ(*s1.fields[0].id_ref(), 1);
-  EXPECT_EQ(*s1.fields[0].name_ref(), "stringMap");
+  EXPECT_EQ(*s1.fields_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*s1.fields_ref()[0].name_ref(), "stringMap");
   EXPECT_EQ(
       s1.fields_ref()[0].type_ref()->getType(), ThriftType::Type::t_typedef);
   EXPECT_EQ(
-      *s1.fields[0].type_ref()->get_t_typedef().name_ref(),
+      *s1.fields_ref()[0].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.StringMap");
   auto utype1 =
       s1.fields_ref()[0].type_ref()->get_t_typedef().underlyingType.get();
@@ -431,12 +432,12 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
       valType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
 
   // list<map<i32,string>>
-  EXPECT_EQ(*s1.fields[1].id_ref(), 2);
-  EXPECT_EQ(*s1.fields[1].name_ref(), "mapList");
+  EXPECT_EQ(*s1.fields_ref()[1].id_ref(), 2);
+  EXPECT_EQ(*s1.fields_ref()[1].name_ref(), "mapList");
   EXPECT_EQ(
       s1.fields_ref()[1].type_ref()->getType(), ThriftType::Type::t_typedef);
   EXPECT_EQ(
-      *s1.fields[1].type_ref()->get_t_typedef().name_ref(),
+      *s1.fields_ref()[1].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.MapList");
   auto utype2 =
       s1.fields_ref()[1].type_ref()->get_t_typedef().underlyingType.get();
@@ -452,12 +453,12 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
       elemValue->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
 
   // map<list<string>, map<i32, list<i64>>>
-  EXPECT_EQ(*s1.fields[2].id_ref(), 3);
-  EXPECT_EQ(*s1.fields[2].name_ref(), "veryComplex");
+  EXPECT_EQ(*s1.fields_ref()[2].id_ref(), 3);
+  EXPECT_EQ(*s1.fields_ref()[2].name_ref(), "veryComplex");
   EXPECT_EQ(
       s1.fields_ref()[2].type_ref()->getType(), ThriftType::Type::t_typedef);
   EXPECT_EQ(
-      *s1.fields[2].type_ref()->get_t_typedef().name_ref(),
+      *s1.fields_ref()[2].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.VeryComplex");
   auto utype3 =
       s1.fields_ref()[2].type_ref()->get_t_typedef().underlyingType.get();
@@ -524,21 +525,21 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   EXPECT_EQ(f1.return_type_ref()->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(
       *f1.return_type_ref()->get_t_struct().name_ref(), "typedef_test.Types");
-  EXPECT_EQ(*f1.arguments[0].id_ref(), 1);
-  EXPECT_EQ(*f1.arguments[0].name_ref(), "stringMap");
-  EXPECT_EQ(*f1.arguments[0].is_optional_ref(), false);
+  EXPECT_EQ(*f1.arguments_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*f1.arguments_ref()[0].name_ref(), "stringMap");
+  EXPECT_EQ(*f1.arguments_ref()[0].is_optional_ref(), false);
   EXPECT_EQ(
       f1.arguments_ref()[0].type_ref()->getType(), ThriftType::Type::t_typedef);
   EXPECT_EQ(
-      *f1.arguments[0].type_ref()->get_t_typedef().name_ref(),
+      *f1.arguments_ref()[0].type_ref()->get_t_typedef().name_ref(),
       "typedef_test.StringMap");
-  EXPECT_EQ(*f1.exceptions[0].id_ref(), 1);
-  EXPECT_EQ(*f1.exceptions[0].name_ref(), "ex");
-  EXPECT_EQ(*f1.exceptions[0].is_optional_ref(), false);
+  EXPECT_EQ(*f1.exceptions_ref()[0].id_ref(), 1);
+  EXPECT_EQ(*f1.exceptions_ref()[0].name_ref(), "ex");
+  EXPECT_EQ(*f1.exceptions_ref()[0].is_optional_ref(), false);
   EXPECT_EQ(
       f1.exceptions_ref()[0].type_ref()->getType(), ThriftType::Type::t_struct);
   EXPECT_EQ(
-      *f1.exceptions[0].type_ref()->get_t_struct().name_ref(),
+      *f1.exceptions_ref()[0].type_ref()->get_t_struct().name_ref(),
       "service_test.CutoffException");
   EXPECT_FALSE(*f1.is_oneway_ref());
 
@@ -556,7 +557,7 @@ TEST_F(ServiceMetadataTest, RepeatedTest) {
     const auto& s = response_.get_context().get_service_info();
     EXPECT_EQ(*s.name_ref(), "repeated.RepeatedTestService");
     EXPECT_EQ(s.functions_ref()->size(), 1);
-    EXPECT_EQ(*s.functions[0].name_ref(), "addValue");
+    EXPECT_EQ(*s.functions_ref()[0].name_ref(), "addValue");
     auto it = metadata.enums_ref()->find("repeated.ValueEnum");
     EXPECT_NE(it, metadata.enums_ref()->end());
     EXPECT_EQ(

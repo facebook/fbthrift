@@ -112,7 +112,7 @@ bool A::operator<(const A& rhs) const {
 
 void swap(A& a, A& b) {
   using ::std::swap;
-  swap(a.useless_field, b.useless_field);
+  swap(a.useless_field_ref().value(), b.useless_field_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
