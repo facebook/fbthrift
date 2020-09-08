@@ -73,6 +73,20 @@ struct IsThriftUnion<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
 } // namespace st
 } // namespace detail
 
+template <typename T>
+constexpr bool is_thrift_class_v = detail::st::IsThriftClass<T>::value;
+
+template <typename T>
+constexpr bool is_thrift_union_v = detail::st::IsThriftUnion<T>::value;
+
+template <typename T>
+constexpr bool is_thrift_exception_v = is_thrift_class_v<T>&&
+    std::is_base_of<apache::thrift::TException, T>::value;
+
+template <typename T>
+constexpr bool is_thrift_struct_v =
+    is_thrift_class_v<T> && !is_thrift_union_v<T> && !is_thrift_exception_v<T>;
+
 namespace detail {
 
 template <typename T>
