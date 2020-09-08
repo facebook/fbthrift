@@ -476,7 +476,7 @@ fn deserializer_underflow() {
     match deserializer.read_i32() {
         Ok(v) => panic!("got unexpected value {}", v),
         Err(err) => match err.downcast_ref::<ProtocolError>() {
-            Some(ProtocolError::EOF) => (),
+            Some(ProtocolError::EOF) => {}
             _ => panic!("got unexpected err {:?}", err),
         },
     }

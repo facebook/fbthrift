@@ -301,7 +301,7 @@ where
     /// the field header until we get the field value, mostly to handle the strangeness of bool.
     fn write_field_id(&mut self, cty: CType) {
         match self.state.field_get() {
-            None => (),
+            None => {}
             Some((tty, idx)) => {
                 debug_assert_eq!(tty, TType::from(cty));
 

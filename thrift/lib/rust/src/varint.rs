@@ -223,7 +223,7 @@ mod test {
         let mut cur = Cursor::new(&data[..]);
 
         match read_u64(&mut cur) {
-            Ok(WANT) => (),
+            Ok(WANT) => {}
             Ok(bad) => panic!("Unexpected result {}", bad),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -238,7 +238,7 @@ mod test {
         let mut cur = Cursor::new(&data[..]);
 
         match read_u64(&mut cur) {
-            Ok(WANT) => (),
+            Ok(WANT) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -253,7 +253,7 @@ mod test {
         let mut cur = Cursor::new(&data[..]);
 
         match read_u64(&mut cur) {
-            Ok(WANT) => (),
+            Ok(WANT) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -268,7 +268,7 @@ mod test {
         let mut cur = Cursor::new(&data[..]);
 
         match read_u64(&mut cur) {
-            Ok(WANT) => (),
+            Ok(WANT) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -283,7 +283,7 @@ mod test {
         let mut cur = Cursor::new(&data[..]);
 
         match read_u64(&mut cur) {
-            Ok(WANT) => (),
+            Ok(WANT) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -298,7 +298,7 @@ mod test {
         let mut cur = Cursor::new(&data[..]);
 
         match read_u64(&mut cur) {
-            Ok(WANT) => (),
+            Ok(WANT) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -314,14 +314,14 @@ mod test {
         let mut cur = Cursor::new(&data[..]);
 
         match read_u64(&mut cur) {
-            Ok(WANT1) => (),
+            Ok(WANT1) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT1),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
         assert_eq!(cur.position(), 2);
 
         match read_u64(&mut cur) {
-            Ok(WANT2) => (),
+            Ok(WANT2) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT2),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -344,13 +344,13 @@ mod test {
         const WANT2: u64 = (99 << 14) + (88 << 7) + 77;
 
         match read_u64(&mut data) {
-            Ok(WANT1) => (),
+            Ok(WANT1) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT1),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
 
         match read_u64(&mut data) {
-            Ok(WANT2) => (),
+            Ok(WANT2) => {}
             Ok(bad) => panic!("Unexpected result {} wanted {}", bad, WANT2),
             Err(bad) => panic!("Bad result {:?}", bad),
         }
@@ -364,7 +364,7 @@ mod test {
         match read_u64(&mut cur) {
             Ok(bad) => panic!("Unexpected result {}", bad),
             Err(err) => match err.downcast_ref::<ProtocolError>() {
-                Some(ProtocolError::InvalidValue) => (),
+                Some(ProtocolError::InvalidValue) => {}
                 _ => panic!("Bad result {:?}", err),
             },
         }
@@ -380,7 +380,7 @@ mod test {
         match read_u64(&mut cur) {
             Ok(bad) => panic!("Unexpected result {}", bad),
             Err(err) => match err.downcast_ref::<ProtocolError>() {
-                Some(_) => (),
+                Some(_) => {}
                 _ => panic!("Bad result {}", err),
             },
         }
@@ -397,7 +397,7 @@ mod test {
         match read_u64(&mut cur) {
             Ok(bad) => panic!("Unexpected result {}", bad),
             Err(err) => match err.downcast_ref::<ProtocolError>() {
-                Some(ProtocolError::InvalidValue) => (),
+                Some(ProtocolError::InvalidValue) => {}
                 _ => panic!("Bad result {:?}", err),
             },
         }
