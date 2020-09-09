@@ -22,8 +22,20 @@
 
 #include <folly/Conv.h>
 #include <folly/io/Cursor.h>
+#include <gtest/gtest.h>
 #include <thrift/conformance/cpp2/AnySerializer.h>
+#include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/cpp2/Protocol.h>
+#include <thrift/conformance/if/gen-cpp2/any_types.tcc>
+#include <thrift/conformance/if/gen-cpp2/object_types.tcc>
+#include <thrift/conformance/if/gen-cpp2/protocol_types.tcc>
+
+// Helper so gtest prints out the line number when running the given check.
+#define THRIFT_SCOPED_CHECK(check) \
+  {                                \
+    SCOPED_TRACE(#check);          \
+    check;                         \
+  }
 
 namespace apache::thrift::conformance {
 
@@ -32,6 +44,29 @@ constexpr StandardProtocol kUnknownStdProtocol =
 
 inline const Protocol& UnknownProtocol() {
   return getStandardProtocol<kUnknownStdProtocol>();
+}
+
+// Checks round trips using the given serializer.
+template <typename S, typename T>
+void checkRoundTrip(const S& seralizer, const T& expected) {
+  folly::IOBufQueue queue;
+  seralizer.encode(expected, folly::io::QueueAppender{&queue, 2 << 4});
+  folly::io::Cursor cursor(queue.front());
+  T actual = seralizer.template decode<T>(cursor);
+  EXPECT_EQ(actual, expected);
+}
+
+// Checks round trips for all standard protocols
+template <typename T>
+void checkRoundTrip(const T& value) {
+  THRIFT_SCOPED_CHECK(checkRoundTrip(
+      getAnyStandardSerializer<T, StandardProtocol::Binary>(), value));
+  THRIFT_SCOPED_CHECK(checkRoundTrip(
+      getAnyStandardSerializer<T, StandardProtocol::Compact>(), value));
+  THRIFT_SCOPED_CHECK(checkRoundTrip(
+      getAnyStandardSerializer<T, StandardProtocol::Json>(), value));
+  THRIFT_SCOPED_CHECK(checkRoundTrip(
+      getAnyStandardSerializer<T, StandardProtocol::SimpleJson>(), value));
 }
 
 // Always serializes integers to the number 1.
