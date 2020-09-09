@@ -675,20 +675,14 @@ void SimpleUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::intValue:
-    {
       destruct(value_.intValue);
       break;
-    }
     case Type::stringValue:
-    {
       destruct(value_.stringValue);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -697,17 +691,11 @@ bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::intValue:
-    {
       return value_.intValue == rhs.value_.intValue;
-    }
     case Type::stringValue:
-    {
       return value_.stringValue == rhs.value_.stringValue;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -885,145 +873,89 @@ void ComplexUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::intValue:
-    {
       destruct(value_.intValue);
       break;
-    }
     case Type::opt_intValue:
-    {
       destruct(value_.opt_intValue);
       break;
-    }
     case Type::stringValue:
-    {
       destruct(value_.stringValue);
       break;
-    }
     case Type::opt_stringValue:
-    {
       destruct(value_.opt_stringValue);
       break;
-    }
     case Type::intValue2:
-    {
       destruct(value_.intValue2);
       break;
-    }
     case Type::intValue3:
-    {
       destruct(value_.intValue3);
       break;
-    }
     case Type::doubelValue:
-    {
       destruct(value_.doubelValue);
       break;
-    }
     case Type::boolValue:
-    {
       destruct(value_.boolValue);
       break;
-    }
     case Type::union_list:
-    {
       destruct(value_.union_list);
       break;
-    }
     case Type::union_set:
-    {
       destruct(value_.union_set);
       break;
-    }
     case Type::union_map:
-    {
       destruct(value_.union_map);
       break;
-    }
     case Type::opt_union_map:
-    {
       destruct(value_.opt_union_map);
       break;
-    }
     case Type::enum_field:
-    {
       destruct(value_.enum_field);
       break;
-    }
     case Type::enum_container:
-    {
       destruct(value_.enum_container);
       break;
-    }
     case Type::a_struct:
-    {
       destruct(value_.a_struct);
       break;
-    }
     case Type::a_set_struct:
-    {
       destruct(value_.a_set_struct);
       break;
-    }
     case Type::a_union:
-    {
       destruct(value_.a_union);
       break;
-    }
     case Type::opt_a_union:
-    {
       destruct(value_.opt_a_union);
       break;
-    }
     case Type::a_union_list:
-    {
       destruct(value_.a_union_list);
       break;
-    }
     case Type::a_union_typedef:
-    {
       destruct(value_.a_union_typedef);
       break;
-    }
     case Type::a_union_typedef_list:
-    {
       destruct(value_.a_union_typedef_list);
       break;
-    }
     case Type::MyBinaryField:
-    {
       destruct(value_.MyBinaryField);
       break;
-    }
     case Type::MyBinaryField2:
-    {
       destruct(value_.MyBinaryField2);
       break;
-    }
     case Type::MyBinaryListField4:
-    {
       destruct(value_.MyBinaryListField4);
       break;
-    }
     case Type::ref_field:
-    {
       destruct(value_.ref_field);
       break;
-    }
     case Type::ref_field2:
-    {
       destruct(value_.ref_field2);
       break;
-    }
     case Type::excp_field:
-    {
       destruct(value_.excp_field);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -1032,121 +964,65 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::intValue:
-    {
       return value_.intValue == rhs.value_.intValue;
-    }
     case Type::opt_intValue:
-    {
       return value_.opt_intValue == rhs.value_.opt_intValue;
-    }
     case Type::stringValue:
-    {
       return value_.stringValue == rhs.value_.stringValue;
-    }
     case Type::opt_stringValue:
-    {
       return value_.opt_stringValue == rhs.value_.opt_stringValue;
-    }
     case Type::intValue2:
-    {
       return value_.intValue2 == rhs.value_.intValue2;
-    }
     case Type::intValue3:
-    {
       return value_.intValue3 == rhs.value_.intValue3;
-    }
     case Type::doubelValue:
-    {
       return value_.doubelValue == rhs.value_.doubelValue;
-    }
     case Type::boolValue:
-    {
       return value_.boolValue == rhs.value_.boolValue;
-    }
     case Type::union_list:
-    {
       return value_.union_list == rhs.value_.union_list;
-    }
     case Type::union_set:
-    {
       return value_.union_set == rhs.value_.union_set;
-    }
     case Type::union_map:
-    {
       return value_.union_map == rhs.value_.union_map;
-    }
     case Type::opt_union_map:
-    {
       return value_.opt_union_map == rhs.value_.opt_union_map;
-    }
     case Type::enum_field:
-    {
       return value_.enum_field == rhs.value_.enum_field;
-    }
     case Type::enum_container:
-    {
       return value_.enum_container == rhs.value_.enum_container;
-    }
     case Type::a_struct:
-    {
       return value_.a_struct == rhs.value_.a_struct;
-    }
     case Type::a_set_struct:
-    {
       return value_.a_set_struct == rhs.value_.a_set_struct;
-    }
     case Type::a_union:
-    {
       return value_.a_union == rhs.value_.a_union;
-    }
     case Type::opt_a_union:
-    {
       return value_.opt_a_union == rhs.value_.opt_a_union;
-    }
     case Type::a_union_list:
-    {
       return value_.a_union_list == rhs.value_.a_union_list;
-    }
     case Type::a_union_typedef:
-    {
       return value_.a_union_typedef == rhs.value_.a_union_typedef;
-    }
     case Type::a_union_typedef_list:
-    {
       return value_.a_union_typedef_list == rhs.value_.a_union_typedef_list;
-    }
     case Type::MyBinaryField:
-    {
       return apache::thrift::StringTraits<std::string>::isEqual(
           value_.MyBinaryField,
           rhs.value_.MyBinaryField);
-    }
     case Type::MyBinaryField2:
-    {
       return apache::thrift::StringTraits<std::string>::isEqual(
           value_.MyBinaryField2,
           rhs.value_.MyBinaryField2);
-    }
     case Type::MyBinaryListField4:
-    {
       return value_.MyBinaryListField4 == rhs.value_.MyBinaryListField4;
-    }
     case Type::ref_field:
-    {
       return *value_.ref_field == *rhs.value_.ref_field;
-    }
     case Type::ref_field2:
-    {
       return *value_.ref_field2 == *rhs.value_.ref_field2;
-    }
     case Type::excp_field:
-    {
       return value_.excp_field == rhs.value_.excp_field;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -4365,20 +4241,14 @@ void FloatUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::floatSide:
-    {
       destruct(value_.floatSide);
       break;
-    }
     case Type::doubleSide:
-    {
       destruct(value_.doubleSide);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -4387,17 +4257,11 @@ bool FloatUnion::operator==(const FloatUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::floatSide:
-    {
       return value_.floatSide == rhs.value_.floatSide;
-    }
     case Type::doubleSide:
-    {
       return value_.doubleSide == rhs.value_.doubleSide;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 

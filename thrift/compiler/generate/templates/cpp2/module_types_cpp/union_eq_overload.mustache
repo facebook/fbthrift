@@ -21,7 +21,6 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
   switch(type_) {
 <%#struct:fields%>
     case Type::<%field:cpp_name%>:
-    {
 <%#field:cpp_ref?%>
       return *value_.<%field:cpp_name%> == *rhs.value_.<%field:cpp_name%>;
 <%/field:cpp_ref?%>
@@ -37,11 +36,8 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
 <%/type:binary?%>
 <%/field:type%>
 <%/field:cpp_ref?%>
-    }
 <%/struct:fields%>
     default:
-    {
       return true;
-    }
   }
 }

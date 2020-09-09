@@ -2417,20 +2417,14 @@ void NoExceptMoveUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::string_field:
-    {
       destruct(value_.string_field);
       break;
-    }
     case Type::i32_field:
-    {
       destruct(value_.i32_field);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -2439,17 +2433,11 @@ bool NoExceptMoveUnion::operator==(const NoExceptMoveUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::string_field:
-    {
       return value_.string_field == rhs.value_.string_field;
-    }
     case Type::i32_field:
-    {
       return value_.i32_field == rhs.value_.i32_field;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 

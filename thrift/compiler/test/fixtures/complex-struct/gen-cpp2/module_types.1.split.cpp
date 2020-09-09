@@ -730,40 +730,26 @@ void MyUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::myEnum:
-    {
       destruct(value_.myEnum);
       break;
-    }
     case Type::myStruct:
-    {
       destruct(value_.myStruct);
       break;
-    }
     case Type::myDataItem:
-    {
       destruct(value_.myDataItem);
       break;
-    }
     case Type::complexNestedStruct:
-    {
       destruct(value_.complexNestedStruct);
       break;
-    }
     case Type::longValue:
-    {
       destruct(value_.longValue);
       break;
-    }
     case Type::intValue:
-    {
       destruct(value_.intValue);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -772,33 +758,19 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::myEnum:
-    {
       return value_.myEnum == rhs.value_.myEnum;
-    }
     case Type::myStruct:
-    {
       return value_.myStruct == rhs.value_.myStruct;
-    }
     case Type::myDataItem:
-    {
       return value_.myDataItem == rhs.value_.myDataItem;
-    }
     case Type::complexNestedStruct:
-    {
       return value_.complexNestedStruct == rhs.value_.complexNestedStruct;
-    }
     case Type::longValue:
-    {
       return value_.longValue == rhs.value_.longValue;
-    }
     case Type::intValue:
-    {
       return value_.intValue == rhs.value_.intValue;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 

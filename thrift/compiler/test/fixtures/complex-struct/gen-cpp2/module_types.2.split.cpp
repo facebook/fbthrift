@@ -937,30 +937,20 @@ void MyUnionFloatFieldThrowExp::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::myEnum:
-    {
       destruct(value_.myEnum);
       break;
-    }
     case Type::setFloat:
-    {
       destruct(value_.setFloat);
       break;
-    }
     case Type::myDataItem:
-    {
       destruct(value_.myDataItem);
       break;
-    }
     case Type::complexNestedStruct:
-    {
       destruct(value_.complexNestedStruct);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -969,25 +959,15 @@ bool MyUnionFloatFieldThrowExp::operator==(const MyUnionFloatFieldThrowExp& rhs)
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::myEnum:
-    {
       return value_.myEnum == rhs.value_.myEnum;
-    }
     case Type::setFloat:
-    {
       return value_.setFloat == rhs.value_.setFloat;
-    }
     case Type::myDataItem:
-    {
       return value_.myDataItem == rhs.value_.myDataItem;
-    }
     case Type::complexNestedStruct:
-    {
       return value_.complexNestedStruct == rhs.value_.complexNestedStruct;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 

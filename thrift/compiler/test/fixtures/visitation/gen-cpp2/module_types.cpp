@@ -210,30 +210,20 @@ void union1::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::ui:
-    {
       destruct(value_.ui);
       break;
-    }
     case Type::ud:
-    {
       destruct(value_.ud);
       break;
-    }
     case Type::us:
-    {
       destruct(value_.us);
       break;
-    }
     case Type::ue:
-    {
       destruct(value_.ue);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -242,25 +232,15 @@ bool union1::operator==(const union1& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::ui:
-    {
       return value_.ui == rhs.value_.ui;
-    }
     case Type::ud:
-    {
       return value_.ud == rhs.value_.ud;
-    }
     case Type::us:
-    {
       return value_.us == rhs.value_.us;
-    }
     case Type::ue:
-    {
       return value_.ue == rhs.value_.ue;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -369,30 +349,20 @@ void union2::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::ui_2:
-    {
       destruct(value_.ui_2);
       break;
-    }
     case Type::ud_2:
-    {
       destruct(value_.ud_2);
       break;
-    }
     case Type::us_2:
-    {
       destruct(value_.us_2);
       break;
-    }
     case Type::ue_2:
-    {
       destruct(value_.ue_2);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -401,25 +371,15 @@ bool union2::operator==(const union2& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::ui_2:
-    {
       return value_.ui_2 == rhs.value_.ui_2;
-    }
     case Type::ud_2:
-    {
       return value_.ud_2 == rhs.value_.ud_2;
-    }
     case Type::us_2:
-    {
       return value_.us_2 == rhs.value_.us_2;
-    }
     case Type::ue_2:
-    {
       return value_.ue_2 == rhs.value_.ue_2;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -528,30 +488,20 @@ void union3::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::ui_3:
-    {
       destruct(value_.ui_3);
       break;
-    }
     case Type::ud_3:
-    {
       destruct(value_.ud_3);
       break;
-    }
     case Type::us_3:
-    {
       destruct(value_.us_3);
       break;
-    }
     case Type::ue_3:
-    {
       destruct(value_.ue_3);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -560,25 +510,15 @@ bool union3::operator==(const union3& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::ui_3:
-    {
       return value_.ui_3 == rhs.value_.ui_3;
-    }
     case Type::ud_3:
-    {
       return value_.ud_3 == rhs.value_.ud_3;
-    }
     case Type::us_3:
-    {
       return value_.us_3 == rhs.value_.us_3;
-    }
     case Type::ue_3:
-    {
       return value_.ue_3 == rhs.value_.ue_3;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -788,35 +728,23 @@ void unionA::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::i:
-    {
       destruct(value_.i);
       break;
-    }
     case Type::d:
-    {
       destruct(value_.d);
       break;
-    }
     case Type::s:
-    {
       destruct(value_.s);
       break;
-    }
     case Type::e:
-    {
       destruct(value_.e);
       break;
-    }
     case Type::a:
-    {
       destruct(value_.a);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -825,29 +753,17 @@ bool unionA::operator==(const unionA& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::i:
-    {
       return value_.i == rhs.value_.i;
-    }
     case Type::d:
-    {
       return value_.d == rhs.value_.d;
-    }
     case Type::s:
-    {
       return value_.s == rhs.value_.s;
-    }
     case Type::e:
-    {
       return value_.e == rhs.value_.e;
-    }
     case Type::a:
-    {
       return value_.a == rhs.value_.a;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -3713,150 +3629,92 @@ void union_with_special_names::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::get:
-    {
       destruct(value_.get);
       break;
-    }
     case Type::getter:
-    {
       destruct(value_.getter);
       break;
-    }
     case Type::lists:
-    {
       destruct(value_.lists);
       break;
-    }
     case Type::maps:
-    {
       destruct(value_.maps);
       break;
-    }
     case Type::name:
-    {
       destruct(value_.name);
       break;
-    }
     case Type::name_to_value:
-    {
       destruct(value_.name_to_value);
       break;
-    }
     case Type::names:
-    {
       destruct(value_.names);
       break;
-    }
     case Type::prefix_tree:
-    {
       destruct(value_.prefix_tree);
       break;
-    }
     case Type::sets:
-    {
       destruct(value_.sets);
       break;
-    }
     case Type::setter:
-    {
       destruct(value_.setter);
       break;
-    }
     case Type::str:
-    {
       destruct(value_.str);
       break;
-    }
     case Type::strings:
-    {
       destruct(value_.strings);
       break;
-    }
     case Type::type:
-    {
       destruct(value_.type);
       break;
-    }
     case Type::value:
-    {
       destruct(value_.value);
       break;
-    }
     case Type::value_to_name:
-    {
       destruct(value_.value_to_name);
       break;
-    }
     case Type::values:
-    {
       destruct(value_.values);
       break;
-    }
     case Type::id:
-    {
       destruct(value_.id);
       break;
-    }
     case Type::ids:
-    {
       destruct(value_.ids);
       break;
-    }
     case Type::descriptor:
-    {
       destruct(value_.descriptor);
       break;
-    }
     case Type::descriptors:
-    {
       destruct(value_.descriptors);
       break;
-    }
     case Type::key:
-    {
       destruct(value_.key);
       break;
-    }
     case Type::keys:
-    {
       destruct(value_.keys);
       break;
-    }
     case Type::annotation:
-    {
       destruct(value_.annotation);
       break;
-    }
     case Type::annotations:
-    {
       destruct(value_.annotations);
       break;
-    }
     case Type::member:
-    {
       destruct(value_.member);
       break;
-    }
     case Type::members:
-    {
       destruct(value_.members);
       break;
-    }
     case Type::field:
-    {
       destruct(value_.field);
       break;
-    }
     case Type::fields:
-    {
       destruct(value_.fields);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -3865,121 +3723,63 @@ bool union_with_special_names::operator==(const union_with_special_names& rhs) c
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::get:
-    {
       return value_.get == rhs.value_.get;
-    }
     case Type::getter:
-    {
       return value_.getter == rhs.value_.getter;
-    }
     case Type::lists:
-    {
       return value_.lists == rhs.value_.lists;
-    }
     case Type::maps:
-    {
       return value_.maps == rhs.value_.maps;
-    }
     case Type::name:
-    {
       return value_.name == rhs.value_.name;
-    }
     case Type::name_to_value:
-    {
       return value_.name_to_value == rhs.value_.name_to_value;
-    }
     case Type::names:
-    {
       return value_.names == rhs.value_.names;
-    }
     case Type::prefix_tree:
-    {
       return value_.prefix_tree == rhs.value_.prefix_tree;
-    }
     case Type::sets:
-    {
       return value_.sets == rhs.value_.sets;
-    }
     case Type::setter:
-    {
       return value_.setter == rhs.value_.setter;
-    }
     case Type::str:
-    {
       return value_.str == rhs.value_.str;
-    }
     case Type::strings:
-    {
       return value_.strings == rhs.value_.strings;
-    }
     case Type::type:
-    {
       return value_.type == rhs.value_.type;
-    }
     case Type::value:
-    {
       return value_.value == rhs.value_.value;
-    }
     case Type::value_to_name:
-    {
       return value_.value_to_name == rhs.value_.value_to_name;
-    }
     case Type::values:
-    {
       return value_.values == rhs.value_.values;
-    }
     case Type::id:
-    {
       return value_.id == rhs.value_.id;
-    }
     case Type::ids:
-    {
       return value_.ids == rhs.value_.ids;
-    }
     case Type::descriptor:
-    {
       return value_.descriptor == rhs.value_.descriptor;
-    }
     case Type::descriptors:
-    {
       return value_.descriptors == rhs.value_.descriptors;
-    }
     case Type::key:
-    {
       return value_.key == rhs.value_.key;
-    }
     case Type::keys:
-    {
       return value_.keys == rhs.value_.keys;
-    }
     case Type::annotation:
-    {
       return value_.annotation == rhs.value_.annotation;
-    }
     case Type::annotations:
-    {
       return value_.annotations == rhs.value_.annotations;
-    }
     case Type::member:
-    {
       return value_.member == rhs.value_.member;
-    }
     case Type::members:
-    {
       return value_.members == rhs.value_.members;
-    }
     case Type::field:
-    {
       return value_.field == rhs.value_.field;
-    }
     case Type::fields:
-    {
       return value_.fields == rhs.value_.fields;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 

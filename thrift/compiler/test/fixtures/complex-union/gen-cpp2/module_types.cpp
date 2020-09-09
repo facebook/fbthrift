@@ -84,40 +84,26 @@ void ComplexUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::intValue:
-    {
       destruct(value_.intValue);
       break;
-    }
     case Type::stringValue:
-    {
       destruct(value_.stringValue);
       break;
-    }
     case Type::intListValue:
-    {
       destruct(value_.intListValue);
       break;
-    }
     case Type::stringListValue:
-    {
       destruct(value_.stringListValue);
       break;
-    }
     case Type::typedefValue:
-    {
       destruct(value_.typedefValue);
       break;
-    }
     case Type::stringRef:
-    {
       destruct(value_.stringRef);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -126,33 +112,19 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::intValue:
-    {
       return value_.intValue == rhs.value_.intValue;
-    }
     case Type::stringValue:
-    {
       return value_.stringValue == rhs.value_.stringValue;
-    }
     case Type::intListValue:
-    {
       return value_.intListValue == rhs.value_.intListValue;
-    }
     case Type::stringListValue:
-    {
       return value_.stringListValue == rhs.value_.stringListValue;
-    }
     case Type::typedefValue:
-    {
       return value_.typedefValue == rhs.value_.typedefValue;
-    }
     case Type::stringRef:
-    {
       return *value_.stringRef == *rhs.value_.stringRef;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -259,20 +231,14 @@ void ListUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::intListValue:
-    {
       destruct(value_.intListValue);
       break;
-    }
     case Type::stringListValue:
-    {
       destruct(value_.stringListValue);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -281,17 +247,11 @@ bool ListUnion::operator==(const ListUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::intListValue:
-    {
       return value_.intListValue == rhs.value_.intListValue;
-    }
     case Type::stringListValue:
-    {
       return value_.stringListValue == rhs.value_.stringListValue;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -390,20 +350,14 @@ void DataUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::binaryData:
-    {
       destruct(value_.binaryData);
       break;
-    }
     case Type::stringData:
-    {
       destruct(value_.stringData);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -412,19 +366,13 @@ bool DataUnion::operator==(const DataUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::binaryData:
-    {
       return apache::thrift::StringTraits<std::string>::isEqual(
           value_.binaryData,
           rhs.value_.binaryData);
-    }
     case Type::stringData:
-    {
       return value_.stringData == rhs.value_.stringData;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -643,20 +591,14 @@ void ValUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::v1:
-    {
       destruct(value_.v1);
       break;
-    }
     case Type::v2:
-    {
       destruct(value_.v2);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -665,17 +607,11 @@ bool ValUnion::operator==(const ValUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::v1:
-    {
       return value_.v1 == rhs.value_.v1;
-    }
     case Type::v2:
-    {
       return value_.v2 == rhs.value_.v2;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -798,20 +734,14 @@ void VirtualComplexUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::thingOne:
-    {
       destruct(value_.thingOne);
       break;
-    }
     case Type::thingTwo:
-    {
       destruct(value_.thingTwo);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -820,17 +750,11 @@ bool VirtualComplexUnion::operator==(const VirtualComplexUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::thingOne:
-    {
       return value_.thingOne == rhs.value_.thingOne;
-    }
     case Type::thingTwo:
-    {
       return value_.thingTwo == rhs.value_.thingTwo;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -1011,15 +935,11 @@ void NonCopyableUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::s:
-    {
       destruct(value_.s);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -1028,13 +948,9 @@ bool NonCopyableUnion::operator==(const NonCopyableUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::s:
-    {
       return value_.s == rhs.value_.s;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 

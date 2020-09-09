@@ -20,16 +20,12 @@
   switch(type_) {
 <%#struct:fields%>
     case Type::<%field:cpp_name%>:
-    {
       destruct(value_.<%field:cpp_name%>);
       break;
-    }
 <%/struct:fields%>
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }

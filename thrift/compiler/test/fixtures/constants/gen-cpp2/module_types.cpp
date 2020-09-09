@@ -862,20 +862,14 @@ void union1::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::i:
-    {
       destruct(value_.i);
       break;
-    }
     case Type::d:
-    {
       destruct(value_.d);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -884,17 +878,11 @@ bool union1::operator==(const union1& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::i:
-    {
       return value_.i == rhs.value_.i;
-    }
     case Type::d:
-    {
       return value_.d == rhs.value_.d;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
@@ -999,30 +987,20 @@ void union2::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::i:
-    {
       destruct(value_.i);
       break;
-    }
     case Type::d:
-    {
       destruct(value_.d);
       break;
-    }
     case Type::s:
-    {
       destruct(value_.s);
       break;
-    }
     case Type::u:
-    {
       destruct(value_.u);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -1031,25 +1009,15 @@ bool union2::operator==(const union2& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::i:
-    {
       return value_.i == rhs.value_.i;
-    }
     case Type::d:
-    {
       return value_.d == rhs.value_.d;
-    }
     case Type::s:
-    {
       return value_.s == rhs.value_.s;
-    }
     case Type::u:
-    {
       return value_.u == rhs.value_.u;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 

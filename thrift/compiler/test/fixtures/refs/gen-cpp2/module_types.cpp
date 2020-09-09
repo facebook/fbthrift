@@ -105,20 +105,14 @@ void MyUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::anInteger:
-    {
       destruct(value_.anInteger);
       break;
-    }
     case Type::aString:
-    {
       destruct(value_.aString);
       break;
-    }
     default:
-    {
       assert(false);
       break;
-    }
   }
   type_ = Type::__EMPTY__;
 }
@@ -127,17 +121,11 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::anInteger:
-    {
       return value_.anInteger == rhs.value_.anInteger;
-    }
     case Type::aString:
-    {
       return value_.aString == rhs.value_.aString;
-    }
     default:
-    {
       return true;
-    }
   }
 }
 
