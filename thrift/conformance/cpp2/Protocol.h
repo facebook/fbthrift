@@ -21,7 +21,6 @@
 
 #include <folly/CPortability.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types.h>
-#include <thrift/conformance/if/gen-cpp2/protocol_types.tcc>
 
 namespace apache::thrift::conformance {
 

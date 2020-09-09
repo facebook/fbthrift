@@ -32,90 +32,41 @@ decltype(auto) forward_elem(T& elem) {
 }
 
 template <typename TT, typename = void>
-struct ValueHelper;
-
-template <>
-struct ValueHelper<type::bool_t> {
-  FOLLY_ERASE static void set(Value& result, bool value) {
-    result.set_boolValue(value);
-  }
-};
-
-template <>
-struct ValueHelper<type::byte_t> {
-  FOLLY_ERASE static void set(Value& result, int8_t value) {
-    result.set_byteValue(value);
-  }
-};
-
-template <>
-struct ValueHelper<type::i16_t> {
-  FOLLY_ERASE static void set(Value& result, int16_t value) {
-    result.set_i16Value(value);
-  }
-};
-
-template <>
-struct ValueHelper<type::i32_t> {
-  FOLLY_ERASE static void set(Value& result, int32_t value) {
-    result.set_i32Value(value);
-  }
-};
-
-template <>
-struct ValueHelper<type::i64_t> {
-  FOLLY_ERASE static void set(Value& result, int64_t value) {
-    result.set_i64Value(value);
-  }
-};
-
-template <typename ET>
-struct ValueHelper<ET, if_base_type<ET, BaseType::Enum>> {
-  template <typename E>
-  FOLLY_ERASE static void set(Value& result, E value) {
-    result.set_i32Value(static_cast<int32_t>(value));
-  }
-};
-
-template <>
-struct ValueHelper<type::float_t> {
-  FOLLY_ERASE static void set(Value& result, float value) {
-    result.set_floatValue(value);
-  }
-};
-
-template <>
-struct ValueHelper<type::double_t> {
-  FOLLY_ERASE static void set(Value& result, float value) {
-    result.set_doubleValue(value);
-  }
-};
-
-template <>
-struct ValueHelper<type::string_t> {
-  FOLLY_ERASE static void set(Value& result, std::string value) {
-    result.set_stringValue(std::move(value));
-  }
-  FOLLY_ERASE static void set(Value& result, const char* value) {
-    set(result, std::string(value));
-  }
-  FOLLY_ERASE static void set(Value& result, folly::StringPiece value) {
-    set(result, std::string(value));
-  }
-  FOLLY_ERASE static void set(Value& result, std::string_view value) {
-    set(result, std::string(value));
+struct ValueHelper {
+  template <typename T>
+  static void set(Value& result, T&& value) {
+    if constexpr (false) {
+    } else if constexpr (TT::kBaseType == BaseType::Bool) {
+      result.set_boolValue(value);
+    } else if constexpr (TT::kBaseType == BaseType::Byte) {
+      result.set_byteValue(value);
+    } else if constexpr (TT::kBaseType == BaseType::I16) {
+      result.set_i16Value(value);
+    } else if constexpr (TT::kBaseType == BaseType::I32) {
+      result.set_i32Value(value);
+    } else if constexpr (TT::kBaseType == BaseType::I64) {
+      result.set_i64Value(value);
+    } else if constexpr (TT::kBaseType == BaseType::Enum) {
+      result.set_i32Value(static_cast<int32_t>(value));
+    } else if constexpr (TT::kBaseType == BaseType::Float) {
+      result.set_floatValue(value);
+    } else if constexpr (TT::kBaseType == BaseType::Double) {
+      result.set_doubleValue(value);
+    } else if constexpr (TT::kBaseType == BaseType::String) {
+      result.set_stringValue(std::forward<T>(value));
+    }
   }
 };
 
 template <>
 struct ValueHelper<type::binary_t> {
-  FOLLY_ERASE static void set(Value& result, std::string value) {
+  static void set(Value& result, std::string value) {
     result.set_binaryValue(std::move(value));
   }
-  FOLLY_ERASE static void set(Value& result, const char* value) {
+  static void set(Value& result, const char* value) {
     set(result, std::string(value));
   }
-  FOLLY_ERASE static void set(Value& result, folly::ByteRange value) {
+  static void set(Value& result, folly::ByteRange value) {
     set(result, std::string(value));
   }
   static void set(Value& result, const folly::IOBuf& value) {

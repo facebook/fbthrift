@@ -21,6 +21,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <thrift/conformance/cpp2/Protocol.h>
+#include <thrift/conformance/if/gen-cpp2/protocol_types_custom_protocol.h>
 
 namespace apache::thrift::conformance {
 namespace {
