@@ -81,8 +81,7 @@ TEST(AnyTest, Registry) {
   Any value = registry.store(3, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
   EXPECT_EQ(toString(*value.data_ref()), "3");
-  ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
-  EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
+  ASSERT_EQ(Protocol(*value.protocol_ref()), kFollyToStringProtocol);
   EXPECT_EQ(std::any_cast<int>(registry.load(value)), 3);
   EXPECT_EQ(registry.load<int>(value), 3);
 
@@ -91,27 +90,23 @@ TEST(AnyTest, Registry) {
   value = registry.store(original, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
   EXPECT_EQ(toString(*value.data_ref()), "3");
-  ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
-  EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
+  ASSERT_EQ(Protocol(*value.protocol_ref()), kFollyToStringProtocol);
   value = registry.store(std::any(std::move(original)), kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
   EXPECT_EQ(toString(*value.data_ref()), "3");
-  ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
-  EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
+  ASSERT_EQ(Protocol(*value.protocol_ref()), kFollyToStringProtocol);
 
   // Storing an Any with a different protocol does a conversion.
   original = value;
   value = registry.store(original, Number1Serializer::kProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
-  ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
-  EXPECT_EQ(value.protocol_ref()->get_custom(), "Number1");
+  ASSERT_EQ(Protocol(*value.protocol_ref()), Number1Serializer::kProtocol);
   value = registry.store(
       std::any(std::move(original)), Number1Serializer::kProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
-  ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
-  EXPECT_EQ(value.protocol_ref()->get_custom(), "Number1");
+  ASSERT_EQ(Protocol(*value.protocol_ref()), Number1Serializer::kProtocol);
   EXPECT_EQ(std::any_cast<int>(registry.load(value)), 1);
   EXPECT_EQ(registry.load<int>(value), 1);
 
@@ -123,22 +118,20 @@ TEST(AnyTest, Registry) {
 
   // Storing using an unsupported protocol throws an error
   EXPECT_THROW(
-      registry.store(3, createProtocol(StandardProtocol::Binary)),
-      std::bad_any_cast);
+      registry.store(3, Protocol(StandardProtocol::Binary)), std::bad_any_cast);
 
   // Loading an empty Any value throws an error.
   value = {};
   EXPECT_EQ(*value.type_ref(), "");
   EXPECT_EQ(toString(*value.data_ref()), "");
-  ASSERT_EQ(value.protocol_ref()->getType(), Protocol::__EMPTY__);
+  ASSERT_EQ(Protocol(*value.protocol_ref()), Protocol());
   EXPECT_THROW(registry.load(value), std::bad_any_cast);
   EXPECT_THROW(registry.load<float>(value), std::bad_any_cast);
 
   value = registry.store(2.5, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "double");
   EXPECT_EQ(toString(*value.data_ref()), "2.5");
-  ASSERT_EQ(value.protocol_ref()->getType(), Protocol::custom);
-  EXPECT_EQ(value.protocol_ref()->get_custom(), "FollyToString");
+  ASSERT_EQ(Protocol(*value.protocol_ref()), kFollyToStringProtocol);
   EXPECT_EQ(std::any_cast<double>(registry.load(value)), 2.5);
   EXPECT_EQ(registry.load<double>(value), 2.5);
   EXPECT_THROW(registry.load<int>(value), std::bad_any_cast);

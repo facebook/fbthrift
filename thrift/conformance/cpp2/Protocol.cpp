@@ -20,114 +20,77 @@
 
 namespace apache::thrift::conformance {
 
-Protocol createProtocol(StandardProtocol protocol) noexcept {
-  Protocol result;
-  result.set_standard(protocol);
-  return result;
-}
-
-Protocol createProtocol(std::string name) noexcept {
-  StandardProtocol standard;
-  if (apache::thrift::TEnumTraits<StandardProtocol>::findValue(
-          name.c_str(), &standard)) {
-    return createProtocol(standard);
+std::optional<StandardProtocol> getStandardProtocol(
+    const std::string& name) noexcept {
+  if (name.empty()) {
+    // Interpreted as None.
+    return StandardProtocol::None;
   }
 
-  Protocol result;
-  result.set_custom(std::move(name));
+  StandardProtocol result;
+  if (!apache::thrift::TEnumTraits<StandardProtocol>::findValue(
+          name.c_str(), &result)) {
+    // Not a known standard protocol.
+    return std::nullopt;
+  }
+
+  // It is a standard protocol!
   return result;
 }
 
-void normalizeProtocol(Protocol* protocol) noexcept {
-  if (protocol->getType() == Protocol::custom) {
-    StandardProtocol standard;
-    if (apache::thrift::TEnumTraits<StandardProtocol>::findValue(
-            protocol->get_custom().c_str(), &standard)) {
-      protocol->set_standard(standard);
+Protocol::Protocol(std::string name) noexcept : custom_(std::move(name)) {
+  if (apache::thrift::TEnumTraits<StandardProtocol>::findValue(
+          custom_.c_str(), &standard_)) {
+    // Actually a standard protocol.
+    custom_ = {};
+  }
+}
+
+Protocol::Protocol(ProtocolStruct protocolStruct) noexcept
+    : standard_(*protocolStruct.standard_ref()) {
+  if (standard_ == StandardProtocol::None &&
+      protocolStruct.custom_ref().has_value()) {
+    // Has a custom name, try to convert it to a standard protocol.
+    if (!apache::thrift::TEnumTraits<StandardProtocol>::findValue(
+            protocolStruct.custom_ref().value_unchecked().c_str(),
+            &standard_)) {
+      // Not a standard protocol, so store the custom name.
+      custom_ = std::move(protocolStruct.custom_ref().value_unchecked());
     }
   }
 }
 
-std::string_view getProtocolName(const Protocol& protocol) {
-  switch (protocol.getType()) {
-    case Protocol::__EMPTY__:
-      return {};
-    case Protocol::standard:
-      return apache::thrift::TEnumTraits<StandardProtocol>::findName(
-          protocol.get_standard());
-    case Protocol::custom:
-      return protocol.get_custom();
-  };
-}
-
-auto ProtocolIdManager::getId(const Protocol& protocol) const noexcept
-    -> id_type {
-  switch (protocol.getType()) {
-    case Protocol::__EMPTY__:
-      return kNoId;
-    case Protocol::standard:
-      return getStandardId(protocol.get_standard());
-    case Protocol::custom:
-      return findId(protocol.get_custom());
+std::string_view Protocol::name() const noexcept {
+  if (!custom_.empty()) {
+    return custom_;
   }
-}
-
-auto ProtocolIdManager::getOrCreateId(const Protocol& protocol) -> id_type {
-  switch (protocol.getType()) {
-    case Protocol::__EMPTY__:
-      folly::throw_exception<std::invalid_argument>("Empty protocol");
-    case Protocol::standard:
-      return static_cast<id_type>(protocol.get_standard());
-    case Protocol::custom:
-      return findOrAllocateId(protocol.get_custom());
+  if (const char* name =
+          apache::thrift::TEnumTraits<StandardProtocol>::findName(standard_)) {
+    return name;
   }
+
+  // Unknown standard protocol.
+  return {};
 }
 
-auto ProtocolIdManager::getStandardId(StandardProtocol protocol) noexcept
-    -> id_type {
-  // Use the enum values.
-  return static_cast<id_type>(protocol);
-}
-
-auto ProtocolIdManager::getStandardId(const std::string& name) noexcept
-    -> id_type {
-  StandardProtocol protocol;
-  if (apache::thrift::TEnumTraits<StandardProtocol>::findValue(
-          name.c_str(), &protocol)) {
-    return getStandardId(protocol);
+ProtocolStruct Protocol::asStruct() const noexcept {
+  ProtocolStruct result;
+  if (!custom_.empty()) {
+    result.custom_ref() = custom_;
+  } else {
+    result.standard_ref() = standard_;
   }
-  return kNoId;
+  return result;
 }
 
-auto ProtocolIdManager::getCustomId(size_t ordinal) noexcept -> id_type {
-  // Counts down from max value.
-  return static_cast<id_type>(-ordinal);
-}
-
-auto ProtocolIdManager::findId(const std::string& name) const noexcept
-    -> id_type {
-  auto itr = customProtocols_.find(name);
-  if (itr != customProtocols_.end()) {
-    return itr->second;
+bool operator<(const Protocol& lhs, const Protocol& rhs) {
+  if (lhs.standard() < rhs.standard()) {
+    return true;
   }
-  // Check if it is actually a standard protocol.
-  return getStandardId(name);
-}
-
-auto ProtocolIdManager::findOrAllocateId(const std::string& name) noexcept
-    -> id_type {
-  auto itr = customProtocols_.find(name);
-  if (itr != customProtocols_.end()) {
-    return itr->second;
+  if (lhs.standard() > rhs.standard()) {
+    return false;
   }
-  // Check if it is actually a standard protocol before adding a new custom
-  // one.
-  if (id_type id = getStandardId(name); id != kNoId) {
-    return id;
-  }
-  id_type id = getCustomId(customProtocols_.size() + 1);
-  customProtocols_.emplace_hint(itr, name, id);
-  return id;
+  return lhs.custom() < rhs.custom();
 }
 
 } // namespace apache::thrift::conformance

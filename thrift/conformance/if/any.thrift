@@ -32,7 +32,7 @@ struct Any {
   1: string type;
 
   // The protocol used to encode the value.
-  2: protocol.Protocol protocol;
+  2: protocol.ProtocolStruct protocol;
 
   // The encoded value.
   // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> to make

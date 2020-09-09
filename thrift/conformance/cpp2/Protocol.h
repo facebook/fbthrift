@@ -18,62 +18,106 @@
 
 #include <string>
 #include <string_view>
-#include <unordered_map>
 
+#include <folly/CPortability.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types.tcc>
 
 namespace apache::thrift::conformance {
 
-// Create a protocol with from the given name.
-Protocol createProtocol(std::string name) noexcept;
-// Create a protocol with from the given standard protocol.
-Protocol createProtocol(StandardProtocol protocol) noexcept;
-
-// Converts custom protocols to standard ones, if they have the name of a
-// standard protocol.
-void normalizeProtocol(Protocol* protocol) noexcept;
-
-std::string_view getProtocolName(const Protocol& protocol);
-
-// Hands out standard ids for standard protocols, and assigns runtime ids for
-// custom protocols.
-//
-// Different instances may return different ids for custom protocols.
-class ProtocolIdManager {
+/**
+ * A serialization protocol.
+ *
+ * All protocols can be represented uniquely by a name.
+ *
+ * For efficiency, a set of standard protocols can also be represented by
+ * a value in the StandardProtocol enum class. The name of the enum value is the
+ * name of that protocol. For example Protocol("Binary") is identical to
+ * Protocol(StandardProtocol::Binary).
+ **/
+class Protocol {
  public:
-  // TODO(afuller): Use a unique type instead.
-  using id_type = size_t;
-  static constexpr id_type kNoId = 0;
+  Protocol() noexcept = default;
+  Protocol(const Protocol&) = default;
+  Protocol(Protocol&&) noexcept = default;
 
-  // Gets a protocol identifier for the given protocol.
-  //
-  // Returns kNoId if protocol is empty, or is custom and hasn't been seen
-  // before.
-  id_type getId(const Protocol& protocol) const noexcept;
+  explicit Protocol(StandardProtocol protocol) noexcept : standard_(protocol) {}
+  explicit Protocol(std::string name) noexcept;
+  explicit Protocol(ProtocolStruct protocol) noexcept;
 
-  // Gets or creates a protocol identifier for the given protocol.
+  Protocol& operator=(const Protocol&) = default;
+  Protocol& operator=(Protocol&&) = default;
+
+  // Returns the name for the given protocol.
   //
-  // @throws std::invalid_argument if protocol is empty.
-  id_type getOrCreateId(const Protocol& protocol);
+  // The empty string is returned if the protocol is an unrecognized standard
+  // protocol.
+  std::string_view name() const noexcept;
+
+  StandardProtocol standard() const noexcept {
+    return standard_;
+  }
+
+  const std::string& custom() const noexcept {
+    return custom_;
+  }
+
+  bool isStandard() const noexcept {
+    return standard_ != StandardProtocol::None;
+  }
+  bool isCustom() const noexcept {
+    return !custom_.empty();
+  }
+  bool isNone() const noexcept {
+    return !isStandard() && !isCustom();
+  }
+
+  ProtocolStruct asStruct() const noexcept;
 
  private:
-  std::unordered_map<std::string, id_type> customProtocols_;
-
-  // Returns the id for the given standard protocol.
-  static id_type getStandardId(StandardProtocol protocol) noexcept;
-
-  // Tries to get the standard id for the given name.
-  //
-  // Returns kNoId if name is not a recognized standard names;
-  static id_type getStandardId(const std::string& name) noexcept;
-
-  // Returns the custom id based on the ordinal at which it was added.
-  static id_type getCustomId(size_t ordinal) noexcept;
-
-  // Find (or allocate) an id for the given protocol.
-  id_type findId(const std::string& name) const noexcept;
-  id_type findOrAllocateId(const std::string& name) noexcept;
+  StandardProtocol standard_ = StandardProtocol::None;
+  std::string custom_;
 };
 
+inline bool operator==(const Protocol& lhs, const Protocol& rhs) {
+  return lhs.standard() == rhs.standard() && lhs.custom() == rhs.custom();
+}
+
+bool operator<(const Protocol& lhs, const Protocol& rhs);
+
+inline bool operator!=(const Protocol& lhs, const Protocol& rhs) {
+  return !(lhs == rhs);
+}
+
+// Returns a static const value for the given standard protocol.
+//
+// The address of this value cannot be used for equality.
+template <StandardProtocol protocol>
+FOLLY_EXPORT const Protocol& getStandardProtocol() noexcept {
+  static const auto* kValue = new Protocol(protocol);
+  return *kValue;
+}
+
+// Attempts to get the standard protocol for the given name.
+std::optional<StandardProtocol> getStandardProtocol(
+    const std::string& name) noexcept;
+
+inline const Protocol kNoProtocol = {};
+
 } // namespace apache::thrift::conformance
+
+// custom specialization of std::hash can be injected in namespace std
+namespace std {
+template <>
+struct hash<apache::thrift::conformance::Protocol> {
+  size_t operator()(const apache::thrift::conformance::Protocol& protocol) const
+      noexcept {
+    size_t h1 = std::hash<apache::thrift::conformance::StandardProtocol>{}(
+        protocol.standard());
+    size_t h2 = std::hash<std::string>{}(protocol.custom());
+    // Since h1 and h2 are mutually exclusive, so we just add them.
+    return h1 + h2;
+  }
+};
+
+} // namespace std

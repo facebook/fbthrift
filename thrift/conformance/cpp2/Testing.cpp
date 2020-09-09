@@ -21,8 +21,8 @@
 
 namespace apache::thrift::conformance {
 
-const Protocol Number1Serializer::kProtocol = createProtocol("Number1");
-const Protocol kFollyToStringProtocol = createProtocol("FollyToString");
+const Protocol Number1Serializer::kProtocol = Protocol("Number1");
+const Protocol kFollyToStringProtocol = Protocol("FollyToString");
 
 void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
     const {

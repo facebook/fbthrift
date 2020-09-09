@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include "thrift/conformance/cpp2/Protocol.h"
+#include <thrift/conformance/cpp2/Protocol.h>
 
 #include <gtest/gtest.h>
+#include <thrift/conformance/cpp2/Testing.h>
 
 namespace apache::thrift::conformance {
 
@@ -24,69 +25,57 @@ namespace {
 
 template <StandardProtocol StdProtocol>
 void testStandardProtocol(std::string_view expectedName) {
-  const auto& protocol = createProtocol(StdProtocol);
-  EXPECT_EQ(createProtocol(StdProtocol), protocol);
-  EXPECT_EQ(createProtocol(std::string(expectedName)), protocol);
-  EXPECT_EQ(getProtocolName(protocol), expectedName);
-  auto normalized = protocol;
-  normalizeProtocol(&normalized);
-  EXPECT_EQ(normalized, protocol);
+  SCOPED_TRACE(expectedName);
 
-  normalized.set_custom(std::string(expectedName));
-  EXPECT_NE(normalized, protocol);
-  normalizeProtocol(&normalized);
-  EXPECT_EQ(normalized, protocol);
+  // 3 ways to get the protocol all return the same value.
+  const auto& protocol = getStandardProtocol<StdProtocol>();
+  EXPECT_EQ(Protocol(StdProtocol), protocol);
+  EXPECT_EQ(Protocol(std::string(expectedName)), protocol);
+
+  // We get the expected name.
+  EXPECT_EQ(protocol.name(), expectedName);
 }
 
+TEST(ProtocolTest, ProtocolStruct) {}
+
 TEST(ProtocolTest, Standard) {
+  testStandardProtocol<StandardProtocol::None>("None");
   testStandardProtocol<StandardProtocol::Binary>("Binary");
   testStandardProtocol<StandardProtocol::Compact>("Compact");
   testStandardProtocol<StandardProtocol::Json>("Json");
   testStandardProtocol<StandardProtocol::SimpleJson>("SimpleJson");
 }
 
+TEST(Protocol, Empty) {
+  Protocol empty;
+  EXPECT_EQ(empty.name(), "None");
+  EXPECT_EQ(empty.standard(), StandardProtocol::None);
+  EXPECT_EQ(empty.custom(), "");
+
+  EXPECT_EQ(empty, kNoProtocol);
+  EXPECT_EQ(empty, Protocol(""));
+  EXPECT_EQ(empty, Protocol("None"));
+  EXPECT_EQ(empty, getStandardProtocol<StandardProtocol::None>());
+}
+
+TEST(Protocol, Unknown) {
+  EXPECT_EQ(UnknownProtocol().name(), "");
+}
+
 TEST(ProtocolTest, Custom) {
-  auto protocol = createProtocol("hi");
-  EXPECT_EQ(createProtocol("hi"), protocol);
-  EXPECT_NE(createProtocol("bye"), protocol);
-  EXPECT_EQ(getProtocolName(protocol), "hi");
-  normalizeProtocol(&protocol);
-  EXPECT_EQ(protocol, createProtocol("hi"));
+  Protocol protocol("hi");
+  EXPECT_EQ(protocol.name(), "hi");
+  EXPECT_EQ(protocol.standard(), StandardProtocol::None);
+  EXPECT_EQ(protocol.custom(), "hi");
+  EXPECT_EQ(Protocol("hi"), protocol);
+  EXPECT_NE(Protocol("bye"), protocol);
 }
 
-TEST(ProtocolIdManagerTest, Standard) {
-  ProtocolIdManager ids;
-
-  // All ways of specifying a standard protocol return the correct id.
-  EXPECT_EQ(
-      ids.getId(createProtocol(StandardProtocol::Binary)),
-      static_cast<ProtocolIdManager::id_type>(StandardProtocol::Binary));
-  Protocol protocol;
-  protocol.set_custom("Binary");
-  EXPECT_EQ(
-      ids.getId(protocol),
-      static_cast<ProtocolIdManager::id_type>(StandardProtocol::Binary));
-  EXPECT_EQ(
-      ids.getOrCreateId(protocol),
-      static_cast<ProtocolIdManager::id_type>(StandardProtocol::Binary));
-}
-
-TEST(ProtocolIdManagerTest, Custom) {
-  ProtocolIdManager ids;
-  EXPECT_EQ(ids.getId(createProtocol(static_cast<StandardProtocol>(100))), 100);
-  EXPECT_EQ(ids.getId(createProtocol("hi")), ProtocolIdManager::kNoId);
-
-  EXPECT_EQ(ids.getOrCreateId(createProtocol("hi")), -1);
-  EXPECT_EQ(ids.getOrCreateId(createProtocol("bye")), -2);
-  EXPECT_EQ(ids.getId(createProtocol("hi")), -1);
-  EXPECT_EQ(ids.getOrCreateId(createProtocol("hi")), -1);
-}
-
-TEST(ProtocolIdManagerTest, Empty) {
-  ProtocolIdManager ids;
-
-  EXPECT_EQ(ids.getId({}), ProtocolIdManager::kNoId);
-  EXPECT_THROW(ids.getOrCreateId({}), std::invalid_argument);
+TEST(Protocol, GetStandardProtocol) {
+  EXPECT_EQ(getStandardProtocol(""), StandardProtocol::None);
+  EXPECT_EQ(getStandardProtocol("None"), StandardProtocol::None);
+  EXPECT_EQ(getStandardProtocol("Hi"), std::nullopt);
+  EXPECT_EQ(getStandardProtocol("Binary"), StandardProtocol::Binary);
 }
 
 } // namespace

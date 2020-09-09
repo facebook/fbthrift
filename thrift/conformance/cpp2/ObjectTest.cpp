@@ -210,11 +210,14 @@ TEST(ObjectTest, Map) {
 
 TEST(ObjectTest, Struct) {
   // TODO(afuller): Use a struct that covers more cases.
-  Protocol protocol = createProtocol("hi");
+  auto protocol = Protocol("hi").asStruct();
   Value value = asValueStruct<type::union_c>(protocol);
   ASSERT_EQ(value.getType(), Value::objectValue);
   const Object& object = value.get_objectValue();
-  EXPECT_EQ(object.members_ref()->size(), 1);
+  EXPECT_EQ(object.members_ref()->size(), 2);
+  EXPECT_EQ(
+      object.members_ref()->at("standard"),
+      asValueStruct<type::enum_c>(StandardProtocol::None));
   EXPECT_EQ(
       object.members_ref()->at("custom"), asValueStruct<type::string_t>("hi"));
 }

@@ -24,16 +24,21 @@ namespace go thrift.conformance.protocol
 
 // Standard protocols.
 enum StandardProtocol {
-    Binary = 1,
-    Compact = 2,
-    Json = 3,
-    SimpleJson = 4;
+  // Indicates a standard protocol is not being used.
+  None = 0,
+
+  // The standard protocols.
+  Binary = 1,
+  Compact = 2,
+  Json = 3,
+  SimpleJson = 4,
 }
 
-// An encoding protocol.
-union Protocol {
-  // A standard protocol.
+// A struct representation of a protocol.
+// TODO(afuller): Put this in another namespace or pick a better name.
+struct ProtocolStruct {
+  // The standard protocol or StandardProtocol::None.
   1: StandardProtocol standard;
-  // The unique name for a custom protocol.
-  2: string custom;
+  // The custom protocol, iff standard == StandardProtocol::None.
+  2: optional string custom;
 }

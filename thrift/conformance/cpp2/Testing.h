@@ -27,6 +27,13 @@
 
 namespace apache::thrift::conformance {
 
+constexpr StandardProtocol kUnknownStdProtocol =
+    static_cast<StandardProtocol>(1000);
+
+inline const Protocol& UnknownProtocol() {
+  return getStandardProtocol<kUnknownStdProtocol>();
+}
+
 // Always serializes integers to the number 1.
 class Number1Serializer
     : public BaseTypedAnySerializer<int, Number1Serializer> {

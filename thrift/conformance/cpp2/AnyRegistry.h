@@ -42,6 +42,10 @@ class AnyRegistry {
   // Throws std::bad_any_cast if no matching serializer has been registered.
   Any store(any_ref value, const Protocol& protocol) const;
   Any store(const Any& value, const Protocol& protocol) const;
+  template <StandardProtocol protocol>
+  Any store(any_ref value) {
+    return store(value, getStandardProtocol<protocol>());
+  }
 
   // Load a value from an Any using the registered serializers.
   //
@@ -99,15 +103,13 @@ class AnyRegistry {
 
     const std::type_info& type;
     const std::string name; // Referenced by rev_index_.
-    folly::F14FastMap<ProtocolIdManager::id_type, const AnySerializer*>
-        protocols;
+    folly::F14FastMap<Protocol, const AnySerializer*> serializers;
   };
 
   std::vector<std::unique_ptr<AnySerializer>> owned_serializers_;
   // rev_index_ references TypeEntry.name.
   folly::F14NodeMap<std::type_index, TypeEntry> registry_;
   folly::F14FastMap<std::string_view, std::type_index> rev_index_;
-  ProtocolIdManager protocol_ids_;
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
