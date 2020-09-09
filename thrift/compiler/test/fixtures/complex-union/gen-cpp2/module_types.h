@@ -1356,11 +1356,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Val& operator=(const Val&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string strVal;
- public:
+ private:
   int32_t intVal;
- public:
+ private:
    ::cpp2::containerTypedef typedefValue;
 
  public:
@@ -2142,7 +2142,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   NonCopyableStruct& operator=(NonCopyableStruct&&) = default;
   void __clear();
- public:
+ private:
   int64_t num;
 
  public:

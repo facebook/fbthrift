@@ -1240,7 +1240,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ASimpleStruct& operator=(const ASimpleStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t boolField;
 
  public:
@@ -1362,7 +1362,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t boolField;
 
  public:
@@ -1484,23 +1484,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~MyStruct();
 
- public:
+ private:
   bool MyBoolField;
- public:
+ private:
   int64_t MyIntField;
- public:
+ private:
   ::std::string MyStringField;
- public:
+ private:
   ::std::string MyStringField2;
- public:
+ private:
   ::std::string MyBinaryField;
  private:
   ::std::string MyBinaryField2;
  public:
   ::std::string MyBinaryField3;
- public:
+ private:
   ::std::vector<::std::string> MyBinaryListField4;
- public:
+ private:
   ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
 
  public:
@@ -4312,35 +4312,35 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~AnException();
 
- public:
+ private:
   int32_t code;
  public:
   int32_t req_code;
- public:
+ private:
   ::std::string message2;
  public:
   ::std::string req_message;
- public:
+ private:
   ::std::vector<int32_t> exception_list;
- public:
+ private:
   ::std::set<int64_t> exception_set;
- public:
+ private:
   ::std::map<::std::string, int32_t> exception_map;
  public:
   ::std::map<::std::string, int32_t> req_exception_map;
- public:
+ private:
    ::some::valid::ns::MyEnumA enum_field;
- public:
+ private:
   ::std::vector< ::some::valid::ns::MyEnumA> enum_container;
- public:
+ private:
    ::some::valid::ns::MyStruct a_struct;
- public:
+ private:
   ::std::set< ::some::valid::ns::MyStruct> a_set_struct;
- public:
+ private:
   ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
- public:
+ private:
    ::some::valid::ns::unionTypeDef union_typedef;
- public:
+ private:
   ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
  public:
@@ -4937,11 +4937,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   virtual ~AnotherException() {}
 
- public:
+ private:
   int32_t code;
  public:
   int32_t req_code;
- public:
+ private:
   ::std::string message;
 
  public:
@@ -5131,97 +5131,97 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   ~containerStruct();
 
- public:
+ private:
   bool fieldA;
  public:
   bool req_fieldA;
  private:
   bool opt_fieldA;
- public:
+ private:
   ::std::map<::std::string, bool> fieldB;
  public:
   ::std::map<::std::string, bool> req_fieldB;
  private:
   ::std::map<::std::string, bool> opt_fieldB;
- public:
+ private:
   ::std::set<int32_t> fieldC;
  public:
   ::std::set<int32_t> req_fieldC;
  private:
   ::std::set<int32_t> opt_fieldC;
- public:
+ private:
   ::std::string fieldD;
- public:
+ private:
   ::std::string fieldE;
  public:
   ::std::string req_fieldE;
  private:
   ::std::string opt_fieldE;
- public:
+ private:
   ::std::vector<::std::vector<int32_t>> fieldF;
- public:
+ private:
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
- public:
+ private:
   ::std::vector<::std::set<int32_t>> fieldH;
- public:
+ private:
   bool fieldI;
- public:
+ private:
   ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
- public:
+ private:
   ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
- public:
+ private:
   ::std::set<::std::set<::std::set<bool>>> fieldL;
- public:
+ private:
   ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
- public:
+ private:
    ::some::valid::ns::simpleTypeDef fieldN;
- public:
+ private:
    ::some::valid::ns::complexStructTypeDef fieldO;
- public:
+ private:
   ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP;
- public:
+ private:
    ::some::valid::ns::MyEnumA fieldQ;
- public:
+ private:
    ::some::valid::ns::MyEnumA fieldR;
  public:
    ::some::valid::ns::MyEnumA req_fieldR;
  private:
    ::some::valid::ns::MyEnumA opt_fieldR;
- public:
+ private:
    ::some::valid::ns::MyEnumA fieldS;
- public:
+ private:
   ::std::vector< ::some::valid::ns::MyEnumA> fieldT;
- public:
+ private:
   ::std::vector< ::some::valid::ns::MyEnumA> fieldU;
- public:
+ private:
    ::some::valid::ns::MyStruct fieldV;
  public:
    ::some::valid::ns::MyStruct req_fieldV;
  private:
    ::some::valid::ns::MyStruct opt_fieldV;
- public:
+ private:
   ::std::set< ::some::valid::ns::MyStruct> fieldW;
- public:
+ private:
    ::some::valid::ns::ComplexUnion fieldX;
  public:
    ::some::valid::ns::ComplexUnion req_fieldX;
  private:
    ::some::valid::ns::ComplexUnion opt_fieldX;
- public:
+ private:
   ::std::vector< ::some::valid::ns::ComplexUnion> fieldY;
- public:
+ private:
    ::some::valid::ns::unionTypeDef fieldZ;
- public:
+ private:
   ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
- public:
+ private:
   ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB;
- public:
+ private:
    ::some::valid::ns::MyEnumB fieldAC;
- public:
+ private:
    ::a::different::ns::AnEnum fieldAD;
- public:
+ private:
   ::std::map<::std::string, int32_t> fieldAE;
- public:
+ private:
    ::some::valid::ns::IndirectionD fieldSD;
 
  public:
@@ -6879,9 +6879,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyIncludedStruct& operator=(const MyIncludedStruct& src);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::a::different::ns::IncludedInt64 MyIncludedInt;
- public:
+ private:
    ::some::valid::ns::AStruct MyIncludedStruct;
  public:
   std::unique_ptr< ::some::valid::ns::AStruct> ARefField;
@@ -7074,7 +7074,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   virtual ~AnnotatedStruct();
 
- public:
+ private:
    ::some::valid::ns::containerStruct no_annotation;
  public:
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
@@ -7112,47 +7112,47 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique;
  public:
   std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared;
- public:
+ private:
    ::some::valid::ns::CppFakeI32 base_type;
- public:
+ private:
    ::some::valid::ns::FollySmallVectorI64 list_type;
- public:
+ private:
    ::some::valid::ns::SortedVectorSetString set_type;
- public:
+ private:
    ::some::valid::ns::FakeMap map_type;
- public:
+ private:
    ::some::valid::ns::UnorderedMapStruct map_struct_type;
- public:
+ private:
    ::some::valid::ns::IOBuf iobuf_type;
  public:
    ::some::valid::ns::IOBufPtr iobuf_ptr;
- public:
+ private:
   std::list<int32_t> list_i32_template;
- public:
+ private:
   std::deque<::std::string> list_string_template;
- public:
+ private:
   folly::sorted_vector_set<::std::string> set_template;
- public:
+ private:
   folly::sorted_vector_map<int64_t, ::std::string> map_template;
- public:
+ private:
    ::some::valid::ns::std_list typedef_list_template;
- public:
+ private:
    ::some::valid::ns::std_deque typedef_deque_template;
- public:
+ private:
    ::some::valid::ns::folly_set typedef_set_template;
- public:
+ private:
    ::some::valid::ns::folly_map typedef_map_template;
- public:
+ private:
    ::some::valid::ns::IndirectionA indirection_a;
- public:
+ private:
   ::std::vector< ::some::valid::ns::IndirectionB> indirection_b;
- public:
+ private:
   ::std::set< ::some::valid::ns::IndirectionC> indirection_c;
- public:
+ private:
    ::some::valid::ns::IOBuf iobuf_type_val;
  public:
    ::some::valid::ns::IOBufPtr iobuf_ptr_val;
- public:
+ private:
    ::some::valid::ns::containerStruct struct_struct;
 
  public:
@@ -8210,9 +8210,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs;
- public:
+ private:
   ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
 
  public:
@@ -8366,9 +8366,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FloatStruct& operator=(const FloatStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   float floatField;
- public:
+ private:
   double doubleField;
 
  public:

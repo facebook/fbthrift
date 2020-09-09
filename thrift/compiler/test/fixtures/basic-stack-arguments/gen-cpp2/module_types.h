@@ -130,9 +130,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t MyIntField;
- public:
+ private:
   ::std::string MyStringField;
 
  public:

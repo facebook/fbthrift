@@ -124,7 +124,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   A& operator=(const A&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t useless_field;
 
  public:

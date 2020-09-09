@@ -448,9 +448,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexFieldNames& operator=(const ComplexFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string error_message;
- public:
+ private:
   ::std::string internal_error_message;
 
  public:
@@ -624,9 +624,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CustomFieldNames& operator=(const CustomFieldNames&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string error_message;
- public:
+ private:
   ::std::string internal_error_message;
 
  public:

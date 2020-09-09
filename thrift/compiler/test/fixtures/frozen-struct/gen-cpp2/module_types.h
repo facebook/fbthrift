@@ -165,17 +165,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~ModuleA();
 
- public:
+ private:
   int32_t i32Field;
- public:
+ private:
   ::std::string strField;
- public:
+ private:
   ::std::vector<int16_t> listField;
- public:
+ private:
   ::std::map<::std::string, int32_t> mapField;
- public:
+ private:
    ::some::ns::IncludedA inclAField;
- public:
+ private:
    ::some::ns::IncludedB inclBField;
 
  public:
@@ -472,9 +472,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ModuleB& operator=(const ModuleB&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t i32Field;
- public:
+ private:
    ::some::ns::EnumB inclEnumB;
 
  public:

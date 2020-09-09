@@ -588,7 +588,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   int64_t opt_value;
- public:
+ private:
   int64_t value;
  public:
   int64_t req_value;
@@ -897,9 +897,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   std::unique_ptr< ::cpp2::MyUnion> u;
- public:
+ private:
   double aDouble;
- public:
+ private:
    ::cpp2::MyField f;
 
  public:

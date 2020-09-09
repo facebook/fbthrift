@@ -2337,9 +2337,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structA& operator=(const structA&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t a;
- public:
+ private:
   ::std::string b;
 
  public:
@@ -2985,9 +2985,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   structB& operator=(const structB&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   double c;
- public:
+ private:
   bool d;
 
  public:
@@ -3145,65 +3145,65 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~structC();
 
- public:
+ private:
   int32_t a;
- public:
+ private:
   ::std::string b;
- public:
+ private:
   double c;
- public:
+ private:
   bool d;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum1 e;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum2 f;
- public:
+ private:
    ::test_cpp2::cpp_reflection::union1 g;
- public:
+ private:
    ::test_cpp2::cpp_reflection::unionA h;
- public:
+ private:
    ::test_cpp2::cpp_reflection::unionA i;
- public:
+ private:
   ::std::vector<int32_t> j;
- public:
+ private:
   ::std::vector<int32_t> j1;
- public:
+ private:
   ::std::vector< ::test_cpp2::cpp_reflection::enum1> j2;
- public:
+ private:
   ::std::vector< ::test_cpp2::cpp_reflection::structA> j3;
- public:
+ private:
   ::std::set<int32_t> k;
- public:
+ private:
   ::std::set<int32_t> k1;
- public:
+ private:
   ::std::set< ::test_cpp2::cpp_reflection::enum2> k2;
- public:
+ private:
   ::std::set< ::test_cpp2::cpp_reflection::structB> k3;
- public:
+ private:
   ::std::map<int32_t, int32_t> l;
- public:
+ private:
   ::std::map<int32_t, int32_t> l1;
- public:
+ private:
   ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2;
- public:
+ private:
   ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3;
- public:
+ private:
   ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1;
- public:
+ private:
   ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2;
- public:
+ private:
   ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3;
- public:
+ private:
   ::std::map<::std::string, int32_t> n1;
- public:
+ private:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> n2;
- public:
+ private:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> n3;
- public:
+ private:
   ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1;
- public:
+ private:
   ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2;
- public:
+ private:
   ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3;
 
  public:
@@ -4326,13 +4326,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   int32_t field0;
  private:
   ::std::string field1;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum1 field2;
  public:
    ::test_cpp2::cpp_reflection::enum2 field3;
  private:
    ::test_cpp2::cpp_reflection::union1 field4;
- public:
+ private:
    ::test_cpp2::cpp_reflection::union2 field5;
 
  public:
@@ -4621,19 +4621,19 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~struct2();
 
- public:
+ private:
   int32_t fieldA;
- public:
+ private:
   ::std::string fieldB;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum1 fieldC;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum2 fieldD;
- public:
+ private:
    ::test_cpp2::cpp_reflection::union1 fieldE;
- public:
+ private:
    ::test_cpp2::cpp_reflection::union2 fieldF;
- public:
+ private:
    ::test_cpp2::cpp_reflection::struct1 fieldG;
 
  public:
@@ -4968,41 +4968,41 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~struct3();
 
- public:
+ private:
   int32_t fieldA;
- public:
+ private:
   ::std::string fieldB;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum1 fieldC;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum2 fieldD;
- public:
+ private:
    ::test_cpp2::cpp_reflection::union1 fieldE;
- public:
+ private:
    ::test_cpp2::cpp_reflection::union2 fieldF;
- public:
+ private:
    ::test_cpp2::cpp_reflection::struct1 fieldG;
- public:
+ private:
    ::test_cpp2::cpp_reflection::union2 fieldH;
- public:
+ private:
   ::std::vector<int32_t> fieldI;
- public:
+ private:
   ::std::vector<::std::string> fieldJ;
- public:
+ private:
   ::std::vector<::std::string> fieldK;
- public:
+ private:
   ::std::vector< ::test_cpp2::cpp_reflection::structA> fieldL;
- public:
+ private:
   ::std::set<int32_t> fieldM;
- public:
+ private:
   ::std::set<::std::string> fieldN;
- public:
+ private:
   ::std::set<::std::string> fieldO;
- public:
+ private:
   ::std::set< ::test_cpp2::cpp_reflection::structB> fieldP;
- public:
+ private:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ;
- public:
+ private:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> fieldR;
 
  public:
@@ -5712,7 +5712,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   int32_t field0;
  private:
   ::std::string field1;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum1 field2;
  public:
   std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3;
@@ -5921,11 +5921,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   int32_t field0;
  private:
   ::std::string field1;
- public:
+ private:
    ::test_cpp2::cpp_reflection::enum1 field2;
- public:
+ private:
    ::test_cpp2::cpp_reflection::structA field3;
- public:
+ private:
    ::test_cpp2::cpp_reflection::structB field4;
 
  public:
@@ -6181,7 +6181,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct_binary& operator=(const struct_binary&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string bi;
 
  public:
@@ -6306,11 +6306,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   dep_A_struct& operator=(const dep_A_struct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::test_cpp2::cpp_reflection::dep_B_struct b;
- public:
+ private:
    ::test_cpp2::cpp_reflection::dep_C_struct c;
- public:
+ private:
   int32_t i_a;
 
  public:
@@ -6498,11 +6498,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   dep_B_struct& operator=(const dep_B_struct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::test_cpp2::cpp_reflection::dep_B_struct b;
- public:
+ private:
    ::test_cpp2::cpp_reflection::dep_C_struct c;
- public:
+ private:
   int32_t i_a;
 
  public:
@@ -6690,7 +6690,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   annotated& operator=(const annotated&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t a;
 
  public:
@@ -8743,61 +8743,61 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct_with_special_names& operator=(const struct_with_special_names&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t get;
- public:
+ private:
   int32_t getter;
- public:
+ private:
   int32_t lists;
- public:
+ private:
   int32_t maps;
- public:
+ private:
   int32_t name;
- public:
+ private:
   int32_t name_to_value;
- public:
+ private:
   int32_t names;
- public:
+ private:
   int32_t prefix_tree;
- public:
+ private:
   int32_t sets;
- public:
+ private:
   int32_t setter;
- public:
+ private:
   int32_t str;
- public:
+ private:
   int32_t strings;
- public:
+ private:
   int32_t type;
- public:
+ private:
   int32_t value;
- public:
+ private:
   int32_t value_to_name;
- public:
+ private:
   int32_t values;
- public:
+ private:
   int32_t id;
- public:
+ private:
   int32_t ids;
- public:
+ private:
   int32_t descriptor;
- public:
+ private:
   int32_t descriptors;
- public:
+ private:
   int32_t key;
- public:
+ private:
   int32_t keys;
- public:
+ private:
   int32_t annotation;
- public:
+ private:
   int32_t annotations;
- public:
+ private:
   int32_t member;
- public:
+ private:
   int32_t members;
- public:
+ private:
   int32_t field;
- public:
+ private:
   int32_t fields;
 
  public:
@@ -9865,15 +9865,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~struct_with_indirections();
 
- public:
+ private:
   int32_t real;
- public:
+ private:
    ::test_cpp2::cpp_reflection::FakeI32 fake;
- public:
+ private:
    ::test_cpp2::cpp_reflection::HasANumber number;
- public:
+ private:
    ::test_cpp2::cpp_reflection::HasAResult result;
- public:
+ private:
    ::test_cpp2::cpp_reflection::HasAPhrase phrase;
 
  public:

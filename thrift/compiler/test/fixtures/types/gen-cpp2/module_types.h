@@ -569,7 +569,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   decorated_struct& operator=(const decorated_struct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string field;
 
  public:
@@ -697,21 +697,21 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~ContainerStruct();
 
- public:
+ private:
   ::std::vector<int32_t> fieldA;
- public:
+ private:
   std::list<int32_t> fieldB;
- public:
+ private:
   std::deque<int32_t> fieldC;
- public:
+ private:
   folly::fbvector<int32_t> fieldD;
- public:
+ private:
   folly::small_vector<int32_t> fieldE;
- public:
+ private:
   folly::sorted_vector_set<int32_t> fieldF;
- public:
+ private:
   folly::sorted_vector_map<int32_t, ::std::string> fieldG;
- public:
+ private:
    ::apache::thrift::fixtures::types::SomeMap fieldH;
 
  public:
@@ -1067,7 +1067,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CppTypeStruct& operator=(const CppTypeStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   std::list<int32_t> fieldA;
 
  public:
@@ -1189,7 +1189,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   virtual ~VirtualStruct() {}
 
- public:
+ private:
   int64_t MyIntField;
 
  public:
@@ -1310,9 +1310,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::apache::thrift::fixtures::types::MyForwardRefEnum a;
- public:
+ private:
    ::apache::thrift::fixtures::types::MyForwardRefEnum b;
 
  public:
@@ -1468,9 +1468,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TrivialNumeric& operator=(const TrivialNumeric&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t a;
- public:
+ private:
   bool b;
 
  public:
@@ -1626,9 +1626,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TrivialNestedWithDefault& operator=(const TrivialNestedWithDefault&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t z;
- public:
+ private:
    ::apache::thrift::fixtures::types::TrivialNumeric n;
 
  public:
@@ -1781,9 +1781,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexString& operator=(const ComplexString&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string a;
- public:
+ private:
   ::std::map<::std::string, int32_t> b;
 
  public:
@@ -1943,9 +1943,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string z;
- public:
+ private:
    ::apache::thrift::fixtures::types::ComplexString n;
 
  public:
@@ -2398,13 +2398,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t MyIntField;
- public:
+ private:
   ::std::string MyStringField;
- public:
+ private:
   int64_t majorVer;
- public:
+ private:
    ::apache::thrift::fixtures::types::MyDataItem data;
 
  public:
@@ -2615,7 +2615,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Renaming& operator=(const Renaming&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t bar;
 
  public:
@@ -2734,9 +2734,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AnnotatedTypes& operator=(const AnnotatedTypes&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::apache::thrift::fixtures::types::TBinary binary_field;
- public:
+ private:
    ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field;
 
  public:
@@ -3341,7 +3341,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   NoexceptMoveSimpleStruct& operator=(const NoexceptMoveSimpleStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t boolField;
 
  public:
@@ -3463,23 +3463,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~NoexceptMoveComplexStruct();
 
- public:
+ private:
   bool MyBoolField;
- public:
+ private:
   int64_t MyIntField;
- public:
+ private:
   ::std::string MyStringField;
- public:
+ private:
   ::std::string MyStringField2;
- public:
+ private:
   ::std::string MyBinaryField;
  private:
   ::std::string MyBinaryField2;
  public:
   ::std::string MyBinaryField3;
- public:
+ private:
   ::std::vector<::std::string> MyBinaryListField4;
- public:
+ private:
   ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt;
 
  public:
@@ -4213,15 +4213,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~AllocatorAware();
 
- public:
+ private:
   ::std::vector<int32_t> aa_list;
- public:
+ private:
   ::std::set<int32_t> aa_set;
- public:
+ private:
   ::std::map<int32_t, int32_t> aa_map;
- public:
+ private:
   ::std::string aa_string;
- public:
+ private:
   int32_t not_a_container;
 
  public:
@@ -4503,7 +4503,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AllocatorAware2& operator=(const AllocatorAware2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t not_a_container;
 
  public:

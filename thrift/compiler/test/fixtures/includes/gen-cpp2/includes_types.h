@@ -85,9 +85,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Included& operator=(const Included&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t MyIntField;
- public:
+ private:
    ::cpp2::Foo MyTransitiveField;
 
  public:

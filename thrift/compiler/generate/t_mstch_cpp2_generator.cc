@@ -760,8 +760,16 @@ class mstch_cpp2_field : public mstch_field {
     }
   }
   mstch::node visibility() {
-    bool isPrivate = field_->get_req() == t_field::e_req::T_OPTIONAL &&
-        !cpp2::is_cpp_ref(field_);
+    auto req = field_->get_req();
+    bool isPrivate = true;
+    if (cpp2::is_cpp_ref(field_) || req == t_field::e_req::T_REQUIRED) {
+      isPrivate = false;
+    } else if (req == t_field::e_req::T_OPTIONAL) {
+      // Optional fields are always private.
+    } else if (req == t_field::e_req::T_OPT_IN_REQ_OUT) {
+      isPrivate =
+          cache_->parsed_options_.count("deprecated_public_fields") == 0;
+    }
     return std::string(isPrivate ? "private" : "public");
   }
   mstch::node metadata_name() {

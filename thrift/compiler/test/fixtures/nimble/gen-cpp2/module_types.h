@@ -98,7 +98,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   int32_t second;
  private:
   int64_t third;
- public:
+ private:
   bool isTrue;
 
  public:

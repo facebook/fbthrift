@@ -188,7 +188,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string name;
 
  public:
@@ -313,13 +313,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructAnnotation& operator=(const MyStructAnnotation&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t count;
- public:
+ private:
   ::std::string name;
  private:
   ::std::string extra;
- public:
+ private:
    ::cpp2::MyStructNestedAnnotation nest;
 
  public:
@@ -557,17 +557,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~MyStruct();
 
- public:
+ private:
   int64_t majorVer;
- public:
+ private:
   ::std::string package;
- public:
+ private:
   ::std::string annotation_with_quote;
- public:
+ private:
   ::std::string class_;
- public:
+ private:
   ::std::string annotation_with_trailing_comma;
- public:
+ private:
   ::std::string empty_annotations;
 
  public:
@@ -887,9 +887,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct& operator=(const SecretStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t id;
- public:
+ private:
   ::std::string password;
 
  public:

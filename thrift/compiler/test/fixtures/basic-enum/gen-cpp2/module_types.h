@@ -215,9 +215,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::test::fixtures::enumstrict::MyEnum myEnum;
- public:
+ private:
    ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
 
  public:

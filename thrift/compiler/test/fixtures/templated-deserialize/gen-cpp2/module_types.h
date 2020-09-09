@@ -280,9 +280,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SmallStruct& operator=(const SmallStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   bool small_A;
- public:
+ private:
   int32_t small_B;
 
  public:
@@ -438,39 +438,39 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~containerStruct();
 
- public:
+ private:
   bool fieldA;
- public:
+ private:
   ::std::map<::std::string, bool> fieldB;
- public:
+ private:
   ::std::set<int32_t> fieldC;
- public:
+ private:
   ::std::string fieldD;
- public:
+ private:
   ::std::string fieldE;
- public:
+ private:
   ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF;
- public:
+ private:
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
- public:
+ private:
   ::std::vector<::std::set<int32_t>> fieldH;
- public:
+ private:
   bool fieldI;
- public:
+ private:
   ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
- public:
+ private:
   ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
- public:
+ private:
   ::std::set<::std::set<::std::set<bool>>> fieldL;
- public:
+ private:
   ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
- public:
+ private:
   ::std::vector< ::cpp2::IndirectionA> fieldN;
- public:
+ private:
   ::std::vector< ::cpp2::IndirectionB> fieldO;
- public:
+ private:
   ::std::vector< ::cpp2::IndirectionC> fieldP;
- public:
+ private:
    ::cpp2::MyEnumA fieldQ;
  public:
   std::unique_ptr<::std::map<::std::string, bool>> fieldR;

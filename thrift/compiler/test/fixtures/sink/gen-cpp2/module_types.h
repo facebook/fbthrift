@@ -109,7 +109,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialResponse& operator=(const InitialResponse&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string content;
 
  public:
@@ -233,7 +233,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FinalResponse& operator=(const FinalResponse&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string content;
 
  public:
@@ -357,7 +357,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkPayload& operator=(const SinkPayload&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string content;
 
  public:
@@ -481,7 +481,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string sink;
 
  public:
@@ -605,7 +605,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   InitialException& operator=(const InitialException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string reason;
 
  public:
@@ -733,7 +733,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException1& operator=(const SinkException1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string reason;
 
  public:
@@ -862,7 +862,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SinkException2& operator=(const SinkException2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t reason;
 
  public:

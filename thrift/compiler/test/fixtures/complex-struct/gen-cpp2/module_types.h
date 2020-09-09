@@ -692,13 +692,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructFloatFieldThrowExp& operator=(const MyStructFloatFieldThrowExp&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t myLongField;
- public:
+ private:
   int8_t MyByteField;
- public:
+ private:
   ::std::string myStringField;
- public:
+ private:
   float myFloatField;
 
  public:
@@ -928,9 +928,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStructMapFloatThrowExp& operator=(const MyStructMapFloatThrowExp&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t myLongField;
- public:
+ private:
   ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::floatTypedef>>> mapListOfFloats;
 
  public:
@@ -1164,61 +1164,61 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~MyStruct();
 
- public:
+ private:
   int64_t MyIntField;
- public:
+ private:
   ::std::string MyStringField;
- public:
+ private:
    ::cpp2::MyDataItem MyDataField;
- public:
+ private:
    ::cpp2::MyEnum myEnum;
- public:
+ private:
   bool MyBoolField;
- public:
+ private:
   int8_t MyByteField;
- public:
+ private:
   int16_t MyShortField;
- public:
+ private:
   int64_t MyLongField;
- public:
+ private:
   double MyDoubleField;
- public:
+ private:
   ::std::vector<double> lDouble;
- public:
+ private:
   ::std::vector<int16_t> lShort;
- public:
+ private:
   ::std::vector<int32_t> lInteger;
- public:
+ private:
   ::std::vector<int64_t> lLong;
- public:
+ private:
   ::std::vector<::std::string> lString;
- public:
+ private:
   ::std::vector<bool> lBool;
- public:
+ private:
   ::std::vector<int8_t> lByte;
- public:
+ private:
   ::std::map<int16_t, ::std::string> mShortString;
- public:
+ private:
   ::std::map<int32_t, ::std::string> mIntegerString;
- public:
+ private:
   ::std::map<::std::string,  ::cpp2::MyStruct> mStringMyStruct;
- public:
+ private:
   ::std::map<::std::string, bool> mStringBool;
- public:
+ private:
   ::std::map<int32_t, int32_t> mIntegerInteger;
- public:
+ private:
   ::std::map<int32_t, bool> mIntegerBool;
- public:
+ private:
   ::std::set<int16_t> sShort;
- public:
+ private:
   ::std::set< ::cpp2::MyStruct> sMyStruct;
- public:
+ private:
   ::std::set<int64_t> sLong;
- public:
+ private:
   ::std::set<::std::string> sString;
- public:
+ private:
   ::std::set<int8_t> sByte;
- public:
+ private:
   ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>> mListList;
 
  public:
@@ -2269,9 +2269,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SimpleStruct& operator=(const SimpleStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int64_t age;
- public:
+ private:
   ::std::string name;
 
  public:
@@ -2434,41 +2434,41 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~ComplexNestedStruct();
 
- public:
+ private:
   ::std::set<::std::set<int32_t>> setOfSetOfInt;
- public:
+ private:
   ::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>> listofListOfListOfListOfEnum;
- public:
+ private:
   ::std::vector<::std::vector< ::cpp2::MyStruct>> listOfListOfMyStruct;
- public:
+ private:
   ::std::set<::std::vector<::std::vector<int64_t>>> setOfListOfListOfLong;
- public:
+ private:
   ::std::set<::std::set<::std::set<int64_t>>> setOfSetOfsetOfLong;
- public:
+ private:
   ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>> mapStructListOfListOfLong;
- public:
+ private:
   ::std::map< ::cpp2::MyStruct, int32_t> mKeyStructValInt;
- public:
+ private:
   ::std::vector<::std::map<int32_t, int32_t>> listOfMapKeyIntValInt;
- public:
+ private:
   ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>> listOfMapKeyStrValList;
- public:
+ private:
   ::std::map<::std::set<int32_t>, int64_t> mapKeySetValLong;
- public:
+ private:
   ::std::map<::std::vector<::std::string>, int32_t> mapKeyListValLong;
- public:
+ private:
   ::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>> mapKeyMapValMap;
- public:
+ private:
   ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap;
- public:
+ private:
   ::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>> NestedMaps;
- public:
+ private:
   ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>> mapKeyIntValList;
- public:
+ private:
   ::std::map<int32_t, ::std::set<bool>> mapKeyIntValSet;
- public:
+ private:
   ::std::map<::std::set<bool>,  ::cpp2::MyEnum> mapKeySetValInt;
- public:
+ private:
   ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet;
 
  public:
@@ -3730,49 +3730,49 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~defaultStruct();
 
- public:
+ private:
   int64_t myLongDFset;
- public:
+ private:
   int64_t myLongDF;
- public:
+ private:
   int32_t portDFset;
- public:
+ private:
   int32_t portNum;
- public:
+ private:
   ::std::string myBinaryDFset;
- public:
+ private:
   ::std::string myBinary;
- public:
+ private:
   int8_t myByteDFSet;
- public:
+ private:
   int8_t myByte;
- public:
+ private:
   double myDoubleDFset;
- public:
+ private:
   double myDoubleDFZero;
- public:
+ private:
   double myDouble;
- public:
+ private:
   ::std::map<int32_t, ::std::string> field3;
- public:
+ private:
   ::std::vector< ::cpp2::MyEnum> myList;
- public:
+ private:
   ::std::set<::std::string> mySet;
- public:
+ private:
    ::cpp2::SimpleStruct simpleStruct;
- public:
+ private:
   ::std::vector< ::cpp2::SimpleStruct> listStructDFset;
- public:
+ private:
    ::cpp2::MyUnion myUnion;
- public:
+ private:
   ::std::vector< ::cpp2::MyUnion> listUnionDFset;
- public:
+ private:
   ::std::map<int32_t, ::std::vector< ::cpp2::SimpleStruct>> mapNestlistStructDfSet;
- public:
+ private:
   ::std::map<int64_t, ::std::string> mapJavaTypeDFset;
- public:
+ private:
   ::std::map<int64_t, int32_t> emptyMap;
- public:
+ private:
   ::std::map<::std::string, ::std::map<int32_t,  ::cpp2::MyEnum>> enumMapDFset;
 
  public:
@@ -4629,23 +4629,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~MyStructTypeDef();
 
- public:
+ private:
   int64_t myLongField;
- public:
+ private:
    ::cpp2::longTypeDef myLongTypeDef;
- public:
+ private:
   ::std::string myStringField;
- public:
+ private:
    ::cpp2::stringTypedef myStringTypedef;
- public:
+ private:
   ::std::map<int16_t, ::std::string> myMapField;
- public:
+ private:
    ::cpp2::mapTypedef myMapTypedef;
- public:
+ private:
   ::std::vector<double> myListField;
- public:
+ private:
    ::cpp2::listTypedef myListTypedef;
- public:
+ private:
   ::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>> myMapListOfTypeDef;
 
  public:
@@ -5486,13 +5486,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   TypeRemapped& operator=(const TypeRemapped&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::map<int64_t, ::std::string> lsMap;
- public:
+ private:
   ::std::map<int32_t,  ::cpp2::FMap> ioMap;
- public:
+ private:
   int32_t BigInteger;
- public:
+ private:
   ::std::string binaryTestBuffer;
 
  public:
@@ -6125,17 +6125,17 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~complexException();
 
- public:
+ private:
   ::std::string message;
- public:
+ private:
   ::std::vector<::std::string> listStrings;
- public:
+ private:
    ::cpp2::MyEnum errorEnum;
  private:
    ::cpp2::MyUnion unionError;
- public:
+ private:
    ::cpp2::MyStruct structError;
- public:
+ private:
   ::std::map<int64_t, ::std::string> lsMap;
 
  public:

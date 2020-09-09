@@ -261,7 +261,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct& operator=(const SomeStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t fieldA;
 
  public:

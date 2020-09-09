@@ -224,13 +224,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Color& operator=(const Color&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   double red;
- public:
+ private:
   double green;
- public:
+ private:
   double blue;
- public:
+ private:
   double alpha;
 
  public:
@@ -458,7 +458,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~Vehicle();
 
- public:
+ private:
    ::cpp2::Color color;
  private:
   ::std::string licensePlate;
@@ -751,9 +751,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~Person();
 
- public:
+ private:
    ::cpp2::PersonID id;
- public:
+ private:
   ::std::string name;
  private:
   int16_t age;

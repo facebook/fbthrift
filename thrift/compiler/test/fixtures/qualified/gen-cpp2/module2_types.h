@@ -91,9 +91,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Struct& operator=(const Struct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::module0::Struct first;
- public:
+ private:
    ::module1::Struct second;
 
  public:
@@ -246,9 +246,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   BigStruct& operator=(const BigStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::module2::Struct s;
- public:
+ private:
   int32_t id;
 
  public:

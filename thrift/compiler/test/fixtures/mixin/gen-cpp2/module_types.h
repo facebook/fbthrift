@@ -109,7 +109,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin1& operator=(const Mixin1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string field1;
 
  public:
@@ -233,7 +233,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin2& operator=(const Mixin2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::cpp2::Mixin1 m1;
  private:
   ::std::string field2;
@@ -398,7 +398,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Mixin3Base& operator=(const Mixin3Base&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string field3;
 
  public:
@@ -522,11 +522,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo& operator=(const Foo&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string field4;
- public:
+ private:
    ::cpp2::Mixin2 m2;
- public:
+ private:
    ::cpp2::Mixin3 m3;
 
  public:

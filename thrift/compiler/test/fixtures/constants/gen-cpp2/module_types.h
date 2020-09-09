@@ -321,7 +321,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
   int32_t weeks;
- public:
+ private:
   ::std::string title;
  private:
    ::cpp2::Company employer;
@@ -658,9 +658,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct1& operator=(const struct1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t a;
- public:
+ private:
   ::std::string b;
 
  public:
@@ -820,13 +820,13 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct2& operator=(const struct2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t a;
- public:
+ private:
   ::std::string b;
- public:
+ private:
    ::cpp2::struct1 c;
- public:
+ private:
   ::std::vector<int32_t> d;
 
  public:
@@ -1054,11 +1054,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct3& operator=(const struct3&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   ::std::string a;
- public:
+ private:
   int32_t b;
- public:
+ private:
    ::cpp2::struct2 c;
 
  public:
@@ -1254,7 +1254,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   struct4& operator=(const struct4&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t a;
  private:
   double b;

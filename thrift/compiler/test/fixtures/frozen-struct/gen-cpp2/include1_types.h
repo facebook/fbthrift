@@ -79,9 +79,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   IncludedA& operator=(const IncludedA&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
   int32_t i32Field;
- public:
+ private:
   ::std::string strField;
 
  public:

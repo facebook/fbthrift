@@ -138,27 +138,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   ~containerStruct2();
 
- public:
+ private:
   bool fieldA;
  public:
   bool req_fieldA;
  private:
   bool opt_fieldA;
- public:
+ private:
   ::std::map<::std::string, bool> fieldB;
  public:
   ::std::map<::std::string, bool> req_fieldB;
  private:
   ::std::map<::std::string, bool> opt_fieldB;
- public:
+ private:
   ::std::set<int32_t> fieldC;
  public:
   ::std::set<int32_t> req_fieldC;
  private:
   ::std::set<int32_t> opt_fieldC;
- public:
+ private:
   ::std::string fieldD;
- public:
+ private:
   ::std::string fieldE;
  public:
   ::std::string req_fieldE;

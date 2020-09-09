@@ -86,11 +86,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
- public:
+ private:
    ::cpp2::Included MyIncludedField;
- public:
+ private:
    ::cpp2::Included MyOtherIncludedField;
- public:
+ private:
    ::cpp2::IncludedInt64 MyIncludedInt;
 
  public:
