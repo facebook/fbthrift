@@ -24,6 +24,14 @@ namespace apache::thrift::conformance {
 const Protocol Number1Serializer::kProtocol = Protocol("Number1");
 const Protocol kFollyToStringProtocol = Protocol("FollyToString");
 
+std::string toString(const folly::IOBuf& buf) {
+  std::string result;
+  folly::IOBufQueue queue;
+  queue.append(buf);
+  queue.appendToString(result);
+  return result;
+}
+
 void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
     const {
   if (value.type() == typeid(int)) {

@@ -21,13 +21,6 @@
 #include <gtest/gtest.h>
 #include <thrift/conformance/cpp2/Testing.h>
 
-// Helper so gtest prints out the line number when running the given check.
-#define SCOPED_CHECK(check) \
-  {                         \
-    SCOPED_TRACE(#check);   \
-    check;                  \
-  }
-
 namespace apache::thrift::conformance {
 
 namespace {
@@ -84,47 +77,47 @@ TEST(SerializerTest, MultiSerializer) {
   MultiSerializer multiSerializer;
   const AnySerializer& serializer = multiSerializer;
 
-  SCOPED_CHECK(multiSerializer.checkAndResetAll());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAndResetAll());
 
   // Can handle ints.
   EXPECT_EQ(encode(serializer, 1), "1");
-  SCOPED_CHECK(multiSerializer.checkIntEnc());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkIntEnc());
   EXPECT_EQ(decode<int>(serializer, "1"), 1);
-  SCOPED_CHECK(multiSerializer.checkIntDec());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkIntDec());
 
   // Can handle std::any(int).
   std::any a = decode(serializer, typeid(int), "1");
-  SCOPED_CHECK(multiSerializer.checkAnyIntDec());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAnyIntDec());
   EXPECT_EQ(std::any_cast<int>(a), 1);
   EXPECT_EQ(encode(serializer, a), "1");
-  SCOPED_CHECK(multiSerializer.checkIntEnc());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkIntEnc());
 
   // Can handle doubles.
   EXPECT_EQ(encode(serializer, 2.5), "2.5");
-  SCOPED_CHECK(multiSerializer.checkDblEnc());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkDblEnc());
   EXPECT_EQ(decode<double>(serializer, "0.5"), 0.5f);
-  SCOPED_CHECK(multiSerializer.checkDblDec());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkDblDec());
 
   // Can handle std::any(double).
   a = decode(serializer, typeid(double), "1");
-  SCOPED_CHECK(multiSerializer.checkAnyDblDec());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAnyDblDec());
   EXPECT_EQ(std::any_cast<double>(a), 1.0);
   EXPECT_EQ(encode(serializer, a), "1");
-  SCOPED_CHECK(multiSerializer.checkDblEnc());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkDblEnc());
 
   // Cannot handle float.
   EXPECT_THROW(encode(serializer, 1.0f), std::bad_any_cast);
-  SCOPED_CHECK(multiSerializer.checkAndResetAll());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAndResetAll());
   EXPECT_THROW(decode<float>(serializer, "1"), std::bad_any_cast);
-  SCOPED_CHECK(multiSerializer.checkAndResetAll());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAndResetAll());
 
   // Cannot handle std::any(float).
   a = 1.0f;
   EXPECT_THROW(decode(serializer, typeid(float), "1"), std::bad_any_cast);
-  SCOPED_CHECK(multiSerializer.checkAndResetAny(1));
-  SCOPED_CHECK(multiSerializer.checkAndResetAll());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAndResetAny(1));
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAndResetAll());
   EXPECT_THROW(encode(serializer, a), std::bad_any_cast);
-  SCOPED_CHECK(multiSerializer.checkAndResetAll());
+  THRIFT_SCOPED_CHECK(multiSerializer.checkAndResetAll());
 }
 
 } // namespace

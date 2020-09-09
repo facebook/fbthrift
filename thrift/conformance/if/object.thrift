@@ -16,6 +16,8 @@
 
 include "thrift/conformance/if/any.thrift"
 
+cpp_include "<folly/io/IOBuf.h>"
+
 namespace cpp2 apache.thrift.conformance
 
 // A dynamic struct/union/exception (e.g. a JSON Object).
@@ -32,9 +34,9 @@ union Value {
   // Integers.
   2: bool boolValue;
   3: byte byteValue;
-  4: i16  i16Value;
-  5: i32  i32Value;
-  6: i64  i64Value;
+  4: i16 i16Value;
+  5: i32 i32Value;
+  6: i64 i64Value;
 
   // Floats.
   7: float floatValue;
@@ -42,7 +44,7 @@ union Value {
 
   // Strings.
   9: string stringValue;
-  10: binary binaryValue;
+  10: binary (cpp.type = "folly::IOBuf") binaryValue;
 
   // Containers of values.
   11: list<Value> listValue;

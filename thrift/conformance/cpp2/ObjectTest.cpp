@@ -21,6 +21,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <thrift/conformance/cpp2/Protocol.h>
+#include <thrift/conformance/cpp2/Testing.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types_custom_protocol.h>
 
 namespace apache::thrift::conformance {
@@ -111,7 +112,7 @@ TEST(ObjectTest, String) {
 TEST(ObjectTest, Binary) {
   Value value = asValueStruct<type::binary_t>("hi");
   ASSERT_EQ(value.getType(), Value::binaryValue);
-  EXPECT_EQ(value.get_binaryValue(), "hi");
+  EXPECT_EQ(toString(value.get_binaryValue()), "hi");
 }
 
 TEST(ObjectTest, List) {

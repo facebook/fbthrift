@@ -60,21 +60,16 @@ struct ValueHelper {
 
 template <>
 struct ValueHelper<type::binary_t> {
-  static void set(Value& result, std::string value) {
+  static void set(Value& result, folly::IOBuf value) {
     result.set_binaryValue(std::move(value));
   }
-  static void set(Value& result, const char* value) {
-    set(result, std::string(value));
+  static void set(Value& result, std::string_view value) {
+    result.set_binaryValue(
+        folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()});
   }
   static void set(Value& result, folly::ByteRange value) {
-    set(result, std::string(value));
-  }
-  static void set(Value& result, const folly::IOBuf& value) {
-    folly::IOBufQueue queue;
-    queue.append(value);
-    std::string strValue;
-    queue.appendToString(strValue);
-    set(result, std::move(strValue));
+    result.set_binaryValue(
+        folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()});
   }
 };
 

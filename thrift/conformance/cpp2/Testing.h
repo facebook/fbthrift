@@ -22,6 +22,7 @@
 
 #include <folly/Conv.h>
 #include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
 #include <gtest/gtest.h>
 #include <thrift/conformance/cpp2/AnySerializer.h>
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
@@ -45,6 +46,8 @@ constexpr StandardProtocol kUnknownStdProtocol =
 inline const Protocol& UnknownProtocol() {
   return getStandardProtocol<kUnknownStdProtocol>();
 }
+
+std::string toString(const folly::IOBuf& buf);
 
 // Checks round trips using the given serializer.
 template <typename S, typename T>

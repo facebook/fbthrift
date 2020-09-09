@@ -24,14 +24,6 @@ namespace apache::thrift::conformance {
 
 namespace {
 
-std::string toString(const folly::IOBuf& buf) {
-  std::string result;
-  folly::IOBufQueue queue;
-  queue.append(buf);
-  queue.appendToString(result);
-  return result;
-}
-
 TEST(AnyTest, Registry) {
   AnyRegistry registry;
   EXPECT_EQ(registry.getTypeName(typeid(int)), "");
