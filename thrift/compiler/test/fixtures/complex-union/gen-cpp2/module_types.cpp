@@ -413,7 +413,9 @@ bool DataUnion::operator==(const DataUnion& rhs) const {
   switch(type_) {
     case Type::binaryData:
     {
-      return value_.binaryData == rhs.value_.binaryData;
+      return apache::thrift::StringTraits<std::string>::isEqual(
+          value_.binaryData,
+          rhs.value_.binaryData);
     }
     case Type::stringData:
     {
@@ -435,7 +437,8 @@ bool DataUnion::operator<(const DataUnion& rhs) const {
   }
   switch (lhs.type_) {
     case Type::binaryData:
-      return lhs.value_.binaryData < rhs.value_.binaryData;
+    return !apache::thrift::StringTraits<std::string>::isEqual(value_.binaryData, rhs.value_.binaryData) &&
+      apache::thrift::StringTraits<std::string>::isLess(value_.binaryData, rhs.value_.binaryData);
     case Type::stringData:
       return lhs.value_.stringData < rhs.value_.stringData;
     default:

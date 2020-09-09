@@ -26,7 +26,16 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
       return *value_.<%field:cpp_name%> == *rhs.value_.<%field:cpp_name%>;
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
+<%#field:type%>
+<%#type:binary?%>
+      return apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(
+          value_.<%field:cpp_name%><%type:cpp_indirection%>,
+          rhs.value_.<%field:cpp_name%><%type:cpp_indirection%>);
+<%/type:binary?%>
+<%^type:binary?%>
       return value_.<%field:cpp_name%> == rhs.value_.<%field:cpp_name%>;
+<%/type:binary?%>
+<%/field:type%>
 <%/field:cpp_ref?%>
     }
 <%/struct:fields%>

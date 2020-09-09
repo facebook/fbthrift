@@ -1117,11 +1117,15 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     }
     case Type::MyBinaryField:
     {
-      return value_.MyBinaryField == rhs.value_.MyBinaryField;
+      return apache::thrift::StringTraits<std::string>::isEqual(
+          value_.MyBinaryField,
+          rhs.value_.MyBinaryField);
     }
     case Type::MyBinaryField2:
     {
-      return value_.MyBinaryField2 == rhs.value_.MyBinaryField2;
+      return apache::thrift::StringTraits<std::string>::isEqual(
+          value_.MyBinaryField2,
+          rhs.value_.MyBinaryField2);
     }
     case Type::MyBinaryListField4:
     {
@@ -1197,9 +1201,11 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
     case Type::a_union_typedef_list:
       return lhs.value_.a_union_typedef_list < rhs.value_.a_union_typedef_list;
     case Type::MyBinaryField:
-      return lhs.value_.MyBinaryField < rhs.value_.MyBinaryField;
+    return !apache::thrift::StringTraits<std::string>::isEqual(value_.MyBinaryField, rhs.value_.MyBinaryField) &&
+      apache::thrift::StringTraits<std::string>::isLess(value_.MyBinaryField, rhs.value_.MyBinaryField);
     case Type::MyBinaryField2:
-      return lhs.value_.MyBinaryField2 < rhs.value_.MyBinaryField2;
+    return !apache::thrift::StringTraits<std::string>::isEqual(value_.MyBinaryField2, rhs.value_.MyBinaryField2) &&
+      apache::thrift::StringTraits<std::string>::isLess(value_.MyBinaryField2, rhs.value_.MyBinaryField2);
     case Type::MyBinaryListField4:
       return lhs.value_.MyBinaryListField4 < rhs.value_.MyBinaryListField4;
     case Type::ref_field:
