@@ -122,11 +122,7 @@ impl From<TType> for CType {
 
 impl From<bool> for CType {
     fn from(b: bool) -> CType {
-        if b {
-            CType::BoolTrue
-        } else {
-            CType::BoolFalse
-        }
+        if b { CType::BoolTrue } else { CType::BoolFalse }
     }
 }
 
