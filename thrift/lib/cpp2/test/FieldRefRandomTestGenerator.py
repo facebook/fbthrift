@@ -109,7 +109,7 @@ def gen_cpp_file(install_dir, idx):
         out("using apache::thrift::optional_field_ref;")
         out(f"TEST(Test, Num{idx}) {{")
         gen_define_variables(out)
-        for _ in range(500):
+        for _ in range(100):
             gen_test_method(out)
         out("}")
 
