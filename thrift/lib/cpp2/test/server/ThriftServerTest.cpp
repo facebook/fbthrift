@@ -1595,3 +1595,63 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
   }
   base.loop();
 }
+
+TEST(ThriftServer, QueueTimeoutStressTest) {
+  // Make sure we only open one connection to the server.
+  auto ioExecutor = std::make_shared<folly::IOThreadPoolExecutor>(1);
+  folly::setIOExecutor(ioExecutor);
+
+  static std::atomic<int> server_reply = 0;
+  static std::atomic<int> received_reply = 0;
+
+  class SendResponseInterface : public TestServiceSvIf {
+    void sendResponse(std::string& _return, int64_t id) override {
+      DCHECK(lastSeenId_ < id);
+
+      if (lastSeenId_ + 1 == id) {
+        std::this_thread::sleep_for(sleepTime_);
+        sleepTime_ *= 2;
+      } else {
+        sleepTime_ = std::chrono::microseconds{1};
+      }
+      server_reply++;
+      lastSeenId_ = id;
+      _return = "wow";
+    }
+
+    std::chrono::microseconds sleepTime_{1};
+    int64_t lastSeenId_{-1};
+  };
+
+  constexpr size_t kNumReqs = 50000;
+
+  {
+    ScopedServerInterfaceThread runner(
+        std::make_shared<SendResponseInterface>());
+    runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds{10});
+
+    auto client = runner.newClient<TestServiceAsyncClient>(
+        nullptr /* executor */, [](auto socket) mutable {
+          return RocketClientChannel::newChannel(std::move(socket));
+        });
+
+    std::vector<folly::SemiFuture<std::string>> futures;
+    for (size_t req = 0; req < kNumReqs; ++req) {
+      futures.emplace_back(client->semifuture_sendResponse(req));
+    }
+    size_t exceptions = 0;
+    for (auto& future : futures) {
+      auto t = std::move(future).getTry();
+      if (t.hasValue()) {
+        ++received_reply;
+      } else {
+        ++exceptions;
+      }
+    }
+
+    EXPECT_LT(exceptions, kNumReqs);
+    EXPECT_GT(exceptions, 0);
+  }
+
+  EXPECT_EQ(received_reply, server_reply);
+}
