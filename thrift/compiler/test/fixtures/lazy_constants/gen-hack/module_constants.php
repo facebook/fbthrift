@@ -5,7 +5,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-class module_CONSTANTS implements \IThriftConstants {
+class test\fixtures\lazy_constantsCONSTANTS implements \IThriftConstants {
   /**
    * Original thrift constant:-
    * i32 myInt
@@ -65,9 +65,9 @@ class module_CONSTANTS implements \IThriftConstants {
    * Original thrift constant:-
    * map<enum module.Company, i32> const_enum_map
    */
-  const dict<Company, int> const_enum_map = dict[
-    Company::FACEBOOK => 123,
-    Company::WHATSAPP => 2,
+  const dict<\test\fixtures\lazy_constants\Company, int> const_enum_map = dict[
+    \test\fixtures\lazy_constants\Company::FACEBOOK => 123,
+    \test\fixtures\lazy_constants\Company::WHATSAPP => 2,
   ];
 
   /**
@@ -75,12 +75,12 @@ class module_CONSTANTS implements \IThriftConstants {
    * struct module.Internship instagram
    */
   <<__Memoize>>
-  public static function instagram(): Internship{
-    return Internship::fromShape(
+  public static function instagram(): \test\fixtures\lazy_constants\Internship{
+    return \test\fixtures\lazy_constants\Internship::fromShape(
       shape(
         "weeks" => 12,
         "title" => "Software Engineer",
-        "employer" => Company::INSTAGRAM,
+        "employer" => \test\fixtures\lazy_constants\Company::INSTAGRAM,
       )
     );
   }
@@ -90,15 +90,15 @@ class module_CONSTANTS implements \IThriftConstants {
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges(): vec<Range>{
+  public static function kRanges(): vec<\test\fixtures\lazy_constants\Range>{
     return vec[
-      Range::fromShape(
+      \test\fixtures\lazy_constants\Range::fromShape(
         shape(
           "min" => 1,
           "max" => 2,
         )
       ),
-      Range::fromShape(
+      \test\fixtures\lazy_constants\Range::fromShape(
         shape(
           "min" => 5,
           "max" => 6,
@@ -112,20 +112,20 @@ class module_CONSTANTS implements \IThriftConstants {
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList(): vec<Internship>{
+  public static function internList(): vec<\test\fixtures\lazy_constants\Internship>{
     return vec[
-      Internship::fromShape(
+      \test\fixtures\lazy_constants\Internship::fromShape(
         shape(
           "weeks" => 12,
           "title" => "Software Engineer",
-          "employer" => Company::INSTAGRAM,
+          "employer" => \test\fixtures\lazy_constants\Company::INSTAGRAM,
         )
       ),
-      Internship::fromShape(
+      \test\fixtures\lazy_constants\Internship::fromShape(
         shape(
           "weeks" => 10,
           "title" => "Sales Intern",
-          "employer" => Company::FACEBOOK,
+          "employer" => \test\fixtures\lazy_constants\Company::FACEBOOK,
         )
       ),
     ];

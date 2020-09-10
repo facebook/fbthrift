@@ -15,6 +15,7 @@
  */
 
 namespace java.swift test.fixtures.lazy_constants
+namespace hack test.fixtures.lazy_constants
 
 const i32 myInt = 1337;
 const string name = "Mark Zuckerberg";

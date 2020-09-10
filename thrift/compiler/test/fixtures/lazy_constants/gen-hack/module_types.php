@@ -6,6 +6,8 @@
  *  @generated
  */
 
+namespace test\fixtures\lazy_constants;
+
 /**
  * Original thrift enum:-
  * City
@@ -47,7 +49,7 @@ class Internship implements \IThriftStruct {
     3 => shape(
       'var' => 'employer',
       'type' => \TType::I32,
-      'enum' => Company::class,
+      'enum' => \test\fixtures\lazy_constants\Company::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -59,7 +61,7 @@ class Internship implements \IThriftStruct {
   const type TConstructorShape = shape(
     ?'weeks' => int,
     ?'title' => string,
-    ?'employer' => ?Company,
+    ?'employer' => ?\test\fixtures\lazy_constants\Company,
   );
 
   const int STRUCTURAL_ID = 749038867953722654;
@@ -77,10 +79,10 @@ class Internship implements \IThriftStruct {
    * Original thrift field:-
    * 3: enum module.Company employer
    */
-  public ?Company $employer;
+  public ?\test\fixtures\lazy_constants\Company $employer;
 
   <<__Rx>>
-  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  ) {
+  public function __construct(?int $weeks = null, ?string $title = null, ?\test\fixtures\lazy_constants\Company $employer = null  ) {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
