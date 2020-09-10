@@ -65,30 +65,22 @@ using binary_t = detail::primitive_type<
 // The enum class of types.
 using enum_c = detail::base_type<BaseType::Enum>;
 template <typename E>
-struct enum_t : detail::concrete_type<enum_c, types<E>> {
-  static_assert(std::is_enum_v<E>, "expected enum type");
-};
+using enum_t = detail::cpp_type<BaseType::Enum, E>;
 
 // The struct class of types.
 using struct_c = detail::base_type<BaseType::Struct>;
 template <typename T>
-struct struct_t : detail::concrete_type<struct_c, types<T>> {
-  // TODO(afuller): Static assert T is a thrift struct.
-};
+using struct_t = detail::cpp_type<BaseType::Struct, T>;
 
 // The union class of types.
 using union_c = detail::base_type<BaseType::Union>;
 template <typename T>
-struct union_t : detail::concrete_type<union_c, types<T>> {
-  // TODO(afuller): Static assert T is a thrift union.
-};
+using union_t = detail::cpp_type<BaseType::Union, T>;
 
 // The exception class of types.
 using exception_c = detail::base_type<BaseType::Exception>;
 template <typename T>
-struct exception_t : detail::concrete_type<exception_c, types<T>> {
-  // TODO(afuller): Static assert T is a thrift exception.
-};
+using exception_t = detail::cpp_type<BaseType::Exception, T>;
 
 // The list class of types.
 using list_c = detail::base_type<BaseType::List>;
@@ -132,27 +124,29 @@ using singular_types = fatal::cat<primitive_types, structured_types>;
 using container_types = types<type::list_c, type::set_c, type::map_c>;
 // Types that are composites of other types.
 using composite_types = fatal::cat<structured_types, container_types>;
+// All types.
+using all_types = fatal::cat<singular_types, container_types>;
 
 // Types that are only defined if the given type belongs to the
 // given group.
 template <typename T, typename R = void>
-using if_integral = detail::if_contains_bt<integral_types, T, R>;
+using if_integral = detail::if_contains<integral_types, T, R>;
 template <typename T, typename R = void>
-using if_floating_point = detail::if_contains_bt<floating_point_types, T, R>;
+using if_floating_point = detail::if_contains<floating_point_types, T, R>;
 template <typename T, typename R = void>
-using if_numeric = detail::if_contains_bt<numeric_types, T, R>;
+using if_numeric = detail::if_contains<numeric_types, T, R>;
 template <typename T, typename R = void>
-using if_string = detail::if_contains_bt<string_types, T, R>;
+using if_string = detail::if_contains<string_types, T, R>;
 template <typename T, typename R = void>
-using if_primitive = detail::if_contains_bt<primitive_types, T, R>;
+using if_primitive = detail::if_contains<primitive_types, T, R>;
 template <typename T, typename R = void>
-using if_structured = detail::if_contains_bt<structured_types, T, R>;
+using if_structured = detail::if_contains<structured_types, T, R>;
 template <typename T, typename R = void>
-using if_singular = detail::if_contains_bt<singular_types, T, R>;
+using if_singular = detail::if_contains<singular_types, T, R>;
 template <typename T, typename R = void>
-using if_container = detail::if_contains_bt<container_types, T, R>;
+using if_container = detail::if_contains<container_types, T, R>;
 template <typename T, typename R = void>
-using if_composite = detail::if_contains_bt<composite_types, T, R>;
+using if_composite = detail::if_contains<composite_types, T, R>;
 
 // Only defined if T has the BaseType B.
 template <typename T, BaseType B, typename R = void>

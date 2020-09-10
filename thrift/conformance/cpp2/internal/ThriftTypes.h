@@ -20,11 +20,17 @@
 #include <set>
 #include <vector>
 
+#include <fatal/type/array.h>
 #include <fatal/type/find.h>
+#include <fatal/type/sequence.h>
 #include <fatal/type/sort.h>
 #include <fatal/type/transform.h>
+#include <fmt/core.h>
+#include <folly/CPortability.h>
+#include <folly/String.h>
 #include <folly/Traits.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
+#include <thrift/lib/cpp2/reflection/reflection.h>
 
 namespace apache::thrift::conformance::detail {
 
@@ -62,12 +68,14 @@ using if_all_concrete = std::enable_if_t<(is_concrete_type_v<Ts> && ...)>;
 
 template <typename... Ts>
 struct types {
-  template <typename T>
-  static constexpr bool contains = fatal::contains<types, T>::value;
-
   template <BaseType B>
   static constexpr bool contains_bt =
       !fatal::empty<fatal::filter<types, has_base_type<B>>>::value;
+
+  // TODO(afuller): Make work for list of arbitrary thrift types, instead
+  // of just the base thrift types (which are the only ones currently defined).
+  template <typename T>
+  static constexpr bool contains = contains_bt<T::kBaseType>;
 
   // The Ith type.
   template <size_t I>
@@ -79,12 +87,22 @@ struct types {
 };
 
 template <typename Ts, typename T, typename R = void>
-using if_contains_bt =
-    std::enable_if_t<Ts::template contains_bt<T::kBaseType>, R>;
+using if_contains = std::enable_if_t<Ts::template contains<T>, R>;
 
 template <BaseType B>
 struct base_type {
   static constexpr BaseType kBaseType = B;
+  FOLLY_EXPORT static const std::string& getName() {
+    static std::string kValue = []() {
+      std::string name;
+      if (const char* cname = TEnumTraits<BaseType>::findName(B)) {
+        name = cname;
+        folly::toLowerAscii(name);
+      }
+      return name;
+    }();
+    return kValue;
+  }
 };
 
 template <typename Base, typename NativeTs>
@@ -92,6 +110,40 @@ struct concrete_type : Base {
   using native_types = NativeTs;
   using native_type = fatal::first<NativeTs>;
 };
+
+template <BaseType B, typename T>
+struct cpp_type : concrete_type<base_type<B>, types<T>> {
+  FOLLY_EXPORT static const std::string& getName() {
+    static const std::string kName = []() {
+      // TODO(afuller): Add an Any type name annotation, and
+      // use that.
+      if constexpr (B == BaseType::Enum) {
+        using info = reflect_enum<T>;
+        using module = reflect_module<typename info::module>;
+        return fmt::format(
+            "{}.{}",
+            fatal::z_data<typename module::name>(),
+            fatal::z_data<typename info::traits::name>());
+      } else if constexpr (B == BaseType::Union) {
+        using info = reflect_variant<T>;
+        using module = reflect_module<typename info::module>;
+        return fmt::format(
+            "{}.{}",
+            fatal::z_data<typename module::name>(),
+            fatal::z_data<typename info::traits::name>());
+
+      } else {
+        using info = reflect_struct<T>;
+        using module = reflect_module<typename info::module>;
+        return fmt::format(
+            "{}.{}",
+            fatal::z_data<typename module::name>(),
+            fatal::z_data<typename info::name>());
+      }
+    }();
+    return kName;
+  }
+}; // namespace apache::thrift::conformance::detail
 
 template <typename T, typename A>
 using expand_types = fatal::transform<typename T::native_types, A>;
@@ -102,6 +154,11 @@ using primitive_type = concrete_type<base_type<B>, types<NativeTs...>>;
 template <typename VT>
 struct base_list : base_type<BaseType::List> {
   using value_type = VT;
+
+  FOLLY_EXPORT static const std::string& getName() {
+    static const std::string kName = fmt::format("list<{}>", VT::getName());
+    return kName;
+  }
 };
 
 template <typename VT, typename = void>
@@ -114,6 +171,10 @@ struct list<VT, if_all_concrete<VT>>
 template <typename VT>
 struct base_set : base_type<BaseType::Set> {
   using value_type = VT;
+  FOLLY_EXPORT static const std::string& getName() {
+    static const std::string kName = fmt::format("set<{}>", VT::getName());
+    return kName;
+  }
 };
 
 template <typename VT, typename = void>
@@ -127,6 +188,11 @@ template <typename KT, typename VT>
 struct base_map : base_type<BaseType::Map> {
   using key_type = KT;
   using mapped_type = VT;
+  FOLLY_EXPORT static const std::string& getName() {
+    static const std::string kName =
+        fmt::format("map<{}, {}>", KT::getName(), VT::getName());
+    return kName;
+  }
 };
 
 template <typename KT, typename VT, typename = void>
