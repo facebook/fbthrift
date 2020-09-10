@@ -28,9 +28,18 @@ from thrift.py3.common cimport Protocol
 
 cdef extern from *:
     """
+    // Py_SET_TYPE is new in Python 3.9 and this is a suggested replacement for
+    // older versions.
+    #if defined(Py_SET_TYPE)
+    #define APACHE_THRIFT_DETAIL_Py_SET_TYPE(obj, type) \
+        Py_SET_TYPE(obj, type)
+    #else
+    #define APACHE_THRIFT_DETAIL_Py_SET_TYPE(obj, type) \
+        ((Py_TYPE(obj) = (type)), (void)0)
+    #endif
     static CYTHON_INLINE void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
     {
-        Py_TYPE(t) = m;
+        APACHE_THRIFT_DETAIL_Py_SET_TYPE(t, m);
         PyType_Modified(t);
     }
     """
