@@ -16,8 +16,8 @@
 import asyncio
 import unittest
 
-from thrift.py3 import RpcOptions, get_client
-from thrift.py3.client import ClientType
+from thrift.py3.client import ClientType, get_client
+from thrift.py3.common import RpcOptions
 from thrift.py3.test.included.included.types import Included
 from thrift.py3.test.server import TestServer
 from thrift.py3.test.stream.clients import StreamTestService

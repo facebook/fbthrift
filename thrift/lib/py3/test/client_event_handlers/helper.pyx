@@ -15,7 +15,7 @@
 from libcpp.memory cimport make_shared, static_pointer_cast, shared_ptr
 
 from thrift.py3.client cimport Client, cTProcessorEventHandler
-from thrift.py3 import get_client as _get_client
+from thrift.py3.client import get_client as _get_client
 from thrift.py3.test.client_event_handler.handler cimport cTestClientEventHandler
 
 cdef class TestHelper:
@@ -36,4 +36,3 @@ cdef class TestHelper:
 
     def is_handler_called(self):
         return self.handler.get().preWriteCalled()
-

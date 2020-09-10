@@ -28,15 +28,19 @@ from testing.types import (
     easy,
     hard,
 )
-from thrift.py3 import Error, Protocol, Struct, deserialize, serialize
+from thrift.py3.common import Protocol
+from thrift.py3.exceptions import Error
 from thrift.py3.serializer import (
     Transform,
+    deserialize,
     deserialize_from_header,
     deserialize_with_length,
+    serialize,
     serialize_iobuf,
     serialize_with_header,
     serialize_with_header_iobuf,
 )
+from thrift.py3.types import Struct
 
 
 class SerializerTests(unittest.TestCase):

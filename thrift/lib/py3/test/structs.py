@@ -32,7 +32,9 @@ from testing.types import (
     mixed,
     numerical,
 )
-from thrift.py3 import Protocol, Struct, deserialize
+from thrift.py3.common import Protocol
+from thrift.py3.serializer import deserialize
+from thrift.py3.types import Struct
 
 
 class StructTests(unittest.TestCase):

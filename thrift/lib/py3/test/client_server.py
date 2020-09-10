@@ -21,7 +21,6 @@ import unittest
 from pathlib import Path
 from typing import Optional, Sequence
 
-import thrift.py3.server
 from derived.clients import DerivedTestingService
 from derived.services import DerivedTestingServiceInterface
 from folly.iobuf import IOBuf
@@ -31,16 +30,16 @@ from stack_args.types import simple
 from testing.clients import TestingService
 from testing.services import TestingServiceInterface
 from testing.types import Color, HardError, easy
-from thrift.py3 import (
-    Protocol,
+from thrift.py3.client import ClientType, get_client
+from thrift.py3.common import Protocol, RpcOptions
+from thrift.py3.exceptions import TransportError
+from thrift.py3.server import (
     RequestContext,
-    RpcOptions,
+    ServiceInterface,
+    SocketAddress,
     ThriftServer,
-    TransportError,
-    get_client,
     get_context,
 )
-from thrift.py3.client import ClientType
 from thrift.py3.test.cpp_handler import CppHandler
 
 
@@ -97,12 +96,12 @@ class TestServer:
     def __init__(
         self,
         ip: Optional[str] = None,
-        path: Optional["thrift.py3.server.Path"] = None,
-        handler: thrift.py3.server.ServiceInterface = Handler(),  # noqa: B008
+        path: Optional["Path"] = None,
+        handler: ServiceInterface = Handler(),  # noqa: B008
     ) -> None:
         self.server = ThriftServer(handler, ip=ip, path=path)
 
-    async def __aenter__(self) -> thrift.py3.server.SocketAddress:
+    async def __aenter__(self) -> SocketAddress:
         self.serve_task = asyncio.get_event_loop().create_task(self.server.serve())
         return await self.server.get_address()
 

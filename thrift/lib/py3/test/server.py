@@ -21,8 +21,12 @@ from typing import Sequence
 
 from testing.services import TestingServiceInterface
 from testing.types import Color, easy
-from thrift.py3 import RequestContext, ThriftServer
-from thrift.py3.server import SocketAddress, getServiceName
+from thrift.py3.server import (
+    RequestContext,
+    SocketAddress,
+    ThriftServer,
+    getServiceName,
+)
 
 
 class Handler(TestingServiceInterface):

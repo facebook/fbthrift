@@ -25,9 +25,9 @@ import unittest
 
 from testing.clients import TestingService
 from testing.types import Color, I32List, easy
-from thrift.py3 import Priority, RpcOptions, TransportError, get_client
-from thrift.py3.client import get_proxy_factory, install_proxy_factory
-from thrift.py3.common import WriteHeaders
+from thrift.py3.client import get_client, get_proxy_factory, install_proxy_factory
+from thrift.py3.common import Priority, RpcOptions, WriteHeaders
+from thrift.py3.exceptions import TransportError
 from thrift.py3.test.client_event_handler.helper import (
     TestHelper as ClientEventHandlerTestHelper,
 )

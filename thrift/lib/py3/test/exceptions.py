@@ -16,7 +16,7 @@
 import unittest
 
 from testing.types import Color, HardError, SimpleError, UnfriendlyError, UnusedError
-from thrift.py3 import Error
+from thrift.py3.exceptions import Error
 
 from .exception_helper import simulate_HardError, simulate_UnusedError
 
