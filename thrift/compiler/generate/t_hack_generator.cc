@@ -988,15 +988,14 @@ void t_hack_generator::init_generator() {
     f_consts_ << "<?hh // strict\n" << autogen_comment();
     constants_values_.clear();
     string const_namespace = php_namespace(program_);
-    if (const_namespace != "") {
-      f_consts_ << "class " << const_namespace << "CONSTANTS ";
-    } else {
-      if (!hack_ns.empty()) {
-        f_consts_ << "namespace " << hack_ns << ";\n\n";
-      }
-      f_consts_ << "class " << program_name_ << "_CONSTANTS ";
+    if (!hack_ns.empty()) {
+      f_consts_ << "namespace " << hack_ns << ";\n\n";
     }
-    f_consts_ << "implements \\IThriftConstants {\n";
+    f_consts_ << "class "
+              << (!hack_ns.empty() || const_namespace == ""
+                      ? program_name_ + "_"
+                      : const_namespace)
+              << "CONSTANTS implements \\IThriftConstants {\n";
   }
 }
 
