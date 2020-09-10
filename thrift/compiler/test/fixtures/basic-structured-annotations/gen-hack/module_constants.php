@@ -10,17 +10,15 @@ class module_CONSTANTS implements \IThriftConstants {
    * Original thrift constant:-
    * map<string, string> MyConst
    */
-  public static Map<string, string> $MyConst = Map {
+  <<__Memoize>>
+  public static function MyConst(): ConstMap<string, string>{
+    return ImmMap {
       "ENUMERATOR" => "enum",
       "CONST" => "const",
     };
+  }
 
-  public static dict<string, mixed> $__values = dict[
-    "MyConst" => Map {
-        "ENUMERATOR" => "enum",
-        "CONST" => "const",
-      },
-  ];
+
   public static function getAllStructuredAnnotations(): dict<string, dict<string, \IThriftStruct>> {
     return dict[
       'MyConst' => dict[

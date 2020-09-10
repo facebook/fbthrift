@@ -60,7 +60,6 @@ class t_hack_generator : public t_oop_generator {
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
     shapes_allow_unknown_fields_ =
         option_is_specified(parsed_options, "shapes_allow_unknown_fields");
-    lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
     array_migration_ = option_is_specified(parsed_options, "array_migration");
     arrays_ = option_is_specified(parsed_options, "arrays");
     no_use_hack_collections_ =
@@ -624,11 +623,6 @@ class t_hack_generator : public t_oop_generator {
   bool shapes_allow_unknown_fields_;
 
   /**
-   * True if we should generate lazy initialization code for constants
-   */
-  bool lazy_constants_;
-
-  /**
    * True to use darrays instead of dicts for internal constructs
    */
   bool array_migration_;
@@ -1010,26 +1004,6 @@ void t_hack_generator::close_generator() {
     // write out the values array
     indent_up();
     f_consts_ << "\n";
-    if (!lazy_constants_) {
-      indent(f_consts_) << "public static "
-                        << generate_array_typehint("string", "mixed")
-                        << " $__values = " << array_keyword_ << "[\n";
-      std::copy(
-          constants_values_.begin(),
-          constants_values_.end(),
-          std::ostream_iterator<string>(f_consts_, ",\n"));
-      indent(f_consts_) << "];\n";
-    } else {
-      stringstream oss(stringstream::out);
-      oss << array_keyword_ << "[\n";
-      std::copy(
-          constants_values_.begin(),
-          constants_values_.end(),
-          std::ostream_iterator<string>(oss, ",\n"));
-      indent(oss) << "    ]";
-
-      string rendered_value = oss.str();
-    }
     // write structured annotations
     f_consts_ << indent()
               << "public static function getAllStructuredAnnotations(): "
@@ -1119,55 +1093,25 @@ void t_hack_generator::generate_const(t_const* tconst) {
 
   indent_up();
   generate_php_docstring(f_consts_, tconst);
-  if (lazy_constants_) {
-    bool is_hack_const = is_hack_const_type(type);
-    f_consts_ << indent();
-    // for base hack types, use const (guarantees optimization in hphp)
-    if (is_hack_const) {
-      f_consts_ << "const " << type_to_typehint(type) << " " << name << " = ";
-      // cannot use const for objects (incl arrays). use static
-    } else {
-      f_consts_ << "<<__Memoize>>\n"
-                << indent() << "public static function " << name
-                << "(): " << type_to_typehint(type, false, false, true)
-                << "{\n";
-      indent_up();
-      f_consts_ << indent() << "return ";
-    }
-    f_consts_ << render_const_value(type, value, true) << ";\n";
-    if (!is_hack_const) {
-      indent_down();
-      f_consts_ << indent() << "}\n";
-    }
-    f_consts_ << "\n";
+  bool is_hack_const = is_hack_const_type(type);
+  f_consts_ << indent();
+  // for base hack types, use const (guarantees optimization in hphp)
+  if (is_hack_const) {
+    f_consts_ << "const " << type_to_typehint(type) << " " << name << " = ";
+    // cannot use const for objects (incl arrays). use static
   } else {
-    // for base php types, use const (guarantees optimization in hphp)
-    if (type->is_base_type()) {
-      indent(f_consts_) << "const " << type_to_typehint(type) << " " << name
-                        << " = ";
-      // cannot use const for objects (incl arrays). use static
-    } else {
-      indent(f_consts_) << "public static " << type_to_typehint(type) << " $"
-                        << name << " = ";
-    }
+    f_consts_ << "<<__Memoize>>\n"
+              << indent() << "public static function " << name
+              << "(): " << type_to_typehint(type, false, false, true) << "{\n";
     indent_up();
-    f_consts_ << render_const_value(type, value);
-    indent_down();
-    f_consts_ << ";\n";
-
-    // add the definitions to a values array as well
-    // indent up cause we're going to be in an array definition
-    indent_up();
-    stringstream oss(stringstream::out);
-    indent(oss) << render_string(name) << " => ";
-    indent_up();
-
-    oss << render_const_value(type, value);
-    indent_down();
-    indent_down();
-    constants_values_.push_back(oss.str());
+    f_consts_ << indent() << "return ";
   }
-
+  f_consts_ << render_const_value(type, value, true) << ";\n";
+  if (!is_hack_const) {
+    indent_down();
+    f_consts_ << indent() << "}\n";
+  }
+  f_consts_ << "\n";
   indent_down();
 }
 
@@ -5170,7 +5114,6 @@ THRIFT_REGISTER_GENERATOR(
     "    shape_arraykeys  When generating Shape definition for structs:\n"
     "                        replace array<string, TValue> with array<arraykey, TValue>\n"
     "    shapes_allow_unknown_fields Allow unknown fields and implicit subtyping for shapes \n"
-    "    lazy_constants   Generate lazy initialization code for global constants.\n"
     "    frommap_construct Generate fromMap_DEPRECATED method to migrate from mapconstruct.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
