@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/TypeClass.h>
 
 #include <folly/Traits.h>
+#include <folly/functional/Invoke.h>
 #include <initializer_list>
 #include <utility>
 
@@ -131,6 +132,11 @@ struct is_safe_overload<Class, T> {
 template <typename Class, typename... Args>
 using safe_overload_t = typename std::enable_if<
     detail::is_safe_overload<Class, Args...>::type::value>::type;
+
+namespace detail {
+FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __clear);
+}
+FOLLY_INLINE_VARIABLE constexpr detail::clear_fn clear;
 
 } // namespace thrift
 } // namespace apache

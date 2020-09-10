@@ -618,3 +618,15 @@ TEST_F(StructTest, noexcept_move_annotation) {
   c = std::move(b);
   EXPECT_EQ(c.get_string_field(), "hello world");
 }
+
+TEST_F(StructTest, clear) {
+  Basic obj;
+  obj.def_field_ref() = 7;
+  obj.req_field_ref() = 8;
+  obj.opt_field_ref() = 9;
+  apache::thrift::clear(obj);
+  EXPECT_FALSE(obj.def_field_ref().is_set());
+  EXPECT_EQ(0, *obj.def_field_ref());
+  EXPECT_EQ(0, *obj.req_field_ref());
+  EXPECT_FALSE(obj.opt_field_ref());
+}
