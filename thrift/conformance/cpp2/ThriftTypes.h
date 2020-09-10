@@ -99,6 +99,26 @@ using map = detail::map<KT, VT>;
 
 } // namespace type
 
+// If a given type tag refers to concrete type and not a class of types.
+// For example:
+//     is_concrete_type_v<type::byte_t> -> true
+//     is_concrete_type_v<type::list_c> -> false
+//     is_concrete_type_v<type::list<type::byte_t>> -> true
+//     is_concrete_type_v<type::list<type::struct_c>> -> false
+template <typename T>
+using is_concrete_type = detail::is_concrete_type<T>;
+template <typename T>
+inline constexpr bool is_concrete_type_v = is_concrete_type<T>::value;
+template <typename T, typename R = void>
+using if_concrete = std::enable_if<is_concrete_type_v<T>, R>;
+
+namespace bound {
+struct is_concrete_type {
+  template <typename T>
+  using apply = detail::is_concrete_type<T>;
+};
+} // namespace bound
+
 // Useful groupings of primitive types.
 using integral_types = types<
     type::bool_t,
@@ -151,18 +171,5 @@ using if_composite = detail::if_contains<composite_types, T, R>;
 // Only defined if T has the BaseType B.
 template <typename T, BaseType B, typename R = void>
 using if_base_type = std::enable_if_t<B == T::kBaseType, R>;
-
-// If a given type tag refers to concrete type and not a class of types.
-// For example:
-//     is_concrete_type_v<type::byte_t> -> true
-//     is_concrete_type_v<type::list_c> -> false
-//     is_concrete_type_v<type::list<type::byte_t>> -> true
-//     is_concrete_type_v<type::list<type::struct_c>> -> false
-template <typename T>
-using is_concrete_type = detail::is_concrete_type<T>;
-template <typename T>
-inline constexpr bool is_concrete_type_v = is_concrete_type<T>::value;
-template <typename T, typename R = void>
-using if_concrete = std::enable_if<is_concrete_type_v<T>, R>;
 
 } // namespace apache::thrift::conformance

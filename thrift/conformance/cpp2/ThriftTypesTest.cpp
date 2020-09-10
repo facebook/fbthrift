@@ -432,5 +432,19 @@ TEST(ThriftTypesTest, Map) {
   EXPECT_TRUE(all_types::contains<tag_t>);
 }
 
+TEST(ThriftTypesTest, ConcreteType_Bound) {
+  IsSameType<
+      fatal::filter<all_types, bound::is_concrete_type>,
+      detail::types<
+          type::bool_t,
+          type::byte_t,
+          type::i16_t,
+          type::i32_t,
+          type::i64_t,
+          type::float_t,
+          type::double_t,
+          type::string_t,
+          type::binary_t>>();
+}
 } // namespace
 } // namespace apache::thrift::conformance
