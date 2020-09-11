@@ -24,6 +24,7 @@
 #include <typeinfo>
 #include <unordered_map>
 
+#include <folly/Utility.h>
 #include <folly/container/F14Map.h>
 #include <thrift/conformance/cpp2/AnyRef.h>
 #include <thrift/conformance/cpp2/AnySerializer.h>
@@ -57,6 +58,10 @@ class AnyRegistry {
 
   // Register a type's unique name.
   bool registerType(const std::type_info& type, std::string name);
+  // Register an alternative name for the given type.
+  //
+  // The type must already have been registered.
+  bool registerTypeAlt(const std::type_info& type, std::string altName);
 
   // Register a serializer for a given type.
   //
@@ -88,6 +93,10 @@ class AnyRegistry {
     return registerType(typeid(T), std::move(name));
   }
   template <typename T>
+  bool registerTypeAlt(std::string altName) {
+    return registerTypeAlt(typeid(T), std::move(altName));
+  }
+  template <typename T>
   bool registerSerializer(const AnySerializer* serializer) {
     return registerSerializer(typeid(T), serializer);
   }
@@ -96,20 +105,41 @@ class AnyRegistry {
     return registerSerializer(typeid(T), std::move(serializer));
   }
 
+  // Register the given names and serializers for the given type.
+  //
+  // Returns false iff any registration fails.
+  template <
+      typename Names = std::vector<std::string>,
+      typename Serializers = std::vector<const AnySerializer*>>
+  bool registerAll(
+      const std::type_info& type,
+      Names&& names,
+      Serializers&& serializers = {});
+
+  template <
+      typename T,
+      typename Names = std::vector<std::string>,
+      typename Serializers = std::vector<const AnySerializer*>>
+  bool registerAll(Names&& names, Serializers&& serializers = {}) {
+    return registerAll(
+        typeid(T),
+        std::forward<Names>(names),
+        std::forward<Serializers>(serializers));
+  }
+
  private:
   struct TypeEntry {
     TypeEntry(const std::type_info& type, std::string name)
         : type(type), name(std::move(name)) {}
 
     const std::type_info& type;
-    const std::string name; // Referenced by rev_index_.
+    const std::string name;
     folly::F14FastMap<Protocol, const AnySerializer*> serializers;
   };
 
   std::vector<std::unique_ptr<AnySerializer>> owned_serializers_;
-  // rev_index_ references TypeEntry.name.
-  folly::F14NodeMap<std::type_index, TypeEntry> registry_;
-  folly::F14FastMap<std::string_view, std::type_index> rev_index_;
+  folly::F14FastMap<std::type_index, TypeEntry> registry_;
+  folly::F14FastMap<std::string, std::type_index> rev_index_;
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
@@ -131,6 +161,29 @@ T AnyRegistry::load(const Any& value) const {
   T out;
   load(value, out);
   return out;
+}
+
+template <typename Names, typename Serializers>
+bool AnyRegistry::registerAll(
+    const std::type_info& type,
+    Names&& names,
+    Serializers&& serializers) {
+  auto nameItr = names.begin();
+  if (nameItr == names.end() ||
+      !registerType(type, folly::forward_like<Names>(*nameItr++))) {
+    return false;
+  }
+
+  // TODO(afuller): Make success atomic.
+  bool success = true;
+  for (; nameItr != names.end(); ++nameItr) {
+    success &= registerTypeAlt(type, folly::forward_like<Names>(*nameItr));
+  }
+  for (auto& serializer : serializers) {
+    success &=
+        registerSerializer(type, folly::forward_like<Serializers>(serializer));
+  }
+  return success;
 }
 
 } // namespace apache::thrift::conformance

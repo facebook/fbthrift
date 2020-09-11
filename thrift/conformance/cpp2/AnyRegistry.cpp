@@ -34,6 +34,18 @@ bool AnyRegistry::registerType(const std::type_info& type, std::string name) {
   return true;
 }
 
+bool AnyRegistry::registerTypeAlt(
+    const std::type_info& type,
+    std::string altName) {
+  if (altName.empty() || rev_index_.count(altName) > 0) {
+    return false;
+  }
+  // Type entry must exist.
+  registry_.at(std::type_index(type));
+  rev_index_.emplace(std::move(altName), std::type_index(type));
+  return true;
+}
+
 bool AnyRegistry::registerSerializer(
     const std::type_info& type,
     const AnySerializer* serializer) {
