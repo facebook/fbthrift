@@ -31,11 +31,14 @@ struct Any {
   // The unique name for this type.
   1: string type;
 
-  // The protocol used to encode the value.
-  2: protocol.ProtocolStruct protocol;
+  // The standard protocol used or StandardProtocol::None.
+  2: protocol.StandardProtocol protocol;
+  // The name of the custom protocol used, iff
+  // protocol == StandardProtocol::None.
+  3: optional string customProtocol;
 
   // The encoded value.
   // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> to make
   // moves cheaper (profile to see if this is better).
-  3: binary (cpp.type = "folly::IOBuf") data;
+  4: binary (cpp.type = "folly::IOBuf") data;
 }

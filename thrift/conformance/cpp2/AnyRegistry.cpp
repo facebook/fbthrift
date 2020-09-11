@@ -17,6 +17,7 @@
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 
 #include <folly/io/Cursor.h>
+#include <thrift/conformance/cpp2/Any.h>
 
 namespace apache::thrift::conformance {
 
@@ -93,13 +94,17 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
 
   Any result;
   result.type_ref() = entry->name;
-  result.protocol_ref() = protocol.asStruct();
+  if (protocol.isCustom()) {
+    result.customProtocol_ref() = protocol.custom();
+  } else {
+    result.protocol_ref() = protocol.standard();
+  }
   result.data_ref() = queue.moveAsValue();
   return result;
 }
 
 Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
-  if (Protocol(*value.protocol_ref()) == protocol) {
+  if (hasProtocol(value, protocol)) {
     return value;
   }
   return store(load(value), protocol);
@@ -107,8 +112,7 @@ Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
 
 void AnyRegistry::load(const Any& value, any_ref out) const {
   const auto* entry = getTypeEntry(*value.type_ref());
-  const auto* serializer =
-      getSerializer(entry, Protocol(*value.protocol_ref()));
+  const auto* serializer = getSerializer(entry, getProtocol(value));
   if (serializer == nullptr) {
     folly::throw_exception<std::bad_any_cast>();
   }
