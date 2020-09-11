@@ -385,7 +385,6 @@ void HeaderServerChannel::messageReceived(
     unique_ptr<THeader>&& header) {
   DestructorGuard dg(this);
 
-  uint32_t recvSeqId = header->getSequenceNumber();
   bool outOfOrder = (header->getFlags() & HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
   if (!outOfOrder_.has_value()) {
     outOfOrder_ = outOfOrder;
@@ -397,12 +396,6 @@ void HeaderServerChannel::messageReceived(
         folly::make_exception_wrapper<TTransportException>(
             "Bad out-of-order flag"));
     return;
-  }
-
-  if (!outOfOrder) {
-    // Create a new seqid for in-order messages because they might not
-    // be sequential.  This seqid is only used internally in HeaderServerChannel
-    recvSeqId = arrivalSeqId_++;
   }
 
   if (callback_) {
@@ -419,7 +412,12 @@ void HeaderServerChannel::messageReceived(
         messageReceiveErrorWrapped(std::move(ex));
         return;
       }
-      request->setInOrderRecvSequenceId(recvSeqId);
+      if (!request->isOneway()) {
+        // Create a new seqid for in-order messages because they might not
+        // be sequential.  This seqid is only used internally in
+        // HeaderServerChannel
+        request->setInOrderRecvSequenceId(arrivalSeqId_++);
+      }
     }
 
     auto ew = folly::try_and_catch<std::exception>(
