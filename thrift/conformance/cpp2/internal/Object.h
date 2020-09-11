@@ -256,6 +256,7 @@ class ObjectWriter : public BaseObjectAdapter {
   std::stack<Value*> cur_;
 
   void checkCur(Value::Type required) {
+    (void)required;
     assert(cur().getType() == required);
   }
 
