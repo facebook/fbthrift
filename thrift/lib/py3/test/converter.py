@@ -31,6 +31,7 @@ class ConverterTest(unittest.TestCase):
                 strSet={"hello", "world"},
                 strToIntMap={"one": 1, "two": 2},
                 color=ttypes.Color.GREEN,
+                name="myname",
             ),
         )
         self.assertEqual(simple.intField, 42)
@@ -39,6 +40,7 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(simple.strSet, {"hello", "world"})
         self.assertEqual(simple.strToIntMap, {"one": 1, "two": 2})
         self.assertEqual(simple.color, types.Color.GREEN)
+        self.assertEqual(simple.name_, "myname")
 
     def test_nested(self) -> None:
         nested = to_py3_struct(
@@ -51,6 +53,7 @@ class ConverterTest(unittest.TestCase):
                     strSet={"hello", "world"},
                     strToIntMap={"one": 1, "two": 2},
                     color=ttypes.Color.NONE,
+                    name="myname",
                 ),
                 simpleList=[
                     ttypes.Simple(
@@ -60,6 +63,7 @@ class ConverterTest(unittest.TestCase):
                         strSet={"keep", "calm"},
                         strToIntMap={"three": 3, "four": 4},
                         color=ttypes.Color.RED,
+                        name="myname",
                     ),
                     ttypes.Simple(
                         intField=404,
@@ -68,6 +72,7 @@ class ConverterTest(unittest.TestCase):
                         strSet={"carry", "on"},
                         strToIntMap={"five": 5, "six": 6},
                         color=ttypes.Color.GREEN,
+                        name="myname",
                     ),
                 ],
                 colorToSimpleMap={
@@ -78,6 +83,7 @@ class ConverterTest(unittest.TestCase):
                         strSet={"server", "error"},
                         strToIntMap={"seven": 7, "eight": 8, "nine": 9},
                         color=ttypes.Color.BLUE,
+                        name="myname",
                     )
                 },
             ),
@@ -93,6 +99,11 @@ class ConverterTest(unittest.TestCase):
         simple_union = to_py3_struct(types.Union, ttypes.Union(intField=42))
         self.assertEqual(simple_union.type, types.Union.Type.intField)
         self.assertEqual(simple_union.value, 42)
+
+    def test_union_with_py3_name_annotation(self) -> None:
+        simple_union = to_py3_struct(types.Union, ttypes.Union(name="myname"))
+        self.assertEqual(simple_union.type, types.Union.Type.name_)
+        self.assertEqual(simple_union.value, "myname")
 
     def test_union_with_containers(self) -> None:
         union_with_list = to_py3_struct(types.Union, ttypes.Union(intList=[1, 2, 3]))

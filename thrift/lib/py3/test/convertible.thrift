@@ -28,6 +28,7 @@ struct Simple {
   4: set<string> strSet,
   5: map<string, i64> strToIntMap,
   6: Color color,
+  7: string name (py3.name = "name_"),
 }
 
 struct Nested {
@@ -41,4 +42,5 @@ union Union {
   2: string strField,
   3: list<i32> intList,
   4: Simple simpleField,
+  5: string name (py3.name = "name_"),
 }
