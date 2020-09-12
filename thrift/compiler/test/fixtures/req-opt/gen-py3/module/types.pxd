@@ -71,8 +71,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Foo(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cFoo] _cpp_obj
     cdef List__bool __field_myBools
     cdef List__i32 __field_myNumbers

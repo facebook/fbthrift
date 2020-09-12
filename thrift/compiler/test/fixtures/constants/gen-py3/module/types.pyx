@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -363,16 +362,8 @@ cdef class Internship(thrift.py3.types.Struct):
 
 
     def __hash__(Internship self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.weeks,
-            self.title,
-            self.employer,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Internship self):
-        return f'Internship(weeks={repr(self.weeks)}, title={repr(self.title)}, employer={repr(self.employer)})'
     def __copy__(Internship self):
         cdef shared_ptr[cInternship] cpp_obj = make_shared[cInternship](
             deref(self._cpp_obj)
@@ -422,9 +413,6 @@ cdef class Internship(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cInternship]()
         needed = serializer.cdeserialize[cInternship](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Internship, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -559,15 +547,8 @@ cdef class Range(thrift.py3.types.Struct):
 
 
     def __hash__(Range self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.min,
-            self.max,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Range self):
-        return f'Range(min={repr(self.min)}, max={repr(self.max)})'
     def __copy__(Range self):
         cdef shared_ptr[cRange] cpp_obj = make_shared[cRange](
             deref(self._cpp_obj)
@@ -617,9 +598,6 @@ cdef class Range(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cRange]()
         needed = serializer.cdeserialize[cRange](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Range, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -754,15 +732,8 @@ cdef class struct1(thrift.py3.types.Struct):
 
 
     def __hash__(struct1 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.a,
-            self.b,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(struct1 self):
-        return f'struct1(a={repr(self.a)}, b={repr(self.b)})'
     def __copy__(struct1 self):
         cdef shared_ptr[cstruct1] cpp_obj = make_shared[cstruct1](
             deref(self._cpp_obj)
@@ -812,9 +783,6 @@ cdef class struct1(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cstruct1]()
         needed = serializer.cdeserialize[cstruct1](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (struct1, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1011,17 +979,8 @@ cdef class struct2(thrift.py3.types.Struct):
 
 
     def __hash__(struct2 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.a,
-            self.b,
-            self.c,
-            self.d,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(struct2 self):
-        return f'struct2(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)}, d={repr(self.d)})'
     def __copy__(struct2 self):
         cdef shared_ptr[cstruct2] cpp_obj = make_shared[cstruct2](
             deref(self._cpp_obj)
@@ -1071,9 +1030,6 @@ cdef class struct2(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cstruct2]()
         needed = serializer.cdeserialize[cstruct2](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (struct2, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1241,16 +1197,8 @@ cdef class struct3(thrift.py3.types.Struct):
 
 
     def __hash__(struct3 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.a,
-            self.b,
-            self.c,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(struct3 self):
-        return f'struct3(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)})'
     def __copy__(struct3 self):
         cdef shared_ptr[cstruct3] cpp_obj = make_shared[cstruct3](
             deref(self._cpp_obj)
@@ -1300,9 +1248,6 @@ cdef class struct3(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cstruct3]()
         needed = serializer.cdeserialize[cstruct3](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (struct3, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1480,16 +1425,8 @@ cdef class struct4(thrift.py3.types.Struct):
 
 
     def __hash__(struct4 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.a,
-            self.b,
-            self.c,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(struct4 self):
-        return f'struct4(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)})'
     def __copy__(struct4 self):
         cdef shared_ptr[cstruct4] cpp_obj = make_shared[cstruct4](
             deref(self._cpp_obj)
@@ -1539,9 +1476,6 @@ cdef class struct4(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cstruct4]()
         needed = serializer.cdeserialize[cstruct4](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (struct4, serialize(self)))
 
 
 
@@ -1618,9 +1552,6 @@ cdef class union1(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __union1Type.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cunion1] cpp_obj):
         __fbthrift_inst = <union1>union1.__new__(union1)
@@ -1642,15 +1573,7 @@ cdef class union1(thrift.py3.types.Union):
 
 
     def __hash__(union1 self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(union1 self):
-        return f'union1(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(union1 self):
         self.type = union1.Type(<int>(deref(self._cpp_obj).getType()))
@@ -1661,9 +1584,6 @@ cdef class union1(thrift.py3.types.Union):
             self.value = deref(self._cpp_obj).get_i()
         elif type == 2:
             self.value = deref(self._cpp_obj).get_d()
-
-    def get_type(union1 self):
-        return self.type
 
     def __copy__(union1 self):
         cdef shared_ptr[cunion1] cpp_obj = make_shared[cunion1](
@@ -1716,9 +1636,6 @@ cdef class union1(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (union1, serialize(self)))
 
 
 
@@ -1815,9 +1732,6 @@ cdef class union2(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __union2Type.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cunion2] cpp_obj):
         __fbthrift_inst = <union2>union2.__new__(union2)
@@ -1851,15 +1765,7 @@ cdef class union2(thrift.py3.types.Union):
 
 
     def __hash__(union2 self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(union2 self):
-        return f'union2(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(union2 self):
         self.type = union2.Type(<int>(deref(self._cpp_obj).getType()))
@@ -1874,9 +1780,6 @@ cdef class union2(thrift.py3.types.Union):
             self.value = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).get_s()))
         elif type == 4:
             self.value = union1.create(make_shared[cunion1](deref(self._cpp_obj).get_u()))
-
-    def get_type(union2 self):
-        return self.type
 
     def __copy__(union2 self):
         cdef shared_ptr[cunion2] cpp_obj = make_shared[cunion2](
@@ -1929,9 +1832,6 @@ cdef class union2(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (union2, serialize(self)))
 
 
 @__cython.auto_pickle(False)

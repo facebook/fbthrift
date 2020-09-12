@@ -255,8 +255,6 @@ cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class ComplexUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
     cdef readonly __ComplexUnionType type
     cdef readonly object value
@@ -283,8 +281,6 @@ cdef class __ListUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class ListUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cListUnion] _cpp_obj
     cdef readonly __ListUnionType type
     cdef readonly object value
@@ -307,8 +303,6 @@ cdef class __DataUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class DataUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cDataUnion] _cpp_obj
     cdef readonly __DataUnionType type
     cdef readonly object value
@@ -327,8 +321,6 @@ cdef class DataUnion(thrift.py3.types.Union):
 
 
 cdef class Val(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cVal] _cpp_obj
     cdef Map__i16_string __field_typedefValue
 
@@ -351,8 +343,6 @@ cdef class __ValUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class ValUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cValUnion] _cpp_obj
     cdef readonly __ValUnionType type
     cdef readonly object value
@@ -375,8 +365,6 @@ cdef class __VirtualComplexUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cVirtualComplexUnion] _cpp_obj
     cdef readonly __VirtualComplexUnionType type
     cdef readonly object value
@@ -395,8 +383,6 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
 
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cNonCopyableStruct] _cpp_obj
 
     @staticmethod
@@ -416,8 +402,6 @@ cdef class __NonCopyableUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class NonCopyableUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cNonCopyableUnion] _cpp_obj
     cdef readonly __NonCopyableUnionType type
     cdef readonly object value

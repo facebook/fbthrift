@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -177,15 +176,8 @@ cdef class Struct(thrift.py3.types.Struct):
 
 
     def __hash__(Struct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.first,
-            self.second,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Struct self):
-        return f'Struct(first={repr(self.first)}, second={repr(self.second)})'
     def __copy__(Struct self):
         cdef shared_ptr[cStruct] cpp_obj = make_shared[cStruct](
             deref(self._cpp_obj)
@@ -235,9 +227,6 @@ cdef class Struct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStruct]()
         needed = serializer.cdeserialize[cStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Struct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -374,15 +363,8 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
 
     def __hash__(BigStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.s,
-            self.id,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(BigStruct self):
-        return f'BigStruct(s={repr(self.s)}, id={repr(self.id)})'
     def __copy__(BigStruct self):
         cdef shared_ptr[cBigStruct] cpp_obj = make_shared[cBigStruct](
             deref(self._cpp_obj)
@@ -432,9 +414,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cBigStruct]()
         needed = serializer.cdeserialize[cBigStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (BigStruct, serialize(self)))
 
 
 c2 = Struct.create(constant_shared_ptr(cc2()))

@@ -68,8 +68,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class FooEx(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cFooEx] _cpp_obj
 
     @staticmethod

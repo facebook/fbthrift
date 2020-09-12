@@ -127,8 +127,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef MyDataItem __field_MyDataField
 
@@ -148,8 +146,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
 cdef class MyDataItem(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyDataItem] _cpp_obj
 
     @staticmethod
@@ -168,8 +164,6 @@ cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class MyUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyUnion] _cpp_obj
     cdef readonly __MyUnionType type
     cdef readonly object value

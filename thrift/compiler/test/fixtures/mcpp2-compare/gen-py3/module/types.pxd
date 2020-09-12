@@ -1101,8 +1101,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Empty(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cEmpty] _cpp_obj
 
     @staticmethod
@@ -1117,8 +1115,6 @@ cdef class Empty(thrift.py3.types.Struct):
 
 
 cdef class ASimpleStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cASimpleStruct] _cpp_obj
 
     @staticmethod
@@ -1134,8 +1130,6 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
 
 cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cASimpleStructNoexcept] _cpp_obj
 
     @staticmethod
@@ -1151,8 +1145,6 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef List__binary __field_MyBinaryListField4
     cdef Map__MyEnumA_string __field_MyMapEnumAndInt
@@ -1182,8 +1174,6 @@ cdef class __SimpleUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class SimpleUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSimpleUnion] _cpp_obj
     cdef readonly __SimpleUnionType type
     cdef readonly object value
@@ -1206,8 +1196,6 @@ cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class ComplexUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
     cdef readonly __ComplexUnionType type
     cdef readonly object value
@@ -1251,8 +1239,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 
 cdef class AnException(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cAnException] _cpp_obj
     cdef List__i32 __field_exception_list
     cdef Set__i64 __field_exception_set
@@ -1292,8 +1278,6 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cAnotherException] _cpp_obj
 
     @staticmethod
@@ -1311,8 +1295,6 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class containerStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[ccontainerStruct] _cpp_obj
     cdef Map__string_bool __field_fieldB
     cdef Map__string_bool __field_req_fieldB
@@ -1402,8 +1384,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
 
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyIncludedStruct] _cpp_obj
     cdef _includes_types.AStruct __field_MyIncludedStruct
     cdef _includes_types.AStruct __field_ARefField
@@ -1425,8 +1405,6 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
 
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cAnnotatedStruct] _cpp_obj
     cdef containerStruct __field_no_annotation
     cdef containerStruct __field_cpp_unique_ref
@@ -1519,8 +1497,6 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
 
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cComplexContainerStruct] _cpp_obj
     cdef Map__string_folly_IOBuf__binary __field_map_of_iobufs
     cdef Map__string_std_unique_ptr_folly_IOBuf__binary __field_map_of_iobuf_ptrs
@@ -1539,8 +1515,6 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 
 
 cdef class FloatStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cFloatStruct] _cpp_obj
 
     @staticmethod
@@ -1561,8 +1535,6 @@ cdef class __FloatUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class FloatUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cFloatUnion] _cpp_obj
     cdef readonly __FloatUnionType type
     cdef readonly object value
@@ -1581,8 +1553,6 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
 
 cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] _cpp_obj
 
     @staticmethod

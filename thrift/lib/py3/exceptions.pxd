@@ -137,4 +137,6 @@ cdef class TransportError(LibraryError):
     pass
 
 cdef class GeneratedError(Error):
+    cdef object __hash
+    cdef object __weakref__
     cdef object __fbthrift_isset(self)

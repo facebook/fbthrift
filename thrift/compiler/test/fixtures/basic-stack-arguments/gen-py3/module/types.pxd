@@ -73,8 +73,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
 
     @staticmethod

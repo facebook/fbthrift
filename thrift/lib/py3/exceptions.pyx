@@ -87,6 +87,10 @@ cdef class GeneratedError(Error):
     cdef object __fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
 
+    def __repr__(self):
+        fields = ", ".join(f"{name}={repr(value)}" for name, value in self)
+        return f"{type(self).__name__}({fields})"
+
 
 cdef class ApplicationError(Error):
     """All Application Level Errors (TApplicationException)"""

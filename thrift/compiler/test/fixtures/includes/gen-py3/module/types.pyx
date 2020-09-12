@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -212,16 +211,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.MyIncludedField,
-            self.MyOtherIncludedField,
-            self.MyIncludedInt,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyStruct self):
-        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)}, MyOtherIncludedField={repr(self.MyOtherIncludedField)}, MyIncludedInt={repr(self.MyIncludedInt)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -271,8 +262,5 @@ cdef class MyStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyStruct]()
         needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyStruct, serialize(self)))
 
 

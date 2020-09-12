@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -116,7 +115,7 @@ cdef class Empty(thrift.py3.types.Struct):
         })
 
     def __iter__(self):
-        return iter(())
+        yield from ()
 
     def __bool__(self):
         return True
@@ -129,14 +128,8 @@ cdef class Empty(thrift.py3.types.Struct):
 
 
     def __hash__(Empty self):
-        if not self.__hash:
-            self.__hash = hash((
-            type(self)   # Hash the class there are no fields
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Empty self):
-        return f'Empty()'
     def __copy__(Empty self):
         cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
             deref(self._cpp_obj)
@@ -187,9 +180,6 @@ cdef class Empty(thrift.py3.types.Struct):
         needed = serializer.cdeserialize[cEmpty](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (Empty, serialize(self)))
-
 
 
 
@@ -221,9 +211,6 @@ cdef class Nada(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __NadaType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cNada] cpp_obj):
         __fbthrift_inst = <Nada>Nada.__new__(Nada)
@@ -233,24 +220,13 @@ cdef class Nada(thrift.py3.types.Union):
 
 
     def __hash__(Nada self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(Nada self):
-        return f'Nada(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(Nada self):
         self.type = Nada.Type(<int>(deref(self._cpp_obj).getType()))
         cdef int type = self.type.value
         if type == 0:    # Empty
             self.value = None
-
-    def get_type(Nada self):
-        return self.type
 
     def __copy__(Nada self):
         cdef shared_ptr[cNada] cpp_obj = make_shared[cNada](
@@ -303,8 +279,5 @@ cdef class Nada(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Nada, serialize(self)))
 
 

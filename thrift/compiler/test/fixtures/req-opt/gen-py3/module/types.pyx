@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -228,17 +227,8 @@ cdef class Foo(thrift.py3.types.Struct):
 
 
     def __hash__(Foo self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.myInteger,
-            self.myString,
-            self.myBools,
-            self.myNumbers,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Foo self):
-        return f'Foo(myInteger={repr(self.myInteger)}, myString={repr(self.myString)}, myBools={repr(self.myBools)}, myNumbers={repr(self.myNumbers)})'
     def __copy__(Foo self):
         cdef shared_ptr[cFoo] cpp_obj = make_shared[cFoo](
             deref(self._cpp_obj)
@@ -288,9 +278,6 @@ cdef class Foo(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cFoo]()
         needed = serializer.cdeserialize[cFoo](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Foo, serialize(self)))
 
 
 @__cython.auto_pickle(False)

@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -303,17 +302,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.MyIntField,
-            self.MyStringField,
-            self.MyDataField,
-            self.myEnum,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyStruct self):
-        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, myEnum={repr(self.myEnum)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -364,9 +354,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (MyStruct, serialize(self)))
-
 
 @__cython.auto_pickle(False)
 cdef class MyDataItem(thrift.py3.types.Struct):
@@ -408,7 +395,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         })
 
     def __iter__(self):
-        return iter(())
+        yield from ()
 
     def __bool__(self):
         return True
@@ -421,14 +408,8 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
 
     def __hash__(MyDataItem self):
-        if not self.__hash:
-            self.__hash = hash((
-            type(self)   # Hash the class there are no fields
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyDataItem self):
-        return f'MyDataItem()'
     def __copy__(MyDataItem self):
         cdef shared_ptr[cMyDataItem] cpp_obj = make_shared[cMyDataItem](
             deref(self._cpp_obj)
@@ -478,9 +459,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyDataItem]()
         needed = serializer.cdeserialize[cMyDataItem](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyDataItem, serialize(self)))
 
 
 
@@ -543,9 +521,6 @@ cdef class MyUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __MyUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cMyUnion] cpp_obj):
         __fbthrift_inst = <MyUnion>MyUnion.__new__(MyUnion)
@@ -573,15 +548,7 @@ cdef class MyUnion(thrift.py3.types.Union):
 
 
     def __hash__(MyUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(MyUnion self):
-        return f'MyUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(MyUnion self):
         self.type = MyUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -594,9 +561,6 @@ cdef class MyUnion(thrift.py3.types.Union):
             self.value = MyStruct.create(make_shared[cMyStruct](deref(self._cpp_obj).get_myStruct()))
         elif type == 3:
             self.value = MyDataItem.create(make_shared[cMyDataItem](deref(self._cpp_obj).get_myDataItem()))
-
-    def get_type(MyUnion self):
-        return self.type
 
     def __copy__(MyUnion self):
         cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
@@ -649,8 +613,5 @@ cdef class MyUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyUnion, serialize(self)))
 
 

@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -206,10 +205,8 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(SimpleException self):
-        return super().__hash__()
+        return  super().__hash__()
 
-    def __repr__(SimpleException self):
-        return f'SimpleException(err_code={repr(self.err_code)})'
     def __copy__(SimpleException self):
         cdef shared_ptr[cSimpleException] cpp_obj = make_shared[cSimpleException](
             deref(self._cpp_obj)
@@ -351,14 +348,8 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
 
     def __hash__(OptionalRefStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.optional_blob,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(OptionalRefStruct self):
-        return f'OptionalRefStruct(optional_blob={repr(self.optional_blob)})'
     def __copy__(OptionalRefStruct self):
         cdef shared_ptr[cOptionalRefStruct] cpp_obj = make_shared[cOptionalRefStruct](
             deref(self._cpp_obj)
@@ -408,9 +399,6 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cOptionalRefStruct]()
         needed = serializer.cdeserialize[cOptionalRefStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (OptionalRefStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -726,20 +714,8 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
 
     def __hash__(SimpleStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.is_on,
-            self.tiny_int,
-            self.small_int,
-            self.nice_sized_int,
-            self.big_int,
-            self.real,
-            self.smaller_real,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(SimpleStruct self):
-        return f'SimpleStruct(is_on={repr(self.is_on)}, tiny_int={repr(self.tiny_int)}, small_int={repr(self.small_int)}, nice_sized_int={repr(self.nice_sized_int)}, big_int={repr(self.big_int)}, real={repr(self.real)}, smaller_real={repr(self.smaller_real)})'
     def __copy__(SimpleStruct self):
         cdef shared_ptr[cSimpleStruct] cpp_obj = make_shared[cSimpleStruct](
             deref(self._cpp_obj)
@@ -789,9 +765,6 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cSimpleStruct]()
         needed = serializer.cdeserialize[cSimpleStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (SimpleStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1147,22 +1120,8 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
 
     def __hash__(ComplexStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.structOne,
-            self.structTwo,
-            self.an_integer,
-            self.name,
-            self.an_enum,
-            self.some_bytes,
-            self.sender,
-            self.cdef_,
-            self.bytes_with_cpp_type,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(ComplexStruct self):
-        return f'ComplexStruct(structOne={repr(self.structOne)}, structTwo={repr(self.structTwo)}, an_integer={repr(self.an_integer)}, name={repr(self.name)}, an_enum={repr(self.an_enum)}, some_bytes={repr(self.some_bytes)}, sender={repr(self.sender)}, cdef_={repr(self.cdef_)}, bytes_with_cpp_type={repr(self.bytes_with_cpp_type)})'
     def __copy__(ComplexStruct self):
         cdef shared_ptr[cComplexStruct] cpp_obj = make_shared[cComplexStruct](
             deref(self._cpp_obj)
@@ -1213,9 +1172,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         needed = serializer.cdeserialize[cComplexStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (ComplexStruct, serialize(self)))
-
 
 
 
@@ -1257,9 +1213,6 @@ cdef class BinaryUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __BinaryUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cBinaryUnion] cpp_obj):
         __fbthrift_inst = <BinaryUnion>BinaryUnion.__new__(BinaryUnion)
@@ -1275,18 +1228,7 @@ cdef class BinaryUnion(thrift.py3.types.Union):
 
 
     def __hash__(BinaryUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    cdef __BinaryUnion_eq(BinaryUnion self, BinaryUnion other):
-        return self.type == other.type and self.value == other.value
-
-    def __repr__(BinaryUnion self):
-        return f'BinaryUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(BinaryUnion self):
         self.type = BinaryUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -1295,9 +1237,6 @@ cdef class BinaryUnion(thrift.py3.types.Union):
             self.value = None
         elif type == 1:
             self.value =  __iobuf.from_unique_ptr(deref(self._cpp_obj).get_iobuf_val().clone())
-
-    def get_type(BinaryUnion self):
-        return self.type
 
     def __copy__(BinaryUnion self):
         cdef shared_ptr[cBinaryUnion] cpp_obj = make_shared[cBinaryUnion](
@@ -1318,9 +1257,9 @@ cdef class BinaryUnion(thrift.py3.types.Union):
                 return NotImplemented
 
         if cop == Py_EQ:
-            return self.__BinaryUnion_eq(other)
+            return self.__noncomparable_eq(other)
         elif cop == Py_NE:
-            return not self.__BinaryUnion_eq(other)
+            return not self.__noncomparable_eq(other)
         else:
             return NotImplemented
 
@@ -1340,9 +1279,6 @@ cdef class BinaryUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (BinaryUnion, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1442,19 +1378,8 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
 
 
     def __hash__(BinaryUnionStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.u,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    cdef __BinaryUnionStruct_eq(BinaryUnionStruct self, BinaryUnionStruct other):
-        if self.u != other.u:
-            return False
-        return True
-
-    def __repr__(BinaryUnionStruct self):
-        return f'BinaryUnionStruct(u={repr(self.u)})'
     def __copy__(BinaryUnionStruct self):
         cdef shared_ptr[cBinaryUnionStruct] cpp_obj = make_shared[cBinaryUnionStruct](
             deref(self._cpp_obj)
@@ -1474,9 +1399,9 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
                 return NotImplemented
 
         if cop == Py_EQ:
-            return self.__BinaryUnionStruct_eq(other)
+            return self.__noncomparable_eq(other)
         elif cop == Py_NE:
-            return not self.__BinaryUnionStruct_eq(other)
+            return not self.__noncomparable_eq(other)
         else:
             return NotImplemented
 
@@ -1494,9 +1419,6 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cBinaryUnionStruct]()
         needed = serializer.cdeserialize[cBinaryUnionStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (BinaryUnionStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)

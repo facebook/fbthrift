@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -278,17 +277,8 @@ cdef class Color(thrift.py3.types.Struct):
 
 
     def __hash__(Color self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.red,
-            self.green,
-            self.blue,
-            self.alpha,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Color self):
-        return f'Color(red={repr(self.red)}, green={repr(self.green)}, blue={repr(self.blue)}, alpha={repr(self.alpha)})'
     def __copy__(Color self):
         cdef shared_ptr[cColor] cpp_obj = make_shared[cColor](
             deref(self._cpp_obj)
@@ -338,9 +328,6 @@ cdef class Color(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cColor]()
         needed = serializer.cdeserialize[cColor](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Color, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -567,18 +554,8 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
 
     def __hash__(Vehicle self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.color,
-            self.licensePlate,
-            self.description,
-            self.name,
-            self.hasAC,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Vehicle self):
-        return f'Vehicle(color={repr(self.color)}, licensePlate={repr(self.licensePlate)}, description={repr(self.description)}, name={repr(self.name)}, hasAC={repr(self.hasAC)})'
     def __copy__(Vehicle self):
         cdef shared_ptr[cVehicle] cpp_obj = make_shared[cVehicle](
             deref(self._cpp_obj)
@@ -628,9 +605,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cVehicle]()
         needed = serializer.cdeserialize[cVehicle](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Vehicle, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1029,23 +1003,8 @@ cdef class Person(thrift.py3.types.Struct):
 
 
     def __hash__(Person self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.id,
-            self.name,
-            self.age,
-            self.address,
-            self.favoriteColor,
-            self.friends,
-            self.bestFriend,
-            self.petNames,
-            self.afraidOfAnimal,
-            self.vehicles,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Person self):
-        return f'Person(id={repr(self.id)}, name={repr(self.name)}, age={repr(self.age)}, address={repr(self.address)}, favoriteColor={repr(self.favoriteColor)}, friends={repr(self.friends)}, bestFriend={repr(self.bestFriend)}, petNames={repr(self.petNames)}, afraidOfAnimal={repr(self.afraidOfAnimal)}, vehicles={repr(self.vehicles)})'
     def __copy__(Person self):
         cdef shared_ptr[cPerson] cpp_obj = make_shared[cPerson](
             deref(self._cpp_obj)
@@ -1095,9 +1054,6 @@ cdef class Person(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cPerson]()
         needed = serializer.cdeserialize[cPerson](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Person, serialize(self)))
 
 
 @__cython.auto_pickle(False)

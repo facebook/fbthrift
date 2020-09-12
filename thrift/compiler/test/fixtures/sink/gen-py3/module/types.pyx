@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -138,14 +137,8 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 
 
     def __hash__(InitialResponse self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.content,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(InitialResponse self):
-        return f'InitialResponse(content={repr(self.content)})'
     def __copy__(InitialResponse self):
         cdef shared_ptr[cInitialResponse] cpp_obj = make_shared[cInitialResponse](
             deref(self._cpp_obj)
@@ -195,9 +188,6 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cInitialResponse]()
         needed = serializer.cdeserialize[cInitialResponse](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (InitialResponse, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -295,14 +285,8 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
 
     def __hash__(FinalResponse self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.content,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(FinalResponse self):
-        return f'FinalResponse(content={repr(self.content)})'
     def __copy__(FinalResponse self):
         cdef shared_ptr[cFinalResponse] cpp_obj = make_shared[cFinalResponse](
             deref(self._cpp_obj)
@@ -352,9 +336,6 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cFinalResponse]()
         needed = serializer.cdeserialize[cFinalResponse](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (FinalResponse, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -452,14 +433,8 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 
 
     def __hash__(SinkPayload self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.content,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(SinkPayload self):
-        return f'SinkPayload(content={repr(self.content)})'
     def __copy__(SinkPayload self):
         cdef shared_ptr[cSinkPayload] cpp_obj = make_shared[cSinkPayload](
             deref(self._cpp_obj)
@@ -509,9 +484,6 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cSinkPayload]()
         needed = serializer.cdeserialize[cSinkPayload](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (SinkPayload, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -609,14 +581,8 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 
     def __hash__(CompatibleWithKeywordSink self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.sink,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(CompatibleWithKeywordSink self):
-        return f'CompatibleWithKeywordSink(sink={repr(self.sink)})'
     def __copy__(CompatibleWithKeywordSink self):
         cdef shared_ptr[cCompatibleWithKeywordSink] cpp_obj = make_shared[cCompatibleWithKeywordSink](
             deref(self._cpp_obj)
@@ -666,9 +632,6 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cCompatibleWithKeywordSink]()
         needed = serializer.cdeserialize[cCompatibleWithKeywordSink](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (CompatibleWithKeywordSink, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -731,10 +694,8 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(InitialException self):
-        return super().__hash__()
+        return  super().__hash__()
 
-    def __repr__(InitialException self):
-        return f'InitialException(reason={repr(self.reason)})'
     def __copy__(InitialException self):
         cdef shared_ptr[cInitialException] cpp_obj = make_shared[cInitialException](
             deref(self._cpp_obj)
@@ -836,10 +797,8 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(SinkException1 self):
-        return super().__hash__()
+        return  super().__hash__()
 
-    def __repr__(SinkException1 self):
-        return f'SinkException1(reason={repr(self.reason)})'
     def __copy__(SinkException1 self):
         cdef shared_ptr[cSinkException1] cpp_obj = make_shared[cSinkException1](
             deref(self._cpp_obj)
@@ -946,10 +905,8 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(SinkException2 self):
-        return super().__hash__()
+        return  super().__hash__()
 
-    def __repr__(SinkException2 self):
-        return f'SinkException2(reason={repr(self.reason)})'
     def __copy__(SinkException2 self):
         cdef shared_ptr[cSinkException2] cpp_obj = make_shared[cSinkException2](
             deref(self._cpp_obj)

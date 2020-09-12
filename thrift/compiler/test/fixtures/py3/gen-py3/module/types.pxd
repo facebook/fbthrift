@@ -214,8 +214,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSimpleException] _cpp_obj
 
     @staticmethod
@@ -231,8 +229,6 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cOptionalRefStruct] _cpp_obj
     cdef __iobuf.IOBuf __field_optional_blob
 
@@ -249,8 +245,6 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
 
 cdef class SimpleStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSimpleStruct] _cpp_obj
 
     @staticmethod
@@ -272,8 +266,6 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
 
 cdef class ComplexStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cComplexStruct] _cpp_obj
     cdef SimpleStruct __field_structOne
     cdef SimpleStruct __field_structTwo
@@ -303,13 +295,10 @@ cdef class __BinaryUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class BinaryUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cBinaryUnion] _cpp_obj
     cdef readonly __BinaryUnionType type
     cdef readonly object value
     cdef _load_cache(BinaryUnion self)
-    cdef __BinaryUnion_eq(BinaryUnion self, BinaryUnion other)
 
     @staticmethod
     cdef unique_ptr[cBinaryUnion] _make_instance(
@@ -323,11 +312,8 @@ cdef class BinaryUnion(thrift.py3.types.Union):
 
 
 cdef class BinaryUnionStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cBinaryUnionStruct] _cpp_obj
     cdef BinaryUnion __field_u
-    cdef __BinaryUnionStruct_eq(BinaryUnionStruct self, BinaryUnionStruct other)
 
     @staticmethod
     cdef unique_ptr[cBinaryUnionStruct] _make_instance(

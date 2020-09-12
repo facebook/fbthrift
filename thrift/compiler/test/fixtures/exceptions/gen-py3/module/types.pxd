@@ -145,8 +145,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Banal(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cBanal] _cpp_obj
 
     @staticmethod
@@ -161,8 +159,6 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class Fiery(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cFiery] _cpp_obj
 
     @staticmethod
@@ -178,8 +174,6 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class Serious(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSerious] _cpp_obj
 
     @staticmethod
@@ -195,8 +189,6 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cComplexFieldNames] _cpp_obj
 
     @staticmethod
@@ -213,8 +205,6 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cCustomFieldNames] _cpp_obj
 
     @staticmethod

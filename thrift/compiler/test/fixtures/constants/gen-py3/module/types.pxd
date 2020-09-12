@@ -273,8 +273,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Internship(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cInternship] _cpp_obj
 
     @staticmethod
@@ -292,8 +290,6 @@ cdef class Internship(thrift.py3.types.Struct):
 
 
 cdef class Range(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cRange] _cpp_obj
 
     @staticmethod
@@ -310,8 +306,6 @@ cdef class Range(thrift.py3.types.Struct):
 
 
 cdef class struct1(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cstruct1] _cpp_obj
 
     @staticmethod
@@ -328,8 +322,6 @@ cdef class struct1(thrift.py3.types.Struct):
 
 
 cdef class struct2(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cstruct2] _cpp_obj
     cdef struct1 __field_c
     cdef List__i32 __field_d
@@ -350,8 +342,6 @@ cdef class struct2(thrift.py3.types.Struct):
 
 
 cdef class struct3(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cstruct3] _cpp_obj
     cdef struct2 __field_c
 
@@ -370,8 +360,6 @@ cdef class struct3(thrift.py3.types.Struct):
 
 
 cdef class struct4(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cstruct4] _cpp_obj
 
     @staticmethod
@@ -393,8 +381,6 @@ cdef class __union1Type(thrift.py3.types.CompiledEnum):
 
 
 cdef class union1(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cunion1] _cpp_obj
     cdef readonly __union1Type type
     cdef readonly object value
@@ -417,8 +403,6 @@ cdef class __union2Type(thrift.py3.types.CompiledEnum):
 
 
 cdef class union2(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cunion2] _cpp_obj
     cdef readonly __union2Type type
     cdef readonly object value

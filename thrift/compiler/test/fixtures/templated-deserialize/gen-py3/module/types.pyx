@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -206,15 +205,8 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
 
     def __hash__(SmallStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.small_A,
-            self.small_B,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(SmallStruct self):
-        return f'SmallStruct(small_A={repr(self.small_A)}, small_B={repr(self.small_B)})'
     def __copy__(SmallStruct self):
         cdef shared_ptr[cSmallStruct] cpp_obj = make_shared[cSmallStruct](
             deref(self._cpp_obj)
@@ -264,9 +256,6 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cSmallStruct]()
         needed = serializer.cdeserialize[cSmallStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (SmallStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -992,35 +981,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
 
     def __hash__(containerStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.fieldA,
-            self.fieldB,
-            self.fieldC,
-            self.fieldD,
-            self.fieldE,
-            self.fieldF,
-            self.fieldG,
-            self.fieldH,
-            self.fieldI,
-            self.fieldJ,
-            self.fieldK,
-            self.fieldL,
-            self.fieldM,
-            self.fieldN,
-            self.fieldO,
-            self.fieldP,
-            self.fieldQ,
-            self.fieldR,
-            self.fieldS,
-            self.fieldT,
-            self.fieldU,
-            self.fieldX,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(containerStruct self):
-        return f'containerStruct(fieldA={repr(self.fieldA)}, fieldB={repr(self.fieldB)}, fieldC={repr(self.fieldC)}, fieldD={repr(self.fieldD)}, fieldE={repr(self.fieldE)}, fieldF={repr(self.fieldF)}, fieldG={repr(self.fieldG)}, fieldH={repr(self.fieldH)}, fieldI={repr(self.fieldI)}, fieldJ={repr(self.fieldJ)}, fieldK={repr(self.fieldK)}, fieldL={repr(self.fieldL)}, fieldM={repr(self.fieldM)}, fieldN={repr(self.fieldN)}, fieldO={repr(self.fieldO)}, fieldP={repr(self.fieldP)}, fieldQ={repr(self.fieldQ)}, fieldR={repr(self.fieldR)}, fieldS={repr(self.fieldS)}, fieldT={repr(self.fieldT)}, fieldU={repr(self.fieldU)}, fieldX={repr(self.fieldX)})'
     def __copy__(containerStruct self):
         cdef shared_ptr[ccontainerStruct] cpp_obj = make_shared[ccontainerStruct](
             deref(self._cpp_obj)
@@ -1070,9 +1032,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[ccontainerStruct]()
         needed = serializer.cdeserialize[ccontainerStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (containerStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)

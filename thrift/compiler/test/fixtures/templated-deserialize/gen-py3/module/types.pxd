@@ -174,8 +174,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class SmallStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSmallStruct] _cpp_obj
 
     @staticmethod
@@ -192,8 +190,6 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
 
 cdef class containerStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[ccontainerStruct] _cpp_obj
     cdef Map__string_bool __field_fieldB
     cdef Set__i32 __field_fieldC

@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -77,7 +76,7 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
         })
 
     def __iter__(self):
-        return iter(())
+        yield from ()
 
     def __bool__(self):
         return True
@@ -91,10 +90,8 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(Banal self):
-        return super().__hash__()
+        return  super().__hash__()
 
-    def __repr__(Banal self):
-        return f'Banal()'
     def __copy__(Banal self):
         cdef shared_ptr[cBanal] cpp_obj = make_shared[cBanal](
             deref(self._cpp_obj)
@@ -194,7 +191,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(Fiery self):
-        return super().__hash__()
+        return  super().__hash__()
 
     def __str__(Fiery self):
         field = self.message
@@ -202,8 +199,6 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
             return str(field)
         return field
 
-    def __repr__(Fiery self):
-        return f'Fiery(message={repr(self.message)})'
     def __copy__(Fiery self):
         cdef shared_ptr[cFiery] cpp_obj = make_shared[cFiery](
             deref(self._cpp_obj)
@@ -307,7 +302,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(Serious self):
-        return super().__hash__()
+        return  super().__hash__()
 
     def __str__(Serious self):
         field = self.sonnet
@@ -315,8 +310,6 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
             return str(field)
         return field
 
-    def __repr__(Serious self):
-        return f'Serious(sonnet={repr(self.sonnet)})'
     def __copy__(Serious self):
         cdef shared_ptr[cSerious] cpp_obj = make_shared[cSerious](
             deref(self._cpp_obj)
@@ -431,7 +424,7 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(ComplexFieldNames self):
-        return super().__hash__()
+        return  super().__hash__()
 
     def __str__(ComplexFieldNames self):
         field = self.internal_error_message
@@ -439,8 +432,6 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
             return str(field)
         return field
 
-    def __repr__(ComplexFieldNames self):
-        return f'ComplexFieldNames(error_message={repr(self.error_message)}, internal_error_message={repr(self.internal_error_message)})'
     def __copy__(ComplexFieldNames self):
         cdef shared_ptr[cComplexFieldNames] cpp_obj = make_shared[cComplexFieldNames](
             deref(self._cpp_obj)
@@ -555,7 +546,7 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(CustomFieldNames self):
-        return super().__hash__()
+        return  super().__hash__()
 
     def __str__(CustomFieldNames self):
         field = self.internal_error_message
@@ -563,8 +554,6 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
             return str(field)
         return field
 
-    def __repr__(CustomFieldNames self):
-        return f'CustomFieldNames(error_message={repr(self.error_message)}, internal_error_message={repr(self.internal_error_message)})'
     def __copy__(CustomFieldNames self):
         cdef shared_ptr[cCustomFieldNames] cpp_obj = make_shared[cCustomFieldNames](
             deref(self._cpp_obj)

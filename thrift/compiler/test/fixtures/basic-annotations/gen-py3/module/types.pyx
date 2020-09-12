@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -169,14 +168,8 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 
 
     def __hash__(MyStructNestedAnnotation self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.name,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyStructNestedAnnotation self):
-        return f'MyStructNestedAnnotation(name={repr(self.name)})'
     def __copy__(MyStructNestedAnnotation self):
         cdef shared_ptr[cMyStructNestedAnnotation] cpp_obj = make_shared[cMyStructNestedAnnotation](
             deref(self._cpp_obj)
@@ -226,9 +219,6 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyStructNestedAnnotation]()
         needed = serializer.cdeserialize[cMyStructNestedAnnotation](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyStructNestedAnnotation, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -428,17 +418,8 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
 
 
     def __hash__(MyStructAnnotation self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.count,
-            self.name,
-            self.extra,
-            self.nest,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyStructAnnotation self):
-        return f'MyStructAnnotation(count={repr(self.count)}, name={repr(self.name)}, extra={repr(self.extra)}, nest={repr(self.nest)})'
     def __copy__(MyStructAnnotation self):
         cdef shared_ptr[cMyStructAnnotation] cpp_obj = make_shared[cMyStructAnnotation](
             deref(self._cpp_obj)
@@ -488,9 +469,6 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyStructAnnotation]()
         needed = serializer.cdeserialize[cMyStructAnnotation](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyStructAnnotation, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -749,19 +727,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.major,
-            self.package,
-            self.annotation_with_quote,
-            self.class_,
-            self.annotation_with_trailing_comma,
-            self.empty_annotations,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyStruct self):
-        return f'MyStruct(major={repr(self.major)}, package={repr(self.package)}, annotation_with_quote={repr(self.annotation_with_quote)}, class_={repr(self.class_)}, annotation_with_trailing_comma={repr(self.annotation_with_trailing_comma)}, empty_annotations={repr(self.empty_annotations)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -811,9 +778,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyStruct]()
         needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -948,15 +912,8 @@ cdef class SecretStruct(thrift.py3.types.Struct):
 
 
     def __hash__(SecretStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.id,
-            self.password,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(SecretStruct self):
-        return f'SecretStruct(id={repr(self.id)}, password={repr(self.password)})'
     def __copy__(SecretStruct self):
         cdef shared_ptr[cSecretStruct] cpp_obj = make_shared[cSecretStruct](
             deref(self._cpp_obj)
@@ -1006,8 +963,5 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cSecretStruct]()
         needed = serializer.cdeserialize[cSecretStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (SecretStruct, serialize(self)))
 
 

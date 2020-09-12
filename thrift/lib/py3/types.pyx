@@ -25,6 +25,7 @@ from folly.iobuf import IOBuf
 from types import MappingProxyType
 
 from thrift.py3.exceptions cimport GeneratedError
+from thrift.py3.serializer import deserialize, serialize
 
 __all__ = ['Struct', 'BadEnum', 'NOTSET', 'Union', 'Enum', 'Flag']
 
@@ -95,6 +96,35 @@ cdef class Struct:
     cdef object __fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
 
+    def __hash__(self):
+        if not self.__hash:
+            value_tuple = tuple(v for _, v in self)
+            self.__hash = hash(
+                value_tuple if value_tuple
+                else type(self)  # Hash the class there are no fields
+            )
+        return self.__hash
+
+    def __iter__(self):
+        # the derived struct class will override this in generated types.pyx
+        yield from ()
+
+    cdef bint __noncomparable_eq(self, other):
+        if self is other:
+            return True
+        name = None  # as sentinel to indicate if no fields
+        for name, value in self.__iter__():
+            if value != getattr(other, name):
+                return False
+        # in case of no fields, only True when identity equal (begining).
+        return name is not None
+
+    def __reduce__(self):
+        return (deserialize, (type(self), serialize(self)))
+
+    def __repr__(self):
+        fields = ", ".join(f"{name}={repr(value)}" for name, value in self)
+        return f"{type(self).__name__}({fields})"
 
 SetMetaClass(<PyTypeObject*> Struct, <PyTypeObject*> StructMeta)
 
@@ -103,7 +133,26 @@ cdef class Union(Struct):
     """
     Base class for all thrift Unions
     """
-    pass
+    cdef bint __noncomparable_eq(self, other):
+        return self.type == other.type and self.value == other.value
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.type,
+                self.value,
+            ))
+        return self.__hash
+
+    def __repr__(self):
+        return f"{type(self).__name__}(type={self.type.name}, value={self.value!r})"
+
+    def __bool__(self):
+        return self.type.value != 0
+
+    def get_type(self):
+        return self.type
+
 
 
 @cython.auto_pickle(False)

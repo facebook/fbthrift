@@ -67,8 +67,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Included(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cIncluded] _cpp_obj
     cdef _transitive_types.Foo __field_MyTransitiveField
 

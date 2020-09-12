@@ -62,8 +62,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class HsFoo(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cHsFoo] _cpp_obj
 
     @staticmethod

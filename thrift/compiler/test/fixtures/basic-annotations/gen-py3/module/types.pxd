@@ -158,8 +158,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStructNestedAnnotation] _cpp_obj
 
     @staticmethod
@@ -175,8 +173,6 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 
 
 cdef class MyStructAnnotation(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStructAnnotation] _cpp_obj
     cdef MyStructNestedAnnotation __field_nest
 
@@ -196,8 +192,6 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
 
     @staticmethod
@@ -218,8 +212,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
 cdef class SecretStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSecretStruct] _cpp_obj
 
     @staticmethod

@@ -59,7 +59,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -292,7 +291,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         yield '{{field:py_name}}', self.{{field:py_name}}
         {{/struct:fields}}
         {{^struct:fields}}
-        return iter(())
+        yield from ()
         {{/struct:fields}}
 
     def __bool__(self):
@@ -350,34 +349,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{/struct:fields}}
 
     def __hash__({{struct:name}} self):
-        {{^struct:exception?}}
-        if not self.__hash:
-            self.__hash = hash((
-            {{#struct:fields}}
-            self.{{field:py_name}},
-            {{/struct:fields}}
-            {{^struct:fields}}
-            type(self)   # Hash the class there are no fields
-            {{/struct:fields}}
-            ))
-        return self.__hash
-        {{/struct:exception?}}
-        {{#struct:exception?}}
-        return super().__hash__()
-        {{/struct:exception?}}
-    {{#struct:cpp_noncomparable}}
-
-    cdef __{{struct:name}}_eq({{struct:name}} self, {{struct:name}} other):
-        {{#struct:fields}}
-        {{^first?}}el{{/first?}}if self.{{field:py_name}} != other.{{field:py_name}}:
-            return False
-        {{/struct:fields}}
-        {{^struct:fields}}
-        if id(self) != id(other):
-            return False
-        {{/struct:fields}}
-        return True
-    {{/struct:cpp_noncomparable}}
+        return  super().__hash__()
 
     {{#struct:exception?}}
     {{#struct:exception_message?}}
@@ -390,8 +362,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
     {{/struct:exception_message?}}
     {{/struct:exception?}}
-    def __repr__({{struct:name}} self):
-        return f'{{struct:name}}({{#struct:fields}}{{field:py_name}}={repr(self.{{field:py_name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'
 {{/struct:union?}}{{!
 }}{{#struct:union?}}
 
@@ -505,9 +475,6 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __{{struct:name}}Type.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
@@ -525,20 +492,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     {{/struct:fields}}
 
     def __hash__({{struct:name}} self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-    {{#struct:cpp_noncomparable}}
-
-    cdef __{{struct:name}}_eq({{struct:name}} self, {{struct:name}} other):
-        return self.type == other.type and self.value == other.value
-    {{/struct:cpp_noncomparable}}
-
-    def __repr__({{struct:name}} self):
-        return f'{{struct:name}}(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache({{struct:name}} self):
         self.type = {{struct:name}}.Type(<int>(deref(self._cpp_obj).getType()))
@@ -552,9 +506,6 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
             {{/field:type}}
 
         {{/struct:fields}}
-
-    def get_type({{struct:name}} self):
-        return self.type
 
 {{/struct:union?}}
     {{! Below are some things that are common to structs and unions: }}
@@ -579,9 +530,9 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{#struct:cpp_noncomparable}}
         {{! There are no comparable ops on C++ class so we do default py_object behavior }}
         if cop == Py_EQ:
-            return self.__{{struct:name}}_eq(other)
+            return self.__noncomparable_eq(other)
         elif cop == Py_NE:
-            return not self.__{{struct:name}}_eq(other)
+            return not self.__noncomparable_eq(other)
         {{/struct:cpp_noncomparable}}
         {{^struct:cpp_noncomparable}}
         cdef c{{struct:name}}* cself = (<{{struct:name}}>self)._cpp_obj.get()
@@ -630,9 +581,6 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         self._load_cache()
         {{/struct:union?}}
         return needed
-
-    def __reduce__(self):
-        return (deserialize, ({{struct:name}}, serialize(self)))
     {{/struct:exception?}}
 
 

@@ -182,8 +182,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class InitialResponse(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cInitialResponse] _cpp_obj
 
     @staticmethod
@@ -199,8 +197,6 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 
 
 cdef class FinalResponse(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cFinalResponse] _cpp_obj
 
     @staticmethod
@@ -216,8 +212,6 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
 
 cdef class SinkPayload(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSinkPayload] _cpp_obj
 
     @staticmethod
@@ -233,8 +227,6 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 
 
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cCompatibleWithKeywordSink] _cpp_obj
 
     @staticmethod
@@ -250,8 +242,6 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 
 cdef class InitialException(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cInitialException] _cpp_obj
 
     @staticmethod
@@ -267,8 +257,6 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSinkException1] _cpp_obj
 
     @staticmethod
@@ -284,8 +272,6 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 
 
 cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cSinkException2] _cpp_obj
 
     @staticmethod

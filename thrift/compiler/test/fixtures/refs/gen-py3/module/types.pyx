@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -167,9 +166,6 @@ cdef class MyUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __MyUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cMyUnion] cpp_obj):
         __fbthrift_inst = <MyUnion>MyUnion.__new__(MyUnion)
@@ -191,15 +187,7 @@ cdef class MyUnion(thrift.py3.types.Union):
 
 
     def __hash__(MyUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(MyUnion self):
-        return f'MyUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(MyUnion self):
         self.type = MyUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -210,9 +198,6 @@ cdef class MyUnion(thrift.py3.types.Union):
             self.value = deref(self._cpp_obj).get_anInteger()
         elif type == 2:
             self.value = bytes(deref(self._cpp_obj).get_aString()).decode('UTF-8')
-
-    def get_type(MyUnion self):
-        return self.type
 
     def __copy__(MyUnion self):
         cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
@@ -265,9 +250,6 @@ cdef class MyUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyUnion, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -443,16 +425,8 @@ cdef class MyField(thrift.py3.types.Struct):
 
 
     def __hash__(MyField self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.opt_value,
-            self.value,
-            self.req_value,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyField self):
-        return f'MyField(opt_value={repr(self.opt_value)}, value={repr(self.value)}, req_value={repr(self.req_value)})'
     def __copy__(MyField self):
         cdef shared_ptr[cMyField] cpp_obj = make_shared[cMyField](
             deref(self._cpp_obj)
@@ -502,9 +476,6 @@ cdef class MyField(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyField]()
         needed = serializer.cdeserialize[cMyField](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyField, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -667,16 +638,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.opt_ref,
-            self.ref,
-            self.req_ref,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyStruct self):
-        return f'MyStruct(opt_ref={repr(self.opt_ref)}, ref={repr(self.ref)}, req_ref={repr(self.req_ref)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -726,9 +689,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyStruct]()
         needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -895,16 +855,8 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.u,
-            self.aDouble,
-            self.f,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithUnion self):
-        return f'StructWithUnion(u={repr(self.u)}, aDouble={repr(self.aDouble)}, f={repr(self.f)})'
     def __copy__(StructWithUnion self):
         cdef shared_ptr[cStructWithUnion] cpp_obj = make_shared[cStructWithUnion](
             deref(self._cpp_obj)
@@ -954,9 +906,6 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStructWithUnion]()
         needed = serializer.cdeserialize[cStructWithUnion](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (StructWithUnion, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1053,14 +1002,8 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
 
     def __hash__(RecursiveStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.mes,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(RecursiveStruct self):
-        return f'RecursiveStruct(mes={repr(self.mes)})'
     def __copy__(RecursiveStruct self):
         cdef shared_ptr[cRecursiveStruct] cpp_obj = make_shared[cRecursiveStruct](
             deref(self._cpp_obj)
@@ -1110,9 +1053,6 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cRecursiveStruct]()
         needed = serializer.cdeserialize[cRecursiveStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (RecursiveStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1347,19 +1287,8 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithContainers self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.list_ref,
-            self.set_ref,
-            self.map_ref,
-            self.list_ref_unique,
-            self.set_ref_shared,
-            self.list_ref_shared_const,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithContainers self):
-        return f'StructWithContainers(list_ref={repr(self.list_ref)}, set_ref={repr(self.set_ref)}, map_ref={repr(self.map_ref)}, list_ref_unique={repr(self.list_ref_unique)}, set_ref_shared={repr(self.set_ref_shared)}, list_ref_shared_const={repr(self.list_ref_shared_const)})'
     def __copy__(StructWithContainers self):
         cdef shared_ptr[cStructWithContainers] cpp_obj = make_shared[cStructWithContainers](
             deref(self._cpp_obj)
@@ -1409,9 +1338,6 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStructWithContainers]()
         needed = serializer.cdeserialize[cStructWithContainers](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (StructWithContainers, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1574,16 +1500,8 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithSharedConst self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.opt_shared_const,
-            self.shared_const,
-            self.req_shared_const,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithSharedConst self):
-        return f'StructWithSharedConst(opt_shared_const={repr(self.opt_shared_const)}, shared_const={repr(self.shared_const)}, req_shared_const={repr(self.req_shared_const)})'
     def __copy__(StructWithSharedConst self):
         cdef shared_ptr[cStructWithSharedConst] cpp_obj = make_shared[cStructWithSharedConst](
             deref(self._cpp_obj)
@@ -1634,9 +1552,6 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         needed = serializer.cdeserialize[cStructWithSharedConst](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (StructWithSharedConst, serialize(self)))
-
 
 @__cython.auto_pickle(False)
 cdef class Empty(thrift.py3.types.Struct):
@@ -1678,7 +1593,7 @@ cdef class Empty(thrift.py3.types.Struct):
         })
 
     def __iter__(self):
-        return iter(())
+        yield from ()
 
     def __bool__(self):
         return True
@@ -1691,14 +1606,8 @@ cdef class Empty(thrift.py3.types.Struct):
 
 
     def __hash__(Empty self):
-        if not self.__hash:
-            self.__hash = hash((
-            type(self)   # Hash the class there are no fields
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Empty self):
-        return f'Empty()'
     def __copy__(Empty self):
         cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
             deref(self._cpp_obj)
@@ -1748,9 +1657,6 @@ cdef class Empty(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cEmpty]()
         needed = serializer.cdeserialize[cEmpty](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Empty, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1913,16 +1819,8 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRef self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.def_field,
-            self.opt_field,
-            self.req_field,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithRef self):
-        return f'StructWithRef(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
     def __copy__(StructWithRef self):
         cdef shared_ptr[cStructWithRef] cpp_obj = make_shared[cStructWithRef](
             deref(self._cpp_obj)
@@ -1972,9 +1870,6 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStructWithRef]()
         needed = serializer.cdeserialize[cStructWithRef](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (StructWithRef, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -2137,16 +2032,8 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefTypeUnique self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.def_field,
-            self.opt_field,
-            self.req_field,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithRefTypeUnique self):
-        return f'StructWithRefTypeUnique(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
     def __copy__(StructWithRefTypeUnique self):
         cdef shared_ptr[cStructWithRefTypeUnique] cpp_obj = make_shared[cStructWithRefTypeUnique](
             deref(self._cpp_obj)
@@ -2196,9 +2083,6 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStructWithRefTypeUnique]()
         needed = serializer.cdeserialize[cStructWithRefTypeUnique](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (StructWithRefTypeUnique, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -2361,16 +2245,8 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefTypeShared self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.def_field,
-            self.opt_field,
-            self.req_field,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithRefTypeShared self):
-        return f'StructWithRefTypeShared(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
     def __copy__(StructWithRefTypeShared self):
         cdef shared_ptr[cStructWithRefTypeShared] cpp_obj = make_shared[cStructWithRefTypeShared](
             deref(self._cpp_obj)
@@ -2420,9 +2296,6 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStructWithRefTypeShared]()
         needed = serializer.cdeserialize[cStructWithRefTypeShared](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (StructWithRefTypeShared, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -2585,16 +2458,8 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefTypeSharedConst self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.def_field,
-            self.opt_field,
-            self.req_field,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithRefTypeSharedConst self):
-        return f'StructWithRefTypeSharedConst(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
     def __copy__(StructWithRefTypeSharedConst self):
         cdef shared_ptr[cStructWithRefTypeSharedConst] cpp_obj = make_shared[cStructWithRefTypeSharedConst](
             deref(self._cpp_obj)
@@ -2644,9 +2509,6 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStructWithRefTypeSharedConst]()
         needed = serializer.cdeserialize[cStructWithRefTypeSharedConst](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (StructWithRefTypeSharedConst, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -2745,14 +2607,8 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.def_field,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
-        return f'StructWithRefAndAnnotCppNoexceptMoveCtor(def_field={repr(self.def_field)})'
     def __copy__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
         cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] cpp_obj = make_shared[cStructWithRefAndAnnotCppNoexceptMoveCtor](
             deref(self._cpp_obj)
@@ -2802,9 +2658,6 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cStructWithRefAndAnnotCppNoexceptMoveCtor]()
         needed = serializer.cdeserialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (StructWithRefAndAnnotCppNoexceptMoveCtor, serialize(self)))
 
 
 @__cython.auto_pickle(False)

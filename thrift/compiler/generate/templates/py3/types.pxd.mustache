@@ -184,8 +184,6 @@ cdef class __{{struct:name}}Type(thrift.py3.types.CompiledEnum):
 
 
 cdef class {{struct:name}}({{> types/PythonStructClass}}):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[c{{struct:name}}] _cpp_obj
     {{^struct:union?}}
     {{!Memoized Python wrappers of struct fields, created lazily}}
@@ -205,9 +203,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     cdef readonly object value
     cdef _load_cache({{struct:name}} self)
     {{/struct:union?}}
-    {{#struct:cpp_noncomparable}}
-    cdef __{{struct:name}}_eq({{struct:name}} self, {{struct:name}} other)
-    {{/struct:cpp_noncomparable}}
 
     @staticmethod
     cdef unique_ptr[c{{struct:name}}] _make_instance(

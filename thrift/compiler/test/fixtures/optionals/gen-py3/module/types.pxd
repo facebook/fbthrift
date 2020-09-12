@@ -163,8 +163,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Color(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cColor] _cpp_obj
 
     @staticmethod
@@ -183,8 +181,6 @@ cdef class Color(thrift.py3.types.Struct):
 
 
 cdef class Vehicle(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cVehicle] _cpp_obj
     cdef Color __field_color
 
@@ -205,8 +201,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
 
 cdef class Person(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cPerson] _cpp_obj
     cdef Color __field_favoriteColor
     cdef Set__i64 __field_friends

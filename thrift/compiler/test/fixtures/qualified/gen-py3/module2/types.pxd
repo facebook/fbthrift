@@ -93,8 +93,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Struct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cStruct] _cpp_obj
     cdef _module0_types.Struct __field_first
     cdef _module1_types.Struct __field_second
@@ -113,8 +111,6 @@ cdef class Struct(thrift.py3.types.Struct):
 
 
 cdef class BigStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cBigStruct] _cpp_obj
     cdef Struct __field_s
 

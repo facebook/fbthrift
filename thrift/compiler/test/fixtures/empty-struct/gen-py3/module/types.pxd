@@ -78,8 +78,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class Empty(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cEmpty] _cpp_obj
 
     @staticmethod
@@ -98,8 +96,6 @@ cdef class __NadaType(thrift.py3.types.CompiledEnum):
 
 
 cdef class Nada(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cNada] _cpp_obj
     cdef readonly __NadaType type
     cdef readonly object value

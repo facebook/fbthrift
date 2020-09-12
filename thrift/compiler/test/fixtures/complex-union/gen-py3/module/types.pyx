@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -341,9 +340,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __ComplexUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cComplexUnion] cpp_obj):
         __fbthrift_inst = <ComplexUnion>ComplexUnion.__new__(ComplexUnion)
@@ -389,15 +385,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 
     def __hash__(ComplexUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(ComplexUnion self):
-        return f'ComplexUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(ComplexUnion self):
         self.type = ComplexUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -419,9 +407,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 self.value = None
             else:
                 self.value = str.create(reference_shared_ptr_stringRef(self._cpp_obj, deref(deref(self._cpp_obj).get_stringRef())))
-
-    def get_type(ComplexUnion self):
-        return self.type
 
     def __copy__(ComplexUnion self):
         cdef shared_ptr[cComplexUnion] cpp_obj = make_shared[cComplexUnion](
@@ -475,9 +460,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (ComplexUnion, serialize(self)))
-
 
 
 
@@ -529,9 +511,6 @@ cdef class ListUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __ListUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cListUnion] cpp_obj):
         __fbthrift_inst = <ListUnion>ListUnion.__new__(ListUnion)
@@ -553,15 +532,7 @@ cdef class ListUnion(thrift.py3.types.Union):
 
 
     def __hash__(ListUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(ListUnion self):
-        return f'ListUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(ListUnion self):
         self.type = ListUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -572,9 +543,6 @@ cdef class ListUnion(thrift.py3.types.Union):
             self.value = List__i64.create(make_shared[vector[cint64_t]](deref(self._cpp_obj).get_intListValue()))
         elif type == 3:
             self.value = List__string.create(make_shared[vector[string]](deref(self._cpp_obj).get_stringListValue()))
-
-    def get_type(ListUnion self):
-        return self.type
 
     def __copy__(ListUnion self):
         cdef shared_ptr[cListUnion] cpp_obj = make_shared[cListUnion](
@@ -628,9 +596,6 @@ cdef class ListUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (ListUnion, serialize(self)))
-
 
 
 
@@ -682,9 +647,6 @@ cdef class DataUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __DataUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cDataUnion] cpp_obj):
         __fbthrift_inst = <DataUnion>DataUnion.__new__(DataUnion)
@@ -706,15 +668,7 @@ cdef class DataUnion(thrift.py3.types.Union):
 
 
     def __hash__(DataUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(DataUnion self):
-        return f'DataUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(DataUnion self):
         self.type = DataUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -725,9 +679,6 @@ cdef class DataUnion(thrift.py3.types.Union):
             self.value = deref(self._cpp_obj).get_binaryData()
         elif type == 2:
             self.value = bytes(deref(self._cpp_obj).get_stringData()).decode('UTF-8')
-
-    def get_type(DataUnion self):
-        return self.type
 
     def __copy__(DataUnion self):
         cdef shared_ptr[cDataUnion] cpp_obj = make_shared[cDataUnion](
@@ -780,9 +731,6 @@ cdef class DataUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (DataUnion, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -946,16 +894,8 @@ cdef class Val(thrift.py3.types.Struct):
 
 
     def __hash__(Val self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.strVal,
-            self.intVal,
-            self.typedefValue,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Val self):
-        return f'Val(strVal={repr(self.strVal)}, intVal={repr(self.intVal)}, typedefValue={repr(self.typedefValue)})'
     def __copy__(Val self):
         cdef shared_ptr[cVal] cpp_obj = make_shared[cVal](
             deref(self._cpp_obj)
@@ -1005,9 +945,6 @@ cdef class Val(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cVal]()
         needed = serializer.cdeserialize[cVal](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Val, serialize(self)))
 
 
 
@@ -1060,9 +997,6 @@ cdef class ValUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __ValUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cValUnion] cpp_obj):
         __fbthrift_inst = <ValUnion>ValUnion.__new__(ValUnion)
@@ -1084,15 +1018,7 @@ cdef class ValUnion(thrift.py3.types.Union):
 
 
     def __hash__(ValUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(ValUnion self):
-        return f'ValUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(ValUnion self):
         self.type = ValUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -1103,9 +1029,6 @@ cdef class ValUnion(thrift.py3.types.Union):
             self.value = Val.create(make_shared[cVal](deref(self._cpp_obj).get_v1()))
         elif type == 2:
             self.value = Val.create(make_shared[cVal](deref(self._cpp_obj).get_v2()))
-
-    def get_type(ValUnion self):
-        return self.type
 
     def __copy__(ValUnion self):
         cdef shared_ptr[cValUnion] cpp_obj = make_shared[cValUnion](
@@ -1159,9 +1082,6 @@ cdef class ValUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (ValUnion, serialize(self)))
-
 
 
 
@@ -1213,9 +1133,6 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __VirtualComplexUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cVirtualComplexUnion] cpp_obj):
         __fbthrift_inst = <VirtualComplexUnion>VirtualComplexUnion.__new__(VirtualComplexUnion)
@@ -1237,15 +1154,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
 
     def __hash__(VirtualComplexUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(VirtualComplexUnion self):
-        return f'VirtualComplexUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(VirtualComplexUnion self):
         self.type = VirtualComplexUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -1256,9 +1165,6 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
             self.value = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
         elif type == 2:
             self.value = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
-
-    def get_type(VirtualComplexUnion self):
-        return self.type
 
     def __copy__(VirtualComplexUnion self):
         cdef shared_ptr[cVirtualComplexUnion] cpp_obj = make_shared[cVirtualComplexUnion](
@@ -1311,9 +1217,6 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (VirtualComplexUnion, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -1417,14 +1320,8 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
 
 
     def __hash__(NonCopyableStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.num,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(NonCopyableStruct self):
-        return f'NonCopyableStruct(num={repr(self.num)})'
     def __copy__(NonCopyableStruct self):
         cdef shared_ptr[cNonCopyableStruct] cpp_obj = make_shared[cNonCopyableStruct](
             deref(self._cpp_obj)
@@ -1475,9 +1372,6 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         needed = serializer.cdeserialize[cNonCopyableStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def __reduce__(self):
-        return (deserialize, (NonCopyableStruct, serialize(self)))
-
 
 
 
@@ -1519,9 +1413,6 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
-    def __bool__(self):
-        return self.type is not __NonCopyableUnionType.EMPTY
-
     @staticmethod
     cdef create(shared_ptr[cNonCopyableUnion] cpp_obj):
         __fbthrift_inst = <NonCopyableUnion>NonCopyableUnion.__new__(NonCopyableUnion)
@@ -1537,15 +1428,7 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
 
 
     def __hash__(NonCopyableUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-                self.type,
-                self.value,
-            ))
-        return self.__hash
-
-    def __repr__(NonCopyableUnion self):
-        return f'NonCopyableUnion(type={self.type.name}, value={self.value!r})'
+        return  super().__hash__()
 
     cdef _load_cache(NonCopyableUnion self):
         self.type = NonCopyableUnion.Type(<int>(deref(self._cpp_obj).getType()))
@@ -1554,9 +1437,6 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
             self.value = None
         elif type == 1:
             self.value = NonCopyableStruct.create(make_shared[cNonCopyableStruct](deref(self._cpp_obj).get_s()))
-
-    def get_type(NonCopyableUnion self):
-        return self.type
 
     def __copy__(NonCopyableUnion self):
         cdef shared_ptr[cNonCopyableUnion] cpp_obj = make_shared[cNonCopyableUnion](
@@ -1609,9 +1489,6 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (NonCopyableUnion, serialize(self)))
 
 
 @__cython.auto_pickle(False)

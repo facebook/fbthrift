@@ -863,8 +863,6 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 
 cdef class decorated_struct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cdecorated_struct] _cpp_obj
 
     @staticmethod
@@ -880,8 +878,6 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
 
 cdef class ContainerStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cContainerStruct] _cpp_obj
     cdef List__i32 __field_fieldA
     cdef std_list__List__i32 __field_fieldB
@@ -912,8 +908,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
 
 cdef class CppTypeStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cCppTypeStruct] _cpp_obj
     cdef std_list_int32_t__List__i32 __field_fieldA
 
@@ -930,8 +924,6 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
 
 cdef class VirtualStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cVirtualStruct] _cpp_obj
 
     @staticmethod
@@ -947,8 +939,6 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
 
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStructWithForwardRefEnum] _cpp_obj
 
     @staticmethod
@@ -965,8 +955,6 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
 
 cdef class TrivialNumeric(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cTrivialNumeric] _cpp_obj
 
     @staticmethod
@@ -983,8 +971,6 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
 
 
 cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cTrivialNestedWithDefault] _cpp_obj
     cdef TrivialNumeric __field_n
 
@@ -1002,8 +988,6 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
 
 cdef class ComplexString(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cComplexString] _cpp_obj
     cdef Map__string_i32 __field_b
 
@@ -1021,8 +1005,6 @@ cdef class ComplexString(thrift.py3.types.Struct):
 
 
 cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cComplexNestedWithDefault] _cpp_obj
     cdef ComplexString __field_n
 
@@ -1040,8 +1022,6 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
 
 cdef class MinPadding(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMinPadding] _cpp_obj
 
     @staticmethod
@@ -1061,11 +1041,8 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef MyDataItem __field_data
-    cdef __MyStruct_eq(MyStruct self, MyStruct other)
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -1083,10 +1060,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
 cdef class MyDataItem(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cMyDataItem] _cpp_obj
-    cdef __MyDataItem_eq(MyDataItem self, MyDataItem other)
 
     @staticmethod
     cdef unique_ptr[cMyDataItem] _make_instance(
@@ -1100,8 +1074,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
 
 cdef class Renaming(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cRenaming] _cpp_obj
 
     @staticmethod
@@ -1117,8 +1089,6 @@ cdef class Renaming(thrift.py3.types.Struct):
 
 
 cdef class AnnotatedTypes(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cAnnotatedTypes] _cpp_obj
     cdef List__std_unordered_map__Map__i32_string __field_list_field
 
@@ -1136,8 +1106,6 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
 
 cdef class ForwardUsageRoot(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cForwardUsageRoot] _cpp_obj
     cdef ForwardUsageStruct __field_ForwardUsageStruct
     cdef ForwardUsageByRef __field_ForwardUsageByRef
@@ -1156,8 +1124,6 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
 
 
 cdef class ForwardUsageStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cForwardUsageStruct] _cpp_obj
     cdef ForwardUsageRoot __field_foo
 
@@ -1174,8 +1140,6 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
 
 
 cdef class ForwardUsageByRef(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cForwardUsageByRef] _cpp_obj
     cdef ForwardUsageRoot __field_foo
 
@@ -1192,8 +1156,6 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
 
 
 cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cNoexceptMoveEmpty] _cpp_obj
 
     @staticmethod
@@ -1208,8 +1170,6 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
 
 
 cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cNoexceptMoveSimpleStruct] _cpp_obj
 
     @staticmethod
@@ -1225,8 +1185,6 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
 
 
 cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cNoexceptMoveComplexStruct] _cpp_obj
     cdef List__binary __field_MyBinaryListField4
     cdef Map__MyEnumA_string __field_MyMapEnumAndInt
@@ -1256,8 +1214,6 @@ cdef class __NoExceptMoveUnionType(thrift.py3.types.CompiledEnum):
 
 
 cdef class NoExceptMoveUnion(thrift.py3.types.Union):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cNoExceptMoveUnion] _cpp_obj
     cdef readonly __NoExceptMoveUnionType type
     cdef readonly object value
@@ -1276,8 +1232,6 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
 
 
 cdef class AllocatorAware(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cAllocatorAware] _cpp_obj
     cdef List__i32 __field_aa_list
     cdef Set__i32 __field_aa_set
@@ -1300,8 +1254,6 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
 
 
 cdef class AllocatorAware2(thrift.py3.types.Struct):
-    cdef object __hash
-    cdef object __weakref__
     cdef shared_ptr[cAllocatorAware2] _cpp_obj
 
     @staticmethod

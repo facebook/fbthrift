@@ -30,7 +30,6 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
@@ -140,14 +139,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.field,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(MyStruct self):
-        return f'MyStruct(field={repr(self.field)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -197,9 +190,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyStruct]()
         needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -382,17 +372,8 @@ cdef class Combo(thrift.py3.types.Struct):
 
 
     def __hash__(Combo self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.listOfOurMyStructLists,
-            self.theirMyStructList,
-            self.ourMyStructList,
-            self.listOfTheirMyStructList,
-            ))
-        return self.__hash
+        return  super().__hash__()
 
-    def __repr__(Combo self):
-        return f'Combo(listOfOurMyStructLists={repr(self.listOfOurMyStructLists)}, theirMyStructList={repr(self.theirMyStructList)}, ourMyStructList={repr(self.ourMyStructList)}, listOfTheirMyStructList={repr(self.listOfTheirMyStructList)})'
     def __copy__(Combo self):
         cdef shared_ptr[cCombo] cpp_obj = make_shared[cCombo](
             deref(self._cpp_obj)
@@ -442,9 +423,6 @@ cdef class Combo(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cCombo]()
         needed = serializer.cdeserialize[cCombo](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def __reduce__(self):
-        return (deserialize, (Combo, serialize(self)))
 
 
 @__cython.auto_pickle(False)

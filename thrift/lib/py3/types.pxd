@@ -102,9 +102,12 @@ cdef __NotSet NOTSET
 
 
 cdef class Struct:
+    cdef object __hash
+    cdef object __weakref__
     cdef IOBuf _serialize(self, Protocol proto)
     cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
     cdef object __fbthrift_isset(self)
+    cdef bint __noncomparable_eq(self, other)
 
 
 cdef class Union(Struct):
