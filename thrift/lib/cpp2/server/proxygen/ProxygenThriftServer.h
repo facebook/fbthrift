@@ -274,6 +274,10 @@ class ProxygenThriftServer : public BaseThriftServer,
     return {};
   }
 
+  bool getTosReflect() const override {
+    return false;
+  }
+
   /**
    * Get the number of connections dropped by the AsyncServerSocket
    */

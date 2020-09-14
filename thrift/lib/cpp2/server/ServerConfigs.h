@@ -83,6 +83,9 @@ class ServerConfigs {
       const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
 
+  // @see ThriftServer::getTosReflect function.
+  virtual bool getTosReflect() const = 0;
+
   /**
    * Disables tracking of number of active requests in the server.
    *

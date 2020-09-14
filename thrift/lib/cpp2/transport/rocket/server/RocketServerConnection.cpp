@@ -20,14 +20,18 @@
 #include <utility>
 
 #include <fmt/core.h>
+#include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>
+#include <folly/GLog.h>
 #include <folly/Likely.h>
 #include <folly/MapUtil.h>
 #include <folly/Overload.h>
 #include <folly/ScopeGuard.h>
+#include <folly/SocketAddress.h>
 #include <folly/Utility.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/SocketOptionMap.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 
@@ -693,6 +697,38 @@ void RocketServerConnection::freeStream(
   streams_.erase(streamId);
   if (markRequestComplete) {
     requestComplete();
+  }
+}
+
+void RocketServerConnection::applyDscpToSocket(int32_t dscp) {
+  constexpr int32_t kMaxDscpValue = (1 << 6) - 1;
+
+  if (!socket_ || dscp < 0 || dscp > kMaxDscpValue) {
+    return;
+  }
+
+  try {
+    folly::SocketAddress addr;
+    socket_->getAddress(&addr);
+
+    if (addr.getFamily() != AF_INET6 && addr.getFamily() != AF_INET) {
+      return;
+    }
+
+    constexpr folly::SocketOptionKey kIpv4TosKey = {IPPROTO_IP, IP_TOS};
+    constexpr folly::SocketOptionKey kIpv6TosKey = {IPPROTO_IPV6, IPV6_TCLASS};
+    auto& key = addr.getIPAddress().isV4() ? kIpv4TosKey : kIpv6TosKey;
+
+    if (auto* sock = socket_->getUnderlyingTransport<folly::AsyncSocket>()) {
+      key.apply(sock->getNetworkSocket(), dscp << 2);
+    }
+  } catch (const std::exception& ex) {
+    FB_LOG_EVERY_MS(WARNING, 60 * 1000)
+        << "Failed to apply DSCP to socket: " << folly::exceptionStr(ex);
+  } catch (...) {
+    FB_LOG_EVERY_MS(WARNING, 60 * 1000)
+        << "Failed to apply DSCP to socket: "
+        << folly::exceptionStr(std::current_exception());
   }
 }
 

@@ -604,8 +604,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   /**
    * Get TOS reflection setting for the server socket
    */
-  bool getTosReflect() {
-    return (tosReflect_);
+  bool getTosReflect() const override {
+    return tosReflect_;
   }
 
   /**

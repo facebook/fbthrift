@@ -301,6 +301,8 @@ struct RequestSetupMetadata {
   3: optional i32 minVersion;
   // Max Rocket protocol version supported by the client
   4: optional i32 maxVersion;
+  // The DSCP value that the server should apply to its end of the socket
+  5: optional i32 dscpToReflect;
 }
 
 struct HeadersPayloadContent {

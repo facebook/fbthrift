@@ -133,6 +133,8 @@ class RocketServerConnection final
     closeIfNeeded();
   }
 
+  void applyDscpToSocket(int32_t dscp);
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code

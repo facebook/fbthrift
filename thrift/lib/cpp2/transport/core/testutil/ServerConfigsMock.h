@@ -77,6 +77,10 @@ class ServerConfigsMock : public ServerConfigs {
     return {};
   }
 
+  bool getTosReflect() const override {
+    return false;
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};

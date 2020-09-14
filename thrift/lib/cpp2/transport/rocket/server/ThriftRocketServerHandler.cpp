@@ -119,17 +119,17 @@ void ThriftRocketServerHandler::handleSetupFrame(
   try {
     CompactProtocolReader reader;
     reader.setInput(cursor);
-    auto meta = std::make_unique<RequestSetupMetadata>();
+    RequestSetupMetadata meta;
     // Throws on read error
-    meta->read(&reader);
+    meta.read(&reader);
     if (reader.getCursorPosition() > frame.payload().metadataSize()) {
       return connection.close(folly::make_exception_wrapper<RocketException>(
           ErrorCode::INVALID_SETUP,
           "Error deserializing SETUP payload: underflow"));
     }
 
-    auto minVersion = meta->minVersion_ref().value_or(0);
-    auto maxVersion = meta->maxVersion_ref().value_or(0);
+    auto minVersion = meta.minVersion_ref().value_or(0);
+    auto maxVersion = meta.maxVersion_ref().value_or(0);
 
     if (minVersion > version_) {
       return connection.close(folly::make_exception_wrapper<RocketException>(
@@ -144,7 +144,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
 
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
-      auto processorInfo = h->tryHandle(*meta);
+      auto processorInfo = h->tryHandle(meta);
       if (processorInfo) {
         bool valid = true;
         valid &= !!(cpp2Processor_ = std::move(processorInfo->cpp2Processor_));
@@ -170,6 +170,11 @@ void ThriftRocketServerHandler::handleSetupFrame(
       if (auto* observer = serverConfigs_->getObserver()) {
         sampleRate_ = observer->getSampleRate();
       }
+    }
+
+    if (meta.dscpToReflect_ref() &&
+        (!serverConfigs_ || !serverConfigs_->getTosReflect())) {
+      connection.applyDscpToSocket(*meta.dscpToReflect_ref());
     }
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
