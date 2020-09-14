@@ -122,15 +122,16 @@ std::false_type reserve_if_possible(T&&...) {
 }
 
 template <typename Void, typename T>
-struct sorted_unique_constructible_ : std::false_type {};
+constexpr bool sorted_unique_constructible_ = false;
 template <typename T>
-struct sorted_unique_constructible_<
+constexpr bool sorted_unique_constructible_<
     folly::void_t<
         decltype(T(folly::sorted_unique, typename T::container_type())),
         decltype(T(typename T::container_type()))>,
-    T> : std::true_type {};
+    T> = true;
 template <typename T>
-struct sorted_unique_constructible : sorted_unique_constructible_<void, T> {};
+constexpr bool sorted_unique_constructible_v =
+    sorted_unique_constructible_<void, T>;
 
 FOLLY_CREATE_MEMBER_INVOKER(emplace_hint_invoker, emplace_hint);
 
@@ -138,7 +139,7 @@ template <typename T>
 using detect_key_compare = typename T::key_compare;
 
 template <typename T>
-using map_emplace_hint_is_invocable = folly::is_invocable<
+constexpr bool map_emplace_hint_is_invocable_v = folly::is_invocable_v<
     emplace_hint_invoker,
     T,
     typename T::iterator,
@@ -146,14 +147,14 @@ using map_emplace_hint_is_invocable = folly::is_invocable<
     typename T::mapped_type>;
 
 template <typename T>
-using set_emplace_hint_is_invocable = folly::is_invocable<
+constexpr bool set_emplace_hint_is_invocable_v = folly::is_invocable_v<
     emplace_hint_invoker,
     T,
     typename T::iterator,
     typename T::value_type>;
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
-typename std::enable_if<sorted_unique_constructible<Map>::value>::type
+typename std::enable_if<sorted_unique_constructible_v<Map>>::type
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
@@ -182,8 +183,8 @@ deserialize_known_length_map(
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<
-    !sorted_unique_constructible<Map>::value &&
-    map_emplace_hint_is_invocable<Map>::value>::type
+    !sorted_unique_constructible_v<Map> &&
+    map_emplace_hint_is_invocable_v<Map>>::type
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
@@ -202,8 +203,8 @@ deserialize_known_length_map(
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<
-    !sorted_unique_constructible<Map>::value &&
-    !map_emplace_hint_is_invocable<Map>::value>::type
+    !sorted_unique_constructible_v<Map> &&
+    !map_emplace_hint_is_invocable_v<Map>>::type
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
@@ -219,7 +220,7 @@ deserialize_known_length_map(
 }
 
 template <typename Set, typename ValDeserializer>
-typename std::enable_if<sorted_unique_constructible<Set>::value>::type
+typename std::enable_if<sorted_unique_constructible_v<Set>>::type
 deserialize_known_length_set(
     Set& set,
     std::uint32_t set_size,
@@ -245,8 +246,8 @@ deserialize_known_length_set(
 
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<
-    !sorted_unique_constructible<Set>::value &&
-    set_emplace_hint_is_invocable<Set>::value>::type
+    !sorted_unique_constructible_v<Set> &&
+    set_emplace_hint_is_invocable_v<Set>>::type
 deserialize_known_length_set(
     Set& set,
     std::uint32_t set_size,
@@ -262,8 +263,8 @@ deserialize_known_length_set(
 
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<
-    !sorted_unique_constructible<Set>::value &&
-    !set_emplace_hint_is_invocable<Set>::value>::type
+    !sorted_unique_constructible_v<Set> &&
+    !set_emplace_hint_is_invocable_v<Set>>::type
 deserialize_known_length_set(
     Set& set,
     std::uint32_t set_size,
