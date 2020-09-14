@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp/Reflection.h>
 #include <thrift/lib/cpp2/reflection/legacy_reflection.h>
-#include <thrift/test/gen-cpp2/ReflectionTest_fatal_types.h>
+#include <thrift/test/reflection/gen-cpp2/ReflectionTest_fatal_types.h>
 
 #include <folly/portability/GTest.h>
 

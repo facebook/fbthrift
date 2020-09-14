@@ -19,7 +19,7 @@
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
-#include <thrift/test/gen-cpp2/fatal_reflection_indirection_fatal.h>
+#include <thrift/test/reflection/gen-cpp2/fatal_reflection_indirection_fatal.h>
 
 namespace {
 

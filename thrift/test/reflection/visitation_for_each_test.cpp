@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/reflection_for_each_field.h>
-#include <thrift/test/gen-cpp2/reflection_no_metadata_for_each_field.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_for_each_field.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_no_metadata_for_each_field.h>
 
 #include <folly/Overload.h>
 #include <folly/portability/GTest.h>

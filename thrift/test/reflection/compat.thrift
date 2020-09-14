@@ -21,7 +21,7 @@ namespace java.swift test_swift.cpp_compat
 namespace php test_php.cpp_compat
 namespace py3 test_py.cpp_compat
 
-cpp_include "thrift/test/fatal_custom_types.h"
+cpp_include "thrift/test/reflection/fatal_custom_types.h"
 
 enum compat_enum1 {
   field0 = 0,

@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-namespace cpp2 test_cpp2.cpp_reflection
+cpp_include "thrift/test/reflection/fatal_reflection_indirection_types.h"
 
-include "thrift/test/reflection_dep_D.thrift"
+namespace cpp2 reflection_indirection
 
-struct dep_C_struct {
-  1: reflection_dep_D.dep_D_struct d
-  2: i32 i_c
+typedef i32 (cpp.type = 'CppFakeI32') FakeI32
+typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
+typedef i32 (cpp.type = 'CppHasAResult', cpp.indirection = '.foo().result()')
+    HasAResult
+typedef string (cpp.type = 'CppHasAPhrase', cpp.indirection = '.phrase')
+    HasAPhrase
+
+struct struct_with_indirections {
+  1: i32 real,
+  2: FakeI32 fake,
+  3: HasANumber number,
+  4: HasAResult result,
+  5: HasAPhrase phrase,
 }

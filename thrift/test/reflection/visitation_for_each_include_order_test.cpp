@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-cpp_include "thrift/test/fatal_reflection_indirection_types.h"
+// Test whether it works if we include for_each.h first.
+#include <thrift/lib/cpp2/visitation/for_each.h>
 
-namespace cpp2 reflection_indirection
+#include <thrift/test/reflection/gen-cpp2/reflection_for_each_field.h>
 
-typedef i32 (cpp.type = 'CppFakeI32') FakeI32
-typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
-typedef i32 (cpp.type = 'CppHasAResult', cpp.indirection = '.foo().result()')
-    HasAResult
-typedef string (cpp.type = 'CppHasAPhrase', cpp.indirection = '.phrase')
-    HasAPhrase
+#include <folly/String.h>
+#include <folly/portability/GTest.h>
 
-struct struct_with_indirections {
-  1: i32 real,
-  2: FakeI32 fake,
-  3: HasANumber number,
-  4: HasAResult result,
-  5: HasAPhrase phrase,
+using namespace apache::thrift;
+using namespace test_cpp2::cpp_reflection;
+
+TEST(structA, test) {
+  structA s;
+  s.a_ref() = 1;
+  s.b_ref() = "1";
+  for_each_field(s, [](auto&&, auto ref) {
+    EXPECT_EQ(folly::to<std::string>(*ref), "1");
+    ref = folly::to<typename decltype(ref)::value_type>(2);
+  });
+  EXPECT_EQ(s.a_ref(), 2);
+  EXPECT_EQ(s.b_ref(), "2");
 }

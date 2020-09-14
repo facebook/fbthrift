@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/reflection_visitation.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_visitation.h>
 
 #include <folly/Overload.h>
 #include <folly/portability/GTest.h>

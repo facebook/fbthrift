@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/reflection_fatal.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_fatal.h>
 
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
@@ -195,7 +195,7 @@ TEST(fatal, metadata) {
 } // namespace cpp_reflection
 } // namespace test_cpp2
 
-#include <thrift/test/gen-cpp2/reflection_fatal_all.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_fatal_all.h>
 
 namespace test_cpp2 {
 namespace cpp_reflection {

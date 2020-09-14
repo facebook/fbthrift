@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/simple_reflection_fatal_types.h>
-#include <thrift/test/gen-cpp2/simple_reflection_types_custom_protocol.h>
+#include <thrift/test/reflection/gen-cpp2/simple_reflection_fatal_types.h>
+#include <thrift/test/reflection/gen-cpp2/simple_reflection_types_custom_protocol.h>
 
-#include <thrift/test/gen-cpp2/service_reflection_fatal_types.h>
-#include <thrift/test/gen-cpp2/service_reflection_types_custom_protocol.h>
+#include <thrift/test/reflection/gen-cpp2/service_reflection_fatal_types.h>
+#include <thrift/test/reflection/gen-cpp2/service_reflection_types_custom_protocol.h>
 
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 #include <thrift/lib/cpp2/reflection/pretty_print.h>
@@ -26,7 +26,7 @@
 
 #include <folly/Memory.h>
 
-#include <thrift/test/fatal_serialization_common.h>
+#include <thrift/test/reflection/fatal_serialization_common.h>
 
 #include <iomanip>
 

@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
-#include <thrift/test/gen-cpp2/reflection_fatal_union.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_fatal_union.h>
 
 #include <folly/portability/GTest.h>
 

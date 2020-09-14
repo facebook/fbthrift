@@ -19,7 +19,7 @@
 # nil = the expected new value of src after merging with rvalue-ref
 #
 
-cpp_include "thrift/test/fatal_merge_types.h"
+cpp_include "thrift/test/reflection/fatal_merge_types.h"
 
 namespace cpp2 apache.thrift.test
 

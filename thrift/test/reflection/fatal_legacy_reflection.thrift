@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-cpp_include "thrift/test/fatal_legacy_reflection_types.h"
+cpp_include "thrift/test/reflection/fatal_legacy_reflection_types.h"
 
 namespace cpp2 apache.thrift.test
 

@@ -14,25 +14,11 @@
  * limitations under the License.
  */
 
-// Test whether it works if we include for_each.h first.
-#include <thrift/lib/cpp2/visitation/for_each.h>
+namespace cpp2 test_cpp2.cpp_reflection
 
-#include <thrift/test/gen-cpp2/reflection_for_each_field.h>
+include "thrift/test/reflection/reflection_dep_D.thrift"
 
-#include <folly/String.h>
-#include <folly/portability/GTest.h>
-
-using namespace apache::thrift;
-using namespace test_cpp2::cpp_reflection;
-
-TEST(structA, test) {
-  structA s;
-  s.a_ref() = 1;
-  s.b_ref() = "1";
-  for_each_field(s, [](auto&&, auto ref) {
-    EXPECT_EQ(folly::to<std::string>(*ref), "1");
-    ref = folly::to<typename decltype(ref)::value_type>(2);
-  });
-  EXPECT_EQ(s.a_ref(), 2);
-  EXPECT_EQ(s.b_ref(), "2");
+struct dep_C_struct {
+  1: reflection_dep_D.dep_D_struct d
+  2: i32 i_c
 }

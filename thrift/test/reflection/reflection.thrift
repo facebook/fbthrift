@@ -22,10 +22,10 @@ namespace java.swift test_swift.cpp_reflection
 namespace php test_php.cpp_reflection
 namespace py3 test_py.cpp_reflection
 
-include "thrift/test/reflection_dep_B.thrift"
-include "thrift/test/reflection_dep_C.thrift"
+include "thrift/test/reflection/reflection_dep_B.thrift"
+include "thrift/test/reflection/reflection_dep_C.thrift"
 
-cpp_include "thrift/test/fatal_custom_types.h"
+cpp_include "thrift/test/reflection/fatal_custom_types.h"
 cpp_include "<deque>"
 cpp_include "<unordered_set>"
 cpp_include "<unordered_map>"

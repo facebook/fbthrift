@@ -19,9 +19,9 @@
 #include <thrift/lib/cpp2/reflection/debug.h>
 #include <thrift/lib/cpp2/reflection/merge.h>
 #include <thrift/lib/cpp2/reflection/pretty_print.h>
-#include <thrift/test/gen-cpp2/fatal_merge_constants.h>
-#include <thrift/test/gen-cpp2/fatal_merge_fatal_types.h>
-#include <thrift/test/gen-cpp2/fatal_merge_types.h>
+#include <thrift/test/reflection/gen-cpp2/fatal_merge_constants.h>
+#include <thrift/test/reflection/gen-cpp2/fatal_merge_fatal_types.h>
+#include <thrift/test/reflection/gen-cpp2/fatal_merge_types.h>
 
 using namespace apache::thrift::test;
 using apache::thrift::debug_equals;

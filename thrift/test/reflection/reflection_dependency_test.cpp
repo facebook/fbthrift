@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/reflection_fatal_types.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_fatal_types.h>
 
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
