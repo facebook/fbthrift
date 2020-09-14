@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <wangle/acceptor/FizzConfigUtil.h>
@@ -85,6 +86,7 @@ ThriftServer::ThriftServer()
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
   ServerInstrumentation::registerServer(*this);
+  THRIFT_SERVER_EVENT(serve).log(*this);
 }
 
 ThriftServer::ThriftServer(
