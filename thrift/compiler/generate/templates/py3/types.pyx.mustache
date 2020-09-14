@@ -228,10 +228,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             # Convert None's to default value. (or unset)
             {{#struct:fields}}
             if not __isNOTSET[{{field:index}}] and {{field:py_name}} is None:
-                {{#field:follyOptional?}}
-                deref(c_inst).{{field:py_name}}.reset()
-                {{/field:follyOptional?}}
-                {{^field:follyOptional?}}
                 {{#field:hasDefaultValue?}}
                 {{#field:has_ref_accessor?}}
                 deref(c_inst).{{field:py_name}}_ref().assign(default_inst[c{{struct:name}}]().{{> CythonFieldValueRef}})
@@ -243,7 +239,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 {{#field:isset?}}
                 deref(c_inst).__isset.{{field:py_name}} = False
                 {{/field:isset?}}
-                {{/field:follyOptional?}}
                 {{#field:reference?}}
                 deref(c_inst).{{field:py_name}}.reset()
                 {{/field:reference?}}
@@ -260,12 +255,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             deref(c_inst).{{field:py_name}}_ref().assign({{> CythonFieldValueForAssignment}})
             {{/field:has_ref_accessor?}}
             {{^field:has_ref_accessor?}}
-            {{#field:follyOptional?}}
-            deref(c_inst).{{field:py_name}}.assign({{> CythonFieldValueForAssignment}})
-            {{/field:follyOptional?}}
-            {{^field:follyOptional?}}
             deref(c_inst).{{field:py_name}} = {{> CythonFieldValueForAssignment}}
-            {{/field:follyOptional?}}
             {{/field:has_ref_accessor?}}
             {{! This should also be inside the if statement, so indent appropriately }}
             {{#field:isset?}}
@@ -298,10 +288,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         return {{#struct:is_always_set?}}True{{/struct:is_always_set?}}{{!
             }}{{^struct:is_always_set?}}{{!
             }}{{#struct:fields}}{{!
-            }}{{#field:follyOptional?}}{{!
-            }}deref(self._cpp_obj).{{field:py_name}}.has_value(){{!
-            }}{{/field:follyOptional?}}{{!
-            }}{{^field:follyOptional?}}{{!
             }}{{^field:hasDefaultValue?}}{{!
             }}{{#field:isset?}}{{#field:reference?}}({{/field:reference?}}{{/field:isset?}}{{!
             }}{{#field:isset?}}deref(self._cpp_obj).__isset.{{field:py_name}}{{/field:isset?}}{{!
@@ -309,7 +295,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             }}{{#field:reference?}}<bint>(deref(self._cpp_obj).{{field:py_name}}){{/field:reference?}}{{!
             }}{{#field:isset?}}{{#field:reference?}}){{/field:reference?}}{{/field:isset?}}{{!
             }}{{/field:hasDefaultValue?}}{{!
-            }}{{/field:follyOptional?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
             }}{{^struct:fields}}True{{/struct:fields}}{{!
             }}{{/struct:is_always_set?}}
@@ -327,18 +312,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     @property
     def {{field:py_name}}(self):
         {{#field:optional?}}
-        {{#field:follyOptional?}}
-        if not deref(self._cpp_obj).{{field:py_name}}.has_value():
-            return None
-        {{/field:follyOptional?}}
-        {{^field:follyOptional?}}
         {{^field:hasDefaultValue?}}
         {{#field:isset?}}
         if not deref(self._cpp_obj).__isset.{{field:py_name}}:
             return None
         {{/field:isset?}}
         {{/field:hasDefaultValue?}}
-        {{/field:follyOptional?}}
         {{/field:optional?}}
         {{#field:type}}
 

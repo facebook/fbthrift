@@ -30,11 +30,6 @@ namespace compiler {
 
 namespace {
 
-bool containsInParsedOptions(const mstch_cache* cache, const std::string& key) {
-  const auto& parsed_options = cache->parsed_options_;
-  return parsed_options.find(key) != parsed_options.end();
-}
-
 mstch::array createStringArray(const std::vector<std::string>& values) {
   mstch::array a;
   for (auto it = values.begin(); it != values.end(); ++it) {
@@ -781,8 +776,7 @@ class mstch_py3_field : public mstch_field {
       int32_t index)
       : mstch_field(field, generators, cache, pos, index),
         pyName_{py3::get_py3_name(*field)},
-        cppName_{get_cppname<t_field>(*field)},
-        hasOptionalsFlag_{containsInParsedOptions(cache.get(), "optionals")} {
+        cppName_{get_cppname<t_field>(*field)} {
     register_methods(
         this,
         {
@@ -794,7 +788,6 @@ class mstch_py3_field : public mstch_field {
             {"field:iobuf_ref?", &mstch_py3_field::isIOBufRef},
             {"field:has_ref_accessor?", &mstch_py3_field::hasRefAccessor},
             {"field:hasDefaultValue?", &mstch_py3_field::hasDefaultValue},
-            {"field:follyOptional?", &mstch_py3_field::isFollyOptional},
             {"field:PEP484Optional?", &mstch_py3_field::isPEP484Optional},
             {"field:isset?", &mstch_py3_field::isSet},
             {"field:cppName", &mstch_py3_field::cppName},
@@ -824,25 +817,20 @@ class mstch_py3_field : public mstch_field {
   }
 
   mstch::node hasRefAccessor() {
-    return hasOptionalsFlag_ ? false : !is_required() && !is_ref();
+    return !is_required() && !is_ref();
   }
 
   mstch::node hasDefaultValue() {
     return has_default_value();
   }
 
-  mstch::node isFollyOptional() {
-    return is_folly_optional();
-  }
-
   mstch::node isPEP484Optional() {
-    return !has_default_value() || is_folly_optional();
+    return !has_default_value();
   }
 
   mstch::node isSet() {
     auto ref_type = get_ref_type();
-    return !hasOptionalsFlag_ &&
-        (ref_type == RefType::NotRef || ref_type == RefType::IOBuf) &&
+    return (ref_type == RefType::NotRef || ref_type == RefType::IOBuf) &&
         !is_required();
   }
 
@@ -863,8 +851,7 @@ class mstch_py3_field : public mstch_field {
   }
 
   bool has_default_value() {
-    return !is_folly_optional() && !is_ref() &&
-        (field_->get_value() != nullptr || !is_optional());
+    return !is_ref() && (field_->get_value() != nullptr || !is_optional());
   }
 
   bool is_required() const {
@@ -872,10 +859,6 @@ class mstch_py3_field : public mstch_field {
   }
 
  protected:
-  bool is_folly_optional() {
-    return hasOptionalsFlag_ && is_optional();
-  }
-
   RefType get_ref_type() {
     if (ref_type_cached_) {
       return ref_type_;
@@ -932,7 +915,6 @@ class mstch_py3_field : public mstch_field {
   bool ref_type_cached_ = false;
   const std::string pyName_;
   const std::string cppName_;
-  bool hasOptionalsFlag_;
 };
 
 class mstch_py3_struct : public mstch_struct {
