@@ -88,6 +88,19 @@ template <typename T>
 constexpr bool is_thrift_struct_v =
     is_thrift_class_v<T> && !is_thrift_union_v<T> && !is_thrift_exception_v<T>;
 
+template <typename T, typename Fallback>
+using type_class_of_thrift_class_or_t = //
+    folly::conditional_t<
+        is_thrift_union_v<T>,
+        type_class::variant,
+        folly::conditional_t<
+            is_thrift_class_v<T>, // struct or exception
+            type_class::structure,
+            Fallback>>;
+
+template <typename T>
+using type_class_of_thrift_class_t = type_class_of_thrift_class_or_t<T, void>;
+
 namespace detail {
 
 template <typename T>
