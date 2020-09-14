@@ -518,6 +518,7 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
       worker->requestStop();
     }
   });
+  sharedSSLContextManager_ = nullptr;
 
   {
     auto sockets = getSockets();
