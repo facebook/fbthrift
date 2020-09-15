@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
-#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
@@ -48,14 +47,12 @@ class RocketCompatibilityTest : public testing::Test {
   std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
 };
 
-class RSCompatibilityManuallyStartServerTest : public testing::Test {
+class RocketManuallyStartServerTest : public testing::Test {
  public:
-  RSCompatibilityManuallyStartServerTest() {
+  RocketManuallyStartServerTest() {
     FLAGS_transport = "rocket";
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
-    compatibilityTest_->addRoutingHandler(
-        std::make_unique<apache::thrift::RocketRoutingHandler>());
   }
 
  protected:
@@ -284,8 +281,12 @@ TEST_F(RocketCompatibilityTest, ClientIdentityHook) {
   compatibilityTest_->TestClientIdentityHook();
 }
 
-TEST_F(RSCompatibilityManuallyStartServerTest, TestCustomAsyncProcessor) {
+TEST_F(RocketManuallyStartServerTest, TestCustomAsyncProcessor) {
   compatibilityTest_->TestCustomAsyncProcessor();
+}
+
+TEST_F(RocketManuallyStartServerTest, TestOnWriteQuiescence) {
+  compatibilityTest_->TestOnWriteQuiescence();
 }
 
 } // namespace thrift

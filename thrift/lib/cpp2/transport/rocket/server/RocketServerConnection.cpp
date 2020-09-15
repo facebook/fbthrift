@@ -110,6 +110,7 @@ RocketServerConnection::~RocketServerConnection() {
   DCHECK(inflightWritesQueue_.empty());
   DCHECK(inflightSinkFinalResponses_ == 0);
   DCHECK(writeBatcher_.empty());
+  DCHECK(activePausedHandlers_ == 0);
   socket_.reset();
 }
 
@@ -541,7 +542,8 @@ void RocketServerConnection::timeoutExpired() noexcept {
 
 bool RocketServerConnection::isBusy() const {
   return inflightRequests_ != 0 || !inflightWritesQueue_.empty() ||
-      inflightSinkFinalResponses_ != 0 || !writeBatcher_.empty();
+      inflightSinkFinalResponses_ != 0 || !writeBatcher_.empty() ||
+      activePausedHandlers_ != 0;
 }
 
 // On graceful shutdown, ConnectionManager will first fire the
@@ -584,6 +586,13 @@ void RocketServerConnection::writeSuccess() noexcept {
   }
 
   inflightWritesQueue_.pop();
+
+  if (onWriteQuiescence_ && writeBatcher_.empty() &&
+      inflightWritesQueue_.empty()) {
+    onWriteQuiescence_(ReadPausableHandle(this));
+    return;
+  }
+
   closeIfNeeded();
 }
 
@@ -730,6 +739,55 @@ void RocketServerConnection::applyDscpToSocket(int32_t dscp) {
         << "Failed to apply DSCP to socket: "
         << folly::exceptionStr(std::current_exception());
   }
+}
+
+RocketServerConnection::ReadResumableHandle::ReadResumableHandle(
+    RocketServerConnection* connection)
+    : connection_(connection) {}
+
+RocketServerConnection::ReadResumableHandle::~ReadResumableHandle() {
+  if (connection_ != nullptr) {
+    std::move(*this).resume();
+  }
+}
+
+RocketServerConnection::ReadResumableHandle::ReadResumableHandle(
+    ReadResumableHandle&& handle) noexcept
+    : connection_(std::exchange(handle.connection_, nullptr)) {}
+
+RocketServerConnection::ReadPausableHandle::ReadPausableHandle(
+    RocketServerConnection* connection)
+    : connection_(connection) {
+  ++connection_->activePausedHandlers_;
+}
+
+void RocketServerConnection::ReadResumableHandle::resume() && {
+  DCHECK(connection_ != nullptr) << "resume() has been called on this handle";
+  --connection_->activePausedHandlers_;
+  if (connection_->state_ == ConnectionState::ALIVE ||
+      connection_->state_ == ConnectionState::DRAINING) {
+    connection_->socket_->setReadCB(&connection_->parser_);
+  }
+  connection_->closeIfNeeded();
+  connection_ = nullptr;
+}
+
+RocketServerConnection::ReadPausableHandle::~ReadPausableHandle() {
+  if (connection_ != nullptr) {
+    --connection_->activePausedHandlers_;
+    connection_->closeIfNeeded();
+  }
+}
+
+RocketServerConnection::ReadPausableHandle::ReadPausableHandle(
+    ReadPausableHandle&& handle) noexcept
+    : connection_(std::exchange(handle.connection_, nullptr)) {}
+
+RocketServerConnection::ReadResumableHandle
+RocketServerConnection::ReadPausableHandle::pause() && {
+  DCHECK(connection_ != nullptr) << "pause() has been called on this handle";
+  connection_->socket_->setReadCB(nullptr);
+  return ReadResumableHandle(std::exchange(connection_, nullptr));
 }
 
 } // namespace rocket

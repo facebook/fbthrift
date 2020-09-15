@@ -31,12 +31,16 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 
 DECLARE_bool(use_ssl);
@@ -1234,6 +1238,73 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       std::make_shared<TestAsyncProcessorFactory>(std::move(cpp2PFac)));
   startServer();
   TestRequestResponse_Simple();
+}
+
+void TransportCompatibilityTest::TestOnWriteQuiescence() {
+  struct State {
+    folly::fibers::Baton baton;
+    folly::Optional<rocket::RocketServerConnection::ReadResumableHandle>
+        resumeHandle;
+  };
+
+  class TestOnWriteQuiescenceRoutingHandler : public RocketRoutingHandler {
+   public:
+    explicit TestOnWriteQuiescenceRoutingHandler(State& state) : state_(state) {}
+    void handleConnection(
+        wangle::ConnectionManager* connectionManager,
+        folly::AsyncTransport::UniquePtr sock,
+        folly::SocketAddress const* address,
+        wangle::TransportInfo const&,
+        std::shared_ptr<Cpp2Worker> worker) override {
+      auto* const sockPtr = sock.get();
+      auto* const server = worker->getServer();
+      auto* const connection = new rocket::RocketServerConnection(
+          std::move(sock),
+          std::make_unique<rocket::ThriftRocketServerHandler>(
+              worker, *address, sockPtr, getSetupFrameHandlers()),
+          server->getStreamExpireTime(),
+          server->getWriteBatchingInterval(),
+          server->getWriteBatchingSize());
+      connection->setOnWriteQuiescenceCallback(
+          [this,
+           callCounter = 0](rocket::RocketServerConnection::ReadPausableHandle
+                                handle) mutable {
+            if (callCounter == 0) {
+              ++callCounter;
+              state_.resumeHandle.emplace(std::move(handle).pause());
+              state_.baton.post();
+            }
+          });
+      connectionManager->addConnection(connection);
+    }
+
+   private:
+    State& state_;
+  };
+
+  State s;
+  server_->getServer()->clearRoutingHandlers();
+  server_->getServer()->addRoutingHandler(
+      std::make_unique<TestOnWriteQuiescenceRoutingHandler>(s));
+  startServer();
+  connectToServer([this, &s](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(AtLeast(2));
+    // wait for first response to complete, write quiescence callback expected
+    // to pause further read.
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    s.baton.wait();
+    EXPECT_TRUE(s.resumeHandle.hasValue());
+    // further request-response won't get through as read paused
+    RpcOptions options;
+    options.setTimeout(std::chrono::milliseconds(80));
+    EXPECT_THROW(
+        client->future_sumTwoNumbers(options, 1, 2).get(), TTransportException);
+    auto& eb = s.resumeHandle->getEventBase();
+    eb.runInEventBaseThreadAndWait(
+        [&s]() { std::move(s.resumeHandle).value().resume(); });
+    // after resume handle called request-response get through again
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+  });
 }
 
 } // namespace thrift

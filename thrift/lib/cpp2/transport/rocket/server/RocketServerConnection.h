@@ -135,6 +135,49 @@ class RocketServerConnection final
 
   void applyDscpToSocket(int32_t dscp);
 
+  class ReadResumableHandle {
+   public:
+    explicit ReadResumableHandle(RocketServerConnection* connection);
+    ~ReadResumableHandle();
+
+    ReadResumableHandle(ReadResumableHandle&&) noexcept;
+    ReadResumableHandle(const ReadResumableHandle&) = delete;
+    ReadResumableHandle& operator=(const ReadResumableHandle&) = delete;
+    ReadResumableHandle& operator=(ReadResumableHandle&&) = delete;
+
+    void resume() &&;
+    folly::EventBase& getEventBase() {
+      return connection_->evb_;
+    }
+
+   private:
+    RocketServerConnection* connection_;
+  };
+
+  class ReadPausableHandle {
+   public:
+    explicit ReadPausableHandle(RocketServerConnection* connection);
+    ~ReadPausableHandle();
+
+    ReadPausableHandle(ReadPausableHandle&&) noexcept;
+    ReadPausableHandle(const ReadPausableHandle&) = delete;
+    ReadPausableHandle& operator=(const ReadPausableHandle&) = delete;
+    ReadPausableHandle& operator=(ReadPausableHandle&&) = delete;
+
+    ReadResumableHandle pause() &&;
+    folly::EventBase& getEventBase() {
+      return connection_->evb_;
+    }
+
+   private:
+    RocketServerConnection* connection_;
+  };
+
+  void setOnWriteQuiescenceCallback(
+      folly::Function<void(ReadPausableHandle)> cb) {
+    onWriteQuiescence_ = std::move(cb);
+  }
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
@@ -323,6 +366,8 @@ class RocketServerConnection final
     static constexpr std::chrono::seconds kTimeout{1};
   };
   SocketDrainer socketDrainer_;
+  size_t activePausedHandlers_{0};
+  folly::Function<void(ReadPausableHandle)> onWriteQuiescence_;
 
   ~RocketServerConnection();
 

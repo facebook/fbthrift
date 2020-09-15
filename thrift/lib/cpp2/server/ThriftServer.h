@@ -741,6 +741,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     routingHandlers_.push_back(std::move(routingHandler));
   }
 
+  void clearRoutingHandlers() {
+    routingHandlers_.clear();
+  }
+
   void setDuplex(bool duplex) {
     // setDuplex may only be called on the server side.
     // serverChannel_ must be nullptr in this case

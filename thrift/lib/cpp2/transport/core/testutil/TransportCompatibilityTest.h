@@ -122,6 +122,7 @@ class TransportCompatibilityTest {
   void TestClientIdentityHook();
 
   void TestCustomAsyncProcessor();
+  void TestOnWriteQuiescence();
 
  protected:
   void connectToServer(
