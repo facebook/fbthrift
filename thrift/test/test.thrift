@@ -33,6 +33,9 @@ const string str_1 = "hello"
 const string str_2 = "world"
 const string str_3 = "'"
 const string str_4 = '"foo"'
+const string str_5 = "line 1
+line 2
+"
 
 const list<string> l_e = []
 const list<i32> l_1 = [23, 42, 56]

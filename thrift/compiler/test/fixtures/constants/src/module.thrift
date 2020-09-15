@@ -19,6 +19,10 @@ namespace java.swift.constants test.fixtures.constants.ModuleConstants
 
 const i32 myInt = 1337;
 const string name = "Mark Zuckerberg";
+const string multi_line_string = "This
+is a
+multi line string.
+"
 const list<map<string, i32>> states = [
   {"San Diego": 3211000, "Sacramento": 479600, "SF": 837400},
   {"New York": 8406000, "Albany": 98400}

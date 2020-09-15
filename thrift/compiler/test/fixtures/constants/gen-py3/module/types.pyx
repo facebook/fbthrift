@@ -3364,6 +3364,7 @@ Mapping.register(Map__i32_string)
 
 myInt = 1337
 name = cname().decode('UTF-8')
+multi_line_string = cmulti_line_string().decode('UTF-8')
 states = List__Map__string_i32.create(constant_shared_ptr(cstates()))
 x = 1
 y = 1000000.0

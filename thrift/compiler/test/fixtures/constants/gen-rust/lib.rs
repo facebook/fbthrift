@@ -11,6 +11,8 @@ pub mod consts {
 
     pub const name: &::std::primitive::str = "Mark Zuckerberg";
 
+    pub const multi_line_string: &::std::primitive::str = "This\nis a\nmulti line string.\n";
+
     lazy_static::lazy_static! {
         pub static ref states: ::std::vec::Vec<::std::collections::BTreeMap<::std::string::String, ::std::primitive::i32>> = vec![
             {

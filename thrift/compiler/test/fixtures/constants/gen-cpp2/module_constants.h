@@ -30,6 +30,19 @@ struct module_constants {
     return name_;
   }
 
+  // consider using folly::StringPiece instead of std::string whenever possible
+  // to referencing this statically allocated string constant, in order to
+  // prevent unnecessary allocations
+
+  static constexpr char const * const multi_line_string_ = R"__FBTHRIFT_STRL(This
+is a
+multi line string.
+)__FBTHRIFT_STRL";
+
+  static constexpr char const * multi_line_string() {
+    return multi_line_string_;
+  }
+
   static ::std::vector<::std::map<::std::string, int32_t>> const& states();
 
   static constexpr double const x_ = 1;

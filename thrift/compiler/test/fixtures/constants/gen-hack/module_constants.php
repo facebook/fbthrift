@@ -20,6 +20,15 @@ class module_CONSTANTS implements \IThriftConstants {
 
   /**
    * Original thrift constant:-
+   * string multi_line_string
+   */
+  const string multi_line_string = "This
+is a
+multi line string.
+";
+
+  /**
+   * Original thrift constant:-
    * list<map<string, i32>> states
    */
   <<__Memoize>>
@@ -706,6 +715,7 @@ class module_CONSTANTS implements \IThriftConstants {
     return dict[
       'myInt' => dict[],
       'name' => dict[],
+      'multi_line_string' => dict[],
       'states' => dict[],
       'x' => dict[],
       'y' => dict[],

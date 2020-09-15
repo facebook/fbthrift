@@ -469,7 +469,7 @@ Fiery.thrift_spec = (
 )
 
 Fiery.thrift_struct_annotations = {
-  "message": """message""",
+  "message": "message",
 }
 Fiery.thrift_field_annotations = {
 }
@@ -493,7 +493,7 @@ Serious.thrift_spec = (
 )
 
 Serious.thrift_struct_annotations = {
-  "message": """sonnet""",
+  "message": "sonnet",
 }
 Serious.thrift_field_annotations = {
 }
@@ -518,7 +518,7 @@ ComplexFieldNames.thrift_spec = (
 )
 
 ComplexFieldNames.thrift_struct_annotations = {
-  "message": """internal_error_message""",
+  "message": "internal_error_message",
 }
 ComplexFieldNames.thrift_field_annotations = {
 }
@@ -545,11 +545,11 @@ CustomFieldNames.thrift_spec = (
 )
 
 CustomFieldNames.thrift_struct_annotations = {
-  "message": """internal_error_message""",
+  "message": "internal_error_message",
 }
 CustomFieldNames.thrift_field_annotations = {
   2: {
-    "java.swift.name": """internalGreatMessage""",
+    "java.swift.name": "internalGreatMessage",
   },
 }
 

@@ -19,6 +19,11 @@ myInt = 1337
 
 name = "Mark Zuckerberg"
 
+multi_line_string = """This
+is a
+multi line string.
+"""
+
 states = [
   {
     "San Diego" : 3211000,

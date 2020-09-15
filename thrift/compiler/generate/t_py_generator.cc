@@ -1025,11 +1025,15 @@ void t_py_generator::generate_const(t_const* tconst) {
 string t_py_generator::render_string(string value) {
   std::ostringstream out;
   size_t pos = 0;
+  // Escape all quotes
   while ((pos = value.find('"', pos)) != string::npos) {
     value.insert(pos, 1, '\\');
     pos += 2;
   }
-  out << "\"" << value << "\"";
+  // If string contains multiple lines, then wrap it in triple quotes """
+  std::string wrap(value.find("\n") == std::string::npos ? "\"" : "\"\"\"");
+
+  out << wrap << value << wrap;
   return out.str();
 }
 
@@ -1542,8 +1546,8 @@ void t_py_generator::generate_py_string_dict(
     const map<string, string>& fields) {
   indent_up();
   for (auto a_iter = fields.begin(); a_iter != fields.end(); ++a_iter) {
-    indent(out) << render_string(a_iter->first) << ": \"\""
-                << render_string(a_iter->second) << "\"\"," << endl;
+    indent(out) << render_string(a_iter->first) << ": "
+                << render_string(a_iter->second) << "," << endl;
   }
   indent_down();
 }

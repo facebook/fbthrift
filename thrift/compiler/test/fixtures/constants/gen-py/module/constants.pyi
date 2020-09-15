@@ -10,6 +10,7 @@ from module.ttypes import *
 
 myInt: int
 name: str
+multi_line_string: str
 states: __T.List[__T.Dict[str, int]]
 x: float
 y: float

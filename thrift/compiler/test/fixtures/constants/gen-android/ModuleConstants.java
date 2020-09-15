@@ -16,6 +16,11 @@ public class ModuleConstants {
 
   public static final String name = "Mark Zuckerberg";
 
+  public static final String multi_line_string = "This
+is a
+multi line string.
+";
+
   public static final List<Map<String,Integer>> states = new ArrayList<Map<String,Integer>>();
   static {
     Map<String,Integer> tmp0 = new HashMap<String,Integer>();

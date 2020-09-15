@@ -21,6 +21,7 @@ var _ = context.Background
 
 const MyInt = 1337
 const Name = "Mark Zuckerberg"
+const MultiLineString = "This\nis a\nmulti line string.\n"
 var States []map[string]int32
 const X = 1
 const Y = 1000000

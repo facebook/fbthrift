@@ -46,7 +46,7 @@ from thrift.util.Decorators import (
 
 class Iface:
   annotations = {
-    "priority": """HIGH""",
+    "priority": "HIGH",
   }
 
   def ping(self, ):
@@ -58,7 +58,7 @@ class Iface:
 
 class ContextIface:
   annotations = {
-    "priority": """HIGH""",
+    "priority": "HIGH",
   }
 
   def ping(self, handler_ctx, ):

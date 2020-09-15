@@ -19,6 +19,11 @@ public final class ModuleConstants {
 
     public static final String NAME = "Mark Zuckerberg";
 
+    public static final String MULTI_LINE_STRING = "This
+is a
+multi line string.
+";
+
     public static final List<Map<String, Integer>> STATES = ImmutableList.<Map<String, Integer>>builder()
         .add(ImmutableMap.<String, Integer>builder()
         .put("San Diego", 3211000)

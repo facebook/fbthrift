@@ -16,6 +16,8 @@ constexpr int32_t const module_constants::myInt_;
 
 constexpr char const * const module_constants::name_;
 
+constexpr char const * const module_constants::multi_line_string_;
+
 ::std::vector<::std::map<::std::string, int32_t>> const& module_constants::states() {
   static folly::Indestructible<::std::vector<::std::map<::std::string, int32_t>>> const instance(std::initializer_list<::std::map<::std::string, int32_t>>{std::initializer_list<std::pair<const ::std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000},
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600},

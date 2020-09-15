@@ -24,6 +24,17 @@ class module_CONSTANTS {
     return self::$__name;
   }
 
+  private static $__multi_line_string = null;
+  public static function multi_line_string() {
+    if (self::$__multi_line_string == null) {
+      self::$__multi_line_string = "This
+is a
+multi line string.
+";
+    }
+    return self::$__multi_line_string;
+  }
+
   private static $__states = null;
   public static function states() {
     if (self::$__states == null) {
@@ -649,6 +660,10 @@ class module_CONSTANTS {
       self::$____values = array(
         "myInt" => 1337,
         "name" => "Mark Zuckerberg",
+        "multi_line_string" => "This
+is a
+multi line string.
+",
         "states" => array(
           array(
             "San Diego" => 3211000,

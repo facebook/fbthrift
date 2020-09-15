@@ -542,6 +542,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cint32_t cmyInt "::cpp2::module_constants::myInt"
     cdef const char* cname "::cpp2::module_constants::name"()
+    cdef const char* cmulti_line_string "::cpp2::module_constants::multi_line_string"()
     cdef vector[cmap[string,cint32_t]] cstates "::cpp2::module_constants::states"()
     cdef double cx "::cpp2::module_constants::x"
     cdef double cy "::cpp2::module_constants::y"

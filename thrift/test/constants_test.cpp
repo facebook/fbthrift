@@ -40,6 +40,7 @@ TEST(constants, examples) {
   EXPECT_EQ(std::string("world"), test_constants::str_2());
   EXPECT_EQ(std::string("'"), test_constants::str_3());
   EXPECT_EQ(std::string("\"foo\""), test_constants::str_4());
+  EXPECT_EQ(std::string("line 1\nline 2\n"), test_constants::str_5());
 
   EXPECT_TRUE(test_constants::l_e().empty());
   EXPECT_EQ((std::vector<std::int32_t>{23, 42, 56}), test_constants::l_1());

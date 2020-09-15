@@ -617,23 +617,23 @@ MyStruct.thrift_spec = (
 )
 
 MyStruct.thrift_struct_annotations = {
-  "android.generate_builder": """1""",
+  "android.generate_builder": "1",
 }
 MyStruct.thrift_field_annotations = {
   1: {
-    "cpp.name": """majorVer""",
+    "cpp.name": "majorVer",
   },
   2: {
-    "java.swift.name": """_package""",
+    "java.swift.name": "_package",
   },
   3: {
-    "go.tag": """tag:\"somevalue\"""",
+    "go.tag": "tag:\"somevalue\"",
   },
   4: {
-    "java.swift.name": """class_""",
+    "java.swift.name": "class_",
   },
   5: {
-    "custom": """test""",
+    "custom": "test",
   },
 }
 
@@ -670,7 +670,7 @@ SecretStruct.thrift_struct_annotations = {
 }
 SecretStruct.thrift_field_annotations = {
   2: {
-    "java.sensitive": """1""",
+    "java.sensitive": "1",
   },
 }
 
