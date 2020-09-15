@@ -982,6 +982,11 @@ void RocketClient::closeNowImpl() noexcept {
 
   DCHECK(socket_);
   socket_->closeNow();
+  // AsyncSocket::closeNow() may not unset the read callback. AsyncSocket
+  // destruction may also be delayed past RocketClient destruction. Unset the
+  // read callback to ensure that AsyncSocket does not subsequently use a
+  // destroyed RocketClient.
+  socket_->setReadCB(nullptr);
   socket_.reset();
 
   state_ = ConnectionState::CLOSED;
