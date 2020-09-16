@@ -18,13 +18,59 @@
 
 namespace apache {
 namespace thrift {
+namespace {
+static InteractionId createInteraction(
+    RequestChannel& channel,
+    folly::StringPiece methodName) {
+  DCHECK(
+      !channel.getEventBase() || channel.getEventBase()->isInEventBaseThread());
+  return channel.createInteraction(methodName);
+}
+} // namespace
 
-// TODO: make it possible to create a connection context from a thrift channel
 GeneratedAsyncClient::GeneratedAsyncClient(
     std::shared_ptr<RequestChannel> channel)
     : channel_(std::move(channel)) {}
 
-GeneratedAsyncClient::~GeneratedAsyncClient() {}
+InteractionHandle::InteractionHandle(
+    std::shared_ptr<RequestChannel> channel,
+    folly::StringPiece methodName)
+    : GeneratedAsyncClient(channel),
+      interactionId_(createInteraction(*channel, methodName)) {
+  DCHECK(interactionId_);
+}
+
+InteractionHandle::~InteractionHandle() {
+  terminate();
+}
+InteractionHandle& InteractionHandle::operator=(InteractionHandle&& other) {
+  if (this != &other) {
+    terminate();
+  }
+  channel_ = std::move(other.channel_);
+  interactionId_ = std::move(other.interactionId_);
+  return *this;
+}
+
+void InteractionHandle::setInteraction(RpcOptions& rpcOptions) {
+  DCHECK(interactionId_);
+  rpcOptions.setInteractionId(interactionId_);
+}
+
+void InteractionHandle::terminate() {
+  if (!channel_ || !interactionId_) {
+    return;
+  }
+  auto* eb = channel_->getEventBase();
+  if (eb) {
+    folly::getKeepAliveToken(eb).add(
+        [channel = channel_, id = std::move(interactionId_)](auto&&) mutable {
+          channel->terminateInteraction(std::move(id));
+        });
+  } else {
+    channel_->terminateInteraction(std::move(interactionId_));
+  }
+}
 
 } // namespace thrift
 } // namespace apache

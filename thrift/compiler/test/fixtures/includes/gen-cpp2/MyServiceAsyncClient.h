@@ -28,13 +28,17 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "MyService";
   }
 
+
+
   virtual void query(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  protected:
   void queryImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  public:
+
   virtual void sync_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void sync_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+
   virtual folly::Future<folly::Unit> future_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::SemiFuture<folly::Unit> semifuture_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<folly::Unit> future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
@@ -66,7 +70,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+
+
   static folly::exception_wrapper recv_wrapped_query(::apache::thrift::ClientReceiveState& state);
   static void recv_query(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -76,13 +83,16 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void queryT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  public:
+
   virtual void has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  protected:
   void has_arg_docsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  public:
+
   virtual void sync_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void sync_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+
   virtual folly::Future<folly::Unit> future_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<folly::Unit> future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
@@ -114,7 +124,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+
+
   static folly::exception_wrapper recv_wrapped_has_arg_docs(::apache::thrift::ClientReceiveState& state);
   static void recv_has_arg_docs(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

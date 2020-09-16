@@ -102,7 +102,6 @@ void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
 }
 
 
-
 folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_do_mid(rpcOptions);
@@ -142,6 +141,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   do_mid(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyNodeAsyncClient::do_mid(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_mid(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -192,5 +192,6 @@ void MyNodeAsyncClient::recv_instance_do_mid(::apache::thrift::ClientReceiveStat
 folly::exception_wrapper MyNodeAsyncClient::recv_instance_wrapped_do_mid(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_do_mid(state);
 }
+
 
 } // cpp2

@@ -484,6 +484,9 @@ class mstch_cpp2_type : public mstch_type {
     return resolved_type_->is_container() || resolved_type_->is_enum();
   }
   mstch::node resolves_to_complex_return() {
+    if (resolved_type_->is_service()) {
+      return false;
+    }
     return resolved_type_->is_container() ||
         resolved_type_->is_string_or_binary() || resolved_type_->is_struct() ||
         resolved_type_->is_xception();
@@ -1193,6 +1196,9 @@ class mstch_cpp2_service : public mstch_service {
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
             {"service:metadata_name", &mstch_cpp2_service::metadata_name},
+            {"service:parent_service_name",
+             &mstch_cpp2_service::parent_service_name},
+            {"service:coro_only_client?", &mstch_service::is_interaction},
         });
   }
   std::string get_service_namespace(t_program const* program) override {
@@ -1248,6 +1254,9 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node metadata_name() {
     return service_->get_program()->get_name() + "_" + service_->get_name();
+  }
+  mstch::node parent_service_name() {
+    return cache_->parsed_options_.at("parent_service_name");
   }
 };
 
@@ -2152,6 +2161,7 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
 void t_mstch_cpp2_generator::generate_service(t_service const* service) {
   const auto& id = get_program()->get_path();
   std::string name = service->get_name();
+  cache_->parsed_options_["parent_service_name"] = name; // for interactions
   std::string service_id = id + name;
   if (!cache_->services_.count(service_id)) {
     cache_->services_[service_id] =
@@ -2183,6 +2193,7 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
         "service_processmap_protocol.cpp",
         name + "_processmap_" + protocol.at(0) + ".cpp");
   }
+  cache_->parsed_options_.erase("parent_service_name");
 }
 
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(

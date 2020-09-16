@@ -26,24 +26,28 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "MyService";
   }
 
-  virtual void createMyInteraction(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void createMyInteraction(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- protected:
-  void createMyInteractionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+class MyInteraction final : public apache::thrift::InteractionHandle {
+  using apache::thrift::InteractionHandle::InteractionHandle;
+  friend class MyServiceAsyncClient;
  public:
-  virtual  sync_createMyInteraction();
-  virtual  sync_createMyInteraction(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<> future_createMyInteraction();
-  virtual folly::SemiFuture<> semifuture_createMyInteraction();
-  virtual folly::Future<> future_createMyInteraction(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<> semifuture_createMyInteraction(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_createMyInteraction(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_createMyInteraction(apache::thrift::RpcOptions& rpcOptions);
+
+
+  char const* getServiceName() const noexcept override {
+    return "MyService";
+  }
+
+
+private:
+  virtual void frobnicate(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ protected:
+  void frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+ public:
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<> co_createMyInteraction() {
-    auto _task = semifuture_createMyInteraction();
+  folly::coro::Task<void> co_frobnicate() {
+    auto _task = semifuture_frobnicate();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
@@ -53,8 +57,8 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
   template <int = 0>
-  folly::coro::Task<> co_createMyInteraction(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_createMyInteraction(rpcOptions);
+  folly::coro::Task<void> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+    auto _task = semifuture_frobnicate(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
@@ -64,23 +68,30 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
-  virtual void createMyInteraction(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_createMyInteraction(& _return, ::apache::thrift::ClientReceiveState& state);
-  static  recv_createMyInteraction(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual  recv_instance_createMyInteraction(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_createMyInteraction(& _return, ::apache::thrift::ClientReceiveState& state);
+
+private:
+  folly::SemiFuture<folly::Unit> semifuture_frobnicate();
+  folly::SemiFuture<folly::Unit> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+public:
+
+  static folly::exception_wrapper recv_wrapped_frobnicate(::apache::thrift::ClientReceiveState& state);
+  static void recv_frobnicate(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void createMyInteractionT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+};
+  MyInteraction createMyInteraction();
+
   virtual void foo(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void foo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void fooImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_foo();
   virtual void sync_foo(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_foo();
   virtual folly::SemiFuture<folly::Unit> semifuture_foo();
   virtual folly::Future<folly::Unit> future_foo(apache::thrift::RpcOptions& rpcOptions);
@@ -112,7 +123,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void foo(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_foo(::apache::thrift::ClientReceiveState& state);
   static void recv_foo(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

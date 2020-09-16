@@ -26,13 +26,17 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
     return "MyServicePrioParent";
   }
 
+
+
   virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_ping();
   virtual void sync_ping(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_ping();
   virtual folly::SemiFuture<folly::Unit> semifuture_ping();
   virtual folly::Future<folly::Unit> future_ping(apache::thrift::RpcOptions& rpcOptions);
@@ -64,7 +68,10 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_ping(::apache::thrift::ClientReceiveState& state);
   static void recv_ping(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -74,13 +81,16 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   template <typename Protocol_>
   void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void pong(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void pongImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_pong();
   virtual void sync_pong(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_pong();
   virtual folly::SemiFuture<folly::Unit> semifuture_pong();
   virtual folly::Future<folly::Unit> future_pong(apache::thrift::RpcOptions& rpcOptions);
@@ -112,7 +122,10 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_pong(::apache::thrift::ClientReceiveState& state);
   static void recv_pong(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

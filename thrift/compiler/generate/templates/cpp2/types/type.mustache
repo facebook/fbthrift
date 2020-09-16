@@ -14,7 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:cpp_type%><%!
+%><%#type:interaction?%><%!
+  %><%type:name%><%!
+%><%/type:interaction?%><%!
+%><%^type:interaction?%><%#type:cpp_type%><%!
   %><%type:cpp_type%><%!
 %><%/type:cpp_type%><%!
 %><%^type:cpp_type%><%!
@@ -79,4 +82,4 @@
     %><%/type:sink?%><%!
 
   %><%/type:typedef?%><%!
-%><%/type:cpp_type%>
+%><%/type:cpp_type%><%/type:interaction?%>

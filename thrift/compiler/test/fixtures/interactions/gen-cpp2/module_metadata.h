@@ -23,7 +23,6 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
  public:
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
  private:
-  static void gen_createMyInteraction(ThriftMetadata& metadata, ThriftService& context);
   static void gen_foo(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md

@@ -27,13 +27,17 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
     return "MyNode";
   }
 
+
+
   virtual void do_mid(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_mid(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void do_midImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_do_mid();
   virtual void sync_do_mid(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_do_mid();
   virtual folly::SemiFuture<folly::Unit> semifuture_do_mid();
   virtual folly::Future<folly::Unit> future_do_mid(apache::thrift::RpcOptions& rpcOptions);
@@ -65,7 +69,10 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void do_mid(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_do_mid(::apache::thrift::ClientReceiveState& state);
   static void recv_do_mid(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

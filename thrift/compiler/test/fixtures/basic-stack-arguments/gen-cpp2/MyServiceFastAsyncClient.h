@@ -26,13 +26,17 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "MyServiceFast";
   }
 
+
+
   virtual void hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
   virtual void hasDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
  protected:
   void hasDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
+
   virtual bool sync_hasDataById(int64_t id);
   virtual bool sync_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
+
   virtual folly::Future<bool> future_hasDataById(int64_t id);
   virtual folly::SemiFuture<bool> semifuture_hasDataById(int64_t id);
   virtual folly::Future<bool> future_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
@@ -66,7 +70,10 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id);
+
+
   static folly::exception_wrapper recv_wrapped_hasDataById(bool& _return, ::apache::thrift::ClientReceiveState& state);
   static bool recv_hasDataById(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -76,13 +83,16 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void hasDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
+
   virtual void getDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
   virtual void getDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
  protected:
   void getDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
+
   virtual void sync_getDataById(::std::string& _return, int64_t id);
   virtual void sync_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, int64_t id);
+
   virtual folly::Future<::std::string> future_getDataById(int64_t id);
   virtual folly::SemiFuture<::std::string> semifuture_getDataById(int64_t id);
   virtual folly::Future<::std::string> future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
@@ -116,7 +126,10 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id);
+
+
   static folly::exception_wrapper recv_wrapped_getDataById(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_getDataById(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -126,13 +139,16 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void getDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
+
   virtual void putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
   virtual void putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
  protected:
   void putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
  public:
+
   virtual void sync_putDataById(int64_t id, const ::std::string& data);
   virtual void sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+
   virtual folly::Future<folly::Unit> future_putDataById(int64_t id, const ::std::string& data);
   virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const ::std::string& data);
   virtual folly::Future<folly::Unit> future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
@@ -166,7 +182,10 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data);
+
+
   static folly::exception_wrapper recv_wrapped_putDataById(::apache::thrift::ClientReceiveState& state);
   static void recv_putDataById(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -176,13 +195,16 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
  public:
+
   virtual void lobDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
   virtual void lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
  protected:
   void lobDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
  public:
+
   virtual void sync_lobDataById(int64_t id, const ::std::string& data);
   virtual void sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+
   virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, const ::std::string& data);
   virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, const ::std::string& data);
   virtual folly::Future<folly::Unit> future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
@@ -212,7 +234,10 @@ class MyServiceFastAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data);
+
+
  private:
   template <typename Protocol_>
   void lobDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);

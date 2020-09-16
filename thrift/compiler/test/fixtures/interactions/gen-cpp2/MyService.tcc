@@ -11,8 +11,6 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false> MyService_createMyInteraction_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::, *>> MyService_createMyInteraction_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_foo_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_foo_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -36,7 +34,7 @@ void MyServiceAsyncProcessor::process_createMyInteraction(apache::thrift::Respon
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<>>(std::move(req), std::move(ctxStack), return_createMyInteraction<ProtocolIn_,ProtocolOut_>, throw_wrapped_createMyInteraction<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<MyInteraction>>(std::move(req), std::move(ctxStack), return_createMyInteraction<ProtocolIn_,ProtocolOut_>, throw_wrapped_createMyInteraction<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     return;
   }
@@ -44,10 +42,10 @@ void MyServiceAsyncProcessor::process_createMyInteraction(apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue MyServiceAsyncProcessor::return_createMyInteraction(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  const& _return) {
+folly::IOBufQueue MyServiceAsyncProcessor::return_createMyInteraction(int32_t protoSeqId, apache::thrift::ContextStack* ctx, MyInteraction const& _return) {
   ProtocolOut_ prot;
   MyService_createMyInteraction_presult result;
-  result.get<0>().value = const_cast<*>(&_return);
+  result.get<0>().value = const_cast<MyInteraction*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("createMyInteraction", &prot, protoSeqId, ctx, result);
 }

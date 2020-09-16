@@ -102,7 +102,6 @@ void CAsyncClient::sync_f(apache::thrift::RpcOptions& rpcOptions) {
 }
 
 
-
 folly::Future<folly::Unit> CAsyncClient::future_f() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_f(rpcOptions);
@@ -142,6 +141,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   f(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void CAsyncClient::f(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   f(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -192,5 +192,6 @@ void CAsyncClient::recv_instance_f(::apache::thrift::ClientReceiveState& state) 
 folly::exception_wrapper CAsyncClient::recv_instance_wrapped_f(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_f(state);
 }
+
 
 } // cpp2

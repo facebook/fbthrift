@@ -102,7 +102,6 @@ void MyLeafAsyncClient::sync_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
 }
 
 
-
 folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_do_leaf(rpcOptions);
@@ -142,6 +141,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   do_leaf(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyLeafAsyncClient::do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_leaf(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -192,5 +192,6 @@ void MyLeafAsyncClient::recv_instance_do_leaf(::apache::thrift::ClientReceiveSta
 folly::exception_wrapper MyLeafAsyncClient::recv_instance_wrapped_do_leaf(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_do_leaf(state);
 }
+
 
 } // cpp2

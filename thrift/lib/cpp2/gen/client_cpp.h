@@ -28,6 +28,10 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/Error.h>
+#endif
+
 namespace apache {
 namespace thrift {
 namespace detail {

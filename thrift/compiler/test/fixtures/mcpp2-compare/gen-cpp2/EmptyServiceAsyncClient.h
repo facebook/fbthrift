@@ -28,6 +28,7 @@ class EmptyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "EmptyService";
   }
 
+
 };
 
 }}} // some::valid::ns

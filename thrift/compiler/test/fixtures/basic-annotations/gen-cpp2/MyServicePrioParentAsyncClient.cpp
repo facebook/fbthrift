@@ -114,7 +114,6 @@ void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOp
 }
 
 
-
 folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_ping(rpcOptions);
@@ -154,6 +153,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   ping(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyServicePrioParentAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -282,7 +282,6 @@ void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOp
 }
 
 
-
 folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_pong(rpcOptions);
@@ -322,6 +321,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   pong(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyServicePrioParentAsyncClient::pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   pong(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -372,5 +372,6 @@ void MyServicePrioParentAsyncClient::recv_instance_pong(::apache::thrift::Client
 folly::exception_wrapper MyServicePrioParentAsyncClient::recv_instance_wrapped_pong(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_pong(state);
 }
+
 
 } // cpp2

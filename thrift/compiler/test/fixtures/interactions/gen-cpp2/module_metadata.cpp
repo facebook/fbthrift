@@ -20,15 +20,6 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
 
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_createMyInteraction(ThriftMetadata& metadata, ThriftService& service) {
-  ::apache::thrift::metadata::ThriftFunction func;
-  (void)metadata;
-  func.name_ref() = "createMyInteraction";
-  auto func_ret_type = ;
-  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
-  func.is_oneway_ref() = false;
-  service.functions_ref()->push_back(std::move(func));
-}
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
@@ -44,7 +35,6 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(ThriftMetadata& metadata, Thrif
   ::apache::thrift::metadata::ThriftService module_MyService;
   module_MyService.name_ref() = "module.MyService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_createMyInteraction,
     ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo,
   };
   for (auto& function_gen : functions) {

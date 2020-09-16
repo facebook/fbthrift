@@ -27,13 +27,17 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
     return "MyServicePrioChild";
   }
 
+
+
   virtual void pang(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void pangImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_pang();
   virtual void sync_pang(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_pang();
   virtual folly::SemiFuture<folly::Unit> semifuture_pang();
   virtual folly::Future<folly::Unit> future_pang(apache::thrift::RpcOptions& rpcOptions);
@@ -65,7 +69,10 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void pang(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_pang(::apache::thrift::ClientReceiveState& state);
   static void recv_pang(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

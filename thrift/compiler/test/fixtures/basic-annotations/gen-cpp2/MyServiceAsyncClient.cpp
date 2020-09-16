@@ -179,7 +179,6 @@ void MyServiceAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
 }
 
 
-
 folly::Future<folly::Unit> MyServiceAsyncClient::future_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_ping(rpcOptions);
@@ -219,6 +218,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   ping(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -347,7 +347,6 @@ void MyServiceAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOpt
 }
 
 
-
 folly::Future<::std::string> MyServiceAsyncClient::future_getRandomData() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getRandomData(rpcOptions);
@@ -387,6 +386,7 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   getRandomData(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::getRandomData(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getRandomData(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -515,7 +515,6 @@ bool MyServiceAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptio
 }
 
 
-
 folly::Future<bool> MyServiceAsyncClient::future_hasDataById(int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_hasDataById(rpcOptions, id);
@@ -555,6 +554,7 @@ folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THe
   hasDataById(rpcOptions, std::move(callback), id);
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   hasDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
@@ -685,7 +685,6 @@ void MyServiceAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptio
 }
 
 
-
 folly::Future<::std::string> MyServiceAsyncClient::future_getDataById(int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getDataById(rpcOptions, id);
@@ -725,6 +724,7 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   getDataById(rpcOptions, std::move(callback), id);
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   getDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
@@ -853,7 +853,6 @@ void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptio
 }
 
 
-
 folly::Future<folly::Unit> MyServiceAsyncClient::future_putDataById(int64_t id, const ::std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_putDataById(rpcOptions, id, data);
@@ -893,6 +892,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   putDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data) {
   putDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
@@ -1004,7 +1004,6 @@ void MyServiceAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptio
   lobDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::RequestClientCallback::Ptr(&callback), id, data);
   callback.waitUntilDone(evb);
 }
-
 folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(int64_t id, const ::std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_lobDataById(rpcOptions, id, data);
@@ -1112,7 +1111,6 @@ void MyServiceAsyncClient::sync_cppDoNothing(apache::thrift::RpcOptions& rpcOpti
 }
 
 
-
 folly::Future<folly::Unit> MyServiceAsyncClient::future_cppDoNothing() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_cppDoNothing(rpcOptions);
@@ -1152,6 +1150,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   cppDoNothing(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::cppDoNothing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   cppDoNothing(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1202,5 +1201,6 @@ void MyServiceAsyncClient::recv_instance_cppDoNothing(::apache::thrift::ClientRe
 folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_cppDoNothing(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_cppDoNothing(state);
 }
+
 
 } // cpp2

@@ -103,7 +103,7 @@ void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftM
 <%/struct:exception?%>
 <%/program:structs%>
 <%#program:services%>
-<%#service:functions%>
+<%#service:functions%><%^function:starts_interaction?%>
 void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
@@ -128,7 +128,7 @@ func.exceptions_ref()->push_back(std::move(<% > metadata/func_field_name%>));
   func.is_oneway_ref() = <%function:oneway?%>;
   service.functions_ref()->push_back(std::move(func));
 }
-<%/service:functions%>
+<%/function:starts_interaction?%><%/service:functions%>
 
 void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
@@ -136,9 +136,9 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
   <%service:metadata_name%>.name_ref() = "<%program:name%>.<%service:name%>";
 <%#service:functions?%>
   static const ThriftFunctionGenerator functions[] = {
-<%#service:functions%>
+<%#service:functions%><%^function:starts_interaction?%>
     ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen_<%function:cpp_name%>,
-<%/service:functions%>
+<%/function:starts_interaction?%><%/service:functions%>
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, <%service:metadata_name%>);

@@ -15,22 +15,22 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
 }
 
 
- MyServiceSvIf::createMyInteraction() {
+MyInteraction MyServiceSvIf::createMyInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteraction");
 }
 
-folly::SemiFuture<> MyServiceSvIf::semifuture_createMyInteraction() {
+folly::SemiFuture<MyInteraction> MyServiceSvIf::semifuture_createMyInteraction() {
   return apache::thrift::detail::si::semifuture([&] {
     return createMyInteraction();
   });
 }
 
-folly::Future<> MyServiceSvIf::future_createMyInteraction() {
+folly::Future<MyInteraction> MyServiceSvIf::future_createMyInteraction() {
   return apache::thrift::detail::si::future(semifuture_createMyInteraction(), getThreadManager());
 }
 
 
-void MyServiceSvIf::async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) {
+void MyServiceSvIf::async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<MyInteraction>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_createMyInteraction();
   });
@@ -57,7 +57,7 @@ void MyServiceSvIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback
   });
 }
 
- MyServiceSvNull::createMyInteraction() {
+MyInteraction MyServiceSvNull::createMyInteraction() {
   return 0;
 }
 

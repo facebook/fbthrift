@@ -116,7 +116,6 @@ void SomeServiceAsyncClient::sync_bounce_map(apache::thrift::RpcOptions& rpcOpti
 }
 
 
-
 folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_bounce_map(rpcOptions, m);
@@ -156,6 +155,7 @@ folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::un
   bounce_map(rpcOptions, std::move(callback), m);
   return std::move(callbackAndFuture.second);
 }
+
 void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
   bounce_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), m);
 }
@@ -284,7 +284,6 @@ void SomeServiceAsyncClient::sync_binary_keyed_map(apache::thrift::RpcOptions& r
 }
 
 
-
 folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::future_binary_keyed_map(const ::std::vector<int64_t>& r) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_binary_keyed_map(rpcOptions, r);
@@ -324,6 +323,7 @@ folly::SemiFuture<std::pair<::std::map< ::apache::thrift::fixtures::types::TBina
   binary_keyed_map(rpcOptions, std::move(callback), r);
   return std::move(callbackAndFuture.second);
 }
+
 void SomeServiceAsyncClient::binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<int64_t>& r) {
   binary_keyed_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), r);
 }
@@ -374,5 +374,6 @@ void SomeServiceAsyncClient::recv_instance_binary_keyed_map(::std::map< ::apache
 folly::exception_wrapper SomeServiceAsyncClient::recv_instance_wrapped_binary_keyed_map(::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_binary_keyed_map(_return, state);
 }
+
 
 }}}} // apache::thrift::fixtures::types

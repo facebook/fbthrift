@@ -15,10 +15,10 @@
   limitations under the License.
 
 %><%#type:void?%><%!
-%>folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state) {
+%>folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
 <%^type:void?%>
-folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:cpp_name%>(<% > types/semi_type%>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<%function:cpp_name%>(<% > types/semi_type%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
   if (state.isException()) {
     return std::move(state.exception());
@@ -28,7 +28,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:cp
   }
 
   using result = <%service:name%>_<%function:cpp_name%>_presult;
-  constexpr auto const fname = "<%function:name%>";
+  constexpr auto const fname = "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>";
   <%#type:sink?%>
   <%^function:sink_exceptions?%>
   using ExMapType = apache::thrift::detail::ap::EmptyExMapType;

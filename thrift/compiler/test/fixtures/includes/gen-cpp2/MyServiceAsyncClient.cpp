@@ -118,7 +118,6 @@ void MyServiceAsyncClient::sync_query(apache::thrift::RpcOptions& rpcOptions, co
 }
 
 
-
 folly::Future<folly::Unit> MyServiceAsyncClient::future_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_query(rpcOptions, s, i);
@@ -158,6 +157,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   query(rpcOptions, std::move(callback), s, i);
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   query(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), s, i);
 }
@@ -286,7 +286,6 @@ void MyServiceAsyncClient::sync_has_arg_docs(apache::thrift::RpcOptions& rpcOpti
 }
 
 
-
 folly::Future<folly::Unit> MyServiceAsyncClient::future_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_has_arg_docs(rpcOptions, s, i);
@@ -326,6 +325,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   has_arg_docs(rpcOptions, std::move(callback), s, i);
   return std::move(callbackAndFuture.second);
 }
+
 void MyServiceAsyncClient::has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   has_arg_docs(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), s, i);
 }
@@ -376,5 +376,6 @@ void MyServiceAsyncClient::recv_instance_has_arg_docs(::apache::thrift::ClientRe
 folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_has_arg_docs(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_has_arg_docs(state);
 }
+
 
 } // cpp2

@@ -14,7 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%^function:starts_interaction?%>
-<% > service_tcc/typedef_params%>
-<% > service_tcc/typedef_result%>
-<%/function:starts_interaction?%><%/service:functions%>
+%><%#service:interaction?%><%service:parent_service_name%>AsyncClient::<%/service:interaction?%><%service:name%><%^service:interaction?%>AsyncClient<%/service:interaction?%>

@@ -102,7 +102,6 @@ void MyRootAsyncClient::sync_do_root(apache::thrift::RpcOptions& rpcOptions) {
 }
 
 
-
 folly::Future<folly::Unit> MyRootAsyncClient::future_do_root() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_do_root(rpcOptions);
@@ -142,6 +141,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   do_root(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyRootAsyncClient::do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_root(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -192,5 +192,6 @@ void MyRootAsyncClient::recv_instance_do_root(::apache::thrift::ClientReceiveSta
 folly::exception_wrapper MyRootAsyncClient::recv_instance_wrapped_do_root(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_do_root(state);
 }
+
 
 } // cpp2

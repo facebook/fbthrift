@@ -27,9 +27,9 @@ namespace cpp2 {
 class MyServiceSvAsyncIf {
  public:
   virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) = 0;
-  virtual folly::Future<> future_createMyInteraction() = 0;
-  virtual folly::SemiFuture<> semifuture_createMyInteraction() = 0;
+  virtual void async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<MyInteraction>> callback) = 0;
+  virtual folly::Future<MyInteraction> future_createMyInteraction() = 0;
+  virtual folly::SemiFuture<MyInteraction> semifuture_createMyInteraction() = 0;
   virtual void async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_foo() = 0;
   virtual folly::SemiFuture<folly::Unit> semifuture_foo() = 0;
@@ -41,10 +41,10 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
  public:
   typedef MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual  createMyInteraction();
-  folly::Future<> future_createMyInteraction() override;
-  folly::SemiFuture<> semifuture_createMyInteraction() override;
-  void async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) override;
+  virtual MyInteraction createMyInteraction();
+  folly::Future<MyInteraction> future_createMyInteraction() override;
+  folly::SemiFuture<MyInteraction> semifuture_createMyInteraction() override;
+  void async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<MyInteraction>> callback) override;
   virtual void foo();
   folly::Future<folly::Unit> future_foo() override;
   folly::SemiFuture<folly::Unit> semifuture_foo() override;
@@ -53,7 +53,7 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
 
 class MyServiceSvNull : public MyServiceSvIf {
  public:
-   createMyInteraction() override;
+  MyInteraction createMyInteraction() override;
   void foo() override;
 };
 
@@ -82,7 +82,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_createMyInteraction(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_createMyInteraction(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  const& _return);
+  static folly::IOBufQueue return_createMyInteraction(int32_t protoSeqId, apache::thrift::ContextStack* ctx, MyInteraction const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_createMyInteraction(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>

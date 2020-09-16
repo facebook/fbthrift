@@ -26,13 +26,17 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "C";
   }
 
+
+
   virtual void f(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void f(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void fImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_f();
   virtual void sync_f(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_f();
   virtual folly::SemiFuture<folly::Unit> semifuture_f();
   virtual folly::Future<folly::Unit> future_f(apache::thrift::RpcOptions& rpcOptions);
@@ -64,7 +68,10 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void f(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_f(::apache::thrift::ClientReceiveState& state);
   static void recv_f(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

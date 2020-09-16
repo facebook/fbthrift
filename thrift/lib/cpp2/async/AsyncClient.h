@@ -18,6 +18,7 @@
 
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache {
@@ -28,10 +29,7 @@ class GeneratedAsyncClient : public TClientBase {
   using channel_ptr =
       std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>;
 
-  // TODO: make it possible to create a connection context from a thrift channel
   GeneratedAsyncClient(std::shared_ptr<RequestChannel> channel);
-
-  ~GeneratedAsyncClient() override;
 
   virtual char const* getServiceName() const noexcept = 0;
 
@@ -49,6 +47,25 @@ class GeneratedAsyncClient : public TClientBase {
 
  protected:
   std::shared_ptr<RequestChannel> channel_;
+};
+
+class InteractionHandle : public GeneratedAsyncClient {
+ public:
+  InteractionHandle(
+      std::shared_ptr<RequestChannel> channel,
+      folly::StringPiece methodName);
+  ~InteractionHandle();
+  InteractionHandle(InteractionHandle&&) noexcept = default;
+  InteractionHandle& operator=(InteractionHandle&&);
+
+ protected:
+  void setInteraction(RpcOptions& rpcOptions);
+
+ private:
+  void terminate();
+
+ protected:
+  InteractionId interactionId_;
 };
 
 } // namespace thrift

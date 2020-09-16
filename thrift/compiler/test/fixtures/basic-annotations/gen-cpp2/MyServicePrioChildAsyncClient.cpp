@@ -102,7 +102,6 @@ void MyServicePrioChildAsyncClient::sync_pang(apache::thrift::RpcOptions& rpcOpt
 }
 
 
-
 folly::Future<folly::Unit> MyServicePrioChildAsyncClient::future_pang() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_pang(rpcOptions);
@@ -142,6 +141,7 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   pang(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
 void MyServicePrioChildAsyncClient::pang(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   pang(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -192,5 +192,6 @@ void MyServicePrioChildAsyncClient::recv_instance_pang(::apache::thrift::ClientR
 folly::exception_wrapper MyServicePrioChildAsyncClient::recv_instance_wrapped_pang(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_pang(state);
 }
+
 
 } // cpp2

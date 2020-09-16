@@ -160,7 +160,6 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 
 
-
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(int32_t i32_from, int32_t i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_returnstream(rpcOptions, i32_from, i32_to);
@@ -181,6 +180,7 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
   returnstream(rpcOptions, std::move(callback), i32_from, i32_to);
   return std::move(callbackAndFuture.second);
 }
+
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -313,7 +313,6 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 
 
-
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(int32_t foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_streamthrows(rpcOptions, foo);
@@ -334,6 +333,7 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
   streamthrows(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
+
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -466,7 +466,6 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
 
 
 
-
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(int32_t foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_boththrows(rpcOptions, foo);
@@ -487,6 +486,7 @@ folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::
   boththrows(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
+
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -619,7 +619,6 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
 
 
 
-
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(int32_t foo) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_responseandstreamthrows(rpcOptions, foo);
@@ -640,6 +639,7 @@ folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<int3
   responseandstreamthrows(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
+
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -689,5 +689,6 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
 folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrapped_responseandstreamthrows(apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_responseandstreamthrows(_return, state);
 }
+
 
 } // cpp2

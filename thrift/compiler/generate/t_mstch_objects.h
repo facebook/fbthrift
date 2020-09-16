@@ -664,6 +664,7 @@ class mstch_type : public mstch_base {
             {"type:keyType", &mstch_type::get_key_type},
             {"type:valueType", &mstch_type::get_value_type},
             {"type:typedefType", &mstch_type::get_typedef_type},
+            {"type:interaction?", &mstch_type::is_interaction},
         });
   }
 
@@ -763,6 +764,9 @@ class mstch_type : public mstch_base {
   mstch::node get_sink_final_reponse_type();
   mstch::node get_stream_elem_type();
   mstch::node get_stream_first_response_type();
+  mstch::node is_interaction() {
+    return type_->is_service();
+  }
 
  protected:
   t_type const* type_;
@@ -939,6 +943,8 @@ class mstch_function : public mstch_base {
             {"function:any_streams?", &mstch_function::any_streams},
             {"function:returns_stream?", &mstch_function::returns_stream},
             {"function:annotations", &mstch_function::annotations},
+            {"function:starts_interaction?",
+             &mstch_function::starts_interaction},
         });
   }
 
@@ -989,6 +995,9 @@ class mstch_function : public mstch_base {
   mstch::node arg_list();
   mstch::node any_streams();
   mstch::node returns_stream();
+  mstch::node starts_interaction() {
+    return function_->get_returntype()->is_service();
+  }
 
  protected:
   t_function const* function_;
@@ -1013,6 +1022,8 @@ class mstch_service : public mstch_base {
             {"service:any_streams?", &mstch_service::any_streams},
             {"service:any_sinks?", &mstch_service::any_sinks},
             {"service:annotations", &mstch_service::annotations},
+            {"service:interactions", &mstch_service::interactions},
+            {"service:interaction?", &mstch_service::is_interaction},
         });
   }
 
@@ -1048,6 +1059,24 @@ class mstch_service : public mstch_base {
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->returns_sink();
     });
+  }
+
+  mstch::node interactions() {
+    std::vector<t_service const*> interactions;
+    for (auto const* function : service_->get_functions()) {
+      if (function->get_returntype()->is_service()) {
+        interactions.push_back(
+            dynamic_cast<t_service const*>(function->get_returntype()));
+      }
+    }
+    return generate_elements(
+        interactions,
+        generators_->service_generator_.get(),
+        generators_,
+        cache_);
+  }
+  mstch::node is_interaction() {
+    return service_->is_interaction();
   }
 
  protected:

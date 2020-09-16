@@ -116,7 +116,6 @@ void DbMixedStackArgumentsAsyncClient::sync_getDataByKey0(apache::thrift::RpcOpt
 }
 
 
-
 folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByKey0(const ::std::string& key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getDataByKey0(rpcOptions, key);
@@ -156,6 +155,7 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   getDataByKey0(rpcOptions, std::move(callback), key);
   return std::move(callbackAndFuture.second);
 }
+
 void DbMixedStackArgumentsAsyncClient::getDataByKey0(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& key) {
   getDataByKey0(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), key);
 }
@@ -284,7 +284,6 @@ void DbMixedStackArgumentsAsyncClient::sync_getDataByKey1(apache::thrift::RpcOpt
 }
 
 
-
 folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByKey1(const ::std::string& key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getDataByKey1(rpcOptions, key);
@@ -324,6 +323,7 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   getDataByKey1(rpcOptions, std::move(callback), key);
   return std::move(callbackAndFuture.second);
 }
+
 void DbMixedStackArgumentsAsyncClient::getDataByKey1(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& key) {
   getDataByKey1(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), key);
 }
@@ -374,5 +374,6 @@ void DbMixedStackArgumentsAsyncClient::recv_instance_getDataByKey1(::std::string
 folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_instance_wrapped_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_getDataByKey1(_return, state);
 }
+
 
 } // cpp2

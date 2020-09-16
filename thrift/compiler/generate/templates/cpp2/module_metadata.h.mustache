@@ -94,9 +94,9 @@ class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>Sv
  public:
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
  private:
-<%#service:functions%>
+<%#service:functions%><%^function:starts_interaction?%>
   static void gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& context);
-<%/service:functions%>
+<%/function:starts_interaction?%><%/service:functions%>
 };
 <%/program:gen_metadata?%>
 <%^program:gen_metadata?%>

@@ -13,4 +13,5 @@ namespace some { namespace valid { namespace ns {
 
 
 
+
 }}} // some::valid::ns

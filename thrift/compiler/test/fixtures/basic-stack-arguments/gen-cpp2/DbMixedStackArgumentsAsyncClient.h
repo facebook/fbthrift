@@ -26,13 +26,17 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
     return "DbMixedStackArguments";
   }
 
+
+
   virtual void getDataByKey0(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& key);
   virtual void getDataByKey0(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& key);
  protected:
   void getDataByKey0Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& key);
  public:
+
   virtual void sync_getDataByKey0(::std::string& _return, const ::std::string& key);
   virtual void sync_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& key);
+
   virtual folly::Future<::std::string> future_getDataByKey0(const ::std::string& key);
   virtual folly::SemiFuture<::std::string> semifuture_getDataByKey0(const ::std::string& key);
   virtual folly::Future<::std::string> future_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& key);
@@ -66,7 +70,10 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void getDataByKey0(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& key);
+
+
   static folly::exception_wrapper recv_wrapped_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -76,13 +83,16 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
   template <typename Protocol_>
   void getDataByKey0T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& key);
  public:
+
   virtual void getDataByKey1(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& key);
   virtual void getDataByKey1(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& key);
  protected:
   void getDataByKey1Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& key);
  public:
+
   virtual void sync_getDataByKey1(::std::string& _return, const ::std::string& key);
   virtual void sync_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& key);
+
   virtual folly::Future<::std::string> future_getDataByKey1(const ::std::string& key);
   virtual folly::SemiFuture<::std::string> semifuture_getDataByKey1(const ::std::string& key);
   virtual folly::Future<::std::string> future_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& key);
@@ -116,7 +126,10 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void getDataByKey1(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& key);
+
+
   static folly::exception_wrapper recv_wrapped_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

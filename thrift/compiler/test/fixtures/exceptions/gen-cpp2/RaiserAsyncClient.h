@@ -26,13 +26,17 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "Raiser";
   }
 
+
+
   virtual void doBland(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doBland(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void doBlandImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_doBland();
   virtual void sync_doBland(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_doBland();
   virtual folly::SemiFuture<folly::Unit> semifuture_doBland();
   virtual folly::Future<folly::Unit> future_doBland(apache::thrift::RpcOptions& rpcOptions);
@@ -64,7 +68,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void doBland(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_doBland(::apache::thrift::ClientReceiveState& state);
   static void recv_doBland(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -74,13 +81,16 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void doRaise(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doRaise(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void doRaiseImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_doRaise();
   virtual void sync_doRaise(apache::thrift::RpcOptions& rpcOptions);
+
   virtual folly::Future<folly::Unit> future_doRaise();
   virtual folly::SemiFuture<folly::Unit> semifuture_doRaise();
   virtual folly::Future<folly::Unit> future_doRaise(apache::thrift::RpcOptions& rpcOptions);
@@ -112,7 +122,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void doRaise(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_doRaise(::apache::thrift::ClientReceiveState& state);
   static void recv_doRaise(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -122,13 +135,16 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void doRaiseT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void get200(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get200(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void get200Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_get200(::std::string& _return);
   virtual void sync_get200(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return);
+
   virtual folly::Future<::std::string> future_get200();
   virtual folly::SemiFuture<::std::string> semifuture_get200();
   virtual folly::Future<::std::string> future_get200(apache::thrift::RpcOptions& rpcOptions);
@@ -160,7 +176,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void get200(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_get200(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_get200(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
@@ -170,13 +189,16 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void get200T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void get500(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get500(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void get500Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+
   virtual void sync_get500(::std::string& _return);
   virtual void sync_get500(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return);
+
   virtual folly::Future<::std::string> future_get500();
   virtual folly::SemiFuture<::std::string> semifuture_get500();
   virtual folly::Future<::std::string> future_get500(apache::thrift::RpcOptions& rpcOptions);
@@ -208,7 +230,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
   virtual void get500(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
   static folly::exception_wrapper recv_wrapped_get500(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_get500(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
