@@ -933,10 +933,10 @@ class mstch_py3_struct : public mstch_struct {
              &mstch_py3_struct::isStructOrderable},
             {"struct:is_always_set?", &mstch_py3_struct::isAlwaysSet},
             {"struct:cpp_noncomparable", &mstch_py3_struct::cppNonComparable},
+            {"struct:cpp_noncopyable?", &mstch_py3_struct::cppNonCopyable},
             {"struct:exception_message?",
              &mstch_py3_struct::hasExceptionMessage},
             {"struct:exception_message", &mstch_py3_struct::exceptionMessage},
-
         });
   }
 
@@ -961,6 +961,11 @@ class mstch_py3_struct : public mstch_struct {
 
   mstch::node cppNonComparable() {
     return strct_->annotations_.find("cpp2.noncomparable") !=
+        strct_->annotations_.end();
+  }
+
+  mstch::node cppNonCopyable() {
+    return strct_->annotations_.find("cpp2.noncopyable") !=
         strct_->annotations_.end();
   }
 

@@ -173,7 +173,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
     cdef cppclass cNonCopyableStruct "::cpp2::NonCopyableStruct":
         cNonCopyableStruct() except +
-        cNonCopyableStruct(const cNonCopyableStruct&) except +
         bint operator==(cNonCopyableStruct&)
         bint operator!=(cNonCopyableStruct&)
         bint operator<(cNonCopyableStruct&)
@@ -190,7 +189,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
     cdef cppclass cNonCopyableUnion "::cpp2::NonCopyableUnion":
         cNonCopyableUnion() except +
-        cNonCopyableUnion(const cNonCopyableUnion&) except +
         bint operator==(cNonCopyableUnion&)
         bint operator!=(cNonCopyableUnion&)
         bint operator<(cNonCopyableUnion&)

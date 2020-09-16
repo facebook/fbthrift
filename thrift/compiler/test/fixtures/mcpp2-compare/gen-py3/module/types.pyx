@@ -302,7 +302,6 @@ cdef class Empty(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Empty", {
         })
 
@@ -450,9 +449,8 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ASimpleStruct", {
-          "boolField": cpp_obj.boolField_ref().has_value(),
+          "boolField": deref(self._cpp_obj).boolField_ref().has_value(),
         })
 
     def __iter__(self):
@@ -596,9 +594,8 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ASimpleStructNoexcept", {
-          "boolField": cpp_obj.boolField_ref().has_value(),
+          "boolField": deref(self._cpp_obj).boolField_ref().has_value(),
         })
 
     def __iter__(self):
@@ -931,16 +928,15 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStruct", {
-          "MyBoolField": cpp_obj.MyBoolField_ref().has_value(),
-          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
-          "MyStringField": cpp_obj.MyStringField_ref().has_value(),
-          "MyStringField2": cpp_obj.MyStringField2_ref().has_value(),
-          "MyBinaryField": cpp_obj.MyBinaryField_ref().has_value(),
-          "MyBinaryField2": cpp_obj.MyBinaryField2_ref().has_value(),
-          "MyBinaryListField4": cpp_obj.MyBinaryListField4_ref().has_value(),
-          "MyMapEnumAndInt": cpp_obj.MyMapEnumAndInt_ref().has_value(),
+          "MyBoolField": deref(self._cpp_obj).MyBoolField_ref().has_value(),
+          "MyIntField": deref(self._cpp_obj).MyIntField_ref().has_value(),
+          "MyStringField": deref(self._cpp_obj).MyStringField_ref().has_value(),
+          "MyStringField2": deref(self._cpp_obj).MyStringField2_ref().has_value(),
+          "MyBinaryField": deref(self._cpp_obj).MyBinaryField_ref().has_value(),
+          "MyBinaryField2": deref(self._cpp_obj).MyBinaryField2_ref().has_value(),
+          "MyBinaryListField4": deref(self._cpp_obj).MyBinaryListField4_ref().has_value(),
+          "MyMapEnumAndInt": deref(self._cpp_obj).MyMapEnumAndInt_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1987,20 +1983,19 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AnException", {
-          "code": cpp_obj.code_ref().has_value(),
-          "message2": cpp_obj.message2_ref().has_value(),
-          "exception_list": cpp_obj.exception_list_ref().has_value(),
-          "exception_set": cpp_obj.exception_set_ref().has_value(),
-          "exception_map": cpp_obj.exception_map_ref().has_value(),
-          "enum_field": cpp_obj.enum_field_ref().has_value(),
-          "enum_container": cpp_obj.enum_container_ref().has_value(),
-          "a_struct": cpp_obj.a_struct_ref().has_value(),
-          "a_set_struct": cpp_obj.a_set_struct_ref().has_value(),
-          "a_union_list": cpp_obj.a_union_list_ref().has_value(),
-          "union_typedef": cpp_obj.union_typedef_ref().has_value(),
-          "a_union_typedef_list": cpp_obj.a_union_typedef_list_ref().has_value(),
+          "code": deref(self._cpp_obj).code_ref().has_value(),
+          "message2": deref(self._cpp_obj).message2_ref().has_value(),
+          "exception_list": deref(self._cpp_obj).exception_list_ref().has_value(),
+          "exception_set": deref(self._cpp_obj).exception_set_ref().has_value(),
+          "exception_map": deref(self._cpp_obj).exception_map_ref().has_value(),
+          "enum_field": deref(self._cpp_obj).enum_field_ref().has_value(),
+          "enum_container": deref(self._cpp_obj).enum_container_ref().has_value(),
+          "a_struct": deref(self._cpp_obj).a_struct_ref().has_value(),
+          "a_set_struct": deref(self._cpp_obj).a_set_struct_ref().has_value(),
+          "a_union_list": deref(self._cpp_obj).a_union_list_ref().has_value(),
+          "union_typedef": deref(self._cpp_obj).union_typedef_ref().has_value(),
+          "a_union_typedef_list": deref(self._cpp_obj).a_union_typedef_list_ref().has_value(),
         })
 
     def __iter__(self):
@@ -2232,10 +2227,9 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AnotherException", {
-          "code": cpp_obj.code_ref().has_value(),
-          "message": cpp_obj.message_ref().has_value(),
+          "code": deref(self._cpp_obj).code_ref().has_value(),
+          "message": deref(self._cpp_obj).message_ref().has_value(),
         })
 
     def __iter__(self):
@@ -2421,530 +2415,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
           fieldSD,
         ))
 
-    def __call__(
-        containerStruct self,
-        fieldA=__NOTSET,
-        req_fieldA=__NOTSET,
-        opt_fieldA=__NOTSET,
-        fieldB=__NOTSET,
-        req_fieldB=__NOTSET,
-        opt_fieldB=__NOTSET,
-        fieldC=__NOTSET,
-        req_fieldC=__NOTSET,
-        opt_fieldC=__NOTSET,
-        fieldD=__NOTSET,
-        fieldE=__NOTSET,
-        req_fieldE=__NOTSET,
-        opt_fieldE=__NOTSET,
-        fieldF=__NOTSET,
-        fieldG=__NOTSET,
-        fieldH=__NOTSET,
-        fieldI=__NOTSET,
-        fieldJ=__NOTSET,
-        fieldK=__NOTSET,
-        fieldL=__NOTSET,
-        fieldM=__NOTSET,
-        fieldN=__NOTSET,
-        fieldO=__NOTSET,
-        fieldP=__NOTSET,
-        fieldQ=__NOTSET,
-        fieldR=__NOTSET,
-        req_fieldR=__NOTSET,
-        opt_fieldR=__NOTSET,
-        fieldS=__NOTSET,
-        fieldT=__NOTSET,
-        fieldU=__NOTSET,
-        fieldV=__NOTSET,
-        req_fieldV=__NOTSET,
-        opt_fieldV=__NOTSET,
-        fieldW=__NOTSET,
-        fieldX=__NOTSET,
-        req_fieldX=__NOTSET,
-        opt_fieldX=__NOTSET,
-        fieldY=__NOTSET,
-        fieldZ=__NOTSET,
-        fieldAA=__NOTSET,
-        fieldAB=__NOTSET,
-        fieldAC=__NOTSET,
-        fieldAD=__NOTSET,
-        fieldAE=__NOTSET,
-        fieldSD=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[46] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if fieldA is ___NOTSET:
-            __isNOTSET[0] = True
-            fieldA = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if req_fieldA is ___NOTSET:
-            __isNOTSET[1] = True
-            req_fieldA = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if opt_fieldA is ___NOTSET:
-            __isNOTSET[2] = True
-            opt_fieldA = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if fieldB is ___NOTSET:
-            __isNOTSET[3] = True
-            fieldB = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-        if req_fieldB is ___NOTSET:
-            __isNOTSET[4] = True
-            req_fieldB = None
-        else:
-            __isNOTSET[4] = False
-            __fbthrift_changed = True
-
-        if opt_fieldB is ___NOTSET:
-            __isNOTSET[5] = True
-            opt_fieldB = None
-        else:
-            __isNOTSET[5] = False
-            __fbthrift_changed = True
-
-        if fieldC is ___NOTSET:
-            __isNOTSET[6] = True
-            fieldC = None
-        else:
-            __isNOTSET[6] = False
-            __fbthrift_changed = True
-
-        if req_fieldC is ___NOTSET:
-            __isNOTSET[7] = True
-            req_fieldC = None
-        else:
-            __isNOTSET[7] = False
-            __fbthrift_changed = True
-
-        if opt_fieldC is ___NOTSET:
-            __isNOTSET[8] = True
-            opt_fieldC = None
-        else:
-            __isNOTSET[8] = False
-            __fbthrift_changed = True
-
-        if fieldD is ___NOTSET:
-            __isNOTSET[9] = True
-            fieldD = None
-        else:
-            __isNOTSET[9] = False
-            __fbthrift_changed = True
-
-        if fieldE is ___NOTSET:
-            __isNOTSET[10] = True
-            fieldE = None
-        else:
-            __isNOTSET[10] = False
-            __fbthrift_changed = True
-
-        if req_fieldE is ___NOTSET:
-            __isNOTSET[11] = True
-            req_fieldE = None
-        else:
-            __isNOTSET[11] = False
-            __fbthrift_changed = True
-
-        if opt_fieldE is ___NOTSET:
-            __isNOTSET[12] = True
-            opt_fieldE = None
-        else:
-            __isNOTSET[12] = False
-            __fbthrift_changed = True
-
-        if fieldF is ___NOTSET:
-            __isNOTSET[13] = True
-            fieldF = None
-        else:
-            __isNOTSET[13] = False
-            __fbthrift_changed = True
-
-        if fieldG is ___NOTSET:
-            __isNOTSET[14] = True
-            fieldG = None
-        else:
-            __isNOTSET[14] = False
-            __fbthrift_changed = True
-
-        if fieldH is ___NOTSET:
-            __isNOTSET[15] = True
-            fieldH = None
-        else:
-            __isNOTSET[15] = False
-            __fbthrift_changed = True
-
-        if fieldI is ___NOTSET:
-            __isNOTSET[16] = True
-            fieldI = None
-        else:
-            __isNOTSET[16] = False
-            __fbthrift_changed = True
-
-        if fieldJ is ___NOTSET:
-            __isNOTSET[17] = True
-            fieldJ = None
-        else:
-            __isNOTSET[17] = False
-            __fbthrift_changed = True
-
-        if fieldK is ___NOTSET:
-            __isNOTSET[18] = True
-            fieldK = None
-        else:
-            __isNOTSET[18] = False
-            __fbthrift_changed = True
-
-        if fieldL is ___NOTSET:
-            __isNOTSET[19] = True
-            fieldL = None
-        else:
-            __isNOTSET[19] = False
-            __fbthrift_changed = True
-
-        if fieldM is ___NOTSET:
-            __isNOTSET[20] = True
-            fieldM = None
-        else:
-            __isNOTSET[20] = False
-            __fbthrift_changed = True
-
-        if fieldN is ___NOTSET:
-            __isNOTSET[21] = True
-            fieldN = None
-        else:
-            __isNOTSET[21] = False
-            __fbthrift_changed = True
-
-        if fieldO is ___NOTSET:
-            __isNOTSET[22] = True
-            fieldO = None
-        else:
-            __isNOTSET[22] = False
-            __fbthrift_changed = True
-
-        if fieldP is ___NOTSET:
-            __isNOTSET[23] = True
-            fieldP = None
-        else:
-            __isNOTSET[23] = False
-            __fbthrift_changed = True
-
-        if fieldQ is ___NOTSET:
-            __isNOTSET[24] = True
-            fieldQ = None
-        else:
-            __isNOTSET[24] = False
-            __fbthrift_changed = True
-
-        if fieldR is ___NOTSET:
-            __isNOTSET[25] = True
-            fieldR = None
-        else:
-            __isNOTSET[25] = False
-            __fbthrift_changed = True
-
-        if req_fieldR is ___NOTSET:
-            __isNOTSET[26] = True
-            req_fieldR = None
-        else:
-            __isNOTSET[26] = False
-            __fbthrift_changed = True
-
-        if opt_fieldR is ___NOTSET:
-            __isNOTSET[27] = True
-            opt_fieldR = None
-        else:
-            __isNOTSET[27] = False
-            __fbthrift_changed = True
-
-        if fieldS is ___NOTSET:
-            __isNOTSET[28] = True
-            fieldS = None
-        else:
-            __isNOTSET[28] = False
-            __fbthrift_changed = True
-
-        if fieldT is ___NOTSET:
-            __isNOTSET[29] = True
-            fieldT = None
-        else:
-            __isNOTSET[29] = False
-            __fbthrift_changed = True
-
-        if fieldU is ___NOTSET:
-            __isNOTSET[30] = True
-            fieldU = None
-        else:
-            __isNOTSET[30] = False
-            __fbthrift_changed = True
-
-        if fieldV is ___NOTSET:
-            __isNOTSET[31] = True
-            fieldV = None
-        else:
-            __isNOTSET[31] = False
-            __fbthrift_changed = True
-
-        if req_fieldV is ___NOTSET:
-            __isNOTSET[32] = True
-            req_fieldV = None
-        else:
-            __isNOTSET[32] = False
-            __fbthrift_changed = True
-
-        if opt_fieldV is ___NOTSET:
-            __isNOTSET[33] = True
-            opt_fieldV = None
-        else:
-            __isNOTSET[33] = False
-            __fbthrift_changed = True
-
-        if fieldW is ___NOTSET:
-            __isNOTSET[34] = True
-            fieldW = None
-        else:
-            __isNOTSET[34] = False
-            __fbthrift_changed = True
-
-        if fieldX is ___NOTSET:
-            __isNOTSET[35] = True
-            fieldX = None
-        else:
-            __isNOTSET[35] = False
-            __fbthrift_changed = True
-
-        if req_fieldX is ___NOTSET:
-            __isNOTSET[36] = True
-            req_fieldX = None
-        else:
-            __isNOTSET[36] = False
-            __fbthrift_changed = True
-
-        if opt_fieldX is ___NOTSET:
-            __isNOTSET[37] = True
-            opt_fieldX = None
-        else:
-            __isNOTSET[37] = False
-            __fbthrift_changed = True
-
-        if fieldY is ___NOTSET:
-            __isNOTSET[38] = True
-            fieldY = None
-        else:
-            __isNOTSET[38] = False
-            __fbthrift_changed = True
-
-        if fieldZ is ___NOTSET:
-            __isNOTSET[39] = True
-            fieldZ = None
-        else:
-            __isNOTSET[39] = False
-            __fbthrift_changed = True
-
-        if fieldAA is ___NOTSET:
-            __isNOTSET[40] = True
-            fieldAA = None
-        else:
-            __isNOTSET[40] = False
-            __fbthrift_changed = True
-
-        if fieldAB is ___NOTSET:
-            __isNOTSET[41] = True
-            fieldAB = None
-        else:
-            __isNOTSET[41] = False
-            __fbthrift_changed = True
-
-        if fieldAC is ___NOTSET:
-            __isNOTSET[42] = True
-            fieldAC = None
-        else:
-            __isNOTSET[42] = False
-            __fbthrift_changed = True
-
-        if fieldAD is ___NOTSET:
-            __isNOTSET[43] = True
-            fieldAD = None
-        else:
-            __isNOTSET[43] = False
-            __fbthrift_changed = True
-
-        if fieldAE is ___NOTSET:
-            __isNOTSET[44] = True
-            fieldAE = None
-        else:
-            __isNOTSET[44] = False
-            __fbthrift_changed = True
-
-        if fieldSD is ___NOTSET:
-            __isNOTSET[45] = True
-            fieldSD = None
-        else:
-            __isNOTSET[45] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
-            return self
-
-        if fieldA is not None:
-            if not isinstance(fieldA, bool):
-                raise TypeError(f'fieldA is not a { bool !r}.')
-
-        if req_fieldA is not None:
-            if not isinstance(req_fieldA, bool):
-                raise TypeError(f'req_fieldA is not a { bool !r}.')
-
-        if opt_fieldA is not None:
-            if not isinstance(opt_fieldA, bool):
-                raise TypeError(f'opt_fieldA is not a { bool !r}.')
-
-        if fieldD is not None:
-            if not isinstance(fieldD, str):
-                raise TypeError(f'fieldD is not a { str !r}.')
-
-        if fieldE is not None:
-            if not isinstance(fieldE, str):
-                raise TypeError(f'fieldE is not a { str !r}.')
-
-        if req_fieldE is not None:
-            if not isinstance(req_fieldE, str):
-                raise TypeError(f'req_fieldE is not a { str !r}.')
-
-        if opt_fieldE is not None:
-            if not isinstance(opt_fieldE, str):
-                raise TypeError(f'opt_fieldE is not a { str !r}.')
-
-        if fieldI is not None:
-            if not isinstance(fieldI, bool):
-                raise TypeError(f'fieldI is not a { bool !r}.')
-
-        if fieldN is not None:
-            if not isinstance(fieldN, int):
-                raise TypeError(f'fieldN is not a { int !r}.')
-            fieldN = <cint32_t> fieldN
-
-        if fieldQ is not None:
-            if not isinstance(fieldQ, MyEnumA):
-                raise TypeError(f'field fieldQ value: { fieldQ !r} is not of the enum type { MyEnumA }.')
-
-        if fieldR is not None:
-            if not isinstance(fieldR, MyEnumA):
-                raise TypeError(f'field fieldR value: { fieldR !r} is not of the enum type { MyEnumA }.')
-
-        if req_fieldR is not None:
-            if not isinstance(req_fieldR, MyEnumA):
-                raise TypeError(f'field req_fieldR value: { req_fieldR !r} is not of the enum type { MyEnumA }.')
-
-        if opt_fieldR is not None:
-            if not isinstance(opt_fieldR, MyEnumA):
-                raise TypeError(f'field opt_fieldR value: { opt_fieldR !r} is not of the enum type { MyEnumA }.')
-
-        if fieldS is not None:
-            if not isinstance(fieldS, MyEnumA):
-                raise TypeError(f'field fieldS value: { fieldS !r} is not of the enum type { MyEnumA }.')
-
-        if fieldV is not None:
-            if not isinstance(fieldV, MyStruct):
-                raise TypeError(f'fieldV is not a { MyStruct !r}.')
-
-        if req_fieldV is not None:
-            if not isinstance(req_fieldV, MyStruct):
-                raise TypeError(f'req_fieldV is not a { MyStruct !r}.')
-
-        if opt_fieldV is not None:
-            if not isinstance(opt_fieldV, MyStruct):
-                raise TypeError(f'opt_fieldV is not a { MyStruct !r}.')
-
-        if fieldX is not None:
-            if not isinstance(fieldX, ComplexUnion):
-                raise TypeError(f'fieldX is not a { ComplexUnion !r}.')
-
-        if req_fieldX is not None:
-            if not isinstance(req_fieldX, ComplexUnion):
-                raise TypeError(f'req_fieldX is not a { ComplexUnion !r}.')
-
-        if opt_fieldX is not None:
-            if not isinstance(opt_fieldX, ComplexUnion):
-                raise TypeError(f'opt_fieldX is not a { ComplexUnion !r}.')
-
-        if fieldAC is not None:
-            if not isinstance(fieldAC, MyEnumB):
-                raise TypeError(f'field fieldAC value: { fieldAC !r} is not of the enum type { MyEnumB }.')
-
-        if fieldAD is not None:
-            if not isinstance(fieldAD, _includes_types.AnEnum):
-                raise TypeError(f'field fieldAD value: { fieldAD !r} is not of the enum type { _includes_types.AnEnum }.')
-
-        if fieldSD is not None:
-            if not isinstance(fieldSD, str):
-                raise TypeError(f'fieldSD is not a { str !r}.')
-
-        __fbthrift_inst = <containerStruct>containerStruct.__new__(containerStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(containerStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          fieldA,
-          req_fieldA,
-          opt_fieldA,
-          fieldB,
-          req_fieldB,
-          opt_fieldB,
-          fieldC,
-          req_fieldC,
-          opt_fieldC,
-          fieldD,
-          fieldE,
-          req_fieldE,
-          opt_fieldE,
-          fieldF,
-          fieldG,
-          fieldH,
-          fieldI,
-          fieldJ,
-          fieldK,
-          fieldL,
-          fieldM,
-          fieldN,
-          fieldO,
-          fieldP,
-          fieldQ,
-          fieldR,
-          req_fieldR,
-          opt_fieldR,
-          fieldS,
-          fieldT,
-          fieldU,
-          fieldV,
-          req_fieldV,
-          opt_fieldV,
-          fieldW,
-          fieldX,
-          req_fieldX,
-          opt_fieldX,
-          fieldY,
-          fieldZ,
-          fieldAA,
-          fieldAB,
-          fieldAC,
-          fieldAD,
-          fieldAE,
-          fieldSD,
-        ))
-        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[ccontainerStruct] _make_instance(
@@ -2999,7 +2469,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     ) except *:
         cdef unique_ptr[ccontainerStruct] c_inst
         if base_instance:
-            c_inst = make_unique[ccontainerStruct](deref(base_instance))
+            raise TypeError("containerStruct is noncopyable")
         else:
             c_inst = make_unique[ccontainerStruct]()
 
@@ -3360,47 +2830,46 @@ cdef class containerStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("containerStruct", {
-          "fieldA": cpp_obj.fieldA_ref().has_value(),
-          "opt_fieldA": cpp_obj.opt_fieldA_ref().has_value(),
-          "fieldB": cpp_obj.fieldB_ref().has_value(),
-          "opt_fieldB": cpp_obj.opt_fieldB_ref().has_value(),
-          "fieldC": cpp_obj.fieldC_ref().has_value(),
-          "opt_fieldC": cpp_obj.opt_fieldC_ref().has_value(),
-          "fieldD": cpp_obj.fieldD_ref().has_value(),
-          "fieldE": cpp_obj.fieldE_ref().has_value(),
-          "opt_fieldE": cpp_obj.opt_fieldE_ref().has_value(),
-          "fieldF": cpp_obj.fieldF_ref().has_value(),
-          "fieldG": cpp_obj.fieldG_ref().has_value(),
-          "fieldH": cpp_obj.fieldH_ref().has_value(),
-          "fieldI": cpp_obj.fieldI_ref().has_value(),
-          "fieldJ": cpp_obj.fieldJ_ref().has_value(),
-          "fieldK": cpp_obj.fieldK_ref().has_value(),
-          "fieldL": cpp_obj.fieldL_ref().has_value(),
-          "fieldM": cpp_obj.fieldM_ref().has_value(),
-          "fieldN": cpp_obj.fieldN_ref().has_value(),
-          "fieldO": cpp_obj.fieldO_ref().has_value(),
-          "fieldP": cpp_obj.fieldP_ref().has_value(),
-          "fieldQ": cpp_obj.fieldQ_ref().has_value(),
-          "fieldR": cpp_obj.fieldR_ref().has_value(),
-          "opt_fieldR": cpp_obj.opt_fieldR_ref().has_value(),
-          "fieldS": cpp_obj.fieldS_ref().has_value(),
-          "fieldT": cpp_obj.fieldT_ref().has_value(),
-          "fieldU": cpp_obj.fieldU_ref().has_value(),
-          "fieldV": cpp_obj.fieldV_ref().has_value(),
-          "opt_fieldV": cpp_obj.opt_fieldV_ref().has_value(),
-          "fieldW": cpp_obj.fieldW_ref().has_value(),
-          "fieldX": cpp_obj.fieldX_ref().has_value(),
-          "opt_fieldX": cpp_obj.opt_fieldX_ref().has_value(),
-          "fieldY": cpp_obj.fieldY_ref().has_value(),
-          "fieldZ": cpp_obj.fieldZ_ref().has_value(),
-          "fieldAA": cpp_obj.fieldAA_ref().has_value(),
-          "fieldAB": cpp_obj.fieldAB_ref().has_value(),
-          "fieldAC": cpp_obj.fieldAC_ref().has_value(),
-          "fieldAD": cpp_obj.fieldAD_ref().has_value(),
-          "fieldAE": cpp_obj.fieldAE_ref().has_value(),
-          "fieldSD": cpp_obj.fieldSD_ref().has_value(),
+          "fieldA": deref(self._cpp_obj).fieldA_ref().has_value(),
+          "opt_fieldA": deref(self._cpp_obj).opt_fieldA_ref().has_value(),
+          "fieldB": deref(self._cpp_obj).fieldB_ref().has_value(),
+          "opt_fieldB": deref(self._cpp_obj).opt_fieldB_ref().has_value(),
+          "fieldC": deref(self._cpp_obj).fieldC_ref().has_value(),
+          "opt_fieldC": deref(self._cpp_obj).opt_fieldC_ref().has_value(),
+          "fieldD": deref(self._cpp_obj).fieldD_ref().has_value(),
+          "fieldE": deref(self._cpp_obj).fieldE_ref().has_value(),
+          "opt_fieldE": deref(self._cpp_obj).opt_fieldE_ref().has_value(),
+          "fieldF": deref(self._cpp_obj).fieldF_ref().has_value(),
+          "fieldG": deref(self._cpp_obj).fieldG_ref().has_value(),
+          "fieldH": deref(self._cpp_obj).fieldH_ref().has_value(),
+          "fieldI": deref(self._cpp_obj).fieldI_ref().has_value(),
+          "fieldJ": deref(self._cpp_obj).fieldJ_ref().has_value(),
+          "fieldK": deref(self._cpp_obj).fieldK_ref().has_value(),
+          "fieldL": deref(self._cpp_obj).fieldL_ref().has_value(),
+          "fieldM": deref(self._cpp_obj).fieldM_ref().has_value(),
+          "fieldN": deref(self._cpp_obj).fieldN_ref().has_value(),
+          "fieldO": deref(self._cpp_obj).fieldO_ref().has_value(),
+          "fieldP": deref(self._cpp_obj).fieldP_ref().has_value(),
+          "fieldQ": deref(self._cpp_obj).fieldQ_ref().has_value(),
+          "fieldR": deref(self._cpp_obj).fieldR_ref().has_value(),
+          "opt_fieldR": deref(self._cpp_obj).opt_fieldR_ref().has_value(),
+          "fieldS": deref(self._cpp_obj).fieldS_ref().has_value(),
+          "fieldT": deref(self._cpp_obj).fieldT_ref().has_value(),
+          "fieldU": deref(self._cpp_obj).fieldU_ref().has_value(),
+          "fieldV": deref(self._cpp_obj).fieldV_ref().has_value(),
+          "opt_fieldV": deref(self._cpp_obj).opt_fieldV_ref().has_value(),
+          "fieldW": deref(self._cpp_obj).fieldW_ref().has_value(),
+          "fieldX": deref(self._cpp_obj).fieldX_ref().has_value(),
+          "opt_fieldX": deref(self._cpp_obj).opt_fieldX_ref().has_value(),
+          "fieldY": deref(self._cpp_obj).fieldY_ref().has_value(),
+          "fieldZ": deref(self._cpp_obj).fieldZ_ref().has_value(),
+          "fieldAA": deref(self._cpp_obj).fieldAA_ref().has_value(),
+          "fieldAB": deref(self._cpp_obj).fieldAB_ref().has_value(),
+          "fieldAC": deref(self._cpp_obj).fieldAC_ref().has_value(),
+          "fieldAD": deref(self._cpp_obj).fieldAD_ref().has_value(),
+          "fieldAE": deref(self._cpp_obj).fieldAE_ref().has_value(),
+          "fieldSD": deref(self._cpp_obj).fieldSD_ref().has_value(),
         })
 
     def __iter__(self):
@@ -3761,10 +3230,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         return  super().__hash__()
 
     def __copy__(containerStruct self):
-        cdef shared_ptr[ccontainerStruct] cpp_obj = make_shared[ccontainerStruct](
-            deref(self._cpp_obj)
-        )
-        return containerStruct.create(__fbthrift_move_shared(cpp_obj))
+        raise TypeError("containerStruct is noncopyable")
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -3956,10 +3422,9 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyIncludedStruct", {
-          "MyIncludedInt": cpp_obj.MyIncludedInt_ref().has_value(),
-          "MyIncludedStruct": cpp_obj.MyIncludedStruct_ref().has_value(),
+          "MyIncludedInt": deref(self._cpp_obj).MyIncludedInt_ref().has_value(),
+          "MyIncludedStruct": deref(self._cpp_obj).MyIncludedStruct_ref().has_value(),
         })
 
     def __iter__(self):
@@ -4161,465 +3626,6 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
           struct_struct,
         ))
 
-    def __call__(
-        AnnotatedStruct self,
-        no_annotation=__NOTSET,
-        cpp_unique_ref=__NOTSET,
-        cpp2_unique_ref=__NOTSET,
-        container_with_ref=__NOTSET,
-        req_cpp_unique_ref=__NOTSET,
-        req_cpp2_unique_ref=__NOTSET,
-        req_container_with_ref=__NOTSET,
-        opt_cpp_unique_ref=__NOTSET,
-        opt_cpp2_unique_ref=__NOTSET,
-        opt_container_with_ref=__NOTSET,
-        ref_type_unique=__NOTSET,
-        ref_type_shared=__NOTSET,
-        ref_type_const=__NOTSET,
-        req_ref_type_shared=__NOTSET,
-        req_ref_type_const=__NOTSET,
-        req_ref_type_unique=__NOTSET,
-        opt_ref_type_const=__NOTSET,
-        opt_ref_type_unique=__NOTSET,
-        opt_ref_type_shared=__NOTSET,
-        base_type=__NOTSET,
-        list_type=__NOTSET,
-        set_type=__NOTSET,
-        map_type=__NOTSET,
-        map_struct_type=__NOTSET,
-        iobuf_type=__NOTSET,
-        iobuf_ptr=__NOTSET,
-        list_i32_template=__NOTSET,
-        list_string_template=__NOTSET,
-        set_template=__NOTSET,
-        map_template=__NOTSET,
-        typedef_list_template=__NOTSET,
-        typedef_deque_template=__NOTSET,
-        typedef_set_template=__NOTSET,
-        typedef_map_template=__NOTSET,
-        indirection_a=__NOTSET,
-        indirection_b=__NOTSET,
-        indirection_c=__NOTSET,
-        iobuf_type_val=__NOTSET,
-        iobuf_ptr_val=__NOTSET,
-        struct_struct=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[40] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if no_annotation is ___NOTSET:
-            __isNOTSET[0] = True
-            no_annotation = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if cpp_unique_ref is ___NOTSET:
-            __isNOTSET[1] = True
-            cpp_unique_ref = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if cpp2_unique_ref is ___NOTSET:
-            __isNOTSET[2] = True
-            cpp2_unique_ref = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if container_with_ref is ___NOTSET:
-            __isNOTSET[3] = True
-            container_with_ref = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-        if req_cpp_unique_ref is ___NOTSET:
-            __isNOTSET[4] = True
-            req_cpp_unique_ref = None
-        else:
-            __isNOTSET[4] = False
-            __fbthrift_changed = True
-
-        if req_cpp2_unique_ref is ___NOTSET:
-            __isNOTSET[5] = True
-            req_cpp2_unique_ref = None
-        else:
-            __isNOTSET[5] = False
-            __fbthrift_changed = True
-
-        if req_container_with_ref is ___NOTSET:
-            __isNOTSET[6] = True
-            req_container_with_ref = None
-        else:
-            __isNOTSET[6] = False
-            __fbthrift_changed = True
-
-        if opt_cpp_unique_ref is ___NOTSET:
-            __isNOTSET[7] = True
-            opt_cpp_unique_ref = None
-        else:
-            __isNOTSET[7] = False
-            __fbthrift_changed = True
-
-        if opt_cpp2_unique_ref is ___NOTSET:
-            __isNOTSET[8] = True
-            opt_cpp2_unique_ref = None
-        else:
-            __isNOTSET[8] = False
-            __fbthrift_changed = True
-
-        if opt_container_with_ref is ___NOTSET:
-            __isNOTSET[9] = True
-            opt_container_with_ref = None
-        else:
-            __isNOTSET[9] = False
-            __fbthrift_changed = True
-
-        if ref_type_unique is ___NOTSET:
-            __isNOTSET[10] = True
-            ref_type_unique = None
-        else:
-            __isNOTSET[10] = False
-            __fbthrift_changed = True
-
-        if ref_type_shared is ___NOTSET:
-            __isNOTSET[11] = True
-            ref_type_shared = None
-        else:
-            __isNOTSET[11] = False
-            __fbthrift_changed = True
-
-        if ref_type_const is ___NOTSET:
-            __isNOTSET[12] = True
-            ref_type_const = None
-        else:
-            __isNOTSET[12] = False
-            __fbthrift_changed = True
-
-        if req_ref_type_shared is ___NOTSET:
-            __isNOTSET[13] = True
-            req_ref_type_shared = None
-        else:
-            __isNOTSET[13] = False
-            __fbthrift_changed = True
-
-        if req_ref_type_const is ___NOTSET:
-            __isNOTSET[14] = True
-            req_ref_type_const = None
-        else:
-            __isNOTSET[14] = False
-            __fbthrift_changed = True
-
-        if req_ref_type_unique is ___NOTSET:
-            __isNOTSET[15] = True
-            req_ref_type_unique = None
-        else:
-            __isNOTSET[15] = False
-            __fbthrift_changed = True
-
-        if opt_ref_type_const is ___NOTSET:
-            __isNOTSET[16] = True
-            opt_ref_type_const = None
-        else:
-            __isNOTSET[16] = False
-            __fbthrift_changed = True
-
-        if opt_ref_type_unique is ___NOTSET:
-            __isNOTSET[17] = True
-            opt_ref_type_unique = None
-        else:
-            __isNOTSET[17] = False
-            __fbthrift_changed = True
-
-        if opt_ref_type_shared is ___NOTSET:
-            __isNOTSET[18] = True
-            opt_ref_type_shared = None
-        else:
-            __isNOTSET[18] = False
-            __fbthrift_changed = True
-
-        if base_type is ___NOTSET:
-            __isNOTSET[19] = True
-            base_type = None
-        else:
-            __isNOTSET[19] = False
-            __fbthrift_changed = True
-
-        if list_type is ___NOTSET:
-            __isNOTSET[20] = True
-            list_type = None
-        else:
-            __isNOTSET[20] = False
-            __fbthrift_changed = True
-
-        if set_type is ___NOTSET:
-            __isNOTSET[21] = True
-            set_type = None
-        else:
-            __isNOTSET[21] = False
-            __fbthrift_changed = True
-
-        if map_type is ___NOTSET:
-            __isNOTSET[22] = True
-            map_type = None
-        else:
-            __isNOTSET[22] = False
-            __fbthrift_changed = True
-
-        if map_struct_type is ___NOTSET:
-            __isNOTSET[23] = True
-            map_struct_type = None
-        else:
-            __isNOTSET[23] = False
-            __fbthrift_changed = True
-
-        if iobuf_type is ___NOTSET:
-            __isNOTSET[24] = True
-            iobuf_type = None
-        else:
-            __isNOTSET[24] = False
-            __fbthrift_changed = True
-
-        if iobuf_ptr is ___NOTSET:
-            __isNOTSET[25] = True
-            iobuf_ptr = None
-        else:
-            __isNOTSET[25] = False
-            __fbthrift_changed = True
-
-        if list_i32_template is ___NOTSET:
-            __isNOTSET[26] = True
-            list_i32_template = None
-        else:
-            __isNOTSET[26] = False
-            __fbthrift_changed = True
-
-        if list_string_template is ___NOTSET:
-            __isNOTSET[27] = True
-            list_string_template = None
-        else:
-            __isNOTSET[27] = False
-            __fbthrift_changed = True
-
-        if set_template is ___NOTSET:
-            __isNOTSET[28] = True
-            set_template = None
-        else:
-            __isNOTSET[28] = False
-            __fbthrift_changed = True
-
-        if map_template is ___NOTSET:
-            __isNOTSET[29] = True
-            map_template = None
-        else:
-            __isNOTSET[29] = False
-            __fbthrift_changed = True
-
-        if typedef_list_template is ___NOTSET:
-            __isNOTSET[30] = True
-            typedef_list_template = None
-        else:
-            __isNOTSET[30] = False
-            __fbthrift_changed = True
-
-        if typedef_deque_template is ___NOTSET:
-            __isNOTSET[31] = True
-            typedef_deque_template = None
-        else:
-            __isNOTSET[31] = False
-            __fbthrift_changed = True
-
-        if typedef_set_template is ___NOTSET:
-            __isNOTSET[32] = True
-            typedef_set_template = None
-        else:
-            __isNOTSET[32] = False
-            __fbthrift_changed = True
-
-        if typedef_map_template is ___NOTSET:
-            __isNOTSET[33] = True
-            typedef_map_template = None
-        else:
-            __isNOTSET[33] = False
-            __fbthrift_changed = True
-
-        if indirection_a is ___NOTSET:
-            __isNOTSET[34] = True
-            indirection_a = None
-        else:
-            __isNOTSET[34] = False
-            __fbthrift_changed = True
-
-        if indirection_b is ___NOTSET:
-            __isNOTSET[35] = True
-            indirection_b = None
-        else:
-            __isNOTSET[35] = False
-            __fbthrift_changed = True
-
-        if indirection_c is ___NOTSET:
-            __isNOTSET[36] = True
-            indirection_c = None
-        else:
-            __isNOTSET[36] = False
-            __fbthrift_changed = True
-
-        if iobuf_type_val is ___NOTSET:
-            __isNOTSET[37] = True
-            iobuf_type_val = None
-        else:
-            __isNOTSET[37] = False
-            __fbthrift_changed = True
-
-        if iobuf_ptr_val is ___NOTSET:
-            __isNOTSET[38] = True
-            iobuf_ptr_val = None
-        else:
-            __isNOTSET[38] = False
-            __fbthrift_changed = True
-
-        if struct_struct is ___NOTSET:
-            __isNOTSET[39] = True
-            struct_struct = None
-        else:
-            __isNOTSET[39] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
-            return self
-
-        if no_annotation is not None:
-            if not isinstance(no_annotation, containerStruct):
-                raise TypeError(f'no_annotation is not a { containerStruct !r}.')
-
-        if cpp_unique_ref is not None:
-            if not isinstance(cpp_unique_ref, containerStruct):
-                raise TypeError(f'cpp_unique_ref is not a { containerStruct !r}.')
-
-        if cpp2_unique_ref is not None:
-            if not isinstance(cpp2_unique_ref, containerStruct):
-                raise TypeError(f'cpp2_unique_ref is not a { containerStruct !r}.')
-
-        if req_cpp_unique_ref is not None:
-            if not isinstance(req_cpp_unique_ref, containerStruct):
-                raise TypeError(f'req_cpp_unique_ref is not a { containerStruct !r}.')
-
-        if req_cpp2_unique_ref is not None:
-            if not isinstance(req_cpp2_unique_ref, containerStruct):
-                raise TypeError(f'req_cpp2_unique_ref is not a { containerStruct !r}.')
-
-        if opt_cpp_unique_ref is not None:
-            if not isinstance(opt_cpp_unique_ref, containerStruct):
-                raise TypeError(f'opt_cpp_unique_ref is not a { containerStruct !r}.')
-
-        if opt_cpp2_unique_ref is not None:
-            if not isinstance(opt_cpp2_unique_ref, containerStruct):
-                raise TypeError(f'opt_cpp2_unique_ref is not a { containerStruct !r}.')
-
-        if ref_type_unique is not None:
-            if not isinstance(ref_type_unique, containerStruct):
-                raise TypeError(f'ref_type_unique is not a { containerStruct !r}.')
-
-        if ref_type_shared is not None:
-            if not isinstance(ref_type_shared, containerStruct):
-                raise TypeError(f'ref_type_shared is not a { containerStruct !r}.')
-
-        if req_ref_type_shared is not None:
-            if not isinstance(req_ref_type_shared, containerStruct):
-                raise TypeError(f'req_ref_type_shared is not a { containerStruct !r}.')
-
-        if req_ref_type_const is not None:
-            if not isinstance(req_ref_type_const, containerStruct):
-                raise TypeError(f'req_ref_type_const is not a { containerStruct !r}.')
-
-        if opt_ref_type_const is not None:
-            if not isinstance(opt_ref_type_const, containerStruct):
-                raise TypeError(f'opt_ref_type_const is not a { containerStruct !r}.')
-
-        if opt_ref_type_unique is not None:
-            if not isinstance(opt_ref_type_unique, containerStruct):
-                raise TypeError(f'opt_ref_type_unique is not a { containerStruct !r}.')
-
-        if base_type is not None:
-            if not isinstance(base_type, int):
-                raise TypeError(f'base_type is not a { int !r}.')
-            base_type = <cint32_t> base_type
-
-        if iobuf_type is not None:
-            if not isinstance(iobuf_type, __iobuf.IOBuf):
-                raise TypeError(f'iobuf_type is not a { __iobuf.IOBuf !r}.')
-
-        if iobuf_ptr is not None:
-            if not isinstance(iobuf_ptr, __iobuf.IOBuf):
-                raise TypeError(f'iobuf_ptr is not a { __iobuf.IOBuf !r}.')
-
-        if indirection_a is not None:
-            if not isinstance(indirection_a, int):
-                raise TypeError(f'indirection_a is not a { int !r}.')
-            indirection_a = <cint64_t> indirection_a
-
-        if iobuf_type_val is not None:
-            if not isinstance(iobuf_type_val, __iobuf.IOBuf):
-                raise TypeError(f'iobuf_type_val is not a { __iobuf.IOBuf !r}.')
-
-        if iobuf_ptr_val is not None:
-            if not isinstance(iobuf_ptr_val, __iobuf.IOBuf):
-                raise TypeError(f'iobuf_ptr_val is not a { __iobuf.IOBuf !r}.')
-
-        if struct_struct is not None:
-            if not isinstance(struct_struct, containerStruct):
-                raise TypeError(f'struct_struct is not a { containerStruct !r}.')
-
-        __fbthrift_inst = <AnnotatedStruct>AnnotatedStruct.__new__(AnnotatedStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(AnnotatedStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          no_annotation,
-          cpp_unique_ref,
-          cpp2_unique_ref,
-          container_with_ref,
-          req_cpp_unique_ref,
-          req_cpp2_unique_ref,
-          req_container_with_ref,
-          opt_cpp_unique_ref,
-          opt_cpp2_unique_ref,
-          opt_container_with_ref,
-          ref_type_unique,
-          ref_type_shared,
-          ref_type_const,
-          req_ref_type_shared,
-          req_ref_type_const,
-          req_ref_type_unique,
-          opt_ref_type_const,
-          opt_ref_type_unique,
-          opt_ref_type_shared,
-          base_type,
-          list_type,
-          set_type,
-          map_type,
-          map_struct_type,
-          iobuf_type,
-          iobuf_ptr,
-          list_i32_template,
-          list_string_template,
-          set_template,
-          map_template,
-          typedef_list_template,
-          typedef_deque_template,
-          typedef_set_template,
-          typedef_map_template,
-          indirection_a,
-          indirection_b,
-          indirection_c,
-          iobuf_type_val,
-          iobuf_ptr_val,
-          struct_struct,
-        ))
-        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cAnnotatedStruct] _make_instance(
@@ -4668,7 +3674,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     ) except *:
         cdef unique_ptr[cAnnotatedStruct] c_inst
         if base_instance:
-            c_inst = make_unique[cAnnotatedStruct](deref(base_instance))
+            raise TypeError("AnnotatedStruct is noncopyable")
         else:
             c_inst = make_unique[cAnnotatedStruct]()
 
@@ -4963,28 +3969,27 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AnnotatedStruct", {
-          "no_annotation": cpp_obj.no_annotation_ref().has_value(),
-          "base_type": cpp_obj.base_type_ref().has_value(),
-          "list_type": cpp_obj.list_type_ref().has_value(),
-          "set_type": cpp_obj.set_type_ref().has_value(),
-          "map_type": cpp_obj.map_type_ref().has_value(),
-          "map_struct_type": cpp_obj.map_struct_type_ref().has_value(),
-          "iobuf_type": cpp_obj.iobuf_type_ref().has_value(),
-          "list_i32_template": cpp_obj.list_i32_template_ref().has_value(),
-          "list_string_template": cpp_obj.list_string_template_ref().has_value(),
-          "set_template": cpp_obj.set_template_ref().has_value(),
-          "map_template": cpp_obj.map_template_ref().has_value(),
-          "typedef_list_template": cpp_obj.typedef_list_template_ref().has_value(),
-          "typedef_deque_template": cpp_obj.typedef_deque_template_ref().has_value(),
-          "typedef_set_template": cpp_obj.typedef_set_template_ref().has_value(),
-          "typedef_map_template": cpp_obj.typedef_map_template_ref().has_value(),
-          "indirection_a": cpp_obj.indirection_a_ref().has_value(),
-          "indirection_b": cpp_obj.indirection_b_ref().has_value(),
-          "indirection_c": cpp_obj.indirection_c_ref().has_value(),
-          "iobuf_type_val": cpp_obj.iobuf_type_val_ref().has_value(),
-          "struct_struct": cpp_obj.struct_struct_ref().has_value(),
+          "no_annotation": deref(self._cpp_obj).no_annotation_ref().has_value(),
+          "base_type": deref(self._cpp_obj).base_type_ref().has_value(),
+          "list_type": deref(self._cpp_obj).list_type_ref().has_value(),
+          "set_type": deref(self._cpp_obj).set_type_ref().has_value(),
+          "map_type": deref(self._cpp_obj).map_type_ref().has_value(),
+          "map_struct_type": deref(self._cpp_obj).map_struct_type_ref().has_value(),
+          "iobuf_type": deref(self._cpp_obj).iobuf_type_ref().has_value(),
+          "list_i32_template": deref(self._cpp_obj).list_i32_template_ref().has_value(),
+          "list_string_template": deref(self._cpp_obj).list_string_template_ref().has_value(),
+          "set_template": deref(self._cpp_obj).set_template_ref().has_value(),
+          "map_template": deref(self._cpp_obj).map_template_ref().has_value(),
+          "typedef_list_template": deref(self._cpp_obj).typedef_list_template_ref().has_value(),
+          "typedef_deque_template": deref(self._cpp_obj).typedef_deque_template_ref().has_value(),
+          "typedef_set_template": deref(self._cpp_obj).typedef_set_template_ref().has_value(),
+          "typedef_map_template": deref(self._cpp_obj).typedef_map_template_ref().has_value(),
+          "indirection_a": deref(self._cpp_obj).indirection_a_ref().has_value(),
+          "indirection_b": deref(self._cpp_obj).indirection_b_ref().has_value(),
+          "indirection_c": deref(self._cpp_obj).indirection_c_ref().has_value(),
+          "iobuf_type_val": deref(self._cpp_obj).iobuf_type_val_ref().has_value(),
+          "struct_struct": deref(self._cpp_obj).struct_struct_ref().has_value(),
         })
 
     def __iter__(self):
@@ -5359,10 +4364,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         return  super().__hash__()
 
     def __copy__(AnnotatedStruct self):
-        cdef shared_ptr[cAnnotatedStruct] cpp_obj = make_shared[cAnnotatedStruct](
-            deref(self._cpp_obj)
-        )
-        return AnnotatedStruct.create(__fbthrift_move_shared(cpp_obj))
+        raise TypeError("AnnotatedStruct is noncopyable")
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -5488,10 +4490,9 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ComplexContainerStruct", {
-          "map_of_iobufs": cpp_obj.map_of_iobufs_ref().has_value(),
-          "map_of_iobuf_ptrs": cpp_obj.map_of_iobuf_ptrs_ref().has_value(),
+          "map_of_iobufs": deref(self._cpp_obj).map_of_iobufs_ref().has_value(),
+          "map_of_iobuf_ptrs": deref(self._cpp_obj).map_of_iobuf_ptrs_ref().has_value(),
         })
 
     def __iter__(self):
@@ -5679,10 +4680,9 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("FloatStruct", {
-          "floatField": cpp_obj.floatField_ref().has_value(),
-          "doubleField": cpp_obj.doubleField_ref().has_value(),
+          "floatField": deref(self._cpp_obj).floatField_ref().has_value(),
+          "doubleField": deref(self._cpp_obj).doubleField_ref().has_value(),
         })
 
     def __iter__(self):
@@ -6004,7 +5004,6 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AllRequiredNoExceptMoveCtrStruct", {
         })
 

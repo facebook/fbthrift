@@ -115,9 +115,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStruct", {
-          "field": cpp_obj.field_ref().has_value(),
+          "field": deref(self._cpp_obj).field_ref().has_value(),
         })
 
     def __iter__(self):
@@ -319,12 +318,11 @@ cdef class Combo(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Combo", {
-          "listOfOurMyStructLists": cpp_obj.listOfOurMyStructLists_ref().has_value(),
-          "theirMyStructList": cpp_obj.theirMyStructList_ref().has_value(),
-          "ourMyStructList": cpp_obj.ourMyStructList_ref().has_value(),
-          "listOfTheirMyStructList": cpp_obj.listOfTheirMyStructList_ref().has_value(),
+          "listOfOurMyStructLists": deref(self._cpp_obj).listOfOurMyStructLists_ref().has_value(),
+          "theirMyStructList": deref(self._cpp_obj).theirMyStructList_ref().has_value(),
+          "ourMyStructList": deref(self._cpp_obj).ourMyStructList_ref().has_value(),
+          "listOfTheirMyStructList": deref(self._cpp_obj).listOfTheirMyStructList_ref().has_value(),
         })
 
     def __iter__(self):

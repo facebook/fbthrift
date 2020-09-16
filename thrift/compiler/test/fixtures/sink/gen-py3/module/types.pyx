@@ -113,9 +113,8 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("InitialResponse", {
-          "content": cpp_obj.content_ref().has_value(),
+          "content": deref(self._cpp_obj).content_ref().has_value(),
         })
 
     def __iter__(self):
@@ -261,9 +260,8 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("FinalResponse", {
-          "content": cpp_obj.content_ref().has_value(),
+          "content": deref(self._cpp_obj).content_ref().has_value(),
         })
 
     def __iter__(self):
@@ -409,9 +407,8 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("SinkPayload", {
-          "content": cpp_obj.content_ref().has_value(),
+          "content": deref(self._cpp_obj).content_ref().has_value(),
         })
 
     def __iter__(self):
@@ -557,9 +554,8 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("CompatibleWithKeywordSink", {
-          "sink": cpp_obj.sink_ref().has_value(),
+          "sink": deref(self._cpp_obj).sink_ref().has_value(),
         })
 
     def __iter__(self):
@@ -669,9 +665,8 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("InitialException", {
-          "reason": cpp_obj.reason_ref().has_value(),
+          "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
 
     def __iter__(self):
@@ -772,9 +767,8 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("SinkException1", {
-          "reason": cpp_obj.reason_ref().has_value(),
+          "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
 
     def __iter__(self):
@@ -880,9 +874,8 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("SinkException2", {
-          "reason": cpp_obj.reason_ref().has_value(),
+          "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
 
     def __iter__(self):

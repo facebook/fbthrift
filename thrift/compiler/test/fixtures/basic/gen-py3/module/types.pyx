@@ -255,12 +255,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStruct", {
-          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
-          "MyStringField": cpp_obj.MyStringField_ref().has_value(),
-          "MyDataField": cpp_obj.MyDataField_ref().has_value(),
-          "myEnum": cpp_obj.myEnum_ref().has_value(),
+          "MyIntField": deref(self._cpp_obj).MyIntField_ref().has_value(),
+          "MyStringField": deref(self._cpp_obj).MyStringField_ref().has_value(),
+          "MyDataField": deref(self._cpp_obj).MyDataField_ref().has_value(),
+          "myEnum": deref(self._cpp_obj).myEnum_ref().has_value(),
         })
 
     def __iter__(self):
@@ -390,7 +389,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyDataItem", {
         })
 

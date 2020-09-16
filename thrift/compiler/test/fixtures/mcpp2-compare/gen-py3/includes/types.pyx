@@ -150,9 +150,8 @@ cdef class AStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AStruct", {
-          "FieldA": cpp_obj.FieldA_ref().has_value(),
+          "FieldA": deref(self._cpp_obj).FieldA_ref().has_value(),
         })
 
     def __iter__(self):
@@ -296,7 +295,6 @@ cdef class AStructB(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AStructB", {
         })
 

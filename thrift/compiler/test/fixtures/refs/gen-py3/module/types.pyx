@@ -386,10 +386,9 @@ cdef class MyField(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyField", {
-          "opt_value": cpp_obj.opt_value_ref().has_value(),
-          "value": cpp_obj.value_ref().has_value(),
+          "opt_value": deref(self._cpp_obj).opt_value_ref().has_value(),
+          "value": deref(self._cpp_obj).value_ref().has_value(),
         })
 
     def __iter__(self):
@@ -591,7 +590,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStruct", {
         })
 
@@ -812,10 +810,9 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithUnion", {
-          "aDouble": cpp_obj.aDouble_ref().has_value(),
-          "f": cpp_obj.f_ref().has_value(),
+          "aDouble": deref(self._cpp_obj).aDouble_ref().has_value(),
+          "f": deref(self._cpp_obj).f_ref().has_value(),
         })
 
     def __iter__(self):
@@ -974,9 +971,8 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("RecursiveStruct", {
-          "mes": cpp_obj.mes_ref().has_value(),
+          "mes": deref(self._cpp_obj).mes_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1210,7 +1206,6 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithContainers", {
         })
 
@@ -1453,7 +1448,6 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithSharedConst", {
         })
 
@@ -1588,7 +1582,6 @@ cdef class Empty(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Empty", {
         })
 
@@ -1772,7 +1765,6 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithRef", {
         })
 
@@ -1985,7 +1977,6 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithRefTypeUnique", {
         })
 
@@ -2198,7 +2189,6 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithRefTypeShared", {
         })
 
@@ -2411,7 +2401,6 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithRefTypeSharedConst", {
         })
 
@@ -2580,7 +2569,6 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("StructWithRefAndAnnotCppNoexceptMoveCtor", {
         })
 

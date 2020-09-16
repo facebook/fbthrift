@@ -242,6 +242,10 @@ struct SlowCompare {
   3: Color field3,
 } (cpp2.noncomparable)
 
+struct NonCopyable {
+  1: i64 num,
+} (cpp2.noncopyable)
+
 struct Messy {
     1: optional string opt_field (some="annotation", a.b.c="d.e.f"),
     2: required string req_field,

@@ -141,6 +141,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/struct:exception?}}
 
     {{^struct:exception?}}
+    {{^struct:cpp_noncopyable?}}
     def __call__(
         {{struct:name}} self{{#struct:fields}},
         {{field:py_name}}=__NOTSET{{/struct:fields}}
@@ -198,6 +199,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         ))
         return __fbthrift_inst
         {{/struct:fields?}}
+    {{/struct:cpp_noncopyable?}}
     {{/struct:exception?}}
 
     @staticmethod
@@ -216,7 +218,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     ) except *:
         cdef unique_ptr[c{{struct:name}}] c_inst
         if base_instance:
+            {{#struct:cpp_noncopyable?}}
+            raise TypeError("{{struct:name}} is noncopyable")
+            {{/struct:cpp_noncopyable?}}
+            {{^struct:cpp_noncopyable?}}
             c_inst = make_unique[c{{struct:name}}](deref(base_instance))
+            {{/struct:cpp_noncopyable?}}
         else:
             c_inst = make_unique[c{{struct:name}}]()
 
@@ -267,11 +274,10 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("{{struct:name}}", {
         {{#struct:fields}}
         {{#field:has_ref_accessor?}}
-          "{{field:py_name}}": cpp_obj.{{field:py_name}}_ref().has_value(),
+          "{{field:py_name}}": deref(self._cpp_obj).{{field:py_name}}_ref().has_value(),
         {{/field:has_ref_accessor?}}
         {{/struct:fields}}
         })
@@ -489,10 +495,15 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
 {{/struct:union?}}
     {{! Below are some things that are common to structs and unions: }}
     def __copy__({{struct:name}} self):
+        {{#struct:cpp_noncopyable?}}
+        raise TypeError("{{struct:name}} is noncopyable")
+        {{/struct:cpp_noncopyable?}}
+        {{^struct:cpp_noncopyable?}}
         cdef shared_ptr[c{{struct:name}}] cpp_obj = make_shared[c{{struct:name}}](
             deref(self._cpp_obj)
         )
         return {{struct:name}}.create(__fbthrift_move_shared(cpp_obj))
+        {{/struct:cpp_noncopyable?}}
 
     def __richcmp__(self, other, op):
         cdef int cop = op

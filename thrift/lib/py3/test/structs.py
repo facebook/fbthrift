@@ -22,6 +22,7 @@ from testing.types import (
     File,
     Integers,
     Kind,
+    NonCopyable,
     Optionals,
     Reserved,
     Runtime,
@@ -180,6 +181,15 @@ class StructTests(unittest.TestCase):
 
         self.assertEqual(x, x2)
         self.assertNotEqual(x, y)
+
+    def test_noncopyable(self) -> None:
+        x = NonCopyable(num=123)
+        with self.assertRaises(TypeError):
+            x(num=1234)
+        with self.assertRaises(TypeError):
+            copy.copy(x)
+        with self.assertRaises(TypeError):
+            copy.deepcopy(x)
 
 
 class NumericalConversionsTests(unittest.TestCase):

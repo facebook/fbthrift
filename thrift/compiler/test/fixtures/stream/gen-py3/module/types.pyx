@@ -73,7 +73,6 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("FooEx", {
         })
 

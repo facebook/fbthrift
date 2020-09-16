@@ -119,9 +119,8 @@ cdef class Foo(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Foo", {
-          "MyInt": cpp_obj.MyInt_ref().has_value(),
+          "MyInt": deref(self._cpp_obj).MyInt_ref().has_value(),
         })
 
     def __iter__(self):

@@ -854,11 +854,10 @@ cdef class Val(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Val", {
-          "strVal": cpp_obj.strVal_ref().has_value(),
-          "intVal": cpp_obj.intVal_ref().has_value(),
-          "typedefValue": cpp_obj.typedefValue_ref().has_value(),
+          "strVal": deref(self._cpp_obj).strVal_ref().has_value(),
+          "intVal": deref(self._cpp_obj).intVal_ref().has_value(),
+          "typedefValue": deref(self._cpp_obj).typedefValue_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1237,37 +1236,6 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
           num,
         ))
 
-    def __call__(
-        NonCopyableStruct self,
-        num=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if num is ___NOTSET:
-            __isNOTSET[0] = True
-            num = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
-            return self
-
-        if num is not None:
-            if not isinstance(num, int):
-                raise TypeError(f'num is not a { int !r}.')
-            num = <cint64_t> num
-
-        __fbthrift_inst = <NonCopyableStruct>NonCopyableStruct.__new__(NonCopyableStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(NonCopyableStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          num,
-        ))
-        return __fbthrift_inst
 
     @staticmethod
     cdef unique_ptr[cNonCopyableStruct] _make_instance(
@@ -1277,7 +1245,7 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
     ) except *:
         cdef unique_ptr[cNonCopyableStruct] c_inst
         if base_instance:
-            c_inst = make_unique[cNonCopyableStruct](deref(base_instance))
+            raise TypeError("NonCopyableStruct is noncopyable")
         else:
             c_inst = make_unique[cNonCopyableStruct]()
 
@@ -1296,9 +1264,8 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("NonCopyableStruct", {
-          "num": cpp_obj.num_ref().has_value(),
+          "num": deref(self._cpp_obj).num_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1323,10 +1290,7 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         return  super().__hash__()
 
     def __copy__(NonCopyableStruct self):
-        cdef shared_ptr[cNonCopyableStruct] cpp_obj = make_shared[cNonCopyableStruct](
-            deref(self._cpp_obj)
-        )
-        return NonCopyableStruct.create(__fbthrift_move_shared(cpp_obj))
+        raise TypeError("NonCopyableStruct is noncopyable")
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1439,10 +1403,7 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
             self.value = NonCopyableStruct.create(make_shared[cNonCopyableStruct](deref(self._cpp_obj).get_s()))
 
     def __copy__(NonCopyableUnion self):
-        cdef shared_ptr[cNonCopyableUnion] cpp_obj = make_shared[cNonCopyableUnion](
-            deref(self._cpp_obj)
-        )
-        return NonCopyableUnion.create(__fbthrift_move_shared(cpp_obj))
+        raise TypeError("NonCopyableUnion is noncopyable")
 
     def __richcmp__(self, other, op):
         cdef int cop = op

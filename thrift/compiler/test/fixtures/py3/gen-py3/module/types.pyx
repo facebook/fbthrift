@@ -180,9 +180,8 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("SimpleException", {
-          "err_code": cpp_obj.err_code_ref().has_value(),
+          "err_code": deref(self._cpp_obj).err_code_ref().has_value(),
         })
 
     def __iter__(self):
@@ -319,7 +318,6 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("OptionalRefStruct", {
         })
 
@@ -648,15 +646,14 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("SimpleStruct", {
-          "is_on": cpp_obj.is_on_ref().has_value(),
-          "tiny_int": cpp_obj.tiny_int_ref().has_value(),
-          "small_int": cpp_obj.small_int_ref().has_value(),
-          "nice_sized_int": cpp_obj.nice_sized_int_ref().has_value(),
-          "big_int": cpp_obj.big_int_ref().has_value(),
-          "real": cpp_obj.real_ref().has_value(),
-          "smaller_real": cpp_obj.smaller_real_ref().has_value(),
+          "is_on": deref(self._cpp_obj).is_on_ref().has_value(),
+          "tiny_int": deref(self._cpp_obj).tiny_int_ref().has_value(),
+          "small_int": deref(self._cpp_obj).small_int_ref().has_value(),
+          "nice_sized_int": deref(self._cpp_obj).nice_sized_int_ref().has_value(),
+          "big_int": deref(self._cpp_obj).big_int_ref().has_value(),
+          "real": deref(self._cpp_obj).real_ref().has_value(),
+          "smaller_real": deref(self._cpp_obj).smaller_real_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1036,17 +1033,16 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ComplexStruct", {
-          "structOne": cpp_obj.structOne_ref().has_value(),
-          "structTwo": cpp_obj.structTwo_ref().has_value(),
-          "an_integer": cpp_obj.an_integer_ref().has_value(),
-          "name": cpp_obj.name_ref().has_value(),
-          "an_enum": cpp_obj.an_enum_ref().has_value(),
-          "some_bytes": cpp_obj.some_bytes_ref().has_value(),
-          "sender": cpp_obj.sender_ref().has_value(),
-          "cdef_": cpp_obj.cdef__ref().has_value(),
-          "bytes_with_cpp_type": cpp_obj.bytes_with_cpp_type_ref().has_value(),
+          "structOne": deref(self._cpp_obj).structOne_ref().has_value(),
+          "structTwo": deref(self._cpp_obj).structTwo_ref().has_value(),
+          "an_integer": deref(self._cpp_obj).an_integer_ref().has_value(),
+          "name": deref(self._cpp_obj).name_ref().has_value(),
+          "an_enum": deref(self._cpp_obj).an_enum_ref().has_value(),
+          "some_bytes": deref(self._cpp_obj).some_bytes_ref().has_value(),
+          "sender": deref(self._cpp_obj).sender_ref().has_value(),
+          "cdef_": deref(self._cpp_obj).cdef__ref().has_value(),
+          "bytes_with_cpp_type": deref(self._cpp_obj).bytes_with_cpp_type_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1352,9 +1348,8 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("BinaryUnionStruct", {
-          "u": cpp_obj.u_ref().has_value(),
+          "u": deref(self._cpp_obj).u_ref().has_value(),
         })
 
     def __iter__(self):

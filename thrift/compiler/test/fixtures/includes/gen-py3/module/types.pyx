@@ -169,11 +169,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStruct", {
-          "MyIncludedField": cpp_obj.MyIncludedField_ref().has_value(),
-          "MyOtherIncludedField": cpp_obj.MyOtherIncludedField_ref().has_value(),
-          "MyIncludedInt": cpp_obj.MyIncludedInt_ref().has_value(),
+          "MyIncludedField": deref(self._cpp_obj).MyIncludedField_ref().has_value(),
+          "MyOtherIncludedField": deref(self._cpp_obj).MyOtherIncludedField_ref().has_value(),
+          "MyIncludedInt": deref(self._cpp_obj).MyIncludedInt_ref().has_value(),
         })
 
     def __iter__(self):

@@ -323,10 +323,9 @@ cdef class Internship(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Internship", {
-          "title": cpp_obj.title_ref().has_value(),
-          "employer": cpp_obj.employer_ref().has_value(),
+          "title": deref(self._cpp_obj).title_ref().has_value(),
+          "employer": deref(self._cpp_obj).employer_ref().has_value(),
         })
 
     def __iter__(self):
@@ -518,7 +517,6 @@ cdef class Range(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Range", {
         })
 
@@ -701,10 +699,9 @@ cdef class struct1(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("struct1", {
-          "a": cpp_obj.a_ref().has_value(),
-          "b": cpp_obj.b_ref().has_value(),
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
         })
 
     def __iter__(self):
@@ -930,12 +927,11 @@ cdef class struct2(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("struct2", {
-          "a": cpp_obj.a_ref().has_value(),
-          "b": cpp_obj.b_ref().has_value(),
-          "c": cpp_obj.c_ref().has_value(),
-          "d": cpp_obj.d_ref().has_value(),
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
+          "c": deref(self._cpp_obj).c_ref().has_value(),
+          "d": deref(self._cpp_obj).d_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1157,11 +1153,10 @@ cdef class struct3(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("struct3", {
-          "a": cpp_obj.a_ref().has_value(),
-          "b": cpp_obj.b_ref().has_value(),
-          "c": cpp_obj.c_ref().has_value(),
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
+          "c": deref(self._cpp_obj).c_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1383,11 +1378,10 @@ cdef class struct4(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("struct4", {
-          "a": cpp_obj.a_ref().has_value(),
-          "b": cpp_obj.b_ref().has_value(),
-          "c": cpp_obj.c_ref().has_value(),
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
+          "c": deref(self._cpp_obj).c_ref().has_value(),
         })
 
     def __iter__(self):

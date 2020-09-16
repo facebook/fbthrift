@@ -636,7 +636,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
 
     cdef cppclass ccontainerStruct "::some::valid::ns::containerStruct":
         ccontainerStruct() except +
-        ccontainerStruct(const ccontainerStruct&) except +
         bint operator==(ccontainerStruct&)
         bint operator!=(ccontainerStruct&)
         bint operator<(ccontainerStruct&)
@@ -797,7 +796,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
 
     cdef cppclass cAnnotatedStruct "::some::valid::ns::AnnotatedStruct":
         cAnnotatedStruct() except +
-        cAnnotatedStruct(const cAnnotatedStruct&) except +
         bint operator==(cAnnotatedStruct&)
         bint operator!=(cAnnotatedStruct&)
         __FieldRef[ccontainerStruct] no_annotation_ref()

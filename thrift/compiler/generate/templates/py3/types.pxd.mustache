@@ -109,7 +109,9 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
 
     cdef cppclass c{{struct:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
         c{{struct:name}}() except +
+        {{^struct:cpp_noncopyable?}}
         c{{struct:name}}(const c{{struct:name}}&) except +
+        {{/struct:cpp_noncopyable?}}
         {{^struct:cpp_noncomparable}}
         bint operator==(c{{struct:name}}&)
         bint operator!=(c{{struct:name}}&)

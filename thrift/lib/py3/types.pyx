@@ -126,6 +126,13 @@ cdef class Struct:
         fields = ", ".join(f"{name}={repr(value)}" for name, value in self)
         return f"{type(self).__name__}({fields})"
 
+    def __deepcopy__(self, _):
+        """
+        copying a thrift-py3 struct is always deep copy
+        """
+        return self.__copy__()
+
+
 SetMetaClass(<PyTypeObject*> Struct, <PyTypeObject*> StructMeta)
 
 

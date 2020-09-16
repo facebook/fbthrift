@@ -144,9 +144,8 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStructNestedAnnotation", {
-          "name": cpp_obj.name_ref().has_value(),
+          "name": deref(self._cpp_obj).name_ref().has_value(),
         })
 
     def __iter__(self):
@@ -369,12 +368,11 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStructAnnotation", {
-          "count": cpp_obj.count_ref().has_value(),
-          "name": cpp_obj.name_ref().has_value(),
-          "extra": cpp_obj.extra_ref().has_value(),
-          "nest": cpp_obj.nest_ref().has_value(),
+          "count": deref(self._cpp_obj).count_ref().has_value(),
+          "name": deref(self._cpp_obj).name_ref().has_value(),
+          "extra": deref(self._cpp_obj).extra_ref().has_value(),
+          "nest": deref(self._cpp_obj).nest_ref().has_value(),
         })
 
     def __iter__(self):
@@ -668,14 +666,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStruct", {
-          "major": cpp_obj.major_ref().has_value(),
-          "package": cpp_obj.package_ref().has_value(),
-          "annotation_with_quote": cpp_obj.annotation_with_quote_ref().has_value(),
-          "class_": cpp_obj.class__ref().has_value(),
-          "annotation_with_trailing_comma": cpp_obj.annotation_with_trailing_comma_ref().has_value(),
-          "empty_annotations": cpp_obj.empty_annotations_ref().has_value(),
+          "major": deref(self._cpp_obj).major_ref().has_value(),
+          "package": deref(self._cpp_obj).package_ref().has_value(),
+          "annotation_with_quote": deref(self._cpp_obj).annotation_with_quote_ref().has_value(),
+          "class_": deref(self._cpp_obj).class__ref().has_value(),
+          "annotation_with_trailing_comma": deref(self._cpp_obj).annotation_with_trailing_comma_ref().has_value(),
+          "empty_annotations": deref(self._cpp_obj).empty_annotations_ref().has_value(),
         })
 
     def __iter__(self):
@@ -881,10 +878,9 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("SecretStruct", {
-          "id": cpp_obj.id_ref().has_value(),
-          "password": cpp_obj.password_ref().has_value(),
+          "id": deref(self._cpp_obj).id_ref().has_value(),
+          "password": deref(self._cpp_obj).password_ref().has_value(),
         })
 
     def __iter__(self):

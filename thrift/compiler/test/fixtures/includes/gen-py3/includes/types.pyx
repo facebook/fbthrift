@@ -145,10 +145,9 @@ cdef class Included(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Included", {
-          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
-          "MyTransitiveField": cpp_obj.MyTransitiveField_ref().has_value(),
+          "MyIntField": deref(self._cpp_obj).MyIntField_ref().has_value(),
+          "MyTransitiveField": deref(self._cpp_obj).MyTransitiveField_ref().has_value(),
         })
 
     def __iter__(self):

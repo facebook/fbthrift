@@ -272,9 +272,8 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("decorated_struct", {
-          "field": cpp_obj.field_ref().has_value(),
+          "field": deref(self._cpp_obj).field_ref().has_value(),
         })
 
     def __iter__(self):
@@ -556,16 +555,15 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ContainerStruct", {
-          "fieldA": cpp_obj.fieldA_ref().has_value(),
-          "fieldB": cpp_obj.fieldB_ref().has_value(),
-          "fieldC": cpp_obj.fieldC_ref().has_value(),
-          "fieldD": cpp_obj.fieldD_ref().has_value(),
-          "fieldE": cpp_obj.fieldE_ref().has_value(),
-          "fieldF": cpp_obj.fieldF_ref().has_value(),
-          "fieldG": cpp_obj.fieldG_ref().has_value(),
-          "fieldH": cpp_obj.fieldH_ref().has_value(),
+          "fieldA": deref(self._cpp_obj).fieldA_ref().has_value(),
+          "fieldB": deref(self._cpp_obj).fieldB_ref().has_value(),
+          "fieldC": deref(self._cpp_obj).fieldC_ref().has_value(),
+          "fieldD": deref(self._cpp_obj).fieldD_ref().has_value(),
+          "fieldE": deref(self._cpp_obj).fieldE_ref().has_value(),
+          "fieldF": deref(self._cpp_obj).fieldF_ref().has_value(),
+          "fieldG": deref(self._cpp_obj).fieldG_ref().has_value(),
+          "fieldH": deref(self._cpp_obj).fieldH_ref().has_value(),
         })
 
     def __iter__(self):
@@ -757,9 +755,8 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("CppTypeStruct", {
-          "fieldA": cpp_obj.fieldA_ref().has_value(),
+          "fieldA": deref(self._cpp_obj).fieldA_ref().has_value(),
         })
 
     def __iter__(self):
@@ -913,9 +910,8 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("VirtualStruct", {
-          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
+          "MyIntField": deref(self._cpp_obj).MyIntField_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1085,10 +1081,9 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStructWithForwardRefEnum", {
-          "a": cpp_obj.a_ref().has_value(),
-          "b": cpp_obj.b_ref().has_value(),
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1270,10 +1265,9 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("TrivialNumeric", {
-          "a": cpp_obj.a_ref().has_value(),
-          "b": cpp_obj.b_ref().has_value(),
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1455,10 +1449,9 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("TrivialNestedWithDefault", {
-          "z": cpp_obj.z_ref().has_value(),
-          "n": cpp_obj.n_ref().has_value(),
+          "z": deref(self._cpp_obj).z_ref().has_value(),
+          "n": deref(self._cpp_obj).n_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1632,10 +1625,9 @@ cdef class ComplexString(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ComplexString", {
-          "a": cpp_obj.a_ref().has_value(),
-          "b": cpp_obj.b_ref().has_value(),
+          "a": deref(self._cpp_obj).a_ref().has_value(),
+          "b": deref(self._cpp_obj).b_ref().has_value(),
         })
 
     def __iter__(self):
@@ -1813,10 +1805,9 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ComplexNestedWithDefault", {
-          "z": cpp_obj.z_ref().has_value(),
-          "n": cpp_obj.n_ref().has_value(),
+          "z": deref(self._cpp_obj).z_ref().has_value(),
+          "n": deref(self._cpp_obj).n_ref().has_value(),
         })
 
     def __iter__(self):
@@ -2086,7 +2077,6 @@ cdef class MinPadding(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MinPadding", {
         })
 
@@ -2341,12 +2331,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyStruct", {
-          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
-          "MyStringField": cpp_obj.MyStringField_ref().has_value(),
-          "majorVer": cpp_obj.majorVer_ref().has_value(),
-          "data": cpp_obj.data_ref().has_value(),
+          "MyIntField": deref(self._cpp_obj).MyIntField_ref().has_value(),
+          "MyStringField": deref(self._cpp_obj).MyStringField_ref().has_value(),
+          "majorVer": deref(self._cpp_obj).majorVer_ref().has_value(),
+          "data": deref(self._cpp_obj).data_ref().has_value(),
         })
 
     def __iter__(self):
@@ -2466,7 +2455,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("MyDataItem", {
         })
 
@@ -2604,9 +2592,8 @@ cdef class Renaming(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Renaming", {
-          "foo": cpp_obj.foo_ref().has_value(),
+          "foo": deref(self._cpp_obj).foo_ref().has_value(),
         })
 
     def __iter__(self):
@@ -2772,10 +2759,9 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AnnotatedTypes", {
-          "binary_field": cpp_obj.binary_field_ref().has_value(),
-          "list_field": cpp_obj.list_field_ref().has_value(),
+          "binary_field": deref(self._cpp_obj).binary_field_ref().has_value(),
+          "list_field": deref(self._cpp_obj).list_field_ref().has_value(),
         })
 
     def __iter__(self):
@@ -2942,9 +2928,8 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ForwardUsageRoot", {
-          "ForwardUsageStruct": cpp_obj.ForwardUsageStruct_ref().has_value(),
+          "ForwardUsageStruct": deref(self._cpp_obj).ForwardUsageStruct_ref().has_value(),
         })
 
     def __iter__(self):
@@ -3103,9 +3088,8 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ForwardUsageStruct", {
-          "foo": cpp_obj.foo_ref().has_value(),
+          "foo": deref(self._cpp_obj).foo_ref().has_value(),
         })
 
     def __iter__(self):
@@ -3254,9 +3238,8 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ForwardUsageByRef", {
-          "foo": cpp_obj.foo_ref().has_value(),
+          "foo": deref(self._cpp_obj).foo_ref().has_value(),
         })
 
     def __iter__(self):
@@ -3370,7 +3353,6 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("NoexceptMoveEmpty", {
         })
 
@@ -3518,9 +3500,8 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("NoexceptMoveSimpleStruct", {
-          "boolField": cpp_obj.boolField_ref().has_value(),
+          "boolField": deref(self._cpp_obj).boolField_ref().has_value(),
         })
 
     def __iter__(self):
@@ -3853,16 +3834,15 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("NoexceptMoveComplexStruct", {
-          "MyBoolField": cpp_obj.MyBoolField_ref().has_value(),
-          "MyIntField": cpp_obj.MyIntField_ref().has_value(),
-          "MyStringField": cpp_obj.MyStringField_ref().has_value(),
-          "MyStringField2": cpp_obj.MyStringField2_ref().has_value(),
-          "MyBinaryField": cpp_obj.MyBinaryField_ref().has_value(),
-          "MyBinaryField2": cpp_obj.MyBinaryField2_ref().has_value(),
-          "MyBinaryListField4": cpp_obj.MyBinaryListField4_ref().has_value(),
-          "MyMapEnumAndInt": cpp_obj.MyMapEnumAndInt_ref().has_value(),
+          "MyBoolField": deref(self._cpp_obj).MyBoolField_ref().has_value(),
+          "MyIntField": deref(self._cpp_obj).MyIntField_ref().has_value(),
+          "MyStringField": deref(self._cpp_obj).MyStringField_ref().has_value(),
+          "MyStringField2": deref(self._cpp_obj).MyStringField2_ref().has_value(),
+          "MyBinaryField": deref(self._cpp_obj).MyBinaryField_ref().has_value(),
+          "MyBinaryField2": deref(self._cpp_obj).MyBinaryField2_ref().has_value(),
+          "MyBinaryListField4": deref(self._cpp_obj).MyBinaryListField4_ref().has_value(),
+          "MyMapEnumAndInt": deref(self._cpp_obj).MyMapEnumAndInt_ref().has_value(),
         })
 
     def __iter__(self):
@@ -4298,13 +4278,12 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AllocatorAware", {
-          "aa_list": cpp_obj.aa_list_ref().has_value(),
-          "aa_set": cpp_obj.aa_set_ref().has_value(),
-          "aa_map": cpp_obj.aa_map_ref().has_value(),
-          "aa_string": cpp_obj.aa_string_ref().has_value(),
-          "not_a_container": cpp_obj.not_a_container_ref().has_value(),
+          "aa_list": deref(self._cpp_obj).aa_list_ref().has_value(),
+          "aa_set": deref(self._cpp_obj).aa_set_ref().has_value(),
+          "aa_map": deref(self._cpp_obj).aa_map_ref().has_value(),
+          "aa_string": deref(self._cpp_obj).aa_string_ref().has_value(),
+          "not_a_container": deref(self._cpp_obj).not_a_container_ref().has_value(),
         })
 
     def __iter__(self):
@@ -4486,9 +4465,8 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("AllocatorAware2", {
-          "not_a_container": cpp_obj.not_a_container_ref().has_value(),
+          "not_a_container": deref(self._cpp_obj).not_a_container_ref().has_value(),
         })
 
     def __iter__(self):

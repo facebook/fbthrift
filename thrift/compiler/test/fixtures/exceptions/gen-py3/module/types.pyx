@@ -71,7 +71,6 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Banal", {
         })
 
@@ -167,7 +166,6 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Fiery", {
         })
 
@@ -275,9 +273,8 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Serious", {
-          "sonnet": cpp_obj.sonnet_ref().has_value(),
+          "sonnet": deref(self._cpp_obj).sonnet_ref().has_value(),
         })
 
     def __iter__(self):
@@ -392,10 +389,9 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("ComplexFieldNames", {
-          "error_message": cpp_obj.error_message_ref().has_value(),
-          "internal_error_message": cpp_obj.internal_error_message_ref().has_value(),
+          "error_message": deref(self._cpp_obj).error_message_ref().has_value(),
+          "internal_error_message": deref(self._cpp_obj).internal_error_message_ref().has_value(),
         })
 
     def __iter__(self):
@@ -514,10 +510,9 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("CustomFieldNames", {
-          "error_message": cpp_obj.error_message_ref().has_value(),
-          "internal_error_message": cpp_obj.internal_error_message_ref().has_value(),
+          "error_message": deref(self._cpp_obj).error_message_ref().has_value(),
+          "internal_error_message": deref(self._cpp_obj).internal_error_message_ref().has_value(),
         })
 
     def __iter__(self):

@@ -232,12 +232,11 @@ cdef class Color(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Color", {
-          "red": cpp_obj.red_ref().has_value(),
-          "green": cpp_obj.green_ref().has_value(),
-          "blue": cpp_obj.blue_ref().has_value(),
-          "alpha": cpp_obj.alpha_ref().has_value(),
+          "red": deref(self._cpp_obj).red_ref().has_value(),
+          "green": deref(self._cpp_obj).green_ref().has_value(),
+          "blue": deref(self._cpp_obj).blue_ref().has_value(),
+          "alpha": deref(self._cpp_obj).alpha_ref().has_value(),
         })
 
     def __iter__(self):
@@ -494,13 +493,12 @@ cdef class Vehicle(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Vehicle", {
-          "color": cpp_obj.color_ref().has_value(),
-          "licensePlate": cpp_obj.licensePlate_ref().has_value(),
-          "description": cpp_obj.description_ref().has_value(),
-          "name": cpp_obj.name_ref().has_value(),
-          "hasAC": cpp_obj.hasAC_ref().has_value(),
+          "color": deref(self._cpp_obj).color_ref().has_value(),
+          "licensePlate": deref(self._cpp_obj).licensePlate_ref().has_value(),
+          "description": deref(self._cpp_obj).description_ref().has_value(),
+          "name": deref(self._cpp_obj).name_ref().has_value(),
+          "hasAC": deref(self._cpp_obj).hasAC_ref().has_value(),
         })
 
     def __iter__(self):
@@ -892,18 +890,17 @@ cdef class Person(thrift.py3.types.Struct):
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
-        cpp_obj = deref(self._cpp_obj)
         return thrift.py3.types._IsSet("Person", {
-          "id": cpp_obj.id_ref().has_value(),
-          "name": cpp_obj.name_ref().has_value(),
-          "age": cpp_obj.age_ref().has_value(),
-          "address": cpp_obj.address_ref().has_value(),
-          "favoriteColor": cpp_obj.favoriteColor_ref().has_value(),
-          "friends": cpp_obj.friends_ref().has_value(),
-          "bestFriend": cpp_obj.bestFriend_ref().has_value(),
-          "petNames": cpp_obj.petNames_ref().has_value(),
-          "afraidOfAnimal": cpp_obj.afraidOfAnimal_ref().has_value(),
-          "vehicles": cpp_obj.vehicles_ref().has_value(),
+          "id": deref(self._cpp_obj).id_ref().has_value(),
+          "name": deref(self._cpp_obj).name_ref().has_value(),
+          "age": deref(self._cpp_obj).age_ref().has_value(),
+          "address": deref(self._cpp_obj).address_ref().has_value(),
+          "favoriteColor": deref(self._cpp_obj).favoriteColor_ref().has_value(),
+          "friends": deref(self._cpp_obj).friends_ref().has_value(),
+          "bestFriend": deref(self._cpp_obj).bestFriend_ref().has_value(),
+          "petNames": deref(self._cpp_obj).petNames_ref().has_value(),
+          "afraidOfAnimal": deref(self._cpp_obj).afraidOfAnimal_ref().has_value(),
+          "vehicles": deref(self._cpp_obj).vehicles_ref().has_value(),
         })
 
     def __iter__(self):
