@@ -1249,7 +1249,8 @@ void TransportCompatibilityTest::TestOnWriteQuiescence() {
 
   class TestOnWriteQuiescenceRoutingHandler : public RocketRoutingHandler {
    public:
-    explicit TestOnWriteQuiescenceRoutingHandler(State& state) : state_(state) {}
+    explicit TestOnWriteQuiescenceRoutingHandler(State& state)
+        : state_(state) {}
     void handleConnection(
         wangle::ConnectionManager* connectionManager,
         folly::AsyncTransport::UniquePtr sock,
