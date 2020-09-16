@@ -62,6 +62,7 @@ class t_mstch_pyi_generator : public t_mstch_generator {
   mstch::map extend_field(const t_field&) override;
   mstch::map extend_type(const t_type&) override;
   mstch::map extend_service(const t_service&) override;
+  mstch::map extend_function(const t_function&) override;
 
  protected:
   void generate_init_files(const t_program&);
@@ -180,6 +181,16 @@ mstch::map t_mstch_pyi_generator::extend_service(const t_service& service) {
       {"programName", program->get_name()},
   };
 
+  return result;
+}
+
+mstch::map t_mstch_pyi_generator::extend_function(const t_function& func) {
+  // Stream and sink functions are not supported, see
+  // t_py_generator::get_functions.
+  const bool isSupported = !func.any_streams() && !func.returns_sink();
+  mstch::map result{
+      {"isSupported?", isSupported},
+  };
   return result;
 }
 

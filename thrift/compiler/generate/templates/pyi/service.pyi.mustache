@@ -51,6 +51,7 @@ class Iface{{!
     # You can cast the result of a Client if you need Future
     {{/program:asyncio?}}
     {{#service:functions}}
+    {{#function:isSupported?}}
     def {{function:name}}(self{{#function:args}}, {{!
     }}{{field:name}}: {{#field:type}}{{> common/FieldType}}{{/field:type}}{{!
     }}{{/function:args}}) -> {{!
@@ -58,6 +59,7 @@ class Iface{{!
     }}{{#function:returnType}}{{> common/FieldType}}{{/function:returnType}}{{!
     }}{{#program:asyncio?}}]{{/program:asyncio?}}{{!
     }}: ...
+    {{/function:isSupported?}}
     {{/service:functions}}
 
 class Client(Iface, __T.ContextManager[Client]):  # {{service:name}}
@@ -68,6 +70,7 @@ class Client(Iface, __T.ContextManager[Client]):  # {{service:name}}
     }}def __init__(self, iprot: TProtocolBase, oprot: __T.Optional[TProtocolBase] = None) -> None: ...{{!
     }}{{/program:asyncio?}}
     {{#service:functions}}
+    {{#function:isSupported?}}
     def send_{{function:name}}(self{{#function:args}}, {{!
     }}{{field:name}}: {{#field:type}}{{> common/OptionalFieldType}}{{/field:type}} = ...{{!
     }}{{/function:args}}) -> None: ...
@@ -77,6 +80,7 @@ class Client(Iface, __T.ContextManager[Client]):  # {{service:name}}
     }}{{#function:returnType}}{{> common/FieldType}}{{/function:returnType}}{{!
     }}{{/program:asyncio?}}{{!
     }}: ...
+    {{/function:isSupported?}}
     {{/service:functions}}
 
 class Processor(Iface, Thrift.TProcessor):  # {{service:name}}
@@ -86,12 +90,14 @@ class Processor(Iface, Thrift.TProcessor):  # {{service:name}}
         self._processMap: __T.Dict[str, __T.Callable]
 
     {{#service:functions}}
+    {{#function:isSupported?}}
     def process_{{function:name}}(self, {{!
       }}seqid: int, {{!
       }}iprot: TProtocolBase, {{!
       }}oprot: TProtocolBase, {{!
       }}server_ctx: __T.Any = ...{{!
     }}) -> {{^program:asyncio?}}None{{/program:asyncio?}}{{#program:asyncio?}}asyncio.Future{{/program:asyncio?}}: ...
+    {{/function:isSupported?}}
     {{/service:functions}}
     def process_main(self, {{!
       }}iprot: TProtocolBase, {{!
@@ -100,6 +106,7 @@ class Processor(Iface, Thrift.TProcessor):  # {{service:name}}
     }}) -> {{^program:asyncio?}}__T.Optional[bool]{{/program:asyncio?}}{{#program:asyncio?}}asyncio.Future{{/program:asyncio?}}: ...
     def onewayMethods(self) -> __T.Tuple[__T.Callable]: ...
 {{#service:functions}}
+{{#function:isSupported?}}
 
 class {{function:name}}_args:
     thrift_spec: __T.Tuple[__T.Optional[__T.Tuple[int, int, str, __T.Any, __T.Optional[int], int]]]
@@ -143,5 +150,6 @@ class {{function:name}}_result:
     def write(self, oprot: TProtocolBase) -> None: ...
     def __eq__(self, other: __T.Any) -> bool: ...
     def __ne__(self, other: __T.Any) -> bool: ...
+{{/function:isSupported?}}
 {{/service:functions}}
 {{/service}}
