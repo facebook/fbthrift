@@ -56,6 +56,14 @@ class t_scope {
     return services_[name];
   }
 
+  void add_interaction(std::string name, t_service* interaction) {
+    interactions_[name] = interaction;
+  }
+
+  t_service* get_interaction(std::string name) {
+    return interactions_[name];
+  }
+
   void add_constant(std::string name, t_const* constant);
 
   std::vector<std::string> split_string_by_periods(std::string str);
@@ -90,6 +98,9 @@ class t_scope {
 
   // Map of names to services
   std::map<std::string, t_service*> services_;
+
+  // Map of names to interactions
+  std::map<std::string, t_service*> interactions_;
 
   // Set of enum_values that are redefined and are ambiguous
   // if referred to without the enum name

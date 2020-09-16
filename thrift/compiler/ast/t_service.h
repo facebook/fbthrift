@@ -69,12 +69,22 @@ class t_service : public t_type {
     return make_full_name("service");
   }
 
+  bool is_interaction() const {
+    return is_interaction_;
+  }
+
+  void set_is_interaction() {
+    is_interaction_ = true;
+  }
+
  private:
   std::vector<std::unique_ptr<t_function>> functions_;
 
   std::vector<t_function*> functions_raw_;
 
   t_service* extends_;
+
+  bool is_interaction_{false};
 };
 
 } // namespace compiler

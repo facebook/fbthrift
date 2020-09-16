@@ -355,6 +355,56 @@ bool struct_names_uniqueness_validator::visit(t_program* p) {
           "Redefinition of type `" + object->get_name() + "`");
     }
   }
+  for (auto* interaction : p->get_interactions()) {
+    if (!seen.emplace(interaction->get_name()).second) {
+      add_error(
+          interaction->get_lineno(),
+          "Redefinition of type `" + interaction->get_name() + "`");
+    }
+  }
+  return true;
+}
+
+bool interactions_validator::visit(t_program* p) {
+  set_program(p);
+  for (auto* interaction : p->get_interactions()) {
+    for (auto* func : interaction->get_functions()) {
+      auto ret = func->get_returntype();
+      if (ret->is_service() && static_cast<t_service*>(ret)->is_interaction()) {
+        add_error(func->get_lineno(), "Nested interactions are forbidden");
+      }
+    }
+  }
+  return true;
+}
+
+bool interactions_validator::visit(t_service* s) {
+  std::set<std::string> seen;
+  for (auto* func : s->get_functions()) {
+    auto ret = func->get_returntype();
+    if (func->is_interaction_constructor()) {
+      if (!ret->is_service() ||
+          !static_cast<t_service*>(ret)->is_interaction()) {
+        add_error(func->get_lineno(), "Only interactions can be performed");
+        continue;
+      }
+    }
+
+    if (!func->is_interaction_constructor()) {
+      if (ret->is_service()) {
+        add_error(func->get_lineno(), "Functions cannot return interactions");
+      }
+      continue;
+    }
+
+    if (!seen.emplace(ret->get_name()).second) {
+      add_error(
+          func->get_lineno(),
+          "Service `" + s->get_name() +
+              "` has multiple methods for creating interaction `" +
+              ret->get_name() + "`");
+    }
+  }
   return true;
 }
 

@@ -94,6 +94,10 @@ class t_program : public t_doc {
     services_raw_.push_back(ts.get());
     services_.push_back(std::move(ts));
   }
+  void add_interaction(std::unique_ptr<t_service> ti) {
+    interactions_raw_.push_back(ti.get());
+    interactions_.push_back(std::move(ti));
+  }
 
   void add_placeholder_typedef(std::unique_ptr<t_typedef> ptd) {
     assert(!ptd->is_defined());
@@ -135,6 +139,9 @@ class t_program : public t_doc {
   }
   const std::vector<t_typedef*>& get_placeholder_typedefs() const {
     return placeholder_typedefs_raw_;
+  }
+  const std::vector<t_service*>& get_interactions() const {
+    return interactions_raw_;
   }
 
   /**
@@ -265,6 +272,7 @@ class t_program : public t_doc {
   std::vector<std::unique_ptr<t_struct>> xceptions_;
   std::vector<std::unique_ptr<t_service>> services_;
   std::vector<std::unique_ptr<t_include>> includes_;
+  std::vector<std::unique_ptr<t_service>> interactions_;
 
   /**
    * A place to store unnamed types so that they can be kept alive for the
@@ -281,6 +289,7 @@ class t_program : public t_doc {
   std::vector<t_struct*> xceptions_raw_;
   std::vector<t_service*> services_raw_;
   std::vector<t_include*> includes_raw_;
+  std::vector<t_service*> interactions_raw_;
 
   std::vector<t_typedef*> placeholder_typedefs_raw_;
 

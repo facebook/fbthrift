@@ -255,3 +255,71 @@ TEST_F(ValidatorTest, DuplicatedStructNames) {
       "[FAILURE:/path/to/file.thrift:42] Redefinition of type `Foo`",
       errors.front().str());
 }
+
+TEST_F(ValidatorTest, NestedInteractions) {
+  t_program program("/path/to/file.thrift");
+
+  auto interaction = std::make_unique<t_service>(&program);
+  interaction->set_is_interaction();
+  auto func =
+      std::make_unique<t_function>(interaction.get(), "frobnicate", nullptr);
+  func->set_lineno(42);
+  interaction->add_function(std::move(func));
+  program.add_interaction(std::move(interaction));
+
+  auto errors = run_validator<interactions_validator>(&program);
+  EXPECT_EQ(1, errors.size());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:42] Nested interactions are forbidden",
+      errors.front().str());
+}
+
+TEST_F(ValidatorTest, DuplicateInteractions) {
+  t_program program("/path/to/file.thrift");
+
+  auto interaction = std::make_unique<t_service>(&program);
+  interaction->set_is_interaction();
+  interaction->set_name("Clyde");
+
+  auto service = create_fake_service("foo");
+  auto func =
+      std::make_unique<t_function>(service.get(), "frobnicate", nullptr);
+  func->set_lineno(1);
+  func->set_is_interaction_constructor();
+  service->add_function(std::move(func));
+
+  func = std::make_unique<t_function>(interaction.get(), "interact", nullptr);
+  func->set_lineno(2);
+  func->set_is_interaction_constructor();
+  service->add_function(std::move(func));
+
+  auto args = std::make_unique<t_struct>(&program, "args");
+  auto type = std::make_unique<t_base_type>("i32", t_base_type::TYPE_I32);
+  args->append(std::make_unique<t_field>(type.get(), "arg"));
+  func = std::make_unique<t_function>(
+      interaction.get(), "reinteract", std::move(args));
+  func->set_lineno(3);
+  func->set_is_interaction_constructor();
+  service->add_function(std::move(func));
+
+  func = std::make_unique<t_function>(
+      interaction.get(), "functionInteract", nullptr);
+  func->set_lineno(4);
+  service->add_function(std::move(func));
+
+  program.add_service(std::move(service));
+
+  program.add_interaction(std::move(interaction));
+
+  auto errors = run_validator<interactions_validator>(&program);
+  EXPECT_EQ(3, errors.size());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:1] Only interactions can be performed",
+      errors.front().str());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:3] Service `foo` has multiple methods for creating interaction `Clyde`",
+      errors.at(1).str());
+  EXPECT_EQ(
+      "[FAILURE:/path/to/file.thrift:4] Functions cannot return interactions",
+      errors.at(2).str());
+}

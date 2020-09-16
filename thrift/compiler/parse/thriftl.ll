@@ -171,6 +171,8 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
   }
 }
 "stream"             { return apache::thrift::compiler::yy::parser::make_tok_stream();               }
+"interaction"        { return apache::thrift::compiler::yy::parser::make_tok_interaction();          }
+"performs"           { return apache::thrift::compiler::yy::parser::make_tok_performs();             }
 "oneway"             { return apache::thrift::compiler::yy::parser::make_tok_oneway();               }
 "typedef"            { return apache::thrift::compiler::yy::parser::make_tok_typedef();              }
 "struct"             { return apache::thrift::compiler::yy::parser::make_tok_struct();               }

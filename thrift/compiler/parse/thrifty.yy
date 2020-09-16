@@ -238,6 +238,8 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %token tok_required
 %token tok_optional
 %token tok_union
+%token tok_interaction
+%token tok_performs
 
 %token tok_eof 0
 
@@ -299,6 +301,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_struct*>        Struct
 %type<t_struct*>        Xception
 %type<t_service*>       Service
+%type<t_service*>       Interaction
 
 %type<t_function*>      Function
 %type<t_type*>          FunctionType
@@ -462,6 +465,17 @@ Definition:
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.scope_cache->add_service(driver.program->get_name() + "." + $1->get_name(), $1);
         driver.program->add_service(std::unique_ptr<t_service>($1));
+      } else {
+        driver.delete_at_the_end($1);
+      }
+      $$ = $1;
+    }
+| Interaction
+    {
+      driver.debug("Definition -> Interaction");
+      if (driver.mode == parsing_mode::PROGRAM) {
+        driver.scope_cache->add_interaction(driver.program->get_name() + "." + $1->get_name(), $1);
+        driver.program->add_interaction(std::unique_ptr<t_service>($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -1027,6 +1041,20 @@ Extends:
       $$ = nullptr;
     }
 
+Interaction:
+  tok_interaction
+    {
+      lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
+    }
+  tok_identifier "{" FlagArgs FunctionList UnflagArgs "}"
+    {
+      driver.debug("Interaction -> tok_interaction tok_identifier { FunctionList }");
+      $$ = $6;
+      $$->set_name($3);
+      $$->set_is_interaction();
+      $$->set_lineno(lineno_stack.pop(LineType::kService));
+    }
+
 FunctionList:
   FunctionList Function
     {
@@ -1083,6 +1111,17 @@ Function:
       }
       $$->set_lineno(driver.scanner->get_lineno());
       y_field_val = -1;
+    }
+  | tok_performs FieldType ";"
+    {
+      driver.debug("Function => tok_performs FieldType");
+      $$ = new t_function(
+        $2,
+        $2 ? "create" + $2->get_name() : "<interaction placeholder>",
+        std::make_unique<t_struct>(driver.program)
+      );
+      $$->set_lineno(driver.scanner->get_lineno());
+      $$->set_is_interaction_constructor();
     }
 
 ParamList:
@@ -1397,6 +1436,12 @@ FieldType:
         $$ = driver.scope_cache->get_type($1);
         if (!$$) {
           $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
+        }
+        if (!$$) {
+          $$ = driver.scope_cache->get_interaction($1);
+        }
+        if (!$$) {
+          $$ = driver.scope_cache->get_interaction(driver.program->get_name() + "." + $1);
         }
         // Create typedef in case we have annotations on the type.
         if ($$ && $2) {

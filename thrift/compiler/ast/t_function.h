@@ -160,6 +160,13 @@ class t_function : public t_annotated {
     return returntype_->is_sink();
   }
 
+  bool is_interaction_constructor() const {
+    return isInteractionConstructor_;
+  }
+  void set_is_interaction_constructor() {
+    isInteractionConstructor_ = true;
+  }
+
  private:
   t_type* returntype_;
   std::string name_;
@@ -169,6 +176,7 @@ class t_function : public t_annotated {
   std::unique_ptr<t_struct> sink_xceptions_;
   std::unique_ptr<t_struct> sink_final_response_xceptions_;
   bool oneway_;
+  bool isInteractionConstructor_{false};
 };
 
 } // namespace compiler
