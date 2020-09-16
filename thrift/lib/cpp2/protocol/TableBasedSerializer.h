@@ -245,9 +245,9 @@ std::enable_if_t<is_unique_ptr<Type>::value> initialize(void* object) {
   *static_cast<Type*>(object) = std::make_unique<typename Type::element_type>();
 }
 
-template <typename SmartPtr>
+template <typename PtrType>
 const void* derefSmartPointer(const void* object) {
-  return static_cast<const SmartPtr*>(object)->get();
+  return static_cast<const PtrType*>(object)->get();
 }
 
 template <typename ReturnType, typename ObjectType>
@@ -255,9 +255,9 @@ enable_if_not_smart_ptr_t<ObjectType, ReturnType> get(const void* object) {
   return static_cast<ReturnType>(*static_cast<const ObjectType*>(object));
 }
 
-template <typename ReturnType, typename SmartPtr>
-enable_if_smart_ptr_t<SmartPtr, ReturnType> get(const void* object) {
-  return static_cast<ReturnType>(**static_cast<const SmartPtr*>(object));
+template <typename ReturnType, typename PtrType>
+enable_if_smart_ptr_t<PtrType, ReturnType> get(const void* object) {
+  return static_cast<ReturnType>(**static_cast<const PtrType*>(object));
 }
 
 template <typename ObjectType, typename ValueType>
@@ -265,21 +265,21 @@ enable_if_not_smart_ptr_t<ObjectType> set(void* object, const ValueType& val) {
   *static_cast<ObjectType*>(object) = static_cast<const ObjectType&>(val);
 }
 
-template <typename SmartPtr, typename ValueType>
-std::enable_if_t<is_unique_ptr<SmartPtr>::value> set(
+template <typename PtrType, typename ValueType>
+std::enable_if_t<is_unique_ptr<PtrType>::value> set(
     void* object,
     const ValueType& val) {
-  using Element = typename SmartPtr::element_type;
-  *static_cast<SmartPtr*>(object) =
+  using Element = typename PtrType::element_type;
+  *static_cast<PtrType*>(object) =
       std::make_unique<Element>(static_cast<Element>(val));
 }
 
-template <typename SmartPtr, typename ValueType>
-std::enable_if_t<is_shared_ptr<SmartPtr>::value> set(
+template <typename PtrType, typename ValueType>
+std::enable_if_t<is_shared_ptr<PtrType>::value> set(
     void* object,
     const ValueType& val) {
-  using Element = typename SmartPtr::element_type;
-  *static_cast<SmartPtr*>(object) =
+  using Element = typename PtrType::element_type;
+  *static_cast<PtrType*>(object) =
       std::make_shared<Element>(static_cast<Element>(val));
 }
 
@@ -288,9 +288,9 @@ enable_if_not_smart_ptr_t<ValueType> placementNewUnionValue(void* object) {
   ::new (object) ValueType();
 }
 
-template <typename SmartPtr>
-enable_if_smart_ptr_t<SmartPtr> placementNewUnionValue(void* object) {
-  ::new (object) SmartPtr(new typename SmartPtr::element_type());
+template <typename PtrType>
+enable_if_smart_ptr_t<PtrType> placementNewUnionValue(void* object) {
+  ::new (object) PtrType(new typename PtrType::element_type());
 }
 
 template <typename List>
