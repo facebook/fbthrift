@@ -16,6 +16,11 @@
 
 #pragma once
 
+#include <forward_list>
+
+#include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+
 namespace apache {
 namespace thrift {
 
@@ -59,5 +64,107 @@ class InteractionId {
 
   friend class RequestChannel;
 };
+
+class Tile {
+ public:
+  virtual ~Tile() = default;
+
+  virtual bool __fbthrift_isError() const {
+    return false;
+  }
+  virtual bool __fbthrift_isPromise() const {
+    return false;
+  }
+
+  void __fbthrift_acquireRef(folly::EventBase& eb) {
+    eb.dcheckIsInEventBaseThread();
+    DCHECK(!__fbthrift_isPromise());
+    ++refCount_;
+  }
+  template <typename Cpp2ConnContext>
+  void __fbthrift_releaseRef(
+      int64_t id,
+      Cpp2ConnContext& conn,
+      concurrency::ThreadManager& tm,
+      folly::EventBase& eb) {
+    eb.dcheckIsInEventBaseThread();
+    DCHECK(!__fbthrift_isPromise());
+    DCHECK_GT(refCount_, 0);
+    if (--refCount_ == 0 && terminationRequested_) {
+      tm.add([tile = conn.removeTile(id)] {});
+    }
+  }
+
+ private:
+  bool terminationRequested_{false};
+  bool duplicatedId_{false};
+  size_t refCount_{0};
+  friend class GeneratedAsyncProcessor;
+  friend class TilePromise;
+};
+
+class TilePromise final : public Tile {
+ public:
+  ~TilePromise() {
+    DCHECK(continuations_.empty());
+  }
+
+  void addContinuation(std::shared_ptr<concurrency::Runnable> task) {
+    continuations_.push_front(std::move(task));
+  }
+
+  template <typename Cpp2ConnContext>
+  void fulfill(
+      Tile& tile,
+      int64_t id,
+      Cpp2ConnContext& ctx,
+      concurrency::ThreadManager& tm,
+      folly::EventBase& eb) {
+    DCHECK_EQ(refCount_, 0);
+    if (terminationRequested_) {
+      if (!continuations_.empty()) {
+        tile.terminationRequested_ = true;
+      } else {
+        tm.add([tile = ctx.removeTile(id)] {});
+        return;
+      }
+    }
+
+    continuations_.reverse();
+    for (auto& task : continuations_) {
+      tile.__fbthrift_acquireRef(eb);
+      tm.add(
+          std::move(task),
+          0, // timeout
+          0, // expiration
+          true); // upstream
+    }
+    continuations_.clear();
+  }
+
+  bool __fbthrift_isPromise() const override {
+    return true;
+  }
+
+ private:
+  std::forward_list<std::shared_ptr<concurrency::Runnable>> continuations_;
+};
+
+class ErrorTile final : public Tile {
+ public:
+  explicit ErrorTile(folly::exception_wrapper ex) : ex_(std::move(ex)) {}
+
+  folly::exception_wrapper get() const {
+    return ex_;
+  }
+
+  bool __fbthrift_isError() const override {
+    return true;
+  }
+
+ private:
+  folly::exception_wrapper ex_;
+};
+
 } // namespace thrift
 } // namespace apache

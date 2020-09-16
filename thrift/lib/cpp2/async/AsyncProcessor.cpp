@@ -42,20 +42,96 @@ void EventTask::expired() {
   if (!req_) {
     return;
   }
+  failWith(
+      TApplicationException{"Task expired without processing"},
+      kTaskExpiredErrorCode);
+}
 
-  auto cleanUp = [oneway = oneway_, req = std::move(req_)] {
+void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
+  auto cleanUp = [oneway = oneway_,
+                  req = std::move(req_),
+                  ex = std::move(ex),
+                  exCode = std::move(exCode)]() mutable {
     // if oneway, skip sending back anything
     if (oneway) {
       return;
     }
-    TApplicationException ex{"Task expired without processing"};
-    req->sendErrorWrapped(std::move(ex), kTaskExpiredErrorCode);
+    req->sendErrorWrapped(std::move(ex), std::move(exCode));
   };
 
   if (base_->isInEventBaseThread()) {
     cleanUp();
   } else {
     base_->runInEventBaseThread(std::move(cleanUp));
+  }
+}
+
+void AsyncProcessor::terminateInteraction(
+    int64_t,
+    Cpp2ConnContext&,
+    concurrency::ThreadManager&,
+    folly::EventBase&) noexcept {
+  LOG(DFATAL) << "This processor doesn't support interactions";
+}
+
+bool GeneratedAsyncProcessor::createInteraction(
+    int64_t id,
+    const std::string& name,
+    Cpp2ConnContext& conn,
+    concurrency::ThreadManager& tm,
+    folly::EventBase& eb) {
+  eb.dcheckIsInEventBaseThread();
+  if (!conn.addTile(id, std::make_unique<TilePromise>())) {
+    return false;
+  }
+
+  folly::via(&tm, [=] { return createInteractionImpl(name); })
+      .via(&eb)
+      .thenTry([&conn, id, &tm, &eb](auto&& t) {
+        std::unique_ptr<Tile> tile;
+        if (t.hasValue()) {
+          if (*t) {
+            tile = std::move(*t);
+          } else {
+            tile = std::make_unique<ErrorTile>(
+                folly::make_exception_wrapper<TApplicationException>(
+                    TApplicationException::TApplicationExceptionType::
+                        INTERACTION_ERROR,
+                    "Null tile returned from handler"));
+            DLOG(FATAL) << "Null tile returned from handler";
+          }
+        } else {
+          tile = std::make_unique<ErrorTile>(std::move(t.exception()));
+        }
+        auto& tileref = *tile;
+        auto promise = conn.resetTile(id, std::move(tile));
+        DCHECK(promise->__fbthrift_isPromise());
+        static_cast<TilePromise&>(*promise).fulfill(tileref, id, conn, tm, eb);
+      });
+  return true;
+}
+
+std::unique_ptr<Tile> GeneratedAsyncProcessor::createInteractionImpl(
+    const std::string&) {
+  LOG(ERROR) << "Unimplemented";
+  return std::make_unique<Tile>();
+}
+
+void GeneratedAsyncProcessor::terminateInteraction(
+    int64_t id,
+    Cpp2ConnContext& conn,
+    concurrency::ThreadManager& tm,
+    folly::EventBase& eb) noexcept {
+  eb.dcheckIsInEventBaseThread();
+  try {
+    auto& tile = conn.getTile(id);
+    if (tile.__fbthrift_isPromise() || tile.refCount_) {
+      tile.terminationRequested_ = true;
+    } else {
+      tm.add([tile = conn.removeTile(id)] {});
+    }
+  } catch (const std::out_of_range&) {
+    LOG(DFATAL) << "Freeing unknown tile " << id;
   }
 }
 

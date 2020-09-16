@@ -44,3 +44,4 @@ const std::string kAppOverloadedErrorCode{"22"};
 const std::string kAppClientErrorCode{"23"};
 const std::string kAppServerErrorCode{"24"};
 const std::string kMethodUnknownErrorCode{"25"};
+const std::string kInteractionErrorCode{"26"};

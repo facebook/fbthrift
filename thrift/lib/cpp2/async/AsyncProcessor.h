@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/RpcTypes.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
@@ -65,6 +66,7 @@ class EventTask : public virtual concurrency::Runnable {
 
   void run() override;
   void expired();
+  void failWith(folly::exception_wrapper ex, std::string exCode);
 
  private:
   folly::Function<void(ResponseChannelRequest::UniquePtr)> taskFunc_;
@@ -111,6 +113,12 @@ class AsyncProcessor : public TProcessorBase {
   }
 
   virtual void getServiceMetadata(metadata::ThriftServiceMetadataResponse&) {}
+
+  virtual void terminateInteraction(
+      int64_t id,
+      Cpp2ConnContext& conn,
+      concurrency::ThreadManager& tm,
+      folly::EventBase&) noexcept;
 };
 
 class GeneratedAsyncProcessor : public AsyncProcessor {
@@ -158,6 +166,38 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       RpcKind kind,
       ProcessFunc<ChildType> processFunc,
       ChildType* childClass);
+
+ private:
+  template <typename ChildType>
+  static std::shared_ptr<EventTask> makeEventTaskForRequest(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedRequest&& serializedRequest,
+      Cpp2RequestContext* ctx,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm,
+      concurrency::PRIORITY pri,
+      RpcKind kind,
+      ProcessFunc<ChildType> processFunc,
+      ChildType* childClass);
+  bool createInteraction(
+      int64_t id,
+      const std::string& name,
+      Cpp2ConnContext& conn,
+      concurrency::ThreadManager& tm,
+      folly::EventBase& eb);
+
+ protected:
+  virtual std::unique_ptr<Tile> createInteractionImpl(const std::string& name);
+  Tile& getTile(Cpp2RequestContext* ctx) {
+    return ctx->getConnectionContext()->getTile(ctx->getInteractionId());
+  }
+
+ public:
+  void terminateInteraction(
+      int64_t id,
+      Cpp2ConnContext& conn,
+      concurrency::ThreadManager& tm,
+      folly::EventBase&) noexcept final;
 };
 
 class AsyncProcessorFactory {
@@ -536,6 +576,43 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
   return queue;
 }
 
+template <typename ChildType>
+std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
+    ResponseChannelRequest::UniquePtr req,
+    SerializedRequest&& serializedRequest,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm,
+    concurrency::PRIORITY pri,
+    RpcKind kind,
+    ProcessFunc<ChildType> processFunc,
+    ChildType* childClass) {
+  return std::make_shared<PriorityEventTask>(
+      pri,
+      [=, serializedRequest = std::move(serializedRequest)](
+          ResponseChannelRequest::UniquePtr rq) mutable {
+        if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
+          // Since this request was queued, reset the processBegin
+          // time to the actual start time, and not the queue time.
+          ctx->getTimestamps().processBegin = std::chrono::steady_clock::now();
+        }
+        // Oneway request won't be canceled if expired. see
+        // D1006482 for furhter details.  TODO: fix this
+        if (kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+          if (!rq->isActive()) {
+            eb->runInEventBaseThread(
+                [rq = std::move(rq)]() mutable { rq.reset(); });
+            return;
+          }
+        }
+        (childClass->*processFunc)(
+            std::move(rq), std::move(serializedRequest), ctx, eb, tm);
+      },
+      std::move(req),
+      eb,
+      kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+}
+
 template <typename ProtocolIn_, typename ProtocolOut_, typename ChildType>
 void GeneratedAsyncProcessor::processInThread(
     ResponseChannelRequest::UniquePtr req,
@@ -548,34 +625,67 @@ void GeneratedAsyncProcessor::processInThread(
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass) {
   if (!validateRpcKind(req, kind)) {
+    // validateRpcKind sends an error response if needed
     return;
   }
+
+  auto task = makeEventTaskForRequest(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      pri,
+      kind,
+      processFunc,
+      childClass);
+
+  if (auto interactionCreate = ctx->getInteractionCreate()) {
+    if (!childClass->createInteraction(
+            *interactionCreate->interactionId_ref(),
+            *interactionCreate->interactionName_ref(),
+            *ctx->getConnectionContext(),
+            *tm,
+            *eb)) {
+      ctx->getConnectionContext()
+          ->getTile(*interactionCreate->interactionId_ref())
+          .duplicatedId_ = true;
+      task->failWith(
+          TApplicationException(
+              "Attempting to create interaction with duplicate id. Failing all requests in that interaction."),
+          kInteractionErrorCode);
+    }
+  }
+
+  if (auto interactionId = ctx->getInteractionId()) { // includes create
+    try {
+      auto& tile = ctx->getConnectionContext()->getTile(interactionId);
+
+      if (tile.duplicatedId_) {
+        task->failWith(
+            TApplicationException(
+                "This interaction's id was duplicated. Failing all requests in interaction to avoid undefined behavior."),
+            kInteractionErrorCode);
+        return;
+      }
+
+      if (tile.__fbthrift_isPromise()) {
+        static_cast<TilePromise&>(tile).addContinuation(std::move(task));
+        return;
+      }
+
+      tile.__fbthrift_acquireRef(*eb);
+    } catch (const std::out_of_range&) {
+      task->failWith(
+          TApplicationException(
+              "Invalid interaction id " + std::to_string(interactionId)),
+          kInteractionErrorCode);
+      return;
+    }
+  }
+
   tm->add(
-      std::make_shared<PriorityEventTask>(
-          pri,
-          [=, serializedRequest = std::move(serializedRequest)](
-              ResponseChannelRequest::UniquePtr rq) mutable {
-            if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
-              // Since this request was queued, reset the processBegin
-              // time to the actual start time, and not the queue time.
-              ctx->getTimestamps().processBegin =
-                  std::chrono::steady_clock::now();
-            }
-            // Oneway request won't be canceled if expired. see
-            // D1006482 for furhter details.  TODO: fix this
-            if (kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-              if (!rq->isActive()) {
-                eb->runInEventBaseThread(
-                    [rq = std::move(rq)]() mutable { rq.reset(); });
-                return;
-              }
-            }
-            (childClass->*processFunc)(
-                std::move(rq), std::move(serializedRequest), ctx, eb, tm);
-          },
-          std::move(req),
-          eb,
-          kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE),
+      std::move(task),
       0, // timeout
       0, // expiration
       true); // upstream

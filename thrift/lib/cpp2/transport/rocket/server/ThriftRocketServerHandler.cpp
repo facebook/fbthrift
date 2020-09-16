@@ -497,8 +497,9 @@ void ThriftRocketServerHandler::requestComplete() {
   serverConfigs_->decActiveRequests();
 }
 
-void ThriftRocketServerHandler::terminateInteraction(int64_t) {
-  LOG(ERROR) << "Not implemented";
+void ThriftRocketServerHandler::terminateInteraction(int64_t id) {
+  cpp2Processor_->terminateInteraction(
+      id, connContext_, *threadManager_, *eventBase_);
 }
 } // namespace rocket
 } // namespace thrift

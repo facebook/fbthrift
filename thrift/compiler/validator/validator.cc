@@ -373,6 +373,10 @@ bool interactions_validator::visit(t_program* p) {
       if (ret->is_service() && static_cast<t_service*>(ret)->is_interaction()) {
         add_error(func->get_lineno(), "Nested interactions are forbidden");
       }
+      if (func->annotations_.count("thread")) {
+        add_error(
+            func->get_lineno(), "Interactions don't support thread annotation");
+      }
     }
   }
   return true;

@@ -56,6 +56,7 @@ class TApplicationException : public TException {
     INJECTED_FAILURE = 13,
     CHECKSUM_MISMATCH = 14,
     INTERRUPTION = 15,
+    INTERACTION_ERROR = 16,
   };
 
   TApplicationException() : type_(UNKNOWN) {}

@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/Interaction.h>
 #include <wangle/ssl/SSLUtil.h>
 
 using apache::thrift::concurrency::PriorityThreadManager;
@@ -224,6 +225,46 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
  private:
   /**
+   * Adds interaction to interaction map
+   * Returns false if id is in use
+   */
+  bool addTile(int64_t id, std::unique_ptr<Tile> tile) {
+    return tiles_.try_emplace(id, std::move(tile)).second;
+  }
+  /**
+   * Updates interaction in map
+   * Returns old value
+   */
+  std::unique_ptr<Tile> resetTile(int64_t id, std::unique_ptr<Tile> tile) {
+    DCHECK(tiles_.count(id));
+    return std::exchange(tiles_[id], std::move(tile));
+  }
+  /**
+   * Removes interaction from map
+   * Returns old value
+   */
+  std::unique_ptr<Tile> removeTile(int64_t id) {
+    auto it = tiles_.find(id);
+    if (it == tiles_.end()) {
+      LOG(DFATAL) << "Double-free of tile " << id;
+      return nullptr;
+    }
+    auto ret = std::move(it->second);
+    tiles_.erase(it);
+    return ret;
+  }
+  /**
+   * Gets tile from map
+   * Throws std::out_of_range if not found
+   */
+  Tile& getTile(int64_t id) {
+    return *tiles_.at(id);
+  }
+  friend class GeneratedAsyncProcessor;
+  friend class Tile;
+  friend class TilePromise;
+
+  /**
    * Platform-independent representation of unix domain socket peer credentials,
    * e.g. ucred on Linux and xucred on macOS.
    *
@@ -308,6 +349,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   PeerCred peerCred_;
   // A CancellationSource that will be signaled when the connection is closed.
   folly::CancellationSource cancellationSource_;
+  folly::F14FastMap<int64_t, std::unique_ptr<Tile>> tiles_;
 
   static void no_op_destructor(void* /*ptr*/) {}
 };

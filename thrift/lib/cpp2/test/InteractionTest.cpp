@@ -185,7 +185,6 @@ TEST(InteractionTest, TerminateUnused) {
 
   DummyChannel dummy;
   dummy.seedInteractionId(42);
-  auto id = dummy.createInteraction("");
 
   folly::via(
       &eb,
@@ -196,15 +195,6 @@ TEST(InteractionTest, TerminateUnused) {
         channel->terminateInteraction(std::move(id));
       })
       .getVia(&eb);
-
-  // This is a contract violation. Don't do it!
-  RpcOptions rpcOpts;
-  rpcOpts.setInteractionId(id);
-  dummy.terminateInteraction(std::move(id));
-  client.sync_get_string(rpcOpts, out);
-
-  // This checks that we clean up unused interactions in the map
-  EXPECT_EQ(out, "42");
 }
 
 TEST(InteractionTest, TerminateWithoutSetup) {
@@ -226,18 +216,6 @@ TEST(InteractionTest, TerminateWithoutSetup) {
         channel->terminateInteraction(std::move(id));
       })
       .getVia(&eb);
-
-  // This is a contract violation. Don't do it!
-  RpcOptions rpcOpts;
-
-  auto id = dummy.createInteraction("");
-  rpcOpts.setInteractionId(id);
-  dummy.terminateInteraction(std::move(id));
-  std::string out;
-  client.sync_get_string(rpcOpts, out);
-
-  // This checks that we clean up unused interactions in the map
-  EXPECT_EQ(out, "42");
 }
 
 TEST(InteractionTest, TerminatePRC) {
