@@ -16,9 +16,12 @@
 
 #include <memory>
 
+#include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Task.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/Calculator.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/HandlerGeneric.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -234,4 +237,183 @@ TEST(InteractionTest, TerminatePRC) {
   EXPECT_EQ(out, std::to_string(id) + "Transaction");
 
   client->getChannel()->terminateInteraction(std::move(id));
+}
+
+struct CalculatorHandler : CalculatorSvIf {
+  struct AdditionHandler : CalculatorSvIf::AdditionIf {
+    int acc_{0};
+    Point pacc_;
+
+#if FOLLY_HAS_COROUTINES
+    folly::coro::Task<void> co_accumulatePrimitive(int32_t a) override {
+      acc_ += a;
+      co_return;
+    }
+    folly::coro::Task<void> co_noop() override {
+      co_return;
+    }
+    folly::coro::Task<void> co_accumulatePoint(
+        std::unique_ptr<::apache::thrift::test::Point> a) override {
+      *pacc_.x_ref() += *a->x_ref();
+      *pacc_.y_ref() += *a->y_ref();
+      co_return;
+    }
+    folly::coro::Task<int32_t> co_getPrimitive() override {
+      co_return acc_;
+    }
+    folly::coro::Task<std::unique_ptr<::apache::thrift::test::Point>>
+    co_getPoint() override {
+      co_return folly::copy_to_unique_ptr(pacc_);
+    }
+#endif
+  };
+
+  std::unique_ptr<AdditionIf> createAddition() override {
+    return std::make_unique<AdditionHandler>();
+  }
+
+  folly::SemiFuture<int32_t> semifuture_addPrimitive(int32_t a, int32_t b)
+      override {
+    return a + b;
+  }
+};
+
+TEST(InteractionCodegenTest, Basic) {
+  ScopedServerInterfaceThread runner{std::make_shared<CalculatorHandler>()};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = client->createAddition();
+#if FOLLY_HAS_COROUTINES
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    co_await adder.co_accumulatePrimitive(1);
+    co_await adder.co_accumulatePrimitive(2);
+    co_await adder.co_noop();
+    auto acc = co_await adder.co_getPrimitive();
+    EXPECT_EQ(acc, 3);
+
+    auto sum = co_await client->co_addPrimitive(20, 22);
+    EXPECT_EQ(sum, 42);
+
+    Point p;
+    p.x_ref() = 1;
+    co_await adder.co_accumulatePoint(p);
+    p.y_ref() = 2;
+    co_await adder.co_accumulatePoint(p);
+    auto pacc = co_await adder.co_getPoint();
+    EXPECT_EQ(*pacc.x_ref(), 2);
+    EXPECT_EQ(*pacc.y_ref(), 2);
+  }());
+#endif
+}
+
+TEST(InteractionCodegenTest, Error) {
+  struct BrokenCalculatorHandler : CalculatorHandler {
+    std::unique_ptr<AdditionIf> createAddition() override {
+      throw std::runtime_error("Plus key is broken");
+    }
+  };
+  ScopedServerInterfaceThread runner{
+      std::make_shared<BrokenCalculatorHandler>()};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  const char* kExpectedErr =
+      "apache::thrift::TApplicationException:"
+      " Interaction constructor failed with std::runtime_error: Plus key is broken";
+
+  auto adder = client->createAddition();
+#if FOLLY_HAS_COROUTINES
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto t = co_await folly::coro::co_awaitTry(adder.co_accumulatePrimitive(1));
+    EXPECT_STREQ(t.exception().what().c_str(), kExpectedErr);
+    auto t2 = co_await folly::coro::co_awaitTry(adder.co_getPrimitive());
+    EXPECT_STREQ(t.exception().what().c_str(), kExpectedErr);
+    co_await adder.co_noop();
+
+    auto sum = co_await client->co_addPrimitive(20, 22);
+    EXPECT_EQ(sum, 42);
+  }());
+#endif
+}
+
+TEST(InteractionCodegenTest, SlowConstructor) {
+  struct SlowCalculatorHandler : CalculatorHandler {
+    std::unique_ptr<AdditionIf> createAddition() override {
+      b.wait();
+      return std::make_unique<AdditionHandler>();
+    }
+
+    folly::Baton<> b;
+  };
+  auto handler = std::make_shared<SlowCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = client->createAddition();
+  folly::EventBase eb;
+#if FOLLY_HAS_COROUTINES
+  // only release constructor once interaction methods are queued
+  adder.co_accumulatePrimitive(1).scheduleOn(&eb).start();
+  adder.co_noop().scheduleOn(&eb).start();
+  folly::via(&eb, [&] { handler->b.post(); }).getVia(&eb);
+  auto acc = folly::coro::blockingWait(adder.co_getPrimitive());
+  EXPECT_EQ(acc, 1);
+#endif
+}
+
+TEST(InteractionCodegenTest, FastTermination) {
+#if FOLLY_HAS_COROUTINES
+  struct SlowCalculatorHandler : CalculatorHandler {
+    struct SlowAdditionHandler : AdditionHandler {
+      folly::coro::Baton &baton_, &destroyed_;
+      SlowAdditionHandler(
+          folly::coro::Baton& baton,
+          folly::coro::Baton& destroyed)
+          : baton_(baton), destroyed_(destroyed) {}
+      ~SlowAdditionHandler() override {
+        destroyed_.post();
+      }
+
+      folly::coro::Task<int32_t> co_getPrimitive() override {
+        co_await baton_;
+        co_return acc_;
+      }
+      folly::coro::Task<void> co_noop() override {
+        co_await baton_;
+        co_return;
+      }
+    };
+
+    std::unique_ptr<AdditionIf> createAddition() override {
+      return std::make_unique<SlowAdditionHandler>(baton, destroyed);
+    }
+
+    folly::coro::Baton baton, destroyed;
+  };
+  auto handler = std::make_shared<SlowCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = folly::copy_to_unique_ptr(client->createAddition());
+  folly::EventBase eb;
+  auto semi = adder->co_getPrimitive().scheduleOn(&eb).start();
+  adder->co_accumulatePrimitive(1).semi().via(&eb).getVia(&eb);
+  adder->co_noop().semi().via(&eb).getVia(&eb);
+  adder.reset(); // sends termination while methods in progress
+  EXPECT_FALSE(handler->destroyed.ready());
+  handler->baton.post();
+  EXPECT_EQ(std::move(semi).via(&eb).getVia(&eb), 1);
+  folly::coro::blockingWait(handler->destroyed);
+#endif
 }
