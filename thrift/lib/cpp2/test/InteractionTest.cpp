@@ -21,6 +21,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Calculator.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/HandlerGeneric.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -415,5 +416,95 @@ TEST(InteractionCodegenTest, FastTermination) {
   handler->baton.post();
   EXPECT_EQ(std::move(semi).via(&eb).getVia(&eb), 1);
   folly::coro::blockingWait(handler->destroyed);
+#endif
+}
+
+TEST(InteractionCodegenTest, ClientCrashDuringInteraction) {
+#if FOLLY_HAS_COROUTINES
+  struct SlowCalculatorHandler : CalculatorHandler {
+    struct SlowAdditionHandler : AdditionHandler {
+      folly::coro::Baton &baton_, &destroyed_;
+      SlowAdditionHandler(
+          folly::coro::Baton& baton,
+          folly::coro::Baton& destroyed)
+          : baton_(baton), destroyed_(destroyed) {}
+      ~SlowAdditionHandler() override {
+        destroyed_.post();
+      }
+
+      folly::coro::Task<void> co_noop() override {
+        co_await baton_;
+        co_return;
+      }
+    };
+
+    std::unique_ptr<AdditionIf> createAddition() override {
+      return std::make_unique<SlowAdditionHandler>(baton, destroyed);
+    }
+
+    folly::coro::Baton baton, destroyed;
+  };
+  auto handler = std::make_shared<SlowCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  folly::EventBase eb;
+  folly::AsyncSocket* sock = new folly::AsyncSocket(&eb, runner.getAddress());
+  CalculatorAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(sock)));
+
+  auto adder = client.createAddition();
+  auto fut = adder.co_noop().semi().via(&eb);
+  adder.co_getPrimitive().semi().via(&eb).getVia(&eb);
+  sock->closeNow();
+  handler->baton.post();
+  fut.waitVia(&eb);
+  folly::coro::blockingWait(handler->destroyed);
+#endif
+}
+
+TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
+#if FOLLY_HAS_COROUTINES
+  struct SlowCalculatorHandler : CalculatorHandler {
+    struct SlowAdditionHandler : AdditionHandler {
+      folly::coro::Baton &baton_, &destroyed_;
+      bool& executed_;
+      SlowAdditionHandler(
+          folly::coro::Baton& baton,
+          folly::coro::Baton& destroyed,
+          bool& executed)
+          : baton_(baton), destroyed_(destroyed), executed_(executed) {}
+      ~SlowAdditionHandler() override {
+        destroyed_.post();
+      }
+
+      folly::coro::Task<void> co_noop() override {
+        executed_ = true;
+        co_return;
+      }
+    };
+
+    std::unique_ptr<AdditionIf> createAddition() override {
+      folly::coro::blockingWait(baton);
+      return std::make_unique<SlowAdditionHandler>(baton, destroyed, executed);
+    }
+
+    folly::coro::Baton baton, destroyed;
+    bool executed = false;
+  };
+  auto handler = std::make_shared<SlowCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  runner.getThriftServer().getThreadManager()->addWorker();
+  folly::EventBase eb;
+  folly::AsyncSocket* sock = new folly::AsyncSocket(&eb, runner.getAddress());
+  CalculatorAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(sock)));
+
+  auto adder = client.createAddition();
+  auto fut = adder.co_noop().semi().via(&eb);
+  client.co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  sock->closeNow();
+  handler->baton.post();
+  fut.waitVia(&eb);
+  folly::coro::blockingWait(handler->destroyed);
+  EXPECT_FALSE(handler->executed);
 #endif
 }

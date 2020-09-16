@@ -121,6 +121,13 @@ class TilePromise final : public Tile {
       concurrency::ThreadManager& tm,
       folly::EventBase& eb) {
     DCHECK_EQ(refCount_, 0);
+
+    if (destructionRequested_) {
+      tm.add([tile = ctx.removeTile(id)] {});
+      continuations_.clear(); // connection might be destroyed here
+      return;
+    }
+
     if (terminationRequested_) {
       if (!continuations_.empty()) {
         tile.terminationRequested_ = true;
@@ -148,6 +155,9 @@ class TilePromise final : public Tile {
 
  private:
   std::forward_list<std::shared_ptr<concurrency::Runnable>> continuations_;
+  bool destructionRequested_{false}; // set when connection is closed to prevent
+                                     // continuations from running
+  friend class GeneratedAsyncProcessor;
 };
 
 class ErrorTile final : public Tile {

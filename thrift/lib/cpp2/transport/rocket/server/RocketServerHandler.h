@@ -60,6 +60,7 @@ class RocketServerHandler {
   virtual void requestComplete() {}
 
   virtual void terminateInteraction(int64_t /*id*/) {}
+
   virtual void connectionClosing() = 0;
 };
 

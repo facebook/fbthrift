@@ -290,6 +290,10 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
 
 void ThriftRocketServerHandler::connectionClosing() {
   connContext_.connectionClosed();
+  if (cpp2Processor_) {
+    cpp2Processor_->destroyAllInteractions(
+        connContext_, *threadManager_, *eventBase_);
+  }
 }
 
 template <class F>
@@ -498,8 +502,10 @@ void ThriftRocketServerHandler::requestComplete() {
 }
 
 void ThriftRocketServerHandler::terminateInteraction(int64_t id) {
-  cpp2Processor_->terminateInteraction(
-      id, connContext_, *threadManager_, *eventBase_);
+  if (cpp2Processor_) {
+    cpp2Processor_->terminateInteraction(
+        id, connContext_, *threadManager_, *eventBase_);
+  }
 }
 } // namespace rocket
 } // namespace thrift

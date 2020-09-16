@@ -119,6 +119,10 @@ class AsyncProcessor : public TProcessorBase {
       Cpp2ConnContext& conn,
       concurrency::ThreadManager& tm,
       folly::EventBase&) noexcept;
+  virtual void destroyAllInteractions(
+      Cpp2ConnContext& conn,
+      concurrency::ThreadManager& tm,
+      folly::EventBase&) noexcept;
 };
 
 class GeneratedAsyncProcessor : public AsyncProcessor {
@@ -201,6 +205,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
  public:
   void terminateInteraction(
       int64_t id,
+      Cpp2ConnContext& conn,
+      concurrency::ThreadManager& tm,
+      folly::EventBase&) noexcept final;
+  void destroyAllInteractions(
       Cpp2ConnContext& conn,
       concurrency::ThreadManager& tm,
       folly::EventBase&) noexcept final;

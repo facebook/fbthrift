@@ -74,6 +74,11 @@ void AsyncProcessor::terminateInteraction(
   LOG(DFATAL) << "This processor doesn't support interactions";
 }
 
+void AsyncProcessor::destroyAllInteractions(
+    Cpp2ConnContext&,
+    concurrency::ThreadManager&,
+    folly::EventBase&) noexcept {}
+
 bool GeneratedAsyncProcessor::createInteraction(
     int64_t id,
     const std::string& name,
@@ -134,6 +139,31 @@ void GeneratedAsyncProcessor::terminateInteraction(
     }
   } catch (const std::out_of_range&) {
     LOG(DFATAL) << "Freeing unknown tile " << id;
+  }
+}
+
+void GeneratedAsyncProcessor::destroyAllInteractions(
+    Cpp2ConnContext& conn,
+    concurrency::ThreadManager& tm,
+    folly::EventBase& eb) noexcept {
+  eb.dcheckIsInEventBaseThread();
+  auto& map = conn.tiles_;
+  std::vector<std::unique_ptr<Tile>> tiles;
+  for (auto itr = map.begin(); itr != map.end();) {
+    auto& tilePtr = itr->second;
+    if (tilePtr->refCount_) {
+      tilePtr->terminationRequested_ = true;
+      ++itr;
+    } else if (tilePtr->__fbthrift_isPromise()) {
+      static_cast<TilePromise&>(*tilePtr).destructionRequested_ = true;
+      ++itr;
+    } else {
+      tiles.push_back(std::move(tilePtr));
+      itr = map.erase(itr);
+    }
+  }
+  if (!tiles.empty()) {
+    tm.add([tiles = std::move(tiles)] {});
   }
 }
 
