@@ -1526,6 +1526,12 @@ pub mod server {
 ///             mock: impl FnMut(FunctionRequest) -> FunctionResponse + Send + Sync + 'mock,
 ///         );
 ///
+///         // invoke closure to compute response
+///         pub fn mock_result(
+///             &self,
+///             mock: impl FnMut(FunctionRequest) -> Result<FunctionResponse, crate::services::MyService::MyFunctionExn> + Send + Sync + 'mock,
+///         );
+///
 ///         // return one of the function's declared exceptions
 ///         pub fn throw<E>(&self, exception: E)
 ///         where
@@ -1554,6 +1560,9 @@ pub mod server {
 ///
 ///         // or throw one of the function's exceptions
 ///         mock.myFunction.throw(StorageException::ItFailed);
+///
+///         // or compute a Result (useful if your exceptions aren't Clone)
+///         mock.myFunction.mock_result(|request| Err(...));
 ///
 ///         let out = do_the_thing(mock).wait().unwrap();
 ///         assert!(out.what_i_expected());
@@ -1647,6 +1656,11 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
                 }
 
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(), crate::errors::raiser::DoBlandError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<crate::errors::raiser::DoBlandError>,
@@ -1684,6 +1698,11 @@ pub mod mock {
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(), crate::errors::raiser::DoRaiseError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
                 }
 
                 pub fn throw<E>(&self, exception: E)
@@ -1725,6 +1744,11 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
                 }
 
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<crate::errors::raiser::Get200Error>,
@@ -1762,6 +1786,11 @@ pub mod mock {
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
                 }
 
                 pub fn throw<E>(&self, exception: E)

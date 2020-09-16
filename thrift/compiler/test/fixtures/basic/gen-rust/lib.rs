@@ -2565,6 +2565,12 @@ pub mod server {
 ///             mock: impl FnMut(FunctionRequest) -> FunctionResponse + Send + Sync + 'mock,
 ///         );
 ///
+///         // invoke closure to compute response
+///         pub fn mock_result(
+///             &self,
+///             mock: impl FnMut(FunctionRequest) -> Result<FunctionResponse, crate::services::MyService::MyFunctionExn> + Send + Sync + 'mock,
+///         );
+///
 ///         // return one of the function's declared exceptions
 ///         pub fn throw<E>(&self, exception: E)
 ///         where
@@ -2593,6 +2599,9 @@ pub mod server {
 ///
 ///         // or throw one of the function's exceptions
 ///         mock.myFunction.throw(StorageException::ItFailed);
+///
+///         // or compute a Result (useful if your exceptions aren't Clone)
+///         mock.myFunction.mock_result(|request| Err(...));
 ///
 ///         let out = do_the_thing(mock).wait().unwrap();
 ///         assert!(out.what_i_expected());
@@ -2747,6 +2756,11 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
                 }
 
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(), crate::errors::my_service::PingError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<crate::errors::my_service::PingError>,
@@ -2784,6 +2798,11 @@ pub mod mock {
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
                 }
 
                 pub fn throw<E>(&self, exception: E)
@@ -2825,6 +2844,11 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move |id| ::std::result::Result::Ok(mock(id)));
                 }
 
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| mock(id));
+                }
+
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<crate::errors::my_service::HasDataByIdError>,
@@ -2862,6 +2886,11 @@ pub mod mock {
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::string::String + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |id| ::std::result::Result::Ok(mock(id)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64) -> ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id| mock(id));
                 }
 
                 pub fn throw<E>(&self, exception: E)
@@ -2903,6 +2932,11 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move |id, data| ::std::result::Result::Ok(mock(id, data)));
                 }
 
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> ::std::result::Result<(), crate::errors::my_service::PutDataByIdError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id, data| mock(id, data));
+                }
+
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<crate::errors::my_service::PutDataByIdError>,
@@ -2940,6 +2974,11 @@ pub mod mock {
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |id, data| ::std::result::Result::Ok(mock(id, data)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::primitive::i64, ::std::string::String) -> ::std::result::Result<(), crate::errors::my_service::LobDataByIdError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |id, data| mock(id, data));
                 }
 
                 pub fn throw<E>(&self, exception: E)
@@ -2983,6 +3022,11 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move |key| ::std::result::Result::Ok(mock(key)));
                 }
 
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::string::String) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |key| mock(key));
+                }
+
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>,
@@ -3020,6 +3064,11 @@ pub mod mock {
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::string::String) -> ::std::vec::Vec<::std::primitive::u8> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |key| ::std::result::Result::Ok(mock(key)));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::string::String) -> ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |key| mock(key));
                 }
 
                 pub fn throw<E>(&self, exception: E)

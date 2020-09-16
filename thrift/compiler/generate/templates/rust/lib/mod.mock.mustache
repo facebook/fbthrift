@@ -163,6 +163,30 @@
                     }})));
                 }
 
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut({{!
+                    }}{{#function:args}}{{!
+                    }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                    }}{{^last?}}, {{/last?}}{{!
+                    }}{{/function:args}}{{!
+                }}) -> ::std::result::Result<{{!
+                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+                        }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error>{{!
+                    }} + ::std::marker::Send + ::std::marker::Sync + 'mock) {{!
+                }}{
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move |{{!
+                        }}{{#function:args}}{{!
+                        }}{{field:rust_name}}{{!
+                        }}{{^last?}}, {{/last?}}{{!
+                        }}{{/function:args}}{{!
+                    }}| mock({{!
+                        }}{{#function:args}}{{!
+                        }}{{field:rust_name}}{{!
+                        }}{{^last?}}, {{/last?}}{{!
+                        }}{{/function:args}}{{!
+                    }}));
+                }
+
                 pub fn throw<E>(&self, exception: E)
                 where
                     E: ::std::convert::Into<{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error>,
