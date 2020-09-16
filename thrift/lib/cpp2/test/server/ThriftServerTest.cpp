@@ -62,6 +62,7 @@ using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
+using namespace std::literals;
 using std::string;
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
@@ -533,12 +534,10 @@ enum class Compression { Enabled, Disabled };
 enum class ErrorType { Overload, AppOverload, MethodOverload, Client, Server };
 } // namespace
 
-class OverloadTest : public ::testing::TestWithParam<
-                         std::tuple<TransportType, Compression, ErrorType>> {
+class HeaderOrRocketTest : public testing::Test {
  public:
-  TransportType transport;
-  Compression compression;
-  ErrorType errorType;
+  TransportType transport = TransportType::Rocket;
+  Compression compression = Compression::Enabled;
 
   auto makeClient(ScopedServerInterfaceThread& runner, folly::EventBase* evb) {
     if (transport == TransportType::Header) {
@@ -559,6 +558,13 @@ class OverloadTest : public ::testing::TestWithParam<
           });
     }
   }
+};
+
+class OverloadTest : public HeaderOrRocketTest,
+                     public ::testing::WithParamInterface<
+                         std::tuple<TransportType, Compression, ErrorType>> {
+ public:
+  ErrorType errorType;
 
   bool isCustomError() {
     return errorType == ErrorType::Client || errorType == ErrorType::Server;
@@ -603,6 +609,128 @@ class OverloadTest : public ::testing::TestWithParam<
     std::tie(transport, compression, errorType) = GetParam();
   }
 };
+
+class CancellationTest : public HeaderOrRocketTest,
+                         public ::testing::WithParamInterface<TransportType> {
+ public:
+  void SetUp() override {
+    transport = GetParam();
+  }
+};
+
+TEST_P(CancellationTest, Test) {
+  class NotCalledBackHandler {
+   public:
+    explicit NotCalledBackHandler(
+        std::unique_ptr<HandlerCallback<void>> callback)
+        : thriftCallback_{std::move(callback)},
+          cancelCallback_(
+              thriftCallback_->getConnectionContext()
+                  ->getConnectionContext()
+                  ->getCancellationToken(),
+              [this]() { requestCancelled(); }) {}
+
+    folly::Baton<> cancelBaton;
+
+   private:
+    void requestCancelled() {
+      // Invoke the thrift callback once the request has canceled.
+      // Even after the request has been canceled handlers still should
+      // eventually invoke the request callback.
+      std::exchange(thriftCallback_, nullptr)
+          ->exception(std::runtime_error("request cancelled"));
+      cancelBaton.post();
+    }
+
+    std::unique_ptr<HandlerCallback<void>> thriftCallback_;
+    folly::CancellationCallback cancelCallback_;
+  };
+
+  class NotCalledBackInterface : public TestServiceSvIf {
+   public:
+    using NotCalledBackHandlers =
+        std::vector<std::shared_ptr<NotCalledBackHandler>>;
+
+    void async_tm_notCalledBack(
+        std::unique_ptr<HandlerCallback<void>> cb) override {
+      auto handler = std::make_shared<NotCalledBackHandler>(std::move(cb));
+      notCalledBackHandlers_.lock()->push_back(std::move(handler));
+      handlersCV_.notify_one();
+    }
+
+    /**
+     * Get all handlers for currently pending notCalledBack() thrift calls.
+     *
+     * If there is no call currently pending this function will wait for up to
+     * the specified timeout for one to arrive.  If the timeout expires before a
+     * notCalledBack() call is received an empty result set will be returned.
+     */
+    NotCalledBackHandlers getNotCalledBackHandlers(
+        std::chrono::milliseconds timeout) {
+      auto end_time = std::chrono::steady_clock::now() + timeout;
+
+      NotCalledBackHandlers results;
+      auto handlers = notCalledBackHandlers_.lock();
+      if (!handlersCV_.wait_until(handlers.getUniqueLock(), end_time, [&] {
+            return !handlers->empty();
+          })) {
+        // If we get here we timed out.
+        // Just return an empty result set in this case.
+        return results;
+      }
+      results.swap(*handlers);
+      return results;
+    }
+
+   private:
+    folly::Synchronized<NotCalledBackHandlers, std::mutex>
+        notCalledBackHandlers_;
+    std::condition_variable handlersCV_;
+  };
+  ScopedServerInterfaceThread runner(
+      std::make_shared<NotCalledBackInterface>());
+  folly::EventBase base;
+  auto client = makeClient(runner, &base);
+
+  auto interface = std::dynamic_pointer_cast<NotCalledBackInterface>(
+      runner.getThriftServer().getProcessorFactory());
+  ASSERT_TRUE(interface);
+  EXPECT_EQ(0, interface->getNotCalledBackHandlers(0s).size());
+
+  // Make a call to notCalledBack(), which will time out since the server never
+  // reponds to this API.
+  try {
+    RpcOptions rpcOptions;
+    rpcOptions.setTimeout(std::chrono::milliseconds(10));
+    client->sync_notCalledBack(rpcOptions);
+    EXPECT_FALSE(true) << "request should have never returned";
+  } catch (const TApplicationException& ex) {
+    if (ex.getType() != TApplicationException::TIMEOUT) {
+      throw;
+    }
+  }
+
+  // Wait for the server to register the call
+  auto handlers = interface->getNotCalledBackHandlers(10s);
+  ASSERT_EQ(1, handlers.size()) << "expected a single notCalledBack() call";
+  auto wasCancelled = handlers[0]->cancelBaton.ready();
+  // Currently we do not trigger per-request cancellations, but only
+  // when client closes the connection.
+  EXPECT_FALSE(wasCancelled);
+
+  // Close the client.  This should trigger request cancellation on the server.
+  client.reset();
+
+  // The handler's cancellation token should be triggered when we close the
+  // connection.
+  wasCancelled = handlers[0]->cancelBaton.try_wait_for(10s);
+  EXPECT_TRUE(wasCancelled);
+}
+
+INSTANTIATE_TEST_CASE_P(
+    CancellationTestFixture,
+    CancellationTest,
+    testing::Values(TransportType::Header, TransportType::Rocket));
 
 TEST_P(OverloadTest, Test) {
   class BlockInterface : public TestServiceSvIf {

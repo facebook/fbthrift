@@ -529,6 +529,7 @@ void RocketServerConnection::close(folly::exception_wrapper ew) {
   sendError(StreamId{0}, std::move(rex));
 
   state_ = ConnectionState::CLOSING;
+  frameHandler_->connectionClosing();
   closeIfNeeded();
 }
 

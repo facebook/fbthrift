@@ -288,6 +288,10 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestSink));
 }
 
+void ThriftRocketServerHandler::connectionClosing() {
+  connContext_.connectionClosed();
+}
+
 template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,

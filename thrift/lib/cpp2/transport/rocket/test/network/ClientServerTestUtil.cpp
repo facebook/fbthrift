@@ -549,6 +549,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         .start();
   }
 
+  void connectionClosing() final {}
+
  private:
   folly::EventBase& ioEvb_;
   const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata_;
