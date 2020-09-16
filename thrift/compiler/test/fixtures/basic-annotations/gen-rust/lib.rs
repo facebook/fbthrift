@@ -3190,7 +3190,7 @@ pub mod server {
     where
         F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: MyServicePrioChild,
-        SMAKE: ::std::ops::Fn(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
+        SMAKE: ::std::ops::FnOnce(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
         SS: ::fbthrift::ThriftService<F, RequestContext = R>,
         SS::Handler: crate::server::MyServicePrioParent,
         R: ::std::marker::Send + ::std::marker::Sync + 'static,

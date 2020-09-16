@@ -290,7 +290,7 @@
         H: {{service:name}}{{!
         }}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}},{{!
         }}{{#service:extends?}}
-        SMAKE: ::std::ops::Fn(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
+        SMAKE: ::std::ops::FnOnce(::fbthrift::ProtocolID) -> ::std::result::Result<SS, ::fbthrift::ApplicationException>,
         SS: ::fbthrift::ThriftService<F, RequestContext = R>,
         SS::Handler: {{>lib/super}},{{!
         }}{{/service:extends?}}
