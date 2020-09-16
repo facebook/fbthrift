@@ -15,7 +15,6 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ParamServiceSvIf::getProcessor()
 }
 
 
-
 void ParamServiceSvIf::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t /*param1*/) {
   callback->exception(apache::thrift::TApplicationException("Function void_ret_i16_param is unimplemented"));
 }
@@ -33,7 +32,6 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_byte_i16_pa
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_byte_i16_param(int8_t param1, int16_t param2) {
   return apache::thrift::detail::si::future(semifuture_void_ret_byte_i16_param(param1, param2), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t param1, int16_t param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -55,7 +53,6 @@ folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::uniq
   return apache::thrift::detail::si::future(semifuture_void_ret_map_param(std::move(param1)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_map_param(std::move(param1));
@@ -75,7 +72,6 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_setlist
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, int64_t>> param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> param2) {
   return apache::thrift::detail::si::future(semifuture_void_ret_map_setlist_param(std::move(param1), std::move(param2)), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -97,7 +93,6 @@ folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_typedef_param( 
   return apache::thrift::detail::si::future(semifuture_void_ret_map_typedef_param(param1), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::simpleTypeDef param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_map_typedef_param(param1);
@@ -117,7 +112,6 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_enum_param(
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_enum_param( ::some::valid::ns::MyEnumA param1) {
   return apache::thrift::detail::si::future(semifuture_void_ret_enum_param(param1), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::MyEnumA param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -139,7 +133,6 @@ folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_struct_param(std::u
   return apache::thrift::detail::si::future(semifuture_void_ret_struct_param(std::move(param1)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::valid::ns::MyStruct> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_void_ret_struct_param(std::move(param1));
@@ -159,7 +152,6 @@ folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_listunion_p
 folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_listunion_param(std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> param1) {
   return apache::thrift::detail::si::future(semifuture_void_ret_listunion_param(std::move(param1)), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -181,7 +173,6 @@ folly::Future<bool> ParamServiceSvIf::future_bool_ret_i32_i64_param(int32_t para
   return apache::thrift::detail::si::future(semifuture_bool_ret_i32_i64_param(param1, param2), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t param1, int64_t param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_bool_ret_i32_i64_param(param1, param2);
@@ -201,7 +192,6 @@ folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_map_param(std::uni
 folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, int64_t>> param1) {
   return apache::thrift::detail::si::future(semifuture_bool_ret_map_param(std::move(param1)), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -223,7 +213,6 @@ folly::Future<bool> ParamServiceSvIf::future_bool_ret_union_param(std::unique_pt
   return apache::thrift::detail::si::future(semifuture_bool_ret_union_param(std::move(param1)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr< ::some::valid::ns::ComplexUnion> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_bool_ret_union_param(std::move(param1));
@@ -243,7 +232,6 @@ folly::SemiFuture<int64_t> ParamServiceSvIf::semifuture_i64_ret_float_double_par
 folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_float_double_param(float param1, double param2) {
   return apache::thrift::detail::si::future(semifuture_i64_ret_float_double_param(param1, param2), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float param1, double param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -265,13 +253,11 @@ folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_string_typedef_param(std
   return apache::thrift::detail::si::future(semifuture_i64_ret_string_typedef_param(std::move(param1), std::move(param2)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, std::unique_ptr<::std::string> param1, std::unique_ptr<::std::set< ::some::valid::ns::mostComplexTypeDef>> param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_i64_ret_string_typedef_param(std::move(param1), std::move(param2));
   });
 }
-
 
 void ParamServiceSvIf::async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) {
   callback->exception(apache::thrift::TApplicationException("Function i64_ret_i32_i32_i32_i32_i32_param is unimplemented"));
@@ -291,7 +277,6 @@ folly::Future<double> ParamServiceSvIf::future_double_ret_setstruct_param(std::u
   return apache::thrift::detail::si::future(semifuture_double_ret_setstruct_param(std::move(param1)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_double_ret_setstruct_param(std::move(param1));
@@ -309,7 +294,6 @@ folly::SemiFuture<std::unique_ptr<::std::string>> ParamServiceSvIf::semifuture_s
 folly::Future<std::unique_ptr<::std::string>> ParamServiceSvIf::future_string_ret_string_param(std::unique_ptr<::std::string> param1) {
   return apache::thrift::detail::si::future(semifuture_string_ret_string_param(std::move(param1)), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -329,7 +313,6 @@ folly::Future<std::unique_ptr<::std::string>> ParamServiceSvIf::future_binary_re
   return apache::thrift::detail::si::future(semifuture_binary_ret_binary_param(std::move(param1)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_binary_ret_binary_param(std::move(param1));
@@ -347,7 +330,6 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::string, int64_t>>> ParamServ
 folly::Future<std::unique_ptr<::std::map<::std::string, int64_t>>> ParamServiceSvIf::future_map_ret_bool_param(bool param1) {
   return apache::thrift::detail::si::future(semifuture_map_ret_bool_param(param1), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>> callback, bool param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -367,7 +349,6 @@ folly::Future<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::future_lis
   return apache::thrift::detail::si::future(semifuture_list_ret_map_setlist_param(std::move(param1), std::move(param2)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> param1, std::unique_ptr<::std::vector<::std::string>> param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_list_ret_map_setlist_param(std::move(param1), std::move(param2));
@@ -385,7 +366,6 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>,
 folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> param1) {
   return apache::thrift::detail::si::future(semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::move(param1)), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -407,13 +387,11 @@ folly::Future< ::some::valid::ns::simpleTypeDef> ParamServiceSvIf::future_typede
   return apache::thrift::detail::si::future(semifuture_typedef_ret_i32_param(param1), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>> callback, int32_t param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_typedef_ret_i32_param(param1);
   });
 }
-
 
 void ParamServiceSvIf::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> /*param1*/) {
   callback->exception(apache::thrift::TApplicationException("Function listtypedef_ret_typedef_param is unimplemented"));
@@ -432,7 +410,6 @@ folly::SemiFuture< ::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum
 folly::Future< ::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_param(double param1) {
   return apache::thrift::detail::si::future(semifuture_enum_ret_double_param(param1), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -454,7 +431,6 @@ folly::Future< ::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_dou
   return apache::thrift::detail::si::future(semifuture_enum_ret_double_enum_param(param1, param2), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double param1,  ::some::valid::ns::MyEnumA param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_enum_ret_double_enum_param(param1, param2);
@@ -473,13 +449,11 @@ folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>> Param
   return apache::thrift::detail::si::future(semifuture_listenum_ret_map_param(std::move(param1)), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, int64_t>> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_listenum_ret_map_param(std::move(param1));
   });
 }
-
 
 void ParamServiceSvIf::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback, int16_t /*param1*/) {
   callback->exception(apache::thrift::TApplicationException("Function struct_ret_i16_param is unimplemented"));
@@ -496,7 +470,6 @@ folly::SemiFuture<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> Par
 folly::Future<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> ParamServiceSvIf::future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> param1) {
   return apache::thrift::detail::si::future(semifuture_setstruct_ret_set_param(std::move(param1)), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -516,7 +489,6 @@ folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ParamServiceSvI
   return apache::thrift::detail::si::future(semifuture_union_ret_i32_i32_param(param1, param2), getThreadManager());
 }
 
-
 void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback, int32_t param1, int32_t param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_union_ret_i32_i32_param(param1, param2);
@@ -534,7 +506,6 @@ folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion
 folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::future_listunion_string_param(std::unique_ptr<::std::string> param1) {
   return apache::thrift::detail::si::future(semifuture_listunion_string_param(std::move(param1)), getThreadManager());
 }
-
 
 void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> param1) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -623,6 +594,8 @@ void ParamServiceSvNull::setstruct_ret_set_param(::std::set< ::some::valid::ns::
 void ParamServiceSvNull::union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/) {}
 
 void ParamServiceSvNull::listunion_string_param(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
+
+
 
 const char* ParamServiceAsyncProcessor::getServiceName() {
   return "ParamService";

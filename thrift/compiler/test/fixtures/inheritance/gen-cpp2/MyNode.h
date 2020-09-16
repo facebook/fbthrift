@@ -39,6 +39,8 @@ class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public ::cpp2::MyRootSvIf {
  public:
   typedef MyNodeAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void do_mid();
   folly::Future<folly::Unit> future_do_mid() override;
   folly::SemiFuture<folly::Unit> semifuture_do_mid() override;
@@ -68,7 +70,7 @@ class MyNodeAsyncProcessor : public ::cpp2::MyRootAsyncProcessor {
   static const MyNodeAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const MyNodeAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const MyNodeAsyncProcessor::ProcessMap compactProcessMap_;
+  static const MyNodeAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_do_mid(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

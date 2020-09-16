@@ -60,6 +60,8 @@ class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::va
  public:
   typedef ExtraServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual bool simple_function();
   folly::Future<bool> future_simple_function() override;
   folly::SemiFuture<bool> semifuture_simple_function() override;
@@ -121,7 +123,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   static const ExtraServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const ExtraServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const ExtraServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const ExtraServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_simple_function(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

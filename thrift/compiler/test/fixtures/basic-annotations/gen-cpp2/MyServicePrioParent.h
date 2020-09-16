@@ -41,6 +41,8 @@ class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apac
  public:
   typedef MyServicePrioParentAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void ping();
   folly::Future<folly::Unit> future_ping() override;
   folly::SemiFuture<folly::Unit> semifuture_ping() override;
@@ -75,7 +77,7 @@ class MyServicePrioParentAsyncProcessor : public ::apache::thrift::GeneratedAsyn
   static const MyServicePrioParentAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const MyServicePrioParentAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const MyServicePrioParentAsyncProcessor::ProcessMap compactProcessMap_;
+  static const MyServicePrioParentAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

@@ -29,7 +29,6 @@ folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf:
   return apache::thrift::detail::si::future(semifuture_returnstream(i32_from, i32_to), getThreadManager());
 }
 
-
 void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_returnstream(i32_from, i32_to);
@@ -49,7 +48,6 @@ folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceS
 folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_streamthrows(int32_t foo) {
   return apache::thrift::detail::si::future(semifuture_streamthrows(foo), getThreadManager());
 }
-
 
 void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -71,7 +69,6 @@ folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf:
   return apache::thrift::detail::si::future(semifuture_boththrows(foo), getThreadManager());
 }
 
-
 void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_boththrows(foo);
@@ -92,12 +89,13 @@ folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubSt
   return apache::thrift::detail::si::future(semifuture_responseandstreamthrows(foo), getThreadManager());
 }
 
-
 void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_responseandstreamthrows(foo);
   });
 }
+
+
 
 const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {
   return "PubSubStreamingService";

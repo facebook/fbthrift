@@ -30,12 +30,17 @@
 <%#service:cpp_includes%>
 #include <%cpp_include%>
 <%/service:cpp_includes%>
+<%^service:any_interactions?%>
 <%#service:any_streams?%>
 #include <thrift/lib/cpp2/async/ServerStream.h>
 <%/service:any_streams?%>
 <%#service:any_sinks?%>
 #include <thrift/lib/cpp2/async/Sink.h>
 <%/service:any_sinks?%>
+<%/service:any_interactions?%><%#service:any_interactions?%>
+#include <thrift/lib/cpp2/async/ServerStream.h>
+#include <thrift/lib/cpp2/async/Sink.h>
+<%/service:any_interactions?%>
 
 namespace folly {
   class IOBuf;

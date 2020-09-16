@@ -201,4 +201,5 @@ void MyServiceAsyncProcessor::process_lobDataById(apache::thrift::ResponseChanne
   iface_->async_tm_lobDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
+
 } // cpp2

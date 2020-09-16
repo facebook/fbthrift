@@ -54,6 +54,8 @@ class SinkServiceSvIf : public SinkServiceSvAsyncIf, public apache::thrift::Serv
  public:
   typedef SinkServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> method();
   folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_method() override;
   folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_method() override;
@@ -108,7 +110,7 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   static const SinkServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const SinkServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const SinkServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const SinkServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_method(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

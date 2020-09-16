@@ -122,6 +122,8 @@ class service_with_special_namesSvIf : public service_with_special_namesSvAsyncI
  public:
   typedef service_with_special_namesAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual int32_t get();
   folly::Future<int32_t> future_get() override;
   folly::SemiFuture<int32_t> semifuture_get() override;
@@ -286,7 +288,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   static const service_with_special_namesAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const service_with_special_namesAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const service_with_special_namesAsyncProcessor::ProcessMap compactProcessMap_;
+  static const service_with_special_namesAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_get(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

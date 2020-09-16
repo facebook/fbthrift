@@ -29,6 +29,11 @@ std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcess
 <% > service_cpp/service_interface_impl%>
 
 <% > service_cpp/service_null_impl%>
+
+<%#service:interactions%>
+<% > service_cpp/service_interface_impl%>
+<%/service:interactions%>
+
 const char* <%service:name%>AsyncProcessor::getServiceName() {
   return "<%service:name%>";
 }
@@ -49,4 +54,7 @@ std::shared_ptr<folly::RequestContext> <%service:name%>AsyncProcessor::getBaseCo
 
 <% > service_cpp/compact_processmap%>
 
+<%#service:any_interactions?%>
+<% > service_cpp/interaction_constructor_map%>
+<%/service:any_interactions?%>
 <% > common/namespace_cpp2_end%>

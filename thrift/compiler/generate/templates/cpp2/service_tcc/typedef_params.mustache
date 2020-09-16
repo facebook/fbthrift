@@ -15,5 +15,5 @@
   limitations under the License.
 
 %>
-typedef apache::thrift::ThriftPresult<false<% > service_tcc/field_data_params%>> <%service:name%>_<%function:cpp_name%>_pargs;
+typedef apache::thrift::ThriftPresult<false<% > service_tcc/field_data_params%>> <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_pargs;
 <%! Force newline %>

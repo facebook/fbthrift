@@ -119,4 +119,5 @@ void MyServiceAsyncProcessor::throw_wrapped_has_arg_docs(apache::thrift::Respons
   }
 }
 
+
 } // cpp2

@@ -29,7 +29,6 @@ folly::Future<folly::Unit> MyRootSvIf::future_do_root() {
   return apache::thrift::detail::si::future(semifuture_do_root(), getThreadManager());
 }
 
-
 void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_do_root();
@@ -39,6 +38,8 @@ void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallbac
 void MyRootSvNull::do_root() {
   return;
 }
+
+
 
 const char* MyRootAsyncProcessor::getServiceName() {
   return "MyRoot";

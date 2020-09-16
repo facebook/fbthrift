@@ -14,26 +14,8 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
   return std::make_unique<MyServiceAsyncProcessor>(this);
 }
 
-
-MyInteraction MyServiceSvIf::createMyInteraction() {
+std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceSvIf::createMyInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteraction");
-}
-
-folly::SemiFuture<MyInteraction> MyServiceSvIf::semifuture_createMyInteraction() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return createMyInteraction();
-  });
-}
-
-folly::Future<MyInteraction> MyServiceSvIf::future_createMyInteraction() {
-  return apache::thrift::detail::si::future(semifuture_createMyInteraction(), getThreadManager());
-}
-
-
-void MyServiceSvIf::async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<MyInteraction>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_createMyInteraction();
-  });
 }
 
 void MyServiceSvIf::foo() {
@@ -50,19 +32,49 @@ folly::Future<folly::Unit> MyServiceSvIf::future_foo() {
   return apache::thrift::detail::si::future(semifuture_foo(), getThreadManager());
 }
 
-
 void MyServiceSvIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_foo();
   });
 }
 
-MyInteraction MyServiceSvNull::createMyInteraction() {
-  return 0;
-}
-
 void MyServiceSvNull::foo() {
   return;
+}
+
+
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> MyServiceSvIf::MyInteractionIf::co_frobnicate() {
+  co_yield folly::coro::co_error(apache::thrift::TApplicationException("Function frobnicate is unimplemented"));
+}
+
+folly::coro::Task<void> MyServiceSvIf::MyInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
+  return co_frobnicate();
+}
+#endif // FOLLY_HAS_COROUTINES
+void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+#if FOLLY_HAS_COROUTINES
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we have to
+  // set them up now. This is just a short-term shim; in the long run, we
+  // shouldn't generate the future, semifuture, and synchronous member functions
+  // for entry points that explicitly ask for coroutines.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  apache::thrift::RequestParams params{callback->getConnectionContext(),
+    callback->getThreadManager(), callback->getEventBase()};
+  try {
+    apache::thrift::detail::si::async_tm_coro_start(
+      co_frobnicate(params),
+      params.getThreadManager(),
+      std::move(callback));
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+#else // FOLLY_HAS_COROUTINES
+  callback->exception(apache::thrift::TApplicationException("Function frobnicate is unimplemented"));
+#endif // FOLLY_HAS_COROUTINES
 }
 
 const char* MyServiceAsyncProcessor::getServiceName() {
@@ -86,8 +98,8 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getBinaryPro
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::binaryProcessMap_ {
-  {"createMyInteraction", &MyServiceAsyncProcessor::_processInThread_createMyInteraction<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"foo", &MyServiceAsyncProcessor::_processInThread_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteraction.frobnicate", &MyServiceAsyncProcessor::_processInThread_MyInteraction_frobnicate<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -95,8 +107,28 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactPr
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProcessMap_ {
-  {"createMyInteraction", &MyServiceAsyncProcessor::_processInThread_createMyInteraction<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"foo", &MyServiceAsyncProcessor::_processInThread_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteraction.frobnicate", &MyServiceAsyncProcessor::_processInThread_MyInteraction_frobnicate<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
-} // cpp2
+const MyServiceAsyncProcessor::InteractionConstructorMap& MyServiceAsyncProcessor::getInteractionConstructorMap() {
+  return interactionConstructorMap_;
+}
+
+const MyServiceAsyncProcessor::InteractionConstructorMap MyServiceAsyncProcessor::interactionConstructorMap_ {
+  {"MyInteraction", &MyServiceAsyncProcessor::createMyInteraction},
+};
+
+std::unique_ptr<Tile> MyServiceAsyncProcessor::createInteractionImpl(const std::string& name) {
+  const auto& cmap = getInteractionConstructorMap();
+  auto fn = cmap.find(name);
+  if (fn == cmap.end()) {
+    LOG(ERROR) << "Unknown interaction name " << name;
+    return std::make_unique<ErrorTile>(
+                folly::make_exception_wrapper<TApplicationException>(
+                    TApplicationException::TApplicationExceptionType::
+                        INTERACTION_ERROR,
+                    "Unknown interaction"));
+  }
+  return (this->*(fn->second))();
+}} // cpp2

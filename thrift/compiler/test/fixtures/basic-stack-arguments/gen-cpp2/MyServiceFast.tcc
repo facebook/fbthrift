@@ -184,4 +184,5 @@ void MyServiceFastAsyncProcessor::process_lobDataById(apache::thrift::ResponseCh
   iface_->async_eb_lobDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
+
 } // cpp2

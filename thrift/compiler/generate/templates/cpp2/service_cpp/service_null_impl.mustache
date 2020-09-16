@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%#function:returnType%><%^function:eb%><%^function:returns_stream?%>
+%><%#service:functions%><%#function:returnType%><%^function:starts_interaction?%><%^function:eb%><%^function:returns_stream?%>
 <% > service_common/function_return_type %> <%service:name%>SvNull::<%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) {<%!
 %><%#type:resolves_to_complex_return?%>}<%/type:resolves_to_complex_return?%>
 <%^type:resolves_to_complex_return?%>
@@ -36,4 +36,4 @@
 }
 <%/type:resolves_to_complex_return?%>
 
-<%/function:returns_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>
+<%/function:returns_stream?%><%/function:eb%><%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>

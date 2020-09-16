@@ -48,6 +48,8 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
  public:
   typedef PubSubStreamingServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual apache::thrift::ServerStream<int32_t> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/);
   folly::Future<apache::thrift::ServerStream<int32_t>> future_returnstream(int32_t i32_from, int32_t i32_to) override;
   folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to) override;
@@ -88,7 +90,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   static const PubSubStreamingServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const PubSubStreamingServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const PubSubStreamingServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const PubSubStreamingServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_returnstream(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

@@ -42,6 +42,8 @@ class SomeServiceSvIf : public SomeServiceSvAsyncIf, public apache::thrift::Serv
  public:
   typedef SomeServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void bounce_map( ::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> /*m*/);
   folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) override;
   folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> semifuture_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) override;
@@ -76,7 +78,7 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   static const SomeServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const SomeServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const SomeServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const SomeServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

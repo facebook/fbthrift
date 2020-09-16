@@ -135,6 +135,12 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename ProcessFunc>
   using ProcessMap = folly::F14ValueMap<std::string, ProcessFunc>;
 
+  template <typename Derived>
+  using InteractionConstructor = std::unique_ptr<Tile> (Derived::*)();
+  template <typename InteractionConstructor>
+  using InteractionConstructorMap =
+      folly::F14ValueMap<std::string, InteractionConstructor>;
+
  protected:
   template <typename ProtocolIn, typename Args>
   static void deserializeRequest(
@@ -353,9 +359,11 @@ class HandlerCallbackBase {
       exnw_ptr ewp,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx)
+      Cpp2RequestContext* reqCtx,
+      Tile* interaction = nullptr)
       : req_(std::move(req)),
         ctx_(std::move(ctx)),
+        interaction_(interaction),
         ewp_(ewp),
         eb_(eb),
         tm_(tm),
@@ -393,6 +401,11 @@ class HandlerCallbackBase {
 
   Cpp2RequestContext* getConnectionContext() {
     return reqCtx_;
+  }
+
+  // pointer is valid until any of the finishing functions is called
+  Tile* getInteraction() {
+    return interaction_;
   }
 
   bool isRequestActive() {
@@ -433,6 +446,14 @@ class HandlerCallbackBase {
   void sendReply(folly::IOBufQueue queue);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
+  // Must be called from IO thread
+  static void releaseInteraction(
+      Tile* interaction,
+      Cpp2RequestContext* reqCtx,
+      concurrency::ThreadManager* tm,
+      folly::EventBase* eb);
+  void releaseInteractionInstance();
+
 #if !FOLLY_HAS_COROUTINES
   [[noreturn]]
 #endif
@@ -444,6 +465,7 @@ class HandlerCallbackBase {
   // Required for this call
   ResponseChannelRequest::UniquePtr req_;
   std::unique_ptr<ContextStack> ctx_;
+  Tile* interaction_{nullptr};
 
   // May be null in a oneway call
   exnw_ptr ewp_;
@@ -476,7 +498,8 @@ class HandlerCallback : public HandlerCallbackBase {
       int32_t protoSeqId,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx);
+      Cpp2RequestContext* reqCtx,
+      Tile* interaction = nullptr);
 
   void result(InputType r) {
     doResult(std::forward<InputType>(r));
@@ -508,7 +531,8 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       int32_t protoSeqId,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx);
+      Cpp2RequestContext* reqCtx,
+      Tile* interaction = nullptr);
 
   void done() {
     doDone();
@@ -710,15 +734,21 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
   if (getEventBase()->isInEventBaseThread()) {
     f(std::exchange(req_, {}), protoSeqId_, ctx_.get(), ex, reqCtx_);
     ctx_.reset();
+    releaseInteractionInstance();
   } else {
-    getEventBase()->runInEventBaseThread([f = std::forward<F>(f),
-                                          req = std::move(req_),
-                                          protoSeqId = protoSeqId_,
-                                          ctx = std::move(ctx_),
-                                          ex = std::forward<T>(ex),
-                                          reqCtx = reqCtx_]() mutable {
-      f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
-    });
+    getEventBase()->runInEventBaseThread(
+        [f = std::forward<F>(f),
+         req = std::move(req_),
+         protoSeqId = protoSeqId_,
+         ctx = std::move(ctx_),
+         ex = std::forward<T>(ex),
+         reqCtx = reqCtx_,
+         interaction = std::exchange(interaction_, nullptr),
+         tm = getThreadManager(),
+         eb = getEventBase()]() mutable {
+          f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
+          releaseInteraction(interaction, reqCtx, tm, eb);
+        });
   }
 }
 
@@ -731,8 +761,16 @@ HandlerCallback<T>::HandlerCallback(
     int32_t protoSeqId,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
-    Cpp2RequestContext* reqCtx)
-    : HandlerCallbackBase(std::move(req), std::move(ctx), ewp, eb, tm, reqCtx),
+    Cpp2RequestContext* reqCtx,
+    Tile* interaction)
+    : HandlerCallbackBase(
+          std::move(req),
+          std::move(ctx),
+          ewp,
+          eb,
+          tm,
+          reqCtx,
+          interaction),
       cp_(cp) {
   this->protoSeqId_ = protoSeqId;
 }

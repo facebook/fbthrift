@@ -29,7 +29,6 @@ folly::Future<folly::Unit> CSvIf::future_f() {
   return apache::thrift::detail::si::future(semifuture_f(), getThreadManager());
 }
 
-
 void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_f();
@@ -39,6 +38,8 @@ void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> ca
 void CSvNull::f() {
   return;
 }
+
+
 
 const char* CAsyncProcessor::getServiceName() {
   return "C";

@@ -29,7 +29,6 @@ folly::Future<folly::Unit> MyNodeSvIf::future_do_mid() {
   return apache::thrift::detail::si::future(semifuture_do_mid(), getThreadManager());
 }
 
-
 void MyNodeSvIf::async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_do_mid();
@@ -39,6 +38,8 @@ void MyNodeSvIf::async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback
 void MyNodeSvNull::do_mid() {
   return;
 }
+
+
 
 const char* MyNodeAsyncProcessor::getServiceName() {
   return "MyNode";

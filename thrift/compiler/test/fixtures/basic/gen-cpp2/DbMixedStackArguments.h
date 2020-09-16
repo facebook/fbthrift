@@ -41,6 +41,8 @@ class DbMixedStackArgumentsSvIf : public DbMixedStackArgumentsSvAsyncIf, public 
  public:
   typedef DbMixedStackArgumentsAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/);
   folly::Future<std::unique_ptr<::std::string>> future_getDataByKey0(std::unique_ptr<::std::string> key) override;
   folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataByKey0(std::unique_ptr<::std::string> key) override;
@@ -75,7 +77,7 @@ class DbMixedStackArgumentsAsyncProcessor : public ::apache::thrift::GeneratedAs
   static const DbMixedStackArgumentsAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const DbMixedStackArgumentsAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const DbMixedStackArgumentsAsyncProcessor::ProcessMap compactProcessMap_;
+  static const DbMixedStackArgumentsAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_getDataByKey0(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

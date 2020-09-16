@@ -405,4 +405,5 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache:
   iface_->async_tm_oneway_void_ret_listunion_param(std::move(callback), args.get<0>().ref());
 }
 
+
 }} // extra::svc

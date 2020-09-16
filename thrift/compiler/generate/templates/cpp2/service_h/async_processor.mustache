@@ -33,39 +33,29 @@
  public:
   using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<<%service:name%>AsyncProcessor>;
   using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
+<%#service:any_interactions?%>
+  using InteractionConstructor = GeneratedAsyncProcessor::InteractionConstructor<<%service:name%>AsyncProcessor>;
+  using InteractionConstructorMap = GeneratedAsyncProcessor::InteractionConstructorMap<InteractionConstructor>;
+<%/service:any_interactions?%>
   static const <%service:name%>AsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
   static const <%service:name%>AsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+<%#service:any_interactions?%>
+  static const <%service:name%>AsyncProcessor::InteractionConstructorMap& getInteractionConstructorMap();
+  std::unique_ptr<Tile> createInteractionImpl(const std::string& name) override;
+<%/service:any_interactions?%>
  private:
   static const <%service:name%>AsyncProcessor::ProcessMap binaryProcessMap_;
-   static const <%service:name%>AsyncProcessor::ProcessMap compactProcessMap_;
+  static const <%service:name%>AsyncProcessor::ProcessMap compactProcessMap_;
+<%#service:any_interactions?%>
+  static const <%service:name%>AsyncProcessor::InteractionConstructorMap interactionConstructorMap_;
+<%/service:any_interactions?%>
  private:
-<%#service:functions%><%#function:returnType%>
-<%^function:eb%>
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_<%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-<%/function:eb%>
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_<%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-<%^function:oneway?%>
-  template <class ProtocolIn_, class ProtocolOut_>
-<%#type:void?%>
-  static folly::IOBufQueue return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
-<%/type:void?%>
-<%^type:void?%>
-  <%^type:streamresponse?%><%^type:sink?%>
-  static folly::IOBufQueue return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
-  <%/type:sink?%><%/type:streamresponse?%>
-  <%#type:streamresponse?%>
-  static apache::thrift::ResponseAndServerStreamFactory return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <% > types/type%> _return);
-  <%/type:streamresponse?%>
-  <%#type:sink?%>
-  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_<%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<> executor);
-  <%/type:sink?%>
-<%/type:void?%>
-  template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_<%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
-<%/function:oneway?%>
-<%/function:returnType%><%/service:functions%>
+<%#service:functions%>
+<% > service_h/async_processor_per_function%>
+<%/service:functions%>
+<%#service:interactions%><%#service:functions%>
+<% > service_h/async_processor_per_function%>
+<%/service:functions%><%/service:interactions%>
  public:
   <%service:name%>AsyncProcessor(<%service:name%>SvIf* iface) :
 <%#service:extends%>

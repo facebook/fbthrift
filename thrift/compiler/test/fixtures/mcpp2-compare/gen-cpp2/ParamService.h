@@ -116,6 +116,8 @@ class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::Se
  public:
   typedef ParamServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   void async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) override;
   virtual void void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/);
   folly::Future<folly::Unit> future_void_ret_byte_i16_param(int8_t param1, int16_t param2) override;
@@ -269,7 +271,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   static const ParamServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const ParamServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const ParamServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const ParamServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_void_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

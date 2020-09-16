@@ -56,6 +56,8 @@ class service1SvIf : public service1SvAsyncIf, public apache::thrift::ServerInte
  public:
   typedef service1AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void method1();
   folly::Future<folly::Unit> future_method1() override;
   folly::SemiFuture<folly::Unit> semifuture_method1() override;
@@ -110,7 +112,7 @@ class service1AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   static const service1AsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const service1AsyncProcessor::ProcessMap binaryProcessMap_;
-   static const service1AsyncProcessor::ProcessMap compactProcessMap_;
+  static const service1AsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_method1(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

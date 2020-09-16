@@ -337,4 +337,5 @@ void service2AsyncProcessor::throw_wrapped_methodF(apache::thrift::ResponseChann
   }
 }
 
+
 }} // test_cpp2::cpp_reflection

@@ -39,7 +39,6 @@ folly::coro::Task<void> MyServiceSvIf::co_ping(apache::thrift::RequestParams /* 
   return co_ping();
 }
 #endif // FOLLY_HAS_COROUTINES
-
 void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -78,7 +77,6 @@ folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getRandomDat
   return apache::thrift::detail::si::future(semifuture_getRandomData(), getThreadManager());
 }
 
-
 void MyServiceSvIf::async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_getRandomData();
@@ -109,7 +107,6 @@ folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(apache::thrift::RequestPar
   return co_hasDataById(id);
 }
 #endif // FOLLY_HAS_COROUTINES
-
 void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -136,7 +133,6 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
 #endif // FOLLY_HAS_COROUTINES
 }
 
-
 void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t /*id*/) {
   callback->exception(apache::thrift::TApplicationException("Function getDataById is unimplemented"));
 }
@@ -154,7 +150,6 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id,
 folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
   return apache::thrift::detail::si::future(semifuture_putDataById(id, std::move(data)), getThreadManager());
 }
-
 
 void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -175,6 +170,8 @@ bool MyServiceSvNull::hasDataById(int64_t /*id*/) {
 void MyServiceSvNull::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
   return;
 }
+
+
 
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";

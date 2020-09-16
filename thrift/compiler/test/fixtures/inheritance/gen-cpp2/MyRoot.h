@@ -38,6 +38,8 @@ class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterfac
  public:
   typedef MyRootAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void do_root();
   folly::Future<folly::Unit> future_do_root() override;
   folly::SemiFuture<folly::Unit> semifuture_do_root() override;
@@ -67,7 +69,7 @@ class MyRootAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   static const MyRootAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const MyRootAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const MyRootAsyncProcessor::ProcessMap compactProcessMap_;
+  static const MyRootAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_do_root(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

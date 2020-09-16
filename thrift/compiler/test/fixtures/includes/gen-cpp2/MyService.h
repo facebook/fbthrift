@@ -43,6 +43,8 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
  public:
   typedef MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/);
   folly::Future<folly::Unit> future_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) override;
   folly::SemiFuture<folly::Unit> semifuture_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) override;
@@ -77,7 +79,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   static const MyServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const MyServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const MyServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const MyServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_query(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

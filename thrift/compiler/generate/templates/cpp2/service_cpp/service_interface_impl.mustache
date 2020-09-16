@@ -14,9 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%#function:returnType%>
+%><%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
 
-<%^function:eb%>
+<%^service:interaction?%><%^function:eb%>
 <% > service_common/function_return_type %> <%service:name%>SvIf::<%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
@@ -48,19 +48,29 @@ folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co
 }
 #endif // FOLLY_HAS_COROUTINES
 <%/function:coroutine?%>
-<%/function:eb%>
+<%/function:eb%><%/service:interaction?%>
+<%#service:interaction?%>
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
+  co_yield folly::coro::co_error(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+}
 
+folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
+  return co_<%function:cpp_name%>(<% > service_common/param_list_move%>);
+}
+#endif // FOLLY_HAS_COROUTINES
+<%/service:interaction?%>
 <%#function:oneway?%>
 <%^function:eb%>
 <%^function:coroutine?%>
-void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 }
 <%/function:coroutine?%>
 <%#function:coroutine?%>
-void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -80,15 +90,19 @@ void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache
     callback->exception(std::current_exception());
   }
 #else // FOLLY_HAS_COROUTINES
+<%^service:interaction?%>
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
+<%/service:interaction?%><%#service:interaction?%>
+  callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+<%/service:interaction?%>
 #endif // FOLLY_HAS_COROUTINES
 }
 <%/function:coroutine?%>
 <%/function:eb%>
 <%#function:eb%>
-void <%service:name%>SvIf::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {
   LOG(DFATAL) << "Function <%function:cpp_name%> is unimplemented";
 }
 <%/function:eb%>
@@ -96,14 +110,14 @@ void <%service:name%>SvIf::async_eb_<%function:cpp_name%>(std::unique_ptr<apache
 <%^function:oneway?%>
 <%^function:eb%>
 <%^function:coroutine?%>
-void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 }
 <%/function:coroutine?%>
 <%#function:coroutine?%>
-void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
+void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_tm_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -123,17 +137,26 @@ void <%service:name%>SvIf::async_tm_<%function:cpp_name%>(std::unique_ptr<apache
     callback->exception(std::current_exception());
   }
 #else // FOLLY_HAS_COROUTINES
+<%^service:interaction?%>
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
+<%/service:interaction?%><%#service:interaction?%>
+  callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+<%/service:interaction?%>
 #endif // FOLLY_HAS_COROUTINES
 }
 <%/function:coroutine?%>
 <%/function:eb%>
 <%#function:eb%>
-void <%service:name%>SvIf::async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
+void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:name%>If::<%/service:interaction?%>async_eb_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list_commented_out%>) {
   callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
 }
 <%/function:eb%>
 <%/function:oneway?%>
+<%/function:starts_interaction?%><%#function:starts_interaction?%>
+std::unique_ptr<<%service:name%>SvIf::<%type:name%>If> <%service:name%>SvIf::<%function:cpp_name%>() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
+}
+<%/function:starts_interaction?%>
 <%/function:returnType%><%/service:functions%>

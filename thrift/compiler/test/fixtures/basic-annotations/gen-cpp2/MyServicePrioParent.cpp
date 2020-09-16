@@ -29,7 +29,6 @@ folly::Future<folly::Unit> MyServicePrioParentSvIf::future_ping() {
   return apache::thrift::detail::si::future(semifuture_ping(), getThreadManager());
 }
 
-
 void MyServicePrioParentSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_ping();
@@ -50,7 +49,6 @@ folly::Future<folly::Unit> MyServicePrioParentSvIf::future_pong() {
   return apache::thrift::detail::si::future(semifuture_pong(), getThreadManager());
 }
 
-
 void MyServicePrioParentSvIf::async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_pong();
@@ -64,6 +62,8 @@ void MyServicePrioParentSvNull::ping() {
 void MyServicePrioParentSvNull::pong() {
   return;
 }
+
+
 
 const char* MyServicePrioParentAsyncProcessor::getServiceName() {
   return "MyServicePrioParent";

@@ -50,6 +50,8 @@ class NestedContainersSvIf : public NestedContainersSvAsyncIf, public apache::th
  public:
   typedef NestedContainersAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> /*foo*/);
   folly::Future<folly::Unit> future_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) override;
   folly::SemiFuture<folly::Unit> semifuture_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) override;
@@ -99,7 +101,7 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   static const NestedContainersAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const NestedContainersAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const NestedContainersAsyncProcessor::ProcessMap compactProcessMap_;
+  static const NestedContainersAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_mapList(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

@@ -452,4 +452,5 @@ void SinkServiceAsyncProcessor::throw_wrapped_methodBothThrow(apache::thrift::Re
   }
 }
 
+
 } // cpp2

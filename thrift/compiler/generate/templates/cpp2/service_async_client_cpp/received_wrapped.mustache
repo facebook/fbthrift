@@ -27,7 +27,7 @@ folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = <%service:name%>_<%function:cpp_name%>_presult;
+  using result = <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult;
   constexpr auto const fname = "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>";
   <%#type:sink?%>
   <%^function:sink_exceptions?%>

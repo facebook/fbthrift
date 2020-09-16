@@ -1053,6 +1053,9 @@ Interaction:
       $$->set_name($3);
       $$->set_is_interaction();
       $$->set_lineno(lineno_stack.pop(LineType::kService));
+      for (auto* func : $$->get_functions()) {
+        func->set_is_interaction_member();
+      }
     }
 
 FunctionList:

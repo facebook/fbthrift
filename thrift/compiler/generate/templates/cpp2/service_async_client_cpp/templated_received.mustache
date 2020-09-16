@@ -18,7 +18,7 @@
 template <typename Protocol_>
 void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
-  <%service:name%>_<%function:cpp_name%>_pargs args;
+  <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_pargs args;
 <%#function:args%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
   args.get<<%field:index%>>().value = &<%field:cpp_name%>;

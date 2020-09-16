@@ -88,6 +88,8 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
  public:
   typedef ReturnServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual bool boolReturn();
   folly::Future<bool> future_boolReturn() override;
@@ -193,7 +195,7 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   static const ReturnServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const ReturnServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const ReturnServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const ReturnServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_noReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

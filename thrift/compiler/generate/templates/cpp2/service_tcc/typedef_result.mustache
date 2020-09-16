@@ -18,7 +18,7 @@
 <%^function:oneway?%>
 <%^type:streamresponse?%>
 <%^type:sink?%><%!
-  %>typedef apache::thrift::ThriftPresult<true<% > service_tcc/field_data_return%><% > service_tcc/field_data_throws%>> <%service:name%>_<%function:cpp_name%>_presult;
+  %>typedef apache::thrift::ThriftPresult<true<% > service_tcc/field_data_return%><% > service_tcc/field_data_throws%>> <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult;
 <%/type:sink?%><%!
 
 %><%#type:sink?%>
@@ -27,7 +27,7 @@ typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true<%#type:sinkFirstResponseType%><% > service_tcc/field_data_return%><%/type:sinkFirstResponseType%><% > service_tcc/field_data_throws%>>,
     apache::thrift::ThriftPresult<true<%#type:sinkElemType%><% > service_tcc/field_data_return%><%/type:sinkElemType%><% > service_tcc/field_data_sink_throws%>>,
     apache::thrift::ThriftPresult<true<%#type:sinkFinalResponseType%><% > service_tcc/field_data_return%><%/type:sinkFinalResponseType%><% > service_tcc/field_data_sink_final_throws%>>
-    > <%service:name%>_<%function:cpp_name%>_presult;
+    > <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult;
   <%/type:sinkHasFirstResponse?%><%!
 
   %><%^type:sinkHasFirstResponse?%>
@@ -35,7 +35,7 @@ typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true<% > service_tcc/field_data_throws%>>,
     apache::thrift::ThriftPresult<true<%#type:sinkElemType%><% > service_tcc/field_data_return%><%/type:sinkElemType%><% > service_tcc/field_data_sink_throws%>>,
     apache::thrift::ThriftPresult<true<%#type:sinkFinalResponseType%><% > service_tcc/field_data_return%><%/type:sinkFinalResponseType%><% > service_tcc/field_data_sink_final_throws%>>
-    > <%service:name%>_<%function:cpp_name%>_presult;
+    > <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult;
   <%/type:sinkHasFirstResponse?%>
 <%/type:sink?%>
 <%/type:streamresponse?%><%!
@@ -45,7 +45,7 @@ typedef apache::thrift::ThriftPResultStream<
     <%#type:streamHasFirstResponse?%>apache::thrift::ThriftPresult<true<%#type:streamFirstResponseType%><% > service_tcc/field_data_return%><%/type:streamFirstResponseType%><% > service_tcc/field_data_throws%>>, <%/type:streamHasFirstResponse?%><%!
     %><%^type:streamHasFirstResponse?%>apache::thrift::ThriftPresult<true<% > service_tcc/field_data_throws%>>, <%/type:streamHasFirstResponse?%>
     apache::thrift::ThriftPresult<true<%#type:streamElemType%><% > service_tcc/field_data_return%><%/type:streamElemType%><% > service_tcc/field_data_stream_throws%>>
-    > <%service:name%>_<%function:cpp_name%>_presult;
+    > <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult;
 <%/type:streamresponse?%>
 <%/function:oneway?%>
 <%/function:returnType%>

@@ -198,13 +198,13 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_foo(::apach
 
 
 
-typedef apache::thrift::ThriftPresult<false> MyInteraction_frobnicate_pargs;
-typedef apache::thrift::ThriftPresult<true> MyInteraction_frobnicate_presult;
+typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_frobnicate_pargs;
+typedef apache::thrift::ThriftPresult<true> MyService_MyInteraction_frobnicate_presult;
 
 template <typename Protocol_>
 void MyServiceAsyncClient::MyInteraction::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
-  MyInteraction_frobnicate_pargs args;
+  MyService_MyInteraction_frobnicate_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.frobnicate", writer, sizer);
@@ -276,7 +276,7 @@ folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_frobn
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = MyInteraction_frobnicate_presult;
+  using result = MyService_MyInteraction_frobnicate_presult;
   constexpr auto const fname = "MyInteraction.frobnicate";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:

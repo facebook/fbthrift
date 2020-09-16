@@ -47,6 +47,8 @@ class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterfac
  public:
   typedef RaiserAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void doBland();
   folly::Future<folly::Unit> future_doBland() override;
   folly::SemiFuture<folly::Unit> semifuture_doBland() override;
@@ -91,7 +93,7 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   static const RaiserAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const RaiserAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const RaiserAsyncProcessor::ProcessMap compactProcessMap_;
+  static const RaiserAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_doBland(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

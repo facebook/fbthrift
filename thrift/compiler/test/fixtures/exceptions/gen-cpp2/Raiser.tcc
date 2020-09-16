@@ -261,4 +261,5 @@ void RaiserAsyncProcessor::throw_wrapped_get500(apache::thrift::ResponseChannelR
   return req->sendReply(queue.move());
 }
 
+
 } // cpp2

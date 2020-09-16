@@ -113,8 +113,10 @@ bool GeneratedAsyncProcessor::createInteraction(
 
 std::unique_ptr<Tile> GeneratedAsyncProcessor::createInteractionImpl(
     const std::string&) {
-  LOG(ERROR) << "Unimplemented";
-  return std::make_unique<Tile>();
+  return std::make_unique<ErrorTile>(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,
+          "Handler doesn't perform any interactions"));
 }
 
 void GeneratedAsyncProcessor::terminateInteraction(
@@ -226,9 +228,16 @@ HandlerCallbackBase::~HandlerCallbackBase() {
     assert(eb_ != nullptr);
     if (eb_->inRunningEventBaseThread()) {
       req_.reset();
+      releaseInteractionInstance();
     } else {
       eb_->runInEventBaseThread(
-          [req = std::move(req_)]() mutable { req.reset(); });
+          [req = std::move(req_),
+           reqCtx = reqCtx_,
+           interaction = std::exchange(interaction_, nullptr),
+           tm = getThreadManager(),
+           eb = getEventBase()] {
+            releaseInteraction(interaction, reqCtx, tm, eb);
+          });
     }
   }
 }
@@ -278,10 +287,27 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
 }
 
 void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
-  std::exchange(req_, {})->sendErrorWrapped(
-      folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::LOADSHEDDING, message),
-      kAppOverloadedErrorCode);
+  if (eb_->inRunningEventBaseThread()) {
+    std::exchange(req_, {})->sendErrorWrapped(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::LOADSHEDDING, message),
+        kAppOverloadedErrorCode);
+    releaseInteractionInstance();
+  } else {
+    eb_->runInEventBaseThread(
+        [message,
+         reqCtx = reqCtx_,
+         interaction = std::exchange(interaction_, nullptr),
+         req = std::move(req_),
+         tm = getThreadManager(),
+         eb = getEventBase()]() mutable {
+          req->sendErrorWrapped(
+              folly::make_exception_wrapper<TApplicationException>(
+                  TApplicationException::LOADSHEDDING, std::move(message)),
+              kAppOverloadedErrorCode);
+          releaseInteraction(interaction, reqCtx, tm, eb);
+        });
+  }
 }
 
 void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
@@ -289,10 +315,18 @@ void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
   transform(queue);
   if (getEventBase()->isInEventBaseThread()) {
     std::exchange(req_, {})->sendReply(queue.move(), nullptr, crc32c);
+    releaseInteractionInstance();
   } else {
     getEventBase()->runInEventBaseThread(
-        [req = std::move(req_), queue = std::move(queue), crc32c]() mutable {
+        [req = std::move(req_),
+         queue = std::move(queue),
+         crc32c,
+         reqCtx = reqCtx_,
+         interaction = std::exchange(interaction_, nullptr),
+         tm = getThreadManager(),
+         eb = getEventBase()]() mutable {
           req->sendReply(queue.move(), nullptr, crc32c);
+          releaseInteraction(interaction, reqCtx, tm, eb);
         });
   }
 }
@@ -306,13 +340,20 @@ void HandlerCallbackBase::sendReply(
   if (getEventBase()->isInEventBaseThread()) {
     std::exchange(req_, {})->sendStreamReply(
         queue.move(), std::move(stream), crc32c);
+    releaseInteractionInstance();
   } else {
-    getEventBase()->runInEventBaseThread([req = std::move(req_),
-                                          queue = std::move(queue),
-                                          stream = std::move(stream),
-                                          crc32c]() mutable {
-      req->sendStreamReply(queue.move(), std::move(stream), crc32c);
-    });
+    getEventBase()->runInEventBaseThread(
+        [req = std::move(req_),
+         queue = std::move(queue),
+         stream = std::move(stream),
+         crc32c,
+         reqCtx = reqCtx_,
+         interaction = std::exchange(interaction_, nullptr),
+         tm = getThreadManager(),
+         eb = getEventBase()]() mutable {
+          req->sendStreamReply(queue.move(), std::move(stream), crc32c);
+          releaseInteraction(interaction, reqCtx, tm, eb);
+        });
   }
 }
 
@@ -328,18 +369,42 @@ void HandlerCallbackBase::sendReply(
   if (getEventBase()->isInEventBaseThread()) {
     std::exchange(req_, {})->sendSinkReply(
         queue.move(), std::move(sinkConsumer), crc32c);
+    releaseInteractionInstance();
   } else {
     getEventBase()->runInEventBaseThread(
         [req = std::move(req_),
          queue = std::move(queue),
          sinkConsumer = std::move(sinkConsumer),
-         crc32c]() mutable {
+         crc32c,
+         reqCtx = reqCtx_,
+         interaction = std::exchange(interaction_, nullptr),
+         tm = getThreadManager(),
+         eb = getEventBase()]() mutable {
           req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
+          releaseInteraction(interaction, reqCtx, tm, eb);
         });
   }
 #else
   std::terminate();
 #endif
+}
+
+void HandlerCallbackBase::releaseInteraction(
+    Tile* interaction,
+    Cpp2RequestContext* reqCtx,
+    concurrency::ThreadManager* tm,
+    folly::EventBase* eb) {
+  if (interaction) {
+    interaction->__fbthrift_releaseRef(
+        reqCtx->getInteractionId(), *reqCtx->getConnectionContext(), *tm, *eb);
+  }
+}
+void HandlerCallbackBase::releaseInteractionInstance() {
+  releaseInteraction(
+      std::exchange(interaction_, nullptr),
+      reqCtx_,
+      getThreadManager(),
+      getEventBase());
 }
 
 HandlerCallback<void>::HandlerCallback(
@@ -350,8 +415,16 @@ HandlerCallback<void>::HandlerCallback(
     int32_t protoSeqId,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
-    Cpp2RequestContext* reqCtx)
-    : HandlerCallbackBase(std::move(req), std::move(ctx), ewp, eb, tm, reqCtx),
+    Cpp2RequestContext* reqCtx,
+    Tile* interaction)
+    : HandlerCallbackBase(
+          std::move(req),
+          std::move(ctx),
+          ewp,
+          eb,
+          tm,
+          reqCtx,
+          interaction),
       cp_(cp) {
   this->protoSeqId_ = protoSeqId;
 }

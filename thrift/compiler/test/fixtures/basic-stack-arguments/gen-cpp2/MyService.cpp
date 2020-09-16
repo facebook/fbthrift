@@ -29,7 +29,6 @@ folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
   return apache::thrift::detail::si::future(semifuture_hasDataById(id), getThreadManager());
 }
 
-
 void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_hasDataById(id);
@@ -47,7 +46,6 @@ folly::SemiFuture<::std::string> MyServiceSvIf::semifuture_getDataById(int64_t i
 folly::Future<::std::string> MyServiceSvIf::future_getDataById(int64_t id) {
   return apache::thrift::detail::si::future(semifuture_getDataById(id), getThreadManager());
 }
-
 
 void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, int64_t id) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -69,7 +67,6 @@ folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, const :
   return apache::thrift::detail::si::future(semifuture_putDataById(id, data), getThreadManager());
 }
 
-
 void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const ::std::string& data) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_putDataById(id, data);
@@ -90,7 +87,6 @@ folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t id, const :
   return apache::thrift::detail::si::future(semifuture_lobDataById(id, data), getThreadManager());
 }
 
-
 void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const ::std::string& data) {
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
     return future_lobDataById(id, data);
@@ -110,6 +106,8 @@ void MyServiceSvNull::putDataById(int64_t /*id*/, const ::std::string& /*data*/)
 void MyServiceSvNull::lobDataById(int64_t /*id*/, const ::std::string& /*data*/) {
   return;
 }
+
+
 
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";

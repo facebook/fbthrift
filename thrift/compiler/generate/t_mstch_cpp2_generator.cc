@@ -1163,7 +1163,8 @@ class mstch_cpp2_function : public mstch_function {
         });
   }
   mstch::node coroutine() {
-    return bool(function_->annotations_.count("cpp.coroutine"));
+    return bool(function_->annotations_.count("cpp.coroutine")) ||
+        function_->is_interaction_member();
   }
   mstch::node event_based() {
     return function_->annotations_.count("thread") &&

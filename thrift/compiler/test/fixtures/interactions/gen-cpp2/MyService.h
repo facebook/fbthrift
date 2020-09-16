@@ -10,6 +10,8 @@
 
 #include "thrift/compiler/test/fixtures/interactions/gen-cpp2/MyServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/interactions/gen-cpp2/module_types.h"
+#include <thrift/lib/cpp2/async/ServerStream.h>
+#include <thrift/lib/cpp2/async/Sink.h>
 
 namespace folly {
   class IOBuf;
@@ -27,9 +29,6 @@ namespace cpp2 {
 class MyServiceSvAsyncIf {
  public:
   virtual ~MyServiceSvAsyncIf() {}
-  virtual void async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<MyInteraction>> callback) = 0;
-  virtual folly::Future<MyInteraction> future_createMyInteraction() = 0;
-  virtual folly::SemiFuture<MyInteraction> semifuture_createMyInteraction() = 0;
   virtual void async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_foo() = 0;
   virtual folly::SemiFuture<folly::Unit> semifuture_foo() = 0;
@@ -41,10 +40,21 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
  public:
   typedef MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual MyInteraction createMyInteraction();
-  folly::Future<MyInteraction> future_createMyInteraction() override;
-  folly::SemiFuture<MyInteraction> semifuture_createMyInteraction() override;
-  void async_tm_createMyInteraction(std::unique_ptr<apache::thrift::HandlerCallback<MyInteraction>> callback) override;
+
+class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::ServerInterface {
+ public:
+  typedef MyServiceAsyncProcessor ProcessorType;
+  virtual ~MyInteractionIf() = default;
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    std::terminate();
+  }
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<void> co_frobnicate();
+  virtual folly::coro::Task<void> co_frobnicate(apache::thrift::RequestParams params);
+#endif
+  void async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
+};
+  virtual std::unique_ptr<MyInteractionIf> createMyInteraction();
   virtual void foo();
   folly::Future<folly::Unit> future_foo() override;
   folly::SemiFuture<folly::Unit> semifuture_foo() override;
@@ -53,7 +63,6 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
 
 class MyServiceSvNull : public MyServiceSvIf {
  public:
-  MyInteraction createMyInteraction() override;
   void foo() override;
 };
 
@@ -71,20 +80,20 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
  public:
   using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<MyServiceAsyncProcessor>;
   using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
+  using InteractionConstructor = GeneratedAsyncProcessor::InteractionConstructor<MyServiceAsyncProcessor>;
+  using InteractionConstructorMap = GeneratedAsyncProcessor::InteractionConstructorMap<InteractionConstructor>;
   static const MyServiceAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
   static const MyServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+  static const MyServiceAsyncProcessor::InteractionConstructorMap& getInteractionConstructorMap();
+  std::unique_ptr<Tile> createInteractionImpl(const std::string& name) override;
  private:
   static const MyServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const MyServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const MyServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const MyServiceAsyncProcessor::InteractionConstructorMap interactionConstructorMap_;
  private:
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_createMyInteraction(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_createMyInteraction(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_createMyInteraction(int32_t protoSeqId, apache::thrift::ContextStack* ctx, MyInteraction const& _return);
-  template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_createMyInteraction(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  std::unique_ptr<apache::thrift::Tile> createMyInteraction() {
+    return iface_->createMyInteraction();
+  }
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_foo(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -93,6 +102,14 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   static folly::IOBufQueue return_foo(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_foo(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_MyInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_MyInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_MyInteraction_frobnicate(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_MyInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyServiceAsyncProcessor(MyServiceSvIf* iface) :
       iface_(iface) {}

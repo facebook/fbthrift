@@ -11,4 +11,5 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace some { namespace valid { namespace ns {
+
 }}} // some::valid::ns

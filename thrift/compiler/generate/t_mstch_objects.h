@@ -1024,6 +1024,7 @@ class mstch_service : public mstch_base {
             {"service:annotations", &mstch_service::annotations},
             {"service:interactions", &mstch_service::interactions},
             {"service:interaction?", &mstch_service::is_interaction},
+            {"service:any_interactions?", &mstch_service::any_interactions},
         });
   }
 
@@ -1058,6 +1059,13 @@ class mstch_service : public mstch_base {
     auto& funcs = service_->get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->returns_sink();
+    });
+  }
+
+  mstch::node any_interactions() {
+    auto& funcs = service_->get_functions();
+    return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
+      return func->get_returntype()->is_service();
     });
   }
 

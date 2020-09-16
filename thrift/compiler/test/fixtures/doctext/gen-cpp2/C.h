@@ -38,6 +38,8 @@ class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   typedef CAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   virtual void f();
   folly::Future<folly::Unit> future_f() override;
   folly::SemiFuture<folly::Unit> semifuture_f() override;
@@ -67,7 +69,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   static const CAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const CAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const CAsyncProcessor::ProcessMap compactProcessMap_;
+  static const CAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_f(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

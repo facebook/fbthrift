@@ -27,7 +27,6 @@ folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_
   return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(key)), getThreadManager());
 }
 
-
 void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> key) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_getDataByKey0(std::move(key));
@@ -46,7 +45,6 @@ folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_
   return apache::thrift::detail::si::future(semifuture_getDataByKey1(std::move(key)), getThreadManager());
 }
 
-
 void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> key) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_getDataByKey1(std::move(key));
@@ -56,6 +54,8 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::t
 void DbMixedStackArgumentsSvNull::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {}
 
 void DbMixedStackArgumentsSvNull::getDataByKey1(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {}
+
+
 
 const char* DbMixedStackArgumentsAsyncProcessor::getServiceName() {
   return "DbMixedStackArguments";

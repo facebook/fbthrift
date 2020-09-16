@@ -37,6 +37,8 @@ class EmptyServiceSvIf : public EmptyServiceSvAsyncIf, public apache::thrift::Se
  public:
   typedef EmptyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
 };
 
 class EmptyServiceSvNull : public EmptyServiceSvIf {
@@ -61,7 +63,7 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   static const EmptyServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const EmptyServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const EmptyServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const EmptyServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
  public:
   EmptyServiceAsyncProcessor(EmptyServiceSvIf* iface) :

@@ -39,6 +39,8 @@ class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::
  public:
   typedef MyServiceFastAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+
+
   void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) override;
   void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, int64_t id) override;
   void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const ::std::string& data) override;
@@ -67,7 +69,7 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   static const MyServiceFastAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
   static const MyServiceFastAsyncProcessor::ProcessMap binaryProcessMap_;
-   static const MyServiceFastAsyncProcessor::ProcessMap compactProcessMap_;
+  static const MyServiceFastAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

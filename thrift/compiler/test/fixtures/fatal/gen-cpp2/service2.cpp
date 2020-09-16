@@ -29,7 +29,6 @@ folly::Future<folly::Unit> service2SvIf::future_methodA() {
   return apache::thrift::detail::si::future(semifuture_methodA(), getThreadManager());
 }
 
-
 void service2SvIf::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodA();
@@ -49,7 +48,6 @@ folly::SemiFuture<folly::Unit> service2SvIf::semifuture_methodB(int32_t x, std::
 folly::Future<folly::Unit> service2SvIf::future_methodB(int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) {
   return apache::thrift::detail::si::future(semifuture_methodB(x, std::move(y), z), getThreadManager());
 }
-
 
 void service2SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -71,7 +69,6 @@ folly::Future<int32_t> service2SvIf::future_methodC() {
   return apache::thrift::detail::si::future(semifuture_methodC(), getThreadManager());
 }
 
-
 void service2SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodC();
@@ -92,7 +89,6 @@ folly::Future<int32_t> service2SvIf::future_methodD(int32_t i, std::unique_ptr< 
   return apache::thrift::detail::si::future(semifuture_methodD(i, std::move(j), k), getThreadManager());
 }
 
-
 void service2SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodD(i, std::move(j), k);
@@ -111,7 +107,6 @@ folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service2Sv
   return apache::thrift::detail::si::future(semifuture_methodE(), getThreadManager());
 }
 
-
 void service2SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
     return future_methodE();
@@ -129,7 +124,6 @@ folly::SemiFuture<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> servic
 folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service2SvIf::future_methodF(int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) {
   return apache::thrift::detail::si::future(semifuture_methodF(l, std::move(m), n), getThreadManager());
 }
-
 
 void service2SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback, int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
@@ -156,6 +150,8 @@ int32_t service2SvNull::methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp
 void service2SvNull::methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/) {}
 
 void service2SvNull::methodF( ::test_cpp2::cpp_reflection::struct2& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {}
+
+
 
 const char* service2AsyncProcessor::getServiceName() {
   return "service2";
