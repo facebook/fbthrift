@@ -884,7 +884,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[6] and MyBinaryField3 is None:
-                deref(c_inst).MyBinaryField3 = default_inst[cMyStruct]().MyBinaryField3
+                deref(c_inst).MyBinaryField3_ref().assign(default_inst[cMyStruct]().MyBinaryField3_ref().value())
                 pass
 
             if not __isNOTSET[7] and MyBinaryListField4 is None:
@@ -916,7 +916,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyBinaryField2_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2)))
             deref(c_inst).__isset.MyBinaryField2 = True
         if MyBinaryField3 is not None:
-            deref(c_inst).MyBinaryField3 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3))
+            deref(c_inst).MyBinaryField3_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3)))
         if MyBinaryListField4 is not None:
             deref(c_inst).MyBinaryListField4_ref().assign(deref(List__binary(MyBinaryListField4)._cpp_obj))
             deref(c_inst).__isset.MyBinaryListField4 = True
@@ -935,6 +935,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "MyStringField2": deref(self._cpp_obj).MyStringField2_ref().has_value(),
           "MyBinaryField": deref(self._cpp_obj).MyBinaryField_ref().has_value(),
           "MyBinaryField2": deref(self._cpp_obj).MyBinaryField2_ref().has_value(),
+          "MyBinaryField3": deref(self._cpp_obj).MyBinaryField3_ref().has_value(),
           "MyBinaryListField4": deref(self._cpp_obj).MyBinaryListField4_ref().has_value(),
           "MyMapEnumAndInt": deref(self._cpp_obj).MyMapEnumAndInt_ref().has_value(),
         })
@@ -994,7 +995,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyBinaryField3(self):
 
-        return deref(self._cpp_obj).MyBinaryField3
+        return deref(self._cpp_obj).MyBinaryField3_ref().value()
 
     @property
     def MyBinaryListField4(self):
@@ -1940,12 +1941,12 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).code_ref().assign(code)
             deref(c_inst).__isset.code = True
         if req_code is not None:
-            deref(c_inst).req_code = req_code
+            deref(c_inst).req_code_ref().assign(req_code)
         if message2 is not None:
             deref(c_inst).message2_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(message2.encode('utf-8'))))
             deref(c_inst).__isset.message2 = True
         if req_message is not None:
-            deref(c_inst).req_message = thrift.py3.types.move(thrift.py3.types.bytes_to_string(req_message.encode('utf-8')))
+            deref(c_inst).req_message_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(req_message.encode('utf-8'))))
         if exception_list is not None:
             deref(c_inst).exception_list_ref().assign(deref(List__i32(exception_list)._cpp_obj))
             deref(c_inst).__isset.exception_list = True
@@ -1956,7 +1957,7 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).exception_map_ref().assign(deref(Map__string_i32(exception_map)._cpp_obj))
             deref(c_inst).__isset.exception_map = True
         if req_exception_map is not None:
-            deref(c_inst).req_exception_map = deref(Map__string_i32(req_exception_map)._cpp_obj)
+            deref(c_inst).req_exception_map_ref().assign(deref(Map__string_i32(req_exception_map)._cpp_obj))
         if enum_field is not None:
             deref(c_inst).enum_field_ref().assign(<cMyEnumA><int>enum_field)
             deref(c_inst).__isset.enum_field = True
@@ -1985,10 +1986,13 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AnException", {
           "code": deref(self._cpp_obj).code_ref().has_value(),
+          "req_code": deref(self._cpp_obj).req_code_ref().has_value(),
           "message2": deref(self._cpp_obj).message2_ref().has_value(),
+          "req_message": deref(self._cpp_obj).req_message_ref().has_value(),
           "exception_list": deref(self._cpp_obj).exception_list_ref().has_value(),
           "exception_set": deref(self._cpp_obj).exception_set_ref().has_value(),
           "exception_map": deref(self._cpp_obj).exception_map_ref().has_value(),
+          "req_exception_map": deref(self._cpp_obj).req_exception_map_ref().has_value(),
           "enum_field": deref(self._cpp_obj).enum_field_ref().has_value(),
           "enum_container": deref(self._cpp_obj).enum_container_ref().has_value(),
           "a_struct": deref(self._cpp_obj).a_struct_ref().has_value(),
@@ -2033,7 +2037,7 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     @property
     def req_code(self):
 
-        return deref(self._cpp_obj).req_code
+        return deref(self._cpp_obj).req_code_ref().value()
 
     @property
     def message2(self):
@@ -2043,7 +2047,7 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     @property
     def req_message(self):
 
-        return (<bytes>deref(self._cpp_obj).req_message).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).req_message_ref().value()).decode('UTF-8')
 
     @property
     def exception_list(self):
@@ -2070,7 +2074,7 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     def req_exception_map(self):
 
         if self.__field_req_exception_map is None:
-            self.__field_req_exception_map = Map__string_i32.create(reference_shared_ptr_req_exception_map(self._cpp_obj, deref(self._cpp_obj).req_exception_map))
+            self.__field_req_exception_map = Map__string_i32.create(reference_shared_ptr_req_exception_map(self._cpp_obj, deref(self._cpp_obj).req_exception_map_ref().value()))
         return self.__field_req_exception_map
 
     @property
@@ -2218,7 +2222,7 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).code_ref().assign(code)
             deref(c_inst).__isset.code = True
         if req_code is not None:
-            deref(c_inst).req_code = req_code
+            deref(c_inst).req_code_ref().assign(req_code)
         if message is not None:
             deref(c_inst).message_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(message.encode('utf-8'))))
             deref(c_inst).__isset.message = True
@@ -2229,6 +2233,7 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AnotherException", {
           "code": deref(self._cpp_obj).code_ref().has_value(),
+          "req_code": deref(self._cpp_obj).req_code_ref().has_value(),
           "message": deref(self._cpp_obj).message_ref().has_value(),
         })
 
@@ -2255,7 +2260,7 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     @property
     def req_code(self):
 
-        return deref(self._cpp_obj).req_code
+        return deref(self._cpp_obj).req_code_ref().value()
 
     @property
     def message(self):
@@ -2481,7 +2486,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and req_fieldA is None:
-                deref(c_inst).req_fieldA = default_inst[ccontainerStruct]().req_fieldA
+                deref(c_inst).req_fieldA_ref().assign(default_inst[ccontainerStruct]().req_fieldA_ref().value())
                 pass
 
             if not __isNOTSET[2] and opt_fieldA is None:
@@ -2494,7 +2499,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[4] and req_fieldB is None:
-                deref(c_inst).req_fieldB = default_inst[ccontainerStruct]().req_fieldB
+                deref(c_inst).req_fieldB_ref().assign(default_inst[ccontainerStruct]().req_fieldB_ref().value())
                 pass
 
             if not __isNOTSET[5] and opt_fieldB is None:
@@ -2507,7 +2512,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[7] and req_fieldC is None:
-                deref(c_inst).req_fieldC = default_inst[ccontainerStruct]().req_fieldC
+                deref(c_inst).req_fieldC_ref().assign(default_inst[ccontainerStruct]().req_fieldC_ref().value())
                 pass
 
             if not __isNOTSET[8] and opt_fieldC is None:
@@ -2526,7 +2531,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[11] and req_fieldE is None:
-                deref(c_inst).req_fieldE = default_inst[ccontainerStruct]().req_fieldE
+                deref(c_inst).req_fieldE_ref().assign(default_inst[ccontainerStruct]().req_fieldE_ref().value())
                 pass
 
             if not __isNOTSET[12] and opt_fieldE is None:
@@ -2600,7 +2605,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[26] and req_fieldR is None:
-                deref(c_inst).req_fieldR = default_inst[ccontainerStruct]().req_fieldR
+                deref(c_inst).req_fieldR_ref().assign(default_inst[ccontainerStruct]().req_fieldR_ref().value())
                 pass
 
             if not __isNOTSET[27] and opt_fieldR is None:
@@ -2629,7 +2634,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[32] and req_fieldV is None:
-                deref(c_inst).req_fieldV = default_inst[ccontainerStruct]().req_fieldV
+                deref(c_inst).req_fieldV_ref().assign(default_inst[ccontainerStruct]().req_fieldV_ref().value())
                 pass
 
             if not __isNOTSET[33] and opt_fieldV is None:
@@ -2647,7 +2652,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[36] and req_fieldX is None:
-                deref(c_inst).req_fieldX = default_inst[ccontainerStruct]().req_fieldX
+                deref(c_inst).req_fieldX_ref().assign(default_inst[ccontainerStruct]().req_fieldX_ref().value())
                 pass
 
             if not __isNOTSET[37] and opt_fieldX is None:
@@ -2698,7 +2703,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldA_ref().assign(fieldA)
             deref(c_inst).__isset.fieldA = True
         if req_fieldA is not None:
-            deref(c_inst).req_fieldA = req_fieldA
+            deref(c_inst).req_fieldA_ref().assign(req_fieldA)
         if opt_fieldA is not None:
             deref(c_inst).opt_fieldA_ref().assign(opt_fieldA)
             deref(c_inst).__isset.opt_fieldA = True
@@ -2706,7 +2711,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldB_ref().assign(deref(Map__string_bool(fieldB)._cpp_obj))
             deref(c_inst).__isset.fieldB = True
         if req_fieldB is not None:
-            deref(c_inst).req_fieldB = deref(Map__string_bool(req_fieldB)._cpp_obj)
+            deref(c_inst).req_fieldB_ref().assign(deref(Map__string_bool(req_fieldB)._cpp_obj))
         if opt_fieldB is not None:
             deref(c_inst).opt_fieldB_ref().assign(deref(Map__string_bool(opt_fieldB)._cpp_obj))
             deref(c_inst).__isset.opt_fieldB = True
@@ -2714,7 +2719,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldC_ref().assign(deref(Set__i32(fieldC)._cpp_obj))
             deref(c_inst).__isset.fieldC = True
         if req_fieldC is not None:
-            deref(c_inst).req_fieldC = deref(Set__i32(req_fieldC)._cpp_obj)
+            deref(c_inst).req_fieldC_ref().assign(deref(Set__i32(req_fieldC)._cpp_obj))
         if opt_fieldC is not None:
             deref(c_inst).opt_fieldC_ref().assign(deref(Set__i32(opt_fieldC)._cpp_obj))
             deref(c_inst).__isset.opt_fieldC = True
@@ -2725,7 +2730,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldE_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldE.encode('utf-8'))))
             deref(c_inst).__isset.fieldE = True
         if req_fieldE is not None:
-            deref(c_inst).req_fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(req_fieldE.encode('utf-8')))
+            deref(c_inst).req_fieldE_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(req_fieldE.encode('utf-8'))))
         if opt_fieldE is not None:
             deref(c_inst).opt_fieldE_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(opt_fieldE.encode('utf-8'))))
             deref(c_inst).__isset.opt_fieldE = True
@@ -2769,7 +2774,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldR_ref().assign(<cMyEnumA><int>fieldR)
             deref(c_inst).__isset.fieldR = True
         if req_fieldR is not None:
-            deref(c_inst).req_fieldR = <cMyEnumA><int>req_fieldR
+            deref(c_inst).req_fieldR_ref().assign(<cMyEnumA><int>req_fieldR)
         if opt_fieldR is not None:
             deref(c_inst).opt_fieldR_ref().assign(<cMyEnumA><int>opt_fieldR)
             deref(c_inst).__isset.opt_fieldR = True
@@ -2786,7 +2791,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldV_ref().assign(deref((<MyStruct?> fieldV)._cpp_obj))
             deref(c_inst).__isset.fieldV = True
         if req_fieldV is not None:
-            deref(c_inst).req_fieldV = deref((<MyStruct?> req_fieldV)._cpp_obj)
+            deref(c_inst).req_fieldV_ref().assign(deref((<MyStruct?> req_fieldV)._cpp_obj))
         if opt_fieldV is not None:
             deref(c_inst).opt_fieldV_ref().assign(deref((<MyStruct?> opt_fieldV)._cpp_obj))
             deref(c_inst).__isset.opt_fieldV = True
@@ -2797,7 +2802,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldX_ref().assign(deref((<ComplexUnion?> fieldX)._cpp_obj))
             deref(c_inst).__isset.fieldX = True
         if req_fieldX is not None:
-            deref(c_inst).req_fieldX = deref((<ComplexUnion?> req_fieldX)._cpp_obj)
+            deref(c_inst).req_fieldX_ref().assign(deref((<ComplexUnion?> req_fieldX)._cpp_obj))
         if opt_fieldX is not None:
             deref(c_inst).opt_fieldX_ref().assign(deref((<ComplexUnion?> opt_fieldX)._cpp_obj))
             deref(c_inst).__isset.opt_fieldX = True
@@ -2832,13 +2837,17 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("containerStruct", {
           "fieldA": deref(self._cpp_obj).fieldA_ref().has_value(),
+          "req_fieldA": deref(self._cpp_obj).req_fieldA_ref().has_value(),
           "opt_fieldA": deref(self._cpp_obj).opt_fieldA_ref().has_value(),
           "fieldB": deref(self._cpp_obj).fieldB_ref().has_value(),
+          "req_fieldB": deref(self._cpp_obj).req_fieldB_ref().has_value(),
           "opt_fieldB": deref(self._cpp_obj).opt_fieldB_ref().has_value(),
           "fieldC": deref(self._cpp_obj).fieldC_ref().has_value(),
+          "req_fieldC": deref(self._cpp_obj).req_fieldC_ref().has_value(),
           "opt_fieldC": deref(self._cpp_obj).opt_fieldC_ref().has_value(),
           "fieldD": deref(self._cpp_obj).fieldD_ref().has_value(),
           "fieldE": deref(self._cpp_obj).fieldE_ref().has_value(),
+          "req_fieldE": deref(self._cpp_obj).req_fieldE_ref().has_value(),
           "opt_fieldE": deref(self._cpp_obj).opt_fieldE_ref().has_value(),
           "fieldF": deref(self._cpp_obj).fieldF_ref().has_value(),
           "fieldG": deref(self._cpp_obj).fieldG_ref().has_value(),
@@ -2853,14 +2862,17 @@ cdef class containerStruct(thrift.py3.types.Struct):
           "fieldP": deref(self._cpp_obj).fieldP_ref().has_value(),
           "fieldQ": deref(self._cpp_obj).fieldQ_ref().has_value(),
           "fieldR": deref(self._cpp_obj).fieldR_ref().has_value(),
+          "req_fieldR": deref(self._cpp_obj).req_fieldR_ref().has_value(),
           "opt_fieldR": deref(self._cpp_obj).opt_fieldR_ref().has_value(),
           "fieldS": deref(self._cpp_obj).fieldS_ref().has_value(),
           "fieldT": deref(self._cpp_obj).fieldT_ref().has_value(),
           "fieldU": deref(self._cpp_obj).fieldU_ref().has_value(),
           "fieldV": deref(self._cpp_obj).fieldV_ref().has_value(),
+          "req_fieldV": deref(self._cpp_obj).req_fieldV_ref().has_value(),
           "opt_fieldV": deref(self._cpp_obj).opt_fieldV_ref().has_value(),
           "fieldW": deref(self._cpp_obj).fieldW_ref().has_value(),
           "fieldX": deref(self._cpp_obj).fieldX_ref().has_value(),
+          "req_fieldX": deref(self._cpp_obj).req_fieldX_ref().has_value(),
           "opt_fieldX": deref(self._cpp_obj).opt_fieldX_ref().has_value(),
           "fieldY": deref(self._cpp_obj).fieldY_ref().has_value(),
           "fieldZ": deref(self._cpp_obj).fieldZ_ref().has_value(),
@@ -2937,7 +2949,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def req_fieldA(self):
 
-        return <pbool> deref(self._cpp_obj).req_fieldA
+        return <pbool> deref(self._cpp_obj).req_fieldA_ref().value()
 
     @property
     def opt_fieldA(self):
@@ -2957,7 +2969,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def req_fieldB(self):
 
         if self.__field_req_fieldB is None:
-            self.__field_req_fieldB = Map__string_bool.create(reference_shared_ptr_req_fieldB(self._cpp_obj, deref(self._cpp_obj).req_fieldB))
+            self.__field_req_fieldB = Map__string_bool.create(reference_shared_ptr_req_fieldB(self._cpp_obj, deref(self._cpp_obj).req_fieldB_ref().value()))
         return self.__field_req_fieldB
 
     @property
@@ -2980,7 +2992,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def req_fieldC(self):
 
         if self.__field_req_fieldC is None:
-            self.__field_req_fieldC = Set__i32.create(reference_shared_ptr_req_fieldC(self._cpp_obj, deref(self._cpp_obj).req_fieldC))
+            self.__field_req_fieldC = Set__i32.create(reference_shared_ptr_req_fieldC(self._cpp_obj, deref(self._cpp_obj).req_fieldC_ref().value()))
         return self.__field_req_fieldC
 
     @property
@@ -3003,7 +3015,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def req_fieldE(self):
 
-        return (<bytes>deref(self._cpp_obj).req_fieldE).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).req_fieldE_ref().value()).decode('UTF-8')
 
     @property
     def opt_fieldE(self):
@@ -3096,7 +3108,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def req_fieldR(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).req_fieldR))
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).req_fieldR_ref().value()))
 
     @property
     def opt_fieldR(self):
@@ -3133,7 +3145,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def req_fieldV(self):
 
         if self.__field_req_fieldV is None:
-            self.__field_req_fieldV = MyStruct.create(reference_shared_ptr_req_fieldV(self._cpp_obj, deref(self._cpp_obj).req_fieldV))
+            self.__field_req_fieldV = MyStruct.create(reference_shared_ptr_req_fieldV(self._cpp_obj, deref(self._cpp_obj).req_fieldV_ref().value()))
         return self.__field_req_fieldV
 
     @property
@@ -3163,7 +3175,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def req_fieldX(self):
 
         if self.__field_req_fieldX is None:
-            self.__field_req_fieldX = ComplexUnion.create(reference_shared_ptr_req_fieldX(self._cpp_obj, deref(self._cpp_obj).req_fieldX))
+            self.__field_req_fieldX = ComplexUnion.create(reference_shared_ptr_req_fieldX(self._cpp_obj, deref(self._cpp_obj).req_fieldX_ref().value()))
         return self.__field_req_fieldX
 
     @property
@@ -3404,7 +3416,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[3] and ARequiredField is None:
-                deref(c_inst).ARequiredField = default_inst[cMyIncludedStruct]().ARequiredField
+                deref(c_inst).ARequiredField_ref().assign(default_inst[cMyIncludedStruct]().ARequiredField_ref().value())
                 pass
 
         if MyIncludedInt is not None:
@@ -3416,7 +3428,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         if ARefField is not None:
             deref(c_inst).ARefField = make_unique[_includes_types.cAStruct](deref((<_includes_types.AStruct?>ARefField)._cpp_obj))
         if ARequiredField is not None:
-            deref(c_inst).ARequiredField = deref((<_includes_types.AStruct?> ARequiredField)._cpp_obj)
+            deref(c_inst).ARequiredField_ref().assign(deref((<_includes_types.AStruct?> ARequiredField)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
@@ -3425,6 +3437,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         return thrift.py3.types._IsSet("MyIncludedStruct", {
           "MyIncludedInt": deref(self._cpp_obj).MyIncludedInt_ref().has_value(),
           "MyIncludedStruct": deref(self._cpp_obj).MyIncludedStruct_ref().has_value(),
+          "ARequiredField": deref(self._cpp_obj).ARequiredField_ref().has_value(),
         })
 
     def __iter__(self):
@@ -3467,7 +3480,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     def ARequiredField(self):
 
         if self.__field_ARequiredField is None:
-            self.__field_ARequiredField = _includes_types.AStruct.create(reference_shared_ptr_ARequiredField(self._cpp_obj, deref(self._cpp_obj).ARequiredField))
+            self.__field_ARequiredField = _includes_types.AStruct.create(reference_shared_ptr_ARequiredField(self._cpp_obj, deref(self._cpp_obj).ARequiredField_ref().value()))
         return self.__field_ARequiredField
 
 
@@ -3920,7 +3933,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).iobuf_type_ref().assign(deref((<__iobuf.IOBuf?>iobuf_type).c_clone()))
             deref(c_inst).__isset.iobuf_type = True
         if iobuf_ptr is not None:
-            deref(c_inst).iobuf_ptr = (<__iobuf.IOBuf?>iobuf_ptr).c_clone()
+            deref(c_inst).iobuf_ptr_ref().assign((<__iobuf.IOBuf?>iobuf_ptr).c_clone())
             deref(c_inst).__isset.iobuf_ptr = True
         if list_i32_template is not None:
             deref(c_inst).list_i32_template_ref().assign(deref(std_list__List__i32(list_i32_template)._cpp_obj))
@@ -3959,7 +3972,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).iobuf_type_val_ref().assign(deref((<__iobuf.IOBuf?>iobuf_type_val).c_clone()))
             deref(c_inst).__isset.iobuf_type_val = True
         if iobuf_ptr_val is not None:
-            deref(c_inst).iobuf_ptr_val = (<__iobuf.IOBuf?>iobuf_ptr_val).c_clone()
+            deref(c_inst).iobuf_ptr_val_ref().assign((<__iobuf.IOBuf?>iobuf_ptr_val).c_clone())
             deref(c_inst).__isset.iobuf_ptr_val = True
         if struct_struct is not None:
             deref(c_inst).struct_struct_ref().assign(deref((<containerStruct?> struct_struct)._cpp_obj))
@@ -3977,6 +3990,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
           "map_type": deref(self._cpp_obj).map_type_ref().has_value(),
           "map_struct_type": deref(self._cpp_obj).map_struct_type_ref().has_value(),
           "iobuf_type": deref(self._cpp_obj).iobuf_type_ref().has_value(),
+          "iobuf_ptr": deref(self._cpp_obj).iobuf_ptr_ref().has_value(),
           "list_i32_template": deref(self._cpp_obj).list_i32_template_ref().has_value(),
           "list_string_template": deref(self._cpp_obj).list_string_template_ref().has_value(),
           "set_template": deref(self._cpp_obj).set_template_ref().has_value(),
@@ -3989,6 +4003,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
           "indirection_b": deref(self._cpp_obj).indirection_b_ref().has_value(),
           "indirection_c": deref(self._cpp_obj).indirection_c_ref().has_value(),
           "iobuf_type_val": deref(self._cpp_obj).iobuf_type_val_ref().has_value(),
+          "iobuf_ptr_val": deref(self._cpp_obj).iobuf_ptr_val_ref().has_value(),
           "struct_struct": deref(self._cpp_obj).struct_struct_ref().has_value(),
         })
 
@@ -4256,9 +4271,9 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     def iobuf_ptr(self):
 
         if self.__field_iobuf_ptr is None:
-            if not deref(self._cpp_obj).iobuf_ptr:
+            if not deref(self._cpp_obj).iobuf_ptr_ref().value():
                 return None
-            self.__field_iobuf_ptr = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr.get(), self)
+            self.__field_iobuf_ptr = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_ref().value().get(), self)
         return self.__field_iobuf_ptr
 
     @property
@@ -4347,9 +4362,9 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     def iobuf_ptr_val(self):
 
         if self.__field_iobuf_ptr_val is None:
-            if not deref(self._cpp_obj).iobuf_ptr_val:
+            if not deref(self._cpp_obj).iobuf_ptr_val_ref().value():
                 return None
-            self.__field_iobuf_ptr_val = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_val.get(), self)
+            self.__field_iobuf_ptr_val = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_val_ref().value().get(), self)
         return self.__field_iobuf_ptr_val
 
     @property
@@ -4994,17 +5009,18 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and intField is None:
-                deref(c_inst).intField = default_inst[cAllRequiredNoExceptMoveCtrStruct]().intField
+                deref(c_inst).intField_ref().assign(default_inst[cAllRequiredNoExceptMoveCtrStruct]().intField_ref().value())
                 pass
 
         if intField is not None:
-            deref(c_inst).intField = intField
+            deref(c_inst).intField_ref().assign(intField)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AllRequiredNoExceptMoveCtrStruct", {
+          "intField": deref(self._cpp_obj).intField_ref().has_value(),
         })
 
     def __iter__(self):
@@ -5022,7 +5038,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     @property
     def intField(self):
 
-        return deref(self._cpp_obj).intField
+        return deref(self._cpp_obj).intField_ref().value()
 
 
     def __hash__(AllRequiredNoExceptMoveCtrStruct self):

@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -63,7 +69,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>(cSimpleException&)
         bint operator<=(cSimpleException&)
         bint operator>=(cSimpleException&)
-        __FieldRef[cint16_t] err_code_ref()
+        __field_ref[cint16_t] err_code_ref()
         cint16_t err_code
         cSimpleException__isset __isset
 
@@ -79,6 +85,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>(cOptionalRefStruct&)
         bint operator<=(cOptionalRefStruct&)
         bint operator>=(cOptionalRefStruct&)
+        __optional_field_ref[unique_ptr[__iobuf.cIOBuf]] optional_blob_ref()
         unique_ptr[__iobuf.cIOBuf] optional_blob
         cOptionalRefStruct__isset __isset
 
@@ -100,19 +107,19 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>(cSimpleStruct&)
         bint operator<=(cSimpleStruct&)
         bint operator>=(cSimpleStruct&)
-        __FieldRef[cbool] is_on_ref()
+        __field_ref[cbool] is_on_ref()
         cbool is_on
-        __FieldRef[cint8_t] tiny_int_ref()
+        __field_ref[cint8_t] tiny_int_ref()
         cint8_t tiny_int
-        __FieldRef[cint16_t] small_int_ref()
+        __field_ref[cint16_t] small_int_ref()
         cint16_t small_int
-        __FieldRef[cint32_t] nice_sized_int_ref()
+        __field_ref[cint32_t] nice_sized_int_ref()
         cint32_t nice_sized_int
-        __FieldRef[cint64_t] big_int_ref()
+        __field_ref[cint64_t] big_int_ref()
         cint64_t big_int
-        __FieldRef[double] real_ref()
+        __field_ref[double] real_ref()
         double real
-        __FieldRef[float] smaller_real_ref()
+        __field_ref[float] smaller_real_ref()
         float smaller_real
         cSimpleStruct__isset __isset
 
@@ -136,23 +143,23 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
         bint operator>(cComplexStruct&)
         bint operator<=(cComplexStruct&)
         bint operator>=(cComplexStruct&)
-        __FieldRef[cSimpleStruct] structOne_ref()
+        __field_ref[cSimpleStruct] structOne_ref()
         cSimpleStruct structOne
-        __FieldRef[cSimpleStruct] structTwo_ref()
+        __field_ref[cSimpleStruct] structTwo_ref()
         cSimpleStruct structTwo
-        __FieldRef[cint32_t] an_integer_ref()
+        __field_ref[cint32_t] an_integer_ref()
         cint32_t an_integer
-        __FieldRef[string] name_ref()
+        __field_ref[string] name_ref()
         string name
-        __FieldRef[cAnEnum] an_enum_ref()
+        __field_ref[cAnEnum] an_enum_ref()
         cAnEnum an_enum
-        __FieldRef[string] some_bytes_ref()
+        __field_ref[string] some_bytes_ref()
         string some_bytes
-        __FieldRef[string] sender_ref "from_ref"()
+        __field_ref[string] sender_ref "from_ref"()
         string sender "from"
-        __FieldRef[string] cdef__ref "cdef_ref"()
+        __field_ref[string] cdef__ref "cdef_ref"()
         string cdef_ "cdef"
-        __FieldRef[foo_Bar] bytes_with_cpp_type_ref()
+        __field_ref[foo_Bar] bytes_with_cpp_type_ref()
         foo_Bar bytes_with_cpp_type
         cComplexStruct__isset __isset
 
@@ -173,7 +180,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
     cdef cppclass cBinaryUnionStruct "::py3::simple::BinaryUnionStruct":
         cBinaryUnionStruct() except +
         cBinaryUnionStruct(const cBinaryUnionStruct&) except +
-        __FieldRef[cBinaryUnion] u_ref()
+        __field_ref[cBinaryUnion] u_ref()
         cBinaryUnion u
         cBinaryUnionStruct__isset __isset
 

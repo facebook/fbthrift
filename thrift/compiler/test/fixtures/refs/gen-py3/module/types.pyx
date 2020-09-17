@@ -370,7 +370,7 @@ cdef class MyField(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[2] and req_value is None:
-                deref(c_inst).req_value = default_inst[cMyField]().req_value
+                deref(c_inst).req_value_ref().assign(default_inst[cMyField]().req_value_ref().value())
                 pass
 
         if opt_value is not None:
@@ -380,7 +380,7 @@ cdef class MyField(thrift.py3.types.Struct):
             deref(c_inst).value_ref().assign(value)
             deref(c_inst).__isset.value = True
         if req_value is not None:
-            deref(c_inst).req_value = req_value
+            deref(c_inst).req_value_ref().assign(req_value)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
@@ -389,6 +389,7 @@ cdef class MyField(thrift.py3.types.Struct):
         return thrift.py3.types._IsSet("MyField", {
           "opt_value": deref(self._cpp_obj).opt_value_ref().has_value(),
           "value": deref(self._cpp_obj).value_ref().has_value(),
+          "req_value": deref(self._cpp_obj).req_value_ref().has_value(),
         })
 
     def __iter__(self):
@@ -420,7 +421,7 @@ cdef class MyField(thrift.py3.types.Struct):
     @property
     def req_value(self):
 
-        return deref(self._cpp_obj).req_value
+        return deref(self._cpp_obj).req_value_ref().value()
 
 
     def __hash__(MyField self):

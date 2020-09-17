@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cimport module0.types as _module0_types
 cimport module1.types as _module1_types
@@ -49,9 +55,9 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator>(cStruct&)
         bint operator<=(cStruct&)
         bint operator>=(cStruct&)
-        __FieldRef[_module0_types.cStruct] first_ref()
+        __field_ref[_module0_types.cStruct] first_ref()
         _module0_types.cStruct first
-        __FieldRef[_module1_types.cStruct] second_ref()
+        __field_ref[_module1_types.cStruct] second_ref()
         _module1_types.cStruct second
         cStruct__isset __isset
 
@@ -68,9 +74,9 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator>(cBigStruct&)
         bint operator<=(cBigStruct&)
         bint operator>=(cBigStruct&)
-        __FieldRef[cStruct] s_ref()
+        __field_ref[cStruct] s_ref()
         cStruct s
-        __FieldRef[cint32_t] id_ref()
+        __field_ref[cint32_t] id_ref()
         cint32_t id
         cBigStruct__isset __isset
 

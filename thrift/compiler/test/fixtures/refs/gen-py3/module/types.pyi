@@ -63,6 +63,7 @@ class MyField(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
     class __fbthrift_IsSet:
         opt_value: bool
         value: bool
+        req_value: bool
         pass
 
     opt_value: Final[_typing.Optional[int]] = ...

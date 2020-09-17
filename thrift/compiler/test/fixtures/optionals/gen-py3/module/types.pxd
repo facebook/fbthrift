@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -57,13 +63,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cColor&)
         bint operator<=(cColor&)
         bint operator>=(cColor&)
-        __FieldRef[double] red_ref()
+        __field_ref[double] red_ref()
         double red
-        __FieldRef[double] green_ref()
+        __field_ref[double] green_ref()
         double green
-        __FieldRef[double] blue_ref()
+        __field_ref[double] blue_ref()
         double blue
-        __FieldRef[double] alpha_ref()
+        __field_ref[double] alpha_ref()
         double alpha
         cColor__isset __isset
 
@@ -83,15 +89,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cVehicle&)
         bint operator<=(cVehicle&)
         bint operator>=(cVehicle&)
-        __FieldRef[cColor] color_ref()
+        __field_ref[cColor] color_ref()
         cColor color
-        __OptionalFieldRef[string] licensePlate_ref()
+        __optional_field_ref[string] licensePlate_ref()
         string licensePlate
-        __OptionalFieldRef[string] description_ref()
+        __optional_field_ref[string] description_ref()
         string description
-        __OptionalFieldRef[string] name_ref()
+        __optional_field_ref[string] name_ref()
         string name
-        __OptionalFieldRef[cbool] hasAC_ref()
+        __optional_field_ref[cbool] hasAC_ref()
         cbool hasAC
         cVehicle__isset __isset
 
@@ -116,25 +122,25 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cPerson&)
         bint operator<=(cPerson&)
         bint operator>=(cPerson&)
-        __FieldRef[cint64_t] id_ref()
+        __field_ref[cint64_t] id_ref()
         cint64_t id
-        __FieldRef[string] name_ref()
+        __field_ref[string] name_ref()
         string name
-        __OptionalFieldRef[cint16_t] age_ref()
+        __optional_field_ref[cint16_t] age_ref()
         cint16_t age
-        __OptionalFieldRef[string] address_ref()
+        __optional_field_ref[string] address_ref()
         string address
-        __OptionalFieldRef[cColor] favoriteColor_ref()
+        __optional_field_ref[cColor] favoriteColor_ref()
         cColor favoriteColor
-        __OptionalFieldRef[cset[cint64_t]] friends_ref()
+        __optional_field_ref[cset[cint64_t]] friends_ref()
         cset[cint64_t] friends
-        __OptionalFieldRef[cint64_t] bestFriend_ref()
+        __optional_field_ref[cint64_t] bestFriend_ref()
         cint64_t bestFriend
-        __OptionalFieldRef[cmap[cAnimal,string]] petNames_ref()
+        __optional_field_ref[cmap[cAnimal,string]] petNames_ref()
         cmap[cAnimal,string] petNames
-        __OptionalFieldRef[cAnimal] afraidOfAnimal_ref()
+        __optional_field_ref[cAnimal] afraidOfAnimal_ref()
         cAnimal afraidOfAnimal
-        __OptionalFieldRef[vector[cVehicle]] vehicles_ref()
+        __optional_field_ref[vector[cVehicle]] vehicles_ref()
         vector[cVehicle] vehicles
         cPerson__isset __isset
 

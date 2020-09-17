@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cimport includes.types as _includes_types
 cdef extern from "gen-py3/module/types.h":
@@ -49,11 +55,11 @@ cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __FieldRef[_includes_types.cIncluded] MyIncludedField_ref()
+        __field_ref[_includes_types.cIncluded] MyIncludedField_ref()
         _includes_types.cIncluded MyIncludedField
-        __FieldRef[_includes_types.cIncluded] MyOtherIncludedField_ref()
+        __field_ref[_includes_types.cIncluded] MyOtherIncludedField_ref()
         _includes_types.cIncluded MyOtherIncludedField
-        __FieldRef[cint64_t] MyIncludedInt_ref()
+        __field_ref[cint64_t] MyIncludedInt_ref()
         cint64_t MyIncludedInt
         cMyStruct__isset __isset
 

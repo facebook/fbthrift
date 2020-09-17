@@ -21,8 +21,10 @@ __property__ = property
 
 class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
+        myInteger: bool
         myString: bool
         myBools: bool
+        myNumbers: bool
         pass
 
     myInteger: Final[int] = ...

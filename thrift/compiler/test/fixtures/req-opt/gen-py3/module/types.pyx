@@ -147,7 +147,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and myInteger is None:
-                deref(c_inst).myInteger = default_inst[cFoo]().myInteger
+                deref(c_inst).myInteger_ref().assign(default_inst[cFoo]().myInteger_ref().value())
                 pass
 
             if not __isNOTSET[1] and myString is None:
@@ -160,11 +160,11 @@ cdef class Foo(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[3] and myNumbers is None:
-                deref(c_inst).myNumbers = default_inst[cFoo]().myNumbers
+                deref(c_inst).myNumbers_ref().assign(default_inst[cFoo]().myNumbers_ref().value())
                 pass
 
         if myInteger is not None:
-            deref(c_inst).myInteger = myInteger
+            deref(c_inst).myInteger_ref().assign(myInteger)
         if myString is not None:
             deref(c_inst).myString_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(myString.encode('utf-8'))))
             deref(c_inst).__isset.myString = True
@@ -172,15 +172,17 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(c_inst).myBools_ref().assign(deref(List__bool(myBools)._cpp_obj))
             deref(c_inst).__isset.myBools = True
         if myNumbers is not None:
-            deref(c_inst).myNumbers = deref(List__i32(myNumbers)._cpp_obj)
+            deref(c_inst).myNumbers_ref().assign(deref(List__i32(myNumbers)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Foo", {
+          "myInteger": deref(self._cpp_obj).myInteger_ref().has_value(),
           "myString": deref(self._cpp_obj).myString_ref().has_value(),
           "myBools": deref(self._cpp_obj).myBools_ref().has_value(),
+          "myNumbers": deref(self._cpp_obj).myNumbers_ref().has_value(),
         })
 
     def __iter__(self):
@@ -201,7 +203,7 @@ cdef class Foo(thrift.py3.types.Struct):
     @property
     def myInteger(self):
 
-        return deref(self._cpp_obj).myInteger
+        return deref(self._cpp_obj).myInteger_ref().value()
 
     @property
     def myString(self):
@@ -221,7 +223,7 @@ cdef class Foo(thrift.py3.types.Struct):
     def myNumbers(self):
 
         if self.__field_myNumbers is None:
-            self.__field_myNumbers = List__i32.create(reference_shared_ptr_myNumbers(self._cpp_obj, deref(self._cpp_obj).myNumbers))
+            self.__field_myNumbers = List__i32.create(reference_shared_ptr_myNumbers(self._cpp_obj, deref(self._cpp_obj).myNumbers_ref().value()))
         return self.__field_myNumbers
 
 

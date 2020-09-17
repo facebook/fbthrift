@@ -37,6 +37,7 @@ class Banal(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iter
 
 class Fiery(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
+        message: bool
         pass
 
     message: Final[str] = ...

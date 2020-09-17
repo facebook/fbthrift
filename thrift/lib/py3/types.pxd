@@ -199,3 +199,11 @@ cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift" nogil:
         T& ref_unchecked "value_unchecked" ()
         void reset()
         bint has_value()
+
+    cdef cppclass required_field_ref[T]:
+        void assign "operator="(T)
+        T value()
+        # Cython doesn't handle references very well, so use a different name
+        # for value in the contexts where references actually work.
+        T& ref "value" ()
+        bint has_value()

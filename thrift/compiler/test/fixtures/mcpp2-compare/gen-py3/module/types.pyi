@@ -119,6 +119,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyStringField2: bool
         MyBinaryField: bool
         MyBinaryField2: bool
+        MyBinaryField3: bool
         MyBinaryListField4: bool
         MyMapEnumAndInt: bool
         pass
@@ -372,10 +373,13 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
 class AnException(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
         code: bool
+        req_code: bool
         message2: bool
+        req_message: bool
         exception_list: bool
         exception_set: bool
         exception_map: bool
+        req_exception_map: bool
         enum_field: bool
         enum_container: bool
         a_struct: bool
@@ -445,6 +449,7 @@ class AnException(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typin
 class AnotherException(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
         code: bool
+        req_code: bool
         message: bool
         pass
 
@@ -472,13 +477,17 @@ class AnotherException(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _
 class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
         fieldA: bool
+        req_fieldA: bool
         opt_fieldA: bool
         fieldB: bool
+        req_fieldB: bool
         opt_fieldB: bool
         fieldC: bool
+        req_fieldC: bool
         opt_fieldC: bool
         fieldD: bool
         fieldE: bool
+        req_fieldE: bool
         opt_fieldE: bool
         fieldF: bool
         fieldG: bool
@@ -493,14 +502,17 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         fieldP: bool
         fieldQ: bool
         fieldR: bool
+        req_fieldR: bool
         opt_fieldR: bool
         fieldS: bool
         fieldT: bool
         fieldU: bool
         fieldV: bool
+        req_fieldV: bool
         opt_fieldV: bool
         fieldW: bool
         fieldX: bool
+        req_fieldX: bool
         opt_fieldX: bool
         fieldY: bool
         fieldZ: bool
@@ -717,6 +729,7 @@ class MyIncludedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterab
     class __fbthrift_IsSet:
         MyIncludedInt: bool
         MyIncludedStruct: bool
+        ARequiredField: bool
         pass
 
     MyIncludedInt: Final[int] = ...
@@ -761,6 +774,7 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         map_type: bool
         map_struct_type: bool
         iobuf_type: bool
+        iobuf_ptr: bool
         list_i32_template: bool
         list_string_template: bool
         set_template: bool
@@ -773,6 +787,7 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         indirection_b: bool
         indirection_c: bool
         iobuf_type_val: bool
+        iobuf_ptr_val: bool
         struct_struct: bool
         pass
 
@@ -1048,6 +1063,7 @@ class FloatUnion(thrift.py3.types.Union, _typing.Hashable):
 
 class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
+        intField: bool
         pass
 
     intField: Final[int] = ...

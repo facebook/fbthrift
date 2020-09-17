@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -54,7 +60,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStructNestedAnnotation&)
         bint operator<=(cMyStructNestedAnnotation&)
         bint operator>=(cMyStructNestedAnnotation&)
-        __FieldRef[string] name_ref()
+        __field_ref[string] name_ref()
         string name
         cMyStructNestedAnnotation__isset __isset
 
@@ -73,13 +79,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStructAnnotation&)
         bint operator<=(cMyStructAnnotation&)
         bint operator>=(cMyStructAnnotation&)
-        __FieldRef[cint64_t] count_ref()
+        __field_ref[cint64_t] count_ref()
         cint64_t count
-        __FieldRef[string] name_ref()
+        __field_ref[string] name_ref()
         string name
-        __OptionalFieldRef[string] extra_ref()
+        __optional_field_ref[string] extra_ref()
         string extra
-        __FieldRef[cMyStructNestedAnnotation] nest_ref()
+        __field_ref[cMyStructNestedAnnotation] nest_ref()
         cMyStructNestedAnnotation nest
         cMyStructAnnotation__isset __isset
 
@@ -100,17 +106,17 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __FieldRef[cint64_t] major_ref "majorVer_ref"()
+        __field_ref[cint64_t] major_ref "majorVer_ref"()
         cint64_t major "majorVer"
-        __FieldRef[string] package_ref()
+        __field_ref[string] package_ref()
         string package
-        __FieldRef[string] annotation_with_quote_ref()
+        __field_ref[string] annotation_with_quote_ref()
         string annotation_with_quote
-        __FieldRef[string] class__ref()
+        __field_ref[string] class__ref()
         string class_
-        __FieldRef[string] annotation_with_trailing_comma_ref()
+        __field_ref[string] annotation_with_trailing_comma_ref()
         string annotation_with_trailing_comma
-        __FieldRef[string] empty_annotations_ref()
+        __field_ref[string] empty_annotations_ref()
         string empty_annotations
         cMyStruct__isset __isset
 
@@ -127,9 +133,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSecretStruct&)
         bint operator<=(cSecretStruct&)
         bint operator>=(cSecretStruct&)
-        __FieldRef[cint64_t] id_ref()
+        __field_ref[cint64_t] id_ref()
         cint64_t id
-        __FieldRef[string] password_ref()
+        __field_ref[string] password_ref()
         string password
         cSecretStruct__isset __isset
 

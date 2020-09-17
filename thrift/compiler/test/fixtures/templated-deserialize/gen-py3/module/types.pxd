@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -61,9 +67,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSmallStruct&)
         bint operator<=(cSmallStruct&)
         bint operator>=(cSmallStruct&)
-        __FieldRef[cbool] small_A_ref()
+        __field_ref[cbool] small_A_ref()
         cbool small_A
-        __FieldRef[cint32_t] small_B_ref()
+        __field_ref[cint32_t] small_B_ref()
         cint32_t small_B
         cSmallStruct__isset __isset
 
@@ -100,39 +106,39 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(ccontainerStruct&)
         bint operator<=(ccontainerStruct&)
         bint operator>=(ccontainerStruct&)
-        __FieldRef[cbool] fieldA_ref()
+        __field_ref[cbool] fieldA_ref()
         cbool fieldA
-        __FieldRef[cmap[string,cbool]] fieldB_ref()
+        __field_ref[cmap[string,cbool]] fieldB_ref()
         cmap[string,cbool] fieldB
-        __FieldRef[cset[cint32_t]] fieldC_ref()
+        __field_ref[cset[cint32_t]] fieldC_ref()
         cset[cint32_t] fieldC
-        __FieldRef[string] fieldD_ref()
+        __field_ref[string] fieldD_ref()
         string fieldD
-        __FieldRef[string] fieldE_ref()
+        __field_ref[string] fieldE_ref()
         string fieldE
-        __FieldRef[vector[vector[vector[cint32_t]]]] fieldF_ref()
+        __field_ref[vector[vector[vector[cint32_t]]]] fieldF_ref()
         vector[vector[vector[cint32_t]]] fieldF
-        __FieldRef[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
+        __field_ref[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
         cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
-        __FieldRef[vector[cset[cint32_t]]] fieldH_ref()
+        __field_ref[vector[cset[cint32_t]]] fieldH_ref()
         vector[cset[cint32_t]] fieldH
-        __FieldRef[cbool] fieldI_ref()
+        __field_ref[cbool] fieldI_ref()
         cbool fieldI
-        __FieldRef[cmap[string,vector[cint32_t]]] fieldJ_ref()
+        __field_ref[cmap[string,vector[cint32_t]]] fieldJ_ref()
         cmap[string,vector[cint32_t]] fieldJ
-        __FieldRef[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
+        __field_ref[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
         vector[vector[vector[vector[cint32_t]]]] fieldK
-        __FieldRef[cset[cset[cset[cbool]]]] fieldL_ref()
+        __field_ref[cset[cset[cset[cbool]]]] fieldL_ref()
         cset[cset[cset[cbool]]] fieldL
-        __FieldRef[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
+        __field_ref[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
         cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
-        __FieldRef[vector[Foo]] fieldN_ref()
+        __field_ref[vector[Foo]] fieldN_ref()
         vector[Foo] fieldN
-        __FieldRef[vector[Bar]] fieldO_ref()
+        __field_ref[vector[Bar]] fieldO_ref()
         vector[Bar] fieldO
-        __FieldRef[vector[Baz]] fieldP_ref()
+        __field_ref[vector[Baz]] fieldP_ref()
         vector[Baz] fieldP
-        __FieldRef[cMyEnumA] fieldQ_ref()
+        __field_ref[cMyEnumA] fieldQ_ref()
         cMyEnumA fieldQ
         unique_ptr[cmap[string,cbool]] fieldR
         unique_ptr[cSmallStruct] fieldS

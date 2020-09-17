@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "gen-py3/transitive/types.h":
   pass
@@ -46,7 +52,7 @@ cdef extern from "gen-cpp2/transitive_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFoo&)
         bint operator<=(cFoo&)
         bint operator>=(cFoo&)
-        __FieldRef[cint64_t] a_ref()
+        __field_ref[cint64_t] a_ref()
         cint64_t a
         cFoo__isset __isset
 

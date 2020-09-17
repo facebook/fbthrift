@@ -817,7 +817,8 @@ class mstch_py3_field : public mstch_field {
   }
 
   mstch::node hasRefAccessor() {
-    return !is_required() && !is_ref();
+    auto ref_type = get_ref_type();
+    return (ref_type == RefType::NotRef || ref_type == RefType::IOBuf);
   }
 
   mstch::node hasDefaultValue() {
@@ -831,7 +832,7 @@ class mstch_py3_field : public mstch_field {
   mstch::node isSet() {
     auto ref_type = get_ref_type();
     return (ref_type == RefType::NotRef || ref_type == RefType::IOBuf) &&
-        !is_required();
+        field_->get_req() != t_field::e_req::T_REQUIRED;
   }
 
   mstch::node pyName() {
@@ -852,10 +853,6 @@ class mstch_py3_field : public mstch_field {
 
   bool has_default_value() {
     return !is_ref() && (field_->get_value() != nullptr || !is_optional());
-  }
-
-  bool is_required() const {
-    return field_->get_req() == t_field::e_req::T_REQUIRED;
   }
 
  protected:

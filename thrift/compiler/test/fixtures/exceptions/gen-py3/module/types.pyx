@@ -160,13 +160,14 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
             c_inst = make_unique[cFiery]()
 
         if message is not None:
-            deref(c_inst).message = thrift.py3.types.move(thrift.py3.types.bytes_to_string(message.encode('utf-8')))
+            deref(c_inst).message_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(message.encode('utf-8'))))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Fiery", {
+          "message": deref(self._cpp_obj).message_ref().has_value(),
         })
 
     def __iter__(self):
@@ -185,7 +186,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     @property
     def message(self):
 
-        return (<bytes>deref(self._cpp_obj).message).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).message_ref().value()).decode('UTF-8')
 
 
     def __hash__(Fiery self):

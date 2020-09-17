@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # Copyright (c) Facebook, Inc. and its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,8 +44,7 @@ class StructTests(unittest.TestCase):
         self.assertTrue(Struct.isset(file).type)
         self.assertFalse(Struct.isset(file).permissions)
         # required fields are always set
-        with self.assertRaises(AttributeError):
-            getattr(Struct.isset(file), "name")
+        self.assertTrue(Struct.isset(file).name)
 
         serialized = b'{"name":"/dev/null"}'
         file = deserialize(File, serialized, protocol=Protocol.JSON)
@@ -57,11 +55,11 @@ class StructTests(unittest.TestCase):
         serialized = b'{"name":"/dev/null","type":8}'
         file = deserialize(File, serialized, protocol=Protocol.JSON)
         self.assertEqual(
-            "Struct.isset(<File>, permissions=False, type=True)",
+            "Struct.isset(<File>, name=True, permissions=False, type=True)",
             repr(Struct.isset(file)),
         )
         self.assertEqual(
-            "Struct.isset(<File>, permissions=False, type=True)",
+            "Struct.isset(<File>, name=True, permissions=False, type=True)",
             str(Struct.isset(file)),
         )
 

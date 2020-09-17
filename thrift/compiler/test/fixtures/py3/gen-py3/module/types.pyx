@@ -311,7 +311,7 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
                 pass
 
         if optional_blob is not None:
-            deref(c_inst).optional_blob = (<__iobuf.IOBuf?>optional_blob).c_clone()
+            deref(c_inst).optional_blob_ref().assign((<__iobuf.IOBuf?>optional_blob).c_clone())
             deref(c_inst).__isset.optional_blob = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -319,6 +319,7 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("OptionalRefStruct", {
+          "optional_blob": deref(self._cpp_obj).optional_blob_ref().has_value(),
         })
 
     def __iter__(self):
@@ -339,9 +340,9 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
             return None
 
         if self.__field_optional_blob is None:
-            if not deref(self._cpp_obj).optional_blob:
+            if not deref(self._cpp_obj).optional_blob_ref().value_unchecked():
                 return None
-            self.__field_optional_blob = __iobuf.IOBuf.create(deref(self._cpp_obj).optional_blob.get(), self)
+            self.__field_optional_blob = __iobuf.IOBuf.create(deref(self._cpp_obj).optional_blob_ref().value_unchecked().get(), self)
         return self.__field_optional_blob
 
 

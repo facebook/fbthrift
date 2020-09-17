@@ -39,6 +39,7 @@ class Company(thrift.py3.types.Enum):
 
 class Internship(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
+        weeks: bool
         title: bool
         employer: bool
         pass
@@ -74,6 +75,8 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_ty
 
 class Range(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
+        min: bool
+        max: bool
         pass
 
     min: Final[int] = ...

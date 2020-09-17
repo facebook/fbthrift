@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -60,6 +66,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFiery&)
         bint operator<=(cFiery&)
         bint operator>=(cFiery&)
+        __required_field_ref[string] message_ref()
         string message
         cFiery__isset __isset
 
@@ -75,7 +82,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cSerious&)
         bint operator<=(cSerious&)
         bint operator>=(cSerious&)
-        __OptionalFieldRef[string] sonnet_ref()
+        __optional_field_ref[string] sonnet_ref()
         string sonnet
         cSerious__isset __isset
 
@@ -92,9 +99,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cComplexFieldNames&)
         bint operator<=(cComplexFieldNames&)
         bint operator>=(cComplexFieldNames&)
-        __FieldRef[string] error_message_ref()
+        __field_ref[string] error_message_ref()
         string error_message
-        __FieldRef[string] internal_error_message_ref()
+        __field_ref[string] internal_error_message_ref()
         string internal_error_message
         cComplexFieldNames__isset __isset
 
@@ -111,9 +118,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cCustomFieldNames&)
         bint operator<=(cCustomFieldNames&)
         bint operator>=(cCustomFieldNames&)
-        __FieldRef[string] error_message_ref()
+        __field_ref[string] error_message_ref()
         string error_message
-        __FieldRef[string] internal_error_message_ref()
+        __field_ref[string] internal_error_message_ref()
         string internal_error_message
         cCustomFieldNames__isset __isset
 

@@ -298,7 +298,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and weeks is None:
-                deref(c_inst).weeks = default_inst[cInternship]().weeks
+                deref(c_inst).weeks_ref().assign(default_inst[cInternship]().weeks_ref().value())
                 pass
 
             if not __isNOTSET[1] and title is None:
@@ -311,7 +311,7 @@ cdef class Internship(thrift.py3.types.Struct):
                 pass
 
         if weeks is not None:
-            deref(c_inst).weeks = weeks
+            deref(c_inst).weeks_ref().assign(weeks)
         if title is not None:
             deref(c_inst).title_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(title.encode('utf-8'))))
             deref(c_inst).__isset.title = True
@@ -324,6 +324,7 @@ cdef class Internship(thrift.py3.types.Struct):
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Internship", {
+          "weeks": deref(self._cpp_obj).weeks_ref().has_value(),
           "title": deref(self._cpp_obj).title_ref().has_value(),
           "employer": deref(self._cpp_obj).employer_ref().has_value(),
         })
@@ -345,7 +346,7 @@ cdef class Internship(thrift.py3.types.Struct):
     @property
     def weeks(self):
 
-        return deref(self._cpp_obj).weeks
+        return deref(self._cpp_obj).weeks_ref().value()
 
     @property
     def title(self):
@@ -501,23 +502,25 @@ cdef class Range(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and min is None:
-                deref(c_inst).min = default_inst[cRange]().min
+                deref(c_inst).min_ref().assign(default_inst[cRange]().min_ref().value())
                 pass
 
             if not __isNOTSET[1] and max is None:
-                deref(c_inst).max = default_inst[cRange]().max
+                deref(c_inst).max_ref().assign(default_inst[cRange]().max_ref().value())
                 pass
 
         if min is not None:
-            deref(c_inst).min = min
+            deref(c_inst).min_ref().assign(min)
         if max is not None:
-            deref(c_inst).max = max
+            deref(c_inst).max_ref().assign(max)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Range", {
+          "min": deref(self._cpp_obj).min_ref().has_value(),
+          "max": deref(self._cpp_obj).max_ref().has_value(),
         })
 
     def __iter__(self):
@@ -536,12 +539,12 @@ cdef class Range(thrift.py3.types.Struct):
     @property
     def min(self):
 
-        return deref(self._cpp_obj).min
+        return deref(self._cpp_obj).min_ref().value()
 
     @property
     def max(self):
 
-        return deref(self._cpp_obj).max
+        return deref(self._cpp_obj).max_ref().value()
 
 
     def __hash__(Range self):

@@ -56,6 +56,7 @@ class SimpleException(thrift.py3.exceptions.GeneratedError, _typing.Hashable, _t
 
 class OptionalRefStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
+        optional_blob: bool
         pass
 
     optional_blob: Final[_typing.Optional[__iobuf.IOBuf]] = ...

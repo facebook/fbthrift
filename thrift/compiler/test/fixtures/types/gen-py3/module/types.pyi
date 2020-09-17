@@ -336,6 +336,11 @@ class ComplexNestedWithDefault(thrift.py3.types.Struct, _typing.Hashable, _typin
 
 class MinPadding(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
+        small: bool
+        big: bool
+        medium: bool
+        biggish: bool
+        tiny: bool
         pass
 
     small: Final[int] = ...
@@ -627,6 +632,7 @@ class NoexceptMoveComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typi
         MyStringField2: bool
         MyBinaryField: bool
         MyBinaryField2: bool
+        MyBinaryField3: bool
         MyBinaryListField4: bool
         MyMapEnumAndInt: bool
         pass

@@ -2043,41 +2043,46 @@ cdef class MinPadding(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and small is None:
-                deref(c_inst).small = default_inst[cMinPadding]().small
+                deref(c_inst).small_ref().assign(default_inst[cMinPadding]().small_ref().value())
                 pass
 
             if not __isNOTSET[1] and big is None:
-                deref(c_inst).big = default_inst[cMinPadding]().big
+                deref(c_inst).big_ref().assign(default_inst[cMinPadding]().big_ref().value())
                 pass
 
             if not __isNOTSET[2] and medium is None:
-                deref(c_inst).medium = default_inst[cMinPadding]().medium
+                deref(c_inst).medium_ref().assign(default_inst[cMinPadding]().medium_ref().value())
                 pass
 
             if not __isNOTSET[3] and biggish is None:
-                deref(c_inst).biggish = default_inst[cMinPadding]().biggish
+                deref(c_inst).biggish_ref().assign(default_inst[cMinPadding]().biggish_ref().value())
                 pass
 
             if not __isNOTSET[4] and tiny is None:
-                deref(c_inst).tiny = default_inst[cMinPadding]().tiny
+                deref(c_inst).tiny_ref().assign(default_inst[cMinPadding]().tiny_ref().value())
                 pass
 
         if small is not None:
-            deref(c_inst).small = small
+            deref(c_inst).small_ref().assign(small)
         if big is not None:
-            deref(c_inst).big = big
+            deref(c_inst).big_ref().assign(big)
         if medium is not None:
-            deref(c_inst).medium = medium
+            deref(c_inst).medium_ref().assign(medium)
         if biggish is not None:
-            deref(c_inst).biggish = biggish
+            deref(c_inst).biggish_ref().assign(biggish)
         if tiny is not None:
-            deref(c_inst).tiny = tiny
+            deref(c_inst).tiny_ref().assign(tiny)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return __fbthrift_move_unique(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MinPadding", {
+          "small": deref(self._cpp_obj).small_ref().has_value(),
+          "big": deref(self._cpp_obj).big_ref().has_value(),
+          "medium": deref(self._cpp_obj).medium_ref().has_value(),
+          "biggish": deref(self._cpp_obj).biggish_ref().has_value(),
+          "tiny": deref(self._cpp_obj).tiny_ref().has_value(),
         })
 
     def __iter__(self):
@@ -2099,27 +2104,27 @@ cdef class MinPadding(thrift.py3.types.Struct):
     @property
     def small(self):
 
-        return deref(self._cpp_obj).small
+        return deref(self._cpp_obj).small_ref().value()
 
     @property
     def big(self):
 
-        return deref(self._cpp_obj).big
+        return deref(self._cpp_obj).big_ref().value()
 
     @property
     def medium(self):
 
-        return deref(self._cpp_obj).medium
+        return deref(self._cpp_obj).medium_ref().value()
 
     @property
     def biggish(self):
 
-        return deref(self._cpp_obj).biggish
+        return deref(self._cpp_obj).biggish_ref().value()
 
     @property
     def tiny(self):
 
-        return deref(self._cpp_obj).tiny
+        return deref(self._cpp_obj).tiny_ref().value()
 
 
     def __hash__(MinPadding self):
@@ -3790,7 +3795,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[6] and MyBinaryField3 is None:
-                deref(c_inst).MyBinaryField3 = default_inst[cNoexceptMoveComplexStruct]().MyBinaryField3
+                deref(c_inst).MyBinaryField3_ref().assign(default_inst[cNoexceptMoveComplexStruct]().MyBinaryField3_ref().value())
                 pass
 
             if not __isNOTSET[7] and MyBinaryListField4 is None:
@@ -3822,7 +3827,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
             deref(c_inst).MyBinaryField2_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2)))
             deref(c_inst).__isset.MyBinaryField2 = True
         if MyBinaryField3 is not None:
-            deref(c_inst).MyBinaryField3 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3))
+            deref(c_inst).MyBinaryField3_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3)))
         if MyBinaryListField4 is not None:
             deref(c_inst).MyBinaryListField4_ref().assign(deref(List__binary(MyBinaryListField4)._cpp_obj))
             deref(c_inst).__isset.MyBinaryListField4 = True
@@ -3841,6 +3846,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
           "MyStringField2": deref(self._cpp_obj).MyStringField2_ref().has_value(),
           "MyBinaryField": deref(self._cpp_obj).MyBinaryField_ref().has_value(),
           "MyBinaryField2": deref(self._cpp_obj).MyBinaryField2_ref().has_value(),
+          "MyBinaryField3": deref(self._cpp_obj).MyBinaryField3_ref().has_value(),
           "MyBinaryListField4": deref(self._cpp_obj).MyBinaryListField4_ref().has_value(),
           "MyMapEnumAndInt": deref(self._cpp_obj).MyMapEnumAndInt_ref().has_value(),
         })
@@ -3900,7 +3906,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
     @property
     def MyBinaryField3(self):
 
-        return deref(self._cpp_obj).MyBinaryField3
+        return deref(self._cpp_obj).MyBinaryField3_ref().value()
 
     @property
     def MyBinaryListField4(self):

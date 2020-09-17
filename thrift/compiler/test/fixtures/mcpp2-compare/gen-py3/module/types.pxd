@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cimport includes.types as _includes_types
 cdef extern from "src/gen-py3/module/types.h":
@@ -336,7 +342,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         cASimpleStruct(const cASimpleStruct&) except +
         bint operator==(cASimpleStruct&)
         bint operator!=(cASimpleStruct&)
-        __FieldRef[cint64_t] boolField_ref()
+        __field_ref[cint64_t] boolField_ref()
         cint64_t boolField
         cASimpleStruct__isset __isset
 
@@ -352,7 +358,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cASimpleStructNoexcept&)
         bint operator<=(cASimpleStructNoexcept&)
         bint operator>=(cASimpleStructNoexcept&)
-        __FieldRef[cint64_t] boolField_ref()
+        __field_ref[cint64_t] boolField_ref()
         cint64_t boolField
         cASimpleStructNoexcept__isset __isset
 
@@ -376,22 +382,23 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __FieldRef[cbool] MyBoolField_ref()
+        __field_ref[cbool] MyBoolField_ref()
         cbool MyBoolField
-        __FieldRef[cint64_t] MyIntField_ref()
+        __field_ref[cint64_t] MyIntField_ref()
         cint64_t MyIntField
-        __FieldRef[string] MyStringField_ref()
+        __field_ref[string] MyStringField_ref()
         string MyStringField
-        __FieldRef[string] MyStringField2_ref()
+        __field_ref[string] MyStringField2_ref()
         string MyStringField2
-        __FieldRef[string] MyBinaryField_ref()
+        __field_ref[string] MyBinaryField_ref()
         string MyBinaryField
-        __OptionalFieldRef[string] MyBinaryField2_ref()
+        __optional_field_ref[string] MyBinaryField2_ref()
         string MyBinaryField2
+        __required_field_ref[string] MyBinaryField3_ref()
         string MyBinaryField3
-        __FieldRef[vector[string]] MyBinaryListField4_ref()
+        __field_ref[vector[string]] MyBinaryListField4_ref()
         vector[string] MyBinaryListField4
-        __FieldRef[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
+        __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
         cmap[cMyEnumA,string] MyMapEnumAndInt
         cMyStruct__isset __isset
 
@@ -536,32 +543,35 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cAnException&)
         bint operator<=(cAnException&)
         bint operator>=(cAnException&)
-        __FieldRef[cint32_t] code_ref()
+        __field_ref[cint32_t] code_ref()
         cint32_t code
+        __required_field_ref[cint32_t] req_code_ref()
         cint32_t req_code
-        __FieldRef[string] message2_ref()
+        __field_ref[string] message2_ref()
         string message2
+        __required_field_ref[string] req_message_ref()
         string req_message
-        __FieldRef[vector[cint32_t]] exception_list_ref()
+        __field_ref[vector[cint32_t]] exception_list_ref()
         vector[cint32_t] exception_list
-        __FieldRef[cset[cint64_t]] exception_set_ref()
+        __field_ref[cset[cint64_t]] exception_set_ref()
         cset[cint64_t] exception_set
-        __FieldRef[cmap[string,cint32_t]] exception_map_ref()
+        __field_ref[cmap[string,cint32_t]] exception_map_ref()
         cmap[string,cint32_t] exception_map
+        __required_field_ref[cmap[string,cint32_t]] req_exception_map_ref()
         cmap[string,cint32_t] req_exception_map
-        __FieldRef[cMyEnumA] enum_field_ref()
+        __field_ref[cMyEnumA] enum_field_ref()
         cMyEnumA enum_field
-        __FieldRef[vector[cMyEnumA]] enum_container_ref()
+        __field_ref[vector[cMyEnumA]] enum_container_ref()
         vector[cMyEnumA] enum_container
-        __FieldRef[cMyStruct] a_struct_ref()
+        __field_ref[cMyStruct] a_struct_ref()
         cMyStruct a_struct
-        __FieldRef[cset[cMyStruct]] a_set_struct_ref()
+        __field_ref[cset[cMyStruct]] a_set_struct_ref()
         cset[cMyStruct] a_set_struct
-        __FieldRef[vector[cSimpleUnion]] a_union_list_ref()
+        __field_ref[vector[cSimpleUnion]] a_union_list_ref()
         vector[cSimpleUnion] a_union_list
-        __FieldRef[cset[cSimpleUnion]] union_typedef_ref()
+        __field_ref[cset[cSimpleUnion]] union_typedef_ref()
         cset[cSimpleUnion] union_typedef
-        __FieldRef[vector[cset[cSimpleUnion]]] a_union_typedef_list_ref()
+        __field_ref[vector[cset[cSimpleUnion]]] a_union_typedef_list_ref()
         vector[cset[cSimpleUnion]] a_union_typedef_list
         cAnException__isset __isset
 
@@ -579,10 +589,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cAnotherException&)
         bint operator<=(cAnotherException&)
         bint operator>=(cAnotherException&)
-        __FieldRef[cint32_t] code_ref()
+        __field_ref[cint32_t] code_ref()
         cint32_t code
+        __required_field_ref[cint32_t] req_code_ref()
         cint32_t req_code
-        __FieldRef[string] message_ref()
+        __field_ref[string] message_ref()
         string message
         cAnotherException__isset __isset
 
@@ -642,90 +653,97 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(ccontainerStruct&)
         bint operator<=(ccontainerStruct&)
         bint operator>=(ccontainerStruct&)
-        __FieldRef[cbool] fieldA_ref()
+        __field_ref[cbool] fieldA_ref()
         cbool fieldA
+        __required_field_ref[cbool] req_fieldA_ref()
         cbool req_fieldA
-        __OptionalFieldRef[cbool] opt_fieldA_ref()
+        __optional_field_ref[cbool] opt_fieldA_ref()
         cbool opt_fieldA
-        __FieldRef[cmap[string,cbool]] fieldB_ref()
+        __field_ref[cmap[string,cbool]] fieldB_ref()
         cmap[string,cbool] fieldB
+        __required_field_ref[cmap[string,cbool]] req_fieldB_ref()
         cmap[string,cbool] req_fieldB
-        __OptionalFieldRef[cmap[string,cbool]] opt_fieldB_ref()
+        __optional_field_ref[cmap[string,cbool]] opt_fieldB_ref()
         cmap[string,cbool] opt_fieldB
-        __FieldRef[cset[cint32_t]] fieldC_ref()
+        __field_ref[cset[cint32_t]] fieldC_ref()
         cset[cint32_t] fieldC
+        __required_field_ref[cset[cint32_t]] req_fieldC_ref()
         cset[cint32_t] req_fieldC
-        __OptionalFieldRef[cset[cint32_t]] opt_fieldC_ref()
+        __optional_field_ref[cset[cint32_t]] opt_fieldC_ref()
         cset[cint32_t] opt_fieldC
-        __FieldRef[string] fieldD_ref()
+        __field_ref[string] fieldD_ref()
         string fieldD
-        __FieldRef[string] fieldE_ref()
+        __field_ref[string] fieldE_ref()
         string fieldE
+        __required_field_ref[string] req_fieldE_ref()
         string req_fieldE
-        __OptionalFieldRef[string] opt_fieldE_ref()
+        __optional_field_ref[string] opt_fieldE_ref()
         string opt_fieldE
-        __FieldRef[vector[vector[cint32_t]]] fieldF_ref()
+        __field_ref[vector[vector[cint32_t]]] fieldF_ref()
         vector[vector[cint32_t]] fieldF
-        __FieldRef[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
+        __field_ref[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
         cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
-        __FieldRef[vector[cset[cint32_t]]] fieldH_ref()
+        __field_ref[vector[cset[cint32_t]]] fieldH_ref()
         vector[cset[cint32_t]] fieldH
-        __FieldRef[cbool] fieldI_ref()
+        __field_ref[cbool] fieldI_ref()
         cbool fieldI
-        __FieldRef[cmap[string,vector[cint32_t]]] fieldJ_ref()
+        __field_ref[cmap[string,vector[cint32_t]]] fieldJ_ref()
         cmap[string,vector[cint32_t]] fieldJ
-        __FieldRef[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
+        __field_ref[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
         vector[vector[vector[vector[cint32_t]]]] fieldK
-        __FieldRef[cset[cset[cset[cbool]]]] fieldL_ref()
+        __field_ref[cset[cset[cset[cbool]]]] fieldL_ref()
         cset[cset[cset[cbool]]] fieldL
-        __FieldRef[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
+        __field_ref[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
         cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
-        __FieldRef[cint32_t] fieldN_ref()
+        __field_ref[cint32_t] fieldN_ref()
         cint32_t fieldN
-        __FieldRef[vector[cmap[cEmpty,cMyStruct]]] fieldO_ref()
+        __field_ref[vector[cmap[cEmpty,cMyStruct]]] fieldO_ref()
         vector[cmap[cEmpty,cMyStruct]] fieldO
-        __FieldRef[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] fieldP_ref()
+        __field_ref[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] fieldP_ref()
         vector[vector[vector[cmap[cEmpty,cMyStruct]]]] fieldP
-        __FieldRef[cMyEnumA] fieldQ_ref()
+        __field_ref[cMyEnumA] fieldQ_ref()
         cMyEnumA fieldQ
-        __FieldRef[cMyEnumA] fieldR_ref()
+        __field_ref[cMyEnumA] fieldR_ref()
         cMyEnumA fieldR
+        __required_field_ref[cMyEnumA] req_fieldR_ref()
         cMyEnumA req_fieldR
-        __OptionalFieldRef[cMyEnumA] opt_fieldR_ref()
+        __optional_field_ref[cMyEnumA] opt_fieldR_ref()
         cMyEnumA opt_fieldR
-        __FieldRef[cMyEnumA] fieldS_ref()
+        __field_ref[cMyEnumA] fieldS_ref()
         cMyEnumA fieldS
-        __FieldRef[vector[cMyEnumA]] fieldT_ref()
+        __field_ref[vector[cMyEnumA]] fieldT_ref()
         vector[cMyEnumA] fieldT
-        __FieldRef[vector[cMyEnumA]] fieldU_ref()
+        __field_ref[vector[cMyEnumA]] fieldU_ref()
         vector[cMyEnumA] fieldU
-        __FieldRef[cMyStruct] fieldV_ref()
+        __field_ref[cMyStruct] fieldV_ref()
         cMyStruct fieldV
+        __required_field_ref[cMyStruct] req_fieldV_ref()
         cMyStruct req_fieldV
-        __OptionalFieldRef[cMyStruct] opt_fieldV_ref()
+        __optional_field_ref[cMyStruct] opt_fieldV_ref()
         cMyStruct opt_fieldV
-        __FieldRef[cset[cMyStruct]] fieldW_ref()
+        __field_ref[cset[cMyStruct]] fieldW_ref()
         cset[cMyStruct] fieldW
-        __FieldRef[cComplexUnion] fieldX_ref()
+        __field_ref[cComplexUnion] fieldX_ref()
         cComplexUnion fieldX
+        __required_field_ref[cComplexUnion] req_fieldX_ref()
         cComplexUnion req_fieldX
-        __OptionalFieldRef[cComplexUnion] opt_fieldX_ref()
+        __optional_field_ref[cComplexUnion] opt_fieldX_ref()
         cComplexUnion opt_fieldX
-        __FieldRef[vector[cComplexUnion]] fieldY_ref()
+        __field_ref[vector[cComplexUnion]] fieldY_ref()
         vector[cComplexUnion] fieldY
-        __FieldRef[cset[cSimpleUnion]] fieldZ_ref()
+        __field_ref[cset[cSimpleUnion]] fieldZ_ref()
         cset[cSimpleUnion] fieldZ
-        __FieldRef[vector[cset[cSimpleUnion]]] fieldAA_ref()
+        __field_ref[vector[cset[cSimpleUnion]]] fieldAA_ref()
         vector[cset[cSimpleUnion]] fieldAA
-        __FieldRef[cmap[Bar,Baz]] fieldAB_ref()
+        __field_ref[cmap[Bar,Baz]] fieldAB_ref()
         cmap[Bar,Baz] fieldAB
-        __FieldRef[cMyEnumB] fieldAC_ref()
+        __field_ref[cMyEnumB] fieldAC_ref()
         cMyEnumB fieldAC
-        __FieldRef[_includes_types.cAnEnum] fieldAD_ref()
+        __field_ref[_includes_types.cAnEnum] fieldAD_ref()
         _includes_types.cAnEnum fieldAD
-        __FieldRef[cmap[string,cint32_t]] fieldAE_ref()
+        __field_ref[cmap[string,cint32_t]] fieldAE_ref()
         cmap[string,cint32_t] fieldAE
-        __FieldRef[FooBar] fieldSD_ref()
+        __field_ref[FooBar] fieldSD_ref()
         FooBar fieldSD
         ccontainerStruct__isset __isset
 
@@ -744,11 +762,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cMyIncludedStruct&)
         bint operator<=(cMyIncludedStruct&)
         bint operator>=(cMyIncludedStruct&)
-        __FieldRef[cint64_t] MyIncludedInt_ref()
+        __field_ref[cint64_t] MyIncludedInt_ref()
         cint64_t MyIncludedInt
-        __FieldRef[_includes_types.cAStruct] MyIncludedStruct_ref()
+        __field_ref[_includes_types.cAStruct] MyIncludedStruct_ref()
         _includes_types.cAStruct MyIncludedStruct
         unique_ptr[_includes_types.cAStruct] ARefField
+        __required_field_ref[_includes_types.cAStruct] ARequiredField_ref()
         _includes_types.cAStruct ARequiredField
         cMyIncludedStruct__isset __isset
 
@@ -798,7 +817,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         cAnnotatedStruct() except +
         bint operator==(cAnnotatedStruct&)
         bint operator!=(cAnnotatedStruct&)
-        __FieldRef[ccontainerStruct] no_annotation_ref()
+        __field_ref[ccontainerStruct] no_annotation_ref()
         ccontainerStruct no_annotation
         unique_ptr[ccontainerStruct] cpp_unique_ref
         unique_ptr[ccontainerStruct] cpp2_unique_ref
@@ -818,45 +837,47 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         shared_ptr[const ccontainerStruct] opt_ref_type_const
         unique_ptr[ccontainerStruct] opt_ref_type_unique
         shared_ptr[cset[cint32_t]] opt_ref_type_shared
-        __FieldRef[CppFakeI32] base_type_ref()
+        __field_ref[CppFakeI32] base_type_ref()
         CppFakeI32 base_type
-        __FieldRef[folly_small_vector_int64_t_8] list_type_ref()
+        __field_ref[folly_small_vector_int64_t_8] list_type_ref()
         folly_small_vector_int64_t_8 list_type
-        __FieldRef[folly_sorted_vector_set_std_string] set_type_ref()
+        __field_ref[folly_sorted_vector_set_std_string] set_type_ref()
         folly_sorted_vector_set_std_string set_type
-        __FieldRef[FakeMap] map_type_ref()
+        __field_ref[FakeMap] map_type_ref()
         FakeMap map_type
-        __FieldRef[std_unordered_map_std_string_containerStruct] map_struct_type_ref()
+        __field_ref[std_unordered_map_std_string_containerStruct] map_struct_type_ref()
         std_unordered_map_std_string_containerStruct map_struct_type
-        __FieldRef[__iobuf.cIOBuf] iobuf_type_ref()
+        __field_ref[__iobuf.cIOBuf] iobuf_type_ref()
         __iobuf.cIOBuf iobuf_type
+        __field_ref[unique_ptr[__iobuf.cIOBuf]] iobuf_ptr_ref()
         unique_ptr[__iobuf.cIOBuf] iobuf_ptr
-        __FieldRef[std_list[cint32_t]] list_i32_template_ref()
+        __field_ref[std_list[cint32_t]] list_i32_template_ref()
         std_list[cint32_t] list_i32_template
-        __FieldRef[std_deque[string]] list_string_template_ref()
+        __field_ref[std_deque[string]] list_string_template_ref()
         std_deque[string] list_string_template
-        __FieldRef[folly_sorted_vector_set[string]] set_template_ref()
+        __field_ref[folly_sorted_vector_set[string]] set_template_ref()
         folly_sorted_vector_set[string] set_template
-        __FieldRef[folly_sorted_vector_map[cint64_t,string]] map_template_ref()
+        __field_ref[folly_sorted_vector_map[cint64_t,string]] map_template_ref()
         folly_sorted_vector_map[cint64_t,string] map_template
-        __FieldRef[std_list[cint32_t]] typedef_list_template_ref()
+        __field_ref[std_list[cint32_t]] typedef_list_template_ref()
         std_list[cint32_t] typedef_list_template
-        __FieldRef[std_deque[string]] typedef_deque_template_ref()
+        __field_ref[std_deque[string]] typedef_deque_template_ref()
         std_deque[string] typedef_deque_template
-        __FieldRef[folly_sorted_vector_set[string]] typedef_set_template_ref()
+        __field_ref[folly_sorted_vector_set[string]] typedef_set_template_ref()
         folly_sorted_vector_set[string] typedef_set_template
-        __FieldRef[folly_sorted_vector_map[cint64_t,string]] typedef_map_template_ref()
+        __field_ref[folly_sorted_vector_map[cint64_t,string]] typedef_map_template_ref()
         folly_sorted_vector_map[cint64_t,string] typedef_map_template
-        __FieldRef[Foo] indirection_a_ref()
+        __field_ref[Foo] indirection_a_ref()
         Foo indirection_a
-        __FieldRef[vector[Bar]] indirection_b_ref()
+        __field_ref[vector[Bar]] indirection_b_ref()
         vector[Bar] indirection_b
-        __FieldRef[cset[Baz]] indirection_c_ref()
+        __field_ref[cset[Baz]] indirection_c_ref()
         cset[Baz] indirection_c
-        __FieldRef[__iobuf.cIOBuf] iobuf_type_val_ref()
+        __field_ref[__iobuf.cIOBuf] iobuf_type_val_ref()
         __iobuf.cIOBuf iobuf_type_val
+        __field_ref[unique_ptr[__iobuf.cIOBuf]] iobuf_ptr_val_ref()
         unique_ptr[__iobuf.cIOBuf] iobuf_ptr_val
-        __FieldRef[ccontainerStruct] struct_struct_ref()
+        __field_ref[ccontainerStruct] struct_struct_ref()
         ccontainerStruct struct_struct
         cAnnotatedStruct__isset __isset
 
@@ -873,9 +894,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cComplexContainerStruct&)
         bint operator<=(cComplexContainerStruct&)
         bint operator>=(cComplexContainerStruct&)
-        __FieldRef[cmap[string,__iobuf.cIOBuf]] map_of_iobufs_ref()
+        __field_ref[cmap[string,__iobuf.cIOBuf]] map_of_iobufs_ref()
         cmap[string,__iobuf.cIOBuf] map_of_iobufs
-        __FieldRef[cmap[string,unique_ptr[__iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref()
+        __field_ref[cmap[string,unique_ptr[__iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref()
         cmap[string,unique_ptr[__iobuf.cIOBuf]] map_of_iobuf_ptrs
         cComplexContainerStruct__isset __isset
 
@@ -892,9 +913,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cFloatStruct&)
         bint operator<=(cFloatStruct&)
         bint operator>=(cFloatStruct&)
-        __FieldRef[float] floatField_ref()
+        __field_ref[float] floatField_ref()
         float floatField
-        __FieldRef[double] doubleField_ref()
+        __field_ref[double] doubleField_ref()
         double doubleField
         cFloatStruct__isset __isset
 
@@ -930,6 +951,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator<=(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator>=(cAllRequiredNoExceptMoveCtrStruct&)
+        __required_field_ref[cint64_t] intField_ref()
         cint64_t intField
         cAllRequiredNoExceptMoveCtrStruct__isset __isset
 

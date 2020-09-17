@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -70,10 +76,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cInternship&)
         bint operator<=(cInternship&)
         bint operator>=(cInternship&)
+        __required_field_ref[cint32_t] weeks_ref()
         cint32_t weeks
-        __FieldRef[string] title_ref()
+        __field_ref[string] title_ref()
         string title
-        __OptionalFieldRef[cCompany] employer_ref()
+        __optional_field_ref[cCompany] employer_ref()
         cCompany employer
         cInternship__isset __isset
 
@@ -90,7 +97,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cRange&)
         bint operator<=(cRange&)
         bint operator>=(cRange&)
+        __required_field_ref[cint32_t] min_ref()
         cint32_t min
+        __required_field_ref[cint32_t] max_ref()
         cint32_t max
         cRange__isset __isset
 
@@ -107,9 +116,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct1&)
         bint operator<=(cstruct1&)
         bint operator>=(cstruct1&)
-        __FieldRef[cint32_t] a_ref()
+        __field_ref[cint32_t] a_ref()
         cint32_t a
-        __FieldRef[string] b_ref()
+        __field_ref[string] b_ref()
         string b
         cstruct1__isset __isset
 
@@ -128,13 +137,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct2&)
         bint operator<=(cstruct2&)
         bint operator>=(cstruct2&)
-        __FieldRef[cint32_t] a_ref()
+        __field_ref[cint32_t] a_ref()
         cint32_t a
-        __FieldRef[string] b_ref()
+        __field_ref[string] b_ref()
         string b
-        __FieldRef[cstruct1] c_ref()
+        __field_ref[cstruct1] c_ref()
         cstruct1 c
-        __FieldRef[vector[cint32_t]] d_ref()
+        __field_ref[vector[cint32_t]] d_ref()
         vector[cint32_t] d
         cstruct2__isset __isset
 
@@ -152,11 +161,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct3&)
         bint operator<=(cstruct3&)
         bint operator>=(cstruct3&)
-        __FieldRef[string] a_ref()
+        __field_ref[string] a_ref()
         string a
-        __FieldRef[cint32_t] b_ref()
+        __field_ref[cint32_t] b_ref()
         cint32_t b
-        __FieldRef[cstruct2] c_ref()
+        __field_ref[cstruct2] c_ref()
         cstruct2 c
         cstruct3__isset __isset
 
@@ -174,11 +183,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cstruct4&)
         bint operator<=(cstruct4&)
         bint operator>=(cstruct4&)
-        __FieldRef[cint32_t] a_ref()
+        __field_ref[cint32_t] a_ref()
         cint32_t a
-        __OptionalFieldRef[double] b_ref()
+        __optional_field_ref[double] b_ref()
         double b
-        __OptionalFieldRef[cint8_t] c_ref()
+        __optional_field_ref[cint8_t] c_ref()
         cint8_t c
         cstruct4__isset __isset
 

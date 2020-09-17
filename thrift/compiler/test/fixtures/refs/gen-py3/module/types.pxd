@@ -24,7 +24,13 @@ cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
-from thrift.py3.types cimport bstring, move, field_ref as __FieldRef, optional_field_ref as __OptionalFieldRef
+from thrift.py3.types cimport (
+    bstring,
+    move,
+    field_ref as __field_ref,
+    optional_field_ref as __optional_field_ref,
+    required_field_ref as __required_field_ref,
+)
 from folly.optional cimport cOptional
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -76,10 +82,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
-        __OptionalFieldRef[cint64_t] opt_value_ref()
+        __optional_field_ref[cint64_t] opt_value_ref()
         cint64_t opt_value
-        __FieldRef[cint64_t] value_ref()
+        __field_ref[cint64_t] value_ref()
         cint64_t value
+        __required_field_ref[cint64_t] req_value_ref()
         cint64_t req_value
         cMyField__isset __isset
 
@@ -117,9 +124,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cStructWithUnion&)
         bint operator>=(cStructWithUnion&)
         unique_ptr[cMyUnion] u
-        __FieldRef[double] aDouble_ref()
+        __field_ref[double] aDouble_ref()
         double aDouble
-        __FieldRef[cMyField] f_ref()
+        __field_ref[cMyField] f_ref()
         cMyField f
         cStructWithUnion__isset __isset
 
@@ -135,7 +142,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cRecursiveStruct&)
         bint operator<=(cRecursiveStruct&)
         bint operator>=(cRecursiveStruct&)
-        __OptionalFieldRef[vector[cRecursiveStruct]] mes_ref()
+        __optional_field_ref[vector[cRecursiveStruct]] mes_ref()
         vector[cRecursiveStruct] mes
         cRecursiveStruct__isset __isset
 
