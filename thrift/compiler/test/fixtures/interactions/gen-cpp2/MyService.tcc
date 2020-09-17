@@ -80,25 +80,25 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
   try {
     tile = &getTile(ctx);
   } catch (const std::out_of_range&) {
+    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
+      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
+    });
     detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,
             "Unknown interaction id " + std::to_string(ctx->getInteractionId())),
         std::move(req), ctx, ctxStack.get(), "MyInteraction.frobnicate", eb);
-    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
-      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
-    });
     return;
   }
   if (tile->__fbthrift_isError()) {
+    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
+      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
+    });
     detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,
             "Interaction constructor failed with " + static_cast<apache::thrift::ErrorTile*>(tile)->get().what().toStdString()),
         std::move(req), ctx, ctxStack.get(), "MyInteraction.frobnicate", eb);
-    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
-      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
-    });
     return;
   }
   try {

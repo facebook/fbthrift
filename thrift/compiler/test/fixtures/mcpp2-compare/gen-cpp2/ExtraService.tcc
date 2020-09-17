@@ -291,6 +291,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::Respons
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret";
+    eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
@@ -324,6 +325,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_i32_i32_i32_i32_i32_param";
+    eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
@@ -349,6 +351,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apach
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_map_setlist_param";
+    eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
@@ -374,6 +377,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::th
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_struct_param";
+    eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
@@ -399,6 +403,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache:
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_listunion_param";
+    eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);

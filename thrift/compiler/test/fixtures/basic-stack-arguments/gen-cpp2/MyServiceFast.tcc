@@ -178,6 +178,7 @@ void MyServiceFastAsyncProcessor::process_lobDataById(apache::thrift::ResponseCh
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function lobDataById";
+    eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);

@@ -60,8 +60,12 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
   try {
     tile = &getTile(ctx);
   } catch (const std::out_of_range&) {
+    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
+      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
+    });
 <%#function:oneway?%>
     LOG(ERROR) << "Unknown interaction id " << ctx->getInteractionId() << " in function <%function:name%>";
+    eb->runInEventBaseThread([req = std::move(req)] {});
 <%/function:oneway?%><%^function:oneway?%>
     detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         folly::make_exception_wrapper<TApplicationException>(
@@ -69,22 +73,21 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
             "Unknown interaction id " + std::to_string(ctx->getInteractionId())),
         std::move(req), ctx, ctxStack.get(), "<%service:name%>.<%function:name%>", eb);
 <%/function:oneway?%>
-    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
-      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
-    });
     return;
   }
   if (tile->__fbthrift_isError()) {
-<%^function:oneway?%>
+    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
+      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
+    });
+<%#function:oneway?%>
+    eb->runInEventBaseThread([req = std::move(req)] {});
+<%/function:oneway?%><%^function:oneway?%>
     detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,
             "Interaction constructor failed with " + static_cast<apache::thrift::ErrorTile*>(tile)->get().what().toStdString()),
         std::move(req), ctx, ctxStack.get(), "<%service:name%>.<%function:name%>", eb);
 <%/function:oneway?%>
-    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
-      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
-    });
     return;
   }
 <%/service:interaction?%>
@@ -94,6 +97,7 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
   catch (const std::exception& ex) {
 <%#function:oneway?%>
     LOG(ERROR) << ex.what() << " in function <%function:name%>";
+    eb->runInEventBaseThread([req = std::move(req)] {});
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx<%#service:interaction?%>, tile<%/service:interaction?%>);
