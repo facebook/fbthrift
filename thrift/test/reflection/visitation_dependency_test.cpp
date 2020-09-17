@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <thrift/test/reflection/gen-cpp2/reflection_dep_C_visitation.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_dep_D_visitation.h>
 #include <thrift/test/reflection/gen-cpp2/reflection_visitation.h>
 
 #include <folly/Overload.h>
@@ -24,7 +26,7 @@ using namespace std;
 
 namespace test_cpp2 {
 namespace cpp_reflection {
-TEST(dep_C_struct, test_transitivity) {
+TEST(dep_C_struct, test_dependency) {
   dep_C_struct s;
   s.i_c_ref() = 10;
   s.d_ref()->i_d_ref() = 20;
