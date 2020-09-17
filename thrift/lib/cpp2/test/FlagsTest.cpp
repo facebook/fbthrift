@@ -152,3 +152,99 @@ TEST(Flags, NoBackend) {
   EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool_external));
   EXPECT_EQ(42, THRIFT_FLAG(test_flag_int_external));
 }
+
+TEST(Flags, MockGet) {
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));
+  EXPECT_EQ(42, THRIFT_FLAG(test_flag_int));
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool_external));
+  EXPECT_EQ(42, THRIFT_FLAG(test_flag_int_external));
+
+  THRIFT_FLAG_SET_MOCK(test_flag_bool, false);
+  THRIFT_FLAG_SET_MOCK(test_flag_int, 41);
+  THRIFT_FLAG_SET_MOCK(test_flag_bool_external, false);
+  THRIFT_FLAG_SET_MOCK(test_flag_int_external, 41);
+
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+
+  EXPECT_EQ(false, THRIFT_FLAG(test_flag_bool));
+  EXPECT_EQ(41, THRIFT_FLAG(test_flag_int));
+  EXPECT_EQ(false, THRIFT_FLAG(test_flag_bool_external));
+  EXPECT_EQ(41, THRIFT_FLAG(test_flag_int_external));
+
+  THRIFT_FLAG_SET_MOCK(test_flag_bool, true);
+  THRIFT_FLAG_SET_MOCK(test_flag_int, 9);
+  THRIFT_FLAG_SET_MOCK(test_flag_bool_external, true);
+  THRIFT_FLAG_SET_MOCK(test_flag_int_external, 61);
+
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));
+  EXPECT_EQ(9, THRIFT_FLAG(test_flag_int));
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool_external));
+  EXPECT_EQ(61, THRIFT_FLAG(test_flag_int_external));
+}
+
+TEST(Flags, MockObserve) {
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));
+  EXPECT_EQ(42, THRIFT_FLAG(test_flag_int));
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool_external));
+  EXPECT_EQ(42, THRIFT_FLAG(test_flag_int_external));
+
+  auto test_flag_bool_observer = THRIFT_FLAG_OBSERVE(test_flag_bool);
+  auto test_flag_int_observer = THRIFT_FLAG_OBSERVE(test_flag_int);
+  auto test_flag_bool_external_observer =
+      THRIFT_FLAG_OBSERVE(test_flag_bool_external);
+  auto test_flag_int_extenal_observer =
+      THRIFT_FLAG_OBSERVE(test_flag_int_external);
+
+  THRIFT_FLAG_SET_MOCK(test_flag_bool, false);
+  THRIFT_FLAG_SET_MOCK(test_flag_int, 41);
+  THRIFT_FLAG_SET_MOCK(test_flag_bool_external, false);
+  THRIFT_FLAG_SET_MOCK(test_flag_int_external, 41);
+
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+
+  EXPECT_EQ(false, **test_flag_bool_observer);
+  EXPECT_EQ(41, **test_flag_int_observer);
+  EXPECT_EQ(false, **test_flag_bool_external_observer);
+  EXPECT_EQ(41, **test_flag_int_extenal_observer);
+
+  THRIFT_FLAG_SET_MOCK(test_flag_bool, true);
+  THRIFT_FLAG_SET_MOCK(test_flag_int, 9);
+  THRIFT_FLAG_SET_MOCK(test_flag_bool_external, true);
+  THRIFT_FLAG_SET_MOCK(test_flag_int_external, 61);
+
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+
+  EXPECT_EQ(true, **test_flag_bool_observer);
+  EXPECT_EQ(9, **test_flag_int_observer);
+  EXPECT_EQ(true, **test_flag_bool_external_observer);
+  EXPECT_EQ(61, **test_flag_int_extenal_observer);
+}
+
+TEST(Flags, MockValuePreferred) {
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));
+  EXPECT_EQ(42, THRIFT_FLAG(test_flag_int));
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool_external));
+  EXPECT_EQ(42, THRIFT_FLAG(test_flag_int_external));
+
+  THRIFT_FLAG_SET_MOCK(test_flag_bool, true);
+  THRIFT_FLAG_SET_MOCK(test_flag_int, 73);
+  THRIFT_FLAG_SET_MOCK(test_flag_bool_external, true);
+  THRIFT_FLAG_SET_MOCK(test_flag_int_external, 49);
+
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+
+  testBackendPtr->getFlagObservableBool("test_flag_bool").setValue(false);
+  testBackendPtr->getFlagObservableInt64("test_flag_int").setValue(41);
+  testBackendPtr->getFlagObservableBool("test_flag_bool_external")
+      .setValue(false);
+  testBackendPtr->getFlagObservableInt64("test_flag_int_external").setValue(41);
+
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));
+  EXPECT_EQ(73, THRIFT_FLAG(test_flag_int));
+  EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool_external));
+  EXPECT_EQ(49, THRIFT_FLAG(test_flag_int_external));
+}

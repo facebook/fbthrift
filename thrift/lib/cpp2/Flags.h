@@ -20,6 +20,7 @@
 #include <folly/Indestructible.h>
 #include <folly/Optional.h>
 #include <folly/experimental/observer/Observer.h>
+#include <folly/experimental/observer/SimpleObservable.h>
 #include <folly/synchronization/CallOnce.h>
 
 namespace apache {
@@ -76,6 +77,11 @@ class FlagWrapper {
     return *observer_;
   }
 
+  // Methods to set mock value for Flags.
+  void setMockValue(T value) {
+    mockObservable_.setValue(value);
+  }
+
  private:
   void init() {
     if (UNLIKELY(!folly::test_once(initFlag_))) {
@@ -87,7 +93,12 @@ class FlagWrapper {
     folly::call_once(initFlag_, [&] {
       observer_ = folly::observer::makeValueObserver(
           [overrideObserver = getFlagObserver<T>(name_),
+           mockObserver = mockObservable_.getObserver(),
            defaultValue = defaultValue_] {
+            auto mockSnapshot = mockObserver.getSnapshot();
+            if (*mockSnapshot) {
+              return **mockSnapshot;
+            }
             auto overrideSnapshot = overrideObserver.getSnapshot();
             if (*overrideSnapshot) {
               return **overrideSnapshot;
@@ -106,6 +117,8 @@ class FlagWrapper {
 
   folly::StringPiece name_;
   const T defaultValue_;
+  folly::observer::SimpleObservable<folly::Optional<T>> mockObservable_{
+      folly::none};
 };
 
 } // namespace detail
@@ -136,6 +149,9 @@ class FlagWrapper {
 #define THRIFT_FLAG(_name) THRIFT_FLAG_WRAPPER__##_name().get()
 
 #define THRIFT_FLAG_OBSERVE(_name) THRIFT_FLAG_WRAPPER__##_name().observe()
+
+#define THRIFT_FLAG_SET_MOCK(_name, _val) \
+  THRIFT_FLAG_WRAPPER__##_name().setMockValue(_val)
 
 } // namespace thrift
 } // namespace apache
