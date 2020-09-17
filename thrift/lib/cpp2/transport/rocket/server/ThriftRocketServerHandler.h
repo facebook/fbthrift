@@ -95,6 +95,10 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
   void terminateInteraction(int64_t id) final;
 
+  Cpp2ConnContext* getCpp2ConnContext() final {
+    return &connContext_;
+  }
+
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;

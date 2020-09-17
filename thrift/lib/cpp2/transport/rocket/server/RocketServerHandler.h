@@ -19,6 +19,9 @@
 
 namespace apache {
 namespace thrift {
+
+class Cpp2ConnContext;
+
 namespace rocket {
 
 class RocketSinkClientCallback;
@@ -62,6 +65,11 @@ class RocketServerHandler {
   virtual void terminateInteraction(int64_t /*id*/) {}
 
   virtual void connectionClosing() = 0;
+
+  virtual Cpp2ConnContext* getCpp2ConnContext() {
+    return nullptr;
+  }
+
 };
 
 } // namespace rocket

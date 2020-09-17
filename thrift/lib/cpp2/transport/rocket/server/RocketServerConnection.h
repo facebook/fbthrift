@@ -45,6 +45,7 @@
 namespace apache {
 namespace thrift {
 
+class Cpp2ConnContext;
 class RocketSinkClientCallback;
 class RocketStreamClientCallback;
 
@@ -150,6 +151,10 @@ class RocketServerConnection final
       return connection_->evb_;
     }
 
+    Cpp2ConnContext* getCpp2ConnContext() {
+      return connection_->frameHandler_->getCpp2ConnContext();
+    }
+
    private:
     RocketServerConnection* connection_;
   };
@@ -167,6 +172,10 @@ class RocketServerConnection final
     ReadResumableHandle pause() &&;
     folly::EventBase& getEventBase() {
       return connection_->evb_;
+    }
+
+    Cpp2ConnContext* getCpp2ConnContext() {
+      return connection_->frameHandler_->getCpp2ConnContext();
     }
 
    private:
