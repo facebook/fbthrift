@@ -1266,7 +1266,7 @@ void t_php_generator::_generate_php_struct_definition(
         !(t->is_struct() || t->is_xception())) {
       dval = render_const_value((*m_iter)->get_type(), (*m_iter)->get_value());
     }
-    indent(out) << "private $" << (*m_iter)->get_name() << " = " << dval << ";"
+    indent(out) << "public $" << (*m_iter)->get_name() << " = " << dval << ";"
                 << endl;
   }
 
@@ -1371,7 +1371,7 @@ void t_php_generator::generate_reflection_getters(ostringstream& out,
                                                    string cap_name) {
 
 
-  out << indent() << "public function " << (type->is_bool() ? "is" : "get") << cap_name << "()" << endl
+  out << indent() << "public function " <<  "get" << cap_name << "()" << endl
       << indent() << "{" << endl;
 
   indent_up();
