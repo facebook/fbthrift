@@ -1343,7 +1343,7 @@ void t_php_generator::generate_generic_field_getters_setters(std::ostream& out,
   std::ostringstream setter_stream;
 
   // build up the bodies of both the getter and setter at once
-  for (const auto& field : tstruct->get_members())
+  for (const auto& field : tstruct->get_members()) {
     t_type* type = (field->get_type())->get_true_type();
     std::string field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
