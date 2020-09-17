@@ -98,6 +98,7 @@ void RocketRoutingHandler::handleConnection(
       server->getStreamExpireTime(),
       server->getWriteBatchingInterval(),
       server->getWriteBatchingSize());
+  onConnection(*connection);
   // set negotiated compression algorithm on this connection
   auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
                          ->getNegotiatedParameters()

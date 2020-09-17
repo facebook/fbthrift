@@ -1251,22 +1251,10 @@ void TransportCompatibilityTest::TestOnWriteQuiescence() {
    public:
     explicit TestOnWriteQuiescenceRoutingHandler(State& state)
         : state_(state) {}
-    void handleConnection(
-        wangle::ConnectionManager* connectionManager,
-        folly::AsyncTransport::UniquePtr sock,
-        folly::SocketAddress const* address,
-        wangle::TransportInfo const&,
-        std::shared_ptr<Cpp2Worker> worker) override {
-      auto* const sockPtr = sock.get();
-      auto* const server = worker->getServer();
-      auto* const connection = new rocket::RocketServerConnection(
-          std::move(sock),
-          std::make_unique<rocket::ThriftRocketServerHandler>(
-              worker, *address, sockPtr, getSetupFrameHandlers()),
-          server->getStreamExpireTime(),
-          server->getWriteBatchingInterval(),
-          server->getWriteBatchingSize());
-      connection->setOnWriteQuiescenceCallback(
+
+   protected:
+    void onConnection(rocket::RocketServerConnection& connection) override {
+      connection.setOnWriteQuiescenceCallback(
           [this,
            callCounter = 0](rocket::RocketServerConnection::ReadPausableHandle
                                 handle) mutable {
@@ -1276,7 +1264,6 @@ void TransportCompatibilityTest::TestOnWriteQuiescence() {
               state_.baton.post();
             }
           });
-      connectionManager->addConnection(connection);
     }
 
    private:

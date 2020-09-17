@@ -24,6 +24,9 @@ namespace apache {
 namespace thrift {
 
 class Cpp2Worker;
+namespace rocket {
+class RocketServerConnection;
+}
 
 class RocketRoutingHandler : public TransportRoutingHandler {
  public:
@@ -45,6 +48,9 @@ class RocketRoutingHandler : public TransportRoutingHandler {
   void addSetupFrameHandler(std::unique_ptr<rocket::SetupFrameHandler> handler);
   const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>&
   getSetupFrameHandlers() const;
+
+ protected:
+  virtual void onConnection(rocket::RocketServerConnection&) {}
 
  private:
   std::atomic<bool> listening_{true};
