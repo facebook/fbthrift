@@ -179,7 +179,7 @@ TEST(ThriftServer, FutureClientTest) {
   auto future = client.future_sendResponse(1000);
   steady_clock::time_point sent = steady_clock::now();
 
-  auto value = future.getVia(&base);
+  auto value = std::move(future).getVia(&base);
   steady_clock::time_point got = steady_clock::now();
 
   EXPECT_EQ(value, "test1000");
@@ -197,7 +197,7 @@ TEST(ThriftServer, FutureClientTest) {
         return response.value().size();
       });
 
-  EXPECT_EQ(len.getVia(&base), 6);
+  EXPECT_EQ(std::move(len).getVia(&base), 6);
 
   RpcOptions options;
   options.setTimeout(std::chrono::milliseconds(1));
@@ -206,7 +206,7 @@ TEST(ThriftServer, FutureClientTest) {
     auto f = client.future_sendResponse(options, 10000);
 
     // Wait for future to finish
-    f.getVia(&base);
+    std::move(f).getVia(&base);
     ADD_FAILURE();
   } catch (...) {
     return;
@@ -277,12 +277,12 @@ TEST(ThriftServer, FutureGetOrderTest) {
 
   steady_clock::time_point start = steady_clock::now();
 
-  EXPECT_EQ(future3.getVia(&base), "test30");
+  EXPECT_EQ(std::move(future3).getVia(&base), "test30");
   steady_clock::time_point sent = steady_clock::now();
-  EXPECT_EQ(future4.getVia(&base), "test40");
-  EXPECT_EQ(future0.getVia(&base), "test0");
-  EXPECT_EQ(future2.getVia(&base), "test20");
-  EXPECT_EQ(future1.getVia(&base), "test10");
+  EXPECT_EQ(std::move(future4).getVia(&base), "test40");
+  EXPECT_EQ(std::move(future0).getVia(&base), "test0");
+  EXPECT_EQ(std::move(future2).getVia(&base), "test20");
+  EXPECT_EQ(std::move(future1).getVia(&base), "test10");
   steady_clock::time_point gets = steady_clock::now();
 
   steady_clock::duration sentTime = sent - start;

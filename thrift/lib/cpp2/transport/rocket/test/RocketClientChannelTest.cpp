@@ -215,7 +215,7 @@ TEST_F(RocketClientChannelTest, ThriftClientLifetime) {
   client.reset();
 
   // Wait for the response.
-  future.getVia(&evb);
+  std::move(future).getVia(&evb);
 }
 
 namespace {
