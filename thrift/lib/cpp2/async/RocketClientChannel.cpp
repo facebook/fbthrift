@@ -978,7 +978,8 @@ void RocketClientChannel::detachEventBase() {
 bool RocketClientChannel::isDetachable() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   auto* transport = getTransport();
-  return !evb_ || !transport || !rclient_ || rclient_->isDetachable();
+  return !evb_ || !transport || !rclient_ ||
+      (rclient_->isDetachable() && pendingInteractions_.empty());
 }
 
 void RocketClientChannel::setOnDetachable(
@@ -1007,10 +1008,7 @@ void RocketClientChannel::terminateInteraction(InteractionId id) {
     releaseInteractionId(std::move(id));
     return;
   }
-  // guard needed for onDetachable callback implementation
-  auto guard = std::make_unique<SingleRequestNoResponseCallback>(
-      nullptr, inflightGuard());
-  rclient_->terminateInteraction(id, std::move(guard));
+  rclient_->terminateInteraction(id);
   releaseInteractionId(std::move(id));
 }
 
@@ -1023,6 +1021,8 @@ void RocketClientChannel::registerInteraction(
 
   auto res = pendingInteractions_.insert({id, name.str()});
   DCHECK(res.second);
+
+  rclient_->addInteraction();
 }
 
 constexpr std::chrono::seconds RocketClientChannel::kDefaultRpcTimeout;

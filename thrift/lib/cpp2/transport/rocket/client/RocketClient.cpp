@@ -1140,15 +1140,18 @@ void RocketClient::OnEventBaseDestructionCallback::
   client_.closeNow(transport::TTransportException("Destroying EventBase"));
 }
 
-void RocketClient::terminateInteraction(
-    int64_t id,
-    std::unique_ptr<RequestFnfCallback> guard) {
+void RocketClient::terminateInteraction(int64_t id) {
+  auto guard = folly::makeGuard([this] {
+    if (!--interactions_) {
+      notifyIfDetachable();
+    }
+  });
+
   if (setupFrame_) {
     // we haven't sent any requests so don't need to send the termination
     return;
   }
 
-  auto g = makeRequestCountGuard();
   InteractionTerminate term;
   term.set_interactionId(id);
   std::ignore = sendFrame(
@@ -1158,7 +1161,6 @@ void RocketClient::terminateInteraction(
           Flags::none(),
           ExtFrameType::INTERACTION_TERMINATE),
       [dg = DestructorGuard(this),
-       g = std::move(g),
        guard = std::move(guard),
        ka = folly::getKeepAliveToken(evb_)](transport::TTransportException ex) {
         FB_LOG_EVERY_MS(WARNING, 1000)

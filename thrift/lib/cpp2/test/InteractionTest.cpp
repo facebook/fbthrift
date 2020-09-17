@@ -240,6 +240,33 @@ TEST(InteractionTest, TerminatePRC) {
   client->getChannel()->terminateInteraction(std::move(id));
 }
 
+TEST(InteractionTest, IsDetachable) {
+  ScopedServerInterfaceThread runner{std::make_shared<Handler>()};
+  folly::EventBase eb;
+  HandlerGenericAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
+  auto channel = static_cast<ClientChannel*>(client.getChannel());
+
+  bool detached = false;
+  channel->setOnDetachable([&] { detached = true; });
+  EXPECT_TRUE(channel->isDetachable());
+
+  auto id = channel->createInteraction("Transaction");
+  EXPECT_FALSE(channel->isDetachable());
+
+  RpcOptions rpcOpts;
+  rpcOpts.setInteractionId(id);
+  std::string out;
+  client.sync_get_string(rpcOpts, out);
+  EXPECT_FALSE(channel->isDetachable());
+
+  channel->terminateInteraction(std::move(id));
+  client.sync_get_string(out); // drive the EB
+  EXPECT_TRUE(channel->isDetachable());
+  EXPECT_TRUE(detached);
+}
+
 struct CalculatorHandler : CalculatorSvIf {
   struct AdditionHandler : CalculatorSvIf::AdditionIf {
     int acc_{0};

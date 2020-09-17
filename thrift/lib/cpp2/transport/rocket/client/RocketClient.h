@@ -180,7 +180,7 @@ class RocketClient : public folly::DelayedDestruction,
     // inflight writes of its own.
     return !writeLoopCallback_.isLoopCallbackScheduled() && !requests_ &&
         streams_.empty() && (!socket_ || socket_->isDetachable()) &&
-        parser_.getReadBuffer().empty();
+        parser_.getReadBuffer().empty() && !interactions_;
   }
 
   void attachEventBase(folly::EventBase& evb);
@@ -235,15 +235,17 @@ class RocketClient : public folly::DelayedDestruction,
     autoCompressSizeLimit_ = size;
   }
 
-  void terminateInteraction(
-      int64_t id,
-      std::unique_ptr<RequestFnfCallback> guard);
+  void addInteraction() {
+    ++interactions_;
+  }
+  void terminateInteraction(int64_t id);
 
  private:
   folly::EventBase* evb_;
   folly::AsyncTransport::UniquePtr socket_;
   folly::Function<void()> onDetachable_;
   size_t requests_{0};
+  size_t interactions_{0};
   StreamId nextStreamId_{1};
   bool hitMaxStreamId_{false};
   std::unique_ptr<SetupFrame> setupFrame_;
