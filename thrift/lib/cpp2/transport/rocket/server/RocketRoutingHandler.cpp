@@ -25,6 +25,7 @@
 #include <folly/io/async/AsyncTransport.h>
 
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 
@@ -43,35 +44,34 @@ void RocketRoutingHandler::stopListening() {
 
 bool RocketRoutingHandler::canAcceptConnection(
     const std::vector<uint8_t>& bytes) {
+  class FrameHeader {
+   public:
+    /*
+     * Sample start of an Rsocket frame (version 1.0) in Octal:
+     * 0x0000 2800 0000 0004 0000 0100 00....
+     * Rsocket frame length - 24 bits
+     * StreamId             - 32 bits
+     * Frame type           -  6 bits
+     * Flags                - 10 bits
+     * Major version        - 16 bits
+     * Minor version        - 16 bits
+     */
+    static uint16_t getMajorVersion(const std::vector<uint8_t>& bytes) {
+      return bytes[9] << 8 | bytes[10];
+    }
+    static uint16_t getMinorVersion(const std::vector<uint8_t>& bytes) {
+      return bytes[11] << 8 | bytes[12];
+    }
+    static rocket::FrameType getType(const std::vector<uint8_t>& bytes) {
+      return rocket::FrameType(bytes[7] >> 2);
+    }
+  };
+
   return listening_ &&
-      /*
-       * Sample start of an Rsocket frame (version 1.0) in Octal:
-       * 0x0000 2800 0000 0004 0000 0100 00....
-       * Rsocket frame length - 24 bits
-       * StreamId             - 32 bits
-       * Frame type           -  6 bits
-       * Flags                - 10 bits
-       * Major version        - 16 bits
-       * Minor version        - 16 bits
-       */
-
       // This only supports Rsocket protocol version 1.0
-      ((bytes[9] == 0x00 && bytes[10] == 0x01 && bytes[11] == 0x00 &&
-        bytes[12] == 0x00)
-
-       /*
-        * SETUP frames have a frame type value of 0x01.
-        *
-        * Since the frame type is specified in only 6 bits, the value is
-        * bitshifted by << 2 before stored. Thus, even though SETUP frame
-        * is 0x01, it becomes 0x04. Furthermore, as METADATA flag is set
-        * it becomes 0x05.
-        *
-        * For more, see:
-        * https://github.com/rsocket/rsocket/blob/master/Protocol.md#frame-types
-        */
-       // setupFrame
-       && bytes[7] == 0x05);
+      FrameHeader::getMajorVersion(bytes) == 1 &&
+      FrameHeader::getMinorVersion(bytes) == 0 &&
+      FrameHeader::getType(bytes) == rocket::FrameType::SETUP;
 }
 
 bool RocketRoutingHandler::canAcceptEncryptedConnection(
