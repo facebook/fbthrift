@@ -150,9 +150,6 @@ cdef class Struct(thrift.py3.types.Struct):
         yield 'first', self.first
         yield 'second', self.second
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
         __fbthrift_inst = <Struct>Struct.__new__(Struct)
@@ -337,9 +334,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 's', self.s
         yield 'id', self.id
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cBigStruct] cpp_obj):

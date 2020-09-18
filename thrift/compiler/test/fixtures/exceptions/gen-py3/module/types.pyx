@@ -77,9 +77,6 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
     def __iter__(self):
         yield from ()
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cBanal] cpp_obj):
         __fbthrift_inst = <Banal>Banal.__new__(Banal, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
@@ -172,9 +169,6 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 
     def __iter__(self):
         yield 'message', self.message
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cFiery] cpp_obj):
@@ -280,9 +274,6 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
     def __iter__(self):
         yield 'sonnet', self.sonnet
-
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.sonnet
 
     @staticmethod
     cdef create(shared_ptr[cSerious] cpp_obj):
@@ -398,9 +389,6 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     def __iter__(self):
         yield 'error_message', self.error_message
         yield 'internal_error_message', self.internal_error_message
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cComplexFieldNames] cpp_obj):
@@ -519,9 +507,6 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     def __iter__(self):
         yield 'error_message', self.error_message
         yield 'internal_error_message', self.internal_error_message
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cCustomFieldNames] cpp_obj):

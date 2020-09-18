@@ -120,9 +120,6 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'content', self.content
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cInitialResponse] cpp_obj):
         __fbthrift_inst = <InitialResponse>InitialResponse.__new__(InitialResponse)
@@ -266,9 +263,6 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'content', self.content
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cFinalResponse] cpp_obj):
@@ -414,9 +408,6 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'content', self.content
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cSinkPayload] cpp_obj):
         __fbthrift_inst = <SinkPayload>SinkPayload.__new__(SinkPayload)
@@ -561,9 +552,6 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'sink', self.sink
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cCompatibleWithKeywordSink] cpp_obj):
         __fbthrift_inst = <CompatibleWithKeywordSink>CompatibleWithKeywordSink.__new__(CompatibleWithKeywordSink)
@@ -672,9 +660,6 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     def __iter__(self):
         yield 'reason', self.reason
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cInitialException] cpp_obj):
         __fbthrift_inst = <InitialException>InitialException.__new__(InitialException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
@@ -773,9 +758,6 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 
     def __iter__(self):
         yield 'reason', self.reason
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cSinkException1] cpp_obj):
@@ -880,9 +862,6 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
 
     def __iter__(self):
         yield 'reason', self.reason
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cSinkException2] cpp_obj):

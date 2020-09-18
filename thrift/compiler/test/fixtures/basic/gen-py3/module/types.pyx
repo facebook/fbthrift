@@ -268,9 +268,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyDataField', self.MyDataField
         yield 'myEnum', self.myEnum
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
@@ -394,9 +391,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield from ()
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyDataItem] cpp_obj):

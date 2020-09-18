@@ -290,21 +290,6 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         yield from ()
         {{/struct:fields}}
 
-    def __bool__(self):
-        return {{#struct:is_always_set?}}True{{/struct:is_always_set?}}{{!
-            }}{{^struct:is_always_set?}}{{!
-            }}{{#struct:fields}}{{!
-            }}{{^field:hasDefaultValue?}}{{!
-            }}{{#field:isset?}}{{#field:reference?}}({{/field:reference?}}{{/field:isset?}}{{!
-            }}{{#field:isset?}}deref(self._cpp_obj).__isset.{{field:py_name}}{{/field:isset?}}{{!
-            }}{{#field:isset?}}{{#field:reference?}} and {{/field:reference?}}{{/field:isset?}}{{!
-            }}{{#field:reference?}}<bint>(deref(self._cpp_obj).{{field:py_name}}){{/field:reference?}}{{!
-            }}{{#field:isset?}}{{#field:reference?}}){{/field:reference?}}{{/field:isset?}}{{!
-            }}{{/field:hasDefaultValue?}}{{!
-            }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
-            }}{{^struct:fields}}True{{/struct:fields}}{{!
-            }}{{/struct:is_always_set?}}
-
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}}{{#struct:exception?}}, (<bytes>deref(cpp_obj).what()).decode('utf-8'){{/struct:exception?}})

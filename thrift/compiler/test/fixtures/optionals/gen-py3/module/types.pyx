@@ -245,9 +245,6 @@ cdef class Color(thrift.py3.types.Struct):
         yield 'blue', self.blue
         yield 'alpha', self.alpha
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cColor] cpp_obj):
         __fbthrift_inst = <Color>Color.__new__(Color)
@@ -507,9 +504,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
         yield 'description', self.description
         yield 'name', self.name
         yield 'hasAC', self.hasAC
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cVehicle] cpp_obj):
@@ -914,9 +908,6 @@ cdef class Person(thrift.py3.types.Struct):
         yield 'petNames', self.petNames
         yield 'afraidOfAnimal', self.afraidOfAnimal
         yield 'vehicles', self.vehicles
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cPerson] cpp_obj):

@@ -180,9 +180,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyOtherIncludedField', self.MyOtherIncludedField
         yield 'MyIncludedInt', self.MyIncludedInt
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)

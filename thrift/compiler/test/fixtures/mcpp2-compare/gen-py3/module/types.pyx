@@ -308,9 +308,6 @@ cdef class Empty(thrift.py3.types.Struct):
     def __iter__(self):
         yield from ()
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cEmpty] cpp_obj):
         __fbthrift_inst = <Empty>Empty.__new__(Empty)
@@ -456,9 +453,6 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'boolField', self.boolField
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cASimpleStruct] cpp_obj):
         __fbthrift_inst = <ASimpleStruct>ASimpleStruct.__new__(ASimpleStruct)
@@ -600,9 +594,6 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'boolField', self.boolField
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStructNoexcept] cpp_obj):
@@ -950,9 +941,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyBinaryField3', self.MyBinaryField3
         yield 'MyBinaryListField4', self.MyBinaryListField4
         yield 'MyMapEnumAndInt', self.MyMapEnumAndInt
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -2019,9 +2007,6 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
         yield 'union_typedef', self.union_typedef
         yield 'a_union_typedef_list', self.a_union_typedef_list
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cAnException] cpp_obj):
         __fbthrift_inst = <AnException>AnException.__new__(AnException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
@@ -2241,9 +2226,6 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
         yield 'code', self.code
         yield 'req_code', self.req_code
         yield 'message', self.message
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cAnotherException] cpp_obj):
@@ -2932,9 +2914,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
         yield 'fieldAE', self.fieldAE
         yield 'fieldSD', self.fieldSD
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct] cpp_obj):
         __fbthrift_inst = <containerStruct>containerStruct.__new__(containerStruct)
@@ -3445,9 +3424,6 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         yield 'MyIncludedStruct', self.MyIncludedStruct
         yield 'ARefField', self.ARefField
         yield 'ARequiredField', self.ARequiredField
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyIncludedStruct] cpp_obj):
@@ -4049,9 +4025,6 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         yield 'iobuf_ptr_val', self.iobuf_ptr_val
         yield 'struct_struct', self.struct_struct
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct] cpp_obj):
         __fbthrift_inst = <AnnotatedStruct>AnnotatedStruct.__new__(AnnotatedStruct)
@@ -4514,9 +4487,6 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
         yield 'map_of_iobufs', self.map_of_iobufs
         yield 'map_of_iobuf_ptrs', self.map_of_iobuf_ptrs
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cComplexContainerStruct] cpp_obj):
         __fbthrift_inst = <ComplexContainerStruct>ComplexContainerStruct.__new__(ComplexContainerStruct)
@@ -4703,9 +4673,6 @@ cdef class FloatStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'floatField', self.floatField
         yield 'doubleField', self.doubleField
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cFloatStruct] cpp_obj):
@@ -5025,9 +4992,6 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'intField', self.intField
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct] cpp_obj):

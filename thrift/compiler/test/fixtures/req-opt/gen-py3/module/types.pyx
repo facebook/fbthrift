@@ -191,9 +191,6 @@ cdef class Foo(thrift.py3.types.Struct):
         yield 'myBools', self.myBools
         yield 'myNumbers', self.myNumbers
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):
         __fbthrift_inst = <Foo>Foo.__new__(Foo)

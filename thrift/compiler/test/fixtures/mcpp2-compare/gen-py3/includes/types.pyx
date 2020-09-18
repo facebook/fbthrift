@@ -157,9 +157,6 @@ cdef class AStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'FieldA', self.FieldA
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cAStruct] cpp_obj):
         __fbthrift_inst = <AStruct>AStruct.__new__(AStruct)
@@ -300,9 +297,6 @@ cdef class AStructB(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'FieldA', self.FieldA
-
-    def __bool__(self):
-        return <bint>(deref(self._cpp_obj).FieldA)
 
     @staticmethod
     cdef create(shared_ptr[cAStructB] cpp_obj):

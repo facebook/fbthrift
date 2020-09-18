@@ -183,9 +183,6 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         yield 'small_A', self.small_A
         yield 'small_B', self.small_B
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cSmallStruct] cpp_obj):
         __fbthrift_inst = <SmallStruct>SmallStruct.__new__(SmallStruct)
@@ -813,9 +810,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
         yield 'fieldT', self.fieldT
         yield 'fieldU', self.fieldU
         yield 'fieldX', self.fieldX
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct] cpp_obj):

@@ -154,9 +154,6 @@ cdef class Included(thrift.py3.types.Struct):
         yield 'MyIntField', self.MyIntField
         yield 'MyTransitiveField', self.MyTransitiveField
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cIncluded] cpp_obj):
         __fbthrift_inst = <Included>Included.__new__(Included)

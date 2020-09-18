@@ -279,9 +279,6 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'field', self.field
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cdecorated_struct] cpp_obj):
         __fbthrift_inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
@@ -576,9 +573,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         yield 'fieldG', self.fieldG
         yield 'fieldH', self.fieldH
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cContainerStruct] cpp_obj):
         __fbthrift_inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
@@ -762,9 +756,6 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'fieldA', self.fieldA
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cCppTypeStruct] cpp_obj):
         __fbthrift_inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
@@ -916,9 +907,6 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'MyIntField', self.MyIntField
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cVirtualStruct] cpp_obj):
@@ -1089,9 +1077,6 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'a', self.a
         yield 'b', self.b
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum] cpp_obj):
@@ -1274,9 +1259,6 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         yield 'a', self.a
         yield 'b', self.b
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cTrivialNumeric] cpp_obj):
         __fbthrift_inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
@@ -1458,9 +1440,6 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         yield 'z', self.z
         yield 'n', self.n
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cTrivialNestedWithDefault] cpp_obj):
         __fbthrift_inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
@@ -1633,9 +1612,6 @@ cdef class ComplexString(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'a', self.a
         yield 'b', self.b
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cComplexString] cpp_obj):
@@ -1813,9 +1789,6 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'z', self.z
         yield 'n', self.n
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cComplexNestedWithDefault] cpp_obj):
@@ -2092,9 +2065,6 @@ cdef class MinPadding(thrift.py3.types.Struct):
         yield 'biggish', self.biggish
         yield 'tiny', self.tiny
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMinPadding] cpp_obj):
         __fbthrift_inst = <MinPadding>MinPadding.__new__(MinPadding)
@@ -2349,9 +2319,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'majorVer', self.majorVer
         yield 'data', self.data
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
@@ -2465,9 +2432,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield from ()
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyDataItem] cpp_obj):
@@ -2603,9 +2567,6 @@ cdef class Renaming(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'foo', self.foo
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cRenaming] cpp_obj):
@@ -2773,9 +2734,6 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         yield 'binary_field', self.binary_field
         yield 'list_field', self.list_field
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cAnnotatedTypes] cpp_obj):
         __fbthrift_inst = <AnnotatedTypes>AnnotatedTypes.__new__(AnnotatedTypes)
@@ -2941,9 +2899,6 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         yield 'ForwardUsageStruct', self.ForwardUsageStruct
         yield 'ForwardUsageByRef', self.ForwardUsageByRef
 
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.ForwardUsageStruct or <bint>(deref(self._cpp_obj).ForwardUsageByRef)
-
     @staticmethod
     cdef create(shared_ptr[cForwardUsageRoot] cpp_obj):
         __fbthrift_inst = <ForwardUsageRoot>ForwardUsageRoot.__new__(ForwardUsageRoot)
@@ -3100,9 +3055,6 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'foo', self.foo
 
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.foo
-
     @staticmethod
     cdef create(shared_ptr[cForwardUsageStruct] cpp_obj):
         __fbthrift_inst = <ForwardUsageStruct>ForwardUsageStruct.__new__(ForwardUsageStruct)
@@ -3250,9 +3202,6 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'foo', self.foo
 
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.foo
-
     @staticmethod
     cdef create(shared_ptr[cForwardUsageByRef] cpp_obj):
         __fbthrift_inst = <ForwardUsageByRef>ForwardUsageByRef.__new__(ForwardUsageByRef)
@@ -3363,9 +3312,6 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield from ()
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveEmpty] cpp_obj):
@@ -3511,9 +3457,6 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'boolField', self.boolField
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveSimpleStruct] cpp_obj):
@@ -3861,9 +3804,6 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         yield 'MyBinaryField3', self.MyBinaryField3
         yield 'MyBinaryListField4', self.MyBinaryListField4
         yield 'MyMapEnumAndInt', self.MyMapEnumAndInt
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveComplexStruct] cpp_obj):
@@ -4299,9 +4239,6 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         yield 'aa_string', self.aa_string
         yield 'not_a_container', self.not_a_container
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware] cpp_obj):
         __fbthrift_inst = <AllocatorAware>AllocatorAware.__new__(AllocatorAware)
@@ -4477,9 +4414,6 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'not_a_container', self.not_a_container
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware2] cpp_obj):

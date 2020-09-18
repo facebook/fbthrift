@@ -334,9 +334,6 @@ cdef class Internship(thrift.py3.types.Struct):
         yield 'title', self.title
         yield 'employer', self.employer
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cInternship] cpp_obj):
         __fbthrift_inst = <Internship>Internship.__new__(Internship)
@@ -527,9 +524,6 @@ cdef class Range(thrift.py3.types.Struct):
         yield 'min', self.min
         yield 'max', self.max
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cRange] cpp_obj):
         __fbthrift_inst = <Range>Range.__new__(Range)
@@ -710,9 +704,6 @@ cdef class struct1(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'a', self.a
         yield 'b', self.b
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cstruct1] cpp_obj):
@@ -943,9 +934,6 @@ cdef class struct2(thrift.py3.types.Struct):
         yield 'c', self.c
         yield 'd', self.d
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cstruct2] cpp_obj):
         __fbthrift_inst = <struct2>struct2.__new__(struct2)
@@ -1166,9 +1154,6 @@ cdef class struct3(thrift.py3.types.Struct):
         yield 'a', self.a
         yield 'b', self.b
         yield 'c', self.c
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cstruct3] cpp_obj):
@@ -1391,9 +1376,6 @@ cdef class struct4(thrift.py3.types.Struct):
         yield 'a', self.a
         yield 'b', self.b
         yield 'c', self.c
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cstruct4] cpp_obj):

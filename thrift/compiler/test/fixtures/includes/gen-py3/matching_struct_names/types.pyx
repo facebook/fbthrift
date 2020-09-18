@@ -122,9 +122,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'field', self.field
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
@@ -330,9 +327,6 @@ cdef class Combo(thrift.py3.types.Struct):
         yield 'theirMyStructList', self.theirMyStructList
         yield 'ourMyStructList', self.ourMyStructList
         yield 'listOfTheirMyStructList', self.listOfTheirMyStructList
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cCombo] cpp_obj):

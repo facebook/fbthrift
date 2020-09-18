@@ -151,9 +151,6 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'name', self.name
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMyStructNestedAnnotation] cpp_obj):
         __fbthrift_inst = <MyStructNestedAnnotation>MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
@@ -380,9 +377,6 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
         yield 'name', self.name
         yield 'extra', self.extra
         yield 'nest', self.nest
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStructAnnotation] cpp_obj):
@@ -683,9 +677,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'annotation_with_trailing_comma', self.annotation_with_trailing_comma
         yield 'empty_annotations', self.empty_annotations
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
@@ -886,9 +877,6 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'id', self.id
         yield 'password', self.password
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cSecretStruct] cpp_obj):

@@ -865,9 +865,6 @@ cdef class Val(thrift.py3.types.Struct):
         yield 'intVal', self.intVal
         yield 'typedefValue', self.typedefValue
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cVal] cpp_obj):
         __fbthrift_inst = <Val>Val.__new__(Val)
@@ -1270,9 +1267,6 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'num', self.num
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cNonCopyableStruct] cpp_obj):

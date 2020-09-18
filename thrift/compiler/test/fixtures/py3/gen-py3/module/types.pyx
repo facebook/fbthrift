@@ -187,9 +187,6 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
     def __iter__(self):
         yield 'err_code', self.err_code
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cSimpleException] cpp_obj):
         __fbthrift_inst = <SimpleException>SimpleException.__new__(SimpleException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
@@ -324,9 +321,6 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'optional_blob', self.optional_blob
-
-    def __bool__(self):
-        return (deref(self._cpp_obj).__isset.optional_blob and <bint>(deref(self._cpp_obj).optional_blob))
 
     @staticmethod
     cdef create(shared_ptr[cOptionalRefStruct] cpp_obj):
@@ -665,9 +659,6 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         yield 'big_int', self.big_int
         yield 'real', self.real
         yield 'smaller_real', self.smaller_real
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] cpp_obj):
@@ -1057,9 +1048,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         yield 'cdef_', self.cdef_
         yield 'bytes_with_cpp_type', self.bytes_with_cpp_type
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cComplexStruct] cpp_obj):
         __fbthrift_inst = <ComplexStruct>ComplexStruct.__new__(ComplexStruct)
@@ -1355,9 +1343,6 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
 
     def __iter__(self):
         yield 'u', self.u
-
-    def __bool__(self):
-        return True
 
     @staticmethod
     cdef create(shared_ptr[cBinaryUnionStruct] cpp_obj):

@@ -79,9 +79,6 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __iter__(self):
         yield from ()
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cFooEx] cpp_obj):
         __fbthrift_inst = <FooEx>FooEx.__new__(FooEx, (<bytes>deref(cpp_obj).what()).decode('utf-8'))

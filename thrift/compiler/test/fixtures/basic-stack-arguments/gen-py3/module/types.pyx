@@ -183,9 +183,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyIntField', self.MyIntField
         yield 'MyStringField', self.MyStringField
 
-    def __bool__(self):
-        return True
-
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
