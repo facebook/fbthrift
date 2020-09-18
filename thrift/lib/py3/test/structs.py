@@ -44,7 +44,6 @@ class StructTests(unittest.TestCase):
         self.assertTrue(Struct.isset(file).type)
         self.assertFalse(Struct.isset(file).permissions)
         # required fields are always set
-        # pyre-fixme[16]: `__fbthrift_IsSet` has no attribute `name`.
         self.assertTrue(Struct.isset(file).name)
 
         serialized = b'{"name":"/dev/null"}'
