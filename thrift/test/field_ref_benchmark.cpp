@@ -24,8 +24,9 @@ using namespace std;
 using namespace cpp2;
 using namespace folly;
 
-BENCHMARK(field_ref_direct, n) {
+BENCHMARK_COUNTERS(field_ref_direct, counters, n) {
   HasOptionals a;
+  counters["stack_mem"] = sizeof(a);
   int64_t k = n * (1 + 'a');
   while (n--) {
     a.int64Opt_ref() = 1;
