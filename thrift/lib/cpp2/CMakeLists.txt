@@ -65,6 +65,7 @@ add_library(
   rpcmetadata
 
   ${RpcMetadata-cpp2-SOURCES}
+  gen/module_types_cpp.cpp
 )
 add_dependencies(rpcmetadata RpcMetadata-cpp2-target)
 target_link_libraries(
@@ -114,7 +115,6 @@ add_library(
   async/RpcTypes.cpp
   async/ServerGeneratorStream.cpp
   async/ServerSinkBridge.cpp
-  gen/module_types_cpp.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp
