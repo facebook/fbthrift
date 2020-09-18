@@ -1109,8 +1109,8 @@ class ExampleUnion final  {
     (&val)->~T();
   }
 
-  std::underlying_type_t<Type> type_;
   storage_type value_;
+  std::underlying_type_t<Type> type_;
 
  private:
   template <class Protocol_>

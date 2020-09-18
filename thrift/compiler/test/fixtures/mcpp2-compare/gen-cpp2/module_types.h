@@ -2147,8 +2147,8 @@ class SimpleUnion  {
     (&val)->~T();
   }
 
-  std::underlying_type_t<Type> type_;
   storage_type value_;
+  std::underlying_type_t<Type> type_;
 
  private:
   template <class Protocol_>
@@ -4248,8 +4248,8 @@ class ComplexUnion final  {
     (&val)->~T();
   }
 
-  std::underlying_type_t<Type> type_;
   storage_type value_;
+  std::underlying_type_t<Type> type_;
   // user defined code (cpp2.methods = ...)
   void foo(const std::string& bar) {}
 
@@ -8738,8 +8738,8 @@ class FloatUnion final  {
     (&val)->~T();
   }
 
-  std::underlying_type_t<Type> type_;
   storage_type value_;
+  std::underlying_type_t<Type> type_;
 
  private:
   template <class Protocol_>
