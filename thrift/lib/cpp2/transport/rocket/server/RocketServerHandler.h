@@ -69,7 +69,6 @@ class RocketServerHandler {
   virtual Cpp2ConnContext* getCpp2ConnContext() {
     return nullptr;
   }
-
 };
 
 } // namespace rocket
