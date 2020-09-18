@@ -94,13 +94,7 @@ struct invoker_adaptor {
   template <typename T>
   using reference = folly::invoke_result_t<A, T>;
   template <typename T>
-  using type = folly::remove_cvref_t<reference<T>>;
-  template <typename T>
   FOLLY_ERASE static constexpr reference<T> ref(T&& t) {
-    return A{}(static_cast<T&&>(t));
-  }
-  template <typename T>
-  FOLLY_ERASE static constexpr type<T> copy(T&& t) {
     return A{}(static_cast<T&&>(t));
   }
 };

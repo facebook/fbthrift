@@ -52,7 +52,7 @@ struct isset {
 
   template <typename T>
   static constexpr bool check(kind<1>, T const& owner) {
-    return Getter::copy(owner.__isset);
+    return Getter::ref(owner.__isset);
   }
   template <typename T>
   static constexpr bool check(kind<2>, T const&) {
