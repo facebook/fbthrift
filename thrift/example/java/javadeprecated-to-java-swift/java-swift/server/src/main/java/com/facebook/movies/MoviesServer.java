@@ -17,7 +17,6 @@
 package com.facebook.movies;
 
 import com.facebook.nifty.codec.ThriftFrameCodecFactory;
-import com.facebook.nifty.core.NiftyNoOpSecurityFactory;
 import com.facebook.nifty.core.NiftyTimer;
 import com.facebook.nifty.duplex.TDuplexProtocolFactory;
 import com.facebook.nifty.header.codec.HeaderThriftCodecFactory;
@@ -57,8 +56,7 @@ public class MoviesServer {
                 "header", new HeaderThriftCodecFactory()),
             ImmutableMap.<String, TDuplexProtocolFactory>of(
                 "header", new TDuplexHeaderProtocolFactory()),
-            ImmutableMap.<String, ExecutorService>of(),
-            new NiftyNoOpSecurityFactory());
+            ImmutableMap.<String, ExecutorService>of());
 
     server.start();
   }
