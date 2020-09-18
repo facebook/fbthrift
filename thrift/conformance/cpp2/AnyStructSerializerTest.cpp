@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/cpp2/Testing.h>
 

@@ -21,7 +21,7 @@
 #include <set>
 #include <type_traits>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 namespace apache::thrift::conformance::data {
 

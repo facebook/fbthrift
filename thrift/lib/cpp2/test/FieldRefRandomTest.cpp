@@ -18,7 +18,7 @@
 #include <random>
 #include <string>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/container/Array.h>
 #include <thrift/lib/cpp2/BadFieldAccess.h>

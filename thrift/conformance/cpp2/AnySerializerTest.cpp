@@ -18,7 +18,7 @@
 
 #include <any>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/conformance/cpp2/Testing.h>
 
 namespace apache::thrift::conformance {

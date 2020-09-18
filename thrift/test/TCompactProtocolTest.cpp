@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 // #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>

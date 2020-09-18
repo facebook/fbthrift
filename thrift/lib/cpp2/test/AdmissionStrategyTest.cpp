@@ -25,7 +25,7 @@
 
 #include <chrono>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/Random.h>
 

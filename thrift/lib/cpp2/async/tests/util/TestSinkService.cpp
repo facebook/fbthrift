@@ -18,7 +18,7 @@
 
 #include <folly/ScopeGuard.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 namespace testutil {
 namespace testservice {

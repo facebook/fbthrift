@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/test/metadata/gen-cpp2/nested_structs_test_metadata.h> // @manual=:nested_structs_test_thrift-cpp2-services
 

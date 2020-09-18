@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/cpp2/AnyRef.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace ::testing;
 

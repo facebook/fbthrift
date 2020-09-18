@@ -20,7 +20,7 @@
 #include <memory>
 #include <thread>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>

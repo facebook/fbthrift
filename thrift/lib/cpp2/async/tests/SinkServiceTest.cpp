@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/experimental/coro/Sleep.h>
 #include <thrift/lib/cpp2/async/tests/util/Util.h>

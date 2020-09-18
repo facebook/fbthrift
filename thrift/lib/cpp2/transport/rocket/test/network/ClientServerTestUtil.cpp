@@ -24,7 +24,7 @@
 #include <string>
 #include <utility>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/Conv.h>
 #include <folly/Function.h>

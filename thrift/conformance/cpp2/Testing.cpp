@@ -17,7 +17,7 @@
 #include <thrift/conformance/cpp2/Testing.h>
 
 #include <folly/lang/Exception.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 namespace apache::thrift::conformance {
 

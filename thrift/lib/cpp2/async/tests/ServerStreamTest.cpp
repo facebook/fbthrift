@@ -16,8 +16,8 @@
 
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <folly/portability/GTest.h>
 #include <folly/synchronization/Baton.h>
-#include <gtest/gtest.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #if FOLLY_HAS_COROUTINES

@@ -18,8 +18,8 @@
 
 #include <set>
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
 #include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/cpp2/Testing.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types_custom_protocol.h>

@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/synchronization/Baton.h>
 

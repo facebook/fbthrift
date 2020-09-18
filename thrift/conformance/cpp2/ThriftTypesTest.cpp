@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/cpp2/ThriftTypes.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/object_fatal_all.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
 
