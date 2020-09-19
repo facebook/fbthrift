@@ -51,7 +51,7 @@ struct export_metric_dynamic {
       T const& metrics,
       std::string const& prefix) const {
     auto const key = prefix + fatal::z_data<typename Member::name>();
-    auto const& value = Member::getter::ref(metrics);
+    auto const& value = typename Member::getter{}(metrics);
 
     sink.add(key, value);
   }
@@ -86,7 +86,7 @@ struct export_metric_static {
     using key = fatal::
         cat<prefix, dot, typename info::name, dot, typename Member::name>;
 
-    auto const& value = Member::getter::ref(metrics);
+    auto const& value = typename Member::getter{}(metrics);
     sink.add(fatal::z_data<key>(), value);
   }
 };

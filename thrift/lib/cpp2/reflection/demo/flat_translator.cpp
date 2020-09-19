@@ -38,7 +38,7 @@ struct legacy_to_flat_translator {
   template <typename Member>
   void operator()(fatal::tag<Member>, std::string const& from, flat_config& to)
       const {
-    auto& value = Member::getter::ref(to);
+    auto& value = typename Member::getter{}(to);
     value = folly::to<typename Member::type>(from);
   }
 };
@@ -62,7 +62,7 @@ struct flat_to_legacy_translator {
       legacy_config& to) {
     using property = typename Member::annotations::values::property;
     auto const key = fatal::z_data<property>();
-    auto const& value = Member::getter::ref(from);
+    auto const& value = typename Member::getter{}(from);
     to[key] = folly::to<std::string>(value);
   }
 };

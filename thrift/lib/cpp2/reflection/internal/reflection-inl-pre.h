@@ -88,7 +88,8 @@ struct chained_data_member_accessor<V, A...> {
 };
 
 template <typename A>
-struct invoker_adaptor {
+struct invoker_adaptor : private A {
+  using A::operator();
   template <typename T>
   FOLLY_ERASE static constexpr auto ref(T&& t)
       -> decltype(A{}(static_cast<T&&>(t))) {

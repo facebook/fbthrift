@@ -35,7 +35,7 @@ template <typename, typename T, typename Getter>
 struct has_isset_field_ : std::false_type {};
 template <typename T, typename Getter>
 struct has_isset_field_<
-    folly::void_t<decltype(Getter::ref(std::declval<T>().__isset))>,
+    folly::void_t<decltype(Getter{}(std::declval<T>().__isset))>,
     T,
     Getter> : std::true_type {};
 template <typename T, typename Getter>
@@ -52,7 +52,7 @@ struct isset {
 
   template <typename T>
   static constexpr bool check(kind<1>, T const& owner) {
-    return Getter::ref(owner.__isset);
+    return Getter{}(owner.__isset);
   }
   template <typename T>
   static constexpr bool check(kind<2>, T const&) {
@@ -65,7 +65,7 @@ struct isset {
 
   template <typename T>
   static constexpr bool mark(kind<1>, T& owner, bool set) {
-    return Getter::ref(owner.__isset) = set;
+    return Getter{}(owner.__isset) = set;
   }
   template <typename T>
   static constexpr bool mark(kind<2>, T&, bool set) {

@@ -37,7 +37,7 @@ struct member_setter {
       std::cout << "value to set: ";
       std::string value;
       std::getline(std::cin, value);
-      auto& member = Member::getter::ref(where);
+      auto& member = typename Member::getter{}(where);
       try {
         member = folly::to<typename Member::type>(value);
       } catch (std::exception const&) {

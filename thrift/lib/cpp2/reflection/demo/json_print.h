@@ -116,7 +116,7 @@ struct struct_member_printer {
     auto const name = fatal::z_data<typename Member::name>();
     std::cout << '"' << name << "\":";
 
-    auto const& value = Member::getter::ref(what);
+    auto const& value = typename Member::getter{}(what);
     printer<typename Member::type_class>::print(value);
   }
 };

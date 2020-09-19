@@ -1044,10 +1044,10 @@ struct reflected_struct_data_member {
    *  pod.fieldC = 7.2;
    *
    *  // yields `7.2`
-   *  auto result1 = getter::ref(pod);
+   *  auto result1 = getter{}(pod);
    *
    *  // sets  `5.6` on `pod.fieldC`
-   *  getter::ref(pod) = 5.6;
+   *  getter{}(pod) = 5.6;
    *
    *  // yields `5.6`
    *  auto result2 = pod.fieldC;

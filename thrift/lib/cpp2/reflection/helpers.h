@@ -47,7 +47,7 @@ namespace thrift {
  *  >;
  *
  *  some_struct x;
- *  info::getter::ref(x) = 10;
+ *  info::getter{}(x) = 10;
  *
  *  // prints `10`
  *  std::cout << x.some_member;
@@ -77,7 +77,7 @@ using get_struct_member_by =
  *  using info = get_struct_member_by_name<some_struct, member_name>;
  *
  *  some_struct x;
- *  info::getter::ref(x) = 10;
+ *  info::getter{}(x) = 10;
  *
  *  // prints `10`
  *  std::cout << x.some_member;
@@ -108,7 +108,7 @@ using get_struct_member_by_name =
  *  using info = get_struct_member_by_id<some_struct, 123>;
  *
  *  some_struct x;
- *  info::getter::ref(x) = 10;
+ *  info::getter{}(x) = 10;
  *
  *  // prints `10`
  *  std::cout << x.some_member;

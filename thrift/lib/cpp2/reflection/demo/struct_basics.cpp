@@ -27,7 +27,7 @@ struct print_struct_member {
   template <typename Member, std::size_t Index, typename T>
   void operator()(fatal::indexed<Member, Index>, T const& object) const {
     auto name = fatal::z_data<typename Member::name>();
-    auto const& value = Member::getter::ref(object);
+    auto const& value = typename Member::getter{}(object);
     std::cout << "  " << name << " = " << value << '\n';
     std::cout << "  - type class: "
               << folly::demangle(typeid(typename Member::type_class)) << '\n';

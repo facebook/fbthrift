@@ -243,7 +243,7 @@ struct struct_member_serializer {
       fatal::indexed<Member, Index>,
       T const& what,
       data_writer& writer) const {
-    auto const& value = Member::getter::ref(what);
+    auto const& value = typename Member::getter{}(what);
     serializer<typename Member::type_class>::serialize(value, writer);
   }
 };
@@ -252,7 +252,7 @@ struct struct_member_deserializer {
   template <typename Member, std::size_t Index, typename T>
   void operator()(fatal::indexed<Member, Index>, T& out, data_reader& reader)
       const {
-    auto& member_ref = Member::getter::ref(out);
+    auto& member_ref = typename Member::getter{}(out);
     serializer<typename Member::type_class>::deserialize(member_ref, reader);
   }
 };
