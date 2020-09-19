@@ -18,6 +18,7 @@
 
 #include <forward_list>
 
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 

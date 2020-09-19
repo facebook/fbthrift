@@ -15,6 +15,7 @@
  */
 
 #pragma once
+#include <folly/Try.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache {
