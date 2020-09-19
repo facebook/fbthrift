@@ -31,13 +31,13 @@ namespace thrift {
 namespace detail {
 namespace reflection_impl {
 
-template <typename T>
-using isset_of = decltype(std::declval<T>().__isset);
 template <typename, typename T, typename Getter>
 struct has_isset_field_ : std::false_type {};
 template <typename T, typename Getter>
-struct has_isset_field_<folly::void_t<isset_of<T>>, T, Getter>
-    : Getter::template has<isset_of<T>> {};
+struct has_isset_field_<
+    folly::void_t<decltype(Getter::ref(std::declval<T>().__isset))>,
+    T,
+    Getter> : std::true_type {};
 template <typename T, typename Getter>
 using has_isset_field = has_isset_field_<void, T, Getter>;
 
