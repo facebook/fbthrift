@@ -90,9 +90,8 @@ struct chained_data_member_accessor<V, A...> {
 template <typename A>
 struct invoker_adaptor {
   template <typename T>
-  using reference = folly::invoke_result_t<A, T>;
-  template <typename T>
-  FOLLY_ERASE static constexpr reference<T> ref(T&& t) {
+  FOLLY_ERASE static constexpr auto ref(T&& t)
+      -> decltype(A{}(static_cast<T&&>(t))) {
     return A{}(static_cast<T&&>(t));
   }
 };
