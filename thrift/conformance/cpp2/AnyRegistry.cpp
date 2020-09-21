@@ -30,19 +30,17 @@ bool AnyRegistry::registerType(const std::type_info& type, std::string name) {
   if (!result.second) {
     return false;
   }
-  rev_index_.emplace(result.first->second.name, std::type_index(type));
+  rev_index_.emplace(result.first->second.name, &result.first->second);
   return true;
 }
 
-bool AnyRegistry::registerTypeAlt(
+bool AnyRegistry::registerTypeAlias(
     const std::type_info& type,
     std::string altName) {
   if (altName.empty() || rev_index_.count(altName) > 0) {
     return false;
   }
-  // Type entry must exist.
-  registry_.at(std::type_index(type));
-  rev_index_.emplace(std::move(altName), std::type_index(type));
+  rev_index_.emplace(std::move(altName), &registry_.at(std::type_index(type)));
   return true;
 }
 
@@ -144,7 +142,7 @@ auto AnyRegistry::getTypeEntry(std::string_view name) const
   if (itr == rev_index_.end()) {
     return nullptr;
   }
-  return getTypeEntry(itr->second);
+  return itr->second;
 }
 
 auto AnyRegistry::getTypeEntry(const std::type_index& index) const

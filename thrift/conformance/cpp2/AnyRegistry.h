@@ -61,7 +61,7 @@ class AnyRegistry {
   // Register an alternative name for the given type.
   //
   // The type must already have been registered.
-  bool registerTypeAlt(const std::type_info& type, std::string altName);
+  bool registerTypeAlias(const std::type_info& type, std::string altName);
 
   // Register a serializer for a given type.
   //
@@ -93,8 +93,8 @@ class AnyRegistry {
     return registerType(typeid(T), std::move(name));
   }
   template <typename T>
-  bool registerTypeAlt(std::string altName) {
-    return registerTypeAlt(typeid(T), std::move(altName));
+  bool registerTypeAlias(std::string altName) {
+    return registerTypeAlias(typeid(T), std::move(altName));
   }
   template <typename T>
   bool registerSerializer(const AnySerializer* serializer) {
@@ -138,8 +138,8 @@ class AnyRegistry {
   };
 
   std::vector<std::unique_ptr<AnySerializer>> owned_serializers_;
-  folly::F14FastMap<std::type_index, TypeEntry> registry_;
-  folly::F14FastMap<std::string, std::type_index> rev_index_;
+  folly::F14NodeMap<std::type_index, TypeEntry> registry_;
+  folly::F14FastMap<std::string, TypeEntry*> rev_index_;
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
@@ -177,7 +177,7 @@ bool AnyRegistry::registerAll(
   // TODO(afuller): Make success atomic.
   bool success = true;
   for (; nameItr != names.end(); ++nameItr) {
-    success &= registerTypeAlt(type, folly::forward_like<Names>(*nameItr));
+    success &= registerTypeAlias(type, folly::forward_like<Names>(*nameItr));
   }
   for (auto& serializer : serializers) {
     success &=

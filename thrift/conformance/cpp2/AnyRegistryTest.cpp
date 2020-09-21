@@ -130,19 +130,19 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_THROW(registry.load<int>(value), std::bad_any_cast);
 }
 
-TEST(AnyRegistryTest, Alt) {
+TEST(AnyRegistryTest, Alias) {
   AnyRegistry registry;
   FollyToStringSerializer<int> intCodec;
 
   // Can't regester an alterantive name before regestring the type.
-  EXPECT_THROW(registry.registerTypeAlt<int>("Int"), std::out_of_range);
+  EXPECT_THROW(registry.registerTypeAlias<int>("Int"), std::out_of_range);
 
   EXPECT_TRUE(registry.registerType<int>("int"));
   // Can't re-regester the same name.
-  EXPECT_FALSE(registry.registerTypeAlt<int>("int"));
-  EXPECT_TRUE(registry.registerTypeAlt<int>("Int"));
-  EXPECT_FALSE(registry.registerTypeAlt<int>("Int"));
-  EXPECT_TRUE(registry.registerTypeAlt<int>("Integer"));
+  EXPECT_FALSE(registry.registerTypeAlias<int>("int"));
+  EXPECT_TRUE(registry.registerTypeAlias<int>("Int"));
+  EXPECT_FALSE(registry.registerTypeAlias<int>("Int"));
+  EXPECT_TRUE(registry.registerTypeAlias<int>("Integer"));
   EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
   EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
 
