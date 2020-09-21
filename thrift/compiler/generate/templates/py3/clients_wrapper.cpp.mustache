@@ -32,7 +32,7 @@ thread that will pass data to the cython callback.
 {{#program:services}}
 {{#service:functions}}{{^function:returns_sink?}}
 folly::Future<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:returnType}}>
-{{service:name}}ClientWrapper::{{function:name}}(
+{{service:name}}ClientWrapper::{{function:cppName}}(
     apache::thrift::RpcOptions& rpcOptions{{#function:args}},
     {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {
   folly::Promise<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:returnType}}> _promise;
@@ -40,14 +40,14 @@ folly::Future<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:ret
   auto* client = static_cast<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient*>(async_client_.get());
   {{^function:oneway?}}
   auto callback = std::make_unique<::thrift::py3::FutureCallback<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:returnType}}>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_{{function:name}}, channel_);
+    std::move(_promise), rpcOptions, client->recv_wrapped_{{function:cppName}}, channel_);
   {{/function:oneway?}}
   {{#function:oneway?}}
   {{! oneway functions have no recv they are special cased}}
   auto callback = std::make_unique<::apache::thrift::OneWayFutureCallback>(
     std::move(_promise), channel_);
   {{/function:oneway?}}
-  client->{{function:name}}(
+  client->{{function:cppName}}(
     rpcOptions,
     std::move(callback){{#function:args}},
     arg_{{field:py_name}}{{/function:args}}

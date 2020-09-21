@@ -79,6 +79,9 @@ class Handler(TestingServiceInterface):
     async def hard_error(self, valid: bool) -> None:
         pass
 
+    async def renamed_func(self, ret: bool) -> bool:
+        return ret
+
 
 class DerivedHandler(Handler, DerivedTestingServiceInterface):
     async def getName(self) -> str:
@@ -360,6 +363,18 @@ class ClientServerTests(unittest.TestCase):
                         await client.hard_error(True)
                     with self.assertRaises(UnicodeDecodeError):
                         await client.hard_error(False)
+
+        loop.run_until_complete(inner_test())
+
+    def test_renamed_func(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(TestingService, host=ip, port=port) as client:
+                    self.assertEqual(True, await client.renamed_func(True))
 
         loop.run_until_complete(inner_test())
 

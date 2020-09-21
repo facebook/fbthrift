@@ -47,7 +47,7 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,
       std::string arg_data);
-    folly::Future<folly::Unit> doNothing(
+    folly::Future<folly::Unit> cppDoNothing(
       apache::thrift::RpcOptions& rpcOptions);
 };
 

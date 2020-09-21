@@ -87,7 +87,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     {{/service:extends?}}
 
     {{#service:functions}}{{^function:returns_sink?}}
-    cFollyFuture[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}] {{function:name}}(cRpcOptions, {{#function:args}}
+    cFollyFuture[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
     {{/function:returns_sink?}}{{/service:functions}}
     {{!

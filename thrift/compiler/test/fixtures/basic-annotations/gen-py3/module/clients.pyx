@@ -360,7 +360,7 @@ cdef class MyService(thrift.py3.client.Client):
         __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).doNothing(rpc_options._cpp_obj, 
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).cppDoNothing(rpc_options._cpp_obj, 
             ),
             MyService_doNothing_callback,
             <PyObject *> __userdata

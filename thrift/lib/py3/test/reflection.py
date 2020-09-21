@@ -297,6 +297,21 @@ class ReflectionTests(unittest.TestCase):
                 exceptions=[HardError],
                 annotations={},
             ),
+            MethodSpec(
+                name="renamed_func",
+                arguments=[
+                    ArgumentSpec(
+                        name="ret",
+                        type=bool,
+                        kind=NumberType.NOT_A_NUMBER,
+                        annotations={},
+                    )
+                ],
+                result=bool,
+                result_kind=NumberType.NOT_A_NUMBER,
+                exceptions=[],
+                annotations={"cpp.name": "renamed_func_in_cpp"},
+            ),
         )
         self.assertEqual(x.methods, methods)
 

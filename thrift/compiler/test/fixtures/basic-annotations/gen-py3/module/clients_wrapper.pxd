@@ -68,7 +68,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
-    cFollyFuture[cFollyUnit] doNothing(cRpcOptions, )
+    cFollyFuture[cFollyUnit] cppDoNothing(cRpcOptions, )
 
 
   cdef cppclass cMyServicePrioParentClientWrapper "::cpp2::MyServicePrioParentClientWrapper":

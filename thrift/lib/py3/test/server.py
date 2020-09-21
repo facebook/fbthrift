@@ -66,6 +66,9 @@ class Handler(TestingServiceInterface):
     async def hard_error(self, valid: bool) -> None:
         pass
 
+    async def renamed_func(self, ret: bool) -> bool:
+        return ret
+
 
 class ServicesTests(unittest.TestCase):
     def test_handler_acontext(self) -> None:
@@ -125,6 +128,12 @@ class ServicesTests(unittest.TestCase):
         call = 5
         ret = loop.run_until_complete(h.complex_action("", "", call, ""))
         self.assertEqual(call, ret)
+
+    def test_unittest_call_renamed_func(self) -> None:
+        h = Handler()
+        loop = asyncio.get_event_loop()
+        ret = loop.run_until_complete(h.renamed_func(True))
+        self.assertTrue(ret)
 
     def test_server_manipulate_config(self) -> None:
         MAX_REQUESTS = 142

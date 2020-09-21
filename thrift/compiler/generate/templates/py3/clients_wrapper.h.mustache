@@ -59,7 +59,7 @@ class {{service:name}}ClientWrapper : {{!
     }}{{^service:extends?}}::thrift::py3::ClientWrapper::ClientWrapper{{/service:extends?}};
 
 {{#service:functions}}{{^function:returns_sink?}}
-    folly::Future<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:returnType}}> {{function:name}}(
+    folly::Future<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:returnType}}> {{function:cppName}}(
       apache::thrift::RpcOptions& rpcOptions{{#function:args}},
       {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}});
 {{/function:returns_sink?}}{{/service:functions}}

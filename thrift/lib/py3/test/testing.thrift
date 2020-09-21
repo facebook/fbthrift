@@ -284,4 +284,5 @@ service TestingService {
     void int_sizes(1: byte one, 2: i16 two, 3: i32 three, 4: i64 four)
 
     void hard_error(1: bool valid) throws (1: HardError e)
+    bool renamed_func(1: bool ret) (cpp.name="renamed_func_in_cpp")
 } (fun_times = "yes", single_quote = "'", double_quotes='"""', py3.pass_context)

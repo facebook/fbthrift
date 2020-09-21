@@ -38,7 +38,7 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
         , int64_t id
         , std::unique_ptr<std::string> data
     ) override;
-    void async_tm_doNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+    void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);

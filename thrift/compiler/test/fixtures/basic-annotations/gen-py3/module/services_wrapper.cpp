@@ -148,7 +148,7 @@ data = std::move(data)    ]() mutable {
         });
     });
 }
-void MyServiceWrapper::async_tm_doNothing(
+void MyServiceWrapper::async_tm_cppDoNothing(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   auto ctx = callback->getConnectionContext();
   folly::via(

@@ -149,7 +149,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         __userdata = (self, __future, rpc_options)
         bridgeFutureWith[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}](
             self._executor,
-            down_cast_ptr[c{{service:name}}ClientWrapper, cClientWrapper](self._client.get()).{{function:name}}(rpc_options._cpp_obj, {{#function:args}}
+            down_cast_ptr[c{{service:name}}ClientWrapper, cClientWrapper](self._client.get()).{{function:cppName}}(rpc_options._cpp_obj, {{#function:args}}
                 {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}
             ),
             {{service:name}}_{{function:name}}_callback,

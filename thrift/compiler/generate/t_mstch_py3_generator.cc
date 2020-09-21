@@ -696,21 +696,30 @@ class mstch_py3_function : public mstch_function {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_function(function, generators, cache, pos) {
+      : mstch_function(function, generators, cache, pos),
+        cppName_{get_cppname<t_function>(*function)} {
     register_methods(
         this,
-        {
-            {"function:eb", &mstch_py3_function::event_based},
-            {"function:stack_arguments?", &mstch_py3_function::stack_arguments},
-        });
+        {{"function:eb", &mstch_py3_function::event_based},
+         {"function:stack_arguments?", &mstch_py3_function::stack_arguments},
+         {"function:cppName", &mstch_py3_function::cppName}});
   }
+
+  mstch::node cppName() {
+    return cppName_;
+  }
+
   mstch::node event_based() {
     return function_->annotations_.count("thread") &&
         function_->annotations_.at("thread") == "eb";
   }
+
   mstch::node stack_arguments() {
     return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
   }
+
+ protected:
+  const std::string cppName_;
 };
 
 class mstch_py3_service : public mstch_service {
