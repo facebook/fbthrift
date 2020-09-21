@@ -36,7 +36,7 @@ Team testValue() {
     auto id = hasher(i);
     Person p;
     p.id = id;
-    p.__isset.nums = true;
+    p.nums_ref().ensure();
     p.nums_ref()->insert(i);
     p.nums_ref()->insert(-i);
     folly::toAppend("Person ", i, &p.name);

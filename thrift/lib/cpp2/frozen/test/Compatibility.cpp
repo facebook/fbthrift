@@ -42,7 +42,7 @@ TEST_P(CompatibilityTest, Write) {
     return;
   }
   auto test = GetParam();
-  if (test.__isset.root) {
+  if (test.root_ref()) {
     freezeToFile(
         *test.root_ref(),
         folly::File(

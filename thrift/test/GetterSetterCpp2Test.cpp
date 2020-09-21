@@ -33,22 +33,22 @@ TEST(GetterSetter, BasicOptionalFields) {
   std::vector<int32_t> vec = {1, 2, 3};
   auto buf = std::make_unique<folly::IOBuf>();
 
-  EXPECT_FALSE(obj.__isset.optionalInt);
+  EXPECT_FALSE(obj.optionalInt_ref().has_value());
   EXPECT_EQ(nullptr, obj.get_optionalInt());
-  EXPECT_FALSE(obj.__isset.optionalList);
+  EXPECT_FALSE(obj.optionalList_ref().has_value());
   EXPECT_EQ(nullptr, obj.get_optionalList());
-  EXPECT_FALSE(obj.__isset.optionalBuf);
+  EXPECT_FALSE(obj.optionalBuf_ref().has_value());
   EXPECT_EQ(nullptr, obj.get_optionalBuf());
 
   obj.optionalInt_ref() = 42;
   EXPECT_EQ(42, *obj.get_optionalInt());
-  EXPECT_TRUE(obj.__isset.optionalInt);
+  EXPECT_TRUE(obj.optionalInt_ref().has_value());
   obj.optionalList_ref() = vec;
   EXPECT_EQ(vec, *obj.get_optionalList());
-  EXPECT_TRUE(obj.__isset.optionalList);
+  EXPECT_TRUE(obj.optionalList_ref().has_value());
   obj.optionalBuf_ref() = std::move(buf);
   EXPECT_TRUE((*obj.get_optionalBuf())->empty());
-  EXPECT_TRUE(obj.__isset.optionalBuf);
+  EXPECT_TRUE(obj.optionalBuf_ref().has_value());
 }
 
 TEST(GetterSetter, BasicDefaultFields) {

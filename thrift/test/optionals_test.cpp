@@ -130,7 +130,7 @@ TEST(OptionalsTest, SerDesTests) {
   EXPECT_EQ(std::string::npos, json1.find("helloOPTIONAL"));
 
   // ok, set the __isset's properly
-  obj1.__isset.stringOpt = true;
+  apache::thrift::ensure_isset_unsafe(obj1.stringOpt_ref());
 
   json1 = objToJSON(obj1);
   EXPECT_NE(std::string::npos, json1.find("helloOPTIONAL"));
@@ -246,11 +246,11 @@ TEST(OptionalsTest, EqualityTests) {
   EXPECT_EQ(obj1, obj2);
   obj1.structOpt_ref() = cpp2::HasOptionalsExtra();
   obj1.structOpt_ref()->__clear();
-  obj1.__isset.structOpt = true;
+  apache::thrift::ensure_isset_unsafe(obj1.structOpt_ref());
   EXPECT_NE(obj1, obj2);
   obj2.structOpt_ref() = cpp2::HasOptionalsExtra();
   obj2.structOpt_ref()->__clear();
-  obj2.__isset.structOpt = true;
+  apache::thrift::ensure_isset_unsafe(obj2.structOpt_ref());
   EXPECT_EQ(obj1, obj2);
 
   // just one more test: try required/optional fields in the optional struct

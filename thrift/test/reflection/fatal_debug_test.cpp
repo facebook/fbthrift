@@ -423,7 +423,7 @@ TEST(fatal_debug, optional_members) {
   struct1 field1SetButNotIsset;
   field1SetButNotIsset.field1_ref().value_unchecked() = "2";
   struct1 field1SetDefault;
-  field1SetDefault.__isset.field1 = true;
+  apache::thrift::ensure_isset_unsafe(field1SetDefault.field1_ref());
   TEST_IMPL(field1Set, field1Unset, "$.field1" /* missing */);
   TEST_IMPL(field1Unset, field1Set, "$.field1" /* extra */);
   TEST_IMPL(field1Set, field1SetButNotIsset, "$.field1" /* missing */);

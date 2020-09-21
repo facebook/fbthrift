@@ -71,8 +71,8 @@ TEST(constants, examples) {
   pod1.b_ref() = "foo";
 
   auto const& pod_1 = test_constants::pod_1();
-  EXPECT_TRUE(pod_1.__isset.a);
-  EXPECT_TRUE(pod_1.__isset.b);
+  EXPECT_TRUE(pod_1.a_ref().has_value());
+  EXPECT_TRUE(pod_1.b_ref().has_value());
   EXPECT_EQ(pod1, pod_1);
 
   struct2 pod2;
@@ -84,24 +84,24 @@ TEST(constants, examples) {
   pod2.d_ref() = std::vector<std::int32_t>{11, 22, 33};
 
   auto const& pod_2 = test_constants::pod_2();
-  EXPECT_TRUE(pod_2.__isset.a);
-  EXPECT_TRUE(pod_2.__isset.b);
-  EXPECT_TRUE(pod_2.__isset.c);
-  EXPECT_TRUE(pod_2.__isset.d);
-  EXPECT_TRUE(pod_2.c_ref()->__isset.a);
-  EXPECT_TRUE(pod_2.c_ref()->__isset.b);
+  EXPECT_TRUE(pod_2.a_ref().has_value());
+  EXPECT_TRUE(pod_2.b_ref().has_value());
+  EXPECT_TRUE(pod_2.c_ref().has_value());
+  EXPECT_TRUE(pod_2.d_ref().has_value());
+  EXPECT_TRUE(pod_2.c_ref()->a_ref().has_value());
+  EXPECT_TRUE(pod_2.c_ref()->b_ref().has_value());
   EXPECT_EQ(pod2, pod_2);
 
   auto const& pod_3 = test_constants::pod_3();
-  EXPECT_TRUE(pod_3.__isset.a);
-  EXPECT_TRUE(pod_3.__isset.b);
-  EXPECT_TRUE(pod_3.__isset.c);
-  EXPECT_TRUE(pod_3.c_ref()->__isset.a);
-  EXPECT_FALSE(pod_3.c_ref()->__isset.b);
-  EXPECT_TRUE(pod_3.c_ref()->__isset.c);
-  EXPECT_FALSE(pod_3.c_ref()->__isset.d);
-  EXPECT_FALSE(pod_3.c_ref()->c_ref()->__isset.a);
-  EXPECT_TRUE(pod_3.c_ref()->c_ref()->__isset.b);
+  EXPECT_TRUE(pod_3.a_ref().has_value());
+  EXPECT_TRUE(pod_3.b_ref().has_value());
+  EXPECT_TRUE(pod_3.c_ref().has_value());
+  EXPECT_TRUE(pod_3.c_ref()->a_ref().has_value());
+  EXPECT_FALSE(pod_3.c_ref()->b_ref().has_value());
+  EXPECT_TRUE(pod_3.c_ref()->c_ref().has_value());
+  EXPECT_FALSE(pod_3.c_ref()->d_ref().has_value());
+  EXPECT_FALSE(pod_3.c_ref()->c_ref()->a_ref().has_value());
+  EXPECT_TRUE(pod_3.c_ref()->c_ref()->b_ref().has_value());
 
   EXPECT_EQ(union1::Type::i, test_constants::u_1_1().getType());
   EXPECT_EQ(97, test_constants::u_1_1().get_i());
