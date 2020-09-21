@@ -43,6 +43,8 @@
 
 #include <thrift/lib/cpp2/reflection/internal/reflection-inl-pre.h>
 
+static_assert(__cplusplus >= 201703L, "__cplusplus >= 201703L");
+
 namespace apache {
 namespace thrift {
 
