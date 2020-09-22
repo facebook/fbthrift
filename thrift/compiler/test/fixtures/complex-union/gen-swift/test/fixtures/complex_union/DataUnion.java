@@ -23,18 +23,26 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("DataUnion")
 public final class DataUnion {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "binaryData");
-      ID_TO_THRIFT_NAME.put((short) 2, "stringData");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _BINARYDATA = 1;
     private static final TField BINARY_DATA_FIELD_DESC = new TField("binaryData", TType.STRING, (short)1);
     public static final int _STRINGDATA = 2;
     private static final TField STRING_DATA_FIELD_DESC = new TField("stringData", TType.STRING, (short)2);
+
+    static {
+      NAMES_TO_IDS.put("binaryData", 1);
+      FIELD_METADATA.put(1, BINARY_DATA_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "binaryData");
+      NAMES_TO_IDS.put("stringData", 2);
+      FIELD_METADATA.put(2, STRING_DATA_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "stringData");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public DataUnion() {
@@ -182,7 +190,7 @@ public final class DataUnion {
       DataUnion res = new DataUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(DataUnion.NAMES_TO_IDS, DataUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

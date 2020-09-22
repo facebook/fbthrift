@@ -23,18 +23,26 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("VirtualComplexUnion")
 public final class VirtualComplexUnion {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "thingOne");
-      ID_TO_THRIFT_NAME.put((short) 2, "thingTwo");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("VirtualComplexUnion");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _THINGONE = 1;
     private static final TField THING_ONE_FIELD_DESC = new TField("thingOne", TType.STRING, (short)1);
     public static final int _THINGTWO = 2;
     private static final TField THING_TWO_FIELD_DESC = new TField("thingTwo", TType.STRING, (short)2);
+
+    static {
+      NAMES_TO_IDS.put("thingOne", 1);
+      FIELD_METADATA.put(1, THING_ONE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "thingOne");
+      NAMES_TO_IDS.put("thingTwo", 2);
+      FIELD_METADATA.put(2, THING_TWO_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "thingTwo");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public VirtualComplexUnion() {
@@ -180,7 +188,7 @@ public final class VirtualComplexUnion {
       VirtualComplexUnion res = new VirtualComplexUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(VirtualComplexUnion.NAMES_TO_IDS, VirtualComplexUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

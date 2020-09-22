@@ -19,7 +19,7 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
   {{struct:javaCapitalName}} res = new {{struct:javaCapitalName}}();
   res.value = null;
   res.id = (short) 0;
-  oprot.readStructBegin();
+  oprot.readStructBegin({{struct:javaCapitalName}}.NAMES_TO_IDS, {{struct:javaCapitalName}}.FIELD_METADATA);
   TField __field = oprot.readFieldBegin();
   if (__field.type != TType.STOP) {
       switch (__field.id) {

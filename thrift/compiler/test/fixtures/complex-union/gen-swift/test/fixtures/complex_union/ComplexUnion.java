@@ -23,18 +23,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("ComplexUnion")
 public final class ComplexUnion {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "intValue");
-      ID_TO_THRIFT_NAME.put((short) 5, "stringValue");
-      ID_TO_THRIFT_NAME.put((short) 2, "intListValue");
-      ID_TO_THRIFT_NAME.put((short) 3, "stringListValue");
-      ID_TO_THRIFT_NAME.put((short) 9, "typedefValue");
-      ID_TO_THRIFT_NAME.put((short) 14, "stringRef");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _INTVALUE = 1;
     private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
     public static final int _STRINGVALUE = 5;
@@ -47,6 +39,30 @@ public final class ComplexUnion {
     private static final TField TYPEDEF_VALUE_FIELD_DESC = new TField("typedefValue", TType.MAP, (short)9);
     public static final int _STRINGREF = 14;
     private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)14);
+
+    static {
+      NAMES_TO_IDS.put("intValue", 1);
+      FIELD_METADATA.put(1, INT_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "intValue");
+      NAMES_TO_IDS.put("stringValue", 5);
+      FIELD_METADATA.put(5, STRING_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 5, "stringValue");
+      NAMES_TO_IDS.put("intListValue", 2);
+      FIELD_METADATA.put(2, INT_LIST_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "intListValue");
+      NAMES_TO_IDS.put("stringListValue", 3);
+      FIELD_METADATA.put(3, STRING_LIST_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 3, "stringListValue");
+      NAMES_TO_IDS.put("typedefValue", 9);
+      FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 9, "typedefValue");
+      NAMES_TO_IDS.put("stringRef", 14);
+      FIELD_METADATA.put(14, STRING_REF_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 14, "stringRef");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public ComplexUnion() {
@@ -353,7 +369,7 @@ public final class ComplexUnion {
       ComplexUnion res = new ComplexUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(ComplexUnion.NAMES_TO_IDS, ComplexUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

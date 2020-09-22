@@ -23,18 +23,26 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("Union")
 public final class Union {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "intValue");
-      ID_TO_THRIFT_NAME.put((short) 5, "stringValue");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("Union");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _INTVALUE = 1;
     private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
     public static final int _STRINGVALUE = 5;
     private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)5);
+
+    static {
+      NAMES_TO_IDS.put("intValue", 1);
+      FIELD_METADATA.put(1, INT_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "intValue");
+      NAMES_TO_IDS.put("stringValue", 5);
+      FIELD_METADATA.put(5, STRING_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 5, "stringValue");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public Union() {
@@ -182,7 +190,7 @@ public final class Union {
       Union res = new Union();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Union.NAMES_TO_IDS, Union.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

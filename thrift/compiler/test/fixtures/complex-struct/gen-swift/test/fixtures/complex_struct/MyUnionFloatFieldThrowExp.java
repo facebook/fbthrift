@@ -23,16 +23,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("MyUnionFloatFieldThrowExp")
 public final class MyUnionFloatFieldThrowExp {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "myEnum");
-      ID_TO_THRIFT_NAME.put((short) 2, "setFloat");
-      ID_TO_THRIFT_NAME.put((short) 3, "myDataItem");
-      ID_TO_THRIFT_NAME.put((short) 4, "complexNestedStruct");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("MyUnionFloatFieldThrowExp");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
     public static final int _SETFLOAT = 2;
@@ -41,6 +35,24 @@ public final class MyUnionFloatFieldThrowExp {
     private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
     public static final int _COMPLEXNESTEDSTRUCT = 4;
     private static final TField COMPLEX_NESTED_STRUCT_FIELD_DESC = new TField("complexNestedStruct", TType.STRUCT, (short)4);
+
+    static {
+      NAMES_TO_IDS.put("myEnum", 1);
+      FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "myEnum");
+      NAMES_TO_IDS.put("setFloat", 2);
+      FIELD_METADATA.put(2, SET_FLOAT_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "setFloat");
+      NAMES_TO_IDS.put("myDataItem", 3);
+      FIELD_METADATA.put(3, MY_DATA_ITEM_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 3, "myDataItem");
+      NAMES_TO_IDS.put("complexNestedStruct", 4);
+      FIELD_METADATA.put(4, COMPLEX_NESTED_STRUCT_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 4, "complexNestedStruct");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public MyUnionFloatFieldThrowExp() {
@@ -272,7 +284,7 @@ public final class MyUnionFloatFieldThrowExp {
       MyUnionFloatFieldThrowExp res = new MyUnionFloatFieldThrowExp();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyUnionFloatFieldThrowExp.NAMES_TO_IDS, MyUnionFloatFieldThrowExp.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

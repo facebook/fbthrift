@@ -23,15 +23,21 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("NonCopyableUnion")
 public final class NonCopyableUnion {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "s");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _S = 1;
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
+
+    static {
+      NAMES_TO_IDS.put("s", 1);
+      FIELD_METADATA.put(1, S_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "s");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public NonCopyableUnion() {
@@ -141,7 +147,7 @@ public final class NonCopyableUnion {
       NonCopyableUnion res = new NonCopyableUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(NonCopyableUnion.NAMES_TO_IDS, NonCopyableUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

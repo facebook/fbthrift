@@ -23,16 +23,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("union2")
 public final class Union2 {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "i");
-      ID_TO_THRIFT_NAME.put((short) 2, "d");
-      ID_TO_THRIFT_NAME.put((short) 3, "s");
-      ID_TO_THRIFT_NAME.put((short) 4, "u");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("union2");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _I = 1;
     private static final TField I_FIELD_DESC = new TField("i", TType.I32, (short)1);
     public static final int _D = 2;
@@ -41,6 +35,24 @@ public final class Union2 {
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)3);
     public static final int _U = 4;
     private static final TField U_FIELD_DESC = new TField("u", TType.STRUCT, (short)4);
+
+    static {
+      NAMES_TO_IDS.put("i", 1);
+      FIELD_METADATA.put(1, I_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "i");
+      NAMES_TO_IDS.put("d", 2);
+      FIELD_METADATA.put(2, D_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "d");
+      NAMES_TO_IDS.put("s", 3);
+      FIELD_METADATA.put(3, S_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 3, "s");
+      NAMES_TO_IDS.put("u", 4);
+      FIELD_METADATA.put(4, U_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 4, "u");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public Union2() {
@@ -264,7 +276,7 @@ public final class Union2 {
       Union2 res = new Union2();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Union2.NAMES_TO_IDS, Union2.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

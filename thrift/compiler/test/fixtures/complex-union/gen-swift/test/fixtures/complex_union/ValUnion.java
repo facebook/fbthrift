@@ -23,18 +23,26 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("ValUnion")
 public final class ValUnion {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "v1");
-      ID_TO_THRIFT_NAME.put((short) 2, "v2");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("ValUnion");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _V1 = 1;
     private static final TField V1_FIELD_DESC = new TField("v1", TType.STRUCT, (short)1);
     public static final int _V2 = 2;
     private static final TField V2_FIELD_DESC = new TField("v2", TType.STRUCT, (short)2);
+
+    static {
+      NAMES_TO_IDS.put("v1", 1);
+      FIELD_METADATA.put(1, V1_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "v1");
+      NAMES_TO_IDS.put("v2", 2);
+      FIELD_METADATA.put(2, V2_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "v2");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public ValUnion() {
@@ -180,7 +188,7 @@ public final class ValUnion {
       ValUnion res = new ValUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(ValUnion.NAMES_TO_IDS, ValUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

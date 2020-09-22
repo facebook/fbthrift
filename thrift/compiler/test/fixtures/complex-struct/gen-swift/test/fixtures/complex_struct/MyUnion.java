@@ -23,18 +23,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("MyUnion")
 public final class MyUnion {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 1, "myEnum");
-      ID_TO_THRIFT_NAME.put((short) 2, "myStruct");
-      ID_TO_THRIFT_NAME.put((short) 3, "myDataItem");
-      ID_TO_THRIFT_NAME.put((short) 4, "complexNestedStruct");
-      ID_TO_THRIFT_NAME.put((short) 5, "longValue");
-      ID_TO_THRIFT_NAME.put((short) 6, "intValue");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
     public static final int _MYSTRUCT = 2;
@@ -47,6 +39,30 @@ public final class MyUnion {
     private static final TField LONG_VALUE_FIELD_DESC = new TField("longValue", TType.I64, (short)5);
     public static final int _INTVALUE = 6;
     private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I32, (short)6);
+
+    static {
+      NAMES_TO_IDS.put("myEnum", 1);
+      FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 1, "myEnum");
+      NAMES_TO_IDS.put("myStruct", 2);
+      FIELD_METADATA.put(2, MY_STRUCT_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "myStruct");
+      NAMES_TO_IDS.put("myDataItem", 3);
+      FIELD_METADATA.put(3, MY_DATA_ITEM_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 3, "myDataItem");
+      NAMES_TO_IDS.put("complexNestedStruct", 4);
+      FIELD_METADATA.put(4, COMPLEX_NESTED_STRUCT_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 4, "complexNestedStruct");
+      NAMES_TO_IDS.put("longValue", 5);
+      FIELD_METADATA.put(5, LONG_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 5, "longValue");
+      NAMES_TO_IDS.put("intValue", 6);
+      FIELD_METADATA.put(6, INT_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 6, "intValue");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public MyUnion() {
@@ -346,7 +362,7 @@ public final class MyUnion {
       MyUnion res = new MyUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(MyUnion.NAMES_TO_IDS, MyUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

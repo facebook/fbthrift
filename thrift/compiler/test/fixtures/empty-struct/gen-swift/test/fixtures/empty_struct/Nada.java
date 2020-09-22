@@ -23,12 +23,16 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("Nada")
 public final class Nada {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    private static final TStruct STRUCT_DESC = new TStruct("Nada");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
+
     static {
     }
+
     private Object value;
     private short id;
-
-    private static final TStruct STRUCT_DESC = new TStruct("Nada");
 
     @ThriftConstructor
     public Nada() {
@@ -100,7 +104,7 @@ public final class Nada {
       Nada res = new Nada();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(Nada.NAMES_TO_IDS, Nada.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

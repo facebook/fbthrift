@@ -23,18 +23,26 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("ListUnion")
 public final class ListUnion {
     private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
-    static {
-      ID_TO_THRIFT_NAME.put((short) 2, "intListValue");
-      ID_TO_THRIFT_NAME.put((short) 3, "stringListValue");
-    }
-    private Object value;
-    private short id;
-
     private static final TStruct STRUCT_DESC = new TStruct("ListUnion");
+    private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+
     public static final int _INTLISTVALUE = 2;
     private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)2);
     public static final int _STRINGLISTVALUE = 3;
     private static final TField STRING_LIST_VALUE_FIELD_DESC = new TField("stringListValue", TType.LIST, (short)3);
+
+    static {
+      NAMES_TO_IDS.put("intListValue", 2);
+      FIELD_METADATA.put(2, INT_LIST_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 2, "intListValue");
+      NAMES_TO_IDS.put("stringListValue", 3);
+      FIELD_METADATA.put(3, STRING_LIST_VALUE_FIELD_DESC);
+      ID_TO_THRIFT_NAME.put((short) 3, "stringListValue");
+    }
+
+    private Object value;
+    private short id;
 
     @ThriftConstructor
     public ListUnion() {
@@ -188,7 +196,7 @@ public final class ListUnion {
       ListUnion res = new ListUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin();
+      oprot.readStructBegin(ListUnion.NAMES_TO_IDS, ListUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {
