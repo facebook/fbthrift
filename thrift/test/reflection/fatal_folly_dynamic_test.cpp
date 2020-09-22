@@ -463,7 +463,7 @@ TEST(fatal_folly_dynamic, list_from_empty_object) {
           fatal::z_data<member_name>(), folly::dynamic::object),
       apache::thrift::dynamic_format::PORTABLE);
   EXPECT_TRUE(member_meta::is_set(obj));
-  EXPECT_EQ(0, member_meta::getter::ref(obj).size());
+  EXPECT_EQ(0, member_meta::getter{}(obj).size());
 }
 
 TEST(fatal_folly_dynamic, set_from_empty_object) {
@@ -481,7 +481,7 @@ TEST(fatal_folly_dynamic, set_from_empty_object) {
           fatal::z_data<member_name>(), folly::dynamic::object),
       apache::thrift::dynamic_format::PORTABLE);
   EXPECT_TRUE(member_meta::is_set(obj));
-  EXPECT_EQ(0, member_meta::getter::ref(obj).size());
+  EXPECT_EQ(0, member_meta::getter{}(obj).size());
 }
 
 TEST(fatal_folly_dynamic, map_from_empty_array) {
@@ -501,7 +501,7 @@ TEST(fatal_folly_dynamic, map_from_empty_array) {
           fatal::z_data<member_name>(), folly::dynamic::array),
       apache::thrift::dynamic_format::PORTABLE);
   EXPECT_TRUE(member_meta::is_set(obj));
-  EXPECT_EQ(0, member_meta::getter::ref(obj).size());
+  EXPECT_EQ(0, member_meta::getter{}(obj).size());
 }
 
 namespace {
@@ -528,7 +528,7 @@ TEST_F(fatal_folly_dynamic_enum, from_string_strict) {
   auto obj = apache::thrift::from_dynamic<type>(
       dyn, apache::thrift::dynamic_format::PORTABLE);
   EXPECT_TRUE(member_meta::is_set(obj));
-  EXPECT_EQ(global_enum1::field0, member_meta::getter::ref(obj));
+  EXPECT_EQ(global_enum1::field0, member_meta::getter{}(obj));
   EXPECT_THROW(
       apache::thrift::from_dynamic<type>(
           dyn, apache::thrift::dynamic_format::JSON_1),
@@ -540,7 +540,7 @@ TEST_F(fatal_folly_dynamic_enum, from_integer_strict) {
   auto obj = apache::thrift::from_dynamic<type>(
       dyn, apache::thrift::dynamic_format::JSON_1);
   EXPECT_TRUE(member_meta::is_set(obj));
-  EXPECT_EQ(global_enum1::field0, member_meta::getter::ref(obj));
+  EXPECT_EQ(global_enum1::field0, member_meta::getter{}(obj));
   EXPECT_THROW(
       apache::thrift::from_dynamic<type>(
           dyn, apache::thrift::dynamic_format::PORTABLE),
@@ -554,13 +554,13 @@ TEST_F(fatal_folly_dynamic_enum, from_string_lenient) {
       apache::thrift::dynamic_format::PORTABLE,
       apache::thrift::format_adherence::LENIENT);
   EXPECT_TRUE(member_meta::is_set(obj1));
-  EXPECT_EQ(global_enum1::field0, member_meta::getter::ref(obj1));
+  EXPECT_EQ(global_enum1::field0, member_meta::getter{}(obj1));
   auto obj2 = apache::thrift::from_dynamic<type>(
       dyn,
       apache::thrift::dynamic_format::JSON_1,
       apache::thrift::format_adherence::LENIENT);
   EXPECT_TRUE(member_meta::is_set(obj2));
-  EXPECT_EQ(global_enum1::field0, member_meta::getter::ref(obj2));
+  EXPECT_EQ(global_enum1::field0, member_meta::getter{}(obj2));
 }
 
 TEST_F(fatal_folly_dynamic_enum, from_integer_lenient) {
@@ -570,11 +570,11 @@ TEST_F(fatal_folly_dynamic_enum, from_integer_lenient) {
       apache::thrift::dynamic_format::PORTABLE,
       apache::thrift::format_adherence::LENIENT);
   EXPECT_TRUE(member_meta::is_set(obj1));
-  EXPECT_EQ(global_enum1::field0, member_meta::getter::ref(obj1));
+  EXPECT_EQ(global_enum1::field0, member_meta::getter{}(obj1));
   auto obj2 = apache::thrift::from_dynamic<type>(
       dyn,
       apache::thrift::dynamic_format::JSON_1,
       apache::thrift::format_adherence::LENIENT);
   EXPECT_TRUE(member_meta::is_set(obj2));
-  EXPECT_EQ(global_enum1::field0, member_meta::getter::ref(obj2));
+  EXPECT_EQ(global_enum1::field0, member_meta::getter{}(obj2));
 }

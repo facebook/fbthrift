@@ -462,24 +462,23 @@ struct debug_equals_impl<type_class::structure> : debug_equals_with_pointers {
 
       if (member::optional::value == optionality::optional) {
         if (!member::is_set(rhs)) {
-          auto const& lPtr = debug_equals_get_pointer(getter::ref(lhs));
+          auto const& lPtr = debug_equals_get_pointer(getter{}(lhs));
           debug_equals_missing()(callback, lPtr, path, "missing");
           result = false;
           return;
         }
 
         if (!member::is_set(lhs)) {
-          auto const& rPtr = debug_equals_get_pointer(getter::ref(rhs));
+          auto const& rPtr = debug_equals_get_pointer(getter{}(rhs));
           debug_equals_extra()(callback, rPtr, path, "extra");
           result = false;
           return;
         }
       }
 
-      result =
-          recurse_into<typename member::type_class>(
-              path, getter::ref(lhs), getter::ref(rhs), callback, lhs, rhs) &&
-          result;
+      auto partial = recurse_into<typename member::type_class>(
+          path, getter{}(lhs), getter{}(rhs), callback, lhs, rhs);
+      result = result && partial; // no short-circuit
     });
 
     return result;

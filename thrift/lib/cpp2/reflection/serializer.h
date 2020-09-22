@@ -810,7 +810,7 @@ struct protocol_methods<type_class::structure, Struct> {
       using protocol_method =
           protocol_methods<typename member::type_class, typename member::type>;
 
-      using member_type = folly::remove_cvref_t<decltype(getter::ref(obj))>;
+      using member_type = folly::remove_cvref_t<decltype(getter{}(obj))>;
 
       if (ftype == protocol_method::ttype_value) {
         detail::mark_isset<
@@ -818,8 +818,7 @@ struct protocol_methods<type_class::structure, Struct> {
             required_fields,
             member>(required_isset, obj);
         protocol_method::read(
-            protocol,
-            detail::deref<member_type>::clear_and_get(getter::ref(obj)));
+            protocol, detail::deref<member_type>::clear_and_get(getter{}(obj)));
       } else {
         protocol.skip(ftype);
       }
@@ -1030,7 +1029,7 @@ struct protocol_methods<type_class::structure, Struct> {
                  << " ttype:" << methods::ttype_value
                  << ", id:" << Member::id::value;
 
-        auto const& got = Member::getter::ref(in);
+        auto const& got = typename Member::getter{}(in);
         using member_type = folly::remove_cvref_t<decltype(got)>;
 
         xfer += field_writer<
@@ -1188,7 +1187,7 @@ struct protocol_methods<type_class::structure, Struct> {
       using methods =
           protocol_methods<typename Member::type_class, typename Member::type>;
 
-      auto const& got = Member::getter::ref(in);
+      auto const& got = typename Member::getter{}(in);
       using member_type = folly::remove_cvref_t<decltype(got)>;
 
       xfer += field_size<

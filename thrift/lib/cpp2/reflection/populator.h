@@ -467,7 +467,7 @@ struct populator_methods<type_class::structure, Struct> {
       using methods =
           populator_methods<typename Member::type_class, typename Member::type>;
 
-      auto& got = Member::getter::ref(out);
+      auto& got = typename Member::getter{}(out);
       using member_type = folly::remove_cvref_t<decltype(got)>;
 
       DVLOG(3) << "populating member: "

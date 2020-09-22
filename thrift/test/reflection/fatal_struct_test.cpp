@@ -93,30 +93,30 @@ TEST(fatal_struct, struct1_sanity_check) {
   pod.field4_ref()->set_ud(5.6);
   pod.field5_ref()->set_us_2("world");
 
-  EXPECT_EQ(pod.field0, traits::member::field0::getter::ref(pod));
-  EXPECT_EQ(*pod.field1_ref(), traits::member::field1::getter::ref(pod));
-  EXPECT_EQ(*pod.field2_ref(), traits::member::field2::getter::ref(pod));
-  EXPECT_EQ(pod.field3, traits::member::field3::getter::ref(pod));
-  EXPECT_EQ(*pod.field4_ref(), traits::member::field4::getter::ref(pod));
-  EXPECT_EQ(*pod.field5_ref(), traits::member::field5::getter::ref(pod));
+  EXPECT_EQ(pod.field0, traits::member::field0::getter{}(pod));
+  EXPECT_EQ(*pod.field1_ref(), traits::member::field1::getter{}(pod));
+  EXPECT_EQ(*pod.field2_ref(), traits::member::field2::getter{}(pod));
+  EXPECT_EQ(pod.field3, traits::member::field3::getter{}(pod));
+  EXPECT_EQ(*pod.field4_ref(), traits::member::field4::getter{}(pod));
+  EXPECT_EQ(*pod.field5_ref(), traits::member::field5::getter{}(pod));
 
-  traits::member::field0::getter::ref(pod) = 98;
+  traits::member::field0::getter{}(pod) = 98;
   EXPECT_EQ(98, pod.field0);
 
-  traits::member::field1::getter::ref(pod) = "test";
+  traits::member::field1::getter{}(pod) = "test";
   EXPECT_EQ("test", *pod.field1_ref());
 
-  traits::member::field2::getter::ref(pod) = enum1::field0;
+  traits::member::field2::getter{}(pod) = enum1::field0;
   EXPECT_EQ(enum1::field0, *pod.field2_ref());
 
-  traits::member::field3::getter::ref(pod) = enum2::field2_2;
+  traits::member::field3::getter{}(pod) = enum2::field2_2;
   EXPECT_EQ(enum2::field2_2, pod.field3);
 
-  traits::member::field4::getter::ref(pod).set_ui(56);
+  traits::member::field4::getter{}(pod).set_ui(56);
   EXPECT_EQ(union1::Type::ui, pod.field4_ref()->getType());
   EXPECT_EQ(56, pod.field4_ref()->get_ui());
 
-  traits::member::field5::getter::ref(pod).set_ue_2(enum1::field1);
+  traits::member::field5::getter{}(pod).set_ue_2(enum1::field1);
   EXPECT_EQ(union2::Type::ue_2, pod.field5_ref()->getType());
   EXPECT_EQ(enum1::field1, pod.field5_ref()->get_ue_2());
 
@@ -201,52 +201,52 @@ TEST(fatal_struct, struct1_sanity_check) {
       (fatal::get<
           traits::members,
           traits::member::field0::name,
-          fatal::get_type::name>::getter::ref(pod)));
+          fatal::get_type::name>::getter{}(pod)));
   EXPECT_EQ(
       "test",
       (fatal::get<
           traits::members,
           traits::member::field1::name,
-          fatal::get_type::name>::getter::ref(pod)));
+          fatal::get_type::name>::getter{}(pod)));
   EXPECT_EQ(
       enum1::field0,
       (fatal::get<
           traits::members,
           traits::member::field2::name,
-          fatal::get_type::name>::getter::ref(pod)));
+          fatal::get_type::name>::getter{}(pod)));
   EXPECT_EQ(
       enum2::field2_2,
       (fatal::get<
           traits::members,
           traits::member::field3::name,
-          fatal::get_type::name>::getter::ref(pod)));
+          fatal::get_type::name>::getter{}(pod)));
   EXPECT_EQ(
       union1::Type::ui,
       (fatal::get<
            traits::members,
            traits::member::field4::name,
-           fatal::get_type::name>::getter::ref(pod)
+           fatal::get_type::name>::getter{}(pod)
            .getType()));
   EXPECT_EQ(
       56,
       (fatal::get<
            traits::members,
            traits::member::field4::name,
-           fatal::get_type::name>::getter::ref(pod)
+           fatal::get_type::name>::getter{}(pod)
            .get_ui()));
   EXPECT_EQ(
       union2::Type::ue_2,
       (fatal::get<
            traits::members,
            traits::member::field5::name,
-           fatal::get_type::name>::getter::ref(pod)
+           fatal::get_type::name>::getter{}(pod)
            .getType()));
   EXPECT_EQ(
       enum1::field1,
       (fatal::get<
            traits::members,
            traits::member::field5::name,
-           fatal::get_type::name>::getter::ref(pod)
+           fatal::get_type::name>::getter{}(pod)
            .get_ue_2()));
 
   EXPECT_SAME<

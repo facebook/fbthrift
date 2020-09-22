@@ -34,17 +34,17 @@ TEST_F(FatalReflectionIndirectionTest, sanity_check_no_indirection) {
 
   EXPECT_SAME<
       std::int32_t&,
-      decltype(member::getter::ref(std::declval<type&>()))>();
+      decltype(member::getter{}(std::declval<type&>()))>();
   EXPECT_SAME<
       std::int32_t&&,
-      decltype(member::getter::ref(std::declval<type&&>()))>();
+      decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
       std::int32_t const&,
-      decltype(member::getter::ref(std::declval<type const&>()))>();
+      decltype(member::getter{}(std::declval<type const&>()))>();
 
   type obj;
-  member::getter::ref(obj) = 12;
-  EXPECT_EQ(12, member::getter::ref(obj));
+  member::getter{}(obj) = 12;
+  EXPECT_EQ(12, member::getter{}(obj));
 
   EXPECT_FALSE(member::is_set(obj));
   member::mark_set(obj, true);
@@ -53,7 +53,7 @@ TEST_F(FatalReflectionIndirectionTest, sanity_check_no_indirection) {
   EXPECT_FALSE(member::is_set(obj));
 
   member::field_ref_getter{}(obj) = 13;
-  EXPECT_EQ(13, member::getter::ref(obj));
+  EXPECT_EQ(13, member::getter{}(obj));
   EXPECT_TRUE(member::is_set(obj));
 }
 
@@ -62,17 +62,17 @@ TEST_F(FatalReflectionIndirectionTest, simple_alias_no_indirection) {
 
   EXPECT_SAME<
       std::int32_t&,
-      decltype(member::getter::ref(std::declval<type&>()))>();
+      decltype(member::getter{}(std::declval<type&>()))>();
   EXPECT_SAME<
       std::int32_t&&,
-      decltype(member::getter::ref(std::declval<type&&>()))>();
+      decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
       std::int32_t const&,
-      decltype(member::getter::ref(std::declval<type const&>()))>();
+      decltype(member::getter{}(std::declval<type const&>()))>();
 
   type obj;
-  member::getter::ref(obj) = 15;
-  EXPECT_EQ(15, member::getter::ref(obj));
+  member::getter{}(obj) = 15;
+  EXPECT_EQ(15, member::getter{}(obj));
 
   EXPECT_FALSE(member::is_set(obj));
   member::mark_set(obj, true);
@@ -81,7 +81,7 @@ TEST_F(FatalReflectionIndirectionTest, simple_alias_no_indirection) {
   EXPECT_FALSE(member::is_set(obj));
 
   member::field_ref_getter{}(obj) = 16;
-  EXPECT_EQ(16, member::getter::ref(obj));
+  EXPECT_EQ(16, member::getter{}(obj));
   EXPECT_TRUE(member::is_set(obj));
 }
 
@@ -90,17 +90,17 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_single_member_field) {
 
   EXPECT_SAME<
       std::int32_t&,
-      decltype(member::getter::ref(std::declval<type&>()))>();
+      decltype(member::getter{}(std::declval<type&>()))>();
   EXPECT_SAME<
       std::int32_t&&,
-      decltype(member::getter::ref(std::declval<type&&>()))>();
+      decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
       std::int32_t const&,
-      decltype(member::getter::ref(std::declval<type const&>()))>();
+      decltype(member::getter{}(std::declval<type const&>()))>();
 
   type obj;
-  member::getter::ref(obj) = -43;
-  EXPECT_EQ(-43, member::getter::ref(obj));
+  member::getter{}(obj) = -43;
+  EXPECT_EQ(-43, member::getter{}(obj));
 
   EXPECT_FALSE(member::is_set(obj));
   member::mark_set(obj, true);
@@ -109,7 +109,7 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_single_member_field) {
   EXPECT_FALSE(member::is_set(obj));
 
   member::field_ref_getter{}(obj) = reflection_indirection::HasANumber(-42);
-  EXPECT_EQ(-42, member::getter::ref(obj));
+  EXPECT_EQ(-42, member::getter{}(obj));
   EXPECT_TRUE(member::is_set(obj));
 }
 
@@ -118,17 +118,17 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
 
   EXPECT_SAME<
       std::int32_t&,
-      decltype(member::getter::ref(std::declval<type&>()))>();
+      decltype(member::getter{}(std::declval<type&>()))>();
   EXPECT_SAME<
       std::int32_t&&,
-      decltype(member::getter::ref(std::declval<type&&>()))>();
+      decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
       std::int32_t const&,
-      decltype(member::getter::ref(std::declval<type const&>()))>();
+      decltype(member::getter{}(std::declval<type const&>()))>();
 
   type obj;
-  member::getter::ref(obj) = -2;
-  EXPECT_EQ(-2, member::getter::ref(obj));
+  member::getter{}(obj) = -2;
+  EXPECT_EQ(-2, member::getter{}(obj));
 
   EXPECT_FALSE(member::is_set(obj));
   member::mark_set(obj, true);
@@ -137,7 +137,7 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
   EXPECT_FALSE(member::is_set(obj));
 
   member::field_ref_getter{}(obj) = reflection_indirection::HasAResult(-1);
-  EXPECT_EQ(-1, member::getter::ref(obj));
+  EXPECT_EQ(-1, member::getter{}(obj));
   EXPECT_TRUE(member::is_set(obj));
 }
 
@@ -146,17 +146,17 @@ TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
 
   EXPECT_SAME<
       std::string&,
-      decltype(member::getter::ref(std::declval<type&>()))>();
+      decltype(member::getter{}(std::declval<type&>()))>();
   EXPECT_SAME<
       std::string&&,
-      decltype(member::getter::ref(std::declval<type&&>()))>();
+      decltype(member::getter{}(std::declval<type&&>()))>();
   EXPECT_SAME<
       std::string const&,
-      decltype(member::getter::ref(std::declval<type const&>()))>();
+      decltype(member::getter{}(std::declval<type const&>()))>();
 
   type obj;
-  member::getter::ref(obj) = "hello";
-  EXPECT_EQ("hello", member::getter::ref(obj));
+  member::getter{}(obj) = "hello";
+  EXPECT_EQ("hello", member::getter{}(obj));
 
   EXPECT_FALSE(member::is_set(obj));
   member::mark_set(obj, true);
@@ -165,6 +165,6 @@ TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
   EXPECT_FALSE(member::is_set(obj));
 
   member::field_ref_getter{}(obj) = reflection_indirection::HasAPhrase("world");
-  EXPECT_EQ("world", member::getter::ref(obj));
+  EXPECT_EQ("world", member::getter{}(obj));
   EXPECT_TRUE(member::is_set(obj));
 }

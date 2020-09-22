@@ -256,7 +256,7 @@ struct impl<T, type_class::structure> {
         schema_t& schema,
         datatype_t& dt) {
       using getter = typename MemberInfo::getter;
-      using type = deref_inner_t<decltype(getter::ref(std::declval<T&>()))>;
+      using type = deref_inner_t<decltype(getter{}(std::declval<T&>()))>;
       using type_class = typename MemberInfo::type_class;
       using type_helper = get_helper<type, type_class>;
       using member_name = typename MemberInfo::name;

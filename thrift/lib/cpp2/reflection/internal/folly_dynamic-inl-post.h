@@ -299,7 +299,7 @@ struct dynamic_converter_impl<type_class::structure> {
           out[folly::StringPiece(
               fatal::z_data<typename member::name>(),
               fatal::size<typename member::name>::value)],
-          member::getter::ref(input),
+          typename member::getter{}(input),
           format);
     });
   }
@@ -310,16 +310,16 @@ struct dynamic_converter_impl<type_class::structure> {
       folly::dynamic const& input,
       dynamic_format format,
       format_adherence adherence) {
+    using members = typename reflect_struct<T>::members;
     for (auto const& i : input.items()) {
       auto const member_name = i.first.stringPiece();
-      fatal::
-          trie_find<typename reflect_struct<T>::members, fatal::get_type::name>(
-              member_name.begin(), member_name.end(), [&](auto tag) {
-                using member = decltype(fatal::tag_type(tag));
-                member::mark_set(out, true);
-                dynamic_converter_impl<typename member::type_class>::from(
-                    member::getter::ref(out), i.second, format, adherence);
-              });
+      fatal::trie_find<members, fatal::get_type::name>(
+          member_name.begin(), member_name.end(), [&](auto tag) {
+            using member = decltype(fatal::tag_type(tag));
+            member::mark_set(out, true);
+            dynamic_converter_impl<typename member::type_class>::from(
+                typename member::getter{}(out), i.second, format, adherence);
+          });
     }
   }
 };

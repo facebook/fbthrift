@@ -209,7 +209,7 @@ struct pretty_print_impl<type_class::structure>
       auto scope = out.start_scope();
       scope << fatal::z_data<typename member::name>() << ": ";
       recurse_into<typename member::type_class>(
-          scope, member::getter::ref(what));
+          scope, typename member::getter{}(what));
       if (index + 1 < size) {
         scope << ',';
       }
