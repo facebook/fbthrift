@@ -28,11 +28,11 @@ public final class NonCopyableUnion {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
     public static final int _S = 1;
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
-    
+
     @ThriftConstructor
     public NonCopyableUnion() {
     }

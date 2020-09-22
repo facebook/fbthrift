@@ -29,13 +29,13 @@ public final class VirtualComplexUnion {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("VirtualComplexUnion");
     public static final int _THINGONE = 1;
     private static final TField THING_ONE_FIELD_DESC = new TField("thingOne", TType.STRING, (short)1);
     public static final int _THINGTWO = 2;
     private static final TField THING_TWO_FIELD_DESC = new TField("thingTwo", TType.STRING, (short)2);
-    
+
     @ThriftConstructor
     public VirtualComplexUnion() {
     }

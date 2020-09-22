@@ -31,7 +31,7 @@ public final class Union2 {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("union2");
     public static final int _I = 1;
     private static final TField I_FIELD_DESC = new TField("i", TType.I32, (short)1);
@@ -41,7 +41,7 @@ public final class Union2 {
     private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)3);
     public static final int _U = 4;
     private static final TField U_FIELD_DESC = new TField("u", TType.STRUCT, (short)4);
-    
+
     @ThriftConstructor
     public Union2() {
     }

@@ -33,7 +33,7 @@ public final class ComplexUnion {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
     public static final int _INTVALUE = 1;
     private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
@@ -47,7 +47,7 @@ public final class ComplexUnion {
     private static final TField TYPEDEF_VALUE_FIELD_DESC = new TField("typedefValue", TType.MAP, (short)9);
     public static final int _STRINGREF = 14;
     private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)14);
-    
+
     @ThriftConstructor
     public ComplexUnion() {
     }

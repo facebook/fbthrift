@@ -27,9 +27,9 @@ public final class Nada {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("Nada");
-    
+
     @ThriftConstructor
     public Nada() {
     }

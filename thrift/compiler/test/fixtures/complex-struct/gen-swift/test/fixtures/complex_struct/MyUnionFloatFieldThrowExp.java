@@ -31,7 +31,7 @@ public final class MyUnionFloatFieldThrowExp {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("MyUnionFloatFieldThrowExp");
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
@@ -41,7 +41,7 @@ public final class MyUnionFloatFieldThrowExp {
     private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
     public static final int _COMPLEXNESTEDSTRUCT = 4;
     private static final TField COMPLEX_NESTED_STRUCT_FIELD_DESC = new TField("complexNestedStruct", TType.STRUCT, (short)4);
-    
+
     @ThriftConstructor
     public MyUnionFloatFieldThrowExp() {
     }

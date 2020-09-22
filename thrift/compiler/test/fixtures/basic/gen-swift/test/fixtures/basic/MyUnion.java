@@ -30,7 +30,7 @@ public final class MyUnion {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
@@ -38,7 +38,7 @@ public final class MyUnion {
     private static final TField MY_STRUCT_FIELD_DESC = new TField("myStruct", TType.STRUCT, (short)2);
     public static final int _MYDATAITEM = 3;
     private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
-    
+
     @ThriftConstructor
     public MyUnion() {
     }

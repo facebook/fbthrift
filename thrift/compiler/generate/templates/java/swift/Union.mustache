@@ -34,6 +34,23 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
 public final class {{struct:javaCapitalName}} {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+    {{#struct:fields}}
+      ID_TO_THRIFT_NAME.put((short) {{field:key}}, "{{field:name}}");
+    {{/struct:fields}}
+    }
+    private Object value;
+    private short id;
+
+    private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
+    {{#struct:fields}}
+    public static final int _{{field:javaAllCapsName}} = {{field:key}};
+    private static final TField {{field:javaTFieldName}} = {{#field:isSupportedApacheType?}}{{!
+    }}new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
+    }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
+    {{/struct:fields}}
+
     {{> union/UnionBuilder}}
 
     {{^struct:unionFieldTypeUnique?}}{{!

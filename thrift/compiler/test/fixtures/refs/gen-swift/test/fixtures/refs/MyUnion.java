@@ -29,13 +29,13 @@ public final class MyUnion {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
     public static final int _ANINTEGER = 1;
     private static final TField AN_INTEGER_FIELD_DESC = new TField("anInteger", TType.I32, (short)1);
     public static final int _ASTRING = 2;
     private static final TField A_STRING_FIELD_DESC = new TField("aString", TType.STRING, (short)2);
-    
+
     @ThriftConstructor
     public MyUnion() {
     }

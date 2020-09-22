@@ -29,13 +29,13 @@ public final class DataUnion {
     }
     private Object value;
     private short id;
-    
+
     private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
     public static final int _BINARYDATA = 1;
     private static final TField BINARY_DATA_FIELD_DESC = new TField("binaryData", TType.STRING, (short)1);
     public static final int _STRINGDATA = 2;
     private static final TField STRING_DATA_FIELD_DESC = new TField("stringData", TType.STRING, (short)2);
-    
+
     @ThriftConstructor
     public DataUnion() {
     }
