@@ -732,10 +732,6 @@ public class TSimpleJSONProtocol extends TProtocol {
   @Override
   public TMessage readMessageBegin() throws TException {
     readJSONArrayStart();
-    if (readJSONInteger() != VERSION) {
-      throw new TProtocolException(
-          TProtocolException.BAD_VERSION, "Message contained bad version.");
-    }
     try {
       String name = readJSONString().toString(StandardCharsets.UTF_8.name());
       byte type = (byte) readJSONInteger();
