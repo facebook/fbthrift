@@ -52,6 +52,7 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   virtual folly::coro::Task<void> co_frobnicate();
   virtual folly::coro::Task<void> co_frobnicate(apache::thrift::RequestParams params);
 #endif
+  virtual folly::SemiFuture<folly::Unit> semifuture_frobnicate();
   void async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
 };
   virtual std::unique_ptr<MyInteractionIf> createMyInteraction();

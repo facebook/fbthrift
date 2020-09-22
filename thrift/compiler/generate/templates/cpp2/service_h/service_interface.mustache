@@ -47,6 +47,7 @@
   virtual folly::coro::Task<<% > service_common/callback_type %>> co_<%function:cpp_name%>(<% > service_common/function_param_list%>);
   virtual folly::coro::Task<<% > service_common/callback_type %>> co_<%function:cpp_name%>(apache::thrift::RequestParams params<%function:comma%><% > service_common/function_param_list%>);
 #endif
+  virtual folly::SemiFuture<<% > service_common/async_return_type %>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>);
 <%/service:interaction?%>
 <%/function:eb%>
 <%#function:oneway?%>

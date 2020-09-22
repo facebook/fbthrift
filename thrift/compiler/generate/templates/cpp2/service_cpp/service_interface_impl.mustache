@@ -52,13 +52,16 @@ folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co
 <%#service:interaction?%>
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
-  co_yield folly::coro::co_error(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+  return folly::coro::toTask(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>));
 }
 
 folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {
   return co_<%function:cpp_name%>(<% > service_common/param_list_move%>);
 }
 #endif // FOLLY_HAS_COROUTINES
+folly::SemiFuture<<% > service_common/async_return_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_<%function:name%>");
+}
 <%/service:interaction?%>
 <%#function:oneway?%>
 <%^function:eb%>
@@ -95,7 +98,11 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 <%/service:interaction?%><%#service:interaction?%>
-  callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+  apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
+    return apache::thrift::detail::si::future(apache::thrift::detail::si::semifuture([&] {
+      return semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>);
+    }), getThreadManager());
+  });
 <%/service:interaction?%>
 #endif // FOLLY_HAS_COROUTINES
 }
@@ -142,7 +149,11 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
     return future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
   });
 <%/service:interaction?%><%#service:interaction?%>
-  callback->exception(apache::thrift::TApplicationException("Function <%function:cpp_name%> is unimplemented"));
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return apache::thrift::detail::si::future(apache::thrift::detail::si::semifuture([&] {
+      return semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>);
+    }), getThreadManager());
+  });
 <%/service:interaction?%>
 #endif // FOLLY_HAS_COROUTINES
 }

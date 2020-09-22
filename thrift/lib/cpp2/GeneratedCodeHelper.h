@@ -39,6 +39,10 @@
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/FutureUtil.h>
+#endif
+
 namespace apache {
 namespace thrift {
 

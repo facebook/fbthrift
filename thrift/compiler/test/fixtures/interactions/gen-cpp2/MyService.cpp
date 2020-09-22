@@ -46,13 +46,16 @@ void MyServiceSvNull::foo() {
 
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<void> MyServiceSvIf::MyInteractionIf::co_frobnicate() {
-  co_yield folly::coro::co_error(apache::thrift::TApplicationException("Function frobnicate is unimplemented"));
+  return folly::coro::toTask(semifuture_frobnicate());
 }
 
 folly::coro::Task<void> MyServiceSvIf::MyInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
   return co_frobnicate();
 }
 #endif // FOLLY_HAS_COROUTINES
+folly::SemiFuture<folly::Unit> MyServiceSvIf::MyInteractionIf::semifuture_frobnicate() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_frobnicate");
+}
 void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
@@ -73,7 +76,11 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
     callback->exception(std::current_exception());
   }
 #else // FOLLY_HAS_COROUTINES
-  callback->exception(apache::thrift::TApplicationException("Function frobnicate is unimplemented"));
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return apache::thrift::detail::si::future(apache::thrift::detail::si::semifuture([&] {
+      return semifuture_frobnicate();
+    }), getThreadManager());
+  });
 #endif // FOLLY_HAS_COROUTINES
 }
 

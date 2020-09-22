@@ -317,7 +317,7 @@ TEST(InteractionCodegenTest, Basic) {
 #if FOLLY_HAS_COROUTINES
   folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
     co_await adder.co_accumulatePrimitive(1);
-    co_await adder.co_accumulatePrimitive(2);
+    co_await adder.semifuture_accumulatePrimitive(2);
     co_await adder.co_noop();
     auto acc = co_await adder.co_getPrimitive();
     EXPECT_EQ(acc, 3);
@@ -335,6 +335,70 @@ TEST(InteractionCodegenTest, Basic) {
     EXPECT_EQ(*pacc.y_ref(), 2);
   }());
 #endif
+}
+
+TEST(InteractionCodegenTest, BasicSemiFuture) {
+  struct SemiCalculatorHandler : CalculatorSvIf {
+    struct SemiAdditionHandler : CalculatorSvIf::AdditionIf {
+      int acc_{0};
+      Point pacc_;
+
+      folly::SemiFuture<folly::Unit> semifuture_accumulatePrimitive(
+          int32_t a) override {
+        acc_ += a;
+        return folly::makeSemiFuture();
+      }
+      folly::SemiFuture<folly::Unit> semifuture_noop() override {
+        return folly::makeSemiFuture();
+      }
+      folly::SemiFuture<folly::Unit> semifuture_accumulatePoint(
+          std::unique_ptr<::apache::thrift::test::Point> a) override {
+        *pacc_.x_ref() += *a->x_ref();
+        *pacc_.y_ref() += *a->y_ref();
+        return folly::makeSemiFuture();
+      }
+      folly::SemiFuture<int32_t> semifuture_getPrimitive() override {
+        return acc_;
+      }
+      folly::SemiFuture<std::unique_ptr<::apache::thrift::test::Point>>
+      semifuture_getPoint() override {
+        return folly::copy_to_unique_ptr(pacc_);
+      }
+    };
+
+    std::unique_ptr<AdditionIf> createAddition() override {
+      return std::make_unique<SemiAdditionHandler>();
+    }
+
+    folly::SemiFuture<int32_t> semifuture_addPrimitive(int32_t a, int32_t b)
+        override {
+      return a + b;
+    }
+  };
+  ScopedServerInterfaceThread runner{std::make_shared<CalculatorHandler>()};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = client->createAddition();
+  adder.semifuture_accumulatePrimitive(1).get();
+  adder.semifuture_accumulatePrimitive(2).get();
+  adder.semifuture_noop().get();
+  auto acc = adder.semifuture_getPrimitive().get();
+  EXPECT_EQ(acc, 3);
+
+  auto sum = client->semifuture_addPrimitive(20, 22).get();
+  EXPECT_EQ(sum, 42);
+
+  Point p;
+  p.x_ref() = 1;
+  adder.semifuture_accumulatePoint(p).get();
+  p.y_ref() = 2;
+  adder.semifuture_accumulatePoint(p).get();
+  auto pacc = adder.semifuture_getPoint().get();
+  EXPECT_EQ(*pacc.x_ref(), 2);
+  EXPECT_EQ(*pacc.y_ref(), 2);
 }
 
 TEST(InteractionCodegenTest, Error) {
