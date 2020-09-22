@@ -34,14 +34,14 @@
   <%type:name%> <%function:cpp_name%>();
 <%/function:starts_interaction?%><%^function:starts_interaction?%>
 <%^function:returns_sink?%>
-<%#service:coro_only_client?%>private:<%/service:coro_only_client?%>
+<%#service:reduced_client?%>private:<%/service:reduced_client?%>
   virtual void <%function:cpp_name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
   virtual void <%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
 <%/function:returns_sink?%>
  protected:
   void <%function:cpp_name%>Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>);
  public:
-<%^function:returns_sink?%><%^service:coro_only_client?%>
+<%^function:returns_sink?%><%^service:reduced_client?%>
 
 <%^type:resolves_to_complex_return?%>
   virtual <% > types/semi_type%> sync_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);
@@ -70,7 +70,7 @@
       apache::thrift::RpcOptions& rpcOptions<%function:comma%> <% > service_common/function_param_list_const%>);
 <%/type:sync_methods_return_try?%>
 <%/function:oneway?%>
-<%/service:coro_only_client?%>
+<%/service:reduced_client?%>
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -97,17 +97,15 @@
   }
 #endif // FOLLY_HAS_COROUTINES
 
-<%^service:coro_only_client?%>
+<%^service:reduced_client?%>
 <%^type:streamresponse?%>
   virtual void <%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:streamresponse?%>
 
-<%/service:coro_only_client?%><%#service:coro_only_client?%>
-private:
+<%/service:reduced_client?%><%#service:reduced_client?%>
   folly::SemiFuture<<% > types/service_type_semi%>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);
   folly::SemiFuture<<% > types/service_type_semi%>> semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
-public:
-<%/service:coro_only_client?%>
+<%/service:reduced_client?%>
 <%/function:returns_sink?%><%#function:returns_sink?%>
 #if FOLLY_HAS_COROUTINES
   folly::coro::Task<<% > types/service_type_coro%>> co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);

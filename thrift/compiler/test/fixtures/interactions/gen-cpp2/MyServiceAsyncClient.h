@@ -69,10 +69,8 @@ private:
   }
 #endif // FOLLY_HAS_COROUTINES
 
-private:
   folly::SemiFuture<folly::Unit> semifuture_frobnicate();
   folly::SemiFuture<folly::Unit> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
-public:
 
   static folly::exception_wrapper recv_wrapped_frobnicate(::apache::thrift::ClientReceiveState& state);
   static void recv_frobnicate(::apache::thrift::ClientReceiveState& state);

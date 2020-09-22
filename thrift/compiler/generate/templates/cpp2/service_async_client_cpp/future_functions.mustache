@@ -15,7 +15,7 @@
   limitations under the License.
 
 %>
-<%^service:coro_only_client?%>
+<%^service:reduced_client?%>
 <%^type:streamresponse?%>
 folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::future_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
@@ -23,12 +23,12 @@ folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_n
 }
 <%/type:streamresponse?%>
 
-<%/service:coro_only_client?%>
+<%/service:reduced_client?%>
 folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
 }
-<%^service:coro_only_client?%>
+<%^service:reduced_client?%>
 
 <%^type:streamresponse?%>
 folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
@@ -39,7 +39,7 @@ folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_n
   return _future;
 }
 <%/type:streamresponse?%>
-<%/service:coro_only_client?%>
+<%/service:reduced_client?%>
 
 folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   <%#service:interaction?%>
@@ -51,7 +51,7 @@ folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_cla
   return std::move(callbackAndFuture.second);
 }
 
-<%^service:coro_only_client?%>
+<%^service:reduced_client?%>
 <%^type:streamresponse?%>
 folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> <% > service_common/client_class_name%>::header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   folly::Promise<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
@@ -68,4 +68,4 @@ folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apac
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return std::move(callbackAndFuture.second);
 }
-<%/service:coro_only_client?%>
+<%/service:reduced_client?%>

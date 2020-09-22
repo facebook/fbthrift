@@ -1199,7 +1199,7 @@ class mstch_cpp2_service : public mstch_service {
             {"service:metadata_name", &mstch_cpp2_service::metadata_name},
             {"service:parent_service_name",
              &mstch_cpp2_service::parent_service_name},
-            {"service:coro_only_client?", &mstch_service::is_interaction},
+            {"service:reduced_client?", &mstch_service::is_interaction},
         });
   }
   std::string get_service_namespace(t_program const* program) override {
