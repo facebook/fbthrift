@@ -22,7 +22,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("DataUnion")
 public final class DataUnion {
-    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
     private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
@@ -35,10 +34,8 @@ public final class DataUnion {
     static {
       NAMES_TO_IDS.put("binaryData", 1);
       FIELD_METADATA.put(1, BINARY_DATA_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 1, "binaryData");
       NAMES_TO_IDS.put("stringData", 2);
       FIELD_METADATA.put(2, STRING_DATA_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 2, "stringData");
     }
 
     private Object value;
@@ -107,7 +104,12 @@ public final class DataUnion {
     }
 
     public String getThriftName() {
-        return ID_TO_THRIFT_NAME.get(this.id);
+        TField tField = (TField) FIELD_METADATA.get((int) this.id);
+        if (tField == null) {
+            return "null";
+        } else {
+            return tField.name;
+        }
     }
 
     public void accept(Visitor visitor) {

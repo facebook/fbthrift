@@ -22,7 +22,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("ComplexUnion")
 public final class ComplexUnion {
-    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
     private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
@@ -43,22 +42,16 @@ public final class ComplexUnion {
     static {
       NAMES_TO_IDS.put("intValue", 1);
       FIELD_METADATA.put(1, INT_VALUE_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 1, "intValue");
       NAMES_TO_IDS.put("stringValue", 5);
       FIELD_METADATA.put(5, STRING_VALUE_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 5, "stringValue");
       NAMES_TO_IDS.put("intListValue", 2);
       FIELD_METADATA.put(2, INT_LIST_VALUE_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 2, "intListValue");
       NAMES_TO_IDS.put("stringListValue", 3);
       FIELD_METADATA.put(3, STRING_LIST_VALUE_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 3, "stringListValue");
       NAMES_TO_IDS.put("typedefValue", 9);
       FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 9, "typedefValue");
       NAMES_TO_IDS.put("stringRef", 14);
       FIELD_METADATA.put(14, STRING_REF_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 14, "stringRef");
     }
 
     private Object value;
@@ -225,7 +218,12 @@ public final class ComplexUnion {
     }
 
     public String getThriftName() {
-        return ID_TO_THRIFT_NAME.get(this.id);
+        TField tField = (TField) FIELD_METADATA.get((int) this.id);
+        if (tField == null) {
+            return "null";
+        } else {
+            return tField.name;
+        }
     }
 
     public void accept(Visitor visitor) {

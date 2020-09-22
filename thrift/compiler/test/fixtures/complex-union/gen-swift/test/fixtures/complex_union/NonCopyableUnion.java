@@ -22,7 +22,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("NonCopyableUnion")
 public final class NonCopyableUnion {
-    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
@@ -33,7 +32,6 @@ public final class NonCopyableUnion {
     static {
       NAMES_TO_IDS.put("s", 1);
       FIELD_METADATA.put(1, S_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 1, "s");
     }
 
     private Object value;
@@ -76,7 +74,12 @@ public final class NonCopyableUnion {
     }
 
     public String getThriftName() {
-        return ID_TO_THRIFT_NAME.get(this.id);
+        TField tField = (TField) FIELD_METADATA.get((int) this.id);
+        if (tField == null) {
+            return "null";
+        } else {
+            return tField.name;
+        }
     }
 
     public void accept(Visitor visitor) {

@@ -22,7 +22,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("VirtualComplexUnion")
 public final class VirtualComplexUnion {
-    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
     private static final TStruct STRUCT_DESC = new TStruct("VirtualComplexUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
@@ -35,10 +34,8 @@ public final class VirtualComplexUnion {
     static {
       NAMES_TO_IDS.put("thingOne", 1);
       FIELD_METADATA.put(1, THING_ONE_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 1, "thingOne");
       NAMES_TO_IDS.put("thingTwo", 2);
       FIELD_METADATA.put(2, THING_TWO_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 2, "thingTwo");
     }
 
     private Object value;
@@ -105,7 +102,12 @@ public final class VirtualComplexUnion {
     }
 
     public String getThriftName() {
-        return ID_TO_THRIFT_NAME.get(this.id);
+        TField tField = (TField) FIELD_METADATA.get((int) this.id);
+        if (tField == null) {
+            return "null";
+        } else {
+            return tField.name;
+        }
     }
 
     public void accept(Visitor visitor) {

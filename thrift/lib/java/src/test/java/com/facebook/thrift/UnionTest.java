@@ -249,4 +249,11 @@ public class UnionTest {
         new com.facebook.thrift.android.test.MySimpleUnion(
             MySimpleUnion.CASEFIVE, Arrays.asList("foo", "bar"));
   }
+
+  @Test
+  public void union_shouldReturnTheRightName() throws Exception {
+    com.facebook.thrift.javaswift.test.MySimpleUnion union =
+        com.facebook.thrift.javaswift.test.MySimpleUnion.fromCaseOne(1);
+    assertThat(union.getThriftName(), equalTo("caseOne"));
+  }
 }

@@ -22,7 +22,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("MyUnionFloatFieldThrowExp")
 public final class MyUnionFloatFieldThrowExp {
-    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
     private static final TStruct STRUCT_DESC = new TStruct("MyUnionFloatFieldThrowExp");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
@@ -39,16 +38,12 @@ public final class MyUnionFloatFieldThrowExp {
     static {
       NAMES_TO_IDS.put("myEnum", 1);
       FIELD_METADATA.put(1, MY_ENUM_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 1, "myEnum");
       NAMES_TO_IDS.put("setFloat", 2);
       FIELD_METADATA.put(2, SET_FLOAT_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 2, "setFloat");
       NAMES_TO_IDS.put("myDataItem", 3);
       FIELD_METADATA.put(3, MY_DATA_ITEM_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 3, "myDataItem");
       NAMES_TO_IDS.put("complexNestedStruct", 4);
       FIELD_METADATA.put(4, COMPLEX_NESTED_STRUCT_FIELD_DESC);
-      ID_TO_THRIFT_NAME.put((short) 4, "complexNestedStruct");
     }
 
     private Object value;
@@ -169,7 +164,12 @@ public final class MyUnionFloatFieldThrowExp {
     }
 
     public String getThriftName() {
-        return ID_TO_THRIFT_NAME.get(this.id);
+        TField tField = (TField) FIELD_METADATA.get((int) this.id);
+        if (tField == null) {
+            return "null";
+        } else {
+            return tField.name;
+        }
     }
 
     public void accept(Visitor visitor) {

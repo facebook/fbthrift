@@ -34,7 +34,6 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
 public final class {{struct:javaCapitalName}} {
-    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
     private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
@@ -50,7 +49,6 @@ public final class {{struct:javaCapitalName}} {
       {{#struct:fields}}
       NAMES_TO_IDS.put("{{field:javaName}}", {{field:key}});
       FIELD_METADATA.put({{field:key}}, {{field:javaTFieldName}});
-      ID_TO_THRIFT_NAME.put((short) {{field:key}}, "{{field:name}}");
       {{/struct:fields}}
     }
 
@@ -87,7 +85,12 @@ public final class {{struct:javaCapitalName}} {
     }
 
     public String getThriftName() {
-        return ID_TO_THRIFT_NAME.get(this.id);
+        TField tField = (TField) FIELD_METADATA.get((int) this.id);
+        if (tField == null) {
+            return "null";
+        } else {
+            return tField.name;
+        }
     }
 
     public void accept(Visitor visitor) {
