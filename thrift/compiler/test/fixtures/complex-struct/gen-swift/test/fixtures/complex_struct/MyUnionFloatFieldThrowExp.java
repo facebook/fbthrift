@@ -324,8 +324,9 @@ public final class MyUnionFloatFieldThrowExp {
               res.value = complexNestedStruct;
             }
             break;
+          default:
+            TProtocolUtil.skip(oprot, __field.type);
           }
-          TProtocolUtil.skip(oprot, __field.type);
         if (res.value != null) {
           res.id = __field.id;
         }

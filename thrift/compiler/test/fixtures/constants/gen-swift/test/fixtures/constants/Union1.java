@@ -198,8 +198,9 @@ public final class Union1 {
               res.value = d;
             }
             break;
+          default:
+            TProtocolUtil.skip(oprot, __field.type);
           }
-          TProtocolUtil.skip(oprot, __field.type);
         if (res.value != null) {
           res.id = __field.id;
         }

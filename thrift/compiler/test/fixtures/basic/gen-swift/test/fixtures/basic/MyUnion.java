@@ -245,8 +245,9 @@ public final class MyUnion {
               res.value = myDataItem;
             }
             break;
+          default:
+            TProtocolUtil.skip(oprot, __field.type);
           }
-          TProtocolUtil.skip(oprot, __field.type);
         if (res.value != null) {
           res.id = __field.id;
         }

@@ -104,8 +104,9 @@ public final class Nada {
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {
+          default:
+            TProtocolUtil.skip(oprot, __field.type);
           }
-          TProtocolUtil.skip(oprot, __field.type);
         if (res.value != null) {
           res.id = __field.id;
         }

@@ -224,8 +224,9 @@ public final class ListUnion {
               res.value = stringListValue;
             }
             break;
+          default:
+            TProtocolUtil.skip(oprot, __field.type);
           }
-          TProtocolUtil.skip(oprot, __field.type);
         if (res.value != null) {
           res.id = __field.id;
         }
