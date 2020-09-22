@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class VirtualComplexUnion {
     private static final TStruct STRUCT_DESC = new TStruct("VirtualComplexUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _THINGONE = 1;
     private static final TField THING_ONE_FIELD_DESC = new TField("thingOne", TType.STRING, (short)1);

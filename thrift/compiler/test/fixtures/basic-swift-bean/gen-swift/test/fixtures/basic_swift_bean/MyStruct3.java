@@ -18,7 +18,6 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
-import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
@@ -201,7 +200,7 @@ public final class MyStruct3 {
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct3");
     private short myInt16;
     public static final int _MYINT16 = 1;

@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class DataUnion {
     private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _BINARYDATA = 1;
     private static final TField BINARY_DATA_FIELD_DESC = new TField("binaryData", TType.STRING, (short)1);

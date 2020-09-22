@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class Union1 {
     private static final TStruct STRUCT_DESC = new TStruct("union1");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _I = 1;
     private static final TField I_FIELD_DESC = new TField("i", TType.I32, (short)1);

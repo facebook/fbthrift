@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class ListUnion {
     private static final TStruct STRUCT_DESC = new TStruct("ListUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _INTLISTVALUE = 2;
     private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)2);

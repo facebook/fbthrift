@@ -24,7 +24,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class MyUnionFloatFieldThrowExp {
     private static final TStruct STRUCT_DESC = new TStruct("MyUnionFloatFieldThrowExp");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    private static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _MYENUM = 1;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);

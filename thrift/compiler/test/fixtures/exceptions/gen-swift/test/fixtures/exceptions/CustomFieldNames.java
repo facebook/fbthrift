@@ -28,7 +28,7 @@ public final class CustomFieldNames extends java.lang.RuntimeException {
     private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("CustomFieldNames");
     private final String errorMessage;

@@ -18,7 +18,6 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
-import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
@@ -3133,7 +3132,7 @@ public final class MyMutableBigStruct {
     }
     
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
-    public static final Map<Integer, Object> FIELD_METADATA = new HashMap<>();
+    public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyMutableBigStruct");
     private String msg1;
     public static final int _MSG1 = 1;
