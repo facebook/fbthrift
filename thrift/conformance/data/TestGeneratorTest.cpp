@@ -17,6 +17,7 @@
 #include <thrift/conformance/data/TestGenerator.h>
 
 #include <folly/portability/GTest.h>
+#include <thrift/conformance/cpp2/Any.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/cpp2/Object.h>
@@ -26,7 +27,8 @@ namespace apache::thrift::conformance::data {
 
 TEST(TestGeneratorTest, RoundTripSuite) {
   AnyRegistry registry;
-  registry.registerType<Value>("fb.com/apache.thrift.conformance.Value");
+  registry.registerType<Value>(
+      createAnyType({"facebook.com/thrift/conformance/Value"}));
   registry.registerSerializer<Value>(
       &getAnyStandardSerializer<Value, StandardProtocol::Binary>());
   registry.registerSerializer<Value>(

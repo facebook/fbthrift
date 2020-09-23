@@ -24,6 +24,22 @@ namespace apache::thrift::conformance {
 const Protocol Number1Serializer::kProtocol = Protocol("Number1");
 const Protocol kFollyToStringProtocol = Protocol("FollyToString");
 
+AnyType createTestAnyType(const std::string& shortName) {
+  return createTestAnyType({shortName.c_str()});
+}
+
+AnyType createTestAnyType(std::initializer_list<const char*> names) {
+  AnyType type;
+  auto itr = names.begin();
+  if (itr != names.end()) {
+    type.set_name(*itr++);
+  }
+  for (; itr != names.end(); ++itr) {
+    type.aliases_ref()->emplace_back(*itr);
+  }
+  return type;
+}
+
 std::string toString(const folly::IOBuf& buf) {
   std::string result;
   folly::IOBufQueue queue;

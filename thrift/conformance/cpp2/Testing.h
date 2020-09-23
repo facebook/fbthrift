@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <initializer_list>
 #include <string>
 
 #include <folly/Conv.h>
@@ -46,6 +47,9 @@ constexpr StandardProtocol kUnknownStdProtocol =
 inline const Protocol& UnknownProtocol() {
   return getStandardProtocol<kUnknownStdProtocol>();
 }
+
+AnyType createTestAnyType(const std::string& shortName);
+AnyType createTestAnyType(std::initializer_list<const char*> names);
 
 std::string toString(const folly::IOBuf& buf);
 

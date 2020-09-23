@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thrift/conformance/cpp2/Protocol.h>
+#include <thrift/conformance/if/gen-cpp2/any_constants.h>
 #include <thrift/conformance/if/gen-cpp2/any_types.h>
 
 namespace apache::thrift::conformance {
@@ -30,5 +31,41 @@ bool hasProtocol(const Any& any, const Protocol& protocol) noexcept;
 // Optimizes the represenation for standard protocols and
 // removes any unneeded customProtocol values.
 void normalizeProtocol(Any& any) noexcept;
+
+// Creates an AnyType struct with the given names and configuration.
+//
+// The first name in names is set as the primary name, and all others are added
+// as aliases.
+template <typename C = std::initializer_list<const char*>>
+AnyType createAnyType(
+    C&& names,
+    int8_t typeIdBytes = any_constants::minTypeIdBytes());
+
+// Implementation
+
+template <typename C>
+AnyType createAnyType(C&& names, int8_t typeIdBytes) {
+  AnyType type;
+  type.set_typeIdBytes(typeIdBytes);
+  auto itr = names.begin();
+  if (itr == names.end()) {
+    folly::throw_exception<std::invalid_argument>(
+        "At least one name must be provided.");
+  }
+  // TODO(afuller): Fix folly::forward_like for containers that only expose
+  // const access.
+  if constexpr (std::is_const_v<std::remove_reference_t<decltype(*itr)>>) {
+    type.set_name(*itr++);
+    for (; itr != names.end(); ++itr) {
+      type.aliases_ref()->emplace_back(*itr);
+    }
+  } else {
+    type.set_name(folly::forward_like<C>(*itr++));
+    for (; itr != names.end(); ++itr) {
+      type.aliases_ref()->emplace_back(folly::forward_like<C>(*itr));
+    }
+  }
+  return type;
+}
 
 } // namespace apache::thrift::conformance

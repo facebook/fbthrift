@@ -21,48 +21,22 @@
 
 namespace apache::thrift::conformance {
 
-bool AnyRegistry::registerType(const std::type_info& type, std::string name) {
-  if (name.empty() || rev_index_.count(name) > 0) {
-    return false;
-  }
-  auto result = registry_.emplace(
-      std::type_index(type), TypeEntry(type, std::move(name)));
-  if (!result.second) {
-    return false;
-  }
-  rev_index_.emplace(result.first->second.name, &result.first->second);
-  return true;
-}
-
-bool AnyRegistry::registerTypeAlias(
-    const std::type_info& type,
-    std::string altName) {
-  if (altName.empty() || rev_index_.count(altName) > 0) {
-    return false;
-  }
-  rev_index_.emplace(std::move(altName), &registry_.at(std::type_index(type)));
-  return true;
+bool AnyRegistry::registerType(const std::type_info& typeInfo, AnyType type) {
+  return registerTypeImpl(typeInfo, std::move(type)) != nullptr;
 }
 
 bool AnyRegistry::registerSerializer(
     const std::type_info& type,
     const AnySerializer* serializer) {
-  if (serializer == nullptr) {
-    return false;
-  }
-  return registry_.at(std::type_index(type))
-      .serializers.emplace(serializer->getProtocol(), serializer)
-      .second;
+  return registerSerializerImpl(
+      serializer, &registry_.at(std::type_index(type)));
 }
 
 bool AnyRegistry::registerSerializer(
     const std::type_info& type,
     std::unique_ptr<AnySerializer> serializer) {
-  if (!registerSerializer(type, serializer.get())) {
-    return false;
-  }
-  owned_serializers_.emplace_back(std::move(serializer));
-  return true;
+  return registerSerializerImpl(
+      std::move(serializer), &registry_.at(std::type_index(type)));
 }
 
 std::string_view AnyRegistry::getTypeName(const std::type_info& type) const {
@@ -70,7 +44,7 @@ std::string_view AnyRegistry::getTypeName(const std::type_info& type) const {
   if (entry == nullptr) {
     return {};
   }
-  return entry->name;
+  return entry->type.get_name();
 }
 
 const AnySerializer* AnyRegistry::getSerializer(
@@ -103,7 +77,7 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
   serializer->encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
 
   Any result;
-  result.type_ref() = entry->name;
+  result.type_ref() = entry->type.get_name();
   if (protocol.isCustom()) {
     result.customProtocol_ref() = protocol.custom();
   } else {
@@ -127,7 +101,7 @@ void AnyRegistry::load(const Any& value, any_ref out) const {
     folly::throw_exception<std::bad_any_cast>();
   }
   folly::io::Cursor cursor(&*value.data_ref());
-  serializer->decode(entry->type, cursor, out);
+  serializer->decode(entry->typeInfo, cursor, out);
 }
 
 std::any AnyRegistry::load(const Any& value) const {
@@ -136,10 +110,76 @@ std::any AnyRegistry::load(const Any& value) const {
   return out;
 }
 
+auto AnyRegistry::registerTypeImpl(const std::type_info& typeInfo, AnyType type)
+    -> TypeEntry* {
+  if (!checkNameAvailability(type)) {
+    return nullptr;
+  }
+
+  auto result = registry_.emplace(
+      std::type_index(typeInfo), TypeEntry(typeInfo, std::move(type)));
+  if (!result.second) {
+    return nullptr;
+  }
+
+  indexType(&result.first->second);
+  return &result.first->second;
+}
+
+bool AnyRegistry::registerSerializerImpl(
+    const AnySerializer* serializer,
+    TypeEntry* entry) {
+  if (serializer == nullptr) {
+    return false;
+  }
+  return entry->serializers.emplace(serializer->getProtocol(), serializer)
+      .second;
+}
+
+bool AnyRegistry::registerSerializerImpl(
+    std::unique_ptr<AnySerializer> serializer,
+    TypeEntry* entry) {
+  if (!registerSerializerImpl(serializer.get(), entry)) {
+    return false;
+  }
+  ownedSerializers_.emplace_front(std::move(serializer));
+  return true;
+}
+
+bool AnyRegistry::checkNameAvailability(std::string_view name) const {
+  return !name.empty() && !nameIndex_.contains(name);
+}
+
+bool AnyRegistry::checkNameAvailability(const AnyType& type) const {
+  // Ensure name and all aliases are availabile.
+  if (!checkNameAvailability(*type.name_ref())) {
+    return false;
+  }
+  for (const auto& alias : *type.aliases_ref()) {
+    if (!checkNameAvailability(alias)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+void AnyRegistry::indexName(std::string_view name, TypeEntry* entry) {
+  auto res = nameIndex_.emplace(name, entry);
+  assert(res.second);
+  // TODO(afuller): Also index under typeId.
+}
+
+void AnyRegistry::indexType(TypeEntry* entry) {
+  indexName(*entry->type.name_ref(), entry);
+  for (const auto& alias : *entry->type.aliases_ref()) {
+    indexName(alias, entry);
+  }
+}
+
 auto AnyRegistry::getTypeEntry(std::string_view name) const
     -> const TypeEntry* {
-  auto itr = rev_index_.find(name);
-  if (itr == rev_index_.end()) {
+  auto itr = nameIndex_.find(name);
+  if (itr == nameIndex_.end()) {
     return nullptr;
   }
   return itr->second;

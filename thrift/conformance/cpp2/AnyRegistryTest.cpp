@@ -38,18 +38,18 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_THROW(registry.registerSerializer<int>(&intCodec), std::out_of_range);
 
   // Empty string is rejected.
-  EXPECT_FALSE(registry.registerType<int>(""));
+  EXPECT_FALSE(registry.registerType<int>(createTestAnyType("")));
 
-  EXPECT_TRUE(registry.registerType<int>("int"));
+  EXPECT_TRUE(registry.registerType<int>(createTestAnyType("int")));
   EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
   EXPECT_EQ(registry.getSerializer("int", kFollyToStringProtocol), nullptr);
   EXPECT_EQ(
       registry.getSerializer(typeid(int), kFollyToStringProtocol), nullptr);
 
   // Conflicting and duplicate registrations are rejected.
-  EXPECT_FALSE(registry.registerType<int>("int"));
-  EXPECT_FALSE(registry.registerType<int>("other int"));
-  EXPECT_FALSE(registry.registerType<double>("int"));
+  EXPECT_FALSE(registry.registerType<int>(createTestAnyType("int")));
+  EXPECT_FALSE(registry.registerType<int>(createTestAnyType("other int")));
+  EXPECT_FALSE(registry.registerType<double>(createTestAnyType("int")));
 
   EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
   EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
@@ -63,7 +63,7 @@ TEST(AnyRegistryTest, Behavior) {
   Number1Serializer number1Codec;
   EXPECT_TRUE(registry.registerSerializer<int>(&number1Codec));
 
-  EXPECT_TRUE(registry.registerType<double>("double"));
+  EXPECT_TRUE(registry.registerType<double>(createTestAnyType("double")));
 
   // nullptr is rejected.
   EXPECT_FALSE(registry.registerSerializer<double>(nullptr));
@@ -115,7 +115,7 @@ TEST(AnyRegistryTest, Behavior) {
 
   // Loading an empty Any value throws an error.
   value = {};
-  EXPECT_EQ(*value.type_ref(), "");
+  EXPECT_FALSE(value.type_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "");
   EXPECT_TRUE(hasProtocol(value, Protocol{}));
   EXPECT_THROW(registry.load(value), std::bad_any_cast);
@@ -130,45 +130,13 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_THROW(registry.load<int>(value), std::bad_any_cast);
 }
 
-TEST(AnyRegistryTest, Alias) {
-  AnyRegistry registry;
-  FollyToStringSerializer<int> intCodec;
-
-  // Can't regester an alterantive name before regestring the type.
-  EXPECT_THROW(registry.registerTypeAlias<int>("Int"), std::out_of_range);
-
-  EXPECT_TRUE(registry.registerType<int>("int"));
-  // Can't re-regester the same name.
-  EXPECT_FALSE(registry.registerTypeAlias<int>("int"));
-  EXPECT_TRUE(registry.registerTypeAlias<int>("Int"));
-  EXPECT_FALSE(registry.registerTypeAlias<int>("Int"));
-  EXPECT_TRUE(registry.registerTypeAlias<int>("Integer"));
-  EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
-  EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
-
-  auto any = registry.store(1, kFollyToStringProtocol);
-  // Stored under the main type name.
-
-  EXPECT_EQ(*any.type_ref(), "int");
-  EXPECT_EQ(registry.load<int>(any), 1);
-
-  any.type_ref() = "Int";
-  EXPECT_EQ(registry.load<int>(any), 1);
-
-  any.type_ref() = "Integer";
-  EXPECT_EQ(registry.load<int>(any), 1);
-
-  any.type_ref() = "Unknown";
-  EXPECT_THROW(registry.load<int>(any), std::bad_any_cast);
-}
-
-TEST(AnyRegistryTest, RegesterAll) {
+TEST(AnyRegistryTest, Aliases) {
   AnyRegistry registry;
   FollyToStringSerializer<int> intCodec;
   Number1Serializer oneCodec;
 
-  EXPECT_TRUE(registry.registerAll<int>(
-      {"int", "Int", "Integer"}, {&oneCodec, &intCodec}));
+  EXPECT_TRUE(registry.registerType<int>(
+      createTestAnyType({"int", "Int", "Integer"}), {&oneCodec, &intCodec}));
   EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
 
   auto any = registry.store(1, kFollyToStringProtocol);
@@ -178,32 +146,6 @@ TEST(AnyRegistryTest, RegesterAll) {
 
   any.type_ref() = "Int";
   EXPECT_EQ(registry.load<int>(any), 1);
-
-  any.type_ref() = "Integer";
-  EXPECT_EQ(registry.load<int>(any), 1);
-
-  any.type_ref() = "Unknown";
-  EXPECT_THROW(registry.load<int>(any), std::bad_any_cast);
-}
-
-TEST(AnyRegistryTest, RegesterAll_Partial) {
-  AnyRegistry registry;
-  FollyToStringSerializer<int> intCodec;
-  Number1Serializer oneCodec;
-
-  EXPECT_TRUE(registry.registerType<double>("Int"));
-  EXPECT_FALSE(registry.registerAll<int>(
-      {"int", "Int", "Integer"}, {&oneCodec, &intCodec}));
-  EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
-  EXPECT_EQ(registry.getTypeName(typeid(double)), "Int");
-
-  auto any = registry.store(1, kFollyToStringProtocol);
-  // Stored under the main type name.
-  EXPECT_EQ(*any.type_ref(), "int");
-  EXPECT_EQ(registry.load<int>(any), 1);
-
-  any.type_ref() = "Int";
-  EXPECT_THROW(registry.load<int>(any), std::bad_any_cast);
 
   any.type_ref() = "Integer";
   EXPECT_EQ(registry.load<int>(any), 1);
