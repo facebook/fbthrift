@@ -90,7 +90,7 @@ class Tile {
       folly::EventBase& eb) {
     eb.dcheckIsInEventBaseThread();
     DCHECK(!__fbthrift_isPromise());
-    DCHECK_GT(refCount_, 0);
+    DCHECK_GT(refCount_, 0u);
     if (--refCount_ == 0 && terminationRequested_) {
       tm.add([tile = conn.removeTile(id)] {});
     }
@@ -121,7 +121,7 @@ class TilePromise final : public Tile {
       Cpp2ConnContext& ctx,
       concurrency::ThreadManager& tm,
       folly::EventBase& eb) {
-    DCHECK_EQ(refCount_, 0);
+    DCHECK_EQ(refCount_, 0u);
 
     if (destructionRequested_) {
       tm.add([tile = ctx.removeTile(id)] {});
