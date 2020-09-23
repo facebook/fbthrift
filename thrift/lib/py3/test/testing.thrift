@@ -201,7 +201,9 @@ struct ColorGroups {
 
 typedef list<i32> (cpp.type = "std::deque<int>") list_typedef
 typedef set<i32> (cpp.type = "std::unordered_set<int>") set_typedef
-typedef map<i32, i32> (cpp.type = "std::unordered_map<int, int>") map_typedef
+typedef map<i32, i32> (cpp.type = "std::unordered_map<int,
+    // comments
+    int /* inline comments */>") map_typedef
 typedef string (cpp.type = "folly::fbstring") string_typedef
 
 struct customized {

@@ -165,7 +165,7 @@ cdef extern from *:
 cdef extern from *:
     ctypedef cint32_t CppFakeI32 "CppFakeI32"
 cdef extern from * nogil:
-    cdef cppclass folly_small_vector_int64_t_8 "folly::small_vector<int64_t, 8 /* maxInline */>":
+    cdef cppclass folly_small_vector_int64_t_8 "folly::small_vector<int64_t, 8 >":
         ctypedef cint64_t value_type
         ctypedef size_t size_type
 
@@ -1034,7 +1034,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
     cdef shared_ptr[ccontainerStruct] reference_shared_ptr_opt_ref_type_const "::thrift::py3::reference_shared_ptr<::some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct&)
     cdef shared_ptr[ccontainerStruct] reference_shared_ptr_opt_ref_type_unique "::thrift::py3::reference_shared_ptr<::some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct&)
     cdef shared_ptr[cset[cint32_t]] reference_shared_ptr_opt_ref_type_shared "::thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cAnnotatedStruct]&, cset[cint32_t]&)
-    cdef shared_ptr[folly_small_vector_int64_t_8] reference_shared_ptr_list_type "::thrift::py3::reference_shared_ptr<folly::small_vector<int64_t, 8 /* maxInline */>>"(shared_ptr[cAnnotatedStruct]&, folly_small_vector_int64_t_8&)
+    cdef shared_ptr[folly_small_vector_int64_t_8] reference_shared_ptr_list_type "::thrift::py3::reference_shared_ptr<folly::small_vector<int64_t, 8 >>"(shared_ptr[cAnnotatedStruct]&, folly_small_vector_int64_t_8&)
     cdef shared_ptr[folly_sorted_vector_set_std_string] reference_shared_ptr_set_type "::thrift::py3::reference_shared_ptr<folly::sorted_vector_set<std::string>>"(shared_ptr[cAnnotatedStruct]&, folly_sorted_vector_set_std_string&)
     cdef shared_ptr[FakeMap] reference_shared_ptr_map_type "::thrift::py3::reference_shared_ptr<FakeMap>"(shared_ptr[cAnnotatedStruct]&, FakeMap&)
     cdef shared_ptr[std_unordered_map_std_string_containerStruct] reference_shared_ptr_map_struct_type "::thrift::py3::reference_shared_ptr<std::unordered_map<std::string, containerStruct>>"(shared_ptr[cAnnotatedStruct]&, std_unordered_map_std_string_containerStruct&)
@@ -2173,7 +2173,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cset[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[cint32_t]])
     cdef shared_ptr[const cset[cint64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[cint64_t]])
     cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast<const std::set<std::string>>"(shared_ptr[cset[string]])
-    cdef shared_ptr[const folly_small_vector_int64_t_8] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int64_t, 8 /* maxInline */>>"(shared_ptr[folly_small_vector_int64_t_8])
+    cdef shared_ptr[const folly_small_vector_int64_t_8] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int64_t, 8 >>"(shared_ptr[folly_small_vector_int64_t_8])
     cdef shared_ptr[const folly_sorted_vector_map[cint64_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int64_t,std::string>>"(shared_ptr[folly_sorted_vector_map[cint64_t,string]])
     cdef shared_ptr[const folly_sorted_vector_set[string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<std::string>>"(shared_ptr[folly_sorted_vector_set[string]])
     cdef shared_ptr[const folly_sorted_vector_set_std_string] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<std::string>>"(shared_ptr[folly_sorted_vector_set_std_string])

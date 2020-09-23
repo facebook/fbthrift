@@ -114,7 +114,7 @@ class mstch_py3_type : public mstch_type {
  public:
   struct CachedProperties {
     const std::string cppTemplate;
-    const std::string cppType;
+    std::string cppType;
     std::string flatName;
   };
   mstch_py3_type(
@@ -127,6 +127,7 @@ class mstch_py3_type : public mstch_type {
       : mstch_type(type, generators, cache, pos),
         prog_{prog},
         cachedProps_{cachedProps} {
+    strip_cpp_comments_and_newlines(cachedProps_.cppType);
     register_methods(
         this,
         {
@@ -318,7 +319,6 @@ class mstch_py3_type : public mstch_type {
       return "";
     }
     std::string cython_type = cachedProps_.cppType;
-    strip_comments(cython_type);
     boost::algorithm::replace_all(cython_type, "::", "_");
     boost::algorithm::replace_all(cython_type, "<", "_");
     boost::algorithm::replace_all(cython_type, ">", "");

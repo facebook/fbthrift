@@ -29,9 +29,9 @@ namespace compiler {
 std::vector<std::string> split_namespace(const std::string& s);
 
 /**
- * strip comments off from cpp annotation text
+ * strip comments and newlines off cpp annotation text
  */
-void strip_comments(std::string& s);
+void strip_cpp_comments_and_newlines(std::string& s);
 
 } // namespace compiler
 } // namespace thrift
