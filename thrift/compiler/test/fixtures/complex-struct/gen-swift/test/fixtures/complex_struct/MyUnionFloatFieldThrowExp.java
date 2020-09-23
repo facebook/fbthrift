@@ -343,6 +343,8 @@ public final class MyUnionFloatFieldThrowExp {
           res.id = __field.id;
         }
         oprot.readFieldEnd();
+        oprot.readFieldBegin();
+        oprot.readFieldEnd();
       }
       oprot.readStructEnd();
       return res;

@@ -45,6 +45,8 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
       res.id = __field.id;
     }
     oprot.readFieldEnd();
+    oprot.readFieldBegin();
+    oprot.readFieldEnd();
   }
   oprot.readStructEnd();
   return res;

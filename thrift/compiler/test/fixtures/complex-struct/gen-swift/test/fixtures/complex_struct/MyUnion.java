@@ -407,6 +407,8 @@ public final class MyUnion {
           res.id = __field.id;
         }
         oprot.readFieldEnd();
+        oprot.readFieldBegin();
+        oprot.readFieldEnd();
       }
       oprot.readStructEnd();
       return res;

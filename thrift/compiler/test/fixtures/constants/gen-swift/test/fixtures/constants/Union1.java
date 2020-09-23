@@ -215,6 +215,8 @@ public final class Union1 {
           res.id = __field.id;
         }
         oprot.readFieldEnd();
+        oprot.readFieldBegin();
+        oprot.readFieldEnd();
       }
       oprot.readStructEnd();
       return res;
