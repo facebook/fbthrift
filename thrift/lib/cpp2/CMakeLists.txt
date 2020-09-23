@@ -98,6 +98,7 @@ add_library(
   thriftcpp2
 
   GeneratedCodeHelper.cpp
+  Flags.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp
   async/ClientSinkBridge.cpp
