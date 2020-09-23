@@ -37,7 +37,6 @@
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
-#include <thrift/lib/cpp2/protocol/Traits.h>
 
 /**
  * Specializations of `protocol_methods` encapsulate a collection of
@@ -285,9 +284,9 @@ deserialize_known_length_set(
 template <typename TypeClass, typename Type, typename Enable = void>
 struct protocol_methods;
 
-#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(Class, Type, Method)      \
-  constexpr static protocol::TType ttype_value =                             \
-      protocol_type_v<type_class::Class, Type>;                              \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(                          \
+    Class, Type, Method, TTypeValue)                                         \
+  constexpr static protocol::TType ttype_value = protocol::TTypeValue;       \
   template <typename Protocol>                                               \
   static void read(Protocol& protocol, Type& out) {                          \
     protocol.read##Method(out);                                              \
@@ -304,7 +303,8 @@ struct protocol_methods;
     return protocol.write##Method(in);                                       \
   }
 
-#define THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(Class, Type, Method)   \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(                       \
+    Class, Type, Method, TTypeValue)                                      \
   template <bool, typename Protocol>                                      \
   static std::size_t serializedSize(Protocol& protocol, Type const& in) { \
     return protocol.serializedSize##Method(in);                           \
@@ -313,23 +313,32 @@ struct protocol_methods;
 // stamp out specializations for primitive types
 // TODO: Perhaps change ttype_value to a static constexpr member function, as
 // those might instantiate faster than a constexpr objects
-#define THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(Class, Type, Method) \
-  template <>                                                          \
-  struct protocol_methods<type_class::Class, Type> {                   \
-    THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(Class, Type, Method)    \
-    THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(Class, Type, Method)    \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(   \
+    Class, Type, Method, TTypeValue)                 \
+  template <>                                        \
+  struct protocol_methods<type_class::Class, Type> { \
+    THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(      \
+        Class,                                       \
+        Type,                                        \
+        Method,                                      \
+        TTypeValue)                                  \
+    THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(      \
+        Class,                                       \
+        Type,                                        \
+        Method,                                      \
+        TTypeValue)                                  \
   }
 
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int8_t, Byte);
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int16_t, I16);
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int32_t, I32);
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64);
+THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int8_t, Byte, T_BYTE);
+THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int16_t, I16, T_I16);
+THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int32_t, I32, T_I32);
+THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64, T_I64);
 
 // Macros for defining protocol_methods for unsigned integers
 // Need special macros due to the casts needed
-#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI(Class, Type, Method)          \
-  constexpr static protocol::TType ttype_value =                             \
-      protocol_type_v<type_class::Class, Type>;                              \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI(                              \
+    Class, Type, Method, TTypeValue)                                         \
+  constexpr static protocol::TType ttype_value = protocol::TTypeValue;       \
   using SignedType = std::make_signed_t<Type>;                               \
   template <typename Protocol>                                               \
   static void read(Protocol& protocol, Type& out) {                          \
@@ -351,7 +360,8 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64);
     return protocol.write##Method(folly::to_signed(in));                     \
   }
 
-#define THRIFT_PROTOCOL_METHODS_REGISTER_SS_UI(Class, Type, Method)       \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_SS_UI(                           \
+    Class, Type, Method, TTypeValue)                                      \
   template <bool, typename Protocol>                                      \
   static std::size_t serializedSize(Protocol& protocol, Type const& in) { \
     return protocol.serializedSize##Method(folly::to_signed(in));         \
@@ -360,17 +370,17 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64);
 // stamp out specializations for unsigned integer primitive types
 // TODO: Perhaps change ttype_value to a static constexpr member function, as
 // those might instantiate faster than a constexpr objects
-#define THRIFT_PROTOCOL_METHODS_REGISTER_UI(Class, Type, Method) \
-  template <>                                                    \
-  struct protocol_methods<type_class::Class, Type> {             \
-    THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI(Class, Type, Method)  \
-    THRIFT_PROTOCOL_METHODS_REGISTER_SS_UI(Class, Type, Method)  \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_UI(Class, Type, Method, TTypeValue) \
+  template <>                                                                \
+  struct protocol_methods<type_class::Class, Type> {                         \
+    THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI(Class, Type, Method, TTypeValue)  \
+    THRIFT_PROTOCOL_METHODS_REGISTER_SS_UI(Class, Type, Method, TTypeValue)  \
   }
 
-THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint8_t, Byte);
-THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint16_t, I16);
-THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint32_t, I32);
-THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint64_t, I64);
+THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint8_t, Byte, T_BYTE);
+THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint16_t, I16, T_I16);
+THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint32_t, I32, T_I32);
+THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint64_t, I64, T_I64);
 
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_UI
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI
@@ -381,8 +391,8 @@ THRIFT_PROTOCOL_METHODS_REGISTER_UI(integral, std::uint64_t, I64);
 // proxy type
 template <>
 struct protocol_methods<type_class::integral, bool> {
-  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(integral, bool, Bool)
-  THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(integral, bool, Bool)
+  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(integral, bool, Bool, T_BOOL)
+  THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(integral, bool, Bool, T_BOOL)
 
   template <typename Protocol>
   static void read(Protocol& protocol, std::vector<bool>::reference out) {
@@ -392,20 +402,28 @@ struct protocol_methods<type_class::integral, bool> {
   }
 };
 
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(floating_point, double, Double);
-THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(floating_point, float, Float);
+THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(
+    floating_point,
+    double,
+    Double,
+    T_DOUBLE);
+THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(
+    floating_point,
+    float,
+    Float,
+    T_FLOAT);
 
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD
 
 template <typename Type>
 struct protocol_methods<type_class::string, Type> {
-  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(string, Type, String)
-  THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(string, Type, String)
+  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(string, Type, String, T_STRING)
+  THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(string, Type, String, T_STRING)
 };
 
 template <typename Type>
 struct protocol_methods<type_class::binary, Type> {
-  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(binary, Type, Binary)
+  THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(binary, Type, Binary, T_STRING)
 
   template <bool ZeroCopy, typename Protocol>
   static typename std::enable_if<ZeroCopy, std::size_t>::type serializedSize(
@@ -477,7 +495,6 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
 
   using elem_type = typename Type::value_type;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
-  using elem_ttype = protocol_type<ElemClass, elem_type>;
 
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
@@ -496,7 +513,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         elem_methods::read(protocol, out.back());
       }
     } else {
-      if (reported_type != WireTypeInfo::fromTType(elem_ttype::value)) {
+      if (reported_type != WireTypeInfo::fromTType(elem_methods::ttype_value)) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
         if (!canReadNElements(protocol, list_size, {reported_type})) {
@@ -528,7 +545,8 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.writeListBegin(
-        elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem : out) {
       xfer += elem_methods::write(protocol, elem);
     }
@@ -541,7 +559,8 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.serializedSizeListBegin(
-        elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
@@ -563,7 +582,6 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
 
   using elem_type = typename Type::value_type;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
-  using elem_ttype = protocol_type<ElemClass, elem_type>;
 
  private:
   template <typename Protocol>
@@ -589,7 +607,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         consume_elem(protocol, out);
       }
     } else {
-      if (reported_type != WireTypeInfo::fromTType(elem_ttype::value)) {
+      if (reported_type != WireTypeInfo::fromTType(elem_methods::ttype_value)) {
         apache::thrift::skip_n(protocol, set_size, {reported_type});
       } else {
         if (!canReadNElements(protocol, set_size, {reported_type})) {
@@ -609,7 +627,8 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.writeSetBegin(
-        elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
 
     if (!folly::is_detected_v<detect_key_compare, Type> &&
         protocol.kSortKeys()) {
@@ -639,7 +658,8 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.serializedSizeSetBegin(
-        elem_ttype::value, folly::to_narrow(folly::to_unsigned(out.size())));
+        elem_methods::ttype_value,
+        folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
@@ -666,8 +686,6 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   using mapped_type = typename Type::mapped_type;
   using key_methods = protocol_methods<KeyClass, key_type>;
   using mapped_methods = protocol_methods<MappedClass, mapped_type>;
-  using key_ttype = protocol_type<KeyClass, key_type>;
-  using mapped_ttype = protocol_type<MappedClass, mapped_type>;
 
  protected:
   template <typename Protocol>
@@ -696,8 +714,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       // CompactProtocol does not transmit key/mapped types if
       // the map is empty
       if (map_size > 0 &&
-          (WireTypeInfo::fromTType(key_ttype::value) != rpt_key_type ||
-           WireTypeInfo::fromTType(mapped_ttype::value) != rpt_mapped_type)) {
+          (WireTypeInfo::fromTType(key_methods::ttype_value) != rpt_key_type ||
+           WireTypeInfo::fromTType(mapped_methods::ttype_value) !=
+               rpt_mapped_type)) {
         apache::thrift::skip_n(
             protocol, map_size, {rpt_key_type, rpt_mapped_type});
       } else {
@@ -722,7 +741,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.writeMapBegin(
-        key_ttype::value, mapped_ttype::value, out.size());
+        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
 
     if (!folly::is_detected_v<detect_key_compare, Type> &&
         protocol.kSortKeys()) {
@@ -755,8 +774,8 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     std::size_t xfer = 0;
 
     xfer += protocol.serializedSizeMapBegin(
-        key_ttype::value,
-        mapped_ttype::value,
+        key_methods::ttype_value,
+        mapped_methods::ttype_value,
         folly::to_narrow(folly::to_unsigned(out.size())));
     for (auto const& elem_pair : out) {
       xfer += key_methods::template serializedSize<ZeroCopy>(
