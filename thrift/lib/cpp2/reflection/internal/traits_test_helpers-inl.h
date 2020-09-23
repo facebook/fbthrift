@@ -193,30 +193,35 @@ void test_thrift_list_traits() {
   EXPECT_SAME<typename T::const_iterator, typename traits::const_iterator>();
 
   {
-    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T s(apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-        traits, detail::test_data::primes, s);
+        traits, apache::thrift::detail::test_data::primes, s);
 
-    auto other = detail::test_data::primes;
-    detail::copy_iterators<traits>(s, other.begin(), other.end());
+    auto other = apache::thrift::detail::test_data::primes;
+    apache::thrift::detail::copy_iterators<traits>(
+        s, other.begin(), other.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(traits, other, s);
   }
 
   {
     T const s(
-        detail::test_data::primes.begin(), detail::test_data::primes.end());
+        apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-        traits, detail::test_data::primes, s);
+        traits, apache::thrift::detail::test_data::primes, s);
   }
 
   {
-    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T s(apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     EXPECT_FALSE(traits::empty(s));
     EXPECT_EQ(s.size(), traits::size(s));
-    EXPECT_EQ(detail::test_data::primes.size(), traits::size(s));
-    EXPECT_EQ(detail::test_data::primes.size(), s.size());
+    EXPECT_EQ(
+        apache::thrift::detail::test_data::primes.size(), traits::size(s));
+    EXPECT_EQ(apache::thrift::detail::test_data::primes.size(), s.size());
     traits::clear(s);
     EXPECT_EQ(s.size(), traits::size(s));
     EXPECT_TRUE(traits::empty(s));
@@ -224,7 +229,8 @@ void test_thrift_list_traits() {
   }
 
   {
-    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T s(apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     auto sizeBefore = traits::size(s);
     EXPECT_FALSE(traits::empty(s));
     auto iter = traits::erase(s, s.begin());
@@ -252,7 +258,8 @@ void test_thrift_string_traits() {
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(traits, s, s.begin(), s.end());
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(
         traits, s, source.begin(), source.end());
-    detail::copy_iterators<traits>(s, other.begin(), other.end());
+    apache::thrift::detail::copy_iterators<traits>(
+        s, other.begin(), other.end());
     THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL(
         traits, s, other.begin(), other.end());
   }
@@ -304,26 +311,30 @@ void test_thrift_set_traits() {
   EXPECT_SAME<typename T::const_iterator, typename traits::const_iterator>();
 
   {
-    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T s(apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-        traits, detail::test_data::primes, s);
+        traits, apache::thrift::detail::test_data::primes, s);
   }
 
   {
     T const s(
-        detail::test_data::primes.begin(), detail::test_data::primes.end());
+        apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-        traits, detail::test_data::primes, s);
+        traits, apache::thrift::detail::test_data::primes, s);
   }
 
   {
-    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T s(apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     EXPECT_FALSE(traits::empty(s));
     EXPECT_EQ(s.size(), traits::size(s));
-    EXPECT_EQ(detail::test_data::primes.size(), traits::size(s));
-    EXPECT_EQ(detail::test_data::primes.size(), s.size());
+    EXPECT_EQ(
+        apache::thrift::detail::test_data::primes.size(), traits::size(s));
+    EXPECT_EQ(apache::thrift::detail::test_data::primes.size(), s.size());
     traits::clear(s);
     EXPECT_EQ(s.size(), traits::size(s));
     EXPECT_TRUE(traits::empty(s));
@@ -331,7 +342,8 @@ void test_thrift_set_traits() {
   }
 
   {
-    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T s(apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     T const& sconst = s;
     auto k = 17;
     EXPECT_EQ(1, s.count(k));
@@ -340,7 +352,8 @@ void test_thrift_set_traits() {
   }
 
   {
-    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T s(apache::thrift::detail::test_data::primes.begin(),
+        apache::thrift::detail::test_data::primes.end());
     EXPECT_FALSE(traits::empty(s));
     auto sizeBefore = traits::size(s);
     EXPECT_FALSE(traits::empty(s));
@@ -367,11 +380,11 @@ void test_thrift_map_traits() {
   EXPECT_SAME<typename T::const_iterator, typename traits::const_iterator>();
 
   {
-    T s(detail::test_data::primes_2x.begin(),
-        detail::test_data::primes_2x.end());
+    T s(apache::thrift::detail::test_data::primes_2x.begin(),
+        apache::thrift::detail::test_data::primes_2x.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-        traits, detail::test_data::primes_2x, s);
+        traits, apache::thrift::detail::test_data::primes_2x, s);
 
     for (auto ai = traits::begin(s), ae = traits::end(s); ai != ae; ++ai) {
       traits::mapped(ai) = traits::key(ai) * 3;
@@ -383,25 +396,26 @@ void test_thrift_map_traits() {
       EXPECT_EQ(traits::key(ai) * 3, traits::mapped(ai));
     }
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-        traits, detail::test_data::primes_3x, s);
+        traits, apache::thrift::detail::test_data::primes_3x, s);
   }
 
   {
     T const s(
-        detail::test_data::primes_2x.begin(),
-        detail::test_data::primes_2x.end());
+        apache::thrift::detail::test_data::primes_2x.begin(),
+        apache::thrift::detail::test_data::primes_2x.end());
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
-        traits, detail::test_data::primes_2x, s);
+        traits, apache::thrift::detail::test_data::primes_2x, s);
   }
 
   {
-    T s(detail::test_data::primes_2x.begin(),
-        detail::test_data::primes_2x.end());
+    T s(apache::thrift::detail::test_data::primes_2x.begin(),
+        apache::thrift::detail::test_data::primes_2x.end());
     EXPECT_FALSE(traits::empty(s));
     EXPECT_EQ(s.size(), traits::size(s));
-    EXPECT_EQ(detail::test_data::primes_2x.size(), traits::size(s));
-    EXPECT_EQ(detail::test_data::primes_2x.size(), s.size());
+    EXPECT_EQ(
+        apache::thrift::detail::test_data::primes_2x.size(), traits::size(s));
+    EXPECT_EQ(apache::thrift::detail::test_data::primes_2x.size(), s.size());
     traits::clear(s);
     EXPECT_EQ(s.size(), traits::size(s));
     EXPECT_TRUE(traits::empty(s));
@@ -409,8 +423,8 @@ void test_thrift_map_traits() {
   }
 
   {
-    T s(detail::test_data::primes_2x.begin(),
-        detail::test_data::primes_2x.end());
+    T s(apache::thrift::detail::test_data::primes_2x.begin(),
+        apache::thrift::detail::test_data::primes_2x.end());
     T const& sconst = s;
     auto k = 17;
     EXPECT_EQ(1, s.count(k));
@@ -419,8 +433,8 @@ void test_thrift_map_traits() {
   }
 
   {
-    T s(detail::test_data::primes_2x.begin(),
-        detail::test_data::primes_2x.end());
+    T s(apache::thrift::detail::test_data::primes_2x.begin(),
+        apache::thrift::detail::test_data::primes_2x.end());
     EXPECT_FALSE(traits::empty(s));
     auto sizeBefore = traits::size(s);
 

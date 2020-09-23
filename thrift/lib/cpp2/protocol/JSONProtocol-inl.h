@@ -159,7 +159,8 @@ uint32_t JSONProtocolWriter::writeFieldBegin(
   ret += writeString(folly::to<std::string>(fieldId));
   ret += writeContext();
   ret += beginContext(ContextType::MAP);
-  ret += writeString(detail::json::getTypeNameForTypeID(fieldType).str());
+  ret += writeString(
+      apache::thrift::detail::json::getTypeNameForTypeID(fieldType).str());
   return ret;
 }
 
@@ -175,8 +176,10 @@ uint32_t
 JSONProtocolWriter::writeMapBegin(TType keyType, TType valType, uint32_t size) {
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
-  ret += writeString(detail::json::getTypeNameForTypeID(keyType).str());
-  ret += writeString(detail::json::getTypeNameForTypeID(valType).str());
+  ret += writeString(
+      apache::thrift::detail::json::getTypeNameForTypeID(keyType).str());
+  ret += writeString(
+      apache::thrift::detail::json::getTypeNameForTypeID(valType).str());
   ret += writeI32(size);
   ret += writeContext();
   ret += beginContext(ContextType::MAP);
@@ -192,7 +195,8 @@ uint32_t JSONProtocolWriter::writeMapEnd() {
 uint32_t JSONProtocolWriter::writeListBegin(TType elemType, uint32_t size) {
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
-  ret += writeString(detail::json::getTypeNameForTypeID(elemType).str());
+  ret += writeString(
+      apache::thrift::detail::json::getTypeNameForTypeID(elemType).str());
   ret += writeI32(size);
   return ret;
 }
@@ -204,7 +208,8 @@ uint32_t JSONProtocolWriter::writeListEnd() {
 uint32_t JSONProtocolWriter::writeSetBegin(TType elemType, uint32_t size) {
   auto ret = writeContext();
   ret += beginContext(ContextType::ARRAY);
-  ret += writeString(detail::json::getTypeNameForTypeID(elemType).str());
+  ret += writeString(
+      apache::thrift::detail::json::getTypeNameForTypeID(elemType).str());
   ret += writeI32(size);
   return ret;
 }
@@ -303,7 +308,7 @@ void JSONProtocolReader::readFieldBegin(
   skipWhitespace();
 
   auto peek = peekCharSafe();
-  if (peek == detail::json::kJSONObjectEnd) {
+  if (peek == apache::thrift::detail::json::kJSONObjectEnd) {
     fieldType = TType::T_STOP;
     fieldId = 0;
     return;
@@ -312,7 +317,7 @@ void JSONProtocolReader::readFieldBegin(
   ensureAndBeginContext(ContextType::MAP);
   std::string fieldTypeS;
   readString(fieldTypeS);
-  fieldType = detail::json::getTypeIDForTypeName(fieldTypeS);
+  fieldType = apache::thrift::detail::json::getTypeIDForTypeName(fieldTypeS);
 }
 
 void JSONProtocolReader::readFieldEnd() {
@@ -326,13 +331,13 @@ void JSONProtocolReader::readMapBegin(
   ensureAndBeginContext(ContextType::ARRAY);
   std::string keyTypeS;
   readString(keyTypeS);
-  keyType = detail::json::getTypeIDForTypeName(keyTypeS);
+  keyType = apache::thrift::detail::json::getTypeIDForTypeName(keyTypeS);
   std::string valTypeS;
   readString(valTypeS);
-  valType = detail::json::getTypeIDForTypeName(valTypeS);
+  valType = apache::thrift::detail::json::getTypeIDForTypeName(valTypeS);
   int64_t sizeRead = 0;
   readI64(sizeRead);
-  size = detail::json::clampSize(sizeRead);
+  size = apache::thrift::detail::json::clampSize(sizeRead);
   ensureAndBeginContext(ContextType::MAP);
 }
 
@@ -345,10 +350,10 @@ void JSONProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
   ensureAndBeginContext(ContextType::ARRAY);
   std::string elemTypeS;
   readString(elemTypeS);
-  elemType = detail::json::getTypeIDForTypeName(elemTypeS);
+  elemType = apache::thrift::detail::json::getTypeIDForTypeName(elemTypeS);
   int64_t sizeRead = 0;
   readI64(sizeRead);
-  size = detail::json::clampSize(sizeRead);
+  size = apache::thrift::detail::json::clampSize(sizeRead);
 }
 
 void JSONProtocolReader::readListEnd() {

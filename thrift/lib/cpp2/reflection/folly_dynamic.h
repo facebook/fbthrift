@@ -106,7 +106,7 @@ enum class format_adherence {
  */
 template <typename T>
 void to_dynamic(folly::dynamic& out, T&& input, dynamic_format format) {
-  using impl = detail::dynamic_converter_impl<
+  using impl = apache::thrift::detail::dynamic_converter_impl<
       reflect_type_class<folly::remove_cvref_t<T>>>;
 
   static_assert(
@@ -150,7 +150,7 @@ void from_dynamic(
     folly::dynamic const& input,
     dynamic_format format,
     format_adherence adherence = format_adherence::STRICT) {
-  using impl = detail::dynamic_converter_impl<
+  using impl = apache::thrift::detail::dynamic_converter_impl<
       reflect_type_class<folly::remove_cvref_t<T>>>;
 
   static_assert(

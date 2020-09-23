@@ -532,7 +532,8 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
 
-    detail::fillTHeaderFromResponseRpcMetadata(response->metadata, *tHeader);
+    apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
+        response->metadata, *tHeader);
     cb_.release()->onResponse(ClientReceiveState(
         static_cast<uint16_t>(-1),
         std::move(response->payload),
@@ -680,7 +681,7 @@ void RocketClientChannel::sendRequestStream(
     StreamClientCallback* clientCallback) {
   DestructorGuard dg(this);
 
-  auto metadata = detail::makeRequestRpcMetadata(
+  auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       static_cast<ProtocolId>(protocolId_),
@@ -715,7 +716,7 @@ void RocketClientChannel::sendRequestSink(
     SinkClientCallback* clientCallback) {
   DestructorGuard dg(this);
 
-  auto metadata = detail::makeRequestRpcMetadata(
+  auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       RpcKind::SINK,
       static_cast<ProtocolId>(protocolId_),
@@ -751,7 +752,7 @@ void RocketClientChannel::sendThriftRequest(
     RequestClientCallback::Ptr cb) {
   DestructorGuard dg(this);
 
-  auto metadata = detail::makeRequestRpcMetadata(
+  auto metadata = apache::thrift::detail::makeRequestRpcMetadata(
       rpcOptions,
       kind,
       static_cast<ProtocolId>(protocolId_),

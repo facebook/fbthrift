@@ -70,7 +70,7 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
 
 template <class T>
 struct Layout<T, typename std::enable_if<std::is_enum<T>::value>::type>
-    : public detail::EnumLayout<T> {};
+    : public apache::thrift::frozen::detail::EnumLayout<T> {};
 } // namespace frozen
 } // namespace thrift
 } // namespace apache

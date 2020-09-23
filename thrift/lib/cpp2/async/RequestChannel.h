@@ -91,7 +91,8 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      typename detail::RequestClientCallbackType<Kind>::Ptr) = delete;
+      typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr) =
+      delete;
 
   /**
    * ReplyCallback will be invoked when the reply to this request is
@@ -242,7 +243,8 @@ inline StreamClientCallback* createStreamClientCallback(
     int32_t bufferSize) {
   DCHECK(requestCallback->isInlineSafe());
   class RequestClientCallbackWrapper
-      : public detail::ClientStreamBridge::FirstResponseCallback {
+      : public apache::thrift::detail::ClientStreamBridge::
+            FirstResponseCallback {
    public:
     RequestClientCallbackWrapper(
         RequestClientCallback::Ptr requestCallback,
@@ -252,10 +254,11 @@ inline StreamClientCallback* createStreamClientCallback(
 
     void onFirstResponse(
         FirstResponsePayload&& firstResponse,
-        detail::ClientStreamBridge::ClientPtr clientStreamBridge) override {
+        apache::thrift::detail::ClientStreamBridge::ClientPtr
+            clientStreamBridge) override {
       auto tHeader = std::make_unique<transport::THeader>();
       tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-      detail::fillTHeaderFromResponseRpcMetadata(
+      apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
           firstResponse.metadata, *tHeader);
       requestCallback_.release()->onResponse(ClientReceiveState(
           static_cast<uint16_t>(-1),
@@ -277,7 +280,7 @@ inline StreamClientCallback* createStreamClientCallback(
     const int32_t bufferSize_;
   };
 
-  return detail::ClientStreamBridge::create(
+  return apache::thrift::detail::ClientStreamBridge::create(
       new RequestClientCallbackWrapper(std::move(requestCallback), bufferSize));
 }
 
@@ -329,7 +332,8 @@ template <RpcKind Kind, class Protocol>
 void clientSendT(
     Protocol* prot,
     const apache::thrift::RpcOptions& rpcOptions,
-    typename detail::RequestClientCallbackType<Kind>::Ptr callback,
+    typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr
+        callback,
     apache::thrift::ContextStack& ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,

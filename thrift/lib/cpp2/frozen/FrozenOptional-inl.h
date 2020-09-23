@@ -204,7 +204,8 @@ struct OptionalLayout : public LayoutBase {
 } // namespace detail
 
 template <class T>
-struct Layout<folly::Optional<T>> : public detail::OptionalLayout<T> {};
+struct Layout<folly::Optional<T>>
+    : public apache::thrift::frozen::detail::OptionalLayout<T> {};
 
 } // namespace frozen
 } // namespace thrift

@@ -255,20 +255,22 @@ struct FieldData {
   typedef typename std::remove_pointer<T>::type ref_type;
   T value;
   ref_type& ref() {
-    return detail::maybe_remove_pointer(value);
+    return apache::thrift::detail::maybe_remove_pointer(value);
   }
   const ref_type& ref() const {
-    return detail::maybe_remove_pointer(value);
+    return apache::thrift::detail::maybe_remove_pointer(value);
   }
 };
 
 template <bool hasIsSet, typename... Field>
-class ThriftPresult : private std::tuple<Field...>,
-                      public detail::IsSetHelper<hasIsSet, sizeof...(Field)> {
+class ThriftPresult
+    : private std::tuple<Field...>,
+      public apache::thrift::detail::IsSetHelper<hasIsSet, sizeof...(Field)> {
   // The fields tuple and IsSetHelper are base classes (rather than members)
   // to employ the empty base class optimization when they are empty
   typedef std::tuple<Field...> Fields;
-  typedef detail::IsSetHelper<hasIsSet, sizeof...(Field)> CurIsSetHelper;
+  typedef apache::thrift::detail::IsSetHelper<hasIsSet, sizeof...(Field)>
+      CurIsSetHelper;
 
  public:
   using size = std::tuple_size<Fields>;
@@ -312,9 +314,9 @@ class ThriftPresult : private std::tuple<Field...>,
         break;
       }
       bool readSomething = false;
-      detail::forEachVoid(
+      apache::thrift::detail::forEachVoid(
           fields(),
-          detail::Reader<Protocol, CurIsSetHelper>(
+          apache::thrift::detail::Reader<Protocol, CurIsSetHelper>(
               prot, isSet(), fid, ftype, readSomething));
       if (!readSomething) {
         prot->skip(ftype);
@@ -330,8 +332,9 @@ class ThriftPresult : private std::tuple<Field...>,
   uint32_t serializedSize(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->serializedStructSize("");
-    xfer += detail::forEach(
-        fields(), detail::Sizer<Protocol, CurIsSetHelper>(prot, isSet()));
+    xfer += apache::thrift::detail::forEach(
+        fields(),
+        apache::thrift::detail::Sizer<Protocol, CurIsSetHelper>(prot, isSet()));
     xfer += prot->serializedSizeStop();
     return xfer;
   }
@@ -340,8 +343,10 @@ class ThriftPresult : private std::tuple<Field...>,
   uint32_t serializedSizeZC(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->serializedStructSize("");
-    xfer += detail::forEach(
-        fields(), detail::SizerZC<Protocol, CurIsSetHelper>(prot, isSet()));
+    xfer += apache::thrift::detail::forEach(
+        fields(),
+        apache::thrift::detail::SizerZC<Protocol, CurIsSetHelper>(
+            prot, isSet()));
     xfer += prot->serializedSizeStop();
     return xfer;
   }
@@ -350,8 +355,10 @@ class ThriftPresult : private std::tuple<Field...>,
   uint32_t write(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->writeStructBegin("");
-    xfer += detail::forEach(
-        fields(), detail::Writer<Protocol, CurIsSetHelper>(prot, isSet()));
+    xfer += apache::thrift::detail::forEach(
+        fields(),
+        apache::thrift::detail::Writer<Protocol, CurIsSetHelper>(
+            prot, isSet()));
     xfer += prot->writeFieldStop();
     xfer += prot->writeStructEnd();
     return xfer;
@@ -499,7 +506,7 @@ folly::exception_wrapper recv_wrapped_helper(
     prot->readMessageBegin(fname, mtype, protoSeqId);
     if (mtype == T_EXCEPTION) {
       TApplicationException x;
-      detail::deserializeExceptionBody(prot, &x);
+      apache::thrift::detail::deserializeExceptionBody(prot, &x);
       prot->readMessageEnd();
       return folly::exception_wrapper(std::move(x));
     }
@@ -522,7 +529,7 @@ folly::exception_wrapper recv_wrapped_helper(
     smsg.protocolType = prot->protocolType();
     smsg.buffer = state.buf();
     ctx->onReadData(smsg);
-    detail::deserializeRequestBody(prot, &result);
+    apache::thrift::detail::deserializeRequestBody(prot, &result);
     prot->readMessageEnd();
     ctx->postRead(
         state.header(),
@@ -583,7 +590,7 @@ folly::exception_wrapper recv_wrapped(
   }
 
   if (!ew) {
-    _return.stream = detail::ap::decode_client_buffered_stream<
+    _return.stream = apache::thrift::detail::ap::decode_client_buffered_stream<
         Protocol,
         typename PResult::StreamPResultType,
         Item>(state.extractStreamBridge(), state.chunkBufferSize());
@@ -612,7 +619,7 @@ folly::exception_wrapper recv_wrapped(
   }
 
   if (!ew) {
-    _return = detail::ap::decode_client_buffered_stream<
+    _return = apache::thrift::detail::ap::decode_client_buffered_stream<
         Protocol,
         typename PResult::StreamPResultType,
         Item>(state.extractStreamBridge(), state.chunkBufferSize());
@@ -645,7 +652,7 @@ ClientSink<SinkType, FinalResponseType> createSink(
               std::decay_t<ErrorMapFunc>>(std::move(item).exception());
         }
       },
-      detail::ap::decode_stream_element<
+      apache::thrift::detail::ap::decode_stream_element<
           ProtocolReader,
           FinalResponsePResult,
           FinalResponseType>);
@@ -955,7 +962,7 @@ std::unique_ptr<folly::IOBuf> encode_stream_exception(
     constexpr size_t kQueueAppenderGrowth = 4096;
     prot.setOutput(&queue, kQueueAppenderGrowth);
     TApplicationException ex(ew.what().toStdString());
-    detail::serializeExceptionBody(&prot, &ex);
+    apache::thrift::detail::serializeExceptionBody(&prot, &ex);
   }
 
   return std::move(queue).move();
@@ -1030,7 +1037,7 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
           // Could not decode the error. It may be a TApplicationException
           TApplicationException x;
           prot.setInput(err.encoded.get());
-          deserializeExceptionBody(&prot, &x);
+          apache::thrift::detail::deserializeExceptionBody(&prot, &x);
           hijacked = folly::exception_wrapper(std::move(x));
         }
       });

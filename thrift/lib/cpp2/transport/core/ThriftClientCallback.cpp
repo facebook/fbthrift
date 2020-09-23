@@ -69,7 +69,8 @@ void ThriftClientCallback::onThriftResponse(
     active_ = false;
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-    detail::fillTHeaderFromResponseRpcMetadata(metadata, *tHeader);
+    apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
+        metadata, *tHeader);
     cb_.release()->onResponse(ClientReceiveState(
         -1, std::move(payload), std::move(tHeader), nullptr));
   }

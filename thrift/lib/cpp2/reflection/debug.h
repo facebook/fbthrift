@@ -73,7 +73,7 @@ bool debug_equals(
     T const& rhs,
     Callback&& callback,
     std::string path = "$") {
-  return detail::debug_equals(path, lhs, rhs, callback);
+  return apache::thrift::detail::debug_equals(path, lhs, rhs, callback);
 }
 
 /**

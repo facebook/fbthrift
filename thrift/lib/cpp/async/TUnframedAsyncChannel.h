@@ -124,12 +124,13 @@ class TUnframedACReadState {
 template <typename ProtocolTraits_>
 class TUnframedAsyncChannel
     : public TStreamAsyncChannel<
-          detail::TUnframedACWriteRequest,
-          detail::TUnframedACReadState<ProtocolTraits_>> {
+          apache::thrift::async::detail::TUnframedACWriteRequest,
+          apache::thrift::async::detail::TUnframedACReadState<
+              ProtocolTraits_>> {
  private:
   typedef TStreamAsyncChannel<
-      detail::TUnframedACWriteRequest,
-      detail::TUnframedACReadState<ProtocolTraits_>>
+      apache::thrift::async::detail::TUnframedACWriteRequest,
+      apache::thrift::async::detail::TUnframedACReadState<ProtocolTraits_>>
       Parent;
   typedef TUnframedAsyncChannel<ProtocolTraits_> Self;
 

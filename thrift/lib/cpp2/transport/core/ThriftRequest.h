@@ -196,7 +196,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   void sendStreamReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      detail::ServerStreamFactory&& stream,
+      apache::thrift::detail::ServerStreamFactory&& stream,
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
@@ -215,7 +215,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 #if FOLLY_HAS_COROUTINES
   void sendSinkReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      detail::SinkConsumerImpl&& consumerImpl,
+      apache::thrift::detail::SinkConsumerImpl&& consumerImpl,
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
@@ -266,7 +266,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   virtual void sendStreamThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
-      detail::ServerStreamFactory&&) noexcept {
+      apache::thrift::detail::ServerStreamFactory&&) noexcept {
     LOG(FATAL) << "sendStreamThriftResponse not implemented";
   }
 
@@ -274,7 +274,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   virtual void sendSinkThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
-      detail::SinkConsumerImpl&&) noexcept {
+      apache::thrift::detail::SinkConsumerImpl&&) noexcept {
     LOG(FATAL) << "sendSinkThriftResponse not implemented";
   }
 #endif
@@ -327,7 +327,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   void sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
-      detail::ServerStreamFactory&& stream) {
+      apache::thrift::detail::ServerStreamFactory&& stream) {
     if (checkResponseSize(*buf)) {
       sendStreamThriftResponse(
           std::move(metadata), std::move(buf), std::move(stream));
@@ -340,7 +340,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   void sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
-      detail::SinkConsumerImpl sink) {
+      apache::thrift::detail::SinkConsumerImpl sink) {
     if (checkResponseSize(*buf)) {
       sendSinkThriftResponse(
           std::move(metadata), std::move(buf), std::move(sink));

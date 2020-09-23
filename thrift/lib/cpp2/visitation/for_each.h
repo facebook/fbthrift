@@ -43,7 +43,8 @@ struct ForEachField {
  */
 template <typename T, typename F>
 void for_each_field(T&& t, F&& f) {
-  detail::ForEachField<folly::remove_cvref_t<T>>()(f, static_cast<T&&>(t));
+  apache::thrift::detail::ForEachField<folly::remove_cvref_t<T>>()(
+      f, static_cast<T&&>(t));
 }
 
 /**
@@ -60,7 +61,7 @@ void for_each_field(T1&& t1, T2&& t2, F f) {
   static_assert(
       std::is_same<folly::remove_cvref_t<T1>, folly::remove_cvref_t<T2>>::value,
       "type mismatch");
-  detail::ForEachField<folly::remove_cvref_t<T1>>()(
+  apache::thrift::detail::ForEachField<folly::remove_cvref_t<T1>>()(
       f, static_cast<T1&&>(t1), static_cast<T2&&>(t2));
 }
 } // namespace thrift

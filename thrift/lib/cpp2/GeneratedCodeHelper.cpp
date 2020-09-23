@@ -50,14 +50,15 @@ std::unique_ptr<folly::IOBuf> helper<ProtocolReader, ProtocolWriter>::write_exn(
     ContextStack* ctx,
     const TApplicationException& x) {
   IOBufQueue queue(IOBufQueue::cacheChainLength());
-  size_t bufSize = detail::serializedExceptionBodySizeZC(prot, &x);
+  size_t bufSize =
+      apache::thrift::detail::serializedExceptionBodySizeZC(prot, &x);
   bufSize += prot->serializedMessageSize(method);
   prot->setOutput(&queue, bufSize);
   if (ctx) {
     ctx->handlerErrorWrapped(exception_wrapper(x));
   }
   prot->writeMessageBegin(method, T_EXCEPTION, protoSeqId);
-  detail::serializeExceptionBody(prot, &x);
+  apache::thrift::detail::serializeExceptionBody(prot, &x);
   prot->writeMessageEnd();
   return std::move(queue).move();
 }

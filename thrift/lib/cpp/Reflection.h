@@ -33,11 +33,13 @@ const uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
 
 inline int64_t makeTypeId(Type type, uint64_t hash) {
   return static_cast<int64_t>(
-      (hash & ~detail::kTypeMask) | static_cast<int>(type));
+      (hash & ~apache::thrift::reflection::detail::kTypeMask) |
+      static_cast<int>(type));
 }
 
 inline Type getType(int64_t typeId) {
-  return static_cast<Type>(typeId & detail::kTypeMask);
+  return static_cast<Type>(
+      typeId & apache::thrift::reflection::detail::kTypeMask);
 }
 
 inline bool isBaseType(Type type) {

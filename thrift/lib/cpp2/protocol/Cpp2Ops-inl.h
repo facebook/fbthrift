@@ -466,7 +466,9 @@ void readIntoVector(Protocol* prot, std::vector<bool>& vec) {
 } // namespace detail
 
 template <class L>
-class Cpp2Ops<L, folly::void_t<typename detail::push_back_result<L>::type>> {
+class Cpp2Ops<
+    L,
+    folly::void_t<typename apache::thrift::detail::push_back_result<L>::type>> {
  public:
   typedef L Type;
   static constexpr protocol::TType thriftType() {
@@ -491,7 +493,7 @@ class Cpp2Ops<L, folly::void_t<typename detail::push_back_result<L>::type>> {
     protocol::TType etype;
     prot->readListBegin(etype, size);
     value->resize(size);
-    detail::readIntoVector(prot, *value);
+    apache::thrift::detail::readIntoVector(prot, *value);
     prot->readListEnd();
   }
   template <class Protocol>
@@ -521,7 +523,10 @@ class Cpp2Ops<L, folly::void_t<typename detail::push_back_result<L>::type>> {
 };
 
 template <class S>
-class Cpp2Ops<S, folly::void_t<typename detail::insert_key_result<S>::type>> {
+class Cpp2Ops<
+    S,
+    folly::void_t<
+        typename apache::thrift::detail::insert_key_result<S>::type>> {
  public:
   typedef S Type;
   static constexpr protocol::TType thriftType() {
@@ -545,7 +550,7 @@ class Cpp2Ops<S, folly::void_t<typename detail::insert_key_result<S>::type>> {
     uint32_t size;
     protocol::TType etype;
     prot->readSetBegin(etype, size);
-    detail::Reserver<Type>::reserve(*value, size);
+    apache::thrift::detail::Reserver<Type>::reserve(*value, size);
     for (uint32_t i = 0; i < size; i++) {
       ElemType elem;
       Cpp2Ops<ElemType>::read(prot, &elem);
@@ -582,7 +587,8 @@ class Cpp2Ops<S, folly::void_t<typename detail::insert_key_result<S>::type>> {
 template <class M>
 class Cpp2Ops<
     M,
-    folly::void_t<typename detail::subscript_key_result<M>::type>> {
+    folly::void_t<
+        typename apache::thrift::detail::subscript_key_result<M>::type>> {
  public:
   typedef M Type;
   static constexpr protocol::TType thriftType() {
@@ -619,7 +625,7 @@ class Cpp2Ops<
     uint32_t size;
     protocol::TType keytype, valuetype;
     prot->readMapBegin(keytype, valuetype, size);
-    detail::Reserver<Type>::reserve(*value, size);
+    apache::thrift::detail::Reserver<Type>::reserve(*value, size);
     for (uint32_t i = 0; i < size; i++) {
       KeyType key;
       Cpp2Ops<KeyType>::read(prot, &key);

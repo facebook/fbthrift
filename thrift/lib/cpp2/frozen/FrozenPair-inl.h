@@ -92,7 +92,7 @@ struct PairLayout : public LayoutBase {
 
 template <class First, class Second>
 struct Layout<std::pair<First, Second>>
-    : public detail::PairLayout<First, Second> {};
+    : public apache::thrift::frozen::detail::PairLayout<First, Second> {};
 
 } // namespace frozen
 } // namespace thrift

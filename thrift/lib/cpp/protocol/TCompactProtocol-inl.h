@@ -214,14 +214,14 @@ uint32_t TCompactProtocolT<Transport_>::writeBool(const bool value) {
         booleanField_.name,
         booleanField_.fieldType,
         booleanField_.fieldId,
-        value ? detail::compact::CT_BOOLEAN_TRUE
-              : detail::compact::CT_BOOLEAN_FALSE);
+        value ? apache::thrift::protocol::detail::compact::CT_BOOLEAN_TRUE
+              : apache::thrift::protocol::detail::compact::CT_BOOLEAN_FALSE);
     booleanField_.name = nullptr;
   } else {
     // we're not part of a field, so just write the value
     wsize += writeByte(
-        value ? detail::compact::CT_BOOLEAN_TRUE
-              : detail::compact::CT_BOOLEAN_FALSE);
+        value ? apache::thrift::protocol::detail::compact::CT_BOOLEAN_TRUE
+              : apache::thrift::protocol::detail::compact::CT_BOOLEAN_FALSE);
   }
   return wsize;
 }
@@ -413,7 +413,7 @@ uint32_t TCompactProtocolT<Transport_>::writeVarint64(uint64_t n) {
  */
 template <class Transport_>
 int8_t TCompactProtocolT<Transport_>::getCompactType(int8_t ttype) {
-  return detail::compact::TTypeToCType[ttype];
+  return apache::thrift::protocol::detail::compact::TTypeToCType[ttype];
 }
 
 //
@@ -509,12 +509,14 @@ uint32_t TCompactProtocolT<Transport_>::readFieldBegin(
   fieldType = getTType(type);
 
   // if this happens to be a boolean field, the value is encoded in the type
-  if (type == detail::compact::CT_BOOLEAN_TRUE ||
-      type == detail::compact::CT_BOOLEAN_FALSE) {
+  if (type == apache::thrift::protocol::detail::compact::CT_BOOLEAN_TRUE ||
+      type == apache::thrift::protocol::detail::compact::CT_BOOLEAN_FALSE) {
     // save the boolean value in a special instance variable.
     boolValue_.hasBoolValue = true;
     boolValue_.boolValue =
-        (type == detail::compact::CT_BOOLEAN_TRUE ? true : false);
+        (type == apache::thrift::protocol::detail::compact::CT_BOOLEAN_TRUE
+             ? true
+             : false);
   }
 
   // push the new field onto the field stack so we can keep the deltas going.
@@ -618,7 +620,7 @@ uint32_t TCompactProtocolT<Transport_>::readBool(bool& value) {
   } else {
     int8_t val;
     readByte(val);
-    value = (val == detail::compact::CT_BOOLEAN_TRUE);
+    value = (val == apache::thrift::protocol::detail::compact::CT_BOOLEAN_TRUE);
     return 1;
   }
 }
@@ -864,30 +866,30 @@ TType TCompactProtocolT<Transport_>::getTType(int8_t type) {
   switch (type) {
     case T_STOP:
       return T_STOP;
-    case detail::compact::CT_BOOLEAN_FALSE:
-    case detail::compact::CT_BOOLEAN_TRUE:
+    case apache::thrift::protocol::detail::compact::CT_BOOLEAN_FALSE:
+    case apache::thrift::protocol::detail::compact::CT_BOOLEAN_TRUE:
       return T_BOOL;
-    case detail::compact::CT_BYTE:
+    case apache::thrift::protocol::detail::compact::CT_BYTE:
       return T_BYTE;
-    case detail::compact::CT_I16:
+    case apache::thrift::protocol::detail::compact::CT_I16:
       return T_I16;
-    case detail::compact::CT_I32:
+    case apache::thrift::protocol::detail::compact::CT_I32:
       return T_I32;
-    case detail::compact::CT_I64:
+    case apache::thrift::protocol::detail::compact::CT_I64:
       return T_I64;
-    case detail::compact::CT_DOUBLE:
+    case apache::thrift::protocol::detail::compact::CT_DOUBLE:
       return T_DOUBLE;
-    case detail::compact::CT_FLOAT:
+    case apache::thrift::protocol::detail::compact::CT_FLOAT:
       return T_FLOAT;
-    case detail::compact::CT_BINARY:
+    case apache::thrift::protocol::detail::compact::CT_BINARY:
       return T_STRING;
-    case detail::compact::CT_LIST:
+    case apache::thrift::protocol::detail::compact::CT_LIST:
       return T_LIST;
-    case detail::compact::CT_SET:
+    case apache::thrift::protocol::detail::compact::CT_SET:
       return T_SET;
-    case detail::compact::CT_MAP:
+    case apache::thrift::protocol::detail::compact::CT_MAP:
       return T_MAP;
-    case detail::compact::CT_STRUCT:
+    case apache::thrift::protocol::detail::compact::CT_STRUCT:
       return T_STRUCT;
     default:
       throw TLibraryException(

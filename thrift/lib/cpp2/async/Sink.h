@@ -49,7 +49,7 @@ class ClientSink {
   ClientSink() = default;
 
   ClientSink(
-      detail::ClientSinkBridge::Ptr impl,
+      apache::thrift::detail::ClientSinkBridge::Ptr impl,
       PayloadSerializer serializer,
       FinalResponseDeserializer deserializer)
       : impl_(std::move(impl)),
@@ -116,7 +116,7 @@ class ClientSink {
     }
   }
 
-  detail::ClientSinkBridge::Ptr impl_;
+  apache::thrift::detail::ClientSinkBridge::Ptr impl_;
   PayloadSerializer serializer_;
   FinalResponseDeserializer deserializer_;
 #endif

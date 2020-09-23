@@ -85,11 +85,13 @@ class ServerAttributeBase {
 
 template <typename T>
 class ServerAttributeAtomic final
-    : public detail::ServerAttributeBase<T, ServerAttributeAtomic<T>> {
+    : public apache::thrift::detail::
+          ServerAttributeBase<T, ServerAttributeAtomic<T>> {
  public:
   template <typename U>
   explicit ServerAttributeAtomic(U value)
-      : detail::ServerAttributeBase<T, ServerAttributeAtomic<T>>(value),
+      : apache::thrift::detail::
+            ServerAttributeBase<T, ServerAttributeAtomic<T>>(value),
         deduced_(this->default_) {}
 
   T get() const {
@@ -106,11 +108,13 @@ class ServerAttributeAtomic final
 
 template <typename T>
 class ServerAttributeSharedMutex final
-    : public detail::ServerAttributeBase<T, ServerAttributeSharedMutex<T>> {
+    : public apache::thrift::detail::
+          ServerAttributeBase<T, ServerAttributeSharedMutex<T>> {
  public:
   template <typename U>
   explicit ServerAttributeSharedMutex(U value)
-      : detail::ServerAttributeBase<T, ServerAttributeSharedMutex<T>>(value),
+      : apache::thrift::detail::
+            ServerAttributeBase<T, ServerAttributeSharedMutex<T>>(value),
         deduced_(this->default_) {}
 
   T get() const {
@@ -128,10 +132,12 @@ class ServerAttributeSharedMutex final
 
 template <typename T>
 class ServerAttributeUnsafe final
-    : public detail::ServerAttributeBase<T, ServerAttributeUnsafe<T>> {
+    : public apache::thrift::detail::
+          ServerAttributeBase<T, ServerAttributeUnsafe<T>> {
  public:
   explicit ServerAttributeUnsafe(const T& value)
-      : detail::ServerAttributeBase<T, ServerAttributeUnsafe<T>>(value),
+      : apache::thrift::detail::
+            ServerAttributeBase<T, ServerAttributeUnsafe<T>>(value),
         deduced_(this->default_) {}
 
   const T& get() const {

@@ -401,7 +401,7 @@ class ServerStreamPublisher {
   }
 
   explicit ServerStreamPublisher(
-      typename detail::ServerPublisherStream<T>::Ptr impl)
+      typename apache::thrift::detail::ServerPublisherStream<T>::Ptr impl)
       : impl_(std::move(impl)) {}
   ServerStreamPublisher(ServerStreamPublisher&&) = default;
   ServerStreamPublisher& operator=(ServerStreamPublisher&&) = default;
@@ -411,7 +411,7 @@ class ServerStreamPublisher {
   }
 
  private:
-  typename detail::ServerPublisherStream<T>::Ptr impl_;
+  typename apache::thrift::detail::ServerPublisherStream<T>::Ptr impl_;
 };
 
 } // namespace thrift

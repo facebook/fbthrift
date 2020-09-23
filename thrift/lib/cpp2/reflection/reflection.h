@@ -207,7 +207,8 @@ enum class optionality {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-using reflect_type_class = typename detail::reflect_type_class_impl<T>::type;
+using reflect_type_class =
+    typename apache::thrift::detail::reflect_type_class_impl<T>::type;
 
 /////////////////////////
 // SECTION: MODULE API //
@@ -391,8 +392,8 @@ struct reflected_module {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Tag>
-using reflect_module =
-    fatal::registry_lookup<detail::reflection_metadata_tag, Tag>;
+using reflect_module = fatal::
+    registry_lookup<apache::thrift::detail::reflection_metadata_tag, Tag>;
 
 /**
  * Retrieves reflection metadata (as a `reflected_module`) associated with the
@@ -435,8 +436,10 @@ using reflect_module =
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Tag, typename Default = void>
-using try_reflect_module =
-    fatal::try_registry_lookup<detail::reflection_metadata_tag, Tag, Default>;
+using try_reflect_module = fatal::try_registry_lookup<
+    apache::thrift::detail::reflection_metadata_tag,
+    Tag,
+    Default>;
 
 /**
  * Tells whether the given type is a tag that represents the reflection metadata
@@ -506,7 +509,7 @@ using is_reflectable_module = std::integral_constant<
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-using reflect_module_tag = typename detail::
+using reflect_module_tag = typename apache::thrift::detail::
     reflect_module_tag_selector<reflect_type_class<T>, T, false>::type;
 
 /**
@@ -541,7 +544,7 @@ e:
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename Default = void>
-using try_reflect_module_tag = typename detail::
+using try_reflect_module_tag = typename apache::thrift::detail::
     reflect_module_tag_selector<reflect_type_class<T>, T, true, Default>::type;
 
 /**
@@ -1195,7 +1198,7 @@ struct reflected_struct_data_member {
    */
   template <typename T>
   static constexpr inline bool is_set(T const& owner) {
-    namespace impl = detail::reflection_impl;
+    namespace impl = apache::thrift::detail::reflection_impl;
     using direct_getter = impl::getter_direct_getter_t<getter>;
     return impl::isset<Owner, direct_getter>::check(owner);
   }
@@ -1228,7 +1231,7 @@ struct reflected_struct_data_member {
    */
   template <typename T>
   static constexpr inline bool mark_set(T& owner, bool set) {
-    namespace impl = detail::reflection_impl;
+    namespace impl = apache::thrift::detail::reflection_impl;
     using direct_getter = impl::getter_direct_getter_t<getter>;
     return impl::isset<Owner, direct_getter>::mark(owner, set);
   }
@@ -1268,8 +1271,8 @@ struct reflected_struct_data_member {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Struct>
-using reflect_struct =
-    fatal::registry_lookup<detail::struct_traits_metadata_tag, Struct>;
+using reflect_struct = fatal::
+    registry_lookup<apache::thrift::detail::struct_traits_metadata_tag, Struct>;
 
 /**
  * Retrieves reflection metadata (as a `reflected_struct`) associated with the
@@ -1306,8 +1309,10 @@ using reflect_struct =
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Struct, typename Default = void>
-using try_reflect_struct = fatal::
-    try_registry_lookup<detail::struct_traits_metadata_tag, Struct, Default>;
+using try_reflect_struct = fatal::try_registry_lookup<
+    apache::thrift::detail::struct_traits_metadata_tag,
+    Struct,
+    Default>;
 
 /**
  * Tells whether the given type is a Thrift struct with compile-time reflection
@@ -1646,7 +1651,7 @@ struct reflected_variant {
   using by_name = fatal::get<
       typename traits::descriptors,
       Name,
-      detail::reflection_impl::variant_member_name>;
+      apache::thrift::detail::reflection_impl::variant_member_name>;
 
   /**
    * Gets the member descriptor for the field with given `TypeId`.
@@ -1698,7 +1703,7 @@ struct reflected_variant {
   using by_field_id = fatal::get<
       typename traits::descriptors,
       std::integral_constant<field_id_t, FieldId>,
-      detail::reflection_impl::variant_member_field_id>;
+      apache::thrift::detail::reflection_impl::variant_member_field_id>;
 };
 
 /**

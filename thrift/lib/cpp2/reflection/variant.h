@@ -87,10 +87,10 @@ using variant_helper =
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V>
-auto variant_get(V&& variant)
-    -> decltype(detail::variant_helper<T, V>::by_type ::template get<T>(
+auto variant_get(V&& variant) -> decltype(
+    apache::thrift::detail::variant_helper<T, V>::by_type ::template get<T>(
         std::forward<V>(variant))) {
-  using traits = detail::variant_helper<T, V>;
+  using traits = apache::thrift::detail::variant_helper<T, V>;
   assert(traits::get_id(variant) == traits::by_type::template id<T>::value);
   return traits::by_type::template get<T>(std::forward<V>(variant));
 }
@@ -126,10 +126,10 @@ auto variant_get(V&& variant)
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename V>
-auto variant_checked_get(V&& variant)
-    -> decltype(detail::variant_helper<T, V>::by_type ::template get<T>(
+auto variant_checked_get(V&& variant) -> decltype(
+    apache::thrift::detail::variant_helper<T, V>::by_type ::template get<T>(
         std::forward<V>(variant))) {
-  using traits = detail::variant_helper<T, V>;
+  using traits = apache::thrift::detail::variant_helper<T, V>;
 
   if (traits::get_id(variant) != traits::by_type::template id<T>::value) {
     throw std::invalid_argument(
@@ -172,8 +172,9 @@ auto variant_checked_get(V&& variant)
  */
 template <typename T, typename V>
 auto variant_try_get(V& variant) -> decltype(std::addressof(
-    detail::variant_helper<T, V>::by_type::template get<T>(variant))) {
-  using traits = detail::variant_helper<T, V>;
+    apache::thrift::detail::variant_helper<T, V>::by_type::template get<T>(
+        variant))) {
+  using traits = apache::thrift::detail::variant_helper<T, V>;
 
   if (traits::get_id(variant) != traits::by_type::template id<T>::value) {
     return nullptr;
@@ -210,7 +211,8 @@ auto variant_try_get(V& variant) -> decltype(std::addressof(
 template <typename V, typename T>
 folly::remove_cvref_t<T>& variant_set(V& variant, T&& value) {
   using type = folly::remove_cvref_t<T>;
-  using by_type = typename detail::variant_helper<type, V>::by_type;
+  using by_type =
+      typename apache::thrift::detail::variant_helper<type, V>::by_type;
 
   by_type::template set<type>(variant, std::forward<T>(value));
   return by_type::template get<type>(variant);
@@ -244,7 +246,8 @@ folly::remove_cvref_t<T>& variant_set(V& variant, T&& value) {
  */
 template <typename T, typename V, typename... Args>
 T& variant_emplace(V& variant, Args&&... args) {
-  using by_type = typename detail::variant_helper<T, V>::by_type;
+  using by_type =
+      typename apache::thrift::detail::variant_helper<T, V>::by_type;
 
   by_type::template set<T>(variant, std::forward<Args>(args)...);
   return by_type::template get<T>(variant);

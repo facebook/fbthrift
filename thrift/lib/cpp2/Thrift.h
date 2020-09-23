@@ -75,10 +75,12 @@ struct IsThriftUnion<T, folly::void_t<typename T::__fbthrift_cpp2_type>>
 } // namespace detail
 
 template <typename T>
-constexpr bool is_thrift_class_v = detail::st::IsThriftClass<T>::value;
+constexpr bool is_thrift_class_v =
+    apache::thrift::detail::st::IsThriftClass<T>::value;
 
 template <typename T>
-constexpr bool is_thrift_union_v = detail::st::IsThriftUnion<T>::value;
+constexpr bool is_thrift_union_v =
+    apache::thrift::detail::st::IsThriftUnion<T>::value;
 
 template <typename T>
 constexpr bool is_thrift_exception_v = is_thrift_class_v<T>&&
@@ -144,12 +146,13 @@ struct is_safe_overload<Class, T> {
 
 template <typename Class, typename... Args>
 using safe_overload_t = typename std::enable_if<
-    detail::is_safe_overload<Class, Args...>::type::value>::type;
+    apache::thrift::detail::is_safe_overload<Class, Args...>::type::value>::
+    type;
 
 namespace detail {
 FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __clear);
 }
-FOLLY_INLINE_VARIABLE constexpr detail::clear_fn clear;
+FOLLY_INLINE_VARIABLE constexpr apache::thrift::detail::clear_fn clear;
 
 } // namespace thrift
 } // namespace apache

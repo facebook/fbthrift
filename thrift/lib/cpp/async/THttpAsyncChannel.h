@@ -108,13 +108,14 @@ class THttpACReadState {
  *
  * Its messages are compatible with THttpTransport.
  */
-class THttpAsyncChannel : public TStreamAsyncChannel<
-                              detail::THttpACWriteRequest,
-                              detail::THttpACReadState> {
+class THttpAsyncChannel
+    : public TStreamAsyncChannel<
+          apache::thrift::async::detail::THttpACWriteRequest,
+          apache::thrift::async::detail::THttpACReadState> {
  private:
   typedef TStreamAsyncChannel<
-      detail::THttpACWriteRequest,
-      detail::THttpACReadState>
+      apache::thrift::async::detail::THttpACWriteRequest,
+      apache::thrift::async::detail::THttpACReadState>
       Parent;
   std::shared_ptr<apache::thrift::util::THttpParser> parser_;
 

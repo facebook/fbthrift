@@ -120,7 +120,7 @@ bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
 
   // apply compression if client has specified compression codec
   if (compressionConfig_) {
-    detail::setCompressionCodec(
+    apache::thrift::rocket::detail::setCompressionCodec(
         *compressionConfig_,
         payload.metadata,
         payload.payload->computeChainDataLength());

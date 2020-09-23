@@ -83,7 +83,7 @@ namespace thrift {
 namespace detail {
 
 #if FOLLY_HAVE_WEAK_SYMBOLS
-std::unique_ptr<detail::FlagsBackend> createFlagsBackend() {
+std::unique_ptr<apache::thrift::detail::FlagsBackend> createFlagsBackend() {
   if (useDummyBackend) {
     return {};
   }

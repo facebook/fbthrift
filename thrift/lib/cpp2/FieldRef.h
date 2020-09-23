@@ -56,7 +56,7 @@ class field_ref {
 
   template <typename U>
   friend class field_ref;
-  friend struct detail::unset_unsafe_fn;
+  friend struct apache::thrift::detail::unset_unsafe_fn;
 
  public:
   using value_type = std::remove_reference_t<T>;
@@ -64,7 +64,7 @@ class field_ref {
 
   FOLLY_ERASE field_ref(
       reference_type value,
-      detail::is_set_t<value_type>& is_set) noexcept
+      apache::thrift::detail::is_set_t<value_type>& is_set) noexcept
       : value_(value), is_set_(is_set) {}
 
   template <
@@ -155,7 +155,7 @@ class field_ref {
 
  private:
   value_type& value_;
-  detail::is_set_t<value_type>& is_set_;
+  apache::thrift::detail::is_set_t<value_type>& is_set_;
 };
 
 template <typename T, typename U>
@@ -256,8 +256,8 @@ class optional_field_ref {
 
   template <typename U>
   friend class optional_field_ref;
-  friend struct detail::ensure_isset_unsafe_fn;
-  friend struct detail::alias_isset_fn;
+  friend struct apache::thrift::detail::ensure_isset_unsafe_fn;
+  friend struct apache::thrift::detail::alias_isset_fn;
 
  public:
   using value_type = std::remove_reference_t<T>;
@@ -265,7 +265,7 @@ class optional_field_ref {
 
   FOLLY_ERASE optional_field_ref(
       reference_type value,
-      detail::is_set_t<value_type>& is_set) noexcept
+      apache::thrift::detail::is_set_t<value_type>& is_set) noexcept
       : value_(value), is_set_(is_set) {}
 
   template <
@@ -430,12 +430,12 @@ class optional_field_ref {
  private:
   FOLLY_ERASE void throw_if_unset() const {
     if (!is_set_) {
-      detail::throw_on_bad_field_access();
+      apache::thrift::detail::throw_on_bad_field_access();
     }
   }
 
   value_type& value_;
-  detail::is_set_t<value_type>& is_set_;
+  apache::thrift::detail::is_set_t<value_type>& is_set_;
 };
 
 template <typename T1, typename T2>
@@ -593,7 +593,7 @@ constexpr unset_unsafe_fn unset_unsafe;
 
 } // namespace detail
 
-constexpr detail::get_pointer_fn get_pointer;
+constexpr apache::thrift::detail::get_pointer_fn get_pointer;
 
 //  can_throw
 //
@@ -603,13 +603,13 @@ constexpr detail::get_pointer_fn get_pointer;
 //  Example:
 //
 //    auto value = apache::thrift::can_throw(*obj.field_ref());
-constexpr detail::can_throw_fn can_throw;
+constexpr apache::thrift::detail::can_throw_fn can_throw;
 
 [[deprecated("Use `emplace` or `operator=` to set Thrift fields.")]] //
-constexpr detail::ensure_isset_unsafe_fn ensure_isset_unsafe;
+constexpr apache::thrift::detail::ensure_isset_unsafe_fn ensure_isset_unsafe;
 
 [[deprecated]] //
-constexpr detail::alias_isset_fn alias_isset;
+constexpr apache::thrift::detail::alias_isset_fn alias_isset;
 
 // A reference to an required field of the possibly const-qualified type
 // std::remove_reference_t<T> in a Thrift-generated struct.
@@ -840,7 +840,7 @@ class union_field_ref {
       std::conditional_t<std::is_const<value_type>::value, const int, int>;
   using owner =
       std::conditional_t<std::is_const<value_type>::value, void const*, void*>;
-  using vtable = detail::union_field_ref_owner_vtable;
+  using vtable = apache::thrift::detail::union_field_ref_owner_vtable;
 
  public:
   FOLLY_ERASE union_field_ref(
@@ -926,7 +926,7 @@ class union_field_ref {
  private:
   FOLLY_ERASE void throw_if_unset() const {
     if (!has_value()) {
-      detail::throw_on_bad_field_access();
+      apache::thrift::detail::throw_on_bad_field_access();
     }
   }
 

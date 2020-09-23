@@ -74,9 +74,12 @@ bool tryReadUnframed(
  * messages encoded using TBinaryProtocol.
  */
 class TBinaryAsyncChannel
-    : public TUnframedAsyncChannel<detail::TBinaryACProtocolTraits> {
+    : public TUnframedAsyncChannel<
+          apache::thrift::async::detail::TBinaryACProtocolTraits> {
  private:
-  typedef TUnframedAsyncChannel<detail::TBinaryACProtocolTraits> Parent;
+  typedef TUnframedAsyncChannel<
+      apache::thrift::async::detail::TBinaryACProtocolTraits>
+      Parent;
 
  public:
   explicit TBinaryAsyncChannel(

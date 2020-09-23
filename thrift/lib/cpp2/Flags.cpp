@@ -21,7 +21,7 @@ namespace thrift {
 namespace detail {
 namespace {
 
-class FlagsBackendDummy : public detail::FlagsBackend {
+class FlagsBackendDummy : public apache::thrift::detail::FlagsBackend {
  public:
   folly::observer::Observer<folly::Optional<bool>> getFlagObserverBool(
       folly::StringPiece) override {
@@ -49,7 +49,7 @@ std::unique_ptr<FlagsBackend> getFlagsBackendImpl() {
 }
 } // namespace
 
-detail::FlagsBackend& getFlagsBackend() {
+apache::thrift::detail::FlagsBackend& getFlagsBackend() {
   static auto& obj = *getFlagsBackendImpl().release();
   return obj;
 }

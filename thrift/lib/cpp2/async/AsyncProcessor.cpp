@@ -388,8 +388,9 @@ void HandlerCallbackBase::sendReply(
 }
 
 void HandlerCallbackBase::sendReply(
-    FOLLY_MAYBE_UNUSED std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
-        responseAndSinkConsumer) {
+    FOLLY_MAYBE_UNUSED
+        std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
+            responseAndSinkConsumer) {
 #if FOLLY_HAS_COROUTINES
   auto& queue = responseAndSinkConsumer.first;
   auto& sinkConsumer = responseAndSinkConsumer.second;

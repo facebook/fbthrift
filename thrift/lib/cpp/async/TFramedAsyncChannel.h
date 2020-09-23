@@ -124,13 +124,14 @@ class TFramedACReadState {
  *
  * Its messages are compatible with TFramedTransport.
  */
-class TFramedAsyncChannel : public TStreamAsyncChannel<
-                                detail::TFramedACWriteRequest,
-                                detail::TFramedACReadState> {
+class TFramedAsyncChannel
+    : public TStreamAsyncChannel<
+          apache::thrift::async::detail::TFramedACWriteRequest,
+          apache::thrift::async::detail::TFramedACReadState> {
  private:
   typedef TStreamAsyncChannel<
-      detail::TFramedACWriteRequest,
-      detail::TFramedACReadState>
+      apache::thrift::async::detail::TFramedACWriteRequest,
+      apache::thrift::async::detail::TFramedACReadState>
       Parent;
 
  public:

@@ -81,15 +81,17 @@ inline bool is_unknown_container_size(uint32_t const size) {
 template <typename TypeClass, typename Type, typename Enable = void>
 struct protocol_methods;
 
-#define THRIFT_PROTOCOL_METHODS_INHERIT(Class, Type)                         \
-  template <>                                                                \
-  struct protocol_methods<type_class::Class, Type>                           \
-      : detail::pm::protocol_methods<type_class::Class, Type> {              \
-    using base = detail::pm::protocol_methods<type_class::Class, Type>;      \
-    template <bool ZeroCopy, typename Protocol>                              \
-    static std::size_t serialized_size(Protocol& protocol, Type const& in) { \
-      return base::template serializedSize<ZeroCopy>(protocol, in);          \
-    }                                                                        \
+#define THRIFT_PROTOCOL_METHODS_INHERIT(Class, Type)                           \
+  template <>                                                                  \
+  struct protocol_methods<type_class::Class, Type>                             \
+      : apache::thrift::detail::pm::                                           \
+            protocol_methods<type_class::Class, Type> {                        \
+    using base =                                                               \
+        apache::thrift::detail::pm::protocol_methods<type_class::Class, Type>; \
+    template <bool ZeroCopy, typename Protocol>                                \
+    static std::size_t serialized_size(Protocol& protocol, Type const& in) {   \
+      return base::template serializedSize<ZeroCopy>(protocol, in);            \
+    }                                                                          \
   }
 
 THRIFT_PROTOCOL_METHODS_INHERIT(integral, std::int8_t);
@@ -165,7 +167,7 @@ template <typename TypeClass, typename PtrType>
 struct protocol_methods<
     TypeClass,
     PtrType,
-    typename detail::enable_if_smart_pointer<PtrType>> {
+    typename apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
   using value_type = typename PtrType::element_type;
   using type_methods = protocol_methods<TypeClass, value_type>;
 
@@ -190,8 +192,10 @@ struct protocol_methods<
 // Enumerations
 template <typename Type>
 struct protocol_methods<type_class::enumeration, Type>
-    : detail::pm::protocol_methods<type_class::enumeration, Type> {
-  using base = detail::pm::protocol_methods<type_class::enumeration, Type>;
+    : apache::thrift::detail::pm::
+          protocol_methods<type_class::enumeration, Type> {
+  using base = apache::thrift::detail::pm::
+      protocol_methods<type_class::enumeration, Type>;
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serialized_size(Protocol& protocol, Type const& in) {
     return base::template serializedSize<ZeroCopy>(protocol, in);
@@ -221,7 +225,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     protocol.readListBegin(reported_type, list_size);
 
     Type list;
-    if (detail::is_unknown_container_size(list_size)) {
+    if (apache::thrift::detail::is_unknown_container_size(list_size)) {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
@@ -307,7 +311,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
 
     out = Type();
     protocol.readSetBegin(reported_type, set_size);
-    if (detail::is_unknown_container_size(set_size)) {
+    if (apache::thrift::detail::is_unknown_container_size(set_size)) {
       while (protocol.peekSet()) {
         consume_elem(protocol, out);
       }
@@ -388,7 +392,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     DVLOG(3) << "read map begin: " << rpt_key_type << "/" << rpt_mapped_type
              << " (" << map_size << ")";
 
-    if (detail::is_unknown_container_size(map_size)) {
+    if (apache::thrift::detail::is_unknown_container_size(map_size)) {
       while (protocol.peekMap()) {
         consume_elem(protocol, out);
       }
@@ -602,7 +606,7 @@ struct protocol_methods<type_class::variant, Union> {
       using descriptor = fatal::get<
           typename traits::descriptors,
           Fid,
-          detail::extract_descriptor_fid>;
+          apache::thrift::detail::extract_descriptor_fid>;
 
       using field_methods = protocol_methods<
           typename descriptor::metadata::type_class,
@@ -646,7 +650,7 @@ struct protocol_methods<type_class::variant, Union> {
 
       using sorted_fids = fatal::sort<fatal::transform<
           typename traits::descriptors,
-          detail::extract_descriptor_fid>>;
+          apache::thrift::detail::extract_descriptor_fid>>;
       if (!fatal::sorted_search<sorted_fids>(
               fid, set_member_by_fid<Protocol>(), ftype, protocol, out)) {
         DVLOG(3) << "didn't find field, fid: " << fid;
@@ -692,8 +696,8 @@ struct protocol_methods<type_class::variant, Union> {
           descriptor::metadata::id::value);
       auto const& tmp = getter(obj);
       using member_type = folly::remove_cvref_t<decltype(tmp)>;
-      xfer +=
-          methods::write(protocol, detail::deref<member_type>::get_const(tmp));
+      xfer += methods::write(
+          protocol, apache::thrift::detail::deref<member_type>::get_const(tmp));
       xfer += protocol.writeFieldEnd();
     }
   };
@@ -741,7 +745,7 @@ struct protocol_methods<type_class::variant, Union> {
       auto const& tmp = getter(obj);
       using member_type = folly::remove_cvref_t<decltype(tmp)>;
       xfer += methods::template serialized_size<ZeroCopy>(
-          protocol, detail::deref<member_type>::get_const(tmp));
+          protocol, apache::thrift::detail::deref<member_type>::get_const(tmp));
     }
   };
 
@@ -767,8 +771,9 @@ struct protocol_methods<type_class::structure, Struct> {
  private:
   using traits = apache::thrift::reflect_struct<Struct>;
 
-  using all_fields =
-      fatal::partition<typename traits::members, detail::is_required_field>;
+  using all_fields = fatal::partition<
+      typename traits::members,
+      apache::thrift::detail::is_required_field>;
   using required_fields = fatal::first<all_fields>;
   using optional_fields = fatal::second<all_fields>;
 
@@ -813,12 +818,14 @@ struct protocol_methods<type_class::structure, Struct> {
       using member_type = folly::remove_cvref_t<decltype(getter{}(obj))>;
 
       if (ftype == protocol_method::ttype_value) {
-        detail::mark_isset<
+        apache::thrift::detail::mark_isset<
             folly::to_underlying(member::optional::value),
             required_fields,
             member>(required_isset, obj);
         protocol_method::read(
-            protocol, detail::deref<member_type>::clear_and_get(getter{}(obj)));
+            protocol,
+            apache::thrift::detail::deref<member_type>::clear_and_get(
+                getter{}(obj)));
       } else {
         protocol.skip(ftype);
       }
@@ -907,7 +914,7 @@ struct protocol_methods<type_class::structure, Struct> {
       MemberType,
       Methods,
       Optional,
-      detail::disable_if_smart_pointer<MemberType>> {
+      apache::thrift::detail::disable_if_smart_pointer<MemberType>> {
     using Member = fatal::get<
         typename traits::members,
         std::integral_constant<field_id_t, MemberFid>,
@@ -920,8 +927,8 @@ struct protocol_methods<type_class::structure, Struct> {
           fatal::z_data<typename Member::name>(),
           Methods::ttype_value,
           Member::id::value);
-      xfer +=
-          Methods::write(protocol, detail::deref<MemberType>::get_const(in));
+      xfer += Methods::write(
+          protocol, apache::thrift::detail::deref<MemberType>::get_const(in));
       xfer += protocol.writeFieldEnd();
       return xfer;
     }
@@ -941,7 +948,7 @@ struct protocol_methods<type_class::structure, Struct> {
       PtrType,
       Methods,
       Optional,
-      detail::enable_if_smart_pointer<PtrType>> {
+      apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
     using struct_type =
         typename std::remove_const<typename PtrType::element_type>::type;
     using Member = fatal::get<
@@ -995,7 +1002,7 @@ struct protocol_methods<type_class::structure, Struct> {
       Methods,
       static_cast<std::underlying_type<optionality>::type>(
           optionality::optional),
-      detail::enable_if_smart_pointer<PtrType>> {
+      apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
     static std::size_t write(Protocol& protocol, PtrType const& in) {
       if (in) {
         return field_writer<
@@ -1072,7 +1079,7 @@ struct protocol_methods<type_class::structure, Struct> {
       MemberType,
       Methods,
       Optional,
-      detail::disable_if_smart_pointer<MemberType>> {
+      apache::thrift::detail::disable_if_smart_pointer<MemberType>> {
     using Member = fatal::get<
         typename traits::members,
         std::integral_constant<field_id_t, MemberFid>,
@@ -1085,7 +1092,7 @@ struct protocol_methods<type_class::structure, Struct> {
           Methods::ttype_value,
           Member::id::value);
       xfer += Methods::template serialized_size<ZeroCopy>(
-          protocol, detail::deref<MemberType>::get_const(in));
+          protocol, apache::thrift::detail::deref<MemberType>::get_const(in));
       return xfer;
     }
   };
@@ -1106,7 +1113,7 @@ struct protocol_methods<type_class::structure, Struct> {
       PtrType,
       Methods,
       Optional,
-      detail::enable_if_smart_pointer<PtrType>> {
+      apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
     using struct_type =
         typename std::remove_const<typename PtrType::element_type>::type;
     using Member = fatal::get<
@@ -1158,7 +1165,7 @@ struct protocol_methods<type_class::structure, Struct> {
       Methods,
       static_cast<std::underlying_type<optionality>::type>(
           optionality::optional),
-      detail::enable_if_smart_pointer<PtrType>> {
+      apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
     static std::size_t size(Protocol& protocol, PtrType const& in) {
       if (in) {
         return field_size<

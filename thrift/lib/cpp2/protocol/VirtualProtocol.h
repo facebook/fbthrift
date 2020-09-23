@@ -73,7 +73,7 @@ class VirtualReaderBase {
   virtual void readString(folly::fbstring& str) = 0;
   virtual void readBinary(std::string& str) = 0;
   virtual void readBinary(folly::fbstring& str) = 0;
-  virtual void readBinary(detail::SkipNoopString& str) = 0;
+  virtual void readBinary(apache::thrift::detail::SkipNoopString& str) = 0;
   virtual void readBinary(std::unique_ptr<folly::IOBuf>& str) = 0;
   virtual void readBinary(folly::IOBuf& str) = 0;
   virtual void skip(TType type) = 0;
@@ -284,7 +284,8 @@ class VirtualReader : public VirtualReaderBase {
   void readBinary(folly::fbstring& str) override {
     protocol_.readBinary(str);
   }
-  virtual void readBinary(detail::SkipNoopString& str) override {
+  virtual void readBinary(
+      apache::thrift::detail::SkipNoopString& str) override {
     protocol_.readBinary(str);
   }
   void readBinary(std::unique_ptr<folly::IOBuf>& str) override {

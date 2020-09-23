@@ -75,7 +75,7 @@ inline std::pair<FrameType, Flags> readFrameTypeAndFlags(
       return {static_cast<FrameType>(pair.first), pair.second};
 
     default:
-      detail::throwUnexpectedFrameType(pair.first);
+      apache::thrift::rocket::detail::throwUnexpectedFrameType(pair.first);
   }
 }
 

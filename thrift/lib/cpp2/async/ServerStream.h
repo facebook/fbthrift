@@ -41,8 +41,8 @@ class ServerStream {
  public:
 #if FOLLY_HAS_COROUTINES
   /* implicit */ ServerStream(folly::coro::AsyncGenerator<T&&>&& gen)
-      : fn_(detail::ServerGeneratorStream::fromAsyncGenerator(std::move(gen))) {
-  }
+      : fn_(apache::thrift::detail::ServerGeneratorStream::fromAsyncGenerator(
+            std::move(gen))) {}
 #endif
 
   // Completion callback is optional
@@ -50,7 +50,7 @@ class ServerStream {
   // It must not call complete() on the publisher object inline
   static std::pair<ServerStream<T>, ServerStreamPublisher<T>> createPublisher(
       folly::Function<void()> onStreamCompleteOrCancel) {
-    auto pair = detail::ServerPublisherStream<T>::create(
+    auto pair = apache::thrift::detail::ServerPublisherStream<T>::create(
         std::move(onStreamCompleteOrCancel));
     return std::make_pair<ServerStream<T>, ServerStreamPublisher<T>>(
         ServerStream<T>(std::move(pair.first)), std::move(pair.second));
@@ -71,16 +71,17 @@ class ServerStream {
       folly::EventBase* evb = folly::getEventBase(),
       size_t bufferSize = 100) &&;
 
-  detail::ServerStreamFactory operator()(
+  apache::thrift::detail::ServerStreamFactory operator()(
       folly::Executor::KeepAlive<> serverExecutor,
       folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) {
     return fn_(std::move(serverExecutor), encode);
   }
 
  private:
-  explicit ServerStream(detail::ServerStreamFn<T> fn) : fn_(std::move(fn)) {}
+  explicit ServerStream(apache::thrift::detail::ServerStreamFn<T> fn)
+      : fn_(std::move(fn)) {}
 
-  detail::ServerStreamFn<T> fn_;
+  apache::thrift::detail::ServerStreamFn<T> fn_;
 
   friend class yarpl::flowable::ThriftStreamShim;
 };
@@ -95,7 +96,7 @@ struct ResponseAndServerStream {
 };
 struct ResponseAndServerStreamFactory {
   folly::IOBufQueue response;
-  detail::ServerStreamFactory stream;
+  apache::thrift::detail::ServerStreamFactory stream;
 };
 
 } // namespace thrift

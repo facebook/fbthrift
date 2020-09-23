@@ -466,9 +466,10 @@ class HandlerCallbackBase {
   [[noreturn]]
 #endif
   void
-  sendReply(FOLLY_MAYBE_UNUSED
-                std::pair<folly::IOBufQueue, detail::SinkConsumerImpl>&&
-                    responseAndSinkConsumer);
+  sendReply(
+      FOLLY_MAYBE_UNUSED std::pair<
+          folly::IOBufQueue,
+          apache::thrift::detail::SinkConsumerImpl>&& responseAndSinkConsumer);
 
   // Required for this call
   ResponseChannelRequest::UniquePtr req_;
@@ -488,7 +489,7 @@ class HandlerCallbackBase {
 
 template <typename T>
 class HandlerCallback : public HandlerCallbackBase {
-  using Helper = detail::HandlerCallbackHelper<T>;
+  using Helper = apache::thrift::detail::HandlerCallbackHelper<T>;
   using InputType = typename Helper::InputType;
   using cob_ptr = typename Helper::CobPtr;
 
@@ -572,7 +573,8 @@ void GeneratedAsyncProcessor::deserializeRequest(
   smsg.buffer = serializedRequest.buffer.get();
   smsg.methodName = methodName;
   c->onReadData(smsg);
-  uint32_t bytes = detail::deserializeRequestBody(&iprot, &args);
+  uint32_t bytes =
+      apache::thrift::detail::deserializeRequestBody(&iprot, &args);
   iprot.readMessageEnd();
   c->postRead(nullptr, bytes);
 }
@@ -585,7 +587,8 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
     ContextStack* ctx,
     const Result& result) {
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  size_t bufSize = detail::serializedResponseBodySizeZC(prot, &result);
+  size_t bufSize =
+      apache::thrift::detail::serializedResponseBodySizeZC(prot, &result);
   bufSize += prot->serializedMessageSize(method);
 
   // Preallocate small buffer headroom for transports metadata & framing.
@@ -597,7 +600,7 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
   prot->setOutput(&queue, bufSize);
   ctx->preWrite();
   prot->writeMessageBegin(method, T_REPLY, protoSeqId);
-  detail::serializeResponseBody(prot, &result);
+  apache::thrift::detail::serializeResponseBody(prot, &result);
   prot->writeMessageEnd();
   SerializedMessage smsg;
   smsg.protocolType = prot->protocolType();
@@ -828,7 +831,7 @@ struct inner_type<std::unique_ptr<S>> {
 
 template <typename T>
 struct HandlerCallbackHelper {
-  using InputType = const typename detail::inner_type<T>::type&;
+  using InputType = const typename apache::thrift::detail::inner_type<T>::type&;
   using CobPtr =
       folly::IOBufQueue (*)(int32_t protoSeqId, ContextStack*, InputType);
   static folly::IOBufQueue call(

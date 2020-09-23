@@ -238,7 +238,7 @@ class CompactProtocolWriter {
     int16_t fieldId;
   } booleanField_;
 
-  detail::compact::SimpleStack<int16_t, 10> lastField_;
+  apache::thrift::detail::compact::SimpleStack<int16_t, 10> lastField_;
   int16_t lastFieldId_{-1};
 };
 
@@ -466,7 +466,7 @@ class CompactProtocolReader {
    */
   Cursor in_;
 
-  detail::compact::SimpleStack<int16_t, 10> lastField_;
+  apache::thrift::detail::compact::SimpleStack<int16_t, 10> lastField_;
   int16_t lastFieldId_{-1};
 
   struct {

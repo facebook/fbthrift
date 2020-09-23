@@ -84,7 +84,7 @@ void swap(
 
 } // namespace detail
 
-typedef detail::CloneableUniquePtr<folly::IOBuf> CloneableIOBuf;
+typedef apache::thrift::detail::CloneableUniquePtr<folly::IOBuf> CloneableIOBuf;
 
 } // namespace thrift
 } // namespace apache

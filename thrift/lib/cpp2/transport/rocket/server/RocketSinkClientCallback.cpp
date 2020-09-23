@@ -92,7 +92,7 @@ void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
 
   // apply compression if client has specified compression codec
   if (compressionConfig_) {
-    detail::setCompressionCodec(
+    apache::thrift::rocket::detail::setCompressionCodec(
         *compressionConfig_,
         finalResponse.metadata,
         finalResponse.payload->computeChainDataLength());

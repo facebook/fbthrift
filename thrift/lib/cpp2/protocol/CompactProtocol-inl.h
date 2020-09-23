@@ -94,11 +94,11 @@ uint32_t CompactProtocolWriter::writeMessageBegin(
     MessageType messageType,
     int32_t seqid) {
   uint32_t wsize = 0;
-  wsize += writeByte(detail::compact::PROTOCOL_ID);
+  wsize += writeByte(apache::thrift::detail::compact::PROTOCOL_ID);
   wsize += writeByte(
-      detail::compact::COMPACT_PROTOCOL_VERSION |
-      ((messageType << detail::compact::TYPE_SHIFT_AMOUNT) &
-       detail::compact::TYPE_MASK));
+      apache::thrift::detail::compact::COMPACT_PROTOCOL_VERSION |
+      ((messageType << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
+       apache::thrift::detail::compact::TYPE_MASK));
   wsize += apache::thrift::util::writeVarint(out_, seqid);
   wsize += writeString(name);
   return wsize;
@@ -134,8 +134,9 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
 
   // if there's a type override, use that.
   int8_t typeToWrite =
-      (typeOverride == -1 ? detail::compact::TTypeToCType[fieldType]
-                          : typeOverride);
+      (typeOverride == -1
+           ? apache::thrift::detail::compact::TTypeToCType[fieldType]
+           : typeOverride);
 
   // check if we can use delta encoding for the field id
   if (fieldId > lastFieldId_ && fieldId - lastFieldId_ <= 15) {
@@ -184,8 +185,8 @@ uint32_t CompactProtocolWriter::writeMapBegin(
   } else {
     wsize += apache::thrift::util::writeVarint(out_, size);
     wsize += writeByte(
-        detail::compact::TTypeToCType[keyType] << 4 |
-        detail::compact::TTypeToCType[valType]);
+        apache::thrift::detail::compact::TTypeToCType[keyType] << 4 |
+        apache::thrift::detail::compact::TTypeToCType[valType]);
   }
   return wsize;
 }
@@ -199,9 +200,11 @@ uint32_t CompactProtocolWriter::writeCollectionBegin(
     int32_t size) {
   uint32_t wsize = 0;
   if (size <= 14) {
-    wsize += writeByte(size << 4 | detail::compact::TTypeToCType[elemType]);
+    wsize += writeByte(
+        size << 4 | apache::thrift::detail::compact::TTypeToCType[elemType]);
   } else {
-    wsize += writeByte(0xf0 | detail::compact::TTypeToCType[elemType]);
+    wsize += writeByte(
+        0xf0 | apache::thrift::detail::compact::TTypeToCType[elemType]);
     wsize += apache::thrift::util::writeVarint(out_, size);
   }
   return wsize;
@@ -232,14 +235,14 @@ uint32_t CompactProtocolWriter::writeBool(bool value) {
         booleanField_.name,
         booleanField_.fieldType,
         booleanField_.fieldId,
-        value ? detail::compact::CT_BOOLEAN_TRUE
-              : detail::compact::CT_BOOLEAN_FALSE);
+        value ? apache::thrift::detail::compact::CT_BOOLEAN_TRUE
+              : apache::thrift::detail::compact::CT_BOOLEAN_FALSE);
     booleanField_.name = NULL;
   } else {
     // we're not part of a field, so just write the value
     wsize += writeByte(
-        value ? detail::compact::CT_BOOLEAN_TRUE
-              : detail::compact::CT_BOOLEAN_FALSE);
+        value ? apache::thrift::detail::compact::CT_BOOLEAN_TRUE
+              : apache::thrift::detail::compact::CT_BOOLEAN_FALSE);
   }
   return wsize;
 }
@@ -474,19 +477,19 @@ void CompactProtocolReader::readMessageBegin(
   int8_t versionAndType;
 
   readByte(protocolId);
-  if (protocolId != detail::compact::PROTOCOL_ID) {
+  if (protocolId != apache::thrift::detail::compact::PROTOCOL_ID) {
     throwBadProtocolIdentifier();
   }
 
   readByte(versionAndType);
   if ((int8_t)(versionAndType & VERSION_MASK) !=
-      detail::compact::COMPACT_PROTOCOL_VERSION) {
+      apache::thrift::detail::compact::COMPACT_PROTOCOL_VERSION) {
     throwBadProtocolVersion();
   }
 
   messageType = (MessageType)(
-      (uint8_t)(versionAndType & detail::compact::TYPE_MASK) >>
-      detail::compact::TYPE_SHIFT_AMOUNT);
+      (uint8_t)(versionAndType & apache::thrift::detail::compact::TYPE_MASK) >>
+      apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
   apache::thrift::util::readVarint(in_, seqid);
   readString(name);
 }
@@ -534,12 +537,13 @@ void CompactProtocolReader::readFieldBegin(
   fieldType = getType(type);
 
   // if this happens to be a boolean field, the value is encoded in the type
-  if (type == detail::compact::CT_BOOLEAN_TRUE ||
-      type == detail::compact::CT_BOOLEAN_FALSE) {
+  if (type == apache::thrift::detail::compact::CT_BOOLEAN_TRUE ||
+      type == apache::thrift::detail::compact::CT_BOOLEAN_FALSE) {
     // save the boolean value in a special instance variable.
     boolValue_.hasBoolValue = true;
     boolValue_.boolValue =
-        (type == detail::compact::CT_BOOLEAN_TRUE ? true : false);
+        (type == apache::thrift::detail::compact::CT_BOOLEAN_TRUE ? true
+                                                                  : false);
   }
 
   // push the new field onto the field stack so we can keep the deltas going.
@@ -609,7 +613,7 @@ void CompactProtocolReader::readBool(bool& value) {
   } else {
     int8_t val;
     readByte(val);
-    value = (val == detail::compact::CT_BOOLEAN_TRUE);
+    value = (val == apache::thrift::detail::compact::CT_BOOLEAN_TRUE);
   }
 }
 
@@ -722,7 +726,7 @@ void CompactProtocolReader::readBinary(folly::IOBuf& str) {
 }
 
 TType CompactProtocolReader::getType(int8_t type) {
-  using detail::compact::CTypeToTType;
+  using apache::thrift::detail::compact::CTypeToTType;
   if (LIKELY(
           static_cast<uint8_t>(type) <
           sizeof(CTypeToTType) / sizeof(*CTypeToTType))) {
@@ -734,15 +738,18 @@ TType CompactProtocolReader::getType(int8_t type) {
 FOLLY_ALWAYS_INLINE bool
 CompactProtocolReader::matchTypeHeader(uint8_t byte, TType type, uint8_t diff) {
   if (type == TType::T_BOOL) {
-    if ((byte == (detail::compact::CT_BOOLEAN_TRUE | (diff << 4))) ||
-        (byte == (detail::compact::CT_BOOLEAN_FALSE | (diff << 4)))) {
+    if ((byte ==
+         (apache::thrift::detail::compact::CT_BOOLEAN_TRUE | (diff << 4))) ||
+        (byte ==
+         (apache::thrift::detail::compact::CT_BOOLEAN_FALSE | (diff << 4)))) {
       boolValue_.hasBoolValue = true;
       boolValue_.boolValue = byte & 1;
       return true;
     }
     return false;
   } else {
-    return byte == (detail::compact::TTypeToCType[type] | (diff << 4));
+    return byte ==
+        (apache::thrift::detail::compact::TTypeToCType[type] | (diff << 4));
   }
 }
 
@@ -820,7 +827,7 @@ FOLLY_ALWAYS_INLINE void CompactProtocolReader::readFieldBeginWithStateImpl(
     StructReadState& state,
     int16_t prevFieldId,
     uint8_t firstByte) {
-  if (firstByte == detail::compact::CT_STOP) {
+  if (firstByte == apache::thrift::detail::compact::CT_STOP) {
     state.fieldType = TType::T_STOP;
     return;
   }
@@ -837,11 +844,12 @@ FOLLY_ALWAYS_INLINE void CompactProtocolReader::readFieldBeginWithStateImpl(
   state.fieldType = getType(type);
 
   // if this happens to be a boolean field, the value is encoded in the type
-  if (type == detail::compact::CT_BOOLEAN_TRUE ||
-      type == detail::compact::CT_BOOLEAN_FALSE) {
+  if (type == apache::thrift::detail::compact::CT_BOOLEAN_TRUE ||
+      type == apache::thrift::detail::compact::CT_BOOLEAN_FALSE) {
     // save the boolean value in a special instance variable.
     boolValue_.hasBoolValue = true;
-    boolValue_.boolValue = type == detail::compact::CT_BOOLEAN_TRUE;
+    boolValue_.boolValue =
+        type == apache::thrift::detail::compact::CT_BOOLEAN_TRUE;
   }
 }
 

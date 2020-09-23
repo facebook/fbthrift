@@ -133,7 +133,7 @@ void skip(Protocol_& prot, WireType arg_type) {
       return;
     }
     case TType::T_STRING: {
-      detail::SkipNoopString str;
+      apache::thrift::detail::SkipNoopString str;
       prot.readBinary(str);
       return;
     }
@@ -196,8 +196,8 @@ inline bool canReadNElements(
     Protocol_& prot,
     uint32_t n,
     std::initializer_list<
-        typename detail::ProtocolReaderWireTypeInfo<Protocol_>::WireType>
-        types) {
+        typename apache::thrift::detail::ProtocolReaderWireTypeInfo<
+            Protocol_>::WireType> types) {
   return prot.getCursor().canAdvance(n * types.size());
 }
 

@@ -152,7 +152,8 @@ struct StringLayout : public LayoutBase {
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsString<T>::value>::type>
-    : detail::StringLayout<typename std::decay<T>::type> {};
+    : apache::thrift::frozen::detail::StringLayout<
+          typename std::decay<T>::type> {};
 
 } // namespace frozen
 } // namespace thrift

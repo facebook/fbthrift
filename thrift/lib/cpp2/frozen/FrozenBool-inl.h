@@ -79,7 +79,8 @@ struct BoolLayout : public LayoutBase {
 } // namespace detail
 
 template <>
-struct Layout<bool, void> : public detail::BoolLayout {};
+struct Layout<bool, void> : public apache::thrift::frozen::detail::BoolLayout {
+};
 
 } // namespace frozen
 } // namespace thrift

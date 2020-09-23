@@ -100,10 +100,10 @@ struct EqualToFollyOptional {
 };
 } // namespace detail
 
-constexpr detail::CopyToFollyOptional copyToFollyOptional;
-constexpr detail::MoveToFollyOptional moveToFollyOptional;
-constexpr detail::FromFollyOptional fromFollyOptional;
-constexpr detail::EqualToFollyOptional equalToFollyOptional;
+constexpr apache::thrift::detail::CopyToFollyOptional copyToFollyOptional;
+constexpr apache::thrift::detail::MoveToFollyOptional moveToFollyOptional;
+constexpr apache::thrift::detail::FromFollyOptional fromFollyOptional;
+constexpr apache::thrift::detail::EqualToFollyOptional equalToFollyOptional;
 
 } // namespace thrift
 } // namespace apache

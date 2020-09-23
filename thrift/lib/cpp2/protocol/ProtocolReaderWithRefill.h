@@ -163,7 +163,7 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
     readStringImpl(str);
   }
 
-  inline void readBinary(detail::SkipNoopString& str) override {
+  inline void readBinary(apache::thrift::detail::SkipNoopString& str) override {
     readStringImpl(str);
   }
 
@@ -394,7 +394,7 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
     readStringImpl(str);
   }
 
-  inline void readBinary(detail::SkipNoopString& str) override {
+  inline void readBinary(apache::thrift::detail::SkipNoopString& str) override {
     readStringImpl(str);
   }
 

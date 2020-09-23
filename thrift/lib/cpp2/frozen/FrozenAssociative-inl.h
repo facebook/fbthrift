@@ -141,29 +141,32 @@ struct SetTableLayout : public Table<T, V, SelfKey<V>, V> {
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsOrderedMap<T>::value>::type>
-    : public detail::MapTableLayout<
+    : public apache::thrift::frozen::detail::MapTableLayout<
           T,
           typename T::key_type,
           typename T::mapped_type,
-          detail::SortedTableLayout> {};
+          apache::thrift::frozen::detail::SortedTableLayout> {};
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsOrderedSet<T>::value>::type>
-    : public detail::
-          SetTableLayout<T, typename T::value_type, detail::SortedTableLayout> {
-};
+    : public apache::thrift::frozen::detail::SetTableLayout<
+          T,
+          typename T::value_type,
+          apache::thrift::frozen::detail::SortedTableLayout> {};
 template <class T>
 struct Layout<T, typename std::enable_if<IsHashMap<T>::value>::type>
-    : public detail::MapTableLayout<
+    : public apache::thrift::frozen::detail::MapTableLayout<
           T,
           typename T::key_type,
           typename T::mapped_type,
-          detail::HashTableLayout> {};
+          apache::thrift::frozen::detail::HashTableLayout> {};
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsHashSet<T>::value>::type>
-    : public detail::
-          SetTableLayout<T, typename T::value_type, detail::HashTableLayout> {};
+    : public apache::thrift::frozen::detail::SetTableLayout<
+          T,
+          typename T::value_type,
+          apache::thrift::frozen::detail::HashTableLayout> {};
 } // namespace frozen
 } // namespace thrift
 } // namespace apache

@@ -104,7 +104,7 @@ struct PackedIntegerLayout : public LayoutBase {
 
 template <class T>
 struct Layout<T, typename std::enable_if<std::is_integral<T>::value>::type>
-    : detail::PackedIntegerLayout<T> {};
+    : apache::thrift::frozen::detail::PackedIntegerLayout<T> {};
 } // namespace frozen
 } // namespace thrift
 } // namespace apache

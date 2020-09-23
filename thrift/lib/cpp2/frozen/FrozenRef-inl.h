@@ -473,13 +473,14 @@ struct UniqueRefLayout : public RefLayout<T> {
 } // namespace detail
 
 template <class T>
-struct Layout<std::shared_ptr<T>> : public detail::SharedRefLayout<T> {};
+struct Layout<std::shared_ptr<T>>
+    : public apache::thrift::frozen::detail::SharedRefLayout<T> {};
 
 template <class T, class D>
 struct Layout<
     std::unique_ptr<T, D>,
     std::enable_if_t<!std::is_same<T, folly::IOBuf>::value>>
-    : public detail::UniqueRefLayout<T> {};
+    : public apache::thrift::frozen::detail::UniqueRefLayout<T> {};
 
 } // namespace frozen
 } // namespace thrift

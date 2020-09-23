@@ -41,7 +41,7 @@ uint32_t JSONProtocolWriterCommon::writeMessageBegin(
     MessageType messageType,
     int32_t seqid) {
   auto ret = beginContext(ContextType::ARRAY);
-  ret += writeI32(detail::json::kThriftVersion1);
+  ret += writeI32(apache::thrift::detail::json::kThriftVersion1);
   ret += writeString(name);
   ret += writeI32(messageType);
   ret += writeI32(seqid);
@@ -211,10 +211,10 @@ uint32_t JSONProtocolWriterCommon::beginContext(ContextType type) {
   context.push_back({type, 0});
   switch (type) {
     case ContextType::MAP:
-      out_.write(detail::json::kJSONObjectStart);
+      out_.write(apache::thrift::detail::json::kJSONObjectStart);
       return 1;
     case ContextType::ARRAY:
-      out_.write(detail::json::kJSONArrayStart);
+      out_.write(apache::thrift::detail::json::kJSONArrayStart);
       return 1;
   }
   CHECK(false);
@@ -225,10 +225,10 @@ uint32_t JSONProtocolWriterCommon::endContext() {
   DCHECK(!context.empty());
   switch (context.back().type) {
     case ContextType::MAP:
-      out_.write(detail::json::kJSONObjectEnd);
+      out_.write(apache::thrift::detail::json::kJSONObjectEnd);
       break;
     case ContextType::ARRAY:
-      out_.write(detail::json::kJSONArrayEnd);
+      out_.write(apache::thrift::detail::json::kJSONArrayEnd);
       break;
   }
   context.pop_back();
@@ -246,14 +246,14 @@ uint32_t JSONProtocolWriterCommon::writeContext() {
       if (meta == 0) {
         return 0;
       } else if (meta % 2 == 0) {
-        out_.write(detail::json::kJSONElemSeparator);
+        out_.write(apache::thrift::detail::json::kJSONElemSeparator);
       } else {
-        out_.write(detail::json::kJSONPairSeparator);
+        out_.write(apache::thrift::detail::json::kJSONPairSeparator);
       }
       return 1;
     case ContextType::ARRAY:
       if (meta != 0) {
-        out_.write(detail::json::kJSONElemSeparator);
+        out_.write(apache::thrift::detail::json::kJSONElemSeparator);
         return 1;
       }
       return 0;
@@ -263,8 +263,10 @@ uint32_t JSONProtocolWriterCommon::writeContext() {
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONEscapeChar(uint8_t ch) {
-  DCHECK(detail::json::kJSONEscapePrefix.size() == 4);
-  out_.push((const uint8_t*)detail::json::kJSONEscapePrefix.data(), 4);
+  DCHECK(apache::thrift::detail::json::kJSONEscapePrefix.size() == 4);
+  out_.push(
+      (const uint8_t*)apache::thrift::detail::json::kJSONEscapePrefix.data(),
+      4);
   out_.write(hexChar(ch >> 4));
   out_.write(hexChar(ch));
   return 6;
@@ -273,9 +275,9 @@ uint32_t JSONProtocolWriterCommon::writeJSONEscapeChar(uint8_t ch) {
 uint32_t JSONProtocolWriterCommon::writeJSONChar(uint8_t ch) {
   if (ch >= 0x30) {
     // Only special character >= 0x30 is '\'
-    if (ch == detail::json::kJSONBackslash) {
-      out_.write(detail::json::kJSONBackslash);
-      out_.write(detail::json::kJSONBackslash);
+    if (ch == apache::thrift::detail::json::kJSONBackslash) {
+      out_.write(apache::thrift::detail::json::kJSONBackslash);
+      out_.write(apache::thrift::detail::json::kJSONBackslash);
       return 2;
     } else {
       out_.write(ch);
@@ -288,7 +290,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONChar(uint8_t ch) {
       out_.write(ch);
       return 1;
     } else if (outCh > 1) {
-      out_.write(detail::json::kJSONBackslash);
+      out_.write(apache::thrift::detail::json::kJSONBackslash);
       out_.write(outCh);
       return 2;
     } else {
@@ -300,11 +302,11 @@ uint32_t JSONProtocolWriterCommon::writeJSONChar(uint8_t ch) {
 uint32_t JSONProtocolWriterCommon::writeJSONString(folly::StringPiece str) {
   uint32_t ret = 2;
 
-  out_.write(detail::json::kJSONStringDelimiter);
+  out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
   for (auto c : str) {
     ret += writeJSONChar(c);
   }
-  out_.write(detail::json::kJSONStringDelimiter);
+  out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
 
   return ret;
 }
@@ -312,7 +314,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONString(folly::StringPiece str) {
 uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
   uint32_t ret = 2;
 
-  out_.write(detail::json::kJSONStringDelimiter);
+  out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
   auto bytes = v.data();
   uint32_t len = folly::to_narrow(v.size());
   uint8_t b[4];
@@ -334,13 +336,14 @@ uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
     }
     ret += len + 1;
   }
-  out_.write(detail::json::kJSONStringDelimiter);
+  out_.write(apache::thrift::detail::json::kJSONStringDelimiter);
 
   return ret;
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONBool(bool val) {
-  const auto& out = val ? detail::json::kJSONTrue : detail::json::kJSONFalse;
+  const auto& out = val ? apache::thrift::detail::json::kJSONTrue
+                        : apache::thrift::detail::json::kJSONFalse;
   out_.push((const uint8_t*)out.data(), out.size());
   return folly::to_narrow(out.size());
 }
@@ -352,11 +355,12 @@ uint32_t JSONProtocolWriterCommon::writeJSONInt(int64_t num) {
 template <typename T>
 uint32_t JSONProtocolWriterCommon::writeJSONDouble(T dbl) {
   if (dbl == std::numeric_limits<T>::infinity()) {
-    return writeJSONString(detail::json::kThriftInfinity);
+    return writeJSONString(apache::thrift::detail::json::kThriftInfinity);
   } else if (dbl == -std::numeric_limits<T>::infinity()) {
-    return writeJSONString(detail::json::kThriftNegativeInfinity);
+    return writeJSONString(
+        apache::thrift::detail::json::kThriftNegativeInfinity);
   } else if (std::isnan(dbl)) {
-    return writeJSONString(detail::json::kThriftNan);
+    return writeJSONString(apache::thrift::detail::json::kThriftNan);
   } else {
     return writeJSONDoubleInternal(dbl);
   }
@@ -373,7 +377,7 @@ void JSONProtocolReaderCommon::readMessageBegin(
   ensureAndBeginContext(ContextType::ARRAY);
   int64_t tmpVal;
   readI64(tmpVal);
-  if (tmpVal != detail::json::kThriftVersion1) {
+  if (tmpVal != apache::thrift::detail::json::kThriftVersion1) {
     throwBadVersion();
   }
   readString(name);
@@ -466,9 +470,10 @@ void JSONProtocolReaderCommon::skipWhitespace() {
   for (auto peek = in_.peekBytes(); !peek.empty(); peek = in_.peekBytes()) {
     uint32_t size = 0;
     for (char ch : peek) {
-      if (ch != detail::json::kJSONSpace && ch != detail::json::kJSONNewline &&
-          ch != detail::json::kJSONTab &&
-          ch != detail::json::kJSONCarriageReturn) {
+      if (ch != apache::thrift::detail::json::kJSONSpace &&
+          ch != apache::thrift::detail::json::kJSONNewline &&
+          ch != apache::thrift::detail::json::kJSONTab &&
+          ch != apache::thrift::detail::json::kJSONCarriageReturn) {
         in_.skip(size);
         return;
       }
@@ -511,16 +516,19 @@ void JSONProtocolReaderCommon::ensureAndSkipContext() {
       case ContextType::MAP:
         if (meta % 2 == 0) {
           if (meta != 0) {
-            skippedChars_ += ensureChar(detail::json::kJSONElemSeparator);
+            skippedChars_ +=
+                ensureChar(apache::thrift::detail::json::kJSONElemSeparator);
           }
           keyish_ = true;
         } else {
-          skippedChars_ += ensureChar(detail::json::kJSONPairSeparator);
+          skippedChars_ +=
+              ensureChar(apache::thrift::detail::json::kJSONPairSeparator);
         }
         break;
       case ContextType::ARRAY:
         if (meta != 0) {
-          skippedChars_ += ensureChar(detail::json::kJSONElemSeparator);
+          skippedChars_ +=
+              ensureChar(apache::thrift::detail::json::kJSONElemSeparator);
         }
         break;
     }
@@ -546,10 +554,10 @@ void JSONProtocolReaderCommon::beginContext(ContextType type) {
   context.push_back({type, 0});
   switch (type) {
     case ContextType::MAP:
-      ensureChar(detail::json::kJSONObjectStart);
+      ensureChar(apache::thrift::detail::json::kJSONObjectStart);
       return;
     case ContextType::ARRAY:
-      ensureChar(detail::json::kJSONArrayStart);
+      ensureChar(apache::thrift::detail::json::kJSONArrayStart);
       return;
   }
   CHECK(false);
@@ -562,10 +570,10 @@ void JSONProtocolReaderCommon::endContext() {
   context.pop_back();
   switch (type) {
     case ContextType::MAP:
-      ensureChar(detail::json::kJSONObjectEnd);
+      ensureChar(apache::thrift::detail::json::kJSONObjectEnd);
       return;
     case ContextType::ARRAY:
-      ensureChar(detail::json::kJSONArrayEnd);
+      ensureChar(apache::thrift::detail::json::kJSONArrayEnd);
       return;
   }
   CHECK(false);
@@ -647,16 +655,16 @@ void JSONProtocolReaderCommon::readJSONVal(int64_t& val) {
 
 void JSONProtocolReaderCommon::readJSONVal(double& val) {
   readWhitespace();
-  if (peekCharSafe() == detail::json::kJSONStringDelimiter) {
+  if (peekCharSafe() == apache::thrift::detail::json::kJSONStringDelimiter) {
     std::string str;
     readJSONString(str);
-    if (str == detail::json::kThriftNan) {
+    if (str == apache::thrift::detail::json::kThriftNan) {
       val = HUGE_VAL / HUGE_VAL; // generates NaN
-    } else if (str == detail::json::kThriftNegativeNan) {
+    } else if (str == apache::thrift::detail::json::kThriftNegativeNan) {
       val = -NAN;
-    } else if (str == detail::json::kThriftInfinity) {
+    } else if (str == apache::thrift::detail::json::kThriftInfinity) {
       val = HUGE_VAL;
-    } else if (str == detail::json::kThriftNegativeInfinity) {
+    } else if (str == apache::thrift::detail::json::kThriftNegativeInfinity) {
       val = -HUGE_VAL;
     } else {
       throwUnrecognizableAsFloatingPoint(str);
@@ -679,7 +687,7 @@ void JSONProtocolReaderCommon::readJSONVal(float& val) {
 }
 
 template <typename Str>
-typename std::enable_if<detail::is_string<Str>::value>::type
+typename std::enable_if<apache::thrift::detail::is_string<Str>::value>::type
 JSONProtocolReaderCommon::readJSONVal(Str& val) {
   readJSONString(val);
 }
@@ -716,8 +724,8 @@ void JSONProtocolReaderCommon::readJSONKeyword(std::string& kw) {
 
 void JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
   uint8_t b1, b2;
-  ensureCharNoWhitespace(detail::json::kJSONZeroChar);
-  ensureCharNoWhitespace(detail::json::kJSONZeroChar);
+  ensureCharNoWhitespace(apache::thrift::detail::json::kJSONZeroChar);
+  ensureCharNoWhitespace(apache::thrift::detail::json::kJSONZeroChar);
   b1 = in_.read<uint8_t>();
   b2 = in_.read<uint8_t>();
   out = (hexVal(b1) << 4) + hexVal(b2);
@@ -725,18 +733,18 @@ void JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
 
 template <typename StrType>
 void JSONProtocolReaderCommon::readJSONString(StrType& val) {
-  ensureChar(detail::json::kJSONStringDelimiter);
+  ensureChar(apache::thrift::detail::json::kJSONStringDelimiter);
 
   std::string json = "\"";
   val.clear();
   while (true) {
     auto ch = in_.read<uint8_t>();
-    if (ch == detail::json::kJSONStringDelimiter) {
+    if (ch == apache::thrift::detail::json::kJSONStringDelimiter) {
       break;
     }
-    if (ch == detail::json::kJSONBackslash) {
+    if (ch == apache::thrift::detail::json::kJSONBackslash) {
       ch = in_.read<uint8_t>();
-      if (ch == detail::json::kJSONEscapeChar) {
+      if (ch == apache::thrift::detail::json::kJSONEscapeChar) {
         if (allowDecodeUTF8_) {
           json += "\\u";
           continue;

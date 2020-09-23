@@ -31,11 +31,11 @@ inline uint32_t CompactV1ProtocolWriter::writeMessageBegin(
     MessageType messageType,
     int32_t seqid) {
   uint32_t wsize = 0;
-  wsize += writeByte(detail::compact::PROTOCOL_ID);
+  wsize += writeByte(apache::thrift::detail::compact::PROTOCOL_ID);
   wsize += writeByte(
-      detail::compact_v1::kCompactV1ProtocolVersion |
-      ((messageType << detail::compact::TYPE_SHIFT_AMOUNT) &
-       detail::compact::TYPE_MASK));
+      apache::thrift::detail::compact_v1::kCompactV1ProtocolVersion |
+      ((messageType << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
+       apache::thrift::detail::compact::TYPE_MASK));
   wsize += apache::thrift::util::writeVarint(out_, seqid);
   wsize += writeString(name);
   return wsize;
@@ -58,21 +58,21 @@ inline void CompactV1ProtocolReader::readMessageBegin(
   int8_t versionAndType;
 
   readByte(protocolId);
-  if (protocolId != detail::compact::PROTOCOL_ID) {
+  if (protocolId != apache::thrift::detail::compact::PROTOCOL_ID) {
     throw TProtocolException(
         TProtocolException::BAD_VERSION, "Bad protocol identifier");
   }
 
   readByte(versionAndType);
   if ((int8_t)(versionAndType & VERSION_MASK) !=
-      detail::compact_v1::kCompactV1ProtocolVersion) {
+      apache::thrift::detail::compact_v1::kCompactV1ProtocolVersion) {
     throw TProtocolException(
         TProtocolException::BAD_VERSION, "Bad protocol version");
   }
 
   messageType = (MessageType)(
-      (versionAndType & detail::compact::TYPE_MASK) >>
-      detail::compact::TYPE_SHIFT_AMOUNT);
+      (versionAndType & apache::thrift::detail::compact::TYPE_MASK) >>
+      apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
   apache::thrift::util::readVarint(in_, seqid);
   readString(name);
 }

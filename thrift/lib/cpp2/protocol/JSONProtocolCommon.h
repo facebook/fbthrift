@@ -258,7 +258,8 @@ class JSONProtocolReaderCommon {
   inline void readJSONVal(double& val);
   inline void readJSONVal(float& val);
   template <typename Str>
-  inline typename std::enable_if<detail::is_string<Str>::value>::type
+  inline typename std::enable_if<
+      apache::thrift::detail::is_string<Str>::value>::type
   readJSONVal(Str& val);
   inline bool JSONtoBool(const std::string& s);
   inline void readJSONVal(bool& val);

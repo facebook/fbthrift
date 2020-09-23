@@ -125,7 +125,8 @@ folly::Try<T> unpack(rocket::Payload&& payload) {
     auto data = std::move(payload).data();
     // uncompress the payload if needed
     if (auto compress = t.metadata.compression_ref()) {
-      auto result = detail::uncompressPayload(*compress, std::move(data));
+      auto result = apache::thrift::rocket::detail::uncompressPayload(
+          *compress, std::move(data));
       if (!result) {
         folly::throw_exception<TApplicationException>(
             TApplicationException::INVALID_TRANSFORM,
@@ -160,9 +161,11 @@ template <typename Payload, typename Metadata>
 rocket::Payload pack(const Metadata& metadata, Payload&& payload) {
   auto serializedPayload = packCompact(std::forward<Payload>(payload));
   if (auto compress = metadata.compression_ref()) {
-    detail::compressPayload(serializedPayload, *compress);
+    apache::thrift::rocket::detail::compressPayload(
+        serializedPayload, *compress);
   }
-  return detail::makePayload(metadata, std::move(serializedPayload));
+  return apache::thrift::rocket::detail::makePayload(
+      metadata, std::move(serializedPayload));
 }
 
 template <class T>

@@ -111,7 +111,8 @@ void readVarint(CursorT& c, T& value) {
     value = static_cast<T>(*p);
     c.skipNoAdvance(1);
   } else {
-    detail::readVarintMediumSlow<T, CursorT>(c, value, p, len);
+    apache::thrift::util::detail::readVarintMediumSlow<T, CursorT>(
+        c, value, p, len);
   }
 }
 
@@ -202,7 +203,7 @@ uint8_t writeVarint(Cursor& c, T value) {
     return 1;
   }
 
-  return detail::writeVarintSlow<Cursor, T>(c, value);
+  return apache::thrift::util::detail::writeVarintSlow<Cursor, T>(c, value);
 }
 
 inline int32_t zigzagToI32(uint32_t n) {

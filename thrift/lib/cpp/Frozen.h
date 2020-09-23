@@ -465,10 +465,11 @@ template <
     class FrozenItem,
     class Range,
     class = decltype(std::declval<Range>().begin())>
-typename std::enable_if<!detail::IsFrozenRange<Range>::value, bool>::type
-operator<(
-    const Range& range,
-    const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+typename std::
+    enable_if<!apache::thrift::detail::IsFrozenRange<Range>::value, bool>::type
+    operator<(
+        const Range& range,
+        const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   return frozen > range;
 }
 
@@ -477,10 +478,11 @@ template <
     class FrozenItem,
     class Range,
     class = decltype(std::declval<Range>().begin())>
-typename std::enable_if<!detail::IsFrozenRange<Range>::value, bool>::type
-operator==(
-    const Range& range,
-    const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+typename std::
+    enable_if<!apache::thrift::detail::IsFrozenRange<Range>::value, bool>::type
+    operator==(
+        const Range& range,
+        const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   return range.size() == frozen.size() &&
       std::equal(range.begin(), range.end(), frozen.begin());
 }
@@ -662,11 +664,11 @@ struct DeprecatedStringPieceHash {
 } // namespace detail
 
 inline size_t frozenHash(folly::StringPiece sp) {
-  return detail::DeprecatedStringPieceHash()(sp);
+  return apache::thrift::detail::DeprecatedStringPieceHash()(sp);
 }
 
 inline size_t frozenHash(const FrozenRange<char>& fr) {
-  return detail::DeprecatedStringPieceHash()(fr.range());
+  return apache::thrift::detail::DeprecatedStringPieceHash()(fr.range());
 }
 
 inline size_t frozenHash(size_t i) {
@@ -674,8 +676,8 @@ inline size_t frozenHash(size_t i) {
 }
 
 template <>
-struct Freezer<detail::BlockIndex, void> : TrivialFreezer<detail::BlockIndex> {
-};
+struct Freezer<apache::thrift::detail::BlockIndex, void>
+    : TrivialFreezer<apache::thrift::detail::BlockIndex> {};
 
 /**
  * FrozenHashMap<...> - A sparsehash-based hashtable for frozen HashMaps.
@@ -696,13 +698,13 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
   const_iterator find(const Key& key) const {
     auto h = frozenHash(key);
     auto chunks = blockIndex.size();
-    auto bits = detail::BlockIndex::kSize;
+    auto bits = apache::thrift::detail::BlockIndex::kSize;
     auto buckets = chunks * bits;
     for (size_t p = 0; p < buckets; h += ++p) { // quadratic probing
       auto bucket = h % buckets;
       auto major = bucket / bits;
       auto minor = bucket % bits;
-      const detail::BlockIndex* block = &blockIndex[major];
+      const apache::thrift::detail::BlockIndex* block = &blockIndex[major];
       for (;;) {
         if (0 == (1 & (block->mask >> minor))) {
           return this->end();
@@ -754,7 +756,7 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
     blockIndex.clear();
   }
 
-  FrozenRange<detail::BlockIndex> blockIndex;
+  FrozenRange<apache::thrift::detail::BlockIndex> blockIndex;
 
  private:
   template <class Key>
@@ -779,7 +781,7 @@ struct HashMapFreezer {
   typedef typename Freezer<ThawedItem>::FrozenType FrozenItem;
 
   static size_t chunkCount(size_t size) {
-    auto bits = detail::BlockIndex::kSize;
+    auto bits = apache::thrift::detail::BlockIndex::kSize;
     // 1.5 => 66% load factor => 3 bits/entry overhead
     // 2.0 => 50% load factor => 4 bits/entry overhead
     return size_t(size * 2.0 + bits - 1) / bits;
@@ -795,7 +797,7 @@ struct HashMapFreezer {
     }
 
     size_t chunks = chunkCount(size);
-    auto bits = detail::BlockIndex::kSize;
+    auto bits = apache::thrift::detail::BlockIndex::kSize;
     size_t buckets = chunks * bits;
     std::unique_ptr<const ThawedItem*[]> index(new const ThawedItem*[buckets]);
     for (size_t b = 0; b < buckets; ++b) {
@@ -822,7 +824,8 @@ struct HashMapFreezer {
     dst.reset(itemsBegin, itemsEnd);
     buffer = unaligned_ptr_cast<byte*>(itemsEnd);
 
-    auto* indexBegin = unaligned_ptr_cast<detail::BlockIndex*>(buffer);
+    auto* indexBegin =
+        unaligned_ptr_cast<apache::thrift::detail::BlockIndex*>(buffer);
     auto* indexEnd = indexBegin + chunks;
     dst.blockIndex.reset(indexBegin, indexEnd);
     buffer = unaligned_ptr_cast<byte*>(indexEnd);
@@ -830,7 +833,7 @@ struct HashMapFreezer {
     size_t count = 0;
     size_t b = 0;
     for (size_t c = 0; c < chunks; ++c) {
-      detail::BlockIndex chunk;
+      apache::thrift::detail::BlockIndex chunk;
       chunk.offset = count;
       for (size_t offset = 0; offset < bits; ++offset) {
         if (const ThawedItem* bucket = index[b++]) {
@@ -860,7 +863,7 @@ struct HashMapFreezer {
     for (auto& item : src) {
       size += frozenSize(item);
     }
-    size += sizeof(detail::BlockIndex) * chunkCount(src.size());
+    size += sizeof(apache::thrift::detail::BlockIndex) * chunkCount(src.size());
     return size;
   }
 };

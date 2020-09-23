@@ -247,12 +247,12 @@ void SimpleJSONProtocolReader::readBool(std::vector<bool>::reference value) {
 
 bool SimpleJSONProtocolReader::peekMap() {
   skipWhitespace();
-  return peekCharSafe() != detail::json::kJSONObjectEnd;
+  return peekCharSafe() != apache::thrift::detail::json::kJSONObjectEnd;
 }
 
 bool SimpleJSONProtocolReader::peekList() {
   skipWhitespace();
-  return peekCharSafe() != detail::json::kJSONArrayEnd;
+  return peekCharSafe() != apache::thrift::detail::json::kJSONArrayEnd;
 }
 
 bool SimpleJSONProtocolReader::peekSet() {
@@ -264,28 +264,28 @@ void SimpleJSONProtocolReader::skip(TType /*type*/) {
   ensureAndReadContext(keyish);
   readWhitespace();
   auto ch = peekCharSafe();
-  if (ch == detail::json::kJSONObjectStart) {
+  if (ch == apache::thrift::detail::json::kJSONObjectStart) {
     beginContext(ContextType::MAP);
     while (true) {
       skipWhitespace();
-      if (peekCharSafe() == detail::json::kJSONObjectEnd) {
+      if (peekCharSafe() == apache::thrift::detail::json::kJSONObjectEnd) {
         break;
       }
       skip(TType::T_VOID);
       skip(TType::T_VOID);
     }
     endContext();
-  } else if (ch == detail::json::kJSONArrayStart) {
+  } else if (ch == apache::thrift::detail::json::kJSONArrayStart) {
     beginContext(ContextType::ARRAY);
     while (true) {
       skipWhitespace();
-      if (peekCharSafe() == detail::json::kJSONArrayEnd) {
+      if (peekCharSafe() == apache::thrift::detail::json::kJSONArrayEnd) {
         break;
       }
       skip(TType::T_VOID);
     }
     endContext();
-  } else if (ch == detail::json::kJSONStringDelimiter) {
+  } else if (ch == apache::thrift::detail::json::kJSONStringDelimiter) {
     std::string tmp;
     readJSONVal(tmp);
   } else if (ch == '-' || ch == '+' || (ch >= '0' && ch <= '9')) {

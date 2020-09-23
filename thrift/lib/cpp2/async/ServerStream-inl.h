@@ -25,19 +25,21 @@ template <typename T>
 ClientBufferedStream<T> ServerStream<T>::toClientStream(
     folly::EventBase* eb,
     size_t bufferSize) && {
-  struct : public detail::ClientStreamBridge::FirstResponseCallback {
+  struct : public apache::thrift::detail::ClientStreamBridge::
+               FirstResponseCallback {
     void onFirstResponse(
         FirstResponsePayload&&,
-        detail::ClientStreamBridge::ClientPtr clientStreamBridge) override {
+        apache::thrift::detail::ClientStreamBridge::ClientPtr
+            clientStreamBridge) override {
       ptr = std::move(clientStreamBridge);
       baton.post();
     }
     void onFirstResponseError(folly::exception_wrapper) override {}
-    detail::ClientStreamBridge::ClientPtr ptr;
+    apache::thrift::detail::ClientStreamBridge::ClientPtr ptr;
     folly::Baton<> baton;
   } firstResponseCallback;
-  auto streamBridge =
-      detail::ClientStreamBridge::create(&firstResponseCallback);
+  auto streamBridge = apache::thrift::detail::ClientStreamBridge::create(
+      &firstResponseCallback);
 
   auto encode = [](folly::Try<T>&& in) {
     if (in.hasValue()) {

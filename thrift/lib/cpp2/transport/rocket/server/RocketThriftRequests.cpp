@@ -359,7 +359,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
 
   // apply compression if client has specified compression codec
   if (compressionConfig.has_value()) {
-    detail::setCompressionCodec(
+    rocket::detail::setCompressionCodec(
         *compressionConfig, metadata, payload->computeChainDataLength());
   }
 

@@ -38,7 +38,7 @@ class ClientBufferedStream {
  public:
   ClientBufferedStream() {}
   ClientBufferedStream(
-      detail::ClientStreamBridge::ClientPtr streamBridge,
+      apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
       int32_t bufferSize)
       : streamBridge_(std::move(streamBridge)),
@@ -137,7 +137,7 @@ class ClientBufferedStream {
  private:
 #if FOLLY_HAS_COROUTINES
   static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorImpl(
-      detail::ClientStreamBridge::ClientPtr streamBridge,
+      apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       int32_t bufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&)) {
     int32_t outstanding = bufferSize;
@@ -178,7 +178,8 @@ class ClientBufferedStream {
         queue = streamBridge->getMessages();
         if (queue.empty()) {
           // we've been cancelled
-          detail::ClientStreamBridge::Ptr(streamBridge.release());
+          apache::thrift::detail::ClientStreamBridge::Ptr(
+              streamBridge.release());
           throw folly::OperationCancelled();
         }
       }
@@ -211,10 +212,11 @@ class ClientBufferedStream {
 #endif // FOLLY_HAS_COROUTINES
 
   struct SharedState {
-    explicit SharedState(detail::ClientStreamBridge::ClientPtr sb)
+    explicit SharedState(
+        apache::thrift::detail::ClientStreamBridge::ClientPtr sb)
         : streamBridge(sb.release()) {}
     folly::Promise<folly::Unit> promise;
-    detail::ClientStreamBridge::Ptr streamBridge;
+    apache::thrift::detail::ClientStreamBridge::Ptr streamBridge;
   };
 
  public:
@@ -269,7 +271,7 @@ class ClientBufferedStream {
     Continuation(
         folly::Executor::KeepAlive<> e,
         OnNextTry onNextTry,
-        detail::ClientStreamBridge::ClientPtr streamBridge,
+        apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
         folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
         int32_t bufferSize)
         : e_(e),
@@ -366,7 +368,7 @@ class ClientBufferedStream {
     friend class ClientBufferedStream;
   };
 
-  detail::ClientStreamBridge::ClientPtr streamBridge_;
+  apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge_;
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
   int32_t bufferSize_{0};
   static constexpr int32_t kRequestCreditPayloadSize = 16384;

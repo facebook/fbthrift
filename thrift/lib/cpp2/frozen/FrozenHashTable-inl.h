@@ -70,7 +70,8 @@ struct BlockLayout : public LayoutBase {
 } // namespace detail
 
 template <>
-struct Layout<detail::Block> : detail::BlockLayout {};
+struct Layout<apache::thrift::frozen::detail::Block>
+    : apache::thrift::frozen::detail::BlockLayout {};
 
 namespace detail {
 /**

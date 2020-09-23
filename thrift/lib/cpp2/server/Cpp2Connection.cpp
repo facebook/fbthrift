@@ -320,7 +320,7 @@ void Cpp2Connection::requestReceived(
   if (auto preprocessResult =
           server->preprocess(&hreq->getHeader()->getHeaders(), &methodName)) {
     preprocessResult.value().apply_visitor(
-        detail::VisitorHelper() //
+        apache::thrift::detail::VisitorHelper() //
             .with([&](AppClientException& ace) {
               handleAppError(
                   std::move(hreq), ace.name(), ace.getMessage(), true);

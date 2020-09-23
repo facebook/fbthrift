@@ -226,7 +226,8 @@ struct ArrayLayout : public LayoutBase {
     }
 
     folly::Range<const Item*> range() const {
-      static_assert(detail::IsBlitType<Item>::value, "");
+      static_assert(
+          apache::thrift::frozen::detail::IsBlitType<Item>::value, "");
       auto data = reinterpret_cast<const Item*>(data_);
       return {data, data + count_};
     }
@@ -365,7 +366,8 @@ struct ArrayLayout : public LayoutBase {
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsList<T>::value>::type>
-    : public detail::ArrayLayout<T, typename T::value_type> {};
+    : public apache::thrift::frozen::detail::
+          ArrayLayout<T, typename T::value_type> {};
 } // namespace frozen
 } // namespace thrift
 } // namespace apache

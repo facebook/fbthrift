@@ -311,7 +311,7 @@ bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
   if (LIKELY(!pageAligned_)) {
     // apply compression if client has specified compression codec
     if (compressionConfig_) {
-      detail::setCompressionCodec(
+      rocket::detail::setCompressionCodec(
           *compressionConfig_,
           payload.metadata,
           payload.payload->computeChainDataLength());

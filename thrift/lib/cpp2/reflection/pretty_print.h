@@ -63,8 +63,8 @@ void pretty_print(
     T&& what,
     std::string indentation = "  ",
     std::string margin = std::string()) {
-  using impl =
-      detail::pretty_print_impl<reflect_type_class<folly::remove_cvref_t<T>>>;
+  using impl = apache::thrift::detail::pretty_print_impl<
+      reflect_type_class<folly::remove_cvref_t<T>>>;
 
   auto indenter = make_indenter(out, std::move(indentation), std::move(margin));
   impl::print(indenter, std::forward<T>(what));
