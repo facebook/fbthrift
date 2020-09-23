@@ -27,6 +27,7 @@
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -42,6 +43,9 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
+
+THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);
 
 namespace apache {
 namespace thrift {
@@ -106,12 +110,14 @@ void ThriftRocketServerHandler::handleSetupFrame(
 
   folly::io::Cursor cursor(frame.payload().buffer());
 
-  // Validate Thrift major/minor version
-  int16_t majorVersion;
-  int16_t minorVersion;
-  const bool success = cursor.tryReadBE<int16_t>(majorVersion) &&
-      cursor.tryReadBE<int16_t>(minorVersion);
-  if (!success || majorVersion != 0 || minorVersion != 1) {
+  // Validate Thrift protocol key
+  uint32_t protocolKey;
+  const bool success = cursor.tryReadBE<uint32_t>(protocolKey);
+  constexpr uint32_t kLegacyRocketProtocolKey = 1;
+  if (!success ||
+      ((!THRIFT_FLAG(rocket_server_legacy_protocol_key) ||
+        protocolKey != kLegacyRocketProtocolKey) &&
+       protocolKey != RpcMetadata_constants::kRocketProtocolKey())) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP, "Incompatible Thrift version"));
   }

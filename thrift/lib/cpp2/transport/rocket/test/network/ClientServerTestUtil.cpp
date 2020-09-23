@@ -56,6 +56,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -368,14 +369,13 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
       : ioEvb_(ioEvb), expectedSetupMetadata_(expectedSetupMetadata) {}
   void handleSetupFrame(SetupFrame&& frame, RocketServerConnection&) final {
     folly::io::Cursor cursor(frame.payload().buffer());
-    // Validate Thrift major/minor version
-    int16_t majorVersion;
-    int16_t minorVersion;
-    const bool success = cursor.tryReadBE<int16_t>(majorVersion) &&
-        cursor.tryReadBE<int16_t>(minorVersion);
+    // Validate Rocket protocol key
+    uint32_t protocolKey;
+    const bool success = cursor.tryReadBE<uint32_t>(protocolKey);
     EXPECT_TRUE(success);
-    EXPECT_EQ(0, majorVersion);
-    EXPECT_EQ(1, minorVersion);
+    EXPECT_TRUE(
+        protocolKey == 1 ||
+        protocolKey == RpcMetadata_constants::kRocketProtocolKey());
     // Validate RequestSetupMetadata
     CompactProtocolReader reader;
     reader.setInput(cursor);

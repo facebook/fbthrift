@@ -292,6 +292,10 @@ enum InterfaceKind {
   DEBUGGING = 1,
 }
 
+// The key is 32-bit, using a 64-bit constant here to make it work with signed
+// types.
+const i64 kRocketProtocolKey = 0xf09f9a80;
+
 struct RequestSetupMetadata {
   1: optional map<string, binary>
       (cpp.template = "apache::thrift::MetadataOpaqueMap") opaque;

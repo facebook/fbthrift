@@ -97,6 +97,7 @@ target_link_libraries(
 add_library(
   thriftcpp2
 
+  Flags.cpp
   GeneratedCodeHelper.cpp
   Flags.cpp
   async/AsyncClient.cpp

@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
@@ -47,7 +48,10 @@
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+
+THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, false);
 
 using namespace apache::thrift::transport;
 
@@ -586,10 +590,10 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
   folly::IOBufQueue queue;
   queue.append(std::move(buf));
   folly::io::QueueAppender appender(&queue, /* do not grow */ 0);
-  // Serialize RocketClient's major/minor version (which is separate from the
-  // rsocket protocol major/minor version) into setup metadata.
-  appender.writeBE<uint16_t>(0); // Thrift RocketClient major version
-  appender.writeBE<uint16_t>(1); // Thrift RocketClient minor version
+  const uint32_t protocolKey = THRIFT_FLAG(rocket_client_new_protocol_key)
+      ? RpcMetadata_constants::kRocketProtocolKey()
+      : 1;
+  appender.writeBE<uint32_t>(protocolKey); // Rocket protocol key
   // Append serialized setup parameters to setup frame metadata
   appender.insert(paramQueue.move());
 
