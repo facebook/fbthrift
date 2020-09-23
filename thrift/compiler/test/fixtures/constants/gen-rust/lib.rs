@@ -462,7 +462,12 @@ pub mod types {
 
     impl ::std::fmt::Display for EmptyEnum {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            write!(fmt, "{}", self.0)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -476,8 +481,15 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                _ => ::anyhow::bail!("Unable to parse {} as EmptyEnum", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(EmptyEnum(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as EmptyEnum", string)
+                }
             }
         }
     }
@@ -554,14 +566,16 @@ pub mod types {
 
     impl ::std::fmt::Display for City {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                City::NYC => "NYC",
-                City::MPK => "MPK",
-                City::SEA => "SEA",
-                City::LON => "LON",
-                City(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("NYC", 0),
+                ("MPK", 1),
+                ("SEA", 2),
+                ("LON", 3),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -575,12 +589,19 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "NYC" => ::std::result::Result::Ok(City::NYC),
-                "MPK" => ::std::result::Result::Ok(City::MPK),
-                "SEA" => ::std::result::Result::Ok(City::SEA),
-                "LON" => ::std::result::Result::Ok(City::LON),
-                _ => ::anyhow::bail!("Unable to parse {} as City", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("LON", 3),
+                ("MPK", 1),
+                ("NYC", 0),
+                ("SEA", 2),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(City(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as City", string)
+                }
             }
         }
     }
@@ -657,14 +678,16 @@ pub mod types {
 
     impl ::std::fmt::Display for Company {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                Company::FACEBOOK => "FACEBOOK",
-                Company::WHATSAPP => "WHATSAPP",
-                Company::OCULUS => "OCULUS",
-                Company::INSTAGRAM => "INSTAGRAM",
-                Company(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("FACEBOOK", 0),
+                ("WHATSAPP", 1),
+                ("OCULUS", 2),
+                ("INSTAGRAM", 3),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -678,12 +701,19 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "FACEBOOK" => ::std::result::Result::Ok(Company::FACEBOOK),
-                "WHATSAPP" => ::std::result::Result::Ok(Company::WHATSAPP),
-                "OCULUS" => ::std::result::Result::Ok(Company::OCULUS),
-                "INSTAGRAM" => ::std::result::Result::Ok(Company::INSTAGRAM),
-                _ => ::anyhow::bail!("Unable to parse {} as Company", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("FACEBOOK", 0),
+                ("INSTAGRAM", 3),
+                ("OCULUS", 2),
+                ("WHATSAPP", 1),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(Company(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as Company", string)
+                }
             }
         }
     }

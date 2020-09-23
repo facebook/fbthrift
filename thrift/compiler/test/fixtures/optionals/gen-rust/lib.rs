@@ -88,13 +88,15 @@ pub mod types {
 
     impl ::std::fmt::Display for Animal {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                Animal::DOG => "DOG",
-                Animal::CAT => "CAT",
-                Animal::TARANTULA => "TARANTULA",
-                Animal(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("DOG", 1),
+                ("CAT", 2),
+                ("TARANTULA", 3),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -108,11 +110,18 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "DOG" => ::std::result::Result::Ok(Animal::DOG),
-                "CAT" => ::std::result::Result::Ok(Animal::CAT),
-                "TARANTULA" => ::std::result::Result::Ok(Animal::TARANTULA),
-                _ => ::anyhow::bail!("Unable to parse {} as Animal", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("CAT", 2),
+                ("DOG", 1),
+                ("TARANTULA", 3),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(Animal(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as Animal", string)
+                }
             }
         }
     }

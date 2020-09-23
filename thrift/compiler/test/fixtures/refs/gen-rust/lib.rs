@@ -187,12 +187,14 @@ pub mod types {
 
     impl ::std::fmt::Display for TypedEnum {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                TypedEnum::VAL1 => "VAL1",
-                TypedEnum::VAL2 => "VAL2",
-                TypedEnum(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("VAL1", 0),
+                ("VAL2", 1),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -206,10 +208,17 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "VAL1" => ::std::result::Result::Ok(TypedEnum::VAL1),
-                "VAL2" => ::std::result::Result::Ok(TypedEnum::VAL2),
-                _ => ::anyhow::bail!("Unable to parse {} as TypedEnum", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("VAL1", 0),
+                ("VAL2", 1),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(TypedEnum(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as TypedEnum", string)
+                }
             }
         }
     }

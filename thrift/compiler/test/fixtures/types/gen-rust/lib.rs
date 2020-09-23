@@ -209,15 +209,17 @@ pub mod types {
 
     impl ::std::fmt::Display for has_bitwise_ops {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                has_bitwise_ops::none => "none",
-                has_bitwise_ops::zero => "zero",
-                has_bitwise_ops::one => "one",
-                has_bitwise_ops::two => "two",
-                has_bitwise_ops::three => "three",
-                has_bitwise_ops(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("none", 0),
+                ("zero", 1),
+                ("one", 2),
+                ("two", 4),
+                ("three", 8),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -231,13 +233,20 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "none" => ::std::result::Result::Ok(has_bitwise_ops::none),
-                "zero" => ::std::result::Result::Ok(has_bitwise_ops::zero),
-                "one" => ::std::result::Result::Ok(has_bitwise_ops::one),
-                "two" => ::std::result::Result::Ok(has_bitwise_ops::two),
-                "three" => ::std::result::Result::Ok(has_bitwise_ops::three),
-                _ => ::anyhow::bail!("Unable to parse {} as has_bitwise_ops", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("none", 0),
+                ("one", 2),
+                ("three", 8),
+                ("two", 4),
+                ("zero", 1),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(has_bitwise_ops(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as has_bitwise_ops", string)
+                }
             }
         }
     }
@@ -310,12 +319,14 @@ pub mod types {
 
     impl ::std::fmt::Display for is_unscoped {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                is_unscoped::hello => "hello",
-                is_unscoped::world => "world",
-                is_unscoped(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("hello", 0),
+                ("world", 1),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -329,10 +340,17 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "hello" => ::std::result::Result::Ok(is_unscoped::hello),
-                "world" => ::std::result::Result::Ok(is_unscoped::world),
-                _ => ::anyhow::bail!("Unable to parse {} as is_unscoped", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("hello", 0),
+                ("world", 1),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(is_unscoped(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as is_unscoped", string)
+                }
             }
         }
     }
@@ -405,12 +423,14 @@ pub mod types {
 
     impl ::std::fmt::Display for MyForwardRefEnum {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                MyForwardRefEnum::ZERO => "ZERO",
-                MyForwardRefEnum::NONZERO => "NONZERO",
-                MyForwardRefEnum(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("ZERO", 0),
+                ("NONZERO", 12),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -424,10 +444,17 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "ZERO" => ::std::result::Result::Ok(MyForwardRefEnum::ZERO),
-                "NONZERO" => ::std::result::Result::Ok(MyForwardRefEnum::NONZERO),
-                _ => ::anyhow::bail!("Unable to parse {} as MyForwardRefEnum", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("NONZERO", 12),
+                ("ZERO", 0),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(MyForwardRefEnum(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as MyForwardRefEnum", string)
+                }
             }
         }
     }
@@ -502,13 +529,15 @@ pub mod types {
 
     impl ::std::fmt::Display for MyEnumA {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                MyEnumA::fieldA => "fieldA",
-                MyEnumA::fieldB => "fieldB",
-                MyEnumA::fieldC => "fieldC",
-                MyEnumA(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("fieldA", 1),
+                ("fieldB", 2),
+                ("fieldC", 4),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -522,11 +551,18 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "fieldA" => ::std::result::Result::Ok(MyEnumA::fieldA),
-                "fieldB" => ::std::result::Result::Ok(MyEnumA::fieldB),
-                "fieldC" => ::std::result::Result::Ok(MyEnumA::fieldC),
-                _ => ::anyhow::bail!("Unable to parse {} as MyEnumA", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("fieldA", 1),
+                ("fieldB", 2),
+                ("fieldC", 4),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(MyEnumA(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as MyEnumA", string)
+                }
             }
         }
     }

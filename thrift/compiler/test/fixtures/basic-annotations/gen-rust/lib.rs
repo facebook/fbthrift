@@ -84,13 +84,15 @@ pub mod types {
 
     impl ::std::fmt::Display for MyEnum {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                MyEnum::MyValue1 => "MyValue1",
-                MyEnum::MyValue2 => "MyValue2",
-                MyEnum::DOMAIN => "DOMAIN",
-                MyEnum(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("MyValue1", 0),
+                ("MyValue2", 1),
+                ("DOMAIN", 2),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -104,11 +106,18 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "MyValue1" => ::std::result::Result::Ok(MyEnum::MyValue1),
-                "MyValue2" => ::std::result::Result::Ok(MyEnum::MyValue2),
-                "DOMAIN" => ::std::result::Result::Ok(MyEnum::DOMAIN),
-                _ => ::anyhow::bail!("Unable to parse {} as MyEnum", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("DOMAIN", 2),
+                ("MyValue1", 0),
+                ("MyValue2", 1),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(MyEnum(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as MyEnum", string)
+                }
             }
         }
     }

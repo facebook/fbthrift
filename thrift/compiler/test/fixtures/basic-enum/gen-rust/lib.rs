@@ -60,7 +60,12 @@ pub mod types {
 
     impl ::std::fmt::Display for EmptyEnum {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            write!(fmt, "{}", self.0)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -74,8 +79,15 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                _ => ::anyhow::bail!("Unable to parse {} as EmptyEnum", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(EmptyEnum(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as EmptyEnum", string)
+                }
             }
         }
     }
@@ -148,12 +160,14 @@ pub mod types {
 
     impl ::std::fmt::Display for MyEnum {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                MyEnum::ONE => "ONE",
-                MyEnum::TWO => "TWO",
-                MyEnum(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("ONE", 1),
+                ("TWO", 2),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -167,10 +181,17 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "ONE" => ::std::result::Result::Ok(MyEnum::ONE),
-                "TWO" => ::std::result::Result::Ok(MyEnum::TWO),
-                _ => ::anyhow::bail!("Unable to parse {} as MyEnum", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("ONE", 1),
+                ("TWO", 2),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(MyEnum(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as MyEnum", string)
+                }
             }
         }
     }
@@ -279,30 +300,32 @@ pub mod types {
 
     impl ::std::fmt::Display for MyBigEnum {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-            let s: &::std::primitive::str = match *self {
-                MyBigEnum::UNKNOWN => "UNKNOWN",
-                MyBigEnum::ONE => "ONE",
-                MyBigEnum::TWO => "TWO",
-                MyBigEnum::THREE => "THREE",
-                MyBigEnum::FOUR => "FOUR",
-                MyBigEnum::FIVE => "FIVE",
-                MyBigEnum::SIX => "SIX",
-                MyBigEnum::SEVEN => "SEVEN",
-                MyBigEnum::EIGHT => "EIGHT",
-                MyBigEnum::NINE => "NINE",
-                MyBigEnum::TEN => "TEN",
-                MyBigEnum::ELEVEN => "ELEVEN",
-                MyBigEnum::TWELVE => "TWELVE",
-                MyBigEnum::THIRTEEN => "THIRTEEN",
-                MyBigEnum::FOURTEEN => "FOURTEEN",
-                MyBigEnum::FIFTEEN => "FIFTEEN",
-                MyBigEnum::SIXTEEN => "SIXTEEN",
-                MyBigEnum::SEVENTEEN => "SEVENTEEN",
-                MyBigEnum::EIGHTEEN => "EIGHTEEN",
-                MyBigEnum::NINETEEN => "NINETEEN",
-                MyBigEnum(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("UNKNOWN", 0),
+                ("ONE", 1),
+                ("TWO", 2),
+                ("THREE", 3),
+                ("FOUR", 4),
+                ("FIVE", 5),
+                ("SIX", 6),
+                ("SEVEN", 7),
+                ("EIGHT", 8),
+                ("NINE", 9),
+                ("TEN", 10),
+                ("ELEVEN", 11),
+                ("TWELVE", 12),
+                ("THIRTEEN", 13),
+                ("FOURTEEN", 14),
+                ("FIFTEEN", 15),
+                ("SIXTEEN", 16),
+                ("SEVENTEEN", 17),
+                ("EIGHTEEN", 18),
+                ("NINETEEN", 19),
+            ];
+            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
+                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
+                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
+            }
         }
     }
 
@@ -316,28 +339,35 @@ pub mod types {
         type Err = ::anyhow::Error;
 
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
-            match string {
-                "UNKNOWN" => ::std::result::Result::Ok(MyBigEnum::UNKNOWN),
-                "ONE" => ::std::result::Result::Ok(MyBigEnum::ONE),
-                "TWO" => ::std::result::Result::Ok(MyBigEnum::TWO),
-                "THREE" => ::std::result::Result::Ok(MyBigEnum::THREE),
-                "FOUR" => ::std::result::Result::Ok(MyBigEnum::FOUR),
-                "FIVE" => ::std::result::Result::Ok(MyBigEnum::FIVE),
-                "SIX" => ::std::result::Result::Ok(MyBigEnum::SIX),
-                "SEVEN" => ::std::result::Result::Ok(MyBigEnum::SEVEN),
-                "EIGHT" => ::std::result::Result::Ok(MyBigEnum::EIGHT),
-                "NINE" => ::std::result::Result::Ok(MyBigEnum::NINE),
-                "TEN" => ::std::result::Result::Ok(MyBigEnum::TEN),
-                "ELEVEN" => ::std::result::Result::Ok(MyBigEnum::ELEVEN),
-                "TWELVE" => ::std::result::Result::Ok(MyBigEnum::TWELVE),
-                "THIRTEEN" => ::std::result::Result::Ok(MyBigEnum::THIRTEEN),
-                "FOURTEEN" => ::std::result::Result::Ok(MyBigEnum::FOURTEEN),
-                "FIFTEEN" => ::std::result::Result::Ok(MyBigEnum::FIFTEEN),
-                "SIXTEEN" => ::std::result::Result::Ok(MyBigEnum::SIXTEEN),
-                "SEVENTEEN" => ::std::result::Result::Ok(MyBigEnum::SEVENTEEN),
-                "EIGHTEEN" => ::std::result::Result::Ok(MyBigEnum::EIGHTEEN),
-                "NINETEEN" => ::std::result::Result::Ok(MyBigEnum::NINETEEN),
-                _ => ::anyhow::bail!("Unable to parse {} as MyBigEnum", string),
+            static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
+                ("EIGHT", 8),
+                ("EIGHTEEN", 18),
+                ("ELEVEN", 11),
+                ("FIFTEEN", 15),
+                ("FIVE", 5),
+                ("FOUR", 4),
+                ("FOURTEEN", 14),
+                ("NINE", 9),
+                ("NINETEEN", 19),
+                ("ONE", 1),
+                ("SEVEN", 7),
+                ("SEVENTEEN", 17),
+                ("SIX", 6),
+                ("SIXTEEN", 16),
+                ("TEN", 10),
+                ("THIRTEEN", 13),
+                ("THREE", 3),
+                ("TWELVE", 12),
+                ("TWO", 2),
+                ("UNKNOWN", 0),
+            ];
+            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
+                ::std::result::Result::Ok(i) => {
+                    ::std::result::Result::Ok(MyBigEnum(VARIANTS_BY_NAME[i].1))
+                }
+                ::std::result::Result::Err(_) => {
+                    ::anyhow::bail!("Unable to parse {} as MyBigEnum", string)
+                }
             }
         }
     }

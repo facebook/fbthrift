@@ -603,7 +603,8 @@ class mstch_rust_enum : public mstch_enum {
         {
             {"enum:rust_name", &mstch_rust_enum::rust_name},
             {"enum:package", &mstch_rust_enum::rust_package},
-            {"enum:values?", &mstch_rust_enum::rust_has_values},
+            {"enum:variants_by_name", &mstch_rust_enum::variants_by_name},
+            {"enum:variants_by_number", &mstch_rust_enum::variants_by_number},
         });
   }
   mstch::node rust_name() {
@@ -612,8 +613,27 @@ class mstch_rust_enum : public mstch_enum {
   mstch::node rust_package() {
     return get_import_name(enm_->get_program(), options_);
   }
-  mstch::node rust_has_values() {
-    return !enm_->get_enum_values().empty();
+  mstch::node variants_by_name() {
+    std::vector<t_enum_value*> variants = enm_->get_enum_values();
+    std::sort(variants.begin(), variants.end(), [](auto a, auto b) {
+      return a->get_name() < b->get_name();
+    });
+    return generate_elements(
+        variants,
+        generators_->enum_value_generator_.get(),
+        generators_,
+        cache_);
+  }
+  mstch::node variants_by_number() {
+    std::vector<t_enum_value*> variants = enm_->get_enum_values();
+    std::sort(variants.begin(), variants.end(), [](auto a, auto b) {
+      return a->get_value() < b->get_value();
+    });
+    return generate_elements(
+        variants,
+        generators_->enum_value_generator_.get(),
+        generators_,
+        cache_);
   }
 
  private:
