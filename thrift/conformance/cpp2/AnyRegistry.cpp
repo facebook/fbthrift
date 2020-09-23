@@ -16,6 +16,7 @@
 
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 
+#include <folly/CppAttributes.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
 
@@ -168,7 +169,7 @@ bool AnyRegistry::checkNameAvailability(const AnyType& type) const {
 }
 
 void AnyRegistry::indexName(std::string_view name, TypeEntry* entry) {
-  auto res = nameIndex_.emplace(name, entry);
+  FOLLY_MAYBE_UNUSED auto res = nameIndex_.emplace(name, entry);
   assert(res.second);
   // TODO(afuller): Also index under typeId.
 }
