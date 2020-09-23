@@ -54,9 +54,11 @@ class Handler(TestingServiceInterface):
     async def takes_a_list(self, ints: Sequence[int]) -> None:
         pass
 
+    # pyre-fixme[11]: Annotation `easy` is not defined as a type.
     async def take_it_easy(self, how: int, what: easy) -> None:
         pass
 
+    # pyre-fixme[11]: Annotation `Color` is not defined as a type.
     async def pick_a_color(self, color: Color) -> None:
         pass
 

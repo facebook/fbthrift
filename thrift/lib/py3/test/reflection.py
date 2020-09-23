@@ -114,6 +114,7 @@ class ReflectionTests(unittest.TestCase):
         self.assertTrue(inspectable(x))
         self.assertTrue(inspectable(List__i32))
         r = inspect(x)
+        # pyre-fixme[16]: `StructSpec` has no attribute `value`.
         self.assertEqual(r.value, int)
         self.assertEqual(r.kind, NumberType.I32)
 
@@ -122,6 +123,7 @@ class ReflectionTests(unittest.TestCase):
         self.assertTrue(inspectable(x))
         self.assertTrue(inspectable(Set__Color))
         r = inspect(x)
+        # pyre-fixme[16]: `StructSpec` has no attribute `value`.
         self.assertEqual(r.value, Color)
         self.assertEqual(r.kind, NumberType.NOT_A_NUMBER)
 
@@ -130,9 +132,13 @@ class ReflectionTests(unittest.TestCase):
         self.assertTrue(inspectable(x))
         self.assertTrue(inspectable(StrStrIntListMapMap))
         r = inspect(x)
+        # pyre-fixme[16]: `StructSpec` has no attribute `key`.
         self.assertEqual(r.key, str)
+        # pyre-fixme[16]: `StructSpec` has no attribute `value`.
         self.assertEqual(r.value, StrI32ListMap)
+        # pyre-fixme[16]: `StructSpec` has no attribute `key_kind`.
         self.assertEqual(r.key_kind, NumberType.NOT_A_NUMBER)
+        # pyre-fixme[16]: `StructSpec` has no attribute `value_kind`.
         self.assertEqual(r.value_kind, NumberType.NOT_A_NUMBER)
 
     def test_interface(self) -> None:

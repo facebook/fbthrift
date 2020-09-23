@@ -14,5 +14,8 @@
 
 import testing.types
 
+# pyre-fixme[11]: Annotation `HardError` is not defined as a type.
 def simulate_HardError(errortext: str, code: int) -> testing.types.HardError: ...
+
+# pyre-fixme[11]: Annotation `UnusedError` is not defined as a type.
 def simulate_UnusedError(message: str) -> testing.types.UnusedError: ...

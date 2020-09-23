@@ -218,9 +218,7 @@ class NumericalConversionsTests(unittest.TestCase):
     def test_float_to_int_unqualified_field(self) -> None:
         with self.assertRaises(TypeError):
             numerical(  # type: ignore
-                req_int_val=5,
-                req_float_val=math.pi,
-                int_val=math.pi,  # pyre-ignore[6]: intentionally for test
+                req_int_val=5, req_float_val=math.pi, int_val=math.pi
             )
 
     def test_float_to_int_list(self) -> None:
