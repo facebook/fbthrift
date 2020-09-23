@@ -73,6 +73,7 @@ TEST(AnyRegistryTest, Behavior) {
 
   Any value = registry.store(3, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   EXPECT_EQ(std::any_cast<int>(registry.load(value)), 3);
@@ -82,10 +83,12 @@ TEST(AnyRegistryTest, Behavior) {
   Any original = value;
   value = registry.store(original, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   value = registry.store(std::any(std::move(original)), kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
 
@@ -93,11 +96,13 @@ TEST(AnyRegistryTest, Behavior) {
   original = value;
   value = registry.store(original, Number1Serializer::kProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
   value = registry.store(
       std::any(std::move(original)), Number1Serializer::kProtocol);
   EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
   EXPECT_EQ(std::any_cast<int>(registry.load(value)), 1);
@@ -116,6 +121,7 @@ TEST(AnyRegistryTest, Behavior) {
   // Loading an empty Any value throws an error.
   value = {};
   EXPECT_FALSE(value.type_ref().has_value());
+  EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "");
   EXPECT_TRUE(hasProtocol(value, Protocol{}));
   EXPECT_THROW(registry.load(value), std::bad_any_cast);
@@ -123,6 +129,7 @@ TEST(AnyRegistryTest, Behavior) {
 
   value = registry.store(2.5, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), "double");
+  EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "2.5");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   EXPECT_EQ(std::any_cast<double>(registry.load(value)), 2.5);

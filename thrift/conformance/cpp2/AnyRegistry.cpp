@@ -77,7 +77,7 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
   serializer->encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
 
   Any result;
-  result.type_ref() = entry->type.get_name();
+  result.set_type(entry->type.get_name());
   if (protocol.isCustom()) {
     result.customProtocol_ref() = protocol.custom();
   } else {
@@ -95,6 +95,10 @@ Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
 }
 
 void AnyRegistry::load(const Any& value, any_ref out) const {
+  // TODO(afuller): Add support for type_id.
+  if (!value.type_ref().has_value()) {
+    folly::throw_exception<std::bad_any_cast>();
+  }
   const auto* entry = getTypeEntry(*value.type_ref());
   const auto* serializer = getSerializer(entry, getProtocol(value));
   if (serializer == nullptr) {

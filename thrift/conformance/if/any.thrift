@@ -31,18 +31,20 @@ const byte minTypeIdBytes = 16;
 // Any encoded thrift value.
 struct Any {
   // The unique name for this type.
-  1: string type;
+  1: optional string type;
+  // A prefix of the SHA3 hash of the unique type name.
+  2: optional binary (cpp.type = "folly::fbstring") typeId;
 
   // The standard protocol used or StandardProtocol::None.
-  2: protocol.StandardProtocol protocol;
+  3: protocol.StandardProtocol protocol;
   // The name of the custom protocol used, iff
   // protocol == StandardProtocol::None.
-  3: optional string customProtocol;
+  4: optional string customProtocol;
 
   // The encoded value.
   // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> to make
   // moves cheaper (profile to see if this is better).
-  4: binary (cpp.type = "folly::IOBuf") data;
+  5: binary (cpp.type = "folly::IOBuf") data;
 }
 
 // A configuration for a type used with Any.
