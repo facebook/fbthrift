@@ -19,6 +19,7 @@
 
 #include <stdint.h>
 
+#include <cassert>
 #include <memory>
 #include <string>
 #include <utility>
@@ -114,6 +115,7 @@ class t_const_value {
   }
 
   const std::string& get_string() const {
+    assert(valType_ == CV_STRING);
     return stringVal_;
   }
 
@@ -123,6 +125,7 @@ class t_const_value {
   }
 
   int64_t get_integer() const {
+    assert(valType_ == CV_INTEGER || valType_ == CV_BOOL);
     return intVal_;
   }
 
@@ -132,6 +135,7 @@ class t_const_value {
   }
 
   double get_double() const {
+    assert(valType_ == CV_INTEGER || valType_ == CV_DOUBLE);
     return doubleVal_;
   }
 
@@ -144,6 +148,7 @@ class t_const_value {
   }
 
   bool get_bool() const {
+    assert(valType_ == CV_BOOL);
     return boolVal_;
   }
 
