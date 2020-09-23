@@ -39,8 +39,7 @@ folly::Future<<% > service_common/async_return_type %>> <%service:name%>SvIf::fu
 <%#function:coroutine?%>
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
-  auto future = future_<%function:cpp_name%>(<% > service_common/param_list_move%>);
-  return apache::thrift::detail::si::future_to_task(std::move(future));
+  return folly::coro::toTask(future_<%function:cpp_name%>(<% > service_common/param_list_move%>));
 }
 
 folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co_<%function:cpp_name%>(apache::thrift::RequestParams /* params */<%function:comma%><% > service_common/function_param_list%>) {

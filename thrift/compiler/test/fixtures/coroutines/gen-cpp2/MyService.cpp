@@ -31,8 +31,7 @@ folly::Future<folly::Unit> MyServiceSvIf::future_ping() {
 
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<void> MyServiceSvIf::co_ping() {
-  auto future = future_ping();
-  return apache::thrift::detail::si::future_to_task(std::move(future));
+  return folly::coro::toTask(future_ping());
 }
 
 folly::coro::Task<void> MyServiceSvIf::co_ping(apache::thrift::RequestParams /* params */) {
@@ -99,8 +98,7 @@ folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
 
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(int64_t id) {
-  auto future = future_hasDataById(id);
-  return apache::thrift::detail::si::future_to_task(std::move(future));
+  return folly::coro::toTask(future_hasDataById(id));
 }
 
 folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(apache::thrift::RequestParams /* params */, int64_t id) {

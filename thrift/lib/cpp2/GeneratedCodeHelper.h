@@ -1266,15 +1266,6 @@ void async_tm_coro_start(
         callback->complete(std::move(tryResult));
       });
 }
-
-inline folly::coro::Task<void> future_to_task(folly::Future<folly::Unit> f) {
-  co_await std::move(f);
-}
-
-template <typename T>
-folly::coro::Task<T> future_to_task(folly::Future<T> f) {
-  co_return co_await std::move(f);
-}
 #endif
 
 [[noreturn]] void throw_app_exn_unimplemented(char const* name);
