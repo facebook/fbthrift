@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "thrift/compiler/test/fixtures/tablebased-types/gen-cpp2/module_data.h"
+#include "thrift/compiler/test/fixtures/tablebased/gen-cpp2/module_data.h"
 
 #include <thrift/lib/cpp2/gen/module_data_cpp.h>
 

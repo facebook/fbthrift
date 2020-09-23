@@ -5,7 +5,7 @@
  *  @generated
  */
 #include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
-#include "thrift/compiler/test/fixtures/tablebased-types/gen-cpp2/module_metadata.h"
+#include "thrift/compiler/test/fixtures/tablebased/gen-cpp2/module_metadata.h"
 
 namespace apache {
 namespace thrift {

@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/gen/module_constants_h.h>
 
-#include "thrift/compiler/test/fixtures/tablebased-types/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/tablebased/gen-cpp2/module_types.h"
 
 namespace test { namespace fixtures { namespace tablebased {
 

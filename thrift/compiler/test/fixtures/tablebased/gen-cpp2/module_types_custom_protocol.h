@@ -14,5 +14,5 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "thrift/compiler/test/fixtures/tablebased-types/gen-cpp2/module_types.tcc"
+#include "thrift/compiler/test/fixtures/tablebased/gen-cpp2/module_types.tcc"
 
