@@ -122,7 +122,13 @@ struct TypeInfo {
 struct FieldInfo {
   // Field id in thrift definition.
   FieldID id;
+
+  // Unqualified fields need to be differentiated from optional fields to always
+  // write unqualified fields despite the value of __isset.
+  bool isUnqualified;
+
   const char* name;
+
   // Offset into the data member of the field in the struct.
   ptrdiff_t memberOffset;
 
