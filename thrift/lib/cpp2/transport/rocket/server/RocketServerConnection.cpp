@@ -725,8 +725,8 @@ void RocketServerConnection::applyDscpToSocket(int32_t dscp) {
       return;
     }
 
-    constexpr folly::SocketOptionKey kIpv4TosKey = {IPPROTO_IP, IP_TOS};
-    constexpr folly::SocketOptionKey kIpv6TosKey = {IPPROTO_IPV6, IPV6_TCLASS};
+    const folly::SocketOptionKey kIpv4TosKey = {IPPROTO_IP, IP_TOS};
+    const folly::SocketOptionKey kIpv6TosKey = {IPPROTO_IPV6, IPV6_TCLASS};
     auto& key = addr.getIPAddress().isV4() ? kIpv4TosKey : kIpv6TosKey;
 
     if (auto* sock = socket_->getUnderlyingTransport<folly::AsyncSocket>()) {
