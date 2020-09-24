@@ -501,7 +501,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     }
     // By default, we set strictSSL to false. This means the server will start
     // even if cert/key is missing as it may become available later
-    config.strictSSL = getStrictSSL();
+    config.strictSSL = getStrictSSL() || getSSLPolicy() == SSLPolicy::REQUIRED;
     config.fizzConfig = fizzConfig_;
     config.customConfigMap["thrift_tls_config"] =
         std::make_shared<ThriftTlsConfig>(thriftConfig_);
