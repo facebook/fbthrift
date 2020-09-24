@@ -17,6 +17,7 @@
 package thrift
 
 import (
+	"errors"
 	"fmt"
 	"io"
 
@@ -53,5 +54,16 @@ func TestExceptionEOF(t *testing.T) {
 
 	if exception.TypeID() != END_OF_FILE {
 		t.Fatalf("TypeID was not END_OF_FILE: expected %v, got %v", END_OF_FILE, exception.TypeID())
+	}
+}
+
+func TestTransportExceptionUnwrap(t *testing.T) {
+	origErr := errors.New("unit-test")
+	exception := &transportException{
+		err: origErr,
+	}
+	if !errors.Is(exception, origErr) {
+		t.Fatalf("exception %T:%v wasn't unwrapped to %T:%v",
+			exception, exception, origErr, origErr)
 	}
 }
