@@ -40,12 +40,7 @@ public class MoviesServer {
     ThriftServiceProcessor serviceProcessor =
         new ThriftServiceProcessor(codecManager, eventHandlers, handler);
 
-    ThriftServerConfig serverConfig =
-        new ThriftServerConfig()
-            .setTransportName("header")
-            .setProtocolName("header")
-            .setWorkerThreads(5)
-            .setPort(7777);
+    ThriftServerConfig serverConfig = new ThriftServerConfig().setWorkerThreads(5).setPort(7777);
 
     ThriftServer server =
         new ThriftServer(
@@ -53,9 +48,9 @@ public class MoviesServer {
             serverConfig,
             new NiftyTimer("thrift"),
             ImmutableMap.<String, ThriftFrameCodecFactory>of(
-                "header", new HeaderThriftCodecFactory()),
+                HeaderThriftCodecFactory.ID, new HeaderThriftCodecFactory()),
             ImmutableMap.<String, TDuplexProtocolFactory>of(
-                "header", new TDuplexHeaderProtocolFactory()),
+                TDuplexHeaderProtocolFactory.ID, new TDuplexHeaderProtocolFactory()),
             ImmutableMap.<String, ExecutorService>of());
 
     server.start();
