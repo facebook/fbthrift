@@ -75,7 +75,7 @@ bool RocketStreamClientCallback::onFirstResponse(
 
   serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(serverCallback);
 
-  DCHECK(tokens_ != 0);
+  DCHECK_NE(tokens_, 0u);
   int tokens = 0;
   if (--tokens_) {
     tokens = std::exchange(tokens_, 0);
@@ -113,7 +113,7 @@ void RocketStreamClientCallback::onFirstResponseError(
 }
 
 bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
-  DCHECK(tokens_ != 0);
+  DCHECK_NE(tokens_, 0u);
   if (!--tokens_) {
     scheduleTimeout();
   }
@@ -193,7 +193,7 @@ void RocketStreamClientCallback::onStreamCancel() {
 }
 
 void RocketStreamClientCallback::timeoutExpired() noexcept {
-  DCHECK_EQ(0, tokens_);
+  DCHECK_EQ(0u, tokens_);
 
   serverCallback()->onStreamCancel();
   onStreamError(folly::make_exception_wrapper<rocket::RocketException>(

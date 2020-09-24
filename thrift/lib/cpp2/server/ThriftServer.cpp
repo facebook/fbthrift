@@ -217,7 +217,7 @@ void ThriftServer::touchRequestTimestamp() noexcept {
 void ThriftServer::setup() {
   DCHECK_NOTNULL(getProcessorFactory().get());
   auto nWorkers = getNumIOWorkerThreads();
-  DCHECK_GT(nWorkers, 0);
+  DCHECK_GT(nWorkers, 0u);
 
   // Initialize event base for this thread, ensure event_init() is called
   serveEventBase_ = eventBaseManager_->getEventBase();
