@@ -847,7 +847,10 @@ class mstch_rust_value : public mstch_base {
     return list_elements();
   }
   mstch::node is_map() {
-    return type_->is_map() && const_value_->get_type() == value_type::CV_MAP;
+    return type_->is_map() &&
+        (const_value_->get_type() == value_type::CV_MAP ||
+         (const_value_->get_type() == value_type::CV_LIST &&
+          const_value_->get_list().empty()));
   }
   mstch::node map_entries();
   mstch::node is_struct() {
