@@ -179,12 +179,12 @@ std::shared_ptr<folly::AsyncTransport> Cpp2Worker::createThriftTransport(
         fizzServer, fizz::server::AsyncFizzServer::Destructor());
   }
 
-  folly::AsyncSocket* tsock = dynamic_cast<folly::AsyncSocket*>(sock.release());
+  folly::AsyncSocket* tsock = dynamic_cast<folly::AsyncSocket*>(sock.get());
   CHECK(tsock);
-  auto asyncSocket = std::shared_ptr<folly::AsyncSocket>(
-      tsock, folly::AsyncSocket::Destructor());
-  markSocketAccepted(asyncSocket.get());
-  return asyncSocket;
+  markSocketAccepted(tsock);
+  // use custom deleter for std::shared_ptr<folly::AsyncTransport> to allow
+  // socket transfer from header to rocket (if enabled by ThriftFlags)
+  return apache::thrift::transport::detail::convertToShared(std::move(sock));
 }
 
 void Cpp2Worker::markSocketAccepted(folly::AsyncSocket* sock) {

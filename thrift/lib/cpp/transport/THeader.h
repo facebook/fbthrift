@@ -73,6 +73,52 @@ namespace apache {
 namespace thrift {
 namespace transport {
 
+namespace detail {
+/**
+ * This is a helper class to facilitate transport upgrade from header to rocket
+ * for non-TLS services. The socket stored in header channel is a shared_ptr
+ * while the socket in rocket is a unique_ptr. The goal is to transfer the
+ * socket from header to rocket, by managing the lifetime using this custom
+ * deleter which makes it possible for the unique_ptr stolen by stealPtr()
+ * outlives the shared_ptr.
+ */
+template <typename T, typename Deleter>
+class ReleaseDeleter {
+ public:
+  explicit ReleaseDeleter(std::unique_ptr<T, Deleter> uPtr)
+      : ptr_(uPtr.release()), deleter_(uPtr.get_deleter()) {}
+
+  void operator()(T* obj) {
+    (void)obj;
+    if (ptr_) {
+      DCHECK(obj == ptr_);
+      deleter_(ptr_);
+    }
+  }
+
+  /**
+   * Steal the unique_ptr stored in this deleter.
+   */
+  std::unique_ptr<T, Deleter> stealPtr() {
+    DCHECK(ptr_);
+    auto uPtr = std::unique_ptr<T, Deleter>(ptr_, deleter_);
+    ptr_ = nullptr;
+    return uPtr;
+  }
+
+ private:
+  T* ptr_;
+  Deleter deleter_;
+};
+
+template <typename T, typename Deleter>
+std::shared_ptr<T> convertToShared(std::unique_ptr<T, Deleter> uPtr) {
+  auto ptr = uPtr.get();
+  auto deleter = ReleaseDeleter<T, Deleter>(std::move(uPtr));
+  return std::shared_ptr<T>(ptr, deleter);
+}
+} // namespace detail
+
 using apache::thrift::protocol::T_BINARY_PROTOCOL;
 using apache::thrift::protocol::T_COMPACT_PROTOCOL;
 

@@ -116,6 +116,13 @@ class Cpp2Worker : public wangle::Acceptor,
   }
 
   /**
+   * Get a shared_ptr of this Cpp2Worker.
+   */
+  std::shared_ptr<Cpp2Worker> getWorkerShared() {
+    return shared_from_this();
+  }
+
+  /**
    * SSL stats hook
    */
   void updateSSLStats(

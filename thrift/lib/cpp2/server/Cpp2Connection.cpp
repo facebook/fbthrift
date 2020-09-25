@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
 namespace apache {
 namespace thrift {
@@ -35,6 +36,79 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::async;
 using namespace std;
 using apache::thrift::TApplicationException;
+
+namespace {
+// This is a SendCallback used for transport upgrade from header to rocket
+class TransportUpgradeSendCallback : public MessageChannel::SendCallback {
+ public:
+  TransportUpgradeSendCallback(
+      const std::shared_ptr<folly::AsyncTransport>& transport,
+      const folly::SocketAddress* peerAddress,
+      Cpp2Worker* cpp2Worker,
+      Cpp2Connection* cpp2Conn,
+      HeaderServerChannel* headerChannel)
+      : transport_(transport),
+        peerAddress_(peerAddress),
+        cpp2Worker_(cpp2Worker),
+        cpp2Conn_(cpp2Conn),
+        headerChannel_(headerChannel) {}
+
+  void sendQueued() override {}
+
+  void messageSent() override {
+    SCOPE_EXIT {
+      delete this;
+    };
+    // do the transport upgrade
+    for (auto& routingHandler :
+         *cpp2Worker_->getServer()->getRoutingHandlers()) {
+      if (auto handler =
+              dynamic_cast<RocketRoutingHandler*>(routingHandler.get())) {
+        // Close the channel, since the transport is transferring to rocket
+        DCHECK(headerChannel_);
+        headerChannel_->setCallback(nullptr);
+        headerChannel_->setTransport(nullptr);
+        headerChannel_->closeNow();
+        DCHECK(transport_.use_count() == 1);
+
+        // Only do upgrade if transport_ is the only one managing the socket.
+        // Otherwise close the connection.
+        if (transport_.use_count() == 1) {
+          // Steal the transport from header channel
+          auto uPtr =
+              std::get_deleter<
+                  apache::thrift::transport::detail::ReleaseDeleter<
+                      folly::AsyncTransport,
+                      folly::DelayedDestruction::Destructor>>(transport_)
+                  ->stealPtr();
+
+          // Let RocketRoutingHandler handle the connection from here
+          handler->handleConnection(
+              cpp2Worker_->getConnectionManager(),
+              std::move(uPtr),
+              peerAddress_,
+              wangle::TransportInfo(),
+              cpp2Worker_->getWorkerShared());
+        }
+        DCHECK(cpp2Conn_);
+        cpp2Conn_->stop();
+        break;
+      }
+    }
+  }
+
+  void messageSendError(folly::exception_wrapper&&) override {
+    delete this;
+  }
+
+ private:
+  const std::shared_ptr<folly::AsyncTransport>& transport_;
+  const folly::SocketAddress* peerAddress_;
+  Cpp2Worker* cpp2Worker_;
+  Cpp2Connection* cpp2Conn_;
+  HeaderServerChannel* headerChannel_;
+};
+} // namespace
 
 Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<folly::AsyncTransport>& transport,
