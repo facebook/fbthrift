@@ -21,6 +21,8 @@
 #include <string_view>
 #include <utility>
 
+#include <folly/io/async/AsyncTransport.h>
+
 namespace apache {
 namespace thrift {
 
@@ -41,7 +43,7 @@ namespace thrift {
   THRIFT_LOGGING_EVENT(#NAME, getApplicationEventHandler)
 
 class ThriftServer;
-class Cpp2Connection;
+class Cpp2Worker;
 
 class LoggingEventHandler {
  public:
@@ -56,7 +58,8 @@ class ServerEventHandler : public LoggingEventHandler {
 
 class ConnectionEventHandler : public LoggingEventHandler {
  public:
-  virtual void log(const Cpp2Connection&) {}
+  virtual void log(const Cpp2Worker&, const folly::AsyncTransport::UniquePtr&) {
+  }
   virtual ~ConnectionEventHandler() {}
 };
 

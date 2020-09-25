@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/PeekingManager.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -94,6 +95,8 @@ void Cpp2Worker::onNewConnection(
   switch (secureTransportType) {
     // If no security, peek into the socket to determine type
     case wangle::SecureTransportType::NONE: {
+      THRIFT_CONNECTION_EVENT(non_tls).log(*this, sock);
+
       auto peekingManager = new PeekingManager(
           shared_from_this(),
           *addr,
