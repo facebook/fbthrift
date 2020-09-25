@@ -21,6 +21,7 @@ from folly.iobuf cimport from_unique_ptr as create_IOBuf
 from cpython.ref cimport PyObject
 from folly.executor cimport get_executor
 from folly.range cimport StringPiece
+from libcpp.utility cimport move as cmove
 
 import asyncio
 import collections
@@ -243,6 +244,9 @@ cdef class ThriftServer:
 
     def get_queue_timeout(self):
         return self.server.get().getQueueTimeout().count() / 1000
+
+    cdef void set_is_overloaded(self, cIsOverloadedFunc is_overloaded):
+        self.server.get().setIsOverloaded(cmove(is_overloaded))
 
     def stop(self):
         self.server.get().stop()

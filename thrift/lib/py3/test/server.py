@@ -27,6 +27,7 @@ from thrift.py3.server import (
     ThriftServer,
     getServiceName,
 )
+from thrift.py3.test.is_overload.helper import OverloadTestHelper
 
 
 class Handler(TestingServiceInterface):
@@ -173,3 +174,9 @@ class ServicesTests(unittest.TestCase):
         active_requests = server.get_active_requests()
         self.assertGreaterEqual(active_requests, 0)
         self.assertLess(active_requests, 10)
+
+    def test_set_is_overloaded(self) -> None:
+        helper = OverloadTestHelper(Handler(), 0)
+        helper.set_is_overload()
+        self.assertTrue(helper.check_overload("overloaded_method"))
+        self.assertFalse(helper.check_overload("not_overloaded_method"))

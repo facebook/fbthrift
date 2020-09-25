@@ -41,6 +41,9 @@ cdef extern from "thrift/lib/py3/server.h" namespace "::thrift::py3":
     cdef cppclass Py3ServerEventHandler:
         Py3ServerEventHandler(cFollyExecutor*, AddressHandler) nogil
 
+    cdef cppclass cIsOverloadedFunc "apache::thrift::IsOverloadedFunc":
+        pass
+
 cdef extern from "thrift/lib/cpp2/async/AsyncProcessor.h" \
         namespace "apache::thrift":
     cdef cppclass cAsyncProcessor "apache::thrift::AsyncProcessor":
@@ -105,6 +108,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         milliseconds getIdleTimeout()
         void setQueueTimeout(milliseconds timeout)
         milliseconds getQueueTimeout()
+        void setIsOverloaded(cIsOverloadedFunc isOverloaded)
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs
@@ -148,6 +152,7 @@ cdef class ThriftServer:
     cdef AsyncProcessorFactory factory
     cdef object loop
     cdef object address_future
+    cdef void set_is_overloaded(self, cIsOverloadedFunc is_overloaded)
 
 
 cdef class ConnectionContext:
