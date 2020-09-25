@@ -84,6 +84,24 @@ class HeaderClientChannel : public ClientChannel,
     return cpp2Channel_->getTransport();
   }
 
+  /**
+   * Steal the transport (AsyncSocket) from this channel.
+   * NOTE: This is for transport upgrade from header to rocket for non-TLS
+   * services.
+   */
+  folly::AsyncTransport::UniquePtr stealTransport() {
+    auto transportShared = cpp2Channel_->getTransportShared();
+    cpp2Channel_->setTransport(nullptr);
+    cpp2Channel_->closeNow();
+    assert(transportShared.use_count() == 1);
+    auto uPtr =
+        std::get_deleter<apache::thrift::transport::detail::ReleaseDeleter<
+            folly::AsyncTransport,
+            folly::DelayedDestruction::Destructor>>(transportShared)
+            ->stealPtr();
+    return uPtr;
+  }
+
   void setReadBufferSize(uint32_t readBufferSize) {
     cpp2Channel_->setReadBufferSize(readBufferSize);
   }

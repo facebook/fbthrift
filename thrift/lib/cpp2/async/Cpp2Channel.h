@@ -73,6 +73,11 @@ class Cpp2Channel
     return transport_.get();
   }
 
+  // Return a shared_ptr of the AsyncTransport
+  std::shared_ptr<folly::AsyncTransport> getTransportShared() {
+    return transport_;
+  }
+
   // DelayedDestruction methods
   void destroy() override;
 
