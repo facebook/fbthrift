@@ -355,11 +355,11 @@ func (p *MyServiceQueryArgs) GetI() *includes1.Included {
 return p.I
 }
 func (p *MyServiceQueryArgs) IsSetS() bool {
-  return p.S != nil
+  return p != nil && p.S != nil
 }
 
 func (p *MyServiceQueryArgs) IsSetI() bool {
-  return p.I != nil
+  return p != nil && p.I != nil
 }
 
 func (p *MyServiceQueryArgs) Read(iprot thrift.Protocol) error {
@@ -551,11 +551,11 @@ func (p *MyServiceHasArgDocsArgs) GetI() *includes1.Included {
 return p.I
 }
 func (p *MyServiceHasArgDocsArgs) IsSetS() bool {
-  return p.S != nil
+  return p != nil && p.S != nil
 }
 
 func (p *MyServiceHasArgDocsArgs) IsSetI() bool {
-  return p.I != nil
+  return p != nil && p.I != nil
 }
 
 func (p *MyServiceHasArgDocsArgs) Read(iprot thrift.Protocol) error {

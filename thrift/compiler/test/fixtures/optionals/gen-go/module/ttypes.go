@@ -292,23 +292,23 @@ func (p *Vehicle) GetHasAC() bool {
   return p.HasAC
 }
 func (p *Vehicle) IsSetColor() bool {
-  return p.Color != nil
+  return p != nil && p.Color != nil
 }
 
 func (p *Vehicle) IsSetLicensePlate() bool {
-  return p.LicensePlate != nil
+  return p != nil && p.LicensePlate != nil
 }
 
 func (p *Vehicle) IsSetDescription() bool {
-  return p.Description != nil
+  return p != nil && p.Description != nil
 }
 
 func (p *Vehicle) IsSetName() bool {
-  return p.Name != nil
+  return p != nil && p.Name != nil
 }
 
 func (p *Vehicle) IsSetHasAC() bool {
-  return p.HasAC != Vehicle_HasAC_DEFAULT
+  return p != nil && p.HasAC != Vehicle_HasAC_DEFAULT
 }
 
 func (p *Vehicle) Read(iprot thrift.Protocol) error {
@@ -597,35 +597,35 @@ func (p *Person) GetVehicles() []*Vehicle {
   return p.Vehicles
 }
 func (p *Person) IsSetAge() bool {
-  return p.Age != nil
+  return p != nil && p.Age != nil
 }
 
 func (p *Person) IsSetAddress() bool {
-  return p.Address != nil
+  return p != nil && p.Address != nil
 }
 
 func (p *Person) IsSetFavoriteColor() bool {
-  return p.FavoriteColor != nil
+  return p != nil && p.FavoriteColor != nil
 }
 
 func (p *Person) IsSetFriends() bool {
-  return p.Friends != nil
+  return p != nil && p.Friends != nil
 }
 
 func (p *Person) IsSetBestFriend() bool {
-  return p.BestFriend != nil
+  return p != nil && p.BestFriend != nil
 }
 
 func (p *Person) IsSetPetNames() bool {
-  return p.PetNames != nil
+  return p != nil && p.PetNames != nil
 }
 
 func (p *Person) IsSetAfraidOfAnimal() bool {
-  return p.AfraidOfAnimal != nil
+  return p != nil && p.AfraidOfAnimal != nil
 }
 
 func (p *Person) IsSetVehicles() bool {
-  return p.Vehicles != nil
+  return p != nil && p.Vehicles != nil
 }
 
 func (p *Person) Read(iprot thrift.Protocol) error {

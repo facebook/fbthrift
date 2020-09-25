@@ -1179,7 +1179,7 @@ func (p *GetEntityGetEntityArgs) GetR() *GetEntityRequest {
 return p.R
 }
 func (p *GetEntityGetEntityArgs) IsSetR() bool {
-  return p.R != nil
+  return p != nil && p.R != nil
 }
 
 func (p *GetEntityGetEntityArgs) Read(iprot thrift.Protocol) error {
@@ -1277,7 +1277,7 @@ func (p *GetEntityGetEntityResult) GetSuccess() *GetEntityResponse {
 return p.Success
 }
 func (p *GetEntityGetEntityResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetEntityResult) Read(iprot thrift.Protocol) error {
@@ -1428,7 +1428,7 @@ func (p *GetEntityGetBoolResult) GetSuccess() bool {
 return *p.Success
 }
 func (p *GetEntityGetBoolResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetBoolResult) Read(iprot thrift.Protocol) error {
@@ -1579,7 +1579,7 @@ func (p *GetEntityGetByteResult) GetSuccess() int8 {
 return *p.Success
 }
 func (p *GetEntityGetByteResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetByteResult) Read(iprot thrift.Protocol) error {
@@ -1731,7 +1731,7 @@ func (p *GetEntityGetI16Result) GetSuccess() int16 {
 return *p.Success
 }
 func (p *GetEntityGetI16Result) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetI16Result) Read(iprot thrift.Protocol) error {
@@ -1882,7 +1882,7 @@ func (p *GetEntityGetI32Result) GetSuccess() int32 {
 return *p.Success
 }
 func (p *GetEntityGetI32Result) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetI32Result) Read(iprot thrift.Protocol) error {
@@ -2033,7 +2033,7 @@ func (p *GetEntityGetI64Result) GetSuccess() int64 {
 return *p.Success
 }
 func (p *GetEntityGetI64Result) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetI64Result) Read(iprot thrift.Protocol) error {
@@ -2184,7 +2184,7 @@ func (p *GetEntityGetDoubleResult) GetSuccess() float64 {
 return *p.Success
 }
 func (p *GetEntityGetDoubleResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetDoubleResult) Read(iprot thrift.Protocol) error {
@@ -2335,7 +2335,7 @@ func (p *GetEntityGetStringResult) GetSuccess() string {
 return *p.Success
 }
 func (p *GetEntityGetStringResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetStringResult) Read(iprot thrift.Protocol) error {
@@ -2484,7 +2484,7 @@ func (p *GetEntityGetBinaryResult) GetSuccess() []byte {
   return p.Success
 }
 func (p *GetEntityGetBinaryResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetBinaryResult) Read(iprot thrift.Protocol) error {
@@ -2628,7 +2628,7 @@ func (p *GetEntityGetMapResult) GetSuccess() map[string]string {
   return p.Success
 }
 func (p *GetEntityGetMapResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetMapResult) Read(iprot thrift.Protocol) error {
@@ -2801,7 +2801,7 @@ func (p *GetEntityGetSetResult) GetSuccess() []string {
   return p.Success
 }
 func (p *GetEntityGetSetResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetSetResult) Read(iprot thrift.Protocol) error {
@@ -2973,7 +2973,7 @@ func (p *GetEntityGetListResult) GetSuccess() []string {
   return p.Success
 }
 func (p *GetEntityGetListResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *GetEntityGetListResult) Read(iprot thrift.Protocol) error {

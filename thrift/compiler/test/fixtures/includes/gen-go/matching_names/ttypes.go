@@ -44,7 +44,7 @@ func (p *IncludesAlso) GetAlso() *IncludesAlso0.Also {
 return p.Also
 }
 func (p *IncludesAlso) IsSetAlso() bool {
-  return p.Also != nil
+  return p != nil && p.Also != nil
 }
 
 func (p *IncludesAlso) Read(iprot thrift.Protocol) error {

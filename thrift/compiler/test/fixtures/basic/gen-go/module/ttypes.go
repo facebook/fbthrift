@@ -89,7 +89,7 @@ func (p *MyStruct) GetMyEnum() MyEnum {
   return p.MyEnum
 }
 func (p *MyStruct) IsSetMyDataField() bool {
-  return p.MyDataField != nil
+  return p != nil && p.MyDataField != nil
 }
 
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
@@ -345,15 +345,15 @@ func (p *MyUnion) CountSetFieldsMyUnion() int {
 }
 
 func (p *MyUnion) IsSetMyEnum() bool {
-  return p.MyEnum != nil
+  return p != nil && p.MyEnum != nil
 }
 
 func (p *MyUnion) IsSetMyStruct() bool {
-  return p.MyStruct != nil
+  return p != nil && p.MyStruct != nil
 }
 
 func (p *MyUnion) IsSetMyDataItem() bool {
-  return p.MyDataItem != nil
+  return p != nil && p.MyDataItem != nil
 }
 
 func (p *MyUnion) Read(iprot thrift.Protocol) error {
@@ -423,8 +423,8 @@ func (p *MyUnion)  ReadField3(iprot thrift.Protocol) error {
 }
 
 func (p *MyUnion) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsMyUnion(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsMyUnion(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("MyUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }

@@ -115,11 +115,11 @@ func (p *Automobile) GetPartNames() map[int32]*PartName {
   return p.PartNames
 }
 func (p *Automobile) IsSetPreviousPlate() bool {
-  return p.PreviousPlate != nil
+  return p != nil && p.PreviousPlate != nil
 }
 
 func (p *Automobile) IsSetFirstPlate() bool {
-  return p.FirstPlate != Automobile_FirstPlate_DEFAULT
+  return p != nil && p.FirstPlate != Automobile_FirstPlate_DEFAULT
 }
 
 func (p *Automobile) Read(iprot thrift.Protocol) error {
@@ -683,11 +683,11 @@ func (p *Pair) GetCar() *Car {
 return p.Car
 }
 func (p *Pair) IsSetAutomobile() bool {
-  return p.Automobile != nil
+  return p != nil && p.Automobile != nil
 }
 
 func (p *Pair) IsSetCar() bool {
-  return p.Car != nil
+  return p != nil && p.Car != nil
 }
 
 func (p *Pair) Read(iprot thrift.Protocol) error {

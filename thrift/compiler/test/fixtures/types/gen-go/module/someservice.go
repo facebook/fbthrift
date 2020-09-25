@@ -446,7 +446,7 @@ func (p *SomeServiceBounceMapResult) GetSuccess() include0.SomeMap {
   return p.Success
 }
 func (p *SomeServiceBounceMapResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *SomeServiceBounceMapResult) Read(iprot thrift.Protocol) error {
@@ -675,7 +675,7 @@ func (p *SomeServiceBinaryKeyedMapResult) GetSuccess() map[string]int64 {
   return p.Success
 }
 func (p *SomeServiceBinaryKeyedMapResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *SomeServiceBinaryKeyedMapResult) Read(iprot thrift.Protocol) error {

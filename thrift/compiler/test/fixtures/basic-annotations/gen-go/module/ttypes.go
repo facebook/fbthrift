@@ -182,11 +182,11 @@ func (p *MyStructAnnotation) GetNest() *MyStructNestedAnnotation {
 return p.Nest
 }
 func (p *MyStructAnnotation) IsSetExtra() bool {
-  return p.Extra != nil
+  return p != nil && p.Extra != nil
 }
 
 func (p *MyStructAnnotation) IsSetNest() bool {
-  return p.Nest != nil
+  return p != nil && p.Nest != nil
 }
 
 func (p *MyStructAnnotation) Read(iprot thrift.Protocol) error {

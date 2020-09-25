@@ -68,11 +68,11 @@ func (p *MyStruct) GetMyIncludedInt() includes0.IncludedInt64 {
   return p.MyIncludedInt
 }
 func (p *MyStruct) IsSetMyIncludedField() bool {
-  return p.MyIncludedField != nil
+  return p != nil && p.MyIncludedField != nil
 }
 
 func (p *MyStruct) IsSetMyOtherIncludedField() bool {
-  return p.MyOtherIncludedField != nil
+  return p != nil && p.MyOtherIncludedField != nil
 }
 
 func (p *MyStruct) Read(iprot thrift.Protocol) error {

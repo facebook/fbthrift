@@ -187,7 +187,7 @@ func (p *Serious) GetSonnet() string {
 return *p.Sonnet
 }
 func (p *Serious) IsSetSonnet() bool {
-  return p.Sonnet != nil
+  return p != nil && p.Sonnet != nil
 }
 
 func (p *Serious) Read(iprot thrift.Protocol) error {

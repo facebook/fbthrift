@@ -519,7 +519,7 @@ func (p *FinderByPlateResult) GetSuccess() *Automobile {
 return p.Success
 }
 func (p *FinderByPlateResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *FinderByPlateResult) Read(iprot thrift.Protocol) error {
@@ -706,7 +706,7 @@ func (p *FinderAliasByPlateResult) GetSuccess() *Car {
 return p.Success
 }
 func (p *FinderAliasByPlateResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *FinderAliasByPlateResult) Read(iprot thrift.Protocol) error {
@@ -893,7 +893,7 @@ func (p *FinderPreviousPlateResult) GetSuccess() Plate {
 return *p.Success
 }
 func (p *FinderPreviousPlateResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *FinderPreviousPlateResult) Read(iprot thrift.Protocol) error {

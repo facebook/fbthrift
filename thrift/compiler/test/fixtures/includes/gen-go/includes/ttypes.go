@@ -62,7 +62,7 @@ func (p *Included) GetMyTransitiveField() *transitive0.Foo {
 return p.MyTransitiveField
 }
 func (p *Included) IsSetMyTransitiveField() bool {
-  return p.MyTransitiveField != nil
+  return p != nil && p.MyTransitiveField != nil
 }
 
 func (p *Included) Read(iprot thrift.Protocol) error {

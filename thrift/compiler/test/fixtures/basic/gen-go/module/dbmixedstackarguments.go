@@ -414,7 +414,7 @@ func (p *DbMixedStackArgumentsGetDataByKey0Result) GetSuccess() []byte {
   return p.Success
 }
 func (p *DbMixedStackArgumentsGetDataByKey0Result) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *DbMixedStackArgumentsGetDataByKey0Result) Read(iprot thrift.Protocol) error {
@@ -593,7 +593,7 @@ func (p *DbMixedStackArgumentsGetDataByKey1Result) GetSuccess() []byte {
   return p.Success
 }
 func (p *DbMixedStackArgumentsGetDataByKey1Result) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *DbMixedStackArgumentsGetDataByKey1Result) Read(iprot thrift.Protocol) error {

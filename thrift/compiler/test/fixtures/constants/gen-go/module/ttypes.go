@@ -169,7 +169,7 @@ func (p *Internship) GetEmployer() Company {
 return *p.Employer
 }
 func (p *Internship) IsSetEmployer() bool {
-  return p.Employer != nil
+  return p != nil && p.Employer != nil
 }
 
 func (p *Internship) Read(iprot thrift.Protocol) error {
@@ -590,7 +590,7 @@ func (p *Struct2) GetD() []int32 {
   return p.D
 }
 func (p *Struct2) IsSetC() bool {
-  return p.C != nil
+  return p != nil && p.C != nil
 }
 
 func (p *Struct2) Read(iprot thrift.Protocol) error {
@@ -797,7 +797,7 @@ func (p *Struct3) GetC() *Struct2 {
 return p.C
 }
 func (p *Struct3) IsSetC() bool {
-  return p.C != nil
+  return p != nil && p.C != nil
 }
 
 func (p *Struct3) Read(iprot thrift.Protocol) error {
@@ -959,11 +959,11 @@ func (p *Struct4) GetC() int8 {
 return *p.C
 }
 func (p *Struct4) IsSetB() bool {
-  return p.B != nil
+  return p != nil && p.B != nil
 }
 
 func (p *Struct4) IsSetC() bool {
-  return p.C != nil
+  return p != nil && p.C != nil
 }
 
 func (p *Struct4) Read(iprot thrift.Protocol) error {
@@ -1141,11 +1141,11 @@ func (p *Union1) CountSetFieldsUnion1() int {
 }
 
 func (p *Union1) IsSetI() bool {
-  return p.I != nil
+  return p != nil && p.I != nil
 }
 
 func (p *Union1) IsSetD() bool {
-  return p.D != nil
+  return p != nil && p.D != nil
 }
 
 func (p *Union1) Read(iprot thrift.Protocol) error {
@@ -1203,8 +1203,8 @@ func (p *Union1)  ReadField2(iprot thrift.Protocol) error {
 }
 
 func (p *Union1) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsUnion1(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsUnion1(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("union1"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1324,19 +1324,19 @@ func (p *Union2) CountSetFieldsUnion2() int {
 }
 
 func (p *Union2) IsSetI() bool {
-  return p.I != nil
+  return p != nil && p.I != nil
 }
 
 func (p *Union2) IsSetD() bool {
-  return p.D != nil
+  return p != nil && p.D != nil
 }
 
 func (p *Union2) IsSetS() bool {
-  return p.S != nil
+  return p != nil && p.S != nil
 }
 
 func (p *Union2) IsSetU() bool {
-  return p.U != nil
+  return p != nil && p.U != nil
 }
 
 func (p *Union2) Read(iprot thrift.Protocol) error {
@@ -1418,8 +1418,8 @@ func (p *Union2)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *Union2) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsUnion2(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsUnion2(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("union2"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }

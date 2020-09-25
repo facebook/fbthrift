@@ -1549,15 +1549,16 @@ void t_go_generator::generate_isset_helpers(
       bool compare_to_nil_only = ttype->is_set() || ttype->is_list() ||
           ttype->is_map() || (is_byteslice && !(*f_iter)->get_value());
       if (is_pointer_field(*f_iter) || compare_to_nil_only) {
-        out << indent() << "return p." << field_name << " != nil" << endl;
+        out << indent() << "return p != nil && p." << field_name << " != nil"
+            << endl;
       } else {
         string def_var_name = tstruct_name + "_" + field_name + "_DEFAULT";
         if (is_byteslice) {
-          out << indent() << "return !bytes.Equal(p." << field_name << ", "
-              << def_var_name << ")" << endl;
+          out << indent() << "return p != nil && !bytes.Equal(p." << field_name
+              << ", " << def_var_name << ")" << endl;
         } else {
-          out << indent() << "return p." << field_name << " != " << def_var_name
-              << endl;
+          out << indent() << "return p != nil && p." << field_name
+              << " != " << def_var_name << endl;
         }
       }
       indent_down();
@@ -1786,9 +1787,9 @@ void t_go_generator::generate_go_struct_writer(
   if (tstruct->is_union() && uses_countsetfields) {
     std::string pub_tstruct_name(publicize(tstruct->get_name()));
     out << indent() << "if c := p.CountSetFields" << pub_tstruct_name
-        << "(); c != 1 {" << endl
+        << "(); c > 1 {" << endl
         << indent()
-        << "  return fmt.Errorf(\"%T write union: exactly one field must be set (%d set).\", p, c)"
+        << "  return fmt.Errorf(\"%T write union: no more than one field must be set (%d set).\", p, c)"
         << endl
         << indent() << "}" << endl;
   }

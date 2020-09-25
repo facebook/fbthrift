@@ -703,15 +703,15 @@ func (p *RaiserDoRaiseResult) GetS() *Serious {
 return p.S
 }
 func (p *RaiserDoRaiseResult) IsSetB() bool {
-  return p.B != nil
+  return p != nil && p.B != nil
 }
 
 func (p *RaiserDoRaiseResult) IsSetF() bool {
-  return p.F != nil
+  return p != nil && p.F != nil
 }
 
 func (p *RaiserDoRaiseResult) IsSetS() bool {
-  return p.S != nil
+  return p != nil && p.S != nil
 }
 
 func (p *RaiserDoRaiseResult) Read(iprot thrift.Protocol) error {
@@ -926,7 +926,7 @@ func (p *RaiserGet200Result) GetSuccess() string {
 return *p.Success
 }
 func (p *RaiserGet200Result) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *RaiserGet200Result) Read(iprot thrift.Protocol) error {
@@ -1104,19 +1104,19 @@ func (p *RaiserGet500Result) GetS() *Serious {
 return p.S
 }
 func (p *RaiserGet500Result) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *RaiserGet500Result) IsSetF() bool {
-  return p.F != nil
+  return p != nil && p.F != nil
 }
 
 func (p *RaiserGet500Result) IsSetB() bool {
-  return p.B != nil
+  return p != nil && p.B != nil
 }
 
 func (p *RaiserGet500Result) IsSetS() bool {
-  return p.S != nil
+  return p != nil && p.S != nil
 }
 
 func (p *RaiserGet500Result) Read(iprot thrift.Protocol) error {

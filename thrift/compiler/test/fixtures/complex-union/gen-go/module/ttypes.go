@@ -109,27 +109,27 @@ func (p *ComplexUnion) CountSetFieldsComplexUnion() int {
 }
 
 func (p *ComplexUnion) IsSetIntValue() bool {
-  return p.IntValue != nil
+  return p != nil && p.IntValue != nil
 }
 
 func (p *ComplexUnion) IsSetStringValue() bool {
-  return p.StringValue != nil
+  return p != nil && p.StringValue != nil
 }
 
 func (p *ComplexUnion) IsSetIntListValue() bool {
-  return p.IntListValue != nil
+  return p != nil && p.IntListValue != nil
 }
 
 func (p *ComplexUnion) IsSetStringListValue() bool {
-  return p.StringListValue != nil
+  return p != nil && p.StringListValue != nil
 }
 
 func (p *ComplexUnion) IsSetTypedefValue() bool {
-  return p.TypedefValue != nil
+  return p != nil && p.TypedefValue != nil
 }
 
 func (p *ComplexUnion) IsSetStringRef() bool {
-  return p.StringRef != nil
+  return p != nil && p.StringRef != nil
 }
 
 func (p *ComplexUnion) Read(iprot thrift.Protocol) error {
@@ -284,8 +284,8 @@ func (p *ComplexUnion)  ReadField14(iprot thrift.Protocol) error {
 }
 
 func (p *ComplexUnion) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsComplexUnion(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsComplexUnion(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("ComplexUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -453,11 +453,11 @@ func (p *ListUnion) GetStringListValue() []string {
   return p.StringListValue
 }
 func (p *ListUnion) IsSetIntListValue() bool {
-  return p.IntListValue != nil
+  return p != nil && p.IntListValue != nil
 }
 
 func (p *ListUnion) IsSetStringListValue() bool {
-  return p.StringListValue != nil
+  return p != nil && p.StringListValue != nil
 }
 
 func (p *ListUnion) Read(iprot thrift.Protocol) error {
@@ -639,11 +639,11 @@ func (p *DataUnion) CountSetFieldsDataUnion() int {
 }
 
 func (p *DataUnion) IsSetBinaryData() bool {
-  return p.BinaryData != nil
+  return p != nil && p.BinaryData != nil
 }
 
 func (p *DataUnion) IsSetStringData() bool {
-  return p.StringData != nil
+  return p != nil && p.StringData != nil
 }
 
 func (p *DataUnion) Read(iprot thrift.Protocol) error {
@@ -701,8 +701,8 @@ func (p *DataUnion)  ReadField2(iprot thrift.Protocol) error {
 }
 
 func (p *DataUnion) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsDataUnion(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsDataUnion(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("DataUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -970,11 +970,11 @@ func (p *ValUnion) CountSetFieldsValUnion() int {
 }
 
 func (p *ValUnion) IsSetV1() bool {
-  return p.V1 != nil
+  return p != nil && p.V1 != nil
 }
 
 func (p *ValUnion) IsSetV2() bool {
-  return p.V2 != nil
+  return p != nil && p.V2 != nil
 }
 
 func (p *ValUnion) Read(iprot thrift.Protocol) error {
@@ -1030,8 +1030,8 @@ func (p *ValUnion)  ReadField2(iprot thrift.Protocol) error {
 }
 
 func (p *ValUnion) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsValUnion(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsValUnion(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("ValUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1129,11 +1129,11 @@ func (p *VirtualComplexUnion) CountSetFieldsVirtualComplexUnion() int {
 }
 
 func (p *VirtualComplexUnion) IsSetThingOne() bool {
-  return p.ThingOne != nil
+  return p != nil && p.ThingOne != nil
 }
 
 func (p *VirtualComplexUnion) IsSetThingTwo() bool {
-  return p.ThingTwo != nil
+  return p != nil && p.ThingTwo != nil
 }
 
 func (p *VirtualComplexUnion) Read(iprot thrift.Protocol) error {
@@ -1191,8 +1191,8 @@ func (p *VirtualComplexUnion)  ReadField2(iprot thrift.Protocol) error {
 }
 
 func (p *VirtualComplexUnion) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsVirtualComplexUnion(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsVirtualComplexUnion(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("VirtualComplexUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1361,7 +1361,7 @@ func (p *NonCopyableUnion) CountSetFieldsNonCopyableUnion() int {
 }
 
 func (p *NonCopyableUnion) IsSetS() bool {
-  return p.S != nil
+  return p != nil && p.S != nil
 }
 
 func (p *NonCopyableUnion) Read(iprot thrift.Protocol) error {
@@ -1405,8 +1405,8 @@ func (p *NonCopyableUnion)  ReadField1(iprot thrift.Protocol) error {
 }
 
 func (p *NonCopyableUnion) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsNonCopyableUnion(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsNonCopyableUnion(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("NonCopyableUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }

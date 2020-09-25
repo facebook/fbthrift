@@ -828,7 +828,7 @@ func (p *MyServiceGetRandomDataResult) GetSuccess() string {
 return *p.Success
 }
 func (p *MyServiceGetRandomDataResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *MyServiceGetRandomDataResult) Read(iprot thrift.Protocol) error {
@@ -1014,7 +1014,7 @@ func (p *MyServiceHasDataByIdResult) GetSuccess() bool {
 return *p.Success
 }
 func (p *MyServiceHasDataByIdResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *MyServiceHasDataByIdResult) Read(iprot thrift.Protocol) error {
@@ -1200,7 +1200,7 @@ func (p *MyServiceGetDataByIdResult) GetSuccess() string {
 return *p.Success
 }
 func (p *MyServiceGetDataByIdResult) IsSetSuccess() bool {
-  return p.Success != nil
+  return p != nil && p.Success != nil
 }
 
 func (p *MyServiceGetDataByIdResult) Read(iprot thrift.Protocol) error {

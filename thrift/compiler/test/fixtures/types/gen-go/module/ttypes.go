@@ -1208,7 +1208,7 @@ func (p *TrivialNestedWithDefault) GetN() *TrivialNumeric {
 return p.N
 }
 func (p *TrivialNestedWithDefault) IsSetN() bool {
-  return p.N != nil
+  return p != nil && p.N != nil
 }
 
 func (p *TrivialNestedWithDefault) Read(iprot thrift.Protocol) error {
@@ -1490,7 +1490,7 @@ func (p *ComplexNestedWithDefault) GetN() *ComplexString {
 return p.N
 }
 func (p *ComplexNestedWithDefault) IsSetN() bool {
-  return p.N != nil
+  return p != nil && p.N != nil
 }
 
 func (p *ComplexNestedWithDefault) Read(iprot thrift.Protocol) error {
@@ -1866,7 +1866,7 @@ func (p *MyStruct) GetData() *MyDataItem {
 return p.Data
 }
 func (p *MyStruct) IsSetData() bool {
-  return p.Data != nil
+  return p != nil && p.Data != nil
 }
 
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
@@ -2348,11 +2348,11 @@ func (p *ForwardUsageRoot) GetForwardUsageByRef() *ForwardUsageByRef {
 return p.ForwardUsageByRef
 }
 func (p *ForwardUsageRoot) IsSetForwardUsageStruct() bool {
-  return p.ForwardUsageStruct != nil
+  return p != nil && p.ForwardUsageStruct != nil
 }
 
 func (p *ForwardUsageRoot) IsSetForwardUsageByRef() bool {
-  return p.ForwardUsageByRef != nil
+  return p != nil && p.ForwardUsageByRef != nil
 }
 
 func (p *ForwardUsageRoot) Read(iprot thrift.Protocol) error {
@@ -2483,7 +2483,7 @@ func (p *ForwardUsageStruct) GetFoo() *ForwardUsageRoot {
 return p.Foo
 }
 func (p *ForwardUsageStruct) IsSetFoo() bool {
-  return p.Foo != nil
+  return p != nil && p.Foo != nil
 }
 
 func (p *ForwardUsageStruct) Read(iprot thrift.Protocol) error {
@@ -2582,7 +2582,7 @@ func (p *ForwardUsageByRef) GetFoo() *ForwardUsageRoot {
 return p.Foo
 }
 func (p *ForwardUsageByRef) IsSetFoo() bool {
-  return p.Foo != nil
+  return p != nil && p.Foo != nil
 }
 
 func (p *ForwardUsageByRef) Read(iprot thrift.Protocol) error {
@@ -2871,7 +2871,7 @@ func (p *NoexceptMoveComplexStruct) GetMyMapEnumAndInt() map[MyEnumA]string {
   return p.MyMapEnumAndInt
 }
 func (p *NoexceptMoveComplexStruct) IsSetMyBinaryField2() bool {
-  return p.MyBinaryField2 != nil
+  return p != nil && p.MyBinaryField2 != nil
 }
 
 func (p *NoexceptMoveComplexStruct) Read(iprot thrift.Protocol) error {
@@ -3242,11 +3242,11 @@ func (p *NoExceptMoveUnion) CountSetFieldsNoExceptMoveUnion() int {
 }
 
 func (p *NoExceptMoveUnion) IsSetStringField() bool {
-  return p.StringField != nil
+  return p != nil && p.StringField != nil
 }
 
 func (p *NoExceptMoveUnion) IsSetI32Field() bool {
-  return p.I32Field != nil
+  return p != nil && p.I32Field != nil
 }
 
 func (p *NoExceptMoveUnion) Read(iprot thrift.Protocol) error {
@@ -3304,8 +3304,8 @@ func (p *NoExceptMoveUnion)  ReadField2(iprot thrift.Protocol) error {
 }
 
 func (p *NoExceptMoveUnion) Write(oprot thrift.Protocol) error {
-  if c := p.CountSetFieldsNoExceptMoveUnion(); c != 1 {
-    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  if c := p.CountSetFieldsNoExceptMoveUnion(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
   }
   if err := oprot.WriteStructBegin("NoExceptMoveUnion"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
