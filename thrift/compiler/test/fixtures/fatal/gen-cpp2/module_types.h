@@ -1011,35 +1011,20 @@ extern const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum
 // END declare_enums
 // BEGIN struct_indirection
 namespace test_cpp2 { namespace cpp_reflection {
-struct apache_thrift_indirection_module_HasANumber {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).number;
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).number;
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_HasANumber,
+    .number);
 
-struct apache_thrift_indirection_module_HasAResult {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).foo().result();
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).foo().result();
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_HasAResult,
+    .foo().result());
 
-struct apache_thrift_indirection_module_HasAPhrase {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).phrase;
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).phrase;
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_HasAPhrase,
+    .phrase);
 
 
 }} // test_cpp2::cpp_reflection

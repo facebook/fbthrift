@@ -19,15 +19,10 @@
 <% > common/namespace_cpp2_begin%>
 
 <%#program:typedefs%><%#typedef:type%><%#type:cpp_indirection%>
-struct apache_thrift_indirection_module_<%typedef:symbolic%> {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x)<%type:cpp_indirection%>;
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x)<%type:cpp_indirection%>;
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_<%typedef:symbolic%>,
+    <%type:cpp_indirection%>);
 
 <%/type:cpp_indirection%><%/typedef:type%><%/program:typedefs%>
 

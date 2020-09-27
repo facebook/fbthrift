@@ -62,6 +62,15 @@
     }                                                                         \
   }
 
+#define FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(classname, ...)              \
+  struct classname {                                                           \
+    template <typename T>                                                      \
+    auto operator()(T&& t) noexcept(noexcept(static_cast<T&&>(t) __VA_ARGS__)) \
+        -> decltype((static_cast<T&&>(t) __VA_ARGS__)) {                       \
+      return static_cast<T&&>(t) __VA_ARGS__;                                  \
+    }                                                                          \
+  }
+
 // Temporarily disable warnings about internal deprecated use of __isset.
 #define THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN \
   FOLLY_PUSH_WARNING                          \

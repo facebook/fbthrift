@@ -1021,45 +1021,25 @@ extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VAL
 // END declare_enums
 // BEGIN struct_indirection
 namespace some { namespace valid { namespace ns {
-struct apache_thrift_indirection_module_IndirectionA {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).value;
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).value;
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_IndirectionA,
+    .value);
 
-struct apache_thrift_indirection_module_IndirectionC {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).__value();
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).__value();
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_IndirectionC,
+    .__value());
 
-struct apache_thrift_indirection_module_IndirectionB {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).value;
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).value;
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_IndirectionB,
+    .value);
 
-struct apache_thrift_indirection_module_IndirectionD {
-  template <typename T> static auto&& get(T&& x) {
-    return std::forward<T>(x).value;
-  }
 
-  template <typename T> static auto&& get(T const&& x) {
-    return std::forward<T>(x).value;
-  }
-};
+FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
+    apache_thrift_indirection_module_IndirectionD,
+    .value);
 
 
 }}} // some::valid::ns

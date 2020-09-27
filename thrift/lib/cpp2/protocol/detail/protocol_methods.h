@@ -794,8 +794,8 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
 template <typename ElemClass, typename Indirection, typename Type>
 struct protocol_methods<indirection_tag<ElemClass, Indirection>, Type> {
   using indirection = Indirection;
-  using elem_type = std::remove_reference_t<decltype(
-      indirection::template get(std::declval<Type&>()))>;
+  using elem_type =
+      std::remove_reference_t<folly::invoke_result_t<indirection, Type&>>;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
 
   // Forward the ttype_value from the internal element
@@ -803,24 +803,22 @@ struct protocol_methods<indirection_tag<ElemClass, Indirection>, Type> {
 
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
-    elem_methods::read(protocol, indirection::template get<Type&>(out));
+    elem_methods::read(protocol, indirection{}(out));
   }
 
   template <typename Protocol, typename Context>
   static void readWithContext(Protocol& protocol, Type& out, Context& ctx) {
-    elem_methods::readWithContext(
-        protocol, indirection::template get<Type&>(out), ctx);
+    elem_methods::readWithContext(protocol, indirection{}(out), ctx);
   }
 
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
-    return elem_methods::write(
-        protocol, indirection::template get<const Type&>(in));
+    return elem_methods::write(protocol, indirection{}(in));
   }
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, Type const& in) {
     return elem_methods::template serializedSize<ZeroCopy>(
-        protocol, indirection::template get<const Type&>(in));
+        protocol, indirection{}(in));
   }
 };
 
