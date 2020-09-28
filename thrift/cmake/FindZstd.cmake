@@ -28,7 +28,7 @@ find_path(
 )
 
 find_library(
-    ZSTD_LIBRARIES zstd
+    ZSTD_LIBRARIES zstd zstd_static
     HINTS
         $ENV{ZSTD_ROOT}/lib
         ${ZSTD_ROOT}/lib
