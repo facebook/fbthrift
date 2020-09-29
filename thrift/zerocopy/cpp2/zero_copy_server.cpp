@@ -20,7 +20,7 @@
 #include <folly/init/Init.h>
 
 #include <common/services/cpp/ServiceFramework.h>
-#include <thrift/test/gen-cpp2/ZeroCopyService.h>
+#include <thrift/zerocopy/cpp2/gen-cpp2/ZeroCopyService.h>
 
 DEFINE_int32(port, 7878, "Port for the thrift server");
 DEFINE_int32(threshold, 32 * 1024, "Zerocopy threshold");
@@ -28,6 +28,7 @@ DEFINE_bool(debug_logs, false, "Debug logs");
 
 using namespace thrift::zerocopy::cpp2;
 
+namespace {
 class ZeroCopyServiceImpl : public ZeroCopyServiceSvIf,
                             public facebook::fb303::FacebookBase2 {
  public:
@@ -51,6 +52,7 @@ class ZeroCopyServiceImpl : public ZeroCopyServiceSvIf,
  private:
   size_t num_{0};
 };
+} // namespace
 
 int main(int argc, char* argv[]) {
   struct rlimit rlim = {

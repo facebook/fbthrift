@@ -18,13 +18,14 @@
 #include <glog/logging.h>
 
 #include <fizz/client/AsyncFizzClient.h>
+#include <folly/Random.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
-#include <thrift/test/gen-cpp2/ZeroCopyServiceAsyncClient.h>
+#include <thrift/zerocopy/cpp2/gen-cpp2/ZeroCopyServiceAsyncClient.h>
 
 enum ChannelType {
   CHANNEL_TYPE_HEADER = 0,
@@ -39,9 +40,11 @@ DEFINE_int32(size, 4096, "Payload size");
 DEFINE_int32(threshold, 32 * 1024, "Zerocopy threshold");
 DEFINE_bool(debug_logs, false, "Debug logs");
 DEFINE_bool(use_crypto, true, "Use crypto");
+DEFINE_bool(verify, true, "Verify reply");
 
 using namespace thrift::zerocopy::cpp2;
 
+namespace {
 class Client {
  public:
   Client(const std::string& server, int port) {
@@ -97,11 +100,30 @@ class Client {
   ~Client() {}
 
   void run(int num) {
-    std::string s(FLAGS_size, 'a');
-    auto data = folly::IOBuf::copyBuffer(s);
+    std::unique_ptr<uint8_t[]> s(new uint8_t[FLAGS_size]);
+    std::mt19937 rnd(folly::randomNumberSeed());
+    size_t n = FLAGS_size;
+    uint8_t* wr = s.get();
+    while (n) {
+      uint32_t r = rnd();
+      size_t len = (n > sizeof(uint32_t)) ? sizeof(uint32_t) : n;
+      ::memcpy(wr, &r, len);
+      wr += len;
+
+      n -= len;
+    }
+
+    auto data = folly::IOBuf::copyBuffer(s.get(), FLAGS_size);
     for (int i = 0; i < num; i++) {
       folly::IOBuf ret;
       client_->sync_echo(ret, *data);
+      if (FLAGS_verify) {
+        ret.coalesce();
+        CHECK_EQ(data->length(), ret.length());
+        auto res = ::memcmp(data->data(), ret.data(), data->length());
+        CHECK_EQ(res, 0);
+      }
+
       if (FLAGS_debug_logs) {
         LOG(INFO) << "[" << i << "]: data = " << data->countChainElements()
                   << ":" << data->computeChainDataLength()
@@ -115,6 +137,7 @@ class Client {
   folly::EventBase evb_;
   std::unique_ptr<ZeroCopyServiceAsyncClient> client_;
 };
+} // namespace
 
 int main(int argc, char* argv[]) {
   struct rlimit rlim = {
