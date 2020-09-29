@@ -15,7 +15,6 @@
  */
 
 #include <thrift/test/reflection/gen-cpp2/reflection_for_each_field.h>
-#include <thrift/test/reflection/gen-cpp2/reflection_no_metadata_for_each_field.h>
 
 #include <folly/Overload.h>
 #include <folly/portability/GTest.h>
@@ -302,81 +301,4 @@ TEST(struct1, test_two_structs_assignment) {
 }
 
 } // namespace cpp_reflection
-} // namespace test_cpp2
-
-namespace test_cpp2 {
-namespace cpp_reflection_no_metadata {
-
-TEST(struct1_no_metadata, test_metadata) {
-  struct1 s;
-  for_each_field(s, [i = 0](auto& meta, auto&& ref) mutable {
-    EXPECT_EQ(*meta.id_ref(), 0);
-    EXPECT_EQ(*meta.name_ref(), "");
-    EXPECT_EQ(int(meta.type_ref()->getType()), 0);
-    EXPECT_EQ(*meta.is_optional_ref(), false);
-    EXPECT_EQ(
-        type_index(typeid(ref)),
-        (vector<type_index>{
-            typeid(required_field_ref<int32_t&>),
-            typeid(optional_field_ref<string&>),
-            typeid(field_ref<enum1&>),
-            typeid(required_field_ref<enum2&>),
-            typeid(optional_field_ref<union1&>),
-            typeid(field_ref<union2&>),
-        })[i]);
-
-    // required field always has value
-    EXPECT_EQ(
-        ref.has_value(), (vector{true, false, false, true, false, false})[i]);
-    ++i;
-  });
-}
-
-TEST(struct1_no_metadata, modify_field) {
-  struct1 s;
-  s.field0_ref() = 10;
-  s.field1_ref() = "20";
-  s.field2_ref() = enum1::field0;
-  s.field3_ref() = enum2::field1_2;
-  s.field4_ref().emplace().set_us("foo");
-  s.field5_ref().emplace().set_us_2("bar");
-  auto run = folly::overload(
-      [](int32_t& ref) {
-        EXPECT_EQ(ref, 10);
-        ref = 20;
-      },
-      [](string& ref) {
-        EXPECT_EQ(ref, "20");
-        ref = "30";
-      },
-      [](enum1& ref) {
-        EXPECT_EQ(ref, enum1::field0);
-        ref = enum1::field1;
-      },
-      [](enum2& ref) {
-        EXPECT_EQ(ref, enum2::field1_2);
-        ref = enum2::field2_2;
-      },
-      [](union1& ref) {
-        EXPECT_EQ(ref.get_us(), "foo");
-        ref.set_ui(20);
-      },
-      [](union2& ref) {
-        EXPECT_EQ(ref.get_us_2(), "bar");
-        ref.set_ui_2(30);
-      },
-      [](auto&) { EXPECT_TRUE(false) << "type mismatch"; });
-  for_each_field(s, [run](auto&, auto&& ref) {
-    EXPECT_TRUE(ref.has_value());
-    run(*ref);
-  });
-  EXPECT_EQ(s.field0_ref(), 20);
-  EXPECT_EQ(s.field1_ref(), "30");
-  EXPECT_EQ(s.field2_ref(), enum1::field1);
-  EXPECT_EQ(s.field3_ref(), enum2::field2_2);
-  EXPECT_EQ(s.field4_ref()->get_ui(), 20);
-  EXPECT_EQ(s.field5_ref()->get_ui_2(), 30);
-}
-
-} // namespace cpp_reflection_no_metadata
 } // namespace test_cpp2
