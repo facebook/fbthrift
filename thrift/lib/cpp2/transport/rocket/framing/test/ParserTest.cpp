@@ -28,6 +28,9 @@ class FakeOwner : public folly::DelayedDestruction {
  public:
   void handleFrame(std::unique_ptr<folly::IOBuf>) {}
   void close(folly::exception_wrapper) noexcept {}
+  void scheduleTimeout(
+      folly::HHWheelTimer::Callback*,
+      const std::chrono::milliseconds&) {}
 };
 
 TEST(ParserTest, resizeBufferTest) {

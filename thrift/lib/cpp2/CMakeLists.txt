@@ -143,6 +143,7 @@ add_library(
   transport/rocket/client/RocketStreamServerCallback.cpp
   transport/rocket/framing/ErrorCode.cpp
   transport/rocket/framing/Frames.cpp
+  transport/rocket/framing/Parser.cpp
   transport/rocket/framing/Serializer.cpp
   transport/rocket/framing/Util.cpp
   transport/rocket/server/RocketRoutingHandler.cpp

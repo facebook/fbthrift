@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
+#pragma once
 
 #include <algorithm>
 #include <chrono>
@@ -43,9 +43,14 @@ template <class T>
 void Parser<T>::getReadBuffer(void** bufout, size_t* lenout) {
   DCHECK(!readBuffer_.isChained());
   if (LIKELY(!aligning_)) {
-    resizeBuffer();
+    if (periodicResizeBufferTimeout_ == 0) {
+      const auto now = std::chrono::steady_clock::now();
+      if (now - lastResizeTime_ > resizeBufferTimeout_) {
+        resizeBuffer();
+        lastResizeTime_ = now;
+      }
+    }
     readBuffer_.unshareOne();
-
     if (readBuffer_.length() == 0) {
       DCHECK(readBuffer_.capacity() > 0);
       // If we read everything, reset pointers to 0 and reuse the buffer
@@ -122,6 +127,13 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
       aligning_ = false;
       owner_.handleFrame(std::move(frame));
     }
+
+    if (periodicResizeBufferTimeout_ != 0 && !isScheduled() &&
+        bufferSize_ > kMaxBufferSize) {
+      owner_.scheduleTimeout(
+          this, std::chrono::seconds(periodicResizeBufferTimeout_));
+    }
+
   } catch (...) {
     auto exceptionStr =
         folly::exceptionStr(std::current_exception()).toStdString();
@@ -148,26 +160,25 @@ void Parser<T>::readErr(const folly::AsyncSocketException& ex) noexcept {
 }
 
 template <class T>
+void Parser<T>::timeoutExpired() noexcept {
+  if (LIKELY(!aligning_)) {
+    resizeBuffer();
+  }
+}
+
+template <class T>
 void Parser<T>::resizeBuffer() {
   if (bufferSize_ <= kMaxBufferSize || readBuffer_.length() >= kMaxBufferSize) {
     return;
   }
-
-  const auto now = std::chrono::steady_clock::now();
-
-  // if enablePageAlignment_ we need to always shrink the buffer otherwise
-  // parser may receive too much data and need to costly aligns them later
-  if (enablePageAlignment_ || now - resizeBufferTimer_ > resizeBufferTimeout_) {
-    // resize readBuffer_ to kMaxBufferSize
-    readBuffer_ = folly::IOBuf(
-        folly::IOBuf::CopyBufferOp(),
-        readBuffer_.data(),
-        readBuffer_.length(),
-        /* headroom */ 0,
-        /* tailroom */ kMaxBufferSize - readBuffer_.length());
-    resizeBufferTimer_ = now;
-    bufferSize_ = kMaxBufferSize;
-  }
+  // resize readBuffer_ to kMaxBufferSize
+  readBuffer_ = folly::IOBuf(
+      folly::IOBuf::CopyBufferOp(),
+      readBuffer_.data(),
+      readBuffer_.length(),
+      /* headroom */ 0,
+      /* tailroom */ kMaxBufferSize - readBuffer_.length());
+  bufferSize_ = kMaxBufferSize;
 }
 
 template <class T>

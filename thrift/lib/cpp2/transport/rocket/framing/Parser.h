@@ -24,18 +24,26 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncTransport.h>
 
+#include <thrift/lib/cpp2/Flags.h>
+
+THRIFT_FLAG_DECLARE_int64(rocket_parser_resize_period_seconds);
+
 namespace apache {
 namespace thrift {
 namespace rocket {
 
 template <class T>
-class Parser final : public folly::AsyncTransport::ReadCallback {
+class Parser final : public folly::AsyncTransport::ReadCallback,
+                     public folly::HHWheelTimer::Callback {
  public:
   explicit Parser(
       T& owner,
       std::chrono::milliseconds resizeBufferTimeout =
           kDefaultBufferResizeInterval)
-      : owner_(owner), resizeBufferTimeout_(resizeBufferTimeout) {}
+      : owner_(owner),
+        resizeBufferTimeout_(resizeBufferTimeout),
+        periodicResizeBufferTimeout_(
+            THRIFT_FLAG(rocket_parser_resize_period_seconds)) {}
 
   // AsyncTransport::ReadCallback implementation
   FOLLY_NOINLINE void getReadBuffer(void** bufout, size_t* lenout) override;
@@ -43,6 +51,8 @@ class Parser final : public folly::AsyncTransport::ReadCallback {
   FOLLY_NOINLINE void readEOF() noexcept override;
   FOLLY_NOINLINE void readErr(
       const folly::AsyncSocketException&) noexcept override;
+
+  void timeoutExpired() noexcept override;
 
   const folly::IOBuf& getReadBuffer() const {
     return readBuffer_;
@@ -72,9 +82,10 @@ class Parser final : public folly::AsyncTransport::ReadCallback {
   T& owner_;
   size_t bufferSize_{kMinBufferSize};
   folly::IOBuf readBuffer_{folly::IOBuf::CreateOp(), bufferSize_};
-  std::chrono::steady_clock::time_point resizeBufferTimer_{
+  std::chrono::steady_clock::time_point lastResizeTime_{
       std::chrono::steady_clock::now()};
   const std::chrono::milliseconds resizeBufferTimeout_;
+  const int64_t periodicResizeBufferTimeout_;
   bool enablePageAlignment_{false};
   bool aligning_{false};
 };
