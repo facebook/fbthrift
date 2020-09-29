@@ -20,7 +20,7 @@
 #include <folly/init/Init.h>
 
 #include <common/services/cpp/ServiceFramework.h>
-#include <thrift/zerocopy/cpp2/gen-cpp2/ZeroCopyService.h>
+#include <thrift/test/integration/cpp2/gen-cpp2/ZeroCopyService.h>
 
 DEFINE_int32(port, 7878, "Port for the thrift server");
 DEFINE_int32(threshold, 32 * 1024, "Zerocopy threshold");
