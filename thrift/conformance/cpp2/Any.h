@@ -41,6 +41,9 @@ AnyType createAnyType(
     C&& names,
     int8_t typeIdBytes = any_constants::minTypeIdBytes());
 
+// Raises std::invalid_argument if invalid.
+void validateAny(const Any& any);
+
 // Implementation
 
 template <typename C>

@@ -17,6 +17,7 @@
 #include <thrift/conformance/cpp2/Protocol.h>
 
 #include <folly/lang/Exception.h>
+#include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
 
@@ -91,6 +92,12 @@ bool operator<(const Protocol& lhs, const Protocol& rhs) {
     return false;
   }
   return lhs.custom() < rhs.custom();
+}
+
+void validateProtocol(const Protocol& protocol) {
+  if (protocol.isCustom()) {
+    validateUniversalType(protocol.custom());
+  }
 }
 
 } // namespace apache::thrift::conformance

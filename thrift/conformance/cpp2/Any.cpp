@@ -16,7 +16,7 @@
 
 #include <thrift/conformance/cpp2/Any.h>
 
-#include <thrift/conformance/cpp2/Protocol.h>
+#include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
 
@@ -61,6 +61,16 @@ void normalizeProtocol(Any& any) noexcept {
           getStandardProtocol(any.customProtocol_ref().value_unchecked())) {
     any.customProtocol_ref().reset();
     any.protocol_ref() = *standard;
+  }
+}
+
+void validateAny(const Any& any) {
+  if (any.type_ref().has_value() && !any.type_ref().value_unchecked().empty()) {
+    validateUniversalType(any.type_ref().value_unchecked());
+  }
+  if (any.customProtocol_ref().has_value() &&
+      !any.customProtocol_ref().value_unchecked().empty()) {
+    validateUniversalType(any.customProtocol_ref().value_unchecked());
   }
 }
 

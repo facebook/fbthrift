@@ -107,5 +107,22 @@ TEST(AnyTest, Custom_EmptyString) {
   EXPECT_TRUE(hasProtocol(any, kNoProtocol));
 }
 
+TEST(AnyTest, ValidateAny) {
+  const auto bad = "foo.com:42/my/type";
+  const auto good = "foo.com/my/type";
+  Any any;
+  validateAny(any);
+  any.set_type("");
+  any.set_customProtocol("");
+  validateAny(any);
+  any.type_ref().ensure() = bad;
+  EXPECT_THROW(validateAny(any), std::invalid_argument);
+  any.type_ref() = good;
+  any.customProtocol_ref().ensure() = bad;
+  EXPECT_THROW(validateAny(any), std::invalid_argument);
+  any.customProtocol_ref() = good;
+  validateAny(any);
+}
+
 } // namespace
 } // namespace apache::thrift::conformance

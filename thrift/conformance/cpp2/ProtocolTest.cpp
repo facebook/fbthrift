@@ -78,5 +78,12 @@ TEST(Protocol, GetStandardProtocol) {
   EXPECT_EQ(getStandardProtocol("Binary"), StandardProtocol::Binary);
 }
 
+TEST(AnyTest, ValidateProtocol) {
+  const auto good = "foo.com/my/protocol";
+  const auto bad = "foo.com:42/my/protocol";
+  EXPECT_THROW(validateProtocol(Protocol{bad}), std::invalid_argument);
+  validateProtocol(Protocol{good});
+}
+
 } // namespace
 } // namespace apache::thrift::conformance

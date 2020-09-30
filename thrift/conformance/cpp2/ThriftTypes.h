@@ -34,10 +34,6 @@
 
 namespace apache::thrift::conformance {
 
-// A list of thrift types with a few relevant helper memebers.
-template <typename... Ts>
-using types = detail::types<Ts...>;
-
 // _t indicates a concrete type.
 // _c indicates a class of types.
 // no sufix means it is dependent on the parameters.
@@ -120,28 +116,28 @@ struct is_concrete_type {
 } // namespace bound
 
 // Useful groupings of primitive types.
-using integral_types = types<
+using integral_types = detail::types<
     type::bool_t,
     type::byte_t,
     type::i16_t,
     type::i32_t,
     type::i64_t,
     type::enum_c>;
-using floating_point_types = types<type::float_t, type::double_t>;
+using floating_point_types = detail::types<type::float_t, type::double_t>;
 using numeric_types = fatal::cat<integral_types, floating_point_types>;
-using string_types = types<type::string_t, type::binary_t>;
+using string_types = detail::types<type::string_t, type::binary_t>;
 
 // All primitive types.
 using primitive_types = fatal::cat<numeric_types, string_types>;
 
 // All structured types.
 using structured_types =
-    types<type::struct_c, type::union_c, type::exception_c>;
+    detail::types<type::struct_c, type::union_c, type::exception_c>;
 
 // Types that are a single value.
 using singular_types = fatal::cat<primitive_types, structured_types>;
 // Types that are containers of other types.
-using container_types = types<type::list_c, type::set_c, type::map_c>;
+using container_types = detail::types<type::list_c, type::set_c, type::map_c>;
 // Types that are composites of other types.
 using composite_types = fatal::cat<structured_types, container_types>;
 // All types.

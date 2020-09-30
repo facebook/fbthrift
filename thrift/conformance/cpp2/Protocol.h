@@ -88,6 +88,9 @@ inline bool operator!=(const Protocol& lhs, const Protocol& rhs) {
   return !(lhs == rhs);
 }
 
+// Raises std::invalid_argument on failure.
+void validateProtocol(const Protocol& protocol);
+
 // Returns a static const value for the given standard protocol.
 //
 // The address of this value cannot be used for equality.
