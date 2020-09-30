@@ -710,10 +710,11 @@ void RocketServerConnection::freeStream(
   }
 }
 
-void RocketServerConnection::applyDscpToSocket(int32_t dscp) {
+void RocketServerConnection::applyDscpAndMarkToSocket(
+    const RequestSetupMetadata& setupMetadata) {
   constexpr int32_t kMaxDscpValue = (1 << 6) - 1;
 
-  if (!socket_ || dscp < 0 || dscp > kMaxDscpValue) {
+  if (!socket_) {
     return;
   }
 
@@ -725,12 +726,23 @@ void RocketServerConnection::applyDscpToSocket(int32_t dscp) {
       return;
     }
 
-    const folly::SocketOptionKey kIpv4TosKey = {IPPROTO_IP, IP_TOS};
-    const folly::SocketOptionKey kIpv6TosKey = {IPPROTO_IPV6, IPV6_TCLASS};
-    auto& key = addr.getIPAddress().isV4() ? kIpv4TosKey : kIpv6TosKey;
-
     if (auto* sock = socket_->getUnderlyingTransport<folly::AsyncSocket>()) {
-      key.apply(sock->getNetworkSocket(), dscp << 2);
+      const auto fd = sock->getNetworkSocket();
+
+      auto dscp = setupMetadata.dscpToReflect_ref();
+      if (dscp && *dscp >= 0 && *dscp <= kMaxDscpValue) {
+        const folly::SocketOptionKey kIpv4TosKey = {IPPROTO_IP, IP_TOS};
+        const folly::SocketOptionKey kIpv6TosKey = {IPPROTO_IPV6, IPV6_TCLASS};
+        auto& dscpKey = addr.getIPAddress().isV4() ? kIpv4TosKey : kIpv6TosKey;
+        dscpKey.apply(fd, *dscp << 2);
+      }
+
+#if defined(SO_MARK)
+      if (auto mark = setupMetadata.markToReflect_ref()) {
+        const folly::SocketOptionKey kSoMarkKey = {SOL_SOCKET, SO_MARK};
+        kSoMarkKey.apply(fd, *mark);
+      }
+#endif
     }
   } catch (const std::exception& ex) {
     FB_LOG_EVERY_MS(WARNING, 60 * 1000)

@@ -178,9 +178,8 @@ void ThriftRocketServerHandler::handleSetupFrame(
       }
     }
 
-    if (meta.dscpToReflect_ref() &&
-        (!serverConfigs_ || !serverConfigs_->getTosReflect())) {
-      connection.applyDscpToSocket(*meta.dscpToReflect_ref());
+    if (meta.dscpToReflect_ref() || meta.markToReflect_ref()) {
+      connection.applyDscpAndMarkToSocket(meta);
     }
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(

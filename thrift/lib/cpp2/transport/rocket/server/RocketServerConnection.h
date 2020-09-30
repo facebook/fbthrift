@@ -134,7 +134,7 @@ class RocketServerConnection final
     closeIfNeeded();
   }
 
-  void applyDscpToSocket(int32_t dscp);
+  void applyDscpAndMarkToSocket(const RequestSetupMetadata& setupMetadata);
 
   class ReadResumableHandle {
    public:
