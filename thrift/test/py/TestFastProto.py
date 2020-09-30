@@ -12,29 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
-import unittest
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
+import unittest
+
+from FastProto.ttypes import (
+    AStruct,
+    NegativeFieldId,
+    OneOfEach,
+    Required,
+    StructWithUnion,
+    TestUnion,
+)
+from thrift.protocol import TBinaryProtocol, TCompactProtocol, fastproto
+from thrift.transport.TTransport import TMemoryBuffer
+from thrift.protocol.exceptions import ThriftUnicodeDecodeError
+
 if sys.version_info[0] >= 3:
     from thrift.util.BytesStrIO import BytesStrIO
+
     StringIO = BytesStrIO
 else:
     from cStringIO import StringIO
 
-from thrift.protocol import fastproto, TBinaryProtocol, TCompactProtocol, \
-    TProtocol
-from thrift.transport.TTransport import TMemoryBuffer
-
-from FastProto.ttypes import AStruct, OneOfEach, TestUnion, StructWithUnion, \
-    NegativeFieldId, Required
 
 class ReadOnlyBufferWithRefill(TMemoryBuffer):
-
     def __init__(self, index, value=None):
         self._value = value
         self._index = index
@@ -48,15 +51,18 @@ class ReadOnlyBufferWithRefill(TMemoryBuffer):
 
     def cstringio_refill(self, partialread, reqlen):
         self.refill_called += 1
-        self._readBuffer = StringIO(partialread + self._value[self._index:])
+        self._readBuffer = StringIO(partialread + self._value[self._index :])
         return self._readBuffer
 
 
-class AbstractTest():
-
+class AbstractTest:
     def encode_helper(self, obj):
-        buf = fastproto.encode(obj, [obj.__class__, obj.thrift_spec,
-                                     obj.isUnion()], utf8strings=0, protoid=self.PROTO)
+        buf = fastproto.encode(
+            obj,
+            [obj.__class__, obj.thrift_spec, obj.isUnion()],
+            utf8strings=0,
+            protoid=self.PROTO,
+        )
 
         trans = TMemoryBuffer(buf)
         if self.PROTO == 0:
@@ -68,7 +74,7 @@ class AbstractTest():
         obj_new.read(proto)
         self.assertEqual(obj, obj_new)
 
-    def decode_helper(self, obj, split=1.0):
+    def decode_helper(self, obj, split=1.0, utf8strings=0):
         trans = TMemoryBuffer()
         if self.PROTO == 0:
             proto = TBinaryProtocol.TBinaryProtocol(trans)
@@ -79,9 +85,13 @@ class AbstractTest():
         index = int(split * len(trans.getvalue()))
         trans = ReadOnlyBufferWithRefill(index, trans.getvalue())
         obj_new = obj.__class__()
-        fastproto.decode(obj_new, trans, [obj.__class__, obj.thrift_spec,
-                                          obj.isUnion()], utf8strings=0,
-                         protoid=self.PROTO)
+        fastproto.decode(
+            obj_new,
+            trans,
+            [obj.__class__, obj.thrift_spec, obj.isUnion()],
+            utf8strings=utf8strings,
+            protoid=self.PROTO,
+        )
         self.assertEqual(obj, obj_new)
         # Verify the entire buffer is read
         self.assertEqual(len(trans._readBuffer.read()), 0)
@@ -110,14 +120,15 @@ class AbstractTest():
             anInteger16=234,
             anInteger32=12345,
             anInteger64=12345678910,
-            aString=u'\x00hello',
-            aBinary=b'\x00\x01\x00',
+            aString="\x00hello",
+            aBinary=b"\x00\x01\x00",
             aDouble=1234567.901,
             aFloat=12345.0,
             aList=[12, 34, 567, 89],
-            aSet=set(["hello", "world", "good", "bye"]),
+            aSet={"hello", "world", "good", "bye"},
             aMap={"hello": 1, "world": 20},
-            aStruct=AStruct(aString="str", anInteger=109))
+            aStruct=AStruct(aString="str", anInteger=109),
+        )
 
     def buildOneOfEachB(self):
         return OneOfEach(
@@ -126,14 +137,15 @@ class AbstractTest():
             anInteger16=234,
             anInteger32=12345,
             anInteger64=12345678910,
-            aString=b'\x00hello',
-            aBinary=b'\x00\x01\x00',
+            aString=b"\x00hello",
+            aBinary=b"\x00\x01\x00",
             aDouble=1234567.901,
             aFloat=12345.0,
             aList=[12, 34, 567, 89],
-            aSet=set([b"hello", b"world", b"good", b"bye"]),
+            aSet={b"hello", b"world", b"good", b"bye"},
             aMap={b"hello": 1, b"world": 20},
-            aStruct=AStruct(aString=b"str", anInteger=109))
+            aStruct=AStruct(aString=b"str", anInteger=109),
+        )
 
     def test_encode(self):
         self.encode_helper(self.buildOneOfEach())
@@ -169,10 +181,10 @@ class AbstractTest():
             self.decode_helper(self.buildOneOfEachB(), split=0.01 * idx)
 
     def test_negative_fid(self):
-        self.encode_helper(NegativeFieldId(anInteger=20,
-                                           aString='hello', aDouble=1.2))
-        self.decode_helper(NegativeFieldId(anInteger=344444,
-                                           aString=b'hello again', aDouble=1.34566))
+        self.encode_helper(NegativeFieldId(anInteger=20, aString="hello", aDouble=1.2))
+        self.decode_helper(
+            NegativeFieldId(anInteger=344444, aString=b"hello again", aDouble=1.34566)
+        )
 
     def test_empty_container(self):
         self.encode_helper(OneOfEach(aSet=set(), aList=[], aMap={}))
@@ -187,6 +199,23 @@ class AbstractTest():
         aStruct = AStruct(aString="")
         required = Required(aStruct=aStruct)
         self.encode_and_decode(required)
+
+    def test_decode_failure_lists_fieldname(self):
+        obj = OneOfEach(aString="Привет".encode("cp866"))
+        # Can't use self.assertRaises since AbstractTest cannot inherit
+        # from unittest.TestCase
+        raised_exception = None
+        try:
+            self.decode_helper(obj, split=1.0, utf8strings=1)
+        except UnicodeDecodeError as ex:
+            raised_exception = ex
+        self.assertIsNotNone(raised_exception)
+        self.assertIn("when decoding field 'aString'", str(raised_exception))
+        self.assertIn(
+            "('utf-8', b'\\x8f\\xe0\\xa8\\xa2\\xa5\\xe2', 0, 1, 'invalid start byte')",
+            str(raised_exception),
+        )
+        self.assertTrue(isinstance(raised_exception, ThriftUnicodeDecodeError))
 
     def createProto(self, trans):
         if self.PROTO == 0:

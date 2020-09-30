@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderWithRefill.h>
 
+#include <folly/Format.h>
 #include <folly/Range.h>
 #include <folly/ScopeGuard.h>
 
@@ -45,6 +46,7 @@ using apache::thrift::protocol::TType;
 #if PY_MAJOR_VERSION >= 3
 static PyTypeObject* BytesIOType;
 #endif
+static PyObject* ExceptionsModule;
 
 // Stolen from cStringIO.c and also works for Python 3
 
@@ -679,7 +681,32 @@ static bool decode_struct(
 
     fieldval = decode_val(
         reader, parsedspec.type, parsedspec.typeargs, utf8strings, args);
+
     if (!fieldval) {
+      PyObject *pType, *pValue, *pTraceback;
+      PyErr_Fetch(&pType, &pValue, &pTraceback);
+      if (!PyErr_GivenExceptionMatches(pType, PyExc_UnicodeDecodeError)) {
+        PyErr_Restore(pType, pValue, pTraceback);
+        return false;
+      }
+#if PY_MAJOR_VERSION >= 3
+      const char* fieldName = PyUnicode_AsUTF8(parsedspec.attrname);
+#else
+      const char* fieldName = PyString_AsString(parsedspec.attrname);
+#endif
+      PyObject* create_func_method_name = Py_BuildValue(
+          "s", "create_ThriftUnicodeDecodeError_from_UnicodeDecodeError");
+      PyObject* pFieldName = Py_BuildValue("s", fieldName);
+
+      PyObject* decode_error = PyObject_CallMethodObjArgs(
+          ExceptionsModule, create_func_method_name, pValue, pFieldName, NULL);
+      PyObject* thrift_decode_error_type = PyObject_Type(decode_error);
+      PyErr_SetObject(thrift_decode_error_type, decode_error);
+      Py_DECREF(pType);
+      Py_DECREF(pValue);
+      if (pTraceback != nullptr) {
+        Py_DECREF(pTraceback);
+      }
       return false;
     }
 
@@ -1179,6 +1206,12 @@ PyMODINIT_FUNC initfastproto(void)
     return nullptr;
   }
   BytesIOType = (PyTypeObject*)PyObject_Type(bio);
+  ExceptionsModule = PyImport_ImportModule("thrift.protocol.exceptions");
+  if (ExceptionsModule == nullptr) {
+    Py_DECREF(iomodule);
+    Py_DECREF(bio);
+    return nullptr;
+  }
   module = PyModule_Create(&ThriftFastProtoModuleDef);
 #else
   PycString_IMPORT;
