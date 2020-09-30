@@ -10,11 +10,13 @@ package test.fixtures.params;
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
-import com.facebook.swift.transport.client.RpcOptions;
+import com.facebook.swift.service.metadata.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import org.apache.thrift.ProtocolId;
 
 @SwiftGenerated
 public class NestedContainersAsyncClientImpl extends AbstractThriftClient implements NestedContainers.Async {
@@ -45,6 +47,29 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
       super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      mapListMethodHandler = methodHandlerMap.get("mapList");
+      mapSetMethodHandler = methodHandlerMap.get("mapSet");
+      listMapMethodHandler = methodHandlerMap.get("listMap");
+      listSetMethodHandler = methodHandlerMap.get("listSet");
+      turtlesMethodHandler = methodHandlerMap.get("turtles");
+    }
+
+    public NestedContainersAsyncClientImpl(
+        Map<String, String> headers,
+        RpcClient rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(headers, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

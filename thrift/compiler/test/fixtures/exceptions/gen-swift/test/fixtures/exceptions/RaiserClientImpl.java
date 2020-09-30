@@ -10,10 +10,12 @@ package test.fixtures.exceptions;
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
-import com.facebook.swift.transport.client.RpcOptions;
+import com.facebook.swift.service.metadata.*;
+import com.facebook.swift.transport.client.*;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import org.apache.thrift.ProtocolId;
 
 @SwiftGenerated
 public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
@@ -42,6 +44,28 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
       super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      doBlandMethodHandler = methodHandlerMap.get("doBland");
+      doRaiseMethodHandler = methodHandlerMap.get("doRaise");
+      get200MethodHandler = methodHandlerMap.get("get200");
+      get500MethodHandler = methodHandlerMap.get("get500");
+    }
+
+    public RaiserClientImpl(
+        Map<String, String> headers,
+        RpcClient rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(headers, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

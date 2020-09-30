@@ -10,11 +10,13 @@ package test.fixtures.sink;
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
-import com.facebook.swift.transport.client.RpcOptions;
+import com.facebook.swift.service.metadata.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import org.apache.thrift.ProtocolId;
 
 @SwiftGenerated
 public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements SinkService.Async {
@@ -48,6 +50,30 @@ public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements 
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
       super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      methodMethodHandler = methodHandlerMap.get("method");
+      methodAndReponseMethodHandler = methodHandlerMap.get("methodAndReponse");
+      methodThrowMethodHandler = methodHandlerMap.get("methodThrow");
+      methodSinkThrowMethodHandler = methodHandlerMap.get("methodSinkThrow");
+      methodFinalThrowMethodHandler = methodHandlerMap.get("methodFinalThrow");
+      methodBothThrowMethodHandler = methodHandlerMap.get("methodBothThrow");
+    }
+
+    public SinkServiceAsyncClientImpl(
+        Map<String, String> headers,
+        RpcClient rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(headers, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

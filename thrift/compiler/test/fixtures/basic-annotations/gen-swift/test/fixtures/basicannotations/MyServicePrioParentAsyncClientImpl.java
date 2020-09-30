@@ -10,11 +10,13 @@ package test.fixtures.basicannotations;
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
-import com.facebook.swift.transport.client.RpcOptions;
+import com.facebook.swift.service.metadata.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import org.apache.thrift.ProtocolId;
 
 @SwiftGenerated
 public class MyServicePrioParentAsyncClientImpl extends AbstractThriftClient implements MyServicePrioParent.Async {
@@ -36,6 +38,26 @@ public class MyServicePrioParentAsyncClientImpl extends AbstractThriftClient imp
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
       super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      pingMethodHandler = methodHandlerMap.get("ping");
+      pongMethodHandler = methodHandlerMap.get("pong");
+    }
+
+    public MyServicePrioParentAsyncClientImpl(
+        Map<String, String> headers,
+        RpcClient rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(headers, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

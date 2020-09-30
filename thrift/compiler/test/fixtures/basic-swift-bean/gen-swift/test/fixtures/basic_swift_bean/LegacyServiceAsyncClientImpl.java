@@ -10,11 +10,13 @@ package test.fixtures.basic_swift_bean;
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
-import com.facebook.swift.transport.client.RpcOptions;
+import com.facebook.swift.service.metadata.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import org.apache.thrift.ProtocolId;
 
 @SwiftGenerated
 public class LegacyServiceAsyncClientImpl extends AbstractThriftClient implements LegacyService.Async {
@@ -33,6 +35,25 @@ public class LegacyServiceAsyncClientImpl extends AbstractThriftClient implement
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
       super(channel, headers, persistentHeaders, eventHandlers);
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      getPointsMethodHandler = methodHandlerMap.get("getPoints");
+    }
+
+    public LegacyServiceAsyncClientImpl(
+        Map<String, String> headers,
+        RpcClient rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      super(headers, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

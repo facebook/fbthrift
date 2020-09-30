@@ -22,11 +22,13 @@ package {{service:javaPackage}};
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
-import com.facebook.swift.transport.client.RpcOptions;
+import com.facebook.swift.service.metadata.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import org.apache.thrift.ProtocolId;
 
 @SwiftGenerated
 public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:extends}}AbstractThriftClient{{/service:extends}}{{#service:extends}}{{service:javaPackage}}.{{service:javaCapitalName}}AsyncClientImpl{{/service:extends}} implements {{service:javaCapitalName}}.Async {
@@ -49,6 +51,27 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
         Map<String, String> persistentHeaders,
         List<? extends ThriftClientEventHandler> eventHandlers) {
       {{^service:extends}}super(channel, headers, persistentHeaders, eventHandlers);{{/service:extends}}{{#service:extends}}super(channel, methods, headers, persistentHeaders, eventHandlers);{{/service:extends}}
+
+      Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
+      methods.forEach(
+          (key, value) -> {
+            methodHandlerMap.put(key.getName(), value);
+          });
+
+      // Set method handlers
+      {{#service:functions}}
+      {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
+      {{/service:functions}}
+    }
+
+    public {{service:javaCapitalName}}AsyncClientImpl(
+        Map<String, String> headers,
+        RpcClient rpcClient,
+        ThriftServiceMetadata serviceMetadata,
+        ThriftCodecManager codecManager,
+        ProtocolId protocolId,
+        Map<Method, ThriftMethodHandler> methods) {
+      {{^service:extends}}super(headers, rpcClient, serviceMetadata, codecManager, protocolId);{{/service:extends}}{{#service:extends}}super(headers, rpcClient, serviceMetadata, codecManager, protocolId, methods);{{/service:extends}}
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
