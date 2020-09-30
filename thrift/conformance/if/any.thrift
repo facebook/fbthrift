@@ -27,6 +27,7 @@ cpp_include "<folly/io/IOBuf.h>"
 include "thrift/conformance/if/protocol.thrift"
 
 const byte minTypeIdBytes = 16;
+const byte maxTypeIdBytes = 32;
 
 // Any encoded thrift value.
 struct Any {
@@ -61,5 +62,6 @@ struct AnyType {
   // The default number of bytes to use in a typeId for this type.
   //
   // 0 indicates a type_id should never be used.
-  3: byte typeIdBytes = minTypeIdBytes;
+  // unset indicates that the implemnation should decided.
+  3: optional byte typeIdBytes;
 }

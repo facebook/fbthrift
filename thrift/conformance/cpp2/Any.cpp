@@ -16,6 +16,8 @@
 
 #include <thrift/conformance/cpp2/Any.h>
 
+#include <fmt/core.h>
+#include <folly/lang/Exception.h>
 #include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
@@ -32,35 +34,30 @@ Protocol getProtocol(const Any& any) noexcept {
 
 bool hasProtocol(const Any& any, const Protocol& protocol) noexcept {
   if (any.protocol_ref() != StandardProtocol::None) {
-    // Fast path for the standard case.
-    return protocol.standard() == any.protocol_ref();
+    return any.protocol_ref() == protocol.standard();
   }
-  if (any.customProtocol_ref()) {
-    // Might not be normalized, so pass through the Protocol constructor.
-    return Protocol(any.customProtocol_ref().value_unchecked()) == protocol;
+  if (any.customProtocol_ref() &&
+      !any.customProtocol_ref().value_unchecked().empty()) {
+    return any.customProtocol_ref().value_unchecked() == protocol.custom();
   }
-  // We have no protocol.
+  // `any` has no protocol.
   return protocol.isNone();
 }
 
-void normalizeProtocol(Any& any) noexcept {
-  if (!any.customProtocol_ref()) {
-    // Nothing to normalize
-    return;
+void validateAnyType(const AnyType& type) {
+  validateUniversalType(*type.name_ref());
+  for (const auto& alias : *type.aliases_ref()) {
+    validateUniversalType(alias);
   }
-
-  if (any.protocol_ref() != StandardProtocol::None) {
-    // We have junk in the custom protocol field.
-    // This 'should' never happen.
-    any.customProtocol_ref().reset();
-    return;
-  }
-
-  // See if this should be normalized to a stnadard protocol.
-  if (auto standard =
-          getStandardProtocol(any.customProtocol_ref().value_unchecked())) {
-    any.customProtocol_ref().reset();
-    any.protocol_ref() = *standard;
+  auto typeIdBytes = type.typeIdBytes_ref().value_or(0);
+  if (typeIdBytes != 0 &&
+      (typeIdBytes < any_constants::minTypeIdBytes() ||
+       typeIdBytes > any_constants::maxTypeIdBytes())) {
+    folly::throw_exception<std::invalid_argument>(fmt::format(
+        "typeIdBytes must be between {} and {}: {}",
+        any_constants::minTypeIdBytes(),
+        any_constants::maxTypeIdBytes(),
+        typeIdBytes));
   }
 }
 

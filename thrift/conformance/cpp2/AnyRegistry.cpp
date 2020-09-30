@@ -117,6 +117,7 @@ std::any AnyRegistry::load(const Any& value) const {
 
 auto AnyRegistry::registerTypeImpl(const std::type_info& typeInfo, AnyType type)
     -> TypeEntry* {
+  validateAnyType(type);
   if (!checkNameAvailability(type)) {
     return nullptr;
   }
@@ -137,6 +138,7 @@ bool AnyRegistry::registerSerializerImpl(
   if (serializer == nullptr) {
     return false;
   }
+  validateProtocol(serializer->getProtocol());
   return entry->serializers.emplace(serializer->getProtocol(), serializer)
       .second;
 }

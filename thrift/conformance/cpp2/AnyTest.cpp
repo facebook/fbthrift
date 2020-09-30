@@ -25,13 +25,18 @@ namespace {
 
 TEST(AnyTest, None) {
   Any any;
+  validateAny(any);
   EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
   any.set_protocol(StandardProtocol::None);
+  validateAny(any);
   EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
   any.set_customProtocol("");
+  validateAny(any);
   EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
+
   any.set_customProtocol("None");
-  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
+  EXPECT_NE(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
+  EXPECT_THROW(validateAny(any), std::invalid_argument);
 }
 
 TEST(AnyTest, Standard) {
@@ -41,24 +46,17 @@ TEST(AnyTest, Standard) {
   EXPECT_TRUE(
       hasProtocol(any, getStandardProtocol<StandardProtocol::Binary>()));
 
-  // Unnormalize name.
-  any.set_protocol(StandardProtocol::None);
-  any.set_customProtocol("Binary");
-  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Binary>());
-  EXPECT_TRUE(
-      hasProtocol(any, getStandardProtocol<StandardProtocol::Binary>()));
-  normalizeProtocol(any);
-  EXPECT_EQ(*any.protocol_ref(), StandardProtocol::Binary);
-  EXPECT_FALSE(any.customProtocol_ref().has_value());
-
   // Junk in the customProtocol.
   any.set_customProtocol("Ignored");
   EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Binary>());
   EXPECT_TRUE(
       hasProtocol(any, getStandardProtocol<StandardProtocol::Binary>()));
-  normalizeProtocol(any);
-  EXPECT_EQ(*any.protocol_ref(), StandardProtocol::Binary);
-  EXPECT_FALSE(any.customProtocol_ref().has_value());
+
+  // Unnormalize name.
+  any.set_protocol(StandardProtocol::None);
+  any.set_customProtocol("Binary");
+  EXPECT_NE(getProtocol(any), getStandardProtocol<StandardProtocol::Binary>());
+  EXPECT_THROW(validateAny(any), std::invalid_argument);
 }
 
 TEST(AnyTest, Custom) {
@@ -72,11 +70,6 @@ TEST(AnyTest, Custom) {
   EXPECT_FALSE(hasProtocol(any, Protocol(StandardProtocol::None)));
   EXPECT_NE(getProtocol(any), Protocol(StandardProtocol::Binary));
   EXPECT_FALSE(hasProtocol(any, Protocol(StandardProtocol::Binary)));
-
-  // Normalization does nothing.
-  normalizeProtocol(any);
-  EXPECT_EQ(*any.protocol_ref(), StandardProtocol::None);
-  EXPECT_EQ(any.customProtocol_ref(), "Hi");
 }
 
 TEST(AnyTest, Unknown) {
@@ -85,11 +78,6 @@ TEST(AnyTest, Unknown) {
   EXPECT_EQ(getProtocol(any), UnknownProtocol());
   EXPECT_TRUE(hasProtocol(any, UnknownProtocol()));
   EXPECT_EQ(getProtocol(any).name(), "");
-
-  // Normalization does nothing.
-  normalizeProtocol(any);
-  EXPECT_EQ(*any.protocol_ref(), kUnknownStdProtocol);
-  EXPECT_FALSE(any.customProtocol_ref().has_value());
 }
 
 TEST(AnyTest, Custom_EmptyString) {
@@ -97,12 +85,6 @@ TEST(AnyTest, Custom_EmptyString) {
   // Empty string protocol is the same as None
   any.set_customProtocol("");
   EXPECT_TRUE(any.customProtocol_ref().has_value());
-  EXPECT_EQ(getProtocol(any), kNoProtocol);
-  EXPECT_TRUE(hasProtocol(any, kNoProtocol));
-
-  // Normalization resets customProtocol.
-  normalizeProtocol(any);
-  EXPECT_FALSE(any.customProtocol_ref().has_value());
   EXPECT_EQ(getProtocol(any), kNoProtocol);
   EXPECT_TRUE(hasProtocol(any, kNoProtocol));
 }
@@ -122,6 +104,44 @@ TEST(AnyTest, ValidateAny) {
   EXPECT_THROW(validateAny(any), std::invalid_argument);
   any.customProtocol_ref() = good;
   validateAny(any);
+}
+
+TEST(AnyTest, ValidateAnyType) {
+  const auto bad = "foo.com:42/my/type";
+  const auto good = "foo.com/my/type";
+  AnyType type;
+  EXPECT_THROW(validateAnyType(type), std::invalid_argument);
+  type.name_ref() = good;
+  validateAnyType(type);
+  type.aliases_ref()->emplace_back(good);
+  validateAnyType(type);
+  type.set_typeIdBytes(any_constants::minTypeIdBytes());
+  validateAnyType(type);
+  type.set_typeIdBytes(any_constants::maxTypeIdBytes());
+  validateAnyType(type);
+
+  {
+    AnyType badType(type);
+    badType.set_name(bad);
+    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
+  }
+
+  {
+    AnyType badType(type);
+    badType.aliases_ref()->emplace_back(bad);
+    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
+  }
+
+  {
+    AnyType badType(type);
+    badType.set_typeIdBytes(1);
+    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
+  }
+  {
+    AnyType badType(type);
+    badType.set_typeIdBytes(100);
+    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
+  }
 }
 
 } // namespace

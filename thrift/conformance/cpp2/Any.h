@@ -43,6 +43,7 @@ AnyType createAnyType(
 
 // Raises std::invalid_argument if invalid.
 void validateAny(const Any& any);
+void validateAnyType(const AnyType& type);
 
 // Implementation
 

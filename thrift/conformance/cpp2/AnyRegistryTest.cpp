@@ -28,9 +28,10 @@ namespace {
 TEST(AnyRegistryTest, Behavior) {
   AnyRegistry registry;
   EXPECT_EQ(registry.getTypeName(typeid(int)), "");
-  EXPECT_EQ(registry.getSerializer("int", kFollyToStringProtocol), nullptr);
   EXPECT_EQ(
-      registry.getSerializer(typeid(int), kFollyToStringProtocol), nullptr);
+      registry.getSerializer(thriftType("int"), kFollyToStringProtocol),
+      nullptr);
+  EXPECT_EQ(registry.getSerializer<int>(kFollyToStringProtocol), nullptr);
 
   FollyToStringSerializer<int> intCodec;
 
@@ -38,24 +39,27 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_THROW(registry.registerSerializer<int>(&intCodec), std::out_of_range);
 
   // Empty string is rejected.
-  EXPECT_FALSE(registry.registerType<int>(createTestAnyType("")));
+  EXPECT_THROW(
+      registry.registerType<int>(testAnyType("")), std::invalid_argument);
 
-  EXPECT_TRUE(registry.registerType<int>(createTestAnyType("int")));
-  EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
-  EXPECT_EQ(registry.getSerializer("int", kFollyToStringProtocol), nullptr);
+  EXPECT_TRUE(registry.registerType<int>(testAnyType("int")));
+  EXPECT_EQ(registry.getTypeName(typeid(int)), thriftType("int"));
   EXPECT_EQ(
-      registry.getSerializer(typeid(int), kFollyToStringProtocol), nullptr);
+      registry.getSerializer(thriftType("int"), kFollyToStringProtocol),
+      nullptr);
+  EXPECT_EQ(registry.getSerializer<int>(kFollyToStringProtocol), nullptr);
 
   // Conflicting and duplicate registrations are rejected.
-  EXPECT_FALSE(registry.registerType<int>(createTestAnyType("int")));
-  EXPECT_FALSE(registry.registerType<int>(createTestAnyType("other int")));
-  EXPECT_FALSE(registry.registerType<double>(createTestAnyType("int")));
+  EXPECT_FALSE(registry.registerType<int>(testAnyType("int")));
+  EXPECT_FALSE(registry.registerType<int>(testAnyType("other-int")));
+  EXPECT_FALSE(registry.registerType<double>(testAnyType("int")));
 
   EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
-  EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
-  EXPECT_EQ(registry.getSerializer("int", kFollyToStringProtocol), &intCodec);
+  EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
   EXPECT_EQ(
-      registry.getSerializer(typeid(int), kFollyToStringProtocol), &intCodec);
+      registry.getSerializer(thriftType("int"), kFollyToStringProtocol),
+      &intCodec);
+  EXPECT_EQ(registry.getSerializer<int>(kFollyToStringProtocol), &intCodec);
 
   // Duplicate registrations are rejected.
   EXPECT_FALSE(registry.registerSerializer<int>(&intCodec));
@@ -63,7 +67,7 @@ TEST(AnyRegistryTest, Behavior) {
   Number1Serializer number1Codec;
   EXPECT_TRUE(registry.registerSerializer<int>(&number1Codec));
 
-  EXPECT_TRUE(registry.registerType<double>(createTestAnyType("double")));
+  EXPECT_TRUE(registry.registerType<double>(testAnyType("double")));
 
   // nullptr is rejected.
   EXPECT_FALSE(registry.registerSerializer<double>(nullptr));
@@ -72,7 +76,7 @@ TEST(AnyRegistryTest, Behavior) {
       std::make_unique<FollyToStringSerializer<double>>()));
 
   Any value = registry.store(3, kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_EQ(*value.type_ref(), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
@@ -82,12 +86,12 @@ TEST(AnyRegistryTest, Behavior) {
   // Storing an Any does nothing if the protocols match.
   Any original = value;
   value = registry.store(original, kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_EQ(*value.type_ref(), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   value = registry.store(std::any(std::move(original)), kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_EQ(*value.type_ref(), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
@@ -95,13 +99,13 @@ TEST(AnyRegistryTest, Behavior) {
   // Storing an Any with a different protocol does a conversion.
   original = value;
   value = registry.store(original, Number1Serializer::kProtocol);
-  EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_EQ(*value.type_ref(), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
   value = registry.store(
       std::any(std::move(original)), Number1Serializer::kProtocol);
-  EXPECT_EQ(*value.type_ref(), "int");
+  EXPECT_EQ(*value.type_ref(), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
@@ -128,7 +132,7 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_THROW(registry.load<float>(value), std::bad_any_cast);
 
   value = registry.store(2.5, kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), "double");
+  EXPECT_EQ(*value.type_ref(), thriftType("double"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "2.5");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
@@ -143,22 +147,46 @@ TEST(AnyRegistryTest, Aliases) {
   Number1Serializer oneCodec;
 
   EXPECT_TRUE(registry.registerType<int>(
-      createTestAnyType({"int", "Int", "Integer"}), {&oneCodec, &intCodec}));
-  EXPECT_EQ(registry.getTypeName(typeid(int)), "int");
+      testAnyType({"int", "Int", "Integer"}), {&oneCodec, &intCodec}));
+  EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
 
   auto any = registry.store(1, kFollyToStringProtocol);
   // Stored under the main type name.
-  EXPECT_EQ(*any.type_ref(), "int");
+  EXPECT_EQ(*any.type_ref(), thriftType("int"));
   EXPECT_EQ(registry.load<int>(any), 1);
 
-  any.type_ref() = "Int";
+  any.type_ref() = thriftType("Int");
   EXPECT_EQ(registry.load<int>(any), 1);
 
-  any.type_ref() = "Integer";
+  any.type_ref() = thriftType("Integer");
   EXPECT_EQ(registry.load<int>(any), 1);
 
-  any.type_ref() = "Unknown";
+  any.type_ref() = thriftType("Unknown");
   EXPECT_THROW(registry.load<int>(any), std::bad_any_cast);
+}
+
+TEST(AnyRegistryTest, ForwardCompat_Protocol) {
+  AnyRegistry registry;
+  Protocol invalidProtocol("invalid");
+  EXPECT_THROW(validateProtocol(invalidProtocol), std::invalid_argument);
+  // Lookup does not throw.
+  EXPECT_EQ(registry.getSerializer<int>(invalidProtocol), nullptr);
+}
+
+TEST(AnyRegistryTest, ForwardCompat_Any) {
+  AnyRegistry registry;
+  FollyToStringSerializer<int> intCodec;
+
+  EXPECT_TRUE(registry.registerType<int>(testAnyType("int")));
+  EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
+
+  Any any = registry.store(1, kFollyToStringProtocol);
+
+  validateAny(any);
+  any.type_ref() = "invalid";
+  EXPECT_THROW(validateAny(any), std::invalid_argument);
+  // Load does not throw std::invalid_argument.
+  EXPECT_THROW(registry.load(any), std::bad_any_cast);
 }
 
 } // namespace

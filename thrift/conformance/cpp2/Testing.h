@@ -20,6 +20,7 @@
 
 #include <initializer_list>
 #include <string>
+#include <string_view>
 
 #include <folly/Conv.h>
 #include <folly/io/Cursor.h>
@@ -48,8 +49,12 @@ inline const Protocol& UnknownProtocol() {
   return getStandardProtocol<kUnknownStdProtocol>();
 }
 
-AnyType createTestAnyType(const std::string& shortName);
-AnyType createTestAnyType(std::initializer_list<const char*> names);
+// Creates a AnyType for tests using the given name(s).
+AnyType testAnyType(const std::string& shortName);
+AnyType testAnyType(std::initializer_list<const char*> names);
+
+// Returns the full thrift type name, for the given type.
+std::string thriftType(std::string_view type);
 
 std::string toString(const folly::IOBuf& buf);
 

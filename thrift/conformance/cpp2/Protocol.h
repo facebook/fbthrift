@@ -40,8 +40,8 @@ class Protocol {
   Protocol(const Protocol&) = default;
   Protocol(Protocol&&) noexcept = default;
 
-  explicit Protocol(StandardProtocol protocol) noexcept : standard_(protocol) {}
-  explicit Protocol(std::string name) noexcept;
+  explicit Protocol(StandardProtocol standard) noexcept : standard_(standard) {}
+  explicit Protocol(std::string custom) noexcept : custom_(std::move(custom)) {}
   explicit Protocol(ProtocolStruct protocol) noexcept;
 
   Protocol& operator=(const Protocol&) = default;
@@ -100,10 +100,6 @@ FOLLY_EXPORT const Protocol& getStandardProtocol() noexcept {
   return *kValue;
 }
 
-// Attempts to get the standard protocol for the given name.
-std::optional<StandardProtocol> getStandardProtocol(
-    const std::string& name) noexcept;
-
 inline const Protocol kNoProtocol = {};
 
 } // namespace apache::thrift::conformance
@@ -117,7 +113,7 @@ struct hash<apache::thrift::conformance::Protocol> {
     size_t h1 = std::hash<apache::thrift::conformance::StandardProtocol>{}(
         protocol.standard());
     size_t h2 = std::hash<std::string>{}(protocol.custom());
-    // Since h1 and h2 are mutually exclusive, so we just add them.
+    // Since h1 and h2 are mutually exclusive, we can just add them.
     return h1 + h2;
   }
 };

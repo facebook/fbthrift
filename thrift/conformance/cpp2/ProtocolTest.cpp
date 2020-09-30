@@ -30,7 +30,9 @@ void testStandardProtocol(std::string_view expectedName) {
   // 3 ways to get the protocol all return the same value.
   const auto& protocol = getStandardProtocol<StdProtocol>();
   EXPECT_EQ(Protocol(StdProtocol), protocol);
-  EXPECT_EQ(Protocol(std::string(expectedName)), protocol);
+  const auto asCustom = Protocol(std::string(expectedName));
+  EXPECT_NE(asCustom, protocol);
+  EXPECT_THROW(validateProtocol(asCustom), std::invalid_argument);
 
   // We get the expected name.
   EXPECT_EQ(protocol.name(), expectedName);
@@ -48,14 +50,17 @@ TEST(ProtocolTest, Standard) {
 
 TEST(Protocol, Empty) {
   Protocol empty;
+  validateProtocol(empty);
   EXPECT_EQ(empty.name(), "None");
   EXPECT_EQ(empty.standard(), StandardProtocol::None);
   EXPECT_EQ(empty.custom(), "");
 
   EXPECT_EQ(empty, kNoProtocol);
   EXPECT_EQ(empty, Protocol(""));
-  EXPECT_EQ(empty, Protocol("None"));
   EXPECT_EQ(empty, getStandardProtocol<StandardProtocol::None>());
+
+  EXPECT_NE(empty, Protocol("None"));
+  EXPECT_THROW(validateProtocol(Protocol{"None"}), std::invalid_argument);
 }
 
 TEST(Protocol, Unknown) {
@@ -69,13 +74,6 @@ TEST(ProtocolTest, Custom) {
   EXPECT_EQ(protocol.custom(), "hi");
   EXPECT_EQ(Protocol("hi"), protocol);
   EXPECT_NE(Protocol("bye"), protocol);
-}
-
-TEST(Protocol, GetStandardProtocol) {
-  EXPECT_EQ(getStandardProtocol(""), StandardProtocol::None);
-  EXPECT_EQ(getStandardProtocol("None"), StandardProtocol::None);
-  EXPECT_EQ(getStandardProtocol("Hi"), std::nullopt);
-  EXPECT_EQ(getStandardProtocol("Binary"), StandardProtocol::Binary);
 }
 
 TEST(AnyTest, ValidateProtocol) {

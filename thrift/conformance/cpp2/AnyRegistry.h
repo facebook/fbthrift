@@ -91,15 +91,6 @@ class AnyRegistry {
   bool registerType(AnyType type) {
     return registerType(typeid(T), std::move(type));
   }
-  template <typename T>
-  bool registerSerializer(const AnySerializer* serializer) {
-    return registerSerializer(typeid(T), serializer);
-  }
-  template <typename T>
-  bool registerSerializer(std::unique_ptr<AnySerializer> serializer) {
-    return registerSerializer(typeid(T), std::move(serializer));
-  }
-
   template <typename C = std::initializer_list<const AnySerializer*>>
   bool
   registerType(const std::type_info& typeInfo, AnyType type, C&& serializers);
@@ -110,6 +101,25 @@ class AnyRegistry {
   bool registerType(AnyType type, C&& serializers) {
     return registerType(
         typeid(T), std::move(type), std::forward<C>(serializers));
+  }
+
+  template <typename T>
+  bool registerSerializer(const AnySerializer* serializer) {
+    return registerSerializer(typeid(T), serializer);
+  }
+  template <typename T>
+  bool registerSerializer(std::unique_ptr<AnySerializer> serializer) {
+    return registerSerializer(typeid(T), std::move(serializer));
+  }
+
+  template <typename T>
+  const AnySerializer* getSerializer(const Protocol& protocol) const {
+    return getSerializer(typeid(T), protocol);
+  }
+
+  template <typename T>
+  std::string_view getTypeName() const {
+    return getTypeName(typeid(T));
   }
 
  private:

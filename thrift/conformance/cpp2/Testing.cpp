@@ -16,26 +16,34 @@
 
 #include <thrift/conformance/cpp2/Testing.h>
 
+#include <fmt/core.h>
 #include <folly/lang/Exception.h>
 #include <folly/portability/GTest.h>
 
 namespace apache::thrift::conformance {
 
-const Protocol Number1Serializer::kProtocol = Protocol("Number1");
-const Protocol kFollyToStringProtocol = Protocol("FollyToString");
+const Protocol Number1Serializer::kProtocol = Protocol(thriftType("Number1"));
+const Protocol kFollyToStringProtocol = Protocol(thriftType("FollyToString"));
 
-AnyType createTestAnyType(const std::string& shortName) {
-  return createTestAnyType({shortName.c_str()});
+std::string thriftType(std::string_view type) {
+  if (type.empty()) {
+    return {};
+  }
+  return fmt::format("facebook.com/thrift/{}", type);
 }
 
-AnyType createTestAnyType(std::initializer_list<const char*> names) {
+AnyType testAnyType(const std::string& shortName) {
+  return testAnyType({shortName.c_str()});
+}
+
+AnyType testAnyType(std::initializer_list<const char*> names) {
   AnyType type;
   auto itr = names.begin();
   if (itr != names.end()) {
-    type.set_name(*itr++);
+    type.set_name(thriftType(*itr++));
   }
-  for (; itr != names.end(); ++itr) {
-    type.aliases_ref()->emplace_back(*itr);
+  while (itr != names.end()) {
+    type.aliases_ref()->emplace_back(thriftType(*itr++));
   }
   return type;
 }

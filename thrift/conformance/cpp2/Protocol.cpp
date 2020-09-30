@@ -21,43 +21,11 @@
 
 namespace apache::thrift::conformance {
 
-std::optional<StandardProtocol> getStandardProtocol(
-    const std::string& name) noexcept {
-  if (name.empty()) {
-    // Interpreted as None.
-    return StandardProtocol::None;
-  }
-
-  StandardProtocol result;
-  if (!apache::thrift::TEnumTraits<StandardProtocol>::findValue(
-          name.c_str(), &result)) {
-    // Not a known standard protocol.
-    return std::nullopt;
-  }
-
-  // It is a standard protocol!
-  return result;
-}
-
-Protocol::Protocol(std::string name) noexcept : custom_(std::move(name)) {
-  if (apache::thrift::TEnumTraits<StandardProtocol>::findValue(
-          custom_.c_str(), &standard_)) {
-    // Actually a standard protocol.
-    custom_ = {};
-  }
-}
-
 Protocol::Protocol(ProtocolStruct protocolStruct) noexcept
     : standard_(*protocolStruct.standard_ref()) {
   if (standard_ == StandardProtocol::None &&
       protocolStruct.custom_ref().has_value()) {
-    // Has a custom name, try to convert it to a standard protocol.
-    if (!apache::thrift::TEnumTraits<StandardProtocol>::findValue(
-            protocolStruct.custom_ref().value_unchecked().c_str(),
-            &standard_)) {
-      // Not a standard protocol, so store the custom name.
-      custom_ = std::move(protocolStruct.custom_ref().value_unchecked());
-    }
+    custom_ = std::move(protocolStruct.custom_ref().value_unchecked());
   }
 }
 
