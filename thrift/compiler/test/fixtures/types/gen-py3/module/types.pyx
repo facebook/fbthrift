@@ -334,14 +334,16 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__decorated_struct()
 
     cdef __iobuf.IOBuf _serialize(decorated_struct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cdecorated_struct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cdecorated_struct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(decorated_struct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cdecorated_struct]()
-        needed = serializer.cdeserialize[cdecorated_struct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cdecorated_struct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -671,14 +673,16 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__ContainerStruct()
 
     cdef __iobuf.IOBuf _serialize(ContainerStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cContainerStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cContainerStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ContainerStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cContainerStruct]()
-        needed = serializer.cdeserialize[cContainerStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cContainerStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -813,14 +817,16 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__CppTypeStruct()
 
     cdef __iobuf.IOBuf _serialize(CppTypeStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cCppTypeStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cCppTypeStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(CppTypeStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cCppTypeStruct]()
-        needed = serializer.cdeserialize[cCppTypeStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cCppTypeStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -963,14 +969,16 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__VirtualStruct()
 
     cdef __iobuf.IOBuf _serialize(VirtualStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cVirtualStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cVirtualStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(VirtualStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cVirtualStruct]()
-        needed = serializer.cdeserialize[cVirtualStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cVirtualStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1138,14 +1146,16 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__MyStructWithForwardRefEnum()
 
     cdef __iobuf.IOBuf _serialize(MyStructWithForwardRefEnum self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cMyStructWithForwardRefEnum](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyStructWithForwardRefEnum](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(MyStructWithForwardRefEnum self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStructWithForwardRefEnum]()
-        needed = serializer.cdeserialize[cMyStructWithForwardRefEnum](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cMyStructWithForwardRefEnum](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1319,14 +1329,16 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__TrivialNumeric()
 
     cdef __iobuf.IOBuf _serialize(TrivialNumeric self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cTrivialNumeric](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cTrivialNumeric](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(TrivialNumeric self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cTrivialNumeric]()
-        needed = serializer.cdeserialize[cTrivialNumeric](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cTrivialNumeric](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1502,14 +1514,16 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__TrivialNestedWithDefault()
 
     cdef __iobuf.IOBuf _serialize(TrivialNestedWithDefault self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cTrivialNestedWithDefault](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cTrivialNestedWithDefault](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(TrivialNestedWithDefault self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cTrivialNestedWithDefault]()
-        needed = serializer.cdeserialize[cTrivialNestedWithDefault](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cTrivialNestedWithDefault](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1675,14 +1689,16 @@ cdef class ComplexString(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__ComplexString()
 
     cdef __iobuf.IOBuf _serialize(ComplexString self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cComplexString](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cComplexString](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ComplexString self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cComplexString]()
-        needed = serializer.cdeserialize[cComplexString](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cComplexString](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1852,14 +1868,16 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__ComplexNestedWithDefault()
 
     cdef __iobuf.IOBuf _serialize(ComplexNestedWithDefault self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cComplexNestedWithDefault](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cComplexNestedWithDefault](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ComplexNestedWithDefault self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cComplexNestedWithDefault]()
-        needed = serializer.cdeserialize[cComplexNestedWithDefault](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cComplexNestedWithDefault](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -2140,14 +2158,16 @@ cdef class MinPadding(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__MinPadding()
 
     cdef __iobuf.IOBuf _serialize(MinPadding self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cMinPadding](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMinPadding](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(MinPadding self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cMinPadding]()
-        needed = serializer.cdeserialize[cMinPadding](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cMinPadding](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -2381,14 +2401,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__MyStruct()
 
     cdef __iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cMyStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(MyStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
-        needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -2473,14 +2495,16 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__MyDataItem()
 
     cdef __iobuf.IOBuf _serialize(MyDataItem self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cMyDataItem](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyDataItem](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(MyDataItem self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyDataItem]()
-        needed = serializer.cdeserialize[cMyDataItem](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cMyDataItem](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -2623,14 +2647,16 @@ cdef class Renaming(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__Renaming()
 
     cdef __iobuf.IOBuf _serialize(Renaming self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cRenaming](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cRenaming](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(Renaming self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cRenaming]()
-        needed = serializer.cdeserialize[cRenaming](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cRenaming](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -2788,14 +2814,16 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__AnnotatedTypes()
 
     cdef __iobuf.IOBuf _serialize(AnnotatedTypes self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cAnnotatedTypes](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cAnnotatedTypes](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(AnnotatedTypes self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cAnnotatedTypes]()
-        needed = serializer.cdeserialize[cAnnotatedTypes](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cAnnotatedTypes](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -2967,14 +2995,16 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__ForwardUsageRoot()
 
     cdef __iobuf.IOBuf _serialize(ForwardUsageRoot self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cForwardUsageRoot](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cForwardUsageRoot](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ForwardUsageRoot self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cForwardUsageRoot]()
-        needed = serializer.cdeserialize[cForwardUsageRoot](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cForwardUsageRoot](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -3114,14 +3144,16 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__ForwardUsageStruct()
 
     cdef __iobuf.IOBuf _serialize(ForwardUsageStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cForwardUsageStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cForwardUsageStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ForwardUsageStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cForwardUsageStruct]()
-        needed = serializer.cdeserialize[cForwardUsageStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cForwardUsageStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -3261,14 +3293,16 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__ForwardUsageByRef()
 
     cdef __iobuf.IOBuf _serialize(ForwardUsageByRef self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cForwardUsageByRef](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cForwardUsageByRef](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ForwardUsageByRef self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cForwardUsageByRef]()
-        needed = serializer.cdeserialize[cForwardUsageByRef](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cForwardUsageByRef](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -3363,14 +3397,16 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__NoexceptMoveEmpty()
 
     cdef __iobuf.IOBuf _serialize(NoexceptMoveEmpty self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cNoexceptMoveEmpty](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cNoexceptMoveEmpty](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(NoexceptMoveEmpty self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNoexceptMoveEmpty]()
-        needed = serializer.cdeserialize[cNoexceptMoveEmpty](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cNoexceptMoveEmpty](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -3513,14 +3549,16 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__NoexceptMoveSimpleStruct()
 
     cdef __iobuf.IOBuf _serialize(NoexceptMoveSimpleStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cNoexceptMoveSimpleStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cNoexceptMoveSimpleStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(NoexceptMoveSimpleStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNoexceptMoveSimpleStruct]()
-        needed = serializer.cdeserialize[cNoexceptMoveSimpleStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cNoexceptMoveSimpleStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -3906,14 +3944,16 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__NoexceptMoveComplexStruct()
 
     cdef __iobuf.IOBuf _serialize(NoexceptMoveComplexStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cNoexceptMoveComplexStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cNoexceptMoveComplexStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(NoexceptMoveComplexStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNoexceptMoveComplexStruct]()
-        needed = serializer.cdeserialize[cNoexceptMoveComplexStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cNoexceptMoveComplexStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -4050,14 +4090,16 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
         return _types_reflection.get_reflection__NoExceptMoveUnion()
 
     cdef __iobuf.IOBuf _serialize(NoExceptMoveUnion self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cNoExceptMoveUnion](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cNoExceptMoveUnion](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(NoExceptMoveUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNoExceptMoveUnion]()
-        needed = serializer.cdeserialize[cNoExceptMoveUnion](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cNoExceptMoveUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
@@ -4320,14 +4362,16 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__AllocatorAware()
 
     cdef __iobuf.IOBuf _serialize(AllocatorAware self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cAllocatorAware](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cAllocatorAware](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(AllocatorAware self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cAllocatorAware]()
-        needed = serializer.cdeserialize[cAllocatorAware](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cAllocatorAware](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -4470,14 +4514,16 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__AllocatorAware2()
 
     cdef __iobuf.IOBuf _serialize(AllocatorAware2 self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cAllocatorAware2](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cAllocatorAware2](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(AllocatorAware2 self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cAllocatorAware2]()
-        needed = serializer.cdeserialize[cAllocatorAware2](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cAllocatorAware2](buf, self._cpp_obj.get(), proto)
         return needed
 
 

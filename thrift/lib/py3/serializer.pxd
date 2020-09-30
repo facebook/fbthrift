@@ -23,7 +23,7 @@ from thrift.py3.common cimport Protocol as cProtocol
 
 
 cdef extern from "thrift/lib/py3/serializer.h" namespace "::thrift::py3" nogil:
-    cIOBufQueue cserialize "::thrift::py3::serialize"[T](const T* obj, cProtocol protocol) except +
+    unique_ptr[cIOBuf] cserialize "::thrift::py3::serialize"[T](const T* obj, cProtocol protocol) except +
     uint32_t cdeserialize"::thrift::py3::deserialize"[T](const cIOBuf* buf, T* obj, cProtocol protocol) except +
 
 

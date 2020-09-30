@@ -23,7 +23,7 @@ namespace thrift {
 namespace py3 {
 using apache::thrift::protocol::PROTOCOL_TYPES;
 template <typename T>
-folly::IOBufQueue serialize(const T* obj, PROTOCOL_TYPES protocol) {
+std::unique_ptr<folly::IOBuf> serialize(const T* obj, PROTOCOL_TYPES protocol) {
   auto queue = folly::IOBufQueue{folly::IOBufQueue::cacheChainLength()};
   switch (protocol) {
     case PROTOCOL_TYPES::T_COMPACT_PROTOCOL:
@@ -45,7 +45,7 @@ folly::IOBufQueue serialize(const T* obj, PROTOCOL_TYPES protocol) {
     default:
       LOG(FATAL) << "Bad serialization protocol " << uint8_t(protocol);
   }
-  return queue;
+  return queue.move();
 }
 
 template <typename T>

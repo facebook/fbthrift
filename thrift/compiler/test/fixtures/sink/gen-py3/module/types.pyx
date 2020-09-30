@@ -175,14 +175,16 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__InitialResponse()
 
     cdef __iobuf.IOBuf _serialize(InitialResponse self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cInitialResponse](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cInitialResponse](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(InitialResponse self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cInitialResponse]()
-        needed = serializer.cdeserialize[cInitialResponse](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cInitialResponse](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -319,14 +321,16 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__FinalResponse()
 
     cdef __iobuf.IOBuf _serialize(FinalResponse self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cFinalResponse](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cFinalResponse](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(FinalResponse self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cFinalResponse]()
-        needed = serializer.cdeserialize[cFinalResponse](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cFinalResponse](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -463,14 +467,16 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__SinkPayload()
 
     cdef __iobuf.IOBuf _serialize(SinkPayload self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cSinkPayload](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cSinkPayload](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(SinkPayload self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cSinkPayload]()
-        needed = serializer.cdeserialize[cSinkPayload](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cSinkPayload](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -607,14 +613,16 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__CompatibleWithKeywordSink()
 
     cdef __iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cCompatibleWithKeywordSink](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cCompatibleWithKeywordSink](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(CompatibleWithKeywordSink self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cCompatibleWithKeywordSink]()
-        needed = serializer.cdeserialize[cCompatibleWithKeywordSink](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cCompatibleWithKeywordSink](buf, self._cpp_obj.get(), proto)
         return needed
 
 

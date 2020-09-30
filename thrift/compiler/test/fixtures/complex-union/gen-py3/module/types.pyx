@@ -448,14 +448,16 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return _types_reflection.get_reflection__ComplexUnion()
 
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cComplexUnion](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cComplexUnion](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ComplexUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cComplexUnion]()
-        needed = serializer.cdeserialize[cComplexUnion](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cComplexUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
@@ -584,14 +586,16 @@ cdef class ListUnion(thrift.py3.types.Union):
         return _types_reflection.get_reflection__ListUnion()
 
     cdef __iobuf.IOBuf _serialize(ListUnion self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cListUnion](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cListUnion](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ListUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cListUnion]()
-        needed = serializer.cdeserialize[cListUnion](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cListUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
@@ -720,14 +724,16 @@ cdef class DataUnion(thrift.py3.types.Union):
         return _types_reflection.get_reflection__DataUnion()
 
     cdef __iobuf.IOBuf _serialize(DataUnion self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cDataUnion](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cDataUnion](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(DataUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cDataUnion]()
-        needed = serializer.cdeserialize[cDataUnion](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cDataUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
@@ -932,14 +938,16 @@ cdef class Val(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__Val()
 
     cdef __iobuf.IOBuf _serialize(Val self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cVal](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cVal](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(Val self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cVal]()
-        needed = serializer.cdeserialize[cVal](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cVal](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1066,14 +1074,16 @@ cdef class ValUnion(thrift.py3.types.Union):
         return _types_reflection.get_reflection__ValUnion()
 
     cdef __iobuf.IOBuf _serialize(ValUnion self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cValUnion](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cValUnion](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(ValUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cValUnion]()
-        needed = serializer.cdeserialize[cValUnion](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cValUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
@@ -1202,14 +1212,16 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         return _types_reflection.get_reflection__VirtualComplexUnion()
 
     cdef __iobuf.IOBuf _serialize(VirtualComplexUnion self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cVirtualComplexUnion](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cVirtualComplexUnion](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(VirtualComplexUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cVirtualComplexUnion]()
-        needed = serializer.cdeserialize[cVirtualComplexUnion](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cVirtualComplexUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
@@ -1320,14 +1332,16 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__NonCopyableStruct()
 
     cdef __iobuf.IOBuf _serialize(NonCopyableStruct self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cNonCopyableStruct](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cNonCopyableStruct](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(NonCopyableStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNonCopyableStruct]()
-        needed = serializer.cdeserialize[cNonCopyableStruct](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cNonCopyableStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1433,14 +1447,16 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
         return _types_reflection.get_reflection__NonCopyableUnion()
 
     cdef __iobuf.IOBuf _serialize(NonCopyableUnion self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cNonCopyableUnion](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cNonCopyableUnion](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(NonCopyableUnion self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cNonCopyableUnion]()
-        needed = serializer.cdeserialize[cNonCopyableUnion](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cNonCopyableUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed

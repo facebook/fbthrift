@@ -181,14 +181,16 @@ cdef class HsFoo(thrift.py3.types.Struct):
         return _types_reflection.get_reflection__HsFoo()
 
     cdef __iobuf.IOBuf _serialize(HsFoo self, __Protocol proto):
-        return __iobuf.from_unique_ptr(
-            serializer.cserialize[cHsFoo](self._cpp_obj.get(), proto).move()
-        )
+        cdef unique_ptr[__iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cHsFoo](self._cpp_obj.get(), proto))
+        return __iobuf.from_unique_ptr(cmove(data))
 
     cdef cuint32_t _deserialize(HsFoo self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cHsFoo]()
-        needed = serializer.cdeserialize[cHsFoo](buf, self._cpp_obj.get(), proto)
+        with nogil:
+            needed = serializer.cdeserialize[cHsFoo](buf, self._cpp_obj.get(), proto)
         return needed
 
 
