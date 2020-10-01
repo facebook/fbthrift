@@ -149,7 +149,7 @@ TEST(RequiredFieldRefTest, HeterogeneousComparisons) {
 struct Tag {};
 
 namespace std {
-// @lint-ignore HOWTOEVEN MisplacedTemplateSpecialization
+// @lint-ignore HOWTOEVEN CLANGTIDY
 template <>
 struct hash<Tag> {
   explicit hash(size_t i) : i(i) {}
@@ -161,7 +161,7 @@ struct hash<Tag> {
 } // namespace std
 
 namespace folly {
-// @lint-ignore HOWTOEVEN MisplacedTemplateSpecialization
+// @lint-ignore HOWTOEVEN CLANGTIDY
 template <>
 struct hasher<Tag> {
   explicit hasher(size_t i) : i(i) {}
@@ -208,7 +208,7 @@ void StatefulHashTest() {
   EXPECT_EQ(hash(f), 42);
 }
 
-// @lint-ignore HOWTOEVEN BadImplicitCast
+// @lint-ignore HOWTOEVEN CLANGTIDY
 TEST(optional_field_ref_test, Hash) {
   StatelessHashTest<std::hash, field_ref>();
   StatelessHashTest<std::hash, optional_field_ref>();
