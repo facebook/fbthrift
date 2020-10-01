@@ -62,7 +62,7 @@ class Protocol {
   }
 
   bool isStandard() const noexcept {
-    return standard_ != StandardProtocol::None;
+    return standard_ != StandardProtocol::Custom;
   }
   bool isCustom() const noexcept {
     return !custom_.empty();
@@ -74,7 +74,7 @@ class Protocol {
   ProtocolStruct asStruct() const noexcept;
 
  private:
-  StandardProtocol standard_ = StandardProtocol::None;
+  StandardProtocol standard_ = StandardProtocol::Custom;
   std::string custom_;
 };
 

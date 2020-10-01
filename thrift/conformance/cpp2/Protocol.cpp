@@ -23,7 +23,7 @@ namespace apache::thrift::conformance {
 
 Protocol::Protocol(ProtocolStruct protocolStruct) noexcept
     : standard_(*protocolStruct.standard_ref()) {
-  if (standard_ == StandardProtocol::None &&
+  if (standard_ == StandardProtocol::Custom &&
       protocolStruct.custom_ref().has_value()) {
     custom_ = std::move(protocolStruct.custom_ref().value_unchecked());
   }

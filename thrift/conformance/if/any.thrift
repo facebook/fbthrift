@@ -15,7 +15,7 @@
  */
 
 namespace cpp2 apache.thrift.conformance
-namespace php thrift
+namespace php apache_thrift
 namespace py thrift.conformance.any
 namespace py.asyncio thrift_asyncio.conformance.any
 namespace py3 thrift.conformance

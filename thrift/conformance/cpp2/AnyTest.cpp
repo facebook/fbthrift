@@ -26,16 +26,16 @@ namespace {
 TEST(AnyTest, None) {
   Any any;
   validateAny(any);
-  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
-  any.set_protocol(StandardProtocol::None);
+  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Custom>());
+  any.set_protocol(StandardProtocol::Custom);
   validateAny(any);
-  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
+  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Custom>());
   any.set_customProtocol("");
   validateAny(any);
-  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
+  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Custom>());
 
-  any.set_customProtocol("None");
-  EXPECT_NE(getProtocol(any), getStandardProtocol<StandardProtocol::None>());
+  any.set_customProtocol("Custom");
+  EXPECT_NE(getProtocol(any), getStandardProtocol<StandardProtocol::Custom>());
   EXPECT_THROW(validateAny(any), std::invalid_argument);
 }
 
@@ -53,7 +53,7 @@ TEST(AnyTest, Standard) {
       hasProtocol(any, getStandardProtocol<StandardProtocol::Binary>()));
 
   // Unnormalize name.
-  any.set_protocol(StandardProtocol::None);
+  any.set_protocol(StandardProtocol::Custom);
   any.set_customProtocol("Binary");
   EXPECT_NE(getProtocol(any), getStandardProtocol<StandardProtocol::Binary>());
   EXPECT_THROW(validateAny(any), std::invalid_argument);
@@ -66,8 +66,8 @@ TEST(AnyTest, Custom) {
   EXPECT_TRUE(hasProtocol(any, Protocol("Hi")));
   EXPECT_NE(getProtocol(any), Protocol("Bye"));
   EXPECT_FALSE(hasProtocol(any, Protocol("Bye")));
-  EXPECT_NE(getProtocol(any), Protocol(StandardProtocol::None));
-  EXPECT_FALSE(hasProtocol(any, Protocol(StandardProtocol::None)));
+  EXPECT_NE(getProtocol(any), Protocol(StandardProtocol::Custom));
+  EXPECT_FALSE(hasProtocol(any, Protocol(StandardProtocol::Custom)));
   EXPECT_NE(getProtocol(any), Protocol(StandardProtocol::Binary));
   EXPECT_FALSE(hasProtocol(any, Protocol(StandardProtocol::Binary)));
 }

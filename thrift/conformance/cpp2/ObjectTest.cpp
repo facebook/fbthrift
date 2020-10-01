@@ -219,7 +219,7 @@ TEST(ObjectTest, Struct) {
   EXPECT_EQ(object.members_ref()->size(), 2);
   EXPECT_EQ(
       object.members_ref()->at("standard"),
-      asValueStruct<type::enum_c>(StandardProtocol::None));
+      asValueStruct<type::enum_c>(StandardProtocol::Custom));
   EXPECT_EQ(
       object.members_ref()->at("custom"), asValueStruct<type::string_t>("hi"));
 }

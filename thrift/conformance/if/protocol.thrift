@@ -15,7 +15,7 @@
  */
 
 namespace cpp2 apache.thrift.conformance
-namespace php thrift
+namespace php apache_thrift
 namespace py thrift.conformance.protocol
 namespace py.asyncio thrift_asyncio.conformance.protocol
 namespace py3 thrift.conformance
@@ -25,7 +25,7 @@ namespace go thrift.conformance.protocol
 // Standard protocols.
 enum StandardProtocol {
   // Indicates a standard protocol is not being used.
-  None = 0,
+  Custom = 0,
 
   // The standard protocols.
   Binary = 1,
@@ -37,8 +37,8 @@ enum StandardProtocol {
 // A struct representation of a protocol.
 // TODO(afuller): Put this in another namespace or pick a better name.
 struct ProtocolStruct {
-  // The standard protocol or StandardProtocol::None.
+  // The standard protocol or StandardProtocol::Custom.
   1: StandardProtocol standard;
-  // The custom protocol, iff standard == StandardProtocol::None.
+  // The custom protocol, iff standard == StandardProtocol::Custom.
   2: optional string custom;
 }

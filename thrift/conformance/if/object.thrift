@@ -19,7 +19,7 @@ include "thrift/conformance/if/any.thrift"
 cpp_include "<folly/io/IOBuf.h>"
 
 namespace cpp2 apache.thrift.conformance
-namespace php thrift
+namespace php apache_thrift
 namespace py thrift.conformance.object
 namespace py.asyncio thrift_asyncio.conformance.object
 namespace py3 thrift.conformance

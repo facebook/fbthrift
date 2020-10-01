@@ -23,7 +23,7 @@
 namespace apache::thrift::conformance {
 
 Protocol getProtocol(const Any& any) noexcept {
-  if (any.protocol_ref() != StandardProtocol::None) {
+  if (any.protocol_ref() != StandardProtocol::Custom) {
     return Protocol(*any.protocol_ref());
   }
   if (any.customProtocol_ref()) {
@@ -33,7 +33,7 @@ Protocol getProtocol(const Any& any) noexcept {
 }
 
 bool hasProtocol(const Any& any, const Protocol& protocol) noexcept {
-  if (any.protocol_ref() != StandardProtocol::None) {
+  if (any.protocol_ref() != StandardProtocol::Custom) {
     return any.protocol_ref() == protocol.standard();
   }
   if (any.customProtocol_ref() &&

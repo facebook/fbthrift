@@ -41,7 +41,7 @@ void testStandardProtocol(std::string_view expectedName) {
 TEST(ProtocolTest, ProtocolStruct) {}
 
 TEST(ProtocolTest, Standard) {
-  testStandardProtocol<StandardProtocol::None>("None");
+  testStandardProtocol<StandardProtocol::Custom>("Custom");
   testStandardProtocol<StandardProtocol::Binary>("Binary");
   testStandardProtocol<StandardProtocol::Compact>("Compact");
   testStandardProtocol<StandardProtocol::Json>("Json");
@@ -51,16 +51,16 @@ TEST(ProtocolTest, Standard) {
 TEST(Protocol, Empty) {
   Protocol empty;
   validateProtocol(empty);
-  EXPECT_EQ(empty.name(), "None");
-  EXPECT_EQ(empty.standard(), StandardProtocol::None);
+  EXPECT_EQ(empty.name(), "Custom");
+  EXPECT_EQ(empty.standard(), StandardProtocol::Custom);
   EXPECT_EQ(empty.custom(), "");
 
   EXPECT_EQ(empty, kNoProtocol);
   EXPECT_EQ(empty, Protocol(""));
-  EXPECT_EQ(empty, getStandardProtocol<StandardProtocol::None>());
+  EXPECT_EQ(empty, getStandardProtocol<StandardProtocol::Custom>());
 
-  EXPECT_NE(empty, Protocol("None"));
-  EXPECT_THROW(validateProtocol(Protocol{"None"}), std::invalid_argument);
+  EXPECT_NE(empty, Protocol("Custom"));
+  EXPECT_THROW(validateProtocol(Protocol{"Custom"}), std::invalid_argument);
 }
 
 TEST(Protocol, Unknown) {
@@ -70,7 +70,7 @@ TEST(Protocol, Unknown) {
 TEST(ProtocolTest, Custom) {
   Protocol protocol("hi");
   EXPECT_EQ(protocol.name(), "hi");
-  EXPECT_EQ(protocol.standard(), StandardProtocol::None);
+  EXPECT_EQ(protocol.standard(), StandardProtocol::Custom);
   EXPECT_EQ(protocol.custom(), "hi");
   EXPECT_EQ(Protocol("hi"), protocol);
   EXPECT_NE(Protocol("bye"), protocol);
