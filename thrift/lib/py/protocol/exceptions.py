@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 def create_ThriftUnicodeDecodeError_from_UnicodeDecodeError(error, field_name):
     return ThriftUnicodeDecodeError(
         error.encoding, error.object, error.start, error.end, error.reason, field_name
@@ -24,7 +25,6 @@ class ThriftUnicodeDecodeError(UnicodeDecodeError):
         self.field_name = field_name
 
     def __str__(self):
-        return (
-            f"{super(UnicodeDecodeError, self).__str__()} "
-            f"when decoding field '{self.field_name}'"
+        return "{error} when decoding field '{field}'".format(
+            error=super(UnicodeDecodeError, self).__str__(), field=self.field_name
         )
