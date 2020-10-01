@@ -18,8 +18,6 @@
 
 #include <folly/portability/GTest.h>
 
-using namespace ::testing;
-
 namespace apache::thrift::conformance {
 namespace {
 
