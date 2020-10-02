@@ -62,10 +62,7 @@ pub mod types {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -81,14 +78,7 @@ pub mod types {
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(EmptyEnum(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as EmptyEnum", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "EmptyEnum").map(EmptyEnum)
         }
     }
 
@@ -164,10 +154,7 @@ pub mod types {
                 ("ONE", 1),
                 ("TWO", 2),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -185,14 +172,7 @@ pub mod types {
                 ("ONE", 1),
                 ("TWO", 2),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(MyEnum(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as MyEnum", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyEnum").map(MyEnum)
         }
     }
 
@@ -322,10 +302,7 @@ pub mod types {
                 ("EIGHTEEN", 18),
                 ("NINETEEN", 19),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -361,14 +338,7 @@ pub mod types {
                 ("TWO", 2),
                 ("UNKNOWN", 0),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(MyBigEnum(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as MyBigEnum", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyBigEnum").map(MyBigEnum)
         }
     }
 

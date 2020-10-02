@@ -464,10 +464,7 @@ pub mod types {
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -483,14 +480,7 @@ pub mod types {
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(EmptyEnum(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as EmptyEnum", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "EmptyEnum").map(EmptyEnum)
         }
     }
 
@@ -572,10 +562,7 @@ pub mod types {
                 ("SEA", 2),
                 ("LON", 3),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -595,14 +582,7 @@ pub mod types {
                 ("NYC", 0),
                 ("SEA", 2),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(City(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as City", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "City").map(City)
         }
     }
 
@@ -684,10 +664,7 @@ pub mod types {
                 ("OCULUS", 2),
                 ("INSTAGRAM", 3),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -707,14 +684,7 @@ pub mod types {
                 ("OCULUS", 2),
                 ("WHATSAPP", 1),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(Company(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as Company", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "Company").map(Company)
         }
     }
 

@@ -216,10 +216,7 @@ pub mod types {
                 ("two", 4),
                 ("three", 8),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -240,14 +237,7 @@ pub mod types {
                 ("two", 4),
                 ("zero", 1),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(has_bitwise_ops(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as has_bitwise_ops", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "has_bitwise_ops").map(has_bitwise_ops)
         }
     }
 
@@ -323,10 +313,7 @@ pub mod types {
                 ("hello", 0),
                 ("world", 1),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -344,14 +331,7 @@ pub mod types {
                 ("hello", 0),
                 ("world", 1),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(is_unscoped(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as is_unscoped", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "is_unscoped").map(is_unscoped)
         }
     }
 
@@ -427,10 +407,7 @@ pub mod types {
                 ("ZERO", 0),
                 ("NONZERO", 12),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -448,14 +425,7 @@ pub mod types {
                 ("NONZERO", 12),
                 ("ZERO", 0),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(MyForwardRefEnum(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as MyForwardRefEnum", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyForwardRefEnum").map(MyForwardRefEnum)
         }
     }
 
@@ -534,10 +504,7 @@ pub mod types {
                 ("fieldB", 2),
                 ("fieldC", 4),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -556,14 +523,7 @@ pub mod types {
                 ("fieldB", 2),
                 ("fieldC", 4),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(MyEnumA(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as MyEnumA", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyEnumA").map(MyEnumA)
         }
     }
 

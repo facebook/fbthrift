@@ -191,10 +191,7 @@ pub mod types {
                 ("VAL1", 0),
                 ("VAL2", 1),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -212,14 +209,7 @@ pub mod types {
                 ("VAL1", 0),
                 ("VAL2", 1),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(TypedEnum(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as TypedEnum", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "TypedEnum").map(TypedEnum)
         }
     }
 

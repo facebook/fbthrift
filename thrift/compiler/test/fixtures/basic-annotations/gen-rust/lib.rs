@@ -89,10 +89,7 @@ pub mod types {
                 ("MyValue2", 1),
                 ("DOMAIN", 2),
             ];
-            match VARIANTS_BY_NUMBER.binary_search_by_key(&self.0, |entry| entry.1) {
-                ::std::result::Result::Ok(i) => write!(fmt, "{}", VARIANTS_BY_NUMBER[i].0),
-                ::std::result::Result::Err(_) => write!(fmt, "{}", self.0),
-            }
+            ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
         }
     }
 
@@ -111,14 +108,7 @@ pub mod types {
                 ("MyValue1", 0),
                 ("MyValue2", 1),
             ];
-            match VARIANTS_BY_NAME.binary_search_by_key(&string, |entry| entry.0) {
-                ::std::result::Result::Ok(i) => {
-                    ::std::result::Result::Ok(MyEnum(VARIANTS_BY_NAME[i].1))
-                }
-                ::std::result::Result::Err(_) => {
-                    ::anyhow::bail!("Unable to parse {} as MyEnum", string)
-                }
-            }
+            ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "MyEnum").map(MyEnum)
         }
     }
 

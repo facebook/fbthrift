@@ -57,6 +57,9 @@ mod varint;
 #[cfg(test)]
 mod tests;
 
+#[doc(hidden)]
+pub mod help;
+
 pub mod types {
     // Define ApplicationException as if it were a normal generated type to make things simpler
     // for codegen.
