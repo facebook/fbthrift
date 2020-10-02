@@ -187,13 +187,19 @@ pub mod types {
         P: ::fbthrift::ProtocolReader,
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("alpha", ::fbthrift::TType::Double, 4),
+                ::fbthrift::Field::new("blue", ::fbthrift::TType::Double, 3),
+                ::fbthrift::Field::new("green", ::fbthrift::TType::Double, 2),
+                ::fbthrift::Field::new("red", ::fbthrift::TType::Double, 1),
+            ];
             let mut field_red = ::std::option::Option::None;
             let mut field_green = ::std::option::Option::None;
             let mut field_blue = ::std::option::Option::None;
             let mut field_alpha = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
-                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Double, 1) => field_red = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
@@ -273,6 +279,13 @@ pub mod types {
         P: ::fbthrift::ProtocolReader,
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("color", ::fbthrift::TType::Struct, 1),
+                ::fbthrift::Field::new("description", ::fbthrift::TType::String, 3),
+                ::fbthrift::Field::new("hasAC", ::fbthrift::TType::Bool, 5),
+                ::fbthrift::Field::new("licensePlate", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("name", ::fbthrift::TType::String, 4),
+            ];
             let mut field_color = ::std::option::Option::None;
             let mut field_licensePlate = ::std::option::Option::None;
             let mut field_description = ::std::option::Option::None;
@@ -280,7 +293,7 @@ pub mod types {
             let mut field_hasAC = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
-                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Struct, 1) => field_color = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
@@ -390,6 +403,18 @@ pub mod types {
         P: ::fbthrift::ProtocolReader,
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("address", ::fbthrift::TType::String, 4),
+                ::fbthrift::Field::new("afraidOfAnimal", ::fbthrift::TType::I32, 9),
+                ::fbthrift::Field::new("age", ::fbthrift::TType::I16, 3),
+                ::fbthrift::Field::new("bestFriend", ::fbthrift::TType::I64, 7),
+                ::fbthrift::Field::new("favoriteColor", ::fbthrift::TType::Struct, 5),
+                ::fbthrift::Field::new("friends", ::fbthrift::TType::Set, 6),
+                ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
+                ::fbthrift::Field::new("name", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("petNames", ::fbthrift::TType::Map, 8),
+                ::fbthrift::Field::new("vehicles", ::fbthrift::TType::List, 10),
+            ];
             let mut field_id = ::std::option::Option::None;
             let mut field_name = ::std::option::Option::None;
             let mut field_age = ::std::option::Option::None;
@@ -402,7 +427,7 @@ pub mod types {
             let mut field_vehicles = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
-                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::I64, 1) => field_id = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),

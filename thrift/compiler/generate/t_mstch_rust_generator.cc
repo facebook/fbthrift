@@ -402,6 +402,7 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:package", &mstch_rust_struct::rust_package},
             {"struct:ord?", &mstch_rust_struct::rust_is_ord},
             {"struct:copy?", &mstch_rust_struct::rust_is_copy},
+            {"struct:fields_by_name", &mstch_rust_struct::rust_fields_by_name},
         });
   }
   mstch::node rust_name() {
@@ -423,6 +424,14 @@ class mstch_rust_struct : public mstch_struct {
   }
   mstch::node rust_is_copy() {
     return strct_->annotations_.count("rust.copy") != 0;
+  }
+  mstch::node rust_fields_by_name() {
+    std::vector<t_field*> fields = strct_->get_members();
+    std::sort(fields.begin(), fields.end(), [](auto a, auto b) {
+      return a->get_name() < b->get_name();
+    });
+    return generate_elements(
+        fields, generators_->field_generator_.get(), generators_, cache_);
   }
 
  private:
@@ -510,7 +519,8 @@ class mstch_rust_function : public mstch_function {
       const std::unordered_multiset<std::string>& function_upcamel_names)
       : mstch_function(function, generators, cache, pos),
         index_(index),
-        function_upcamel_names_(function_upcamel_names) {
+        function_upcamel_names_(function_upcamel_names),
+        success_return(function->get_returntype(), "Success", 0) {
     register_methods(
         this,
         {
@@ -519,6 +529,9 @@ class mstch_rust_function : public mstch_function {
             {"function:void?", &mstch_rust_function::rust_void},
             {"function:uniqueExceptions",
              &mstch_rust_function::rust_unique_exceptions},
+            {"function:args_by_name", &mstch_rust_function::rust_args_by_name},
+            {"function:returns_by_name",
+             &mstch_rust_function::rust_returns_by_name},
         });
   }
   mstch::node rust_upcamel() {
@@ -564,10 +577,28 @@ class mstch_rust_function : public mstch_function {
         generators_,
         cache_);
   }
+  mstch::node rust_args_by_name() {
+    std::vector<t_field*> args = function_->get_arglist()->get_members();
+    std::sort(args.begin(), args.end(), [](auto a, auto b) {
+      return a->get_name() < b->get_name();
+    });
+    return generate_elements(
+        args, generators_->field_generator_.get(), generators_, cache_);
+  }
+  mstch::node rust_returns_by_name() {
+    std::vector<t_field*> returns = function_->get_xceptions()->get_members();
+    returns.push_back(&success_return);
+    std::sort(returns.begin(), returns.end(), [](auto a, auto b) {
+      return a->get_name() < b->get_name();
+    });
+    return generate_elements(
+        returns, generators_->field_generator_.get(), generators_, cache_);
+  }
 
  private:
   int32_t index_;
   const std::unordered_multiset<std::string>& function_upcamel_names_;
+  t_field success_return;
 };
 
 class mstch_rust_enum_value : public mstch_enum_value {

@@ -65,13 +65,19 @@ pub mod types {
         P: ::fbthrift::ProtocolReader,
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("myBools", ::fbthrift::TType::List, 3),
+                ::fbthrift::Field::new("myInteger", ::fbthrift::TType::I32, 1),
+                ::fbthrift::Field::new("myNumbers", ::fbthrift::TType::List, 4),
+                ::fbthrift::Field::new("myString", ::fbthrift::TType::String, 2),
+            ];
             let mut field_myInteger = ::std::option::Option::None;
             let mut field_myString = ::std::option::Option::None;
             let mut field_myBools = ::std::option::Option::None;
             let mut field_myNumbers = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
-                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::I32, 1) => field_myInteger = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),

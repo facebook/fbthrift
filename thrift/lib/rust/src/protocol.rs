@@ -99,7 +99,8 @@ fn skip_inner<P: ProtocolReader + ?Sized>(
         TType::Struct => {
             p.read_struct_begin(|_| ())?;
             loop {
-                let (_, type_id, _) = p.read_field_begin(|_| ())?;
+                let fields = &[];
+                let (_, type_id, _) = p.read_field_begin(|_| (), fields)?;
                 if type_id == TType::Stop {
                     break;
                 }
@@ -189,7 +190,7 @@ pub trait ProtocolReader {
     where
         F: FnOnce(&[u8]) -> T;
     fn read_struct_end(&mut self) -> Result<()>;
-    fn read_field_begin<F, T>(&mut self, field: F) -> Result<(T, TType, i16)>
+    fn read_field_begin<F, T>(&mut self, field: F, fields: &[Field]) -> Result<(T, TType, i16)>
     where
         F: FnOnce(&[u8]) -> T;
     fn read_field_end(&mut self) -> Result<()>;
@@ -239,4 +240,16 @@ where
     p.write_message_begin(name, messagetype, seqid);
     body(p);
     p.write_message_end();
+}
+
+pub struct Field {
+    pub name: &'static str,
+    pub ttype: TType,
+    pub id: i16,
+}
+
+impl Field {
+    pub const fn new(name: &'static str, ttype: TType, id: i16) -> Self {
+        Field { name, ttype, id }
+    }
 }

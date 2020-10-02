@@ -76,7 +76,7 @@ pub use crate::errors::{NonthrowingFunctionError, ProtocolError};
 pub use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
 pub use crate::processor::{NullServiceProcessor, ServiceProcessor, ThriftService};
 pub use crate::protocol::{
-    Protocol, ProtocolDecoded, ProtocolEncoded, ProtocolEncodedFinal, ProtocolReader,
+    Field, Protocol, ProtocolDecoded, ProtocolEncoded, ProtocolEncodedFinal, ProtocolReader,
     ProtocolWriter,
 };
 pub use crate::serialize::Serialize;

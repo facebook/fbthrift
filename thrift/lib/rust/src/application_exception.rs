@@ -15,7 +15,7 @@
  */
 
 use crate::deserialize::Deserialize;
-use crate::protocol::{ProtocolReader, ProtocolWriter};
+use crate::protocol::{Field, ProtocolReader, ProtocolWriter};
 use crate::serialize::Serialize;
 use crate::thrift_protocol::ProtocolID;
 use crate::ttype::TType;
@@ -118,7 +118,11 @@ where
 
         loop {
             // Start reading the next field
-            let (_, ttype, id) = iprot.read_field_begin(|_| ())?;
+            static FIELDS: &[Field] = &[
+                Field::new("message", TType::String, 1),
+                Field::new("type", TType::I32, 2),
+            ];
+            let (_, ttype, id) = iprot.read_field_begin(|_| (), FIELDS)?;
 
             match (ttype, id) {
                 (TType::Stop, _) => break,

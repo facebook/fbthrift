@@ -18,7 +18,7 @@ use crate::bufext::BufMutExt;
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
-use crate::protocol::{Protocol, ProtocolReader, ProtocolWriter};
+use crate::protocol::{Field, Protocol, ProtocolReader, ProtocolWriter};
 use crate::serialize::Serialize;
 use crate::thrift_protocol::{MessageType, ProtocolID};
 use crate::ttype::TType;
@@ -613,7 +613,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok(())
     }
 
-    fn read_field_begin<F, T>(&mut self, fieldfn: F) -> Result<(T, TType, i16)>
+    fn read_field_begin<F, T>(&mut self, fieldfn: F, _fields: &[Field]) -> Result<(T, TType, i16)>
     where
         F: FnOnce(&[u8]) -> T,
     {
