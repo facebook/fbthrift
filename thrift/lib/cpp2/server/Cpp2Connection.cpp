@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -25,6 +26,8 @@
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
+
+THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
 
 namespace apache {
 namespace thrift {
@@ -424,6 +427,44 @@ void Cpp2Connection::requestReceived(
         TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
         kQueueOverloadedErrorCode,
         "server shutting down");
+    return;
+  }
+
+  // Transport upgrade: check if client requested transport upgrade from header
+  // to rocket. If yes, reply immediately and upgrade the transport after
+  // sending the reply.
+  if (THRIFT_FLAG(server_rocket_upgrade_enabled) &&
+      methodName == "upgradeToRocket") {
+    folly::IOBufQueue queue;
+    switch (protoId) {
+      case apache::thrift::protocol::T_BINARY_PROTOCOL:
+        queue = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
+            msgBegin.seqId);
+        break;
+      case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+        queue = upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
+            msgBegin.seqId);
+        break;
+      default:
+        LOG(DFATAL) << "Unsupported protocol found";
+        // if protocol is neither binary or compact, we want to kill the request
+        // and abort upgrade
+        killRequest(
+            std::move(hreq),
+            TApplicationException::TApplicationExceptionType::INVALID_PROTOCOL,
+            kUnknownErrorCode,
+            "invalid protocol used");
+        return;
+    }
+
+    hreq->sendReply(
+        queue.move(),
+        new TransportUpgradeSendCallback(
+            transport_,
+            context_.getPeerAddress(),
+            getWorker(),
+            this,
+            channel_.get()));
     return;
   }
 
