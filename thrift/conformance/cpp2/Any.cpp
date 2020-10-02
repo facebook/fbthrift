@@ -59,6 +59,9 @@ void validateAnyType(const AnyType& type) {
         any_constants::maxTypeIdBytes(),
         typeIdBytes));
   }
+  if (type.aliases_ref()->find(*type.name_ref()) != type.aliases_ref()->end()) {
+    folly::throw_exception<std::invalid_argument>("alias matches name");
+  }
 }
 
 void validateAny(const Any& any) {

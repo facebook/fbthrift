@@ -43,7 +43,7 @@ AnyType testAnyType(std::initializer_list<const char*> names) {
     type.set_name(thriftType(*itr++));
   }
   while (itr != names.end()) {
-    type.aliases_ref()->emplace_back(thriftType(*itr++));
+    type.aliases_ref()->emplace(thriftType(*itr++));
   }
   return type;
 }

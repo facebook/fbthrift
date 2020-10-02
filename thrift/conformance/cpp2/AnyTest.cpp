@@ -108,12 +108,13 @@ TEST(AnyTest, ValidateAny) {
 
 TEST(AnyTest, ValidateAnyType) {
   const auto bad = "foo.com:42/my/type";
-  const auto good = "foo.com/my/type";
+  const auto good1 = "foo.com/my/type";
+  const auto good2 = "foo.com/my/other-type";
   AnyType type;
   EXPECT_THROW(validateAnyType(type), std::invalid_argument);
-  type.name_ref() = good;
+  type.name_ref() = good1;
   validateAnyType(type);
-  type.aliases_ref()->emplace_back(good);
+  type.aliases_ref()->emplace(good2);
   validateAnyType(type);
   type.set_typeIdBytes(any_constants::minTypeIdBytes());
   validateAnyType(type);
@@ -128,7 +129,12 @@ TEST(AnyTest, ValidateAnyType) {
 
   {
     AnyType badType(type);
-    badType.aliases_ref()->emplace_back(bad);
+    badType.aliases_ref()->emplace(good1); // Duplicate name.
+    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
+  }
+  {
+    AnyType badType(type);
+    badType.aliases_ref()->emplace(bad);
     EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
   }
 

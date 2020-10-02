@@ -61,12 +61,12 @@ AnyType createAnyType(C&& names, int8_t typeIdBytes) {
   if constexpr (std::is_const_v<std::remove_reference_t<decltype(*itr)>>) {
     type.set_name(*itr++);
     for (; itr != names.end(); ++itr) {
-      type.aliases_ref()->emplace_back(*itr);
+      type.aliases_ref()->emplace(*itr);
     }
   } else {
     type.set_name(folly::forward_like<C>(*itr++));
     for (; itr != names.end(); ++itr) {
-      type.aliases_ref()->emplace_back(folly::forward_like<C>(*itr));
+      type.aliases_ref()->emplace(folly::forward_like<C>(*itr));
     }
   }
   return type;

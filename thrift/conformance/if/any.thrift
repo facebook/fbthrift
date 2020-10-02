@@ -57,7 +57,7 @@ struct AnyType {
   1: string name;
 
   // The list of alias for this type.
-  2: list<string> aliases;
+  2: set<string> aliases;
 
   // The default number of bytes to use in a typeId for this type.
   //
