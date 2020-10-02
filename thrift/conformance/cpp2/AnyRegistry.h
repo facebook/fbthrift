@@ -31,6 +31,7 @@
 #include <folly/container/F14Map.h>
 #include <thrift/conformance/cpp2/AnyRef.h>
 #include <thrift/conformance/cpp2/AnySerializer.h>
+#include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/if/gen-cpp2/any_types.h>
 
 namespace apache::thrift::conformance {
@@ -47,7 +48,7 @@ class AnyRegistry {
   Any store(any_ref value, const Protocol& protocol) const;
   Any store(const Any& value, const Protocol& protocol) const;
   template <StandardProtocol protocol>
-  Any store(any_ref value) {
+  Any store(any_ref value) const {
     return store(value, getStandardProtocol<protocol>());
   }
 
@@ -87,10 +88,6 @@ class AnyRegistry {
       const Protocol& protocol) const;
 
   // Compile-time Type overloads.
-  template <typename T>
-  bool registerType(AnyType type) {
-    return registerType(typeid(T), std::move(type));
-  }
   template <typename C = std::initializer_list<const AnySerializer*>>
   bool
   registerType(const std::type_info& typeInfo, AnyType type, C&& serializers);
@@ -101,6 +98,12 @@ class AnyRegistry {
   bool registerType(AnyType type, C&& serializers) {
     return registerType(
         typeid(T), std::move(type), std::forward<C>(serializers));
+  }
+
+  template <typename T, StandardProtocol... Ps>
+  bool registerType(AnyType type) {
+    return registerType(
+        typeid(T), std::move(type), {&getAnyStandardSerializer<T, Ps>()...});
   }
 
   template <typename T>
