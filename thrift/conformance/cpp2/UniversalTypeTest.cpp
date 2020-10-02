@@ -18,6 +18,8 @@
 
 #include <regex>
 
+#include <openssl/evp.h>
+
 #include <fmt/core.h>
 #include <folly/portability/GTest.h>
 
@@ -88,6 +90,32 @@ TEST(UniversalTypeTest, ValidateUniversalType) {
     EXPECT_FALSE(std::regex_match(bad, pattern));
     EXPECT_THROW(validateUniversalType(bad), std::invalid_argument);
   }
+}
+
+TEST(UniversalTypeTest, TypeId) {
+  // The digest should include the fbthrift:// prefix.
+  std::string expected(EVP_MAX_MD_SIZE, 0);
+  constexpr std::string_view message = "fbthrift://foo.com/my/type";
+  uint32_t size;
+  EXPECT_TRUE(EVP_Digest(
+      message.data(),
+      message.size(),
+      reinterpret_cast<uint8_t*>(expected.data()),
+      &size,
+      EVP_sha256(),
+      nullptr));
+  expected.resize(size);
+  EXPECT_EQ(getUniversalTypeId("foo.com/my/type"), expected);
+
+  // Make sure the values haven't changed unintentionally.
+  EXPECT_EQ(
+      getUniversalTypeId("foo.com/my/type"),
+      "\tat$\x9C\xEF\xAD\xB5\xEA\rE;\xCB"
+      "3\xADTv\x1\xFB\xFE\xC4\xB2\xD7\x95\x92N\xEBg\xD4[\xE6"
+      "F");
+  EXPECT_EQ(
+      getUniversalTypeId("facebook.com/thrift/Object"),
+      "\x96\x88\xBD>\x83\x19\xB6\f\v\xD8\xB0\xD2\xEB\xFCQ\xB5\n\x91\xD4\xDC\xE2\xA6R\x5\xDD\xDFT\x17\x94$\x9D\"");
 }
 
 } // namespace

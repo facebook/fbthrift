@@ -26,4 +26,7 @@ namespace apache::thrift::conformance {
 // Throws std::invalid_argument on failure.
 void validateUniversalType(std::string_view name);
 
+// Returns the type id for the given type name.
+std::string getUniversalTypeId(std::string_view name);
+
 } // namespace apache::thrift::conformance
