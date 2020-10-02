@@ -743,9 +743,9 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
     return;
   }
   if (getEventBase()->isInEventBaseThread()) {
+    releaseInteractionInstance();
     f(std::exchange(req_, {}), protoSeqId_, ctx_.get(), ex, reqCtx_);
     ctx_.reset();
-    releaseInteractionInstance();
   } else {
     getEventBase()->runInEventBaseThread(
         [f = std::forward<F>(f),
@@ -757,8 +757,8 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
           releaseInteraction(interaction, reqCtx, tm, eb);
+          f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
         });
   }
 }

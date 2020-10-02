@@ -60,9 +60,6 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
   try {
     tile = &getTile(ctx);
   } catch (const std::out_of_range&) {
-    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
-      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
-    });
 <%#function:oneway?%>
     LOG(ERROR) << "Unknown interaction id " << ctx->getInteractionId() << " in function <%function:name%>";
     eb->runInEventBaseThread([req = std::move(req)] {});

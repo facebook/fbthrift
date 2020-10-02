@@ -80,9 +80,6 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
   try {
     tile = &getTile(ctx);
   } catch (const std::out_of_range&) {
-    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
-      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
-    });
     detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,

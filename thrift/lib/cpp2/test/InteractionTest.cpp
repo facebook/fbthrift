@@ -288,6 +288,42 @@ TEST(InteractionCodegenTest, Error) {
 #endif
 }
 
+TEST(InteractionCodegenTest, MethodException) {
+  struct ExceptionCalculatorHandler : CalculatorSvIf {
+    struct AdditionHandler : CalculatorSvIf::AdditionIf {
+      int acc_{0};
+#if FOLLY_HAS_COROUTINES
+      folly::coro::Task<void> co_accumulatePrimitive(int32_t a) override {
+        acc_ += a;
+        co_yield folly::coro::co_error(
+            std::runtime_error("Not Implemented Yet"));
+      }
+#endif
+    };
+    std::unique_ptr<AdditionIf> createAddition() override {
+      return std::make_unique<AdditionHandler>();
+    }
+  };
+
+  ScopedServerInterfaceThread runner{
+      std::make_shared<ExceptionCalculatorHandler>()};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  const char* kExpectedErr =
+      "apache::thrift::TApplicationException: std::runtime_error: Not Implemented Yet";
+
+  auto adder = client->createAddition();
+#if FOLLY_HAS_COROUTINES
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto t = co_await folly::coro::co_awaitTry(adder.co_accumulatePrimitive(1));
+    EXPECT_STREQ(t.exception().what().c_str(), kExpectedErr);
+  }());
+#endif
+}
+
 TEST(InteractionCodegenTest, SlowConstructor) {
   struct SlowCalculatorHandler : CalculatorHandler {
     std::unique_ptr<AdditionIf> createAddition() override {

@@ -257,8 +257,8 @@ HandlerCallbackBase::~HandlerCallbackBase() {
     }
     assert(eb_ != nullptr);
     if (eb_->inRunningEventBaseThread()) {
-      req_.reset();
       releaseInteractionInstance();
+      req_.reset();
     } else {
       eb_->runInEventBaseThread(
           [req = std::move(req_),
@@ -318,11 +318,11 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
 
 void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
   if (eb_->inRunningEventBaseThread()) {
+    releaseInteractionInstance();
     std::exchange(req_, {})->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::LOADSHEDDING, message),
         kAppOverloadedErrorCode);
-    releaseInteractionInstance();
   } else {
     eb_->runInEventBaseThread(
         [message,
@@ -331,11 +331,11 @@ void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
          req = std::move(req_),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
+          releaseInteraction(interaction, reqCtx, tm, eb);
           req->sendErrorWrapped(
               folly::make_exception_wrapper<TApplicationException>(
                   TApplicationException::LOADSHEDDING, std::move(message)),
               kAppOverloadedErrorCode);
-          releaseInteraction(interaction, reqCtx, tm, eb);
         });
   }
 }
@@ -344,8 +344,8 @@ void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
   if (getEventBase()->isInEventBaseThread()) {
-    std::exchange(req_, {})->sendReply(queue.move(), nullptr, crc32c);
     releaseInteractionInstance();
+    std::exchange(req_, {})->sendReply(queue.move(), nullptr, crc32c);
   } else {
     getEventBase()->runInEventBaseThread(
         [req = std::move(req_),
@@ -355,8 +355,8 @@ void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          req->sendReply(queue.move(), nullptr, crc32c);
           releaseInteraction(interaction, reqCtx, tm, eb);
+          req->sendReply(queue.move(), nullptr, crc32c);
         });
   }
 }
@@ -368,9 +368,9 @@ void HandlerCallbackBase::sendReply(
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
   if (getEventBase()->isInEventBaseThread()) {
+    releaseInteractionInstance();
     std::exchange(req_, {})->sendStreamReply(
         queue.move(), std::move(stream), crc32c);
-    releaseInteractionInstance();
   } else {
     getEventBase()->runInEventBaseThread(
         [req = std::move(req_),
@@ -381,8 +381,8 @@ void HandlerCallbackBase::sendReply(
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          req->sendStreamReply(queue.move(), std::move(stream), crc32c);
           releaseInteraction(interaction, reqCtx, tm, eb);
+          req->sendStreamReply(queue.move(), std::move(stream), crc32c);
         });
   }
 }
@@ -398,9 +398,9 @@ void HandlerCallbackBase::sendReply(
   transform(queue);
 
   if (getEventBase()->isInEventBaseThread()) {
+    releaseInteractionInstance();
     std::exchange(req_, {})->sendSinkReply(
         queue.move(), std::move(sinkConsumer), crc32c);
-    releaseInteractionInstance();
   } else {
     getEventBase()->runInEventBaseThread(
         [req = std::move(req_),
@@ -411,8 +411,8 @@ void HandlerCallbackBase::sendReply(
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
           releaseInteraction(interaction, reqCtx, tm, eb);
+          req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
         });
   }
 #else
