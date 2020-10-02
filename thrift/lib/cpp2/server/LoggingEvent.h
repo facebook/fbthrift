@@ -82,5 +82,7 @@ class LoggingEventRegistry {
 
 const LoggingEventRegistry& getLoggingEventRegistry();
 
+void useMockLoggingEventRegistry();
+
 } // namespace thrift
 } // namespace apache

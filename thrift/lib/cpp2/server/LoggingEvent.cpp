@@ -76,6 +76,10 @@ folly::LeakySingleton<Registry, RegistryTag> registryStorage;
 
 } // namespace
 
+void useMockLoggingEventRegistry() {
+  folly::LeakySingleton<Registry, RegistryTag>::make_mock();
+}
+
 const LoggingEventRegistry& getLoggingEventRegistry() {
   return registryStorage.get().getRegistry();
 }

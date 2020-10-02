@@ -88,22 +88,6 @@ class TestEventRegistry : public LoggingEventRegistry {
       connectionEventMap_;
 };
 
-void expectServerEventCall(std::string_view key, size_t times) {
-  auto& handler =
-      apache::thrift::getLoggingEventRegistry().getServerEventHandler(key);
-  auto* testHandler = dynamic_cast<TestServerEventHandler*>(&handler);
-  EXPECT_NE(testHandler, nullptr);
-  EXPECT_CALL(*testHandler, log(testing::_)).Times(times);
-}
-
-void expectConnectionEventCall(std::string_view key, size_t times) {
-  auto& handler =
-      apache::thrift::getLoggingEventRegistry().getConnectionEventHandler(key);
-  auto* testHandler = dynamic_cast<TestConnectionEventHandler*>(&handler);
-  EXPECT_NE(testHandler, nullptr);
-  EXPECT_CALL(*testHandler, log(testing::_, testing::_)).Times(times);
-}
-
 } // namespace
 
 namespace fbthrift {
@@ -113,14 +97,58 @@ makeLoggingEventRegistry() {
 }
 } // namespace fbthrift
 
-class ServerEventLogTest : public testing::Test {};
+template <typename T>
+class LoggingEventTest : public testing::Test {
+ protected:
+  void SetUp() override {
+    apache::thrift::useMockLoggingEventRegistry();
+  }
+
+  template <typename H>
+  T& fetchHandler(
+      H& (LoggingEventRegistry::*method)(std::string_view) const,
+      std::string_view key) {
+    if (!handler_) {
+      auto& handler = (apache::thrift::getLoggingEventRegistry().*method)(key);
+      handler_ = dynamic_cast<T*>(&handler);
+      EXPECT_NE(handler_, nullptr);
+    }
+    return *handler_;
+  }
+
+  void TearDown() override {
+    if (handler_) {
+      ASSERT_TRUE(testing::Mock::VerifyAndClearExpectations(handler_));
+    }
+  }
+
+ private:
+  T* handler_{nullptr};
+};
+
+class ServerEventLogTest : public LoggingEventTest<TestServerEventHandler> {
+ protected:
+  void expectServerEventCall(std::string_view key, size_t times) {
+    auto& handler =
+        fetchHandler(&LoggingEventRegistry::getServerEventHandler, key);
+    EXPECT_CALL(handler, log(testing::_)).Times(times);
+  }
+};
+
+class ConnectionEventLogTest
+    : public LoggingEventTest<TestConnectionEventHandler> {
+ protected:
+  void expectConnectionEventCall(std::string_view key, size_t times) {
+    auto& handler =
+        fetchHandler(&LoggingEventRegistry::getConnectionEventHandler, key);
+    EXPECT_CALL(handler, log(testing::_, testing::_)).Times(times);
+  }
+};
 
 class TestServiceHandler : public apache::thrift::test::TestServiceSvIf {
  public:
   void voidResponse() override {}
 };
-
-class ConnectionEventLogTest : public testing::Test {};
 
 TEST_F(ServerEventLogTest, serverTest) {
   expectServerEventCall(kServe, 1);
