@@ -26,7 +26,6 @@
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
@@ -105,20 +104,6 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
   void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
     negotiatedCompressionAlgo_ = compressionAlgo;
-  }
-
-  typedef apache::thrift::ThriftPresult<true>
-      RocketUpgrade_upgradeToRocket_presult;
-  template <class ProtocolWriter>
-  folly::IOBufQueue upgradeToRocketReply(int32_t protoSeqId) {
-    folly::IOBufQueue queue;
-    ProtocolWriter w;
-    w.setOutput(&queue);
-    w.writeMessageBegin("upgradeToRocket", apache::thrift::T_REPLY, protoSeqId);
-    RocketUpgrade_upgradeToRocket_presult result;
-    apache::thrift::detail::serializeResponseBody(&w, &result);
-    w.writeMessageEnd();
-    return queue;
   }
 
  protected:
