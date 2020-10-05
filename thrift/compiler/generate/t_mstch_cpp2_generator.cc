@@ -2270,8 +2270,8 @@ bool annotation_validator::visit(t_struct* s) {
         add_error(
             member->get_lineno(),
             "Mixin field `" + member->get_name() +
-                "` can not have annotation (" + i.first + " = " + i.second +
-                ")");
+                "` can not have annotation `(" + i.first + " = " + i.second +
+                ")`.");
       }
     }
   }
@@ -2321,9 +2321,9 @@ bool service_method_validator::visit(t_service* service) {
     if (!ok) {
       add_error(
           func->get_lineno(),
-          service->get_name() + ":" + func->get_name() +
-              " use of cpp.coroutine and stack_arguments together is "
-              "disallowed");
+          "`" + service->get_name() + "." + func->get_name() +
+              "` use of cpp.coroutine and stack_arguments together is "
+              "disallowed.");
     }
   }
   return true;
@@ -2340,8 +2340,8 @@ class splits_validator : public validator {
     if (split_count_ != 0 && split_count_ > object_count) {
       add_error(
           boost::none,
-          "types_cpp_splits=" + to_string(split_count_) +
-              " is misconfigured: it can not be greater than number of object, which is " +
+          "`types_cpp_splits=" + to_string(split_count_) +
+              "` is misconfigured: it can not be greater than number of object, which is " +
               to_string(object_count) + ".");
     }
     return true;

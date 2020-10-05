@@ -217,7 +217,7 @@ class struct_names_uniqueness_validator : virtual public validator {
   bool visit(t_program* s) override;
 };
 
-class structured_annotations_validator : virtual public validator {
+class base_annotation_validator : virtual public validator {
  public:
   using validator::visit;
 
@@ -233,7 +233,7 @@ class structured_annotations_validator : virtual public validator {
 };
 
 class structured_annotations_uniqueness_validator
-    : virtual public structured_annotations_validator {
+    : virtual public base_annotation_validator {
  protected:
   void validate_annotations(
       t_annotated* tannotated,

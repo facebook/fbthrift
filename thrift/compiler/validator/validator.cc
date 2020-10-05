@@ -79,10 +79,10 @@ void service_method_name_uniqueness_validator::add_error_service_method_names(
     std::string const& service_name_old,
     std::string const& function_name) {
   //[FALIURE:{}:{}] Function {}.{} redefines {}.{}
-  std::ostringstream err;
-  err << "Function " << service_name_new << "." << function_name << " "
-      << "redefines " << service_name_old << "." << function_name;
-  add_error(lineno, err.str());
+  add_error(
+      lineno,
+      "Function `" + service_name_new + "." + function_name + "` " +
+          "redefines `" + service_name_old + "." + function_name + "`.");
 }
 
 void service_method_name_uniqueness_validator::
@@ -147,9 +147,10 @@ void enum_value_names_uniqueness_validator::add_validation_error(
     std::string const& value_name,
     std::string const& enum_name) {
   // [FAILURE:{}] Redefinition of value {} in enum {}
-  std::ostringstream err;
-  err << "Redefinition of value " << value_name << " in enum " << enum_name;
-  add_error(lineno, err.str());
+  add_error(
+      lineno,
+      "Redefinition of value `" + value_name + "` in enum `" + enum_name +
+          "`.");
 }
 
 bool enum_value_names_uniqueness_validator::visit(t_enum* const tenum) {
@@ -173,11 +174,11 @@ void enum_values_uniqueness_validator::add_validation_error(
     t_enum_value const& enum_value,
     std::string const& existing_value_name,
     std::string const& enum_name) {
-  std::ostringstream err;
-  err << "Duplicate value " << enum_value.get_name() << "="
-      << enum_value.get_value() << " with value " << existing_value_name
-      << " in enum " << enum_name << ".";
-  add_error(lineno, err.str());
+  add_error(
+      lineno,
+      "Duplicate value `" + enum_value.get_name() + "=" +
+          std::to_string(enum_value.get_value()) + "` with value `" +
+          existing_value_name + "` in enum `" + enum_name + "`.");
 }
 
 bool enum_values_uniqueness_validator::visit(t_enum* const tenum) {
@@ -202,10 +203,10 @@ void enum_values_set_validator::add_validation_error(
     int const lineno,
     std::string const& enum_value_name,
     std::string const& enum_name) {
-  std::ostringstream err;
-  err << "Unset enum value " << enum_value_name << " in enum " << enum_name
-      << ". Add an explicit value to suppress this error";
-  add_error(lineno, err.str());
+  add_error(
+      lineno,
+      "Unset enum value `" + enum_value_name + "` in enum `" + enum_name +
+          "`. Add an explicit value to suppress this error.");
 }
 
 bool enum_values_set_validator::visit(t_enum* const tenum) {
@@ -224,15 +225,16 @@ void enum_values_set_validator::validate(t_enum const* const tenum) {
 bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
   auto check_func = [=](t_function const* func) {
     if (!validate_throws(func->get_xceptions())) {
-      std::ostringstream ss;
-      ss << "Non-exception type in throws list for method" << func->get_name();
-      add_error(func->get_lineno(), ss.str());
+      add_error(
+          func->get_lineno(),
+          "Non-exception type in throws list for method `" + func->get_name() +
+              "`.");
     }
     if (!validate_throws(func->get_stream_xceptions())) {
-      std::ostringstream ss;
-      ss << "Non-exception type in stream throws list for method"
-         << func->get_name();
-      add_error(func->get_lineno(), ss.str());
+      add_error(
+          func->get_lineno(),
+          "Non-exception type in stream throws list for method `" +
+              func->get_name() + "`.");
     }
   };
 
@@ -270,11 +272,12 @@ bool union_no_qualified_fields_validator::visit(t_struct* s) {
 
   for (const auto* field : s->get_members()) {
     if (field->get_req() != t_field::T_OPT_IN_REQ_OUT) {
-      std::ostringstream ss;
-      ss << "Unions cannot contain qualified fields. Remove "
-         << (field->get_req() == t_field::T_REQUIRED ? "required" : "optional")
-         << " qualifier from field '" << field->get_name() << "'";
-      add_error(field->get_lineno(), ss.str());
+      add_error(
+          field->get_lineno(),
+          std::string("Unions cannot contain qualified fields. Remove ") +
+              (field->get_req() == t_field::T_REQUIRED ? "required"
+                                                       : "optional") +
+              " qualifier from field `" + field->get_name() + "`.");
     }
   }
   return true;
@@ -283,21 +286,22 @@ bool union_no_qualified_fields_validator::visit(t_struct* s) {
 bool mixin_type_correctness_validator::visit(t_struct* s) {
   for (auto* member : s->get_members()) {
     if (member->is_mixin()) {
+      auto* member_type = member->get_type()->get_true_type();
+      const auto& name = member->get_name();
       if (s->is_union()) {
         add_error(
             s->get_lineno(),
-            "Union `" + s->get_name() + "` can not have mixin field `" +
-                member->get_name() + '`');
-      } else if (!member->get_type()->get_true_type()->is_struct()) {
+            "Union `" + s->get_name() + "` can not have mixin field `" + name +
+                "`.");
+      } else if (!member_type->is_struct()) {
         add_error(
             member->get_lineno(),
-            "Mixin field `" + member->get_name() + "` is not a struct but " +
-                member->get_type()->get_name());
-      } else if (member->get_type()->get_true_type()->is_union()) {
+            "Mixin field `" + name + "` is not a struct but `" +
+                member->get_type()->get_name() + "`.");
+      } else if (member_type->is_union()) {
         add_error(
             member->get_lineno(),
-            "Mixin field `" + member->get_name() +
-                "` is not a struct but union");
+            "Mixin field `" + name + "` is not a struct but union.");
       } else if (member->get_req() == t_field::T_OPTIONAL) {
         // Nothing technically stops us from marking optional field mixin.
         // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
@@ -305,7 +309,7 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
         // field.
         add_error(
             member->get_lineno(),
-            "Mixin field `" + member->get_name() + "` can not be optional");
+            "Mixin field `" + name + "` can not be optional.");
       }
     }
   }
@@ -327,7 +331,7 @@ bool field_names_uniqueness_validator::visit(t_struct* s) {
       add_error(
           member->get_lineno(),
           "Field `" + member->get_name() + "` is not unique in struct `" +
-              s->get_name() + '`');
+              s->get_name() + "`.");
     }
   }
 
@@ -339,7 +343,7 @@ bool field_names_uniqueness_validator::visit(t_struct* s) {
           i.mixin->get_lineno(),
           "Field `" + res.first->second + "." + i.member->get_name() +
               "` and `" + i.mixin->get_name() + "." + i.member->get_name() +
-              "` can not have same name in struct `" + s->get_name() + '`');
+              "` can not have same name in struct `" + s->get_name() + "`.");
     }
   }
   return true;
@@ -352,14 +356,14 @@ bool struct_names_uniqueness_validator::visit(t_program* p) {
     if (!seen.emplace(object->get_name()).second) {
       add_error(
           object->get_lineno(),
-          "Redefinition of type `" + object->get_name() + "`");
+          "Redefinition of type `" + object->get_name() + "`.");
     }
   }
   for (auto* interaction : p->get_interactions()) {
     if (!seen.emplace(interaction->get_name()).second) {
       add_error(
           interaction->get_lineno(),
-          "Redefinition of type `" + interaction->get_name() + "`");
+          "Redefinition of type `" + interaction->get_name() + "`.");
     }
   }
   return true;
@@ -371,11 +375,12 @@ bool interactions_validator::visit(t_program* p) {
     for (auto* func : interaction->get_functions()) {
       auto ret = func->get_returntype();
       if (ret->is_service() && static_cast<t_service*>(ret)->is_interaction()) {
-        add_error(func->get_lineno(), "Nested interactions are forbidden");
+        add_error(func->get_lineno(), "Nested interactions are forbidden.");
       }
       if (func->annotations_.count("thread")) {
         add_error(
-            func->get_lineno(), "Interactions don't support thread annotation");
+            func->get_lineno(),
+            "Interactions don't support thread annotation.");
       }
     }
   }
@@ -389,14 +394,14 @@ bool interactions_validator::visit(t_service* s) {
     if (func->is_interaction_constructor()) {
       if (!ret->is_service() ||
           !static_cast<t_service*>(ret)->is_interaction()) {
-        add_error(func->get_lineno(), "Only interactions can be performed");
+        add_error(func->get_lineno(), "Only interactions can be performed.");
         continue;
       }
     }
 
     if (!func->is_interaction_constructor()) {
       if (ret->is_service()) {
-        add_error(func->get_lineno(), "Functions cannot return interactions");
+        add_error(func->get_lineno(), "Functions cannot return interactions.");
       }
       continue;
     }
@@ -406,28 +411,28 @@ bool interactions_validator::visit(t_service* s) {
           func->get_lineno(),
           "Service `" + s->get_name() +
               "` has multiple methods for creating interaction `" +
-              ret->get_name() + "`");
+              ret->get_name() + "`.");
     }
   }
   return true;
 }
 
-bool structured_annotations_validator::visit(t_service* service) {
+bool base_annotation_validator::visit(t_service* service) {
   validate_annotations(service, service->get_full_name());
   return true;
 }
 
-bool structured_annotations_validator::visit(t_enum* tenum) {
+bool base_annotation_validator::visit(t_enum* tenum) {
   validate_annotations(tenum, tenum->get_full_name());
   return true;
 }
 
-bool structured_annotations_validator::visit(t_struct* tstruct) {
+bool base_annotation_validator::visit(t_struct* tstruct) {
   validate_annotations(tstruct, tstruct->get_full_name());
   return true;
 }
 
-bool structured_annotations_validator::visit(t_field* tfield) {
+bool base_annotation_validator::visit(t_field* tfield) {
   validate_annotations(tfield, "field " + tfield->get_name());
   validate_annotations(
       tfield->get_type(), "type of the field " + tfield->get_name());

@@ -1227,7 +1227,7 @@ Field:
         for (const auto& it : $8->annotations_) {
           if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
             if ($4 != t_field::T_OPTIONAL) {
-              driver.warning(1, "cpp.ref field must be optional if it is recursive");
+              driver.warning(1, "`cpp.ref` field must be optional if it is recursive.");
             }
             break;
           }

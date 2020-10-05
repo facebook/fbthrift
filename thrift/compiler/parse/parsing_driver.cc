@@ -128,7 +128,7 @@ void parsing_driver::parse_file() {
     // Fail on circular dependencies
     if (circular_deps_.count(included_program->get_path())) {
       failure(
-          "Circular dependency found: file %s is already parsed.",
+          "Circular dependency found: file `%s` is already parsed.",
           included_program->get_path().c_str());
     }
 
@@ -166,7 +166,7 @@ void parsing_driver::parse_file() {
 
   for (auto td : program->get_placeholder_typedefs()) {
     if (!td->resolve_placeholder()) {
-      failure("Type \"%s\" not defined.", td->get_symbolic().c_str());
+      failure("Type `%s` not defined.", td->get_symbolic().c_str());
     }
   }
 }
@@ -235,38 +235,38 @@ void parsing_driver::validate_const_rec(
       case t_base_type::TYPE_BINARY:
         if (value->get_type() != t_const_value::CV_STRING) {
           throw std::string(
-              "type error: const \"" + name + "\" was declared as string");
+              "type error: const `" + name + "` was declared as string.");
         }
         break;
       case t_base_type::TYPE_BOOL:
         if (value->get_type() != t_const_value::CV_BOOL &&
             value->get_type() != t_const_value::CV_INTEGER) {
           throw std::string(
-              "type error: const \"" + name + "\" was declared as bool");
+              "type error: const `" + name + "` was declared as bool.");
         }
         break;
       case t_base_type::TYPE_BYTE:
         if (value->get_type() != t_const_value::CV_INTEGER) {
           throw std::string(
-              "type error: const \"" + name + "\" was declared as byte");
+              "type error: const `" + name + "` was declared as byte.");
         }
         break;
       case t_base_type::TYPE_I16:
         if (value->get_type() != t_const_value::CV_INTEGER) {
           throw std::string(
-              "type error: const \"" + name + "\" was declared as i16");
+              "type error: const `" + name + "` was declared as i16.");
         }
         break;
       case t_base_type::TYPE_I32:
         if (value->get_type() != t_const_value::CV_INTEGER) {
           throw std::string(
-              "type error: const \"" + name + "\" was declared as i32");
+              "type error: const `" + name + "` was declared as i32.");
         }
         break;
       case t_base_type::TYPE_I64:
         if (value->get_type() != t_const_value::CV_INTEGER) {
           throw std::string(
-              "type error: const \"" + name + "\" was declared as i64");
+              "type error: const `" + name + "` was declared as i64.");
         }
         break;
       case t_base_type::TYPE_DOUBLE:
@@ -274,7 +274,7 @@ void parsing_driver::validate_const_rec(
         if (value->get_type() != t_const_value::CV_INTEGER &&
             value->get_type() != t_const_value::CV_DOUBLE) {
           throw std::string(
-              "type error: const \"" + name + "\" was declared as double");
+              "type error: const `" + name + "` was declared as double.");
         }
         break;
       default:
@@ -285,7 +285,7 @@ void parsing_driver::validate_const_rec(
   } else if (type->is_enum()) {
     if (value->get_type() != t_const_value::CV_INTEGER) {
       throw std::string(
-          "type error: const \"" + name + "\" was declared as enum");
+          "type error: const `" + name + "` was declared as enum.");
     }
     const auto as_enum = dynamic_cast<t_enum*>(type);
     assert(as_enum != nullptr);
@@ -293,45 +293,45 @@ void parsing_driver::validate_const_rec(
     if (enum_val == nullptr) {
       warning(
           0,
-          "type error: const \"%s\" was declared as enum \"%s\" with a value"
-          " not of that enum",
+          "type error: const `%s` was declared as enum `%s` with a value"
+          " not of that enum.",
           name.c_str(),
           type->get_name().c_str());
     }
   } else if (as_struct && as_struct->is_union()) {
     if (value->get_type() != t_const_value::CV_MAP) {
       throw std::string(
-          "type error: const \"" + name + "\" was declared as union");
+          "type error: const `" + name + "` was declared as union.");
     }
     auto const& map = value->get_map();
     if (map.size() > 1) {
       throw std::string(
-          "type error: const \"" + name +
-          "\" is a union and can't "
-          "have more than one field set");
+          "type error: const `" + name +
+          "` is a union and can't "
+          "have more than one field set.");
     }
     if (!map.empty()) {
       if (map.front().first->get_type() != t_const_value::CV_STRING) {
         throw std::string(
-            "type error: const \"" + name +
-            "\" is a union and member "
-            "names must be a string");
+            "type error: const `" + name +
+            "` is a union and member "
+            "names must be a string.");
       }
       auto const& member_name = map.front().first->get_string();
       auto const& member = as_struct->get_member(member_name);
       if (!member) {
         throw std::string(
-            "type error: no member named \"" + member_name +
-            "\" for "
-            "union const \"" +
-            name + "\"");
+            "type error: no member named `" + member_name +
+            "` for "
+            "union const `" +
+            name + "`.");
       }
     }
   } else if (type->is_struct() || type->is_xception()) {
     if (value->get_type() != t_const_value::CV_MAP) {
       throw std::string(
-          "type error: const \"" + name + "\" was declared as " +
-          "struct/exception");
+          "type error: const `" + name + "` was declared as " +
+          "struct/exception.");
     }
     const std::vector<t_field*>& fields = ((t_struct*)type)->get_members();
     std::vector<t_field*>::const_iterator f_iter;
@@ -342,7 +342,8 @@ void parsing_driver::validate_const_rec(
         v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       if (v_iter->first->get_type() != t_const_value::CV_STRING) {
-        throw std::string("type error: " + name + " struct key must be string");
+        throw std::string(
+            "type error: `" + name + "` struct key must be string.");
       }
       t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -352,8 +353,8 @@ void parsing_driver::validate_const_rec(
       }
       if (field_type == nullptr) {
         throw std::string(
-            "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string());
+            "type error: `" + type->get_name() + "` has no field `" +
+            v_iter->first->get_string() + "`.");
       }
 
       validate_const_rec(
@@ -397,8 +398,8 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
   if (scope_cache->is_ambiguous_enum_value(name)) {
     std::string possible_enums =
         scope_cache->get_fully_qualified_enum_value_names(name).c_str();
-    std::string msg = "The ambiguous enum " + name +
-        " is defined in more than one place. " +
+    std::string msg = "The ambiguous enum `" + name +
+        "` is defined in more than one place. " +
         "Please refer to this enum using ENUM_NAME.ENUM_VALUE.";
     if (!possible_enums.empty()) {
       msg += (" Possible options: " + possible_enums);

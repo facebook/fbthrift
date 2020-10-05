@@ -81,7 +81,7 @@ TEST_F(ValidatorTest, ReapeatedNamesInService) {
   // An error will be found
   const std::string expected =
       "[FAILURE:/path/to/file.thrift:1] "
-      "Function bar.foo redefines bar.foo";
+      "Function `bar.foo` redefines `bar.foo`.";
   auto errors =
       run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
@@ -120,7 +120,7 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
   // An error will be found
   const std::string expected =
       "[FAILURE:/path/to/file.thrift:1] "
-      "Function qux.foo redefines service bar.foo";
+      "Function `qux.foo` redefines `service bar.foo`.";
   errors = run_validator<service_method_name_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front().str());
@@ -148,7 +148,7 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
   // An error will be found
   const std::string expected =
       "[FAILURE:/path/to/file.thrift:1] "
-      "Redefinition of value bar in enum foo";
+      "Redefinition of value `bar` in enum `foo`.";
   errors = run_validator<enum_value_names_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front().str());
@@ -170,7 +170,7 @@ TEST_F(ValidatorTest, DuplicatedEnumValues) {
   // An error will be found
   const std::string expected =
       "[FAILURE:/path/to/file.thrift:1] "
-      "Duplicate value foo=1 with value bar in enum foo.";
+      "Duplicate value `foo=1` with value `bar` in enum `foo`.";
   auto errors = run_validator<enum_values_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front().str());
@@ -194,12 +194,12 @@ TEST_F(ValidatorTest, UnsetEnumValues) {
   auto errors = run_validator<enum_values_set_validator>(&program);
   EXPECT_EQ(2, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:2] Unset enum value Bar in enum Foo. "
-      "Add an explicit value to suppress this error",
+      "[FAILURE:/path/to/file.thrift:2] Unset enum value `Bar` in enum `Foo`. "
+      "Add an explicit value to suppress this error.",
       errors.at(0).str());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:3] Unset enum value Baz in enum Foo. "
-      "Add an explicit value to suppress this error",
+      "[FAILURE:/path/to/file.thrift:3] Unset enum value `Baz` in enum `Foo`. "
+      "Add an explicit value to suppress this error.",
       errors.at(1).str());
 }
 
@@ -231,11 +231,11 @@ TEST_F(ValidatorTest, QualifiedInUnion) {
   EXPECT_EQ(2, errors.size());
   EXPECT_EQ(
       "[FAILURE:/path/to/file.thrift:5] Unions cannot contain qualified fields. "
-      "Remove required qualifier from field 'foo'",
+      "Remove required qualifier from field `foo`.",
       errors.front().str());
   EXPECT_EQ(
       "[FAILURE:/path/to/file.thrift:6] Unions cannot contain qualified fields. "
-      "Remove optional qualifier from field 'baz'",
+      "Remove optional qualifier from field `baz`.",
       errors.at(1).str());
 }
 
@@ -252,7 +252,7 @@ TEST_F(ValidatorTest, DuplicatedStructNames) {
   auto errors = run_validator<struct_names_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:42] Redefinition of type `Foo`",
+      "[FAILURE:/path/to/file.thrift:42] Redefinition of type `Foo`.",
       errors.front().str());
 }
 
@@ -270,7 +270,7 @@ TEST_F(ValidatorTest, NestedInteractions) {
   auto errors = run_validator<interactions_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:42] Nested interactions are forbidden",
+      "[FAILURE:/path/to/file.thrift:42] Nested interactions are forbidden.",
       errors.front().str());
 }
 
@@ -314,12 +314,12 @@ TEST_F(ValidatorTest, DuplicateInteractions) {
   auto errors = run_validator<interactions_validator>(&program);
   EXPECT_EQ(3, errors.size());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:1] Only interactions can be performed",
+      "[FAILURE:/path/to/file.thrift:1] Only interactions can be performed.",
       errors.front().str());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:3] Service `foo` has multiple methods for creating interaction `Clyde`",
+      "[FAILURE:/path/to/file.thrift:3] Service `foo` has multiple methods for creating interaction `Clyde`.",
       errors.at(1).str());
   EXPECT_EQ(
-      "[FAILURE:/path/to/file.thrift:4] Functions cannot return interactions",
+      "[FAILURE:/path/to/file.thrift:4] Functions cannot return interactions.",
       errors.at(2).str());
 }

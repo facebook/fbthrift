@@ -92,7 +92,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 0)
         self.assertEqual(
             err,
-            '[WARNING:foo.thrift:9] type error: const "color" was declared as enum "Color" with a value not of that enum\n',
+            "[WARNING:foo.thrift:9] type error: const `color` was declared as enum `Color` with "
+            "a value not of that enum.\n",
         )
 
     def test_duplicate_method_name(self):
@@ -111,7 +112,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Function MyS.meh redefines MyS.meh\n"
+            err, "[FAILURE:foo.thrift:3] Function `MyS.meh` redefines `MyS.meh`.\n"
         )
 
     def test_duplicate_method_name_base_base(self):
@@ -153,8 +154,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:baz.thrift:3] Function MyS.lol redefines service foo.MySBB.lol\n"
-            "[FAILURE:baz.thrift:4] Function MyS.meh redefines service bar.MySB.meh\n",
+            "[FAILURE:baz.thrift:3] Function `MyS.lol` redefines `service foo.MySBB.lol`.\n"
+            "[FAILURE:baz.thrift:4] Function `MyS.meh` redefines `service bar.MySB.meh`.\n",
         )
 
     def test_duplicate_enum_value_name(self):
@@ -171,7 +172,7 @@ class CompilerFailureTest(unittest.TestCase):
         )
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Redefinition of value Bar in enum Foo\n"
+            err, "[FAILURE:foo.thrift:3] Redefinition of value `Bar` in enum `Foo`.\n"
         )
 
     def test_duplicate_enum_value(self):
@@ -189,7 +190,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Duplicate value Baz=1 with value Bar in enum Foo.\n",
+            "[FAILURE:foo.thrift:3] Duplicate value `Baz=1` with value `Bar` in enum `Foo`.\n",
         )
 
     def test_unset_enum_value(self):
@@ -207,10 +208,10 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] Unset enum value Bar in enum Foo. "
-            "Add an explicit value to suppress this error\n"
-            "[FAILURE:foo.thrift:3] Unset enum value Baz in enum Foo. "
-            "Add an explicit value to suppress this error\n",
+            "[FAILURE:foo.thrift:2] Unset enum value `Bar` in enum `Foo`. "
+            "Add an explicit value to suppress this error.\n"
+            "[FAILURE:foo.thrift:3] Unset enum value `Baz` in enum `Foo`. "
+            "Add an explicit value to suppress this error.\n",
         )
 
     def test_circular_include_dependencies(self):
@@ -241,8 +242,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:bar.thrift:5] Circular dependency found: file "
-            "foo.thrift is already parsed.\n",
+            "[FAILURE:bar.thrift:5] Circular dependency found: "
+            "file `foo.thrift` is already parsed.\n",
         )
 
     def test_nonexistent_type(self):
@@ -261,7 +262,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, '[FAILURE:foo.thrift:4] Type "Random.Type" not defined.\n'
+            err, "[FAILURE:foo.thrift:4] Type `Random.Type` not defined.\n"
         )
 
     def test_field_names_uniqueness(self):
@@ -282,7 +283,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:4] Field `a` is not unique in struct `Foo`\n"
+            err, "[FAILURE:foo.thrift:4] Field `a` is not unique in struct `Foo`.\n"
         )
 
     def test_mixin_field_names_uniqueness(self):
@@ -305,7 +306,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:5] Field `a.i` and `b.i` can not have same name in struct `C`\n",
+            "[FAILURE:foo.thrift:5] Field `a.i` and `b.i` can not have same name in struct `C`.\n",
         )
 
         write_file(
@@ -326,7 +327,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:bar.thrift:3] Field `B.i` and `a.i` can not have same name in struct `B`\n",
+            "[FAILURE:bar.thrift:3] Field `B.i` and `a.i` can not have same name in struct `B`.\n",
         )
 
     def test_mixin_nonstruct_members(self):
@@ -345,7 +346,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:2] Mixin field `i` is not a struct but i32\n"
+            err, "[FAILURE:foo.thrift:2] Mixin field `i` is not a struct but `i32`.\n"
         )
 
     def test_mixin_in_union(self):
@@ -365,7 +366,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:2] Union `B` can not have mixin field `a`\n"
+            err, "[FAILURE:foo.thrift:2] Union `B` can not have mixin field `a`.\n"
         )
 
     def test_union_as_mixin(self):
@@ -385,7 +386,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Mixin field `a` is not a struct but union\n"
+            err, "[FAILURE:foo.thrift:3] Mixin field `a` is not a struct but union.\n"
         )
 
     def test_mixin_with_cpp_ref(self):
@@ -408,9 +409,9 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 """\
-                [FAILURE:foo.thrift:3] Mixin field `a` can not have annotation (cpp.ref = true)
-                [WARNING:foo.thrift:3] cpp.ref field must be optional if it is recursive
-                [WARNING:foo.thrift:3] cpp.ref field must be optional if it is recursive
+                [FAILURE:foo.thrift:3] Mixin field `a` can not have annotation `(cpp.ref = true)`.
+                [WARNING:foo.thrift:3] `cpp.ref` field must be optional if it is recursive.
+                [WARNING:foo.thrift:3] `cpp.ref` field must be optional if it is recursive.
                 """
             ),
         )
@@ -449,8 +450,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] SumService:sum use of "
-            "cpp.coroutine and stack_arguments together is disallowed\n",
+            "[FAILURE:foo.thrift:2] `SumService.sum` use of "
+            "cpp.coroutine and stack_arguments together is disallowed.\n",
         )
 
         write_file(
@@ -487,7 +488,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             textwrap.dedent(
-                "[FAILURE:foo.thrift:3] Mixin field `a` can not be optional\n"
+                "[FAILURE:foo.thrift:3] Mixin field `a` can not be optional.\n"
             ),
         )
 
@@ -578,6 +579,6 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift] types_cpp_splits=5 is misconfigured: "
+            "[FAILURE:foo.thrift] `types_cpp_splits=5` is misconfigured: "
             "it can not be greater than number of object, which is 4.\n",
         )
