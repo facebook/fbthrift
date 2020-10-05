@@ -66,12 +66,13 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
 
     public {{service:javaCapitalName}}AsyncClientImpl(
         Map<String, String> headers,
+        Map<String, String> persistentHeaders,
         RpcClient rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      {{^service:extends}}super(headers, rpcClient, serviceMetadata, codecManager, protocolId);{{/service:extends}}{{#service:extends}}super(headers, rpcClient, serviceMetadata, codecManager, protocolId, methods);{{/service:extends}}
+      {{^service:extends}}super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);{{/service:extends}}{{#service:extends}}super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);{{/service:extends}}
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

@@ -72,12 +72,13 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
     public MyServiceClientImpl(
         Map<String, String> headers,
+        Map<String, String> persistentHeaders,
         RpcClient rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      super(headers, rpcClient, serviceMetadata, codecManager, protocolId);
+      super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(

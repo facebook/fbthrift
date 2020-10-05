@@ -48,12 +48,13 @@ public class MyServicePrioChildAsyncClientImpl extends test.fixtures.basicannota
 
     public MyServicePrioChildAsyncClientImpl(
         Map<String, String> headers,
+        Map<String, String> persistentHeaders,
         RpcClient rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
         Map<Method, ThriftMethodHandler> methods) {
-      super(headers, rpcClient, serviceMetadata, codecManager, protocolId, methods);
+      super(headers, persistentHeaders, rpcClient, serviceMetadata, codecManager, protocolId, methods);
 
       Map<String, ThriftMethodHandler> methodHandlerMap = new HashMap<>();
       methods.forEach(
