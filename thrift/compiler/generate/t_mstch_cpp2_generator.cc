@@ -28,10 +28,12 @@
 #include <thrift/compiler/util.h>
 #include <thrift/compiler/validator/validator.h>
 
-using namespace std;
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 namespace {
-using namespace apache::thrift::compiler;
+
 std::string const& map_find_first(
     std::map<std::string, std::string> const& m,
     std::initializer_list<char const*> keys) {
@@ -189,11 +191,8 @@ std::string render_fatal_string(const std::string& normal_string) {
   res << ">";
   return res.str();
 }
-} // namespace
 
-namespace apache {
-namespace thrift {
-namespace compiler {
+} // namespace
 
 class cpp2_generator_context {
  public:
@@ -759,7 +758,7 @@ class mstch_cpp2_field : public mstch_field {
       case t_field::e_req::T_OPT_IN_REQ_OUT:
         return std::string("required_of_writer");
       default:
-        throw runtime_error("unknown required qualifier");
+        throw std::runtime_error("unknown required qualifier");
     }
   }
   mstch::node visibility() {
@@ -951,7 +950,7 @@ class mstch_cpp2_struct : public mstch_struct {
           return name;
         }
       }
-      throw runtime_error("No cpp.allocator_via field \"" + name + "\"");
+      throw std::runtime_error("No cpp.allocator_via field \"" + name + "\"");
     }
     return std::string();
   }
@@ -1024,7 +1023,7 @@ class mstch_cpp2_struct : public mstch_struct {
 
   mstch::node get_num_union_members() {
     if (!strct_->is_union()) {
-      throw runtime_error("not a union struct");
+      throw std::runtime_error("not a union struct");
     }
     return std::to_string(strct_->get_members().size());
   }
@@ -2132,10 +2131,10 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
       cache_->programs_[id], "module_types.tcc", name + "_types.tcc");
 
   if (auto split_count = cpp2::get_split_count(parsed_options_)) {
-    auto digit = to_string(split_count - 1).size();
+    auto digit = std::to_string(split_count - 1).size();
     for (int split_id = 0; split_id < split_count; ++split_id) {
-      auto s = to_string(split_id);
-      s = string(digit - s.size(), '0') + s;
+      auto s = std::to_string(split_id);
+      s = std::string(digit - s.size(), '0') + s;
       render_to_file(
           program_cpp2_generator{}.generate_with_split_id(
               program, generators_, cache_, split_id),
@@ -2340,9 +2339,9 @@ class splits_validator : public validator {
     if (split_count_ != 0 && split_count_ > object_count) {
       add_error(
           boost::none,
-          "`types_cpp_splits=" + to_string(split_count_) +
+          "`types_cpp_splits=" + std::to_string(split_count_) +
               "` is misconfigured: it can not be greater than number of object, which is " +
-              to_string(object_count) + ".");
+              std::to_string(object_count) + ".");
     }
     return true;
   }
