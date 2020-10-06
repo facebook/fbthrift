@@ -109,6 +109,7 @@ class ReadHeaders(Headers): ...
 class WriteHeaders(Headers): ...
 
 class ConnectionContext:
+    local_address: SocketAddress
     peer_address: SocketAddress
     peer_common_name: str
     security_protocol: str

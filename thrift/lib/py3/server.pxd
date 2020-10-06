@@ -133,6 +133,7 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         string getPeerCommonName()
         shared_ptr[X509] getPeerCertificate()
         cfollySocketAddress* getPeerAddress()
+        cfollySocketAddress* getLocalAddress()
 
     cdef cppclass Cpp2RequestContext:
         Cpp2ConnContext* getConnectionContext()
@@ -158,6 +159,7 @@ cdef class ThriftServer:
 cdef class ConnectionContext:
     cdef Cpp2ConnContext* _ctx
     cdef object _peer_address
+    cdef object _local_address
 
     @staticmethod
     cdef ConnectionContext create(Cpp2ConnContext* ctx)

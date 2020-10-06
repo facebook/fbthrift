@@ -259,6 +259,7 @@ cdef class ConnectionContext:
         if ctx:
             inst._ctx = ctx
             inst._peer_address = _get_SocketAddress(ctx.getPeerAddress())
+            inst._local_address = _get_SocketAddress(ctx.getLocalAddress())
         return inst
 
     @property
@@ -285,6 +286,10 @@ cdef class ConnectionContext:
                 return b''.join(iobuf)
             return bytes(iobuf)
         return None
+
+    @property
+    def local_address(ConnectionContext self):
+        return self._local_address
 
 
 cdef class ReadHeaders(Headers):
