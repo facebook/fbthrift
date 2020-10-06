@@ -56,7 +56,7 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
 <%/field:type%><%/function:args%>
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", ctx));
 <%#service:interaction?%>
-  Tile* tile;
+  apache::thrift::Tile* tile;
   try {
     tile = &getTile(ctx);
   } catch (const std::out_of_range&) {
@@ -64,9 +64,10 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
     LOG(ERROR) << "Unknown interaction id " << ctx->getInteractionId() << " in function <%function:name%>";
     eb->runInEventBaseThread([req = std::move(req)] {});
 <%/function:oneway?%><%^function:oneway?%>
-    detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
-        folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
+            apache::thrift::TApplicationException::TApplicationExceptionType
+                ::INTERACTION_ERROR,
             "Unknown interaction id " + std::to_string(ctx->getInteractionId())),
         std::move(req), ctx, ctxStack.get(), "<%service:name%>.<%function:name%>", eb);
 <%/function:oneway?%>
@@ -79,9 +80,10 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
 <%#function:oneway?%>
     eb->runInEventBaseThread([req = std::move(req)] {});
 <%/function:oneway?%><%^function:oneway?%>
-    detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
-        folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
+            apache::thrift::TApplicationException::TApplicationExceptionType
+              ::INTERACTION_ERROR,
             "Interaction constructor failed with " + static_cast<apache::thrift::ErrorTile*>(tile)->get().what().toStdString()),
         std::move(req), ctx, ctxStack.get(), "<%service:name%>.<%function:name%>", eb);
 <%/function:oneway?%>

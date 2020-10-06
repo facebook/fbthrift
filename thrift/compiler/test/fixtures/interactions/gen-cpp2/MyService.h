@@ -86,7 +86,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   static const MyServiceAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
   static const MyServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
   static const MyServiceAsyncProcessor::InteractionConstructorMap& getInteractionConstructorMap();
-  std::unique_ptr<Tile> createInteractionImpl(const std::string& name) override;
+  std::unique_ptr<apache::thrift::Tile> createInteractionImpl(const std::string& name) override;
  private:
   static const MyServiceAsyncProcessor::ProcessMap binaryProcessMap_;
   static const MyServiceAsyncProcessor::ProcessMap compactProcessMap_;

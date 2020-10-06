@@ -41,7 +41,7 @@
   static const <%service:name%>AsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
 <%#service:any_interactions?%>
   static const <%service:name%>AsyncProcessor::InteractionConstructorMap& getInteractionConstructorMap();
-  std::unique_ptr<Tile> createInteractionImpl(const std::string& name) override;
+  std::unique_ptr<apache::thrift::Tile> createInteractionImpl(const std::string& name) override;
 <%/service:any_interactions?%>
  private:
   static const <%service:name%>AsyncProcessor::ProcessMap binaryProcessMap_;
