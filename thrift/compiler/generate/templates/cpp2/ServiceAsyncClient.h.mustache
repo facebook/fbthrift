@@ -36,6 +36,11 @@
 <%#service:any_streams?%>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 <%/service:any_streams?%>
+<%#service:any_interactions?%>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+#include <thrift/lib/cpp2/async/ClientSinkBridge.h>
+#include <thrift/lib/cpp2/async/Sink.h>
+<%/service:any_interactions?%>
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;
