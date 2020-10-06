@@ -113,6 +113,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     }
   };
 
+  struct Metadata {
+    std::string configPath;
+  };
+
  private:
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
@@ -242,6 +246,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   ServerAttributeUnsafe<folly::sorted_vector_set<std::string>>
       methodsBypassMaxRequestsLimit_{{}};
+
+  Metadata metadata_;
 
  protected:
   //! The server's listening addresses
@@ -1054,6 +1060,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   size_t getWriteBatchingSize() const {
     return writeBatchingSize_.get();
+  }
+
+  const Metadata& metadata() const {
+    return metadata_;
+  }
+
+  Metadata& metadata() {
+    return metadata_;
   }
 };
 } // namespace thrift
