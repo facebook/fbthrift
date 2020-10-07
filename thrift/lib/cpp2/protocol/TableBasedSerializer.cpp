@@ -214,40 +214,43 @@ void read(
     case protocol::TType::T_I32: {
       std::int32_t temp;
       iprot->readI32(temp);
-      reinterpret_cast<void (*)(void*, std::int32_t)>(typeInfo.set)(
+      reinterpret_cast<void (*)(void*, const std::int32_t&)>(typeInfo.set)(
           object, temp);
       break;
     }
     case protocol::TType::T_I16: {
       std::int16_t temp;
       iprot->readI16(temp);
-      reinterpret_cast<void (*)(void*, std::int16_t)>(typeInfo.set)(
+      reinterpret_cast<void (*)(void*, const std::int16_t&)>(typeInfo.set)(
           object, temp);
       break;
     }
     case protocol::TType::T_BYTE: {
       std::int8_t temp;
       iprot->readByte(temp);
-      reinterpret_cast<void (*)(void*, std::int8_t)>(typeInfo.set)(
+      reinterpret_cast<void (*)(void*, const std::int8_t&)>(typeInfo.set)(
           object, temp);
       break;
     }
     case protocol::TType::T_BOOL: {
       bool temp;
       iprot->readBool(temp);
-      reinterpret_cast<void (*)(void*, bool)>(typeInfo.set)(object, temp);
+      reinterpret_cast<void (*)(void*, const bool&)>(typeInfo.set)(
+          object, temp);
       break;
     }
     case protocol::TType::T_DOUBLE: {
       double temp;
       iprot->readDouble(temp);
-      reinterpret_cast<void (*)(void*, double)>(typeInfo.set)(object, temp);
+      reinterpret_cast<void (*)(void*, const double&)>(typeInfo.set)(
+          object, temp);
       break;
     }
     case protocol::TType::T_FLOAT: {
       float temp;
       iprot->readFloat(temp);
-      reinterpret_cast<void (*)(void*, float)>(typeInfo.set)(object, temp);
+      reinterpret_cast<void (*)(void*, const float&)>(typeInfo.set)(
+          object, temp);
       break;
     }
     case protocol::TType::T_STRING: {

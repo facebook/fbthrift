@@ -448,6 +448,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   friend class ::apache::thrift::Cpp2Ops< TrivialTypesStruct >;
   friend void swap(TrivialTypesStruct& a, TrivialTypesStruct& b);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<TrivialTypesStruct>)(std::int16_t fieldIndex);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<TrivialTypesStruct>)(std::int16_t fieldIndex);
 };
 
 template <class Protocol_>
@@ -822,6 +824,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   friend class ::apache::thrift::Cpp2Ops< ContainerStruct >;
   friend void swap(ContainerStruct& a, ContainerStruct& b);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<ContainerStruct>)(std::int16_t fieldIndex);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<ContainerStruct>)(std::int16_t fieldIndex);
 };
 
 template <class Protocol_>
@@ -1118,6 +1122,7 @@ class ExampleUnion final  {
 
   friend class ::apache::thrift::Cpp2Ops< ExampleUnion >;
   friend void swap(ExampleUnion& a, ExampleUnion& b);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<ExampleUnion>)();
 };
 
 template <class Protocol_>

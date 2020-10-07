@@ -38,12 +38,11 @@ namespace detail {
 
 using FieldID = std::int16_t;
 using VoidFuncPtr = void (*)(void*);
-// MSVC cannot
-// reinterpret_cast an overloaded function to another function pointer,
-// but piping the function through an identity function before reinterpret_cast
-// works.
+// MSVC cannot reinterpret_cast an overloaded function to another function
+// pointer, but piping the function through an identity function before
+// reinterpret_cast works.
 template <typename T>
-FOLLY_ALWAYS_INLINE constexpr T identity(T t) {
+FOLLY_ERASE constexpr T identity(T t) {
   return t;
 }
 
@@ -174,6 +173,12 @@ struct StructInfoN {
   FieldInfo fieldInfos[NumFields];
 };
 
+template <std::int16_t NumFields>
+FOLLY_ERASE const StructInfo& toStructInfo(
+    const StructInfoN<NumFields>& templatizedInfo) {
+  return reinterpret_cast<const StructInfo&>(templatizedInfo);
+}
+
 struct MapFieldExt {
   const TypeInfo* keyInfo;
   const TypeInfo* valInfo;
@@ -235,6 +240,11 @@ struct SetFieldExt {
       bool protocolSortKeys,
       size_t (*writer)(const void* context, const void* val));
 };
+
+template <typename ThriftUnion>
+void clearUnion(void* object) {
+  reinterpret_cast<ThriftUnion*>(object)->__clear();
+}
 
 template <typename Type>
 enable_if_not_smart_ptr_t<Type> initialize(void* object) {

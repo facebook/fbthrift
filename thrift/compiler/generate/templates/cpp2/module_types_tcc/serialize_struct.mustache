@@ -122,6 +122,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   return xfer;
 }
 
+<%^program:tablebased?%>
 template <class Protocol_>
 uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
@@ -178,5 +179,17 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
+<%/program:tablebased?%>
+<%#program:tablebased?%>
+template <class Protocol_>
+uint32_t <%struct:name%>::write(Protocol_* iprot) const {
+  return ::apache::thrift::detail::write(
+    iprot,
+    ::apache::thrift::detail::toStructInfo(
+      <% > common/namespace_cpp2%>__fbthrift_struct_info::<%struct:name%>
+    ),
+    this);
+}
+<%/program:tablebased?%>
 <%!
 %>

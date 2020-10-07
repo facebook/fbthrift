@@ -280,6 +280,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   friend class ::apache::thrift::Cpp2Ops< <%struct:name%> >;
   friend void swap(<%struct:name%>& a, <%struct:name%>& b);
+  <%#program:tablebased?%>
+  <%^struct:union?%>
+  friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<<%struct:name%>>)(std::int16_t fieldIndex);
+  friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<<%struct:name%>>)(std::int16_t fieldIndex);
+  <%/struct:union?%>
+  <%#struct:union?%>
+  friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<<%struct:name%>>)();
+  <%/struct:union?%>
+  <%/program:tablebased?%>
 };
 
 template <class Protocol_>

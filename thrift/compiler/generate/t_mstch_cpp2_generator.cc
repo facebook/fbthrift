@@ -33,6 +33,13 @@ namespace thrift {
 namespace compiler {
 
 namespace {
+bool field_has_isset(const t_field* field) {
+  return field->get_req() != t_field::e_req::T_REQUIRED &&
+      !field->annotations_.count("cpp.ref") &&
+      !field->annotations_.count("cpp2.ref") &&
+      !field->annotations_.count("cpp.ref_type") &&
+      !field->annotations_.count("cpp2.ref_type");
+}
 
 std::string const& map_find_first(
     std::map<std::string, std::string> const& m,
@@ -650,6 +657,7 @@ class mstch_cpp2_field : public mstch_field {
         this,
         {
             {"field:index_plus_one", &mstch_cpp2_field::index_plus_one},
+            {"field:has_isset?", &mstch_cpp2_field::has_isset},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
             {"field:next_field_key", &mstch_cpp2_field::next_field_key},
             {"field:next_field_type", &mstch_cpp2_field::next_field_type},
@@ -742,6 +750,9 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node has_fatal_annotations() {
     return get_fatal_annotations(field_->annotations_).size() > 0;
   }
+  mstch::node has_isset() {
+    return field_has_isset(field_);
+  }
   mstch::node fatal_annotations() {
     return generate_elements(
         get_fatal_annotations(field_->annotations_),
@@ -796,6 +807,8 @@ class mstch_cpp2_struct : public mstch_struct {
         {
             {"struct:fields_size", &mstch_cpp2_struct::fields_size},
             {"struct:filtered_fields", &mstch_cpp2_struct::filtered_fields},
+            {"struct:fields_in_key_order",
+             &mstch_cpp2_struct::fields_in_key_order},
             {"struct:fields_in_layout_order",
              &mstch_cpp2_struct::fields_in_layout_order},
             {"struct:is_struct_orderable?",
@@ -956,11 +969,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node has_isset_fields() {
     for (const auto* field : strct_->get_members()) {
-      if (field->get_req() != t_field::e_req::T_REQUIRED &&
-          !field->annotations_.count("cpp.ref") &&
-          !field->annotations_.count("cpp2.ref") &&
-          !field->annotations_.count("cpp.ref_type") &&
-          !field->annotations_.count("cpp2.ref_type")) {
+      if (field_has_isset(field)) {
         return true;
       }
     }
@@ -969,11 +978,7 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node isset_fields() {
     std::vector<t_field const*> fields;
     for (const auto* field : strct_->get_members()) {
-      if (field->get_req() != t_field::e_req::T_REQUIRED &&
-          !field->annotations_.count("cpp.ref") &&
-          !field->annotations_.count("cpp2.ref") &&
-          !field->annotations_.count("cpp.ref_type") &&
-          !field->annotations_.count("cpp2.ref_type")) {
+      if (field_has_isset(field)) {
         fields.push_back(field);
       }
     }
@@ -1138,8 +1143,35 @@ class mstch_cpp2_struct : public mstch_struct {
         cache_);
   }
 
+  // Returns the struct members ordered by the key.
+  const std::vector<t_field*>& get_members_in_key_order() {
+    auto const& members = strct_->get_members();
+    if (members.size() == fields_in_key_order_.size()) {
+      // Already reordered.
+      return fields_in_key_order_;
+    }
+
+    fields_in_key_order_ = std::vector<t_field*>(members);
+    // Sort by increasing key.
+    std::sort(
+        fields_in_key_order_.begin(),
+        fields_in_key_order_.end(),
+        [](auto lhs, auto rhs) { return lhs->get_key() < rhs->get_key(); });
+
+    return fields_in_key_order_;
+  }
+
+  mstch::node fields_in_key_order() {
+    return generate_elements(
+        get_members_in_key_order(),
+        generators_->field_generator_.get(),
+        generators_,
+        cache_);
+  }
+
   std::shared_ptr<cpp2_generator_context> context_;
 
+  std::vector<t_field*> fields_in_key_order_;
   std::vector<t_field*> fields_in_layout_order_;
 };
 
@@ -1346,6 +1378,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:frozen?", &mstch_cpp2_program::frozen},
             {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
+            {"program:tablebased?", &mstch_cpp2_program::tablebased},
             {"program:json?", &mstch_cpp2_program::json},
             {"program:nimble?", &mstch_cpp2_program::nimble},
             {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
@@ -1492,6 +1525,9 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node frozen() {
     return cache_->parsed_options_.count("frozen") != 0;
+  }
+  mstch::node tablebased() {
+    return cache_->parsed_options_.count("tablebased") != 0;
   }
   mstch::node frozen_packed() {
     auto iter = cache_->parsed_options_.find("frozen");

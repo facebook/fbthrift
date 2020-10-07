@@ -82,6 +82,13 @@ namespace thrift {
 
 namespace detail {
 
+template <typename T>
+constexpr ptrdiff_t fieldOffset(std::int16_t fieldIndex);
+template <typename T>
+constexpr ptrdiff_t issetOffset(std::int16_t fieldIndex);
+template <typename T>
+constexpr ptrdiff_t unionTypeOffset();
+
 template <typename Tag>
 struct access_field;
 template <typename Tag>

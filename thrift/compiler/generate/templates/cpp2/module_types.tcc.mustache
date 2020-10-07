@@ -22,11 +22,18 @@
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 
 <% > module_types_tcc/declare_enums%>
+<%^program:tablebased?%>
 <% > module_types_tcc/tcc_struct_traits%>
+<%/program:tablebased?%>
 
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
 
+<%#program:tablebased?%>
+namespace __fbthrift_struct_info {
+extern const ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> <%struct:name%>;
+} // namespace __fbthrift_struct_info
+<%/program:tablebased?%>
 
 <%^struct:union?%>
 <% > module_types_tcc/deserialize_struct%>
@@ -63,4 +70,27 @@ extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::Nim
 
 <% > common/namespace_cpp2_end%>
 
+<%/program:structs%><%!
+
+%><%#program:tablebased?%>
+namespace apache {
+namespace thrift {
+namespace detail {
+<%#program:structs%>
+template <>
+struct TypeToInfo<
+    ::apache::thrift::type_class::<%#struct:union?%>variant<%/struct:union?%><%^struct:union?%>structure<%/struct:union?%>,
+    <% > common/namespace_cpp2 %><%struct:name%>> {
+  static const ::apache::thrift::detail::TypeInfo typeInfo;
+};
 <%/program:structs%>
+<%#program:enums%>
+  template <>
+    struct TypeToInfo<
+        ::apache::thrift::type_class::enumeration,
+        <% > common/namespace_cpp2%><%enum:name%>> {
+    static const ::apache::thrift::detail::TypeInfo typeInfo;
+  };
+<%/program:enums%>
+}}} // namespace apache::thrift::detail
+<%/program:tablebased?%>

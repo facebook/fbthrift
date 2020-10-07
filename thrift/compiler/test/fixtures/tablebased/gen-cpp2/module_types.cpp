@@ -44,46 +44,68 @@ const _ExampleEnum_EnumMapFactory::NamesToValuesMapType _ExampleEnum_NAMES_TO_VA
 FOLLY_POP_WARNING
 
 }}} // test::fixtures::tablebased
-
 namespace apache {
 namespace thrift {
 namespace detail {
-
-void TccStructTraits<::test::fixtures::tablebased::TrivialTypesStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 5;
-  static constexpr folly::StringPiece _names[] = {
-    "fieldA",
-    "fieldB",
-    "fieldC",
-    "fieldD",
-    "fieldE",
-  };
-  static constexpr int16_t _ids[] = {
-    1,
-    2,
-    3,
-    4,
-    5,
-  };
-  static constexpr TType _types[] = {
-    TType::T_I32,
-    TType::T_STRING,
-    TType::T_STRING,
-    TType::T_STRING,
-    TType::T_I32,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
-  st::translate_field_name(_fname, fid, _ftype, table);
+FOLLY_PUSH_WARNING
+FOLLY_GNU_DISABLE_WARNING("-Winvalid-offsetof")
+template<>
+constexpr ptrdiff_t fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(std::int16_t fieldIndex) {
+  constexpr ptrdiff_t offsets[] = {
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldA),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldB),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldC),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldD),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, fieldE)};
+  return offsets[fieldIndex];
 }
 
-} // namespace detail
-} // namespace thrift
-} // namespace apache
+template<>
+constexpr ptrdiff_t issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(std::int16_t fieldIndex) {
+  constexpr ptrdiff_t offsets[] = {
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.fieldA),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.fieldB),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.fieldC),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.fieldD),
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.fieldE)};
+  return offsets[fieldIndex];
+}
+
+template<>
+constexpr ptrdiff_t fieldOffset<::test::fixtures::tablebased::ContainerStruct>(std::int16_t fieldIndex) {
+  constexpr ptrdiff_t offsets[] = {
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldB),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldC),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldD),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldE),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldF),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldG),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldH),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, fieldA)};
+  return offsets[fieldIndex];
+}
+
+template<>
+constexpr ptrdiff_t issetOffset<::test::fixtures::tablebased::ContainerStruct>(std::int16_t fieldIndex) {
+  constexpr ptrdiff_t offsets[] = {
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldB),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldC),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldD),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldE),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldF),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldG),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldH),
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.fieldA)};
+  return offsets[fieldIndex];
+}
+
+
+template<>
+constexpr ptrdiff_t unionTypeOffset<::test::fixtures::tablebased::ExampleUnion>() {
+  return offsetof(::test::fixtures::tablebased::ExampleUnion, type_);
+}
+FOLLY_POP_WARNING
+}}} // apache::thrift::detail
 
 namespace test { namespace fixtures { namespace tablebased {
 
@@ -241,58 +263,57 @@ template uint32_t TrivialTypesStruct::write<>(apache::thrift::SimpleJSONProtocol
 template uint32_t TrivialTypesStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t TrivialTypesStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+namespace __fbthrift_struct_info {
+constexpr ::apache::thrift::detail::StructInfoN<5> TrivialTypesStruct = {
+  /* .numFields */ 5,
+  /* .name */ "TrivialTypesStruct",
+  /* .unionExt */ nullptr,
+  /* .fieldInfos */ {
+  {
+    /* .id */ 1,
+    /* .isUnqualified */ false,
+    /* .name */ "fieldA",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(0),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(0),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::integral, int32_t>::typeInfo,
+  },
+  {
+    /* .id */ 2,
+    /* .isUnqualified */ false,
+    /* .name */ "fieldB",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(1),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(1),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::string, ::std::string>::typeInfo,
+  },
+  {
+    /* .id */ 3,
+    /* .isUnqualified */ false,
+    /* .name */ "fieldC",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(2),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(2),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::binary, ::std::string>::typeInfo,
+  },
+  {
+    /* .id */ 4,
+    /* .isUnqualified */ false,
+    /* .name */ "fieldD",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(3),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(3),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::binary,  ::test::fixtures::tablebased::IOBufPtr>::typeInfo,
+  },
+  {
+    /* .id */ 5,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldE",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(4),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(4),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::enumeration,  ::test::fixtures::tablebased::ExampleEnum>::typeInfo,
+  }}
+};
+} // namespace __fbthrift_struct_info
 
 
 }}} // test::fixtures::tablebased
-namespace apache {
-namespace thrift {
-namespace detail {
-
-void TccStructTraits<::test::fixtures::tablebased::ContainerStruct>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 8;
-  static constexpr folly::StringPiece _names[] = {
-    "fieldA",
-    "fieldB",
-    "fieldC",
-    "fieldD",
-    "fieldE",
-    "fieldF",
-    "fieldG",
-    "fieldH",
-  };
-  static constexpr int16_t _ids[] = {
-    12,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-  };
-  static constexpr TType _types[] = {
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_LIST,
-    TType::T_SET,
-    TType::T_MAP,
-    TType::T_LIST,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
 namespace test { namespace fixtures { namespace tablebased {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -461,6 +482,78 @@ template uint32_t ContainerStruct::write<>(apache::thrift::SimpleJSONProtocolWri
 template uint32_t ContainerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+namespace __fbthrift_struct_info {
+constexpr ::apache::thrift::detail::StructInfoN<8> ContainerStruct = {
+  /* .numFields */ 8,
+  /* .name */ "ContainerStruct",
+  /* .unionExt */ nullptr,
+  /* .fieldInfos */ {
+  {
+    /* .id */ 2,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldB",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(0),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(0),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::typeInfo,
+  },
+  {
+    /* .id */ 3,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldC",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(1),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(1),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::typeInfo,
+  },
+  {
+    /* .id */ 4,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldD",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(2),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(2),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::typeInfo,
+  },
+  {
+    /* .id */ 5,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldE",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(3),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(3),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::typeInfo,
+  },
+  {
+    /* .id */ 6,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldF",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(4),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(4),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::typeInfo,
+  },
+  {
+    /* .id */ 7,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldG",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(5),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(5),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, ::std::string>>::typeInfo,
+  },
+  {
+    /* .id */ 8,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldH",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(6),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(6),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>::typeInfo,
+  },
+  {
+    /* .id */ 12,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldA",
+    /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(7),
+    /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(7),
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::typeInfo,
+  }}
+};
+} // namespace __fbthrift_struct_info
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ContainerStruct,
@@ -476,37 +569,6 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // test::fixtures::tablebased
-namespace apache {
-namespace thrift {
-namespace detail {
-
-void TccStructTraits<::test::fixtures::tablebased::ExampleUnion>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 2;
-  static constexpr folly::StringPiece _names[] = {
-    "fieldA",
-    "fieldB",
-  };
-  static constexpr int16_t _ids[] = {
-    1,
-    2,
-  };
-  static constexpr TType _types[] = {
-    TType::T_STRUCT,
-    TType::T_STRUCT,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::size;
@@ -579,6 +641,37 @@ template uint32_t ExampleUnion::write<>(apache::thrift::SimpleJSONProtocolWriter
 template uint32_t ExampleUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ExampleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
+namespace __fbthrift_struct_info {
+constexpr ::apache::thrift::detail::UnionExtN<2> ExampleUnion_unionExt = {
+  /* .clear */ ::apache::thrift::detail::clearUnion<::test::fixtures::tablebased::ExampleUnion>,
+  /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<::test::fixtures::tablebased::ExampleUnion>(),
+  /* .initMember */ {
+  ::apache::thrift::detail::placementNewUnionValue< ::test::fixtures::tablebased::ContainerStruct>,
+::apache::thrift::detail::placementNewUnionValue< ::test::fixtures::tablebased::TrivialTypesStruct>},
+};
+constexpr ::apache::thrift::detail::StructInfoN<2> ExampleUnion = {
+  /* .numFields */ 2,
+  /* .name */ "ExampleUnion",
+  /* .unionExt */ &ExampleUnion_unionExt,
+  /* .fieldInfos */ {
+  {
+    /* .id */ 1,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldA",
+    /* .memberOffset */ 0,
+    /* .issetOffset */ 0,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::ContainerStruct>::typeInfo,
+  },
+  {
+    /* .id */ 2,
+    /* .isUnqualified */ true,
+    /* .name */ "fieldB",
+    /* .memberOffset */ 0,
+    /* .issetOffset */ 0,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::TrivialTypesStruct>::typeInfo,
+  }}
+};
+} // namespace __fbthrift_struct_info
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ExampleUnion,
@@ -606,3 +699,39 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // test::fixtures::tablebased
+namespace apache {
+namespace thrift {
+namespace detail {
+const ::apache::thrift::detail::TypeInfo TypeToInfo<
+    apache::thrift::type_class::enumeration,
+    ::test::fixtures::tablebased::ExampleEnum>::typeInfo = {
+  /* .type */ apache::thrift::protocol::TType::T_I32,
+  /* .set */ reinterpret_cast<VoidFuncPtr>(set<::test::fixtures::tablebased::ExampleEnum>, std::int32_t),
+  /* .get */ reinterpret_cast<VoidFuncPtr>(get<std::int32_t, ::test::fixtures::tablebased::ExampleEnum>),
+  /* .typeExt */ nullptr,
+};
+const ::apache::thrift::detail::TypeInfo TypeToInfo<
+  ::apache::thrift::type_class::structure,
+  ::test::fixtures::tablebased::TrivialTypesStruct>::typeInfo = {
+  /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
+  /* .set */ nullptr,
+  /* .get */ nullptr,
+  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info::TrivialTypesStruct,
+};
+const ::apache::thrift::detail::TypeInfo TypeToInfo<
+  ::apache::thrift::type_class::structure,
+  ::test::fixtures::tablebased::ContainerStruct>::typeInfo = {
+  /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
+  /* .set */ nullptr,
+  /* .get */ nullptr,
+  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info::ContainerStruct,
+};
+const ::apache::thrift::detail::TypeInfo TypeToInfo<
+  ::apache::thrift::type_class::variant,
+  ::test::fixtures::tablebased::ExampleUnion>::typeInfo = {
+  /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
+  /* .set */ nullptr,
+  /* .get */ nullptr,
+  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info::ExampleUnion,
+};
+}}} // namespace apache::thrift::detail

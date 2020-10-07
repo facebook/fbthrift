@@ -14,7 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>template <class Protocol_>
+%><%^program:tablebased?%>
+template <class Protocol_>
 void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
   _readState.fieldId = 0;
@@ -94,4 +95,16 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
     }
   }
   _readState.readStructEnd(iprot);
-}
+}<%!
+%><%/program:tablebased?%><%!
+%><%#program:tablebased?%>
+template <class Protocol_>
+void <%struct:name%>::readNoXfer(Protocol_* iprot) {
+  ::apache::thrift::detail::read(
+    iprot,
+    ::apache::thrift::detail::toStructInfo(
+      <% > common/namespace_cpp2%>__fbthrift_struct_info::<%struct:name%>
+    ),
+    this);
+}<%!
+%><%/program:tablebased?%>
