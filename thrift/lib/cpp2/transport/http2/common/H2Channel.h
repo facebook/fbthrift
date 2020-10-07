@@ -82,7 +82,9 @@ class H2Channel : public ThriftChannelIf {
   // more writes to the stream should be performed after this point.
   // Also, after this call Proxygen will relinquish access to this
   // object.
-  virtual void onH2StreamClosed(proxygen::ProxygenError /*error*/) noexcept {}
+  virtual void onH2StreamClosed(
+      proxygen::ProxygenError /*error*/,
+      std::string errorDescription) noexcept = 0;
 
  protected:
   // Encodes Thrift headers to be HTTP compliant.

@@ -59,7 +59,9 @@ class SingleRpcChannel : public H2Channel {
 
   void onH2StreamEnd() noexcept override;
 
-  void onH2StreamClosed(proxygen::ProxygenError) noexcept override;
+  void onH2StreamClosed(
+      proxygen::ProxygenError error,
+      std::string errorDescription) noexcept override;
 
   void setNotYetStable() noexcept;
 

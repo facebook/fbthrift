@@ -49,7 +49,7 @@ void ThriftRequestHandler::onUpgrade(UpgradeProtocol /*prot*/) noexcept {}
 
 void ThriftRequestHandler::detachTransaction() noexcept {
   if (channel_) {
-    channel_->onH2StreamClosed(ProxygenError::kErrorNone);
+    channel_->onH2StreamClosed(ProxygenError::kErrorNone, "");
   }
   delete this;
 }
@@ -87,7 +87,7 @@ void ThriftRequestHandler::onError(
 
 void ThriftRequestHandler::deliverChannelError(proxygen::ProxygenError error) {
   if (channel_) {
-    channel_->onH2StreamClosed(error);
+    channel_->onH2StreamClosed(error, "");
     channel_ = nullptr;
   }
 }

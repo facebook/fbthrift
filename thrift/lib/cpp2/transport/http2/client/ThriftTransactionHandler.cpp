@@ -44,7 +44,7 @@ void ThriftTransactionHandler::setTransaction(HTTPTransaction* txn) noexcept {
 
 void ThriftTransactionHandler::detachTransaction() noexcept {
   DCHECK(channel_);
-  channel_->onH2StreamClosed(ProxygenError::kErrorNone);
+  channel_->onH2StreamClosed(ProxygenError::kErrorNone, "");
   delete this;
 }
 
@@ -67,7 +67,7 @@ void ThriftTransactionHandler::onEOM() noexcept {
 
 void ThriftTransactionHandler::onError(const HTTPException& error) noexcept {
   DCHECK(channel_);
-  channel_->onH2StreamClosed(error.getProxygenError());
+  channel_->onH2StreamClosed(error.getProxygenError(), error.describe());
 }
 
 } // namespace thrift

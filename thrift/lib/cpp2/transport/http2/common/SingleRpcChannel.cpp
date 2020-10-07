@@ -219,7 +219,9 @@ void SingleRpcChannel::onH2StreamEnd() noexcept {
   }
 }
 
-void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
+void SingleRpcChannel::onH2StreamClosed(
+    proxygen::ProxygenError error,
+    std::string errorDescription) noexcept {
   VLOG(4) << "onH2StreamClosed";
   if (callback_) {
     std::unique_ptr<TTransportException> ex;
@@ -229,9 +231,7 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
     } else {
       // Some unknown error.
       ex = std::make_unique<TTransportException>(
-          TTransportException::NETWORK_ERROR,
-          folly::to<std::string>(
-              "ProxygenError ", proxygen::getErrorString(error)));
+          TTransportException::NETWORK_ERROR, errorDescription);
     }
     // We assume that the connection is still valid.  If not, we will
     // get an error the next time we try to create a new transaction
@@ -247,7 +247,6 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
     });
   }
   httpTransaction_ = nullptr;
-  H2Channel::onH2StreamClosed(error);
 }
 
 void SingleRpcChannel::onThriftRequest() noexcept {
