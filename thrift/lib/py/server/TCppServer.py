@@ -187,7 +187,6 @@ class TSSLConfig(object):
         self.verify = SSLVerifyPeerEnum.VERIFY
         self.ssl_policy = SSLPolicy.PERMITTED
         self.ticket_file_path = ''
-        self.alpn_protocols = []
         self.session_context = None
         self.ssl_version = None
 

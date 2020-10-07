@@ -87,23 +87,6 @@ T getIntAttr(object& pyObject, const char* attrName) {
   return extract<T>(val);
 }
 
-std::list<std::string> getStringListSafe(object& pyObject, const char* attr) {
-  object val = pyObject.attr(attr);
-  std::list<std::string> result;
-  if (val.is_none()) {
-    return result;
-  }
-  auto exList = extract<list>(val);
-  if (exList.check()) {
-    list pyList = exList;
-    int len = boost::python::len(pyList);
-    for (int i = 0; i < len; ++i) {
-      result.push_back(extract<std::string>(str(pyList[i])));
-    }
-  }
-  return result;
-}
-
 } // namespace
 
 class CallbackWrapper {
@@ -559,8 +542,6 @@ class CppServerWrapper : public ThriftServer {
     if (!eccCurve.empty()) {
       cfg->eccCurveName = eccCurve;
     }
-    auto alpnProtocols = getStringListSafe(sslConfig, "alpn_protocols");
-    cfg->setNextProtocols(alpnProtocols);
     object sessionContext = sslConfig.attr("session_context");
     if (!sessionContext.is_none()) {
       cfg->sessionContext = extract<std::string>(str(sessionContext));
@@ -572,7 +553,12 @@ class CppServerWrapper : public ThriftServer {
           extract<SSLContext::SSLVersion>(sslConfig.attr("ssl_version"));
     }
 
-    ThriftServer::setSSLConfig(cfg);
+    ThriftServer::setSSLConfig(folly::observer::makeObserver(
+        [cfg, nextProtocolsObserver = ThriftServer::defaultNextProtocols()] {
+          auto cfgWithNextProtocols = *cfg;
+          cfgWithNextProtocols.setNextProtocols(**nextProtocolsObserver);
+          return cfgWithNextProtocols;
+        }));
 
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
 
