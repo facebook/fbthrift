@@ -31,6 +31,7 @@ using proxygen::ProxygenError;
 ThriftTransactionHandler::~ThriftTransactionHandler() {
   if (txn_) {
     txn_->setHandler(nullptr);
+    txn_->setTransportCallback(nullptr);
   }
 }
 
@@ -40,6 +41,7 @@ void ThriftTransactionHandler::setChannel(std::shared_ptr<H2Channel> channel) {
 
 void ThriftTransactionHandler::setTransaction(HTTPTransaction* txn) noexcept {
   txn_ = txn;
+  txn_->setTransportCallback(this);
 }
 
 void ThriftTransactionHandler::detachTransaction() noexcept {
@@ -68,6 +70,11 @@ void ThriftTransactionHandler::onEOM() noexcept {
 void ThriftTransactionHandler::onError(const HTTPException& error) noexcept {
   DCHECK(channel_);
   channel_->onH2StreamClosed(error.getProxygenError(), error.describe());
+}
+
+void ThriftTransactionHandler::lastByteFlushed() noexcept {
+  DCHECK(channel_);
+  channel_->onMessageFlushed();
 }
 
 } // namespace thrift

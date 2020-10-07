@@ -63,6 +63,8 @@ class SingleRpcChannel : public H2Channel {
       proxygen::ProxygenError error,
       std::string errorDescription) noexcept override;
 
+  void onMessageFlushed() noexcept override;
+
   void setNotYetStable() noexcept;
 
  private:

@@ -178,8 +178,6 @@ void SingleRpcChannel::sendThriftRequest(
         [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
   } else {
     callback_ = std::move(callback);
-    callbackEvb->runInEventBaseThread(
-        [cb = callback_.get()]() mutable { cb->onThriftRequestSent(); });
   }
   receivedThriftRPC_ = true;
 }
@@ -247,6 +245,17 @@ void SingleRpcChannel::onH2StreamClosed(
     });
   }
   httpTransaction_ = nullptr;
+}
+
+void SingleRpcChannel::onMessageFlushed() noexcept {
+  if (callback_) {
+    auto evb = callback_->getEventBase();
+    // The callbacks are serialized on the EventBase, so it's safe to keep raw
+    // ptr here.
+    evb->runInEventBaseThread([callbackPtr = callback_.get()]() mutable {
+      callbackPtr->onThriftRequestSent();
+    });
+  }
 }
 
 void SingleRpcChannel::onThriftRequest() noexcept {

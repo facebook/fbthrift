@@ -86,6 +86,8 @@ class H2Channel : public ThriftChannelIf {
       proxygen::ProxygenError /*error*/,
       std::string errorDescription) noexcept = 0;
 
+  virtual void onMessageFlushed() noexcept {}
+
  protected:
   // Encodes Thrift headers to be HTTP compliant.
   void encodeHeaders(

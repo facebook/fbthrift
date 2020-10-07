@@ -22,7 +22,9 @@
 namespace apache {
 namespace thrift {
 
-class ThriftTransactionHandler : public proxygen::HTTPTransactionHandler {
+class ThriftTransactionHandler
+    : public proxygen::HTTPTransactionHandler,
+      public proxygen::HTTPTransaction::TransportCallback {
  public:
   ThriftTransactionHandler() = default;
 
@@ -76,6 +78,20 @@ class ThriftTransactionHandler : public proxygen::HTTPTransactionHandler {
 
   void onPushedTransaction(
       proxygen::HTTPTransaction* /*txn*/) noexcept override {}
+
+  /**
+   * HTTPTransaction::TransportCallback interface
+   */
+  void firstHeaderByteFlushed() noexcept override {}
+  void firstByteFlushed() noexcept override {}
+  void lastByteFlushed() noexcept override;
+  void lastByteAcked(std::chrono::milliseconds /*latency*/) noexcept override {}
+  void headerBytesGenerated(
+      proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
+  void headerBytesReceived(
+      const proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
+  void bodyBytesGenerated(size_t /*nbytes*/) noexcept override {}
+  void bodyBytesReceived(size_t /*size*/) noexcept override {}
 
  private:
   std::shared_ptr<H2Channel> channel_;
