@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
@@ -54,6 +55,8 @@ DEFINE_string(
     service_identity,
     "",
     "The name of the service. Associates the service with ACLs and keys");
+
+THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 
 namespace apache {
 namespace thrift {
@@ -515,6 +518,9 @@ void ThriftServer::stopWorkers() {
 }
 
 void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
+  if (std::exchange(stopAcceptingAndJoinOutstandingRequestsDone_, true)) {
+    return;
+  }
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       worker->requestStop();
@@ -736,6 +742,33 @@ ThriftServer::snapshotActiveRequests() {
           std::move(vec.begin(), vec.end(), std::back_inserter(flat_result));
         }
         return flat_result;
+      });
+}
+
+folly::observer::Observer<std::list<std::string>>
+ThriftServer::defaultNextProtocols() {
+  return folly::observer::makeObserver(
+      [rocketPreferredObserver =
+           THRIFT_FLAG_OBSERVE(server_alpn_prefer_rocket)] {
+        const auto rocketPreferred = *rocketPreferredObserver.getSnapshot();
+        if (rocketPreferred) {
+          return std::list<std::string>{
+              "rs",
+              "thrift",
+              "h2",
+              // "http" is not a legit specifier but need to include it for
+              // legacy.  Thrift's HTTP2RoutingHandler uses this, and clients
+              // may be sending it.
+              "http"};
+        }
+        return std::list<std::string>{
+            "thrift",
+            "h2",
+            // "http" is not a legit specifier but need to include it for
+            // legacy.  Thrift's HTTP2RoutingHandler uses this, and clients
+            // may be sending it.
+            "http",
+            "rs"};
       });
 }
 } // namespace thrift

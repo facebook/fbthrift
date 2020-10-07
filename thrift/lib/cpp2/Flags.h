@@ -80,6 +80,7 @@ class FlagWrapper {
   // Methods to set mock value for Flags.
   void setMockValue(T value) {
     mockObservable_.setValue(value);
+    folly::observer_detail::ObserverManager::waitForAllUpdates();
   }
 
  private:

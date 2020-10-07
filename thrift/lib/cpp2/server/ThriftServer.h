@@ -190,6 +190,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void stopCPUWorkers();
   void stopAcceptingAndJoinOutstandingRequests();
 
+  bool stopAcceptingAndJoinOutstandingRequestsDone_{false};
+
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
 
   std::unique_ptr<ThriftProcessor> thriftProcessor_;
@@ -789,6 +791,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   // other.
   void replaceShutdownSocketSet(
       const std::shared_ptr<folly::ShutdownSocketSet>& newSSS);
+
+  static folly::observer::Observer<std::list<std::string>>
+  defaultNextProtocols();
 
   /**
    * For each request debug stub, a snapshot information can be constructed to
