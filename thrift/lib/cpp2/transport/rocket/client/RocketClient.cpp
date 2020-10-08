@@ -1078,6 +1078,10 @@ void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
 }
 
 void RocketClient::attachEventBase(folly::EventBase& evb) {
+  if (evb_ == &evb) {
+    return;
+  }
+
   DCHECK(!evb_);
   evb.dcheckIsInEventBaseThread();
 
