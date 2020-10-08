@@ -225,7 +225,7 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
     apache::thrift::type_class::enumeration,
     <% > common/namespace_cpp2%><%enum:name%>>::typeInfo = {
   /* .type */ apache::thrift::protocol::TType::T_I32,
-  /* .set */ reinterpret_cast<VoidFuncPtr>(set<<% > common/namespace_cpp2%><%enum:name%>>, std::int32_t),
+  /* .set */ reinterpret_cast<VoidFuncPtr>(set<<% > common/namespace_cpp2%><%enum:name%>, std::int32_t>),
   /* .get */ reinterpret_cast<VoidFuncPtr>(get<std::int32_t, <% > common/namespace_cpp2%><%enum:name%>>),
   /* .typeExt */ nullptr,
 };

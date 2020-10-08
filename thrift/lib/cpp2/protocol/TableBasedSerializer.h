@@ -277,14 +277,14 @@ enable_if_smart_ptr_t<PtrType, ReturnType> get(const void* object) {
 }
 
 template <typename ObjectType, typename ValueType>
-enable_if_not_smart_ptr_t<ObjectType> set(void* object, const ValueType& val) {
-  *static_cast<ObjectType*>(object) = static_cast<const ObjectType&>(val);
+enable_if_not_smart_ptr_t<ObjectType> set(void* object, ValueType val) {
+  *static_cast<ObjectType*>(object) = static_cast<ObjectType>(val);
 }
 
 template <typename PtrType, typename ValueType>
 std::enable_if_t<is_unique_ptr<PtrType>::value> set(
     void* object,
-    const ValueType& val) {
+    ValueType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_unique<Element>(static_cast<Element>(val));
@@ -293,7 +293,7 @@ std::enable_if_t<is_unique_ptr<PtrType>::value> set(
 template <typename PtrType, typename ValueType>
 std::enable_if_t<is_shared_ptr<PtrType>::value> set(
     void* object,
-    const ValueType& val) {
+    ValueType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_shared<Element>(static_cast<Element>(val));

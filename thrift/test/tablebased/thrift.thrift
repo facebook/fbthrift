@@ -18,6 +18,11 @@ namespace cpp2 facebook.thrift.test
 
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
+enum Enum {
+  A = 1;
+  B = 2;
+}
+
 struct StructA {
   1: optional string fieldA;
   2: optional i64 fieldB;
@@ -25,6 +30,7 @@ struct StructA {
   5: optional list<string> fieldD;
   10: optional map<string, i64> fieldE;
   11: string fieldF;
+  12: Enum fieldG;
 }
 
 struct StructB {
@@ -32,6 +38,14 @@ struct StructB {
   2: optional i64 fieldB;
   3: optional IOBufPtr fieldC;
   5: list<i64> fieldD (cpp2.ref_type = "shared");
+  6: i32 fieldE;
+  7: i16 fieldF;
+  8: byte fieldG;
+  9: bool fieldH;
+  10: set<i32> fieldI;
+  11: string fieldJ (cpp2.type = "folly::IOBuf");
+  12: double fieldK;
+  13: float fieldL;
 }
 
 union Union {

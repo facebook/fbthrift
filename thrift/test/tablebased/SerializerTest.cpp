@@ -70,6 +70,14 @@ Type makeStructBLike() {
   otherStructLike.fieldD_ref() = std::make_shared<std::vector<int64_t>>();
   otherStructLike.fieldD_ref()->emplace_back(9000);
   otherStructLike.fieldD_ref()->emplace_back(8000);
+  otherStructLike.fieldE_ref() = 1000;
+  otherStructLike.fieldF_ref() = 20;
+  otherStructLike.fieldG_ref() = 16;
+  otherStructLike.fieldH_ref() = true;
+  otherStructLike.fieldI_ref() = std::set{1, 2, 3};
+  otherStructLike.fieldJ_ref() = "testBuffer";
+  otherStructLike.fieldK_ref() = 1.0;
+  otherStructLike.fieldL_ref() = 2.0;
   return otherStructLike;
 }
 
@@ -84,6 +92,8 @@ Type makeStructALike() {
   structALike.fieldC_ref().emplace();
   structALike.fieldC_ref() = makeStructBLike<
       std::remove_reference_t<decltype(*structALike.fieldC_ref())>>();
+  using EnumType = std::remove_reference_t<decltype(*structALike.fieldG_ref())>;
+  structALike.fieldG_ref() = EnumType::A;
   return structALike;
 }
 } // namespace
