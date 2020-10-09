@@ -19,11 +19,20 @@
 #include <glog/logging.h>
 
 #include <folly/CppAttributes.h>
+#include <folly/Singleton.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
 #include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
+namespace detail {
+
+AnyRegistry& getGeneratedAnyRegistry() {
+  struct GeneratedTag {};
+  return folly::detail::createGlobal<AnyRegistry, GeneratedTag>();
+}
+
+} // namespace detail
 
 namespace {
 

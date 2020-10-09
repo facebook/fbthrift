@@ -261,5 +261,27 @@ TEST(AnyRegistryTest, StdProtocol) {
   EXPECT_EQ(cregistry.load<Value>(any), value);
 }
 
+TEST(AnyRegistryTest, Generated) {
+  detail::registerGeneratedStruct<
+      Value,
+      StandardProtocol::Binary,
+      StandardProtocol::Compact>(testAnyType("Value"));
+
+  // Double regeister fails with a runtime error.
+  EXPECT_THROW(
+      detail::registerGeneratedStruct<Value>(testAnyType("Value")),
+      std::runtime_error);
+
+  auto value = asValueStruct<type::i32_t>(1);
+  auto any = AnyRegistry::generated().store<StandardProtocol::Compact>(value);
+  ASSERT_TRUE(any.type_ref());
+  EXPECT_EQ(any.type_ref().value_unchecked(), thriftType("Value"));
+  EXPECT_EQ(AnyRegistry::generated().load<Value>(any), value);
+
+  EXPECT_THROW(
+      AnyRegistry::generated().store<StandardProtocol::Json>(value),
+      std::bad_any_cast);
+}
+
 } // namespace
 } // namespace apache::thrift::conformance

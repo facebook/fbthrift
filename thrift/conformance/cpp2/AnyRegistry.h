@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <thrift/conformance/cpp2/internal/AnyRegistry.h>
+
 #include <any>
 #include <forward_list>
 #include <initializer_list>
@@ -43,6 +45,11 @@ namespace apache::thrift::conformance {
 // apache::thrift::conformance::Any values using the registered serializers.
 class AnyRegistry {
  public:
+  // Returns the registry for structs with generated code linked in.
+  static const AnyRegistry& generated() {
+    return detail::getGeneratedAnyRegistry();
+  }
+
   // Store a value in an Any using the registered serializers.
   //
   // Throws std::bad_any_cast if no matching serializer has been registered.
@@ -209,4 +216,15 @@ bool AnyRegistry::registerType(
   return success;
 }
 
+namespace detail {
+
+template <typename Struct, StandardProtocol... Ps>
+void registerGeneratedStruct(const AnyType& type) {
+  if (!getGeneratedAnyRegistry().registerType<Struct, Ps...>(type)) {
+    folly::throw_exception<std::runtime_error>(
+        "Could not register: " + type.get_name());
+  }
+}
+
+} // namespace detail
 } // namespace apache::thrift::conformance
