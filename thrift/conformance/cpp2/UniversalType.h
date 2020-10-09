@@ -18,7 +18,15 @@
 
 #include <string_view>
 
+#include <folly/FBString.h>
+#include <folly/Range.h>
+
 namespace apache::thrift::conformance {
+
+using type_id_size_t = int8_t;
+inline constexpr type_id_size_t kDisableTypeId = 0;
+inline constexpr type_id_size_t kMinTypeIdBytes = 16;
+inline constexpr type_id_size_t kMaxTypeIdBytes = 32;
 
 // Validates that name is a valid universal type name of the form:
 // {domain}/{path}. For example: facebook.com/thrift/Value.
@@ -26,7 +34,59 @@ namespace apache::thrift::conformance {
 // Throws std::invalid_argument on failure.
 void validateUniversalType(std::string_view name);
 
-// Returns the type id for the given type name.
-std::string getUniversalTypeId(std::string_view name);
+// Validates that the given type id meets the size requirements.
+//
+// Throws std::invalid_argument on failure.
+void validateTypeId(folly::StringPiece typeId);
+
+// Validates that the given type id bytes size meets size requirements.
+//
+// Throws std::invalid_argument on failure.
+void validateTypeIdBytes(type_id_size_t typeIdBytes);
+
+// Returns the type id for the given universal type name.
+folly::fbstring getTypeId(std::string_view name);
+
+// Shrinks the fullTypeId to fit in the given number of bytes.
+folly::StringPiece getPartialTypeId(
+    folly::StringPiece fullTypeId,
+    type_id_size_t typeIdBytes);
+
+// Returns true iff partialTypeId was derived from fullTypeId.
+bool matchesTypeId(
+    folly::StringPiece fullTypeId,
+    folly::StringPiece partialTypeId);
+
+// Clamps the given type id bytes to a valid range.
+type_id_size_t clampTypeIdBytes(type_id_size_t typeIdBytes);
+
+// Returns the type id iff smaller than the name.
+folly::fbstring maybeGetTypeId(
+    std::string_view name,
+    type_id_size_t typeIdBytes);
+
+// Returns true, if the given map contains an entry that matches the given
+// partial type id.
+template <typename C, typename K>
+bool containsTypeId(C& sortedMap, const K& partialTypeId) {
+  auto itr = sortedMap.lower_bound(partialTypeId);
+  return itr != sortedMap.end() && matchesTypeId(itr->first, partialTypeId);
+}
+
+// Finds a matching id within the given sorted map.
+//
+// Raises a std::runtime_error if the result is ambigous.
+template <typename C, typename K>
+auto findByTypeId(C& sortedMap, const K& partialTypeId) {
+  auto itr = sortedMap.lower_bound(partialTypeId);
+  if (itr == sortedMap.end() || !matchesTypeId(itr->first, partialTypeId)) {
+    return sortedMap.end();
+  }
+  auto next = itr;
+  if (++next != sortedMap.end() && matchesTypeId(next->first, partialTypeId)) {
+    folly::throw_exception<std::runtime_error>("type id look up ambigous");
+  }
+  return itr;
+}
 
 } // namespace apache::thrift::conformance

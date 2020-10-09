@@ -16,6 +16,8 @@
 
 #include <thrift/conformance/cpp2/UniversalType.h>
 
+#include <algorithm>
+#include <limits>
 #include <string>
 
 #include <openssl/evp.h>
@@ -101,6 +103,17 @@ void checkDomain(folly::StringPiece domain) {
   }
 }
 
+[[noreturn]] void throwInvalidTypeIdSize() {
+  folly::throw_exception<std::invalid_argument>(
+      "TypeId size must be in the range [16, 32].");
+}
+
+void checkTypeIdSize(type_id_size_t typeIdBytes) {
+  if (typeIdBytes < kMinTypeIdBytes || typeIdBytes > kMaxTypeIdBytes) {
+    throwInvalidTypeIdSize();
+  }
+}
+
 } // namespace
 
 // TODO(afuller): Consider 'normalizing' a folly::Uri instead of
@@ -119,7 +132,7 @@ void validateUniversalType(std::string_view name) {
   checkTypeSegment(segs[i]);
 }
 
-std::string getUniversalTypeId(std::string_view name) {
+folly::fbstring getTypeId(std::string_view name) {
   // Save an initalized context.
   static EVP_MD_CTX* kBase = []() {
     auto ctx = newMdContext();
@@ -136,12 +149,62 @@ std::string getUniversalTypeId(std::string_view name) {
   checkResult(EVP_DigestUpdate(ctx.get(), name.data(), name.size()));
 
   // Get the result.
-  std::string result(EVP_MD_CTX_size(ctx.get()), 0);
+  folly::fbstring result(EVP_MD_CTX_size(ctx.get()), 0);
   uint32_t size;
   checkResult(EVP_DigestFinal_ex(
       ctx.get(), reinterpret_cast<uint8_t*>(result.data()), &size));
   assert(size == result.size()); // Should already be the correct size.
   result.resize(size);
+  return result;
+}
+
+void validateTypeId(folly::StringPiece typeId) {
+  if (typeId.size() > std::numeric_limits<type_id_size_t>::max()) {
+    throwInvalidTypeIdSize();
+  }
+  checkTypeIdSize(type_id_size_t(typeId.size()));
+}
+
+void validateTypeIdBytes(type_id_size_t typeIdBytes) {
+  if (typeIdBytes == kDisableTypeId) {
+    return;
+  }
+  checkTypeIdSize(typeIdBytes);
+}
+
+bool matchesTypeId(
+    folly::StringPiece fullTypeId,
+    folly::StringPiece partialTypeId) {
+  if (fullTypeId.size() < partialTypeId.size() || partialTypeId.empty()) {
+    return false;
+  }
+  return fullTypeId.subpiece(0, partialTypeId.size()) == partialTypeId;
+}
+
+type_id_size_t clampTypeIdBytes(type_id_size_t typeIdBytes) {
+  if (typeIdBytes == kDisableTypeId) {
+    return kDisableTypeId;
+  }
+  return std::clamp(typeIdBytes, kMinTypeIdBytes, kMaxTypeIdBytes);
+}
+
+folly::StringPiece getPartialTypeId(
+    folly::StringPiece fullTypeId,
+    type_id_size_t typeIdBytes) {
+  return fullTypeId.subpiece(0, typeIdBytes);
+}
+
+folly::fbstring maybeGetTypeId(
+    std::string_view name,
+    type_id_size_t typeIdBytes) {
+  if (typeIdBytes == kDisableTypeId || // Type id disabled.
+      name.size() <= size_t(typeIdBytes)) { // Type name is smaller.
+    return {};
+  }
+  folly::fbstring result = getTypeId(name);
+  if (result.size() > size_t(typeIdBytes)) {
+    result.resize(typeIdBytes);
+  }
   return result;
 }
 
