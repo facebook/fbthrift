@@ -27,6 +27,8 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 
+DECLARE_string(transport);
+
 namespace apache {
 namespace thrift {
 

@@ -19,8 +19,7 @@
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
-
-DECLARE_string(transport);
+#include <thrift/lib/cpp2/transport/util/ConnectionThread.h>
 
 namespace apache {
 namespace thrift {
