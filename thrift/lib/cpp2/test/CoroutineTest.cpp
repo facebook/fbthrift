@@ -16,6 +16,7 @@
 
 #include <exception>
 
+#include <folly/experimental/coro/BlockingWait.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/portability/GTest.h>
 
@@ -640,5 +641,42 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
   auto cb3 = std::make_unique<apache::thrift::HandlerCallbackBase>(
       nullptr, nullptr, nullptr, ebt.getEventBase(), tm.get(), nullptr);
   handler.async_tm_onewayRequest(std::move(cb3), 0);
+}
+
+TEST(CoroutineHeaderTest, customHeaderTest) {
+  class CoroHandler : virtual public CoroutineSvIf {
+   public:
+    folly::coro::Task<std::unique_ptr<::apache::thrift::test::SumResponse>>
+    co_computeSum(
+        apache::thrift::RequestParams params,
+        std::unique_ptr<::apache::thrift::test::SumRequest> request) override {
+      if (folly::get_ptr(params.getRequestContext()->getHeaders(), "foo")) {
+        auto header = params.getRequestContext()->getHeader();
+        if (header) {
+          header->setHeader("header_from_server", "1");
+        }
+      }
+      auto response = std::make_unique<SumResponse>();
+      response->sum_ref() = *request->x_ref() + *request->y_ref();
+      co_return response;
+    }
+  };
+
+  std::shared_ptr<CoroHandler> handler = std::make_shared<CoroHandler>();
+  ScopedServerInterfaceThread ssit{handler};
+  auto client = ssit.newClient<CoroutineAsyncClient>();
+
+  apache::thrift::RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader("foo", "bar");
+
+  SumRequest sumRequest;
+  sumRequest.x_ref() = 42;
+  sumRequest.y_ref() = 123;
+  auto result = folly::coro::blockingWait(
+      client->header_co_computeSum(rpcOptions, sumRequest));
+  auto ptr = folly::get_ptr(result.second->getHeaders(), "header_from_server");
+  EXPECT_NE(nullptr, ptr);
+  EXPECT_EQ("1", *ptr);
+  EXPECT_EQ(165, *result.first.sum_ref());
 }
 #endif

@@ -49,24 +49,12 @@ class MyLeafAsyncClient : public ::cpp2::MyNodeAsyncClient {
   template <int = 0>
   folly::coro::Task<void> co_do_leaf() {
     auto _task = semifuture_do_leaf();
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
-    }
+    co_yield folly::coro::co_result(co_await apache::thrift::detail::ac::detach_on_cancel(std::move(_task)));
   }
   template <int = 0>
   folly::coro::Task<void> co_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
     auto _task = semifuture_do_leaf(rpcOptions);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
-    }
+    co_yield folly::coro::co_result(co_await apache::thrift::detail::ac::detach_on_cancel(std::move(_task)));
   }
 #endif // FOLLY_HAS_COROUTINES
 

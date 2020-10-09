@@ -73,28 +73,29 @@
 <%/service:reduced_client?%>
 
 #if FOLLY_HAS_COROUTINES
-  template <int = 0>
+  template <int = 0><%!
+  Coroutine functions are inline templates to prevent compile time and binary size regression
+  %>
   folly::coro::Task<<% > types/service_type_coro%>> co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
     auto _task = semifuture_<%function:cpp_name%>(<% > service_common/param_list%>);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
-    }
+    co_yield folly::coro::co_result(co_await apache::thrift::detail::ac::detach_on_cancel(std::move(_task)));
   }
   template <int = 0>
   folly::coro::Task<<% > types/service_type_coro%>> co_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
     auto _task = semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
-    }
+    co_yield folly::coro::co_result(co_await apache::thrift::detail::ac::detach_on_cancel(std::move(_task)));
   }
+  <%^service:reduced_client?%>
+  <%^function:oneway?%>
+  <%^type:void?%>
+  template <int = 0>
+  folly::coro::Task<std::pair<<% > types/service_type_coro%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_co_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+    auto _task = header_semifuture_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
+    co_yield folly::coro::co_result(co_await apache::thrift::detail::ac::detach_on_cancel(std::move(_task)));
+  }
+  <%/type:void?%>
+  <%/function:oneway?%>
+  <%/service:reduced_client?%>
 #endif // FOLLY_HAS_COROUTINES
 
 <%^service:reduced_client?%>
