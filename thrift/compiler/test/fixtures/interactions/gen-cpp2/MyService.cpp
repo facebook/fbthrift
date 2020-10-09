@@ -77,9 +77,8 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
   }
 #else // FOLLY_HAS_COROUTINES
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return apache::thrift::detail::si::future(apache::thrift::detail::si::semifuture([&] {
-      return semifuture_frobnicate();
-    }), getThreadManager());
+    return apache::thrift::detail::si::future(
+      semifuture_frobnicate(), getThreadManager());
   });
 #endif // FOLLY_HAS_COROUTINES
 }

@@ -238,7 +238,7 @@ TEST(InteractionCodegenTest, Basic) {
 }
 
 TEST(InteractionCodegenTest, BasicSemiFuture) {
-  ScopedServerInterfaceThread runner{std::make_shared<CalculatorHandler>()};
+  ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
   auto client =
       runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
         return RocketClientChannel::newChannel(std::move(socket));

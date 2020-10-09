@@ -149,9 +149,8 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
   });
 <%/service:interaction?%><%#service:interaction?%>
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return apache::thrift::detail::si::future(apache::thrift::detail::si::semifuture([&] {
-      return semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>);
-    }), getThreadManager());
+    return apache::thrift::detail::si::future(
+      semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), getThreadManager());
   });
 <%/service:interaction?%>
 #endif // FOLLY_HAS_COROUTINES
