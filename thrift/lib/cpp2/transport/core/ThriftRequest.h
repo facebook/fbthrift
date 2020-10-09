@@ -234,6 +234,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
 #endif
 
   void sendErrorWrapped(folly::exception_wrapper ew, std::string exCode) final {
+    if (exCode == kConnectionClosingErrorCode) {
+      closeConnection(std::move(ew));
+    }
+
     if (active_.exchange(false)) {
       cancelTimeout();
       sendErrorWrappedInternal(
@@ -278,6 +282,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
     LOG(FATAL) << "sendSinkThriftResponse not implemented";
   }
 #endif
+
+  virtual void closeConnection(folly::exception_wrapper) noexcept {
+    LOG(FATAL) << "closeConnection not implemented";
+  }
 
   virtual folly::EventBase* getEventBase() noexcept = 0;
 

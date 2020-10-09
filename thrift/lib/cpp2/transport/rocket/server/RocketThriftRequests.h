@@ -76,6 +76,8 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
     return false;
   }
 
+  void closeConnection(folly::exception_wrapper ew) noexcept override;
+
  private:
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
@@ -112,6 +114,8 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
   folly::EventBase* getEventBase() noexcept override {
     return &evb_;
   }
+
+  void closeConnection(folly::exception_wrapper ew) noexcept override;
 
  private:
   folly::EventBase& evb_;
@@ -165,6 +169,8 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   bool isStream() const override {
     return true;
   }
+
+  void closeConnection(folly::exception_wrapper ew) noexcept override;
 
  private:
   folly::EventBase& evb_;
@@ -220,6 +226,8 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
   bool isReplyChecksumNeeded() const override {
     return true;
   }
+
+  void closeConnection(folly::exception_wrapper ew) noexcept override;
 
  private:
   folly::EventBase& evb_;

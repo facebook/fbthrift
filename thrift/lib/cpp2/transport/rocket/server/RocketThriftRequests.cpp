@@ -438,6 +438,11 @@ void ThriftServerRequestResponse::sendSerializedError(
   sendThriftResponse(std::move(metadata), std::move(exbuf), nullptr);
 }
 
+void ThriftServerRequestResponse::closeConnection(
+    folly::exception_wrapper ew) noexcept {
+  context_.connection().close(std::move(ew));
+}
+
 ThriftServerRequestFnf::ThriftServerRequestFnf(
     RequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
@@ -479,6 +484,11 @@ void ThriftServerRequestFnf::sendThriftResponse(
 void ThriftServerRequestFnf::sendSerializedError(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {}
+
+void ThriftServerRequestFnf::closeConnection(
+    folly::exception_wrapper ew) noexcept {
+  context_.connection().close(std::move(ew));
+}
 
 ThriftServerRequestStream::ThriftServerRequestStream(
     RequestsRegistry::DebugStub& debugStubToInit,
@@ -588,6 +598,11 @@ void ThriftServerRequestStream::sendSerializedError(
           FirstResponsePayload(std::move(exbuf), std::move(metadata))));
 }
 
+void ThriftServerRequestStream::closeConnection(
+    folly::exception_wrapper ew) noexcept {
+  context_.connection().close(std::move(ew));
+}
+
 ThriftServerRequestSink::ThriftServerRequestSink(
     RequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
@@ -685,6 +700,11 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
       .start();
 }
 #endif
+
+void ThriftServerRequestSink::closeConnection(
+    folly::exception_wrapper ew) noexcept {
+  context_.connection().close(std::move(ew));
+}
 
 } // namespace rocket
 } // namespace thrift

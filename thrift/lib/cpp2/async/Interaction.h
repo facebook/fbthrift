@@ -94,7 +94,6 @@ class Tile {
 
  private:
   bool terminationRequested_{false};
-  bool duplicatedId_{false};
   size_t refCount_{0};
   friend class GeneratedAsyncProcessor;
   friend class TilePromise;

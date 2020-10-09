@@ -65,6 +65,7 @@ extern const std::string kProxyLoopbackErrorCode;
 extern const std::string kRequestTypeDoesntMatchServiceFunctionType;
 extern const std::string kMethodUnknownErrorCode;
 extern const std::string kInteractionErrorCode;
+extern const std::string kConnectionClosingErrorCode;
 
 namespace apache {
 namespace thrift {

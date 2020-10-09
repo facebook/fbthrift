@@ -732,13 +732,18 @@ void GeneratedAsyncProcessor::processInThread(
             *ctx->getConnectionContext(),
             *tm,
             *eb)) {
-      ctx->getConnectionContext()
-          ->getTile(*interactionCreate->interactionId_ref())
-          .duplicatedId_ = true;
+      // Duplicate id is a contract violation so close the connection.
+      // Terminate this interaction first so queued requests can't use it (which
+      // could result in UB).
+      childClass->terminateInteraction(
+          *interactionCreate->interactionId_ref(),
+          *ctx->getConnectionContext(),
+          *tm,
+          *eb);
       req->sendErrorWrapped(
           TApplicationException(
               "Attempting to create interaction with duplicate id. Failing all requests in that interaction."),
-          kInteractionErrorCode);
+          kConnectionClosingErrorCode);
       return;
     }
   }
@@ -751,14 +756,6 @@ void GeneratedAsyncProcessor::processInThread(
       req->sendErrorWrapped(
           TApplicationException(
               "Invalid interaction id " + std::to_string(interactionId)),
-          kInteractionErrorCode);
-      return;
-    }
-
-    if (tile->duplicatedId_) {
-      req->sendErrorWrapped(
-          TApplicationException(
-              "This interaction's id was duplicated. Failing all requests in interaction to avoid undefined behavior."),
           kInteractionErrorCode);
       return;
     }
