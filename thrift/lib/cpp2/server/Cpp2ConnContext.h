@@ -246,7 +246,6 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::unique_ptr<Tile> removeTile(int64_t id) {
     auto it = tiles_.find(id);
     if (it == tiles_.end()) {
-      LOG(DFATAL) << "Double-free of tile " << id;
       return nullptr;
     }
     auto ret = std::move(it->second);
@@ -479,6 +478,14 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return timestamps_;
   }
 
+  void setTile(Tile& tile) {
+    tile_ = &tile;
+  }
+
+  Tile* getTile() {
+    return tile_;
+  }
+
  protected:
   static void no_op_destructor(void* /*ptr*/) {}
 
@@ -492,6 +499,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   int32_t protoSeqId_{0};
   int64_t interactionId_{0};
   folly::Optional<InteractionCreate> interactionCreate_;
+  Tile* tile_{nullptr};
 };
 
 } // namespace thrift

@@ -57,9 +57,9 @@ class EventTask : public virtual concurrency::Runnable {
       ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway)
-      : taskFunc_(std::move(taskFunc)),
+      : base_(base),
+        taskFunc_(std::move(taskFunc)),
         req_(std::move(req)),
-        base_(base),
         oneway_(oneway) {}
 
   ~EventTask() override;
@@ -68,10 +68,12 @@ class EventTask : public virtual concurrency::Runnable {
   void expired();
   void failWith(folly::exception_wrapper ex, std::string exCode);
 
+ protected:
+  folly::EventBase* base_;
+
  private:
   folly::Function<void(ResponseChannelRequest::UniquePtr)> taskFunc_;
   ResponseChannelRequest::UniquePtr req_;
-  folly::EventBase* base_;
   bool oneway_;
 };
 
@@ -94,6 +96,47 @@ class PriorityEventTask : public concurrency::PriorityRunnable,
 
  private:
   concurrency::PriorityThreadManager::PRIORITY priority_;
+};
+
+class InteractionEventTask : public PriorityEventTask {
+ public:
+  InteractionEventTask(
+      concurrency::PriorityThreadManager::PRIORITY priority,
+      folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)>&&
+          taskFunc,
+      ResponseChannelRequest::UniquePtr req,
+      folly::EventBase* base,
+      bool oneway,
+      concurrency::ThreadManager& tm,
+      Tile* tile)
+      : PriorityEventTask(
+            priority,
+            [=](ResponseChannelRequest::UniquePtr request) {
+              DCHECK(tile_);
+              DCHECK(!tile_->__fbthrift_isPromise());
+              taskFunc_(std::move(request), *std::exchange(tile_, nullptr));
+            },
+            std::move(req),
+            base,
+            oneway),
+        tm_(tm),
+        tile_(tile),
+        taskFunc_(std::move(taskFunc)) {}
+
+  ~InteractionEventTask() {
+    if (tile_) {
+      tile_->__fbthrift_releaseRef(tm_, *base_);
+    }
+  }
+
+  void setTile(Tile& tile) {
+    tile_ = &tile;
+  }
+
+ private:
+  concurrency::ThreadManager& tm_;
+  Tile* tile_;
+  folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)> taskFunc_;
 };
 
 class AsyncProcessor : public TProcessorBase {
@@ -188,7 +231,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       concurrency::PRIORITY pri,
       RpcKind kind,
       ProcessFunc<ChildType> processFunc,
-      ChildType* childClass);
+      ChildType* childClass,
+      Tile* tile);
   bool createInteraction(
       int64_t id,
       const std::string& name,
@@ -457,7 +501,6 @@ class HandlerCallbackBase {
   // Must be called from IO thread
   static void releaseInteraction(
       Tile* interaction,
-      Cpp2RequestContext* reqCtx,
       concurrency::ThreadManager* tm,
       folly::EventBase* eb);
   void releaseInteractionInstance();
@@ -621,31 +664,49 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
     concurrency::PRIORITY pri,
     RpcKind kind,
     ProcessFunc<ChildType> processFunc,
-    ChildType* childClass) {
-  return std::make_shared<PriorityEventTask>(
+    ChildType* childClass,
+    Tile* tile) {
+  auto taskFn = [=, serializedRequest = std::move(serializedRequest)](
+                    ResponseChannelRequest::UniquePtr rq) mutable {
+    if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
+      // Since this request was queued, reset the processBegin
+      // time to the actual start time, and not the queue time.
+      ctx->getTimestamps().processBegin = std::chrono::steady_clock::now();
+    }
+    // Oneway request won't be canceled if expired. see
+    // D1006482 for furhter details.  TODO: fix this
+    if (kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+      if (!rq->isActive()) {
+        eb->runInEventBaseThread(
+            [rq = std::move(rq)]() mutable { rq.reset(); });
+        return;
+      }
+    }
+    (childClass->*processFunc)(
+        std::move(rq), std::move(serializedRequest), ctx, eb, tm);
+  };
+
+  if (!tile) {
+    return std::make_shared<PriorityEventTask>(
+        pri,
+        std::move(taskFn),
+        std::move(req),
+        eb,
+        kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  }
+
+  return std::make_shared<InteractionEventTask>(
       pri,
-      [=, serializedRequest = std::move(serializedRequest)](
-          ResponseChannelRequest::UniquePtr rq) mutable {
-        if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
-          // Since this request was queued, reset the processBegin
-          // time to the actual start time, and not the queue time.
-          ctx->getTimestamps().processBegin = std::chrono::steady_clock::now();
-        }
-        // Oneway request won't be canceled if expired. see
-        // D1006482 for furhter details.  TODO: fix this
-        if (kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-          if (!rq->isActive()) {
-            eb->runInEventBaseThread(
-                [rq = std::move(rq)]() mutable { rq.reset(); });
-            return;
-          }
-        }
-        (childClass->*processFunc)(
-            std::move(rq), std::move(serializedRequest), ctx, eb, tm);
+      [=, taskFn = std::move(taskFn)](
+          ResponseChannelRequest::UniquePtr rq, Tile& tileRef) mutable {
+        ctx->setTile(tileRef);
+        taskFn(std::move(rq));
       },
       std::move(req),
       eb,
-      kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+      kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
+      *tm,
+      tile);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_, typename ChildType>
@@ -664,17 +725,6 @@ void GeneratedAsyncProcessor::processInThread(
     return;
   }
 
-  auto task = makeEventTaskForRequest(
-      std::move(req),
-      std::move(serializedRequest),
-      ctx,
-      eb,
-      tm,
-      pri,
-      kind,
-      processFunc,
-      childClass);
-
   if (auto interactionCreate = ctx->getInteractionCreate()) {
     if (!childClass->createInteraction(
             *interactionCreate->interactionId_ref(),
@@ -685,38 +735,52 @@ void GeneratedAsyncProcessor::processInThread(
       ctx->getConnectionContext()
           ->getTile(*interactionCreate->interactionId_ref())
           .duplicatedId_ = true;
-      task->failWith(
+      req->sendErrorWrapped(
           TApplicationException(
               "Attempting to create interaction with duplicate id. Failing all requests in that interaction."),
           kInteractionErrorCode);
+      return;
     }
   }
 
+  Tile* tile = nullptr;
   if (auto interactionId = ctx->getInteractionId()) { // includes create
     try {
-      auto& tile = ctx->getConnectionContext()->getTile(interactionId);
-
-      if (tile.duplicatedId_) {
-        task->failWith(
-            TApplicationException(
-                "This interaction's id was duplicated. Failing all requests in interaction to avoid undefined behavior."),
-            kInteractionErrorCode);
-        return;
-      }
-
-      if (tile.__fbthrift_isPromise()) {
-        static_cast<TilePromise&>(tile).addContinuation(std::move(task));
-        return;
-      }
-
-      tile.__fbthrift_acquireRef(*eb);
+      tile = &ctx->getConnectionContext()->getTile(interactionId);
     } catch (const std::out_of_range&) {
-      task->failWith(
+      req->sendErrorWrapped(
           TApplicationException(
               "Invalid interaction id " + std::to_string(interactionId)),
           kInteractionErrorCode);
       return;
     }
+
+    if (tile->duplicatedId_) {
+      req->sendErrorWrapped(
+          TApplicationException(
+              "This interaction's id was duplicated. Failing all requests in interaction to avoid undefined behavior."),
+          kInteractionErrorCode);
+      return;
+    }
+
+    tile->__fbthrift_acquireRef(*eb);
+  }
+
+  auto task = makeEventTaskForRequest(
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm,
+      pri,
+      kind,
+      processFunc,
+      childClass,
+      tile);
+
+  if (tile && tile->__fbthrift_isPromise()) {
+    static_cast<TilePromise*>(tile)->addContinuation(std::move(task));
+    return;
   }
 
   tm->add(
@@ -757,7 +821,7 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, reqCtx, tm, eb);
+          releaseInteraction(interaction, tm, eb);
           f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
         });
   }

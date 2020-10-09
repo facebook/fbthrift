@@ -79,20 +79,16 @@ class Tile {
 
   void __fbthrift_acquireRef(folly::EventBase& eb) {
     eb.dcheckIsInEventBaseThread();
-    DCHECK(!__fbthrift_isPromise());
     ++refCount_;
   }
-  template <typename Cpp2ConnContext>
   void __fbthrift_releaseRef(
-      int64_t id,
-      Cpp2ConnContext& conn,
       concurrency::ThreadManager& tm,
       folly::EventBase& eb) {
     eb.dcheckIsInEventBaseThread();
-    DCHECK(!__fbthrift_isPromise());
     DCHECK_GT(refCount_, 0u);
+
     if (--refCount_ == 0 && terminationRequested_) {
-      tm.add([tile = conn.removeTile(id)] {});
+      tm.add([this] { delete this; });
     }
   }
 
@@ -106,41 +102,19 @@ class Tile {
 
 class TilePromise final : public Tile {
  public:
-  ~TilePromise() {
-    DCHECK(continuations_.empty());
-  }
-
   void addContinuation(std::shared_ptr<concurrency::Runnable> task) {
     continuations_.push_front(std::move(task));
   }
 
-  template <typename Cpp2ConnContext>
-  void fulfill(
-      Tile& tile,
-      int64_t id,
-      Cpp2ConnContext& ctx,
-      concurrency::ThreadManager& tm,
-      folly::EventBase& eb) {
-    DCHECK_EQ(refCount_, 0u);
-
-    if (destructionRequested_) {
-      tm.add([tile = ctx.removeTile(id)] {});
-      continuations_.clear(); // connection might be destroyed here
-      return;
-    }
-
-    if (terminationRequested_) {
-      if (!continuations_.empty()) {
-        tile.terminationRequested_ = true;
-      } else {
-        tm.add([tile = ctx.removeTile(id)] {});
-        return;
-      }
-    }
-
+  template <typename InteractionEventTask>
+  void
+  fulfill(Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
+    DCHECK(!continuations_.empty());
     continuations_.reverse();
     for (auto& task : continuations_) {
       tile.__fbthrift_acquireRef(eb);
+      dynamic_cast<InteractionEventTask&>(*task).setTile(tile);
+      --refCount_;
       tm.add(
           std::move(task),
           0, // timeout
@@ -148,6 +122,7 @@ class TilePromise final : public Tile {
           true); // upstream
     }
     continuations_.clear();
+    DCHECK_EQ(refCount_, 0u);
   }
 
   bool __fbthrift_isPromise() const override {

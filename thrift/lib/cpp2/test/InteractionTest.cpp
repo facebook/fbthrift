@@ -75,6 +75,17 @@ TEST(InteractionTest, TerminateUsed) {
           new folly::AsyncSocket(&eb, runner.getAddress()))));
 
   auto adder = client.createAddition();
+  adder.semifuture_getPrimitive().via(&eb).getVia(&eb);
+}
+
+TEST(InteractionTest, TerminateActive) {
+  ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
+  folly::EventBase eb;
+  CalculatorAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
+
+  auto adder = client.createAddition();
   adder.semifuture_noop().via(&eb).getVia(&eb);
 }
 
@@ -101,19 +112,17 @@ TEST(InteractionTest, TerminateWithoutSetup) {
 
 TEST(InteractionTest, TerminateUsedPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  folly::EventBase eb;
   auto client =
       runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
         return RocketClientChannel::newChannel(std::move(socket));
       });
 
   auto adder = client->createAddition();
-  adder.semifuture_noop().via(&eb).getVia(&eb);
+  adder.semifuture_noop().get();
 }
 
 TEST(InteractionTest, TerminateUnusedPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  folly::EventBase eb;
   auto client =
       runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
         return RocketClientChannel::newChannel(std::move(socket));
@@ -125,7 +134,6 @@ TEST(InteractionTest, TerminateUnusedPRC) {
 
 TEST(InteractionTest, TerminateWithoutSetupPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  folly::EventBase eb;
   auto client =
       runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
         return RocketClientChannel::newChannel(std::move(socket));
@@ -489,4 +497,47 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
   folly::coro::blockingWait(handler->destroyed);
   EXPECT_FALSE(handler->executed);
 #endif
+}
+
+TEST(InteractionCodegenTest, ReuseIdDuringConstructor) {
+  struct SlowCalculatorHandler : CalculatorHandler {
+    std::unique_ptr<AdditionIf> createAddition() override {
+      if (first) {
+        first = false;
+        b1.post();
+        b2.wait();
+      }
+      return std::make_unique<AdditionHandler>();
+    }
+
+    folly::Baton<> b1, b2;
+    bool first = true;
+  };
+  auto handler = std::make_shared<SlowCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  runner.getThriftServer().getThreadManager()->addWorker();
+  folly::EventBase eb;
+  CalculatorAsyncClient client(
+      RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(&eb, runner.getAddress()))));
+
+  {
+    auto adder = client.createAddition();
+    adder.semifuture_noop().via(&eb).getVia(&eb);
+    handler->b1.wait();
+  } // sends termination while constructor is blocked
+  client.sync_addPrimitive(0, 0);
+
+  auto adder = client.createAddition();
+  // terribly sorry about this
+  struct Hack {
+    CalculatorAsyncClient c;
+    int64_t id;
+  };
+  reinterpret_cast<Hack*>(&adder)->id = 1;
+  client.getChannel()->registerInteraction("Addition", 1);
+
+  auto fut = adder.semifuture_accumulatePrimitive(1);
+  handler->b2.post();
+  std::move(fut).via(&eb).getVia(&eb);
 }

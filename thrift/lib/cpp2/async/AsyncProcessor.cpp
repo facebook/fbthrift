@@ -86,13 +86,16 @@ bool GeneratedAsyncProcessor::createInteraction(
     concurrency::ThreadManager& tm,
     folly::EventBase& eb) {
   eb.dcheckIsInEventBaseThread();
-  if (!conn.addTile(id, std::make_unique<TilePromise>())) {
+  auto promise = std::make_unique<TilePromise>();
+  auto promisePtr = promise.get();
+  if (!conn.addTile(id, std::move(promise))) {
     return false;
   }
 
   folly::via(&tm, [=] { return createInteractionImpl(name); })
       .via(&eb)
-      .thenTry([&conn, id, &tm, &eb](auto&& t) {
+      .thenTry([&conn, id, &tm, &eb, promisePtr](auto&& t) {
+        auto promise = std::unique_ptr<TilePromise>(promisePtr);
         std::unique_ptr<Tile> tile;
         if (t.hasValue()) {
           if (*t) {
@@ -108,10 +111,19 @@ bool GeneratedAsyncProcessor::createInteraction(
         } else {
           tile = std::make_unique<ErrorTile>(std::move(t.exception()));
         }
-        auto& tileref = *tile;
-        auto promise = conn.resetTile(id, std::move(tile));
-        DCHECK(promise->__fbthrift_isPromise());
-        static_cast<TilePromise&>(*promise).fulfill(tileref, id, conn, tm, eb);
+
+        if (promise->destructionRequested_) {
+          // promise not in tile map, not running continuations
+          tm.add([tile = std::move(tile)] {});
+        } else if (promise->terminationRequested_) {
+          // promise not in tile map, continuations will free tile
+          tile->terminationRequested_ = true;
+          promise->fulfill<InteractionEventTask>(*tile.release(), tm, eb);
+        } else {
+          // promise and tile managed by pointer in tile map
+          promise->fulfill<InteractionEventTask>(*tile, tm, eb);
+          conn.resetTile(id, std::move(tile)).release(); // aliases promise
+        }
       });
   return true;
 }
@@ -130,15 +142,15 @@ void GeneratedAsyncProcessor::terminateInteraction(
     concurrency::ThreadManager& tm,
     folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
-  try {
-    auto& tile = conn.getTile(id);
-    if (tile.__fbthrift_isPromise() || tile.refCount_) {
-      tile.terminationRequested_ = true;
-    } else {
-      tm.add([tile = conn.removeTile(id)] {});
-    }
-  } catch (const std::out_of_range&) {
-    LOG(DFATAL) << "Freeing unknown tile " << id;
+
+  auto tile = conn.removeTile(id);
+  if (!tile) {
+    return;
+  } else if (tile->refCount_ || tile->__fbthrift_isPromise()) {
+    tile->terminationRequested_ = true;
+    tile.release(); // freed by last decref
+  } else {
+    tm.add([tile = std::move(tile)] {});
   }
 }
 
@@ -147,24 +159,24 @@ void GeneratedAsyncProcessor::destroyAllInteractions(
     concurrency::ThreadManager& tm,
     folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
-  auto& map = conn.tiles_;
-  std::vector<std::unique_ptr<Tile>> tiles;
-  for (auto itr = map.begin(); itr != map.end();) {
-    auto& tilePtr = itr->second;
-    if (tilePtr->refCount_) {
-      tilePtr->terminationRequested_ = true;
-      ++itr;
-    } else if (tilePtr->__fbthrift_isPromise()) {
-      static_cast<TilePromise&>(*tilePtr).destructionRequested_ = true;
-      ++itr;
-    } else {
-      tiles.push_back(std::move(tilePtr));
-      itr = map.erase(itr);
+
+  if (conn.tiles_.empty()) {
+    return;
+  }
+
+  auto tiles = std::move(conn.tiles_);
+  for (auto& [id, tile] : tiles) {
+    if (tile->refCount_) {
+      if (tile->__fbthrift_isPromise()) {
+        static_cast<TilePromise&>(*tile).destructionRequested_ = true;
+      } else {
+        tile->terminationRequested_ = true;
+      }
+      tile.release();
     }
   }
-  if (!tiles.empty()) {
-    tm.add([tiles = std::move(tiles)] {});
-  }
+
+  tm.add([tiles = std::move(tiles)] {});
 }
 
 bool GeneratedAsyncProcessor::validateRpcKind(
@@ -262,12 +274,9 @@ HandlerCallbackBase::~HandlerCallbackBase() {
     } else {
       eb_->runInEventBaseThread(
           [req = std::move(req_),
-           reqCtx = reqCtx_,
            interaction = std::exchange(interaction_, nullptr),
            tm = getThreadManager(),
-           eb = getEventBase()] {
-            releaseInteraction(interaction, reqCtx, tm, eb);
-          });
+           eb = getEventBase()] { releaseInteraction(interaction, tm, eb); });
     }
   }
 }
@@ -326,12 +335,11 @@ void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
   } else {
     eb_->runInEventBaseThread(
         [message,
-         reqCtx = reqCtx_,
          interaction = std::exchange(interaction_, nullptr),
          req = std::move(req_),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, reqCtx, tm, eb);
+          releaseInteraction(interaction, tm, eb);
           req->sendErrorWrapped(
               folly::make_exception_wrapper<TApplicationException>(
                   TApplicationException::LOADSHEDDING, std::move(message)),
@@ -351,11 +359,10 @@ void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
         [req = std::move(req_),
          queue = std::move(queue),
          crc32c,
-         reqCtx = reqCtx_,
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, reqCtx, tm, eb);
+          releaseInteraction(interaction, tm, eb);
           req->sendReply(queue.move(), nullptr, crc32c);
         });
   }
@@ -377,11 +384,10 @@ void HandlerCallbackBase::sendReply(
          queue = std::move(queue),
          stream = std::move(stream),
          crc32c,
-         reqCtx = reqCtx_,
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, reqCtx, tm, eb);
+          releaseInteraction(interaction, tm, eb);
           req->sendStreamReply(queue.move(), std::move(stream), crc32c);
         });
   }
@@ -407,11 +413,10 @@ void HandlerCallbackBase::sendReply(
          queue = std::move(queue),
          sinkConsumer = std::move(sinkConsumer),
          crc32c,
-         reqCtx = reqCtx_,
          interaction = std::exchange(interaction_, nullptr),
          tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, reqCtx, tm, eb);
+          releaseInteraction(interaction, tm, eb);
           req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
         });
   }
@@ -422,20 +427,15 @@ void HandlerCallbackBase::sendReply(
 
 void HandlerCallbackBase::releaseInteraction(
     Tile* interaction,
-    Cpp2RequestContext* reqCtx,
     concurrency::ThreadManager* tm,
     folly::EventBase* eb) {
   if (interaction) {
-    interaction->__fbthrift_releaseRef(
-        reqCtx->getInteractionId(), *reqCtx->getConnectionContext(), *tm, *eb);
+    interaction->__fbthrift_releaseRef(*tm, *eb);
   }
 }
 void HandlerCallbackBase::releaseInteractionInstance() {
   releaseInteraction(
-      std::exchange(interaction_, nullptr),
-      reqCtx_,
-      getThreadManager(),
-      getEventBase());
+      std::exchange(interaction_, nullptr), getThreadManager(), getEventBase());
 }
 
 HandlerCallback<void>::HandlerCallback(

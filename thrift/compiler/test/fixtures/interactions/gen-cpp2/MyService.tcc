@@ -76,21 +76,10 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
   iface_->setConnectionContext(nullptr);
   MyService_MyInteraction_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.frobnicate", ctx));
-  apache::thrift::Tile* tile;
-  try {
-    tile = &getTile(ctx);
-  } catch (const std::out_of_range&) {
-    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
-        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-            apache::thrift::TApplicationException::TApplicationExceptionType
-                ::INTERACTION_ERROR,
-            "Unknown interaction id " + std::to_string(ctx->getInteractionId())),
-        std::move(req), ctx, ctxStack.get(), "MyInteraction.frobnicate", eb);
-    return;
-  }
+  auto tile = ctx->getTile();
   if (tile->__fbthrift_isError()) {
-    eb->runInEventBaseThread([=, id = ctx->getInteractionId(), conn = ctx->getConnectionContext()]() mutable {
-      tile->__fbthrift_releaseRef(id, *conn, *tm, *eb);
+    eb->runInEventBaseThread([=]() mutable {
+      tile->__fbthrift_releaseRef(*tm, *eb);
     });
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         folly::make_exception_wrapper<apache::thrift::TApplicationException>(
