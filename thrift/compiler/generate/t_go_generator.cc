@@ -22,6 +22,7 @@
  * guide for ensuring uniformity and readability.
  */
 
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -1667,13 +1668,10 @@ void t_go_generator::generate_go_struct_reader(
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     int32_t field_id = (*f_iter)->get_key();
 
-    // if negative id, ensure we generate a valid method name
-    string field_method_prefix("ReadField");
-
-    if (field_id < 0) {
-      field_method_prefix += "_";
-      field_id *= -1;
-    }
+    // -1 -> ReadField_1, 1 -> ReadField1
+    string field_method("ReadField");
+    field_method += (field_id < 0 ? "_" : "");
+    field_method += std::to_string(std::abs(field_id));
 
     if (seen.find(field_id) != seen.end()) {
       continue;
@@ -1688,8 +1686,8 @@ void t_go_generator::generate_go_struct_reader(
       thriftFieldTypeId = "thrift.STRING";
     }
 
-    out << indent() << "if err := p." << field_method_prefix << field_id
-        << "(iprot); err != nil {" << endl;
+    out << indent() << "if err := p." << field_method << "(iprot); err != nil {"
+        << endl;
     out << indent() << "  return err" << endl;
     out << indent() << "}" << endl;
 
@@ -1752,17 +1750,14 @@ void t_go_generator::generate_go_struct_reader(
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     string field_type_name(publicize((*f_iter)->get_type()->get_name()));
     string field_name(publicize((*f_iter)->get_name()));
-    string field_method_prefix("ReadField");
     int32_t field_id = (*f_iter)->get_key();
+    // -1 -> ReadField_1, 1 -> ReadField1
+    string field_method("ReadField");
+    field_method += (field_id < 0 ? "_" : "");
+    field_method += std::to_string(std::abs(field_id));
 
-    if (field_id < 0) {
-      field_method_prefix += "_";
-      field_id *= -1;
-    }
-
-    out << indent() << "func (p *" << tstruct_name << ")  "
-        << field_method_prefix << field_id << "(iprot thrift.Protocol) error {"
-        << endl;
+    out << indent() << "func (p *" << tstruct_name << ")  " << field_method
+        << "(iprot thrift.Protocol) error {" << endl;
     indent_up();
     generate_deserialize_field(out, *f_iter, false, "p.");
     indent_down();
@@ -1801,17 +1796,15 @@ void t_go_generator::generate_go_struct_writer(
       << endl;
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    string field_method_prefix("writeField");
     int32_t field_id = (*f_iter)->get_key();
     const string& field_name = (*f_iter)->get_name();
     string escape_field_name = escape_string(field_name);
+    // -1 -> writeField_1, 1 -> writeField1
+    string field_method("writeField");
+    field_method += (field_id < 0 ? "_" : "");
+    field_method += std::to_string(std::abs(field_id));
 
-    if (field_id < 0) {
-      field_method_prefix += "_";
-      field_id *= -1;
-    }
-
-    out << indent() << "if err := p." << field_method_prefix << field_id
+    out << indent() << "if err := p." << field_method
         << "(oprot); err != nil { return err }" << endl;
   }
 
@@ -1829,19 +1822,16 @@ void t_go_generator::generate_go_struct_writer(
   out << indent() << "}" << endl << endl;
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    string field_method_prefix("writeField");
     int32_t field_id = (*f_iter)->get_key();
     const string& field_name = (*f_iter)->get_name();
     string escape_field_name = escape_string(field_name);
     t_field::e_req field_required = (*f_iter)->get_req();
+    // -1 -> writeField_1, 1 -> writeField1
+    string field_method("writeField");
+    field_method += (field_id < 0 ? "_" : "");
+    field_method += std::to_string(std::abs(field_id));
 
-    if (field_id < 0) {
-      field_method_prefix += "_";
-      field_id *= -1;
-    }
-
-    out << indent() << "func (p *" << tstruct_name << ") "
-        << field_method_prefix << field_id
+    out << indent() << "func (p *" << tstruct_name << ") " << field_method
         << "(oprot thrift.Protocol) (err error) {" << endl;
     indent_up();
 

@@ -3225,7 +3225,11 @@ func (p *GetEntityGetLegacyStuffArgs) Read(iprot thrift.Protocol) error {
       if err := p.ReadField1(iprot); err != nil {
         return err
       }
-    case 2:
+    case -1:
+      if err := p.ReadField_1(iprot); err != nil {
+        return err
+      }
+    case -2:
       if err := p.ReadField_2(iprot); err != nil {
         return err
       }
@@ -3285,22 +3289,22 @@ func (p *GetEntityGetLegacyStuffArgs) Write(oprot thrift.Protocol) error {
 }
 
 func (p *GetEntityGetLegacyStuffArgs) writeField_2(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("numNeg2", thrift.I64, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:numNeg2: ", p), err) }
+  if err := oprot.WriteFieldBegin("numNeg2", thrift.I64, -2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error -2:numNeg2: ", p), err) }
   if err := oprot.WriteI64(int64(p.NumNeg2)); err != nil {
   return thrift.PrependError(fmt.Sprintf("%T.numNeg2 (-2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:numNeg2: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error -2:numNeg2: ", p), err) }
   return err
 }
 
 func (p *GetEntityGetLegacyStuffArgs) writeField_1(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("numNeg1", thrift.I64, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:numNeg1: ", p), err) }
+  if err := oprot.WriteFieldBegin("numNeg1", thrift.I64, -1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error -1:numNeg1: ", p), err) }
   if err := oprot.WriteI64(int64(p.NumNeg1)); err != nil {
   return thrift.PrependError(fmt.Sprintf("%T.numNeg1 (-1) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:numNeg1: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error -1:numNeg1: ", p), err) }
   return err
 }
 
