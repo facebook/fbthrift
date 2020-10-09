@@ -49,6 +49,8 @@ void validateAnyType(const AnyType& type) {
   for (const auto& alias : *type.aliases_ref()) {
     validateUniversalType(alias);
   }
+  // Note: We don't need to valudate 0 or unset (as unset indicates the
+  // implementation should decide).
   auto typeIdBytes = type.typeIdBytes_ref().value_or(0);
   if (typeIdBytes != 0 &&
       (typeIdBytes < any_constants::minTypeIdBytes() ||

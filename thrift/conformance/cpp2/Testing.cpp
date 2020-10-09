@@ -19,6 +19,7 @@
 #include <fmt/core.h>
 #include <folly/lang/Exception.h>
 #include <folly/portability/GTest.h>
+#include <thrift/conformance/if/gen-cpp2/any_constants.h>
 
 namespace apache::thrift::conformance {
 
@@ -38,6 +39,7 @@ AnyType testAnyType(const std::string& shortName) {
 
 AnyType testAnyType(std::initializer_list<const char*> names) {
   AnyType type;
+  type.set_typeIdBytes(0);
   auto itr = names.begin();
   if (itr != names.end()) {
     type.set_name(thriftType(*itr++));
@@ -67,6 +69,21 @@ void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
   } else {
     folly::throw_exception<std::bad_any_cast>();
   }
+}
+
+AnyType shortAnyType(int ordinal) {
+  AnyType type;
+  type.set_name(fmt::format("sh.or/t/{}", ordinal));
+  assert(type.get_name().size() <= any_constants::minTypeIdBytes());
+  return type;
+}
+
+AnyType longAnyType(int ordinal) {
+  AnyType type;
+  type.set_name(
+      fmt::format("seriously.long.type/seriously/long/type/{}", ordinal));
+  assert(type.get_name().size() > any_constants::maxTypeIdBytes());
+  return type;
 }
 
 void MultiSerializer::decode(

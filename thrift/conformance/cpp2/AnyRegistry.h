@@ -27,6 +27,7 @@
 #include <typeinfo>
 #include <unordered_map>
 
+#include <folly/FBString.h>
 #include <folly/Utility.h>
 #include <folly/container/F14Map.h>
 #include <thrift/conformance/cpp2/AnyRef.h>
@@ -83,9 +84,6 @@ class AnyRegistry {
   const AnySerializer* getSerializer(
       const std::type_info& type,
       const Protocol& protocol) const;
-  const AnySerializer* getSerializer(
-      std::string_view name,
-      const Protocol& protocol) const;
 
   // Compile-time Type overloads.
   template <typename C = std::initializer_list<const AnySerializer*>>
@@ -127,18 +125,20 @@ class AnyRegistry {
 
  private:
   struct TypeEntry {
-    TypeEntry(const std::type_info& typeInfo, AnyType type)
-        : typeInfo(typeInfo), type(std::move(type)) {}
+    TypeEntry(const std::type_info& typeInfo, AnyType type);
 
     const std::type_info& typeInfo;
+    const folly::fbstring typeId; // The type id to use, if applicable.
     const AnyType type; // Referenced by nameIndex_.
     folly::F14FastMap<Protocol, const AnySerializer*> serializers;
   };
 
   std::forward_list<std::unique_ptr<AnySerializer>> ownedSerializers_;
+  // Referenced by nameIndex_ and idIndex_, so must be a Node map.
   folly::F14NodeMap<std::type_index, TypeEntry> registry_;
 
   folly::F14FastMap<std::string_view, TypeEntry*> nameIndex_;
+  std::map<folly::fbstring, TypeEntry*> idIndex_; // Must be sorted.
 
   TypeEntry* registerTypeImpl(const std::type_info& typeInfo, AnyType type);
   static bool registerSerializerImpl(
@@ -148,18 +148,25 @@ class AnyRegistry {
       std::unique_ptr<AnySerializer> serializer,
       TypeEntry* entry);
 
-  bool checkNameAvailability(std::string_view name) const;
-  bool checkNameAvailability(const AnyType& type) const;
+  bool genTypeIdsAndCheckForConflicts(
+      std::string_view name,
+      std::vector<folly::fbstring>* typeIds) const;
+  bool genTypeIdsAndCheckForConflicts(
+      const AnyType& type,
+      std::vector<folly::fbstring>* typeIds) const;
   void indexName(std::string_view name, TypeEntry* entry);
-  void indexType(TypeEntry* entry);
+  void indexId(folly::fbstring&& id, TypeEntry* entry);
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
-  const TypeEntry* getTypeEntry(std::string_view name) const;
   const TypeEntry* getTypeEntry(const std::type_index& index) const;
   const TypeEntry* getTypeEntry(const std::type_info& type) const {
     return getTypeEntry(std::type_index(type));
   }
+  // Look up TypeEntry by secondary index.
+  const TypeEntry* getTypeEntryByName(std::string_view name) const;
+  const TypeEntry* getTypeEntryById(const folly::fbstring& name) const;
+  const TypeEntry* getTypeEntryFor(const Any& value) const;
 
   const AnySerializer* getSerializer(
       const TypeEntry* entry,

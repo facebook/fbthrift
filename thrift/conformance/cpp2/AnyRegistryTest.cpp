@@ -21,18 +21,75 @@
 #include <thrift/conformance/cpp2/Any.h>
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/cpp2/Testing.h>
+#include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
 
 namespace {
 
+TEST(AnyRegistryTest, ShortType) {
+  AnyRegistry registry;
+  FollyToStringSerializer<int> intCodec;
+  EXPECT_TRUE(registry.registerType<int>(shortAnyType(), {&intCodec}));
+
+  // Should use the type name because it is shorter than the id.
+  Any any = registry.store(1, kFollyToStringProtocol);
+  EXPECT_TRUE(any.type_ref());
+  EXPECT_FALSE(any.typeId_ref());
+  EXPECT_EQ(registry.load<int>(any), 1);
+}
+
+constexpr int kUnsetTypeId = -1;
+void checkLongType(int typeBytes, int expectedOutBytes) {
+  AnyRegistry registry;
+  FollyToStringSerializer<int> intCodec;
+  auto longType = longAnyType();
+  if (typeBytes == kUnsetTypeId) {
+    longType.typeIdBytes_ref().reset();
+  } else {
+    longType.set_typeIdBytes(typeBytes);
+  }
+  EXPECT_TRUE(registry.registerType<int>(longType, {&intCodec}));
+
+  // Should use the type id because it is shorter than the name.
+  Any any = registry.store(1, kFollyToStringProtocol);
+  if (expectedOutBytes == kDisableTypeId) {
+    EXPECT_FALSE(any.typeId_ref());
+    EXPECT_TRUE(any.type_ref());
+  } else {
+    EXPECT_FALSE(any.type_ref());
+    ASSERT_TRUE(any.typeId_ref());
+    EXPECT_EQ(any.typeId_ref().value_unchecked().size(), expectedOutBytes);
+  }
+  EXPECT_EQ(registry.load<int>(any), 1);
+}
+
+TEST(AnyRegistryTest, LongType) {
+  // Disabled is respected.
+  THRIFT_SCOPED_CHECK(checkLongType(kDisableTypeId, kDisableTypeId));
+
+  // Unset uses minimum.
+  THRIFT_SCOPED_CHECK(checkLongType(kUnsetTypeId, kMinTypeIdBytes));
+
+  // Type can increase bytes used.
+  THRIFT_SCOPED_CHECK(checkLongType(24, 24));
+  THRIFT_SCOPED_CHECK(checkLongType(32, 32));
+}
+
+TEST(AnyRegistryTest, ShortTypeId) {
+  AnyRegistry registry;
+  FollyToStringSerializer<int> intCodec;
+  auto longType = longAnyType();
+  EXPECT_TRUE(registry.registerType<int>(longType, {&intCodec}));
+  Any any = registry.store(1, kFollyToStringProtocol);
+  any.set_typeId(any.typeId_ref()->substr(0, 8));
+  EXPECT_THROW(registry.load<int>(any), std::invalid_argument);
+}
+
 TEST(AnyRegistryTest, Behavior) {
   AnyRegistry registry;
   const AnyRegistry& cregistry = registry;
   EXPECT_EQ(cregistry.getTypeName(typeid(int)), "");
-  EXPECT_EQ(
-      cregistry.getSerializer(thriftType("int"), kFollyToStringProtocol),
-      nullptr);
   EXPECT_EQ(cregistry.getSerializer<int>(kFollyToStringProtocol), nullptr);
 
   FollyToStringSerializer<int> intCodec;
@@ -46,9 +103,6 @@ TEST(AnyRegistryTest, Behavior) {
 
   EXPECT_TRUE(registry.registerType<int>(testAnyType("int")));
   EXPECT_EQ(cregistry.getTypeName(typeid(int)), thriftType("int"));
-  EXPECT_EQ(
-      cregistry.getSerializer(thriftType("int"), kFollyToStringProtocol),
-      nullptr);
   EXPECT_EQ(cregistry.getSerializer<int>(kFollyToStringProtocol), nullptr);
 
   // Conflicting and duplicate registrations are rejected.
@@ -58,9 +112,6 @@ TEST(AnyRegistryTest, Behavior) {
 
   EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
   EXPECT_EQ(cregistry.getTypeName<int>(), thriftType("int"));
-  EXPECT_EQ(
-      cregistry.getSerializer(thriftType("int"), kFollyToStringProtocol),
-      &intCodec);
   EXPECT_EQ(cregistry.getSerializer<int>(kFollyToStringProtocol), &intCodec);
 
   // Duplicate registrations are rejected.
@@ -78,7 +129,7 @@ TEST(AnyRegistryTest, Behavior) {
       std::make_unique<FollyToStringSerializer<double>>()));
 
   Any value = cregistry.store(3, kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), thriftType("int"));
+  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
@@ -88,13 +139,13 @@ TEST(AnyRegistryTest, Behavior) {
   // Storing an Any does nothing if the protocols match.
   Any original = value;
   value = cregistry.store(original, kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), thriftType("int"));
+  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   value =
       cregistry.store(std::any(std::move(original)), kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), thriftType("int"));
+  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
@@ -102,13 +153,13 @@ TEST(AnyRegistryTest, Behavior) {
   // Storing an Any with a different protocol does a conversion.
   original = value;
   value = cregistry.store(original, Number1Serializer::kProtocol);
-  EXPECT_EQ(*value.type_ref(), thriftType("int"));
+  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
   value = cregistry.store(
       std::any(std::move(original)), Number1Serializer::kProtocol);
-  EXPECT_EQ(*value.type_ref(), thriftType("int"));
+  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
@@ -158,16 +209,16 @@ TEST(AnyRegistryTest, Aliases) {
 
   auto any = cregistry.store(1, kFollyToStringProtocol);
   // Stored under the main type name.
-  EXPECT_EQ(*any.type_ref(), thriftType("int"));
+  EXPECT_EQ(any.type_ref().value_or(""), thriftType("int"));
   EXPECT_EQ(cregistry.load<int>(any), 1);
 
-  any.type_ref() = thriftType("Int");
+  any.set_type(thriftType("Int"));
   EXPECT_EQ(cregistry.load<int>(any), 1);
 
-  any.type_ref() = thriftType("Integer");
+  any.set_type(thriftType("Integer"));
   EXPECT_EQ(cregistry.load<int>(any), 1);
 
-  any.type_ref() = thriftType("Unknown");
+  any.set_type(thriftType("Unknown"));
   EXPECT_THROW(cregistry.load<int>(any), std::bad_any_cast);
 }
 

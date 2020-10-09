@@ -49,9 +49,14 @@ inline const Protocol& UnknownProtocol() {
   return getStandardProtocol<kUnknownStdProtocol>();
 }
 
-// Creates a AnyType for tests using the given name(s).
+// Creates an AnyType for tests using the given name(s).
 AnyType testAnyType(const std::string& shortName);
 AnyType testAnyType(std::initializer_list<const char*> names);
+
+// Creates an AnyType that is smaller than the associated type id.
+AnyType shortAnyType(int ordinal = 1);
+// Creates an AnyType that is larger than the associated type id.
+AnyType longAnyType(int ordinal = 1);
 
 // Returns the full thrift type name, for the given type.
 std::string thriftType(std::string_view type);

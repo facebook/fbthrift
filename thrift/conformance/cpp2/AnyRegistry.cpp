@@ -16,11 +16,31 @@
 
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 
+#include <glog/logging.h>
+
 #include <folly/CppAttributes.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
+#include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
+
+namespace {
+
+folly::fbstring maybeGetTypeId(
+    const AnyType& type,
+    type_id_size_t defaultTypeIdBytes = kMinTypeIdBytes) {
+  if (type.typeIdBytes_ref().has_value()) {
+    // Use the custom size.
+    defaultTypeIdBytes = type.typeIdBytes_ref().value_unchecked();
+  }
+  return conformance::maybeGetTypeId(type.get_name(), defaultTypeIdBytes);
+}
+
+} // namespace
+
+AnyRegistry::TypeEntry::TypeEntry(const std::type_info& typeInfo, AnyType type)
+    : typeInfo(typeInfo), typeId(maybeGetTypeId(type)), type(std::move(type)) {}
 
 bool AnyRegistry::registerType(const std::type_info& typeInfo, AnyType type) {
   return registerTypeImpl(typeInfo, std::move(type)) != nullptr;
@@ -54,12 +74,6 @@ const AnySerializer* AnyRegistry::getSerializer(
   return getSerializer(getTypeEntry(type), protocol);
 }
 
-const AnySerializer* AnyRegistry::getSerializer(
-    std::string_view name,
-    const Protocol& protocol) const {
-  return getSerializer(getTypeEntry(name), protocol);
-}
-
 Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
   if (value.type() == typeid(Any)) {
     // Use the Any specific overload.
@@ -78,13 +92,17 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
   serializer->encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
 
   Any result;
-  result.set_type(entry->type.get_name());
+  if (entry->typeId.empty()) {
+    result.set_type(entry->type.get_name());
+  } else {
+    result.set_typeId(entry->typeId);
+  }
   if (protocol.isCustom()) {
     result.customProtocol_ref() = protocol.custom();
   } else {
     result.protocol_ref() = protocol.standard();
   }
-  result.data_ref() = queue.moveAsValue();
+  result.set_data(queue.moveAsValue());
   return result;
 }
 
@@ -96,11 +114,7 @@ Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
 }
 
 void AnyRegistry::load(const Any& value, any_ref out) const {
-  // TODO(afuller): Add support for type_id.
-  if (!value.type_ref().has_value()) {
-    folly::throw_exception<std::bad_any_cast>();
-  }
-  const auto* entry = getTypeEntry(*value.type_ref());
+  const auto* entry = getTypeEntryFor(value);
   const auto* serializer = getSerializer(entry, getProtocol(value));
   if (serializer == nullptr) {
     folly::throw_exception<std::bad_any_cast>();
@@ -118,7 +132,9 @@ std::any AnyRegistry::load(const Any& value) const {
 auto AnyRegistry::registerTypeImpl(const std::type_info& typeInfo, AnyType type)
     -> TypeEntry* {
   validateAnyType(type);
-  if (!checkNameAvailability(type)) {
+  std::vector<folly::fbstring> typeIds;
+  typeIds.reserve(type.aliases_ref()->size() + 1);
+  if (!genTypeIdsAndCheckForConflicts(type, &typeIds)) {
     return nullptr;
   }
 
@@ -128,7 +144,17 @@ auto AnyRegistry::registerTypeImpl(const std::type_info& typeInfo, AnyType type)
     return nullptr;
   }
 
-  indexType(&result.first->second);
+  TypeEntry* entry = &result.first->second;
+
+  // Add to secondary indexes.
+  indexName(*entry->type.name_ref(), entry);
+  for (const auto& alias : *entry->type.aliases_ref()) {
+    indexName(alias, entry);
+  }
+
+  for (auto& id : typeIds) {
+    indexId(std::move(id), entry);
+  }
   return &result.first->second;
 }
 
@@ -153,17 +179,33 @@ bool AnyRegistry::registerSerializerImpl(
   return true;
 }
 
-bool AnyRegistry::checkNameAvailability(std::string_view name) const {
-  return !name.empty() && !nameIndex_.contains(name);
+bool AnyRegistry::genTypeIdsAndCheckForConflicts(
+    std::string_view name,
+    std::vector<folly::fbstring>* typeIds) const {
+  if (name.empty() || nameIndex_.contains(name)) {
+    return false; // Already exists.
+  }
+
+  auto typeId = getTypeId(name);
+  // Find shortest valid partial type id.
+  folly::fbstring minTypeId(getPartialTypeId(typeId, kMinTypeIdBytes));
+  // Check if the minimum type id would be ambiguous.
+  if (containsTypeId(idIndex_, minTypeId)) {
+    return false; // Ambigous with another typeId.
+  }
+  typeIds->emplace_back(std::move(typeId));
+  return true;
 }
 
-bool AnyRegistry::checkNameAvailability(const AnyType& type) const {
+bool AnyRegistry::genTypeIdsAndCheckForConflicts(
+    const AnyType& type,
+    std::vector<folly::fbstring>* typeIds) const {
   // Ensure name and all aliases are availabile.
-  if (!checkNameAvailability(*type.name_ref())) {
+  if (!genTypeIdsAndCheckForConflicts(*type.name_ref(), typeIds)) {
     return false;
   }
   for (const auto& alias : *type.aliases_ref()) {
-    if (!checkNameAvailability(alias)) {
+    if (!genTypeIdsAndCheckForConflicts(alias, typeIds)) {
       return false;
     }
   }
@@ -171,25 +213,13 @@ bool AnyRegistry::checkNameAvailability(const AnyType& type) const {
 }
 
 void AnyRegistry::indexName(std::string_view name, TypeEntry* entry) {
-  FOLLY_MAYBE_UNUSED auto res = nameIndex_.emplace(name, entry);
-  assert(res.second);
-  // TODO(afuller): Also index under typeId.
+  auto res = nameIndex_.emplace(name, entry);
+  DCHECK(res.second);
 }
 
-void AnyRegistry::indexType(TypeEntry* entry) {
-  indexName(*entry->type.name_ref(), entry);
-  for (const auto& alias : *entry->type.aliases_ref()) {
-    indexName(alias, entry);
-  }
-}
-
-auto AnyRegistry::getTypeEntry(std::string_view name) const
-    -> const TypeEntry* {
-  auto itr = nameIndex_.find(name);
-  if (itr == nameIndex_.end()) {
-    return nullptr;
-  }
-  return itr->second;
+void AnyRegistry::indexId(folly::fbstring&& id, TypeEntry* entry) {
+  auto res = idIndex_.emplace(std::move(id), entry);
+  DCHECK(res.second);
 }
 
 auto AnyRegistry::getTypeEntry(const std::type_index& index) const
@@ -199,6 +229,37 @@ auto AnyRegistry::getTypeEntry(const std::type_index& index) const
     return nullptr;
   }
   return &itr->second;
+}
+
+auto AnyRegistry::getTypeEntryById(const folly::fbstring& id) const
+    -> const TypeEntry* {
+  validateTypeId(id);
+  auto itr = findByTypeId(idIndex_, id);
+  if (itr == idIndex_.end()) {
+    // No match.
+    return nullptr;
+  }
+  return itr->second;
+}
+
+auto AnyRegistry::getTypeEntryByName(std::string_view name) const
+    -> const TypeEntry* {
+  auto itr = nameIndex_.find(name);
+  if (itr == nameIndex_.end()) {
+    return nullptr;
+  }
+  return itr->second;
+}
+
+auto AnyRegistry::getTypeEntryFor(const Any& value) const -> const TypeEntry* {
+  if (value.type_ref().has_value() &&
+      !value.type_ref().value_unchecked().empty()) {
+    return getTypeEntryByName(value.type_ref().value_unchecked());
+  }
+  if (value.typeId_ref().has_value()) {
+    return getTypeEntryById(value.typeId_ref().value_unchecked());
+  }
+  return nullptr;
 }
 
 const AnySerializer* AnyRegistry::getSerializer(
