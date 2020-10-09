@@ -33,6 +33,7 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "   getMap()")
   fmt.Fprintln(os.Stderr, "   getSet()")
   fmt.Fprintln(os.Stderr, "   getList()")
+  fmt.Fprintln(os.Stderr, "  i32 getLegacyStuff(i64 numPos, i64 numNeg1, i64 numNeg2)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -238,6 +239,32 @@ func main() {
       flag.Usage()
     }
     fmt.Print(client.GetList())
+    fmt.Print("\n")
+    break
+  case "getLegacyStuff":
+    if flag.NArg() - 1 != 3 {
+      fmt.Fprintln(os.Stderr, "GetLegacyStuff requires 3 args")
+      flag.Usage()
+    }
+    argvalue0, err12 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err12 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    argvalue1, err13 := (strconv.ParseInt(flag.Arg(2), 10, 64))
+    if err13 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    argvalue2, err14 := (strconv.ParseInt(flag.Arg(3), 10, 64))
+    if err14 != nil {
+      Usage()
+      return
+    }
+    value2 := argvalue2
+    fmt.Print(client.GetLegacyStuff(value0, value1, value2))
     fmt.Print("\n")
     break
   case "":

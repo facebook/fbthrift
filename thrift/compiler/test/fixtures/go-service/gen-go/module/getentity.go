@@ -34,6 +34,11 @@ type GetEntity interface {
   GetMap() (_r map[string]string, err error)
   GetSet() (_r []string, err error)
   GetList() (_r []string, err error)
+  // Parameters:
+  //  - NumPos
+  //  - NumNeg1
+  //  - NumNeg2
+  GetLegacyStuff(numPos int64, numNeg1 int64, numNeg2 int64) (_r int32, err error)
 }
 
 type GetEntityClientInterface interface {
@@ -52,6 +57,11 @@ type GetEntityClientInterface interface {
   GetMap() (_r map[string]string, err error)
   GetSet() (_r []string, err error)
   GetList() (_r []string, err error)
+  // Parameters:
+  //  - NumPos
+  //  - NumNeg1
+  //  - NumNeg2
+  GetLegacyStuff(numPos int64, numNeg1 int64, numNeg2 int64) (_r int32, err error)
 }
 
 type GetEntityClient struct {
@@ -270,6 +280,30 @@ func (p *GetEntityClient) GetList() (_r []string, err error) {
 func (p *GetEntityClient) recvGetList() (value []string, err error) {
   var result GetEntityGetListResult
   err = p.CC.RecvMsg("getList", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - NumPos
+//  - NumNeg1
+//  - NumNeg2
+func (p *GetEntityClient) GetLegacyStuff(numPos int64, numNeg1 int64, numNeg2 int64) (_r int32, err error) {
+  args := GetEntityGetLegacyStuffArgs{
+    NumPos : numPos,
+    NumNeg1 : numNeg1,
+    NumNeg2 : numNeg2,
+  }
+  err = p.CC.SendMsg("getLegacyStuff", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvGetLegacyStuff()
+}
+
+
+func (p *GetEntityClient) recvGetLegacyStuff() (value int32, err error) {
+  var result GetEntityGetLegacyStuffResult
+  err = p.CC.RecvMsg("getLegacyStuff", &result)
   if err != nil { return }
 
   return result.GetSuccess(), nil
@@ -528,6 +562,32 @@ func (p *GetEntityThreadsafeClient) recvGetList() (value []string, err error) {
   return result.GetSuccess(), nil
 }
 
+// Parameters:
+//  - NumPos
+//  - NumNeg1
+//  - NumNeg2
+func (p *GetEntityThreadsafeClient) GetLegacyStuff(numPos int64, numNeg1 int64, numNeg2 int64) (_r int32, err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  args := GetEntityGetLegacyStuffArgs{
+    NumPos : numPos,
+    NumNeg1 : numNeg1,
+    NumNeg2 : numNeg2,
+  }
+  err = p.CC.SendMsg("getLegacyStuff", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvGetLegacyStuff()
+}
+
+
+func (p *GetEntityThreadsafeClient) recvGetLegacyStuff() (value int32, err error) {
+  var result GetEntityGetLegacyStuffResult
+  err = p.CC.RecvMsg("getLegacyStuff", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
 
 type GetEntityProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
@@ -563,6 +623,7 @@ func NewGetEntityProcessor(handler GetEntity) *GetEntityProcessor {
   self0.processorMap["getMap"] = &getEntityProcessorGetMap{handler:handler}
   self0.processorMap["getSet"] = &getEntityProcessorGetSet{handler:handler}
   self0.processorMap["getList"] = &getEntityProcessorGetList{handler:handler}
+  self0.processorMap["getLegacyStuff"] = &getEntityProcessorGetLegacyStuff{handler:handler}
   return self0
 }
 
@@ -1151,6 +1212,56 @@ func (p *getEntityProcessorGetList) Run(argStruct thrift.Struct) (thrift.Writabl
     }
   } else {
     result.Success = retval
+  }
+  return &result, nil
+}
+
+type getEntityProcessorGetLegacyStuff struct {
+  handler GetEntity
+}
+
+func (p *getEntityProcessorGetLegacyStuff) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
+  args := GetEntityGetLegacyStuffArgs{}
+  if err := args.Read(iprot); err != nil {
+    return nil, err
+  }
+  iprot.ReadMessageEnd()
+  return &args, nil
+}
+
+func (p *getEntityProcessorGetLegacyStuff) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
+  var err2 error
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
+  }
+  if err2 = oprot.WriteMessageBegin("getLegacyStuff", messageType, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  return err
+}
+
+func (p *getEntityProcessorGetLegacyStuff) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  args := argStruct.(*GetEntityGetLegacyStuffArgs)
+  var result GetEntityGetLegacyStuffResult
+  if retval, err := p.handler.GetLegacyStuff(args.NumPos, args.NumNeg1, args.NumNeg2); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing getLegacyStuff: " + err.Error())
+      return x, x
+    }
+  } else {
+    result.Success = &retval
   }
   return &result, nil
 }
@@ -3068,6 +3179,250 @@ func (p *GetEntityGetListResult) String() string {
 
   successVal := fmt.Sprintf("%v", p.Success)
   return fmt.Sprintf("GetEntityGetListResult({Success:%s})", successVal)
+}
+
+// Attributes:
+//  - NumPos
+//  - NumNeg1
+//  - NumNeg2
+type GetEntityGetLegacyStuffArgs struct {
+  thrift.IRequest
+  NumPos int64
+  NumNeg1 int64
+  NumNeg2 int64
+}
+
+func NewGetEntityGetLegacyStuffArgs() *GetEntityGetLegacyStuffArgs {
+  return &GetEntityGetLegacyStuffArgs{}
+}
+
+
+func (p *GetEntityGetLegacyStuffArgs) GetNumPos() int64 {
+  return p.NumPos
+}
+
+func (p *GetEntityGetLegacyStuffArgs) GetNumNeg1() int64 {
+  return p.NumNeg1
+}
+
+func (p *GetEntityGetLegacyStuffArgs) GetNumNeg2() int64 {
+  return p.NumNeg2
+}
+func (p *GetEntityGetLegacyStuffArgs) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField_2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffArgs)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.NumPos = v
+}
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffArgs)  ReadField_1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field -1: ", err)
+} else {
+  p.NumNeg1 = v
+}
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffArgs)  ReadField_2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field -2: ", err)
+} else {
+  p.NumNeg2 = v
+}
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffArgs) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("getLegacyStuff_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField_2(oprot); err != nil { return err }
+  if err := p.writeField_1(oprot); err != nil { return err }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffArgs) writeField_2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("numNeg2", thrift.I64, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:numNeg2: ", p), err) }
+  if err := oprot.WriteI64(int64(p.NumNeg2)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.numNeg2 (-2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:numNeg2: ", p), err) }
+  return err
+}
+
+func (p *GetEntityGetLegacyStuffArgs) writeField_1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("numNeg1", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:numNeg1: ", p), err) }
+  if err := oprot.WriteI64(int64(p.NumNeg1)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.numNeg1 (-1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:numNeg1: ", p), err) }
+  return err
+}
+
+func (p *GetEntityGetLegacyStuffArgs) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("numPos", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:numPos: ", p), err) }
+  if err := oprot.WriteI64(int64(p.NumPos)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.numPos (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:numPos: ", p), err) }
+  return err
+}
+
+func (p *GetEntityGetLegacyStuffArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  numNeg2Val := fmt.Sprintf("%v", p.NumNeg2)
+  numNeg1Val := fmt.Sprintf("%v", p.NumNeg1)
+  numPosVal := fmt.Sprintf("%v", p.NumPos)
+  return fmt.Sprintf("GetEntityGetLegacyStuffArgs({NumNeg2:%s NumNeg1:%s NumPos:%s})", numNeg2Val, numNeg1Val, numPosVal)
+}
+
+// Attributes:
+//  - Success
+type GetEntityGetLegacyStuffResult struct {
+  thrift.IResponse
+  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewGetEntityGetLegacyStuffResult() *GetEntityGetLegacyStuffResult {
+  return &GetEntityGetLegacyStuffResult{}
+}
+
+var GetEntityGetLegacyStuffResult_Success_DEFAULT int32
+func (p *GetEntityGetLegacyStuffResult) GetSuccess() int32 {
+  if !p.IsSetSuccess() {
+    return GetEntityGetLegacyStuffResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *GetEntityGetLegacyStuffResult) IsSetSuccess() bool {
+  return p != nil && p.Success != nil
+}
+
+func (p *GetEntityGetLegacyStuffResult) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if err := p.ReadField0(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffResult)  ReadField0(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffResult) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("getLegacyStuff_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField0(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *GetEntityGetLegacyStuffResult) writeField0(oprot thrift.Protocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *GetEntityGetLegacyStuffResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  var successVal string
+  if p.Success == nil {
+    successVal = "<nil>"
+  } else {
+    successVal = fmt.Sprintf("%v", *p.Success)
+  }
+  return fmt.Sprintf("GetEntityGetLegacyStuffResult({Success:%s})", successVal)
 }
 
 

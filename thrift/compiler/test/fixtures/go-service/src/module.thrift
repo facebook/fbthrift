@@ -36,4 +36,7 @@ service GetEntity {
   map<string, string> getMap();
   set<string> getSet();
   list<string> getList();
+
+  // Legacy method with negative parameter tags
+  i32 getLegacyStuff(1: i64 numPos, -1: i64 numNeg1, -2: i64 numNeg2);
 }
