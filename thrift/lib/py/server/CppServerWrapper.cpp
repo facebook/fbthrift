@@ -57,11 +57,16 @@ namespace {
 const std::string kHeaderEx = "uex";
 const std::string kHeaderExWhat = "uexw";
 
-object makePythonHeaders(const std::map<std::string, std::string>& cppheaders) {
+object makePythonHeaders(
+    const std::map<std::string, std::string>& cppheaders,
+    const Cpp2RequestContext* context) {
   object headers = dict();
   for (const auto& it : cppheaders) {
     headers[it.first] = it.second;
   }
+  headers[apache::thrift::THeader::CLIENT_TIMEOUT_HEADER] =
+      folly::to<std::string>(
+          std::chrono::milliseconds(context->getRequestTimeout()).count());
   return headers;
 }
 
@@ -406,7 +411,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
 
             adapter_->attr("call_processor")(
                 input,
-                makePythonHeaders(context->getHeader()->getHeaders()),
+                makePythonHeaders(context->getHeader()->getHeaders(), context),
                 int(clientType),
                 int(protType),
                 contextData,
