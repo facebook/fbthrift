@@ -33,27 +33,3 @@ class IOBuf;
 class IOBufQueue;
 
 } // namespace folly
-
-namespace apache {
-namespace thrift {
-namespace detail {
-namespace ac {
-
-#if FOLLY_HAS_COROUTINES
-template <typename T>
-folly::coro::Task<folly::Try<folly::drop_unit_t<T>>> detach_on_cancel(
-    folly::SemiFuture<T>&& task) {
-  const folly::CancellationToken& cancelToken =
-      co_await folly::coro::co_current_cancellation_token;
-  if (cancelToken.canBeCancelled()) {
-    co_return co_await folly::coro::co_awaitTry(
-        folly::coro::detachOnCancel(std::move(task)));
-  } else {
-    co_return co_await folly::coro::co_awaitTry(std::move(task));
-  }
-}
-#endif
-} // namespace ac
-} // namespace detail
-} // namespace thrift
-} // namespace apache
