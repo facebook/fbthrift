@@ -30,7 +30,7 @@ class RocketServerConnection;
 
 class RocketRoutingHandler : public TransportRoutingHandler {
  public:
-  RocketRoutingHandler();
+  explicit RocketRoutingHandler(ThriftServer&);
   ~RocketRoutingHandler() override;
   RocketRoutingHandler(const RocketRoutingHandler&) = delete;
   RocketRoutingHandler& operator=(const RocketRoutingHandler&) = delete;
@@ -44,10 +44,6 @@ class RocketRoutingHandler : public TransportRoutingHandler {
       folly::SocketAddress const* peerAddress,
       wangle::TransportInfo const& tinfo,
       std::shared_ptr<Cpp2Worker> worker) override;
-
-  void addSetupFrameHandler(std::unique_ptr<rocket::SetupFrameHandler> handler);
-  const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>&
-  getSetupFrameHandlers() const;
 
  protected:
   virtual void onConnection(rocket::RocketServerConnection&) {}

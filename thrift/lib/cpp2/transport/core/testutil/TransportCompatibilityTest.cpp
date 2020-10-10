@@ -1249,8 +1249,8 @@ void TransportCompatibilityTest::TestOnWriteQuiescence() {
 
   class TestOnWriteQuiescenceRoutingHandler : public RocketRoutingHandler {
    public:
-    explicit TestOnWriteQuiescenceRoutingHandler(State& state)
-        : state_(state) {}
+    TestOnWriteQuiescenceRoutingHandler(ThriftServer& server, State& state)
+        : RocketRoutingHandler(server), state_(state) {}
 
    protected:
     void onConnection(rocket::RocketServerConnection& connection) override {
@@ -1273,7 +1273,8 @@ void TransportCompatibilityTest::TestOnWriteQuiescence() {
   State s;
   server_->getServer()->clearRoutingHandlers();
   server_->getServer()->addRoutingHandler(
-      std::make_unique<TestOnWriteQuiescenceRoutingHandler>(s));
+      std::make_unique<TestOnWriteQuiescenceRoutingHandler>(
+          *server_->getServer(), s));
   startServer();
   connectToServer([this, &s](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(AtLeast(2));

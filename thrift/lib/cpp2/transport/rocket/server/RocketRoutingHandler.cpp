@@ -31,8 +31,21 @@
 
 namespace apache {
 namespace thrift {
+namespace rocket {
+#if FOLLY_HAVE_WEAK_SYMBOLS
+FOLLY_ATTR_WEAK std::unique_ptr<SetupFrameHandler> createDebugSetupFrameHandler(
+    ThriftServer&);
+#else
+constexpr std::unique_ptr<SetupFrameHandler> (*createDebugSetupFrameHandler)(
+    ThriftServer&) = nullptr;
+#endif
+} // namespace rocket
 
-RocketRoutingHandler::RocketRoutingHandler() {}
+RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
+  if (rocket::createDebugSetupFrameHandler) {
+    setupFrameHandlers_.push_back(rocket::createDebugSetupFrameHandler(server));
+  }
+}
 
 RocketRoutingHandler::~RocketRoutingHandler() {
   stopListening();
@@ -114,16 +127,6 @@ void RocketRoutingHandler::handleConnection(
         connectionManager->getNumConnections() *
         server->getNumIOWorkerThreads());
   }
-}
-
-void RocketRoutingHandler::addSetupFrameHandler(
-    std::unique_ptr<rocket::SetupFrameHandler> handler) {
-  setupFrameHandlers_.push_back(std::move(handler));
-}
-
-const std::vector<std::unique_ptr<rocket::SetupFrameHandler>>&
-RocketRoutingHandler::getSetupFrameHandlers() const {
-  return setupFrameHandlers_;
 }
 
 } // namespace thrift

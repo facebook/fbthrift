@@ -222,6 +222,19 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
   folly::ThreadLocal<RequestsRegistry> reqRegistry_;
 };
 
+namespace apache {
+namespace thrift {
+namespace rocket {
+#if FOLLY_HAVE_WEAK_SYMBOLS
+std::unique_ptr<SetupFrameHandler> createDebugSetupFrameHandler(
+    ThriftServer& thriftServer) {
+  return std::make_unique<DebuggingFrameHandler>(thriftServer);
+}
+#endif
+} // namespace rocket
+} // namespace thrift
+} // namespace apache
+
 class RequestInstrumentationTest : public testing::Test {
  protected:
   RequestInstrumentationTest() {}
@@ -412,16 +425,6 @@ TEST_F(RequestInstrumentationTest, threadSnapshotWithShallowRC) {
 
 TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
   size_t reqNum = 5;
-
-  // inject our setup frame handler for rocket connections
-  for (const auto& rh : *thriftServer()->getRoutingHandlers()) {
-    auto rs = dynamic_cast<RocketRoutingHandler*>(rh.get());
-    if (rs != nullptr) {
-      rs->addSetupFrameHandler(
-          std::make_unique<DebuggingFrameHandler>(*thriftServer()));
-      break;
-    }
-  }
 
   auto client = makeRocketClient();
   auto debugClient = makeDebugClient();

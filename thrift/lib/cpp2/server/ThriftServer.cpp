@@ -82,7 +82,8 @@ ThriftServer::ThriftServer()
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
-  addRoutingHandler(std::make_unique<apache::thrift::RocketRoutingHandler>());
+  addRoutingHandler(
+      std::make_unique<apache::thrift::RocketRoutingHandler>(*this));
   if (FLAGS_thrift_ssl_policy == "required") {
     sslPolicy_ = SSLPolicy::REQUIRED;
   } else if (FLAGS_thrift_ssl_policy == "permitted") {
