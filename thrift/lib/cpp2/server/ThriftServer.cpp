@@ -82,8 +82,6 @@ ThriftServer::ThriftServer()
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
-  addRoutingHandler(
-      std::make_unique<apache::thrift::RocketRoutingHandler>(*this));
   if (FLAGS_thrift_ssl_policy == "required") {
     sslPolicy_ = SSLPolicy::REQUIRED;
   } else if (FLAGS_thrift_ssl_policy == "permitted") {
@@ -222,6 +220,11 @@ void ThriftServer::setup() {
   DCHECK_NOTNULL(getProcessorFactory().get());
   auto nWorkers = getNumIOWorkerThreads();
   DCHECK_GT(nWorkers, 0u);
+
+  stopAcceptingAndJoinOutstandingRequestsDone_ = false;
+
+  addRoutingHandler(
+      std::make_unique<apache::thrift::RocketRoutingHandler>(*this));
 
   // Initialize event base for this thread, ensure event_init() is called
   serveEventBase_ = eventBaseManager_->getEventBase();

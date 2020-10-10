@@ -288,7 +288,7 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   }
 
   void waitForRequest() {
-    requestSem_.wait();
+    EXPECT_TRUE(requestSem_.try_wait_for(std::chrono::seconds{5}));
   }
 
  private:
@@ -329,7 +329,7 @@ class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
   }
 
   void waitForRequest() {
-    requestSem_.wait();
+    EXPECT_TRUE(requestSem_.try_wait_for(std::chrono::seconds{5}));
   }
 
  private:
@@ -362,6 +362,42 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 
   EXPECT_GE(timer.elapsed().count(), 6000);
   EXPECT_EQ(6000, std::move(future).get());
+}
+
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
+  auto ts = make_shared<ThriftServer>();
+
+  for (size_t i = 0; i < 2; ++i) {
+    auto tf = make_shared<apache::thrift::concurrency::PosixThreadFactory>(
+        apache::thrift::concurrency::PosixThreadFactory::ATTACHED);
+    auto tm =
+        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
+            1, false);
+    tm->threadFactory(move(tf));
+    tm->start();
+    ts->setAddress({"::1", 0});
+    ts->setIOThreadPool(std::make_shared<folly::IOThreadPoolExecutor>(1));
+    ts->setThreadManager(tm);
+    ts->setAcceptExecutor({});
+    auto serviceImpl = this->newService();
+    ts->setProcessorFactory(serviceImpl);
+
+    folly::Optional<ScopedServerInterfaceThread> ssit(folly::in_place, ts);
+
+    auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
+
+    folly::stop_watch<std::chrono::milliseconds> timer;
+
+    auto future = cli->semifuture_add(6000, 0);
+
+    serviceImpl->waitForRequest();
+    serviceImpl.reset();
+
+    ssit.reset();
+
+    EXPECT_GE(timer.elapsed().count(), 6000);
+    EXPECT_EQ(6000, std::move(future).get());
+  }
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStreamTaskTimeout) {
