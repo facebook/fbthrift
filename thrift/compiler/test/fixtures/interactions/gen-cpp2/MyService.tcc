@@ -81,12 +81,12 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
     eb->runInEventBaseThread([=]() mutable {
       tile->__fbthrift_releaseRef(*tm, *eb);
     });
-    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+    eb->runInEventBaseThread([req = std::move(req), err = static_cast<apache::thrift::ErrorTile*>(tile)->get().what()] {
+      req->sendErrorWrapped(
         folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-            apache::thrift::TApplicationException::TApplicationExceptionType
-              ::INTERACTION_ERROR,
-            "Interaction constructor failed with " + static_cast<apache::thrift::ErrorTile*>(tile)->get().what().toStdString()),
-        std::move(req), ctx, ctxStack.get(), "MyInteraction.frobnicate", eb);
+            "Interaction constructor failed with " + err.toStdString()),
+          kInteractionConstructorErrorErrorCode);
+    });
     return;
   }
   try {

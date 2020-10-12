@@ -102,11 +102,9 @@ bool GeneratedAsyncProcessor::createInteraction(
             tile = std::move(*t);
           } else {
             tile = std::make_unique<ErrorTile>(
-                folly::make_exception_wrapper<TApplicationException>(
-                    TApplicationException::TApplicationExceptionType::
-                        INTERACTION_ERROR,
-                    "Null tile returned from handler"));
-            DLOG(FATAL) << "Null tile returned from handler";
+                folly::make_exception_wrapper<std::runtime_error>(
+                    "Nullptr returned from interaction constructor"));
+            DLOG(FATAL) << "Nullptr returned from interaction constructor";
           }
         } else {
           tile = std::make_unique<ErrorTile>(std::move(t.exception()));
@@ -131,8 +129,7 @@ bool GeneratedAsyncProcessor::createInteraction(
 std::unique_ptr<Tile> GeneratedAsyncProcessor::createInteractionImpl(
     const std::string&) {
   return std::make_unique<ErrorTile>(
-      folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::TApplicationExceptionType::INTERACTION_ERROR,
+      folly::make_exception_wrapper<std::runtime_error>(
           "Handler doesn't perform any interactions"));
 }
 

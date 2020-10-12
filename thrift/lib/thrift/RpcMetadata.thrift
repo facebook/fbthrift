@@ -262,6 +262,8 @@ enum ResponseRpcErrorCode {
   CHECKSUM_MISMATCH = 11,
   INTERRUPTION = 12,
   APP_OVERLOAD = 13,
+  UNKNOWN_INTERACTION_ID = 14,
+  INTERACTION_CONSTRUCTOR_ERROR = 15,
 }
 
 struct ResponseRpcError {

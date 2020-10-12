@@ -133,7 +133,7 @@ std::unique_ptr<apache::thrift::Tile> MyServiceAsyncProcessor::createInteraction
     return std::make_unique<apache::thrift::ErrorTile>(
                 folly::make_exception_wrapper<apache::thrift::TApplicationException>(
                     apache::thrift::TApplicationException::
-                      TApplicationExceptionType::INTERACTION_ERROR,
+                      TApplicationExceptionType::UNKNOWN_METHOD,
                     "Unknown interaction"));
   }
   return (this->*(fn->second))();

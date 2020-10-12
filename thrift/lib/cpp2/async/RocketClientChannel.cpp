@@ -137,6 +137,12 @@ folly::Try<FirstResponsePayload> decodeResponseError(
       exCode = kAppOverloadedErrorCode;
       exType = TApplicationException::LOADSHEDDING;
       break;
+    case ResponseRpcErrorCode::UNKNOWN_INTERACTION_ID:
+      exCode = kInteractionIdUnknownErrorCode;
+      break;
+    case ResponseRpcErrorCode::INTERACTION_CONSTRUCTOR_ERROR:
+      exCode = kInteractionConstructorErrorErrorCode;
+      break;
     default:
       exCode = kUnknownErrorCode;
       break;

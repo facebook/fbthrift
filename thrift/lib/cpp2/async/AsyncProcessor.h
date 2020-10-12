@@ -756,7 +756,7 @@ void GeneratedAsyncProcessor::processInThread(
       req->sendErrorWrapped(
           TApplicationException(
               "Invalid interaction id " + std::to_string(interactionId)),
-          kInteractionErrorCode);
+          kInteractionIdUnknownErrorCode);
       return;
     }
 

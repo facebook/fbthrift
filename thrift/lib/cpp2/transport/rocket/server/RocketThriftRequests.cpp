@@ -61,6 +61,7 @@ RocketException makeResponseRpcError(
       case ResponseRpcErrorCode::WRONG_RPC_KIND:
       case ResponseRpcErrorCode::UNKNOWN_METHOD:
       case ResponseRpcErrorCode::CHECKSUM_MISMATCH:
+      case ResponseRpcErrorCode::UNKNOWN_INTERACTION_ID:
         return ResponseRpcErrorCategory::INVALID_REQUEST;
       case ResponseRpcErrorCode::OVERLOAD:
       case ResponseRpcErrorCode::QUEUE_OVERLOADED:
@@ -267,7 +268,11 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                        {kResponseTooBigErrorCode,
                         ResponseRpcErrorCode::RESPONSE_TOO_BIG},
                        {kRequestTypeDoesntMatchServiceFunctionType,
-                        ResponseRpcErrorCode::WRONG_RPC_KIND}});
+                        ResponseRpcErrorCode::WRONG_RPC_KIND},
+                       {kInteractionIdUnknownErrorCode,
+                        ResponseRpcErrorCode::UNKNOWN_INTERACTION_ID},
+                       {kInteractionConstructorErrorErrorCode,
+                        ResponseRpcErrorCode::INTERACTION_CONSTRUCTOR_ERROR}});
                   if (auto errorCode = folly::get_ptr(errorCodeMap, *exPtr)) {
                     return *errorCode;
                   }

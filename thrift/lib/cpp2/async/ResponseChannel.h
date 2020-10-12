@@ -64,7 +64,8 @@ extern const std::string kProxyOverloadedErrorCode;
 extern const std::string kProxyLoopbackErrorCode;
 extern const std::string kRequestTypeDoesntMatchServiceFunctionType;
 extern const std::string kMethodUnknownErrorCode;
-extern const std::string kInteractionErrorCode;
+extern const std::string kInteractionIdUnknownErrorCode;
+extern const std::string kInteractionConstructorErrorErrorCode;
 extern const std::string kConnectionClosingErrorCode;
 
 namespace apache {

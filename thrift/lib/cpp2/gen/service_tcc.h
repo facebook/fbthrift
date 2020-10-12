@@ -98,32 +98,24 @@ void process_throw_wrapped_handler_error(
     apache::thrift::ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* const ctx,
     ContextStack* const stack,
-    char const* const method,
-    folly::EventBase* const eb = nullptr) {
+    char const* const method) {
   LOG(ERROR) << ew << " in function " << method;
   stack->userExceptionWrapped(false, ew);
   stack->handlerErrorWrapped(ew);
   auto xp = ew.get_exception<TApplicationException>();
   auto x = xp ? std::move(*xp) : TApplicationException(ew.what().toStdString());
   auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
-  auto sendReply = [buf = std::move(buf), req = std::move(req)]() mutable {
-    if (req->isStream()) {
-      std::ignore = req->sendStreamReply(
-          std::move(buf), StreamServerCallbackPtr(nullptr));
-    } else if (req->isSink()) {
+  if (req->isStream()) {
+    std::ignore =
+        req->sendStreamReply(std::move(buf), StreamServerCallbackPtr(nullptr));
+  } else if (req->isSink()) {
 #if FOLLY_HAS_COROUTINES
-      req->sendSinkReply(std::move(buf), {});
+    req->sendSinkReply(std::move(buf), {});
 #else
-      DCHECK(false);
+    DCHECK(false);
 #endif
-    } else {
-      req->sendReply(std::move(buf));
-    }
-  };
-  if (eb) {
-    eb->runInEventBaseThread(std::move(sendReply));
   } else {
-    sendReply();
+    req->sendReply(std::move(buf));
   }
 }
 
