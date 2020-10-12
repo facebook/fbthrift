@@ -20,6 +20,7 @@ import com.facebook.thrift.TException;
 import com.facebook.thrift.java.test.BoolStruct;
 import com.facebook.thrift.java.test.EveryLayout;
 import com.facebook.thrift.java.test.Nesting;
+import com.facebook.thrift.java.test.SimpleStructTypes;
 import com.facebook.thrift.transport.TIOStreamTransport;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -434,5 +435,36 @@ public class TSimpleJSONProtocolTest {
     EveryLayout read = new EveryLayout();
     read.read(protocol2);
     Assert.assertEquals(everyLayout, read);
+  }
+
+  @Test
+  public void testMissingBool() throws Exception {
+    BoolStruct read = deserializeBoolStruct("{}");
+    Assert.assertEquals(read.isABool(), false);
+  }
+
+  @Test
+  public void testMissingEveryLayout() throws Exception {
+    EveryLayout everyLayout = new EveryLayout.Builder().build();
+
+    ByteArrayInputStream bis = new ByteArrayInputStream("{}".getBytes(StandardCharsets.UTF_8));
+    TIOStreamTransport transport = new TIOStreamTransport(bis);
+    TSimpleJSONProtocol protocol = new TSimpleJSONProtocol(transport);
+    EveryLayout read = new EveryLayout();
+    read.read(protocol);
+    Assert.assertEquals(everyLayout, read);
+  }
+
+  @Test
+  public void testMissingSimpleStructTypes() throws Exception {
+    SimpleStructTypes simpleStructTypes = new SimpleStructTypes.Builder().build();
+
+    ByteArrayInputStream bis = new ByteArrayInputStream("{}".getBytes(StandardCharsets.UTF_8));
+    TIOStreamTransport transport = new TIOStreamTransport(bis);
+    TSimpleJSONProtocol protocol = new TSimpleJSONProtocol(transport);
+    SimpleStructTypes read = new SimpleStructTypes();
+    read.read(protocol);
+    Assert.assertEquals(-9999, read.getJ());
+    Assert.assertEquals(97, read.getY());
   }
 }
