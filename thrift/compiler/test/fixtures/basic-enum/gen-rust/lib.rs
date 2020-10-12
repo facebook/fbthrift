@@ -29,6 +29,11 @@ pub mod types {
             &[
             ]
         }
+
+        pub fn variant_values() -> &'static [EmptyEnum] {
+            &[
+            ]
+        }
     }
 
     impl ::std::default::Default for EmptyEnum {
@@ -117,6 +122,13 @@ pub mod types {
             &[
                 "ONE",
                 "TWO",
+            ]
+        }
+
+        pub fn variant_values() -> &'static [MyEnum] {
+            &[
+                MyEnum::ONE,
+                MyEnum::TWO,
             ]
         }
     }
@@ -247,6 +259,31 @@ pub mod types {
                 "SEVENTEEN",
                 "EIGHTEEN",
                 "NINETEEN",
+            ]
+        }
+
+        pub fn variant_values() -> &'static [MyBigEnum] {
+            &[
+                MyBigEnum::UNKNOWN,
+                MyBigEnum::ONE,
+                MyBigEnum::TWO,
+                MyBigEnum::THREE,
+                MyBigEnum::FOUR,
+                MyBigEnum::FIVE,
+                MyBigEnum::SIX,
+                MyBigEnum::SEVEN,
+                MyBigEnum::EIGHT,
+                MyBigEnum::NINE,
+                MyBigEnum::TEN,
+                MyBigEnum::ELEVEN,
+                MyBigEnum::TWELVE,
+                MyBigEnum::THIRTEEN,
+                MyBigEnum::FOURTEEN,
+                MyBigEnum::FIFTEEN,
+                MyBigEnum::SIXTEEN,
+                MyBigEnum::SEVENTEEN,
+                MyBigEnum::EIGHTEEN,
+                MyBigEnum::NINETEEN,
             ]
         }
     }

@@ -156,6 +156,13 @@ pub mod types {
                 "VAL2",
             ]
         }
+
+        pub fn variant_values() -> &'static [TypedEnum] {
+            &[
+                TypedEnum::VAL1,
+                TypedEnum::VAL2,
+            ]
+        }
     }
 
     impl ::std::default::Default for TypedEnum {

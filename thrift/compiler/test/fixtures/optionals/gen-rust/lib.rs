@@ -57,6 +57,14 @@ pub mod types {
                 "TARANTULA",
             ]
         }
+
+        pub fn variant_values() -> &'static [Animal] {
+            &[
+                Animal::DOG,
+                Animal::CAT,
+                Animal::TARANTULA,
+            ]
+        }
     }
 
     impl ::std::default::Default for Animal {

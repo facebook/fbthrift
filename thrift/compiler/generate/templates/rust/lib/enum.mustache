@@ -34,6 +34,14 @@
                 {{/enum:values}}
             ]
         }
+
+        pub fn variant_values() -> &'static [{{enum:rust_name}}] {
+            &[
+                {{#enum:values}}
+                {{enum:rust_name}}::{{enumValue:rust_name}},
+                {{/enum:values}}
+            ]
+        }
     }
 
     impl ::std::default::Default for {{enum:rust_name}} {

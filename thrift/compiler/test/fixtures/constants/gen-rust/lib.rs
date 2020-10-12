@@ -431,6 +431,11 @@ pub mod types {
             &[
             ]
         }
+
+        pub fn variant_values() -> &'static [EmptyEnum] {
+            &[
+            ]
+        }
     }
 
     impl ::std::default::Default for EmptyEnum {
@@ -523,6 +528,15 @@ pub mod types {
                 "MPK",
                 "SEA",
                 "LON",
+            ]
+        }
+
+        pub fn variant_values() -> &'static [City] {
+            &[
+                City::NYC,
+                City::MPK,
+                City::SEA,
+                City::LON,
             ]
         }
     }
@@ -625,6 +639,15 @@ pub mod types {
                 "WHATSAPP",
                 "OCULUS",
                 "INSTAGRAM",
+            ]
+        }
+
+        pub fn variant_values() -> &'static [Company] {
+            &[
+                Company::FACEBOOK,
+                Company::WHATSAPP,
+                Company::OCULUS,
+                Company::INSTAGRAM,
             ]
         }
     }

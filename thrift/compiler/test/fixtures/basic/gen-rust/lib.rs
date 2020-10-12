@@ -42,6 +42,13 @@ pub mod types {
                 "MyValue2",
             ]
         }
+
+        pub fn variant_values() -> &'static [MyEnum] {
+            &[
+                MyEnum::MyValue1,
+                MyEnum::MyValue2,
+            ]
+        }
     }
 
     impl ::std::default::Default for MyEnum {

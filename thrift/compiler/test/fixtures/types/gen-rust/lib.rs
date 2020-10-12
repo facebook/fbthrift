@@ -178,6 +178,16 @@ pub mod types {
                 "three",
             ]
         }
+
+        pub fn variant_values() -> &'static [has_bitwise_ops] {
+            &[
+                has_bitwise_ops::none,
+                has_bitwise_ops::zero,
+                has_bitwise_ops::one,
+                has_bitwise_ops::two,
+                has_bitwise_ops::three,
+            ]
+        }
     }
 
     impl ::std::default::Default for has_bitwise_ops {
@@ -278,6 +288,13 @@ pub mod types {
                 "world",
             ]
         }
+
+        pub fn variant_values() -> &'static [is_unscoped] {
+            &[
+                is_unscoped::hello,
+                is_unscoped::world,
+            ]
+        }
     }
 
     impl ::std::default::Default for is_unscoped {
@@ -370,6 +387,13 @@ pub mod types {
             &[
                 "ZERO",
                 "NONZERO",
+            ]
+        }
+
+        pub fn variant_values() -> &'static [MyForwardRefEnum] {
+            &[
+                MyForwardRefEnum::ZERO,
+                MyForwardRefEnum::NONZERO,
             ]
         }
     }
@@ -466,6 +490,14 @@ pub mod types {
                 "fieldA",
                 "fieldB",
                 "fieldC",
+            ]
+        }
+
+        pub fn variant_values() -> &'static [MyEnumA] {
+            &[
+                MyEnumA::fieldA,
+                MyEnumA::fieldB,
+                MyEnumA::fieldC,
             ]
         }
     }
