@@ -58,8 +58,7 @@ class ServerEventHandler : public LoggingEventHandler {
 
 class ConnectionEventHandler : public LoggingEventHandler {
  public:
-  virtual void log(const Cpp2Worker&, const folly::AsyncTransport::UniquePtr&) {
-  }
+  virtual void log(const Cpp2Worker&, const folly::AsyncTransport&) {}
   virtual ~ConnectionEventHandler() {}
 };
 

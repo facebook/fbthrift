@@ -46,9 +46,7 @@ class TestConnectionEventHandler : public ConnectionEventHandler {
  public:
   MOCK_METHOD2(
       log,
-      void(
-          const apache::thrift::Cpp2Worker&,
-          const folly::AsyncTransport::UniquePtr&));
+      void(const apache::thrift::Cpp2Worker&, const folly::AsyncTransport&));
 };
 
 class TestEventRegistry : public LoggingEventRegistry {
