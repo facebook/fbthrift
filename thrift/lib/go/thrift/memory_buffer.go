@@ -48,6 +48,10 @@ func NewMemoryBuffer() *MemoryBuffer {
 	return &MemoryBuffer{Buffer: &bytes.Buffer{}, size: 0}
 }
 
+func NewMemoryBufferWithData(data []byte) *MemoryBuffer {
+	return &MemoryBuffer{Buffer: bytes.NewBuffer(data), size: len(data)}
+}
+
 func NewMemoryBufferLen(size int) *MemoryBuffer {
 	buf := make([]byte, 0, size)
 	return &MemoryBuffer{Buffer: bytes.NewBuffer(buf), size: size}
