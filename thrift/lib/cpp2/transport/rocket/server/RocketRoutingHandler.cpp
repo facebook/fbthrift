@@ -16,6 +16,10 @@
 
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
+#ifndef _WIN32
+#include <dlfcn.h>
+#endif
+
 #include <memory>
 #include <string>
 #include <utility>
@@ -42,8 +46,28 @@ constexpr std::unique_ptr<SetupFrameHandler> (*createDebugSetupFrameHandler)(
 } // namespace rocket
 
 RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
-  if (rocket::createDebugSetupFrameHandler) {
-    setupFrameHandlers_.push_back(rocket::createDebugSetupFrameHandler(server));
+  using CreateDebugSetupFrameHandler =
+      std::unique_ptr<rocket::SetupFrameHandler> (*)(ThriftServer&);
+  auto createDebugSetupFrameHandlerPtr = [&]() -> CreateDebugSetupFrameHandler {
+    if (rocket::createDebugSetupFrameHandler) {
+      return rocket::createDebugSetupFrameHandler;
+    } else {
+      CreateDebugSetupFrameHandler (*createDebugSetupFrameHandlerGetPtr)() =
+#ifdef FOLLY_HAVE_LINUX_VDSO
+          reinterpret_cast<CreateDebugSetupFrameHandler (*)()>(dlsym(
+              RTLD_DEFAULT,
+              "apache_thrift_rocket_createDebugSetupFrameHandler_get_ptr"));
+#else
+          nullptr;
+#endif
+      if (createDebugSetupFrameHandlerGetPtr) {
+        return createDebugSetupFrameHandlerGetPtr();
+      }
+      return nullptr;
+    }
+  }();
+  if (createDebugSetupFrameHandlerPtr) {
+    setupFrameHandlers_.push_back(createDebugSetupFrameHandlerPtr(server));
   }
 }
 
