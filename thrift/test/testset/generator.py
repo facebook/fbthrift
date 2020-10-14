@@ -82,8 +82,8 @@ def generate_struct(name: str, types: List[str]) -> str:
     return "\n".join(lines)
 
 
-def gen_struct_all(path: str):
-    with open(path, 'w') as file:
+def gen_struct_all(path: str) -> None:
+    with open(path, "w") as file:
         print(THRIFT_HEADER, file=file)
 
         structs = []
