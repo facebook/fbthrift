@@ -208,7 +208,6 @@ void StatefulHashTest() {
   EXPECT_EQ(hash(f), 42);
 }
 
-// @lint-ignore HOWTOEVEN CLANGTIDY
 TEST(optional_field_ref_test, Hash) {
   StatelessHashTest<std::hash, field_ref>();
   StatelessHashTest<std::hash, optional_field_ref>();
