@@ -17,6 +17,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import org.apache.thrift.ProtocolId;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class MyLeafAsyncClientImpl extends test.fixtures.inheritance.MyNodeAsyncClientImpl implements MyLeaf.Async {
@@ -49,7 +50,7 @@ public class MyLeafAsyncClientImpl extends test.fixtures.inheritance.MyNodeAsync
     public MyLeafAsyncClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
-        RpcClient rpcClient,
+        Mono<? extends RpcClient> rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,

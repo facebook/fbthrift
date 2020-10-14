@@ -28,6 +28,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import org.apache.thrift.ProtocolId;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}AbstractThriftClient{{/service:extends}}{{#service:extends}}{{service:javaPackage}}.{{service:javaCapitalName}}ClientImpl{{/service:extends}} implements {{service:javaCapitalName}} {
@@ -67,7 +68,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
     public {{service:javaCapitalName}}ClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
-        RpcClient rpcClient,
+        Mono<? extends RpcClient> rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,

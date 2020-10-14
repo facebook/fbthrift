@@ -16,6 +16,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import org.apache.thrift.ProtocolId;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
@@ -61,7 +62,7 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
     public RaiserClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
-        RpcClient rpcClient,
+        Mono<? extends RpcClient> rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,

@@ -17,6 +17,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import org.apache.thrift.ProtocolId;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class DbMixedStackArgumentsAsyncClientImpl extends AbstractThriftClient implements DbMixedStackArguments.Async {
@@ -53,7 +54,7 @@ public class DbMixedStackArgumentsAsyncClientImpl extends AbstractThriftClient i
     public DbMixedStackArgumentsAsyncClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
-        RpcClient rpcClient,
+        Mono<? extends RpcClient> rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,

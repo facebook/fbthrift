@@ -16,6 +16,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import org.apache.thrift.ProtocolId;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class SinkServiceClientImpl extends AbstractThriftClient implements SinkService {
@@ -69,7 +70,7 @@ public class SinkServiceClientImpl extends AbstractThriftClient implements SinkS
     public SinkServiceClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
-        RpcClient rpcClient,
+        Mono<? extends RpcClient> rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,

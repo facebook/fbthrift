@@ -29,6 +29,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import org.apache.thrift.ProtocolId;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:extends}}AbstractThriftClient{{/service:extends}}{{#service:extends}}{{service:javaPackage}}.{{service:javaCapitalName}}AsyncClientImpl{{/service:extends}} implements {{service:javaCapitalName}}.Async {
@@ -67,7 +68,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     public {{service:javaCapitalName}}AsyncClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
-        RpcClient rpcClient,
+        Mono<? extends RpcClient> rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,

@@ -16,6 +16,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import org.apache.thrift.ProtocolId;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class MyServicePrioParentClientImpl extends AbstractThriftClient implements MyServicePrioParent {
@@ -53,7 +54,7 @@ public class MyServicePrioParentClientImpl extends AbstractThriftClient implemen
     public MyServicePrioParentClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
-        RpcClient rpcClient,
+        Mono<? extends RpcClient> rpcClient,
         ThriftServiceMetadata serviceMetadata,
         ThriftCodecManager codecManager,
         ProtocolId protocolId,
