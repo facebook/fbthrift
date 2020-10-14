@@ -83,6 +83,18 @@ const AnySerializer* AnyRegistry::getSerializer(
   return getSerializer(getTypeEntry(type), protocol);
 }
 
+const AnySerializer* AnyRegistry::getSerializerByName(
+    const std::string_view name,
+    const Protocol& protocol) const {
+  return getSerializer(getTypeEntryByName(name), protocol);
+}
+
+const AnySerializer* AnyRegistry::getSerializerById(
+    const folly::fbstring& typeId,
+    const Protocol& protocol) const {
+  return getSerializer(getTypeEntryById(typeId), protocol);
+}
+
 Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
   if (value.type() == typeid(Any)) {
     // Use the Any specific overload.

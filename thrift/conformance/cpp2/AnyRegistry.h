@@ -91,6 +91,12 @@ class AnyRegistry {
   const AnySerializer* getSerializer(
       const std::type_info& type,
       const Protocol& protocol) const;
+  const AnySerializer* getSerializerByName(
+      const std::string_view name,
+      const Protocol& protocol) const;
+  const AnySerializer* getSerializerById(
+      const folly::fbstring& typeId,
+      const Protocol& protocol) const;
 
   // Compile-time Type overloads.
   template <typename C = std::initializer_list<const AnySerializer*>>

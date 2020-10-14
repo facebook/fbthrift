@@ -56,10 +56,16 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
   if (expectedOutBytes == kDisableTypeId) {
     EXPECT_FALSE(any.typeId_ref());
     EXPECT_TRUE(any.type_ref());
+    EXPECT_EQ(
+        registry.getSerializerByName(*any.get_type(), intCodec.getProtocol()),
+        &intCodec);
   } else {
     EXPECT_FALSE(any.type_ref());
     ASSERT_TRUE(any.typeId_ref());
     EXPECT_EQ(any.typeId_ref().value_unchecked().size(), expectedOutBytes);
+    EXPECT_EQ(
+        registry.getSerializerById(*any.get_typeId(), intCodec.getProtocol()),
+        &intCodec);
   }
   EXPECT_EQ(registry.load<int>(any), 1);
 }
@@ -206,6 +212,16 @@ TEST(AnyRegistryTest, Aliases) {
   EXPECT_TRUE(registry.registerType<int>(
       testAnyType({"int", "Int", "Integer"}), {&oneCodec, &intCodec}));
   EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
+  EXPECT_EQ(
+      registry.getSerializerByName(thriftType("int"), oneCodec.getProtocol()),
+      &oneCodec);
+  EXPECT_EQ(
+      registry.getSerializerByName(thriftType("Int"), oneCodec.getProtocol()),
+      &oneCodec);
+  EXPECT_EQ(
+      registry.getSerializerByName(
+          thriftType("Integer"), oneCodec.getProtocol()),
+      &oneCodec);
 
   auto any = cregistry.store(1, kFollyToStringProtocol);
   // Stored under the main type name.
