@@ -96,7 +96,7 @@ def gen_struct_all(path: str):
         print(generate_struct("struct_all", structs), file=file)
 
 
-if __name__ == "__main__":
+def main() -> None:
     doctest.testmod()
     os.chdir(check_output(["buck", "root"]).strip())
     parser = argparse.ArgumentParser()
@@ -104,3 +104,7 @@ if __name__ == "__main__":
     parser.add_argument("--filename", required=True)
     args = parser.parse_args()
     gen_struct_all(os.path.join(args.install_dir, args.filename))
+
+
+if __name__ == "__main__":
+    main()
