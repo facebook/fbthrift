@@ -40,9 +40,22 @@ def format_dict(
     return {key_format.format(k): value_format.format(d[k]) for k in d}
 
 
+PRIMITIVE_TYPES = [
+    "bool",
+    "byte",
+    "i16",
+    "i32",
+    "i64",
+    "float",
+    "double",
+    "binary",
+    "string",
+]
+
+
 def generate_names_to_types() -> Dict[str, str]:
     """ Generate display name to thrift type mapping. Display name will be used in file name, rule name, etc """
-    ret = {"i64": "i64", "string": "string"}
+    ret = {t: t for t in PRIMITIVE_TYPES}
     ret.update(format_dict(ret, "set_{}", "set<{}>"))
     ret.update(format_dict(ret, "map_string_{}", "map<string, {}>"))
     ret.update(
