@@ -1073,5 +1073,17 @@ TEST_F(StreamingTest, RequestsOrder) {
     EXPECT_EQ(4, std::move(r4).get().response);
   });
 }
+
+TEST_F(StreamingTest, LeakPublisherCheck) {
+  server_->setTaskExpireTime(std::chrono::milliseconds(10));
+  server_->setUseClientTimeout(false);
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    EXPECT_THROW(
+        client->sync_leakPublisherCheck(),
+        apache::thrift::TApplicationException);
+    waitNoLeak(client.get());
+  });
+}
+
 } // namespace thrift
 } // namespace apache

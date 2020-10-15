@@ -275,5 +275,17 @@ void TestStreamServiceMock::async_eb_orderRequestResponse(
     std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> cb) {
   cb->result(++order_);
 }
+
+apache::thrift::ServerStream<int32_t>
+TestStreamServiceMock::leakPublisherCheck() {
+  auto [stream, publisher] = ServerStream<int32_t>::createPublisher(
+      [this, detector = LeakDetector()]() { publisher_ = nullptr; });
+  publisher_ =
+      std::make_unique<ServerStreamPublisher<int32_t>>(std::move(publisher));
+  // let task expire timeout triggered
+  std::this_thread::sleep_for(std::chrono::milliseconds{100});
+  return std::move(stream);
+}
+
 } // namespace testservice
 } // namespace testutil

@@ -76,12 +76,18 @@ class TestStreamServiceMock : public StreamServiceSvIf {
   void async_eb_orderRequestResponse(
       std::unique_ptr<apache::thrift::HandlerCallback<int32_t>>) override;
 
+  apache::thrift::ServerStream<int32_t> leakPublisherCheck() override;
+
  protected:
   folly::ScopedEventBaseThread executor_;
 
   std::unique_ptr<apache::thrift::ServerStreamPublisher<int32_t>> messages_;
 
   std::atomic<int32_t> order_{0};
+
+  folly::Synchronized<
+      std::unique_ptr<apache::thrift::ServerStreamPublisher<int32_t>>>
+      publisher_;
 };
 
 } // namespace testservice

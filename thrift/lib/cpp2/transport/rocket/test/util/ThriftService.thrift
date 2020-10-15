@@ -80,6 +80,8 @@ service StreamService {
 
   i32, stream<i32> orderRequestStream() (thread = "eb");
   i32 orderRequestResponse() (thread = "eb");
+
+  stream<i32> leakPublisherCheck();
 }
 
 # OldVersion and NewVersion services will be used to test the behavior

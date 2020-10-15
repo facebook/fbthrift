@@ -36,6 +36,13 @@ class ServerPublisherStream : private StreamServerCallback {
     }
   };
 
+  struct CancelDeleter {
+    void operator()(ServerPublisherStream<T>* ptr) {
+      ptr->onStreamCompleteOrCancel_.call();
+      ptr->decref();
+    }
+  };
+
   struct CallOnceFunction {
    private:
     struct Function {
@@ -200,7 +207,8 @@ class ServerPublisherStream : private StreamServerCallback {
       Func onStreamCompleteOrCancel) {
     auto stream =
         new ServerPublisherStream<T>(std::move(onStreamCompleteOrCancel));
-    return {[stream = Ptr(stream)](
+    return {[stream = std::unique_ptr<ServerPublisherStream<T>, CancelDeleter>(
+                 stream)](
                 folly::Executor::KeepAlive<> serverExecutor,
                 folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
               stream->serverExecutor_ = std::move(serverExecutor);
