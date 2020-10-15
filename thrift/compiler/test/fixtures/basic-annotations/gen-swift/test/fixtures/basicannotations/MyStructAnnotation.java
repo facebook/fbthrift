@@ -174,7 +174,7 @@ public final class MyStructAnnotation {
         return this.nest != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("count", count);
@@ -184,7 +184,7 @@ public final class MyStructAnnotation {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -203,7 +203,7 @@ public final class MyStructAnnotation {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             count,

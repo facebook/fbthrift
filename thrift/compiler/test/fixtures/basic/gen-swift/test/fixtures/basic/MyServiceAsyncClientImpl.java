@@ -92,13 +92,13 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> ping() {
         try {
           return (ListenableFuture<Void>) execute(pingMethodHandler, pingExceptions);
@@ -107,7 +107,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<String> getRandomData() {
         try {
           return (ListenableFuture<String>) execute(getRandomDataMethodHandler, getRandomDataExceptions);
@@ -116,7 +116,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Boolean> hasDataById(
         long id) {
         try {
@@ -126,7 +126,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<String> getDataById(
         long id) {
         try {
@@ -136,7 +136,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> putDataById(
         long id,
         String data) {
@@ -147,7 +147,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> lobDataById(
         long id,
         String data) {

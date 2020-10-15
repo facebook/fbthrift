@@ -67,13 +67,13 @@ public class MyRootClientImpl extends AbstractThriftClient implements MyRoot {
       doRootMethodHandler = methodHandlerMap.get("doRoot");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void doRoot() throws org.apache.thrift.TException {
       try {
         execute(doRootMethodHandler, doRootExceptions);

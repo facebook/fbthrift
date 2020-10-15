@@ -19,7 +19,7 @@ import java.util.*;
 public interface Raiser extends java.io.Closeable {
     @ThriftService("Raiser")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "doBland")
         ListenableFuture<Void> doBland();
@@ -43,7 +43,7 @@ public interface Raiser extends java.io.Closeable {
                       })
         ListenableFuture<String> get500();
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "doBland")
     void doBland() throws org.apache.thrift.TException;

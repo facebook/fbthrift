@@ -174,7 +174,7 @@ public final class MyStructFloatFieldThrowExp {
         return __isset_bit_vector.get(_MYFLOATFIELD);
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("myLongField", myLongField);
@@ -184,7 +184,7 @@ public final class MyStructFloatFieldThrowExp {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -203,7 +203,7 @@ public final class MyStructFloatFieldThrowExp {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myLongField,

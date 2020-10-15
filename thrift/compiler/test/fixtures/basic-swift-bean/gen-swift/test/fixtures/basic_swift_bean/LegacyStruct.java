@@ -126,7 +126,7 @@ static {
     public void unsetBad() {
         __isset_bit_vector.clear(_BAD);
     }
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("normal", normal);
@@ -134,7 +134,7 @@ static {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -151,7 +151,7 @@ static {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             normal,

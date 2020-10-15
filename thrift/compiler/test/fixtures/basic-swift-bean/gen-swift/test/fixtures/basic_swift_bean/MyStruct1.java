@@ -174,7 +174,7 @@ public final class MyStruct1 {
         return __isset_bit_vector.get(_MAJOR);
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("myIntField", myIntField);
@@ -184,7 +184,7 @@ public final class MyStruct1 {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -203,7 +203,7 @@ public final class MyStruct1 {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myIntField,

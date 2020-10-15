@@ -87,13 +87,13 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
       turtlesMethodHandler = methodHandlerMap.get("turtles");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> mapList(
         Map<Integer, List<Integer>> foo) {
         try {
@@ -103,7 +103,7 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> mapSet(
         Map<Integer, Set<Integer>> foo) {
         try {
@@ -113,7 +113,7 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> listMap(
         List<Map<Integer, Integer>> foo) {
         try {
@@ -123,7 +123,7 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> listSet(
         List<Set<Integer>> foo) {
         try {
@@ -133,7 +133,7 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> turtles(
         List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) {
         try {

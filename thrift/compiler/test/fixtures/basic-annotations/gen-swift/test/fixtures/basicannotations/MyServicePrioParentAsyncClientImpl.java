@@ -72,13 +72,13 @@ public class MyServicePrioParentAsyncClientImpl extends AbstractThriftClient imp
       pongMethodHandler = methodHandlerMap.get("pong");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> ping() {
         try {
           return (ListenableFuture<Void>) execute(pingMethodHandler, pingExceptions);
@@ -87,7 +87,7 @@ public class MyServicePrioParentAsyncClientImpl extends AbstractThriftClient imp
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> pong() {
         try {
           return (ListenableFuture<Void>) execute(pongMethodHandler, pongExceptions);

@@ -67,13 +67,13 @@ public class MyNodeClientImpl extends test.fixtures.inheritance.MyRootClientImpl
       doMidMethodHandler = methodHandlerMap.get("doMid");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void doMid() throws org.apache.thrift.TException {
       try {
         execute(doMidMethodHandler, doMidExceptions);

@@ -72,13 +72,13 @@ public class MyServicePrioParentClientImpl extends AbstractThriftClient implemen
       pongMethodHandler = methodHandlerMap.get("pong");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void ping() throws org.apache.thrift.TException {
       try {
         execute(pingMethodHandler, pingExceptions);
@@ -90,7 +90,7 @@ public class MyServicePrioParentClientImpl extends AbstractThriftClient implemen
       }
     }
 
-    @Override
+    @java.lang.Override
     public void pong() throws org.apache.thrift.TException {
       try {
         execute(pongMethodHandler, pongExceptions);

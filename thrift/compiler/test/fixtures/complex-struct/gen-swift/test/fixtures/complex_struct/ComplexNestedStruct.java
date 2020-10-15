@@ -580,7 +580,7 @@ public final class ComplexNestedStruct {
         return this.mapKeyListValSet != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("setOfSetOfInt", setOfSetOfInt);
@@ -604,7 +604,7 @@ public final class ComplexNestedStruct {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -637,7 +637,7 @@ public final class ComplexNestedStruct {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             setOfSetOfInt,

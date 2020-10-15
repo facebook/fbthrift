@@ -145,7 +145,7 @@ public final class MyField {
         return __isset_bit_vector.get(_REQ_VALUE);
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("optValue", optValue);
@@ -154,7 +154,7 @@ public final class MyField {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -172,7 +172,7 @@ public final class MyField {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             optValue,

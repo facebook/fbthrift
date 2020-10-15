@@ -19,12 +19,12 @@ import java.util.*;
 public interface MyRoot extends java.io.Closeable {
     @ThriftService("MyRoot")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "do_root")
         ListenableFuture<Void> doRoot();
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "do_root")
     void doRoot() throws org.apache.thrift.TException;

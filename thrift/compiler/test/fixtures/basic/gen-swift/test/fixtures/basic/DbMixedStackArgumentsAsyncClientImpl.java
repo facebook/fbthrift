@@ -72,13 +72,13 @@ public class DbMixedStackArgumentsAsyncClientImpl extends AbstractThriftClient i
       getDataByKey1MethodHandler = methodHandlerMap.get("getDataByKey1");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<byte[]> getDataByKey0(
         String key) {
         try {
@@ -88,7 +88,7 @@ public class DbMixedStackArgumentsAsyncClientImpl extends AbstractThriftClient i
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<byte[]> getDataByKey1(
         String key) {
         try {

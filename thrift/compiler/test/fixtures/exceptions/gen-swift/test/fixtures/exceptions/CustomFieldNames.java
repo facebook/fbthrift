@@ -99,7 +99,7 @@ public final class CustomFieldNames extends java.lang.RuntimeException {
     @ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
     public String getInternalGreatMessage() { return internalGreatMessage; }
         
-    @Override
+    @java.lang.Override
     public String getMessage() {
       return internalGreatMessage;
     }

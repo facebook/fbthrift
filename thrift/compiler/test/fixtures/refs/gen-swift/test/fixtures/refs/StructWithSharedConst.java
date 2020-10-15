@@ -145,7 +145,7 @@ public final class StructWithSharedConst {
         return this.reqSharedConst != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("optSharedConst", optSharedConst);
@@ -154,7 +154,7 @@ public final class StructWithSharedConst {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -172,7 +172,7 @@ public final class StructWithSharedConst {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             optSharedConst,

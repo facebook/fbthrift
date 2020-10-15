@@ -82,13 +82,13 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
       get500MethodHandler = methodHandlerMap.get("get500");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> doBland() {
         try {
           return (ListenableFuture<Void>) execute(doBlandMethodHandler, doBlandExceptions);
@@ -97,7 +97,7 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> doRaise() {
         try {
           return (ListenableFuture<Void>) execute(doRaiseMethodHandler, doRaiseExceptions);
@@ -106,7 +106,7 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<String> get200() {
         try {
           return (ListenableFuture<String>) execute(get200MethodHandler, get200Exceptions);
@@ -115,7 +115,7 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<String> get500() {
         try {
           return (ListenableFuture<String>) execute(get500MethodHandler, get500Exceptions);

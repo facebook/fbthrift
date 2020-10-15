@@ -82,13 +82,13 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
       get500MethodHandler = methodHandlerMap.get("get500");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void doBland() throws org.apache.thrift.TException {
       try {
         execute(doBlandMethodHandler, doBlandExceptions);
@@ -100,7 +100,7 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
       }
     }
 
-    @Override
+    @java.lang.Override
     public void doRaise() throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       try {
         execute(doRaiseMethodHandler, doRaiseExceptions);
@@ -121,7 +121,7 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
       }
     }
 
-    @Override
+    @java.lang.Override
     public String get200() throws org.apache.thrift.TException {
       try {
         return (String) execute(get200MethodHandler, get200Exceptions);
@@ -133,7 +133,7 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
       }
     }
 
-    @Override
+    @java.lang.Override
     public String get500() throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       try {
         return (String) execute(get500MethodHandler, get500Exceptions);

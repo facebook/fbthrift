@@ -72,13 +72,13 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
       hasArgDocsMethodHandler = methodHandlerMap.get("hasArgDocs");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> query(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) {
@@ -89,7 +89,7 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
         }
     }
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> hasArgDocs(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) {

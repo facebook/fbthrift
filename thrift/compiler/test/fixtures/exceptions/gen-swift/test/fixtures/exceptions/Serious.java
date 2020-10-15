@@ -79,7 +79,7 @@ public final class Serious extends java.lang.RuntimeException {
     @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
     public String getSonnet() { return sonnet; }
         
-    @Override
+    @java.lang.Override
     public String getMessage() {
       return sonnet;
     }

@@ -6991,7 +6991,7 @@ public final class MyBigStruct {
         return this.msg257 != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("msg1", msg1);
@@ -7254,7 +7254,7 @@ public final class MyBigStruct {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -7526,7 +7526,7 @@ public final class MyBigStruct {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             msg1,

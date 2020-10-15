@@ -87,13 +87,13 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
       turtlesMethodHandler = methodHandlerMap.get("turtles");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void mapList(
         Map<Integer, List<Integer>> foo) throws org.apache.thrift.TException {
       try {
@@ -106,7 +106,7 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
       }
     }
 
-    @Override
+    @java.lang.Override
     public void mapSet(
         Map<Integer, Set<Integer>> foo) throws org.apache.thrift.TException {
       try {
@@ -119,7 +119,7 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
       }
     }
 
-    @Override
+    @java.lang.Override
     public void listMap(
         List<Map<Integer, Integer>> foo) throws org.apache.thrift.TException {
       try {
@@ -132,7 +132,7 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
       }
     }
 
-    @Override
+    @java.lang.Override
     public void listSet(
         List<Set<Integer>> foo) throws org.apache.thrift.TException {
       try {
@@ -145,7 +145,7 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
       }
     }
 
-    @Override
+    @java.lang.Override
     public void turtles(
         List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) throws org.apache.thrift.TException {
       try {

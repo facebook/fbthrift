@@ -145,7 +145,7 @@ public final class Internship {
         return this.employer != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("weeks", weeks);
@@ -154,7 +154,7 @@ public final class Internship {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -172,7 +172,7 @@ public final class Internship {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             weeks,

@@ -174,7 +174,7 @@ public final class TypeRemapped {
         return this.binaryTestBuffer != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("lsMap", lsMap);
@@ -184,7 +184,7 @@ public final class TypeRemapped {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -203,7 +203,7 @@ public final class TypeRemapped {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             lsMap,

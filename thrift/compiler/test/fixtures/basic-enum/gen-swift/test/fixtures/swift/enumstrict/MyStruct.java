@@ -116,7 +116,7 @@ public final class MyStruct {
         return this.myBigEnum != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("myEnum", myEnum);
@@ -124,7 +124,7 @@ public final class MyStruct {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -141,7 +141,7 @@ public final class MyStruct {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myEnum,

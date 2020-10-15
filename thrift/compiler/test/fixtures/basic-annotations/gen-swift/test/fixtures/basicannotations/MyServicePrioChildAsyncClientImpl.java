@@ -67,13 +67,13 @@ public class MyServicePrioChildAsyncClientImpl extends test.fixtures.basicannota
       pangMethodHandler = methodHandlerMap.get("pang");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> pang() {
         try {
           return (ListenableFuture<Void>) execute(pangMethodHandler, pangExceptions);

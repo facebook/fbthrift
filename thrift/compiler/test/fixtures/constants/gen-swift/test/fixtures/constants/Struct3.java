@@ -145,7 +145,7 @@ public final class Struct3 {
         return this.c != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("a", a);
@@ -154,7 +154,7 @@ public final class Struct3 {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -172,7 +172,7 @@ public final class Struct3 {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             a,

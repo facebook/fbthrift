@@ -72,13 +72,13 @@ public class DbMixedStackArgumentsClientImpl extends AbstractThriftClient implem
       getDataByKey1MethodHandler = methodHandlerMap.get("getDataByKey1");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public byte[] getDataByKey0(
         String key) throws org.apache.thrift.TException {
       try {
@@ -91,7 +91,7 @@ public class DbMixedStackArgumentsClientImpl extends AbstractThriftClient implem
       }
     }
 
-    @Override
+    @java.lang.Override
     public byte[] getDataByKey1(
         String key) throws org.apache.thrift.TException {
       try {

@@ -175,7 +175,7 @@ public final class SomeStruct {
         return this.tags != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("reasonable", reasonable);
@@ -185,7 +185,7 @@ public final class SomeStruct {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -204,7 +204,7 @@ public final class SomeStruct {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             reasonable,

@@ -928,7 +928,7 @@ public final class MyNomralStruct {
         return __isset_bit_vector.get(_MYDOUBLEFIELD30);
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("msg1", msg1);
@@ -964,7 +964,7 @@ public final class MyNomralStruct {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -1009,7 +1009,7 @@ public final class MyNomralStruct {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             msg1,

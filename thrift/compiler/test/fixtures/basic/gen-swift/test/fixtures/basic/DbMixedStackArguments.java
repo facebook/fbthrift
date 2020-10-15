@@ -19,7 +19,7 @@ import java.util.*;
 public interface DbMixedStackArguments extends java.io.Closeable {
     @ThriftService("DbMixedStackArguments")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "getDataByKey0")
         ListenableFuture<byte[]> getDataByKey0(
@@ -29,7 +29,7 @@ public interface DbMixedStackArguments extends java.io.Closeable {
         ListenableFuture<byte[]> getDataByKey1(
             @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key);
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "getDataByKey0")
     byte[] getDataByKey0(

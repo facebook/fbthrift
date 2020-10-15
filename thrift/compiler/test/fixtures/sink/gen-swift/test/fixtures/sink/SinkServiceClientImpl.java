@@ -92,7 +92,7 @@ public class SinkServiceClientImpl extends AbstractThriftClient implements SinkS
       methodBothThrowMethodHandler = methodHandlerMap.get("methodBothThrow");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }

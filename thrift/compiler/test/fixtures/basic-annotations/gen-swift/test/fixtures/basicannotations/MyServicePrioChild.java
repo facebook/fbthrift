@@ -19,12 +19,12 @@ import java.util.*;
 public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.basicannotations.MyServicePrioParent {
     @ThriftService("MyServicePrioChild")
     public interface Async extends java.io.Closeable, test.fixtures.basicannotations.MyServicePrioParent.Async {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "pang")
         ListenableFuture<Void> pang();
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "pang")
     void pang() throws org.apache.thrift.TException;

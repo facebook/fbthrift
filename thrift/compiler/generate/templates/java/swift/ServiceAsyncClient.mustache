@@ -87,7 +87,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
       {{/service:functions}}
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
@@ -95,7 +95,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{#service:functions}}
     {{^function:any_streams?}}{{^function:returns_sink?}}
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
         try {

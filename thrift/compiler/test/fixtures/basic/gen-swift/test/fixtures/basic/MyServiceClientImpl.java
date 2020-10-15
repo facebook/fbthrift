@@ -92,13 +92,13 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void ping() throws org.apache.thrift.TException {
       try {
         execute(pingMethodHandler, pingExceptions);
@@ -110,7 +110,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    @Override
+    @java.lang.Override
     public String getRandomData() throws org.apache.thrift.TException {
       try {
         return (String) execute(getRandomDataMethodHandler, getRandomDataExceptions);
@@ -122,7 +122,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    @Override
+    @java.lang.Override
     public boolean hasDataById(
         long id) throws org.apache.thrift.TException {
       try {
@@ -135,7 +135,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    @Override
+    @java.lang.Override
     public String getDataById(
         long id) throws org.apache.thrift.TException {
       try {
@@ -148,7 +148,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    @Override
+    @java.lang.Override
     public void putDataById(
         long id,
         String data) throws org.apache.thrift.TException {
@@ -162,7 +162,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    @Override
+    @java.lang.Override
     public void lobDataById(
         long id,
         String data) throws org.apache.thrift.TException {

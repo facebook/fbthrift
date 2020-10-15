@@ -87,7 +87,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
       {{/service:functions}}
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
@@ -95,7 +95,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
     {{#service:functions}}
     {{^function:any_streams?}}{{^function:returns_sink?}}
 
-    @Override
+    @java.lang.Override
     public {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions

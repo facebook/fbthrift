@@ -19,7 +19,7 @@ import java.util.*;
 public interface MyService extends java.io.Closeable {
     @ThriftService("MyService")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "query")
         ListenableFuture<Void> query(
@@ -31,7 +31,7 @@ public interface MyService extends java.io.Closeable {
             @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.includes.MyStruct s,
             @ThriftField(value=2, name="i", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included i);
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "query")
     void query(

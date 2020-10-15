@@ -67,13 +67,13 @@ public class LegacyServiceAsyncClientImpl extends AbstractThriftClient implement
       getPointsMethodHandler = methodHandlerMap.get("getPoints");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Map<String, List<Integer>>> getPoints(
         Set<String> key,
         long legacyStuff) {

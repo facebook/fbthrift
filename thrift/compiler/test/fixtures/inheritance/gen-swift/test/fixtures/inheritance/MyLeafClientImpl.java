@@ -67,13 +67,13 @@ public class MyLeafClientImpl extends test.fixtures.inheritance.MyNodeClientImpl
       doLeafMethodHandler = methodHandlerMap.get("doLeaf");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void doLeaf() throws org.apache.thrift.TException {
       try {
         execute(doLeafMethodHandler, doLeafExceptions);

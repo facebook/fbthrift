@@ -67,13 +67,13 @@ public class MyServicePrioChildClientImpl extends test.fixtures.basicannotations
       pangMethodHandler = methodHandlerMap.get("pang");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void pang() throws org.apache.thrift.TException {
       try {
         execute(pangMethodHandler, pangExceptions);

@@ -67,13 +67,13 @@ public class MyNodeAsyncClientImpl extends test.fixtures.inheritance.MyRootAsync
       doMidMethodHandler = methodHandlerMap.get("doMid");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> doMid() {
         try {
           return (ListenableFuture<Void>) execute(doMidMethodHandler, doMidExceptions);

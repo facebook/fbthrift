@@ -67,13 +67,13 @@ public class MyRootAsyncClientImpl extends AbstractThriftClient implements MyRoo
       doRootMethodHandler = methodHandlerMap.get("doRoot");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> doRoot() {
         try {
           return (ListenableFuture<Void>) execute(doRootMethodHandler, doRootExceptions);

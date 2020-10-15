@@ -19,7 +19,7 @@ import java.util.*;
 public interface NestedContainers extends java.io.Closeable {
     @ThriftService("NestedContainers")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "mapList")
         ListenableFuture<Void> mapList(
@@ -41,7 +41,7 @@ public interface NestedContainers extends java.io.Closeable {
         ListenableFuture<Void> turtles(
             @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "mapList")
     void mapList(

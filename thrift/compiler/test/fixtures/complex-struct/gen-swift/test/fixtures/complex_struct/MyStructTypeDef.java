@@ -319,7 +319,7 @@ public final class MyStructTypeDef {
         return this.myMapListOfTypeDef != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("myLongField", myLongField);
@@ -334,7 +334,7 @@ public final class MyStructTypeDef {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -358,7 +358,7 @@ public final class MyStructTypeDef {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myLongField,

@@ -19,12 +19,12 @@ import java.util.*;
 public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyRoot {
     @ThriftService("MyNode")
     public interface Async extends java.io.Closeable, test.fixtures.inheritance.MyRoot.Async {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "do_mid")
         ListenableFuture<Void> doMid();
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "do_mid")
     void doMid() throws org.apache.thrift.TException;

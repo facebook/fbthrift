@@ -19,7 +19,7 @@ import java.util.*;
 public interface MyService extends java.io.Closeable {
     @ThriftService("MyService")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "ping")
         ListenableFuture<Void> ping();
@@ -46,7 +46,7 @@ public interface MyService extends java.io.Closeable {
             @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
             @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "ping")
     void ping() throws org.apache.thrift.TException;

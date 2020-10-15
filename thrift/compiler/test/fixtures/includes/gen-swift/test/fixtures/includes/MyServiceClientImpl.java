@@ -72,13 +72,13 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       hasArgDocsMethodHandler = methodHandlerMap.get("hasArgDocs");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public void query(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) throws org.apache.thrift.TException {
@@ -92,7 +92,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    @Override
+    @java.lang.Override
     public void hasArgDocs(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) throws org.apache.thrift.TException {

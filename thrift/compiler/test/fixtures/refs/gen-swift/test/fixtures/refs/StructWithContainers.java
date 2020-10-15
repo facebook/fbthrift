@@ -232,7 +232,7 @@ public final class StructWithContainers {
         return this.listRefSharedConst != null;
     }
     
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("listRef", listRef);
@@ -244,7 +244,7 @@ public final class StructWithContainers {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -265,7 +265,7 @@ public final class StructWithContainers {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             listRef,

@@ -18,7 +18,7 @@ public class TooBigEnum extends IntEnum {
         this.value = value;
     }
 
-    @Override
+    @java.lang.Override
     @ThriftEnumValue
     public int getValue() {
         return value;
@@ -29,7 +29,7 @@ public class TooBigEnum extends IntEnum {
         return new TooBigEnum(n);
     }
 
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -43,7 +43,7 @@ public class TooBigEnum extends IntEnum {
         return this.value == other.value;
     }
 
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return value;
     }

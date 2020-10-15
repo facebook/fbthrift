@@ -126,7 +126,7 @@ static {
     public void unsetMyString() {
         this.myString = null;
     }
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("myStruct1", myStruct1);
@@ -134,7 +134,7 @@ static {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -151,7 +151,7 @@ static {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myStruct1,

@@ -82,7 +82,7 @@ public class PubSubStreamingServiceAsyncClientImpl extends AbstractThriftClient 
       responseandstreamthrowsMethodHandler = methodHandlerMap.get("responseandstreamthrows");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }

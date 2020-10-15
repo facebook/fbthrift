@@ -454,7 +454,7 @@ static {
     public void unsetMyMapList() {
         this.myMapList = null;
     }
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("myInt16", myInt16);
@@ -470,7 +470,7 @@ static {
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -495,7 +495,7 @@ static {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             myInt16,

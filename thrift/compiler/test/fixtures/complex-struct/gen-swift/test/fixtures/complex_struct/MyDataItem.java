@@ -56,13 +56,13 @@ public final class MyDataItem {
     private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
 static {
     }
-    @Override
+    @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         return helper.toString();
     }
     
-    @Override
+    @java.lang.Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -77,7 +77,7 @@ static {
             true;
     }
     
-    @Override
+    @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
         });

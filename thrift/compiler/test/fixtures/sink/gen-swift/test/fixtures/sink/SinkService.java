@@ -19,8 +19,8 @@ import java.util.*;
 public interface SinkService extends java.io.Closeable {
     @ThriftService("SinkService")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
     }
-    @Override void close();
+    @java.lang.Override void close();
 }

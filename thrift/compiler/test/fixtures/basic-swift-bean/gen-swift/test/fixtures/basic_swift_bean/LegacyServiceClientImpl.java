@@ -67,13 +67,13 @@ public class LegacyServiceClientImpl extends AbstractThriftClient implements Leg
       getPointsMethodHandler = methodHandlerMap.get("getPoints");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public Map<String, List<Integer>> getPoints(
         Set<String> key,
         long legacyStuff) throws org.apache.thrift.TException {

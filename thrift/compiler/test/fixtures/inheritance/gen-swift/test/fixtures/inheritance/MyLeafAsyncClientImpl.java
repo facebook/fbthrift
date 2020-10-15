@@ -67,13 +67,13 @@ public class MyLeafAsyncClientImpl extends test.fixtures.inheritance.MyNodeAsync
       doLeafMethodHandler = methodHandlerMap.get("doLeaf");
     }
 
-    @Override
+    @java.lang.Override
     public void close() {
         super.close();
     }
 
 
-    @Override
+    @java.lang.Override
     public ListenableFuture<Void> doLeaf() {
         try {
           return (ListenableFuture<Void>) execute(doLeafMethodHandler, doLeafExceptions);

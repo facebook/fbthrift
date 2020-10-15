@@ -31,7 +31,7 @@ import java.util.*;
 public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
     @ThriftService("{{service:javaCapitalName}}")
     public interface Async extends java.io.Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
-        @Override void close();
+        @java.lang.Override void close();
 
         {{#service:functions}}
         {{^function:any_streams?}}{{^function:returns_sink?}}
@@ -48,7 +48,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{/function:returns_sink?}}{{/function:any_streams?}}
         {{/service:functions}}
     }
-    @Override void close();
+    @java.lang.Override void close();
     {{#service:functions}}
     {{^function:any_streams?}}{{^function:returns_sink?}}
 

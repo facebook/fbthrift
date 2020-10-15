@@ -19,14 +19,14 @@ import java.util.*;
 public interface LegacyService extends java.io.Closeable {
     @ThriftService("LegacyService")
     public interface Async extends java.io.Closeable {
-        @Override void close();
+        @java.lang.Override void close();
 
         @ThriftMethod(value = "getPoints")
         ListenableFuture<Map<String, List<Integer>>> getPoints(
             @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
             @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff);
     }
-    @Override void close();
+    @java.lang.Override void close();
 
     @ThriftMethod(value = "getPoints")
     Map<String, List<Integer>> getPoints(
