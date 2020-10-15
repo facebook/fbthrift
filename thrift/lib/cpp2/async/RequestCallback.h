@@ -564,8 +564,18 @@ class RpcOptions {
     DCHECK_GT(interactionId_, 0);
     return *this;
   }
+
   int64_t getInteractionId() const {
     return interactionId_;
+  }
+
+  RpcOptions& setLoggingContext(const std::string& loggingContext) {
+    loggingContext_ = loggingContext;
+    return *this;
+  }
+
+  const std::string& getLoggingContext() const {
+    return loggingContext_;
   }
 
  private:
@@ -585,6 +595,9 @@ class RpcOptions {
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;
   std::map<std::string, std::string> readHeaders_;
+
+  // Custom data about the request for logging and analysis.
+  std::string loggingContext_;
 }; // namespace thrift
 
 struct RpcResponseContext {
