@@ -497,6 +497,25 @@ class RpcOptions {
     return queueTimeout_;
   }
 
+  RpcOptions& setOverallTimeout(std::chrono::milliseconds overallTimeout) {
+    overallTimeout_ = overallTimeout;
+    return *this;
+  }
+
+  std::chrono::milliseconds getOverallTimeout() const {
+    return overallTimeout_;
+  }
+
+  RpcOptions& setProcessingTimeout(
+      std::chrono::milliseconds processingTimeout) {
+    processingTimeout_ = processingTimeout;
+    return *this;
+  }
+
+  std::chrono::milliseconds getProcessingTimeout() const {
+    return processingTimeout_;
+  }
+
   /**
    * Set routing key for (e.g. consistent hashing based) routing.
    *
@@ -582,6 +601,8 @@ class RpcOptions {
   std::chrono::milliseconds timeout_{0};
   std::chrono::milliseconds chunkTimeout_{0};
   std::chrono::milliseconds queueTimeout_{0};
+  std::chrono::milliseconds overallTimeout_{0};
+  std::chrono::milliseconds processingTimeout_{0};
   uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
