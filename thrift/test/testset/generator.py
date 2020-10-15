@@ -24,6 +24,8 @@ THRIFT_HEADER = """
 # {'@' + 'generated'}
 
 namespace cpp2 apache.thrift.test
+
+cpp_include "thrift/test/testset/PrintPath.h"
 """
 
 FIELD_COUNT = 2  # Number of fields per structs
