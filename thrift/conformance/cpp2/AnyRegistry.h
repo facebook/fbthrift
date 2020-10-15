@@ -52,7 +52,7 @@ class AnyRegistry {
 
   // Store a value in an Any using the registered serializers.
   //
-  // Throws std::bad_any_cast if no matching serializer has been registered.
+  // Throws std::out_of_range if no matching serializer has been registered.
   Any store(any_ref value, const Protocol& protocol) const;
   Any store(const Any& value, const Protocol& protocol) const;
   template <StandardProtocol protocol>
@@ -62,19 +62,25 @@ class AnyRegistry {
 
   // Load a value from an Any using the registered serializers.
   //
-  // Throws std::bad_any_cast if no matching serializer has been registered.
+  // Throws std::out_of_range if no matching serializer has been registered.
+  // Throws std::bad_any_cast if value cannot be stored in out.
   void load(const Any& value, any_ref out) const;
   std::any load(const Any& value) const;
   template <typename T>
   T load(const Any& value) const;
 
   // Register a type's unique name.
+  //
+  // Throws std::invalid_argument if type is invalid.
+  // Returns false iff the type conflicts with an existing registration.
   bool registerType(const std::type_info& typeInfo, AnyType type);
 
   // Register a serializer for a given type.
   //
   // Throws std::out_of_range error if the type has not already been
   // registered.
+  // Throws std::invalid_argument if serializer contains an invalid protocol.
+  // Returns false iff the serializer conflicts with an existing registration.
   bool registerSerializer(
       const std::type_info& type,
       const AnySerializer* serializer);
@@ -84,19 +90,19 @@ class AnyRegistry {
 
   // Returns the unique type name for the given type, or "" if the type has not
   // been registered.
-  std::string_view getTypeName(const std::type_info& type) const;
+  std::string_view getTypeName(const std::type_info& type) const noexcept;
 
   // Returns the serializer for the given type and protocol, or nullptr if
   // no matching serializer is found.
   const AnySerializer* getSerializer(
       const std::type_info& type,
-      const Protocol& protocol) const;
+      const Protocol& protocol) const noexcept;
   const AnySerializer* getSerializerByName(
       const std::string_view name,
-      const Protocol& protocol) const;
+      const Protocol& protocol) const noexcept;
   const AnySerializer* getSerializerById(
       const folly::fbstring& typeId,
-      const Protocol& protocol) const;
+      const Protocol& protocol) const noexcept;
 
   // Compile-time Type overloads.
   template <typename C = std::initializer_list<const AnySerializer*>>
@@ -127,12 +133,16 @@ class AnyRegistry {
   }
 
   template <typename T>
-  const AnySerializer* getSerializer(const Protocol& protocol) const {
+  const AnySerializer* getSerializer(const Protocol& protocol) const noexcept {
     return getSerializer(typeid(T), protocol);
+  }
+  template <typename T, StandardProtocol P>
+  const AnySerializer* getSerializer() const noexcept {
+    return getSerializer<T>(getStandardProtocol<P>());
   }
 
   template <typename T>
-  std::string_view getTypeName() const {
+  std::string_view getTypeName() const noexcept {
     return getTypeName(typeid(T));
   }
 
@@ -163,27 +173,27 @@ class AnyRegistry {
 
   bool genTypeIdsAndCheckForConflicts(
       std::string_view name,
-      std::vector<folly::fbstring>* typeIds) const;
+      std::vector<folly::fbstring>* typeIds) const noexcept;
   bool genTypeIdsAndCheckForConflicts(
       const AnyType& type,
-      std::vector<folly::fbstring>* typeIds) const;
-  void indexName(std::string_view name, TypeEntry* entry);
-  void indexId(folly::fbstring&& id, TypeEntry* entry);
+      std::vector<folly::fbstring>* typeIds) const noexcept;
+  void indexName(std::string_view name, TypeEntry* entry) noexcept;
+  void indexId(folly::fbstring&& id, TypeEntry* entry) noexcept;
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
-  const TypeEntry* getTypeEntry(const std::type_index& index) const;
-  const TypeEntry* getTypeEntry(const std::type_info& type) const {
+  const TypeEntry* getTypeEntry(const std::type_index& index) const noexcept;
+  const TypeEntry* getTypeEntry(const std::type_info& type) const noexcept {
     return getTypeEntry(std::type_index(type));
   }
   // Look up TypeEntry by secondary index.
-  const TypeEntry* getTypeEntryByName(std::string_view name) const;
-  const TypeEntry* getTypeEntryById(const folly::fbstring& name) const;
-  const TypeEntry* getTypeEntryFor(const Any& value) const;
+  const TypeEntry* getTypeEntryByName(std::string_view name) const noexcept;
+  const TypeEntry* getTypeEntryById(const folly::fbstring& name) const noexcept;
+  const TypeEntry* getTypeEntryFor(const Any& value) const noexcept;
 
   const AnySerializer* getSerializer(
       const TypeEntry* entry,
-      const Protocol& protocol) const;
+      const Protocol& protocol) const noexcept;
 };
 
 // Implementation details.

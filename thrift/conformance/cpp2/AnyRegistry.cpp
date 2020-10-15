@@ -46,6 +46,13 @@ folly::fbstring maybeGetTypeId(
   return conformance::maybeGetTypeId(type.get_name(), defaultTypeIdBytes);
 }
 
+const AnySerializer* checkFound(const AnySerializer* serializer) {
+  if (serializer == nullptr) {
+    folly::throw_exception<std::out_of_range>("serializer not found");
+  }
+  return serializer;
+}
+
 } // namespace
 
 AnyRegistry::TypeEntry::TypeEntry(const std::type_info& typeInfo, AnyType type)
@@ -69,7 +76,8 @@ bool AnyRegistry::registerSerializer(
       std::move(serializer), &registry_.at(std::type_index(type)));
 }
 
-std::string_view AnyRegistry::getTypeName(const std::type_info& type) const {
+std::string_view AnyRegistry::getTypeName(const std::type_info& type) const
+    noexcept {
   const auto* entry = getTypeEntry(type);
   if (entry == nullptr) {
     return {};
@@ -79,19 +87,19 @@ std::string_view AnyRegistry::getTypeName(const std::type_info& type) const {
 
 const AnySerializer* AnyRegistry::getSerializer(
     const std::type_info& type,
-    const Protocol& protocol) const {
+    const Protocol& protocol) const noexcept {
   return getSerializer(getTypeEntry(type), protocol);
 }
 
 const AnySerializer* AnyRegistry::getSerializerByName(
     const std::string_view name,
-    const Protocol& protocol) const {
+    const Protocol& protocol) const noexcept {
   return getSerializer(getTypeEntryByName(name), protocol);
 }
 
 const AnySerializer* AnyRegistry::getSerializerById(
     const folly::fbstring& typeId,
-    const Protocol& protocol) const {
+    const Protocol& protocol) const noexcept {
   return getSerializer(getTypeEntryById(typeId), protocol);
 }
 
@@ -102,10 +110,7 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
   }
 
   const auto* entry = getTypeEntry(value.type());
-  const auto* serializer = getSerializer(entry, protocol);
-  if (serializer == nullptr) {
-    folly::throw_exception<std::bad_any_cast>();
-  }
+  const auto* serializer = checkFound(getSerializer(entry, protocol));
 
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   // Allocate 16KB at a time; leave some room for the IOBuf overhead
@@ -136,10 +141,7 @@ Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
 
 void AnyRegistry::load(const Any& value, any_ref out) const {
   const auto* entry = getTypeEntryFor(value);
-  const auto* serializer = getSerializer(entry, getProtocol(value));
-  if (serializer == nullptr) {
-    folly::throw_exception<std::bad_any_cast>();
-  }
+  const auto* serializer = checkFound(getSerializer(entry, getProtocol(value)));
   folly::io::Cursor cursor(&*value.data_ref());
   serializer->decode(entry->typeInfo, cursor, out);
 }
@@ -202,7 +204,7 @@ bool AnyRegistry::registerSerializerImpl(
 
 bool AnyRegistry::genTypeIdsAndCheckForConflicts(
     std::string_view name,
-    std::vector<folly::fbstring>* typeIds) const {
+    std::vector<folly::fbstring>* typeIds) const noexcept {
   if (name.empty() || nameIndex_.contains(name)) {
     return false; // Already exists.
   }
@@ -220,7 +222,7 @@ bool AnyRegistry::genTypeIdsAndCheckForConflicts(
 
 bool AnyRegistry::genTypeIdsAndCheckForConflicts(
     const AnyType& type,
-    std::vector<folly::fbstring>* typeIds) const {
+    std::vector<folly::fbstring>* typeIds) const noexcept {
   // Ensure name and all aliases are availabile.
   if (!genTypeIdsAndCheckForConflicts(*type.name_ref(), typeIds)) {
     return false;
@@ -233,17 +235,17 @@ bool AnyRegistry::genTypeIdsAndCheckForConflicts(
   return true;
 }
 
-void AnyRegistry::indexName(std::string_view name, TypeEntry* entry) {
+void AnyRegistry::indexName(std::string_view name, TypeEntry* entry) noexcept {
   auto res = nameIndex_.emplace(name, entry);
   DCHECK(res.second);
 }
 
-void AnyRegistry::indexId(folly::fbstring&& id, TypeEntry* entry) {
+void AnyRegistry::indexId(folly::fbstring&& id, TypeEntry* entry) noexcept {
   auto res = idIndex_.emplace(std::move(id), entry);
   DCHECK(res.second);
 }
 
-auto AnyRegistry::getTypeEntry(const std::type_index& index) const
+auto AnyRegistry::getTypeEntry(const std::type_index& index) const noexcept
     -> const TypeEntry* {
   auto itr = registry_.find(index);
   if (itr == registry_.end()) {
@@ -252,9 +254,11 @@ auto AnyRegistry::getTypeEntry(const std::type_index& index) const
   return &itr->second;
 }
 
-auto AnyRegistry::getTypeEntryById(const folly::fbstring& id) const
+auto AnyRegistry::getTypeEntryById(const folly::fbstring& id) const noexcept
     -> const TypeEntry* {
-  validateTypeId(id);
+  if (id.size() < kMinTypeIdBytes) {
+    return nullptr;
+  }
   auto itr = findByTypeId(idIndex_, id);
   if (itr == idIndex_.end()) {
     // No match.
@@ -263,7 +267,7 @@ auto AnyRegistry::getTypeEntryById(const folly::fbstring& id) const
   return itr->second;
 }
 
-auto AnyRegistry::getTypeEntryByName(std::string_view name) const
+auto AnyRegistry::getTypeEntryByName(std::string_view name) const noexcept
     -> const TypeEntry* {
   auto itr = nameIndex_.find(name);
   if (itr == nameIndex_.end()) {
@@ -272,7 +276,8 @@ auto AnyRegistry::getTypeEntryByName(std::string_view name) const
   return itr->second;
 }
 
-auto AnyRegistry::getTypeEntryFor(const Any& value) const -> const TypeEntry* {
+auto AnyRegistry::getTypeEntryFor(const Any& value) const noexcept
+    -> const TypeEntry* {
   if (value.type_ref().has_value() &&
       !value.type_ref().value_unchecked().empty()) {
     return getTypeEntryByName(value.type_ref().value_unchecked());
@@ -285,7 +290,7 @@ auto AnyRegistry::getTypeEntryFor(const Any& value) const -> const TypeEntry* {
 
 const AnySerializer* AnyRegistry::getSerializer(
     const TypeEntry* entry,
-    const Protocol& protocol) const {
+    const Protocol& protocol) const noexcept {
   if (entry == nullptr) {
     return nullptr;
   }

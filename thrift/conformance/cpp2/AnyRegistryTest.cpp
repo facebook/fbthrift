@@ -89,7 +89,59 @@ TEST(AnyRegistryTest, ShortTypeId) {
   EXPECT_TRUE(registry.registerType<int>(longType, {&intCodec}));
   Any any = registry.store(1, kFollyToStringProtocol);
   any.set_typeId(any.typeId_ref()->substr(0, 8));
-  EXPECT_THROW(registry.load<int>(any), std::invalid_argument);
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+}
+
+TEST(AnyRegistryTest, TypeNotFound) {
+  AnyRegistry registry;
+  EXPECT_EQ(registry.getTypeName<int>(), "");
+  EXPECT_EQ((registry.getSerializer<int, StandardProtocol::Binary>()), nullptr);
+
+  EXPECT_THROW(registry.store<StandardProtocol::Binary>(1), std::out_of_range);
+
+  Any any;
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+  any.set_type(thriftType("int"));
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+  any.set_protocol(StandardProtocol::Binary);
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+
+  FollyToStringSerializer<int> intCodec;
+  EXPECT_THROW(registry.registerSerializer<int>(&intCodec), std::out_of_range);
+}
+
+TEST(AnyRegistryTest, ProtocolNotFound) {
+  AnyRegistry registry;
+  EXPECT_TRUE(registry.registerType<int>(testAnyType("int")));
+  EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
+  EXPECT_EQ((registry.getSerializer<int, StandardProtocol::Binary>()), nullptr);
+
+  EXPECT_THROW(registry.store<StandardProtocol::Binary>(1), std::out_of_range);
+
+  Any any;
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+  any.set_type(thriftType("int"));
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+  any.set_protocol(StandardProtocol::Binary);
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+}
+
+TEST(AnyRegistryTest, TypeIdToShort) {
+  AnyRegistry registry;
+  FollyToStringSerializer<int> intCodec;
+  auto anyType = longAnyType();
+  anyType.set_typeIdBytes(17);
+  EXPECT_TRUE(registry.registerType<int>(anyType, {&intCodec}));
+  Any any = registry.store(1, intCodec.getProtocol());
+  ASSERT_TRUE(any.typeId_ref());
+  EXPECT_EQ(any.get_typeId()->size(), 17);
+  EXPECT_EQ(registry.load<int>(any), 1);
+
+  any.set_typeId(any.get_typeId()->substr(0, 16));
+  EXPECT_EQ(registry.load<int>(any), 1);
+
+  any.set_typeId(any.get_typeId()->substr(0, 15));
+  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
 }
 
 TEST(AnyRegistryTest, Behavior) {
@@ -174,15 +226,15 @@ TEST(AnyRegistryTest, Behavior) {
 
   // Storing an unsupported type is an error.
   EXPECT_THROW(
-      cregistry.store(2.5f, kFollyToStringProtocol), std::bad_any_cast);
+      cregistry.store(2.5f, kFollyToStringProtocol), std::out_of_range);
   EXPECT_THROW(
       cregistry.store(std::any(2.5f), kFollyToStringProtocol),
-      std::bad_any_cast);
+      std::out_of_range);
 
   // Storing using an unsupported protocol throws an error
   EXPECT_THROW(
       cregistry.store(3, Protocol(StandardProtocol::Binary)),
-      std::bad_any_cast);
+      std::out_of_range);
 
   // Loading an empty Any value throws an error.
   value = {};
@@ -190,8 +242,11 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_FALSE(value.typeId_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "");
   EXPECT_TRUE(hasProtocol(value, Protocol{}));
-  EXPECT_THROW(cregistry.load(value), std::bad_any_cast);
-  EXPECT_THROW(cregistry.load<float>(value), std::bad_any_cast);
+  EXPECT_THROW(cregistry.load(value), std::out_of_range);
+  EXPECT_THROW(cregistry.load<float>(value), std::out_of_range);
+  value.set_type("foo");
+  EXPECT_THROW(cregistry.load(value), std::out_of_range);
+  EXPECT_THROW(cregistry.load<float>(value), std::out_of_range);
 
   value = cregistry.store(2.5, kFollyToStringProtocol);
   EXPECT_EQ(*value.type_ref(), thriftType("double"));
@@ -235,7 +290,7 @@ TEST(AnyRegistryTest, Aliases) {
   EXPECT_EQ(cregistry.load<int>(any), 1);
 
   any.set_type(thriftType("Unknown"));
-  EXPECT_THROW(cregistry.load<int>(any), std::bad_any_cast);
+  EXPECT_THROW(cregistry.load<int>(any), std::out_of_range);
 }
 
 TEST(AnyRegistryTest, ForwardCompat_Protocol) {
@@ -260,7 +315,7 @@ TEST(AnyRegistryTest, ForwardCompat_Any) {
   any.type_ref() = "invalid";
   EXPECT_THROW(validateAny(any), std::invalid_argument);
   // Load does not throw std::invalid_argument.
-  EXPECT_THROW(cregistry.load(any), std::bad_any_cast);
+  EXPECT_THROW(cregistry.load(any), std::out_of_range);
 }
 
 TEST(AnyRegistryTest, StdProtocol) {
@@ -296,7 +351,7 @@ TEST(AnyRegistryTest, Generated) {
 
   EXPECT_THROW(
       AnyRegistry::generated().store<StandardProtocol::Json>(value),
-      std::bad_any_cast);
+      std::out_of_range);
 }
 
 } // namespace
