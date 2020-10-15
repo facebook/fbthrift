@@ -376,7 +376,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     sslCallbackHandle_.cancel();
     sslCallbackHandle_ = sslContextObserver_->addCallback([&](auto ssl) {
       if (sharedSSLContextManager_) {
-        sharedSSLContextManager_->reloadSSLContextConfigs();
+        sharedSSLContextManager_->updateSSLConfigAndReloadContexts(*ssl);
       } else {
         // "this" needed due to
         // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67274
