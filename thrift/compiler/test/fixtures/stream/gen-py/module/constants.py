@@ -7,8 +7,9 @@
 
 from __future__ import absolute_import
 import six
+import sys
 from thrift.util.Recursive import fix_spec
-from thrift.Thrift import *
+from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
 from thrift.protocol.TProtocol import TProtocolException
 
 from json import loads
@@ -17,5 +18,5 @@ if sys.version_info[0] >= 3:
   long = int
 
 
-from .ttypes import *
+from .ttypes import UTF8STRINGS, FooEx
 

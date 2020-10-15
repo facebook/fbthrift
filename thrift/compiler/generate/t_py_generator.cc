@@ -296,6 +296,7 @@ class t_py_generator : public t_concat_generator {
   std::string type_to_spec_args(t_type* ttype);
   std::string get_real_py_module(const t_program* program);
   std::string render_string(std::string value);
+  std::string render_ttype_declarations(const char* delimiter);
 
   std::string get_priority(
       const t_annotated* obj,
@@ -792,23 +793,32 @@ void t_py_generator::init_generator() {
            << endl;
 
   // Define __all__ for ttypes
-  f_types_ << "__all__ = ['UTF8STRINGS'";
-  for (auto& en : program_->get_enums()) {
-    f_types_ << ", '" << rename_reserved_keywords(en->get_name()) << "'";
-  }
-  for (auto& object : program_->get_objects()) {
-    f_types_ << ", '" << rename_reserved_keywords(object->get_name()) << "'";
-  }
-  for (auto& td : program_->get_typedefs()) {
-    f_types_ << ", '" << rename_reserved_keywords(td->get_symbolic()) << "'";
-  }
-  f_types_ << "]" << endl << endl;
+  f_types_ << "__all__ = [" << render_ttype_declarations("'") << "]" << endl
+           << endl;
 
   f_consts_ << py_autogen_comment() << endl
             << py_imports() << endl
             << render_includes() << endl
-            << "from .ttypes import *" << endl
+            << "from .ttypes import " << render_ttype_declarations("") << endl
             << endl;
+}
+
+string t_py_generator::render_ttype_declarations(const char* delimiter) {
+  std::ostringstream out;
+  out << delimiter << "UTF8STRINGS" << delimiter;
+  for (const auto& en : program_->get_enums()) {
+    out << ", " << delimiter << rename_reserved_keywords(en->get_name())
+        << delimiter;
+  }
+  for (const auto& object : program_->get_objects()) {
+    out << ", " << delimiter << rename_reserved_keywords(object->get_name())
+        << delimiter;
+  }
+  for (const auto& td : program_->get_typedefs()) {
+    out << ", " << delimiter << rename_reserved_keywords(td->get_symbolic())
+        << delimiter;
+  }
+  return out.str();
 }
 
 /**
@@ -850,11 +860,10 @@ string t_py_generator::render_fastproto_includes() {
          "from thrift.protocol import TCompactProtocol\n"
          "from thrift.protocol import THeaderProtocol\n"
          "fastproto = None\n"
-         "if not '__pypy__' in sys.builtin_module_names:\n"
-         "  try:\n"
-         "    from thrift.protocol import fastproto\n"
-         "  except ImportError:\n"
-         "    pass\n";
+         "try:\n"
+         "  from thrift.protocol import fastproto\n"
+         "except ImportError:\n"
+         "  pass\n";
 }
 
 /**
@@ -907,8 +916,12 @@ string t_py_generator::py_imports() {
   string imports = "from __future__ import absolute_import\n";
 
   imports += "import six\n";
+  imports += "import sys\n";
   imports += "from thrift.util.Recursive import fix_spec\n";
-  imports += "from thrift.Thrift import *\n";
+  imports += "from thrift.Thrift import TType, TMessageType, TPriority";
+  imports += ", TRequestContext, TProcessorEventHandler, TServerInterface";
+  imports +=
+      ", TProcessor, TException, TApplicationException, UnimplementedTypedef\n";
   imports += "from thrift.protocol.TProtocol import TProtocolException\n";
   if (compare_t_fields_only_) {
     imports += "from thrift.util import parse_struct_spec\n\n";
@@ -2001,7 +2014,7 @@ void t_py_generator::generate_service(t_service* tservice) {
                << endl;
   }
 
-  f_service_ << "from .ttypes import *" << endl
+  f_service_ << "from .ttypes import " << render_ttype_declarations("") << endl
              << render_includes() << "from thrift.Thrift import TProcessor"
              << endl
              << render_fastproto_includes() << endl
