@@ -1361,7 +1361,7 @@ string t_hack_generator::render_default_value(t_type* type) {
   } else if (type->is_struct() || type->is_xception()) {
     t_struct* tstruct = (t_struct*)type;
     if (no_nullables_) {
-      dval = "new " + hack_name(tstruct) + "()";
+      dval = hack_name(tstruct) + "::fromShape()";
     } else {
       dval = "null";
     }
@@ -3159,7 +3159,7 @@ void t_hack_generator::generate_process_function(
              << "  $args = \\thrift_protocol_read_compact_struct($input, '"
              << argsname << "');\n"
              << indent() << "} else {\n"
-             << indent() << "  $args = new " << argsname << "();\n"
+             << indent() << "  $args = " << argsname << "::fromShape();\n"
              << indent() << "  $args->read($input);\n"
              << indent() << "}\n";
   f_service_ << indent() << "$input->readMessageEnd();\n";
@@ -3172,7 +3172,7 @@ void t_hack_generator::generate_process_function(
 
   // Declare result for non oneway function
   if (!tfunction->is_oneway()) {
-    f_service_ << indent() << "$result = new " << resultname << "();\n";
+    f_service_ << indent() << "$result = " << resultname << "::fromShape();\n";
   }
 
   // Try block for a function with exceptions
@@ -3870,16 +3870,14 @@ void t_hack_generator::_generate_service_client(
         hack_name(tservice) + "_" + (*f_iter)->get_name() + "_args";
 
     out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
-        << indent() << "$args = new " << argsname << "("
-        << (map_construct_ && !from_map_construct_ ? "Map {" : "") << "\n";
+        << indent() << "$args = " << argsname << "::fromShape("
+        << (!fields.empty() ? "shape(\n" : "");
     indent_up();
     // Loop through the fields and assign to the args struct
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
       indent(out);
       string name = "$" + (*fld_iter)->get_name();
-      if (map_construct_ && !from_map_construct_) {
-        out << "'" << (*fld_iter)->get_name() << "' => ";
-      }
+      out << "'" << (*fld_iter)->get_name() << "' => ";
       if (nullable_everything_) {
         // just passthrough null
         out << name << " === null ? null : ";
@@ -3889,8 +3887,7 @@ void t_hack_generator::_generate_service_client(
       out << ",\n";
     }
     indent_down();
-    out << indent() << (map_construct_ && !from_map_construct_ ? "}" : "")
-        << ");\n";
+    out << (!fields.empty() ? indent() + ")" : "") << ");\n";
     out << indent() << "try {\n";
     indent_up();
     out << indent() << "$this->eventHandler_->preSend('"
@@ -4035,7 +4032,7 @@ void t_hack_generator::_generate_service_client(
           << indent() << "  throw $x;\n"
           << indent() << "}\n";
 
-      out << indent() << "$result = new " << resultname << "();\n"
+      out << indent() << "$result = " << resultname << "::fromShape();\n"
           << indent() << "$result->read($this->input_);\n";
 
       out << indent() << "$this->input_->readMessageEnd();\n";
@@ -4501,8 +4498,8 @@ void t_hack_generator::generate_deserialize_struct(
     ofstream& out,
     t_struct* tstruct,
     string prefix) {
-  out << indent() << "$" << prefix << " = new " << hack_name(tstruct) << "();"
-      << "\n"
+  out << indent() << "$" << prefix << " = " << hack_name(tstruct)
+      << "::fromShape();\n"
       << indent() << "$xfer += $" << prefix << "->read($input);\n";
 }
 
@@ -4940,7 +4937,7 @@ string t_hack_generator::declare_field(
       }
     } else if (type->is_struct() || type->is_xception()) {
       if (obj) {
-        result += " = new " + hack_name(type) + "()";
+        result += " = " + hack_name(type) + "::fromShape()";
       } else {
         result += " = null";
       }

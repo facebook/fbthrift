@@ -1034,14 +1034,14 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
 
     if (idx($parsed, 'v1') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['v1']);
-      $_tmp1 = new Val();
+      $_tmp1 = Val::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->v1 = $_tmp1;
       $this->_type = ValUnionEnum::v1;
     }    
     if (idx($parsed, 'v2') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['v2']);
-      $_tmp3 = new Val();
+      $_tmp3 = Val::fromShape();
       $_tmp3->readFromJson($_tmp2);
       $this->v2 = $_tmp3;
       $this->_type = ValUnionEnum::v2;
@@ -1406,7 +1406,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
 
     if (idx($parsed, 's') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['s']);
-      $_tmp1 = new NonCopyableStruct();
+      $_tmp1 = NonCopyableStruct::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->s = $_tmp1;
       $this->_type = NonCopyableUnionEnum::s;

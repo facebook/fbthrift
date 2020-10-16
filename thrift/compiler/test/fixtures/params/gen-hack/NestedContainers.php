@@ -179,11 +179,11 @@ trait NestedContainersClientBase {
 
   protected function sendImpl_mapList(KeyedContainer<int, KeyedContainer<int, int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new NestedContainers_mapList_args(
-      (new Map($foo))->map(
+    $args = NestedContainers_mapList_args::fromShape(shape(
+      'foo' => (new Map($foo))->map(
         $_val0 ==> new Vector($_val0)
       ),
-    );
+    ));
     try {
       $this->eventHandler_->preSend('mapList', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -246,7 +246,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new NestedContainers_mapList_result();
+        $result = NestedContainers_mapList_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -276,9 +276,9 @@ trait NestedContainersClientBase {
 
   protected function sendImpl_mapSet(KeyedContainer<int, Set<int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new NestedContainers_mapSet_args(
-      new Map($foo),
-    );
+    $args = NestedContainers_mapSet_args::fromShape(shape(
+      'foo' => new Map($foo),
+    ));
     try {
       $this->eventHandler_->preSend('mapSet', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -341,7 +341,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new NestedContainers_mapSet_result();
+        $result = NestedContainers_mapSet_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -371,11 +371,11 @@ trait NestedContainersClientBase {
 
   protected function sendImpl_listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new NestedContainers_listMap_args(
-      (new Vector($foo))->map(
+    $args = NestedContainers_listMap_args::fromShape(shape(
+      'foo' => (new Vector($foo))->map(
         $_val0 ==> new Map($_val0)
       ),
-    );
+    ));
     try {
       $this->eventHandler_->preSend('listMap', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -438,7 +438,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new NestedContainers_listMap_result();
+        $result = NestedContainers_listMap_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -468,9 +468,9 @@ trait NestedContainersClientBase {
 
   protected function sendImpl_listSet(KeyedContainer<int, Set<int>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new NestedContainers_listSet_args(
-      new Vector($foo),
-    );
+    $args = NestedContainers_listSet_args::fromShape(shape(
+      'foo' => new Vector($foo),
+    ));
     try {
       $this->eventHandler_->preSend('listSet', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -533,7 +533,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new NestedContainers_listSet_result();
+        $result = NestedContainers_listSet_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -563,15 +563,15 @@ trait NestedContainersClientBase {
 
   protected function sendImpl_turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new NestedContainers_turtles_args(
-      (new Vector($foo))->map(
+    $args = NestedContainers_turtles_args::fromShape(shape(
+      'foo' => (new Vector($foo))->map(
         $_val0 ==> (new Vector($_val0))->map(
           $_val1 ==> (new Map($_val1))->map(
             $_val2 ==> new Map($_val2)
           )
         )
       ),
-    );
+    ));
     try {
       $this->eventHandler_->preSend('turtles', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -634,7 +634,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new NestedContainers_turtles_result();
+        $result = NestedContainers_turtles_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -1068,12 +1068,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapList_args');
     } else {
-      $args = new NestedContainers_mapList_args();
+      $args = NestedContainers_mapList_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
-    $result = new NestedContainers_mapList_result();
+    $result = NestedContainers_mapList_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
       await $this->handler->mapList($args->foo);
@@ -1112,12 +1112,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapSet_args');
     } else {
-      $args = new NestedContainers_mapSet_args();
+      $args = NestedContainers_mapSet_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
-    $result = new NestedContainers_mapSet_result();
+    $result = NestedContainers_mapSet_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
       await $this->handler->mapSet($args->foo);
@@ -1156,12 +1156,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listMap_args');
     } else {
-      $args = new NestedContainers_listMap_args();
+      $args = NestedContainers_listMap_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
-    $result = new NestedContainers_listMap_result();
+    $result = NestedContainers_listMap_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
       await $this->handler->listMap($args->foo);
@@ -1200,12 +1200,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listSet_args');
     } else {
-      $args = new NestedContainers_listSet_args();
+      $args = NestedContainers_listSet_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
-    $result = new NestedContainers_listSet_result();
+    $result = NestedContainers_listSet_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
       await $this->handler->listSet($args->foo);
@@ -1244,12 +1244,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_turtles_args');
     } else {
-      $args = new NestedContainers_turtles_args();
+      $args = NestedContainers_turtles_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
-    $result = new NestedContainers_turtles_result();
+    $result = NestedContainers_turtles_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
       await $this->handler->turtles($args->foo);
@@ -1295,12 +1295,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapList_args');
     } else {
-      $args = new NestedContainers_mapList_args();
+      $args = NestedContainers_mapList_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
-    $result = new NestedContainers_mapList_result();
+    $result = NestedContainers_mapList_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
       $this->handler->mapList($args->foo);
@@ -1339,12 +1339,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapSet_args');
     } else {
-      $args = new NestedContainers_mapSet_args();
+      $args = NestedContainers_mapSet_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
-    $result = new NestedContainers_mapSet_result();
+    $result = NestedContainers_mapSet_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
       $this->handler->mapSet($args->foo);
@@ -1383,12 +1383,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listMap_args');
     } else {
-      $args = new NestedContainers_listMap_args();
+      $args = NestedContainers_listMap_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
-    $result = new NestedContainers_listMap_result();
+    $result = NestedContainers_listMap_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
       $this->handler->listMap($args->foo);
@@ -1427,12 +1427,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listSet_args');
     } else {
-      $args = new NestedContainers_listSet_args();
+      $args = NestedContainers_listSet_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
-    $result = new NestedContainers_listSet_result();
+    $result = NestedContainers_listSet_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
       $this->handler->listSet($args->foo);
@@ -1471,12 +1471,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_turtles_args');
     } else {
-      $args = new NestedContainers_turtles_args();
+      $args = NestedContainers_turtles_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
-    $result = new NestedContainers_turtles_result();
+    $result = NestedContainers_turtles_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
       $this->handler->turtles($args->foo);

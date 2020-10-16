@@ -931,7 +931,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     }    
     if (idx($parsed, 'n') !== null) {
       $_tmp1 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
-      $_tmp2 = new TrivialNumeric();
+      $_tmp2 = TrivialNumeric::fromShape();
       $_tmp2->readFromJson($_tmp1);
       $this->n = $_tmp2;
     }    
@@ -1146,7 +1146,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     }    
     if (idx($parsed, 'n') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
-      $_tmp1 = new ComplexString();
+      $_tmp1 = ComplexString::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->n = $_tmp1;
     }    
@@ -1472,7 +1472,7 @@ class MyStruct implements \IThriftStruct {
     }    
     if (idx($parsed, 'data') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['data']);
-      $_tmp1 = new MyDataItem();
+      $_tmp1 = MyDataItem::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->data = $_tmp1;
     }    
@@ -1823,13 +1823,13 @@ class ForwardUsageRoot implements \IThriftStruct {
 
     if (idx($parsed, 'ForwardUsageStruct') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageStruct']);
-      $_tmp1 = new ForwardUsageStruct();
+      $_tmp1 = ForwardUsageStruct::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->ForwardUsageStruct = $_tmp1;
     }    
     if (idx($parsed, 'ForwardUsageByRef') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageByRef']);
-      $_tmp3 = new ForwardUsageByRef();
+      $_tmp3 = ForwardUsageByRef::fromShape();
       $_tmp3->readFromJson($_tmp2);
       $this->ForwardUsageByRef = $_tmp3;
     }    
@@ -1908,7 +1908,7 @@ class ForwardUsageStruct implements \IThriftStruct {
 
     if (idx($parsed, 'foo') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
-      $_tmp1 = new ForwardUsageRoot();
+      $_tmp1 = ForwardUsageRoot::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
     }    
@@ -1987,7 +1987,7 @@ class ForwardUsageByRef implements \IThriftStruct {
 
     if (idx($parsed, 'foo') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
-      $_tmp1 = new ForwardUsageRoot();
+      $_tmp1 = ForwardUsageRoot::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
     }    

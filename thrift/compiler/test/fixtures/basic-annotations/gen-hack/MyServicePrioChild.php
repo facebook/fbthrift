@@ -67,8 +67,7 @@ trait MyServicePrioChildClientBase {
 
   protected function sendImpl_pang(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyServicePrioChild_pang_args(
-    );
+    $args = MyServicePrioChild_pang_args::fromShape();
     try {
       $this->eventHandler_->preSend('pang', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -131,7 +130,7 @@ trait MyServicePrioChildClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new MyServicePrioChild_pang_result();
+        $result = MyServicePrioChild_pang_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -265,12 +264,12 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
-      $args = new MyServicePrioChild_pang_args();
+      $args = MyServicePrioChild_pang_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'pang', $args);
-    $result = new MyServicePrioChild_pang_result();
+    $result = MyServicePrioChild_pang_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
       await $this->handler->pang();
@@ -316,12 +315,12 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
-      $args = new MyServicePrioChild_pang_args();
+      $args = MyServicePrioChild_pang_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'pang', $args);
-    $result = new MyServicePrioChild_pang_result();
+    $result = MyServicePrioChild_pang_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
       $this->handler->pang();

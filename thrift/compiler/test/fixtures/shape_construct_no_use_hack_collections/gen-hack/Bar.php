@@ -83,15 +83,15 @@ trait BarClientBase {
 
   protected function sendImpl_baz(dict<int, bool> $a, KeyedContainer<int, KeyedContainer<int, dict<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new Bar_baz_args(
-      $a,
-      varray(Vec\map($b, 
+    $args = Bar_baz_args::fromShape(shape(
+      'a' => $a,
+      'b' => varray(Vec\map($b, 
         $_val0 ==> darray($_val0)
       )),
-      $c,
-      $d,
-      $e,
-    );
+      'c' => $c,
+      'd' => $d,
+      'e' => $e,
+    ));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -154,7 +154,7 @@ trait BarClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new Bar_baz_result();
+        $result = Bar_baz_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {

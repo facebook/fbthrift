@@ -83,15 +83,15 @@ trait BarClientBase {
 
   protected function sendImpl_baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new Bar_baz_args(
-      $a,
-      (new Vector($b))->map(
+    $args = Bar_baz_args::fromShape(shape(
+      'a' => $a,
+      'b' => (new Vector($b))->map(
         $_val0 ==> new Map($_val0)
       ),
-      $c,
-      $d,
-      $e,
-    );
+      'c' => $c,
+      'd' => $d,
+      'e' => $e,
+    ));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -154,7 +154,7 @@ trait BarClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new Bar_baz_result();
+        $result = Bar_baz_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -306,12 +306,12 @@ abstract class BarAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
-      $args = new Bar_baz_args();
+      $args = Bar_baz_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
-    $result = new Bar_baz_result();
+    $result = Bar_baz_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = await $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
@@ -357,12 +357,12 @@ abstract class BarSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
-      $args = new Bar_baz_args();
+      $args = Bar_baz_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
-    $result = new Bar_baz_result();
+    $result = Bar_baz_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);

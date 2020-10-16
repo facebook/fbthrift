@@ -95,8 +95,7 @@ trait MyServicePrioParentClientBase {
 
   protected function sendImpl_ping(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyServicePrioParent_ping_args(
-    );
+    $args = MyServicePrioParent_ping_args::fromShape();
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -159,7 +158,7 @@ trait MyServicePrioParentClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new MyServicePrioParent_ping_result();
+        $result = MyServicePrioParent_ping_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -189,8 +188,7 @@ trait MyServicePrioParentClientBase {
 
   protected function sendImpl_pong(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = new MyServicePrioParent_pong_args(
-    );
+    $args = MyServicePrioParent_pong_args::fromShape();
     try {
       $this->eventHandler_->preSend('pong', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -253,7 +251,7 @@ trait MyServicePrioParentClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = new MyServicePrioParent_pong_result();
+        $result = MyServicePrioParent_pong_result::fromShape();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -462,12 +460,12 @@ abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcess
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_ping_args');
     } else {
-      $args = new MyServicePrioParent_ping_args();
+      $args = MyServicePrioParent_ping_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
-    $result = new MyServicePrioParent_ping_result();
+    $result = MyServicePrioParent_ping_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
       await $this->handler->ping();
@@ -506,12 +504,12 @@ abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcess
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_pong_args');
     } else {
-      $args = new MyServicePrioParent_pong_args();
+      $args = MyServicePrioParent_pong_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'pong', $args);
-    $result = new MyServicePrioParent_pong_result();
+    $result = MyServicePrioParent_pong_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
       await $this->handler->pong();
@@ -557,12 +555,12 @@ abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_ping_args');
     } else {
-      $args = new MyServicePrioParent_ping_args();
+      $args = MyServicePrioParent_ping_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
-    $result = new MyServicePrioParent_ping_result();
+    $result = MyServicePrioParent_ping_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
       $this->handler->ping();
@@ -601,12 +599,12 @@ abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_pong_args');
     } else {
-      $args = new MyServicePrioParent_pong_args();
+      $args = MyServicePrioParent_pong_args::fromShape();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'pong', $args);
-    $result = new MyServicePrioParent_pong_result();
+    $result = MyServicePrioParent_pong_result::fromShape();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
       $this->handler->pong();

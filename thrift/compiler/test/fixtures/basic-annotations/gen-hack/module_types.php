@@ -267,7 +267,7 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'nest') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['nest']);
-      $_tmp1 = new MyStructNestedAnnotation();
+      $_tmp1 = MyStructNestedAnnotation::fromShape();
       $_tmp1->readFromJson($_tmp0);
       $this->nest = $_tmp1;
     }    
