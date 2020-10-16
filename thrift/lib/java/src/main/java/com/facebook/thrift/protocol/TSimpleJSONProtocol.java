@@ -357,17 +357,23 @@ public class TSimpleJSONProtocol extends TProtocol {
     private boolean hasData_;
     private byte[] data_ = new byte[1];
 
+    private boolean hasNextData_ = false;
+    private byte[] nextData_ = new byte[1];
+
     // Return and consume the next byte to be read, either taking it from the
     // data buffer if present or getting it from the transport otherwise.
     protected byte read(boolean skip) throws TException {
+      if (hasNextData_) {
+        byte result = data_[0];
+        data_[0] = nextData_[0];
+        hasNextData_ = false;
+        return result;
+      }
+
       if (hasData_) {
         hasData_ = false;
       } else {
-        byte b;
-        do {
-          trans_.readAll(data_, 0, 1);
-          b = data_[0];
-        } while (skip && (b == WHITE_SPACE || b == TAB || b == NEW_LINE || b == CARRIAGE_RETURN));
+        readDirectly(data_, skip);
       }
       return data_[0];
     }
@@ -384,6 +390,27 @@ public class TSimpleJSONProtocol extends TProtocol {
       }
       hasData_ = true;
       return data_[0];
+    }
+
+    private byte peekNext() throws TException {
+      if (!hasNextData_) {
+        peek();
+        readDirectly(nextData_);
+        hasNextData_ = true;
+      }
+      return nextData_[0];
+    }
+
+    private void readDirectly(byte[] data) {
+      readDirectly(data, true);
+    }
+
+    private void readDirectly(byte[] data, boolean skip) {
+      byte b;
+      do {
+        trans_.readAll(data, 0, 1);
+        b = data[0];
+      } while (skip && (b == WHITE_SPACE || b == TAB || b == NEW_LINE || b == CARRIAGE_RETURN));
     }
   }
 
@@ -792,6 +819,9 @@ public class TSimpleJSONProtocol extends TProtocol {
       try {
         final String fieldName = readJSONString().toString(StandardCharsets.UTF_8.name());
         final Integer fieldId = currentReadContext.namesToIds.get(fieldName);
+        if (fieldId == null) {
+          return new TField(fieldName, getTypeIDForPeekedByte(reader_.peekNext()), (short) 0);
+        }
         return currentReadContext.fieldMetadata.get(fieldId);
       } catch (Exception e) {
         throw new TException(e);

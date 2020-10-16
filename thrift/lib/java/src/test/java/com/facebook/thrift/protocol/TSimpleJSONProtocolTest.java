@@ -467,4 +467,27 @@ public class TSimpleJSONProtocolTest {
     Assert.assertEquals(-9999, read.getJ());
     Assert.assertEquals(97, read.getY());
   }
+
+  @Test
+  public void testExtraField() throws Exception {
+    testUnknown("{\"unknown_field\":1337}");
+    testUnknown("{\"unknown_field\": 1337}");
+    testUnknown("{\"unknown_field\" : 1337}");
+    testUnknown("{\"unknown_field\" :1337}");
+    testUnknown("{\"unknown_field\":\"1337\"}");
+    testUnknown("{\"unknown_field\": \"1337\"}");
+    testUnknown("{\"unknown_field\" :[ \"1337\"]}");
+    testUnknown("{\"unknown_field\" : [ \"1337\"]}");
+  }
+
+  private void testUnknown(String json) {
+    EveryLayout everyLayout = new EveryLayout.Builder().build();
+
+    ByteArrayInputStream bis = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+    TIOStreamTransport transport = new TIOStreamTransport(bis);
+    TSimpleJSONProtocol protocol = new TSimpleJSONProtocol(transport);
+    EveryLayout read = new EveryLayout();
+    read.read(protocol);
+    Assert.assertEquals(everyLayout, read);
+  }
 }
