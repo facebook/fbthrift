@@ -59,6 +59,7 @@ static void unexpected_token(parsing_driver& driver, char* text) {
  * Current level of '{}' blocks. Some keywords (e.g. 'sink') are considered as
  * reserved only if appears at some certain scope and might be used for other
  * purposes like field names.
+ * Interactions count as services for this purpose.
  */
 int g_scope_level = 0;
 bool service_encountered = false;
@@ -171,7 +172,10 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
   }
 }
 "stream"             { return apache::thrift::compiler::yy::parser::make_tok_stream();               }
-"interaction"        { return apache::thrift::compiler::yy::parser::make_tok_interaction();          }
+"interaction"        {
+  service_encountered = true; // treat sink as keyword inside interactions
+  return apache::thrift::compiler::yy::parser::make_tok_interaction();
+}
 "performs"           { return apache::thrift::compiler::yy::parser::make_tok_performs();             }
 "oneway"             { return apache::thrift::compiler::yy::parser::make_tok_oneway();               }
 "typedef"            { return apache::thrift::compiler::yy::parser::make_tok_typedef();              }

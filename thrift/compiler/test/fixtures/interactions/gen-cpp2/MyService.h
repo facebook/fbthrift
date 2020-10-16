@@ -49,11 +49,29 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
     std::terminate();
   }
 #if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<void> co_frobnicate();
-  virtual folly::coro::Task<void> co_frobnicate(apache::thrift::RequestParams params);
+  virtual folly::coro::Task<int32_t> co_frobnicate();
+  virtual folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RequestParams params);
 #endif
-  virtual folly::SemiFuture<folly::Unit> semifuture_frobnicate();
-  void async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
+  virtual folly::SemiFuture<int32_t> semifuture_frobnicate();
+  void async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<void> co_ping();
+  virtual folly::coro::Task<void> co_ping(apache::thrift::RequestParams params);
+#endif
+  virtual folly::SemiFuture<folly::Unit> semifuture_ping();
+  void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<apache::thrift::ServerStream<bool>> co_truthify();
+  virtual folly::coro::Task<apache::thrift::ServerStream<bool>> co_truthify(apache::thrift::RequestParams params);
+#endif
+  virtual folly::SemiFuture<apache::thrift::ServerStream<bool>> semifuture_truthify();
+  void async_tm_truthify(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<bool>>> callback);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>> co_encode();
+  virtual folly::coro::Task<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>> co_encode(apache::thrift::RequestParams params);
+#endif
+  virtual folly::SemiFuture<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>> semifuture_encode();
+  void async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>>> callback);
 };
   virtual std::unique_ptr<MyInteractionIf> createMyInteraction();
   virtual void foo();
@@ -108,9 +126,29 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_MyInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_MyInteraction_frobnicate(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static folly::IOBufQueue return_MyInteraction_frobnicate(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_MyInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_MyInteraction_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_MyInteraction_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_MyInteraction_truthify(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_MyInteraction_truthify(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static apache::thrift::ResponseAndServerStreamFactory return_MyInteraction_truthify(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<bool> _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_MyInteraction_truthify(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_MyInteraction_encode(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_MyInteraction_encode(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_MyInteraction_encode(apache::thrift::ContextStack* ctx, apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>&& _return, folly::Executor::KeepAlive<> executor);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_MyInteraction_encode(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyServiceAsyncProcessor(MyServiceSvIf* iface) :
       iface_(iface) {}

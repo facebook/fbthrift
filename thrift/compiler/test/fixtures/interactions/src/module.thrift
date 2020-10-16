@@ -15,7 +15,10 @@
  */
 
 interaction MyInteraction {
-  void frobnicate();
+  i32 frobnicate();
+  oneway void ping();
+  stream<bool> truthify();
+  set<float>, sink<string, binary> encode();
 }
 
 service MyService {

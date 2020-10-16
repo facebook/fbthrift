@@ -49,7 +49,7 @@ private:
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_frobnicate() {
+  folly::coro::Task<int32_t> co_frobnicate() {
     auto _task = semifuture_frobnicate();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
@@ -60,7 +60,7 @@ private:
     }
   }
   template <int = 0>
-  folly::coro::Task<void> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
     auto _task = semifuture_frobnicate(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
@@ -72,14 +72,108 @@ private:
   }
 #endif // FOLLY_HAS_COROUTINES
 
-  folly::SemiFuture<folly::Unit> semifuture_frobnicate();
-  folly::SemiFuture<folly::Unit> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
+  folly::SemiFuture<int32_t> semifuture_frobnicate();
+  folly::SemiFuture<int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
-  static folly::exception_wrapper recv_wrapped_frobnicate(::apache::thrift::ClientReceiveState& state);
-  static void recv_frobnicate(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_frobnicate(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+ public:
+private:
+  virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ protected:
+  void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+ public:
+
+#if FOLLY_HAS_COROUTINES
+  template <int = 0>
+  folly::coro::Task<void> co_ping() {
+    auto _task = semifuture_ping();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_ping(apache::thrift::RpcOptions& rpcOptions) {
+    auto _task = semifuture_ping(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+#endif // FOLLY_HAS_COROUTINES
+
+  folly::SemiFuture<folly::Unit> semifuture_ping();
+  folly::SemiFuture<folly::Unit> semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
+
+ private:
+  template <typename Protocol_>
+  void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+ public:
+private:
+  virtual void truthify(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ protected:
+  void truthifyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
+ public:
+
+#if FOLLY_HAS_COROUTINES
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ClientBufferedStream<bool>> co_truthify() {
+    auto _task = semifuture_truthify();
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ClientBufferedStream<bool>> co_truthify(apache::thrift::RpcOptions& rpcOptions) {
+    auto _task = semifuture_truthify(rpcOptions);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+#endif // FOLLY_HAS_COROUTINES
+
+  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify();
+  folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
+
+  static folly::exception_wrapper recv_wrapped_truthify(apache::thrift::ClientBufferedStream<bool>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientBufferedStream<bool> recv_truthify(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void truthifyT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
+ public:
+ protected:
+  void encodeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
+#if FOLLY_HAS_COROUTINES
+  folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> co_encode();
+  folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> co_encode(apache::thrift::RpcOptions& rpcOptions);
+#endif // FOLLY_HAS_COROUTINES
+
+  static folly::exception_wrapper recv_wrapped_encode(apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string> recv_encode(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void encodeT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 };
   MyInteraction createMyInteraction();
