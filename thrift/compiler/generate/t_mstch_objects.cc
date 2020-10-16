@@ -22,6 +22,10 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+namespace {
+constexpr auto kAnyTypeNameAnnotation = "any_type.name";
+}
+
 std::shared_ptr<mstch_base> enum_value_generator::generate(
     t_enum_value const* enum_value,
     std::shared_ptr<mstch_generators const> generators,
@@ -487,6 +491,16 @@ mstch::node mstch_struct::fields() {
   return generate_fields(strct_->get_members());
 }
 
+mstch::node mstch_struct::any_type() {
+  if (cache_->parsed_options_.count("any")) {
+    auto itr = strct_->annotations_.find(kAnyTypeNameAnnotation);
+    if (itr != strct_->annotations_.end()) {
+      return itr->second;
+    }
+  }
+  return std::string();
+}
+
 mstch::node mstch_function::return_type() {
   return generators_->type_generator_->generate(
       function_->get_returntype(), generators_, cache_, pos_);
@@ -566,6 +580,18 @@ mstch::node mstch_const::value() {
 mstch::node mstch_const::program() {
   return generators_->program_generator_->generate(
       cnst_->get_program(), generators_, cache_, pos_);
+}
+
+mstch::node mstch_program::has_any_types() {
+  if (cache_->parsed_options_.count("any")) {
+    for (const auto& strct : program_->get_structs()) {
+      if (strct->annotations_.find(kAnyTypeNameAnnotation) !=
+          strct->annotations_.end()) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 mstch::node mstch_program::structs() {
