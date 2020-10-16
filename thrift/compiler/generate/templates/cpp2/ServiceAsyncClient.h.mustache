@@ -29,18 +29,18 @@
 <%#service:cpp_includes%>
 #include <%cpp_include%>
 <%/service:cpp_includes%>
-<%#service:any_sinks?%>
+<%#service:sinks?%>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/Sink.h>
-<%/service:any_sinks?%>
-<%#service:any_streams?%>
+<%/service:sinks?%>
+<%#service:streams?%>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
-<%/service:any_streams?%>
-<%#service:any_interactions?%>
+<%/service:streams?%>
+<%#service:interactions?%>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/Sink.h>
-<%/service:any_interactions?%>
+<%/service:interactions?%>
 
 namespace apache { namespace thrift {
   class Cpp2RequestContext;

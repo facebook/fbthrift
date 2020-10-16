@@ -151,8 +151,7 @@ class t_function : public t_annotated {
     return oneway_;
   }
 
-  // Does the function return a stream?
-  bool any_streams() const {
+  bool returns_stream() const {
     return returntype_->is_streamresponse();
   }
 

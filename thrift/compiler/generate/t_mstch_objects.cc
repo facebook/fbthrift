@@ -527,12 +527,8 @@ mstch::node mstch_function::arg_list() {
   return generate_fields(function_->get_arglist()->get_members());
 }
 
-mstch::node mstch_function::any_streams() {
-  return function_->any_streams();
-}
-
 mstch::node mstch_function::returns_stream() {
-  return function_->get_returntype()->is_streamresponse();
+  return function_->returns_stream();
 }
 
 mstch::node mstch_service::functions() {

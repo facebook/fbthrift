@@ -33,22 +33,22 @@
  public:
   using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<<%service:name%>AsyncProcessor>;
   using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
-<%#service:any_interactions?%>
+<%#service:interactions?%>
   using InteractionConstructor = GeneratedAsyncProcessor::InteractionConstructor<<%service:name%>AsyncProcessor>;
   using InteractionConstructorMap = GeneratedAsyncProcessor::InteractionConstructorMap<InteractionConstructor>;
-<%/service:any_interactions?%>
+<%/service:interactions?%>
   static const <%service:name%>AsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
   static const <%service:name%>AsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
-<%#service:any_interactions?%>
+<%#service:interactions?%>
   static const <%service:name%>AsyncProcessor::InteractionConstructorMap& getInteractionConstructorMap();
   std::unique_ptr<apache::thrift::Tile> createInteractionImpl(const std::string& name) override;
-<%/service:any_interactions?%>
+<%/service:interactions?%>
  private:
   static const <%service:name%>AsyncProcessor::ProcessMap binaryProcessMap_;
   static const <%service:name%>AsyncProcessor::ProcessMap compactProcessMap_;
-<%#service:any_interactions?%>
+<%#service:interactions?%>
   static const <%service:name%>AsyncProcessor::InteractionConstructorMap interactionConstructorMap_;
-<%/service:any_interactions?%>
+<%/service:interactions?%>
  private:
 <%#service:functions%>
 <% > service_h/async_processor_per_function%>

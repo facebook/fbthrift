@@ -3583,7 +3583,7 @@ const std::vector<t_function*>& t_py_generator::get_functions(
   }
   std::vector<t_function*> funcs;
   for (auto func : tservice->get_functions()) {
-    if (!func->any_streams() && !func->returns_sink()) {
+    if (!func->returns_stream() && !func->returns_sink()) {
       funcs.push_back(func);
     }
   }

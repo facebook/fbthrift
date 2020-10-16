@@ -81,7 +81,7 @@
         }}{{#service:extends}}{{service:package}}::client::{{service:name}} + {{/service:extends}}{{!
         }}::std::marker::Send {{>lib/block}}{{!
 
-        }}{{#service:rustFunctions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -91,7 +91,7 @@
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>>;{{!
-        }}{{/function:any_streams?}}{{/service:rustFunctions}}
+        }}{{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
     impl<P, T> {{service:name}} for {{service:name}}Impl<P, T>
@@ -102,7 +102,7 @@
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
     {{>lib/block}}{{!
-        }}{{#service:rustFunctions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -178,7 +178,7 @@
                 }))
                 .boxed()
         }
-        {{/function:any_streams?}}{{/service:rustFunctions}}
+        {{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
     impl<'a, T> {{service:name}} for T
@@ -191,7 +191,7 @@
         {{/service:extendedServices}}
         T: ::std::marker::Send,
     {
-        {{#service:rustFunctions}}{{^function:any_streams?}}
+        {{#service:rustFunctions}}{{^function:returns_streams?}}
         fn {{function:name}}(
             &self,
             {{#function:args}}
@@ -207,7 +207,7 @@
                 {{/function:args}}
             )
         }
-        {{/function:any_streams?}}{{/service:rustFunctions}}
+        {{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
     pub struct make_{{service:name}};

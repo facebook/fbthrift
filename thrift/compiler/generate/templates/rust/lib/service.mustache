@@ -17,7 +17,7 @@
 }}
 
     pub mod {{service:snake}} {{>lib/block}}{{!
-        }}{{#service:rustFunctions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
 
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}Exn {
@@ -157,6 +157,6 @@
                 }}{{/function:void?}}
             }
         }{{!
-        }}{{/function:any_streams?}}{{/service:rustFunctions}}
+        }}{{/function:returns_streams?}}{{/service:rustFunctions}}
     }
     {{!newline}}

@@ -93,7 +93,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
     }
 
     {{#service:functions}}
-    {{^function:any_streams?}}{{^function:returns_sink?}}
+    {{^function:returns_streams?}}{{^function:returns_sink?}}
 
     @java.lang.Override
     public {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
@@ -114,11 +114,11 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         throw new org.apache.thrift.TException(t);
       }
     }
-    {{/function:returns_sink?}}{{/function:any_streams?}}
+    {{/function:returns_sink?}}{{/function:returns_streams?}}
     {{/service:functions}}
 
     {{#service:functions}}
-    {{^function:any_streams?}}{{^function:returns_sink?}}
+    {{^function:returns_streams?}}{{^function:returns_sink?}}
 
     public {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
@@ -139,6 +139,6 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         throw new org.apache.thrift.TException(t);
       }
     }
-    {{/function:returns_sink?}}{{/function:any_streams?}}
+    {{/function:returns_sink?}}{{/function:returns_streams?}}
     {{/service:functions}}
 }

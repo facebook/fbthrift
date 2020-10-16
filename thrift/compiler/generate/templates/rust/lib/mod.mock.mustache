@@ -20,9 +20,9 @@
         {{#service:extends}}
         pub parent: {{service:package}}::mock::{{service:name}}<'mock>,
         {{/service:extends}}
-        {{#service:rustFunctions}}{{^function:any_streams?}}
+        {{#service:rustFunctions}}{{^function:returns_streams?}}
         pub {{function:name}}: r#impl::{{service:snake}}::{{function:name}}<'mock>,
-        {{/function:any_streams?}}{{/service:rustFunctions}}
+        {{/function:returns_streams?}}{{/service:rustFunctions}}
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -32,10 +32,10 @@
                 {{#service:extends}}
                 parent: {{service:package}}::client::{{service:name}}::mock(),
                 {{/service:extends}}
-                {{#service:rustFunctions}}{{^function:any_streams?}}
+                {{#service:rustFunctions}}{{^function:returns_streams?}}
                 {{function:name}}: {{!
                     }}r#impl::{{service:snake}}::{{function:name}}::unimplemented(),
-                {{/function:any_streams?}}{{/service:rustFunctions}}
+                {{/function:returns_streams?}}{{/service:rustFunctions}}
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -43,7 +43,7 @@
 
     #[::async_trait::async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
-        }}{{#service:rustFunctions}}{{^function:any_streams?}}
+        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
@@ -73,7 +73,7 @@
                 }}{{/function:args}}{{!
             }})))
         }{{!
-        }}{{/function:any_streams?}}{{/service:rustFunctions}}
+        }}{{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
     {{#service:extendedServices}}
@@ -97,7 +97,7 @@
     }}{{#program:services}}
         pub mod {{service:snake}} {{>lib/block}}{{!
 
-            }}{{#service:rustFunctions}}{{^function:any_streams?}}
+            }}{{#service:rustFunctions}}{{^function:returns_streams?}}
 
             pub struct {{function:name}}<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
@@ -201,7 +201,7 @@
                     }}| ::std::result::Result::Err(exception.clone().into()));
                 }
             }{{!
-            }}{{/function:any_streams?}}{{/service:rustFunctions}}
+            }}{{/function:returns_streams?}}{{/service:rustFunctions}}
         }{{!
     }}{{/program:services}}
     }

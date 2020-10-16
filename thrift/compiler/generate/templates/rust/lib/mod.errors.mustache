@@ -19,7 +19,7 @@
     {{#program:services}}
     pub mod {{service:snake}} {
 
-        {{#service:rustFunctions}}{{^function:any_streams?}}
+        {{#service:rustFunctions}}{{^function:returns_streams?}}
         {{#function:exceptions?}}
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}Error {
@@ -57,7 +57,7 @@
         pub type {{function:upcamel}}Error = ::fbthrift::NonthrowingFunctionError;
         {{/function:exceptions?}}
 
-        {{/function:any_streams?}}{{/service:rustFunctions}}
+        {{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
     {{/program:services}}

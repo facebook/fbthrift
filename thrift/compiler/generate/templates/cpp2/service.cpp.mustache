@@ -54,7 +54,7 @@ std::shared_ptr<folly::RequestContext> <%service:name%>AsyncProcessor::getBaseCo
 
 <% > service_cpp/compact_processmap%>
 
-<%#service:any_interactions?%>
+<%#service:interactions?%>
 <% > service_cpp/interaction_constructor_map%>
-<%/service:any_interactions?%>
+<%/service:interactions?%>
 <% > common/namespace_cpp2_end%>

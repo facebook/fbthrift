@@ -1013,7 +1013,7 @@ class mstch_function : public mstch_base {
             {"function:comma", &mstch_function::has_args},
             {"function:priority", &mstch_function::priority},
             {"function:returns_sink?", &mstch_function::returns_sink},
-            {"function:any_streams?", &mstch_function::any_streams},
+            {"function:returns_streams?", &mstch_function::returns_stream},
             {"function:returns_stream?", &mstch_function::returns_stream},
             {"function:annotations", &mstch_function::annotations},
             {"function:starts_interaction?",
@@ -1066,7 +1066,6 @@ class mstch_function : public mstch_base {
   mstch::node sink_exceptions();
   mstch::node sink_final_response_exceptions();
   mstch::node arg_list();
-  mstch::node any_streams();
   mstch::node returns_stream();
   mstch::node starts_interaction() {
     return function_->get_returntype()->is_service();
@@ -1092,12 +1091,12 @@ class mstch_service : public mstch_base {
             {"service:functions?", &mstch_service::has_functions},
             {"service:extends", &mstch_service::extends},
             {"service:extends?", &mstch_service::has_extends},
-            {"service:any_streams?", &mstch_service::any_streams},
-            {"service:any_sinks?", &mstch_service::any_sinks},
+            {"service:streams?", &mstch_service::has_streams},
+            {"service:sinks?", &mstch_service::has_sinks},
             {"service:annotations", &mstch_service::annotations},
-            {"service:interactions", &mstch_service::interactions},
             {"service:interaction?", &mstch_service::is_interaction},
-            {"service:any_interactions?", &mstch_service::any_interactions},
+            {"service:interactions", &mstch_service::interactions},
+            {"service:interactions?", &mstch_service::has_interactions},
         });
   }
 
@@ -1119,19 +1118,22 @@ class mstch_service : public mstch_base {
   mstch::node annotations() {
     return mstch_base::annotations(service_);
   }
-  mstch::node any_streams() {
+
+  mstch::node has_streams() {
     auto& funcs = service_->get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
-      return func->any_streams();
+      return func->returns_stream();
     });
   }
-  mstch::node any_sinks() {
+
+  mstch::node has_sinks() {
     auto& funcs = service_->get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->returns_sink();
     });
   }
-  mstch::node any_interactions() {
+
+  mstch::node has_interactions() {
     auto& funcs = service_->get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->get_returntype()->is_service();
