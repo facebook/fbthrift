@@ -298,7 +298,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
         clientQueueTimeout_, clientTimeout_, queueTimeout, taskTimeout);
 
     auto reqContext = getRequestContext();
-    reqContext->setRequestTimeout(taskTimeout);
+    if (clientTimeout_ > std::chrono::milliseconds::zero()) {
+      reqContext->setRequestTimeout(clientTimeout_);
+    } else {
+      reqContext->setRequestTimeout(taskTimeout);
+    }
 
     if (differentTimeouts) {
       if (queueTimeout > std::chrono::milliseconds(0)) {
