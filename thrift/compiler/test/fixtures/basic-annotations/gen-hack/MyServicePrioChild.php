@@ -379,7 +379,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
     );
   }
@@ -440,7 +440,7 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
     );
   }

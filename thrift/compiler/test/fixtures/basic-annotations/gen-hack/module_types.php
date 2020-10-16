@@ -54,7 +54,7 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'name'),
     );
@@ -185,7 +185,7 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'count'),
       Shapes::idx($shape, 'name'),
@@ -378,7 +378,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'major'),
       Shapes::idx($shape, 'package'),
@@ -544,7 +544,7 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'id'),
       Shapes::idx($shape, 'password'),

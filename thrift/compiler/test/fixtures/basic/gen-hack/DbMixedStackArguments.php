@@ -687,7 +687,7 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'key'),
     );
@@ -765,7 +765,7 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
@@ -836,7 +836,7 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'key'),
     );
@@ -914,7 +914,7 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );

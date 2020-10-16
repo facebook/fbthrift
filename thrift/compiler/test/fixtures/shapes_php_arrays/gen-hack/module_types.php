@@ -209,7 +209,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Map {
         'just_int' => Shapes::idx($shape, 'just_int'),

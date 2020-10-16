@@ -73,6 +73,8 @@ interface IThriftStruct extends IAnnotatedThriftStruct {
 
   <<__Rx>>
   public function __construct();
+  <<__Rx>>
+  public function fromShape();
   public function getName(): string;
   public function read(TProtocol $input): int;
   public function write(TProtocol $input): int;

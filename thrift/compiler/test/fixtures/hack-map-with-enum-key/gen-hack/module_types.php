@@ -83,7 +83,7 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'e'),
       Shapes::idx($shape, 's'),

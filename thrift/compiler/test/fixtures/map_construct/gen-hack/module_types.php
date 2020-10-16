@@ -114,7 +114,7 @@ class Foo implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Map {
         'a' => Shapes::idx($shape, 'a'),
@@ -260,7 +260,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Map {
         'string_field' => Shapes::idx($shape, 'string_field'),
@@ -473,7 +473,7 @@ class Baz extends \TException implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Map {
         'message' => Shapes::idx($shape, 'message'),
@@ -554,7 +554,7 @@ class OptBaz extends \TException implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Map {
         'message' => Shapes::idx($shape, 'message'),

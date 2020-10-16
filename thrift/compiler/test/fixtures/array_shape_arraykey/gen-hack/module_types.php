@@ -65,7 +65,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'just_an_enum'),
       Shapes::idx($shape, 'a'),
@@ -581,7 +581,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
       Shapes::idx($shape, 'map_of_string_to_i32'),
@@ -1373,7 +1373,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape = shape()): this {
     return new static(
       Shapes::idx($shape, 'just_an_A'),
       Shapes::idx($shape, 'just_an_enum'),

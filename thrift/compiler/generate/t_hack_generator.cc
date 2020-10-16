@@ -2859,7 +2859,7 @@ void t_hack_generator::generate_php_struct_from_shape(
     t_struct* tstruct) {
   indent(out) << "<<__Rx>>\n";
   out << indent() << "public static function fromShape"
-      << "(self::TConstructorShape $shape): this {\n";
+      << "(self::TConstructorShape $shape = shape()): this {\n";
   indent_up();
   out << indent() << "return new static(\n";
   indent_up();
