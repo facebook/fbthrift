@@ -184,16 +184,12 @@ class t_mstch_swift_generator : public t_mstch_generator {
       return;
     }
     auto name = program->get_name();
-    const auto& id = program->get_path();
-    if (!cache_->programs_.count(id)) {
-      cache_->programs_[id] = generators_->program_generator_->generate(
-          program, generators_, cache_);
-    }
+    const auto& prog = cached_program(program);
+
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
     auto constant_file_name = get_constants_class_name(*program) + ".java";
-    render_to_file(
-        cache_->programs_[id], "Constants", package_dir / constant_file_name);
+    render_to_file(prog, "Constants", package_dir / constant_file_name);
   }
 
   void generate_placeholder(const t_program* program) {

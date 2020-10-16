@@ -350,11 +350,7 @@ class mstch_cpp2_enum : public mstch_enum {
     return get_fatal_annotations(enm_->annotations_).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_elements(
-        get_fatal_annotations(enm_->annotations_),
-        generators_->annotation_generator_.get(),
-        generators_,
-        cache_);
+    return generate_annotations(get_fatal_annotations(enm_->annotations_));
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(enm_->get_type_id());
@@ -386,11 +382,8 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
     return get_fatal_annotations(enm_value_->annotations_).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_elements(
-        get_fatal_annotations(enm_value_->annotations_),
-        generators_->annotation_generator_.get(),
-        generators_,
-        cache_);
+    return generate_annotations(
+        get_fatal_annotations(enm_value_->annotations_));
   }
 };
 
@@ -754,11 +747,7 @@ class mstch_cpp2_field : public mstch_field {
     return field_has_isset(field_);
   }
   mstch::node fatal_annotations() {
-    return generate_elements(
-        get_fatal_annotations(field_->annotations_),
-        generators_->annotation_generator_.get(),
-        generators_,
-        cache_);
+    return generate_annotations(get_fatal_annotations(field_->annotations_));
   }
   mstch::node fatal_required_qualifier() {
     switch (field_->get_req()) {
@@ -881,11 +870,7 @@ class mstch_cpp2_struct : public mstch_struct {
         filtered_fields.push_back(field);
       }
     }
-    return generate_elements(
-        filtered_fields,
-        generators_->field_generator_.get(),
-        generators_,
-        cache_);
+    return generate_fields(filtered_fields);
   }
 
   mstch::node mixin_fields() {
@@ -985,8 +970,7 @@ class mstch_cpp2_struct : public mstch_struct {
     if (fields.empty()) {
       return mstch::node();
     }
-    return generate_elements(
-        fields, generators_->field_generator_.get(), generators_, cache_);
+    return generate_fields(fields);
   }
   mstch::node is_large() {
     // Outline constructors and destructors if the struct has
@@ -1013,11 +997,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return get_fatal_annotations(strct_->annotations_).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_elements(
-        get_fatal_annotations(strct_->annotations_),
-        generators_->annotation_generator_.get(),
-        generators_,
-        cache_);
+    return generate_annotations(get_fatal_annotations(strct_->annotations_));
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(strct_->get_type_id());
@@ -1136,11 +1116,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 
   mstch::node fields_in_layout_order() {
-    return generate_elements(
-        get_members_in_layout_order(),
-        generators_->field_generator_.get(),
-        generators_,
-        cache_);
+    return generate_fields(get_members_in_layout_order());
   }
 
   // Returns the struct members ordered by the key.
@@ -1162,11 +1138,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 
   mstch::node fields_in_key_order() {
-    return generate_elements(
-        get_members_in_key_order(),
-        generators_->field_generator_.get(),
-        generators_,
-        cache_);
+    return generate_fields(get_members_in_key_order());
   }
 
   std::shared_ptr<cpp2_generator_context> context_;
@@ -1250,13 +1222,8 @@ class mstch_cpp2_service : public mstch_service {
     mstch::array a{};
     for (auto const* program :
          service_->get_program()->get_included_programs()) {
-      const auto& program_id = program->get_path();
-      if (!cache_->programs_.count(program_id)) {
-        cache_->programs_[program_id] =
-            generators_->program_generator_->generate(
-                program, generators_, cache_);
-      }
-      a.push_back(cache_->programs_[program_id]);
+      a.push_back(generators_->program_generator_->generate_cached(
+          program, generators_, cache_));
     }
     return a;
   }
@@ -1270,11 +1237,7 @@ class mstch_cpp2_service : public mstch_service {
         oneway_functions.push_back(function);
       }
     }
-    return generate_elements(
-        oneway_functions,
-        generators_->function_generator_.get(),
-        generators_,
-        cache_);
+    return generate_functions(oneway_functions);
   }
   mstch::node has_oneway() {
     for (auto const* function : service_->get_functions()) {
@@ -1513,13 +1476,8 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node thrift_includes() {
     mstch::array a{};
     for (auto const* program : program_->get_included_programs()) {
-      const auto& program_id = program->get_path();
-      if (!cache_->programs_.count(program_id)) {
-        cache_->programs_[program_id] =
-            generators_->program_generator_->generate(
-                program, generators_, cache_);
-      }
-      a.push_back(cache_->programs_[program_id]);
+      a.push_back(generators_->program_generator_->generate_cached(
+          program, generators_, cache_));
     }
     return a;
   }
@@ -2072,99 +2030,58 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
 }
 
 void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
-  std::string name = program->get_name();
-  const auto& id = program->get_path();
-  if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] =
-        generators_->program_generator_->generate(program, generators_, cache_);
-  }
-  render_to_file(
-      cache_->programs_[id], "module_constants.h", name + "_constants.h");
-  render_to_file(
-      cache_->programs_[id], "module_constants.cpp", name + "_constants.cpp");
+  const auto& name = program->get_name();
+  const auto& prog = cached_program(program);
+
+  render_to_file(prog, "module_constants.h", name + "_constants.h");
+  render_to_file(prog, "module_constants.cpp", name + "_constants.cpp");
 }
 
 void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
   const auto& name = program->get_name();
-  const auto& id = program->get_path();
-  if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] =
-        generators_->program_generator_->generate(program, generators_, cache_);
-  }
+  const auto& prog = cached_program(program);
 
-  render_to_file(
-      cache_->programs_[id], "module_metadata.h", name + "_metadata.h");
+  render_to_file(prog, "module_metadata.h", name + "_metadata.h");
   if (cache_->parsed_options_.count("no_metadata") == 0) {
-    render_to_file(
-        cache_->programs_[id], "module_metadata.cpp", name + "_metadata.cpp");
+    render_to_file(prog, "module_metadata.cpp", name + "_metadata.cpp");
   }
 }
 
 void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
   const auto& name = program->get_name();
-  const auto& id = program->get_path();
-  if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] =
-        generators_->program_generator_->generate(program, generators_, cache_);
-  }
+  const auto& prog = cached_program(program);
 
   // Combo include: all
-  render_to_file(
-      cache_->programs_[id], "module_fatal_all.h", name + "_fatal_all.h");
+  render_to_file(prog, "module_fatal_all.h", name + "_fatal_all.h");
   // Combo include: types
-  render_to_file(
-      cache_->programs_[id], "module_fatal_types.h", name + "_fatal_types.h");
+  render_to_file(prog, "module_fatal_types.h", name + "_fatal_types.h");
   // Unique Compile-time Strings, Metadata tags and Metadata registration
-  render_to_file(cache_->programs_[id], "module_fatal.h", name + "_fatal.h");
+  render_to_file(prog, "module_fatal.h", name + "_fatal.h");
 
-  render_to_file(
-      cache_->programs_[id], "module_fatal_enum.h", name + "_fatal_enum.h");
-  render_to_file(
-      cache_->programs_[id], "module_fatal_union.h", name + "_fatal_union.h");
-  render_to_file(
-      cache_->programs_[id], "module_fatal_struct.h", name + "_fatal_struct.h");
-  render_to_file(
-      cache_->programs_[id],
-      "module_fatal_constant.h",
-      name + "_fatal_constant.h");
-  render_to_file(
-      cache_->programs_[id],
-      "module_fatal_service.h",
-      name + "_fatal_service.h");
+  render_to_file(prog, "module_fatal_enum.h", name + "_fatal_enum.h");
+  render_to_file(prog, "module_fatal_union.h", name + "_fatal_union.h");
+  render_to_file(prog, "module_fatal_struct.h", name + "_fatal_struct.h");
+  render_to_file(prog, "module_fatal_constant.h", name + "_fatal_constant.h");
+  render_to_file(prog, "module_fatal_service.h", name + "_fatal_service.h");
 }
 
 void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
   const auto& name = program->get_name();
-  const auto& id = program->get_path();
-  if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] =
-        generators_->program_generator_->generate(program, generators_, cache_);
-  }
+  const auto& prog = cached_program(program);
 
-  render_to_file(
-      cache_->programs_[id], "module_visitation.h", name + "_visitation.h");
-
-  render_to_file(
-      cache_->programs_[id],
-      "module_for_each_field.h",
-      name + "_for_each_field.h");
-
-  render_to_file(
-      cache_->programs_[id], "module_visit_union.h", name + "_visit_union.h");
+  render_to_file(prog, "module_visitation.h", name + "_visitation.h");
+  render_to_file(prog, "module_for_each_field.h", name + "_for_each_field.h");
+  render_to_file(prog, "module_visit_union.h", name + "_visit_union.h");
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
   const auto& name = program->get_name();
-  const auto& id = program->get_path();
-  if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] =
-        generators_->program_generator_->generate(program, generators_, cache_);
-  }
-  render_to_file(cache_->programs_[id], "module_data.h", name + "_data.h");
-  render_to_file(cache_->programs_[id], "module_data.cpp", name + "_data.cpp");
-  render_to_file(cache_->programs_[id], "module_types.h", name + "_types.h");
-  render_to_file(
-      cache_->programs_[id], "module_types.tcc", name + "_types.tcc");
+  const auto& prog = cached_program(program);
+
+  render_to_file(prog, "module_data.h", name + "_data.h");
+  render_to_file(prog, "module_data.cpp", name + "_data.cpp");
+  render_to_file(prog, "module_types.h", name + "_types.h");
+  render_to_file(prog, "module_types.tcc", name + "_types.tcc");
 
   if (auto split_count = cpp2::get_split_count(parsed_options_)) {
     auto digit = std::to_string(split_count - 1).size();
@@ -2178,46 +2095,31 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
           name + "_types." + s + ".split.cpp");
     }
   } else {
-    render_to_file(
-        cache_->programs_[id], "module_types.cpp", name + "_types.cpp");
+    render_to_file(prog, "module_types.cpp", name + "_types.cpp");
   }
 
   render_to_file(
-      cache_->programs_[id],
+      prog,
       "module_types_custom_protocol.h",
       name + "_types_custom_protocol.h");
   if (cache_->parsed_options_.count("frozen2")) {
-    render_to_file(
-        cache_->programs_[id], "module_layouts.h", name + "_layouts.h");
-    render_to_file(
-        cache_->programs_[id], "module_layouts.cpp", name + "_layouts.cpp");
+    render_to_file(prog, "module_layouts.h", name + "_layouts.h");
+    render_to_file(prog, "module_layouts.cpp", name + "_layouts.cpp");
   }
 }
 
 void t_mstch_cpp2_generator::generate_service(t_service const* service) {
-  const auto& id = get_program()->get_path();
-  std::string name = service->get_name();
+  const auto& name = service->get_name();
   cache_->parsed_options_["parent_service_name"] = name; // for interactions
-  std::string service_id = id + name;
-  if (!cache_->services_.count(service_id)) {
-    cache_->services_[service_id] =
-        generators_->service_generator_->generate(service, generators_, cache_);
-  }
-  render_to_file(
-      cache_->services_[service_id],
-      "ServiceAsyncClient.h",
-      name + "AsyncClient.h");
-  render_to_file(
-      cache_->services_[service_id],
-      "ServiceAsyncClient.cpp",
-      name + "AsyncClient.cpp");
-  render_to_file(cache_->services_[service_id], "service.cpp", name + ".cpp");
-  render_to_file(cache_->services_[service_id], "service.h", name + ".h");
-  render_to_file(cache_->services_[service_id], "service.tcc", name + ".tcc");
-  render_to_file(
-      cache_->services_[service_id],
-      "types_custom_protocol.h",
-      name + "_custom_protocol.h");
+  auto serv = generators_->service_generator_->generate_cached(
+      get_program(), service, generators_, cache_);
+
+  render_to_file(serv, "ServiceAsyncClient.h", name + "AsyncClient.h");
+  render_to_file(serv, "ServiceAsyncClient.cpp", name + "AsyncClient.cpp");
+  render_to_file(serv, "service.cpp", name + ".cpp");
+  render_to_file(serv, "service.h", name + ".h");
+  render_to_file(serv, "service.tcc", name + ".tcc");
+  render_to_file(serv, "types_custom_protocol.h", name + "_custom_protocol.h");
 
   std::vector<std::array<std::string, 3>> protocols = {
       {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
@@ -2225,7 +2127,7 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
   };
   for (const auto& protocol : protocols) {
     render_to_file(
-        cache_->services_[service_id],
+        serv,
         "service_processmap_protocol.cpp",
         name + "_processmap_" + protocol.at(0) + ".cpp");
   }

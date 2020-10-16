@@ -378,8 +378,7 @@ class mstch_rust_program : public mstch_program {
     });
     std::vector<const t_type*> elements(
         nonstandard_collections.begin(), nonstandard_collections.end());
-    return generate_elements(
-        elements, generators_->type_generator_.get(), generators_, cache_);
+    return generate_types(elements);
   }
 
  private:
@@ -430,8 +429,7 @@ class mstch_rust_struct : public mstch_struct {
     std::sort(fields.begin(), fields.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_elements(
-        fields, generators_->field_generator_.get(), generators_, cache_);
+    return generate_fields(fields);
   }
 
  private:
@@ -571,19 +569,14 @@ class mstch_rust_function : public mstch_function {
           return type_count.at(field->get_type()) == 1;
         });
 
-    return generate_elements(
-        unique_exceptions,
-        generators_->field_generator_.get(),
-        generators_,
-        cache_);
+    return generate_fields(unique_exceptions);
   }
   mstch::node rust_args_by_name() {
     std::vector<t_field*> args = function_->get_arglist()->get_members();
     std::sort(args.begin(), args.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_elements(
-        args, generators_->field_generator_.get(), generators_, cache_);
+    return generate_fields(args);
   }
   mstch::node rust_returns_by_name() {
     std::vector<t_field*> returns = function_->get_xceptions()->get_members();
@@ -591,8 +584,7 @@ class mstch_rust_function : public mstch_function {
     std::sort(returns.begin(), returns.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_elements(
-        returns, generators_->field_generator_.get(), generators_, cache_);
+    return generate_fields(returns);
   }
 
  private:
@@ -649,22 +641,14 @@ class mstch_rust_enum : public mstch_enum {
     std::sort(variants.begin(), variants.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_elements(
-        variants,
-        generators_->enum_value_generator_.get(),
-        generators_,
-        cache_);
+    return generate_enum_values(variants);
   }
   mstch::node variants_by_number() {
     std::vector<t_enum_value*> variants = enm_->get_enum_values();
     std::sort(variants.begin(), variants.end(), [](auto a, auto b) {
       return a->get_value() < b->get_value();
     });
-    return generate_elements(
-        variants,
-        generators_->enum_value_generator_.get(),
-        generators_,
-        cache_);
+    return generate_enum_values(variants);
   }
 
  private:
@@ -1388,18 +1372,14 @@ class function_rust_generator {
 mstch::node mstch_rust_service::rust_functions() {
   function_rust_generator function_generator;
   return generate_elements(
-      service_->get_functions(),
-      &function_generator,
-      generators_,
-      cache_,
-      function_upcamel_names_);
+      service_->get_functions(), &function_generator, function_upcamel_names_);
 }
 
 class field_rust_generator : public field_generator {
  public:
   explicit field_rust_generator(const rust_codegen_options& options)
       : options_(options) {}
-  ~field_rust_generator() override = default;
+
   std::shared_ptr<mstch_base> generate(
       const t_field* field,
       std::shared_ptr<mstch_generators const> generators,
@@ -1528,13 +1508,9 @@ void t_mstch_rust_generator::generate_program() {
   set_mstch_generators();
 
   const auto* program = get_program();
-  const auto& id = program->get_path();
-  if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] =
-        generators_->program_generator_->generate(program, generators_, cache_);
-  }
+  const auto& prog = cached_program(program);
 
-  render_to_file(cache_->programs_[id], "lib.rs", "lib.rs");
+  render_to_file(prog, "lib.rs", "lib.rs");
 }
 
 void t_mstch_rust_generator::set_mstch_generators() {

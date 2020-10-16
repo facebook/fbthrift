@@ -158,11 +158,7 @@ std::shared_ptr<mstch_base> program_generator::generate(
 }
 
 mstch::node mstch_enum::values() {
-  return generate_elements(
-      enm_->get_enum_values(),
-      generators_->enum_value_generator_.get(),
-      generators_,
-      cache_);
+  return generate_enum_values(enm_->get_enum_values());
 }
 
 mstch::node mstch_type::get_struct() {
@@ -173,9 +169,7 @@ mstch::node mstch_type::get_struct() {
         std::vector<t_struct const*>{dynamic_cast<t_struct const*>(type_)},
         generators_->struct_generator_.get(),
         cache_->structs_,
-        id,
-        generators_,
-        cache_);
+        id);
   }
   return mstch::node();
 }
@@ -188,9 +182,7 @@ mstch::node mstch_type::get_enum() {
         std::vector<t_enum const*>{dynamic_cast<t_enum const*>(resolved_type_)},
         generators_->enum_generator_.get(),
         cache_->enums_,
-        id,
-        generators_,
-        cache_);
+        id);
   }
   return mstch::node();
 }
@@ -425,13 +417,8 @@ mstch::node mstch_const_value::list_elems() {
             dynamic_cast<const t_set*>(expected_type_)->get_elem_type();
       }
     }
-    return generate_elements(
-        const_value_->get_list(),
-        generators_->const_value_generator_.get(),
-        generators_,
-        cache_,
-        current_const_,
-        expected_type);
+    return generate_consts(
+        const_value_->get_list(), current_const_, expected_type);
   }
   return mstch::node();
 }
@@ -443,13 +430,8 @@ mstch::node mstch_const_value::map_elems() {
       const auto* m = dynamic_cast<const t_map*>(expected_type_);
       expected_types = {m->get_key_type(), m->get_val_type()};
     }
-    return generate_elements(
-        const_value_->get_map(),
-        generators_->const_value_generator_.get(),
-        generators_,
-        cache_,
-        current_const_,
-        expected_types);
+    return generate_consts(
+        const_value_->get_map(), current_const_, expected_types);
   }
   return mstch::node();
 }
@@ -502,11 +484,7 @@ mstch::node mstch_field::type() {
 }
 
 mstch::node mstch_struct::fields() {
-  return generate_elements(
-      strct_->get_members(),
-      generators_->field_generator_.get(),
-      generators_,
-      cache_);
+  return generate_fields(strct_->get_members());
 }
 
 mstch::node mstch_function::return_type() {
@@ -515,43 +493,24 @@ mstch::node mstch_function::return_type() {
 }
 
 mstch::node mstch_function::exceptions() {
-  return generate_elements(
-      function_->get_xceptions()->get_members(),
-      generators_->field_generator_.get(),
-      generators_,
-      cache_);
+  return generate_fields(function_->get_xceptions()->get_members());
 }
 
 mstch::node mstch_function::stream_exceptions() {
-  return generate_elements(
-      function_->get_stream_xceptions()->get_members(),
-      generators_->field_generator_.get(),
-      generators_,
-      cache_);
+  return generate_fields(function_->get_stream_xceptions()->get_members());
 }
 
 mstch::node mstch_function::sink_exceptions() {
-  return generate_elements(
-      function_->get_sink_xceptions()->get_members(),
-      generators_->field_generator_.get(),
-      generators_,
-      cache_);
+  return generate_fields(function_->get_sink_xceptions()->get_members());
 }
 
 mstch::node mstch_function::sink_final_response_exceptions() {
-  return generate_elements(
-      function_->get_sink_final_response_xceptions()->get_members(),
-      generators_->field_generator_.get(),
-      generators_,
-      cache_);
+  return generate_fields(
+      function_->get_sink_final_response_xceptions()->get_members());
 }
 
 mstch::node mstch_function::arg_list() {
-  return generate_elements(
-      function_->get_arglist()->get_members(),
-      generators_->field_generator_.get(),
-      generators_,
-      cache_);
+  return generate_fields(function_->get_arglist()->get_members());
 }
 
 mstch::node mstch_function::any_streams() {
@@ -563,11 +522,7 @@ mstch::node mstch_function::returns_stream() {
 }
 
 mstch::node mstch_service::functions() {
-  return generate_elements(
-      service_->get_functions(),
-      generators_->function_generator_.get(),
-      generators_,
-      cache_);
+  return generate_functions(service_->get_functions());
 }
 
 mstch::node mstch_service::extends() {
@@ -590,9 +545,7 @@ mstch::node mstch_service::generate_cached_extended_service(
       cache_->services_,
       id,
       element_index,
-      element_count,
-      generators_,
-      cache_);
+      element_count);
 }
 
 mstch::node mstch_typedef::type() {
@@ -621,9 +574,7 @@ mstch::node mstch_program::structs() {
       get_program_objects(),
       generators_->struct_generator_.get(),
       cache_->structs_,
-      id,
-      generators_,
-      cache_);
+      id);
 }
 
 mstch::node mstch_program::enums() {
@@ -632,9 +583,7 @@ mstch::node mstch_program::enums() {
       get_program_enums(),
       generators_->enum_generator_.get(),
       cache_->enums_,
-      id,
-      generators_,
-      cache_);
+      id);
 }
 
 mstch::node mstch_program::services() {
@@ -643,17 +592,11 @@ mstch::node mstch_program::services() {
       program_->get_services(),
       generators_->service_generator_.get(),
       cache_->services_,
-      id,
-      generators_,
-      cache_);
+      id);
 }
 
 mstch::node mstch_program::typedefs() {
-  return generate_elements(
-      program_->get_typedefs(),
-      generators_->typedef_generator_.get(),
-      generators_,
-      cache_);
+  return generate_typedefs(program_->get_typedefs());
 }
 
 mstch::node mstch_program::constants() {

@@ -515,6 +515,21 @@ void t_mstch_generator::render_to_file(
   write_output(path, render(template_name, context));
 }
 
+const std::shared_ptr<mstch_base>& t_mstch_generator::cached_program(
+    t_program const* program) {
+  const auto& id = program->get_path();
+  auto itr = cache_->programs_.find(id);
+  if (itr == cache_->programs_.end()) {
+    itr = cache_->programs_
+              .emplace(
+                  id,
+                  generators_->program_generator_->generate(
+                      program, generators_, cache_))
+              .first;
+  }
+  return itr->second;
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

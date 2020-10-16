@@ -17,11 +17,17 @@
 #pragma once
 
 #include <iomanip>
+#include <map>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <type_traits>
 #include <unordered_map>
-
-#include <thrift/compiler/mustache/mstch.h>
+#include <utility>
+#include <vector>
 
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/mustache/mstch.h>
 
 namespace apache {
 namespace thrift {
@@ -160,6 +166,22 @@ class service_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const;
+
+  std::shared_ptr<mstch_base> generate_cached(
+      t_program const* program,
+      t_service const* service,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0) const {
+    std::string service_id = program->get_path() + service->get_name();
+    auto itr = cache->services_.find(service_id);
+    if (itr == cache->services_.end()) {
+      itr = cache->services_.emplace_hint(
+          itr, service_id, generate(service, generators, cache, pos, index));
+    }
+    return itr->second;
+  }
 };
 
 class typedef_generator {
@@ -199,6 +221,21 @@ class program_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const;
+
+  std::shared_ptr<mstch_base> generate_cached(
+      t_program const* program,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0) {
+    const auto& id = program->get_path();
+    auto itr = cache->programs_.find(id);
+    if (itr == cache->programs_.end()) {
+      itr = cache->programs_.emplace_hint(
+          itr, id, generate(program, generators, cache, pos, index));
+    }
+    return itr->second;
+  }
 };
 
 class mstch_generators {
@@ -310,11 +347,7 @@ class mstch_base : public mstch::object {
     for (const auto& itr : annotated->annotations_) {
       annotations.emplace_back(itr.first, itr.second);
     }
-    return generate_elements(
-        annotations,
-        generators_->annotation_generator_.get(),
-        generators_,
-        cache_);
+    return generate_annotations(annotations);
   }
 
   static ELEMENT_POSITION element_position(size_t index, size_t length) {
@@ -332,59 +365,97 @@ class mstch_base : public mstch::object {
   }
 
   template <typename Container, typename Generator, typename... Args>
-  static mstch::array generate_elements(
+  mstch::array generate_elements(
       Container const& container,
       Generator const* generator,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
       Args const&... args) {
     mstch::array a;
     for (size_t i = 0; i < container.size(); ++i) {
       auto pos = element_position(i, container.size());
       a.push_back(generator->generate(
-          container[i], generators, cache, pos, i, args...));
+          container[i], generators_, cache_, pos, i, args...));
     }
     return a;
   }
 
+  template <typename C, typename... Args>
+  mstch::array generate_services(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->service_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_annotations(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->annotation_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_enum_values(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->enum_value_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_consts(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->const_value_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_fields(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->field_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_functions(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->function_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_typedefs(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->typedef_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_types(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->type_generator_.get(), args...);
+  }
+
   template <typename Item, typename Generator, typename Cache>
-  static mstch::node generate_element_cached(
+  mstch::node generate_element_cached(
       Item const& item,
       Generator const* generator,
       Cache& c,
       std::string const& id,
       size_t element_index,
-      size_t element_count,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache) {
+      size_t element_count) {
     std::string elem_id = id + item->get_name();
     auto pos = element_position(element_index, element_count);
-    if (!c.count(elem_id)) {
-      c[elem_id] =
-          generator->generate(item, generators, cache, pos, element_index);
+    auto itr = c.find(elem_id);
+    if (itr == c.end()) {
+      itr = c.emplace_hint(
+          itr,
+          elem_id,
+          generator->generate(item, generators_, cache_, pos, element_index));
     }
-    return c[elem_id];
+    return itr->second;
   }
 
   template <typename Container, typename Generator, typename Cache>
-  static mstch::array generate_elements_cached(
+  mstch::array generate_elements_cached(
       Container const& container,
       Generator const* generator,
       Cache& c,
-      std::string const& id,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache) {
+      std::string const& id) {
     mstch::array a;
     for (size_t i = 0; i < container.size(); ++i) {
       a.push_back(generate_element_cached(
-          container[i],
-          generator,
-          c,
-          id,
-          i,
-          container.size(),
-          generators,
-          cache));
+          container[i], generator, c, id, i, container.size()));
     }
     return a;
   }
@@ -1029,7 +1100,7 @@ class mstch_service : public mstch_base {
   }
 
   virtual std::string get_service_namespace(t_program const*) {
-    return "";
+    return {};
   }
 
   mstch::node name() {
@@ -1043,32 +1114,27 @@ class mstch_service : public mstch_base {
   }
   mstch::node functions();
   mstch::node extends();
-
   mstch::node annotations() {
     return mstch_base::annotations(service_);
   }
-
   mstch::node any_streams() {
     auto& funcs = service_->get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->any_streams();
     });
   }
-
   mstch::node any_sinks() {
     auto& funcs = service_->get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->returns_sink();
     });
   }
-
   mstch::node any_interactions() {
     auto& funcs = service_->get_functions();
     return std::any_of(funcs.cbegin(), funcs.cend(), [](auto const& func) {
       return func->get_returntype()->is_service();
     });
   }
-
   mstch::node interactions() {
     std::vector<t_service const*> interactions;
     for (auto const* function : service_->get_functions()) {
@@ -1077,11 +1143,7 @@ class mstch_service : public mstch_base {
             dynamic_cast<t_service const*>(function->get_returntype()));
       }
     }
-    return generate_elements(
-        interactions,
-        generators_->service_generator_.get(),
-        generators_,
-        cache_);
+    return generate_services(interactions);
   }
   mstch::node is_interaction() {
     return service_->is_interaction();
@@ -1194,7 +1256,7 @@ class mstch_program : public mstch_base {
   }
 
   virtual std::string get_program_namespace(t_program const*) {
-    return "";
+    return {};
   }
 
   mstch::node name() {

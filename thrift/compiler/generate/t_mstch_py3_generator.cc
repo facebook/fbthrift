@@ -436,7 +436,7 @@ class mstch_py3_program : public mstch_program {
 
   mstch::node getContainerTypes() {
     type_py3_generator<true> generator{program_};
-    return generate_elements(containers_, &generator, generators_, cache_);
+    return generate_elements(containers_, &generator);
   }
 
   mstch::node getCppIncludes() {
@@ -452,8 +452,7 @@ class mstch_py3_program : public mstch_program {
       functions.push_back(kv.second);
     }
 
-    return generate_elements(
-        functions, generators_->function_generator_.get(), generators_, cache_);
+    return generate_functions(functions);
   }
 
   mstch::node getCustomTemplates() {
@@ -536,10 +535,9 @@ class mstch_py3_program : public mstch_program {
     bool hasServices;
     bool hasTypes;
   };
-  mstch::array generate_types_array(
-      const std::vector<const t_type*>& types) const {
-    return generate_elements(
-        types, generators_->type_generator_.get(), generators_, cache_);
+
+  mstch::array generate_types_array(const std::vector<const t_type*>& types) {
+    return generate_types(types);
   }
 
   void gather_included_program_namespaces() {
