@@ -41,6 +41,10 @@
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 
+namespace wangle {
+class ConnectionManager;
+}
+
 namespace apache {
 namespace thrift {
 
@@ -48,6 +52,7 @@ class AdmissionStrategy;
 
 typedef std::function<void(
     folly::EventBase*,
+    wangle::ConnectionManager*,
     std::shared_ptr<folly::AsyncTransport>,
     std::unique_ptr<folly::IOBuf>)>
     getHandlerFunc;
