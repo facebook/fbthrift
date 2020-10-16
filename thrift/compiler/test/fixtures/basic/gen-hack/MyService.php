@@ -303,8 +303,8 @@ trait MyServiceClientBase {
       $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('ping', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('ping', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_getRandomData(): int {
@@ -701,8 +701,8 @@ return;
       $this->eventHandler_->recvError('putDataById', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('putDataById', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('putDataById', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_lobDataById(int $id, string $data): int {

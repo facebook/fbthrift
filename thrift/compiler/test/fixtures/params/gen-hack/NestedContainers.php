@@ -270,8 +270,8 @@ trait NestedContainersClientBase {
       $this->eventHandler_->recvError('mapList', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('mapList', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('mapList', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_mapSet(KeyedContainer<int, Set<int>> $foo): int {
@@ -365,8 +365,8 @@ return;
       $this->eventHandler_->recvError('mapSet', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('mapSet', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('mapSet', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): int {
@@ -462,8 +462,8 @@ return;
       $this->eventHandler_->recvError('listMap', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('listMap', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('listMap', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_listSet(KeyedContainer<int, Set<int>> $foo): int {
@@ -557,8 +557,8 @@ return;
       $this->eventHandler_->recvError('listSet', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('listSet', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('listSet', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): int {
@@ -658,8 +658,8 @@ return;
       $this->eventHandler_->recvError('turtles', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('turtles', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('turtles', $expectedsequenceid, null);
+    return;
   }
 
 }

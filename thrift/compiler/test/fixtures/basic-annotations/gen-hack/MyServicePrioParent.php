@@ -183,8 +183,8 @@ trait MyServicePrioParentClientBase {
       $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('ping', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('ping', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_pong(): int {
@@ -277,8 +277,8 @@ return;
       $this->eventHandler_->recvError('pong', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('pong', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('pong', $expectedsequenceid, null);
+    return;
   }
 
 }

@@ -155,8 +155,8 @@ trait MyServicePrioChildClientBase {
       $this->eventHandler_->recvError('pang', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('pang', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('pang', $expectedsequenceid, null);
+    return;
   }
 
 }

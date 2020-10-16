@@ -263,8 +263,8 @@ trait RaiserClientBase {
       $this->eventHandler_->recvError('doBland', $expectedsequenceid, $ex);
       throw $ex;
     }
-          $this->eventHandler_->postRecv('doBland', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('doBland', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_doRaise(): int {
@@ -372,8 +372,8 @@ return;
       $this->eventHandler_->recvException('doRaise', $expectedsequenceid, $x);
       throw $x;
     }
-          $this->eventHandler_->postRecv('doRaise', $expectedsequenceid, null);
-return;
+    $this->eventHandler_->postRecv('doRaise', $expectedsequenceid, null);
+    return;
   }
 
   protected function sendImpl_get200(): int {
