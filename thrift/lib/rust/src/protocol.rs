@@ -110,24 +110,55 @@ fn skip_inner<P: ProtocolReader + ?Sized>(
             p.read_struct_end()?;
         }
         TType::Map => {
-            let (key_type, value_type, size) = p.read_map_begin()?;
-            for _ in 0..size {
+            let (key_type, value_type, len) = p.read_map_begin()?;
+            let mut idx = 0;
+            loop {
+                let more = p.read_map_key_begin()?;
+                if !more {
+                    break;
+                }
                 skip_inner(p, key_type, max_depth - 1)?;
+                p.read_map_value_begin()?;
                 skip_inner(p, value_type, max_depth)?;
+
+                idx += 1;
+                if should_break(len, more, idx) {
+                    break;
+                }
             }
             p.read_map_end()?;
         }
         TType::Set => {
-            let (elem_type, size) = p.read_set_begin()?;
-            for _ in 0..size {
+            let (elem_type, len) = p.read_set_begin()?;
+            let mut idx = 0;
+            loop {
+                let more = p.read_set_value_begin()?;
+                if !more {
+                    break;
+                }
                 skip_inner(p, elem_type, max_depth - 1)?;
+
+                idx += 1;
+                if should_break(len, more, idx) {
+                    break;
+                }
             }
             p.read_set_end()?;
         }
         TType::List => {
-            let (elem_type, size) = p.read_list_begin()?;
-            for _ in 0..size {
+            let (elem_type, len) = p.read_list_begin()?;
+            let mut idx = 0;
+            loop {
+                let more = p.read_list_value_begin()?;
+                if !more {
+                    break;
+                }
                 skip_inner(p, elem_type, max_depth - 1)?;
+
+                idx += 1;
+                if should_break(len, more, idx) {
+                    break;
+                }
             }
             p.read_list_end()?;
         }
@@ -194,15 +225,15 @@ pub trait ProtocolReader {
     where
         F: FnOnce(&[u8]) -> T;
     fn read_field_end(&mut self) -> Result<()>;
-    fn read_map_begin(&mut self) -> Result<(TType, TType, usize)>;
-    fn read_map_key_begin(&mut self) -> Result<()>;
+    fn read_map_begin(&mut self) -> Result<(TType, TType, Option<usize>)>;
+    fn read_map_key_begin(&mut self) -> Result<bool>;
     fn read_map_value_begin(&mut self) -> Result<()>;
     fn read_map_end(&mut self) -> Result<()>;
-    fn read_list_begin(&mut self) -> Result<(TType, usize)>;
-    fn read_list_value_begin(&mut self) -> Result<()>;
+    fn read_list_begin(&mut self) -> Result<(TType, Option<usize>)>;
+    fn read_list_value_begin(&mut self) -> Result<bool>;
     fn read_list_end(&mut self) -> Result<()>;
-    fn read_set_begin(&mut self) -> Result<(TType, usize)>;
-    fn read_set_value_begin(&mut self) -> Result<()>;
+    fn read_set_begin(&mut self) -> Result<(TType, Option<usize>)>;
+    fn read_set_value_begin(&mut self) -> Result<bool>;
     fn read_set_end(&mut self) -> Result<()>;
     fn read_bool(&mut self) -> Result<bool>;
     fn read_byte(&mut self) -> Result<i8>;
@@ -217,6 +248,14 @@ pub trait ProtocolReader {
     /// Skip over the next data element from the provided input Protocol object
     fn skip(&mut self, field_type: TType) -> Result<()> {
         skip_inner(self, field_type, DEFAULT_RECURSION_DEPTH)
+    }
+}
+
+pub fn should_break(len: Option<usize>, more: bool, idx: usize) -> bool {
+    match (len, more) {
+        (Some(real_length), _) => idx >= real_length,
+        (None, true) => false,
+        (None, false) => true,
     }
 }
 

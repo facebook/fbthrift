@@ -48,7 +48,7 @@ fn read_write_bool_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &BOOL_VALUES {
             assert_eq!(*v, deserializer.read_bool().expect("failed to read bool"));
@@ -87,7 +87,7 @@ fn read_write_string_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &string_values {
             assert_eq!(
@@ -122,7 +122,7 @@ fn read_write_byte_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &BYTE_VALUES {
             assert_eq!(*v, deserializer.read_byte().expect("failed to read byte"));
@@ -154,7 +154,7 @@ fn read_write_i16_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &INT16_VALUES {
             assert_eq!(*v, deserializer.read_i16().expect("failed to read i16"));
@@ -186,7 +186,7 @@ fn read_write_i32_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &INT32_VALUES {
             assert_eq!(*v, deserializer.read_i32().expect("failed to read i32"));
@@ -218,7 +218,7 @@ fn read_write_i64_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &INT64_VALUES {
             assert_eq!(*v, deserializer.read_i64().expect("failed to read i64"));
@@ -250,7 +250,7 @@ fn read_write_f32_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &FLOAT_VALUES {
             let val = deserializer.read_float().expect("failed to read f32");
@@ -288,7 +288,7 @@ fn read_write_f64_list() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &DOUBLE_VALUES {
             let val = deserializer.read_double().expect("failed to read f64");
@@ -326,7 +326,7 @@ fn read_write_f64_set() {
             .expect("failed to read header");
 
         assert_eq!(thetype, thetype2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for v in &DOUBLE_VALUES {
             let val = deserializer.read_double().expect("failed to read f64");
@@ -366,7 +366,7 @@ fn read_write_string_i64_map() {
 
         assert_eq!(key_type, key_type2);
         assert_eq!(value_type, value_type2);
-        assert_eq!(thelen, thelen2);
+        assert_eq!(Some(thelen), thelen2);
 
         for (k, v) in string_keys.iter().zip(INT64_VALUES.iter()) {
             assert_eq!(

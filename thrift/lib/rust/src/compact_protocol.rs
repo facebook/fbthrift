@@ -644,7 +644,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok(())
     }
 
-    fn read_map_begin(&mut self) -> Result<(TType, TType, usize)> {
+    fn read_map_begin(&mut self) -> Result<(TType, TType, Option<usize>)> {
         let size = self.read_varint_u64()? as usize;
 
         ensure_err!(
@@ -658,12 +658,12 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         let kcty = CType::try_from((kvtype >> 4) & 0x0f)?;
         let vcty = CType::try_from((kvtype) & 0x0f)?;
 
-        Ok((TType::from(kcty), TType::from(vcty), size as usize))
+        Ok((TType::from(kcty), TType::from(vcty), Some(size as usize)))
     }
 
     #[inline]
-    fn read_map_key_begin(&mut self) -> Result<()> {
-        Ok(())
+    fn read_map_key_begin(&mut self) -> Result<bool> {
+        Ok(true)
     }
 
     #[inline]
@@ -675,7 +675,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok(())
     }
 
-    fn read_list_begin(&mut self) -> Result<(TType, usize)> {
+    fn read_list_begin(&mut self) -> Result<(TType, Option<usize>)> {
         let szty = self.read_byte()?;
         let cty = CType::try_from(szty & 0x0f)?;
         let elem_type = TType::from(cty);
@@ -690,25 +690,25 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
             ProtocolError::InvalidDataLength
         );
 
-        Ok((elem_type, size))
+        Ok((elem_type, Some(size)))
     }
 
     #[inline]
-    fn read_list_value_begin(&mut self) -> Result<()> {
-        Ok(())
+    fn read_list_value_begin(&mut self) -> Result<bool> {
+        Ok(true)
     }
 
     fn read_list_end(&mut self) -> Result<()> {
         Ok(())
     }
 
-    fn read_set_begin(&mut self) -> Result<(TType, usize)> {
+    fn read_set_begin(&mut self) -> Result<(TType, Option<usize>)> {
         self.read_list_begin()
     }
 
     #[inline]
-    fn read_set_value_begin(&mut self) -> Result<()> {
-        Ok(())
+    fn read_set_value_begin(&mut self) -> Result<bool> {
+        Ok(true)
     }
 
     fn read_set_end(&mut self) -> Result<()> {

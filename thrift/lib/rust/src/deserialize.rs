@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::protocol::ProtocolReader;
+use crate::protocol::{should_break, ProtocolReader};
 use crate::Result;
 use bytes::Bytes;
 use ordered_float::OrderedFloat;
@@ -191,10 +191,24 @@ where
     fn read(p: &mut P) -> Result<Self> {
         let (_elem_ty, len) = p.read_set_begin()?;
         let mut bset = BTreeSet::new();
-        for _ in 0..len {
-            p.read_set_value_begin()?;
+
+        if let Some(0) = len {
+            return Ok(bset);
+        }
+
+        let mut idx = 0;
+        loop {
+            let more = p.read_set_value_begin()?;
+            if !more {
+                break;
+            }
             let item = Deserialize::read(p)?;
             bset.insert(item);
+
+            idx += 1;
+            if should_break(len, more, idx) {
+                break;
+            }
         }
         Ok(bset)
     }
@@ -208,11 +222,26 @@ where
 {
     fn read(p: &mut P) -> Result<Self> {
         let (_elem_ty, len) = p.read_set_begin()?;
-        let mut hset = HashSet::with_capacity_and_hasher(len, Default::default());
-        for _ in 0..len {
-            p.read_set_value_begin()?;
+        let mut hset =
+            HashSet::with_capacity_and_hasher(len.unwrap_or_default(), Default::default());
+
+        if let Some(0) = len {
+            return Ok(hset);
+        }
+
+        let mut idx = 0;
+        loop {
+            let more = p.read_set_value_begin()?;
+            if !more {
+                break;
+            }
             let item = Deserialize::read(p)?;
             hset.insert(item);
+
+            idx += 1;
+            if should_break(len, more, idx) {
+                break;
+            }
         }
         Ok(hset)
     }
@@ -227,12 +256,26 @@ where
     fn read(p: &mut P) -> Result<Self> {
         let (_key_ty, _val_ty, len) = p.read_map_begin()?;
         let mut btree = BTreeMap::new();
-        for _ in 0..len {
-            p.read_map_key_begin()?;
+
+        if let Some(0) = len {
+            return Ok(btree);
+        }
+
+        let mut idx = 0;
+        loop {
+            let more = p.read_map_key_begin()?;
+            if !more {
+                break;
+            }
             let key = Deserialize::read(p)?;
             p.read_map_value_begin()?;
             let val = Deserialize::read(p)?;
             btree.insert(key, val);
+
+            idx += 1;
+            if should_break(len, more, idx) {
+                break;
+            }
         }
         Ok(btree)
     }
@@ -247,13 +290,28 @@ where
 {
     fn read(p: &mut P) -> Result<Self> {
         let (_key_ty, _val_ty, len) = p.read_map_begin()?;
-        let mut hmap = HashMap::with_capacity_and_hasher(len, Default::default());
-        for _ in 0..len {
-            p.read_map_key_begin()?;
+        let mut hmap =
+            HashMap::with_capacity_and_hasher(len.unwrap_or_default(), Default::default());
+
+        if let Some(0) = len {
+            return Ok(hmap);
+        }
+
+        let mut idx = 0;
+        loop {
+            let more = p.read_map_key_begin()?;
+            if !more {
+                break;
+            }
             let key = Deserialize::read(p)?;
             p.read_map_value_begin()?;
             let val = Deserialize::read(p)?;
             hmap.insert(key, val);
+
+            idx += 1;
+            if should_break(len, more, idx) {
+                break;
+            }
         }
         Ok(hmap)
     }
@@ -267,11 +325,25 @@ where
     /// Vec<T> is Thrift List type
     fn read(p: &mut P) -> Result<Self> {
         let (_elem_ty, len) = p.read_list_begin()?;
-        let mut list = Vec::with_capacity(len as usize);
-        for _ in 0..len {
-            p.read_list_value_begin()?;
+        let mut list = Vec::with_capacity(len.unwrap_or_default() as usize);
+
+        if let Some(0) = len {
+            return Ok(list);
+        }
+
+        let mut idx = 0;
+        loop {
+            let more = p.read_list_value_begin()?;
+            if !more {
+                break;
+            }
             let item = Deserialize::read(p)?;
             list.push(item);
+
+            idx += 1;
+            if should_break(len, more, idx) {
+                break;
+            }
         }
         Ok(list)
     }

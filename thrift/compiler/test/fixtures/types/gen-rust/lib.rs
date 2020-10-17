@@ -3148,13 +3148,27 @@ mod r#impl {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let (_key_ty, _val_ty, len) = p.read_map_begin()?;
-            let mut map = <::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>>::with_capacity(len);
-            for _ in 0..len {
-                p.read_map_key_begin()?;
+            let mut map = <::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::string::String>>::with_capacity(len.unwrap_or_default());
+
+            if let Some(0) = len {
+                return Ok(LocalImpl(map));
+            }
+
+            let mut idx = 0;
+            loop {
+                let more = p.read_map_key_begin()?;
+                if !more {
+                    break;
+                }
                 let k: ::std::primitive::i32 = ::fbthrift::Deserialize::read(p)?;
                 p.read_map_value_begin()?;
                 let v: ::std::string::String = ::fbthrift::Deserialize::read(p)?;
                 map.insert(k, v);
+
+                idx += 1;
+                if ::fbthrift::protocol::should_break(len, more, idx) {
+                    break;
+                }
             }
             Ok(LocalImpl(map))
         }
@@ -3183,11 +3197,25 @@ mod r#impl {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             let (_elem_ty, len) = p.read_set_begin()?;
-            let mut set = <::sorted_vector_map::SortedVectorSet<::std::primitive::i32>>::with_capacity(len);
-            for _ in 0..len {
-                p.read_set_value_begin()?;
+            let mut set = <::sorted_vector_map::SortedVectorSet<::std::primitive::i32>>::with_capacity(len.unwrap_or_default());
+
+            if let Some(0) = len {
+                return Ok(LocalImpl(set));
+            }
+
+            let mut idx = 0;
+            loop {
+                let more = p.read_set_value_begin()?;
+                if !more {
+                    break;
+                }
                 let v: ::std::primitive::i32 = ::fbthrift::Deserialize::read(p)?;
                 set.insert(v);
+
+                idx += 1;
+                if ::fbthrift::protocol::should_break(len, more, idx) {
+                    break;
+                }
             }
             Ok(LocalImpl(set))
         }

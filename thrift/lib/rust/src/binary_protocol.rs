@@ -335,18 +335,18 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
         Ok(())
     }
 
-    fn read_map_begin(&mut self) -> Result<(TType, TType, usize)> {
+    fn read_map_begin(&mut self) -> Result<(TType, TType, Option<usize>)> {
         let k_type = TType::try_from(self.read_byte()?)?;
         let v_type = TType::try_from(self.read_byte()?)?;
 
         let size = self.read_i32()?;
         ensure_err!(size >= 0, ProtocolError::InvalidDataLength);
-        Ok((k_type, v_type, size as usize))
+        Ok((k_type, v_type, Some(size as usize)))
     }
 
     #[inline]
-    fn read_map_key_begin(&mut self) -> Result<()> {
-        Ok(())
+    fn read_map_key_begin(&mut self) -> Result<bool> {
+        Ok(true)
     }
 
     #[inline]
@@ -358,32 +358,32 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
         Ok(())
     }
 
-    fn read_list_begin(&mut self) -> Result<(TType, usize)> {
+    fn read_list_begin(&mut self) -> Result<(TType, Option<usize>)> {
         let elem_type = TType::try_from(self.read_byte()?)?;
         let size = self.read_i32()?;
         ensure_err!(size >= 0, ProtocolError::InvalidDataLength);
-        Ok((elem_type, size as usize))
+        Ok((elem_type, Some(size as usize)))
     }
 
     #[inline]
-    fn read_list_value_begin(&mut self) -> Result<()> {
-        Ok(())
+    fn read_list_value_begin(&mut self) -> Result<bool> {
+        Ok(true)
     }
 
     fn read_list_end(&mut self) -> Result<()> {
         Ok(())
     }
 
-    fn read_set_begin(&mut self) -> Result<(TType, usize)> {
+    fn read_set_begin(&mut self) -> Result<(TType, Option<usize>)> {
         let elem_type = TType::try_from(self.read_byte()?)?;
         let size = self.read_i32()?;
         ensure_err!(size >= 0, ProtocolError::InvalidDataLength);
-        Ok((elem_type, size as usize))
+        Ok((elem_type, Some(size as usize)))
     }
 
     #[inline]
-    fn read_set_value_begin(&mut self) -> Result<()> {
-        Ok(())
+    fn read_set_value_begin(&mut self) -> Result<bool> {
+        Ok(true)
     }
 
     fn read_set_end(&mut self) -> Result<()> {
