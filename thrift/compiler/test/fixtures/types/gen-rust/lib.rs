@@ -3163,6 +3163,7 @@ mod r#impl {
                 let k: ::std::primitive::i32 = ::fbthrift::Deserialize::read(p)?;
                 p.read_map_value_begin()?;
                 let v: ::std::string::String = ::fbthrift::Deserialize::read(p)?;
+                p.read_map_value_end()?;
                 map.insert(k, v);
 
                 idx += 1;
@@ -3170,6 +3171,7 @@ mod r#impl {
                     break;
                 }
             }
+            p.read_map_end()?;
             Ok(LocalImpl(map))
         }
     }
@@ -3210,6 +3212,7 @@ mod r#impl {
                     break;
                 }
                 let v: ::std::primitive::i32 = ::fbthrift::Deserialize::read(p)?;
+                p.read_set_value_end()?;
                 set.insert(v);
 
                 idx += 1;
@@ -3217,6 +3220,7 @@ mod r#impl {
                     break;
                 }
             }
+            p.read_set_end()?;
             Ok(LocalImpl(set))
         }
     }

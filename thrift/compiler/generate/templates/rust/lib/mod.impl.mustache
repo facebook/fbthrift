@@ -78,6 +78,7 @@
                     break;
                 }
                 {{#type:setElemType}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:setElemType}}?;
+                p.read_set_value_end()?;
                 set.insert(v);
 
                 idx += 1;
@@ -85,6 +86,7 @@
                     break;
                 }
             }
+            p.read_set_end()?;
             Ok(LocalImpl(set))
         }
     }{{!
@@ -133,6 +135,7 @@
                 {{#type:keyType}}let k: {{>lib/type}} = {{>lib/read}}(p){{/type:keyType}}?;
                 p.read_map_value_begin()?;
                 {{#type:valueType}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:valueType}}?;
+                p.read_map_value_end()?;
                 map.insert(k, v);
 
                 idx += 1;
@@ -140,6 +143,7 @@
                     break;
                 }
             }
+            p.read_map_end()?;
             Ok(LocalImpl(map))
         }
     }{{!

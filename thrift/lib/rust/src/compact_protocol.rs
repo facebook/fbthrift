@@ -671,6 +671,11 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok(())
     }
 
+    #[inline]
+    fn read_map_value_end(&mut self) -> Result<()> {
+        Ok(())
+    }
+
     fn read_map_end(&mut self) -> Result<()> {
         Ok(())
     }
@@ -698,6 +703,11 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok(true)
     }
 
+    #[inline]
+    fn read_list_value_end(&mut self) -> Result<()> {
+        Ok(())
+    }
+
     fn read_list_end(&mut self) -> Result<()> {
         Ok(())
     }
@@ -709,6 +719,11 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
     #[inline]
     fn read_set_value_begin(&mut self) -> Result<bool> {
         Ok(true)
+    }
+
+    #[inline]
+    fn read_set_value_end(&mut self) -> Result<()> {
+        Ok(())
     }
 
     fn read_set_end(&mut self) -> Result<()> {

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::ttype::TType;
 use crate::ApplicationException;
 use anyhow::Error;
 use thiserror::Error;
@@ -33,6 +34,8 @@ pub enum ProtocolError {
     StreamUnsupported,
     #[error("STOP outside of struct in skip")]
     UnexpectedStopInSkip,
+    #[error("Invalid type in skip {0:?}")]
+    InvalidTypeInSkip(TType),
     #[error("Unknown or invalid protocol ID {0}")]
     InvalidProtocolID(i16),
     #[error("Unknown or invalid TMessage type {0}")]

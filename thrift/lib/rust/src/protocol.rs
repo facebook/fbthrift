@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 use crate::bufext::BufMutExt;
 use crate::errors::ProtocolError;
 use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
@@ -22,7 +21,7 @@ use crate::ttype::TType;
 use crate::Result;
 
 /// The maximum recursive depth the skip() function will traverse
-const DEFAULT_RECURSION_DEPTH: i32 = 64;
+pub const DEFAULT_RECURSION_DEPTH: i32 = 64;
 
 /// Helper type alias to get the pre-finalization encoded type of a protocol frame.
 pub type ProtocolEncoded<P> = FramingEncoded<<P as Protocol>::Frame>;
@@ -120,6 +119,7 @@ fn skip_inner<P: ProtocolReader + ?Sized>(
                 skip_inner(p, key_type, max_depth - 1)?;
                 p.read_map_value_begin()?;
                 skip_inner(p, value_type, max_depth)?;
+                p.read_map_value_end()?;
 
                 idx += 1;
                 if should_break(len, more, idx) {
@@ -137,6 +137,7 @@ fn skip_inner<P: ProtocolReader + ?Sized>(
                     break;
                 }
                 skip_inner(p, elem_type, max_depth - 1)?;
+                p.read_set_value_end()?;
 
                 idx += 1;
                 if should_break(len, more, idx) {
@@ -154,6 +155,7 @@ fn skip_inner<P: ProtocolReader + ?Sized>(
                     break;
                 }
                 skip_inner(p, elem_type, max_depth - 1)?;
+                p.read_list_value_end()?;
 
                 idx += 1;
                 if should_break(len, more, idx) {
@@ -228,12 +230,15 @@ pub trait ProtocolReader {
     fn read_map_begin(&mut self) -> Result<(TType, TType, Option<usize>)>;
     fn read_map_key_begin(&mut self) -> Result<bool>;
     fn read_map_value_begin(&mut self) -> Result<()>;
+    fn read_map_value_end(&mut self) -> Result<()>;
     fn read_map_end(&mut self) -> Result<()>;
     fn read_list_begin(&mut self) -> Result<(TType, Option<usize>)>;
     fn read_list_value_begin(&mut self) -> Result<bool>;
+    fn read_list_value_end(&mut self) -> Result<()>;
     fn read_list_end(&mut self) -> Result<()>;
     fn read_set_begin(&mut self) -> Result<(TType, Option<usize>)>;
     fn read_set_value_begin(&mut self) -> Result<bool>;
+    fn read_set_value_end(&mut self) -> Result<()>;
     fn read_set_end(&mut self) -> Result<()>;
     fn read_bool(&mut self) -> Result<bool>;
     fn read_byte(&mut self) -> Result<i8>;

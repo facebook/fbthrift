@@ -46,6 +46,7 @@ pub mod export;
 pub mod framing;
 pub mod processor;
 pub mod serialize;
+pub mod simplejson_protocol;
 pub mod thrift_protocol;
 pub mod ttype;
 
@@ -80,6 +81,7 @@ pub use crate::protocol::{
     ProtocolWriter,
 };
 pub use crate::serialize::Serialize;
+pub use crate::simplejson_protocol::SimpleJsonProtocol;
 pub use crate::thrift_protocol::{MessageType, ProtocolID};
 pub use crate::ttype::{GetTType, TType};
 

@@ -203,6 +203,7 @@ where
                 break;
             }
             let item = Deserialize::read(p)?;
+            p.read_set_value_end()?;
             bset.insert(item);
 
             idx += 1;
@@ -210,6 +211,7 @@ where
                 break;
             }
         }
+        p.read_set_end()?;
         Ok(bset)
     }
 }
@@ -236,6 +238,7 @@ where
                 break;
             }
             let item = Deserialize::read(p)?;
+            p.read_set_value_end()?;
             hset.insert(item);
 
             idx += 1;
@@ -243,6 +246,7 @@ where
                 break;
             }
         }
+        p.read_set_end()?;
         Ok(hset)
     }
 }
@@ -270,6 +274,7 @@ where
             let key = Deserialize::read(p)?;
             p.read_map_value_begin()?;
             let val = Deserialize::read(p)?;
+            p.read_map_value_end()?;
             btree.insert(key, val);
 
             idx += 1;
@@ -277,6 +282,7 @@ where
                 break;
             }
         }
+        p.read_map_end()?;
         Ok(btree)
     }
 }
@@ -306,6 +312,7 @@ where
             let key = Deserialize::read(p)?;
             p.read_map_value_begin()?;
             let val = Deserialize::read(p)?;
+            p.read_map_value_end()?;
             hmap.insert(key, val);
 
             idx += 1;
@@ -313,6 +320,7 @@ where
                 break;
             }
         }
+        p.read_map_end()?;
         Ok(hmap)
     }
 }
@@ -338,6 +346,7 @@ where
                 break;
             }
             let item = Deserialize::read(p)?;
+            p.read_list_value_end()?;
             list.push(item);
 
             idx += 1;
@@ -345,6 +354,7 @@ where
                 break;
             }
         }
+        p.read_list_end()?;
         Ok(list)
     }
 }
