@@ -487,8 +487,12 @@ void Cpp2Connection::requestReceived(
 
   std::chrono::milliseconds queueTimeout;
   std::chrono::milliseconds taskTimeout;
+  std::chrono::milliseconds clientQueueTimeout =
+      hreq->getHeader()->getClientQueueTimeout();
+  std::chrono::milliseconds clientTimeout =
+      hreq->getHeader()->getClientTimeout();
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
-      *(hreq->getHeader()), queueTimeout, taskTimeout);
+      clientQueueTimeout, clientTimeout, queueTimeout, taskTimeout);
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
       std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
@@ -525,7 +529,11 @@ void Cpp2Connection::requestReceived(
   }
 
   auto reqContext = t2r->getContext();
-  reqContext->setRequestTimeout(taskTimeout);
+  if (clientTimeout > std::chrono::milliseconds::zero()) {
+    reqContext->setRequestTimeout(clientTimeout);
+  } else {
+    reqContext->setRequestTimeout(taskTimeout);
+  }
 
   try {
     ResponseChannelRequest::UniquePtr req = std::move(t2r);
