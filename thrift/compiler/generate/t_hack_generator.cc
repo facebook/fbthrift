@@ -4106,9 +4106,8 @@ void t_hack_generator::_generate_service_client(
       // Careful, only return _result if not a void function
       if ((*f_iter)->get_returntype()->is_void()) {
         out << indent() << "$this->eventHandler_->postRecv('"
-                    << (*f_iter)->get_name()
-                    << "', $expectedsequenceid, null);\n"
-                    << indent() << "return;\n";
+            << (*f_iter)->get_name() << "', $expectedsequenceid, null);\n"
+            << indent() << "return;\n";
       } else {
         out << indent() << "$x = new \\TApplicationException(\""
             << (*f_iter)->get_name() << " failed: unknown result\""
