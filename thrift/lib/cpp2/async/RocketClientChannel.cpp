@@ -107,7 +107,7 @@ folly::Try<FirstResponsePayload> decodeResponseError(
       exType = TApplicationException::INJECTED_FAILURE;
       break;
     case ResponseRpcErrorCode::REQUEST_PARSING_FAILURE:
-      exCode = kUnknownErrorCode;
+      exCode = kRequestParsingErrorCode;
       exType = TApplicationException::UNSUPPORTED_CLIENT_TYPE;
       break;
     case ResponseRpcErrorCode::QUEUE_TIMEOUT:

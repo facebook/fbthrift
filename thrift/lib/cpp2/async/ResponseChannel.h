@@ -67,6 +67,7 @@ extern const std::string kMethodUnknownErrorCode;
 extern const std::string kInteractionIdUnknownErrorCode;
 extern const std::string kInteractionConstructorErrorErrorCode;
 extern const std::string kConnectionClosingErrorCode;
+extern const std::string kRequestParsingErrorCode;
 
 namespace apache {
 namespace thrift {

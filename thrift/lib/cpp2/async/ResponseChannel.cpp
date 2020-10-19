@@ -46,4 +46,5 @@ const std::string kAppServerErrorCode{"24"};
 const std::string kMethodUnknownErrorCode{"25"};
 const std::string kInteractionIdUnknownErrorCode{"26"};
 const std::string kInteractionConstructorErrorErrorCode{"27"};
+const std::string kRequestParsingErrorCode{"28"};
 const std::string kConnectionClosingErrorCode{"-1"};

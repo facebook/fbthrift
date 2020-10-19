@@ -243,6 +243,9 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           auto exPtr = otherMetadataRef
               ? folly::get_ptr(*otherMetadataRef, "ex")
               : nullptr;
+          auto uexPtr = otherMetadataRef
+              ? folly::get_ptr(*otherMetadataRef, "uex")
+              : nullptr;
           if (auto errorCode = [&]() -> folly::Optional<ResponseRpcErrorCode> {
                 if (exPtr) {
                   if (*exPtr == kQueueOverloadedErrorCode &&
@@ -278,10 +281,15 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                   }
                 }
 
+                if (uexPtr) {
+                  // fall through to handle more specific exception
+                  return folly::none;
+                }
                 switch (ex.getType()) {
                   case TApplicationException::UNKNOWN_METHOD:
                     return ResponseRpcErrorCode::UNKNOWN_METHOD;
 
+                  case TApplicationException::PROTOCOL_ERROR:
                   case TApplicationException::INVALID_TRANSFORM:
                   case TApplicationException::UNSUPPORTED_CLIENT_TYPE:
                     return ResponseRpcErrorCode::REQUEST_PARSING_FAILURE;
@@ -298,10 +306,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
               }()) {
             return makeResponseRpcError(*errorCode, ex.getMessage(), metadata);
           }
-
-          if (auto uexPtr = otherMetadataRef
-                  ? folly::get_ptr(*otherMetadataRef, "uex")
-                  : nullptr) {
+          if (uexPtr) {
             exceptionMetadataBase.name_utf8_ref() = *uexPtr;
             otherMetadataRef->erase("uex");
           }
