@@ -42,7 +42,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::serializedSize(prot_, <%^field:cpp_ref?%>&<%/field:cpp_ref?%>this-><%field:cpp_name%><%#field:cpp_ref?%>.get()<%/field:cpp_ref?%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
 <%/type:struct?%>
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
@@ -96,7 +96,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::serializedSizeZC(prot_, <%^field:cpp_ref?%>&<%/field:cpp_ref?%>this-><%field:cpp_name%><%#field:cpp_ref?%>.get()<%/field:cpp_ref?%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<true>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
 <%/type:struct?%>
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
@@ -151,7 +151,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::write(prot_, <%^field:cpp_ref?%>&<%/field:cpp_ref?%>this-><%field:cpp_name%><%#field:cpp_ref?%>.get()<%/field:cpp_ref?%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
 <%/type:struct?%>
 <%#field:cpp_ref?%>
 <%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }

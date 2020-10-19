@@ -178,7 +178,7 @@ _readField_FieldA:
     _readState.beforeSubobject(iprot);
     
     std::unique_ptr< ::a::different::ns::AStruct> ptr = std::make_unique< ::a::different::ns::AStruct>();
-    ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::read(iprot, ptr.get());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::a::different::ns::AStruct>::read(*iprot, *ptr);
     this->FieldA = std::move(ptr);
     _readState.afterSubobject(iprot);
   }
@@ -231,7 +231,7 @@ uint32_t AStructB::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("AStructB");
   xfer += prot_->serializedFieldSize("FieldA", apache::thrift::protocol::T_STRUCT, 1);
   if (this->FieldA) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::serializedSize(prot_, this->FieldA.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::a::different::ns::AStruct>::serializedSize<false>(*prot_, *this->FieldA);
   }
   else {
     xfer += prot_->serializedStructSize("AStruct");
@@ -247,7 +247,7 @@ uint32_t AStructB::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("AStructB");
   xfer += prot_->serializedFieldSize("FieldA", apache::thrift::protocol::T_STRUCT, 1);
   if (this->FieldA) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::serializedSizeZC(prot_, this->FieldA.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::a::different::ns::AStruct>::serializedSize<true>(*prot_, *this->FieldA);
   }
   else {
     xfer += prot_->serializedStructSize("AStruct");
@@ -263,7 +263,7 @@ uint32_t AStructB::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("AStructB");
   xfer += prot_->writeFieldBegin("FieldA", apache::thrift::protocol::T_STRUCT, 1);
   if (this->FieldA) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::write(prot_, this->FieldA.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::a::different::ns::AStruct>::write(*prot_, *this->FieldA);
   }
   else {
     xfer += prot_->writeStructBegin("AStruct");

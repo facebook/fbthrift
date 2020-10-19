@@ -48,7 +48,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_OtherStructField:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::matching_module_name::OtherStruct>::read(iprot, &this->OtherStructField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::matching_module_name::OtherStruct>::read(*iprot, this->OtherStructField);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.OtherStructField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -102,7 +102,7 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("OtherStructField", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::Cpp2Ops<  ::matching_module_name::OtherStruct>::serializedSize(prot_, &this->OtherStructField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::matching_module_name::OtherStruct>::serializedSize<false>(*prot_, this->OtherStructField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -112,7 +112,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("OtherStructField", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::Cpp2Ops<  ::matching_module_name::OtherStruct>::serializedSizeZC(prot_, &this->OtherStructField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::matching_module_name::OtherStruct>::serializedSize<true>(*prot_, this->OtherStructField);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -122,7 +122,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStruct");
   xfer += prot_->writeFieldBegin("OtherStructField", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::Cpp2Ops<  ::matching_module_name::OtherStruct>::write(prot_, &this->OtherStructField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::matching_module_name::OtherStruct>::write(*prot_, this->OtherStructField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

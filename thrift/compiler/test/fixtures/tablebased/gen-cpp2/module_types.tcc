@@ -219,13 +219,13 @@ uint32_t ExampleUnion::serializedSize(Protocol_ const* prot_) const {
     case ExampleUnion::Type::fieldA:
     {
       xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::test::fixtures::tablebased::ContainerStruct>::serializedSize(prot_, &this->get_fieldA());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::ContainerStruct>::serializedSize<false>(*prot_, this->get_fieldA());
       break;
     }
     case ExampleUnion::Type::fieldB:
     {
       xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRUCT, 2);
-      xfer += ::apache::thrift::Cpp2Ops<  ::test::fixtures::tablebased::TrivialTypesStruct>::serializedSize(prot_, &this->get_fieldB());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::TrivialTypesStruct>::serializedSize<false>(*prot_, this->get_fieldB());
       break;
     }
     case ExampleUnion::Type::__EMPTY__:;
@@ -242,13 +242,13 @@ uint32_t ExampleUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ExampleUnion::Type::fieldA:
     {
       xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::test::fixtures::tablebased::ContainerStruct>::serializedSizeZC(prot_, &this->get_fieldA());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::ContainerStruct>::serializedSize<true>(*prot_, this->get_fieldA());
       break;
     }
     case ExampleUnion::Type::fieldB:
     {
       xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRUCT, 2);
-      xfer += ::apache::thrift::Cpp2Ops<  ::test::fixtures::tablebased::TrivialTypesStruct>::serializedSizeZC(prot_, &this->get_fieldB());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::TrivialTypesStruct>::serializedSize<true>(*prot_, this->get_fieldB());
       break;
     }
     case ExampleUnion::Type::__EMPTY__:;

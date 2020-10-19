@@ -63,7 +63,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
           ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>, _readState);
 <%/type:resolves_to_enum?%>
 <%#type:struct?%>
-          ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>);
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>);
 <%/type:struct?%>
 <%#field:cpp_ref?%>
           this->mutable_<%field:cpp_name%>() = std::move(ptr);

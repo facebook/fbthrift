@@ -269,7 +269,7 @@ void Vehicle::readNoXfer(Protocol_* iprot) {
 _readField_color:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::read(iprot, &this->color);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::read(*iprot, this->color);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.color = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -418,7 +418,7 @@ uint32_t Vehicle::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Vehicle");
   xfer += prot_->serializedFieldSize("color", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSize(prot_, &this->color);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::serializedSize<false>(*prot_, this->color);
   if (this->licensePlate_ref().has_value()) {
     xfer += prot_->serializedFieldSize("licensePlate", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->licensePlate);
@@ -444,7 +444,7 @@ uint32_t Vehicle::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Vehicle");
   xfer += prot_->serializedFieldSize("color", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSizeZC(prot_, &this->color);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::serializedSize<true>(*prot_, this->color);
   if (this->licensePlate_ref().has_value()) {
     xfer += prot_->serializedFieldSize("licensePlate", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->licensePlate);
@@ -470,7 +470,7 @@ uint32_t Vehicle::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Vehicle");
   xfer += prot_->writeFieldBegin("color", apache::thrift::protocol::T_STRUCT, 1);
-  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::write(prot_, &this->color);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::write(*prot_, this->color);
   xfer += prot_->writeFieldEnd();
   if (this->licensePlate_ref().has_value()) {
     xfer += prot_->writeFieldBegin("licensePlate", apache::thrift::protocol::T_STRING, 2);
@@ -590,7 +590,7 @@ _readField_address:
 _readField_favoriteColor:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::read(iprot, &this->favoriteColor);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::read(*iprot, this->favoriteColor);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.favoriteColor = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -816,7 +816,7 @@ uint32_t Person::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->favoriteColor_ref().has_value()) {
     xfer += prot_->serializedFieldSize("favoriteColor", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSize(prot_, &this->favoriteColor);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::serializedSize<false>(*prot_, this->favoriteColor);
   }
   if (this->friends_ref().has_value()) {
     xfer += prot_->serializedFieldSize("friends", apache::thrift::protocol::T_SET, 6);
@@ -860,7 +860,7 @@ uint32_t Person::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->favoriteColor_ref().has_value()) {
     xfer += prot_->serializedFieldSize("favoriteColor", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::serializedSizeZC(prot_, &this->favoriteColor);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::serializedSize<true>(*prot_, this->favoriteColor);
   }
   if (this->friends_ref().has_value()) {
     xfer += prot_->serializedFieldSize("friends", apache::thrift::protocol::T_SET, 6);
@@ -908,7 +908,7 @@ uint32_t Person::write(Protocol_* prot_) const {
   }
   if (this->favoriteColor_ref().has_value()) {
     xfer += prot_->writeFieldBegin("favoriteColor", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::write(prot_, &this->favoriteColor);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::write(*prot_, this->favoriteColor);
     xfer += prot_->writeFieldEnd();
   }
   if (this->friends_ref().has_value()) {

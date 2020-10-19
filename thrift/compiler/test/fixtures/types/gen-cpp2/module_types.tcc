@@ -1212,7 +1212,7 @@ _readField_z:
 _readField_n:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::read(iprot, &this->n);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::TrivialNumeric>::read(*iprot, this->n);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.n = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1276,7 +1276,7 @@ uint32_t TrivialNestedWithDefault::serializedSize(Protocol_ const* prot_) const 
   xfer += prot_->serializedFieldSize("z", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->z);
   xfer += prot_->serializedFieldSize("n", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::serializedSize(prot_, &this->n);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::TrivialNumeric>::serializedSize<false>(*prot_, this->n);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1288,7 +1288,7 @@ uint32_t TrivialNestedWithDefault::serializedSizeZC(Protocol_ const* prot_) cons
   xfer += prot_->serializedFieldSize("z", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->z);
   xfer += prot_->serializedFieldSize("n", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::serializedSizeZC(prot_, &this->n);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::TrivialNumeric>::serializedSize<true>(*prot_, this->n);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1301,7 +1301,7 @@ uint32_t TrivialNestedWithDefault::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->z);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("n", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::write(prot_, &this->n);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::TrivialNumeric>::write(*prot_, this->n);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -1500,7 +1500,7 @@ _readField_z:
 _readField_n:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::read(iprot, &this->n);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ComplexString>::read(*iprot, this->n);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.n = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1564,7 +1564,7 @@ uint32_t ComplexNestedWithDefault::serializedSize(Protocol_ const* prot_) const 
   xfer += prot_->serializedFieldSize("z", apache::thrift::protocol::T_STRING, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->z);
   xfer += prot_->serializedFieldSize("n", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::serializedSize(prot_, &this->n);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ComplexString>::serializedSize<false>(*prot_, this->n);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1576,7 +1576,7 @@ uint32_t ComplexNestedWithDefault::serializedSizeZC(Protocol_ const* prot_) cons
   xfer += prot_->serializedFieldSize("z", apache::thrift::protocol::T_STRING, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->z);
   xfer += prot_->serializedFieldSize("n", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::serializedSizeZC(prot_, &this->n);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ComplexString>::serializedSize<true>(*prot_, this->n);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1589,7 +1589,7 @@ uint32_t ComplexNestedWithDefault::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->z);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("n", apache::thrift::protocol::T_STRUCT, 2);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::write(prot_, &this->n);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ComplexString>::write(*prot_, this->n);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -1967,7 +1967,7 @@ _readField_majorVer:
 _readField_data:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::read(iprot, &this->data);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::MyDataItem>::read(*iprot, this->data);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.data = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2051,7 +2051,7 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("majorVer", apache::thrift::protocol::T_I64, 3);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
   xfer += prot_->serializedFieldSize("data", apache::thrift::protocol::T_STRUCT, 4);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::serializedSize(prot_, &this->data);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::MyDataItem>::serializedSize<false>(*prot_, this->data);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -2067,7 +2067,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("majorVer", apache::thrift::protocol::T_I64, 3);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
   xfer += prot_->serializedFieldSize("data", apache::thrift::protocol::T_STRUCT, 4);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::serializedSizeZC(prot_, &this->data);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::MyDataItem>::serializedSize<true>(*prot_, this->data);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -2086,7 +2086,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->majorVer);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("data", apache::thrift::protocol::T_STRUCT, 4);
-  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::write(prot_, &this->data);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::MyDataItem>::write(*prot_, this->data);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -2379,7 +2379,7 @@ void ForwardUsageStruct::readNoXfer(Protocol_* iprot) {
 _readField_foo:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(iprot, &this->foo);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(*iprot, this->foo);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.foo = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2434,7 +2434,7 @@ uint32_t ForwardUsageStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("ForwardUsageStruct");
   if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize(prot_, &this->foo);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<false>(*prot_, this->foo);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2446,7 +2446,7 @@ uint32_t ForwardUsageStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("ForwardUsageStruct");
   if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSizeZC(prot_, &this->foo);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<true>(*prot_, this->foo);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2458,7 +2458,7 @@ uint32_t ForwardUsageStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("ForwardUsageStruct");
   if (this->foo_ref().has_value()) {
     xfer += prot_->writeFieldBegin("foo", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::write(prot_, &this->foo);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::write(*prot_, this->foo);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -2497,7 +2497,7 @@ void ForwardUsageRoot::readNoXfer(Protocol_* iprot) {
 _readField_ForwardUsageStruct:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::read(iprot, &this->ForwardUsageStruct);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageStruct>::read(*iprot, this->ForwardUsageStruct);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.ForwardUsageStruct = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2516,7 +2516,7 @@ _readField_ForwardUsageByRef:
     _readState.beforeSubobject(iprot);
     
     std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ptr = std::make_unique< ::apache::thrift::fixtures::types::ForwardUsageByRef>();
-    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageByRef>::read(iprot, ptr.get());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageByRef>::read(*iprot, *ptr);
     this->ForwardUsageByRef = std::move(ptr);
     _readState.afterSubobject(iprot);
   }
@@ -2577,12 +2577,12 @@ uint32_t ForwardUsageRoot::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("ForwardUsageRoot");
   if (this->ForwardUsageStruct_ref().has_value()) {
     xfer += prot_->serializedFieldSize("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSize(prot_, &this->ForwardUsageStruct);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSize<false>(*prot_, this->ForwardUsageStruct);
   }
   if (this->ForwardUsageByRef) {
     xfer += prot_->serializedFieldSize("ForwardUsageByRef", apache::thrift::protocol::T_STRUCT, 2);
     if (this->ForwardUsageByRef) {
-      xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSize(prot_, this->ForwardUsageByRef.get());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSize<false>(*prot_, *this->ForwardUsageByRef);
     }
     else {
       xfer += prot_->serializedStructSize("ForwardUsageByRef");
@@ -2599,12 +2599,12 @@ uint32_t ForwardUsageRoot::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("ForwardUsageRoot");
   if (this->ForwardUsageStruct_ref().has_value()) {
     xfer += prot_->serializedFieldSize("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSizeZC(prot_, &this->ForwardUsageStruct);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageStruct>::serializedSize<true>(*prot_, this->ForwardUsageStruct);
   }
   if (this->ForwardUsageByRef) {
     xfer += prot_->serializedFieldSize("ForwardUsageByRef", apache::thrift::protocol::T_STRUCT, 2);
     if (this->ForwardUsageByRef) {
-      xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSizeZC(prot_, this->ForwardUsageByRef.get());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageByRef>::serializedSize<true>(*prot_, *this->ForwardUsageByRef);
     }
     else {
       xfer += prot_->serializedStructSize("ForwardUsageByRef");
@@ -2621,13 +2621,13 @@ uint32_t ForwardUsageRoot::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("ForwardUsageRoot");
   if (this->ForwardUsageStruct_ref().has_value()) {
     xfer += prot_->writeFieldBegin("ForwardUsageStruct", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::write(prot_, &this->ForwardUsageStruct);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageStruct>::write(*prot_, this->ForwardUsageStruct);
     xfer += prot_->writeFieldEnd();
   }
   if (this->ForwardUsageByRef) {
     xfer += prot_->writeFieldBegin("ForwardUsageByRef", apache::thrift::protocol::T_STRUCT, 2);
     if (this->ForwardUsageByRef) {
-      xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageByRef>::write(prot_, this->ForwardUsageByRef.get());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageByRef>::write(*prot_, *this->ForwardUsageByRef);
     }
     else {
       xfer += prot_->writeStructBegin("ForwardUsageByRef");
@@ -2672,7 +2672,7 @@ void ForwardUsageByRef::readNoXfer(Protocol_* iprot) {
 _readField_foo:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(iprot, &this->foo);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(*iprot, this->foo);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.foo = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2727,7 +2727,7 @@ uint32_t ForwardUsageByRef::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("ForwardUsageByRef");
   if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize(prot_, &this->foo);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<false>(*prot_, this->foo);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2739,7 +2739,7 @@ uint32_t ForwardUsageByRef::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("ForwardUsageByRef");
   if (this->foo_ref().has_value()) {
     xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSizeZC(prot_, &this->foo);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::serializedSize<true>(*prot_, this->foo);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -2751,7 +2751,7 @@ uint32_t ForwardUsageByRef::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("ForwardUsageByRef");
   if (this->foo_ref().has_value()) {
     xfer += prot_->writeFieldBegin("foo", apache::thrift::protocol::T_STRUCT, 1);
-    xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::write(prot_, &this->foo);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageRoot>::write(*prot_, this->foo);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

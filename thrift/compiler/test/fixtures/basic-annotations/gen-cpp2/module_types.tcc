@@ -234,7 +234,7 @@ _readField_extra:
 _readField_nest:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::Cpp2Ops<  ::cpp2::MyStructNestedAnnotation>::read(iprot, &this->nest);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyStructNestedAnnotation>::read(*iprot, this->nest);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.nest = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -320,7 +320,7 @@ uint32_t MyStructAnnotation::serializedSize(Protocol_ const* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->extra);
   }
   xfer += prot_->serializedFieldSize("nest", apache::thrift::protocol::T_STRUCT, 4);
-  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyStructNestedAnnotation>::serializedSize(prot_, &this->nest);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyStructNestedAnnotation>::serializedSize<false>(*prot_, this->nest);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -338,7 +338,7 @@ uint32_t MyStructAnnotation::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->extra);
   }
   xfer += prot_->serializedFieldSize("nest", apache::thrift::protocol::T_STRUCT, 4);
-  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyStructNestedAnnotation>::serializedSizeZC(prot_, &this->nest);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyStructNestedAnnotation>::serializedSize<true>(*prot_, this->nest);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -359,7 +359,7 @@ uint32_t MyStructAnnotation::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("nest", apache::thrift::protocol::T_STRUCT, 4);
-  xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyStructNestedAnnotation>::write(prot_, &this->nest);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyStructNestedAnnotation>::write(*prot_, this->nest);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

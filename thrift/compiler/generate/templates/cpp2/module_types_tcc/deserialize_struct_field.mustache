@@ -31,7 +31,7 @@ std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
 %><%/type:resolves_to_container?%><%!
 %><%#type:struct?%>
-::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, ptr.get());<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
 %><%/type:struct?%>
 this-><%field:cpp_name%> = std::move(ptr);<%!
 %><%/field:cpp_ref?%><%!
@@ -53,7 +53,7 @@ this-><%field:cpp_name%> = <% > types/type%>();
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
 %><%/type:resolves_to_container?%><%!
 %><%#type:struct?%><%!
-%>::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:cpp_name%>);<%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
 %><%/type:struct?%><%!
 %><%/field:cpp_ref?%><%!
 

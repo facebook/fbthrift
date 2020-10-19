@@ -526,7 +526,7 @@ _readField_fieldS:
     _readState.beforeSubobject(iprot);
     
     std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
-    ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldS = std::move(ptr);
     _readState.afterSubobject(iprot);
   }
@@ -543,7 +543,7 @@ _readField_fieldT:
     _readState.beforeSubobject(iprot);
     
     std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
-    ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldT = std::move(ptr);
     _readState.afterSubobject(iprot);
   }
@@ -560,7 +560,7 @@ _readField_fieldU:
     _readState.beforeSubobject(iprot);
     
     std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
-    ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldU = std::move(ptr);
     _readState.afterSubobject(iprot);
   }
@@ -577,7 +577,7 @@ _readField_fieldX:
     _readState.beforeSubobject(iprot);
     
     std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
-    ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldX = std::move(ptr);
     _readState.afterSubobject(iprot);
   }
@@ -840,7 +840,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldS", apache::thrift::protocol::T_STRUCT, 19);
   if (this->fieldS) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSize(prot_, this->fieldS.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<false>(*prot_, *this->fieldS);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -848,7 +848,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldT", apache::thrift::protocol::T_STRUCT, 20);
   if (this->fieldT) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSize(prot_, this->fieldT.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<false>(*prot_, *this->fieldT);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -856,7 +856,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldU", apache::thrift::protocol::T_STRUCT, 21);
   if (this->fieldU) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSize(prot_, this->fieldU.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<false>(*prot_, *this->fieldU);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -864,7 +864,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldX", apache::thrift::protocol::T_STRUCT, 23);
   if (this->fieldX) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSize(prot_, this->fieldX.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<false>(*prot_, *this->fieldX);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -922,7 +922,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldS", apache::thrift::protocol::T_STRUCT, 19);
   if (this->fieldS) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSizeZC(prot_, this->fieldS.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<true>(*prot_, *this->fieldS);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -930,7 +930,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldT", apache::thrift::protocol::T_STRUCT, 20);
   if (this->fieldT) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSizeZC(prot_, this->fieldT.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<true>(*prot_, *this->fieldT);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -938,7 +938,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldU", apache::thrift::protocol::T_STRUCT, 21);
   if (this->fieldU) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSizeZC(prot_, this->fieldU.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<true>(*prot_, *this->fieldU);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -946,7 +946,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("fieldX", apache::thrift::protocol::T_STRUCT, 23);
   if (this->fieldX) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::serializedSizeZC(prot_, this->fieldX.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::serializedSize<true>(*prot_, *this->fieldX);
   }
   else {
     xfer += prot_->serializedStructSize("SmallStruct");
@@ -1022,7 +1022,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldS", apache::thrift::protocol::T_STRUCT, 19);
   if (this->fieldS) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::write(prot_, this->fieldS.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::write(*prot_, *this->fieldS);
   }
   else {
     xfer += prot_->writeStructBegin("SmallStruct");
@@ -1032,7 +1032,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldT", apache::thrift::protocol::T_STRUCT, 20);
   if (this->fieldT) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::write(prot_, this->fieldT.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::write(*prot_, *this->fieldT);
   }
   else {
     xfer += prot_->writeStructBegin("SmallStruct");
@@ -1042,7 +1042,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldU", apache::thrift::protocol::T_STRUCT, 21);
   if (this->fieldU) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::write(prot_, this->fieldU.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::write(*prot_, *this->fieldU);
   }
   else {
     xfer += prot_->writeStructBegin("SmallStruct");
@@ -1052,7 +1052,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldX", apache::thrift::protocol::T_STRUCT, 23);
   if (this->fieldX) {
-    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::write(prot_, this->fieldX.get());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::write(*prot_, *this->fieldX);
   }
   else {
     xfer += prot_->writeStructBegin("SmallStruct");

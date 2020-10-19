@@ -806,7 +806,7 @@ void ValUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_v1();
           _readState.beforeSubobject(iprot);
-          ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::read(iprot, &this->mutable_v1());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::read(*iprot, this->mutable_v1());
           _readState.afterSubobject(iprot);
         } else {
           _readState.skip(iprot);
@@ -818,7 +818,7 @@ void ValUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_v2();
           _readState.beforeSubobject(iprot);
-          ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::read(iprot, &this->mutable_v2());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::read(*iprot, this->mutable_v2());
           _readState.afterSubobject(iprot);
         } else {
           _readState.skip(iprot);
@@ -848,13 +848,13 @@ uint32_t ValUnion::serializedSize(Protocol_ const* prot_) const {
     case ValUnion::Type::v1:
     {
       xfer += prot_->serializedFieldSize("v1", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::serializedSize(prot_, &this->get_v1());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::serializedSize<false>(*prot_, this->get_v1());
       break;
     }
     case ValUnion::Type::v2:
     {
       xfer += prot_->serializedFieldSize("v2", apache::thrift::protocol::T_STRUCT, 2);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::serializedSize(prot_, &this->get_v2());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::serializedSize<false>(*prot_, this->get_v2());
       break;
     }
     case ValUnion::Type::__EMPTY__:;
@@ -871,13 +871,13 @@ uint32_t ValUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ValUnion::Type::v1:
     {
       xfer += prot_->serializedFieldSize("v1", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::serializedSizeZC(prot_, &this->get_v1());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::serializedSize<true>(*prot_, this->get_v1());
       break;
     }
     case ValUnion::Type::v2:
     {
       xfer += prot_->serializedFieldSize("v2", apache::thrift::protocol::T_STRUCT, 2);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::serializedSizeZC(prot_, &this->get_v2());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::serializedSize<true>(*prot_, this->get_v2());
       break;
     }
     case ValUnion::Type::__EMPTY__:;
@@ -894,14 +894,14 @@ uint32_t ValUnion::write(Protocol_* prot_) const {
     case ValUnion::Type::v1:
     {
       xfer += prot_->writeFieldBegin("v1", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::write(prot_, &this->get_v1());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::write(*prot_, this->get_v1());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case ValUnion::Type::v2:
     {
       xfer += prot_->writeFieldBegin("v2", apache::thrift::protocol::T_STRUCT, 2);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Val>::write(prot_, &this->get_v2());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Val>::write(*prot_, this->get_v2());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -1188,7 +1188,7 @@ void NonCopyableUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_s();
           _readState.beforeSubobject(iprot);
-          ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::read(iprot, &this->mutable_s());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::NonCopyableStruct>::read(*iprot, this->mutable_s());
           _readState.afterSubobject(iprot);
         } else {
           _readState.skip(iprot);
@@ -1218,7 +1218,7 @@ uint32_t NonCopyableUnion::serializedSize(Protocol_ const* prot_) const {
     case NonCopyableUnion::Type::s:
     {
       xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::serializedSize(prot_, &this->get_s());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::NonCopyableStruct>::serializedSize<false>(*prot_, this->get_s());
       break;
     }
     case NonCopyableUnion::Type::__EMPTY__:;
@@ -1235,7 +1235,7 @@ uint32_t NonCopyableUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case NonCopyableUnion::Type::s:
     {
       xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::serializedSizeZC(prot_, &this->get_s());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::NonCopyableStruct>::serializedSize<true>(*prot_, this->get_s());
       break;
     }
     case NonCopyableUnion::Type::__EMPTY__:;
@@ -1252,7 +1252,7 @@ uint32_t NonCopyableUnion::write(Protocol_* prot_) const {
     case NonCopyableUnion::Type::s:
     {
       xfer += prot_->writeFieldBegin("s", apache::thrift::protocol::T_STRUCT, 1);
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::write(prot_, &this->get_s());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::NonCopyableStruct>::write(*prot_, this->get_s());
       xfer += prot_->writeFieldEnd();
       break;
     }
