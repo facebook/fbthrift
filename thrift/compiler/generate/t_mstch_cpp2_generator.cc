@@ -1193,6 +1193,7 @@ class mstch_cpp2_service : public mstch_service {
         this,
         {
             {"service:program_name", &mstch_cpp2_service::program_name},
+            {"service:program_path", &mstch_cpp2_service::program_path},
             {"service:include_prefix", &mstch_cpp2_service::include_prefix},
             {"service:thrift_includes", &mstch_cpp2_service::thrift_includes},
             {"service:namespace_cpp2", &mstch_cpp2_service::namespace_cpp2},
@@ -1210,6 +1211,9 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node program_name() {
     return service_->get_program()->get_name();
+  }
+  mstch::node program_path() {
+    return service_->get_program()->get_path();
   }
   mstch::node cpp_includes() {
     return t_mstch_cpp2_generator::cpp_includes(service_->get_program());

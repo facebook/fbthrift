@@ -205,7 +205,10 @@ std::string parsing_driver::include_file(const std::string& filename) {
     // iterate through paths
     std::vector<std::string>::iterator it;
     for (it = sp.begin(); it != sp.end(); it++) {
-      std::string sfilename = *(it) + "/" + filename;
+      std::string sfilename = filename;
+      if ((*it) != "." && (*it) != "") {
+        sfilename = *(it) + "/" + filename;
+      }
       if (boost::filesystem::exists(sfilename)) {
         return sfilename;
       } else {

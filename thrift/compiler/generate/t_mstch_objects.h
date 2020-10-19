@@ -1244,6 +1244,7 @@ class mstch_program : public mstch_base {
         this,
         {
             {"program:name", &mstch_program::name},
+            {"program:path", &mstch_program::path},
             {"program:includePrefix", &mstch_program::include_prefix},
             {"program:structs", &mstch_program::structs},
             {"program:enums", &mstch_program::enums},
@@ -1266,6 +1267,9 @@ class mstch_program : public mstch_base {
 
   mstch::node name() {
     return program_->get_name();
+  }
+  mstch::node path() {
+    return program_->get_path();
   }
   mstch::node include_prefix() {
     return program_->get_include_prefix();

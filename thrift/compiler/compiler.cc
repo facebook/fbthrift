@@ -385,8 +385,6 @@ compile_result compile(std::vector<std::string> arguments) {
     return result;
   }
 
-  std::string input_file = compute_absolute_path(arguments[i]);
-
   string input_filename = arguments[i];
   string include_prefix = get_include_path(generator_strings, input_filename);
 
@@ -403,7 +401,7 @@ compile_result compile(std::vector<std::string> arguments) {
   params.allow_64bit_consts = allow_64bit_consts;
   params.incl_searchpath = std::move(incl_searchpath);
 
-  parsing_driver driver{input_file, std::move(params)};
+  parsing_driver driver{input_filename, std::move(params)};
   auto program = driver.parse(result.diagnostics);
   if (!program) {
     return result;
