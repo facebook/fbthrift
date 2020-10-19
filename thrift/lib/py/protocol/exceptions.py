@@ -14,6 +14,9 @@
 
 
 def create_ThriftUnicodeDecodeError_from_UnicodeDecodeError(error, field_name):
+    if isinstance(error, ThriftUnicodeDecodeError):
+        error.field_names.append(field_name)
+        return error
     return ThriftUnicodeDecodeError(
         error.encoding, error.object, error.start, error.end, error.reason, field_name
     )
@@ -21,10 +24,10 @@ def create_ThriftUnicodeDecodeError_from_UnicodeDecodeError(error, field_name):
 
 class ThriftUnicodeDecodeError(UnicodeDecodeError):
     def __init__(self, encoding, object, start, end, reason, field_name):
-        super(UnicodeDecodeError, self).__init__(encoding, object, start, end, reason)
-        self.field_name = field_name
+        super(ThriftUnicodeDecodeError, self).__init__(encoding, object, start, end, reason)
+        self.field_names = [field_name]
 
     def __str__(self):
         return "{error} when decoding field '{field}'".format(
-            error=super(UnicodeDecodeError, self).__str__(), field=self.field_name
+            error=super(ThriftUnicodeDecodeError, self).__str__(), field="->".join(reversed(self.field_names))
         )

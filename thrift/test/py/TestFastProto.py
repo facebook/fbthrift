@@ -201,7 +201,7 @@ class AbstractTest:
         self.encode_and_decode(required)
 
     def test_decode_failure_lists_fieldname(self):
-        obj = OneOfEach(aString="Привет".encode("cp866"))
+        obj = OneOfEach(aStruct=AStruct(aString="Привет".encode("cp866")))
         # Can't use self.assertRaises since AbstractTest cannot inherit
         # from unittest.TestCase
         raised_exception = None
@@ -210,10 +210,10 @@ class AbstractTest:
         except UnicodeDecodeError as ex:
             raised_exception = ex
         self.assertIsNotNone(raised_exception)
-        self.assertIn("when decoding field 'aString'", str(raised_exception))
+        self.assertIn("when decoding field 'aStruct->aString'", str(raised_exception))
         self.assertIn(
             "('utf-8', b'\\x8f\\xe0\\xa8\\xa2\\xa5\\xe2', 0, 1, 'invalid start byte')",
-            str(raised_exception),
+            repr(raised_exception),
         )
         self.assertTrue(isinstance(raised_exception, ThriftUnicodeDecodeError))
 
