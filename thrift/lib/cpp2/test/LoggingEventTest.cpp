@@ -88,12 +88,14 @@ class TestEventRegistry : public LoggingEventRegistry {
 
 } // namespace
 
-namespace fbthrift {
+namespace facebook {
+namespace thrift {
 std::unique_ptr<apache::thrift::LoggingEventRegistry>
 makeLoggingEventRegistry() {
   return std::make_unique<TestEventRegistry>();
 }
-} // namespace fbthrift
+} // namespace thrift
+} // namespace facebook
 
 template <typename T>
 class LoggingEventTest : public testing::Test {

@@ -20,7 +20,8 @@
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
 
-namespace fbthrift {
+namespace facebook {
+namespace thrift {
 #if FOLLY_HAVE_WEAK_SYMBOLS
 FOLLY_ATTR_WEAK std::unique_ptr<apache::thrift::LoggingEventRegistry>
 makeLoggingEventRegistry();
@@ -28,7 +29,8 @@ makeLoggingEventRegistry();
 constexpr std::unique_ptr<apache::thrift::LoggingEventRegistry> (
     *makeLoggingEventRegistry)() = nullptr;
 #endif
-} // namespace fbthrift
+} // namespace thrift
+} // namespace facebook
 
 namespace apache {
 namespace thrift {
@@ -53,8 +55,8 @@ class DefaultLoggingEventRegistry : public LoggingEventRegistry {
 };
 
 std::unique_ptr<LoggingEventRegistry> makeRegistry() {
-  if (fbthrift::makeLoggingEventRegistry) {
-    return fbthrift::makeLoggingEventRegistry();
+  if (facebook::thrift::makeLoggingEventRegistry) {
+    return facebook::thrift::makeLoggingEventRegistry();
   }
   return std::make_unique<DefaultLoggingEventRegistry>();
 }
