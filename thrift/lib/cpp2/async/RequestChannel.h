@@ -158,7 +158,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   // only some channels can be nested; the rest call terminate here
   virtual void registerInteraction(folly::StringPiece name, int64_t id);
 
- protected:
+  // used by channels to implement the above APIs
   static InteractionId createInteractionId(int64_t id);
   static void releaseInteractionId(InteractionId&& id);
 };
