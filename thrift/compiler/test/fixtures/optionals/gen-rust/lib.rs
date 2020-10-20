@@ -49,8 +49,10 @@ pub mod types {
         pub const DOG: Self = Animal(1i32);
         pub const CAT: Self = Animal(2i32);
         pub const TARANTULA: Self = Animal(3i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for Animal {
+        fn variants() -> &'static [&'static str] {
             &[
                 "DOG",
                 "CAT",
@@ -58,7 +60,7 @@ pub mod types {
             ]
         }
 
-        pub fn variant_values() -> &'static [Animal] {
+        fn variant_values() -> &'static [Animal] {
             &[
                 Animal::DOG,
                 Animal::CAT,

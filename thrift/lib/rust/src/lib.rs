@@ -85,6 +85,12 @@ pub use crate::simplejson_protocol::SimpleJsonProtocol;
 pub use crate::thrift_protocol::{MessageType, ProtocolID};
 pub use crate::ttype::{GetTType, TType};
 
+pub trait ThriftEnum: Sized {
+    fn variants() -> &'static [&'static str];
+
+    fn variant_values() -> &'static [Self];
+}
+
 /// Set the default ID's for unknown exceptions and fields.
 /// When reading off the wire, these default values will be
 /// overridden with the unrecognized id (which must be nonnegative).

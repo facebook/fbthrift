@@ -168,8 +168,10 @@ pub mod types {
         pub const one: Self = has_bitwise_ops(2i32);
         pub const two: Self = has_bitwise_ops(4i32);
         pub const three: Self = has_bitwise_ops(8i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for has_bitwise_ops {
+        fn variants() -> &'static [&'static str] {
             &[
                 "none",
                 "zero",
@@ -179,7 +181,7 @@ pub mod types {
             ]
         }
 
-        pub fn variant_values() -> &'static [has_bitwise_ops] {
+        fn variant_values() -> &'static [has_bitwise_ops] {
             &[
                 has_bitwise_ops::none,
                 has_bitwise_ops::zero,
@@ -281,15 +283,17 @@ pub mod types {
     impl is_unscoped {
         pub const hello: Self = is_unscoped(0i32);
         pub const world: Self = is_unscoped(1i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for is_unscoped {
+        fn variants() -> &'static [&'static str] {
             &[
                 "hello",
                 "world",
             ]
         }
 
-        pub fn variant_values() -> &'static [is_unscoped] {
+        fn variant_values() -> &'static [is_unscoped] {
             &[
                 is_unscoped::hello,
                 is_unscoped::world,
@@ -382,15 +386,17 @@ pub mod types {
     impl MyForwardRefEnum {
         pub const ZERO: Self = MyForwardRefEnum(0i32);
         pub const NONZERO: Self = MyForwardRefEnum(12i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for MyForwardRefEnum {
+        fn variants() -> &'static [&'static str] {
             &[
                 "ZERO",
                 "NONZERO",
             ]
         }
 
-        pub fn variant_values() -> &'static [MyForwardRefEnum] {
+        fn variant_values() -> &'static [MyForwardRefEnum] {
             &[
                 MyForwardRefEnum::ZERO,
                 MyForwardRefEnum::NONZERO,
@@ -484,8 +490,10 @@ pub mod types {
         pub const fieldA: Self = MyEnumA(1i32);
         pub const fieldB: Self = MyEnumA(2i32);
         pub const fieldC: Self = MyEnumA(4i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for MyEnumA {
+        fn variants() -> &'static [&'static str] {
             &[
                 "fieldA",
                 "fieldB",
@@ -493,7 +501,7 @@ pub mod types {
             ]
         }
 
-        pub fn variant_values() -> &'static [MyEnumA] {
+        fn variant_values() -> &'static [MyEnumA] {
             &[
                 MyEnumA::fieldA,
                 MyEnumA::fieldB,

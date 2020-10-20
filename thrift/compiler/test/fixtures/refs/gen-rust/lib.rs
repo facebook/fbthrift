@@ -149,15 +149,17 @@ pub mod types {
     impl TypedEnum {
         pub const VAL1: Self = TypedEnum(0i32);
         pub const VAL2: Self = TypedEnum(1i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for TypedEnum {
+        fn variants() -> &'static [&'static str] {
             &[
                 "VAL1",
                 "VAL2",
             ]
         }
 
-        pub fn variant_values() -> &'static [TypedEnum] {
+        fn variant_values() -> &'static [TypedEnum] {
             &[
                 TypedEnum::VAL1,
                 TypedEnum::VAL2,

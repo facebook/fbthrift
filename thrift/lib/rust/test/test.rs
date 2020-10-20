@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use fbthrift::{serialize, CompactProtocol, Deserialize, Protocol, Serialize};
+use fbthrift::{serialize, CompactProtocol, Deserialize, Protocol, Serialize, ThriftEnum};
 use indexmap::{IndexMap, IndexSet};
 use interface::{NonstandardCollectionTypes, TestEnum, TestEnumEmpty};
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};

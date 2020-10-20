@@ -26,8 +26,10 @@
         pub const {{enumValue:rust_name}}: Self = {{!
             }}{{enum:rust_name}}({{enumValue:value}}i32);{{!
         }}{{/enum:values}}
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for {{enum:rust_name}} {
+        fn variants() -> &'static [&'static str] {
             &[
                 {{#enum:values}}
                 "{{enumValue:name}}",
@@ -35,7 +37,7 @@
             ]
         }
 
-        pub fn variant_values() -> &'static [{{enum:rust_name}}] {
+        fn variant_values() -> &'static [{{enum:rust_name}}] {
             &[
                 {{#enum:values}}
                 {{enum:rust_name}}::{{enumValue:rust_name}},

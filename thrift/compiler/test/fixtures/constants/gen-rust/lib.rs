@@ -426,13 +426,15 @@ pub mod types {
     pub struct EmptyEnum(pub ::std::primitive::i32);
 
     impl EmptyEnum {
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for EmptyEnum {
+        fn variants() -> &'static [&'static str] {
             &[
             ]
         }
 
-        pub fn variant_values() -> &'static [EmptyEnum] {
+        fn variant_values() -> &'static [EmptyEnum] {
             &[
             ]
         }
@@ -521,8 +523,10 @@ pub mod types {
         pub const MPK: Self = City(1i32);
         pub const SEA: Self = City(2i32);
         pub const LON: Self = City(3i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for City {
+        fn variants() -> &'static [&'static str] {
             &[
                 "NYC",
                 "MPK",
@@ -531,7 +535,7 @@ pub mod types {
             ]
         }
 
-        pub fn variant_values() -> &'static [City] {
+        fn variant_values() -> &'static [City] {
             &[
                 City::NYC,
                 City::MPK,
@@ -632,8 +636,10 @@ pub mod types {
         pub const WHATSAPP: Self = Company(1i32);
         pub const OCULUS: Self = Company(2i32);
         pub const INSTAGRAM: Self = Company(3i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for Company {
+        fn variants() -> &'static [&'static str] {
             &[
                 "FACEBOOK",
                 "WHATSAPP",
@@ -642,7 +648,7 @@ pub mod types {
             ]
         }
 
-        pub fn variant_values() -> &'static [Company] {
+        fn variant_values() -> &'static [Company] {
             &[
                 Company::FACEBOOK,
                 Company::WHATSAPP,

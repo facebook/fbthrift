@@ -24,13 +24,15 @@ pub mod types {
     pub struct EmptyEnum(pub ::std::primitive::i32);
 
     impl EmptyEnum {
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for EmptyEnum {
+        fn variants() -> &'static [&'static str] {
             &[
             ]
         }
 
-        pub fn variant_values() -> &'static [EmptyEnum] {
+        fn variant_values() -> &'static [EmptyEnum] {
             &[
             ]
         }
@@ -117,15 +119,17 @@ pub mod types {
     impl MyEnum {
         pub const ONE: Self = MyEnum(1i32);
         pub const TWO: Self = MyEnum(2i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for MyEnum {
+        fn variants() -> &'static [&'static str] {
             &[
                 "ONE",
                 "TWO",
             ]
         }
 
-        pub fn variant_values() -> &'static [MyEnum] {
+        fn variant_values() -> &'static [MyEnum] {
             &[
                 MyEnum::ONE,
                 MyEnum::TWO,
@@ -236,8 +240,10 @@ pub mod types {
         pub const SEVENTEEN: Self = MyBigEnum(17i32);
         pub const EIGHTEEN: Self = MyBigEnum(18i32);
         pub const NINETEEN: Self = MyBigEnum(19i32);
+    }
 
-        pub fn variants() -> &'static [&'static str] {
+    impl ::fbthrift::ThriftEnum for MyBigEnum {
+        fn variants() -> &'static [&'static str] {
             &[
                 "UNKNOWN",
                 "ONE",
@@ -262,7 +268,7 @@ pub mod types {
             ]
         }
 
-        pub fn variant_values() -> &'static [MyBigEnum] {
+        fn variant_values() -> &'static [MyBigEnum] {
             &[
                 MyBigEnum::UNKNOWN,
                 MyBigEnum::ONE,
