@@ -463,7 +463,7 @@ void struct2::__clear() {
   // clear all fields
   a = 0;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::clear(&c);
+  c.__clear();
   d.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -610,7 +610,7 @@ void struct3::__clear() {
   // clear all fields
   a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   b = 0;
-  ::apache::thrift::Cpp2Ops<  ::cpp2::struct2>::clear(&c);
+  c.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

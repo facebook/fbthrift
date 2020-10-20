@@ -34,6 +34,10 @@ class MyCustomStruct {
   MyCustomStruct() : data_(4, '\0') {}
   /* implicit */ MyCustomStruct(const std::string& data) : data_(data) {}
 
+  void __clear() {
+    data_.clear();
+  }
+
   bool operator==(const MyCustomStruct& other) const {
     return data_ == other.data_;
   }
@@ -52,6 +56,10 @@ class MyCustomUnion {
  public:
   MyCustomUnion() {}
   /* implicit */ MyCustomUnion(const std::string& data) : data_(data) {}
+
+  void __clear() {
+    data_.clear();
+  }
 
   bool operator==(const MyCustomUnion& other) const {
     return data_ == other.data_;

@@ -1119,9 +1119,9 @@ void structC::__clear() {
   d = 0;
   e =  ::test_cpp2::cpp_reflection::enum1::field0;
   f =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&g);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::clear(&h);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::clear(&i);
+  g.__clear();
+  h.__clear();
+  i.__clear();
   j.clear();
   j1.clear();
   j2.clear();
@@ -1791,8 +1791,8 @@ void struct1::__clear() {
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&field4);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&field5);
+  field4.__clear();
+  field5.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1996,9 +1996,9 @@ void struct2::__clear() {
   fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
   fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&fieldE);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&fieldF);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::clear(&fieldG);
+  fieldE.__clear();
+  fieldF.__clear();
+  fieldG.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2284,10 +2284,10 @@ void struct3::__clear() {
   fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
   fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&fieldE);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&fieldF);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::clear(&fieldG);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&fieldH);
+  fieldE.__clear();
+  fieldF.__clear();
+  fieldG.__clear();
+  fieldH.__clear();
   fieldI.clear();
   fieldJ.clear();
   fieldK.clear();
@@ -2744,7 +2744,7 @@ void struct4::__clear() {
   field0 = 0;
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  if (field3) ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(field3.get());
+  if (field3) field3->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2903,8 +2903,8 @@ void struct5::__clear() {
   field0 = 0;
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(&field3);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::clear(&field4);
+  field3.__clear();
+  field4.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3152,8 +3152,8 @@ dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void dep_A_struct::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
+  b.__clear();
+  c.__clear();
   i_a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -3303,8 +3303,8 @@ dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void dep_B_struct::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
-  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
+  b.__clear();
+  c.__clear();
   i_a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

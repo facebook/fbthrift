@@ -69,11 +69,11 @@ void <%struct:name%>::__clear() {
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
-  ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(&<%field:cpp_name%>);
+  <%field:cpp_name%>.__clear();
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>
-  if (<%field:cpp_name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:cpp_name%>.get());
+  if (<%field:cpp_name%>) <%field:cpp_name%>->__clear();
 <%/field:optional?%>
 <%#field:optional?%>
   <%field:cpp_name%>.reset();
@@ -81,7 +81,7 @@ void <%struct:name%>::__clear() {
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
 <%^field:optional?%>
-  if (<%field:cpp_name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:cpp_name%>.get());
+  if (<%field:cpp_name%>) <%field:cpp_name%>->__clear();
 <%/field:optional?%>
 <%#field:optional?%>
   <%field:cpp_name%>.reset();

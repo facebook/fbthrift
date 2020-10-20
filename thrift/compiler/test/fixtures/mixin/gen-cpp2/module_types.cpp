@@ -140,7 +140,7 @@ Mixin2::Mixin2(apache::thrift::FragileConstructor,  ::cpp2::Mixin1 m1__arg, ::st
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Mixin2::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin1>::clear(&m1);
+  m1.__clear();
   field2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -349,8 +349,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Foo::__clear() {
   // clear all fields
   field4 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin2>::clear(&m2);
-  ::apache::thrift::Cpp2Ops<  ::cpp2::Mixin3>::clear(&m3);
+  m2.__clear();
+  m3.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

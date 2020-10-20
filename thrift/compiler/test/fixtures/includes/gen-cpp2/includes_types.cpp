@@ -56,7 +56,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Included::__clear() {
   // clear all fields
   MyIntField = 0LL;
-  ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::clear(&MyTransitiveField);
+  MyTransitiveField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

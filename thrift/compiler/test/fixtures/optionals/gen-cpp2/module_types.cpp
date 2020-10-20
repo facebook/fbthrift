@@ -235,7 +235,7 @@ Vehicle::Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Vehicle::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::clear(&color);
+  color.__clear();
   licensePlate = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   description = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
@@ -432,7 +432,7 @@ void Person::__clear() {
   name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   age = 0;
   address = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::clear(&favoriteColor);
+  favoriteColor.__clear();
   friends.clear();
   bestFriend = 0;
   petNames.clear();

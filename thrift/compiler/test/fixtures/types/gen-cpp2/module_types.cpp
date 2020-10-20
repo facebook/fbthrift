@@ -863,7 +863,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void TrivialNestedWithDefault::__clear() {
   // clear all fields
   z = 4;
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::clear(&n);
+  n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1087,7 +1087,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ComplexNestedWithDefault::__clear() {
   // clear all fields
   z = apache::thrift::StringTraits< std::string>::fromStringLiteral("4");
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::clear(&n);
+  n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1653,7 +1653,7 @@ ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor,  ::ap
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ForwardUsageStruct::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::clear(&foo);
+  foo.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1776,7 +1776,7 @@ ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor,  ::apache
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ForwardUsageRoot::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::clear(&ForwardUsageStruct);
+  ForwardUsageStruct.__clear();
   ForwardUsageByRef.reset();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -1911,7 +1911,7 @@ ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor,  ::apac
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ForwardUsageByRef::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::clear(&foo);
+  foo.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

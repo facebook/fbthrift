@@ -1369,7 +1369,7 @@ void AnException::__clear() {
   req_exception_map.clear();
   enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
   enum_container.clear();
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&a_struct);
+  a_struct.__clear();
   a_set_struct.clear();
   a_union_list.clear();
   union_typedef.clear();
@@ -2106,13 +2106,13 @@ void containerStruct::__clear() {
   fieldS =  ::some::valid::ns::MyEnumA::fieldB;
   fieldT.clear();
   fieldU.clear();
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&fieldV);
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&req_fieldV);
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&opt_fieldV);
+  fieldV.__clear();
+  req_fieldV.__clear();
+  opt_fieldV.__clear();
   fieldW.clear();
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&fieldX);
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&req_fieldX);
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&opt_fieldX);
+  fieldX.__clear();
+  req_fieldX.__clear();
+  opt_fieldX.__clear();
   fieldY.clear();
   fieldZ.clear();
   fieldAA.clear();
@@ -2909,9 +2909,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyIncludedStruct::__clear() {
   // clear all fields
   MyIncludedInt = 42LL;
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(&MyIncludedStruct);
-  if (ARefField) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(ARefField.get());
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(&ARequiredField);
+  MyIncludedStruct.__clear();
+  if (ARefField) ARefField->__clear();
+  ARequiredField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3327,20 +3327,20 @@ AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::va
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void AnnotatedStruct::__clear() {
   // clear all fields
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&no_annotation);
-  if (cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(cpp_unique_ref.get());
-  if (cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(cpp2_unique_ref.get());
+  no_annotation.__clear();
+  if (cpp_unique_ref) cpp_unique_ref->__clear();
+  if (cpp2_unique_ref) cpp2_unique_ref->__clear();
   container_with_ref.reset(new typename decltype(container_with_ref)::element_type());
-  if (req_cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_cpp_unique_ref.get());
-  if (req_cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_cpp2_unique_ref.get());
+  if (req_cpp_unique_ref) req_cpp_unique_ref->__clear();
+  if (req_cpp2_unique_ref) req_cpp2_unique_ref->__clear();
   req_container_with_ref.reset(new typename decltype(req_container_with_ref)::element_type());
   opt_cpp_unique_ref.reset();
   opt_cpp2_unique_ref.reset();
   opt_container_with_ref.reset();
-  if (ref_type_unique) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(ref_type_unique.get());
-  if (ref_type_shared) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(ref_type_shared.get());
+  if (ref_type_unique) ref_type_unique->__clear();
+  if (ref_type_shared) ref_type_shared->__clear();
   ref_type_const.reset(new typename decltype(ref_type_const)::element_type());
-  if (req_ref_type_shared) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_ref_type_shared.get());
+  if (req_ref_type_shared) req_ref_type_shared->__clear();
   if (req_ref_type_const) req_ref_type_const.reset(new typename decltype(req_ref_type_const)::element_type());
   req_ref_type_unique.reset(new typename decltype(req_ref_type_unique)::element_type());
   opt_ref_type_const.reset();
@@ -3366,7 +3366,7 @@ void AnnotatedStruct::__clear() {
   indirection_c.clear();
   iobuf_type_val = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value");
   iobuf_ptr_val = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
-  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&struct_struct);
+  struct_struct.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

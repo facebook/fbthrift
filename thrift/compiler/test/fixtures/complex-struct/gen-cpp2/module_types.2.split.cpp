@@ -1164,8 +1164,8 @@ void complexException::__clear() {
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   listStrings.clear();
   errorEnum =  ::cpp2::MyEnum::MyValue1;
-  ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::clear(&unionError);
-  ::apache::thrift::Cpp2Ops<  ::cpp2::MyStruct>::clear(&structError);
+  unionError.__clear();
+  structError.__clear();
   lsMap.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

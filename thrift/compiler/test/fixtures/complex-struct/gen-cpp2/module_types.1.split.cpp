@@ -321,9 +321,9 @@ void defaultStruct::__clear() {
   field3.clear();
   myList.clear();
   mySet.clear();
-  ::apache::thrift::Cpp2Ops<  ::cpp2::SimpleStruct>::clear(&simpleStruct);
+  simpleStruct.__clear();
   listStructDFset.clear();
-  ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::clear(&myUnion);
+  myUnion.__clear();
   listUnionDFset.clear();
   mapNestlistStructDfSet.clear();
   mapJavaTypeDFset.clear();

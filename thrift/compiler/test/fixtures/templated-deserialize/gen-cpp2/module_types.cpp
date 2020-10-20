@@ -409,10 +409,10 @@ void containerStruct::__clear() {
   fieldP.clear();
   fieldQ = static_cast< ::cpp2::MyEnumA>(0);
   fieldR.reset(new typename decltype(fieldR)::element_type());
-  if (fieldS) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldS.get());
-  if (fieldT) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldT.get());
+  if (fieldS) fieldS->__clear();
+  if (fieldT) fieldT->__clear();
   if (fieldU) fieldU.reset(new typename decltype(fieldU)::element_type());
-  if (fieldX) ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::clear(fieldX.get());
+  if (fieldX) fieldX->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

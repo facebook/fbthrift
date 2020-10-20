@@ -331,8 +331,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
   opt_ref.reset();
-  if (ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(ref.get());
-  if (req_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(req_ref.get());
+  if (ref) ref->__clear();
+  if (req_ref) req_ref->__clear();
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -518,9 +518,9 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, std::unique
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithUnion::__clear() {
   // clear all fields
-  if (u) ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::clear(u.get());
+  if (u) u->__clear();
   aDouble = 0;
-  ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(&f);
+  f.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

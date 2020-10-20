@@ -120,8 +120,8 @@ void ModuleA::__clear() {
   strField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   listField.clear();
   mapField.clear();
-  ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::clear(&inclAField);
-  ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedB>::clear(&inclBField);
+  inclAField.__clear();
+  inclBField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

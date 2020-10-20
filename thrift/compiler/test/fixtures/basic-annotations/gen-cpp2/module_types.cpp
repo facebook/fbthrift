@@ -186,7 +186,7 @@ void MyStructAnnotation::__clear() {
   count = 0;
   name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   extra = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  ::apache::thrift::Cpp2Ops<  ::cpp2::MyStructNestedAnnotation>::clear(&nest);
+  nest.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
