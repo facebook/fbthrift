@@ -29,6 +29,13 @@ const int kIterationCount = 1'000'000;
 template <class T>
 using DetectValueUnchecked = decltype(T{}.field_1_ref().value_unchecked());
 
+template <class T>
+FOLLY_NOINLINE void indirect(T ref) {
+  ref = "a";
+  folly::doNotOptimizeAway(ref);
+  folly::doNotOptimizeAway(ref.value());
+}
+
 template <class Struct>
 void add_benchmark() {
   string name = folly::demangle(typeid(Struct).name()).toStdString();
@@ -44,6 +51,14 @@ void add_benchmark() {
     return 1;
   });
 
+  folly::addBenchmark(__FILE__, '%' + name + "_indirect", [] {
+    static Struct s;
+    for (int i = 0; i < kIterationCount; i++) {
+      indirect(std::move(s.field_1_ref()));
+    }
+    return 1;
+  });
+
   folly::addBenchmark(__FILE__, '%' + name + "_unsafe", [] {
     static Struct s;
     for (int i = 0; i < kIterationCount; i++) {
@@ -51,11 +66,24 @@ void add_benchmark() {
         s.field_1_ref().value_unchecked() = "a";
         folly::doNotOptimizeAway(s.field_1_ref());
         folly::doNotOptimizeAway(s.field_1_ref().value_unchecked());
+      } else if constexpr (apache::thrift::is_thrift_union_v<Struct>) {
+        s.set_field_1("a");
+        folly::doNotOptimizeAway(s.field_1_ref());
+        folly::doNotOptimizeAway(s.get_field_1());
       } else {
         s.field_1_ref().value() = "a";
         folly::doNotOptimizeAway(s.field_1_ref());
         folly::doNotOptimizeAway(s.field_1_ref().value());
       }
+    }
+    return 1;
+  });
+
+  folly::addBenchmark(__FILE__, '%' + name + "_baseline", [] {
+    static std::decay_t<decltype(*Struct{}.field_1_ref())> v;
+    for (int i = 0; i < kIterationCount; i++) {
+      v = "a";
+      folly::doNotOptimizeAway(v);
     }
     return 1;
   });
@@ -67,6 +95,7 @@ int main(int argc, char** argv) {
   add_benchmark<test::struct_optional_string>();
   add_benchmark<test::struct_required_string>();
   add_benchmark<test::struct_optional_string_cpp_ref>();
+  add_benchmark<test::union_string>();
   folly::runBenchmarks();
   return 0;
 }
