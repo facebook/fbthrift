@@ -25,7 +25,6 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
       switch (__field.id) {
       {{#struct:fields}}
       case _{{field:javaAllCapsName}}:
-        {{#field:isSupportedApacheType?}}
         if (__field.type == {{field:javaTFieldName}}.type) {
           {{#field:type}}
           {{field:nestedDepth++}}{{> ReadType}}{{field:nestedDepth--}}
@@ -33,10 +32,6 @@ public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TExceptio
           res.value = {{field:javaName}};
         }
         break;
-        {{/field:isSupportedApacheType?}}{{!
-        }}{{^field:isSupportedApacheType?}}
-          throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:{{field:javaName}} Type:{{> FieldType}}");
-        {{/field:isSupportedApacheType?}}
       {{/struct:fields}}
       default:
         TProtocolUtil.skip(oprot, __field.type);

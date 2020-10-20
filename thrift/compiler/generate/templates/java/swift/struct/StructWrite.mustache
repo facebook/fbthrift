@@ -18,7 +18,6 @@
 public void write0(TProtocol oprot) throws TException {
   oprot.writeStructBegin(STRUCT_DESC);
   {{#struct:fields}}
-  {{#field:isSupportedApacheType?}}
   {{#field:isNullableOrOptionalNotEnum?}}
   if (this.{{field:javaName}} != null) {
     oprot.writeFieldBegin({{field:javaTFieldName}});
@@ -44,12 +43,6 @@ public void write0(TProtocol oprot) throws TException {
   {{/field:type}}{{!
   }}oprot.writeFieldEnd();
   {{/field:isNullableOrOptionalNotEnum?}}
-  {{/field:isSupportedApacheType?}}{{!
-  }}{{^field:isSupportedApacheType?}}
-  if ({{field:javaTFieldName}} == null){
-    throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:{{field:javaName}} Type:{{> FieldType}}");
-  }
-  {{/field:isSupportedApacheType?}}
   {{/struct:fields}}
   oprot.writeFieldStop();
   oprot.writeStructEnd();

@@ -19,20 +19,13 @@ public static class Builder {
     private final BitSet __optional_isset = new BitSet();
 
     {{#struct:fields}}
-    {{#field:isSupportedApacheType?}}
     {{^field:value}}
     private {{> FieldType}} {{field:javaName}} = {{field:javaDefaultValue}};
     {{/field:value}}{{!
     }}{{#field:value}}
     private {{> FieldType}} {{field:javaName}} = {{#field:hasInitialValue?}}{{#field:type}}{{field:nestedDepth++}}{{> DefaultValue}}{{field:nestedDepth--}}{{/field:type}}{{/field:hasInitialValue?}}{{^field:hasInitialValue?}}{{field:javaDefaultValue}}{{/field:hasInitialValue?}};
-    {{/field:value}}{{!
-    }}{{/field:isSupportedApacheType?}}{{!
-
-    }}{{^field:isSupportedApacheType?}}
-    private {{> FieldType}} {{field:javaName}} = {{#field:type}}{{#type:float?}}{{field:javaDefaultValue}}{{/type:float?}}{{!
-    }}{{^type:float?}}null{{/type:float?}}{{/field:type}};
-    {{/field:isSupportedApacheType?}}{{!
-    }}{{/struct:fields}}
+    {{/field:value}}
+    {{/struct:fields}}
 
     {{#struct:fields}}
     {{> ThriftFieldAnnotation}}{{#field:javaAnnotation?}} @{{field:javaAnnotation}}{{/field:javaAnnotation?}}

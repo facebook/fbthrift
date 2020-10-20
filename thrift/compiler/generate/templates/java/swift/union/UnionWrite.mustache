@@ -23,7 +23,6 @@ public void write0(TProtocol oprot) throws TException {
   switch (this.id) {
   {{#struct:fields}}
   case _{{field:javaAllCapsName}}: {
-    {{#field:isSupportedApacheType?}}
     oprot.writeFieldBegin({{field:javaTFieldName}});
     {{#field:isContainer?}}
     {{> FieldType}} _iter{{field:nestedDepth}} = ({{> FieldType}})this.value;
@@ -42,10 +41,6 @@ public void write0(TProtocol oprot) throws TException {
     {{/field:type}}
     oprot.writeFieldEnd();
     break;
-    {{/field:isSupportedApacheType?}}{{!
-    }}{{^field:isSupportedApacheType?}}
-    throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:{{field:javaName}} Type:{{> FieldType}}");
-    {{/field:isSupportedApacheType?}}
   }
   {{/struct:fields}}
   default:

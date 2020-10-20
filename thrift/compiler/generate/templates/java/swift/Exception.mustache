@@ -46,9 +46,7 @@ public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeExc
     {{#struct:fields}}
     private final {{> FieldType}} {{field:javaName}};
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
-    private static final TField {{field:javaTFieldName}} = {{#field:isSupportedApacheType?}}{{!
-    }}new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
-    }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
+    private static final TField {{field:javaTFieldName}} = new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
     {{/struct:fields}}
 
     {{> struct/ThriftConstructor}}

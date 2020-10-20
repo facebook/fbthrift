@@ -399,10 +399,6 @@ class mstch_swift_field : public mstch_field {
             {"field:javaAnnotations?",
              &mstch_swift_field::has_java_annotations},
             {"field:javaAnnotations", &mstch_swift_field::java_annotations},
-            // TODO:Remove search for Unsupported Apache Types once float and
-            // streams types are handled and runtimes are unified
-            {"field:isSupportedApacheType?",
-             &mstch_swift_field::is_supported_apache_type},
             {"field:javaTFieldName", &mstch_swift_field::java_tfield_name},
             {"field:isNullableOrOptionalNotEnum?",
              &mstch_swift_field::is_nullable_or_optional_not_enum},
@@ -507,42 +503,6 @@ class mstch_swift_field : public mstch_field {
   mstch::node is_recursive_reference() {
     return field_->annotations_.count("swift.recursive_reference") &&
         field_->annotations_.at("swift.recursive_reference") == "true";
-  }
-  mstch::node is_supported_apache_type() {
-    return (
-        !contains_unsupported_apache_type(field_->get_type()->get_true_type()));
-  }
-  bool contains_unsupported_apache_type(t_type* curr_type) {
-    if (is_apache_thrift_type(curr_type)) {
-      return false;
-    }
-    if (curr_type->is_map()) {
-      t_map* map = (t_map*)curr_type;
-      return (
-          contains_unsupported_apache_type(
-              map->get_key_type()->get_true_type()) ||
-          contains_unsupported_apache_type(
-              map->get_val_type()->get_true_type()));
-    }
-    if (curr_type->is_list()) {
-      t_list* list = (t_list*)curr_type;
-      return (contains_unsupported_apache_type(
-          list->get_elem_type()->get_true_type()));
-    }
-    if (curr_type->is_set()) {
-      t_set* set = (t_set*)curr_type;
-      return (contains_unsupported_apache_type(
-          set->get_elem_type()->get_true_type()));
-    }
-    return true;
-  }
-  bool is_apache_thrift_type(t_type* curr_type) {
-    return (
-        curr_type->is_bool() || curr_type->is_byte() || curr_type->is_i16() ||
-        curr_type->is_i32() || curr_type->is_i64() || curr_type->is_double() ||
-        curr_type->is_float() || curr_type->is_enum() ||
-        curr_type->is_binary() || curr_type->is_string() ||
-        curr_type->is_struct() || curr_type->is_xception());
   }
   mstch::node is_negative_id() {
     return field_->get_key() < 0;
