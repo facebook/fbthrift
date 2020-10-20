@@ -27,6 +27,11 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for EmptyEnum {
+        fn enumerate() -> &'static [(EmptyEnum, &'static str)] {
+            &[
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
             ]
@@ -122,6 +127,13 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for MyEnum {
+        fn enumerate() -> &'static [(MyEnum, &'static str)] {
+            &[
+                (MyEnum::ONE, "ONE"),
+                (MyEnum::TWO, "TWO"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "ONE",
@@ -243,6 +255,31 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for MyBigEnum {
+        fn enumerate() -> &'static [(MyBigEnum, &'static str)] {
+            &[
+                (MyBigEnum::UNKNOWN, "UNKNOWN"),
+                (MyBigEnum::ONE, "ONE"),
+                (MyBigEnum::TWO, "TWO"),
+                (MyBigEnum::THREE, "THREE"),
+                (MyBigEnum::FOUR, "FOUR"),
+                (MyBigEnum::FIVE, "FIVE"),
+                (MyBigEnum::SIX, "SIX"),
+                (MyBigEnum::SEVEN, "SEVEN"),
+                (MyBigEnum::EIGHT, "EIGHT"),
+                (MyBigEnum::NINE, "NINE"),
+                (MyBigEnum::TEN, "TEN"),
+                (MyBigEnum::ELEVEN, "ELEVEN"),
+                (MyBigEnum::TWELVE, "TWELVE"),
+                (MyBigEnum::THIRTEEN, "THIRTEEN"),
+                (MyBigEnum::FOURTEEN, "FOURTEEN"),
+                (MyBigEnum::FIFTEEN, "FIFTEEN"),
+                (MyBigEnum::SIXTEEN, "SIXTEEN"),
+                (MyBigEnum::SEVENTEEN, "SEVENTEEN"),
+                (MyBigEnum::EIGHTEEN, "EIGHTEEN"),
+                (MyBigEnum::NINETEEN, "NINETEEN"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "UNKNOWN",

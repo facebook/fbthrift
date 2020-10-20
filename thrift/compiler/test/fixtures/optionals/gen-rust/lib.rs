@@ -52,6 +52,14 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for Animal {
+        fn enumerate() -> &'static [(Animal, &'static str)] {
+            &[
+                (Animal::DOG, "DOG"),
+                (Animal::CAT, "CAT"),
+                (Animal::TARANTULA, "TARANTULA"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "DOG",

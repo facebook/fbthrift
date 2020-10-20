@@ -171,6 +171,16 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for has_bitwise_ops {
+        fn enumerate() -> &'static [(has_bitwise_ops, &'static str)] {
+            &[
+                (has_bitwise_ops::none, "none"),
+                (has_bitwise_ops::zero, "zero"),
+                (has_bitwise_ops::one, "one"),
+                (has_bitwise_ops::two, "two"),
+                (has_bitwise_ops::three, "three"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "none",
@@ -286,6 +296,13 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for is_unscoped {
+        fn enumerate() -> &'static [(is_unscoped, &'static str)] {
+            &[
+                (is_unscoped::hello, "hello"),
+                (is_unscoped::world, "world"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "hello",
@@ -389,6 +406,13 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for MyForwardRefEnum {
+        fn enumerate() -> &'static [(MyForwardRefEnum, &'static str)] {
+            &[
+                (MyForwardRefEnum::ZERO, "ZERO"),
+                (MyForwardRefEnum::NONZERO, "NONZERO"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "ZERO",
@@ -493,6 +517,14 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for MyEnumA {
+        fn enumerate() -> &'static [(MyEnumA, &'static str)] {
+            &[
+                (MyEnumA::fieldA, "fieldA"),
+                (MyEnumA::fieldB, "fieldB"),
+                (MyEnumA::fieldC, "fieldC"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "fieldA",

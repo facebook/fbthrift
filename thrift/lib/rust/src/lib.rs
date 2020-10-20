@@ -86,6 +86,8 @@ pub use crate::thrift_protocol::{MessageType, ProtocolID};
 pub use crate::ttype::{GetTType, TType};
 
 pub trait ThriftEnum: Sized {
+    fn enumerate() -> &'static [(Self, &'static str)];
+
     fn variants() -> &'static [&'static str];
 
     fn variant_values() -> &'static [Self];

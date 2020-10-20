@@ -29,6 +29,14 @@
     }
 
     impl ::fbthrift::ThriftEnum for {{enum:rust_name}} {
+        fn enumerate() -> &'static [({{enum:rust_name}}, &'static str)] {
+            &[
+                {{#enum:values}}
+                ({{enum:rust_name}}::{{enumValue:rust_name}}, "{{enumValue:name}}"),
+                {{/enum:values}}
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 {{#enum:values}}

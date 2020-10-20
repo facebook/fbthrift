@@ -48,6 +48,14 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for MyEnum {
+        fn enumerate() -> &'static [(MyEnum, &'static str)] {
+            &[
+                (MyEnum::MyValue1, "MyValue1"),
+                (MyEnum::MyValue2, "MyValue2"),
+                (MyEnum::DOMAIN, "DOMAIN"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "MyValue1",

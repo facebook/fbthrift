@@ -104,3 +104,15 @@ fn test_variant_values_fn_enum() {
     let expected_empty: &'static [TestEnumEmpty] = &[];
     assert_eq!(TestEnumEmpty::variant_values(), expected_empty);
 }
+
+#[test]
+fn test_enumerate_fn_enum() {
+    let expected = &[
+        (TestEnum::FOO, "FOO"),
+        (TestEnum::BAR, "BAR"),
+        (TestEnum::BAZ, "BAZ"),
+    ];
+    assert_eq!(TestEnum::enumerate(), expected);
+    let expected_empty: &'static [(TestEnumEmpty, &str)] = &[];
+    assert_eq!(TestEnumEmpty::enumerate(), expected_empty);
+}

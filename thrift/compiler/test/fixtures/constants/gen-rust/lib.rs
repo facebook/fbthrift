@@ -429,6 +429,11 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for EmptyEnum {
+        fn enumerate() -> &'static [(EmptyEnum, &'static str)] {
+            &[
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
             ]
@@ -526,6 +531,15 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for City {
+        fn enumerate() -> &'static [(City, &'static str)] {
+            &[
+                (City::NYC, "NYC"),
+                (City::MPK, "MPK"),
+                (City::SEA, "SEA"),
+                (City::LON, "LON"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "NYC",
@@ -639,6 +653,15 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for Company {
+        fn enumerate() -> &'static [(Company, &'static str)] {
+            &[
+                (Company::FACEBOOK, "FACEBOOK"),
+                (Company::WHATSAPP, "WHATSAPP"),
+                (Company::OCULUS, "OCULUS"),
+                (Company::INSTAGRAM, "INSTAGRAM"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "FACEBOOK",

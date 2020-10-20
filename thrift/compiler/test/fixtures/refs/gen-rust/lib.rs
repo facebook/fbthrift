@@ -152,6 +152,13 @@ pub mod types {
     }
 
     impl ::fbthrift::ThriftEnum for TypedEnum {
+        fn enumerate() -> &'static [(TypedEnum, &'static str)] {
+            &[
+                (TypedEnum::VAL1, "VAL1"),
+                (TypedEnum::VAL2, "VAL2"),
+            ]
+        }
+
         fn variants() -> &'static [&'static str] {
             &[
                 "VAL1",
