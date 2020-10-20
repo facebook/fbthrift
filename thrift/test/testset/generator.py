@@ -16,7 +16,7 @@ import argparse
 import doctest
 import os
 from subprocess import check_output
-from typing import Dict, List
+from typing import Dict, List, TextIO
 
 
 THRIFT_HEADER = """
@@ -55,47 +55,59 @@ PRIMITIVE_TYPES = [
 ]
 
 
-def generate_names_to_types() -> Dict[str, str]:
-    """ Generate display name to thrift type mapping. Display name will be used in file name, rule name, etc """
+def generate_union_names_to_types() -> Dict[str, str]:
+    """ Generate display name to thrift type mapping in union. Display name will be used in file name, rule name, etc """
     ret = {t: t for t in PRIMITIVE_TYPES}
     ret.update(format_dict(ret, "set_{}", "set<{}>"))
     ret.update(format_dict(ret, "map_string_{}", "map<string, {}>"))
-    ret.update(
-        **format_dict(ret, "optional_{}", "optional {}"),
-        **format_dict(ret, "required_{}", "required {}"),
-    )
     ret.update(format_dict(ret, "{}_cpp_ref", "{} (cpp.ref = 'true')"))
     return ret
 
 
-def generate_struct(name: str, types: List[str]) -> str:
+def generate_struct_names_to_types() -> Dict[str, str]:
+    """ Similar to thrift types in union. Difference is that unions cannot contain qualified fields. """
+    ret = generate_union_names_to_types()
+    ret.update(
+        **format_dict(ret, "optional_{}", "optional {}"),
+        **format_dict(ret, "required_{}", "required {}"),
+    )
+    return ret
+
+
+def generate_class(class_type: str, name: str, types: List[str]) -> str:
     """ Generate thrift struct from types
-    >>> print(generate_struct("Foo", ["i64", "optional string", "set<i32> (cpp.ref = 'true')"]))
+    >>> print(generate_class("struct", "Foo", ["i64", "optional string", "set<i32> (cpp.ref = 'true')"]))
     struct Foo {
       1: i64 field_1;
       2: optional string field_2;
       3: set<i32> (cpp.ref = 'true') field_3;
     }
     """
-    lines = ["struct {} {{".format(name)]
+    lines = [f"{class_type} {name} {{"]
     for i, t in enumerate(types):
         lines.append("  {0}: {1} field_{0};".format(i + 1, t))
     lines.append("}")
     return "\n".join(lines)
 
 
+def print_thrift_class(
+    file: TextIO, class_type: str, names_to_types: Dict[str, str]
+) -> None:
+    classes = []
+    for display_name, type in names_to_types.items():
+        class_name = class_type + "_" + display_name
+        classes.append(class_name)
+        print(generate_class(class_type, class_name, [type] * FIELD_COUNT), file=file)
+
+    # Thrift class that contains all other generated classes with same-type
+    print(generate_class(class_type, class_type + "_all", classes), file=file)
+
+
 def gen_struct_all(path: str) -> None:
     with open(path, "w") as file:
         print(THRIFT_HEADER, file=file)
-
-        structs = []
-        for display_name, type in generate_names_to_types().items():
-            struct_name = "struct_" + display_name
-            structs.append(struct_name)
-            print(generate_struct(struct_name, [type] * FIELD_COUNT), file=file)
-
-        # Generate thrift files that contains all generated structures
-        print(generate_struct("struct_all", structs), file=file)
+        print_thrift_class(file, "struct", generate_struct_names_to_types())
+        print_thrift_class(file, "union", generate_union_names_to_types())
 
 
 def main() -> None:

@@ -24,12 +24,19 @@
 using namespace apache::thrift;
 
 TEST(SerializationRoundTripTest, TestAll) {
-  test::struct_all foo, bar;
-  for_each_field(foo, bar, [](auto&&, auto&& obj1, auto&& obj2) {
+  auto func = [](auto&&, auto&& obj1, auto&& obj2) {
     std::mt19937 rng;
     populator::populate(obj1.ensure(), {}, rng);
     auto data = CompactSerializer::serialize<std::string>(*obj1);
     CompactSerializer::deserialize(data, obj2.ensure());
     EXPECT_EQ(obj1, obj2) << folly::demangle(typeid(*obj1).name());
-  });
+  };
+  {
+    test::struct_all foo, bar;
+    for_each_field(foo, bar, func);
+  }
+  {
+    test::union_all foo, bar;
+    for_each_field(foo, bar, func);
+  }
 }
