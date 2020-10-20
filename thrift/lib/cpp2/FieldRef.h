@@ -24,7 +24,7 @@
     (defined(_MSC_VER) && __cplusplus >= 201703L)
 #include <optional>
 // Technically it should be 201606 but std::optional is present with 201603.
-#if __cpp_lib_optional >= 201603
+#if __cpp_lib_optional >= 201603 || _LIBCPP_STD_VER > 14
 #define THRIFT_HAS_OPTIONAL
 #endif
 #endif
