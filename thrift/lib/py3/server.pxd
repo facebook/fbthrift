@@ -22,7 +22,8 @@ from folly.range cimport StringPiece
 from folly cimport cFollyExecutor
 from cpython.ref cimport PyObject
 from thrift.py3.common cimport cPriority, Priority_to_cpp, Headers
-from thrift.py3.std_libcpp cimport milliseconds
+from thrift.py3.std_libcpp cimport milliseconds, seconds
+
 
 cdef extern from "thrift/lib/py3/server.h" namespace "::thrift::py3":
     cdef cppclass cfollySocketAddress "folly::SocketAddress":
@@ -101,6 +102,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         uint32_t getNumIOWorkerThreads()
         void setNumCPUWorkerThreads(uint32_t numCPUWorkerThreads)
         uint32_t getNumCPUWorkerThreads()
+        void setWorkersJoinTimeout(seconds timeout)
         void setNumSSLHandshakeWorkerThreads(uint32_t nSSLHandshakeThreads)
         uint32_t getNumSSLHandshakeWorkerThreads()
         void setAllowPlaintextOnLoopback(cbool allow)

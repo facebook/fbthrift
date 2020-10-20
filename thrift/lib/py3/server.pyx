@@ -198,6 +198,9 @@ cdef class ThriftServer:
     def get_cpu_worker_threads(self):
         return self.server.get().getNumCPUWorkerThreads()
 
+    def set_workers_join_timeout(self, timeout):
+        self.server.get().setWorkersJoinTimeout(seconds(<int64_t>timeout))
+
     def set_ssl_handshake_worker_threads(self, num):
         self.server.get().setNumSSLHandshakeWorkerThreads(num)
 

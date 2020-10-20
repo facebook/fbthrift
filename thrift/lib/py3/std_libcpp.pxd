@@ -23,6 +23,9 @@ cdef extern from "<chrono>" namespace "std::chrono" nogil:
         milliseconds(int64_t) except +
         int64_t count()
 
+    cdef cppclass seconds:
+        seconds(int64_t) except +
+
 cdef extern from "<iterator>" namespace "std" nogil:
     cdef cppclass iterator_traits[T]:
         cppclass difference_type:
