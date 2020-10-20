@@ -1066,7 +1066,7 @@ class ExampleUnion final  {
 
   template <typename..., typename T =  ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> fieldA_ref() const&& {
-    return {value_.fieldA, type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldA), type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::test::fixtures::tablebased::ContainerStruct>
@@ -1076,7 +1076,7 @@ class ExampleUnion final  {
 
   template <typename..., typename T =  ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> fieldA_ref() && {
-    return {value_.fieldA, type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldA), type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> fieldB_ref() const& {
@@ -1085,7 +1085,7 @@ class ExampleUnion final  {
 
   template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> fieldB_ref() const&& {
-    return {value_.fieldB, type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldB), type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
@@ -1095,7 +1095,7 @@ class ExampleUnion final  {
 
   template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> fieldB_ref() && {
-    return {value_.fieldB, type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.fieldB), type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

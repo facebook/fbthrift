@@ -930,7 +930,7 @@ class union_field_ref {
     }
   }
 
-  reference_type value_;
+  value_type& value_;
   int_t& type_;
   const int field_type_;
   owner owner_;

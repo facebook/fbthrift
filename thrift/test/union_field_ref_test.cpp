@@ -239,6 +239,15 @@ TEST(UnionFieldTest, comparison) {
     test('a');
   }
 }
+
+TEST(UnionFieldTest, field_ref_api) {
+  Basic a;
+  a.str_ref() = "foo";
+  EXPECT_EQ(*a.str_ref(), "foo");
+  EXPECT_EQ(*as_const(a).str_ref(), "foo");
+  EXPECT_EQ(*move(a).str_ref(), "foo");
+  EXPECT_EQ(*move(as_const(a)).str_ref(), "foo");
+}
 } // namespace test
 } // namespace thrift
 } // namespace apache

@@ -2080,7 +2080,7 @@ class SimpleUnion  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue_ref() const&& {
-    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int64_t>
@@ -2090,7 +2090,7 @@ class SimpleUnion  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue_ref() && {
-    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringValue_ref() const& {
@@ -2099,7 +2099,7 @@ class SimpleUnion  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringValue_ref() const&& {
-    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.stringValue), type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
@@ -2109,7 +2109,7 @@ class SimpleUnion  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringValue_ref() && {
-    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.stringValue), type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -3706,7 +3706,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue_ref() const&& {
-    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int64_t>
@@ -3716,7 +3716,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue_ref() && {
-    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> opt_intValue_ref() const& {
@@ -3725,7 +3725,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> opt_intValue_ref() const&& {
-    return {value_.opt_intValue, type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_intValue), type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int64_t>
@@ -3735,7 +3735,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_intValue_ref() && {
-    return {value_.opt_intValue, type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_intValue), type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> stringValue_ref() const& {
@@ -3744,7 +3744,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> stringValue_ref() const&& {
-    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.stringValue), type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
@@ -3754,7 +3754,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringValue_ref() && {
-    return {value_.stringValue, type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.stringValue), type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> opt_stringValue_ref() const& {
@@ -3763,7 +3763,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> opt_stringValue_ref() const&& {
-    return {value_.opt_stringValue, type_, opt_stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_stringValue), type_, opt_stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
@@ -3773,7 +3773,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_stringValue_ref() && {
-    return {value_.opt_stringValue, type_, opt_stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_stringValue), type_, opt_stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = int16_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue2_ref() const& {
@@ -3782,7 +3782,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int16_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue2_ref() const&& {
-    return {value_.intValue2, type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue2), type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int16_t>
@@ -3792,7 +3792,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int16_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue2_ref() && {
-    return {value_.intValue2, type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue2), type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue3_ref() const& {
@@ -3801,7 +3801,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue3_ref() const&& {
-    return {value_.intValue3, type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue3), type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int32_t>
@@ -3811,7 +3811,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue3_ref() && {
-    return {value_.intValue3, type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue3), type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> doubelValue_ref() const& {
@@ -3820,7 +3820,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> doubelValue_ref() const&& {
-    return {value_.doubelValue, type_, doubelValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.doubelValue), type_, doubelValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = double>
@@ -3830,7 +3830,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> doubelValue_ref() && {
-    return {value_.doubelValue, type_, doubelValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.doubelValue), type_, doubelValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> boolValue_ref() const& {
@@ -3839,7 +3839,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> boolValue_ref() const&& {
-    return {value_.boolValue, type_, boolValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.boolValue), type_, boolValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = bool>
@@ -3849,7 +3849,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> boolValue_ref() && {
-    return {value_.boolValue, type_, boolValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.boolValue), type_, boolValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector<int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> union_list_ref() const& {
@@ -3858,7 +3858,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector<int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> union_list_ref() const&& {
-    return {value_.union_list, type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.union_list), type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<int32_t>>
@@ -3868,7 +3868,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector<int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> union_list_ref() && {
-    return {value_.union_list, type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.union_list), type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::set<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> union_set_ref() const& {
@@ -3877,7 +3877,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::set<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> union_set_ref() const&& {
-    return {value_.union_set, type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.union_set), type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::set<int64_t>>
@@ -3887,7 +3887,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::set<int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> union_set_ref() && {
-    return {value_.union_set, type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.union_set), type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> union_map_ref() const& {
@@ -3896,7 +3896,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> union_map_ref() const&& {
-    return {value_.union_map, type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.union_map), type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
@@ -3906,7 +3906,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> union_map_ref() && {
-    return {value_.union_map, type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.union_map), type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> opt_union_map_ref() const& {
@@ -3915,7 +3915,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> opt_union_map_ref() const&& {
-    return {value_.opt_union_map, type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_union_map), type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
@@ -3925,7 +3925,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::map<::std::string, int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_union_map_ref() && {
-    return {value_.opt_union_map, type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_union_map), type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> enum_field_ref() const& {
@@ -3934,7 +3934,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> enum_field_ref() const&& {
-    return {value_.enum_field, type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.enum_field), type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::MyEnumA>
@@ -3944,7 +3944,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> enum_field_ref() && {
-    return {value_.enum_field, type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.enum_field), type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> enum_container_ref() const& {
@@ -3953,7 +3953,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> enum_container_ref() const&& {
-    return {value_.enum_container, type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.enum_container), type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
@@ -3963,7 +3963,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> enum_container_ref() && {
-    return {value_.enum_container, type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.enum_container), type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_struct_ref() const& {
@@ -3972,7 +3972,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_struct_ref() const&& {
-    return {value_.a_struct, type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_struct), type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
@@ -3982,7 +3982,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_struct_ref() && {
-    return {value_.a_struct, type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_struct), type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_set_struct_ref() const& {
@@ -3991,7 +3991,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_set_struct_ref() const&& {
-    return {value_.a_set_struct, type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_set_struct), type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
@@ -4001,7 +4001,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_set_struct_ref() && {
-    return {value_.a_set_struct, type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_set_struct), type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_ref() const& {
@@ -4010,7 +4010,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_ref() const&& {
-    return {value_.a_union, type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union), type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
@@ -4020,7 +4020,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_ref() && {
-    return {value_.a_union, type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union), type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> opt_a_union_ref() const& {
@@ -4029,7 +4029,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> opt_a_union_ref() const&& {
-    return {value_.opt_a_union, type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_a_union), type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
@@ -4039,7 +4039,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_a_union_ref() && {
-    return {value_.opt_a_union, type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.opt_a_union), type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_list_ref() const& {
@@ -4048,7 +4048,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_list_ref() const&& {
-    return {value_.a_union_list, type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union_list), type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
@@ -4058,7 +4058,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_list_ref() && {
-    return {value_.a_union_list, type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union_list), type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_typedef_ref() const& {
@@ -4067,7 +4067,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_typedef_ref() const&& {
-    return {value_.a_union_typedef, type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union_typedef), type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
@@ -4077,7 +4077,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_typedef_ref() && {
-    return {value_.a_union_typedef, type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union_typedef), type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_typedef_list_ref() const& {
@@ -4086,7 +4086,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_typedef_list_ref() const&& {
-    return {value_.a_union_typedef_list, type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union_typedef_list), type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
@@ -4096,7 +4096,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_typedef_list_ref() && {
-    return {value_.a_union_typedef_list, type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.a_union_typedef_list), type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> MyBinaryField_ref() const& {
@@ -4105,7 +4105,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> MyBinaryField_ref() const&& {
-    return {value_.MyBinaryField, type_, MyBinaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.MyBinaryField), type_, MyBinaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4115,7 +4115,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> MyBinaryField_ref() && {
-    return {value_.MyBinaryField, type_, MyBinaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.MyBinaryField), type_, MyBinaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> MyBinaryField2_ref() const& {
@@ -4124,7 +4124,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> MyBinaryField2_ref() const&& {
-    return {value_.MyBinaryField2, type_, MyBinaryField2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.MyBinaryField2), type_, MyBinaryField2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4134,7 +4134,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> MyBinaryField2_ref() && {
-    return {value_.MyBinaryField2, type_, MyBinaryField2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.MyBinaryField2), type_, MyBinaryField2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> MyBinaryListField4_ref() const& {
@@ -4143,7 +4143,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> MyBinaryListField4_ref() const&& {
-    return {value_.MyBinaryListField4, type_, MyBinaryListField4, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.MyBinaryListField4), type_, MyBinaryListField4, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::string>>
@@ -4153,7 +4153,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> MyBinaryListField4_ref() && {
-    return {value_.MyBinaryListField4, type_, MyBinaryListField4, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.MyBinaryListField4), type_, MyBinaryListField4, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> ref_field_ref() const& {
@@ -4162,7 +4162,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> ref_field_ref() const&& {
-    return {value_.ref_field, type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.ref_field), type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
@@ -4172,7 +4172,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> ref_field_ref() && {
-    return {value_.ref_field, type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.ref_field), type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> ref_field2_ref() const& {
@@ -4181,7 +4181,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> ref_field2_ref() const&& {
-    return {value_.ref_field2, type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.ref_field2), type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
@@ -4191,7 +4191,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> ref_field2_ref() && {
-    return {value_.ref_field2, type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.ref_field2), type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::some::valid::ns::AnException>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> excp_field_ref() const& {
@@ -4200,7 +4200,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::AnException>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> excp_field_ref() const&& {
-    return {value_.excp_field, type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.excp_field), type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::some::valid::ns::AnException>
@@ -4210,7 +4210,7 @@ class ComplexUnion final  {
 
   template <typename..., typename T =  ::some::valid::ns::AnException>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> excp_field_ref() && {
-    return {value_.excp_field, type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.excp_field), type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -8671,7 +8671,7 @@ class FloatUnion final  {
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> floatSide_ref() const&& {
-    return {value_.floatSide, type_, floatSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.floatSide), type_, floatSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = float>
@@ -8681,7 +8681,7 @@ class FloatUnion final  {
 
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> floatSide_ref() && {
-    return {value_.floatSide, type_, floatSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.floatSide), type_, floatSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> doubleSide_ref() const& {
@@ -8690,7 +8690,7 @@ class FloatUnion final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> doubleSide_ref() const&& {
-    return {value_.doubleSide, type_, doubleSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.doubleSide), type_, doubleSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = double>
@@ -8700,7 +8700,7 @@ class FloatUnion final  {
 
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> doubleSide_ref() && {
-    return {value_.doubleSide, type_, doubleSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.doubleSide), type_, doubleSide, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

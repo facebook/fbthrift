@@ -4078,7 +4078,7 @@ class NoExceptMoveUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> string_field_ref() const&& {
-    return {value_.string_field, type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.string_field), type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
@@ -4088,7 +4088,7 @@ class NoExceptMoveUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> string_field_ref() && {
-    return {value_.string_field, type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.string_field), type_, string_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> i32_field_ref() const& {
@@ -4097,7 +4097,7 @@ class NoExceptMoveUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> i32_field_ref() const&& {
-    return {value_.i32_field, type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.i32_field), type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int32_t>
@@ -4107,7 +4107,7 @@ class NoExceptMoveUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> i32_field_ref() && {
-    return {value_.i32_field, type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.i32_field), type_, i32_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

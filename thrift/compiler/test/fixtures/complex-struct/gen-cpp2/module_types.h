@@ -3551,7 +3551,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myEnum_ref() const&& {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::MyEnum>
@@ -3561,7 +3561,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myEnum_ref() && {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myStruct_ref() const& {
@@ -3570,7 +3570,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myStruct_ref() const&& {
-    return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::MyStruct>
@@ -3580,7 +3580,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myStruct_ref() && {
-    return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myDataItem_ref() const& {
@@ -3589,7 +3589,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myDataItem_ref() const&& {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
@@ -3599,7 +3599,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> complexNestedStruct_ref() const& {
@@ -3608,7 +3608,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> complexNestedStruct_ref() const&& {
-    return {value_.complexNestedStruct, type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.complexNestedStruct), type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
@@ -3618,7 +3618,7 @@ class MyUnion final  {
 
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> complexNestedStruct_ref() && {
-    return {value_.complexNestedStruct, type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.complexNestedStruct), type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> longValue_ref() const& {
@@ -3627,7 +3627,7 @@ class MyUnion final  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> longValue_ref() const&& {
-    return {value_.longValue, type_, longValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.longValue), type_, longValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int64_t>
@@ -3637,7 +3637,7 @@ class MyUnion final  {
 
   template <typename..., typename T = int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> longValue_ref() && {
-    return {value_.longValue, type_, longValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.longValue), type_, longValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue_ref() const& {
@@ -3646,7 +3646,7 @@ class MyUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue_ref() const&& {
-    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int32_t>
@@ -3656,7 +3656,7 @@ class MyUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue_ref() && {
-    return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -5348,7 +5348,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T =  ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myEnum_ref() const&& {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::MyEnum>
@@ -5358,7 +5358,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T =  ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myEnum_ref() && {
-    return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::vector<::std::vector<float>>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> setFloat_ref() const& {
@@ -5367,7 +5367,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<float>>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> setFloat_ref() const&& {
-    return {value_.setFloat, type_, setFloat, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.setFloat), type_, setFloat, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::vector<::std::vector<float>>>
@@ -5377,7 +5377,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T = ::std::vector<::std::vector<float>>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> setFloat_ref() && {
-    return {value_.setFloat, type_, setFloat, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.setFloat), type_, setFloat, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myDataItem_ref() const& {
@@ -5386,7 +5386,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myDataItem_ref() const&& {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
@@ -5396,7 +5396,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T =  ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
-    return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> complexNestedStruct_ref() const& {
@@ -5405,7 +5405,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> complexNestedStruct_ref() const&& {
-    return {value_.complexNestedStruct, type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.complexNestedStruct), type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
@@ -5415,7 +5415,7 @@ class MyUnionFloatFieldThrowExp final  {
 
   template <typename..., typename T =  ::cpp2::ComplexNestedStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> complexNestedStruct_ref() && {
-    return {value_.complexNestedStruct, type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.complexNestedStruct), type_, complexNestedStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 

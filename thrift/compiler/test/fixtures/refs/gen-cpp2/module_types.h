@@ -484,7 +484,7 @@ class MyUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> anInteger_ref() const&& {
-    return {value_.anInteger, type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.anInteger), type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = int32_t>
@@ -494,7 +494,7 @@ class MyUnion final  {
 
   template <typename..., typename T = int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> anInteger_ref() && {
-    return {value_.anInteger, type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.anInteger), type_, anInteger, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> aString_ref() const& {
@@ -503,7 +503,7 @@ class MyUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> aString_ref() const&& {
-    return {value_.aString, type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.aString), type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
   template <typename..., typename T = ::std::string>
@@ -513,7 +513,7 @@ class MyUnion final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> aString_ref() && {
-    return {value_.aString, type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+    return {std::move(value_.aString), type_, aString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
