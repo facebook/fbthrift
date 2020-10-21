@@ -118,10 +118,10 @@ const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAs
 }
 
 const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsyncProcessor::binaryProcessMap_ {
-  {"returnstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"streamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_streamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"boththrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_boththrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"responseandstreamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_responseandstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"returnstream", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstream<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"streamthrows", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"boththrows", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"responseandstreamthrows", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -129,10 +129,10 @@ const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAs
 }
 
 const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsyncProcessor::compactProcessMap_ {
-  {"returnstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"streamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_streamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"boththrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_boththrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"responseandstreamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_responseandstreamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"returnstream", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstream<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"streamthrows", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"boththrows", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"responseandstreamthrows", &PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

@@ -174,12 +174,12 @@ const service1AsyncProcessor::ProcessMap& service1AsyncProcessor::getBinaryProto
 }
 
 const service1AsyncProcessor::ProcessMap service1AsyncProcessor::binaryProcessMap_ {
-  {"method1", &service1AsyncProcessor::_processInThread_method1<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"method2", &service1AsyncProcessor::_processInThread_method2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"method3", &service1AsyncProcessor::_processInThread_method3<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"method4", &service1AsyncProcessor::_processInThread_method4<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"method5", &service1AsyncProcessor::_processInThread_method5<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"method6", &service1AsyncProcessor::_processInThread_method6<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"method1", &service1AsyncProcessor::setUpAndProcess_method1<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"method2", &service1AsyncProcessor::setUpAndProcess_method2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"method3", &service1AsyncProcessor::setUpAndProcess_method3<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"method4", &service1AsyncProcessor::setUpAndProcess_method4<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"method5", &service1AsyncProcessor::setUpAndProcess_method5<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"method6", &service1AsyncProcessor::setUpAndProcess_method6<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const service1AsyncProcessor::ProcessMap& service1AsyncProcessor::getCompactProtocolProcessMap() {
@@ -187,12 +187,12 @@ const service1AsyncProcessor::ProcessMap& service1AsyncProcessor::getCompactProt
 }
 
 const service1AsyncProcessor::ProcessMap service1AsyncProcessor::compactProcessMap_ {
-  {"method1", &service1AsyncProcessor::_processInThread_method1<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"method2", &service1AsyncProcessor::_processInThread_method2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"method3", &service1AsyncProcessor::_processInThread_method3<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"method4", &service1AsyncProcessor::_processInThread_method4<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"method5", &service1AsyncProcessor::_processInThread_method5<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"method6", &service1AsyncProcessor::_processInThread_method6<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"method1", &service1AsyncProcessor::setUpAndProcess_method1<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"method2", &service1AsyncProcessor::setUpAndProcess_method2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"method3", &service1AsyncProcessor::setUpAndProcess_method3<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"method4", &service1AsyncProcessor::setUpAndProcess_method4<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"method5", &service1AsyncProcessor::setUpAndProcess_method5<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"method6", &service1AsyncProcessor::setUpAndProcess_method6<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }} // test_cpp2::cpp_reflection

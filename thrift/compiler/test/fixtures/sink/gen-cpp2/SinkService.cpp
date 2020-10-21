@@ -182,12 +182,12 @@ const SinkServiceAsyncProcessor::ProcessMap& SinkServiceAsyncProcessor::getBinar
 }
 
 const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::binaryProcessMap_ {
-  {"method", &SinkServiceAsyncProcessor::_processInThread_method<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodAndReponse", &SinkServiceAsyncProcessor::_processInThread_methodAndReponse<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodThrow", &SinkServiceAsyncProcessor::_processInThread_methodThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodSinkThrow", &SinkServiceAsyncProcessor::_processInThread_methodSinkThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodFinalThrow", &SinkServiceAsyncProcessor::_processInThread_methodFinalThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"methodBothThrow", &SinkServiceAsyncProcessor::_processInThread_methodBothThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"method", &SinkServiceAsyncProcessor::setUpAndProcess_method<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"methodAndReponse", &SinkServiceAsyncProcessor::setUpAndProcess_methodAndReponse<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"methodThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"methodSinkThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"methodFinalThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"methodBothThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const SinkServiceAsyncProcessor::ProcessMap& SinkServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -195,12 +195,12 @@ const SinkServiceAsyncProcessor::ProcessMap& SinkServiceAsyncProcessor::getCompa
 }
 
 const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::compactProcessMap_ {
-  {"method", &SinkServiceAsyncProcessor::_processInThread_method<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodAndReponse", &SinkServiceAsyncProcessor::_processInThread_methodAndReponse<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodThrow", &SinkServiceAsyncProcessor::_processInThread_methodThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodSinkThrow", &SinkServiceAsyncProcessor::_processInThread_methodSinkThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodFinalThrow", &SinkServiceAsyncProcessor::_processInThread_methodFinalThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"methodBothThrow", &SinkServiceAsyncProcessor::_processInThread_methodBothThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"method", &SinkServiceAsyncProcessor::setUpAndProcess_method<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"methodAndReponse", &SinkServiceAsyncProcessor::setUpAndProcess_methodAndReponse<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"methodThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"methodSinkThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"methodFinalThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"methodBothThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

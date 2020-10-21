@@ -86,8 +86,8 @@ const MyServicePrioParentAsyncProcessor::ProcessMap& MyServicePrioParentAsyncPro
 }
 
 const MyServicePrioParentAsyncProcessor::ProcessMap MyServicePrioParentAsyncProcessor::binaryProcessMap_ {
-  {"ping", &MyServicePrioParentAsyncProcessor::_processInThread_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"pong", &MyServicePrioParentAsyncProcessor::_processInThread_pong<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"ping", &MyServicePrioParentAsyncProcessor::setUpAndProcess_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"pong", &MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServicePrioParentAsyncProcessor::ProcessMap& MyServicePrioParentAsyncProcessor::getCompactProtocolProcessMap() {
@@ -95,8 +95,8 @@ const MyServicePrioParentAsyncProcessor::ProcessMap& MyServicePrioParentAsyncPro
 }
 
 const MyServicePrioParentAsyncProcessor::ProcessMap MyServicePrioParentAsyncProcessor::compactProcessMap_ {
-  {"ping", &MyServicePrioParentAsyncProcessor::_processInThread_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"pong", &MyServicePrioParentAsyncProcessor::_processInThread_pong<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"ping", &MyServicePrioParentAsyncProcessor::setUpAndProcess_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"pong", &MyServicePrioParentAsyncProcessor::setUpAndProcess_pong<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

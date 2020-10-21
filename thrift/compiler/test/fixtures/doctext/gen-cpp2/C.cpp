@@ -62,7 +62,7 @@ const CAsyncProcessor::ProcessMap& CAsyncProcessor::getBinaryProtocolProcessMap(
 }
 
 const CAsyncProcessor::ProcessMap CAsyncProcessor::binaryProcessMap_ {
-  {"f", &CAsyncProcessor::_processInThread_f<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"f", &CAsyncProcessor::setUpAndProcess_f<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const CAsyncProcessor::ProcessMap& CAsyncProcessor::getCompactProtocolProcessMap() {
@@ -70,7 +70,7 @@ const CAsyncProcessor::ProcessMap& CAsyncProcessor::getCompactProtocolProcessMap
 }
 
 const CAsyncProcessor::ProcessMap CAsyncProcessor::compactProcessMap_ {
-  {"f", &CAsyncProcessor::_processInThread_f<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"f", &CAsyncProcessor::setUpAndProcess_f<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

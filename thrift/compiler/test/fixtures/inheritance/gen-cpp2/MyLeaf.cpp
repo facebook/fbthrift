@@ -62,7 +62,7 @@ const MyLeafAsyncProcessor::ProcessMap& MyLeafAsyncProcessor::getBinaryProtocolP
 }
 
 const MyLeafAsyncProcessor::ProcessMap MyLeafAsyncProcessor::binaryProcessMap_ {
-  {"do_leaf", &MyLeafAsyncProcessor::_processInThread_do_leaf<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"do_leaf", &MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyLeafAsyncProcessor::ProcessMap& MyLeafAsyncProcessor::getCompactProtocolProcessMap() {
@@ -70,7 +70,7 @@ const MyLeafAsyncProcessor::ProcessMap& MyLeafAsyncProcessor::getCompactProtocol
 }
 
 const MyLeafAsyncProcessor::ProcessMap MyLeafAsyncProcessor::compactProcessMap_ {
-  {"do_leaf", &MyLeafAsyncProcessor::_processInThread_do_leaf<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"do_leaf", &MyLeafAsyncProcessor::setUpAndProcess_do_leaf<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

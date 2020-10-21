@@ -86,8 +86,8 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getBinaryPro
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::binaryProcessMap_ {
-  {"query", &MyServiceAsyncProcessor::_processInThread_query<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"has_arg_docs", &MyServiceAsyncProcessor::_processInThread_has_arg_docs<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"query", &MyServiceAsyncProcessor::setUpAndProcess_query<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"has_arg_docs", &MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -95,8 +95,8 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactPr
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProcessMap_ {
-  {"query", &MyServiceAsyncProcessor::_processInThread_query<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"has_arg_docs", &MyServiceAsyncProcessor::_processInThread_has_arg_docs<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"query", &MyServiceAsyncProcessor::setUpAndProcess_query<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"has_arg_docs", &MyServiceAsyncProcessor::setUpAndProcess_has_arg_docs<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

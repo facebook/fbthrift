@@ -78,8 +78,8 @@ const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getBinar
 }
 
 const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::binaryProcessMap_ {
-  {"bounce_map", &SomeServiceAsyncProcessor::_processInThread_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"binary_keyed_map", &SomeServiceAsyncProcessor::_processInThread_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"bounce_map", &SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"binary_keyed_map", &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -87,8 +87,8 @@ const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getCompa
 }
 
 const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::compactProcessMap_ {
-  {"bounce_map", &SomeServiceAsyncProcessor::_processInThread_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"binary_keyed_map", &SomeServiceAsyncProcessor::_processInThread_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"bounce_map", &SomeServiceAsyncProcessor::setUpAndProcess_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"binary_keyed_map", &SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }}}} // apache::thrift::fixtures::types

@@ -62,7 +62,7 @@ const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProce
 }
 
 const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::binaryProcessMap_ {
-  {"pang", &MyServicePrioChildAsyncProcessor::_processInThread_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"pang", &MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProcessor::getCompactProtocolProcessMap() {
@@ -70,7 +70,7 @@ const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProce
 }
 
 const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::compactProcessMap_ {
-  {"pang", &MyServicePrioChildAsyncProcessor::_processInThread_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"pang", &MyServicePrioChildAsyncProcessor::setUpAndProcess_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

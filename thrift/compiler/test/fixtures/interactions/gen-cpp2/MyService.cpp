@@ -222,11 +222,11 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getBinaryPro
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::binaryProcessMap_ {
-  {"foo", &MyServiceAsyncProcessor::_processInThread_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"MyInteraction.frobnicate", &MyServiceAsyncProcessor::_processInThread_MyInteraction_frobnicate<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"MyInteraction.ping", &MyServiceAsyncProcessor::_processInThread_MyInteraction_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"MyInteraction.truthify", &MyServiceAsyncProcessor::_processInThread_MyInteraction_truthify<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"MyInteraction.encode", &MyServiceAsyncProcessor::_processInThread_MyInteraction_encode<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"foo", &MyServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteraction.frobnicate", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteraction.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteraction.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteraction.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_encode<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -234,11 +234,11 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactPr
 }
 
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProcessMap_ {
-  {"foo", &MyServiceAsyncProcessor::_processInThread_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"MyInteraction.frobnicate", &MyServiceAsyncProcessor::_processInThread_MyInteraction_frobnicate<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"MyInteraction.ping", &MyServiceAsyncProcessor::_processInThread_MyInteraction_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"MyInteraction.truthify", &MyServiceAsyncProcessor::_processInThread_MyInteraction_truthify<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"MyInteraction.encode", &MyServiceAsyncProcessor::_processInThread_MyInteraction_encode<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"foo", &MyServiceAsyncProcessor::setUpAndProcess_foo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteraction.frobnicate", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteraction.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteraction.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteraction.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_encode<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::InteractionConstructorMap& MyServiceAsyncProcessor::getInteractionConstructorMap() {

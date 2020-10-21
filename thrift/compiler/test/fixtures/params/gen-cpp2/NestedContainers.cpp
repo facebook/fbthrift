@@ -158,11 +158,11 @@ const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor
 }
 
 const NestedContainersAsyncProcessor::ProcessMap NestedContainersAsyncProcessor::binaryProcessMap_ {
-  {"mapList", &NestedContainersAsyncProcessor::_processInThread_mapList<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"mapSet", &NestedContainersAsyncProcessor::_processInThread_mapSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"listMap", &NestedContainersAsyncProcessor::_processInThread_listMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"listSet", &NestedContainersAsyncProcessor::_processInThread_listSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"turtles", &NestedContainersAsyncProcessor::_processInThread_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"mapList", &NestedContainersAsyncProcessor::setUpAndProcess_mapList<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"mapSet", &NestedContainersAsyncProcessor::setUpAndProcess_mapSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"listMap", &NestedContainersAsyncProcessor::setUpAndProcess_listMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"listSet", &NestedContainersAsyncProcessor::setUpAndProcess_listSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"turtles", &NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor::getCompactProtocolProcessMap() {
@@ -170,11 +170,11 @@ const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor
 }
 
 const NestedContainersAsyncProcessor::ProcessMap NestedContainersAsyncProcessor::compactProcessMap_ {
-  {"mapList", &NestedContainersAsyncProcessor::_processInThread_mapList<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"mapSet", &NestedContainersAsyncProcessor::_processInThread_mapSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"listMap", &NestedContainersAsyncProcessor::_processInThread_listMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"listSet", &NestedContainersAsyncProcessor::_processInThread_listSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"turtles", &NestedContainersAsyncProcessor::_processInThread_turtles<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"mapList", &NestedContainersAsyncProcessor::setUpAndProcess_mapList<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"mapSet", &NestedContainersAsyncProcessor::setUpAndProcess_mapSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"listMap", &NestedContainersAsyncProcessor::setUpAndProcess_listMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"listSet", &NestedContainersAsyncProcessor::setUpAndProcess_listSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"turtles", &NestedContainersAsyncProcessor::setUpAndProcess_turtles<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

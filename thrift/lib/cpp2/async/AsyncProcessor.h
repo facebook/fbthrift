@@ -204,11 +204,20 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       ContextStack* ctx,
       const Result& result);
 
+  // Sends an error response if validation fails.
   static bool validateRpcKind(
       ResponseChannelRequest::UniquePtr& req,
       RpcKind kind);
 
-  template <typename ProtocolIn_, typename ProtocolOut_, typename ChildType>
+  // Returns true if setup succeeded and sends an error response otherwise.
+  // Always runs in eb thread.
+  template <typename ChildType>
+  static bool setUpRequestProcessing(
+      ResponseChannelRequest::UniquePtr& req,
+      RpcKind kind,
+      ChildType* childClass);
+
+  template <typename ChildType>
   static void processInThread(
       ResponseChannelRequest::UniquePtr req,
       SerializedRequest&& serializedRequest,
@@ -655,6 +664,17 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
 }
 
 template <typename ChildType>
+bool GeneratedAsyncProcessor::setUpRequestProcessing(
+    ResponseChannelRequest::UniquePtr& req,
+    RpcKind kind,
+    ChildType* /* childClass */) {
+  if (!validateRpcKind(req, kind)) {
+    return false;
+  }
+  return true;
+}
+
+template <typename ChildType>
 std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
     ResponseChannelRequest::UniquePtr req,
     SerializedRequest&& serializedRequest,
@@ -709,7 +729,7 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
       tile);
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_, typename ChildType>
+template <typename ChildType>
 void GeneratedAsyncProcessor::processInThread(
     ResponseChannelRequest::UniquePtr req,
     SerializedRequest&& serializedRequest,
@@ -720,11 +740,6 @@ void GeneratedAsyncProcessor::processInThread(
     RpcKind kind,
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass) {
-  if (!validateRpcKind(req, kind)) {
-    // validateRpcKind sends an error response if needed
-    return;
-  }
-
   if (auto interactionCreate = ctx->getInteractionCreate()) {
     if (!childClass->createInteraction(
             *interactionCreate->interactionId_ref(),

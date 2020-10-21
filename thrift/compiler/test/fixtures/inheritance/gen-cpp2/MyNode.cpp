@@ -62,7 +62,7 @@ const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getBinaryProtocolP
 }
 
 const MyNodeAsyncProcessor::ProcessMap MyNodeAsyncProcessor::binaryProcessMap_ {
-  {"do_mid", &MyNodeAsyncProcessor::_processInThread_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"do_mid", &MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getCompactProtocolProcessMap() {
@@ -70,7 +70,7 @@ const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getCompactProtocol
 }
 
 const MyNodeAsyncProcessor::ProcessMap MyNodeAsyncProcessor::compactProcessMap_ {
-  {"do_mid", &MyNodeAsyncProcessor::_processInThread_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"do_mid", &MyNodeAsyncProcessor::setUpAndProcess_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

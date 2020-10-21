@@ -126,10 +126,10 @@ const RaiserAsyncProcessor::ProcessMap& RaiserAsyncProcessor::getBinaryProtocolP
 }
 
 const RaiserAsyncProcessor::ProcessMap RaiserAsyncProcessor::binaryProcessMap_ {
-  {"doBland", &RaiserAsyncProcessor::_processInThread_doBland<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"doRaise", &RaiserAsyncProcessor::_processInThread_doRaise<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"get200", &RaiserAsyncProcessor::_processInThread_get200<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"get500", &RaiserAsyncProcessor::_processInThread_get500<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"doBland", &RaiserAsyncProcessor::setUpAndProcess_doBland<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"doRaise", &RaiserAsyncProcessor::setUpAndProcess_doRaise<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"get200", &RaiserAsyncProcessor::setUpAndProcess_get200<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"get500", &RaiserAsyncProcessor::setUpAndProcess_get500<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const RaiserAsyncProcessor::ProcessMap& RaiserAsyncProcessor::getCompactProtocolProcessMap() {
@@ -137,10 +137,10 @@ const RaiserAsyncProcessor::ProcessMap& RaiserAsyncProcessor::getCompactProtocol
 }
 
 const RaiserAsyncProcessor::ProcessMap RaiserAsyncProcessor::compactProcessMap_ {
-  {"doBland", &RaiserAsyncProcessor::_processInThread_doBland<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"doRaise", &RaiserAsyncProcessor::_processInThread_doRaise<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"get200", &RaiserAsyncProcessor::_processInThread_get200<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"get500", &RaiserAsyncProcessor::_processInThread_get500<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"doBland", &RaiserAsyncProcessor::setUpAndProcess_doBland<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"doRaise", &RaiserAsyncProcessor::setUpAndProcess_doRaise<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"get200", &RaiserAsyncProcessor::setUpAndProcess_get200<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"get500", &RaiserAsyncProcessor::setUpAndProcess_get500<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

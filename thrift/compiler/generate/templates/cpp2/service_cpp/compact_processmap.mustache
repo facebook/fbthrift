@@ -24,10 +24,10 @@ const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor:
 <%#service:functions?%>
 const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {
 <%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
-  {"<%function:name%>", &<%service:name%>AsyncProcessor::<%#function:eb%>process<%/function:eb%><%^function:eb%>_processInThread<%/function:eb%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"<%function:name%>", &<%service:name%>AsyncProcessor::setUpAndProcess_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 <%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>
 <%#service:interactions%><%#service:functions%><%#function:returnType%>
-  {"<%service:name%>.<%function:name%>", &<%service:parent_service_name%>AsyncProcessor::<%#function:eb%>process<%/function:eb%><%^function:eb%>_processInThread<%/function:eb%>_<%service:name%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"<%service:name%>.<%function:name%>", &<%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%service:name%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 <%/function:returnType%><%/service:functions%><%/service:interactions%>
 };
 <%/service:functions?%>
