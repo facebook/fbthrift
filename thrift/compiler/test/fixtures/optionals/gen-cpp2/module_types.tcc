@@ -190,13 +190,13 @@ uint32_t Color::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Color");
   xfer += prot_->serializedFieldSize("red", apache::thrift::protocol::T_DOUBLE, 1);
-  xfer += prot_->serializedSizeDouble(this->red);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->red);
   xfer += prot_->serializedFieldSize("green", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->green);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->green);
   xfer += prot_->serializedFieldSize("blue", apache::thrift::protocol::T_DOUBLE, 3);
-  xfer += prot_->serializedSizeDouble(this->blue);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->blue);
   xfer += prot_->serializedFieldSize("alpha", apache::thrift::protocol::T_DOUBLE, 4);
-  xfer += prot_->serializedSizeDouble(this->alpha);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->alpha);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -206,13 +206,13 @@ uint32_t Color::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Color");
   xfer += prot_->serializedFieldSize("red", apache::thrift::protocol::T_DOUBLE, 1);
-  xfer += prot_->serializedSizeDouble(this->red);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->red);
   xfer += prot_->serializedFieldSize("green", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->green);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->green);
   xfer += prot_->serializedFieldSize("blue", apache::thrift::protocol::T_DOUBLE, 3);
-  xfer += prot_->serializedSizeDouble(this->blue);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->blue);
   xfer += prot_->serializedFieldSize("alpha", apache::thrift::protocol::T_DOUBLE, 4);
-  xfer += prot_->serializedSizeDouble(this->alpha);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->alpha);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -222,16 +222,16 @@ uint32_t Color::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Color");
   xfer += prot_->writeFieldBegin("red", apache::thrift::protocol::T_DOUBLE, 1);
-  xfer += prot_->writeDouble(this->red);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->red);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("green", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->writeDouble(this->green);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->green);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("blue", apache::thrift::protocol::T_DOUBLE, 3);
-  xfer += prot_->writeDouble(this->blue);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->blue);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("alpha", apache::thrift::protocol::T_DOUBLE, 4);
-  xfer += prot_->writeDouble(this->alpha);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->alpha);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -433,7 +433,7 @@ uint32_t Vehicle::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->hasAC_ref().has_value()) {
     xfer += prot_->serializedFieldSize("hasAC", apache::thrift::protocol::T_BOOL, 5);
-    xfer += prot_->serializedSizeBool(this->hasAC);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->hasAC);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -459,7 +459,7 @@ uint32_t Vehicle::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->hasAC_ref().has_value()) {
     xfer += prot_->serializedFieldSize("hasAC", apache::thrift::protocol::T_BOOL, 5);
-    xfer += prot_->serializedSizeBool(this->hasAC);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->hasAC);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -489,7 +489,7 @@ uint32_t Vehicle::write(Protocol_* prot_) const {
   }
   if (this->hasAC_ref().has_value()) {
     xfer += prot_->writeFieldBegin("hasAC", apache::thrift::protocol::T_BOOL, 5);
-    xfer += prot_->writeBool(this->hasAC);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::write(*prot_, this->hasAC);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

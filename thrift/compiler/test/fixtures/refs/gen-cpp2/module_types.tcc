@@ -184,7 +184,7 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
     case MyUnion::Type::aString:
     {
       xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += prot_->serializedSizeString(this->get_aString());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->get_aString());
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -207,7 +207,7 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case MyUnion::Type::aString:
     {
       xfer += prot_->serializedFieldSize("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += prot_->serializedSizeString(this->get_aString());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->get_aString());
       break;
     }
     case MyUnion::Type::__EMPTY__:;
@@ -231,7 +231,7 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     case MyUnion::Type::aString:
     {
       xfer += prot_->writeFieldBegin("aString", apache::thrift::protocol::T_STRING, 2);
-      xfer += prot_->writeString(this->get_aString());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->get_aString());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -795,7 +795,7 @@ uint32_t StructWithUnion::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedFieldSize("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->aDouble);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->aDouble);
   xfer += prot_->serializedFieldSize("f", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyField>::serializedSize<false>(*prot_, this->f);
   xfer += prot_->serializedSizeStop();
@@ -815,7 +815,7 @@ uint32_t StructWithUnion::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedSizeStop();
   }
   xfer += prot_->serializedFieldSize("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->aDouble);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->aDouble);
   xfer += prot_->serializedFieldSize("f", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyField>::serializedSize<true>(*prot_, this->f);
   xfer += prot_->serializedSizeStop();
@@ -837,7 +837,7 @@ uint32_t StructWithUnion::write(Protocol_* prot_) const {
   }
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->writeDouble(this->aDouble);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->aDouble);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("f", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyField>::write(*prot_, this->f);

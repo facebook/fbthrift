@@ -1048,7 +1048,7 @@ uint32_t struct4::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->a);
   if (this->b_ref().has_value()) {
     xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
-    xfer += prot_->serializedSizeDouble(this->b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->b);
   }
   if (this->c_ref().has_value()) {
     xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_BYTE, 3);
@@ -1066,7 +1066,7 @@ uint32_t struct4::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->a);
   if (this->b_ref().has_value()) {
     xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
-    xfer += prot_->serializedSizeDouble(this->b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->b);
   }
   if (this->c_ref().has_value()) {
     xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_BYTE, 3);
@@ -1085,7 +1085,7 @@ uint32_t struct4::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   if (this->b_ref().has_value()) {
     xfer += prot_->writeFieldBegin("b", apache::thrift::protocol::T_DOUBLE, 2);
-    xfer += prot_->writeDouble(this->b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->b);
     xfer += prot_->writeFieldEnd();
   }
   if (this->c_ref().has_value()) {
@@ -1174,7 +1174,7 @@ uint32_t union1::serializedSize(Protocol_ const* prot_) const {
     case union1::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += prot_->serializedSizeDouble(this->get_d());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->get_d());
       break;
     }
     case union1::Type::__EMPTY__:;
@@ -1197,7 +1197,7 @@ uint32_t union1::serializedSizeZC(Protocol_ const* prot_) const {
     case union1::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += prot_->serializedSizeDouble(this->get_d());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->get_d());
       break;
     }
     case union1::Type::__EMPTY__:;
@@ -1221,7 +1221,7 @@ uint32_t union1::write(Protocol_* prot_) const {
     case union1::Type::d:
     {
       xfer += prot_->writeFieldBegin("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += prot_->writeDouble(this->get_d());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->get_d());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -1332,7 +1332,7 @@ uint32_t union2::serializedSize(Protocol_ const* prot_) const {
     case union2::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += prot_->serializedSizeDouble(this->get_d());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->get_d());
       break;
     }
     case union2::Type::s:
@@ -1367,7 +1367,7 @@ uint32_t union2::serializedSizeZC(Protocol_ const* prot_) const {
     case union2::Type::d:
     {
       xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += prot_->serializedSizeDouble(this->get_d());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->get_d());
       break;
     }
     case union2::Type::s:
@@ -1403,7 +1403,7 @@ uint32_t union2::write(Protocol_* prot_) const {
     case union2::Type::d:
     {
       xfer += prot_->writeFieldBegin("d", apache::thrift::protocol::T_DOUBLE, 2);
-      xfer += prot_->writeDouble(this->get_d());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->get_d());
       xfer += prot_->writeFieldEnd();
       break;
     }

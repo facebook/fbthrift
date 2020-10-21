@@ -1134,7 +1134,7 @@ uint32_t TrivialNumeric::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->a);
   xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_BOOL, 2);
-  xfer += prot_->serializedSizeBool(this->b);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->b);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1146,7 +1146,7 @@ uint32_t TrivialNumeric::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->a);
   xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_BOOL, 2);
-  xfer += prot_->serializedSizeBool(this->b);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->b);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1159,7 +1159,7 @@ uint32_t TrivialNumeric::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->a);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("b", apache::thrift::protocol::T_BOOL, 2);
-  xfer += prot_->writeBool(this->b);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::write(*prot_, this->b);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -3225,7 +3225,7 @@ uint32_t NoexceptMoveComplexStruct::serializedSize(Protocol_ const* prot_) const
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NoexceptMoveComplexStruct");
   xfer += prot_->serializedFieldSize("MyBoolField", apache::thrift::protocol::T_BOOL, 1);
-  xfer += prot_->serializedSizeBool(this->MyBoolField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->MyBoolField);
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
   xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 3);
@@ -3253,7 +3253,7 @@ uint32_t NoexceptMoveComplexStruct::serializedSizeZC(Protocol_ const* prot_) con
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("NoexceptMoveComplexStruct");
   xfer += prot_->serializedFieldSize("MyBoolField", apache::thrift::protocol::T_BOOL, 1);
-  xfer += prot_->serializedSizeBool(this->MyBoolField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->MyBoolField);
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
   xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 3);
@@ -3281,7 +3281,7 @@ uint32_t NoexceptMoveComplexStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("NoexceptMoveComplexStruct");
   xfer += prot_->writeFieldBegin("MyBoolField", apache::thrift::protocol::T_BOOL, 1);
-  xfer += prot_->writeBool(this->MyBoolField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::write(*prot_, this->MyBoolField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->MyIntField);
@@ -3384,7 +3384,7 @@ uint32_t NoExceptMoveUnion::serializedSize(Protocol_ const* prot_) const {
     case NoExceptMoveUnion::Type::string_field:
     {
       xfer += prot_->serializedFieldSize("string_field", apache::thrift::protocol::T_STRING, 1);
-      xfer += prot_->serializedSizeString(this->get_string_field());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->get_string_field());
       break;
     }
     case NoExceptMoveUnion::Type::i32_field:
@@ -3407,7 +3407,7 @@ uint32_t NoExceptMoveUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case NoExceptMoveUnion::Type::string_field:
     {
       xfer += prot_->serializedFieldSize("string_field", apache::thrift::protocol::T_STRING, 1);
-      xfer += prot_->serializedSizeString(this->get_string_field());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->get_string_field());
       break;
     }
     case NoExceptMoveUnion::Type::i32_field:
@@ -3430,7 +3430,7 @@ uint32_t NoExceptMoveUnion::write(Protocol_* prot_) const {
     case NoExceptMoveUnion::Type::string_field:
     {
       xfer += prot_->writeFieldBegin("string_field", apache::thrift::protocol::T_STRING, 1);
-      xfer += prot_->writeString(this->get_string_field());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->get_string_field());
       xfer += prot_->writeFieldEnd();
       break;
     }
