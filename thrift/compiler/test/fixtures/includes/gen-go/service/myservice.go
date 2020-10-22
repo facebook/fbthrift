@@ -78,6 +78,10 @@ func NewMyServiceClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.
   return &MyServiceClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewMyServiceClientProtocol(prot thrift.Protocol) *MyServiceClient {
+  return NewMyServiceClient(prot.Transport(), prot, prot)
+}
+
 // This is a function-level docblock
 // 
 // Parameters:
@@ -150,6 +154,10 @@ func NewMyServiceThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFa
 
 func NewMyServiceThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceThreadsafeClient {
   return &MyServiceThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewMyServiceThreadsafeClientProtocol(prot thrift.Protocol) *MyServiceThreadsafeClient {
+  return NewMyServiceThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 // This is a function-level docblock

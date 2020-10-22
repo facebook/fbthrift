@@ -59,6 +59,10 @@ func NewRaiserClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Pro
   return &RaiserClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewRaiserClientProtocol(prot thrift.Protocol) *RaiserClient {
+  return NewRaiserClient(prot.Transport(), prot, prot)
+}
+
 func (p *RaiserClient) DoBland() (err error) {
   var args RaiserDoBlandArgs
   err = p.CC.SendMsg("doBland", &args, thrift.CALL)
@@ -169,6 +173,10 @@ func NewRaiserThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFacto
 
 func NewRaiserThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *RaiserThreadsafeClient {
   return &RaiserThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewRaiserThreadsafeClientProtocol(prot thrift.Protocol) *RaiserThreadsafeClient {
+  return NewRaiserThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 func (p *RaiserThreadsafeClient) DoBland() (err error) {

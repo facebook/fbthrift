@@ -85,6 +85,10 @@ func NewMyServiceClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.
   return &MyServiceClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewMyServiceClientProtocol(prot thrift.Protocol) *MyServiceClient {
+  return NewMyServiceClient(prot.Transport(), prot, prot)
+}
+
 func (p *MyServiceClient) Ping() (err error) {
   var args MyServicePingArgs
   err = p.CC.SendMsg("ping", &args, thrift.CALL)
@@ -230,6 +234,10 @@ func NewMyServiceThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFa
 
 func NewMyServiceThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceThreadsafeClient {
   return &MyServiceThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewMyServiceThreadsafeClientProtocol(prot thrift.Protocol) *MyServiceThreadsafeClient {
+  return NewMyServiceThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 func (p *MyServiceThreadsafeClient) Ping() (err error) {

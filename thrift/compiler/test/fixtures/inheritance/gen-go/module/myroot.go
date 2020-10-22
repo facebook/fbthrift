@@ -53,6 +53,10 @@ func NewMyRootClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Pro
   return &MyRootClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewMyRootClientProtocol(prot thrift.Protocol) *MyRootClient {
+  return NewMyRootClient(prot.Transport(), prot, prot)
+}
+
 func (p *MyRootClient) DoRoot() (err error) {
   var args MyRootDoRootArgs
   err = p.CC.SendMsg("do_root", &args, thrift.CALL)
@@ -97,6 +101,10 @@ func NewMyRootThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFacto
 
 func NewMyRootThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootThreadsafeClient {
   return &MyRootThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewMyRootThreadsafeClientProtocol(prot thrift.Protocol) *MyRootThreadsafeClient {
+  return NewMyRootThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 func (p *MyRootThreadsafeClient) DoRoot() (err error) {

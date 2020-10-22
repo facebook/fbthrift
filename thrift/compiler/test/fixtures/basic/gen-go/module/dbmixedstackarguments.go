@@ -63,6 +63,10 @@ func NewDbMixedStackArgumentsClient(t thrift.Transport, iprot thrift.Protocol, o
   return &DbMixedStackArgumentsClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewDbMixedStackArgumentsClientProtocol(prot thrift.Protocol) *DbMixedStackArgumentsClient {
+  return NewDbMixedStackArgumentsClient(prot.Transport(), prot, prot)
+}
+
 // Parameters:
 //  - Key
 func (p *DbMixedStackArgumentsClient) GetDataByKey0(key string) (_r []byte, err error) {
@@ -134,6 +138,10 @@ func NewDbMixedStackArgumentsThreadsafeClientFactory(t thrift.Transport, f thrif
 
 func NewDbMixedStackArgumentsThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *DbMixedStackArgumentsThreadsafeClient {
   return &DbMixedStackArgumentsThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewDbMixedStackArgumentsThreadsafeClientProtocol(prot thrift.Protocol) *DbMixedStackArgumentsThreadsafeClient {
+  return NewDbMixedStackArgumentsThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 // Parameters:

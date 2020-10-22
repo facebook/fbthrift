@@ -55,6 +55,10 @@ func NewMyServicePrioChildClient(t thrift.Transport, iprot thrift.Protocol, opro
   return &MyServicePrioChildClient{MyServicePrioParentClient: NewMyServicePrioParentClient(t, iprot, oprot)}
 }
 
+func NewMyServicePrioChildClientProtocol(prot thrift.Protocol) *MyServicePrioChildClient {
+  return NewMyServicePrioChildClient(prot.Transport(), prot, prot)
+}
+
 func (p *MyServicePrioChildClient) Pang() (err error) {
   var args MyServicePrioChildPangArgs
   err = p.CC.SendMsg("pang", &args, thrift.CALL)
@@ -98,6 +102,10 @@ func NewMyServicePrioChildThreadsafeClientFactory(t thrift.Transport, f thrift.P
 
 func NewMyServicePrioChildThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildThreadsafeClient {
   return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClient(t, iprot, oprot)}
+}
+
+func NewMyServicePrioChildThreadsafeClientProtocol(prot thrift.Protocol) *MyServicePrioChildThreadsafeClient {
+  return NewMyServicePrioChildThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 func (p *MyServicePrioChildThreadsafeClient) Pang() (err error) {

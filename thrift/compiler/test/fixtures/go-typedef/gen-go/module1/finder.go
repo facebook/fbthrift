@@ -72,6 +72,10 @@ func NewFinderClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Pro
   return &FinderClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewFinderClientProtocol(prot thrift.Protocol) *FinderClient {
+  return NewFinderClient(prot.Transport(), prot, prot)
+}
+
 // Parameters:
 //  - Plate
 func (p *FinderClient) ByPlate(plate Plate) (_r *Automobile, err error) {
@@ -163,6 +167,10 @@ func NewFinderThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFacto
 
 func NewFinderThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *FinderThreadsafeClient {
   return &FinderThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewFinderThreadsafeClientProtocol(prot thrift.Protocol) *FinderThreadsafeClient {
+  return NewFinderThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 // Parameters:

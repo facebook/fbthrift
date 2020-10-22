@@ -89,6 +89,10 @@ func NewGetEntityClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.
   return &GetEntityClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewGetEntityClientProtocol(prot thrift.Protocol) *GetEntityClient {
+  return NewGetEntityClient(prot.Transport(), prot, prot)
+}
+
 // Parameters:
 //  - R
 func (p *GetEntityClient) GetEntity(r *GetEntityRequest) (_r *GetEntityResponse, err error) {
@@ -340,6 +344,10 @@ func NewGetEntityThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFa
 
 func NewGetEntityThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *GetEntityThreadsafeClient {
   return &GetEntityThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewGetEntityThreadsafeClientProtocol(prot thrift.Protocol) *GetEntityThreadsafeClient {
+  return NewGetEntityThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 // Parameters:

@@ -66,6 +66,10 @@ func NewSomeServiceClient(t thrift.Transport, iprot thrift.Protocol, oprot thrif
   return &SomeServiceClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
+func NewSomeServiceClientProtocol(prot thrift.Protocol) *SomeServiceClient {
+  return NewSomeServiceClient(prot.Transport(), prot, prot)
+}
+
 // Parameters:
 //  - M
 func (p *SomeServiceClient) BounceMap(m include0.SomeMap) (_r include0.SomeMap, err error) {
@@ -137,6 +141,10 @@ func NewSomeServiceThreadsafeClientFactory(t thrift.Transport, f thrift.Protocol
 
 func NewSomeServiceThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *SomeServiceThreadsafeClient {
   return &SomeServiceThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
+}
+
+func NewSomeServiceThreadsafeClientProtocol(prot thrift.Protocol) *SomeServiceThreadsafeClient {
+  return NewSomeServiceThreadsafeClient(prot.Transport(), prot, prot)
 }
 
 // Parameters:

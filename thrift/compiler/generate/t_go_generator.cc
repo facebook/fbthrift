@@ -2252,6 +2252,7 @@ void t_go_generator::generate_service_client(
 
   indent_down();
   f_service_ << indent() << "}" << endl << endl;
+
   // Constructor function
   f_service_
       << indent() << "func New" << clientTypeName
@@ -2270,6 +2271,17 @@ void t_go_generator::generate_service_client(
 
   indent_down();
   f_service_ << indent() << "}" << endl << endl;
+
+  // Constructor function with protocol only
+  f_service_ << indent() << "func New" << clientTypeName << "Protocol"
+             << "(prot thrift.Protocol) *" << clientTypeName << " {" << endl;
+  indent_up();
+  f_service_ << indent() << "return New" << clientTypeName
+             << "(prot.Transport(), prot, prot)" << endl;
+
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+
   // Generate client method implementations
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
