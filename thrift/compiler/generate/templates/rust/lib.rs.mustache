@@ -48,7 +48,9 @@ pub mod services {{>lib/block}}{{>lib/mod.services}}}
 
 pub mod client {{>lib/block}}{{>lib/mod.client}}}
 
+{{#program:server?}}
 pub mod server {{>lib/block}}{{>lib/mod.server}}}
+{{/program:server?}}
 
 /// Client mocks. For every service, a struct mock::TheService that implements
 /// client::TheService.

@@ -180,6 +180,10 @@ struct rust_codegen_options {
   // Enabled by `--gen rust:serde`.
   bool serde = false;
 
+  // Whether to skip server stubs. Server stubs are built by default, but can
+  // be turned off via `--gen rust:noserver`.
+  bool noserver = false;
+
   // True if we are generating a submodule rather than the whole crate.
   bool multifile_mode = false;
 
@@ -241,6 +245,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
     }
 
     options_.serde = parsed_options.count("serde");
+    options_.noserver = parsed_options.count("noserver");
 
     auto include_prefix_flag = parsed_options.find("include_prefix");
     if (include_prefix_flag != parsed_options.end()) {
@@ -282,6 +287,7 @@ class mstch_rust_program : public mstch_program {
             {"program:structsOrEnums?",
              &mstch_rust_program::rust_structs_or_enums},
             {"program:serde?", &mstch_rust_program::rust_serde},
+            {"program:server?", &mstch_rust_program::rust_server},
             {"program:multifile?", &mstch_rust_program::rust_multifile},
             {"program:crate", &mstch_rust_program::rust_crate},
             {"program:package", &mstch_rust_program::rust_package},
@@ -304,6 +310,9 @@ class mstch_rust_program : public mstch_program {
   }
   mstch::node rust_serde() {
     return options_.serde;
+  }
+  mstch::node rust_server() {
+    return !options_.noserver;
   }
   mstch::node rust_multifile() {
     return options_.multifile_mode;
