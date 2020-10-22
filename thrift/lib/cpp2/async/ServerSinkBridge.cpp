@@ -94,7 +94,6 @@ folly::coro::Task<void> ServerSinkBridge::start() {
 
 // TwoWayBridge consumer
 void ServerSinkBridge::consume() {
-  DCHECK(evb_);
   evb_->runInEventBaseThread(
       [self = copy()]() { self->processClientMessages(); });
 }
@@ -175,7 +174,6 @@ void ServerSinkBridge::processClientMessages() {
 
 void ServerSinkBridge::close() {
   clientClose();
-  evb_.reset();
   clientCallback_ = nullptr;
   Ptr(this);
 }
