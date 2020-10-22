@@ -1317,14 +1317,6 @@ class enum_member_union_field_names_validator : virtual public validator {
 
 class t_mstch_py3_generator : public t_mstch_generator {
  public:
-  enum class ModuleType {
-    TYPES,
-    CLIENTS,
-    SERVICES,
-    BUILDERS,
-    REFLECTIONS,
-  };
-
   t_mstch_py3_generator(
       t_program* program,
       t_generation_context context,
@@ -1342,11 +1334,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
   void generate_program() override {
     set_mstch_generators();
     generate_init_files();
-    generate_module(ModuleType::TYPES);
-    generate_module(ModuleType::SERVICES);
-    generate_module(ModuleType::CLIENTS);
-    generate_module(ModuleType::BUILDERS);
-    generate_module(ModuleType::REFLECTIONS);
+    generate_types();
+    generate_services();
   }
 
   void fill_validator_list(validator_list& vl) const override {
@@ -1358,28 +1347,14 @@ class t_mstch_py3_generator : public t_mstch_generator {
   bool should_resolve_typedefs() const override {
     return true;
   }
-
-  std::string get_module_name(ModuleType module) {
-    switch (module) {
-      case ModuleType::TYPES:
-        return "types";
-      case ModuleType::CLIENTS:
-        return "clients";
-      case ModuleType::SERVICES:
-        return "services";
-      case ModuleType::BUILDERS:
-        return "builders";
-      case ModuleType::REFLECTIONS:
-        return "services_reflection";
-    }
-    // Should not happen
-    assert(false);
-    return {};
-  }
-
   void set_mstch_generators();
   void generate_init_files();
-  void generate_module(ModuleType moduleType);
+  void generate_file(
+      const std::string& file,
+      const boost::filesystem::path& base);
+  void setTypeContext(bool val);
+  void generate_types();
+  void generate_services();
   boost::filesystem::path package_to_path();
 
   const boost::filesystem::path generateRootPath_;
@@ -1437,57 +1412,94 @@ void t_mstch_py3_generator::generate_init_files() {
     p = p.parent_path();
   }
 }
+
 boost::filesystem::path t_mstch_py3_generator::package_to_path() {
   auto package = get_program()->get_namespace("py3");
   return boost::algorithm::replace_all_copy(package, ".", "/");
 }
 
-void t_mstch_py3_generator::generate_module(ModuleType moduleType) {
+void t_mstch_py3_generator::setTypeContext(bool val) {
+  auto nodePtr = generators_->program_generator_->generate(
+      get_program(), generators_, cache_);
+  auto programNodePtr = std::static_pointer_cast<mstch_py3_program>(nodePtr);
+  programNodePtr->setTypeContext(val);
+}
+
+void t_mstch_py3_generator::generate_file(
+    const std::string& file,
+    const boost::filesystem::path& base = {}) {
   auto program = get_program();
-  if (moduleType != ModuleType::TYPES && moduleType != ModuleType::BUILDERS &&
-      program->get_services().empty()) {
+  const auto& name = program->get_name();
+  auto nodePtr =
+      generators_->program_generator_->generate(program, generators_, cache_);
+  render_to_file(nodePtr, file, base / name / file);
+}
+
+void t_mstch_py3_generator::generate_types() {
+  std::vector<std::string> cythonFilesWithTypeContext{
+      "types.pyx",
+      "types.pxd",
+      "types.pyi",
+  };
+
+  std::vector<std::string> cythonFilesNoTypeContext{
+      "types_reflection.pxd",
+      "types_reflection.pyx",
+      "builders.pxd",
+      "builders.pyx",
+      "builders.pyi",
+  };
+
+  std::vector<std::string> cppFilesWithTypeContext{
+      "types.h",
+  };
+
+  setTypeContext(true);
+  for (const auto& file : cythonFilesWithTypeContext) {
+    generate_file(file, generateRootPath_);
+  }
+  for (const auto& file : cppFilesWithTypeContext) {
+    generate_file(file);
+  }
+  setTypeContext(false);
+  for (const auto& file : cythonFilesNoTypeContext) {
+    generate_file(file, generateRootPath_);
+  }
+}
+
+void t_mstch_py3_generator::generate_services() {
+  if (get_program()->get_services().empty()) {
     // There is no need to generate empty / broken code for non existent
     // services.
     return;
   }
-  auto nodePtr = generators_->program_generator_->generate(
-      get_program(), generators_, cache_);
-  auto programNodePtr = std::static_pointer_cast<mstch_py3_program>(nodePtr);
-  programNodePtr->setTypeContext(moduleType == ModuleType::TYPES);
-  const auto& name = program->get_name();
-  auto module = get_module_name(moduleType);
 
-  std::vector<std::string> exts = {".pyx", ".pxd"};
-  if (moduleType != ModuleType::REFLECTIONS) {
-    exts.push_back(".pyi");
-  }
-  if (moduleType == ModuleType::TYPES) {
-    exts.push_back(".h");
-  }
-  for (auto ext : exts) {
-    render_to_file(
-        nodePtr, module + ext, generateRootPath_ / name / (module + ext));
-  }
-  auto cpp_path = boost::filesystem::path{name};
-  if (moduleType == ModuleType::CLIENTS || moduleType == ModuleType::SERVICES) {
-    auto basename = module + "_wrapper";
-    for (auto ext : {".h", ".cpp"}) {
-      render_to_file(nodePtr, basename + ext, cpp_path / (basename + ext));
-    }
+  setTypeContext(false);
+  std::vector<std::string> cythonFiles{
+      "clients.pxd",
+      "clients.pyx",
+      "clients.pyi",
+      "clients_wrapper.pxd",
+      "services.pxd",
+      "services.pyx",
+      "services.pyi",
+      "services_wrapper.pxd",
+      "services_reflection.pxd",
+      "services_reflection.pyx",
+  };
 
-    render_to_file(
-        nodePtr,
-        basename + ".pxd",
-        generateRootPath_ / name / (basename + ".pxd"));
-  }
+  std::vector<std::string> cppFiles{
+      "clients_wrapper.h",
+      "clients_wrapper.cpp",
+      "services_wrapper.h",
+      "services_wrapper.cpp",
+  };
 
-  if (moduleType == ModuleType::TYPES) {
-    render_to_file(nodePtr, "types.h", cpp_path / "types.h");
-    programNodePtr->setTypeContext(false);
-    for (auto ext : {".pxd", ".pyx"}) {
-      const auto filename = std::string{"types_reflection"} + ext;
-      render_to_file(nodePtr, filename, generateRootPath_ / name / filename);
-    }
+  for (const auto& file : cythonFiles) {
+    generate_file(file, generateRootPath_);
+  }
+  for (const auto& file : cppFiles) {
+    generate_file(file);
   }
 }
 
