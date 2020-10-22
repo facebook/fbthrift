@@ -39,9 +39,6 @@ class EventHandlerBase {
   folly::Range<std::shared_ptr<TProcessorEventHandler>*> getEventHandlers()
       const;
 
- protected:
-  ~EventHandlerBase() = default;
-
   std::unique_ptr<ContextStack> getContextStack(
       const char* service_name,
       const char* fn_name,
@@ -49,6 +46,9 @@ class EventHandlerBase {
     return std::make_unique<ContextStack>(
         handlers_, service_name, fn_name, connectionContext);
   }
+
+ protected:
+  ~EventHandlerBase() = default;
 
   std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
       handlers_;
