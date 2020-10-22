@@ -471,13 +471,20 @@ public class TSimpleJSONProtocolTest {
   @Test
   public void testExtraField() throws Exception {
     testUnknown("{\"unknown_field\":1337}");
+    testUnknown("{\"unknown_field\":1337, \"other_field\": 3.1415}");
     testUnknown("{\"unknown_field\": 1337}");
     testUnknown("{\"unknown_field\" : 1337}");
+    testUnknown("{\"unknown_field\" : 1337}, \"other_field\" : 3.14.15");
     testUnknown("{\"unknown_field\" :1337}");
     testUnknown("{\"unknown_field\":\"1337\"}");
     testUnknown("{\"unknown_field\": \"1337\"}");
     testUnknown("{\"unknown_field\" :[ \"1337\"]}");
     testUnknown("{\"unknown_field\" : [ \"1337\"]}");
+    testUnknown("{\"unknown_nested\":{\"key\":1337}}");
+    testUnknown("{\"unknown_nested\":{\"key\":1337}}, \"other_field\": 3.1415}");
+    testUnknown("{\"unknown_nested\": {\"key\": 1337}}");
+    testUnknown("{\"unknown_nested\" : { \"key\" : 1337 } , \"other_field\" : 3.1415 } ");
+    testUnknown("{\"unknown_nested\": [{\"key\": 1337}]}");
   }
 
   private void testUnknown(String json) {
