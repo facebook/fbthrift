@@ -101,6 +101,7 @@ def read_lines(path):
     with open(path, "r") as f:
         return f.readlines()
 
+
 args = parsed_args()
 build_dir = args.build_dir
 fixture_root = args.fixture_root
@@ -138,6 +139,7 @@ async def run_subprocess(cmd, *, cwd):
         has_errors = True
         sys.stderr.write(err.decode(sys.stderr.encoding))
 
+
 processes = []
 
 msg_format = "Building fixture {{0:>{w}}}/{{1}}: {{2}}".format(
@@ -170,7 +172,7 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
             # This is a hack before this is resolved.
             base_args.remove("-r")
         xargs = base_args + args
-        processes.append(run_subprocess(base_args + args, cwd=cwd))
+        processes.append(run_subprocess(xargs, cwd=cwd))
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(asyncio.gather(*processes))

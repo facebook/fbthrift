@@ -242,6 +242,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
  private:
   void set_mstch_generators();
+  void generate_sinit(t_program const* program);
   void generate_reflection(t_program const* program);
   void generate_visitation(t_program const* program);
   void generate_constants(t_program const* program);
@@ -1996,6 +1997,9 @@ void t_mstch_cpp2_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
 
+  if (cache_->parsed_options_.count("any")) {
+    generate_sinit(program);
+  }
   if (cache_->parsed_options_.count("reflection") ||
       cache_->parsed_options_.count("visitation")) {
     generate_reflection(program);
@@ -2049,6 +2053,13 @@ void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
   if (cache_->parsed_options_.count("no_metadata") == 0) {
     render_to_file(prog, "module_metadata.cpp", name + "_metadata.cpp");
   }
+}
+
+void t_mstch_cpp2_generator::generate_sinit(t_program const* program) {
+  const auto& name = program->get_name();
+  const auto& prog = cached_program(program);
+
+  render_to_file(prog, "module_sinit.cpp", name + "_sinit.cpp");
 }
 
 void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
@@ -2218,6 +2229,7 @@ bool annotation_validator::visit(t_struct* s) {
   }
   return true;
 }
+
 class service_method_validator : public validator {
  public:
   explicit service_method_validator(
@@ -2269,6 +2281,7 @@ bool service_method_validator::visit(t_service* service) {
   }
   return true;
 }
+
 class splits_validator : public validator {
  public:
   explicit splits_validator(int split_count) : split_count_(split_count) {}

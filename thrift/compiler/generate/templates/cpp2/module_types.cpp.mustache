@@ -19,9 +19,22 @@
 #include "<%program:include_prefix%><%program:name%>_types.tcc"
 
 #include <thrift/lib/cpp2/gen/module_types_cpp.h>
+<%#program:any_types?%>
+#include <thrift/conformance/cpp2/AnyRegistry.h>
+<%/program:any_types?%>
 
 #include "<%program:include_prefix%><%program:name%>_data.h"
 
+<%#program:any_types?%>
+namespace {
+apache::thrift::conformance::AnyType anyTypeFor(std::string name) {
+    apache::thrift::conformance::AnyType type;
+    type.set_name(std::move(name));
+    return type;
+}
+} // namespace
+
+<%/program:any_types?%>
 <% > module_types_cpp/declare_enums%>
 <%#program:tablebased?%>
 namespace apache {
@@ -86,6 +99,22 @@ FOLLY_POP_WARNING
 
 <%/struct:fields_contain_cpp_ref_unique_either?%>
 <%/struct:cpp_noncopyable%>
+<%#struct:any_type%>
+// Static-init time registration for dynamically-linked libraries.
+//
+// To include in statically-linked libraties, always link (e.g. link_whole)
+// `<%program:name%>_sinit.cpp`.
+FOLLY_EXPORT bool __fbthrift_static_init_<%struct:name%> = (
+    apache::thrift::conformance::detail::registerGeneratedStruct<
+        <%struct:name%>,
+<%#program:json?%>
+        apache::thrift::conformance::StandardProtocol::SimpleJson,
+<%/program:json?%>
+        apache::thrift::conformance::StandardProtocol::Compact,
+        apache::thrift::conformance::StandardProtocol::Binary
+    >(anyTypeFor("<%struct:any_type%>")), true);
+
+<%/struct:any_type%>
 <% > module_types_cpp/declare_members%>
 
 
