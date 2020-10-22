@@ -19,6 +19,7 @@
 #include <vector>
 
 #include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchData_types.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchData_types_custom_protocol.h>
 
 // template specifications for thrift struct
 

@@ -94,6 +94,8 @@ void readBench(size_t iters) {
 
 X(Binary)
 X(Compact)
+X(SimpleJSON)
+X(JSON)
 X(Nimble)
 
 int main(int argc, char** argv) {
