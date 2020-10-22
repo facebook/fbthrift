@@ -2663,17 +2663,19 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct SomeServiceProcessor<P, H, R> {
+    pub struct SomeServiceProcessor<P, H, R, CS> {
         service: H,
         supa: ::fbthrift::NullServiceProcessor<P, R>,
-        _phantom: ::std::marker::PhantomData<(P, H, R)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R, CS)>,
     }
 
-    impl<P, H, R> SomeServiceProcessor<P, H, R>
+    impl<P, H, R, CS> SomeServiceProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: SomeService,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync,
     {
         pub fn new(service: H) -> Self {
             Self {
@@ -2690,14 +2692,27 @@ pub mod server {
         async fn handle_bounce_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "SomeService";
+                METHOD_NAME = "SomeService.bounce_map";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("m", ::fbthrift::TType::Map, 1),
             ];
             let mut field_m = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -2709,6 +2724,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.bounce_map(
                 field_m.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2731,6 +2747,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "bounce_map",
@@ -2738,20 +2755,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_binary_keyed_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "SomeService";
+                METHOD_NAME = "SomeService.binary_keyed_map";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("r", ::fbthrift::TType::List, 1),
             ];
             let mut field_r = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -2763,6 +2794,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.binary_keyed_map(
                 field_r.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2785,6 +2817,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "binary_keyed_map",
@@ -2792,17 +2825,19 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for SomeServiceProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ServiceProcessor<P> for SomeServiceProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: SomeService,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type RequestContext = R;
 
@@ -2835,13 +2870,14 @@ pub mod server {
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for SomeServiceProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ThriftService<P::Frame> for SomeServiceProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         P::Frame: ::std::marker::Send + 'static,
         H: SomeService,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type Handler = H;
         type RequestContext = R;
@@ -2890,21 +2926,22 @@ pub mod server {
         }
     }
 
-    pub fn make_SomeService_server<F, H, R>(
+    pub fn make_SomeService_server<F, H, R, CS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
     ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
         F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: SomeService,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         match proto {
             ::fbthrift::ProtocolID::BinaryProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(SomeServiceProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(SomeServiceProcessor::<::fbthrift::BinaryProtocol<F>, H, R, CS>::new(handler)))
             }
             ::fbthrift::ProtocolID::CompactProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(SomeServiceProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(SomeServiceProcessor::<::fbthrift::CompactProtocol<F>, H, R, CS>::new(handler)))
             }
             bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }

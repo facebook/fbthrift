@@ -1856,17 +1856,19 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct MyServiceProcessor<P, H, R> {
+    pub struct MyServiceProcessor<P, H, R, CS> {
         service: H,
         supa: ::fbthrift::NullServiceProcessor<P, R>,
-        _phantom: ::std::marker::PhantomData<(P, H, R)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R, CS)>,
     }
 
-    impl<P, H, R> MyServiceProcessor<P, H, R>
+    impl<P, H, R, CS> MyServiceProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: MyService,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync,
     {
         pub fn new(service: H) -> Self {
             Self {
@@ -1883,12 +1885,25 @@ pub mod server {
         async fn handle_ping<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.ping";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
             ];
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -1899,6 +1914,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.ping(
             ).await;
             let res = match res {
@@ -1915,6 +1931,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "ping",
@@ -1922,18 +1939,32 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_getRandomData<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.getRandomData";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
             ];
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -1944,6 +1975,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.getRandomData(
             ).await;
             let res = match res {
@@ -1960,6 +1992,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getRandomData",
@@ -1967,20 +2000,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_hasDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.hasDataById";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
             ];
             let mut field_id = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -1992,6 +2039,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.hasDataById(
                 field_id.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2014,6 +2062,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "hasDataById",
@@ -2021,20 +2070,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_getDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.getDataById";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
             ];
             let mut field_id = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -2046,6 +2109,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.getDataById(
                 field_id.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2068,6 +2132,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getDataById",
@@ -2075,22 +2140,36 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_putDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.putDataById";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("data", ::fbthrift::TType::String, 2),
                 ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
             ];
             let mut field_id = ::std::option::Option::None;
             let mut field_data = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -2103,6 +2182,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.putDataById(
                 field_id.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2131,6 +2211,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "putDataById",
@@ -2138,22 +2219,36 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_lobDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.lobDataById";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("data", ::fbthrift::TType::String, 2),
                 ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
             ];
             let mut field_id = ::std::option::Option::None;
             let mut field_data = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -2166,6 +2261,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.lobDataById(
                 field_id.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2194,6 +2290,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "lobDataById",
@@ -2201,17 +2298,19 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for MyServiceProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ServiceProcessor<P> for MyServiceProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: MyService,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type RequestContext = R;
 
@@ -2252,13 +2351,14 @@ pub mod server {
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for MyServiceProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ThriftService<P::Frame> for MyServiceProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         P::Frame: ::std::marker::Send + 'static,
         H: MyService,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type Handler = H;
         type RequestContext = R;
@@ -2307,21 +2407,22 @@ pub mod server {
         }
     }
 
-    pub fn make_MyService_server<F, H, R>(
+    pub fn make_MyService_server<F, H, R, CS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
     ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
         F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: MyService,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         match proto {
             ::fbthrift::ProtocolID::BinaryProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(MyServiceProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyServiceProcessor::<::fbthrift::BinaryProtocol<F>, H, R, CS>::new(handler)))
             }
             ::fbthrift::ProtocolID::CompactProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(MyServiceProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(MyServiceProcessor::<::fbthrift::CompactProtocol<F>, H, R, CS>::new(handler)))
             }
             bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
@@ -2353,17 +2454,19 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct DbMixedStackArgumentsProcessor<P, H, R> {
+    pub struct DbMixedStackArgumentsProcessor<P, H, R, CS> {
         service: H,
         supa: ::fbthrift::NullServiceProcessor<P, R>,
-        _phantom: ::std::marker::PhantomData<(P, H, R)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R, CS)>,
     }
 
-    impl<P, H, R> DbMixedStackArgumentsProcessor<P, H, R>
+    impl<P, H, R, CS> DbMixedStackArgumentsProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: DbMixedStackArguments,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync,
     {
         pub fn new(service: H) -> Self {
             Self {
@@ -2380,14 +2483,27 @@ pub mod server {
         async fn handle_getDataByKey0<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "DbMixedStackArguments";
+                METHOD_NAME = "DbMixedStackArguments.getDataByKey0";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("key", ::fbthrift::TType::String, 1),
             ];
             let mut field_key = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -2399,6 +2515,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.getDataByKey0(
                 field_key.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2421,6 +2538,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getDataByKey0",
@@ -2428,20 +2546,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_getDataByKey1<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "DbMixedStackArguments";
+                METHOD_NAME = "DbMixedStackArguments.getDataByKey1";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("key", ::fbthrift::TType::String, 1),
             ];
             let mut field_key = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -2453,6 +2585,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.getDataByKey1(
                 field_key.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -2475,6 +2608,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "getDataByKey1",
@@ -2482,17 +2616,19 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for DbMixedStackArgumentsProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ServiceProcessor<P> for DbMixedStackArgumentsProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: DbMixedStackArguments,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type RequestContext = R;
 
@@ -2525,13 +2661,14 @@ pub mod server {
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for DbMixedStackArgumentsProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ThriftService<P::Frame> for DbMixedStackArgumentsProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         P::Frame: ::std::marker::Send + 'static,
         H: DbMixedStackArguments,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type Handler = H;
         type RequestContext = R;
@@ -2580,21 +2717,22 @@ pub mod server {
         }
     }
 
-    pub fn make_DbMixedStackArguments_server<F, H, R>(
+    pub fn make_DbMixedStackArguments_server<F, H, R, CS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
     ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
         F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: DbMixedStackArguments,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         match proto {
             ::fbthrift::ProtocolID::BinaryProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(DbMixedStackArgumentsProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(DbMixedStackArgumentsProcessor::<::fbthrift::BinaryProtocol<F>, H, R, CS>::new(handler)))
             }
             ::fbthrift::ProtocolID::CompactProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(DbMixedStackArgumentsProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(DbMixedStackArgumentsProcessor::<::fbthrift::CompactProtocol<F>, H, R, CS>::new(handler)))
             }
             bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }

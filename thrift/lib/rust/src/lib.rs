@@ -41,10 +41,12 @@ pub mod protocol;
 pub mod application_exception;
 pub mod binary_protocol;
 pub mod compact_protocol;
+pub mod context_stack;
 pub mod deserialize;
 pub mod export;
 pub mod framing;
 pub mod processor;
+pub mod request_context;
 pub mod serialize;
 pub mod simplejson_protocol;
 pub mod thrift_protocol;
@@ -72,6 +74,7 @@ pub use crate::binary_protocol::BinaryProtocol;
 pub use crate::bufext::{BufExt, BufMutExt};
 pub use crate::client::{ClientFactory, Transport};
 pub use crate::compact_protocol::CompactProtocol;
+pub use crate::context_stack::ContextStack;
 pub use crate::deserialize::Deserialize;
 pub use crate::errors::{NonthrowingFunctionError, ProtocolError};
 pub use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
@@ -80,6 +83,7 @@ pub use crate::protocol::{
     Field, Protocol, ProtocolDecoded, ProtocolEncoded, ProtocolEncodedFinal, ProtocolReader,
     ProtocolWriter,
 };
+pub use crate::request_context::RequestContext;
 pub use crate::serialize::Serialize;
 pub use crate::simplejson_protocol::SimpleJsonProtocol;
 pub use crate::thrift_protocol::{MessageType, ProtocolID};

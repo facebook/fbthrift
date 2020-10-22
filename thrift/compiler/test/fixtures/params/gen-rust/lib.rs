@@ -920,17 +920,19 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct NestedContainersProcessor<P, H, R> {
+    pub struct NestedContainersProcessor<P, H, R, CS> {
         service: H,
         supa: ::fbthrift::NullServiceProcessor<P, R>,
-        _phantom: ::std::marker::PhantomData<(P, H, R)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R, CS)>,
     }
 
-    impl<P, H, R> NestedContainersProcessor<P, H, R>
+    impl<P, H, R, CS> NestedContainersProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: NestedContainers,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync,
     {
         pub fn new(service: H) -> Self {
             Self {
@@ -947,14 +949,27 @@ pub mod server {
         async fn handle_mapList<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.mapList";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
             ];
             let mut field_foo = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -966,6 +981,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.mapList(
                 field_foo.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -988,6 +1004,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "mapList",
@@ -995,20 +1012,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_mapSet<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.mapSet";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
             ];
             let mut field_foo = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -1020,6 +1051,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.mapSet(
                 field_foo.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -1042,6 +1074,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "mapSet",
@@ -1049,20 +1082,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_listMap<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.listMap";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
             ];
             let mut field_foo = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -1074,6 +1121,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.listMap(
                 field_foo.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -1096,6 +1144,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "listMap",
@@ -1103,20 +1152,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_listSet<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.listSet";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
             ];
             let mut field_foo = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -1128,6 +1191,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.listSet(
                 field_foo.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -1150,6 +1214,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "listSet",
@@ -1157,20 +1222,34 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
 
         async fn handle_turtles<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+
+            const_cstr! {
+                SERVICE_NAME = "NestedContainers";
+                METHOD_NAME = "NestedContainers.turtles";
+            }
+            let mut ctx_stack = req_ctxt.get_context_stack(
+                &SERVICE_NAME,
+                &METHOD_NAME,
+            )?;
+            ctx_stack.pre_read()?;
+
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
             ];
             let mut field_foo = ::std::option::Option::None;
+
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
@@ -1182,6 +1261,7 @@ pub mod server {
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
+            ctx_stack.post_read(0)?;
             let res = self.service.turtles(
                 field_foo.ok_or_else(|| {
                     ::fbthrift::ApplicationException::missing_arg(
@@ -1204,6 +1284,7 @@ pub mod server {
                     )
                 }
             };
+            ctx_stack.pre_write()?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "turtles",
@@ -1211,17 +1292,19 @@ pub mod server {
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
+            ctx_stack.post_write(0)?;
             ::std::result::Result::Ok(res)
         }
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ServiceProcessor<P> for NestedContainersProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ServiceProcessor<P> for NestedContainersProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: NestedContainers,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type RequestContext = R;
 
@@ -1260,13 +1343,14 @@ pub mod server {
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R> ::fbthrift::ThriftService<P::Frame> for NestedContainersProcessor<P, H, R>
+    impl<P, H, R, CS> ::fbthrift::ThriftService<P::Frame> for NestedContainersProcessor<P, H, R, CS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         P::Frame: ::std::marker::Send + 'static,
         H: NestedContainers,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type Handler = H;
         type RequestContext = R;
@@ -1315,21 +1399,22 @@ pub mod server {
         }
     }
 
-    pub fn make_NestedContainers_server<F, H, R>(
+    pub fn make_NestedContainers_server<F, H, R, CS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
     ) -> ::std::result::Result<::std::boxed::Box<dyn ::fbthrift::ThriftService<F, Handler = H, RequestContext = R> + ::std::marker::Send + 'static>, ::fbthrift::ApplicationException>
     where
         F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: NestedContainers,
-        R: ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         match proto {
             ::fbthrift::ProtocolID::BinaryProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(NestedContainersProcessor::<::fbthrift::BinaryProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(NestedContainersProcessor::<::fbthrift::BinaryProtocol<F>, H, R, CS>::new(handler)))
             }
             ::fbthrift::ProtocolID::CompactProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new(NestedContainersProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
+                ::std::result::Result::Ok(::std::boxed::Box::new(NestedContainersProcessor::<::fbthrift::CompactProtocol<F>, H, R, CS>::new(handler)))
             }
             bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
         }
