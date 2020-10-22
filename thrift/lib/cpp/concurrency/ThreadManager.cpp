@@ -120,7 +120,8 @@ class ThreadManager::Impl::Worker : public Runnable {
       } catch (const std::exception& ex) {
         LOG(ERROR) << "worker task threw unhandled " << folly::exceptionStr(ex);
       } catch (...) {
-        LOG(ERROR) << "worker task threw unhandled non-exception object";
+        LOG(ERROR) << "worker task threw unhandled "
+                   << folly::exceptionStr(std::current_exception());
       }
 
       auto endTime = std::chrono::steady_clock::now();
