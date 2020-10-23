@@ -17,8 +17,10 @@
 #include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>
 
 #include <limits>
+#include <type_traits>
 
 #include <folly/Utility.h>
+#include <folly/container/Enumerate.h>
 
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryField)
 THRIFT_IMPL_HASH(apache::thrift::frozen::schema::MemoryLayoutBase)
@@ -53,16 +55,18 @@ void MemorySchema::initFromSchema(Schema&& schema) {
       memLayout.setSize(*layout.size_ref());
       memLayout.setBits(*layout.bits_ref());
 
+      std::vector<MemoryField> fields;
+      fields.reserve(layout.fields_ref()->size());
       for (const auto& fieldKvp : *layout.fields_ref()) {
-        MemoryField memField;
+        MemoryField& memField = fields.emplace_back();
         const auto& fieldId = fieldKvp.first;
         const auto& field = fieldKvp.second;
 
         memField.setId(fieldId);
         memField.setLayoutId(*field.layoutId_ref());
         memField.setOffset(*field.offset_ref());
-        memLayout.addField(std::move(memField));
       }
+      memLayout.setFields(std::move(fields));
     }
   }
   setRootLayoutId(*schema.rootLayout_ref());
@@ -73,21 +77,26 @@ void convert(Schema&& schema, MemorySchema& memSchema) {
 }
 
 void convert(const MemorySchema& memSchema, Schema& schema) {
-  std::size_t i = 0;
-  for (const auto& memLayout : memSchema.getLayouts()) {
-    auto& newLayout = schema.layouts_ref()[i];
+  using LayoutsType = std::decay_t<decltype(*schema.layouts_ref())>;
+  LayoutsType::container_type layouts;
+  for (const auto&& memLayout : folly::enumerate(memSchema.getLayouts())) {
+    Layout newLayout;
+    newLayout.size_ref() = memLayout->getSize();
+    newLayout.bits_ref() = memLayout->getBits();
 
-    *newLayout.size_ref() = memLayout.getSize();
-    *newLayout.bits_ref() = memLayout.getBits();
-
-    for (const auto& field : memLayout.getFields()) {
-      auto& newField = newLayout.fields_ref()[field.getId()];
-
-      *newField.layoutId_ref() = field.getLayoutId();
-      *newField.offset_ref() = field.getOffset();
+    using FieldsType = std::decay_t<decltype(*newLayout.fields_ref())>;
+    FieldsType::container_type fields;
+    for (const auto& field : memLayout->getFields()) {
+      Field newField;
+      newField.layoutId_ref() = field.getLayoutId();
+      newField.offset_ref() = field.getOffset();
+      fields.emplace_back(field.getId(), std::move(newField));
     }
-    ++i;
+    newLayout.fields_ref() = FieldsType{std::move(fields)};
+
+    layouts.emplace_back(memLayout.index, std::move(newLayout));
   }
+  schema.layouts_ref() = LayoutsType{std::move(layouts)};
 
   //
   // Type information is discarded when transforming from memSchema to

@@ -172,6 +172,10 @@ class MemoryLayout : public MemoryLayoutBase {
     fields.push_back(std::move(field));
   }
 
+  inline void setFields(std::vector<MemoryField>&& fs) {
+    fields = std::move(fs);
+  }
+
   inline const std::vector<MemoryField>& getFields() const {
     return fields;
   }
