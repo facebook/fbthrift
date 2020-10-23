@@ -45,7 +45,7 @@
     }
 
     #[derive(Clone, Debug)]
-    pub struct {{service:name}}Processor<P, H, R, CS{{!
+    pub struct {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
         }}{{!
     }}> {
@@ -56,12 +56,12 @@
         }}{{^service:extends?}}
         supa: ::fbthrift::NullServiceProcessor<P, R>,{{!
         }}{{/service:extends?}}
-        _phantom: ::std::marker::PhantomData<(P, H, R, CS)>,
+        _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
-    impl<P, H, R, CS{{!
+    impl<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
-    }}> {{service:name}}Processor<P, H, R, CS{{!
+    }}> {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
     }}>
     where
@@ -69,8 +69,8 @@
         P::Deserializer: ::std::marker::Send,
         H: {{service:name}}{{!
         }}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}},
-        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
-        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync,{{!
+        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync,{{!
         }}{{#service:extends?}}
         SS: ::fbthrift::ThriftService<P::Frame>,
         SS::Handler: {{>lib/super}},
@@ -112,7 +112,7 @@
                 &SERVICE_NAME,
                 &METHOD_NAME,
             )?;
-            ctx_stack.pre_read()?;
+            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
 
             static ARGS: &[::fbthrift::Field] = &[
                 {{#function:args_by_name}}
@@ -137,7 +137,7 @@
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            ctx_stack.post_read(0)?;
+            ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.{{function:name}}({{!
                 }}{{#service:requestContext?}}
                 req_ctxt,{{!
@@ -168,7 +168,7 @@
                 ::std::result::Result::Err(exn) => exn,
                 {{/function:exceptions?}}
             };
-            ctx_stack.pre_write()?;
+            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
             let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
                 p,
                 "{{function:name}}",
@@ -176,16 +176,16 @@
                 seqid,
                 |p| ::fbthrift::Serialize::write(&res, p),
             ));
-            ctx_stack.post_write(0)?;
+            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
             ::std::result::Result::Ok(res)
         }{{!
         }}{{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R, CS{{!
+    impl<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
-    }}> ::fbthrift::ServiceProcessor<P> for {{service:name}}Processor<P, H, R, CS{{!
+    }}> ::fbthrift::ServiceProcessor<P> for {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
     }}>
     where
@@ -198,8 +198,8 @@
         SS::Handler: {{>lib/super}},
         P::Frame: ::std::marker::Send + 'static,{{!
         }}{{/service:extends?}}
-        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
-        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
+        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type RequestContext = R;
 
@@ -234,9 +234,9 @@
     }
 
     #[::async_trait::async_trait]
-    impl<P, H, R, CS{{!
+    impl<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
-    }}> ::fbthrift::ThriftService<P::Frame> for {{service:name}}Processor<P, H, R, CS{{!
+    }}> ::fbthrift::ThriftService<P::Frame> for {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
     }}>
     where
@@ -250,8 +250,8 @@
         SS::Handler: {{>lib/super}},
         P::Frame: ::std::marker::Send + 'static,{{!
         }}{{/service:extends?}}
-        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
-        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
+        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         type Handler = H;
         type RequestContext = R;
@@ -300,7 +300,7 @@
         }
     }
 
-    pub fn make_{{service:name}}_server<F, H, R, CS{{!
+    pub fn make_{{service:name}}_server<F, H, R{{!
         }}{{#service:extends?}}, SMAKE, SS{{/service:extends?}}{{!
     }}>(
         proto: ::fbthrift::ProtocolID,
@@ -318,19 +318,19 @@
         SS: ::fbthrift::ThriftService<F, RequestContext = R>,
         SS::Handler: {{>lib/super}},{{!
         }}{{/service:extends?}}
-        R: ::fbthrift::RequestContext<ContextStack = CS, Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
-        CS: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
+        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         match proto {
             ::fbthrift::ProtocolID::BinaryProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new({{service:name}}Processor::<::fbthrift::BinaryProtocol<F>, H, R, CS{{!
+                ::std::result::Result::Ok(::std::boxed::Box::new({{service:name}}Processor::<::fbthrift::BinaryProtocol<F>, H, R{{!
                     }}{{#service:extends?}}, SS{{/service:extends?}}{{!
                 }}>::new(handler{{!
                     }}{{#service:extends?}}, supa(proto)?{{/service:extends?}}{{!
                 }})))
             }
             ::fbthrift::ProtocolID::CompactProtocol => {
-                ::std::result::Result::Ok(::std::boxed::Box::new({{service:name}}Processor::<::fbthrift::CompactProtocol<F>, H, R, CS{{!
+                ::std::result::Result::Ok(::std::boxed::Box::new({{service:name}}Processor::<::fbthrift::CompactProtocol<F>, H, R{{!
                     }}{{#service:extends?}}, SS{{/service:extends?}}{{!
                 }}>::new(handler{{!
                     }}{{#service:extends?}}, supa(proto)?{{/service:extends?}}{{!
