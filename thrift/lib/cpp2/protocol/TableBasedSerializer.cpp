@@ -134,15 +134,23 @@ void* getMember(const FieldInfo& fieldInfo, void* object) {
   return static_cast<char*>(object) + fieldInfo.memberOffset;
 }
 
-const void* maybeDerefObject(const TypeInfo& typeInfo, const void* object) {
-  return typeInfo.get
-      ? reinterpret_cast<const void* (*)(const void*)>(typeInfo.get)(object)
-      : object;
+const OptionalThriftValue getValue(
+    const TypeInfo& typeInfo,
+    const void* object) {
+  if (typeInfo.get) {
+    // Handle smart pointer and numerical types.
+    return reinterpret_cast<OptionalThriftValue (*)(const void*)>(typeInfo.get)(
+        object);
+  }
+  // Handle others.
+  if (object) {
+    return folly::make_optional<ThriftValue>(object);
+  }
+  return folly::none;
 }
 
-void* maybeDerefObject(const TypeInfo& typeInfo, void* object) {
-  return const_cast<void*>(
-      maybeDerefObject(typeInfo, const_cast<const void*>(object)));
+FOLLY_ERASE void* invokeSet(VoidFuncPtr set, void* object) {
+  return reinterpret_cast<void* (*)(void*)>(set)(object);
 }
 
 template <class Protocol_>
@@ -201,7 +209,7 @@ void read(
       read<Protocol_>(
           iprot,
           *static_cast<const StructInfo*>(typeInfo.typeExt),
-          maybeDerefObject(typeInfo, object));
+          typeInfo.set ? invokeSet(typeInfo.set, object) : object);
       readState.afterSubobject(iprot);
       break;
     case protocol::TType::T_I64: {
@@ -268,8 +276,7 @@ void read(
     case protocol::TType::T_MAP: {
       readState.beforeSubobject(iprot);
       // Initialize the container to clear out current values.
-      typeInfo.set(object);
-      auto* actualObject = maybeDerefObject(typeInfo, object);
+      auto* actualObject = invokeSet(typeInfo.set, object);
       const MapFieldExt& ext =
           *static_cast<const MapFieldExt*>(typeInfo.typeExt);
       std::uint32_t size = ~0;
@@ -328,8 +335,7 @@ void read(
     case protocol::TType::T_SET: {
       readState.beforeSubobject(iprot);
       // Initialize the container to clear out current values.
-      typeInfo.set(object);
-      auto* actualObject = maybeDerefObject(typeInfo, object);
+      auto* actualObject = invokeSet(typeInfo.set, object);
       const SetFieldExt& ext =
           *static_cast<const SetFieldExt*>(typeInfo.typeExt);
       std::uint32_t size = ~0;
@@ -374,8 +380,7 @@ void read(
     case protocol::TType::T_LIST: {
       readState.beforeSubobject(iprot);
       // Initialize the container to clear out current values.
-      typeInfo.set(object);
-      auto* actualObject = maybeDerefObject(typeInfo, object);
+      auto* actualObject = invokeSet(typeInfo.set, object);
       const ListFieldExt& ext =
           *static_cast<const ListFieldExt*>(typeInfo.typeExt);
       std::uint32_t size = ~0;
@@ -429,51 +434,47 @@ void read(
 }
 
 template <class Protocol_>
-size_t write(Protocol_* iprot, const TypeInfo& typeInfo, const void* object) {
+size_t write(Protocol_* iprot, const TypeInfo& typeInfo, ThriftValue value) {
   switch (typeInfo.type) {
     case protocol::TType::T_STRUCT:
       return write(
           iprot,
           *static_cast<const StructInfo*>(typeInfo.typeExt),
-          maybeDerefObject(typeInfo, object));
+          value.object);
     case protocol::TType::T_I64:
-      return iprot->writeI64(reinterpret_cast<std::int64_t (*)(const void*)>(
-          typeInfo.get)(object));
+      return iprot->writeI64(value.int64Value);
     case protocol::TType::T_I32:
-      return iprot->writeI32(reinterpret_cast<std::int32_t (*)(const void*)>(
-          typeInfo.get)(object));
+      return iprot->writeI32(value.int32Value);
     case protocol::TType::T_I16:
-      return iprot->writeI16(reinterpret_cast<std::int16_t (*)(const void*)>(
-          typeInfo.get)(object));
+      return iprot->writeI16(value.int16Value);
     case protocol::TType::T_BYTE:
-      return iprot->writeByte(
-          reinterpret_cast<std::int8_t (*)(const void*)>(typeInfo.get)(object));
+      return iprot->writeByte(value.int8Value);
     case protocol::TType::T_BOOL:
-      return iprot->writeBool(
-          reinterpret_cast<bool (*)(const void*)>(typeInfo.get)(object));
+      return iprot->writeBool(value.boolValue);
     case protocol::TType::T_DOUBLE:
-      return iprot->writeDouble(
-          reinterpret_cast<double (*)(const void*)>(typeInfo.get)(object));
+      return iprot->writeDouble(value.doubleValue);
     case protocol::TType::T_FLOAT:
-      return iprot->writeFloat(
-          reinterpret_cast<float (*)(const void*)>(typeInfo.get)(object));
+      return iprot->writeFloat(value.floatValue);
     case protocol::TType::T_STRING: {
       switch (*static_cast<const StringFieldType*>(typeInfo.typeExt)) {
         case StringFieldType::String:
-          return iprot->writeString(*static_cast<const std::string*>(object));
+          return iprot->writeString(
+              *static_cast<const std::string*>(value.object));
         case StringFieldType::IOBuf:
-          return iprot->writeBinary(*static_cast<const folly::IOBuf*>(object));
+          return iprot->writeBinary(
+              *static_cast<const folly::IOBuf*>(value.object));
         case StringFieldType::IOBufPtr:
           return iprot->writeBinary(
-              *static_cast<const std::unique_ptr<folly::IOBuf>*>(object));
+              *static_cast<const std::unique_ptr<folly::IOBuf>*>(value.object));
       };
     }
+      // For container types, when recursively writing with lambdas we
+      // intentionally skip checking OptionalThriftValue.hasValue and treat it
+      // as a user error if the value is a nullptr.
     case protocol::TType::T_MAP: {
-      size_t written = 0;
-      auto* actualObject = maybeDerefObject(typeInfo, object);
       const auto& ext = *static_cast<const MapFieldExt*>(typeInfo.typeExt);
-      written += iprot->writeMapBegin(
-          ext.keyInfo->type, ext.valInfo->type, ext.size(actualObject));
+      size_t written = iprot->writeMapBegin(
+          ext.keyInfo->type, ext.valInfo->type, ext.size(value.object));
 
       struct Context {
         const TypeInfo* keyInfo;
@@ -487,21 +488,24 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, const void* object) {
       };
       written += ext.writeMap(
           &context,
-          actualObject,
+          value.object,
           iprot->kSortKeys(),
           [](const void* context, const void* key, const void* val) {
             const auto& typedContext = *static_cast<const Context*>(context);
-            return write(typedContext.iprot, *typedContext.keyInfo, key) +
-                write(typedContext.iprot, *typedContext.valInfo, val);
+            const TypeInfo& keyInfo = *typedContext.keyInfo;
+            const TypeInfo& valInfo = *typedContext.valInfo;
+            return write(typedContext.iprot, keyInfo, *getValue(keyInfo, key)) +
+                write(typedContext.iprot,
+                      *typedContext.valInfo,
+                      *getValue(valInfo, val));
           });
       written += iprot->writeMapEnd();
       return written;
     }
     case protocol::TType::T_SET: {
-      auto* actualObject = maybeDerefObject(typeInfo, object);
       const auto& ext = *static_cast<const SetFieldExt*>(typeInfo.typeExt);
       size_t written =
-          iprot->writeSetBegin(ext.valInfo->type, ext.size(actualObject));
+          iprot->writeSetBegin(ext.valInfo->type, ext.size(value.object));
 
       struct Context {
         const TypeInfo* valInfo;
@@ -513,20 +517,21 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, const void* object) {
       };
       written += ext.writeSet(
           &context,
-          actualObject,
+          value.object,
           iprot->kSortKeys(),
           [](const void* context, const void* value) {
             const auto& typedContext = *static_cast<const Context*>(context);
-            return write(typedContext.iprot, *typedContext.valInfo, value);
+            const TypeInfo& valInfo = *typedContext.valInfo;
+            return write(
+                typedContext.iprot, valInfo, *getValue(valInfo, value));
           });
       written += iprot->writeSetEnd();
       return written;
     }
     case protocol::TType::T_LIST: {
-      auto* actualObject = maybeDerefObject(typeInfo, object);
       const auto& ext = *static_cast<const ListFieldExt*>(typeInfo.typeExt);
       size_t written =
-          iprot->writeListBegin(ext.valInfo->type, ext.size(actualObject));
+          iprot->writeListBegin(ext.valInfo->type, ext.size(value.object));
 
       struct Context {
         const TypeInfo* valInfo;
@@ -537,9 +542,11 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, const void* object) {
           iprot,
       };
       written += ext.writeList(
-          &context, actualObject, [](const void* context, const void* value) {
+          &context, value.object, [](const void* context, const void* value) {
             const auto& typedContext = *static_cast<const Context*>(context);
-            return write(typedContext.iprot, *typedContext.valInfo, value);
+            const TypeInfo& valInfo = *typedContext.valInfo;
+            return write(
+                typedContext.iprot, valInfo, *getValue(valInfo, value));
           });
       written += iprot->writeListEnd();
       return written;
@@ -557,11 +564,13 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, const void* object) {
 }
 
 template <class Protocol_>
-size_t
-writeField(Protocol_* iprot, const FieldInfo& fieldInfo, const void* object) {
+size_t writeField(
+    Protocol_* iprot,
+    const FieldInfo& fieldInfo,
+    const ThriftValue& value) {
   size_t written = iprot->writeFieldBegin(
       fieldInfo.name, fieldInfo.typeInfo->type, fieldInfo.id);
-  written += write(iprot, *fieldInfo.typeInfo, getMember(fieldInfo, object));
+  written += write(iprot, *fieldInfo.typeInfo, value);
   written += iprot->writeFieldEnd();
   return written;
 }
@@ -669,14 +678,28 @@ write(Protocol_* iprot, const StructInfo& structInfo, const void* object) {
         unionId,
         [](const FieldInfo& lhs, FieldID rhs) { return lhs.id < rhs; });
     if (found < end && found->id == unionId) {
-      written += writeField(iprot, *found, object);
+      const OptionalThriftValue value = getValue(*found->typeInfo, object);
+      if (value.hasValue()) {
+        written += writeField(iprot, *found, value.value());
+      } else if (found->typeInfo->type == protocol::TType::T_STRUCT) {
+        written += iprot->writeFieldBegin(
+            found->name, found->typeInfo->type, found->id);
+        written += iprot->writeStructBegin(found->name);
+        written += iprot->writeStructEnd();
+        written += iprot->writeFieldStop();
+        written += iprot->writeFieldEnd();
+      }
     }
   } else {
     for (std::int16_t index = 0; index < structInfo.numFields; index++) {
       const auto& fieldInfo = structInfo.fieldInfos[index];
       if (fieldInfo.isUnqualified || fieldInfo.issetOffset == 0 ||
           fieldIsSet(object, fieldInfo.issetOffset)) {
-        written += writeField(iprot, fieldInfo, object);
+        const OptionalThriftValue value =
+            getValue(*fieldInfo.typeInfo, getMember(fieldInfo, object));
+        if (value.hasValue()) {
+          written += writeField(iprot, fieldInfo, value.value());
+        }
       }
     }
   }

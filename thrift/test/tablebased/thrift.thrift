@@ -33,11 +33,18 @@ struct StructA {
   12: Enum fieldG;
 }
 
+struct StructWithRef {
+  1: optional StructB fieldA (cpp2.ref_type = "shared_const");
+  2: optional list<string> fieldB (cpp2.ref_type = "shared_const");
+  3: optional i16 fieldC (cpp2.ref_type = "shared_const");
+  4: optional i32 fieldD (cpp2.ref_type = "unique");
+}
+
 struct StructB {
   1: string fieldA;
   2: optional i64 fieldB;
   3: optional IOBufPtr fieldC;
-  5: list<i64> fieldD (cpp2.ref_type = "shared");
+  5: optional list<i64> fieldD (cpp2.ref_type = "shared");
   6: i32 fieldE;
   7: i16 fieldF;
   8: byte fieldG;
@@ -57,4 +64,6 @@ union Union {
 union UnionWithRef {
   1: StructA fieldA (cpp2.ref_type = "unique");
   2: StructB fieldB;
+  3: StructA fieldC (cpp2.ref_type = "shared_const");
+  4: StructA fieldD (cpp2.ref_type = "shared");
 }

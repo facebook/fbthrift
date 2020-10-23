@@ -25,6 +25,7 @@
 #include <vector>
 
 #include <folly/CPortability.h>
+#include <folly/Optional.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp/protocol/TType.h>
@@ -75,7 +76,7 @@ struct maybe_get_element_type {
 
 template <typename T>
 struct maybe_get_element_type<T, enable_if_smart_ptr_t<T>>
-    : maybe_get_element_type<typename T::element_type> {};
+    : maybe_get_element_type<std::remove_cv_t<typename T::element_type>> {};
 
 template <typename T>
 using maybe_get_element_type_t = typename maybe_get_element_type<T>::type;
@@ -246,54 +247,91 @@ void clearUnion(void* object) {
   reinterpret_cast<ThriftUnion*>(object)->__clear();
 }
 
-template <typename Type>
-enable_if_not_smart_ptr_t<Type> initialize(void* object) {
-  *static_cast<Type*>(object) = Type();
+union ThriftValue {
+  explicit ThriftValue(bool value) : boolValue(value) {}
+  explicit ThriftValue(std::int8_t value) : int8Value(value) {}
+  explicit ThriftValue(std::int16_t value) : int16Value(value) {}
+  explicit ThriftValue(std::int32_t value) : int32Value(value) {}
+  explicit ThriftValue(std::int64_t value) : int64Value(value) {}
+  explicit ThriftValue(float value) : floatValue(value) {}
+  explicit ThriftValue(double value) : doubleValue(value) {}
+  explicit ThriftValue(const void* value) : object(value) {}
+
+  bool boolValue;
+  std::int8_t int8Value;
+  std::int16_t int16Value;
+  std::int32_t int32Value;
+  std::int64_t int64Value;
+  float floatValue;
+  double doubleValue;
+  const void* object;
+};
+
+using OptionalThriftValue = folly::Optional<ThriftValue>;
+
+template <typename PrimitiveType, typename ObjectType>
+enable_if_not_smart_ptr_t<ObjectType, OptionalThriftValue> get(
+    const void* object) {
+  return folly::make_optional<ThriftValue>(
+      static_cast<PrimitiveType>(*static_cast<const ObjectType*>(object)));
 }
 
-template <typename Type>
-std::enable_if_t<is_shared_ptr<Type>::value> initialize(void* object) {
-  *static_cast<Type*>(object) = std::make_shared<typename Type::element_type>();
-}
-
-template <typename Type>
-std::enable_if_t<is_unique_ptr<Type>::value> initialize(void* object) {
-  *static_cast<Type*>(object) = std::make_unique<typename Type::element_type>();
+template <typename PrimitiveType, typename PtrType>
+enable_if_smart_ptr_t<PtrType, OptionalThriftValue> get(const void* object) {
+  if (const auto* ptr = static_cast<const PtrType*>(object)->get()) {
+    return folly::make_optional<ThriftValue>(static_cast<PrimitiveType>(*ptr));
+  }
+  return folly::none;
 }
 
 template <typename PtrType>
-const void* derefSmartPointer(const void* object) {
-  return static_cast<const PtrType*>(object)->get();
+enable_if_smart_ptr_t<PtrType, OptionalThriftValue> get(const void* object) {
+  if (const void* ptr = static_cast<const PtrType*>(object)->get()) {
+    return folly::make_optional<ThriftValue>(ptr);
+  }
+  return folly::none;
 }
 
-template <typename ReturnType, typename ObjectType>
-enable_if_not_smart_ptr_t<ObjectType, ReturnType> get(const void* object) {
-  return static_cast<ReturnType>(*static_cast<const ObjectType*>(object));
+template <typename ObjectType>
+enable_if_not_smart_ptr_t<ObjectType, void*> set(void* object) {
+  *static_cast<ObjectType*>(object) = ObjectType();
+  return object;
 }
 
-template <typename ReturnType, typename PtrType>
-enable_if_smart_ptr_t<PtrType, ReturnType> get(const void* object) {
-  return static_cast<ReturnType>(**static_cast<const PtrType*>(object));
+template <typename PtrType>
+std::enable_if_t<is_shared_ptr<PtrType>::value, void*> set(void* object) {
+  using Element = typename PtrType::element_type;
+  auto& ptr = *static_cast<PtrType*>(object);
+  ptr = std::make_shared<Element>();
+  return const_cast<std::remove_const_t<Element>*>(ptr.get());
 }
 
-template <typename ObjectType, typename ValueType>
-enable_if_not_smart_ptr_t<ObjectType> set(void* object, ValueType val) {
+template <typename PtrType>
+std::enable_if_t<is_unique_ptr<PtrType>::value, void*> set(void* object) {
+  using Element = typename PtrType::element_type;
+  auto& ptr = *static_cast<PtrType*>(object);
+  ptr = std::make_unique<Element>();
+  return const_cast<std::remove_const_t<Element>*>(ptr.get());
+}
+
+template <typename ObjectType, typename PrimitiveType>
+enable_if_not_smart_ptr_t<ObjectType> set(void* object, PrimitiveType val) {
   *static_cast<ObjectType*>(object) = static_cast<ObjectType>(val);
 }
 
-template <typename PtrType, typename ValueType>
+template <typename PtrType, typename PrimitiveType>
 std::enable_if_t<is_unique_ptr<PtrType>::value> set(
     void* object,
-    ValueType val) {
+    PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_unique<Element>(static_cast<Element>(val));
 }
 
-template <typename PtrType, typename ValueType>
+template <typename PtrType, typename PrimitiveType>
 std::enable_if_t<is_shared_ptr<PtrType>::value> set(
     void* object,
-    ValueType val) {
+    PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_shared<Element>(static_cast<Element>(val));
@@ -574,7 +612,7 @@ constexpr VoidFuncPtr getDerefFuncPtr(enable_if_not_smart_ptr_t<T, void*>) {
 
 template <typename T>
 constexpr VoidFuncPtr getDerefFuncPtr(enable_if_smart_ptr_t<T, void*>) {
-  return reinterpret_cast<VoidFuncPtr>(identity(derefSmartPointer<T>));
+  return reinterpret_cast<VoidFuncPtr>(identity(get<T>));
 }
 
 // Specialization for set.
@@ -598,7 +636,7 @@ const SetFieldExt TypeToInfo<type_class::set<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::set<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_SET,
-    /* .set */ initialize<T>,
+    /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .get */ getDerefFuncPtr<T>(nullptr),
     /* .typeExt */
     &TypeToInfo<type_class::set<ElemTypeClass>, T>::ext,
@@ -623,12 +661,12 @@ const ListFieldExt TypeToInfo<type_class::list<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::list<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_LIST,
-    /* .set */ initialize<T>,
+    /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
     /* .get */ getDerefFuncPtr<T>(nullptr),
     /* .typeExt */ &ext,
 };
 
-// Specialization for map
+// Specialization for map.
 template <typename KeyTypeClass, typename ValTypeClass, typename T>
 struct TypeToInfo<type_class::map<KeyTypeClass, ValTypeClass>, T> {
   using map_type = maybe_get_element_type_t<T>;
@@ -651,35 +689,59 @@ template <typename KeyTypeClass, typename ValTypeClass, typename T>
 const TypeInfo
     TypeToInfo<type_class::map<KeyTypeClass, ValTypeClass>, T>::typeInfo = {
         /* .type */ protocol::TType::T_MAP,
-        /* .set */ initialize<T>,
+        /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
         /* .get */ getDerefFuncPtr<T>(nullptr),
         /* .typeExt */ &ext,
 };
 
 // Specialization for smart pointers of type class struct and union.
-#define THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO(TypeClass)                       \
-  template <typename T>                                                     \
-  struct TypeToInfo<type_class::TypeClass, T, enable_if_smart_ptr_t<T>> {   \
-    static const TypeInfo typeInfo;                                         \
-  };                                                                        \
-                                                                            \
-  template <typename T>                                                     \
-  const TypeInfo TypeToInfo<                                                \
-      type_class::TypeClass,                                                \
-      T,                                                                    \
-      enable_if_smart_ptr_t<T>>::typeInfo = {                               \
-      TypeToInfo<type_class::TypeClass, typename T::element_type>::typeInfo \
-          .type,                                                            \
-      TypeToInfo<type_class::TypeClass, typename T::element_type>::typeInfo \
-          .set,                                                             \
-      reinterpret_cast<VoidFuncPtr>(identity(derefSmartPointer<T>)),        \
-      TypeToInfo<type_class::TypeClass, typename T::element_type>::typeInfo \
-          .typeExt,                                                         \
+#define THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO(TypeClass)                     \
+  template <typename T>                                                   \
+  struct TypeToInfo<type_class::TypeClass, T, enable_if_smart_ptr_t<T>> { \
+    using struct_type = std::remove_cv_t<typename T::element_type>;       \
+    static const TypeInfo typeInfo;                                       \
+  };                                                                      \
+                                                                          \
+  template <typename T>                                                   \
+  const TypeInfo TypeToInfo<                                              \
+      type_class::TypeClass,                                              \
+      T,                                                                  \
+      enable_if_smart_ptr_t<T>>::typeInfo = {                             \
+      TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.type,      \
+      reinterpret_cast<VoidFuncPtr>(set<T>),                              \
+      reinterpret_cast<VoidFuncPtr>(identity(get<T>)),                    \
+      TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.typeExt,   \
   }
 
 THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO(structure);
 THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO(variant);
 #undef THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO
+
+// Specialization for smart pointers of numerical types.
+#define THRIFT_DEFINE_NUMERIC_PTR_TYPE_INFO(TypeClass)                        \
+  template <typename T>                                                       \
+  struct TypeToInfo<type_class::TypeClass, T, enable_if_smart_ptr_t<T>> {     \
+    using numeric_type = std::remove_cv_t<typename T::element_type>;          \
+    using underlying_type =                                                   \
+        typename TypeToInfo<type_class::TypeClass, numeric_type>::            \
+            underlying_type;                                                  \
+    static const TypeInfo typeInfo;                                           \
+  };                                                                          \
+                                                                              \
+  template <typename T>                                                       \
+  const TypeInfo                                                              \
+      TypeToInfo<type_class::TypeClass, T, enable_if_smart_ptr_t<T>>::        \
+          typeInfo = {                                                        \
+              TypeToInfo<type_class::TypeClass, numeric_type>::typeInfo.type, \
+              reinterpret_cast<VoidFuncPtr>(set<T, underlying_type>),         \
+              reinterpret_cast<VoidFuncPtr>(                                  \
+                  identity(get<underlying_type, T>)),                         \
+              nullptr,                                                        \
+  }
+
+THRIFT_DEFINE_NUMERIC_PTR_TYPE_INFO(integral);
+THRIFT_DEFINE_NUMERIC_PTR_TYPE_INFO(floating_point);
+#undef THRIFT_DEFINE_NUMERIC_PTR_TYPE_INFO
 
 template <class ThriftStruct>
 constexpr ptrdiff_t fieldOffset(std::int16_t fieldIndex);
