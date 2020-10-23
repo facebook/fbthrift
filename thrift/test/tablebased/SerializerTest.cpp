@@ -71,6 +71,13 @@ constexpr const char* UNQUALIFIED = "unqualified";
   EXPECT_COMPATIBLE_PROTOCOL_IMPL(object, tableBasedObject, Serializer, true)
 
 template <typename Type>
+Type makeStructWithIncludeLike() {
+  Type object;
+  object.fieldA_ref().emplace();
+  return object;
+}
+
+template <typename Type>
 Type makeStructBLike() {
   Type otherStructLike;
   otherStructLike.fieldB_ref() = 2000;
@@ -148,6 +155,17 @@ TYPED_TEST(MultiProtocolTest, EmptyStructWithRef) {
 TYPED_TEST(MultiProtocolTest, StructWithRef) {
   auto oldObject = makeStructWithRefLike<StructWithRef>();
   auto newObject = makeStructWithRefLike<tablebased::StructWithRef>();
+  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+}
+
+TYPED_TEST(MultiProtocolTest, EmptyStructWithInclude) {
+  EXPECT_COMPATIBLE_PROTOCOL(
+      StructWithInclude(), tablebased::StructWithInclude(), TypeParam);
+}
+
+TYPED_TEST(MultiProtocolTest, StructWithInclude) {
+  auto oldObject = makeStructWithIncludeLike<StructWithInclude>();
+  auto newObject = makeStructWithIncludeLike<tablebased::StructWithInclude>();
   EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
 }
 

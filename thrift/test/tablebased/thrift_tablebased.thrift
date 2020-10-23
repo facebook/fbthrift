@@ -16,6 +16,8 @@
 
 namespace cpp2 facebook.thrift.test.tablebased
 
+include "thrift/test/tablebased/include_tablebased.thrift"
+
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
 enum Enum {
@@ -53,6 +55,10 @@ struct StructB {
   11: string fieldJ (cpp2.type = "folly::IOBuf");
   12: double fieldK;
   13: float fieldL;
+}
+
+struct StructWithInclude {
+  1: optional include_tablebased.IncludedStruct fieldA;
 }
 
 union Union {

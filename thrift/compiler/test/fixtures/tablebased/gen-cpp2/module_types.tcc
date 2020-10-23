@@ -281,31 +281,3 @@ extern template uint32_t ExampleUnion::serializedSize<>(apache::thrift::SimpleJS
 extern template uint32_t ExampleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // test::fixtures::tablebased
-namespace apache {
-namespace thrift {
-namespace detail {
-template <>
-struct TypeToInfo<
-    ::apache::thrift::type_class::structure,
-    ::test::fixtures::tablebased::TrivialTypesStruct> {
-  static const ::apache::thrift::detail::TypeInfo typeInfo;
-};
-template <>
-struct TypeToInfo<
-    ::apache::thrift::type_class::structure,
-    ::test::fixtures::tablebased::ContainerStruct> {
-  static const ::apache::thrift::detail::TypeInfo typeInfo;
-};
-template <>
-struct TypeToInfo<
-    ::apache::thrift::type_class::variant,
-    ::test::fixtures::tablebased::ExampleUnion> {
-  static const ::apache::thrift::detail::TypeInfo typeInfo;
-};
-  template <>
-    struct TypeToInfo<
-        ::apache::thrift::type_class::enumeration,
-        ::test::fixtures::tablebased::ExampleEnum> {
-    static const ::apache::thrift::detail::TypeInfo typeInfo;
-  };
-}}} // namespace apache::thrift::detail

@@ -70,27 +70,4 @@ extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::Nim
 
 <% > common/namespace_cpp2_end%>
 
-<%/program:structs%><%!
-
-%><%#program:tablebased?%>
-namespace apache {
-namespace thrift {
-namespace detail {
-<%#program:structs%>
-template <>
-struct TypeToInfo<
-    ::apache::thrift::type_class::<%#struct:union?%>variant<%/struct:union?%><%^struct:union?%>structure<%/struct:union?%>,
-    <% > common/namespace_cpp2 %><%struct:name%>> {
-  static const ::apache::thrift::detail::TypeInfo typeInfo;
-};
 <%/program:structs%>
-<%#program:enums%>
-  template <>
-    struct TypeToInfo<
-        ::apache::thrift::type_class::enumeration,
-        <% > common/namespace_cpp2%><%enum:name%>> {
-    static const ::apache::thrift::detail::TypeInfo typeInfo;
-  };
-<%/program:enums%>
-}}} // namespace apache::thrift::detail
-<%/program:tablebased?%>

@@ -302,4 +302,27 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 
 <% > module_types_h/frozen%>
 <%/program:structs%>
-<% > module_types_h/declare_union_types%>
+<% > module_types_h/declare_union_types%><%!
+
+%><%#program:tablebased?%>
+namespace apache {
+namespace thrift {
+namespace detail {
+<%#program:structs%>
+template <>
+struct TypeToInfo<
+    ::apache::thrift::type_class::<%#struct:union?%>variant<%/struct:union?%><%^struct:union?%>structure<%/struct:union?%>,
+    <% > common/namespace_cpp2 %><%struct:name%>> {
+  static const ::apache::thrift::detail::TypeInfo typeInfo;
+};
+<%/program:structs%>
+<%#program:enums%>
+  template <>
+    struct TypeToInfo<
+        ::apache::thrift::type_class::enumeration,
+        <% > common/namespace_cpp2%><%enum:name%>> {
+    static const ::apache::thrift::detail::TypeInfo typeInfo;
+  };
+<%/program:enums%>
+}}} // namespace apache::thrift::detail
+<%/program:tablebased?%>

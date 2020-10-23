@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/TableBasedForwardTypes.h>
 #include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
 
 namespace apache {
@@ -38,7 +39,6 @@ namespace thrift {
 namespace detail {
 
 using FieldID = std::int16_t;
-using VoidFuncPtr = void (*)(void*);
 // MSVC cannot reinterpret_cast an overloaded function to another function
 // pointer, but piping the function through an identity function before
 // reinterpret_cast works.
@@ -85,38 +85,6 @@ enum class StringFieldType {
   IOBuf,
   IOBufPtr,
   String,
-};
-
-struct TypeInfo {
-  protocol::TType type;
-
-  // A function to set an object of a specific type, so deserialization logic
-  // can modify or initialize the object accordingly.
-  // This function helps us support cpp.type for primitive fields.
-  // It should take a Thrift object pointer and optionally the value to set.
-  // For container types, the function is the initialization function to clear
-  // the container before deserializing into the container.
-  VoidFuncPtr set;
-
-  // For primitive number types (float, i64, ...):
-  // A function to read an object pointer and return the Thrift type for
-  // serializing thrift.
-  // The function casts the object pointer to the object's type, optionally
-  // deref the smart pointer if applicable, and construct the underlying thrift
-  // type from the object. The signature is:
-  //
-  // UnderlyingThriftType (*)(const void* object)
-  //
-  // Where UnderlyingThriftType is the type that Thrift write functions can take
-  // as parameters (writeBinary, writeI64, ...).
-  //
-  // For others (string, struct, ...):
-  // A field may get annotated with cpp.ref_type = "unique".
-  // In that case we need to deref the smart pointer
-  // before we get to the actual address of the object.
-  VoidFuncPtr get;
-  // A pointer to additional type information, e.g. `MapFieldExt` for a map.
-  const void* typeExt;
 };
 
 struct FieldInfo {
@@ -520,9 +488,6 @@ void readList(
     }
   }
 }
-
-template <typename TypeClass, typename T, typename Enable = void>
-struct TypeToInfo;
 
 #define THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(      \
     TypeClass, Type, ThriftType, TTypeValue)       \
