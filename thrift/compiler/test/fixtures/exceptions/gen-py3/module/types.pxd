@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -125,30 +124,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cCustomFieldNames__isset __isset
 
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cBanal] __fbthrift_move "std::move"(unique_ptr[cBanal])
-    cdef shared_ptr[cBanal] __fbthrift_move_shared "std::move"(shared_ptr[cBanal])
-    cdef unique_ptr[cBanal] __fbthrift_move_unique "std::move"(unique_ptr[cBanal])
-    cdef shared_ptr[cFiery] __fbthrift_move "std::move"(unique_ptr[cFiery])
-    cdef shared_ptr[cFiery] __fbthrift_move_shared "std::move"(shared_ptr[cFiery])
-    cdef unique_ptr[cFiery] __fbthrift_move_unique "std::move"(unique_ptr[cFiery])
-    cdef shared_ptr[cSerious] __fbthrift_move "std::move"(unique_ptr[cSerious])
-    cdef shared_ptr[cSerious] __fbthrift_move_shared "std::move"(shared_ptr[cSerious])
-    cdef unique_ptr[cSerious] __fbthrift_move_unique "std::move"(unique_ptr[cSerious])
-    cdef shared_ptr[cComplexFieldNames] __fbthrift_move "std::move"(unique_ptr[cComplexFieldNames])
-    cdef shared_ptr[cComplexFieldNames] __fbthrift_move_shared "std::move"(shared_ptr[cComplexFieldNames])
-    cdef unique_ptr[cComplexFieldNames] __fbthrift_move_unique "std::move"(unique_ptr[cComplexFieldNames])
-    cdef shared_ptr[cCustomFieldNames] __fbthrift_move "std::move"(unique_ptr[cCustomFieldNames])
-    cdef shared_ptr[cCustomFieldNames] __fbthrift_move_shared "std::move"(shared_ptr[cCustomFieldNames])
-    cdef unique_ptr[cCustomFieldNames] __fbthrift_move_unique "std::move"(unique_ptr[cCustomFieldNames])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cBanal] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Banal>"(shared_ptr[cBanal])
-    cdef shared_ptr[const cFiery] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Fiery>"(shared_ptr[cFiery])
-    cdef shared_ptr[const cSerious] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Serious>"(shared_ptr[cSerious])
-    cdef shared_ptr[const cComplexFieldNames] const_pointer_cast "std::const_pointer_cast<const ::cpp2::ComplexFieldNames>"(shared_ptr[cComplexFieldNames])
-    cdef shared_ptr[const cCustomFieldNames] const_pointer_cast "std::const_pointer_cast<const ::cpp2::CustomFieldNames>"(shared_ptr[cCustomFieldNames])
-
 
 
 cdef class Banal(thrift.py3.exceptions.GeneratedError):
@@ -224,8 +199,6 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cCustomFieldNames])
-
-
 
 
 

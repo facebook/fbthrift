@@ -28,9 +28,14 @@ std::shared_ptr<T> constant_shared_ptr(const T& x) {
   return std::shared_ptr<T>(std::shared_ptr<T>{}, const_cast<T*>(&x));
 }
 
+// the folly::remove_cvref_t conversions work around Cython's limitation on
+// const/reference qualifier when custom cpp.type with those are defined
 template <typename T, typename S>
-std::shared_ptr<T> reference_shared_ptr(S& owner, const T& ref) {
-  return std::shared_ptr<T>(owner, const_cast<T*>(&ref));
+std::shared_ptr<folly::remove_cvref_t<T>> reference_shared_ptr(
+    const folly::remove_cvref_t<T>& ref,
+    const std::shared_ptr<S>& owner) {
+  using Type = folly::remove_cvref_t<T>;
+  return std::shared_ptr<Type>(owner, const_cast<Type*>(&ref));
 }
 
 template <typename T>

@@ -46,8 +46,8 @@ return self.__field_{{field:py_name}}{{!
         return None
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.__field_{{field:py_name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:py_name}}({{!
-      }}self._cpp_obj, deref(deref(self._cpp_obj).{{> CythonFieldValueRef}})))
+    self.__field_{{field:py_name}} = {{> types/CythonPythonType}}.create(__reference_shared_ptr({{!
+      }}deref(deref(self._cpp_obj).{{> CythonFieldValueRef}}), self._cpp_obj))
 return self.__field_{{field:py_name}}{{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
@@ -68,9 +68,9 @@ return self.__field_{{field:py_name}}{{!
 }}{{/type:enum?}}{{!
 }}{{^type:enum?}}{{!  Structs and Containers
 }}if self.__field_{{field:py_name}} is None:
-    self.__field_{{field:py_name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:py_name}}({{!
-      }}self._cpp_obj, {{!
-      }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
+    self.__field_{{field:py_name}} = {{> types/CythonPythonType}}.create(__reference_shared_ptr({{!
+      }}deref(self._cpp_obj).{{> CythonFieldRef}}, {{!
+      }}self._cpp_obj{{!
       }}))
 return self.__field_{{field:py_name}}{{!
 }}{{/type:enum?}}{{!

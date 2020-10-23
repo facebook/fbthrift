@@ -49,8 +49,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -61,6 +63,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -131,11 +134,11 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/type:cythonTypeNoneable?}}
         {{/field:type}}
         {{/struct:fields}}
-        self._cpp_obj = __fbthrift_move({{struct:name}}._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove({{struct:name}}._make_instance(
           NULL,
           NULL,{{#struct:fields}}
           {{field:py_name}},{{/struct:fields}}
-        ))
+        )))
         {{#struct:exception?}}
         _builtins.Exception.__init__(self, {{#struct:fields}}self.{{field:py_name}}{{^last?}}, {{/last?}}{{/struct:fields}})
         {{/struct:exception?}}
@@ -192,11 +195,11 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/struct:fields}}
         {{#struct:fields?}}
         __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        __fbthrift_inst._cpp_obj = __fbthrift_move({{struct:name}}._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove({{struct:name}}._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,{{#struct:fields}}
           {{field:py_name}},{{/struct:fields}}
-        ))
+        )))
         return __fbthrift_inst
         {{/struct:fields?}}
     {{/struct:cpp_noncopyable?}}
@@ -271,7 +274,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/field:type}}{{/struct:fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("{{struct:name}}", {
@@ -293,7 +296,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}}{{#struct:exception?}}, (<bytes>deref(cpp_obj).what()).decode('utf-8'){{/struct:exception?}})
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         {{#struct:exception?}}
         _builtins.Exception.__init__(__fbthrift_inst, {{#struct:fields}}__fbthrift_inst.{{field:py_name}}{{^last?}}, {{/last?}}{{/struct:fields}})
         {{/struct:exception?}}
@@ -366,10 +369,10 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{/type:cythonTypeNoneable?}}
         {{/field:type}}
         {{/struct:fields}}
-        self._cpp_obj = __fbthrift_move({{struct:name}}._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove({{struct:name}}._make_instance(
           NULL,{{#struct:fields}}
           {{field:py_name}},{{/struct:fields}}
-        ))
+        )))
         self._load_cache()
 
     @staticmethod
@@ -443,12 +446,12 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{/field:type}}{{/struct:fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         __fbthrift_inst._load_cache()
         return __fbthrift_inst
 
@@ -487,7 +490,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         cdef shared_ptr[c{{struct:name}}] cpp_obj = make_shared[c{{struct:name}}](
             deref(self._cpp_obj)
         )
-        return {{struct:name}}.create(__fbthrift_move_shared(cpp_obj))
+        return {{struct:name}}.create(cmove(cpp_obj))
         {{/struct:cpp_noncopyable?}}
 
     def __richcmp__(self, other, op):
@@ -578,14 +581,14 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
     @staticmethod
     cdef create(shared_ptr[{{> types/CythonCppType}}] c_items):
         __fbthrift_inst = <{{> types/CythonPythonType}}>{{> types/CythonPythonType}}.__new__({{> types/CythonPythonType}})
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__({{> types/CythonPythonType}} self):
         cdef shared_ptr[{{> types/CythonCppType}}] cpp_obj = make_shared[{{> types/CythonCppType}}](
             deref(self._cpp_obj)
         )
-        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(cpp_obj))
+        return {{> types/CythonPythonType}}.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -630,7 +633,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(c_inst))
+            return {{> types/CythonPythonType}}.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -640,9 +643,9 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
             {{#type:listElemType}}
-            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
+            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(self._cpp_obj)[index]{{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
             return {{> ContainerCythonCppToPythonItem}}
             {{/type:listElemType}}
 
@@ -673,9 +676,9 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:listElemType}}
-            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
+            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(loc){{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:listElemType}}
             inc(loc)
@@ -690,9 +693,9 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
         cdef {{>types/CythonCppType}}.reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             {{#type:listElemType}}
-            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
+            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(loc){{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:listElemType}}
             inc(loc)
@@ -824,9 +827,9 @@ Sequence.register({{> types/CythonPythonType}})
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:setElemType}}
-            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
+            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(loc){{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:setElemType}}
             inc(loc)
@@ -923,7 +926,7 @@ Sequence.register({{> types/CythonPythonType}})
             if deref(cother).count(deref(loc)) > 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(cmove(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -942,7 +945,7 @@ Sequence.register({{> types/CythonPythonType}})
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(cmove(shretval))
 
     def __or__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -964,7 +967,7 @@ Sequence.register({{> types/CythonPythonType}})
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(cmove(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -988,7 +991,7 @@ Sequence.register({{> types/CythonPythonType}})
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        return {{> types/CythonPythonType}}.create(__fbthrift_move_shared(shretval))
+        return {{> types/CythonPythonType}}.create(cmove(shretval))
 
 
     @staticmethod
@@ -1065,9 +1068,9 @@ Set.register({{> types/CythonPythonType}})
         cdef {{#type:valueType}}{{!
         }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
             }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }} citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
+            }} citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                 }}deref(iter).second{{!
-            }}{{^type:simple?}}){{/type:simple?}}{{/type:valueType}}
+            }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}{{/type:valueType}}
         return {{#type:valueType}}{{!
             }}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
 
@@ -1081,9 +1084,9 @@ Set.register({{> types/CythonPythonType}})
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:keyType}}
-            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:simple?}}{{!
+            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(loc).first{{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:keyType}}
             inc(loc)
@@ -1135,9 +1138,9 @@ Set.register({{> types/CythonPythonType}})
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:valueType}}
-            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
+            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(loc).second{{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:valueType}}
             inc(loc)
@@ -1157,14 +1160,14 @@ Set.register({{> types/CythonPythonType}})
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:keyType}}
-            ckey = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:simple?}}{{!
+            ckey = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(loc).first{{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
             {{/type:keyType}}
             {{#type:valueType}}
-            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
+            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
                     }}deref(loc).second{{!
-                    }}{{^type:simple?}}){{/type:simple?}}
+                    }}{{^type:simple?}} ,self._cpp_obj){{/type:simple?}}
             {{/type:valueType}}
             yield ({{!
               }}{{#type:keyType}}{{!

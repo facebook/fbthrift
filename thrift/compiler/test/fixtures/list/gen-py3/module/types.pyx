@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -53,14 +56,14 @@ cdef class List__string(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[string]] c_items):
         __fbthrift_inst = <List__string>List__string.__new__(List__string)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__string self):
         cdef shared_ptr[vector[string]] cpp_obj = make_shared[vector[string]](
             deref(self._cpp_obj)
         )
-        return List__string.create(__fbthrift_move_shared(cpp_obj))
+        return List__string.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -85,7 +88,7 @@ cdef class List__string(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__string.create(__fbthrift_move_shared(c_inst))
+            return List__string.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -184,14 +187,14 @@ cdef class Map__i64_List__string(thrift.py3.types.Map):
     @staticmethod
     cdef create(shared_ptr[cmap[cint64_t,vector[string]]] c_items):
         __fbthrift_inst = <Map__i64_List__string>Map__i64_List__string.__new__(Map__i64_List__string)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(Map__i64_List__string self):
         cdef shared_ptr[cmap[cint64_t,vector[string]]] cpp_obj = make_shared[cmap[cint64_t,vector[string]]](
             deref(self._cpp_obj)
         )
-        return Map__i64_List__string.create(__fbthrift_move_shared(cpp_obj))
+        return Map__i64_List__string.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -222,7 +225,7 @@ cdef class Map__i64_List__string(thrift.py3.types.Map):
             self._cpp_obj).find(key)
         if iter == deref(self._cpp_obj).end():
             raise err
-        cdef shared_ptr[vector[string]] citem = reference_shared_ptr_Map__i64_List__string(self._cpp_obj, deref(iter).second)
+        cdef shared_ptr[vector[string]] citem = __reference_shared_ptr(deref(iter).second, self._cpp_obj)
         return List__string.create(citem)
 
     def __iter__(self):
@@ -258,7 +261,7 @@ cdef class Map__i64_List__string(thrift.py3.types.Map):
         cdef shared_ptr[vector[string]] citem
         cdef cmap[cint64_t,vector[string]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
-            citem = reference_shared_ptr_Map__i64_List__string(self._cpp_obj, deref(loc).second)
+            citem = __reference_shared_ptr(deref(loc).second, self._cpp_obj)
             yield List__string.create(citem)
             inc(loc)
 
@@ -270,7 +273,7 @@ cdef class Map__i64_List__string(thrift.py3.types.Map):
         cdef cmap[cint64_t,vector[string]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
-            citem = reference_shared_ptr_Map__i64_List__string(self._cpp_obj, deref(loc).second)
+            citem = __reference_shared_ptr(deref(loc).second ,self._cpp_obj)
             yield (ckey, List__string.create(citem))
             inc(loc)
 

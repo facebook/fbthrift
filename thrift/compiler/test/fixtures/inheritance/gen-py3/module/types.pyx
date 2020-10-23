@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable

@@ -20,6 +20,7 @@ from cpython cimport bool as pbool
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
+from libcpp.utility cimport move as cmove
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -31,9 +32,9 @@ from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
-  c_unit
+  c_unit,
+
 )
-from thrift.py3.types cimport move
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -43,6 +44,7 @@ from folly.executor cimport get_executor
 cimport folly.iobuf as __iobuf
 import folly.iobuf as __iobuf
 from folly.iobuf cimport move as move_iobuf
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -1376,7 +1378,7 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     unique_ptr[vector[cint16_t]] numbers
 ):
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    arg_numbers = _module_types.List__i16.create(_module_types.__fbthrift_move(numbers))
+    arg_numbers = _module_types.List__i16.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1428,7 +1430,7 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     unique_ptr[vector[cint32_t]] numbers
 ):
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    arg_numbers = _module_types.List__i32.create(_module_types.__fbthrift_move(numbers))
+    arg_numbers = _module_types.List__i32.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1480,7 +1482,7 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     unique_ptr[vector[cint64_t]] numbers
 ):
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    arg_numbers = _module_types.List__i64.create(_module_types.__fbthrift_move(numbers))
+    arg_numbers = _module_types.List__i64.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1532,7 +1534,7 @@ cdef api void call_cy_SimpleService_concat_many(
     unique_ptr[vector[string]] words
 ):
     __promise = Promise_string.create(move_promise_string(cPromise))
-    arg_words = _module_types.List__string.create(_module_types.__fbthrift_move(words))
+    arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1584,7 +1586,7 @@ cdef api void call_cy_SimpleService_count_structs(
     unique_ptr[vector[_module_types.cSimpleStruct]] items
 ):
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    arg_items = _module_types.List__SimpleStruct.create(_module_types.__fbthrift_move(items))
+    arg_items = _module_types.List__SimpleStruct.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1636,7 +1638,7 @@ cdef api void call_cy_SimpleService_sum_set(
     unique_ptr[cset[cint32_t]] numbers
 ):
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    arg_numbers = _module_types.Set__i32.create(_module_types.__fbthrift_move(numbers))
+    arg_numbers = _module_types.Set__i32.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1689,7 +1691,7 @@ cdef api void call_cy_SimpleService_contains_word(
     unique_ptr[string] word
 ):
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
-    arg_words = _module_types.Set__string.create(_module_types.__fbthrift_move(words))
+    arg_words = _module_types.Set__string.create(__to_shared_ptr(cmove(words)))
     arg_word = (deref(word)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1747,7 +1749,7 @@ cdef api void call_cy_SimpleService_get_map_value(
     unique_ptr[string] key
 ):
     __promise = Promise_string.create(move_promise_string(cPromise))
-    arg_words = _module_types.Map__string_string.create(_module_types.__fbthrift_move(words))
+    arg_words = _module_types.Map__string_string.create(__to_shared_ptr(cmove(words)))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1804,7 +1806,7 @@ cdef api void call_cy_SimpleService_map_length(
     unique_ptr[cmap[string,_module_types.cSimpleStruct]] items
 ):
     __promise = Promise_cint16_t.create(move_promise_cint16_t(cPromise))
-    arg_items = _module_types.Map__string_SimpleStruct.create(_module_types.__fbthrift_move(items))
+    arg_items = _module_types.Map__string_SimpleStruct.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1856,7 +1858,7 @@ cdef api void call_cy_SimpleService_sum_map_values(
     unique_ptr[cmap[string,cint16_t]] items
 ):
     __promise = Promise_cint16_t.create(move_promise_cint16_t(cPromise))
-    arg_items = _module_types.Map__string_i16.create(_module_types.__fbthrift_move(items))
+    arg_items = _module_types.Map__string_i16.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2111,7 +2113,7 @@ cdef api void call_cy_SimpleService_unique_words(
     unique_ptr[vector[string]] words
 ):
     __promise = Promise_cset__string.create(move_promise_cset__string(cPromise))
-    arg_words = _module_types.List__string.create(_module_types.__fbthrift_move(words))
+    arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2164,7 +2166,7 @@ cdef api void call_cy_SimpleService_words_count(
     unique_ptr[vector[string]] words
 ):
     __promise = Promise_cmap__string_cint16_t.create(move_promise_cmap__string_cint16_t(cPromise))
-    arg_words = _module_types.List__string.create(_module_types.__fbthrift_move(words))
+    arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2434,7 +2436,7 @@ cdef api void call_cy_SimpleService_nested_map_argument(
     unique_ptr[cmap[string,vector[_module_types.cSimpleStruct]]] struct_map
 ):
     __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
-    arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(_module_types.__fbthrift_move(struct_map))
+    arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(__to_shared_ptr(cmove(struct_map)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2486,7 +2488,7 @@ cdef api void call_cy_SimpleService_make_sentence(
     unique_ptr[vector[vector[string]]] word_chars
 ):
     __promise = Promise_string.create(move_promise_string(cPromise))
-    arg_word_chars = _module_types.List__List__string.create(_module_types.__fbthrift_move(word_chars))
+    arg_word_chars = _module_types.List__List__string.create(__to_shared_ptr(cmove(word_chars)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2538,7 +2540,7 @@ cdef api void call_cy_SimpleService_get_union(
     unique_ptr[vector[cset[cint32_t]]] sets
 ):
     __promise = Promise_cset__cint32_t.create(move_promise_cset__cint32_t(cPromise))
-    arg_sets = _module_types.List__Set__i32.create(_module_types.__fbthrift_move(sets))
+    arg_sets = _module_types.List__Set__i32.create(__to_shared_ptr(cmove(sets)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2591,7 +2593,7 @@ cdef api void call_cy_SimpleService_get_keys(
     unique_ptr[vector[cmap[string,string]]] string_map
 ):
     __promise = Promise_cset__string.create(move_promise_cset__string(cPromise))
-    arg_string_map = _module_types.List__Map__string_string.create(_module_types.__fbthrift_move(string_map))
+    arg_string_map = _module_types.List__Map__string_string.create(__to_shared_ptr(cmove(string_map)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2748,7 +2750,7 @@ cdef api void call_cy_SimpleService_contain_binary(
     unique_ptr[vector[string]] binaries
 ):
     __promise = Promise_cset__binary.create(move_promise_cset__binary(cPromise))
-    arg_binaries = _module_types.List__binary.create(_module_types.__fbthrift_move(binaries))
+    arg_binaries = _module_types.List__binary.create(__to_shared_ptr(cmove(binaries)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2801,7 +2803,7 @@ cdef api void call_cy_SimpleService_contain_enum(
     unique_ptr[vector[_module_types.cAnEnum]] the_enum
 ):
     __promise = Promise_vector___module_types_cAnEnum.create(move_promise_vector___module_types_cAnEnum(cPromise))
-    arg_the_enum = _module_types.List__AnEnum.create(_module_types.__fbthrift_move(the_enum))
+    arg_the_enum = _module_types.List__AnEnum.create(__to_shared_ptr(cmove(the_enum)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

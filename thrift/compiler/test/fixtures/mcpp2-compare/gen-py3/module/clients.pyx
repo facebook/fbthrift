@@ -17,6 +17,7 @@ from cpython cimport bool as pbool
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
+from libcpp.utility cimport move as cmove
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
 from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, cClientWrapper
@@ -26,7 +27,6 @@ from folly.cast cimport down_cast_ptr
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
-from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -718,7 +718,7 @@ cdef class EmptyService(thrift.py3.client.Client):
 
     cdef bind_client(EmptyService self, cRequestChannel_ptr&& channel):
         self._client = makeClientWrapper[cEmptyServiceAsyncClient, cEmptyServiceClientWrapper](
-            thrift.py3.client.move(channel)
+            cmove(channel)
         )
 
 
@@ -739,7 +739,7 @@ cdef class ReturnService(thrift.py3.client.Client):
 
     cdef bind_client(ReturnService self, cRequestChannel_ptr&& channel):
         self._client = makeClientWrapper[cReturnServiceAsyncClient, cReturnServiceClientWrapper](
-            thrift.py3.client.move(channel)
+            cmove(channel)
         )
 
     @cython.always_allow_keywords(True)
@@ -1192,7 +1192,7 @@ cdef class ParamService(thrift.py3.client.Client):
 
     cdef bind_client(ParamService self, cRequestChannel_ptr&& channel):
         self._client = makeClientWrapper[cParamServiceAsyncClient, cParamServiceClientWrapper](
-            thrift.py3.client.move(channel)
+            cmove(channel)
         )
 
     @cython.always_allow_keywords(True)

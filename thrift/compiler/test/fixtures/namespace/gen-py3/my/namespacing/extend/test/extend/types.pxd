@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -35,12 +34,6 @@ from folly.optional cimport cOptional
 cimport hsmodule.types as _hsmodule_types
 cdef extern from "src/gen-py3/extend/types.h":
   pass
-
-
-
-
-
-
 
 
 

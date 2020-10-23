@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -49,11 +52,11 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         InitialResponse self, *,
         str content=None
     ):
-        self._cpp_obj = __fbthrift_move(InitialResponse._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(InitialResponse._make_instance(
           NULL,
           NULL,
           content,
-        ))
+        )))
 
     def __call__(
         InitialResponse self,
@@ -79,11 +82,11 @@ cdef class InitialResponse(thrift.py3.types.Struct):
                 raise TypeError(f'content is not a { str !r}.')
 
         __fbthrift_inst = <InitialResponse>InitialResponse.__new__(InitialResponse)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(InitialResponse._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(InitialResponse._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           content,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -106,11 +109,11 @@ cdef class InitialResponse(thrift.py3.types.Struct):
                 pass
 
         if content is not None:
-            deref(c_inst).content_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
+            deref(c_inst).content_ref().assign(cmove(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
             deref(c_inst).__isset.content = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("InitialResponse", {
@@ -123,7 +126,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cInitialResponse] cpp_obj):
         __fbthrift_inst = <InitialResponse>InitialResponse.__new__(InitialResponse)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -139,7 +142,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
         cdef shared_ptr[cInitialResponse] cpp_obj = make_shared[cInitialResponse](
             deref(self._cpp_obj)
         )
-        return InitialResponse.create(__fbthrift_move_shared(cpp_obj))
+        return InitialResponse.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -195,11 +198,11 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         FinalResponse self, *,
         str content=None
     ):
-        self._cpp_obj = __fbthrift_move(FinalResponse._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(FinalResponse._make_instance(
           NULL,
           NULL,
           content,
-        ))
+        )))
 
     def __call__(
         FinalResponse self,
@@ -225,11 +228,11 @@ cdef class FinalResponse(thrift.py3.types.Struct):
                 raise TypeError(f'content is not a { str !r}.')
 
         __fbthrift_inst = <FinalResponse>FinalResponse.__new__(FinalResponse)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(FinalResponse._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(FinalResponse._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           content,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -252,11 +255,11 @@ cdef class FinalResponse(thrift.py3.types.Struct):
                 pass
 
         if content is not None:
-            deref(c_inst).content_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
+            deref(c_inst).content_ref().assign(cmove(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
             deref(c_inst).__isset.content = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("FinalResponse", {
@@ -269,7 +272,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cFinalResponse] cpp_obj):
         __fbthrift_inst = <FinalResponse>FinalResponse.__new__(FinalResponse)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -285,7 +288,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         cdef shared_ptr[cFinalResponse] cpp_obj = make_shared[cFinalResponse](
             deref(self._cpp_obj)
         )
-        return FinalResponse.create(__fbthrift_move_shared(cpp_obj))
+        return FinalResponse.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -341,11 +344,11 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         SinkPayload self, *,
         str content=None
     ):
-        self._cpp_obj = __fbthrift_move(SinkPayload._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(SinkPayload._make_instance(
           NULL,
           NULL,
           content,
-        ))
+        )))
 
     def __call__(
         SinkPayload self,
@@ -371,11 +374,11 @@ cdef class SinkPayload(thrift.py3.types.Struct):
                 raise TypeError(f'content is not a { str !r}.')
 
         __fbthrift_inst = <SinkPayload>SinkPayload.__new__(SinkPayload)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(SinkPayload._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(SinkPayload._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           content,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -398,11 +401,11 @@ cdef class SinkPayload(thrift.py3.types.Struct):
                 pass
 
         if content is not None:
-            deref(c_inst).content_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
+            deref(c_inst).content_ref().assign(cmove(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
             deref(c_inst).__isset.content = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkPayload", {
@@ -415,7 +418,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cSinkPayload] cpp_obj):
         __fbthrift_inst = <SinkPayload>SinkPayload.__new__(SinkPayload)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -431,7 +434,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
         cdef shared_ptr[cSinkPayload] cpp_obj = make_shared[cSinkPayload](
             deref(self._cpp_obj)
         )
-        return SinkPayload.create(__fbthrift_move_shared(cpp_obj))
+        return SinkPayload.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -487,11 +490,11 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         CompatibleWithKeywordSink self, *,
         str sink=None
     ):
-        self._cpp_obj = __fbthrift_move(CompatibleWithKeywordSink._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(CompatibleWithKeywordSink._make_instance(
           NULL,
           NULL,
           sink,
-        ))
+        )))
 
     def __call__(
         CompatibleWithKeywordSink self,
@@ -517,11 +520,11 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
                 raise TypeError(f'sink is not a { str !r}.')
 
         __fbthrift_inst = <CompatibleWithKeywordSink>CompatibleWithKeywordSink.__new__(CompatibleWithKeywordSink)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(CompatibleWithKeywordSink._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(CompatibleWithKeywordSink._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           sink,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -544,11 +547,11 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
                 pass
 
         if sink is not None:
-            deref(c_inst).sink_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(sink.encode('utf-8'))))
+            deref(c_inst).sink_ref().assign(cmove(thrift.py3.types.bytes_to_string(sink.encode('utf-8'))))
             deref(c_inst).__isset.sink = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("CompatibleWithKeywordSink", {
@@ -561,7 +564,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cCompatibleWithKeywordSink] cpp_obj):
         __fbthrift_inst = <CompatibleWithKeywordSink>CompatibleWithKeywordSink.__new__(CompatibleWithKeywordSink)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -577,7 +580,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
         cdef shared_ptr[cCompatibleWithKeywordSink] cpp_obj = make_shared[cCompatibleWithKeywordSink](
             deref(self._cpp_obj)
         )
-        return CompatibleWithKeywordSink.create(__fbthrift_move_shared(cpp_obj))
+        return CompatibleWithKeywordSink.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -633,11 +636,11 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
         InitialException self,
         str reason=None
     ):
-        self._cpp_obj = __fbthrift_move(InitialException._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(InitialException._make_instance(
           NULL,
           NULL,
           reason,
-        ))
+        )))
         _builtins.Exception.__init__(self, self.reason)
 
 
@@ -654,11 +657,11 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
             c_inst = make_unique[cInitialException]()
 
         if reason is not None:
-            deref(c_inst).reason_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
+            deref(c_inst).reason_ref().assign(cmove(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
             deref(c_inst).__isset.reason = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("InitialException", {
@@ -671,7 +674,7 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     cdef create(shared_ptr[cInitialException] cpp_obj):
         __fbthrift_inst = <InitialException>InitialException.__new__(InitialException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.reason)
         return __fbthrift_inst
 
@@ -688,7 +691,7 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cInitialException] cpp_obj = make_shared[cInitialException](
             deref(self._cpp_obj)
         )
-        return InitialException.create(__fbthrift_move_shared(cpp_obj))
+        return InitialException.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -732,11 +735,11 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
         SinkException1 self,
         str reason=None
     ):
-        self._cpp_obj = __fbthrift_move(SinkException1._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(SinkException1._make_instance(
           NULL,
           NULL,
           reason,
-        ))
+        )))
         _builtins.Exception.__init__(self, self.reason)
 
 
@@ -753,11 +756,11 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
             c_inst = make_unique[cSinkException1]()
 
         if reason is not None:
-            deref(c_inst).reason_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
+            deref(c_inst).reason_ref().assign(cmove(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
             deref(c_inst).__isset.reason = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkException1", {
@@ -770,7 +773,7 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     cdef create(shared_ptr[cSinkException1] cpp_obj):
         __fbthrift_inst = <SinkException1>SinkException1.__new__(SinkException1, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.reason)
         return __fbthrift_inst
 
@@ -787,7 +790,7 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cSinkException1] cpp_obj = make_shared[cSinkException1](
             deref(self._cpp_obj)
         )
-        return SinkException1.create(__fbthrift_move_shared(cpp_obj))
+        return SinkException1.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -836,11 +839,11 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
                 raise TypeError(f'reason is not a { int !r}.')
             reason = <cint64_t> reason
 
-        self._cpp_obj = __fbthrift_move(SinkException2._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(SinkException2._make_instance(
           NULL,
           NULL,
           reason,
-        ))
+        )))
         _builtins.Exception.__init__(self, self.reason)
 
 
@@ -861,7 +864,7 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
             deref(c_inst).__isset.reason = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkException2", {
@@ -874,7 +877,7 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     cdef create(shared_ptr[cSinkException2] cpp_obj):
         __fbthrift_inst = <SinkException2>SinkException2.__new__(SinkException2, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.reason)
         return __fbthrift_inst
 
@@ -891,7 +894,7 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cSinkException2] cpp_obj = make_shared[cSinkException2](
             deref(self._cpp_obj)
         )
-        return SinkException2.create(__fbthrift_move_shared(cpp_obj))
+        return SinkException2.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

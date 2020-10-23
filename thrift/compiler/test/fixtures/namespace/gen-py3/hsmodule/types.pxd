@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -57,14 +56,6 @@ cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "::cpp2":
         cHsFoo__isset __isset
 
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cHsFoo] __fbthrift_move "std::move"(unique_ptr[cHsFoo])
-    cdef shared_ptr[cHsFoo] __fbthrift_move_shared "std::move"(shared_ptr[cHsFoo])
-    cdef unique_ptr[cHsFoo] __fbthrift_move_unique "std::move"(unique_ptr[cHsFoo])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cHsFoo] const_pointer_cast "std::const_pointer_cast<const ::cpp2::HsFoo>"(shared_ptr[cHsFoo])
-
 
 
 cdef class HsFoo(thrift.py3.types.Struct):
@@ -79,8 +70,6 @@ cdef class HsFoo(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cHsFoo])
-
-
 
 
 

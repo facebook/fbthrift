@@ -26,7 +26,7 @@ This template assumes that the Python object is in a variable named <field>.
 }}{{#type:iobuf?}}deref((<__iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}((<__iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}{{> types/CythonCppType}}(move(<string>{{field:py_name}})){{!
+  }}{{> types/CythonCppType}}(cmove(<string>{{field:py_name}})){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}{{field:py_name}}{{/type:bool?}}{{!

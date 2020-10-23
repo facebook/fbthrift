@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -86,12 +89,12 @@ cdef class Struct(thrift.py3.types.Struct):
                 raise TypeError(f'first is not a { int !r}.')
             first = <cint32_t> first
 
-        self._cpp_obj = __fbthrift_move(Struct._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(Struct._make_instance(
           NULL,
           NULL,
           first,
           second,
-        ))
+        )))
 
     def __call__(
         Struct self,
@@ -130,12 +133,12 @@ cdef class Struct(thrift.py3.types.Struct):
                 raise TypeError(f'second is not a { str !r}.')
 
         __fbthrift_inst = <Struct>Struct.__new__(Struct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(Struct._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Struct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           first,
           second,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -167,11 +170,11 @@ cdef class Struct(thrift.py3.types.Struct):
             deref(c_inst).first_ref().assign(first)
             deref(c_inst).__isset.first = True
         if second is not None:
-            deref(c_inst).second_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(second.encode('utf-8'))))
+            deref(c_inst).second_ref().assign(cmove(thrift.py3.types.bytes_to_string(second.encode('utf-8'))))
             deref(c_inst).__isset.second = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Struct", {
@@ -186,7 +189,7 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
         __fbthrift_inst = <Struct>Struct.__new__(Struct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -207,7 +210,7 @@ cdef class Struct(thrift.py3.types.Struct):
         cdef shared_ptr[cStruct] cpp_obj = make_shared[cStruct](
             deref(self._cpp_obj)
         )
-        return Struct.create(__fbthrift_move_shared(cpp_obj))
+        return Struct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -267,14 +270,14 @@ cdef class List__Enum(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[cEnum]] c_items):
         __fbthrift_inst = <List__Enum>List__Enum.__new__(List__Enum)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__Enum self):
         cdef shared_ptr[vector[cEnum]] cpp_obj = make_shared[vector[cEnum]](
             deref(self._cpp_obj)
         )
-        return List__Enum.create(__fbthrift_move_shared(cpp_obj))
+        return List__Enum.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -297,7 +300,7 @@ cdef class List__Enum(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__Enum.create(__fbthrift_move_shared(c_inst))
+            return List__Enum.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

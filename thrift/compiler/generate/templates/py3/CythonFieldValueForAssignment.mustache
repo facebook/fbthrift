@@ -26,7 +26,7 @@ on a struct.
   }}(<__iobuf.IOBuf?>{{field:py_name}}).c_clone(){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}{{> types/CythonCppType}}(move(<string>{{field:py_name}})){{!
+  }}{{> types/CythonCppType}}(cmove(<string>{{field:py_name}})){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
@@ -39,13 +39,12 @@ on a struct.
     }}{{> types/CythonCastOrCreatePythonType}}._cpp_obj{{!
   }}{{/field:shared_ref?}}{{!
   }}{{#field:shared_const_ref?}}{{!
-    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
     }}const_pointer_cast({{> types/CythonCastOrCreatePythonType}}._cpp_obj){{!
   }}{{/field:shared_const_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
-  }}{{#type:string?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:string?}}{{!
-  }}{{#type:binary?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:binary?}}{{!
+  }}{{#type:string?}}cmove(thrift.py3.types.bytes_to_string({{/type:string?}}{{!
+  }}{{#type:binary?}}cmove(thrift.py3.types.bytes_to_string({{/type:binary?}}{{!
   }}{{field:py_name}}{{!
   }}{{#type:string?}}.encode('utf-8'))){{/type:string?}}{{!
   }}{{#type:binary?}})){{/type:binary?}}{{!

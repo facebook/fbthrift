@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -237,47 +236,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const cunion1& get_u() const
         cunion1& set_u(const cunion1&)
 
-    cdef shared_ptr[cstruct1] reference_shared_ptr_c "::thrift::py3::reference_shared_ptr<::cpp2::struct1>"(shared_ptr[cstruct2]&, cstruct1&)
-    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_d "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cstruct2]&, vector[cint32_t]&)
-    cdef shared_ptr[cstruct2] reference_shared_ptr_c "::thrift::py3::reference_shared_ptr<::cpp2::struct2>"(shared_ptr[cstruct3]&, cstruct2&)
-    cdef shared_ptr[cstruct1] reference_shared_ptr_s "::thrift::py3::reference_shared_ptr<::cpp2::struct1>"(shared_ptr[cunion2]&, cstruct1&)
-    cdef shared_ptr[cunion1] reference_shared_ptr_u "::thrift::py3::reference_shared_ptr<::cpp2::union1>"(shared_ptr[cunion2]&, cunion1&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cInternship] __fbthrift_move "std::move"(unique_ptr[cInternship])
-    cdef shared_ptr[cInternship] __fbthrift_move_shared "std::move"(shared_ptr[cInternship])
-    cdef unique_ptr[cInternship] __fbthrift_move_unique "std::move"(unique_ptr[cInternship])
-    cdef shared_ptr[cRange] __fbthrift_move "std::move"(unique_ptr[cRange])
-    cdef shared_ptr[cRange] __fbthrift_move_shared "std::move"(shared_ptr[cRange])
-    cdef unique_ptr[cRange] __fbthrift_move_unique "std::move"(unique_ptr[cRange])
-    cdef shared_ptr[cstruct1] __fbthrift_move "std::move"(unique_ptr[cstruct1])
-    cdef shared_ptr[cstruct1] __fbthrift_move_shared "std::move"(shared_ptr[cstruct1])
-    cdef unique_ptr[cstruct1] __fbthrift_move_unique "std::move"(unique_ptr[cstruct1])
-    cdef shared_ptr[cstruct2] __fbthrift_move "std::move"(unique_ptr[cstruct2])
-    cdef shared_ptr[cstruct2] __fbthrift_move_shared "std::move"(shared_ptr[cstruct2])
-    cdef unique_ptr[cstruct2] __fbthrift_move_unique "std::move"(unique_ptr[cstruct2])
-    cdef shared_ptr[cstruct3] __fbthrift_move "std::move"(unique_ptr[cstruct3])
-    cdef shared_ptr[cstruct3] __fbthrift_move_shared "std::move"(shared_ptr[cstruct3])
-    cdef unique_ptr[cstruct3] __fbthrift_move_unique "std::move"(unique_ptr[cstruct3])
-    cdef shared_ptr[cstruct4] __fbthrift_move "std::move"(unique_ptr[cstruct4])
-    cdef shared_ptr[cstruct4] __fbthrift_move_shared "std::move"(shared_ptr[cstruct4])
-    cdef unique_ptr[cstruct4] __fbthrift_move_unique "std::move"(unique_ptr[cstruct4])
-    cdef shared_ptr[cunion1] __fbthrift_move "std::move"(unique_ptr[cunion1])
-    cdef shared_ptr[cunion1] __fbthrift_move_shared "std::move"(shared_ptr[cunion1])
-    cdef unique_ptr[cunion1] __fbthrift_move_unique "std::move"(unique_ptr[cunion1])
-    cdef shared_ptr[cunion2] __fbthrift_move "std::move"(unique_ptr[cunion2])
-    cdef shared_ptr[cunion2] __fbthrift_move_shared "std::move"(shared_ptr[cunion2])
-    cdef unique_ptr[cunion2] __fbthrift_move_unique "std::move"(unique_ptr[cunion2])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cInternship] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Internship>"(shared_ptr[cInternship])
-    cdef shared_ptr[const cRange] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Range>"(shared_ptr[cRange])
-    cdef shared_ptr[const cstruct1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct1>"(shared_ptr[cstruct1])
-    cdef shared_ptr[const cstruct2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct2>"(shared_ptr[cstruct2])
-    cdef shared_ptr[const cstruct3] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct3>"(shared_ptr[cstruct3])
-    cdef shared_ptr[const cstruct4] const_pointer_cast "std::const_pointer_cast<const ::cpp2::struct4>"(shared_ptr[cstruct4])
-    cdef shared_ptr[const cunion1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::union1>"(shared_ptr[cunion1])
-    cdef shared_ptr[const cunion2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::union2>"(shared_ptr[cunion2])
 
 
 
@@ -507,46 +465,6 @@ cdef class Map__i32_string(thrift.py3.types.Map):
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,string]] _make_instance(object items) except *
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[cInternship]] __fbthrift_move "std::move"(unique_ptr[vector[cInternship]])
-    cdef shared_ptr[vector[cInternship]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cInternship]])
-    cdef shared_ptr[vector[cmap[string,cint32_t]]] __fbthrift_move "std::move"(unique_ptr[vector[cmap[string,cint32_t]]])
-    cdef shared_ptr[vector[cmap[string,cint32_t]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cmap[string,cint32_t]]])
-    cdef shared_ptr[vector[cRange]] __fbthrift_move "std::move"(unique_ptr[vector[cRange]])
-    cdef shared_ptr[vector[cRange]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cRange]])
-    cdef shared_ptr[vector[cint32_t]] __fbthrift_move "std::move"(unique_ptr[vector[cint32_t]])
-    cdef shared_ptr[vector[cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cint32_t]])
-    cdef shared_ptr[vector[string]] __fbthrift_move "std::move"(unique_ptr[vector[string]])
-    cdef shared_ptr[vector[string]] __fbthrift_move_shared "std::move"(shared_ptr[vector[string]])
-    cdef shared_ptr[cmap[cint32_t,cint32_t]] __fbthrift_move "std::move"(unique_ptr[cmap[cint32_t,cint32_t]])
-    cdef shared_ptr[cmap[cint32_t,cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[cint32_t,cint32_t]])
-    cdef shared_ptr[cmap[cint32_t,string]] __fbthrift_move "std::move"(unique_ptr[cmap[cint32_t,string]])
-    cdef shared_ptr[cmap[cint32_t,string]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[cint32_t,string]])
-    cdef shared_ptr[cmap[string,cint32_t]] __fbthrift_move "std::move"(unique_ptr[cmap[string,cint32_t]])
-    cdef shared_ptr[cmap[string,cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[string,cint32_t]])
-    cdef shared_ptr[cmap[string,string]] __fbthrift_move "std::move"(unique_ptr[cmap[string,string]])
-    cdef shared_ptr[cmap[string,string]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[string,string]])
-    cdef shared_ptr[cset[cint32_t]] __fbthrift_move "std::move"(unique_ptr[cset[cint32_t]])
-    cdef shared_ptr[cset[cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[cset[cint32_t]])
-    cdef shared_ptr[cset[string]] __fbthrift_move "std::move"(unique_ptr[cset[string]])
-    cdef shared_ptr[cset[string]] __fbthrift_move_shared "std::move"(shared_ptr[cset[string]])
-cdef extern from "<utility>" nogil:
-    pass  
-    shared_ptr[cmap[string,cint32_t]] reference_shared_ptr_List__Map__string_i32 "::thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
-    shared_ptr[cRange] reference_shared_ptr_List__Range "::thrift::py3::reference_shared_ptr<::cpp2::Range>"(...)
-    shared_ptr[cInternship] reference_shared_ptr_List__Internship "::thrift::py3::reference_shared_ptr<::cpp2::Internship>"(...)
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cInternship]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::Internship>>"(shared_ptr[vector[cInternship]])
-    cdef shared_ptr[const vector[cmap[string,cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<std::string,int32_t>>>"(shared_ptr[vector[cmap[string,cint32_t]]])
-    cdef shared_ptr[const vector[cRange]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::Range>>"(shared_ptr[vector[cRange]])
-    cdef shared_ptr[const vector[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[cint32_t]])
-    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
-    cdef shared_ptr[const cmap[cint32_t,cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[cint32_t,cint32_t]])
-    cdef shared_ptr[const cmap[cint32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::string>>"(shared_ptr[cmap[cint32_t,string]])
-    cdef shared_ptr[const cmap[string,cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,cint32_t]])
-    cdef shared_ptr[const cmap[string,string]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::string>>"(shared_ptr[cmap[string,string]])
-    cdef shared_ptr[const cset[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[cint32_t]])
-    cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast<const std::set<std::string>>"(shared_ptr[cset[string]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cint32_t cmyInt "::cpp2::module_constants::myInt"

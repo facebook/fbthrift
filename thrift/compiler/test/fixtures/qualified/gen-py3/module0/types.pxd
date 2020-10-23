@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -68,14 +67,6 @@ cdef extern from "gen-cpp2/module0_types_custom_protocol.h" namespace "::module0
         cStruct__isset __isset
 
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cStruct] __fbthrift_move "std::move"(unique_ptr[cStruct])
-    cdef shared_ptr[cStruct] __fbthrift_move_shared "std::move"(shared_ptr[cStruct])
-    cdef unique_ptr[cStruct] __fbthrift_move_unique "std::move"(unique_ptr[cStruct])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const ::module0::Struct>"(shared_ptr[cStruct])
-
 
 
 cdef class Struct(thrift.py3.types.Struct):
@@ -100,13 +91,6 @@ cdef class List__Enum(thrift.py3.types.List):
     @staticmethod
     cdef shared_ptr[vector[cEnum]] _make_instance(object items) except *
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[cEnum]] __fbthrift_move "std::move"(unique_ptr[vector[cEnum]])
-    cdef shared_ptr[vector[cEnum]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cEnum]])
-cdef extern from "<utility>" nogil:
-    pass  
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<::module0::Enum>>"(shared_ptr[vector[cEnum]])
 
 cdef extern from "gen-cpp2/module0_constants.h" namespace "::module0":
     cdef cStruct cc0 "::module0::module0_constants::c0"()

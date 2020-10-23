@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -58,13 +61,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
             MyIncludedInt = <cint64_t> MyIncludedInt
 
-        self._cpp_obj = __fbthrift_move(MyStruct._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
           NULL,
           NULL,
           MyIncludedField,
           MyOtherIncludedField,
           MyIncludedInt,
-        ))
+        )))
 
     def __call__(
         MyStruct self,
@@ -115,13 +118,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
             MyIncludedInt = <cint64_t> MyIncludedInt
 
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStruct._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           MyIncludedField,
           MyOtherIncludedField,
           MyIncludedInt,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -166,7 +169,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.MyIncludedInt = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
@@ -183,21 +186,21 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
     def MyIncludedField(self):
 
         if self.__field_MyIncludedField is None:
-            self.__field_MyIncludedField = _includes_types.Included.create(reference_shared_ptr_MyIncludedField(self._cpp_obj, deref(self._cpp_obj).MyIncludedField_ref().value()))
+            self.__field_MyIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedField_ref().ref(), self._cpp_obj))
         return self.__field_MyIncludedField
 
     @property
     def MyOtherIncludedField(self):
 
         if self.__field_MyOtherIncludedField is None:
-            self.__field_MyOtherIncludedField = _includes_types.Included.create(reference_shared_ptr_MyOtherIncludedField(self._cpp_obj, deref(self._cpp_obj).MyOtherIncludedField_ref().value()))
+            self.__field_MyOtherIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyOtherIncludedField_ref().ref(), self._cpp_obj))
         return self.__field_MyOtherIncludedField
 
     @property
@@ -213,7 +216,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(__fbthrift_move_shared(cpp_obj))
+        return MyStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

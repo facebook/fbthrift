@@ -20,6 +20,7 @@ from cpython cimport bool as pbool
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
+from libcpp.utility cimport move as cmove
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -31,9 +32,9 @@ from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
-  c_unit
+  c_unit,
+
 )
-from thrift.py3.types cimport move
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -43,6 +44,7 @@ from folly.executor cimport get_executor
 cimport folly.iobuf as __iobuf
 import folly.iobuf as __iobuf
 from folly.iobuf cimport move as move_iobuf
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -133,7 +135,7 @@ cdef api void call_cy_SomeService_bounce_map(
     unique_ptr[_module_types.std_unordered_map[cint32_t,string]] m
 ):
     __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(move_promise__module_types_std_unordered_map__cint32_t_string(cPromise))
-    arg_m = _module_types.std_unordered_map__Map__i32_string.create(_module_types.__fbthrift_move(m))
+    arg_m = _module_types.std_unordered_map__Map__i32_string.create(__to_shared_ptr(cmove(m)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -186,7 +188,7 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     unique_ptr[vector[cint64_t]] r
 ):
     __promise = Promise_cmap__binary_cint64_t.create(move_promise_cmap__binary_cint64_t(cPromise))
-    arg_r = _module_types.List__i64.create(_module_types.__fbthrift_move(r))
+    arg_r = _module_types.List__i64.create(__to_shared_ptr(cmove(r)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

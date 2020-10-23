@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -82,22 +81,6 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
         cCombo__isset __isset
 
-    cdef shared_ptr[vector[vector[cMyStruct]]] reference_shared_ptr_listOfOurMyStructLists "::thrift::py3::reference_shared_ptr<std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[cCombo]&, vector[vector[cMyStruct]]&)
-    cdef shared_ptr[vector[_module_types.cMyStruct]] reference_shared_ptr_theirMyStructList "::thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(shared_ptr[cCombo]&, vector[_module_types.cMyStruct]&)
-    cdef shared_ptr[vector[cMyStruct]] reference_shared_ptr_ourMyStructList "::thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(shared_ptr[cCombo]&, vector[cMyStruct]&)
-    cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] reference_shared_ptr_listOfTheirMyStructList "::thrift::py3::reference_shared_ptr<std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[cCombo]&, vector[vector[_module_types.cMyStruct]]&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cMyStruct] __fbthrift_move "std::move"(unique_ptr[cMyStruct])
-    cdef shared_ptr[cMyStruct] __fbthrift_move_shared "std::move"(shared_ptr[cMyStruct])
-    cdef unique_ptr[cMyStruct] __fbthrift_move_unique "std::move"(unique_ptr[cMyStruct])
-    cdef shared_ptr[cCombo] __fbthrift_move "std::move"(unique_ptr[cCombo])
-    cdef shared_ptr[cCombo] __fbthrift_move_shared "std::move"(shared_ptr[cCombo])
-    cdef unique_ptr[cCombo] __fbthrift_move_unique "std::move"(unique_ptr[cCombo])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
-    cdef shared_ptr[const cCombo] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Combo>"(shared_ptr[cCombo])
 
 
 
@@ -165,24 +148,4 @@ cdef class List__List__module_MyStruct(thrift.py3.types.List):
     @staticmethod
     cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] _make_instance(object items) except *
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[vector[cMyStruct]]] __fbthrift_move "std::move"(unique_ptr[vector[vector[cMyStruct]]])
-    cdef shared_ptr[vector[vector[cMyStruct]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[vector[cMyStruct]]])
-    cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] __fbthrift_move "std::move"(unique_ptr[vector[vector[_module_types.cMyStruct]]])
-    cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
-    cdef shared_ptr[vector[cMyStruct]] __fbthrift_move "std::move"(unique_ptr[vector[cMyStruct]])
-    cdef shared_ptr[vector[cMyStruct]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cMyStruct]])
-    cdef shared_ptr[vector[_module_types.cMyStruct]] __fbthrift_move "std::move"(unique_ptr[vector[_module_types.cMyStruct]])
-    cdef shared_ptr[vector[_module_types.cMyStruct]] __fbthrift_move_shared "std::move"(shared_ptr[vector[_module_types.cMyStruct]])
-cdef extern from "<utility>" nogil:
-    pass  
-    shared_ptr[cMyStruct] reference_shared_ptr_List__MyStruct "::thrift::py3::reference_shared_ptr<::cpp2::MyStruct>"(...)
-    shared_ptr[vector[cMyStruct]] reference_shared_ptr_List__List__MyStruct "::thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(...)
-    shared_ptr[_module_types.cMyStruct] reference_shared_ptr_List__module_MyStruct "::thrift::py3::reference_shared_ptr<::cpp2::MyStruct>"(...)
-    shared_ptr[vector[_module_types.cMyStruct]] reference_shared_ptr_List__List__module_MyStruct "::thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(...)
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[vector[cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[vector[vector[cMyStruct]]])
-    cdef shared_ptr[const vector[vector[_module_types.cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
-    cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::MyStruct>>"(shared_ptr[vector[cMyStruct]])
-    cdef shared_ptr[const vector[_module_types.cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::MyStruct>>"(shared_ptr[vector[_module_types.cMyStruct]])
 

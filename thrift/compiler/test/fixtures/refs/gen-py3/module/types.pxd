@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -295,90 +294,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cEmpty] def_field
         cStructWithRefAndAnnotCppNoexceptMoveCtor__isset __isset
 
-    cdef shared_ptr[cMyField] reference_shared_ptr_opt_ref "::thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_ref "::thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_req_ref "::thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
-    cdef shared_ptr[cMyUnion] reference_shared_ptr_u "::thrift::py3::reference_shared_ptr<::cpp2::MyUnion>"(shared_ptr[cStructWithUnion]&, cMyUnion&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_f "::thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithUnion]&, cMyField&)
-    cdef shared_ptr[vector[cRecursiveStruct]] reference_shared_ptr_mes "::thrift::py3::reference_shared_ptr<std::vector<::cpp2::RecursiveStruct>>"(shared_ptr[cRecursiveStruct]&, vector[cRecursiveStruct]&)
-    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_list_ref "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[cint32_t]&)
-    cdef shared_ptr[cset[cint32_t]] reference_shared_ptr_set_ref "::thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[cint32_t]&)
-    cdef shared_ptr[cmap[cint32_t,cint32_t]] reference_shared_ptr_map_ref "::thrift::py3::reference_shared_ptr<std::map<int32_t,int32_t>>"(shared_ptr[cStructWithContainers]&, cmap[cint32_t,cint32_t]&)
-    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_list_ref_unique "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[cint32_t]&)
-    cdef shared_ptr[cset[cint32_t]] reference_shared_ptr_set_ref_shared "::thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[cint32_t]&)
-    cdef shared_ptr[vector[cint32_t]] reference_shared_ptr_list_ref_shared_const "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[cint32_t]&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_opt_shared_const "::thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_shared_const "::thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_req_shared_const "::thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "::thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor]&, cEmpty&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cMyUnion] __fbthrift_move "std::move"(unique_ptr[cMyUnion])
-    cdef shared_ptr[cMyUnion] __fbthrift_move_shared "std::move"(shared_ptr[cMyUnion])
-    cdef unique_ptr[cMyUnion] __fbthrift_move_unique "std::move"(unique_ptr[cMyUnion])
-    cdef shared_ptr[cMyField] __fbthrift_move "std::move"(unique_ptr[cMyField])
-    cdef shared_ptr[cMyField] __fbthrift_move_shared "std::move"(shared_ptr[cMyField])
-    cdef unique_ptr[cMyField] __fbthrift_move_unique "std::move"(unique_ptr[cMyField])
-    cdef shared_ptr[cMyStruct] __fbthrift_move "std::move"(unique_ptr[cMyStruct])
-    cdef shared_ptr[cMyStruct] __fbthrift_move_shared "std::move"(shared_ptr[cMyStruct])
-    cdef unique_ptr[cMyStruct] __fbthrift_move_unique "std::move"(unique_ptr[cMyStruct])
-    cdef shared_ptr[cStructWithUnion] __fbthrift_move "std::move"(unique_ptr[cStructWithUnion])
-    cdef shared_ptr[cStructWithUnion] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithUnion])
-    cdef unique_ptr[cStructWithUnion] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithUnion])
-    cdef shared_ptr[cRecursiveStruct] __fbthrift_move "std::move"(unique_ptr[cRecursiveStruct])
-    cdef shared_ptr[cRecursiveStruct] __fbthrift_move_shared "std::move"(shared_ptr[cRecursiveStruct])
-    cdef unique_ptr[cRecursiveStruct] __fbthrift_move_unique "std::move"(unique_ptr[cRecursiveStruct])
-    cdef shared_ptr[cStructWithContainers] __fbthrift_move "std::move"(unique_ptr[cStructWithContainers])
-    cdef shared_ptr[cStructWithContainers] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithContainers])
-    cdef unique_ptr[cStructWithContainers] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithContainers])
-    cdef shared_ptr[cStructWithSharedConst] __fbthrift_move "std::move"(unique_ptr[cStructWithSharedConst])
-    cdef shared_ptr[cStructWithSharedConst] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithSharedConst])
-    cdef unique_ptr[cStructWithSharedConst] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithSharedConst])
-    cdef shared_ptr[cEmpty] __fbthrift_move "std::move"(unique_ptr[cEmpty])
-    cdef shared_ptr[cEmpty] __fbthrift_move_shared "std::move"(shared_ptr[cEmpty])
-    cdef unique_ptr[cEmpty] __fbthrift_move_unique "std::move"(unique_ptr[cEmpty])
-    cdef shared_ptr[cStructWithRef] __fbthrift_move "std::move"(unique_ptr[cStructWithRef])
-    cdef shared_ptr[cStructWithRef] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithRef])
-    cdef unique_ptr[cStructWithRef] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithRef])
-    cdef shared_ptr[cStructWithRefTypeUnique] __fbthrift_move "std::move"(unique_ptr[cStructWithRefTypeUnique])
-    cdef shared_ptr[cStructWithRefTypeUnique] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithRefTypeUnique])
-    cdef unique_ptr[cStructWithRefTypeUnique] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithRefTypeUnique])
-    cdef shared_ptr[cStructWithRefTypeShared] __fbthrift_move "std::move"(unique_ptr[cStructWithRefTypeShared])
-    cdef shared_ptr[cStructWithRefTypeShared] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithRefTypeShared])
-    cdef unique_ptr[cStructWithRefTypeShared] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithRefTypeShared])
-    cdef shared_ptr[cStructWithRefTypeSharedConst] __fbthrift_move "std::move"(unique_ptr[cStructWithRefTypeSharedConst])
-    cdef shared_ptr[cStructWithRefTypeSharedConst] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithRefTypeSharedConst])
-    cdef unique_ptr[cStructWithRefTypeSharedConst] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithRefTypeSharedConst])
-    cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] __fbthrift_move "std::move"(unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
-    cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] __fbthrift_move_shared "std::move"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
-    cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] __fbthrift_move_unique "std::move"(unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cMyUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyUnion>"(shared_ptr[cMyUnion])
-    cdef shared_ptr[const cMyField] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyField>"(shared_ptr[cMyField])
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
-    cdef shared_ptr[const cStructWithUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithUnion>"(shared_ptr[cStructWithUnion])
-    cdef shared_ptr[const cRecursiveStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::RecursiveStruct>"(shared_ptr[cRecursiveStruct])
-    cdef shared_ptr[const cStructWithContainers] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithContainers>"(shared_ptr[cStructWithContainers])
-    cdef shared_ptr[const cStructWithSharedConst] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithSharedConst>"(shared_ptr[cStructWithSharedConst])
-    cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Empty>"(shared_ptr[cEmpty])
-    cdef shared_ptr[const cStructWithRef] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRef>"(shared_ptr[cStructWithRef])
-    cdef shared_ptr[const cStructWithRefTypeUnique] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefTypeUnique>"(shared_ptr[cStructWithRefTypeUnique])
-    cdef shared_ptr[const cStructWithRefTypeShared] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefTypeShared>"(shared_ptr[cStructWithRefTypeShared])
-    cdef shared_ptr[const cStructWithRefTypeSharedConst] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefTypeSharedConst>"(shared_ptr[cStructWithRefTypeSharedConst])
-    cdef shared_ptr[const cStructWithRefAndAnnotCppNoexceptMoveCtor] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -659,23 +574,6 @@ cdef class Map__i32_i32(thrift.py3.types.Map):
     @staticmethod
     cdef shared_ptr[cmap[cint32_t,cint32_t]] _make_instance(object items) except *
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[cRecursiveStruct]] __fbthrift_move "std::move"(unique_ptr[vector[cRecursiveStruct]])
-    cdef shared_ptr[vector[cRecursiveStruct]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cRecursiveStruct]])
-    cdef shared_ptr[vector[cint32_t]] __fbthrift_move "std::move"(unique_ptr[vector[cint32_t]])
-    cdef shared_ptr[vector[cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cint32_t]])
-    cdef shared_ptr[cmap[cint32_t,cint32_t]] __fbthrift_move "std::move"(unique_ptr[cmap[cint32_t,cint32_t]])
-    cdef shared_ptr[cmap[cint32_t,cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[cint32_t,cint32_t]])
-    cdef shared_ptr[cset[cint32_t]] __fbthrift_move "std::move"(unique_ptr[cset[cint32_t]])
-    cdef shared_ptr[cset[cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[cset[cint32_t]])
-cdef extern from "<utility>" nogil:
-    pass  
-    shared_ptr[cRecursiveStruct] reference_shared_ptr_List__RecursiveStruct "::thrift::py3::reference_shared_ptr<::cpp2::RecursiveStruct>"(...)
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cRecursiveStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::RecursiveStruct>>"(shared_ptr[vector[cRecursiveStruct]])
-    cdef shared_ptr[const vector[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[cint32_t]])
-    cdef shared_ptr[const cmap[cint32_t,cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[cint32_t,cint32_t]])
-    cdef shared_ptr[const cset[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[cint32_t]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cStructWithRef ckStructWithRef "::cpp2::module_constants::kStructWithRef"()

@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -147,35 +146,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         unique_ptr[cSmallStruct] fieldX
         ccontainerStruct__isset __isset
 
-    cdef shared_ptr[cmap[string,cbool]] reference_shared_ptr_fieldB "::thrift::py3::reference_shared_ptr<std::map<std::string,bool>>"(shared_ptr[ccontainerStruct]&, cmap[string,cbool]&)
-    cdef shared_ptr[cset[cint32_t]] reference_shared_ptr_fieldC "::thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[ccontainerStruct]&, cset[cint32_t]&)
-    cdef shared_ptr[vector[vector[vector[cint32_t]]]] reference_shared_ptr_fieldF "::thrift::py3::reference_shared_ptr<std::vector<std::vector<std::vector<int32_t>>>>"(shared_ptr[ccontainerStruct]&, vector[vector[vector[cint32_t]]]&)
-    cdef shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]] reference_shared_ptr_fieldG "::thrift::py3::reference_shared_ptr<std::map<std::string,std::map<std::string,std::map<std::string,int32_t>>>>"(shared_ptr[ccontainerStruct]&, cmap[string,cmap[string,cmap[string,cint32_t]]]&)
-    cdef shared_ptr[vector[cset[cint32_t]]] reference_shared_ptr_fieldH "::thrift::py3::reference_shared_ptr<std::vector<std::set<int32_t>>>"(shared_ptr[ccontainerStruct]&, vector[cset[cint32_t]]&)
-    cdef shared_ptr[cmap[string,vector[cint32_t]]] reference_shared_ptr_fieldJ "::thrift::py3::reference_shared_ptr<std::map<std::string,std::vector<int32_t>>>"(shared_ptr[ccontainerStruct]&, cmap[string,vector[cint32_t]]&)
-    cdef shared_ptr[vector[vector[vector[vector[cint32_t]]]]] reference_shared_ptr_fieldK "::thrift::py3::reference_shared_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>>"(shared_ptr[ccontainerStruct]&, vector[vector[vector[vector[cint32_t]]]]&)
-    cdef shared_ptr[cset[cset[cset[cbool]]]] reference_shared_ptr_fieldL "::thrift::py3::reference_shared_ptr<std::set<std::set<std::set<bool>>>>"(shared_ptr[ccontainerStruct]&, cset[cset[cset[cbool]]]&)
-    cdef shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] reference_shared_ptr_fieldM "::thrift::py3::reference_shared_ptr<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>"(shared_ptr[ccontainerStruct]&, cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]&)
-    cdef shared_ptr[vector[Foo]] reference_shared_ptr_fieldN "::thrift::py3::reference_shared_ptr<std::vector<Foo>>"(shared_ptr[ccontainerStruct]&, vector[Foo]&)
-    cdef shared_ptr[vector[Bar]] reference_shared_ptr_fieldO "::thrift::py3::reference_shared_ptr<std::vector<Bar>>"(shared_ptr[ccontainerStruct]&, vector[Bar]&)
-    cdef shared_ptr[vector[Baz]] reference_shared_ptr_fieldP "::thrift::py3::reference_shared_ptr<std::vector<Baz>>"(shared_ptr[ccontainerStruct]&, vector[Baz]&)
-    cdef shared_ptr[cmap[string,cbool]] reference_shared_ptr_fieldR "::thrift::py3::reference_shared_ptr<std::map<std::string,bool>>"(shared_ptr[ccontainerStruct]&, cmap[string,cbool]&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldS "::thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldT "::thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldU "::thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldX "::thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cSmallStruct] __fbthrift_move "std::move"(unique_ptr[cSmallStruct])
-    cdef shared_ptr[cSmallStruct] __fbthrift_move_shared "std::move"(shared_ptr[cSmallStruct])
-    cdef unique_ptr[cSmallStruct] __fbthrift_move_unique "std::move"(unique_ptr[cSmallStruct])
-    cdef shared_ptr[ccontainerStruct] __fbthrift_move "std::move"(unique_ptr[ccontainerStruct])
-    cdef shared_ptr[ccontainerStruct] __fbthrift_move_shared "std::move"(shared_ptr[ccontainerStruct])
-    cdef unique_ptr[ccontainerStruct] __fbthrift_move_unique "std::move"(unique_ptr[ccontainerStruct])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cSmallStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SmallStruct>"(shared_ptr[cSmallStruct])
-    cdef shared_ptr[const ccontainerStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::containerStruct>"(shared_ptr[ccontainerStruct])
 
 
 
@@ -401,88 +371,4 @@ cdef class List__Baz__i32(thrift.py3.types.List):
     @staticmethod
     cdef shared_ptr[vector[Baz]] _make_instance(object items) except *
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[Bar]] __fbthrift_move "std::move"(unique_ptr[vector[Bar]])
-    cdef shared_ptr[vector[Bar]] __fbthrift_move_shared "std::move"(shared_ptr[vector[Bar]])
-    cdef shared_ptr[vector[Baz]] __fbthrift_move "std::move"(unique_ptr[vector[Baz]])
-    cdef shared_ptr[vector[Baz]] __fbthrift_move_shared "std::move"(shared_ptr[vector[Baz]])
-    cdef shared_ptr[vector[Foo]] __fbthrift_move "std::move"(unique_ptr[vector[Foo]])
-    cdef shared_ptr[vector[Foo]] __fbthrift_move_shared "std::move"(shared_ptr[vector[Foo]])
-    cdef shared_ptr[vector[vector[vector[vector[cint32_t]]]]] __fbthrift_move "std::move"(unique_ptr[vector[vector[vector[vector[cint32_t]]]]])
-    cdef shared_ptr[vector[vector[vector[vector[cint32_t]]]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[vector[vector[vector[cint32_t]]]]])
-    cdef shared_ptr[vector[vector[vector[cint32_t]]]] __fbthrift_move "std::move"(unique_ptr[vector[vector[vector[cint32_t]]]])
-    cdef shared_ptr[vector[vector[vector[cint32_t]]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[vector[vector[cint32_t]]]])
-    cdef shared_ptr[vector[vector[cint32_t]]] __fbthrift_move "std::move"(unique_ptr[vector[vector[cint32_t]]])
-    cdef shared_ptr[vector[vector[cint32_t]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[vector[cint32_t]]])
-    cdef shared_ptr[vector[cset[cint32_t]]] __fbthrift_move "std::move"(unique_ptr[vector[cset[cint32_t]]])
-    cdef shared_ptr[vector[cset[cint32_t]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cset[cint32_t]]])
-    cdef shared_ptr[vector[cset[string]]] __fbthrift_move "std::move"(unique_ptr[vector[cset[string]]])
-    cdef shared_ptr[vector[cset[string]]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cset[string]]])
-    cdef shared_ptr[vector[cint32_t]] __fbthrift_move "std::move"(unique_ptr[vector[cint32_t]])
-    cdef shared_ptr[vector[cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cint32_t]])
-    cdef shared_ptr[cmap[vector[cset[string]],string]] __fbthrift_move "std::move"(unique_ptr[cmap[vector[cset[string]],string]])
-    cdef shared_ptr[cmap[vector[cset[string]],string]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[vector[cset[string]],string]])
-    cdef shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] __fbthrift_move "std::move"(unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]])
-    cdef shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]])
-    cdef shared_ptr[cmap[string,vector[cint32_t]]] __fbthrift_move "std::move"(unique_ptr[cmap[string,vector[cint32_t]]])
-    cdef shared_ptr[cmap[string,vector[cint32_t]]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[string,vector[cint32_t]]])
-    cdef shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]] __fbthrift_move "std::move"(unique_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]])
-    cdef shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]])
-    cdef shared_ptr[cmap[string,cmap[string,cint32_t]]] __fbthrift_move "std::move"(unique_ptr[cmap[string,cmap[string,cint32_t]]])
-    cdef shared_ptr[cmap[string,cmap[string,cint32_t]]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[string,cmap[string,cint32_t]]])
-    cdef shared_ptr[cmap[string,cbool]] __fbthrift_move "std::move"(unique_ptr[cmap[string,cbool]])
-    cdef shared_ptr[cmap[string,cbool]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[string,cbool]])
-    cdef shared_ptr[cmap[string,cint32_t]] __fbthrift_move "std::move"(unique_ptr[cmap[string,cint32_t]])
-    cdef shared_ptr[cmap[string,cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[string,cint32_t]])
-    cdef shared_ptr[cset[vector[cint32_t]]] __fbthrift_move "std::move"(unique_ptr[cset[vector[cint32_t]]])
-    cdef shared_ptr[cset[vector[cint32_t]]] __fbthrift_move_shared "std::move"(shared_ptr[cset[vector[cint32_t]]])
-    cdef shared_ptr[cset[cset[cset[cbool]]]] __fbthrift_move "std::move"(unique_ptr[cset[cset[cset[cbool]]]])
-    cdef shared_ptr[cset[cset[cset[cbool]]]] __fbthrift_move_shared "std::move"(shared_ptr[cset[cset[cset[cbool]]]])
-    cdef shared_ptr[cset[cset[cbool]]] __fbthrift_move "std::move"(unique_ptr[cset[cset[cbool]]])
-    cdef shared_ptr[cset[cset[cbool]]] __fbthrift_move_shared "std::move"(shared_ptr[cset[cset[cbool]]])
-    cdef shared_ptr[cset[cbool]] __fbthrift_move "std::move"(unique_ptr[cset[cbool]])
-    cdef shared_ptr[cset[cbool]] __fbthrift_move_shared "std::move"(shared_ptr[cset[cbool]])
-    cdef shared_ptr[cset[cint32_t]] __fbthrift_move "std::move"(unique_ptr[cset[cint32_t]])
-    cdef shared_ptr[cset[cint32_t]] __fbthrift_move_shared "std::move"(shared_ptr[cset[cint32_t]])
-    cdef shared_ptr[cset[string]] __fbthrift_move "std::move"(unique_ptr[cset[string]])
-    cdef shared_ptr[cset[string]] __fbthrift_move_shared "std::move"(shared_ptr[cset[string]])
-cdef extern from "<utility>" nogil:
-    pass  
-    shared_ptr[vector[cint32_t]] reference_shared_ptr_List__List__i32 "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
-    shared_ptr[vector[vector[cint32_t]]] reference_shared_ptr_List__List__List__i32 "::thrift::py3::reference_shared_ptr<std::vector<std::vector<int32_t>>>"(...)
-    shared_ptr[cmap[string,cint32_t]] reference_shared_ptr_Map__string_Map__string_i32 "::thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
-    shared_ptr[cmap[string,cmap[string,cint32_t]]] reference_shared_ptr_Map__string_Map__string_Map__string_i32 "::thrift::py3::reference_shared_ptr<std::map<std::string,std::map<std::string,int32_t>>>"(...)
-    shared_ptr[cset[cint32_t]] reference_shared_ptr_List__Set__i32 "::thrift::py3::reference_shared_ptr<std::set<int32_t>>"(...)
-    shared_ptr[vector[cint32_t]] reference_shared_ptr_Map__string_List__i32 "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
-    shared_ptr[vector[vector[vector[cint32_t]]]] reference_shared_ptr_List__List__List__List__i32 "::thrift::py3::reference_shared_ptr<std::vector<std::vector<std::vector<int32_t>>>>"(...)
-    shared_ptr[cset[cbool]] reference_shared_ptr_Set__Set__bool "::thrift::py3::reference_shared_ptr<std::set<bool>>"(...)
-    shared_ptr[cset[cset[cbool]]] reference_shared_ptr_Set__Set__Set__bool "::thrift::py3::reference_shared_ptr<std::set<std::set<bool>>>"(...)
-    shared_ptr[vector[cint32_t]] reference_shared_ptr_Set__List__i32 "::thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
-    shared_ptr[cset[string]] reference_shared_ptr_List__Set__string "::thrift::py3::reference_shared_ptr<std::set<std::string>>"(...)
-    shared_ptr[vector[cset[string]]] reference_shared_ptr_Map__List__Set__string_string_key "::thrift::py3::reference_shared_ptr<std::vector<std::set<std::string>>>"(...)
-    shared_ptr[cset[vector[cint32_t]]] reference_shared_ptr_Map__Set__List__i32_Map__List__Set__string_string_key "::thrift::py3::reference_shared_ptr<std::set<std::vector<int32_t>>>"(...)
-    shared_ptr[cmap[vector[cset[string]],string]] reference_shared_ptr_Map__Set__List__i32_Map__List__Set__string_string "::thrift::py3::reference_shared_ptr<std::map<std::vector<std::set<std::string>>,std::string>>"(...)
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast<const std::vector<Bar>>"(shared_ptr[vector[Bar]])
-    cdef shared_ptr[const vector[Baz]] const_pointer_cast "std::const_pointer_cast<const std::vector<Baz>>"(shared_ptr[vector[Baz]])
-    cdef shared_ptr[const vector[Foo]] const_pointer_cast "std::const_pointer_cast<const std::vector<Foo>>"(shared_ptr[vector[Foo]])
-    cdef shared_ptr[const vector[vector[vector[vector[cint32_t]]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<std::vector<int32_t>>>>>"(shared_ptr[vector[vector[vector[vector[cint32_t]]]]])
-    cdef shared_ptr[const vector[vector[vector[cint32_t]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<int32_t>>>>"(shared_ptr[vector[vector[vector[cint32_t]]]])
-    cdef shared_ptr[const vector[vector[cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<int32_t>>>"(shared_ptr[vector[vector[cint32_t]]])
-    cdef shared_ptr[const vector[cset[cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<int32_t>>>"(shared_ptr[vector[cset[cint32_t]]])
-    cdef shared_ptr[const vector[cset[string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<std::string>>>"(shared_ptr[vector[cset[string]]])
-    cdef shared_ptr[const vector[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[cint32_t]])
-    cdef shared_ptr[const cmap[vector[cset[string]],string]] const_pointer_cast "std::const_pointer_cast<const std::map<std::vector<std::set<std::string>>,std::string>>"(shared_ptr[cmap[vector[cset[string]],string]])
-    cdef shared_ptr[const cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>"(shared_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]])
-    cdef shared_ptr[const cmap[string,vector[cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::vector<int32_t>>>"(shared_ptr[cmap[string,vector[cint32_t]]])
-    cdef shared_ptr[const cmap[string,cmap[string,cmap[string,cint32_t]]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::map<std::string,std::map<std::string,int32_t>>>>"(shared_ptr[cmap[string,cmap[string,cmap[string,cint32_t]]]])
-    cdef shared_ptr[const cmap[string,cmap[string,cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::map<std::string,int32_t>>>"(shared_ptr[cmap[string,cmap[string,cint32_t]]])
-    cdef shared_ptr[const cmap[string,cbool]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,bool>>"(shared_ptr[cmap[string,cbool]])
-    cdef shared_ptr[const cmap[string,cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,cint32_t]])
-    cdef shared_ptr[const cset[vector[cint32_t]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::vector<int32_t>>>"(shared_ptr[cset[vector[cint32_t]]])
-    cdef shared_ptr[const cset[cset[cset[cbool]]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::set<std::set<bool>>>>"(shared_ptr[cset[cset[cset[cbool]]]])
-    cdef shared_ptr[const cset[cset[cbool]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::set<bool>>>"(shared_ptr[cset[cset[cbool]]])
-    cdef shared_ptr[const cset[cbool]] const_pointer_cast "std::const_pointer_cast<const std::set<bool>>"(shared_ptr[cset[cbool]])
-    cdef shared_ptr[const cset[cint32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[cint32_t]])
-    cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast<const std::set<std::string>>"(shared_ptr[cset[string]])
 

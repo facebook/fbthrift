@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -85,11 +88,11 @@ cdef class AStruct(thrift.py3.types.Struct):
                 raise TypeError(f'FieldA is not a { int !r}.')
             FieldA = <cint32_t> FieldA
 
-        self._cpp_obj = __fbthrift_move(AStruct._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(AStruct._make_instance(
           NULL,
           NULL,
           FieldA,
-        ))
+        )))
 
     def __call__(
         AStruct self,
@@ -116,11 +119,11 @@ cdef class AStruct(thrift.py3.types.Struct):
             FieldA = <cint32_t> FieldA
 
         __fbthrift_inst = <AStruct>AStruct.__new__(AStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(AStruct._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(AStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           FieldA,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -147,7 +150,7 @@ cdef class AStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.FieldA = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AStruct", {
@@ -160,7 +163,7 @@ cdef class AStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cAStruct] cpp_obj):
         __fbthrift_inst = <AStruct>AStruct.__new__(AStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -176,7 +179,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cAStruct] cpp_obj = make_shared[cAStruct](
             deref(self._cpp_obj)
         )
-        return AStruct.create(__fbthrift_move_shared(cpp_obj))
+        return AStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -232,11 +235,11 @@ cdef class AStructB(thrift.py3.types.Struct):
         AStructB self, *,
         AStruct FieldA=None
     ):
-        self._cpp_obj = __fbthrift_move(AStructB._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(AStructB._make_instance(
           NULL,
           NULL,
           FieldA,
-        ))
+        )))
 
     def __call__(
         AStructB self,
@@ -262,11 +265,11 @@ cdef class AStructB(thrift.py3.types.Struct):
                 raise TypeError(f'FieldA is not a { AStruct !r}.')
 
         __fbthrift_inst = <AStructB>AStructB.__new__(AStructB)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(AStructB._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(AStructB._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           FieldA,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -291,7 +294,7 @@ cdef class AStructB(thrift.py3.types.Struct):
             deref(c_inst).FieldA = const_pointer_cast((<AStruct?>FieldA)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AStructB", {
@@ -303,7 +306,7 @@ cdef class AStructB(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cAStructB] cpp_obj):
         __fbthrift_inst = <AStructB>AStructB.__new__(AStructB)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -312,7 +315,7 @@ cdef class AStructB(thrift.py3.types.Struct):
         if self.__field_FieldA is None:
             if not deref(self._cpp_obj).FieldA:
                 return None
-            self.__field_FieldA = AStruct.create(reference_shared_ptr_FieldA(self._cpp_obj, deref(deref(self._cpp_obj).FieldA)))
+            self.__field_FieldA = AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).FieldA), self._cpp_obj))
         return self.__field_FieldA
 
 
@@ -323,7 +326,7 @@ cdef class AStructB(thrift.py3.types.Struct):
         cdef shared_ptr[cAStructB] cpp_obj = make_shared[cAStructB](
             deref(self._cpp_obj)
         )
-        return AStructB.create(__fbthrift_move_shared(cpp_obj))
+        return AStructB.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

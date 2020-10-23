@@ -39,6 +39,6 @@ to be converted from unicode to binary representation.
 }}{{#type:struct?}}{{> types/CythonPythonType}}.create({{!
   }}shared_ptr[{{> types/CythonCppType}}]({{field:py_name}}.release())){{/type:struct?}}{{!
 }}{{#type:container?}}{{> types/CythonPythonType}}.create({{!
-  }}{{> common/ModulePath}}.__fbthrift_move({{field:py_name}})){{/type:container?}}{{!
+  }}__to_shared_ptr(cmove({{field:py_name}}))){{/type:container?}}{{!
 }}{{#type:enum?}}{{> types/CythonPythonType}}(<int> {{field:py_name}}){{/type:enum?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

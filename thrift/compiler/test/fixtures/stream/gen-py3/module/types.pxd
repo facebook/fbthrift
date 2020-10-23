@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -63,14 +62,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cFooEx__isset __isset
 
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cFooEx] __fbthrift_move "std::move"(unique_ptr[cFooEx])
-    cdef shared_ptr[cFooEx] __fbthrift_move_shared "std::move"(shared_ptr[cFooEx])
-    cdef unique_ptr[cFooEx] __fbthrift_move_unique "std::move"(unique_ptr[cFooEx])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cFooEx] const_pointer_cast "std::const_pointer_cast<const ::cpp2::FooEx>"(shared_ptr[cFooEx])
-
 
 
 cdef class FooEx(thrift.py3.exceptions.GeneratedError):
@@ -87,11 +78,6 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
 
 
 
-
-
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef cClientBufferedStream[cint32_t] move_semistream "std::move"(cClientBufferedStream[cint32_t])
 
 cdef class ClientBufferedStream__i32(ClientBufferedStream):
     cdef unique_ptr[cClientBufferedStreamWrapper[cint32_t]] _gen

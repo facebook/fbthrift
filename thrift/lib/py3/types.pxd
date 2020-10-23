@@ -45,8 +45,12 @@ cdef extern from *:
     """
     void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const T] const_pointer_cast "std::const_pointer_cast"[T](shared_ptr[T])
+
 cdef extern from "thrift/lib/py3/types.h" namespace "::thrift::py3" nogil:
     shared_ptr[T] constant_shared_ptr[T](T)
+    shared_ptr[T] reference_shared_ptr[T](const T& ref, ...)
     const T& default_inst[T]()
 
 ctypedef PyObject* PyObjectPtr

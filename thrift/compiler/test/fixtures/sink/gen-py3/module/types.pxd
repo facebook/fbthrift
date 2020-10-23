@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -153,38 +152,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cSinkException2__isset __isset
 
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cInitialResponse] __fbthrift_move "std::move"(unique_ptr[cInitialResponse])
-    cdef shared_ptr[cInitialResponse] __fbthrift_move_shared "std::move"(shared_ptr[cInitialResponse])
-    cdef unique_ptr[cInitialResponse] __fbthrift_move_unique "std::move"(unique_ptr[cInitialResponse])
-    cdef shared_ptr[cFinalResponse] __fbthrift_move "std::move"(unique_ptr[cFinalResponse])
-    cdef shared_ptr[cFinalResponse] __fbthrift_move_shared "std::move"(shared_ptr[cFinalResponse])
-    cdef unique_ptr[cFinalResponse] __fbthrift_move_unique "std::move"(unique_ptr[cFinalResponse])
-    cdef shared_ptr[cSinkPayload] __fbthrift_move "std::move"(unique_ptr[cSinkPayload])
-    cdef shared_ptr[cSinkPayload] __fbthrift_move_shared "std::move"(shared_ptr[cSinkPayload])
-    cdef unique_ptr[cSinkPayload] __fbthrift_move_unique "std::move"(unique_ptr[cSinkPayload])
-    cdef shared_ptr[cCompatibleWithKeywordSink] __fbthrift_move "std::move"(unique_ptr[cCompatibleWithKeywordSink])
-    cdef shared_ptr[cCompatibleWithKeywordSink] __fbthrift_move_shared "std::move"(shared_ptr[cCompatibleWithKeywordSink])
-    cdef unique_ptr[cCompatibleWithKeywordSink] __fbthrift_move_unique "std::move"(unique_ptr[cCompatibleWithKeywordSink])
-    cdef shared_ptr[cInitialException] __fbthrift_move "std::move"(unique_ptr[cInitialException])
-    cdef shared_ptr[cInitialException] __fbthrift_move_shared "std::move"(shared_ptr[cInitialException])
-    cdef unique_ptr[cInitialException] __fbthrift_move_unique "std::move"(unique_ptr[cInitialException])
-    cdef shared_ptr[cSinkException1] __fbthrift_move "std::move"(unique_ptr[cSinkException1])
-    cdef shared_ptr[cSinkException1] __fbthrift_move_shared "std::move"(shared_ptr[cSinkException1])
-    cdef unique_ptr[cSinkException1] __fbthrift_move_unique "std::move"(unique_ptr[cSinkException1])
-    cdef shared_ptr[cSinkException2] __fbthrift_move "std::move"(unique_ptr[cSinkException2])
-    cdef shared_ptr[cSinkException2] __fbthrift_move_shared "std::move"(shared_ptr[cSinkException2])
-    cdef unique_ptr[cSinkException2] __fbthrift_move_unique "std::move"(unique_ptr[cSinkException2])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cInitialResponse] const_pointer_cast "std::const_pointer_cast<const ::cpp2::InitialResponse>"(shared_ptr[cInitialResponse])
-    cdef shared_ptr[const cFinalResponse] const_pointer_cast "std::const_pointer_cast<const ::cpp2::FinalResponse>"(shared_ptr[cFinalResponse])
-    cdef shared_ptr[const cSinkPayload] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SinkPayload>"(shared_ptr[cSinkPayload])
-    cdef shared_ptr[const cCompatibleWithKeywordSink] const_pointer_cast "std::const_pointer_cast<const ::cpp2::CompatibleWithKeywordSink>"(shared_ptr[cCompatibleWithKeywordSink])
-    cdef shared_ptr[const cInitialException] const_pointer_cast "std::const_pointer_cast<const ::cpp2::InitialException>"(shared_ptr[cInitialException])
-    cdef shared_ptr[const cSinkException1] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SinkException1>"(shared_ptr[cSinkException1])
-    cdef shared_ptr[const cSinkException2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SinkException2>"(shared_ptr[cSinkException2])
-
 
 
 cdef class InitialResponse(thrift.py3.types.Struct):
@@ -289,8 +256,6 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
 
     @staticmethod
     cdef create(shared_ptr[cSinkException2])
-
-
 
 
 

@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -54,11 +57,11 @@ cdef class Foo(thrift.py3.types.Struct):
                 raise TypeError(f'a is not a { int !r}.')
             a = <cint64_t> a
 
-        self._cpp_obj = __fbthrift_move(Foo._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(Foo._make_instance(
           NULL,
           NULL,
           a,
-        ))
+        )))
 
     def __call__(
         Foo self,
@@ -85,11 +88,11 @@ cdef class Foo(thrift.py3.types.Struct):
             a = <cint64_t> a
 
         __fbthrift_inst = <Foo>Foo.__new__(Foo)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(Foo._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Foo._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           a,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -116,7 +119,7 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(c_inst).__isset.a = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Foo", {
@@ -129,7 +132,7 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):
         __fbthrift_inst = <Foo>Foo.__new__(Foo)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -145,7 +148,7 @@ cdef class Foo(thrift.py3.types.Struct):
         cdef shared_ptr[cFoo] cpp_obj = make_shared[cFoo](
             deref(self._cpp_obj)
         )
-        return Foo.create(__fbthrift_move_shared(cpp_obj))
+        return Foo.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

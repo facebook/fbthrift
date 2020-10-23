@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -57,14 +60,14 @@ cdef class Foo(thrift.py3.types.Struct):
                 raise TypeError(f'myInteger is not a { int !r}.')
             myInteger = <cint32_t> myInteger
 
-        self._cpp_obj = __fbthrift_move(Foo._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(Foo._make_instance(
           NULL,
           NULL,
           myInteger,
           myString,
           myBools,
           myNumbers,
-        ))
+        )))
 
     def __call__(
         Foo self,
@@ -119,14 +122,14 @@ cdef class Foo(thrift.py3.types.Struct):
                 raise TypeError(f'myString is not a { str !r}.')
 
         __fbthrift_inst = <Foo>Foo.__new__(Foo)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(Foo._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Foo._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           myInteger,
           myString,
           myBools,
           myNumbers,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -166,7 +169,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if myInteger is not None:
             deref(c_inst).myInteger_ref().assign(myInteger)
         if myString is not None:
-            deref(c_inst).myString_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(myString.encode('utf-8'))))
+            deref(c_inst).myString_ref().assign(cmove(thrift.py3.types.bytes_to_string(myString.encode('utf-8'))))
             deref(c_inst).__isset.myString = True
         if myBools is not None:
             deref(c_inst).myBools_ref().assign(deref(List__bool(myBools)._cpp_obj))
@@ -175,7 +178,7 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(c_inst).myNumbers_ref().assign(deref(List__i32(myNumbers)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Foo", {
@@ -194,7 +197,7 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):
         __fbthrift_inst = <Foo>Foo.__new__(Foo)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -213,14 +216,14 @@ cdef class Foo(thrift.py3.types.Struct):
     def myBools(self):
 
         if self.__field_myBools is None:
-            self.__field_myBools = List__bool.create(reference_shared_ptr_myBools(self._cpp_obj, deref(self._cpp_obj).myBools_ref().value()))
+            self.__field_myBools = List__bool.create(__reference_shared_ptr(deref(self._cpp_obj).myBools_ref().ref(), self._cpp_obj))
         return self.__field_myBools
 
     @property
     def myNumbers(self):
 
         if self.__field_myNumbers is None:
-            self.__field_myNumbers = List__i32.create(reference_shared_ptr_myNumbers(self._cpp_obj, deref(self._cpp_obj).myNumbers_ref().value()))
+            self.__field_myNumbers = List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).myNumbers_ref().ref(), self._cpp_obj))
         return self.__field_myNumbers
 
 
@@ -231,7 +234,7 @@ cdef class Foo(thrift.py3.types.Struct):
         cdef shared_ptr[cFoo] cpp_obj = make_shared[cFoo](
             deref(self._cpp_obj)
         )
-        return Foo.create(__fbthrift_move_shared(cpp_obj))
+        return Foo.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -291,14 +294,14 @@ cdef class List__bool(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[cbool]] c_items):
         __fbthrift_inst = <List__bool>List__bool.__new__(List__bool)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__bool self):
         cdef shared_ptr[vector[cbool]] cpp_obj = make_shared[vector[cbool]](
             deref(self._cpp_obj)
         )
-        return List__bool.create(__fbthrift_move_shared(cpp_obj))
+        return List__bool.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -321,7 +324,7 @@ cdef class List__bool(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__bool.create(__fbthrift_move_shared(c_inst))
+            return List__bool.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -420,14 +423,14 @@ cdef class List__i32(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[cint32_t]] c_items):
         __fbthrift_inst = <List__i32>List__i32.__new__(List__i32)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__i32 self):
         cdef shared_ptr[vector[cint32_t]] cpp_obj = make_shared[vector[cint32_t]](
             deref(self._cpp_obj)
         )
-        return List__i32.create(__fbthrift_move_shared(cpp_obj))
+        return List__i32.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -451,7 +454,7 @@ cdef class List__i32(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__i32.create(__fbthrift_move_shared(c_inst))
+            return List__i32.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

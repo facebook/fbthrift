@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -139,27 +138,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string password
         cSecretStruct__isset __isset
 
-    cdef shared_ptr[cMyStructNestedAnnotation] reference_shared_ptr_nest "::thrift::py3::reference_shared_ptr<::cpp2::MyStructNestedAnnotation>"(shared_ptr[cMyStructAnnotation]&, cMyStructNestedAnnotation&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cMyStructNestedAnnotation] __fbthrift_move "std::move"(unique_ptr[cMyStructNestedAnnotation])
-    cdef shared_ptr[cMyStructNestedAnnotation] __fbthrift_move_shared "std::move"(shared_ptr[cMyStructNestedAnnotation])
-    cdef unique_ptr[cMyStructNestedAnnotation] __fbthrift_move_unique "std::move"(unique_ptr[cMyStructNestedAnnotation])
-    cdef shared_ptr[cMyStructAnnotation] __fbthrift_move "std::move"(unique_ptr[cMyStructAnnotation])
-    cdef shared_ptr[cMyStructAnnotation] __fbthrift_move_shared "std::move"(shared_ptr[cMyStructAnnotation])
-    cdef unique_ptr[cMyStructAnnotation] __fbthrift_move_unique "std::move"(unique_ptr[cMyStructAnnotation])
-    cdef shared_ptr[cMyStruct] __fbthrift_move "std::move"(unique_ptr[cMyStruct])
-    cdef shared_ptr[cMyStruct] __fbthrift_move_shared "std::move"(shared_ptr[cMyStruct])
-    cdef unique_ptr[cMyStruct] __fbthrift_move_unique "std::move"(unique_ptr[cMyStruct])
-    cdef shared_ptr[cSecretStruct] __fbthrift_move "std::move"(unique_ptr[cSecretStruct])
-    cdef shared_ptr[cSecretStruct] __fbthrift_move_shared "std::move"(shared_ptr[cSecretStruct])
-    cdef unique_ptr[cSecretStruct] __fbthrift_move_unique "std::move"(unique_ptr[cSecretStruct])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cMyStructNestedAnnotation] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStructNestedAnnotation>"(shared_ptr[cMyStructNestedAnnotation])
-    cdef shared_ptr[const cMyStructAnnotation] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStructAnnotation>"(shared_ptr[cMyStructAnnotation])
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
-    cdef shared_ptr[const cSecretStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SecretStruct>"(shared_ptr[cSecretStruct])
 
 
 
@@ -230,8 +208,6 @@ cdef class SecretStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cSecretStruct])
-
-
 
 
 

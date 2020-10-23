@@ -17,6 +17,7 @@ from cpython cimport bool as pbool
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
+from libcpp.utility cimport move as cmove
 from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
 from thrift.py3.client cimport cRequestChannel_ptr, makeClientWrapper, cClientWrapper
@@ -26,7 +27,6 @@ from folly.cast cimport down_cast_ptr
 from libcpp.typeinfo cimport type_info
 import thrift.py3.types
 cimport thrift.py3.types
-from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
@@ -196,7 +196,7 @@ cdef class MyService(thrift.py3.client.Client):
 
     cdef bind_client(MyService self, cRequestChannel_ptr&& channel):
         self._client = makeClientWrapper[cMyServiceAsyncClient, cMyServiceClientWrapper](
-            thrift.py3.client.move(channel)
+            cmove(channel)
         )
 
     @cython.always_allow_keywords(True)
@@ -325,7 +325,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
 
     cdef bind_client(MyServiceFast self, cRequestChannel_ptr&& channel):
         self._client = makeClientWrapper[cMyServiceFastAsyncClient, cMyServiceFastClientWrapper](
-            thrift.py3.client.move(channel)
+            cmove(channel)
         )
 
     @cython.always_allow_keywords(True)
@@ -454,7 +454,7 @@ cdef class DbMixedStackArguments(thrift.py3.client.Client):
 
     cdef bind_client(DbMixedStackArguments self, cRequestChannel_ptr&& channel):
         self._client = makeClientWrapper[cDbMixedStackArgumentsAsyncClient, cDbMixedStackArgumentsClientWrapper](
-            thrift.py3.client.move(channel)
+            cmove(channel)
         )
 
     @cython.always_allow_keywords(True)

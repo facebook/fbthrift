@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -51,11 +54,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStruct self, *,
         str field=None
     ):
-        self._cpp_obj = __fbthrift_move(MyStruct._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
           NULL,
           NULL,
           field,
-        ))
+        )))
 
     def __call__(
         MyStruct self,
@@ -81,11 +84,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'field is not a { str !r}.')
 
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStruct._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           field,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -108,11 +111,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 pass
 
         if field is not None:
-            deref(c_inst).field_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(field.encode('utf-8'))))
+            deref(c_inst).field_ref().assign(cmove(thrift.py3.types.bytes_to_string(field.encode('utf-8'))))
             deref(c_inst).__isset.field = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
@@ -125,7 +128,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -141,7 +144,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(__fbthrift_move_shared(cpp_obj))
+        return MyStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -200,14 +203,14 @@ cdef class Combo(thrift.py3.types.Struct):
         ourMyStructList=None,
         listOfTheirMyStructList=None
     ):
-        self._cpp_obj = __fbthrift_move(Combo._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(Combo._make_instance(
           NULL,
           NULL,
           listOfOurMyStructLists,
           theirMyStructList,
           ourMyStructList,
           listOfTheirMyStructList,
-        ))
+        )))
 
     def __call__(
         Combo self,
@@ -253,14 +256,14 @@ cdef class Combo(thrift.py3.types.Struct):
             return self
 
         __fbthrift_inst = <Combo>Combo.__new__(Combo)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(Combo._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Combo._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           listOfOurMyStructLists,
           theirMyStructList,
           ourMyStructList,
           listOfTheirMyStructList,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -314,7 +317,7 @@ cdef class Combo(thrift.py3.types.Struct):
             deref(c_inst).__isset.listOfTheirMyStructList = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Combo", {
@@ -333,35 +336,35 @@ cdef class Combo(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cCombo] cpp_obj):
         __fbthrift_inst = <Combo>Combo.__new__(Combo)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
     def listOfOurMyStructLists(self):
 
         if self.__field_listOfOurMyStructLists is None:
-            self.__field_listOfOurMyStructLists = List__List__MyStruct.create(reference_shared_ptr_listOfOurMyStructLists(self._cpp_obj, deref(self._cpp_obj).listOfOurMyStructLists_ref().value()))
+            self.__field_listOfOurMyStructLists = List__List__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).listOfOurMyStructLists_ref().ref(), self._cpp_obj))
         return self.__field_listOfOurMyStructLists
 
     @property
     def theirMyStructList(self):
 
         if self.__field_theirMyStructList is None:
-            self.__field_theirMyStructList = List__module_MyStruct.create(reference_shared_ptr_theirMyStructList(self._cpp_obj, deref(self._cpp_obj).theirMyStructList_ref().value()))
+            self.__field_theirMyStructList = List__module_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).theirMyStructList_ref().ref(), self._cpp_obj))
         return self.__field_theirMyStructList
 
     @property
     def ourMyStructList(self):
 
         if self.__field_ourMyStructList is None:
-            self.__field_ourMyStructList = List__MyStruct.create(reference_shared_ptr_ourMyStructList(self._cpp_obj, deref(self._cpp_obj).ourMyStructList_ref().value()))
+            self.__field_ourMyStructList = List__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).ourMyStructList_ref().ref(), self._cpp_obj))
         return self.__field_ourMyStructList
 
     @property
     def listOfTheirMyStructList(self):
 
         if self.__field_listOfTheirMyStructList is None:
-            self.__field_listOfTheirMyStructList = List__List__module_MyStruct.create(reference_shared_ptr_listOfTheirMyStructList(self._cpp_obj, deref(self._cpp_obj).listOfTheirMyStructList_ref().value()))
+            self.__field_listOfTheirMyStructList = List__List__module_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).listOfTheirMyStructList_ref().ref(), self._cpp_obj))
         return self.__field_listOfTheirMyStructList
 
 
@@ -372,7 +375,7 @@ cdef class Combo(thrift.py3.types.Struct):
         cdef shared_ptr[cCombo] cpp_obj = make_shared[cCombo](
             deref(self._cpp_obj)
         )
-        return Combo.create(__fbthrift_move_shared(cpp_obj))
+        return Combo.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -432,14 +435,14 @@ cdef class List__MyStruct(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[cMyStruct]] c_items):
         __fbthrift_inst = <List__MyStruct>List__MyStruct.__new__(List__MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__MyStruct self):
         cdef shared_ptr[vector[cMyStruct]] cpp_obj = make_shared[vector[cMyStruct]](
             deref(self._cpp_obj)
         )
-        return List__MyStruct.create(__fbthrift_move_shared(cpp_obj))
+        return List__MyStruct.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -462,7 +465,7 @@ cdef class List__MyStruct(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__MyStruct.create(__fbthrift_move_shared(c_inst))
+            return List__MyStruct.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -471,7 +474,7 @@ cdef class List__MyStruct(thrift.py3.types.List):
                 index = size + index
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            citem = reference_shared_ptr_List__MyStruct(self._cpp_obj, deref(self._cpp_obj)[index])
+            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
             return MyStruct.create(citem)
 
     def __contains__(self, item):
@@ -487,7 +490,7 @@ cdef class List__MyStruct(thrift.py3.types.List):
         cdef shared_ptr[cMyStruct] citem
         cdef vector[cMyStruct].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
-            citem = reference_shared_ptr_List__MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield MyStruct.create(citem)
             inc(loc)
 
@@ -497,7 +500,7 @@ cdef class List__MyStruct(thrift.py3.types.List):
         cdef shared_ptr[cMyStruct] citem
         cdef vector[cMyStruct].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
-            citem = reference_shared_ptr_List__MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield MyStruct.create(citem)
             inc(loc)
 
@@ -561,14 +564,14 @@ cdef class List__List__MyStruct(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[vector[cMyStruct]]] c_items):
         __fbthrift_inst = <List__List__MyStruct>List__List__MyStruct.__new__(List__List__MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__List__MyStruct self):
         cdef shared_ptr[vector[vector[cMyStruct]]] cpp_obj = make_shared[vector[vector[cMyStruct]]](
             deref(self._cpp_obj)
         )
-        return List__List__MyStruct.create(__fbthrift_move_shared(cpp_obj))
+        return List__List__MyStruct.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -593,7 +596,7 @@ cdef class List__List__MyStruct(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__List__MyStruct.create(__fbthrift_move_shared(c_inst))
+            return List__List__MyStruct.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -602,7 +605,7 @@ cdef class List__List__MyStruct(thrift.py3.types.List):
                 index = size + index
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            citem = reference_shared_ptr_List__List__MyStruct(self._cpp_obj, deref(self._cpp_obj)[index])
+            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
             return List__MyStruct.create(citem)
 
     def __contains__(self, item):
@@ -623,7 +626,7 @@ cdef class List__List__MyStruct(thrift.py3.types.List):
         cdef shared_ptr[vector[cMyStruct]] citem
         cdef vector[vector[cMyStruct]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
-            citem = reference_shared_ptr_List__List__MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield List__MyStruct.create(citem)
             inc(loc)
 
@@ -633,7 +636,7 @@ cdef class List__List__MyStruct(thrift.py3.types.List):
         cdef shared_ptr[vector[cMyStruct]] citem
         cdef vector[vector[cMyStruct]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
-            citem = reference_shared_ptr_List__List__MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield List__MyStruct.create(citem)
             inc(loc)
 
@@ -707,14 +710,14 @@ cdef class List__module_MyStruct(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[_module_types.cMyStruct]] c_items):
         __fbthrift_inst = <List__module_MyStruct>List__module_MyStruct.__new__(List__module_MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__module_MyStruct self):
         cdef shared_ptr[vector[_module_types.cMyStruct]] cpp_obj = make_shared[vector[_module_types.cMyStruct]](
             deref(self._cpp_obj)
         )
-        return List__module_MyStruct.create(__fbthrift_move_shared(cpp_obj))
+        return List__module_MyStruct.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -737,7 +740,7 @@ cdef class List__module_MyStruct(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__module_MyStruct.create(__fbthrift_move_shared(c_inst))
+            return List__module_MyStruct.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -746,7 +749,7 @@ cdef class List__module_MyStruct(thrift.py3.types.List):
                 index = size + index
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            citem = reference_shared_ptr_List__module_MyStruct(self._cpp_obj, deref(self._cpp_obj)[index])
+            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
             return _module_types.MyStruct.create(citem)
 
     def __contains__(self, item):
@@ -762,7 +765,7 @@ cdef class List__module_MyStruct(thrift.py3.types.List):
         cdef shared_ptr[_module_types.cMyStruct] citem
         cdef vector[_module_types.cMyStruct].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
-            citem = reference_shared_ptr_List__module_MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield _module_types.MyStruct.create(citem)
             inc(loc)
 
@@ -772,7 +775,7 @@ cdef class List__module_MyStruct(thrift.py3.types.List):
         cdef shared_ptr[_module_types.cMyStruct] citem
         cdef vector[_module_types.cMyStruct].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
-            citem = reference_shared_ptr_List__module_MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield _module_types.MyStruct.create(citem)
             inc(loc)
 
@@ -836,14 +839,14 @@ cdef class List__List__module_MyStruct(thrift.py3.types.List):
     @staticmethod
     cdef create(shared_ptr[vector[vector[_module_types.cMyStruct]]] c_items):
         __fbthrift_inst = <List__List__module_MyStruct>List__List__module_MyStruct.__new__(List__List__module_MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(c_items)
+        __fbthrift_inst._cpp_obj = cmove(c_items)
         return __fbthrift_inst
 
     def __copy__(List__List__module_MyStruct self):
         cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] cpp_obj = make_shared[vector[vector[_module_types.cMyStruct]]](
             deref(self._cpp_obj)
         )
-        return List__List__module_MyStruct.create(__fbthrift_move_shared(cpp_obj))
+        return List__List__module_MyStruct.create(cmove(cpp_obj))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -868,7 +871,7 @@ cdef class List__List__module_MyStruct(thrift.py3.types.List):
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
                 deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__List__module_MyStruct.create(__fbthrift_move_shared(c_inst))
+            return List__List__module_MyStruct.create(cmove(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -877,7 +880,7 @@ cdef class List__List__module_MyStruct(thrift.py3.types.List):
                 index = size + index
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            citem = reference_shared_ptr_List__List__module_MyStruct(self._cpp_obj, deref(self._cpp_obj)[index])
+            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
             return List__module_MyStruct.create(citem)
 
     def __contains__(self, item):
@@ -898,7 +901,7 @@ cdef class List__List__module_MyStruct(thrift.py3.types.List):
         cdef shared_ptr[vector[_module_types.cMyStruct]] citem
         cdef vector[vector[_module_types.cMyStruct]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
-            citem = reference_shared_ptr_List__List__module_MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield List__module_MyStruct.create(citem)
             inc(loc)
 
@@ -908,7 +911,7 @@ cdef class List__List__module_MyStruct(thrift.py3.types.List):
         cdef shared_ptr[vector[_module_types.cMyStruct]] citem
         cdef vector[vector[_module_types.cMyStruct]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
-            citem = reference_shared_ptr_List__List__module_MyStruct(self._cpp_obj, deref(loc))
+            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
             yield List__module_MyStruct.create(citem)
             inc(loc)
 

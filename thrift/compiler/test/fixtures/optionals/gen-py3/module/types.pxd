@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -144,27 +143,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         vector[cVehicle] vehicles
         cPerson__isset __isset
 
-    cdef shared_ptr[cColor] reference_shared_ptr_color "::thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)
-    cdef shared_ptr[cColor] reference_shared_ptr_favoriteColor "::thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cPerson]&, cColor&)
-    cdef shared_ptr[cset[cint64_t]] reference_shared_ptr_friends "::thrift::py3::reference_shared_ptr<std::set<int64_t>>"(shared_ptr[cPerson]&, cset[cint64_t]&)
-    cdef shared_ptr[cmap[cAnimal,string]] reference_shared_ptr_petNames "::thrift::py3::reference_shared_ptr<std::map<::cpp2::Animal,std::string>>"(shared_ptr[cPerson]&, cmap[cAnimal,string]&)
-    cdef shared_ptr[vector[cVehicle]] reference_shared_ptr_vehicles "::thrift::py3::reference_shared_ptr<std::vector<::cpp2::Vehicle>>"(shared_ptr[cPerson]&, vector[cVehicle]&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cColor] __fbthrift_move "std::move"(unique_ptr[cColor])
-    cdef shared_ptr[cColor] __fbthrift_move_shared "std::move"(shared_ptr[cColor])
-    cdef unique_ptr[cColor] __fbthrift_move_unique "std::move"(unique_ptr[cColor])
-    cdef shared_ptr[cVehicle] __fbthrift_move "std::move"(unique_ptr[cVehicle])
-    cdef shared_ptr[cVehicle] __fbthrift_move_shared "std::move"(shared_ptr[cVehicle])
-    cdef unique_ptr[cVehicle] __fbthrift_move_unique "std::move"(unique_ptr[cVehicle])
-    cdef shared_ptr[cPerson] __fbthrift_move "std::move"(unique_ptr[cPerson])
-    cdef shared_ptr[cPerson] __fbthrift_move_shared "std::move"(shared_ptr[cPerson])
-    cdef unique_ptr[cPerson] __fbthrift_move_unique "std::move"(unique_ptr[cPerson])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cColor] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Color>"(shared_ptr[cColor])
-    cdef shared_ptr[const cVehicle] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Vehicle>"(shared_ptr[cVehicle])
-    cdef shared_ptr[const cPerson] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Person>"(shared_ptr[cPerson])
 
 
 
@@ -254,18 +232,4 @@ cdef class List__Vehicle(thrift.py3.types.List):
     @staticmethod
     cdef shared_ptr[vector[cVehicle]] _make_instance(object items) except *
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[cVehicle]] __fbthrift_move "std::move"(unique_ptr[vector[cVehicle]])
-    cdef shared_ptr[vector[cVehicle]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cVehicle]])
-    cdef shared_ptr[cmap[cAnimal,string]] __fbthrift_move "std::move"(unique_ptr[cmap[cAnimal,string]])
-    cdef shared_ptr[cmap[cAnimal,string]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[cAnimal,string]])
-    cdef shared_ptr[cset[cint64_t]] __fbthrift_move "std::move"(unique_ptr[cset[cint64_t]])
-    cdef shared_ptr[cset[cint64_t]] __fbthrift_move_shared "std::move"(shared_ptr[cset[cint64_t]])
-cdef extern from "<utility>" nogil:
-    pass  
-    shared_ptr[cVehicle] reference_shared_ptr_List__Vehicle "::thrift::py3::reference_shared_ptr<::cpp2::Vehicle>"(...)
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::Vehicle>>"(shared_ptr[vector[cVehicle]])
-    cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast<const std::map<::cpp2::Animal,std::string>>"(shared_ptr[cmap[cAnimal,string]])
-    cdef shared_ptr[const cset[cint64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[cint64_t]])
 

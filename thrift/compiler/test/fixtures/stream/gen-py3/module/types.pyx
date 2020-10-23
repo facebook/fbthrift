@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -50,10 +53,10 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __init__(
         FooEx self
     ):
-        self._cpp_obj = __fbthrift_move(FooEx._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(FooEx._make_instance(
           NULL,
           NULL,
-        ))
+        )))
         _builtins.Exception.__init__(self, )
 
 
@@ -70,7 +73,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
 
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("FooEx", {
@@ -82,7 +85,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     cdef create(shared_ptr[cFooEx] cpp_obj):
         __fbthrift_inst = <FooEx>FooEx.__new__(FooEx, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         _builtins.Exception.__init__(__fbthrift_inst, )
         return __fbthrift_inst
 
@@ -94,7 +97,7 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
         cdef shared_ptr[cFooEx] cpp_obj = make_shared[cFooEx](
             deref(self._cpp_obj)
         )
-        return FooEx.create(__fbthrift_move_shared(cpp_obj))
+        return FooEx.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

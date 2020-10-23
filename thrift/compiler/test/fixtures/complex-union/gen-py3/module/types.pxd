@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -205,52 +204,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const cNonCopyableStruct& get_s() const
         cNonCopyableStruct& set_s(const cNonCopyableStruct&)
 
-    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "::thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cComplexUnion]&, vector[cint64_t]&)
-    cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "::thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cComplexUnion]&, vector[string]&)
-    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "::thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cComplexUnion]&, cmap[cint16_t,string]&)
-    cdef shared_ptr[string] reference_shared_ptr_stringRef "::thrift::py3::reference_shared_ptr<std::string>"(shared_ptr[cComplexUnion]&, string&)
-    cdef shared_ptr[vector[cint64_t]] reference_shared_ptr_intListValue "::thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cListUnion]&, vector[cint64_t]&)
-    cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "::thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cListUnion]&, vector[string]&)
-    cdef shared_ptr[cmap[cint16_t,string]] reference_shared_ptr_typedefValue "::thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cVal]&, cmap[cint16_t,string]&)
-    cdef shared_ptr[cVal] reference_shared_ptr_v1 "::thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
-    cdef shared_ptr[cVal] reference_shared_ptr_v2 "::thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
-    cdef shared_ptr[cNonCopyableStruct] reference_shared_ptr_s "::thrift::py3::reference_shared_ptr<::cpp2::NonCopyableStruct>"(shared_ptr[cNonCopyableUnion]&, cNonCopyableStruct&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cComplexUnion] __fbthrift_move "std::move"(unique_ptr[cComplexUnion])
-    cdef shared_ptr[cComplexUnion] __fbthrift_move_shared "std::move"(shared_ptr[cComplexUnion])
-    cdef unique_ptr[cComplexUnion] __fbthrift_move_unique "std::move"(unique_ptr[cComplexUnion])
-    cdef shared_ptr[cListUnion] __fbthrift_move "std::move"(unique_ptr[cListUnion])
-    cdef shared_ptr[cListUnion] __fbthrift_move_shared "std::move"(shared_ptr[cListUnion])
-    cdef unique_ptr[cListUnion] __fbthrift_move_unique "std::move"(unique_ptr[cListUnion])
-    cdef shared_ptr[cDataUnion] __fbthrift_move "std::move"(unique_ptr[cDataUnion])
-    cdef shared_ptr[cDataUnion] __fbthrift_move_shared "std::move"(shared_ptr[cDataUnion])
-    cdef unique_ptr[cDataUnion] __fbthrift_move_unique "std::move"(unique_ptr[cDataUnion])
-    cdef shared_ptr[cVal] __fbthrift_move "std::move"(unique_ptr[cVal])
-    cdef shared_ptr[cVal] __fbthrift_move_shared "std::move"(shared_ptr[cVal])
-    cdef unique_ptr[cVal] __fbthrift_move_unique "std::move"(unique_ptr[cVal])
-    cdef shared_ptr[cValUnion] __fbthrift_move "std::move"(unique_ptr[cValUnion])
-    cdef shared_ptr[cValUnion] __fbthrift_move_shared "std::move"(shared_ptr[cValUnion])
-    cdef unique_ptr[cValUnion] __fbthrift_move_unique "std::move"(unique_ptr[cValUnion])
-    cdef shared_ptr[cVirtualComplexUnion] __fbthrift_move "std::move"(unique_ptr[cVirtualComplexUnion])
-    cdef shared_ptr[cVirtualComplexUnion] __fbthrift_move_shared "std::move"(shared_ptr[cVirtualComplexUnion])
-    cdef unique_ptr[cVirtualComplexUnion] __fbthrift_move_unique "std::move"(unique_ptr[cVirtualComplexUnion])
-    cdef shared_ptr[cNonCopyableStruct] __fbthrift_move "std::move"(unique_ptr[cNonCopyableStruct])
-    cdef shared_ptr[cNonCopyableStruct] __fbthrift_move_shared "std::move"(shared_ptr[cNonCopyableStruct])
-    cdef unique_ptr[cNonCopyableStruct] __fbthrift_move_unique "std::move"(unique_ptr[cNonCopyableStruct])
-    cdef shared_ptr[cNonCopyableUnion] __fbthrift_move "std::move"(unique_ptr[cNonCopyableUnion])
-    cdef shared_ptr[cNonCopyableUnion] __fbthrift_move_shared "std::move"(shared_ptr[cNonCopyableUnion])
-    cdef unique_ptr[cNonCopyableUnion] __fbthrift_move_unique "std::move"(unique_ptr[cNonCopyableUnion])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cComplexUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::ComplexUnion>"(shared_ptr[cComplexUnion])
-    cdef shared_ptr[const cListUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::ListUnion>"(shared_ptr[cListUnion])
-    cdef shared_ptr[const cDataUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::DataUnion>"(shared_ptr[cDataUnion])
-    cdef shared_ptr[const cVal] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Val>"(shared_ptr[cVal])
-    cdef shared_ptr[const cValUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::ValUnion>"(shared_ptr[cValUnion])
-    cdef shared_ptr[const cVirtualComplexUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::VirtualComplexUnion>"(shared_ptr[cVirtualComplexUnion])
-    cdef shared_ptr[const cNonCopyableStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NonCopyableStruct>"(shared_ptr[cNonCopyableStruct])
-    cdef shared_ptr[const cNonCopyableUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NonCopyableUnion>"(shared_ptr[cNonCopyableUnion])
 
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -442,17 +395,4 @@ cdef class Map__i16_string(thrift.py3.types.Map):
     @staticmethod
     cdef shared_ptr[cmap[cint16_t,string]] _make_instance(object items) except *
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[cint64_t]] __fbthrift_move "std::move"(unique_ptr[vector[cint64_t]])
-    cdef shared_ptr[vector[cint64_t]] __fbthrift_move_shared "std::move"(shared_ptr[vector[cint64_t]])
-    cdef shared_ptr[vector[string]] __fbthrift_move "std::move"(unique_ptr[vector[string]])
-    cdef shared_ptr[vector[string]] __fbthrift_move_shared "std::move"(shared_ptr[vector[string]])
-    cdef shared_ptr[cmap[cint16_t,string]] __fbthrift_move "std::move"(unique_ptr[cmap[cint16_t,string]])
-    cdef shared_ptr[cmap[cint16_t,string]] __fbthrift_move_shared "std::move"(shared_ptr[cmap[cint16_t,string]])
-cdef extern from "<utility>" nogil:
-    pass  
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cint64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[cint64_t]])
-    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
-    cdef shared_ptr[const cmap[cint16_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::string>>"(shared_ptr[cmap[cint16_t,string]])
 

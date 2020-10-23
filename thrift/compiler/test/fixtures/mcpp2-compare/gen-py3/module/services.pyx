@@ -20,6 +20,7 @@ from cpython cimport bool as pbool
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
+from libcpp.utility cimport move as cmove
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -31,9 +32,9 @@ from thrift.py3.server import RequestContext, pass_context
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
-  c_unit
+  c_unit,
+
 )
-from thrift.py3.types cimport move
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -43,6 +44,7 @@ from folly.executor cimport get_executor
 cimport folly.iobuf as __iobuf
 import folly.iobuf as __iobuf
 from folly.iobuf cimport move as move_iobuf
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -1946,7 +1948,7 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     unique_ptr[cmap[string,cint64_t]] param1
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1999,8 +2001,8 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     unique_ptr[cset[vector[string]]] param2
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(_module_types.__fbthrift_move(param1))
-    arg_param2 = _module_types.Set__List__string.create(_module_types.__fbthrift_move(param2))
+    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
+    arg_param2 = _module_types.Set__List__string.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2212,7 +2214,7 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
     unique_ptr[vector[_module_types.cComplexUnion]] param1
 ):
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
-    arg_param1 = _module_types.List__ComplexUnion.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.List__ComplexUnion.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2322,7 +2324,7 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     unique_ptr[cmap[string,cint64_t]] param1
 ):
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2486,7 +2488,7 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
 ):
     __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
-    arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(_module_types.__fbthrift_move(param2))
+    arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2618,7 +2620,7 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
     unique_ptr[cset[_module_types.cMyStruct]] param1
 ):
     __promise = Promise_double.create(move_promise_double(cPromise))
-    arg_param1 = _module_types.Set__MyStruct.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.Set__MyStruct.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2828,8 +2830,8 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     unique_ptr[vector[string]] param2
 ):
     __promise = Promise_vector__cbool.create(move_promise_vector__cbool(cPromise))
-    arg_param1 = _module_types.Map__i32_List__string.create(_module_types.__fbthrift_move(param1))
-    arg_param2 = _module_types.List__string.create(_module_types.__fbthrift_move(param2))
+    arg_param1 = _module_types.Map__i32_List__string.create(__to_shared_ptr(cmove(param1)))
+    arg_param2 = _module_types.List__string.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2886,7 +2888,7 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
     unique_ptr[vector[vector[vector[vector[cint32_t]]]]] param1
 ):
     __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.create(move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string(cPromise))
-    arg_param1 = _module_types.List__List__List__List__i32.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.List__List__List__List__i32.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2991,7 +2993,7 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] param1
 ):
     __promise = Promise_vector__cint32_t.create(move_promise_vector__cint32_t(cPromise))
-    arg_param1 = _module_types.List__Map__Empty_MyStruct.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -3154,7 +3156,7 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
     unique_ptr[cmap[string,cint64_t]] param1
 ):
     __promise = Promise_vector___module_types_cMyEnumA.create(move_promise_vector___module_types_cMyEnumA(cPromise))
-    arg_param1 = _module_types.Map__string_i64.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -3259,7 +3261,7 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
     unique_ptr[cset[string]] param1
 ):
     __promise = Promise_cset___module_types_cMyStruct.create(move_promise_cset___module_types_cMyStruct(cPromise))
-    arg_param1 = _module_types.Set__string.create(_module_types.__fbthrift_move(param1))
+    arg_param1 = _module_types.Set__string.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

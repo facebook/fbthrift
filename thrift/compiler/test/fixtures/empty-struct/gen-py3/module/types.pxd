@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -69,18 +68,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cNada__type getType() const
 
 
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cEmpty] __fbthrift_move "std::move"(unique_ptr[cEmpty])
-    cdef shared_ptr[cEmpty] __fbthrift_move_shared "std::move"(shared_ptr[cEmpty])
-    cdef unique_ptr[cEmpty] __fbthrift_move_unique "std::move"(unique_ptr[cEmpty])
-    cdef shared_ptr[cNada] __fbthrift_move "std::move"(unique_ptr[cNada])
-    cdef shared_ptr[cNada] __fbthrift_move_shared "std::move"(shared_ptr[cNada])
-    cdef unique_ptr[cNada] __fbthrift_move_unique "std::move"(unique_ptr[cNada])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Empty>"(shared_ptr[cEmpty])
-    cdef shared_ptr[const cNada] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Nada>"(shared_ptr[cNada])
-
 
 
 cdef class Empty(thrift.py3.types.Struct):
@@ -114,8 +101,6 @@ cdef class Nada(thrift.py3.types.Union):
 
     @staticmethod
     cdef create(shared_ptr[cNada])
-
-
 
 
 

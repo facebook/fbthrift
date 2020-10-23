@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -54,12 +57,12 @@ cdef class Struct(thrift.py3.types.Struct):
         _module0_types.Struct first=None,
         _module1_types.Struct second=None
     ):
-        self._cpp_obj = __fbthrift_move(Struct._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(Struct._make_instance(
           NULL,
           NULL,
           first,
           second,
-        ))
+        )))
 
     def __call__(
         Struct self,
@@ -97,12 +100,12 @@ cdef class Struct(thrift.py3.types.Struct):
                 raise TypeError(f'second is not a { _module1_types.Struct !r}.')
 
         __fbthrift_inst = <Struct>Struct.__new__(Struct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(Struct._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Struct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           first,
           second,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -138,7 +141,7 @@ cdef class Struct(thrift.py3.types.Struct):
             deref(c_inst).__isset.second = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Struct", {
@@ -153,21 +156,21 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
         __fbthrift_inst = <Struct>Struct.__new__(Struct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
     def first(self):
 
         if self.__field_first is None:
-            self.__field_first = _module0_types.Struct.create(reference_shared_ptr_first(self._cpp_obj, deref(self._cpp_obj).first_ref().value()))
+            self.__field_first = _module0_types.Struct.create(__reference_shared_ptr(deref(self._cpp_obj).first_ref().ref(), self._cpp_obj))
         return self.__field_first
 
     @property
     def second(self):
 
         if self.__field_second is None:
-            self.__field_second = _module1_types.Struct.create(reference_shared_ptr_second(self._cpp_obj, deref(self._cpp_obj).second_ref().value()))
+            self.__field_second = _module1_types.Struct.create(__reference_shared_ptr(deref(self._cpp_obj).second_ref().ref(), self._cpp_obj))
         return self.__field_second
 
 
@@ -178,7 +181,7 @@ cdef class Struct(thrift.py3.types.Struct):
         cdef shared_ptr[cStruct] cpp_obj = make_shared[cStruct](
             deref(self._cpp_obj)
         )
-        return Struct.create(__fbthrift_move_shared(cpp_obj))
+        return Struct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -240,12 +243,12 @@ cdef class BigStruct(thrift.py3.types.Struct):
                 raise TypeError(f'id is not a { int !r}.')
             id = <cint32_t> id
 
-        self._cpp_obj = __fbthrift_move(BigStruct._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(BigStruct._make_instance(
           NULL,
           NULL,
           s,
           id,
-        ))
+        )))
 
     def __call__(
         BigStruct self,
@@ -284,12 +287,12 @@ cdef class BigStruct(thrift.py3.types.Struct):
             id = <cint32_t> id
 
         __fbthrift_inst = <BigStruct>BigStruct.__new__(BigStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(BigStruct._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(BigStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           s,
           id,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -325,7 +328,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.id = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("BigStruct", {
@@ -340,14 +343,14 @@ cdef class BigStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cBigStruct] cpp_obj):
         __fbthrift_inst = <BigStruct>BigStruct.__new__(BigStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
     def s(self):
 
         if self.__field_s is None:
-            self.__field_s = Struct.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s_ref().value()))
+            self.__field_s = Struct.create(__reference_shared_ptr(deref(self._cpp_obj).s_ref().ref(), self._cpp_obj))
         return self.__field_s
 
     @property
@@ -363,7 +366,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cBigStruct] cpp_obj = make_shared[cBigStruct](
             deref(self._cpp_obj)
         )
-        return BigStruct.create(__fbthrift_move_shared(cpp_obj))
+        return BigStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

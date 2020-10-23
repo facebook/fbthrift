@@ -26,7 +26,6 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
-    move,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
@@ -80,21 +79,6 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         cint32_t id
         cBigStruct__isset __isset
 
-    cdef shared_ptr[_module0_types.cStruct] reference_shared_ptr_first "::thrift::py3::reference_shared_ptr<::module0::Struct>"(shared_ptr[cStruct]&, _module0_types.cStruct&)
-    cdef shared_ptr[_module1_types.cStruct] reference_shared_ptr_second "::thrift::py3::reference_shared_ptr<::module1::Struct>"(shared_ptr[cStruct]&, _module1_types.cStruct&)
-    cdef shared_ptr[cStruct] reference_shared_ptr_s "::thrift::py3::reference_shared_ptr<::module2::Struct>"(shared_ptr[cBigStruct]&, cStruct&)
-
-cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cStruct] __fbthrift_move "std::move"(unique_ptr[cStruct])
-    cdef shared_ptr[cStruct] __fbthrift_move_shared "std::move"(shared_ptr[cStruct])
-    cdef unique_ptr[cStruct] __fbthrift_move_unique "std::move"(unique_ptr[cStruct])
-    cdef shared_ptr[cBigStruct] __fbthrift_move "std::move"(unique_ptr[cBigStruct])
-    cdef shared_ptr[cBigStruct] __fbthrift_move_shared "std::move"(shared_ptr[cBigStruct])
-    cdef unique_ptr[cBigStruct] __fbthrift_move_unique "std::move"(unique_ptr[cBigStruct])
-
-cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const ::module2::Struct>"(shared_ptr[cStruct])
-    cdef shared_ptr[const cBigStruct] const_pointer_cast "std::const_pointer_cast<const ::module2::BigStruct>"(shared_ptr[cBigStruct])
 
 
 
@@ -130,8 +114,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cBigStruct])
-
-
 
 
 

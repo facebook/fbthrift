@@ -20,8 +20,10 @@ cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
+    const_pointer_cast,
     constant_shared_ptr,
     default_inst,
+    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -32,6 +34,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
+from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -121,14 +124,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <cint64_t> MyIntField
 
-        self._cpp_obj = __fbthrift_move(MyStruct._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
           NULL,
           NULL,
           MyIntField,
           MyStringField,
           MyDataField,
           myEnum,
-        ))
+        )))
 
     def __call__(
         MyStruct self,
@@ -191,14 +194,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'field myEnum value: { myEnum !r} is not of the enum type { MyEnum }.')
 
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move(MyStruct._make_instance(
+        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
           self._cpp_obj.get(),
           __isNOTSET,
           MyIntField,
           MyStringField,
           MyDataField,
           myEnum,
-        ))
+        )))
         return __fbthrift_inst
 
     @staticmethod
@@ -242,7 +245,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyIntField_ref().assign(MyIntField)
             deref(c_inst).__isset.MyIntField = True
         if MyStringField is not None:
-            deref(c_inst).MyStringField_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8'))))
+            deref(c_inst).MyStringField_ref().assign(cmove(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8'))))
             deref(c_inst).__isset.MyStringField = True
         if MyDataField is not None:
             deref(c_inst).MyDataField_ref().assign(deref((<MyDataItem?> MyDataField)._cpp_obj))
@@ -252,7 +255,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.myEnum = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
@@ -271,7 +274,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
     @property
@@ -288,7 +291,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def MyDataField(self):
 
         if self.__field_MyDataField is None:
-            self.__field_MyDataField = MyDataItem.create(reference_shared_ptr_MyDataField(self._cpp_obj, deref(self._cpp_obj).MyDataField_ref().value()))
+            self.__field_MyDataField = MyDataItem.create(__reference_shared_ptr(deref(self._cpp_obj).MyDataField_ref().ref(), self._cpp_obj))
         return self.__field_MyDataField
 
     @property
@@ -304,7 +307,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
         )
-        return MyStruct.create(__fbthrift_move_shared(cpp_obj))
+        return MyStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -359,10 +362,10 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     def __init__(
         MyDataItem self, *
     ):
-        self._cpp_obj = __fbthrift_move(MyDataItem._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(MyDataItem._make_instance(
           NULL,
           NULL,
-        ))
+        )))
 
     def __call__(
         MyDataItem self
@@ -385,7 +388,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
             pass
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyDataItem", {
@@ -397,7 +400,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyDataItem] cpp_obj):
         __fbthrift_inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
 
 
@@ -408,7 +411,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         cdef shared_ptr[cMyDataItem] cpp_obj = make_shared[cMyDataItem](
             deref(self._cpp_obj)
         )
-        return MyDataItem.create(__fbthrift_move_shared(cpp_obj))
+        return MyDataItem.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -469,12 +472,12 @@ cdef class MyUnion(thrift.py3.types.Union):
         MyStruct myStruct=None,
         MyDataItem myDataItem=None
     ):
-        self._cpp_obj = __fbthrift_move(MyUnion._make_instance(
+        self._cpp_obj = __to_shared_ptr(cmove(MyUnion._make_instance(
           NULL,
           myEnum,
           myStruct,
           myDataItem,
-        ))
+        )))
         self._load_cache()
 
     @staticmethod
@@ -515,12 +518,12 @@ cdef class MyUnion(thrift.py3.types.Union):
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
-        return __fbthrift_move_unique(c_inst)
+        return cmove(c_inst)
 
     @staticmethod
     cdef create(shared_ptr[cMyUnion] cpp_obj):
         __fbthrift_inst = <MyUnion>MyUnion.__new__(MyUnion)
-        __fbthrift_inst._cpp_obj = __fbthrift_move_shared(cpp_obj)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         __fbthrift_inst._load_cache()
         return __fbthrift_inst
 
@@ -562,7 +565,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
             deref(self._cpp_obj)
         )
-        return MyUnion.create(__fbthrift_move_shared(cpp_obj))
+        return MyUnion.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

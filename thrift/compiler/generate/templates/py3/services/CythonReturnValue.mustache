@@ -32,7 +32,7 @@ to the client.
 }}{{#type:flexibleBinary?}}{{!
   }}{{#function:stack_arguments?}}{{> types/CythonCppType}}({{/function:stack_arguments?}}{{!
   }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
-  }}move(<string>result)){{!
+  }}cmove(<string>result)){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}<cbool> result{{/type:bool?}}{{!
