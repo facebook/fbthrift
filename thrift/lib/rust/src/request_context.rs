@@ -26,3 +26,16 @@ pub trait RequestContext {
         fn_name: &Self::Name,
     ) -> Result<Self::ContextStack, Error>;
 }
+
+impl RequestContext for () {
+    type ContextStack = ();
+    type Name = const_cstr::ConstCStr;
+
+    fn get_context_stack(
+        &self,
+        _service_name: &Self::Name,
+        _fn_name: &Self::Name,
+    ) -> Result<Self::ContextStack, Error> {
+        Ok(())
+    }
+}

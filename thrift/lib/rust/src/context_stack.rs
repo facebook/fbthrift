@@ -29,3 +29,21 @@ pub trait ContextStack {
     /// Called after a response a written.
     fn post_write(&mut self, bytes: u32) -> Result<(), Error>;
 }
+
+impl ContextStack for () {
+    fn pre_read(&mut self) -> Result<(), Error> {
+        Ok(())
+    }
+
+    fn post_read(&mut self, _bytes: u32) -> Result<(), Error> {
+        Ok(())
+    }
+
+    fn pre_write(&mut self) -> Result<(), Error> {
+        Ok(())
+    }
+
+    fn post_write(&mut self, _bytes: u32) -> Result<(), Error> {
+        Ok(())
+    }
+}
