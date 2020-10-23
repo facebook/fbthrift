@@ -26,21 +26,21 @@ class EnumMetadata<::cpp2::MyEnum>
 };
 template <>
 class StructMetadata<::cpp2::MyDataItem>
-    : private EmptyStructMetadata {
+    : private EmptyMetadata {
  public:
-  using EmptyStructMetadata::gen;
+  using EmptyMetadata::gen;
 };
 template <>
 class StructMetadata<::cpp2::MyStruct>
-    : private EmptyStructMetadata {
+    : private EmptyMetadata {
  public:
-  using EmptyStructMetadata::gen;
+  using EmptyMetadata::gen;
 };
 template <>
 class StructMetadata<::cpp2::MyUnion>
-    : private EmptyStructMetadata {
+    : private EmptyMetadata {
  public:
-  using EmptyStructMetadata::gen;
+  using EmptyMetadata::gen;
 };
 template <>
 class ServiceMetadata<::cpp2::MyServiceSvIf>
