@@ -1023,7 +1023,7 @@ void RocketClientChannel::terminateInteraction(InteractionId id) {
   releaseInteractionId(std::move(id));
 }
 
-void RocketClientChannel::registerInteraction(
+InteractionId RocketClientChannel::registerInteraction(
     folly::StringPiece name,
     int64_t id) {
   CHECK(!name.empty());
@@ -1034,6 +1034,8 @@ void RocketClientChannel::registerInteraction(
   DCHECK(res.second);
 
   rclient_->addInteraction();
+
+  return createInteractionId(id);
 }
 
 constexpr std::chrono::seconds RocketClientChannel::kDefaultRpcTimeout;

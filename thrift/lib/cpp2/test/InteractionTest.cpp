@@ -522,20 +522,17 @@ TEST(InteractionCodegenTest, ReuseIdDuringConstructor) {
           new folly::AsyncSocket(&eb, runner.getAddress()))));
 
   {
-    auto adder = client.createAddition();
+    auto id = client.getChannel()->registerInteraction("Addition", 1);
+    CalculatorAsyncClient::Addition adder(
+        client.getChannelShared(), std::move(id));
     adder.semifuture_noop().via(&eb).getVia(&eb);
     handler->b1.wait();
   } // sends termination while constructor is blocked
   client.sync_addPrimitive(0, 0);
 
-  auto adder = client.createAddition();
-  // terribly sorry about this
-  struct Hack {
-    CalculatorAsyncClient c;
-    int64_t id;
-  };
-  reinterpret_cast<Hack*>(&adder)->id = 1;
-  client.getChannel()->registerInteraction("Addition", 1);
+  auto id = client.getChannel()->registerInteraction("Addition", 1);
+  CalculatorAsyncClient::Addition adder(
+      client.getChannelShared(), std::move(id));
 
   auto fut = adder.semifuture_accumulatePrimitive(1);
   handler->b2.post();

@@ -154,10 +154,9 @@ void RequestChannel::terminateInteraction(InteractionId) {
 InteractionId RequestChannel::createInteraction(folly::StringPiece name) {
   static std::atomic<int64_t> nextId{0};
   int64_t id = 1 + nextId.fetch_add(1, std::memory_order_relaxed);
-  registerInteraction(name, id);
-  return createInteractionId(id);
+  return registerInteraction(name, id);
 }
-void RequestChannel::registerInteraction(folly::StringPiece, int64_t) {
+InteractionId RequestChannel::registerInteraction(folly::StringPiece, int64_t) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
 }

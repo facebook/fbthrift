@@ -27,6 +27,7 @@ namespace thrift {
 
 class InteractionId {
  public:
+  InteractionId() : id_(0) {}
   InteractionId(InteractionId&& other) noexcept {
     id_ = other.id_;
     other.release();
@@ -47,11 +48,6 @@ class InteractionId {
 
   operator int64_t() const {
     return id_;
-  }
-
-  void bind(int64_t id) {
-    CHECK_EQ(id_, 0) << "Can only bind dummy id objects";
-    id_ = id;
   }
 
  private:

@@ -149,7 +149,8 @@ class RocketClientChannel final : public ClientChannel {
 
   // supports nesting
   // must be called from evb thread
-  void registerInteraction(folly::StringPiece name, int64_t id) override;
+  InteractionId registerInteraction(folly::StringPiece name, int64_t id)
+      override;
 
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};

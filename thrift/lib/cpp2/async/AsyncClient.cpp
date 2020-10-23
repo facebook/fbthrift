@@ -40,6 +40,13 @@ InteractionHandle::InteractionHandle(
   DCHECK(interactionId_);
 }
 
+InteractionHandle::InteractionHandle(
+    std::shared_ptr<RequestChannel> channel,
+    InteractionId id)
+    : GeneratedAsyncClient(channel), interactionId_(std::move(id)) {
+  DCHECK(interactionId_);
+}
+
 InteractionHandle::~InteractionHandle() {
   terminate();
 }

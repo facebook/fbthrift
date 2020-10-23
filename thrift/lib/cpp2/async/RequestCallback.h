@@ -577,7 +577,7 @@ class RpcOptions {
     return headers;
   }
 
-  // For TILES, primarily used by ServiceRouter
+  // Primarily used by generated code
   RpcOptions& setInteractionId(const InteractionId& id) {
     interactionId_ = id;
     DCHECK_GT(interactionId_, 0);

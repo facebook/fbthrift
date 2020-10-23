@@ -26,6 +26,7 @@ namespace {
 struct InteractionState {
   folly::Executor::KeepAlive<folly::EventBase> keepAlive;
   std::string name;
+  InteractionId id;
 };
 
 static void maybeCreateInteraction(
@@ -33,9 +34,9 @@ static void maybeCreateInteraction(
     PooledRequestChannel::Impl& channel) {
   if (auto id = options.getInteractionId()) {
     auto* state = reinterpret_cast<InteractionState*>(id);
-    if (!state->name.empty()) {
-      channel.registerInteraction(std::move(state->name), id);
-      state->name.clear();
+    if (!state->id) {
+      state->id = channel.registerInteraction(std::move(state->name), id);
+      state->name = {};
     }
   }
 }
@@ -222,15 +223,16 @@ InteractionId PooledRequestChannel::createInteraction(folly::StringPiece name) {
   CHECK(!name.empty());
   auto& evb = getEvb({});
   return createInteractionId(reinterpret_cast<int64_t>(
-      new InteractionState{getKeepAliveToken(evb), name.str()}));
+      new InteractionState{getKeepAliveToken(evb), name.str(), {}}));
 }
 
 void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
   int64_t id = idWrapper;
+  releaseInteractionId(std::move(idWrapper));
   std::unique_ptr<InteractionState> state(
       reinterpret_cast<InteractionState*>(id));
   std::move(state->keepAlive)
-      .add([id = std::move(idWrapper),
+      .add([id = std::move(state->id),
             implPtr = impl_](auto&& keepAlive) mutable {
         auto* channel = implPtr->get(*keepAlive);
         if (channel) {
@@ -238,7 +240,7 @@ void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
         } else {
           // channel is only null if nothing was ever sent on that evb,
           // in which case server doesn't know about this interaction
-          releaseInteractionId(std::move(id));
+          DCHECK(!id);
         }
       });
 }
