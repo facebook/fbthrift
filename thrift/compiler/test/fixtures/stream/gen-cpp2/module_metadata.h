@@ -37,6 +37,7 @@ class ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf> {
   static void gen_streamthrows(ThriftMetadata& metadata, ThriftService& context);
   static void gen_boththrows(ThriftMetadata& metadata, ThriftService& context);
   static void gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_returnstreamFast(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

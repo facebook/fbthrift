@@ -140,6 +140,16 @@ cdef class PubSubStreamingServiceInterface(
             foo):
         raise NotImplementedError("async def responseandstreamthrows is not implemented")
 
+    @staticmethod
+    def pass_context_returnstreamFast(fn):
+        return pass_context(fn)
+
+    async def returnstreamFast(
+            self,
+            i32_from,
+            i32_to):
+        raise NotImplementedError("async def returnstreamFast is not implemented")
+
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__PubSubStreamingService(for_clients=False)
@@ -366,5 +376,64 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
         ))
     else:
         promise.cPromise.setValue(createEmptyResponseAndServerStream[cint32_t,cint32_t]() # server streaming support is not implemented yet
+)
+
+cdef api void call_cy_PubSubStreamingService_returnstreamFast(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cServerStream[cint32_t]] cPromise,
+    cint32_t i32_from,
+    cint32_t i32_to
+):
+    __promise = Promise_cServerStream__cint32_t.create(move_promise_cServerStream__cint32_t(cPromise))
+    arg_i32_from = i32_from
+    arg_i32_to = i32_to
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_returnstreamFast_coro(
+            self,
+            __context,
+            __promise,
+            arg_i32_from,
+            arg_i32_to
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def PubSubStreamingService_returnstreamFast_coro(
+    object self,
+    object ctx,
+    Promise_cServerStream__cint32_t promise,
+    i32_from,
+    i32_to
+):
+    try:
+        if ctx and getattr(self.returnstreamFast, "pass_context", False):
+            result = await self.returnstreamFast(ctx,
+                      i32_from,
+                      i32_to)
+        else:
+            result = await self.returnstreamFast(
+                      i32_from,
+                      i32_to)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler returnstreamFast:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(cServerStream[cint32_t].createEmpty() # server streaming support is not implemented yet
 )
 

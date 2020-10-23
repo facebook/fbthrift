@@ -109,6 +109,31 @@ foo    ]() mutable {
         });
     });
 }
+void PubSubStreamingServiceWrapper::async_eb_returnstreamFast(
+  std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
+    , int32_t i32_from
+    , int32_t i32_to
+) {
+  auto ctx = callback->getConnectionContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+i32_from,
+i32_to    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<apache::thrift::ServerStream<int32_t>>();
+        call_cy_PubSubStreamingService_returnstreamFast(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            i32_from,
+            i32_to        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<apache::thrift::ServerStream<int32_t>>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
 std::shared_ptr<apache::thrift::ServerInterface> PubSubStreamingServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<PubSubStreamingServiceWrapper>(if_object, exc);
 }

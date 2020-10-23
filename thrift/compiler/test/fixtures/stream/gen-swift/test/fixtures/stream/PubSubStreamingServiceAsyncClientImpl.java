@@ -27,6 +27,7 @@ public class PubSubStreamingServiceAsyncClientImpl extends AbstractThriftClient 
     private ThriftMethodHandler streamthrowsMethodHandler;
     private ThriftMethodHandler boththrowsMethodHandler;
     private ThriftMethodHandler responseandstreamthrowsMethodHandler;
+    private ThriftMethodHandler returnstreamFastMethodHandler;
 
     // Method Exceptions
     private static final Class[] returnstreamExceptions = new Class[] {
@@ -37,6 +38,8 @@ public class PubSubStreamingServiceAsyncClientImpl extends AbstractThriftClient 
         test.fixtures.stream.FooEx.class, org.apache.thrift.TException.class};
     private static final Class[] responseandstreamthrowsExceptions = new Class[] {
         test.fixtures.stream.FooEx.class, org.apache.thrift.TException.class};
+    private static final Class[] returnstreamFastExceptions = new Class[] {
+        org.apache.thrift.TException.class};
 
     public PubSubStreamingServiceAsyncClientImpl(
         RequestChannel channel,
@@ -57,6 +60,7 @@ public class PubSubStreamingServiceAsyncClientImpl extends AbstractThriftClient 
       streamthrowsMethodHandler = methodHandlerMap.get("streamthrows");
       boththrowsMethodHandler = methodHandlerMap.get("boththrows");
       responseandstreamthrowsMethodHandler = methodHandlerMap.get("responseandstreamthrows");
+      returnstreamFastMethodHandler = methodHandlerMap.get("returnstreamFast");
     }
 
     public PubSubStreamingServiceAsyncClientImpl(
@@ -80,6 +84,7 @@ public class PubSubStreamingServiceAsyncClientImpl extends AbstractThriftClient 
       streamthrowsMethodHandler = methodHandlerMap.get("streamthrows");
       boththrowsMethodHandler = methodHandlerMap.get("boththrows");
       responseandstreamthrowsMethodHandler = methodHandlerMap.get("responseandstreamthrows");
+      returnstreamFastMethodHandler = methodHandlerMap.get("returnstreamFast");
     }
 
     @java.lang.Override

@@ -33,6 +33,10 @@ class PubSubStreamingServiceWrapper : virtual public PubSubStreamingServiceSvIf 
     void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback
         , int32_t foo
     ) override;
+    void async_eb_returnstreamFast(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
+        , int32_t i32_from
+        , int32_t i32_to
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> PubSubStreamingServiceInterface(PyObject *if_object, folly::Executor *exc);

@@ -117,6 +117,19 @@ cdef void PubSubStreamingService_responseandstreamthrows_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void PubSubStreamingService_returnstreamFast_callback(
+    cFollyTry[cClientBufferedStream[cint32_t]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_module_types.ClientBufferedStream__i32.create(result.value(), options))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 
 cdef object _PubSubStreamingService_annotations = _py_types.MappingProxyType({
 })
@@ -240,6 +253,38 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
                 foo,
             ),
             PubSubStreamingService_responseandstreamthrows_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def returnstreamFast(
+            PubSubStreamingService self,
+            i32_from not None,
+            i32_to not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(i32_from, int):
+            raise TypeError(f'i32_from is not a {int !r}.')
+        else:
+            i32_from = <cint32_t> i32_from
+        if not isinstance(i32_to, int):
+            raise TypeError(f'i32_to is not a {int !r}.')
+        else:
+            i32_to = <cint32_t> i32_to
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
+            self._executor,
+            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).returnstreamFast(rpc_options._cpp_obj, 
+                i32_from,
+                i32_to,
+            ),
+            PubSubStreamingService_returnstreamFast_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

@@ -79,6 +79,7 @@ class ServiceMetadata<::cpp2::SinkServiceSvIf> {
   static void gen_methodSinkThrow(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodFinalThrow(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodBothThrow(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_methodFast(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

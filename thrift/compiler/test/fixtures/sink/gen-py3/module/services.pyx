@@ -374,3 +374,49 @@ async def SinkService_methodBothThrow_coro(
     else:
         promise.cPromise.setValue()
 
+cdef api void call_cy_SinkService_methodFast(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[] cPromise
+):
+    __promise = Promise_.create(move_promise_(cPromise))
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        SinkService_methodFast_coro(
+            self,
+            __context,
+            __promise
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def SinkService_methodFast_coro(
+    object self,
+    object ctx,
+    Promise_ promise
+):
+    try:
+        if ctx and getattr(self.methodFast, "pass_context", False):
+            result = await self.methodFast(ctx,)
+        else:
+            result = await self.methodFast()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler methodFast:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue()
+

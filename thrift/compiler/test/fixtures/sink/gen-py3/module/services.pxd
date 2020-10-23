@@ -16,5 +16,6 @@ cdef class SinkServiceInterface(ServiceInterface):
     cdef bint _for_cython_methodSinkThrow
     cdef bint _for_cython_methodFinalThrow
     cdef bint _for_cython_methodBothThrow
+    cdef bint _for_cython_methodFast
     pass
 

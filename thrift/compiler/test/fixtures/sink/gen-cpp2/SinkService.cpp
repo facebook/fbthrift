@@ -135,6 +135,10 @@ void SinkServiceSvIf::async_tm_methodBothThrow(std::unique_ptr<apache::thrift::H
   });
 }
 
+void SinkServiceSvIf::async_eb_methodFast(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
+  callback->exception(apache::thrift::TApplicationException("Function methodFast is unimplemented"));
+}
+
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::method() {
   return {};
 }
@@ -188,6 +192,7 @@ const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::binaryPro
   {"methodSinkThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"methodFinalThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"methodBothThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"methodFast", &SinkServiceAsyncProcessor::setUpAndProcess_methodFast<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const SinkServiceAsyncProcessor::ProcessMap& SinkServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -201,6 +206,7 @@ const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::compactPr
   {"methodSinkThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"methodFinalThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"methodBothThrow", &SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"methodFast", &SinkServiceAsyncProcessor::setUpAndProcess_methodFast<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

@@ -80,4 +80,23 @@ PubSubStreamingServiceClientWrapper::responseandstreamthrows(
   return _future;
 }
 
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
+PubSubStreamingServiceClientWrapper::returnstreamFast(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_i32_from,
+    int32_t arg_i32_to) {
+  folly::Promise<apache::thrift::ClientBufferedStream<int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_returnstreamFast, channel_);
+  client->returnstreamFast(
+    rpcOptions,
+    std::move(callback),
+    arg_i32_from,
+    arg_i32_to
+  );
+  return _future;
+}
+
 } // namespace cpp2

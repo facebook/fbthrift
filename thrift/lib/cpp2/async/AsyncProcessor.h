@@ -560,6 +560,7 @@ class HandlerCallback : public HandlerCallbackBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
+      folly::Executor::KeepAlive<> streamEx = nullptr,
       Tile* interaction = nullptr);
 
   void result(InputType r) {
@@ -573,6 +574,7 @@ class HandlerCallback : public HandlerCallbackBase {
   virtual void doResult(InputType r);
 
   cob_ptr cp_;
+  folly::Executor::KeepAlive<> streamEx_;
 };
 
 template <>
@@ -849,6 +851,7 @@ HandlerCallback<T>::HandlerCallback(
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx,
+    folly::Executor::KeepAlive<> streamEx,
     Tile* interaction)
     : HandlerCallbackBase(
           std::move(req),
@@ -858,7 +861,8 @@ HandlerCallback<T>::HandlerCallback(
           tm,
           reqCtx,
           interaction),
-      cp_(cp) {
+      cp_(cp),
+      streamEx_(std::move(streamEx)) {
   this->protoSeqId_ = protoSeqId;
 }
 
@@ -886,7 +890,7 @@ void HandlerCallback<T>::doResult(InputType r) {
       cp_,
       this->protoSeqId_,
       this->ctx_.get(),
-      this->tm_,
+      std::move(this->streamEx_),
       std::forward<InputType>(r));
   this->ctx_.reset();
   sendReply(std::move(reply));
@@ -914,7 +918,7 @@ struct HandlerCallbackHelper {
       CobPtr cob,
       int32_t protoSeqId,
       ContextStack* ctx,
-      concurrency::ThreadManager*,
+      folly::Executor::KeepAlive<>,
       InputType input) {
     return cob(protoSeqId, ctx, std::move(input));
   }
@@ -932,13 +936,9 @@ struct HandlerCallbackHelperServerStream {
       CobPtr cob,
       int32_t protoSeqId,
       ContextStack* ctx,
-      concurrency::ThreadManager* tm,
+      folly::Executor::KeepAlive<> streamEx,
       InputType input) {
-    return cob(
-        protoSeqId,
-        ctx,
-        ServerInterface::getBlockingThreadManager(tm),
-        std::move(input));
+    return cob(protoSeqId, ctx, std::move(streamEx), std::move(input));
   }
 };
 
@@ -962,10 +962,9 @@ struct HandlerCallbackHelperSink {
       CobPtr cob,
       int32_t,
       ContextStack* ctx,
-      concurrency::ThreadManager* tm,
+      folly::Executor::KeepAlive<> streamEx,
       InputType input) {
-    return cob(
-        ctx, std::move(input), ServerInterface::getBlockingThreadManager(tm));
+    return cob(ctx, std::move(input), std::move(streamEx));
   }
 };
 

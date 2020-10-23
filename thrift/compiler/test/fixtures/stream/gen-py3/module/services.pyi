@@ -88,6 +88,24 @@ class PubSubStreamingServiceInterface(
         self,
         foo: int
     ) -> _module_types.ResponseAndServerStream__i32_i32: ...
+
+    @staticmethod
+    def pass_context_returnstreamFast(
+        fn: _typing.Callable[
+                [_PubSubStreamingServiceInterfaceT, RequestContext, int, int],
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+        ]
+    ) -> _typing.Callable[
+        [_PubSubStreamingServiceInterfaceT, int, int],
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ServerStream__i32]
+    ]: ...
+
+    @abstractmethod
+    async def returnstreamFast(
+        self,
+        i32_from: int,
+        i32_to: int
+    ) -> _module_types.ServerStream__i32: ...
     pass
 
 

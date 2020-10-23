@@ -46,6 +46,12 @@ typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkException1>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkException2>>
     > SinkService_methodBothThrow_presult;
+typedef apache::thrift::ThriftPresult<false> SinkService_methodFast_pargs;
+typedef apache::thrift::ThriftPResultSink<
+    apache::thrift::ThriftPresult<true>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
+    > SinkService_methodFast_presult;
 
 template <typename Protocol_>
 void SinkServiceAsyncClient::methodT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
@@ -104,6 +110,16 @@ void SinkServiceAsyncClient::methodBothThrowT(Protocol_* prot, apache::thrift::R
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodBothThrow", writer, sizer);
+  ctx->reqContext.setRequestHeader(nullptr);
+}
+
+template <typename Protocol_>
+void SinkServiceAsyncClient::methodFastT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+  std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
+  SinkService_methodFast_pargs args;
+  auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
+  auto writer = [&](Protocol_* p) { args.write(p); };
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodFast", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -709,6 +725,103 @@ apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> SinkSer
 
 folly::exception_wrapper SinkServiceAsyncClient::recv_instance_wrapped_methodBothThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_methodBothThrow(_return, state);
+}
+
+void SinkServiceAsyncClient::methodFastImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      methodFastT(&writer, rpcOptions, std::move(ctx), std::move(callback));
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      methodFastT(&writer, rpcOptions, std::move(ctx), std::move(callback));
+      break;
+    }
+    default:
+    {
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
+    }
+  }
+}
+
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodFast() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_methodFast(rpcOptions);
+}
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodFast(apache::thrift::RpcOptions& rpcOptions) {
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "SinkService.methodFast");
+  auto callback = apache::thrift::detail::ClientSinkBridge::create();
+  methodFastImpl(rpcOptions, ctx, callback.get());
+  auto firstPayload = co_await callback->getFirstThriftResponse();
+  if (firstPayload.hasException()) {
+    firstPayload.exception().throw_exception();
+  }
+
+  auto tHeader = std::make_unique<apache::thrift::transport::THeader>();
+  tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+  apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(firstPayload->metadata, *tHeader);
+  apache::thrift::ClientReceiveState _returnState(
+      protocolId,
+      std::move(firstPayload->payload),
+      std::move(callback),
+      std::move(tHeader),
+      std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  co_return recv_methodFast(_returnState);
+}
+#endif // FOLLY_HAS_COROUTINES
+folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodFast(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state) {
+  if (state.isException()) {
+    return std::move(state.exception());
+  }
+  if (!state.buf()) {
+    return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
+  }
+
+  using result = SinkService_methodFast_presult;
+  constexpr auto const fname = "methodFast";
+  using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
+  switch (state.protocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
+    }
+    default:
+    {
+    }
+  }
+  return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
+}
+
+apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> SinkServiceAsyncClient::recv_methodFast(::apache::thrift::ClientReceiveState& state) {
+  apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> _return;
+  auto ew = recv_wrapped_methodFast(_return, state);
+  if (ew) {
+    ew.throw_exception();
+  }
+  return _return;
+}
+
+apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> SinkServiceAsyncClient::recv_instance_methodFast(::apache::thrift::ClientReceiveState& state) {
+  return recv_methodFast(state);
+}
+
+folly::exception_wrapper SinkServiceAsyncClient::recv_instance_wrapped_methodFast(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_methodFast(_return, state);
 }
 
 

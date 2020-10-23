@@ -303,6 +303,15 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodBothThrow(ThriftMetadat
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
+void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodFast(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "methodFast";
+  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  func.is_oneway_ref() = false;
+  service.functions_ref()->push_back(std::move(func));
+}
 
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
@@ -315,6 +324,7 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen(ThriftMetadata& metadata, Thr
     ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodSinkThrow,
     ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodFinalThrow,
     ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodBothThrow,
+    ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodFast,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_SinkService);

@@ -126,6 +126,29 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamt
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
+void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstreamFast(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name_ref() = "returnstreamFast";
+  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
+  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_returnstreamFast_i32_from_1;
+  module_PubSubStreamingService_returnstreamFast_i32_from_1.id_ref() = 1;
+  module_PubSubStreamingService_returnstreamFast_i32_from_1.name_ref() = "i32_from";
+  module_PubSubStreamingService_returnstreamFast_i32_from_1.is_optional_ref() = false;
+  auto module_PubSubStreamingService_returnstreamFast_i32_from_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_PubSubStreamingService_returnstreamFast_i32_from_1_type->writeAndGenType(*module_PubSubStreamingService_returnstreamFast_i32_from_1.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_PubSubStreamingService_returnstreamFast_i32_from_1));
+  ::apache::thrift::metadata::ThriftField module_PubSubStreamingService_returnstreamFast_i32_to_2;
+  module_PubSubStreamingService_returnstreamFast_i32_to_2.id_ref() = 2;
+  module_PubSubStreamingService_returnstreamFast_i32_to_2.name_ref() = "i32_to";
+  module_PubSubStreamingService_returnstreamFast_i32_to_2.is_optional_ref() = false;
+  auto module_PubSubStreamingService_returnstreamFast_i32_to_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
+  module_PubSubStreamingService_returnstreamFast_i32_to_2_type->writeAndGenType(*module_PubSubStreamingService_returnstreamFast_i32_to_2.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_PubSubStreamingService_returnstreamFast_i32_to_2));
+  func.is_oneway_ref() = false;
+  service.functions_ref()->push_back(std::move(func));
+}
 
 void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
   (void) metadata;
@@ -136,6 +159,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen(ThriftMetadata& me
     ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_streamthrows,
     ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows,
     ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamthrows,
+    ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstreamFast,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_PubSubStreamingService);

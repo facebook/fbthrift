@@ -29,6 +29,7 @@ public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements 
     private ThriftMethodHandler methodSinkThrowMethodHandler;
     private ThriftMethodHandler methodFinalThrowMethodHandler;
     private ThriftMethodHandler methodBothThrowMethodHandler;
+    private ThriftMethodHandler methodFastMethodHandler;
 
     // Method Exceptions
     private static final Class[] methodExceptions = new Class[] {
@@ -42,6 +43,8 @@ public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements 
     private static final Class[] methodFinalThrowExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] methodBothThrowExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] methodFastExceptions = new Class[] {
         org.apache.thrift.TException.class};
 
     public SinkServiceAsyncClientImpl(
@@ -65,6 +68,7 @@ public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements 
       methodSinkThrowMethodHandler = methodHandlerMap.get("methodSinkThrow");
       methodFinalThrowMethodHandler = methodHandlerMap.get("methodFinalThrow");
       methodBothThrowMethodHandler = methodHandlerMap.get("methodBothThrow");
+      methodFastMethodHandler = methodHandlerMap.get("methodFast");
     }
 
     public SinkServiceAsyncClientImpl(
@@ -90,6 +94,7 @@ public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements 
       methodSinkThrowMethodHandler = methodHandlerMap.get("methodSinkThrow");
       methodFinalThrowMethodHandler = methodHandlerMap.get("methodFinalThrow");
       methodBothThrowMethodHandler = methodHandlerMap.get("methodBothThrow");
+      methodFastMethodHandler = methodHandlerMap.get("methodFast");
     }
 
     @java.lang.Override

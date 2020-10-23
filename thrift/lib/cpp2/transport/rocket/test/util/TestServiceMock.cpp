@@ -268,7 +268,16 @@ void TestStreamServiceMock::async_eb_leakCallback(
 void TestStreamServiceMock::async_eb_orderRequestStream(
     std::unique_ptr<apache::thrift::HandlerCallback<
         apache::thrift::ResponseAndServerStream<int32_t, int32_t>>> cb) {
-  cb->result({++order_, apache::thrift::ServerStream<int32_t>::createEmpty()});
+#if FOLLY_HAS_COROUTINES
+  auto stream = folly::coro::co_invoke(
+      [eb = cb->getEventBase()]() -> folly::coro::AsyncGenerator<int32_t&&> {
+        eb->checkIsInEventBaseThread();
+        co_return;
+      });
+#else
+  auto stream = ServerStream<int32_t>::createEmpty();
+#endif
+  cb->result({++order_, std::move(stream)});
 }
 
 void TestStreamServiceMock::async_eb_orderRequestResponse(

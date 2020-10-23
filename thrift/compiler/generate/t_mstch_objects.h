@@ -710,6 +710,7 @@ class mstch_type : public mstch_base {
             {"type:sink?", &mstch_type::is_sink},
             {"type:sinkHasFirstResponse?",
              &mstch_type::sink_has_first_response},
+            {"type:stream_or_sink?", &mstch_type::is_stream_or_sink},
             {"type:streamresponse?", &mstch_type::is_streamresponse},
             {"type:streamHasFirstResponse?",
              &mstch_type::stream_has_first_response},
@@ -790,6 +791,9 @@ class mstch_type : public mstch_base {
   mstch::node sink_has_first_response() {
     return resolved_type_->is_sink() &&
         dynamic_cast<const t_sink*>(resolved_type_)->sink_has_first_response();
+  }
+  mstch::node is_stream_or_sink() {
+    return resolved_type_->is_streamresponse() || resolved_type_->is_sink();
   }
   mstch::node is_streamresponse() {
     return resolved_type_->is_streamresponse();

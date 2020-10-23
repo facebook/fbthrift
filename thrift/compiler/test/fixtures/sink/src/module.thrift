@@ -51,4 +51,5 @@ service SinkService {
   sink<SinkPayload throws (1: SinkException1 ex), FinalResponse> methodSinkThrow();
   sink<SinkPayload, FinalResponse throws (1:  SinkException2 ex)> methodFinalThrow();
   sink<SinkPayload throws (1: SinkException1 ex), FinalResponse throws (1:  SinkException2 ex)> methodBothThrow();
+  sink<SinkPayload, FinalResponse> methodFast() (thread='eb');
 }
