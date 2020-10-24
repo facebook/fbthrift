@@ -82,10 +82,6 @@ namespace thrift {
 template <>
 class Cpp2Ops<::thrift::test::MyCustomStruct> {
  public:
-  static void clear(::thrift::test::MyCustomStruct* obj) {
-    obj->data_.clear();
-  }
-
   template <class Protocol>
   static uint32_t write(
       Protocol* p,
@@ -184,10 +180,6 @@ class Cpp2Ops<::thrift::test::MyCustomStruct> {
 template <>
 class Cpp2Ops<::thrift::test::MyCustomUnion> {
  public:
-  static void clear(::thrift::test::MyCustomUnion* obj) {
-    obj->data_.clear();
-  }
-
   template <class Protocol>
   static uint32_t write(Protocol* p, const ::thrift::test::MyCustomUnion* obj) {
     uint32_t xfer = 0;

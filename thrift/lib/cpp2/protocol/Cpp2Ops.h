@@ -45,8 +45,6 @@ class Cpp2Ops {
       "(only Thrift-generated classes are serializable)");
   //  When instantiated with a type T, includes:
   //
-  //      static void clear(T*);
-  //
   //      template <class P>
   //      static uint32_t write(P*, const T*);
   //

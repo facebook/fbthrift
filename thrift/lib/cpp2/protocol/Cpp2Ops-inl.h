@@ -729,9 +729,6 @@ class Cpp2Ops<T, folly::void_t<typename T::__fbthrift_cpp2_type>> {
   static constexpr protocol::TType thriftType() {
     return protocol::T_STRUCT;
   }
-  static void clear(Type* value) {
-    value->__clear();
-  }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return value->write(prot);
