@@ -14,8 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:cpp_indirection%><%!
-  %>::apache::thrift::detail::indirection_tag<<%/type:cpp_indirection%><%!
+%><%#type:cpp_indirection?%><%!
+  %>::apache::thrift::detail::indirection_tag<<%/type:cpp_indirection?%><%!
 
 %>::apache::thrift::type_class::<%!
 %><%#type:binary?%>binary<%/type:binary?%><%!
@@ -43,7 +43,7 @@
     %>map<<%#type:keyType%><% > common/type_class%><%/type:keyType%>, <%#type:valueType%><% > common/type_class%><%/type:valueType%>><%!
 %><%/type:map?%><%!
 
-%><%#type:cpp_indirection%><%!
-  %>, <% > common/type_namespace_cpp2%>apache_thrift_indirection_module_<%type:name%><%!
+%><%#type:cpp_indirection?%><%!
+  %>, ::apache::thrift::detail::apply_indirection_fn<%!
 %>><%!
-%><%/type:cpp_indirection%>
+%><%/type:cpp_indirection?%>

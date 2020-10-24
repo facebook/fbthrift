@@ -25,6 +25,8 @@ namespace thrift {
 namespace test {
 
 struct CppHasANumber : private boost::totally_ordered<CppHasANumber> {
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(number);
+
   std::int32_t number{};
   CppHasANumber() {}
   /* implicit */ CppHasANumber(std::int32_t number_) : number(number_) {}

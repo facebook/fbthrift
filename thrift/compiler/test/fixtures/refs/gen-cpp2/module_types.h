@@ -243,9 +243,6 @@ extern const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO
 } // cpp2
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
 class MyUnion;

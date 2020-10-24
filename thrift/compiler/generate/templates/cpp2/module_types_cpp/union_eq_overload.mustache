@@ -28,8 +28,8 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
 <%#field:type%>
 <%#type:binary?%>
       return apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(
-          value_.<%field:cpp_name%><%type:cpp_indirection%>,
-          rhs.value_.<%field:cpp_name%><%type:cpp_indirection%>);
+          <% > types/apply_indirection_pre%>value_.<%field:cpp_name%><% > types/apply_indirection_post%>,
+          <% > types/apply_indirection_pre%>rhs.value_.<%field:cpp_name%><% > types/apply_indirection_post%>);
 <%/type:binary?%>
 <%^type:binary?%>
       return value_.<%field:cpp_name%> == rhs.value_.<%field:cpp_name%>;

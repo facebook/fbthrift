@@ -95,9 +95,6 @@ extern const _Metasyntactic_EnumMapFactory::NamesToValuesMapType _Metasyntactic_
 } // cpp2
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
 class SomeStruct;

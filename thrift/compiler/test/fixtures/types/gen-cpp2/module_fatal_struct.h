@@ -19,7 +19,6 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 namespace thrift_fatal_impl_detail {
 
-
 struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
   template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
 

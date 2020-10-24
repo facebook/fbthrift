@@ -32,9 +32,6 @@ APACHE_THRIFT_DEFINE_ACCESSOR(strField);
 // BEGIN declare_enums
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace some { namespace ns {
 class IncludedB;

@@ -168,10 +168,10 @@ exception AnotherException {
   2: string message
 } (cpp.virtual)
 
-typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
-typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
-typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
-typedef string (cpp.type = "FooBar", cpp.indirection=".value") IndirectionD
+typedef i64 (cpp.type = "Foo", cpp.indirection) IndirectionA
+typedef i32 (cpp.type = "Baz", cpp.indirection) IndirectionC
+typedef double (cpp.type = "Bar", cpp.indirection) IndirectionB
+typedef string (cpp.type = "FooBar", cpp.indirection) IndirectionD
 typedef map<MyEnumA, string>
   (cpp.declare_hash, cpp.declare_equal_to) HashedTypedef
 

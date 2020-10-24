@@ -114,9 +114,6 @@ extern const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES;
 }} // some::ns
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace some { namespace ns {
 class ModuleA;

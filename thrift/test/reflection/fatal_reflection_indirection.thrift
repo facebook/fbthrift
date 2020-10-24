@@ -19,11 +19,9 @@ cpp_include "thrift/test/reflection/fatal_reflection_indirection_types.h"
 namespace cpp2 reflection_indirection
 
 typedef i32 (cpp.type = 'CppFakeI32') FakeI32
-typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
-typedef i32 (cpp.type = 'CppHasAResult', cpp.indirection = '.foo().result()')
-    HasAResult
-typedef string (cpp.type = 'CppHasAPhrase', cpp.indirection = '.phrase')
-    HasAPhrase
+typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection) HasANumber
+typedef i32 (cpp.type = 'CppHasAResult', cpp.indirection) HasAResult
+typedef string (cpp.type = 'CppHasAPhrase', cpp.indirection) HasAPhrase
 
 struct struct_with_indirections {
   1: i32 real,

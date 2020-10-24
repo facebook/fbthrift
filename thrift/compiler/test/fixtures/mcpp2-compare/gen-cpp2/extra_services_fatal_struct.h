@@ -19,7 +19,6 @@ namespace extra { namespace svc {
 
 namespace thrift_fatal_impl_detail {
 
-
 struct extra_svc_extra_services__struct_unique_member_pod_list {
   template <typename T_extra_svc_extra_services_struct_member_pod>
 

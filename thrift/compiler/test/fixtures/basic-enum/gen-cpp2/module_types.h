@@ -167,9 +167,6 @@ extern const _MyBigEnum_EnumMapFactory::NamesToValuesMapType _MyBigEnum_NAMES_TO
 }}} // test::fixtures::enumstrict
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace test { namespace fixtures { namespace enumstrict {
 class MyStruct;

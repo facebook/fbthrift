@@ -489,9 +489,6 @@ extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VAL
 }}}} // apache::thrift::fixtures::types
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class decorated_struct;

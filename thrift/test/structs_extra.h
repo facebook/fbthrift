@@ -36,6 +36,16 @@ struct WrappedType {
   }
 };
 
+template <class T>
+struct WrappedTypeField : WrappedType<T> {
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(raw);
+};
+
+template <class T>
+struct WrappedTypeMethod : WrappedType<T> {
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(rawAccessor());
+};
+
 template <typename Value>
 using SmallSortedVectorSet = folly::sorted_vector_set<
     Value,

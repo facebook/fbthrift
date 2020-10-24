@@ -194,26 +194,6 @@ extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VAL
 } // cpp2
 
 // END declare_enums
-// BEGIN struct_indirection
-namespace cpp2 {
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_IndirectionA,
-    .value);
-
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_IndirectionC,
-    .__value());
-
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_IndirectionB,
-    .value);
-
-
-} // cpp2
-// END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
 class SmallStruct;

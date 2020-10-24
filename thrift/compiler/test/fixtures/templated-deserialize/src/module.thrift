@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
-typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
-typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
+typedef i64 (cpp.type = "Foo", cpp.indirection) IndirectionA
+typedef i32 (cpp.type = "Baz", cpp.indirection) IndirectionC
+typedef double (cpp.type = "Bar", cpp.indirection) IndirectionB
 
 enum MyEnumA {
   fieldA = 1

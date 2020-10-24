@@ -14,19 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>// BEGIN struct_indirection
-<%#program:indirection?%>
-<% > common/namespace_cpp2_begin%>
-
-<%#program:typedefs%><%#typedef:type%><%#type:cpp_indirection%>
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_<%typedef:symbolic%>,
-    <%type:cpp_indirection%>);
-
-<%/type:cpp_indirection%><%/typedef:type%><%/program:typedefs%>
-
-<% > common/namespace_cpp2_end%>
-<%/program:indirection?%>
-
-// END struct_indirection
+%><%#type:cpp_indirection?%>)<%/type:cpp_indirection?%>

@@ -84,9 +84,6 @@ extern const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUE
 }}} // a::different::ns
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace a { namespace different { namespace ns {
 class AStruct;

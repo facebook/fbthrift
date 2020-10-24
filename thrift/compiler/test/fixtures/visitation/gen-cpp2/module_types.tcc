@@ -6459,7 +6459,7 @@ _readField_fake:
   }
 _readField_number:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasANumber>,  ::test_cpp2::cpp_reflection::HasANumber>::readWithContext(*iprot, this->number, _readState);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasANumber>::readWithContext(*iprot, this->number, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.number = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -6474,7 +6474,7 @@ _readField_number:
   }
 _readField_result:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAResult>,  ::test_cpp2::cpp_reflection::HasAResult>::readWithContext(*iprot, this->result, _readState);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAResult>::readWithContext(*iprot, this->result, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.result = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -6490,7 +6490,7 @@ _readField_result:
 _readField_phrase:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAPhrase>,  ::test_cpp2::cpp_reflection::HasAPhrase>::read(*iprot, this->phrase);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAPhrase>::read(*iprot, this->phrase);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.phrase = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -6579,11 +6579,11 @@ uint32_t struct_with_indirections::serializedSize(Protocol_ const* prot_) const 
   xfer += prot_->serializedFieldSize("fake", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::FakeI32>::serializedSize<false>(*prot_, this->fake);
   xfer += prot_->serializedFieldSize("number", apache::thrift::protocol::T_I32, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasANumber>,  ::test_cpp2::cpp_reflection::HasANumber>::serializedSize<false>(*prot_, this->number);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasANumber>::serializedSize<false>(*prot_, this->number);
   xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAResult>,  ::test_cpp2::cpp_reflection::HasAResult>::serializedSize<false>(*prot_, this->result);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAResult>::serializedSize<false>(*prot_, this->result);
   xfer += prot_->serializedFieldSize("phrase", apache::thrift::protocol::T_STRING, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAPhrase>,  ::test_cpp2::cpp_reflection::HasAPhrase>::serializedSize<false>(*prot_, this->phrase);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAPhrase>::serializedSize<false>(*prot_, this->phrase);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -6597,11 +6597,11 @@ uint32_t struct_with_indirections::serializedSizeZC(Protocol_ const* prot_) cons
   xfer += prot_->serializedFieldSize("fake", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::FakeI32>::serializedSize<false>(*prot_, this->fake);
   xfer += prot_->serializedFieldSize("number", apache::thrift::protocol::T_I32, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasANumber>,  ::test_cpp2::cpp_reflection::HasANumber>::serializedSize<false>(*prot_, this->number);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasANumber>::serializedSize<false>(*prot_, this->number);
   xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAResult>,  ::test_cpp2::cpp_reflection::HasAResult>::serializedSize<false>(*prot_, this->result);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAResult>::serializedSize<false>(*prot_, this->result);
   xfer += prot_->serializedFieldSize("phrase", apache::thrift::protocol::T_STRING, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAPhrase>,  ::test_cpp2::cpp_reflection::HasAPhrase>::serializedSize<false>(*prot_, this->phrase);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAPhrase>::serializedSize<false>(*prot_, this->phrase);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -6617,13 +6617,13 @@ uint32_t struct_with_indirections::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::FakeI32>::write(*prot_, this->fake);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("number", apache::thrift::protocol::T_I32, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasANumber>,  ::test_cpp2::cpp_reflection::HasANumber>::write(*prot_, this->number);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasANumber>::write(*prot_, this->number);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("result", apache::thrift::protocol::T_I32, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAResult>,  ::test_cpp2::cpp_reflection::HasAResult>::write(*prot_, this->result);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAResult>::write(*prot_, this->result);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("phrase", apache::thrift::protocol::T_STRING, 5);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::test_cpp2::cpp_reflection::apache_thrift_indirection_module_HasAPhrase>,  ::test_cpp2::cpp_reflection::HasAPhrase>::write(*prot_, this->phrase);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::test_cpp2::cpp_reflection::HasAPhrase>::write(*prot_, this->phrase);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

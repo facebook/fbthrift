@@ -148,9 +148,6 @@ extern const _ExampleEnum_EnumMapFactory::NamesToValuesMapType _ExampleEnum_NAME
 }}} // test::fixtures::tablebased
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace test { namespace fixtures { namespace tablebased {
 class TrivialTypesStruct;

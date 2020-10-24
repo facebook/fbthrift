@@ -21,7 +21,8 @@
   if (!this-><%field:cpp_name%>.empty()) {
 <%/type:resolves_to_container?%>
 <%#type:string_or_binary?%>
-  if (!apache::thrift::StringTraits< <% > types/indirected_string_type%>>::isEmpty(this-><%field:cpp_name%><%type:cpp_indirection%>)) {
+  if (!apache::thrift::StringTraits< <% > types/indirected_string_type%>>::isEmpty(<%!
+      %><% > types/apply_indirection_pre%>this-><%field:cpp_name%><% > types/apply_indirection_post%>)) {
 <%/type:string_or_binary?%>
 <%^field:cpp_ref?%><%^type:resolves_to_container?%><%^type:string_or_binary?%>
 <%#field:value%>

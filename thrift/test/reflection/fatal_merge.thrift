@@ -396,7 +396,7 @@ const NestedRefSharedConstExample kNestedRefSharedConstExample = {
   },
 }
 
-typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
+typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection) HasANumber
 
 struct Indirection {
   1: i32 real,

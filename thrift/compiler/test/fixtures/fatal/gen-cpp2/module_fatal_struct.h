@@ -20,33 +20,6 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 namespace thrift_fatal_impl_detail {
 
-struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list {
-  struct number {
-    template <typename T__thrift__arg__>
-    constexpr auto operator()(T__thrift__arg__ &&__thrift__arg__) noexcept(noexcept(
-      static_cast<T__thrift__arg__&&>(__thrift__arg__).number))
-      -> decltype((static_cast<T__thrift__arg__&&>(__thrift__arg__).number)) {
-      return static_cast<T__thrift__arg__&&>(__thrift__arg__).number;
-    }
-  };
-  struct phrase {
-    template <typename T__thrift__arg__>
-    constexpr auto operator()(T__thrift__arg__ &&__thrift__arg__) noexcept(noexcept(
-      static_cast<T__thrift__arg__&&>(__thrift__arg__).phrase))
-      -> decltype((static_cast<T__thrift__arg__&&>(__thrift__arg__).phrase)) {
-      return static_cast<T__thrift__arg__&&>(__thrift__arg__).phrase;
-    }
-  };
-  struct result {
-    template <typename T__thrift__arg__>
-    constexpr auto operator()(T__thrift__arg__ &&__thrift__arg__) noexcept(noexcept(
-      static_cast<T__thrift__arg__&&>(__thrift__arg__).foo().result()))
-      -> decltype((static_cast<T__thrift__arg__&&>(__thrift__arg__).foo().result())) {
-      return static_cast<T__thrift__arg__&&>(__thrift__arg__).foo().result();
-    }
-  };
-};
-
 struct test_cpp2_cpp_reflection_module__struct_unique_member_pod_list {
   template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
@@ -4139,7 +4112,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         ::apache::thrift::detail::reflection_impl::data_member_accessor<
           ::apache::thrift::tag::number
         >,
-        thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::number
+        ::apache::thrift::detail::apply_indirection_fn
       >
     >,
     ::apache::thrift::detail::invoke_reffer<
@@ -4160,7 +4133,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         ::apache::thrift::detail::reflection_impl::data_member_accessor<
           ::apache::thrift::tag::result
         >,
-        thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::result
+        ::apache::thrift::detail::apply_indirection_fn
       >
     >,
     ::apache::thrift::detail::invoke_reffer<
@@ -4181,7 +4154,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
         ::apache::thrift::detail::reflection_impl::data_member_accessor<
           ::apache::thrift::tag::phrase
         >,
-        thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::phrase
+        ::apache::thrift::detail::apply_indirection_fn
       >
     >,
     ::apache::thrift::detail::invoke_reffer<

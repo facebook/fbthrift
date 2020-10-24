@@ -4377,9 +4377,9 @@ void struct_with_indirections::__clear() {
   // clear all fields
   real = 0;
   fake = 0;
-  number.number = 0;
-  result.foo().result() = 0;
-  phrase.phrase = apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<CppHasAPhrase>().phrase)>>::fromStringLiteral("");
+  ::apache::thrift::apply_indirection(number) = 0;
+  ::apache::thrift::apply_indirection(result) = 0;
+  ::apache::thrift::apply_indirection(phrase) = apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

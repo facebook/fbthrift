@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/TypeClass.h>
 
 #include <folly/Traits.h>
+#include <folly/Utility.h>
 #include <folly/functional/Invoke.h>
 #include <initializer_list>
 #include <utility>
@@ -153,6 +154,49 @@ namespace detail {
 FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __clear);
 }
 FOLLY_INLINE_VARIABLE constexpr apache::thrift::detail::clear_fn clear;
+
+} // namespace thrift
+} // namespace apache
+
+#define FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(...)                       \
+  struct __fbthrift_cpp2_indirection_fn {                                    \
+    template <typename __fbthrift_t>                                         \
+    FOLLY_ERASE constexpr auto operator()(__fbthrift_t&& __fbthrift_v) const \
+        noexcept(                                                            \
+            noexcept(static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) \
+            -> decltype(                                                     \
+                (static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) {   \
+      return static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__;          \
+    }                                                                        \
+  }
+
+namespace apache {
+namespace thrift {
+
+template <typename T>
+using detect_indirection_fn_t = typename T::__fbthrift_cpp2_indirection_fn;
+
+template <typename T>
+using indirection_fn_t =
+    folly::detected_or_t<folly::identity_fn, detect_indirection_fn_t, T>;
+
+namespace detail {
+struct apply_indirection_fn {
+ private:
+  template <typename T>
+  using i = indirection_fn_t<folly::remove_cvref_t<T>>;
+
+ public:
+  template <typename T>
+  FOLLY_ERASE constexpr auto operator()(T&& t) const
+      noexcept(noexcept(i<T>{}(static_cast<T&&>(t))))
+          -> decltype(i<T>{}(static_cast<T&&>(t))) {
+    return i<T>{}(static_cast<T&&>(t));
+  }
+};
+} // namespace detail
+
+FOLLY_INLINE_VARIABLE constexpr detail::apply_indirection_fn apply_indirection;
 
 } // namespace thrift
 } // namespace apache

@@ -18,7 +18,6 @@ namespace cpp2 {
 
 namespace thrift_fatal_impl_detail {
 
-
 struct cpp2_reflection__struct_unique_member_pod_list {
   template <typename T_cpp2_reflection_struct_member_pod>
 

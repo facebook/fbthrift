@@ -1009,26 +1009,6 @@ extern const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum
 }} // test_cpp2::cpp_reflection
 
 // END declare_enums
-// BEGIN struct_indirection
-namespace test_cpp2 { namespace cpp_reflection {
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_HasANumber,
-    .number);
-
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_HasAResult,
-    .foo().result());
-
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_HasAPhrase,
-    .phrase);
-
-
-}} // test_cpp2::cpp_reflection
-// END struct_indirection
 // BEGIN forward_declare
 namespace test_cpp2 { namespace cpp_reflection {
 class union1;

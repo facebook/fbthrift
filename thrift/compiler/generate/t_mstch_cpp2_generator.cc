@@ -447,7 +447,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
-            {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
+            {"type:cpp_indirection?", &mstch_cpp2_type::cpp_indirection},
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
             {"type:namespace_cpp2", &mstch_cpp2_type::namespace_cpp2},
             {"type:sync_methods_return_try?",
@@ -546,10 +546,7 @@ class mstch_cpp2_type : public mstch_type {
     return get_cpp_template(type_);
   }
   mstch::node cpp_indirection() {
-    if (resolved_type_->annotations_.count("cpp.indirection")) {
-      return resolved_type_->annotations_.at("cpp.indirection");
-    }
-    return std::string();
+    return resolved_type_->annotations_.count("cpp.indirection") > 0;
   }
   mstch::node cpp_declare_hash() {
     return resolved_type_->annotations_.count("cpp.declare_hash") ||
@@ -1345,7 +1342,6 @@ class mstch_cpp2_program : public mstch_program {
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
             {"program:frozen?", &mstch_cpp2_program::frozen},
             {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
-            {"program:indirection?", &mstch_cpp2_program::has_indirection},
             {"program:tablebased?", &mstch_cpp2_program::tablebased},
             {"program:json?", &mstch_cpp2_program::json},
             {"program:nimble?", &mstch_cpp2_program::nimble},
@@ -1359,9 +1355,6 @@ class mstch_cpp2_program : public mstch_program {
              &mstch_cpp2_program::fatal_identifiers},
             {"program:fatal_data_member",
              &mstch_cpp2_program::fatal_data_member},
-            {"program:indirection_recursive?",
-             &mstch_cpp2_program::has_indirection_recursive},
-            {"program:indirection", &mstch_cpp2_program::indirection},
             {"program:enforce_required?",
              &mstch_cpp2_program::enforce_required},
             {"program:gen_metadata?", &mstch_cpp2_program::gen_metadata},
@@ -1496,16 +1489,6 @@ class mstch_cpp2_program : public mstch_program {
     auto iter = cache_->parsed_options_.find("frozen");
     return iter != cache_->parsed_options_.end() && iter->second == "packed";
   }
-  mstch::node has_indirection() {
-    // NOTE: this can be problematic, since typedef can be from an imported
-    // thrift file.
-    for (auto const* typedf : program_->get_typedefs()) {
-      if (typedf->get_type()->annotations_.count("cpp.indirection")) {
-        return true;
-      }
-    }
-    return false;
-  }
   mstch::node json() {
     return cache_->parsed_options_.count("json") != 0;
   }
@@ -1626,64 +1609,6 @@ class mstch_cpp2_program : public mstch_program {
       a.push_back(*f);
     }
     return a;
-  }
-  mstch::node has_indirection_recursive() {
-    for (const t_struct* s : program_->get_objects()) {
-      if (s->is_union()) {
-        continue;
-      }
-      for (const t_field* f : s->get_members()) {
-        if (!f->get_type()->is_typedef()) {
-          continue;
-        }
-        const auto* true_type = f->get_type()->get_true_type();
-        if (true_type->annotations_.count("cpp.indirection")) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-  mstch::node indirection() {
-    std::map<std::string, std::map<std::string, std::string>> indirections;
-    for (const t_struct* s : program_->get_objects()) {
-      if (s->is_union()) {
-        continue;
-      }
-      for (const t_field* f : s->get_members()) {
-        if (!f->get_type()->is_typedef()) {
-          continue;
-        }
-        const auto* true_type = f->get_type()->get_true_type();
-        if (true_type->annotations_.count("cpp.indirection")) {
-          if (indirections.count(s->get_name()) > 0) {
-            indirections.at(s->get_name())
-                .emplace(
-                    get_cpp_name(f),
-                    true_type->annotations_.at("cpp.indirection"));
-          } else {
-            indirections.emplace(
-                s->get_name(),
-                std::map<std::string, std::string>{
-                    {get_cpp_name(f),
-                     true_type->annotations_.at("cpp.indirection")}});
-          }
-        }
-      }
-    }
-    mstch::array result;
-    for (const auto& indirection : indirections) {
-      mstch::array per_struct;
-      for (const auto& itr : indirection.second) {
-        per_struct.push_back(
-            mstch::map{{"indirection:field_name", itr.first},
-                       {"indirection:indirection_name", itr.second}});
-      }
-      result.push_back(
-          mstch::map{{"indirection:struct_name", indirection.first},
-                     {"indirection:indirection_fields", per_struct}});
-    }
-    return result;
   }
   mstch::node enforce_required() {
     return cache_->parsed_options_.count("deprecated_enforce_required") != 0;

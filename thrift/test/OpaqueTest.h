@@ -19,6 +19,8 @@
 #include <cstdint>
 #include <type_traits>
 
+#include <thrift/lib/cpp2/Thrift.h>
+
 // Implement basic opaque typedef suitable for testing
 //
 // In real life it would have operators defined that access underlying value in
@@ -34,6 +36,8 @@ class Opaque {
   RawType val_;
 
  public:
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(__value());
+
   explicit Opaque(const RawType& val) : val_(val) {}
   Opaque() {}
   RawType& __value() {

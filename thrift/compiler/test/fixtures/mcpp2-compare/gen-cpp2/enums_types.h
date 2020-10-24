@@ -214,9 +214,6 @@ extern const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VAL
 }}} // facebook::ns::qwerty
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace facebook { namespace ns { namespace qwerty {
 class SomeStruct;

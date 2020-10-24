@@ -20,13 +20,13 @@ cpp_include "<unordered_map>"
 cpp_include "thrift/test/OpaqueTest.h"
 
 typedef
-  double (cpp.type = "OpaqueDouble1", cpp.indirection=".__value()")
+  double (cpp.type = "OpaqueDouble1", cpp.indirection)
   OpaqueDouble1
 typedef
-  double (cpp.type = "OpaqueDouble2", cpp.indirection=".__value()")
+  double (cpp.type = "OpaqueDouble2", cpp.indirection)
   OpaqueDouble2
 typedef
-  i64 (cpp.type = "NonConvertibleId", cpp.indirection=".__value()")
+  i64 (cpp.type = "NonConvertibleId", cpp.indirection)
   NonConvertibleId
 typedef
   map<i32, OpaqueDouble1> (cpp.template = "std::unordered_map")

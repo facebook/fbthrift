@@ -258,9 +258,6 @@ extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VAL
 } // cpp2
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
 class Internship;

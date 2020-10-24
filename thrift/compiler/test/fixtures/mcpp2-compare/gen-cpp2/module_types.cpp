@@ -2120,7 +2120,7 @@ void containerStruct::__clear() {
   fieldAC =  ::some::valid::ns::MyEnumB::AField;
   fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
   fieldAE.clear();
-  fieldSD.value = apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<FooBar>().value)>>::fromStringLiteral("");
+  ::apache::thrift::apply_indirection(fieldSD) = apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3361,7 +3361,7 @@ void AnnotatedStruct::__clear() {
   typedef_deque_template.clear();
   typedef_set_template.clear();
   typedef_map_template.clear();
-  indirection_a.value = 0;
+  ::apache::thrift::apply_indirection(indirection_a) = 0;
   indirection_b.clear();
   indirection_c.clear();
   iobuf_type_val = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value");

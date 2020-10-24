@@ -1019,31 +1019,6 @@ extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VAL
 }}} // some::valid::ns
 
 // END declare_enums
-// BEGIN struct_indirection
-namespace some { namespace valid { namespace ns {
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_IndirectionA,
-    .value);
-
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_IndirectionC,
-    .__value());
-
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_IndirectionB,
-    .value);
-
-
-FBTHRIFT_DETAIL_CPP_DEFINE_INDIRECTION_FN(
-    apache_thrift_indirection_module_IndirectionD,
-    .value);
-
-
-}}} // some::valid::ns
-// END struct_indirection
 // BEGIN forward_declare
 namespace some { namespace valid { namespace ns {
 class Empty;

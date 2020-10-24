@@ -36,22 +36,22 @@ void <%struct:name%>::__clear() {
 <%#type:resolves_to_base_or_enum?%>
 <%#field:value%>
 <%^type:enum?%>
-  <%field:cpp_name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
+  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
 <%/type:enum?%>
 <%#type:enum?%>
 <%#value:enum?%>
-  <%field:cpp_name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
+  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
 <%/value:enum?%>
 <%^value:enum?%><%#field:enum_has_value%>
-  <%field:cpp_name%><%type:cpp_indirection%> = <% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:cpp_name%>;
+  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:cpp_name%>;
 <%/field:enum_has_value%><%/value:enum?%>
 <%^value:enum?%><%^field:enum_has_value%>
-  <%field:cpp_name%><%type:cpp_indirection%> = static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
+  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
 <%/field:enum_has_value%><%/value:enum?%>
 <%/type:enum?%>
 <%/field:value%>
 <%^field:value%>
-  <%field:cpp_name%><%type:cpp_indirection%> = <% > module_types_cpp/unset_values%>;
+  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > module_types_cpp/unset_values%>;
 <%/field:value%>
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>

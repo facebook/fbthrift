@@ -77,9 +77,6 @@ extern const _B_EnumMapFactory::NamesToValuesMapType _B_NAMES_TO_VALUES;
 } // cpp2
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
 class A;

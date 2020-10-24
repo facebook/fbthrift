@@ -169,9 +169,6 @@ extern const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUE
 } // cpp2
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
 class Color;

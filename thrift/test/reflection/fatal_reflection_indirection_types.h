@@ -25,6 +25,8 @@ namespace reflection_indirection {
 using CppFakeI32 = std::int32_t;
 
 struct CppHasANumber : private boost::totally_ordered<CppHasANumber> {
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(number);
+
   std::int32_t number{};
   CppHasANumber() {}
   explicit CppHasANumber(std::int32_t number_) : number(number_) {}
@@ -38,6 +40,8 @@ struct CppHasANumber : private boost::totally_ordered<CppHasANumber> {
 
 class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
  public:
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(foo().result());
+
   class Foo {
    public:
     explicit Foo(std::int32_t& obj) : obj_(obj) {}
@@ -86,6 +90,8 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
 };
 
 struct CppHasAPhrase : private boost::totally_ordered<CppHasAPhrase> {
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(phrase);
+
   std::string phrase{};
   CppHasAPhrase() {}
   explicit CppHasAPhrase(std::string phrase_) : phrase(std::move(phrase_)) {}

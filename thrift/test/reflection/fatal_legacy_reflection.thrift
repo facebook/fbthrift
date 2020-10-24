@@ -18,7 +18,7 @@ cpp_include "thrift/test/reflection/fatal_legacy_reflection_types.h"
 
 namespace cpp2 apache.thrift.test
 
-typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
+typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection) HasANumber
 
 enum SampleEnum {
   kSampleEnumFoo = 0,

@@ -3505,7 +3505,7 @@ _readField_fieldAB:
     _readState.beforeSubobject(iprot);
     
     this->fieldAB = ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::read(*iprot, this->fieldAB);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::read(*iprot, this->fieldAB);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldAB = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3571,7 +3571,7 @@ _readField_fieldAE:
 _readField_fieldSD:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionD>,  ::some::valid::ns::IndirectionD>::read(*iprot, this->fieldSD);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionD>::read(*iprot, this->fieldSD);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.fieldSD = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -4131,7 +4131,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   }
   if (!this->fieldAB.empty()) {
     xfer += prot_->serializedFieldSize("fieldAB", apache::thrift::protocol::T_MAP, 29);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
   }
   if (this->fieldAC !=  ::some::valid::ns::MyEnumB::AField) {
     xfer += prot_->serializedFieldSize("fieldAC", apache::thrift::protocol::T_I32, 30);
@@ -4145,9 +4145,9 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("fieldAE", apache::thrift::protocol::T_MAP, 32);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAE);
   }
-  if (!apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<FooBar>().value)>>::isEmpty(this->fieldSD.value)) {
+  if (!apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::isEmpty(::apache::thrift::apply_indirection(this->fieldSD))) {
     xfer += prot_->serializedFieldSize("fieldSD", apache::thrift::protocol::T_STRING, 33);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionD>,  ::some::valid::ns::IndirectionD>::serializedSize<false>(*prot_, this->fieldSD);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionD>::serializedSize<false>(*prot_, this->fieldSD);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -4305,7 +4305,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (!this->fieldAB.empty()) {
     xfer += prot_->serializedFieldSize("fieldAB", apache::thrift::protocol::T_MAP, 29);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
   }
   if (this->fieldAC !=  ::some::valid::ns::MyEnumB::AField) {
     xfer += prot_->serializedFieldSize("fieldAC", apache::thrift::protocol::T_I32, 30);
@@ -4319,9 +4319,9 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("fieldAE", apache::thrift::protocol::T_MAP, 32);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAE);
   }
-  if (!apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<FooBar>().value)>>::isEmpty(this->fieldSD.value)) {
+  if (!apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::isEmpty(::apache::thrift::apply_indirection(this->fieldSD))) {
     xfer += prot_->serializedFieldSize("fieldSD", apache::thrift::protocol::T_STRING, 33);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionD>,  ::some::valid::ns::IndirectionD>::serializedSize<false>(*prot_, this->fieldSD);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionD>::serializedSize<false>(*prot_, this->fieldSD);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -4520,7 +4520,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   }
   if (!this->fieldAB.empty()) {
     xfer += prot_->writeFieldBegin("fieldAB", apache::thrift::protocol::T_MAP, 29);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::write(*prot_, this->fieldAB);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>, ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::write(*prot_, this->fieldAB);
     xfer += prot_->writeFieldEnd();
   }
   if (this->fieldAC !=  ::some::valid::ns::MyEnumB::AField) {
@@ -4538,9 +4538,9 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::write(*prot_, this->fieldAE);
     xfer += prot_->writeFieldEnd();
   }
-  if (!apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<FooBar>().value)>>::isEmpty(this->fieldSD.value)) {
+  if (!apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::isEmpty(::apache::thrift::apply_indirection(this->fieldSD))) {
     xfer += prot_->writeFieldBegin("fieldSD", apache::thrift::protocol::T_STRING, 33);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionD>,  ::some::valid::ns::IndirectionD>::write(*prot_, this->fieldSD);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::string, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionD>::write(*prot_, this->fieldSD);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -5418,7 +5418,7 @@ _readField_typedef_map_template:
   }
 _readField_indirection_a:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionA>,  ::some::valid::ns::IndirectionA>::readWithContext(*iprot, this->indirection_a, _readState);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionA>::readWithContext(*iprot, this->indirection_a, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.indirection_a = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -5436,7 +5436,7 @@ _readField_indirection_b:
     _readState.beforeSubobject(iprot);
     
     this->indirection_b = ::std::vector< ::some::valid::ns::IndirectionB>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>>, ::std::vector< ::some::valid::ns::IndirectionB>>::read(*iprot, this->indirection_b);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>>, ::std::vector< ::some::valid::ns::IndirectionB>>::read(*iprot, this->indirection_b);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.indirection_b = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -5455,7 +5455,7 @@ _readField_indirection_c:
     _readState.beforeSubobject(iprot);
     
     this->indirection_c = ::std::set< ::some::valid::ns::IndirectionC>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::set< ::some::valid::ns::IndirectionC>>::read(*iprot, this->indirection_c);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::set< ::some::valid::ns::IndirectionC>>::read(*iprot, this->indirection_c);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.indirection_c = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -6101,15 +6101,15 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->indirection_a != 0) {
     xfer += prot_->serializedFieldSize("indirection_a", apache::thrift::protocol::T_I64, 35);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionA>,  ::some::valid::ns::IndirectionA>::serializedSize<false>(*prot_, this->indirection_a);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionA>::serializedSize<false>(*prot_, this->indirection_a);
   }
   if (!this->indirection_b.empty()) {
     xfer += prot_->serializedFieldSize("indirection_b", apache::thrift::protocol::T_LIST, 36);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>>, ::std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>>, ::std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
   }
   if (!this->indirection_c.empty()) {
     xfer += prot_->serializedFieldSize("indirection_c", apache::thrift::protocol::T_SET, 37);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
   }
   if (!apache::thrift::StringTraits< folly::IOBuf>::isEmpty(this->iobuf_type_val)) {
     xfer += prot_->serializedFieldSize("iobuf_type_val", apache::thrift::protocol::T_STRING, 38);
@@ -6361,15 +6361,15 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->indirection_a != 0) {
     xfer += prot_->serializedFieldSize("indirection_a", apache::thrift::protocol::T_I64, 35);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionA>,  ::some::valid::ns::IndirectionA>::serializedSize<false>(*prot_, this->indirection_a);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionA>::serializedSize<false>(*prot_, this->indirection_a);
   }
   if (!this->indirection_b.empty()) {
     xfer += prot_->serializedFieldSize("indirection_b", apache::thrift::protocol::T_LIST, 36);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>>, ::std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>>, ::std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
   }
   if (!this->indirection_c.empty()) {
     xfer += prot_->serializedFieldSize("indirection_c", apache::thrift::protocol::T_SET, 37);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
   }
   if (!apache::thrift::StringTraits< folly::IOBuf>::isEmpty(this->iobuf_type_val)) {
     xfer += prot_->serializedFieldSize("iobuf_type_val", apache::thrift::protocol::T_STRING, 38);
@@ -6667,17 +6667,17 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   }
   if (this->indirection_a != 0) {
     xfer += prot_->writeFieldBegin("indirection_a", apache::thrift::protocol::T_I64, 35);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionA>,  ::some::valid::ns::IndirectionA>::write(*prot_, this->indirection_a);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>,  ::some::valid::ns::IndirectionA>::write(*prot_, this->indirection_a);
     xfer += prot_->writeFieldEnd();
   }
   if (!this->indirection_b.empty()) {
     xfer += prot_->writeFieldBegin("indirection_b", apache::thrift::protocol::T_LIST, 36);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionB>>, ::std::vector< ::some::valid::ns::IndirectionB>>::write(*prot_, this->indirection_b);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::floating_point, ::apache::thrift::detail::apply_indirection_fn>>, ::std::vector< ::some::valid::ns::IndirectionB>>::write(*prot_, this->indirection_b);
     xfer += prot_->writeFieldEnd();
   }
   if (!this->indirection_c.empty()) {
     xfer += prot_->writeFieldBegin("indirection_c", apache::thrift::protocol::T_SET, 37);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral,  ::some::valid::ns::apache_thrift_indirection_module_IndirectionC>>, ::std::set< ::some::valid::ns::IndirectionC>>::write(*prot_, this->indirection_c);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::indirection_tag<::apache::thrift::type_class::integral, ::apache::thrift::detail::apply_indirection_fn>>, ::std::set< ::some::valid::ns::IndirectionC>>::write(*prot_, this->indirection_c);
     xfer += prot_->writeFieldEnd();
   }
   if (!apache::thrift::StringTraits< folly::IOBuf>::isEmpty(this->iobuf_type_val)) {
