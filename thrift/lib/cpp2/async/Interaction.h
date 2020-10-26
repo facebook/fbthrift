@@ -66,9 +66,6 @@ class Tile {
  public:
   virtual ~Tile() = default;
 
-  virtual bool __fbthrift_isError() const {
-    return false;
-  }
   virtual bool __fbthrift_isPromise() const {
     return false;
   }
@@ -120,6 +117,15 @@ class TilePromise final : public Tile {
     DCHECK_EQ(refCount_, 0u);
   }
 
+  template <typename EventTask>
+  void failWith(folly::exception_wrapper ew, const std::string& exCode) {
+    continuations_.reverse();
+    for (auto& task : continuations_) {
+      dynamic_cast<EventTask&>(*task).failWith(ew, exCode);
+    }
+    continuations_.clear();
+  }
+
   bool __fbthrift_isPromise() const override {
     return true;
   }
@@ -129,22 +135,6 @@ class TilePromise final : public Tile {
   bool destructionRequested_{false}; // set when connection is closed to prevent
                                      // continuations from running
   friend class GeneratedAsyncProcessor;
-};
-
-class ErrorTile final : public Tile {
- public:
-  explicit ErrorTile(folly::exception_wrapper ex) : ex_(std::move(ex)) {}
-
-  folly::exception_wrapper get() const {
-    return ex_;
-  }
-
-  bool __fbthrift_isError() const override {
-    return true;
-  }
-
- private:
-  folly::exception_wrapper ex_;
 };
 
 } // namespace thrift

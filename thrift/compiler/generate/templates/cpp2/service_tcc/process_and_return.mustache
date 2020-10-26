@@ -58,20 +58,6 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", ctx));
 <%#service:interaction?%>
   auto tile = ctx->getTile();
-  if (tile->__fbthrift_isError()) {
-    eb->runInEventBaseThread([=]() mutable {
-      tile->__fbthrift_releaseRef(*tm, *eb);
-    });
-    eb->runInEventBaseThread([req = std::move(req), err = static_cast<apache::thrift::ErrorTile*>(tile)->get().what()] {
-<%^function:oneway?%>
-      req->sendErrorWrapped(
-        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-            "Interaction constructor failed with " + err.toStdString()),
-          kInteractionConstructorErrorErrorCode);
-<%/function:oneway?%>
-    });
-    return;
-  }
 <%/service:interaction?%>
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());

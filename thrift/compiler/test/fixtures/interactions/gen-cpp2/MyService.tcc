@@ -97,18 +97,6 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
   MyService_MyInteraction_frobnicate_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.frobnicate", ctx));
   auto tile = ctx->getTile();
-  if (tile->__fbthrift_isError()) {
-    eb->runInEventBaseThread([=]() mutable {
-      tile->__fbthrift_releaseRef(*tm, *eb);
-    });
-    eb->runInEventBaseThread([req = std::move(req), err = static_cast<apache::thrift::ErrorTile*>(tile)->get().what()] {
-      req->sendErrorWrapped(
-        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-            "Interaction constructor failed with " + err.toStdString()),
-          kInteractionConstructorErrorErrorCode);
-    });
-    return;
-  }
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
@@ -164,14 +152,6 @@ void MyServiceAsyncProcessor::process_MyInteraction_ping(apache::thrift::Respons
   MyService_MyInteraction_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.ping", ctx));
   auto tile = ctx->getTile();
-  if (tile->__fbthrift_isError()) {
-    eb->runInEventBaseThread([=]() mutable {
-      tile->__fbthrift_releaseRef(*tm, *eb);
-    });
-    eb->runInEventBaseThread([req = std::move(req), err = static_cast<apache::thrift::ErrorTile*>(tile)->get().what()] {
-    });
-    return;
-  }
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
@@ -201,18 +181,6 @@ void MyServiceAsyncProcessor::process_MyInteraction_truthify(apache::thrift::Res
   MyService_MyInteraction_truthify_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.truthify", ctx));
   auto tile = ctx->getTile();
-  if (tile->__fbthrift_isError()) {
-    eb->runInEventBaseThread([=]() mutable {
-      tile->__fbthrift_releaseRef(*tm, *eb);
-    });
-    eb->runInEventBaseThread([req = std::move(req), err = static_cast<apache::thrift::ErrorTile*>(tile)->get().what()] {
-      req->sendErrorWrapped(
-        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-            "Interaction constructor failed with " + err.toStdString()),
-          kInteractionConstructorErrorErrorCode);
-    });
-    return;
-  }
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }
@@ -271,18 +239,6 @@ void MyServiceAsyncProcessor::process_MyInteraction_encode(apache::thrift::Respo
   MyService_MyInteraction_encode_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.encode", ctx));
   auto tile = ctx->getTile();
-  if (tile->__fbthrift_isError()) {
-    eb->runInEventBaseThread([=]() mutable {
-      tile->__fbthrift_releaseRef(*tm, *eb);
-    });
-    eb->runInEventBaseThread([req = std::move(req), err = static_cast<apache::thrift::ErrorTile*>(tile)->get().what()] {
-      req->sendErrorWrapped(
-        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-            "Interaction constructor failed with " + err.toStdString()),
-          kInteractionConstructorErrorErrorCode);
-    });
-    return;
-  }
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
   }

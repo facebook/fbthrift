@@ -101,26 +101,43 @@ bool GeneratedAsyncProcessor::createInteraction(
           if (*t) {
             tile = std::move(*t);
           } else {
-            tile = std::make_unique<ErrorTile>(
+            t.emplaceException(
                 folly::make_exception_wrapper<std::runtime_error>(
                     "Nullptr returned from interaction constructor"));
             DLOG(FATAL) << "Nullptr returned from interaction constructor";
           }
-        } else {
-          tile = std::make_unique<ErrorTile>(std::move(t.exception()));
         }
 
         if (promise->destructionRequested_) {
           // promise not in tile map, not running continuations
-          tm.add([tile = std::move(tile)] {});
+          if (tile) {
+            tm.add([tile = std::move(tile)] {});
+          }
         } else if (promise->terminationRequested_) {
           // promise not in tile map, continuations will free tile
-          tile->terminationRequested_ = true;
-          promise->fulfill<InteractionEventTask>(*tile.release(), tm, eb);
+          if (tile) {
+            tile->terminationRequested_ = true;
+            promise->fulfill<InteractionEventTask>(*tile.release(), tm, eb);
+          } else {
+            promise->failWith<EventTask>(
+                folly::make_exception_wrapper<TApplicationException>(
+                    "Interaction constructor failed with " +
+                    t.exception().what().toStdString()),
+                kInteractionConstructorErrorErrorCode);
+          }
         } else {
-          // promise and tile managed by pointer in tile map
-          promise->fulfill<InteractionEventTask>(*tile, tm, eb);
-          conn.resetTile(id, std::move(tile)).release(); // aliases promise
+          if (tile) {
+            // promise and tile managed by pointer in tile map
+            promise->fulfill<InteractionEventTask>(*tile, tm, eb);
+            conn.resetTile(id, std::move(tile)).release(); // aliases promise
+          } else {
+            promise->failWith<EventTask>(
+                folly::make_exception_wrapper<TApplicationException>(
+                    "Interaction constructor failed with " +
+                    t.exception().what().toStdString()),
+                kInteractionConstructorErrorErrorCode);
+            conn.removeTile(id).release(); // aliases promise
+          }
         }
       });
   return true;
@@ -128,9 +145,7 @@ bool GeneratedAsyncProcessor::createInteraction(
 
 std::unique_ptr<Tile> GeneratedAsyncProcessor::createInteractionImpl(
     const std::string&) {
-  return std::make_unique<ErrorTile>(
-      folly::make_exception_wrapper<std::runtime_error>(
-          "Handler doesn't perform any interactions"));
+  return nullptr;
 }
 
 void GeneratedAsyncProcessor::terminateInteraction(

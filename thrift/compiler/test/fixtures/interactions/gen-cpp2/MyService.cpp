@@ -250,15 +250,6 @@ const MyServiceAsyncProcessor::InteractionConstructorMap MyServiceAsyncProcessor
 };
 
 std::unique_ptr<apache::thrift::Tile> MyServiceAsyncProcessor::createInteractionImpl(const std::string& name) {
-  const auto& cmap = getInteractionConstructorMap();
-  auto fn = cmap.find(name);
-  if (fn == cmap.end()) {
-    LOG(ERROR) << "Unknown interaction name " << name;
-    return std::make_unique<apache::thrift::ErrorTile>(
-                folly::make_exception_wrapper<apache::thrift::TApplicationException>(
-                    apache::thrift::TApplicationException::
-                      TApplicationExceptionType::UNKNOWN_METHOD,
-                    "Unknown interaction"));
-  }
-  return (this->*(fn->second))();
+  auto fn = getInteractionConstructorMap().at(name);
+  return (this->*fn)();
 }} // cpp2

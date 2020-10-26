@@ -538,3 +538,35 @@ TEST(InteractionCodegenTest, ReuseIdDuringConstructor) {
   handler->b2.post();
   std::move(fut).via(&eb).getVia(&eb);
 }
+
+TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
+  struct SlowCalculatorHandler : CalculatorHandler {
+    std::unique_ptr<AdditionIf> createAddition() override {
+      b.wait();
+      throw std::runtime_error("Custom exception");
+    }
+
+    folly::Baton<> b;
+  };
+  auto handler = std::make_shared<SlowCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = client->createAddition();
+  // only release constructor once interaction methods are queued
+  auto fut1 = adder.semifuture_accumulatePrimitive(1);
+  auto fut2 = adder.semifuture_accumulatePrimitive(1);
+  handler->b.post();
+  auto fut3 = adder.semifuture_accumulatePrimitive(1);
+
+  EXPECT_THAT(
+      std::move(fut1).getTry().exception().what().toStdString(),
+      HasSubstr("Custom exception"));
+  EXPECT_THAT(
+      std::move(fut2).getTry().exception().what().toStdString(),
+      HasSubstr("Custom exception"));
+  EXPECT_TRUE(std::move(fut3).getTry().hasException());
+}
