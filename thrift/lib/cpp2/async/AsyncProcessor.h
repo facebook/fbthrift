@@ -211,11 +211,14 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   // Returns true if setup succeeded and sends an error response otherwise.
   // Always runs in eb thread.
-  template <typename ChildType>
-  static bool setUpRequestProcessing(
+  // tm is null if the method is annotated with thread='eb'.
+  bool setUpRequestProcessing(
       ResponseChannelRequest::UniquePtr& req,
+      Cpp2RequestContext* ctx,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm,
       RpcKind kind,
-      ChildType* childClass);
+      const char* interaction = nullptr);
 
   template <typename ChildType>
   static void processInThread(
@@ -666,17 +669,6 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
 }
 
 template <typename ChildType>
-bool GeneratedAsyncProcessor::setUpRequestProcessing(
-    ResponseChannelRequest::UniquePtr& req,
-    RpcKind kind,
-    ChildType* /* childClass */) {
-  if (!validateRpcKind(req, kind)) {
-    return false;
-  }
-  return true;
-}
-
-template <typename ChildType>
 std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
     ResponseChannelRequest::UniquePtr req,
     SerializedRequest&& serializedRequest,
@@ -742,29 +734,6 @@ void GeneratedAsyncProcessor::processInThread(
     RpcKind kind,
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass) {
-  if (auto interactionCreate = ctx->getInteractionCreate()) {
-    if (!childClass->createInteraction(
-            *interactionCreate->interactionId_ref(),
-            *interactionCreate->interactionName_ref(),
-            *ctx->getConnectionContext(),
-            *tm,
-            *eb)) {
-      // Duplicate id is a contract violation so close the connection.
-      // Terminate this interaction first so queued requests can't use it (which
-      // could result in UB).
-      childClass->terminateInteraction(
-          *interactionCreate->interactionId_ref(),
-          *ctx->getConnectionContext(),
-          *tm,
-          *eb);
-      req->sendErrorWrapped(
-          TApplicationException(
-              "Attempting to create interaction with duplicate id. Failing all requests in that interaction."),
-          kConnectionClosingErrorCode);
-      return;
-    }
-  }
-
   Tile* tile = nullptr;
   if (auto interactionId = ctx->getInteractionId()) { // includes create
     try {

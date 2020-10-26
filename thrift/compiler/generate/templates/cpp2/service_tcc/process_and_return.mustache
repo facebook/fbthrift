@@ -17,7 +17,7 @@
 %><%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!setUpRequestProcessing(req, <% > types/function_kind%>, this)) {
+  if (!setUpRequestProcessing(req, ctx, eb, <%^function:eb%>tm<%/function:eb%><%#function:eb%>nullptr<%/function:eb%>, <% > types/function_kind%><%#service:interaction?%>, "<%service:name%>"<%/service:interaction?%>)) {
     return;
   }
 <%^function:eb%>

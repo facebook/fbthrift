@@ -215,6 +215,64 @@ bool GeneratedAsyncProcessor::validateRpcKind(
   return false;
 }
 
+bool GeneratedAsyncProcessor::setUpRequestProcessing(
+    ResponseChannelRequest::UniquePtr& req,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm,
+    RpcKind kind,
+    const char* interaction) {
+  if (!validateRpcKind(req, kind)) {
+    return false;
+  }
+
+  bool interactionMetadataValid;
+  if (ctx->getInteractionId()) {
+    CHECK(tm) << "EB interactions blocked by validator";
+    if (auto interactionCreate = ctx->getInteractionCreate()) {
+      if (!interaction ||
+          *interactionCreate->interactionName_ref() != interaction) {
+        interactionMetadataValid = false;
+      } else if (!createInteraction(
+                     *interactionCreate->interactionId_ref(),
+                     *interactionCreate->interactionName_ref(),
+                     *ctx->getConnectionContext(),
+                     *tm,
+                     *eb)) {
+        // Duplicate id is a contract violation so close the connection.
+        // Terminate this interaction first so queued requests can't use it
+        // (which could result in UB).
+        terminateInteraction(
+            *interactionCreate->interactionId_ref(),
+            *ctx->getConnectionContext(),
+            *tm,
+            *eb);
+        req->sendErrorWrapped(
+            TApplicationException(
+                "Attempting to create interaction with duplicate id. Failing all requests in that interaction."),
+            kConnectionClosingErrorCode);
+        return false;
+      } else {
+        interactionMetadataValid = true;
+      }
+    } else {
+      interactionMetadataValid = !!interaction;
+    }
+  } else {
+    interactionMetadataValid = !interaction;
+  }
+  if (!interactionMetadataValid) {
+    req->sendErrorWrapped(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+            "Interaction and method do not match"),
+        kMethodUnknownErrorCode);
+    return false;
+  }
+
+  return true;
+}
+
 concurrency::PRIORITY ServerInterface::getRequestPriority(
     Cpp2RequestContext* ctx,
     concurrency::PRIORITY prio) {
