@@ -74,20 +74,19 @@ class Tile {
     eb.dcheckIsInEventBaseThread();
     ++refCount_;
   }
-  void __fbthrift_releaseRef(
-      concurrency::ThreadManager& tm,
-      folly::EventBase& eb) {
+  void __fbthrift_releaseRef(folly::EventBase& eb) {
     eb.dcheckIsInEventBaseThread();
     DCHECK_GT(refCount_, 0u);
 
     if (--refCount_ == 0 && terminationRequested_) {
-      tm.add([this] { delete this; });
+      std::move(destructionExecutor_).add([this](auto) { delete this; });
     }
   }
 
  private:
   bool terminationRequested_{false};
   size_t refCount_{0};
+  folly::Executor::KeepAlive<> destructionExecutor_;
   friend class GeneratedAsyncProcessor;
   friend class TilePromise;
 };

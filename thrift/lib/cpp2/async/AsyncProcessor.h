@@ -107,7 +107,6 @@ class InteractionEventTask : public PriorityEventTask {
       ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway,
-      concurrency::ThreadManager& tm,
       Tile* tile)
       : PriorityEventTask(
             priority,
@@ -119,13 +118,12 @@ class InteractionEventTask : public PriorityEventTask {
             std::move(req),
             base,
             oneway),
-        tm_(tm),
         tile_(tile),
         taskFunc_(std::move(taskFunc)) {}
 
   ~InteractionEventTask() {
     if (tile_) {
-      tile_->__fbthrift_releaseRef(tm_, *base_);
+      tile_->__fbthrift_releaseRef(*base_);
     }
   }
 
@@ -134,7 +132,6 @@ class InteractionEventTask : public PriorityEventTask {
   }
 
  private:
-  concurrency::ThreadManager& tm_;
   Tile* tile_;
   folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)> taskFunc_;
 };
@@ -160,7 +157,6 @@ class AsyncProcessor : public TProcessorBase {
   virtual void terminateInteraction(
       int64_t id,
       Cpp2ConnContext& conn,
-      concurrency::ThreadManager& tm,
       folly::EventBase&) noexcept;
   virtual void destroyAllInteractions(
       Cpp2ConnContext& conn,
@@ -262,7 +258,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   void terminateInteraction(
       int64_t id,
       Cpp2ConnContext& conn,
-      concurrency::ThreadManager& tm,
       folly::EventBase&) noexcept final;
   void destroyAllInteractions(
       Cpp2ConnContext& conn,
@@ -511,10 +506,7 @@ class HandlerCallbackBase {
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
   // Must be called from IO thread
-  static void releaseInteraction(
-      Tile* interaction,
-      concurrency::ThreadManager* tm,
-      folly::EventBase* eb);
+  static void releaseInteraction(Tile* interaction, folly::EventBase* eb);
   void releaseInteractionInstance();
 
 #if !FOLLY_HAS_COROUTINES
@@ -719,7 +711,6 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
       std::move(req),
       eb,
       kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      *tm,
       tile);
 }
 
@@ -802,9 +793,8 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
          ex = std::forward<T>(ex),
          reqCtx = reqCtx_,
          interaction = std::exchange(interaction_, nullptr),
-         tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, tm, eb);
+          releaseInteraction(interaction, eb);
           f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
         });
   }

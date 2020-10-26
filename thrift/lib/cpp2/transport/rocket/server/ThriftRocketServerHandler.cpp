@@ -508,8 +508,7 @@ void ThriftRocketServerHandler::requestComplete() {
 
 void ThriftRocketServerHandler::terminateInteraction(int64_t id) {
   if (cpp2Processor_) {
-    cpp2Processor_->terminateInteraction(
-        id, connContext_, *threadManager_, *eventBase_);
+    cpp2Processor_->terminateInteraction(id, connContext_, *eventBase_);
   }
 }
 } // namespace rocket

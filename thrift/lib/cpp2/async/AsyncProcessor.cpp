@@ -69,7 +69,6 @@ void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
 void AsyncProcessor::terminateInteraction(
     int64_t,
     Cpp2ConnContext&,
-    concurrency::ThreadManager&,
     folly::EventBase&) noexcept {
   LOG(DFATAL) << "This processor doesn't support interactions";
 }
@@ -100,6 +99,7 @@ bool GeneratedAsyncProcessor::createInteraction(
         if (t.hasValue()) {
           if (*t) {
             tile = std::move(*t);
+            tile->destructionExecutor_ = &tm;
           } else {
             t.emplaceException(
                 folly::make_exception_wrapper<std::runtime_error>(
@@ -111,7 +111,8 @@ bool GeneratedAsyncProcessor::createInteraction(
         if (promise->destructionRequested_) {
           // promise not in tile map, not running continuations
           if (tile) {
-            tm.add([tile = std::move(tile)] {});
+            auto ex = std::move(tile->destructionExecutor_);
+            std::move(ex).add([tile = std::move(tile)](auto) {});
           }
         } else if (promise->terminationRequested_) {
           // promise not in tile map, continuations will free tile
@@ -151,7 +152,6 @@ std::unique_ptr<Tile> GeneratedAsyncProcessor::createInteractionImpl(
 void GeneratedAsyncProcessor::terminateInteraction(
     int64_t id,
     Cpp2ConnContext& conn,
-    concurrency::ThreadManager& tm,
     folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
@@ -162,7 +162,8 @@ void GeneratedAsyncProcessor::terminateInteraction(
     tile->terminationRequested_ = true;
     tile.release(); // freed by last decref
   } else {
-    tm.add([tile = std::move(tile)] {});
+    auto ex = std::move(tile->destructionExecutor_);
+    std::move(ex).add([tile = std::move(tile)](auto) {});
   }
 }
 
@@ -260,7 +261,6 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
         terminateInteraction(
             *interactionCreate->interactionId_ref(),
             *ctx->getConnectionContext(),
-            *tm,
             *eb);
         req->sendErrorWrapped(
             TApplicationException(
@@ -345,8 +345,7 @@ HandlerCallbackBase::~HandlerCallbackBase() {
       eb_->runInEventBaseThread(
           [req = std::move(req_),
            interaction = std::exchange(interaction_, nullptr),
-           tm = getThreadManager(),
-           eb = getEventBase()] { releaseInteraction(interaction, tm, eb); });
+           eb = getEventBase()] { releaseInteraction(interaction, eb); });
     }
   }
 }
@@ -407,9 +406,8 @@ void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
         [message,
          interaction = std::exchange(interaction_, nullptr),
          req = std::move(req_),
-         tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, tm, eb);
+          releaseInteraction(interaction, eb);
           req->sendErrorWrapped(
               folly::make_exception_wrapper<TApplicationException>(
                   TApplicationException::LOADSHEDDING, std::move(message)),
@@ -430,9 +428,8 @@ void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
          queue = std::move(queue),
          crc32c,
          interaction = std::exchange(interaction_, nullptr),
-         tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, tm, eb);
+          releaseInteraction(interaction, eb);
           req->sendReply(queue.move(), nullptr, crc32c);
         });
   }
@@ -455,9 +452,8 @@ void HandlerCallbackBase::sendReply(
          stream = std::move(stream),
          crc32c,
          interaction = std::exchange(interaction_, nullptr),
-         tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, tm, eb);
+          releaseInteraction(interaction, eb);
           req->sendStreamReply(queue.move(), std::move(stream), crc32c);
         });
   }
@@ -484,9 +480,8 @@ void HandlerCallbackBase::sendReply(
          sinkConsumer = std::move(sinkConsumer),
          crc32c,
          interaction = std::exchange(interaction_, nullptr),
-         tm = getThreadManager(),
          eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, tm, eb);
+          releaseInteraction(interaction, eb);
           req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
         });
   }
@@ -497,15 +492,13 @@ void HandlerCallbackBase::sendReply(
 
 void HandlerCallbackBase::releaseInteraction(
     Tile* interaction,
-    concurrency::ThreadManager* tm,
     folly::EventBase* eb) {
   if (interaction) {
-    interaction->__fbthrift_releaseRef(*tm, *eb);
+    interaction->__fbthrift_releaseRef(*eb);
   }
 }
 void HandlerCallbackBase::releaseInteractionInstance() {
-  releaseInteraction(
-      std::exchange(interaction_, nullptr), getThreadManager(), getEventBase());
+  releaseInteraction(std::exchange(interaction_, nullptr), getEventBase());
 }
 
 HandlerCallback<void>::HandlerCallback(
