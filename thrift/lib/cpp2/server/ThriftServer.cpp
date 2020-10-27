@@ -724,18 +724,20 @@ ThriftServer::snapshotActiveRequests() {
     if (!worker) {
       return;
     }
-    auto fut = folly::via(
-        worker->getEventBase(),
-        [reqRegistry = worker->getRequestsRegistry()]() {
-          std::vector<RequestSnapshot> reqSnapshots;
-          for (const auto& stub : reqRegistry->getActive()) {
-            reqSnapshots.emplace_back(stub);
-          }
-          for (const auto& stub : reqRegistry->getFinished()) {
-            reqSnapshots.emplace_back(stub);
-          }
-          return reqSnapshots;
-        });
+    auto fut = folly::via(worker->getEventBase(), [worker]() {
+      std::vector<RequestSnapshot> reqSnapshots;
+      auto reqRegistry = worker->getRequestsRegistry();
+      DCHECK(reqRegistry);
+      if (reqRegistry != nullptr) {
+        for (const auto& stub : reqRegistry->getActive()) {
+          reqSnapshots.emplace_back(stub);
+        }
+        for (const auto& stub : reqRegistry->getFinished()) {
+          reqSnapshots.emplace_back(stub);
+        }
+      }
+      return reqSnapshots;
+    });
     tasks.emplace_back(std::move(fut));
   });
 
