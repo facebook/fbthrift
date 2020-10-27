@@ -81,6 +81,14 @@ void ServerSinkBridge::resetClientCallback(SinkClientCallback& clientCallback) {
 
 // start should be called on threadmanager's thread
 folly::coro::Task<void> ServerSinkBridge::start() {
+  SCOPE_EXIT {
+    if (consumer_.interaction) {
+      evb_->add([interaction = consumer_.interaction, evb = evb_] {
+        interaction->__fbthrift_releaseRef(*evb);
+      });
+    }
+  };
+
   serverPush(consumer_.bufferSize);
   folly::Try<StreamPayload> finalResponse =
       co_await consumer_.consumer(makeGenerator());

@@ -202,6 +202,15 @@ class ServerPublisherStream : private StreamServerCallback {
  public:
   using Ptr = std::unique_ptr<ServerPublisherStream<T>, Deleter>;
 
+  ~ServerPublisherStream() {
+    if (interaction_) {
+      clientEventBase_->add(
+          [interaction = interaction_, eb = clientEventBase_] {
+            interaction->__fbthrift_releaseRef(*eb);
+          });
+    }
+  }
+
   template <typename Func>
   static std::pair<ServerStreamFn<T>, ServerStreamPublisher<T>> create(
       Func onStreamCompleteOrCancel) {
@@ -220,15 +229,17 @@ class ServerPublisherStream : private StreamServerCallback {
                 }
               }
 
-              return [stream = std::move(stream)](
-                         FirstResponsePayload&& payload,
-                         StreamClientCallback* callback,
-                         folly::EventBase* clientEb) mutable {
+              return ServerStreamFactory([stream = std::move(stream)](
+                                             FirstResponsePayload&& payload,
+                                             StreamClientCallback* callback,
+                                             folly::EventBase* clientEb,
+                                             Tile* interaction) mutable {
                 stream->streamClientCallback_ = callback;
                 stream->clientEventBase_ = clientEb;
+                stream->interaction_ = interaction;
                 std::ignore = callback->onFirstResponse(
                     std::move(payload), clientEb, stream.release());
-              };
+              });
             },
             ServerStreamPublisher<T>(stream->copy())};
   }
@@ -391,6 +402,8 @@ class ServerPublisherStream : private StreamServerCallback {
 
   // must only be read/written on client thread
   CreditBuffer creditBuffer_;
+
+  Tile* interaction_{nullptr};
 };
 
 } // namespace detail

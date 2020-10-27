@@ -441,21 +441,17 @@ void HandlerCallbackBase::sendReply(
   auto& stream = responseAndStream.stream;
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
+  stream.setInteraction(std::exchange(interaction_, nullptr));
   if (getEventBase()->isInEventBaseThread()) {
-    releaseInteractionInstance();
     std::exchange(req_, {})->sendStreamReply(
         queue.move(), std::move(stream), crc32c);
   } else {
-    getEventBase()->runInEventBaseThread(
-        [req = std::move(req_),
-         queue = std::move(queue),
-         stream = std::move(stream),
-         crc32c,
-         interaction = std::exchange(interaction_, nullptr),
-         eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, eb);
-          req->sendStreamReply(queue.move(), std::move(stream), crc32c);
-        });
+    getEventBase()->runInEventBaseThread([req = std::move(req_),
+                                          queue = std::move(queue),
+                                          stream = std::move(stream),
+                                          crc32c]() mutable {
+      req->sendStreamReply(queue.move(), std::move(stream), crc32c);
+    });
   }
 }
 
@@ -468,9 +464,9 @@ void HandlerCallbackBase::sendReply(
   auto& sinkConsumer = responseAndSinkConsumer.second;
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
+  sinkConsumer.interaction = std::exchange(interaction_, nullptr);
 
   if (getEventBase()->isInEventBaseThread()) {
-    releaseInteractionInstance();
     std::exchange(req_, {})->sendSinkReply(
         queue.move(), std::move(sinkConsumer), crc32c);
   } else {
@@ -478,10 +474,7 @@ void HandlerCallbackBase::sendReply(
         [req = std::move(req_),
          queue = std::move(queue),
          sinkConsumer = std::move(sinkConsumer),
-         crc32c,
-         interaction = std::exchange(interaction_, nullptr),
-         eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, eb);
+         crc32c]() mutable {
           req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
         });
   }

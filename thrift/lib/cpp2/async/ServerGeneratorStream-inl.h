@@ -25,19 +25,21 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
   return [gen = std::move(gen)](
              folly::Executor::KeepAlive<> serverExecutor,
              folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
-    return [gen = std::move(gen),
-            serverExecutor = std::move(serverExecutor),
-            encode](
-               FirstResponsePayload&& payload,
-               StreamClientCallback* callback,
-               folly::EventBase* clientEb) mutable {
+    return ServerStreamFactory([gen = std::move(gen),
+                                serverExecutor = std::move(serverExecutor),
+                                encode](
+                                   FirstResponsePayload&& payload,
+                                   StreamClientCallback* callback,
+                                   folly::EventBase* clientEb,
+                                   Tile* interaction) mutable {
       DCHECK(clientEb->isInEventBaseThread());
       auto stream = new ServerGeneratorStream(callback, clientEb);
       auto streamPtr = stream->copy();
       folly::coro::co_invoke(
           [stream = std::move(streamPtr),
            encode,
-           gen = std::move(gen)]() mutable -> folly::coro::Task<void> {
+           gen = std::move(gen),
+           interaction]() mutable -> folly::coro::Task<void> {
             int64_t credits = 0;
             class ReadyCallback
                 : public apache::thrift::detail::ServerStreamConsumer {
@@ -53,6 +55,12 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
               folly::coro::Baton baton;
             };
             SCOPE_EXIT {
+              if (interaction) {
+                stream->clientEventBase_->add(
+                    [interaction, eb = stream->clientEventBase_] {
+                      interaction->__fbthrift_releaseRef(*eb);
+                    });
+              }
               stream->serverClose();
             };
 
@@ -104,7 +112,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
       std::ignore =
           callback->onFirstResponse(std::move(payload), clientEb, stream);
       stream->processPayloads();
-    };
+    });
   };
 }
 #endif // FOLLY_HAS_COROUTINES

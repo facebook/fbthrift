@@ -140,7 +140,7 @@ struct SinkConsumer {
   }
   SinkConsumer& setChunkTimeout(const std::chrono::milliseconds& timeout) & {
     sinkOptions.chunkTimeout = timeout;
-    return this;
+    return *this;
   }
 #endif
 };

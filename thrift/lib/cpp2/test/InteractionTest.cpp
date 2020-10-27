@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Calculator.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/Streamer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace ::testing;
@@ -569,4 +570,111 @@ TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
       std::move(fut2).getTry().exception().what().toStdString(),
       HasSubstr("Custom exception"));
   EXPECT_TRUE(std::move(fut3).getTry().hasException());
+}
+
+TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
+#if FOLLY_HAS_COROUTINES
+  struct StreamingHandler : StreamerSvIf {
+    StreamingHandler() : publisherPair(ServerStream<int>::createPublisher()) {}
+    struct StreamTile : StreamerSvIf::StreamingIf {
+      folly::coro::Task<ServerStream<int>> co_generatorStream() override {
+        co_return folly::coro::co_invoke(
+            []() -> folly::coro::AsyncGenerator<int&&> {
+              while (true) {
+                co_yield 0;
+              }
+            });
+      }
+
+      folly::coro::Task<ServerStream<int>> co_publisherStream() override {
+        co_return std::move(publisherStreamRef);
+      }
+
+      folly::coro::Task<apache::thrift::SinkConsumer<int32_t, int8_t>>
+      co__sink() override {
+        SinkConsumer<int32_t, int8_t> sink;
+        sink.consumer = [](auto gen) -> folly::coro::Task<int8_t> {
+          co_await gen.next();
+          co_return 0;
+        };
+        sink.bufferSize = 5;
+        sink.setChunkTimeout(std::chrono::milliseconds(500));
+        co_return sink;
+      }
+
+      StreamTile(folly::Baton<>& baton, ServerStream<int>& publisherStream)
+          : batonRef(baton), publisherStreamRef(publisherStream) {}
+
+      ~StreamTile() {
+        batonRef.post();
+      }
+
+      folly::Baton<>& batonRef;
+      ServerStream<int>& publisherStreamRef;
+    };
+
+    std::unique_ptr<StreamingIf> createStreaming() override {
+      return std::make_unique<StreamTile>(baton, publisherPair.first);
+    }
+
+    folly::Baton<> baton;
+    std::pair<ServerStream<int>, ServerStreamPublisher<int>> publisherPair;
+  };
+
+  auto handler = std::make_shared<StreamingHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client = runner.newClient<StreamerAsyncClient>(nullptr, [](auto socket) {
+    return RocketClientChannel::newChannel(std::move(socket));
+  });
+
+  // Generator test
+  {
+    auto handle = folly::copy_to_unique_ptr(client->createStreaming());
+    auto stream = handle->semifuture_generatorStream().get();
+    // both stream and interaction handle are alive
+    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->baton.reset();
+    handle.reset();
+    // stream keeps interaction alive after handle destroyed
+    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->baton.reset();
+  }
+  // both stream and handle destroyed
+  EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+  handler->baton.reset();
+
+  // Publisher test
+  {
+    auto handle = folly::copy_to_unique_ptr(client->createStreaming());
+    auto stream = handle->semifuture_publisherStream().get();
+    // both stream and interaction handle are alive
+    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->baton.reset();
+    handle.reset();
+    // stream keeps interaction alive after handle destroyed
+    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->baton.reset();
+  }
+  // both stream and handle destroyed
+  std::move(handler->publisherPair.second).complete();
+  EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+  handler->baton.reset();
+
+  // Sink test
+  {
+    auto handle = folly::copy_to_unique_ptr(client->createStreaming());
+    auto sink = handle->co__sink().semi().get();
+    // both sink and interaction handle are alive
+    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->baton.reset();
+    handle.reset();
+    // sink keeps interaction alive after handle destroyed
+    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->baton.reset();
+  }
+  // both sink and handle destroyed
+  EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
+  handler->baton.reset();
+
+#endif
 }

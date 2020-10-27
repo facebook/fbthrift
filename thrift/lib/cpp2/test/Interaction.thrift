@@ -33,3 +33,13 @@ service Calculator {
     performs Addition;
     i32 addPrimitive(1: i32 a, 2: i32 b);
 }
+
+interaction Streaming {
+  stream<i32> generatorStream();
+  stream<i32> publisherStream();
+  sink<i32, byte> _sink();
+}
+
+service Streamer {
+  performs Streaming;
+}

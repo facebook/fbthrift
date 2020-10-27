@@ -16,14 +16,37 @@
 
 #pragma once
 #include <folly/Try.h>
+#include <thrift/lib/cpp2/async/Interaction.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-using ServerStreamFactory = folly::Function<
-    void(FirstResponsePayload&&, StreamClientCallback*, folly::EventBase*)>;
+struct ServerStreamFactory {
+  template <typename F>
+  explicit ServerStreamFactory(F&& fn) : fn_(std::forward<F>(fn)) {}
+
+  void setInteraction(Tile* interaction) {
+    interaction_ = interaction;
+  }
+
+  void operator()(
+      FirstResponsePayload&& payload,
+      StreamClientCallback* cb,
+      folly::EventBase* eb) {
+    fn_(std::move(payload), cb, eb, interaction_);
+  }
+
+ private:
+  folly::Function<void(
+      FirstResponsePayload&&,
+      StreamClientCallback*,
+      folly::EventBase*,
+      Tile*)>
+      fn_;
+  Tile* interaction_{nullptr};
+};
 
 template <typename T>
 using ServerStreamFn = folly::Function<ServerStreamFactory(
