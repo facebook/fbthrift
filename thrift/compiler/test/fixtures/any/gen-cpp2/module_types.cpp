@@ -25,7 +25,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStruct1>::translateFieldName(
+void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
@@ -50,25 +50,25 @@ void TccStructTraits<::cpp2::MyStruct1>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
-
 // Static-init time registration for dynamically-linked libraries.
 //
 // To include in statically-linked libraties, always link (e.g. link_whole)
 // `module_sinit.cpp`.
-FOLLY_EXPORT bool __fbthrift_static_init_MyStruct1 = (
+FOLLY_EXPORT bool __fbthrift_static_init_MyStruct = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
-        MyStruct1,
+        MyStruct,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary
-    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyStruct1")), true);
+    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyStruct")), true);
+
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct1::MyStruct1(apache::thrift::FragileConstructor, ::std::string myString__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg) :
     myString(std::move(myString__arg)) {
   __isset.myString = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-void MyStruct1::__clear() {
+void MyStruct::__clear() {
   // clear all fields
   myString = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -76,7 +76,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
-bool MyStruct1::operator==(const MyStruct1& rhs) const {
+bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -86,7 +86,7 @@ bool MyStruct1::operator==(const MyStruct1& rhs) const {
   return true;
 }
 
-bool MyStruct1::operator<(const MyStruct1& rhs) const {
+bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -97,7 +97,7 @@ bool MyStruct1::operator<(const MyStruct1& rhs) const {
 }
 
 
-void swap(MyStruct1& a, MyStruct1& b) {
+void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
   swap(a.myString_ref().value(), b.myString_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -105,14 +105,14 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
-template void MyStruct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyStruct1::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyStruct1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyStruct1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyStruct1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyStruct1::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyStruct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyStruct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
 
@@ -121,7 +121,127 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStruct2>::translateFieldName(
+void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
+  using TType = apache::thrift::protocol::TType;
+  constexpr size_t _size = 1;
+  static constexpr folly::StringPiece _names[] = {
+    "myString",
+  };
+  static constexpr int16_t _ids[] = {
+    1,
+  };
+  static constexpr TType _types[] = {
+    TType::T_STRING,
+  };
+  static constexpr st::translate_field_name_table
+      table{_size, _names, _ids, _types};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
+folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::MyUnion::Type>::findName(type value) {
+  using factory = detail::TEnumMapFactory<::cpp2::MyUnion::Type>;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) {
+  using factory = detail::TEnumMapFactory<::cpp2::MyUnion::Type>;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+}} // apache::thrift
+namespace cpp2 {
+// Static-init time registration for dynamically-linked libraries.
+//
+// To include in statically-linked libraties, always link (e.g. link_whole)
+// `module_sinit.cpp`.
+FOLLY_EXPORT bool __fbthrift_static_init_MyUnion = (
+    apache::thrift::conformance::detail::registerGeneratedStruct<
+        MyUnion,
+        apache::thrift::conformance::StandardProtocol::Compact,
+        apache::thrift::conformance::StandardProtocol::Binary
+    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyUnion")), true);
+
+
+void MyUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::myString:
+      destruct(value_.myString);
+      break;
+    default:
+      assert(false);
+      break;
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool MyUnion::operator==(const MyUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::myString:
+      return value_.myString == rhs.value_.myString;
+    default:
+      return true;
+  }
+}
+
+bool MyUnion::operator<(const MyUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::myString:
+      return lhs.value_.myString < rhs.value_.myString;
+    default:
+      return false;
+  }
+}
+
+void swap(MyUnion& a, MyUnion& b) {
+  MyUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void MyUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+} // cpp2
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::MyException>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
@@ -146,25 +266,25 @@ void TccStructTraits<::cpp2::MyStruct2>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
-
 // Static-init time registration for dynamically-linked libraries.
 //
 // To include in statically-linked libraties, always link (e.g. link_whole)
 // `module_sinit.cpp`.
-FOLLY_EXPORT bool __fbthrift_static_init_MyStruct2 = (
+FOLLY_EXPORT bool __fbthrift_static_init_MyException = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
-        MyStruct2,
+        MyException,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary
-    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyStruct2")), true);
+    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyException")), true);
+
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct2::MyStruct2(apache::thrift::FragileConstructor, ::std::string myString__arg) :
+MyException::MyException(apache::thrift::FragileConstructor, ::std::string myString__arg) :
     myString(std::move(myString__arg)) {
   __isset.myString = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-void MyStruct2::__clear() {
+void MyException::__clear() {
   // clear all fields
   myString = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -172,7 +292,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
-bool MyStruct2::operator==(const MyStruct2& rhs) const {
+bool MyException::operator==(const MyException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -182,7 +302,7 @@ bool MyStruct2::operator==(const MyStruct2& rhs) const {
   return true;
 }
 
-bool MyStruct2::operator<(const MyStruct2& rhs) const {
+bool MyException::operator<(const MyException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -193,7 +313,7 @@ bool MyStruct2::operator<(const MyStruct2& rhs) const {
 }
 
 
-void swap(MyStruct2& a, MyStruct2& b) {
+void swap(MyException& a, MyException& b) {
   using ::std::swap;
   swap(a.myString_ref().value(), b.myString_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -201,14 +321,14 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
-template void MyStruct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyStruct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyStruct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyStruct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyStruct2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyStruct2::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyStruct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyStruct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void MyException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
 

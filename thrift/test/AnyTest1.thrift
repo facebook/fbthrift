@@ -16,6 +16,10 @@
 
 namespace cpp2 apache.thrift.test
 
-struct AnyTest1Struct {
+struct AnyTestStruct {
   1: i32 foo;
-} (any_type.name = "facebook.com/thrift/test/AnyTest1Struct")
+} (any_type.name = "facebook.com/thrift/test/AnyTestStruct")
+
+exception AnyTestException {
+  1: i32 foo;
+} (any_type.name = "facebook.com/thrift/test/AnyTestException")

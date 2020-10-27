@@ -87,22 +87,10 @@ FOLLY_POP_WARNING
 
 <% > common/namespace_cpp2_begin%>
 
-
-<%^struct:union?%>
-<%^struct:cpp_noncopyable%>
-<%#struct:fields_contain_cpp_ref_unique_either?%>
-<% > module_types_cpp/copy_ctor%>
-
-
-<% > module_types_cpp/assign_overload%>
-
-
-<%/struct:fields_contain_cpp_ref_unique_either?%>
-<%/struct:cpp_noncopyable%>
 <%#struct:any_type%>
 // Static-init time registration for dynamically-linked libraries.
 //
-// To include in statically-linked libraties, always link (e.g. link_whole)
+// To include in statically-linked libraties, link whole (e.g. --whole-archive)
 // `<%program:name%>_sinit.cpp`.
 FOLLY_EXPORT bool __fbthrift_static_init_<%struct:name%> = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
@@ -115,6 +103,18 @@ FOLLY_EXPORT bool __fbthrift_static_init_<%struct:name%> = (
     >(anyTypeFor("<%struct:any_type%>")), true);
 
 <%/struct:any_type%>
+
+<%^struct:union?%>
+<%^struct:cpp_noncopyable%>
+<%#struct:fields_contain_cpp_ref_unique_either?%>
+<% > module_types_cpp/copy_ctor%>
+
+
+<% > module_types_cpp/assign_overload%>
+
+
+<%/struct:fields_contain_cpp_ref_unique_either?%>
+<%/struct:cpp_noncopyable%>
 <% > module_types_cpp/declare_members%>
 
 

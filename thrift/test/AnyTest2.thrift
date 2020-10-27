@@ -16,6 +16,6 @@
 
 namespace cpp2 apache.thrift.test
 
-struct AnyTest2Struct {
+union AnyTestUnion {
   1: i32 foo;
-} (any_type.name = "facebook.com/thrift/test/AnyTest2Struct")
+} (any_type.name = "facebook.com/thrift/test/AnyTestUnion")

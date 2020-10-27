@@ -15,8 +15,13 @@ namespace thrift {
 namespace tag {
 struct myString;
 struct myString;
+struct myString;
 } // namespace tag
 namespace detail {
+#ifndef APACHE_THRIFT_ACCESSOR_myString
+#define APACHE_THRIFT_ACCESSOR_myString
+APACHE_THRIFT_DEFINE_ACCESSOR(myString);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_myString
 #define APACHE_THRIFT_ACCESSOR_myString
 APACHE_THRIFT_DEFINE_ACCESSOR(myString);
@@ -32,13 +37,11 @@ APACHE_THRIFT_DEFINE_ACCESSOR(myString);
 // BEGIN declare_enums
 
 // END declare_enums
-// BEGIN struct_indirection
-
-// END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
-class MyStruct1;
-class MyStruct2;
+class MyStruct;
+class MyUnion;
+class MyException;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -47,7 +50,7 @@ class MyStruct2;
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
-class MyStruct1 final  {
+class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -56,7 +59,7 @@ class MyStruct1 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
-  using __fbthrift_cpp2_type = MyStruct1;
+  using __fbthrift_cpp2_type = MyStruct;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
@@ -64,19 +67,19 @@ class MyStruct1 final  {
  public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStruct1() {}
+  MyStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct1(apache::thrift::FragileConstructor, ::std::string myString__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg);
 
-  MyStruct1(MyStruct1&&) = default;
+  MyStruct(MyStruct&&) = default;
 
-  MyStruct1(const MyStruct1&) = default;
+  MyStruct(const MyStruct&) = default;
 
 
-  MyStruct1& operator=(MyStruct1&&) = default;
+  MyStruct& operator=(MyStruct&&) = default;
 
-  MyStruct1& operator=(const MyStruct1&) = default;
+  MyStruct& operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
@@ -87,21 +90,21 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   struct __isset {
     bool myString;
   } __isset = {};
-  bool operator==(const MyStruct1& rhs) const;
+  bool operator==(const MyStruct& rhs) const;
 #ifndef SWIG
-  friend bool operator!=(const MyStruct1& __x, const MyStruct1& __y) {
+  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
     return !(__x == __y);
   }
 #endif
-  bool operator<(const MyStruct1& rhs) const;
+  bool operator<(const MyStruct& rhs) const;
 #ifndef SWIG
-  friend bool operator>(const MyStruct1& __x, const MyStruct1& __y) {
+  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
     return __y < __x;
   }
-  friend bool operator<=(const MyStruct1& __x, const MyStruct1& __y) {
+  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
     return !(__y < __x);
   }
-  friend bool operator>=(const MyStruct1& __x, const MyStruct1& __y) {
+  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
     return !(__x < __y);
   }
 #endif
@@ -136,9 +139,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return std::move(myString);
   }
 
-  template <typename T_MyStruct1_myString_struct_setter = ::std::string>
-  ::std::string& set_myString(T_MyStruct1_myString_struct_setter&& myString_) {
-    myString = std::forward<T_MyStruct1_myString_struct_setter>(myString_);
+  template <typename T_MyStruct_myString_struct_setter = ::std::string>
+  ::std::string& set_myString(T_MyStruct_myString_struct_setter&& myString_) {
+    myString = std::forward<T_MyStruct_myString_struct_setter>(myString_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myString = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -158,12 +161,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct1 >;
-  friend void swap(MyStruct1& a, MyStruct1& b);
+  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend void swap(MyStruct& a, MyStruct& b);
 };
 
 template <class Protocol_>
-uint32_t MyStruct1::read(Protocol_* iprot) {
+uint32_t MyStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -171,7 +174,7 @@ uint32_t MyStruct1::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyStruct2 final  {
+class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -180,7 +183,226 @@ class MyStruct2 final  {
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
 
  public:
-  using __fbthrift_cpp2_type = MyStruct2;
+  using __fbthrift_cpp2_type = MyUnion;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    true;
+
+
+ public:
+  enum Type : int {
+    __EMPTY__ = 0,
+    myString = 1,
+  } ;
+
+  MyUnion()
+      : type_(Type::__EMPTY__) {}
+
+  MyUnion(MyUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::myString:
+      {
+        set_myString(std::move(rhs.value_.myString));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  MyUnion(const MyUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::myString:
+      {
+        set_myString(rhs.value_.myString);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  MyUnion& operator=(MyUnion&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::myString:
+      {
+        set_myString(std::move(rhs.value_.myString));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  MyUnion& operator=(const MyUnion& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::myString:
+      {
+        set_myString(rhs.value_.myString);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  void __clear();
+
+  ~MyUnion() {
+    __clear();
+  }
+  union storage_type {
+    ::std::string myString;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const MyUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator!=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__x == __y);
+  }
+#endif
+  bool operator<(const MyUnion& rhs) const;
+#ifndef SWIG
+  friend bool operator>(const MyUnion& __x, const MyUnion& __y) {
+    return __y < __x;
+  }
+  friend bool operator<=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__y < __x);
+  }
+  friend bool operator>=(const MyUnion& __x, const MyUnion& __y) {
+    return !(__x < __y);
+  }
+#endif
+
+  ::std::string& set_myString(::std::string const &t) {
+    __clear();
+    type_ = Type::myString;
+    ::new (std::addressof(value_.myString)) ::std::string(t);
+    return value_.myString;
+  }
+
+  ::std::string& set_myString(::std::string&& t) {
+    __clear();
+    type_ = Type::myString;
+    ::new (std::addressof(value_.myString)) ::std::string(std::move(t));
+    return value_.myString;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_myString(T&&... t) {
+    __clear();
+    type_ = Type::myString;
+    ::new (std::addressof(value_.myString)) ::std::string(std::forward<T>(t)...);
+    return value_.myString;
+  }
+
+  ::std::string const & get_myString() const {
+    assert(type_ == Type::myString);
+    return value_.myString;
+  }
+
+  ::std::string & mutable_myString() {
+    assert(type_ == Type::myString);
+    return value_.myString;
+  }
+
+  ::std::string move_myString() {
+    assert(type_ == Type::myString);
+    return std::move(value_.myString);
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myString_ref() const& {
+    return {value_.myString, type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myString_ref() const&& {
+    return {std::move(value_.myString), type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myString_ref() & {
+    return {value_.myString, type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myString_ref() && {
+    return {std::move(value_.myString), type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+  Type getType() const { return static_cast<Type>(type_); }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  storage_type value_;
+  std::underlying_type_t<Type> type_;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyUnion >;
+  friend void swap(MyUnion& a, MyUnion& b);
+};
+
+template <class Protocol_>
+uint32_t MyUnion::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class MyException final : public apache::thrift::TException {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+
+ public:
+  using __fbthrift_cpp2_type = MyException;
   static constexpr bool __fbthrift_cpp2_is_union =
     false;
 
@@ -188,19 +410,19 @@ class MyStruct2 final  {
  public:
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStruct2() {}
+  MyException() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct2(apache::thrift::FragileConstructor, ::std::string myString__arg);
+  MyException(apache::thrift::FragileConstructor, ::std::string myString__arg);
 
-  MyStruct2(MyStruct2&&) = default;
+  MyException(MyException&&) = default;
 
-  MyStruct2(const MyStruct2&) = default;
+  MyException(const MyException&) = default;
 
 
-  MyStruct2& operator=(MyStruct2&&) = default;
+  MyException& operator=(MyException&&) = default;
 
-  MyStruct2& operator=(const MyStruct2&) = default;
+  MyException& operator=(const MyException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
@@ -211,21 +433,21 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   struct __isset {
     bool myString;
   } __isset = {};
-  bool operator==(const MyStruct2& rhs) const;
+  bool operator==(const MyException& rhs) const;
 #ifndef SWIG
-  friend bool operator!=(const MyStruct2& __x, const MyStruct2& __y) {
+  friend bool operator!=(const MyException& __x, const MyException& __y) {
     return !(__x == __y);
   }
 #endif
-  bool operator<(const MyStruct2& rhs) const;
+  bool operator<(const MyException& rhs) const;
 #ifndef SWIG
-  friend bool operator>(const MyStruct2& __x, const MyStruct2& __y) {
+  friend bool operator>(const MyException& __x, const MyException& __y) {
     return __y < __x;
   }
-  friend bool operator<=(const MyStruct2& __x, const MyStruct2& __y) {
+  friend bool operator<=(const MyException& __x, const MyException& __y) {
     return !(__y < __x);
   }
-  friend bool operator>=(const MyStruct2& __x, const MyStruct2& __y) {
+  friend bool operator>=(const MyException& __x, const MyException& __y) {
     return !(__x < __y);
   }
 #endif
@@ -260,9 +482,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return std::move(myString);
   }
 
-  template <typename T_MyStruct2_myString_struct_setter = ::std::string>
-  ::std::string& set_myString(T_MyStruct2_myString_struct_setter&& myString_) {
-    myString = std::forward<T_MyStruct2_myString_struct_setter>(myString_);
+  template <typename T_MyException_myString_struct_setter = ::std::string>
+  ::std::string& set_myString(T_MyException_myString_struct_setter&& myString_) {
+    myString = std::forward<T_MyException_myString_struct_setter>(myString_);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myString = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -278,19 +500,40 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
+  const char* what() const noexcept override {
+    return "::cpp2::MyException";
+  }
+
  private:
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct2 >;
-  friend void swap(MyStruct2& a, MyStruct2& b);
+  friend class ::apache::thrift::Cpp2Ops< MyException >;
+  friend void swap(MyException& a, MyException& b);
 };
 
 template <class Protocol_>
-uint32_t MyStruct2::read(Protocol_* iprot) {
+uint32_t MyException::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
 
 } // cpp2
+
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::cpp2::MyUnion::Type>;
+
+template <> struct TEnumTraits<::cpp2::MyUnion::Type> {
+  using type = ::cpp2::MyUnion::Type;
+
+  static constexpr std::size_t const size = 1;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
+}} // apache::thrift

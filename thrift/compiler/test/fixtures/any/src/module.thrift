@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-struct MyStruct1 {
+struct MyStruct {
   1: string myString;
-} (any_type.name = "facebook.com/thrift/compiler/test/fictures/any/MyStruct1")
+} (any_type.name = "facebook.com/thrift/compiler/test/fictures/any/MyStruct")
 
-struct MyStruct2 {
+union MyUnion {
   1: string myString;
-} (any_type.name = "facebook.com/thrift/compiler/test/fictures/any/MyStruct2")
+} (any_type.name = "facebook.com/thrift/compiler/test/fictures/any/MyUnion")
+
+exception MyException {
+  1: string myString;
+} (any_type.name = "facebook.com/thrift/compiler/test/fictures/any/MyException")

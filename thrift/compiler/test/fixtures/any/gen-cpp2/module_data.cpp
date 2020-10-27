@@ -13,5 +13,10 @@ namespace apache {
 namespace thrift {
 
 
+constexpr const std::size_t TEnumDataStorage<::cpp2::MyUnion::Type>::size;
+constexpr const std::array<::cpp2::MyUnion::Type, 1> TEnumDataStorage<::cpp2::MyUnion::Type>::values;
+constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::cpp2::MyUnion::Type>::names;
+
+
 } // namespace thrift
 } // namespace apache

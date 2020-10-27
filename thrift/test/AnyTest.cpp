@@ -20,6 +20,7 @@
 namespace apache::thrift::test {
 namespace {
 
+using conformance::StandardProtocol;
 template <conformance::StandardProtocol P>
 bool isRegistered(std::string_view name) {
   return conformance::AnyRegistry::generated().getSerializerByName(
@@ -27,29 +28,38 @@ bool isRegistered(std::string_view name) {
 }
 
 TEST(AnyTest, Registered) {
-  constexpr auto kType1Name = "facebook.com/thrift/test/AnyTest1Struct";
-  EXPECT_TRUE(isRegistered<conformance::StandardProtocol::Binary>(kType1Name));
-  EXPECT_TRUE(isRegistered<conformance::StandardProtocol::Compact>(kType1Name));
-  EXPECT_FALSE(
-      isRegistered<conformance::StandardProtocol::SimpleJson>(kType1Name));
-  EXPECT_FALSE(isRegistered<conformance::StandardProtocol::Json>(kType1Name));
+  {
+    constexpr auto kTypeName = "facebook.com/thrift/test/AnyTestStruct";
+    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kTypeName));
+    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+  }
 
-  // Has Json enabled.
-  constexpr auto kType2Name = "facebook.com/thrift/test/AnyTest2Struct";
-  EXPECT_TRUE(isRegistered<conformance::StandardProtocol::Binary>(kType2Name));
-  EXPECT_TRUE(isRegistered<conformance::StandardProtocol::Compact>(kType2Name));
-  EXPECT_TRUE(
-      isRegistered<conformance::StandardProtocol::SimpleJson>(kType2Name));
-  EXPECT_FALSE(isRegistered<conformance::StandardProtocol::Json>(kType2Name));
+  {
+    constexpr auto kTypeName = "facebook.com/thrift/test/AnyTestException";
+    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kTypeName));
+    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+  }
 
-  // Does not have any enabled.
-  constexpr auto kType3Name = "facebook.com/thrift/test/AnyTest3Struct";
-  EXPECT_FALSE(isRegistered<conformance::StandardProtocol::Binary>(kType3Name));
-  EXPECT_FALSE(
-      isRegistered<conformance::StandardProtocol::Compact>(kType3Name));
-  EXPECT_FALSE(
-      isRegistered<conformance::StandardProtocol::SimpleJson>(kType3Name));
-  EXPECT_FALSE(isRegistered<conformance::StandardProtocol::Json>(kType3Name));
+  { // Has Json enabled.
+    constexpr auto kTypeName = "facebook.com/thrift/test/AnyTestUnion";
+    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kTypeName));
+    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kTypeName));
+    EXPECT_TRUE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+  }
+
+  { // Does not have `any` in buck target options.
+    constexpr auto kTypeName =
+        "facebook.com/thrift/test/AnyTestMissingAnyOption";
+    EXPECT_FALSE(isRegistered<StandardProtocol::Binary>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Compact>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+  }
 }
 
 } // namespace

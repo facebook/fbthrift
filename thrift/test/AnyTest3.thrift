@@ -16,6 +16,6 @@
 
 namespace cpp2 apache.thrift.test
 
-struct AnyTest3Struct {
+struct AnyTestMissingAnyOption {
   1: i32 foo;
-} (any_type.name = "facebook.com/thrift/test/AnyTest3Struct")
+} (any_type.name = "facebook.com/thrift/test/AnyTestMissingAnyOption")

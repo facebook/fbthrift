@@ -13,4 +13,15 @@
 namespace apache { namespace thrift {
 
 
+template <> struct TEnumDataStorage<::cpp2::MyUnion::Type> {
+  using type = ::cpp2::MyUnion::Type;
+  static constexpr const std::size_t size = 1;
+  static constexpr const std::array<type, size> values = {{
+    type::myString,
+  }};
+  static constexpr const std::array<folly::StringPiece, size> names = {{
+    "myString",
+  }};
+};
+
 }} // apache::thrift

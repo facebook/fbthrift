@@ -16,14 +16,24 @@ namespace detail {
 namespace md {
 
 template <>
-class StructMetadata<::cpp2::MyStruct1> {
+class StructMetadata<::cpp2::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStruct2> {
+class StructMetadata<::cpp2::MyUnion> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::MyException> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::MyException> {
+ public:
+  static void gen(ThriftMetadata& metadata);
 };
 } // namespace md
 } // namespace detail
