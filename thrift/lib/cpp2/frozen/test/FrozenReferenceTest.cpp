@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/Math.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
@@ -42,7 +43,7 @@ std::unique_ptr<Node> makeNode(int64_t id, const std::string& content) {
 void fillTree(std::unique_ptr<Node>& node, int min, int max) {
   if (min >= max)
     return;
-  int mid = (max + min) / 2;
+  const int mid = folly::midpoint(min, max);
   node = std::make_unique<Node>();
   *node->id_ref() = mid;
   fillTree(node->left, min, mid);
