@@ -28,12 +28,21 @@ class ThriftParametersContext {
     return supportedCompressionAlgos_;
   }
 
+  void setUseStopTLS(bool useStopTLS) {
+    useStopTLS_ = useStopTLS;
+  }
+
+  bool getUseStopTLS() {
+    return useStopTLS_;
+  }
+
  private:
   static constexpr std::array<CompressionAlgorithm, 2>
       supportedCompressionAlgos_{{
           CompressionAlgorithm::ZSTD,
           CompressionAlgorithm::ZLIB,
       }};
+  bool useStopTLS_{false};
 };
 } // namespace thrift
 } // namespace apache

@@ -50,6 +50,7 @@ TEST_F(ExtensionsTest, TestThriftParameters) {
   std::uint64_t compressions = 1ull << (int(CompressionAlgorithm::ZSTD) - 1) |
       1ull << (int(CompressionAlgorithm::ZLIB) - 1);
   params.compressionAlgos_ref() = compressions;
+  params.useStopTLS_ref() = true;
   std::vector<fizz::Extension> exts;
   ThriftParametersExt paramsExt;
   paramsExt.params = params;
@@ -61,6 +62,7 @@ TEST_F(ExtensionsTest, TestThriftParameters) {
   EXPECT_EQ(ext.value().params, paramsExt.params);
   EXPECT_TRUE(ext->params.compressionAlgos_ref());
   EXPECT_EQ(ext->params.compressionAlgos_ref().value(), compressions);
+  EXPECT_TRUE(ext->params.useStopTLS_ref().value());
 }
 
 } // namespace test

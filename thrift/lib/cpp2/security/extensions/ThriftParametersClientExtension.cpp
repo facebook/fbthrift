@@ -29,6 +29,7 @@ ThriftParametersClientExtension::getClientHelloExtensions() const {
     compressionAlgorithms |= 1ull << (int(comp) - 1);
   }
   params.compressionAlgos_ref() = compressionAlgorithms;
+  params.useStopTLS_ref() = context_->getUseStopTLS();
   ThriftParametersExt paramsExt;
   paramsExt.params = params;
   clientExtensions.push_back(encodeThriftExtension(paramsExt));
@@ -49,13 +50,14 @@ void ThriftParametersClientExtension::onEncryptedExtensions(
       assert(comp != CompressionAlgorithm::NONE);
       if (*serverCompressions & 1ull << (int(comp) - 1)) {
         negotiatedThriftCompressionAlgo_ = comp;
-        return;
+        break;
       }
     }
   } else {
     VLOG(6) << "Server did not negotiate thrift compression algorithms";
-    return;
   }
+  negotiatedStopTLS_ = context_->getUseStopTLS() &&
+      serverParams->params.useStopTLS_ref().value_or(false);
 }
 
 } // namespace thrift

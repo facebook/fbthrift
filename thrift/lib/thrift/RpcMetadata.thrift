@@ -79,11 +79,13 @@ struct CompressionConfig {
 }
 
 // A TLS extension used for thrift parameters negotiation during TLS handshake.
-// All fields should be optional i64 bitmaps indicating feature presence.
+// All fields should be optional.
+// For fields which are conceptually list<bool>, i64 bitmap is frequently preferred.
 struct NegotiationParameters {
   // nth (zero-based) least significant bit set if CompressionAlgorithm = n + 1
   // is accepted. For example, 0b10 means ZSTD is accepted.
   1: optional i64 (cpp.type = "std::uint64_t") compressionAlgos;
+  2: optional bool useStopTLS;
 }
 
 enum RequestRpcMetadataFlags {

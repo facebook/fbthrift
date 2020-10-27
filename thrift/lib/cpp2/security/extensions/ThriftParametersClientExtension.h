@@ -42,8 +42,13 @@ class ThriftParametersClientExtension : public fizz::ClientExtensions {
     return negotiatedThriftCompressionAlgo_;
   }
 
+  bool getNegotiatedStopTLS() const {
+    return negotiatedStopTLS_;
+  }
+
  private:
   folly::Optional<CompressionAlgorithm> negotiatedThriftCompressionAlgo_;
+  bool negotiatedStopTLS_{false};
   std::shared_ptr<ThriftParametersContext> context_;
 };
 } // namespace thrift
