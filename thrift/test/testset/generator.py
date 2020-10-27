@@ -24,8 +24,6 @@ THRIFT_HEADER = """
 # {'@' + 'generated'}
 
 namespace cpp2 apache.thrift.test
-
-cpp_include "thrift/test/testset/PrintPath.h"
 """
 
 FIELD_COUNT = 2  # Number of fields per structs
@@ -34,7 +32,7 @@ FIELD_COUNT = 2  # Number of fields per structs
 def format_dict(
     d: Dict[str, str], key_format: str, value_format: str
 ) -> Dict[str, str]:
-    """ Format key/value of dict
+    """Format key/value of dict
     >>> result = format_dict({"foo_k": "foo_v", "bar_k": "bar_v"}, 'prefix_{}', "{}_suffix")
     >>> result == {'prefix_foo_k': 'foo_v_suffix', 'prefix_bar_k': 'bar_v_suffix'}
     True
@@ -75,7 +73,7 @@ def generate_struct_names_to_types() -> Dict[str, str]:
 
 
 def generate_class(class_type: str, name: str, types: List[str]) -> str:
-    """ Generate thrift struct from types
+    """Generate thrift struct from types
     >>> print(generate_class("struct", "Foo", ["i64", "optional string", "set<i32> (cpp.ref = 'true')"]))
     struct Foo {
       1: i64 field_1;

@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-#include "thrift/test/testset/PrintPath.h"
 #include <glog/logging.h>
 
 namespace apache::thrift::test::detail {
-const std::shared_ptr<void> kThriftPathPrinter{
-    nullptr,
-    [](auto) { LOG(INFO) << "Thrift testset path: " << THRIFT_TESTSET_PATH; }};
-}
+
+namespace {
+struct ThriftPathPrinter {
+  ~ThriftPathPrinter() {
+    LOG(INFO) << "Thrift testset path: " << THRIFT_TESTSET_PATH;
+  }
+};
+} // namespace
+
+const ThriftPathPrinter kThriftTestsetPathPrinter;
+
+} // namespace apache::thrift::test::detail
