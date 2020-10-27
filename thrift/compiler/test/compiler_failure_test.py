@@ -582,3 +582,41 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift] `types_cpp_splits=5` is misconfigured: "
             "it can not be greater than number of object, which is 4.\n",
         )
+
+    def test_py_type_mismatch(self):
+        write_file(
+            "a.thrift",
+            textwrap.dedent(
+                """\
+                struct A {
+                  1: Enum e = Enum.v1,
+                }
+
+                enum Enum {
+                  v0 = 0,
+                  v1 = 1,
+                }
+                """
+            ),
+        )
+
+        write_file(
+            "b.thrift",
+            textwrap.dedent(
+                """\
+                include "a.thrift"
+
+                typedef a.A A
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift(
+                "-r", "b.thrift", gen="py:new_style"
+        )
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "t_const_value type mismatch: valType_=3 is not any of {1, 0}\n"
+            "[WARNING:a.thrift:2] Constant strings should be quoted: Enum.v1\n",
+        )

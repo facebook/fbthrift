@@ -19,7 +19,7 @@
 
 #include <stdint.h>
 
-#include <cassert>
+#include <initializer_list>
 #include <memory>
 #include <string>
 #include <utility>
@@ -115,7 +115,7 @@ class t_const_value {
   }
 
   const std::string& get_string() const {
-    assert(valType_ == CV_STRING);
+    check_val_type({CV_STRING});
     return stringVal_;
   }
 
@@ -125,7 +125,7 @@ class t_const_value {
   }
 
   int64_t get_integer() const {
-    assert(valType_ == CV_INTEGER || valType_ == CV_BOOL);
+    check_val_type({CV_INTEGER, CV_BOOL});
     return intVal_;
   }
 
@@ -135,7 +135,7 @@ class t_const_value {
   }
 
   double get_double() const {
-    assert(valType_ == CV_INTEGER || valType_ == CV_DOUBLE);
+    check_val_type({CV_INTEGER, CV_DOUBLE});
     return doubleVal_;
   }
 
@@ -148,7 +148,7 @@ class t_const_value {
   }
 
   bool get_bool() const {
-    assert(valType_ == CV_BOOL);
+    check_val_type({CV_BOOL});
     return boolVal_;
   }
 
@@ -240,6 +240,8 @@ class t_const_value {
   }
 
  private:
+  void check_val_type(std::initializer_list<t_const_value_type> types) const;
+
   // Use a vector of pairs to store the contents of the map so that we
   // preserve thrift-file ordering when generating per-language source.
   std::vector<
