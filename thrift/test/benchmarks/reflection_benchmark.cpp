@@ -23,8 +23,8 @@
 #include <thrift/test/testset/gen-cpp2/gen_struct_all_fatal_all.h>
 #include <thrift/test/testset/gen-cpp2/gen_struct_all_for_each_field.h>
 
-using namespace apache::thrift;
-using namespace std;
+namespace apache::thrift::test {
+namespace {
 
 template <class Struct>
 void add_benchmark() {
@@ -37,7 +37,7 @@ void add_benchmark() {
             typename reflect_variant<Struct>::traits::descriptors>::value == 2);
   }
 
-  string name = folly::pretty_name<Struct>();
+  std::string name = folly::pretty_name<Struct>();
   name = name.substr(name.rfind("::") + 2);
 
   if constexpr (!is_thrift_union_v<Struct>) {
@@ -80,7 +80,7 @@ void add_benchmark() {
       fatal::foreach<typename reflect_struct<Struct>::members>([&k](auto tag) {
         using Member = decltype(fatal::tag_type(tag));
         const char* name = fatal::z_data<typename Member::name>();
-        for (char c : string_view(name)) {
+        for (char c : std::string_view(name)) {
           k += c;
         }
       });
@@ -115,13 +115,21 @@ void add_benchmark() {
     return 1;
   });
 }
+} // namespace
+
+void addReflectionBenchmarks() {
+  add_benchmark<testset::struct_string>();
+  add_benchmark<testset::struct_optional_string>();
+  add_benchmark<testset::struct_required_string>();
+  add_benchmark<testset::struct_optional_string_cpp_ref>();
+  add_benchmark<testset::union_string>();
+}
+
+} // namespace apache::thrift::test
 
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
-  add_benchmark<test::struct_string>();
-  add_benchmark<test::struct_optional_string>();
-  add_benchmark<test::struct_required_string>();
-  add_benchmark<test::struct_optional_string_cpp_ref>();
-  add_benchmark<test::union_string>();
+  apache::thrift::test::addReflectionBenchmarks();
   folly::runBenchmarks();
+  return 0;
 }

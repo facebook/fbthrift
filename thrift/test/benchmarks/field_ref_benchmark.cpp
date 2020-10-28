@@ -21,10 +21,10 @@
 #include <glog/logging.h>
 #include <thrift/test/testset/gen-cpp2/gen_struct_all_for_each_field.h>
 
-using namespace apache::thrift;
-using namespace std;
+namespace apache::thrift::test {
+namespace {
 
-const int kIterationCount = 1'000'000;
+constexpr int kIterationCount = 1'000'000;
 
 template <class T>
 using DetectValueUnchecked = decltype(T{}.field_1_ref().value_unchecked());
@@ -38,7 +38,7 @@ FOLLY_NOINLINE void indirect(T ref) {
 
 template <class Struct>
 void add_benchmark() {
-  string name = folly::demangle(typeid(Struct).name()).toStdString();
+  std::string name = folly::demangle(typeid(Struct).name()).toStdString();
   name = name.substr(name.rfind("::") + 2);
 
   folly::addBenchmark(__FILE__, name, [] {
@@ -51,7 +51,7 @@ void add_benchmark() {
     return 1;
   });
 
-  folly::addBenchmark(__FILE__, '%' + name + "_indirect", [] {
+  folly::addBenchmark(__FILE__, "%" + name + "_indirect", [] {
     static Struct s;
     for (int i = 0; i < kIterationCount; i++) {
       indirect(std::move(s.field_1_ref()));
@@ -59,7 +59,7 @@ void add_benchmark() {
     return 1;
   });
 
-  folly::addBenchmark(__FILE__, '%' + name + "_unsafe", [] {
+  folly::addBenchmark(__FILE__, "%" + name + "_unsafe", [] {
     static Struct s;
     for (int i = 0; i < kIterationCount; i++) {
       if constexpr (folly::is_detected_v<DetectValueUnchecked, Struct>) {
@@ -79,7 +79,7 @@ void add_benchmark() {
     return 1;
   });
 
-  folly::addBenchmark(__FILE__, '%' + name + "_baseline", [] {
+  folly::addBenchmark(__FILE__, "%" + name + "_baseline", [] {
     static std::decay_t<decltype(*Struct{}.field_1_ref())> v;
     for (int i = 0; i < kIterationCount; i++) {
       v = "a";
@@ -88,14 +88,21 @@ void add_benchmark() {
     return 1;
   });
 }
+} // namespace
+
+void addFieldRefBenchmarks() {
+  add_benchmark<testset::struct_string>();
+  add_benchmark<testset::struct_optional_string>();
+  add_benchmark<testset::struct_required_string>();
+  add_benchmark<testset::struct_optional_string_cpp_ref>();
+  add_benchmark<testset::union_string>();
+}
+
+} // namespace apache::thrift::test
 
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
-  add_benchmark<test::struct_string>();
-  add_benchmark<test::struct_optional_string>();
-  add_benchmark<test::struct_required_string>();
-  add_benchmark<test::struct_optional_string_cpp_ref>();
-  add_benchmark<test::union_string>();
+  apache::thrift::test::addFieldRefBenchmarks();
   folly::runBenchmarks();
   return 0;
 }
