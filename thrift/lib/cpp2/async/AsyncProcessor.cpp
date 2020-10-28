@@ -79,33 +79,53 @@ void AsyncProcessor::destroyAllInteractions(
     folly::EventBase&) noexcept {}
 
 bool GeneratedAsyncProcessor::createInteraction(
+    ResponseChannelRequest::UniquePtr& req,
     int64_t id,
     const std::string& name,
     Cpp2ConnContext& conn,
-    concurrency::ThreadManager& tm,
+    concurrency::ThreadManager* tm,
     folly::EventBase& eb) {
   eb.dcheckIsInEventBaseThread();
+
+  auto nullthrows = [](std::unique_ptr<Tile> tile) {
+    if (!tile) {
+      DLOG(FATAL) << "Nullptr returned from interaction constructor";
+      throw std::runtime_error("Nullptr returned from interaction constructor");
+    }
+    return tile;
+  };
+
+  // In the eb model we create the interaction inline.
+  if (!tm) {
+    auto tile = folly::makeTryWith(
+        [&] { return nullthrows(createInteractionImpl(name)); });
+    if (tile.hasException()) {
+      req->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              "Interaction constructor failed with " +
+              tile.exception().what().toStdString()),
+          kInteractionConstructorErrorErrorCode);
+      return true; // Not a duplicate; caller will see missing tile.
+    }
+    (*tile)->destructionExecutor_ = &eb;
+    return conn.addTile(id, std::move(*tile));
+  }
+
+  // In the tm model we use a promise.
   auto promise = std::make_unique<TilePromise>();
   auto promisePtr = promise.get();
   if (!conn.addTile(id, std::move(promise))) {
     return false;
   }
 
-  folly::via(&tm, [=] { return createInteractionImpl(name); })
+  folly::via(tm, [=] { return nullthrows(createInteractionImpl(name)); })
       .via(&eb)
-      .thenTry([&conn, id, &tm, &eb, promisePtr](auto&& t) {
+      .thenTry([&conn, id, tm, &eb, promisePtr](auto&& t) {
         auto promise = std::unique_ptr<TilePromise>(promisePtr);
         std::unique_ptr<Tile> tile;
         if (t.hasValue()) {
-          if (*t) {
-            tile = std::move(*t);
-            tile->destructionExecutor_ = &tm;
-          } else {
-            t.emplaceException(
-                folly::make_exception_wrapper<std::runtime_error>(
-                    "Nullptr returned from interaction constructor"));
-            DLOG(FATAL) << "Nullptr returned from interaction constructor";
-          }
+          tile = std::move(*t);
+          tile->destructionExecutor_ = tm;
         }
 
         if (promise->destructionRequested_) {
@@ -118,7 +138,7 @@ bool GeneratedAsyncProcessor::createInteraction(
           // promise not in tile map, continuations will free tile
           if (tile) {
             tile->terminationRequested_ = true;
-            promise->fulfill<InteractionEventTask>(*tile.release(), tm, eb);
+            promise->fulfill<InteractionEventTask>(*tile.release(), *tm, eb);
           } else {
             promise->failWith<EventTask>(
                 folly::make_exception_wrapper<TApplicationException>(
@@ -129,7 +149,7 @@ bool GeneratedAsyncProcessor::createInteraction(
         } else {
           if (tile) {
             // promise and tile managed by pointer in tile map
-            promise->fulfill<InteractionEventTask>(*tile, tm, eb);
+            promise->fulfill<InteractionEventTask>(*tile, *tm, eb);
             conn.resetTile(id, std::move(tile)).release(); // aliases promise
           } else {
             promise->failWith<EventTask>(
@@ -243,25 +263,22 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
   }
 
   bool interactionMetadataValid;
-  if (ctx->getInteractionId()) {
-    CHECK(tm) << "EB interactions blocked by validator";
+  if (auto interactionId = ctx->getInteractionId()) {
     if (auto interactionCreate = ctx->getInteractionCreate()) {
       if (!interaction ||
           *interactionCreate->interactionName_ref() != interaction) {
         interactionMetadataValid = false;
       } else if (!createInteraction(
-                     *interactionCreate->interactionId_ref(),
+                     req,
+                     interactionId,
                      *interactionCreate->interactionName_ref(),
                      *ctx->getConnectionContext(),
-                     *tm,
+                     tm,
                      *eb)) {
         // Duplicate id is a contract violation so close the connection.
         // Terminate this interaction first so queued requests can't use it
         // (which could result in UB).
-        terminateInteraction(
-            *interactionCreate->interactionId_ref(),
-            *ctx->getConnectionContext(),
-            *eb);
+        terminateInteraction(interactionId, *ctx->getConnectionContext(), *eb);
         req->sendErrorWrapped(
             TApplicationException(
                 "Attempting to create interaction with duplicate id. Failing all requests in that interaction."),
@@ -272,6 +289,21 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
       }
     } else {
       interactionMetadataValid = !!interaction;
+    }
+
+    if (interactionMetadataValid && !tm) {
+      try {
+        // This is otherwise done by InteractionEventTask when dequeued.
+        auto& tile = ctx->getConnectionContext()->getTile(interactionId);
+        ctx->setTile(tile);
+        tile.__fbthrift_acquireRef(*eb);
+      } catch (const std::out_of_range&) {
+        req->sendErrorWrapped(
+            TApplicationException(
+                "Invalid interaction id " + std::to_string(interactionId)),
+            kInteractionIdUnknownErrorCode);
+        return false;
+      }
     }
   } else {
     interactionMetadataValid = !interaction;

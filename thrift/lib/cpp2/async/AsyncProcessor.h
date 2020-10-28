@@ -241,18 +241,18 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       ProcessFunc<ChildType> processFunc,
       ChildType* childClass,
       Tile* tile);
+
+  // Returns false if interaction id is duplicated.
   bool createInteraction(
+      ResponseChannelRequest::UniquePtr& req,
       int64_t id,
       const std::string& name,
       Cpp2ConnContext& conn,
-      concurrency::ThreadManager& tm,
+      concurrency::ThreadManager* tm,
       folly::EventBase& eb);
 
  protected:
   virtual std::unique_ptr<Tile> createInteractionImpl(const std::string& name);
-  Tile& getTile(Cpp2RequestContext* ctx) {
-    return ctx->getConnectionContext()->getTile(ctx->getInteractionId());
-  }
 
  public:
   void terminateInteraction(

@@ -17,6 +17,7 @@
 #include <memory>
 
 #include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Collect.h>
 #include <folly/experimental/coro/Task.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
@@ -676,5 +677,68 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
   EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
   handler->baton.reset();
 
+#endif
+}
+
+TEST(InteractionCodegenTest, BasicEB) {
+  struct ExceptionCalculatorHandler : CalculatorSvIf {
+    struct AdditionHandler : CalculatorSvIf::AdditionFastIf {
+      int acc_{0};
+      void async_eb_accumulatePrimitive(
+          std::unique_ptr<HandlerCallback<void>> cb,
+          int32_t a) override {
+        acc_ += a;
+        cb->exception(std::runtime_error("Not Implemented Yet"));
+      }
+      void async_eb_getPrimitive(
+          std::unique_ptr<HandlerCallback<int32_t>> cb) override {
+        cb->result(acc_);
+      }
+    };
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      return std::make_unique<AdditionHandler>();
+    }
+  };
+
+  ScopedServerInterfaceThread runner{
+      std::make_shared<ExceptionCalculatorHandler>()};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = client->createAdditionFast();
+#if FOLLY_HAS_COROUTINES
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto [r1, r2] = co_await folly::coro::collectAllTry(
+        adder.co_accumulatePrimitive(1), adder.co_getPrimitive());
+    EXPECT_TRUE(r1.hasException());
+    EXPECT_EQ(*r2, 1);
+  }());
+#endif
+}
+
+TEST(InteractionCodegenTest, ErrorEB) {
+  struct ExceptionCalculatorHandler : CalculatorSvIf {
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      throw std::runtime_error("Unimplemented");
+    }
+  };
+
+  ScopedServerInterfaceThread runner{
+      std::make_shared<ExceptionCalculatorHandler>()};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = client->createAdditionFast();
+#if FOLLY_HAS_COROUTINES
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto [r1, r2] = co_await folly::coro::collectAllTry(
+        adder.co_accumulatePrimitive(1), adder.co_getPrimitive());
+    EXPECT_TRUE(r1.hasException());
+    EXPECT_TRUE(r2.hasException());
+  }());
 #endif
 }

@@ -1046,7 +1046,7 @@ Interaction:
     {
       lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
     }
-  tok_identifier "{" FlagArgs FunctionList UnflagArgs "}"
+  tok_identifier "{" FlagArgs FunctionList UnflagArgs "}" TypeAnnotations
     {
       driver.debug("Interaction -> tok_interaction tok_identifier { FunctionList }");
       $$ = $6;
@@ -1055,6 +1055,22 @@ Interaction:
       $$->set_lineno(lineno_stack.pop(LineType::kService));
       for (auto* func : $$->get_functions()) {
         func->set_is_interaction_member();
+        if (func->annotations_.count("thread")) {
+          driver.failure("Interaction methods cannot be individually annotated with "
+            "thread='eb'. Use process_in_event_base on the interaction instead.");
+        }
+      }
+
+      if ($9) {
+        for (const auto& it : $9->annotations_) {
+          if (it.first == "process_in_event_base") {
+            for (auto* func : $$->get_functions()) {
+              func->annotations_["thread"] = "eb";
+            }
+          } else {
+            driver.failure("Unknown interaction annotation '%s'", it.first.c_str());
+          }
+        }
       }
     }
 

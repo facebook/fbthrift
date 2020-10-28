@@ -21,7 +21,15 @@ interaction MyInteraction {
   set<float>, sink<string, binary> encode();
 }
 
+interaction MyInteractionFast {
+  i32 frobnicate();
+  oneway void ping();
+  stream<bool> truthify();
+  set<float>, sink<string, binary> encode();
+} (process_in_event_base)
+
 service MyService {
   performs MyInteraction;
+  performs MyInteractionFast;
   void foo();
 }

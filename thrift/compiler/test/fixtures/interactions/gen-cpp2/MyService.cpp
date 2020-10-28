@@ -17,6 +17,9 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
 std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceSvIf::createMyInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteraction");
 }
+std::unique_ptr<MyServiceSvIf::MyInteractionFastIf> MyServiceSvIf::createMyInteractionFast() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteractionFast");
+}
 
 void MyServiceSvIf::foo() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("foo");
@@ -201,6 +204,22 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
 #endif // FOLLY_HAS_COROUTINES
 }
 
+void MyServiceSvIf::MyInteractionFastIf::async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+  callback->exception(apache::thrift::TApplicationException("Function frobnicate is unimplemented"));
+}
+
+void MyServiceSvIf::MyInteractionFastIf::async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/) {
+  LOG(DFATAL) << "Function ping is unimplemented";
+}
+
+void MyServiceSvIf::MyInteractionFastIf::async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<bool>>> callback) {
+  callback->exception(apache::thrift::TApplicationException("Function truthify is unimplemented"));
+}
+
+void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>>> callback) {
+  callback->exception(apache::thrift::TApplicationException("Function encode is unimplemented"));
+}
+
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";
 }
@@ -227,6 +246,10 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::binaryProcess
   {"MyInteraction.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"MyInteraction.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"MyInteraction.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_encode<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteractionFast.frobnicate", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_frobnicate<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteractionFast.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteractionFast.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_truthify<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"MyInteractionFast.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_encode<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -239,6 +262,10 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProces
   {"MyInteraction.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"MyInteraction.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"MyInteraction.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_encode<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteractionFast.frobnicate", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_frobnicate<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteractionFast.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteractionFast.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_truthify<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"MyInteractionFast.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_encode<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::InteractionConstructorMap& MyServiceAsyncProcessor::getInteractionConstructorMap() {
@@ -247,6 +274,7 @@ const MyServiceAsyncProcessor::InteractionConstructorMap& MyServiceAsyncProcesso
 
 const MyServiceAsyncProcessor::InteractionConstructorMap MyServiceAsyncProcessor::interactionConstructorMap_ {
   {"MyInteraction", &MyServiceAsyncProcessor::createMyInteraction},
+  {"MyInteractionFast", &MyServiceAsyncProcessor::createMyInteractionFast},
 };
 
 std::unique_ptr<apache::thrift::Tile> MyServiceAsyncProcessor::createInteractionImpl(const std::string& name) {

@@ -16,7 +16,7 @@
 
 %><%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
 
-<%^service:interaction?%><%^function:eb%>
+<%^function:eb%><%^service:interaction?%>
 <% > service_common/function_return_type %> <%service:name%>SvIf::<%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
@@ -47,7 +47,7 @@ folly::coro::Task<<% > service_common/callback_type %>> <%service:name%>SvIf::co
 }
 #endif // FOLLY_HAS_COROUTINES
 <%/function:coroutine?%>
-<%/function:eb%><%/service:interaction?%>
+<%/service:interaction?%>
 <%#service:interaction?%>
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::co_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
@@ -61,7 +61,7 @@ folly::coro::Task<<% > service_common/callback_type %>> <%service:parent_service
 folly::SemiFuture<<% > service_common/async_return_type %>> <%service:parent_service_name%>SvIf::<%service:name%>If::semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_<%function:name%>");
 }
-<%/service:interaction?%>
+<%/service:interaction?%><%/function:eb%>
 <%#function:oneway?%>
 <%^function:eb%>
 <%^function:coroutine?%>
