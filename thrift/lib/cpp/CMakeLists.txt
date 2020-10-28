@@ -155,6 +155,13 @@ foreach(dir ${THRIFT1_HEADER_DIRS})
           FILES_MATCHING PATTERN "*.tcc")
 endforeach()
 
+if (BUILD_SHARED_LIBS)
+  # all but thrift since it's an interface
+  set_target_properties(thrift-core concurrency protocol transport async
+    PROPERTIES VERSION ${PROJECT_VERSION}
+    )
+endif()
+
 install(
   TARGETS
     thrift-core

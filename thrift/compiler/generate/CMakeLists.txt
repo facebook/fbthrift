@@ -44,15 +44,7 @@ add_custom_command(
 
 add_library(
   compiler_generate_templates
+  OBJECT
 
   ${CMAKE_CURRENT_BINARY_DIR}/templates.cc
-)
-
-install(
-  TARGETS
-    compiler_generate_templates
-  EXPORT fbthrift-exports
-  RUNTIME DESTINATION ${BIN_INSTALL_DIR}
-  LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-  ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
 )

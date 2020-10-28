@@ -115,11 +115,11 @@ add_library(
   compiler_generators
 
   ${GENERATOR_FILES}
+  $<TARGET_OBJECTS:compiler_generate_templates>
 )
 target_link_libraries(
   compiler_generators
 
-  compiler_generate_templates
   compiler_base
   compiler_lib
   mustache_lib
@@ -161,6 +161,14 @@ if(MSVC)
     PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:compiler_generators"
   )
 endif(MSVC)
+
+if (BUILD_SHARED_LIBS)
+  # all but thrift1 since it's a binary
+  set_target_properties(compiler_ast compiler_base compiler_lib mustache_lib
+    compiler_generators
+    PROPERTIES VERSION ${PROJECT_VERSION}
+    )
+endif()
 
 install(
   TARGETS
