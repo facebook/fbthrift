@@ -135,8 +135,10 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
         }
       }
       iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
+      TField __stopField = iprot.readFieldBegin();
+      if (__stopField.type != TType.STOP) {
+        throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'MyUnion' is missing a STOP byte");
+      }
     }
     iprot.readStructEnd();
   }

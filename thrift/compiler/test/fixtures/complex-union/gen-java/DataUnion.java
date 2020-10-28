@@ -113,8 +113,10 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
         }
       }
       iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
+      TField __stopField = iprot.readFieldBegin();
+      if (__stopField.type != TType.STOP) {
+        throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'DataUnion' is missing a STOP byte");
+      }
     }
     iprot.readStructEnd();
   }

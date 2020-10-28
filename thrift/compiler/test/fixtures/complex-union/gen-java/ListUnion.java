@@ -115,8 +115,10 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
         }
       }
       iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
+      TField __stopField = iprot.readFieldBegin();
+      if (__stopField.type != TType.STOP) {
+        throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ListUnion' is missing a STOP byte");
+      }
     }
     iprot.readStructEnd();
   }

@@ -73,8 +73,10 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
         }
       }
       iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
+      TField __stopField = iprot.readFieldBegin();
+      if (__stopField.type != TType.STOP) {
+        throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'Nada' is missing a STOP byte");
+      }
     }
     iprot.readStructEnd();
   }

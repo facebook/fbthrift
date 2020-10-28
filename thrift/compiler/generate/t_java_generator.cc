@@ -874,8 +874,13 @@ void t_java_generator::generate_union_reader(ofstream& out, t_struct* tstruct) {
   indent(out) << "}" << endl;
   indent(out) << "iprot.readFieldEnd();" << endl;
   // Eat stop byte
-  indent(out) << "iprot.readFieldBegin();" << endl;
-  indent(out) << "iprot.readFieldEnd();" << endl;
+  indent(out) << "TField __stopField = iprot.readFieldBegin();" << endl;
+  indent(out) << "if (__stopField.type != TType.STOP) {" << endl;
+  indent(out)
+      << "  throw new TProtocolException(TProtocolException.INVALID_DATA, \"Union '" +
+          tstruct->get_name() + "' is missing a STOP byte\");"
+      << endl;
+  indent(out) << "}" << endl;
   indent_down();
   indent(out) << "}" << endl;
 

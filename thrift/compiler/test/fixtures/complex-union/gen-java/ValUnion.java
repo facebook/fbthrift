@@ -113,8 +113,10 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
         }
       }
       iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
+      TField __stopField = iprot.readFieldBegin();
+      if (__stopField.type != TType.STOP) {
+        throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'ValUnion' is missing a STOP byte");
+      }
     }
     iprot.readStructEnd();
   }
