@@ -48,7 +48,10 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
 
   ~Helper() override;
 
-  void init(shared_ptr<BaseThriftServer> server, shared_ptr<Helper> self);
+  void init(
+      shared_ptr<BaseThriftServer> server,
+      shared_ptr<Helper> self,
+      Func onExit);
 
   void run() override;
 
@@ -166,6 +169,7 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
   std::condition_variable stateCondVar_;
 
   shared_ptr<BaseThriftServer> server_;
+  Func onExit_;
   // If the server event handler has been intercepted, then this field will be
   // set to the replaced event handler, which could be nullptr.
   folly::Optional<shared_ptr<TServerEventHandler>> eventHandler_;
@@ -181,8 +185,10 @@ ScopedServerThread::Helper::~Helper() {
 
 void ScopedServerThread::Helper::init(
     shared_ptr<BaseThriftServer> server,
-    shared_ptr<Helper> self) {
+    shared_ptr<Helper> self,
+    Func onExit) {
   server_ = std::move(server);
+  onExit_ = std::move(onExit);
 
   // Install ourself as the server event handler, so that our preServe() method
   // will be called once we've successfully bound to the port and are about to
@@ -205,6 +211,9 @@ void ScopedServerThread::Helper::run() {
     handleServeError(x);
   } catch (...) {
     TServerEventHandler::handleServeError();
+  }
+  if (onExit_) {
+    onExit_();
   }
 }
 
@@ -271,7 +280,9 @@ ScopedServerThread::~ScopedServerThread() {
   stop();
 }
 
-void ScopedServerThread::start(shared_ptr<BaseThriftServer> server) {
+void ScopedServerThread::start(
+    shared_ptr<BaseThriftServer> server,
+    Func onExit) {
   if (helper_) {
     throw TLibraryException("ScopedServerThread is already running");
   }
@@ -282,7 +293,7 @@ void ScopedServerThread::start(shared_ptr<BaseThriftServer> server) {
   // TServerEventHandler ourself.
   auto helper = std::make_shared<Helper>();
 
-  helper->init(std::move(server), helper);
+  helper->init(std::move(server), helper, std::move(onExit));
 
   // Start the thread
   PosixThreadFactory threadFactory;

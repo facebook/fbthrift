@@ -20,6 +20,8 @@
 #include <memory>
 #include <string>
 
+#include <folly/Function.h>
+
 namespace folly {
 class SocketAddress;
 }
@@ -64,7 +66,8 @@ class ScopedServerThread {
    *
    * @param server The server to run in the new thread.
    */
-  void start(std::shared_ptr<BaseThriftServer> server);
+  using Func = folly::Function<void()>;
+  void start(std::shared_ptr<BaseThriftServer> server, Func onExit = {});
 
   /**
    * Stop the server thread.
