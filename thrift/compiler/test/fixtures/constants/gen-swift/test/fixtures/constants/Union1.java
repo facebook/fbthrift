@@ -215,8 +215,10 @@ public final class Union1 {
           res.id = __field.id;
         }
         oprot.readFieldEnd();
-        oprot.readFieldBegin();
-        oprot.readFieldEnd();
+        TField __stopField = oprot.readFieldBegin(); // Consume the STOP byte
+        if (__stopField.type != TType.STOP) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Union 'Union1' is missing a STOP byte");
+        }
       }
       oprot.readStructEnd();
       return res;

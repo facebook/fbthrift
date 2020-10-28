@@ -52,7 +52,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 // Static-init time registration for dynamically-linked libraries.
 //
-// To include in statically-linked libraties, always link (e.g. link_whole)
+// To include in statically-linked libraties, link whole (e.g. --whole-archive)
 // `module_sinit.cpp`.
 FOLLY_EXPORT bool __fbthrift_static_init_MyStruct = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
@@ -170,7 +170,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 namespace cpp2 {
 // Static-init time registration for dynamically-linked libraries.
 //
-// To include in statically-linked libraties, always link (e.g. link_whole)
+// To include in statically-linked libraties, link whole (e.g. --whole-archive)
 // `module_sinit.cpp`.
 FOLLY_EXPORT bool __fbthrift_static_init_MyUnion = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
@@ -268,7 +268,7 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 namespace cpp2 {
 // Static-init time registration for dynamically-linked libraries.
 //
-// To include in statically-linked libraties, always link (e.g. link_whole)
+// To include in statically-linked libraties, link whole (e.g. --whole-archive)
 // `module_sinit.cpp`.
 FOLLY_EXPORT bool __fbthrift_static_init_MyException = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
