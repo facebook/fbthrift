@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/CppAttributes.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/visitation/metadata.h>
 

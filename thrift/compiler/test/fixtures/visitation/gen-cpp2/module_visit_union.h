@@ -16,9 +16,10 @@ namespace detail {
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union1> {
   template <typename F, typename T>
-  void operator()(F&& f, T&& t) const {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union1>;
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
+        get_field_metadata<::test_cpp2::cpp_reflection::union1>;
     switch (t.getType()) {
     case Union::Type::ui:
       return f(get_metadata(0), *static_cast<T&&>(t).ui_ref());
@@ -35,9 +36,10 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union1> {
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union2> {
   template <typename F, typename T>
-  void operator()(F&& f, T&& t) const {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union2>;
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
+        get_field_metadata<::test_cpp2::cpp_reflection::union2>;
     switch (t.getType()) {
     case Union::Type::ui_2:
       return f(get_metadata(0), *static_cast<T&&>(t).ui_2_ref());
@@ -54,9 +56,10 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union2> {
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union3> {
   template <typename F, typename T>
-  void operator()(F&& f, T&& t) const {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union3>;
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
+        get_field_metadata<::test_cpp2::cpp_reflection::union3>;
     switch (t.getType()) {
     case Union::Type::ui_3:
       return f(get_metadata(0), *static_cast<T&&>(t).ui_3_ref());
@@ -73,9 +76,10 @@ struct VisitUnion<::test_cpp2::cpp_reflection::union3> {
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::unionA> {
   template <typename F, typename T>
-  void operator()(F&& f, T&& t) const {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::unionA>;
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
+        get_field_metadata<::test_cpp2::cpp_reflection::unionA>;
     switch (t.getType()) {
     case Union::Type::i:
       return f(get_metadata(0), *static_cast<T&&>(t).i_ref());
@@ -94,9 +98,10 @@ struct VisitUnion<::test_cpp2::cpp_reflection::unionA> {
 template <>
 struct VisitUnion<::test_cpp2::cpp_reflection::union_with_special_names> {
   template <typename F, typename T>
-  void operator()(F&& f, T&& t) const {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union_with_special_names>;
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
+        get_field_metadata<::test_cpp2::cpp_reflection::union_with_special_names>;
     switch (t.getType()) {
     case Union::Type::get:
       return f(get_metadata(0), *static_cast<T&&>(t).get_ref());

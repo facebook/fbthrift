@@ -91,7 +91,9 @@ def generate_class(class_type: str, name: str, types: List[str]) -> str:
 def print_thrift_class(
     file: TextIO, class_type: str, names_to_types: Dict[str, str]
 ) -> None:
-    classes = []
+    name = "empty_" + class_type
+    print(generate_class(class_type, name, []), file=file)
+    classes = [name]
     for display_name, type in names_to_types.items():
         class_name = class_type + "_" + display_name
         classes.append(class_name)

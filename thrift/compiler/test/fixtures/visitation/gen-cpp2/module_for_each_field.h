@@ -16,8 +16,9 @@ namespace detail {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::union1> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union1>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::union1>;
 
     f(get_metadata(0), static_cast<T&&>(t).ui_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).ud_ref()...);
@@ -29,8 +30,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::union1> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::union2> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union2>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::union2>;
 
     f(get_metadata(0), static_cast<T&&>(t).ui_2_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).ud_2_ref()...);
@@ -42,8 +44,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::union2> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::union3> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union3>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::union3>;
 
     f(get_metadata(0), static_cast<T&&>(t).ui_3_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).ud_3_ref()...);
@@ -55,8 +58,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::union3> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::structA> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::structA>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::structA>;
 
     f(get_metadata(0), static_cast<T&&>(t).a_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).b_ref()...);
@@ -66,8 +70,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::structA> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::unionA> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::unionA>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::unionA>;
 
     f(get_metadata(0), static_cast<T&&>(t).i_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).d_ref()...);
@@ -80,8 +85,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::unionA> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::structB> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::structB>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::structB>;
 
     f(get_metadata(0), static_cast<T&&>(t).c_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).d_ref()...);
@@ -91,8 +97,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::structB> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::structC> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::structC>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::structC>;
 
     f(get_metadata(0), static_cast<T&&>(t).a_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).b_ref()...);
@@ -130,8 +137,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::structC> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct1> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct1>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct1>;
 
     f(get_metadata(0), static_cast<T&&>(t).field0_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).field1_ref()...);
@@ -145,8 +153,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct1> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct2> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct2>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct2>;
 
     f(get_metadata(0), static_cast<T&&>(t).fieldA_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).fieldB_ref()...);
@@ -161,8 +170,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct2> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct3> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct3>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct3>;
 
     f(get_metadata(0), static_cast<T&&>(t).fieldA_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).fieldB_ref()...);
@@ -188,8 +198,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct3> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct4> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct4>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct4>;
 
     f(get_metadata(0), static_cast<T&&>(t).field0_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).field1_ref()...);
@@ -201,8 +212,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct4> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct5> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct5>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct5>;
 
     f(get_metadata(0), static_cast<T&&>(t).field0_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).field1_ref()...);
@@ -215,8 +227,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct5> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct_binary> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct_binary>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct_binary>;
 
     f(get_metadata(0), static_cast<T&&>(t).bi_ref()...);
   }
@@ -225,8 +238,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct_binary> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::dep_A_struct> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::dep_A_struct>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::dep_A_struct>;
 
     f(get_metadata(0), static_cast<T&&>(t).b_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).c_ref()...);
@@ -237,8 +251,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::dep_A_struct> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::dep_B_struct> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::dep_B_struct>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::dep_B_struct>;
 
     f(get_metadata(0), static_cast<T&&>(t).b_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).c_ref()...);
@@ -249,8 +264,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::dep_B_struct> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::annotated> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::annotated>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::annotated>;
 
     f(get_metadata(0), static_cast<T&&>(t).a_ref()...);
   }
@@ -259,8 +275,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::annotated> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::union_with_special_names> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::union_with_special_names>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::union_with_special_names>;
 
     f(get_metadata(0), static_cast<T&&>(t).get_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).getter_ref()...);
@@ -296,8 +313,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::union_with_special_names> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct_with_special_names> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct_with_special_names>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct_with_special_names>;
 
     f(get_metadata(0), static_cast<T&&>(t).get_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).getter_ref()...);
@@ -333,8 +351,9 @@ struct ForEachField<::test_cpp2::cpp_reflection::struct_with_special_names> {
 template <>
 struct ForEachField<::test_cpp2::cpp_reflection::struct_with_indirections> {
   template <typename F, typename... T>
-  void operator()(F&& f, T&&... t) const {
-    constexpr auto get_metadata = get_field_metadata<::test_cpp2::cpp_reflection::struct_with_indirections>;
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
+        get_field_metadata<::test_cpp2::cpp_reflection::struct_with_indirections>;
 
     f(get_metadata(0), static_cast<T&&>(t).real_ref()...);
     f(get_metadata(1), static_cast<T&&>(t).fake_ref()...);
