@@ -20,6 +20,7 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp2/security/SSLUtil.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersServerExtension.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -37,7 +38,8 @@ struct NegotiatedParams {
 };
 
 class ThriftFizzAcceptorHandshakeHelper
-    : public wangle::FizzAcceptorHandshakeHelper {
+    : public wangle::FizzAcceptorHandshakeHelper,
+      public fizz::AsyncFizzBase::EndOfTLSCallback {
  public:
   ThriftFizzAcceptorHandshakeHelper(
       std::shared_ptr<const fizz::server::FizzServerContext> context,
@@ -129,8 +131,38 @@ class ThriftFizzAcceptorHandshakeHelper
       loggingCallback_->logFizzHandshakeSuccess(*transport, &tinfo_);
     }
 
+    if (thriftExtension_ && thriftExtension_->getNegotiatedStopTLS()) {
+      transport->setEndOfTLSCallback(this);
+      transport->tlsShutdown();
+    } else {
+      callback_->connectionReady(
+          std::move(transport_),
+          std::move(appProto),
+          SecureTransportType::TLS,
+          wangle::SSLErrorEnum::NO_ERROR);
+    }
+  }
+
+  void endOfTLS(
+      fizz::AsyncFizzBase* transport,
+      std::unique_ptr<folly::IOBuf> endOfData) override {
+    auto sock = transport->getUnderlyingTransport<folly::AsyncSocket>();
+    auto appProto = transport->getApplicationProtocol();
+    DCHECK(sock);
+    auto plaintextTransport = moveToPlaintext(sock);
+    // The server initiates the close, which means the client will be the first
+    // to successfully terminate tls and return the socket back to the caller.
+    // What this means for us is we clearly don't know if our fizz transport
+    // will only read the close notify and not additionally read any data the
+    // application decided to send when it got back the socket. Fizz already
+    // exposes any post close notify data and we shove it back into the socket
+    // here.
+    plaintextTransport->setPreReceivedData(std::move(endOfData));
+    plaintextTransport->cacheAddresses();
+    // kill the fizz socket unique ptr
+    transport_.reset();
     callback_->connectionReady(
-        std::move(transport_),
+        std::move(plaintextTransport),
         std::move(appProto),
         SecureTransportType::TLS,
         wangle::SSLErrorEnum::NO_ERROR);

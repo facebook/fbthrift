@@ -92,6 +92,7 @@ class Cpp2Worker : public wangle::Acceptor,
       if (thriftConfig->enableThriftParamsNegotiation) {
         auto thriftParametersContext =
             std::make_shared<ThriftParametersContext>();
+        thriftParametersContext->setUseStopTLS(thriftConfig->enableStopTLS);
         fizzPeeker_.setThriftParametersContext(
             std::move(thriftParametersContext));
       }

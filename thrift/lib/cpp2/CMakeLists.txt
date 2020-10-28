@@ -117,6 +117,7 @@ add_library(
   async/RpcTypes.cpp
   async/ServerGeneratorStream.cpp
   async/ServerSinkBridge.cpp
+  security/SSLUtil.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp

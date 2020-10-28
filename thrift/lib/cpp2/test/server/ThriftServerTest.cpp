@@ -47,6 +47,7 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/security/extensions/ThriftParametersClientExtension.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
@@ -56,6 +57,8 @@
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
+
+#include <fizz/client/AsyncFizzClient.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;
@@ -1596,6 +1599,100 @@ TEST(ThriftServer, SSLRequiredRejectsPlaintext) {
 
   std::string response;
   EXPECT_THROW(client.sync_sendResponse(response, 64);, TTransportException);
+}
+
+namespace {
+class FizzStopTLSConnector
+    : public fizz::client::AsyncFizzClient::HandshakeCallback,
+      public fizz::AsyncFizzBase::EndOfTLSCallback {
+ public:
+  folly::AsyncSocket::UniquePtr connect(
+      const folly::SocketAddress& address,
+      folly::EventBase* eb) {
+    eb_ = eb;
+
+    auto sock = folly::AsyncSocket::newSocket(eb_, address);
+    auto ctx = std::make_shared<fizz::client::FizzClientContext>();
+    ctx->setSupportedAlpns({"rs"});
+    auto thriftParametersContext =
+        std::make_shared<apache::thrift::ThriftParametersContext>();
+    thriftParametersContext->setUseStopTLS(true);
+    auto extension =
+        std::make_shared<apache::thrift::ThriftParametersClientExtension>(
+            thriftParametersContext);
+
+    client_.reset(new fizz::client::AsyncFizzClient(
+        std::move(sock), std::move(ctx), std::move(extension)));
+    client_->connect(
+        this,
+        nullptr,
+        folly::none,
+        folly::none,
+        std::chrono::milliseconds(100));
+    return promise_.getFuture().getVia(eb_);
+  }
+
+  void fizzHandshakeSuccess(
+      fizz::client::AsyncFizzClient* client) noexcept override {
+    client->setEndOfTLSCallback(this);
+  }
+
+  void fizzHandshakeError(
+      fizz::client::AsyncFizzClient* /* unused */,
+      folly::exception_wrapper ex) noexcept override {
+    promise_.setException(ex);
+    FAIL();
+  }
+
+  void endOfTLS(fizz::AsyncFizzBase* transport, std::unique_ptr<folly::IOBuf>)
+      override {
+    auto sock = transport->getUnderlyingTransport<folly::AsyncSocket>();
+    DCHECK(sock);
+
+    auto fd = sock->detachNetworkSocket();
+    auto zcId = sock->getZeroCopyBufId();
+
+    // create new socket
+    auto plaintextTransport =
+        folly::AsyncSocket::UniquePtr(new folly::AsyncSocket(eb_, fd, zcId));
+    promise_.setValue(std::move(plaintextTransport));
+  }
+
+  fizz::client::AsyncFizzClient::UniquePtr client_;
+  folly::Promise<folly::AsyncSocket::UniquePtr> promise_;
+  folly::EventBase* eb_;
+};
+} // namespace
+
+TEST(ThriftServer, StopTLSDowngrade) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
+  sslConfig->setNextProtocols({"rs"});
+  sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
+  sslConfig->clientVerification =
+      folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY;
+  server->setSSLConfig(std::move(sslConfig));
+  ThriftTlsConfig thriftConfig;
+  thriftConfig.enableThriftParamsNegotiation = true;
+  thriftConfig.enableStopTLS = true;
+  server->setThriftConfig(thriftConfig);
+  server->setAcceptorFactory(
+      std::make_shared<DefaultThriftAcceptorFactory>(server.get()));
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  FizzStopTLSConnector connector;
+  auto transport = connector.connect(*sst.getAddress(), &base);
+  // Note we only use stop tls with rocket
+  TestServiceAsyncClient client(
+      RocketClientChannel::newChannel(std::move(transport)));
+
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+  base.loopOnce();
 }
 
 TEST(ThriftServer, SSLRequiredAllowsLocalPlaintext) {
