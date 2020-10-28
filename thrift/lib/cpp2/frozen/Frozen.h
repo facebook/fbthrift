@@ -1030,11 +1030,7 @@ enum class Frozen2 { Marker };
  * Freezes an object, returning an View bundled with an owned layout and
  * storage.
  */
-template <
-    class T,
-    class =
-        typename std::enable_if<!std::is_trivially_copyable<T>::value>::type,
-    class Return = Bundled<typename Layout<T>::View>>
+template <class T, class Return = Bundled<typename Layout<T>::View>>
 Return freeze(const T& x, Frozen2 = Frozen2::Marker) {
   std::unique_ptr<Layout<T>> layout(new Layout<T>);
   size_t size = LayoutRoot::layout(x, *layout);

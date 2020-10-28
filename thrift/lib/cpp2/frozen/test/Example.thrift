@@ -155,3 +155,7 @@ struct User {
   1: i64 uid,
   2: string name,
 } (cpp.declare_hash, cpp.declare_equal_to)
+
+struct TriviallyCopyableStruct {
+  1: required i32 field
+}

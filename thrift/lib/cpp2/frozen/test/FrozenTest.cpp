@@ -530,3 +530,10 @@ TEST(Frozen, Bundled) {
   EXPECT_EQ(47, *s.findFirstOfType<int>());
   EXPECT_EQ(nullptr, s.findFirstOfType<std::string>());
 }
+
+TEST(Frozen, TrivialCopyable) {
+  TriviallyCopyableStruct s;
+  s.field_ref() = 42;
+  auto view = freeze(s);
+  EXPECT_EQ(view.field(), 42);
+}
