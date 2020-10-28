@@ -71,7 +71,7 @@ public final class ComplexException extends java.lang.Exception {
     protected ComplexException() {
       this.message = null;
       this.listStrings = null;
-      this.errorEnum = null;
+      this.errorEnum = test.fixtures.complex_struct.MyEnum.fromInteger(0);
       this.unionError = null;
       this.structError = null;
       this.lsMap = null;
@@ -82,7 +82,7 @@ public final class ComplexException extends java.lang.Exception {
     
         private String message = null;
         private List<String> listStrings = null;
-        private test.fixtures.complex_struct.MyEnum errorEnum = null;
+        private test.fixtures.complex_struct.MyEnum errorEnum = test.fixtures.complex_struct.MyEnum.fromInteger(0);
         private test.fixtures.complex_struct.MyUnion unionError = null;
         private test.fixtures.complex_struct.MyStruct structError = null;
         private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = null;

@@ -38,14 +38,14 @@ public final class MyStruct {
     
     @ThriftConstructor
     protected MyStruct() {
-      this.myEnum = null;
-      this.myBigEnum = null;
+      this.myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
+      this.myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.fromInteger(0);
     }
     
     public static class Builder {
         private final BitSet __optional_isset = new BitSet();
     
-        private test.fixtures.swift.enumstrict.MyEnum myEnum = null;
+        private test.fixtures.swift.enumstrict.MyEnum myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
     
         @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)

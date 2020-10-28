@@ -528,6 +528,12 @@ class mstch_swift_field : public mstch_field {
         return "0.";
       } else if (type->is_bool()) {
         return "false";
+      } else if (type->is_enum()) {
+        // we use fromInteger(0) as default value as it may be null or the enum
+        // entry for 0.
+        auto javaNamespace = get_namespace_or_default(*(type->get_program()));
+        auto enumType = java::mangle_java_name(type->get_name(), true);
+        return javaNamespace + "." + enumType + ".fromInteger(0)";
       }
       return "null";
     }
