@@ -457,3 +457,7 @@ struct hasRefSharedConst {
       anOptionalMap (cpp2.ref_type = "shared_const"),
   10: optional unionA anOptionalUnion (cpp2.ref_type = "shared_const"),
 }
+
+struct StructWithIOBuf {
+  1: binary (cpp.type = "std::unique_ptr<folly::IOBuf>") buf;
+}

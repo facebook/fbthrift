@@ -17,7 +17,10 @@
 #ifndef THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_
 #define THRIFT_FATAL_FOLLY_DYNAMIC_INL_POST_H_ 1
 
+#include <memory>
 #include <stdexcept>
+
+#include <folly/io/IOBuf.h>
 
 #include <fatal/type/enum.h>
 #include <fatal/type/search.h>
@@ -359,6 +362,14 @@ struct dynamic_converter_impl<type_class::binary> {
       dynamic_format,
       format_adherence) {
     out = input.asString();
+  }
+
+  static void from(
+      std::unique_ptr<folly::IOBuf>& out,
+      folly::dynamic const& input,
+      dynamic_format,
+      format_adherence) {
+    out = folly::IOBuf::copyBuffer(input.asString());
   }
 
   template <typename T>

@@ -504,6 +504,14 @@ TEST(fatal_folly_dynamic, map_from_empty_array) {
   EXPECT_EQ(0, member_meta::getter{}(obj).size());
 }
 
+TEST(fatal_folly_dynamic, from_iobuf) {
+  folly::dynamic dyn = folly::dynamic::object("buf", "foo");
+  auto obj =
+      apache::thrift::from_dynamic<test_cpp2::cpp_reflection::StructWithIOBuf>(
+          dyn, apache::thrift::dynamic_format::PORTABLE);
+  EXPECT_EQ((*obj.buf_ref())->moveToFbString(), "foo");
+}
+
 namespace {
 
 class fatal_folly_dynamic_enum : public ::testing::Test {

@@ -63,6 +63,7 @@ FATAL_S(my_structAs, "my_structA");
 FATAL_S(hasRefUnique_name, "hasRefUnique");
 FATAL_S(hasRefShared_name, "hasRefShared");
 FATAL_S(hasRefSharedConst_name, "hasRefSharedConst");
+FATAL_S(StructWithIOBufs, "StructWithIOBuf");
 
 FATAL_S(constant1s, "constant1");
 FATAL_S(constant2s, "constant2");
@@ -184,6 +185,7 @@ TEST(fatal, metadata) {
           fatal::pair<hasRefUnique, hasRefUnique_name>,
           fatal::pair<hasRefShared, hasRefShared_name>,
           fatal::pair<hasRefSharedConst, hasRefSharedConst_name>,
+          fatal::pair<StructWithIOBuf, StructWithIOBufs>,
           fatal::pair<my_structA, my_structAs>>,
       info::structs>();
 
