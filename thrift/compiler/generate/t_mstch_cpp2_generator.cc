@@ -1924,20 +1924,16 @@ void t_mstch_cpp2_generator::generate_program() {
   if (cache_->parsed_options_.count("any")) {
     generate_sinit(program);
   }
-  if (cache_->parsed_options_.count("reflection") ||
-      cache_->parsed_options_.count("visitation")) {
+  if (cache_->parsed_options_.count("reflection")) {
     generate_reflection(program);
-    if (cache_->parsed_options_.count("visitation")) {
-      generate_visitation(program);
-    }
   }
-
   generate_structs(program);
   generate_constants(program);
   for (const auto* service : program->get_services()) {
     generate_service(service);
   }
   generate_metadata(program);
+  generate_visitation(program);
 }
 
 void t_mstch_cpp2_generator::set_mstch_generators() {
