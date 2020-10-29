@@ -21,7 +21,6 @@
 #include <vector>
 
 #include <boost/algorithm/string/replace.hpp>
-#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
