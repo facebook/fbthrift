@@ -43,5 +43,38 @@ constexpr const std::array<::cpp2::NonCopyableUnion::Type, 1> TEnumDataStorage<:
 constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::cpp2::NonCopyableUnion::Type>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::cpp2::ComplexUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ComplexUnion>::fields_size> TStructDataStorage<::cpp2::ComplexUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::ComplexUnion>::fields_size> TStructDataStorage<::cpp2::ComplexUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ComplexUnion>::fields_size> TStructDataStorage<::cpp2::ComplexUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::ListUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ListUnion>::fields_size> TStructDataStorage<::cpp2::ListUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::ListUnion>::fields_size> TStructDataStorage<::cpp2::ListUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ListUnion>::fields_size> TStructDataStorage<::cpp2::ListUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::DataUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::DataUnion>::fields_size> TStructDataStorage<::cpp2::DataUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::DataUnion>::fields_size> TStructDataStorage<::cpp2::DataUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::DataUnion>::fields_size> TStructDataStorage<::cpp2::DataUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::Val>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Val>::fields_size> TStructDataStorage<::cpp2::Val>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Val>::fields_size> TStructDataStorage<::cpp2::Val>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Val>::fields_size> TStructDataStorage<::cpp2::Val>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::ValUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ValUnion>::fields_size> TStructDataStorage<::cpp2::ValUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::ValUnion>::fields_size> TStructDataStorage<::cpp2::ValUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ValUnion>::fields_size> TStructDataStorage<::cpp2::ValUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::VirtualComplexUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::VirtualComplexUnion>::fields_size> TStructDataStorage<::cpp2::VirtualComplexUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::VirtualComplexUnion>::fields_size> TStructDataStorage<::cpp2::VirtualComplexUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::VirtualComplexUnion>::fields_size> TStructDataStorage<::cpp2::VirtualComplexUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::NonCopyableStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::NonCopyableStruct>::fields_size> TStructDataStorage<::cpp2::NonCopyableStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::NonCopyableStruct>::fields_size> TStructDataStorage<::cpp2::NonCopyableStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::NonCopyableStruct>::fields_size> TStructDataStorage<::cpp2::NonCopyableStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::NonCopyableUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::NonCopyableUnion>::fields_size> TStructDataStorage<::cpp2::NonCopyableUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::NonCopyableUnion>::fields_size> TStructDataStorage<::cpp2::NonCopyableUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::NonCopyableUnion>::fields_size> TStructDataStorage<::cpp2::NonCopyableUnion>::fields_types;
+
 } // namespace thrift
 } // namespace apache

@@ -13,5 +13,14 @@ namespace apache {
 namespace thrift {
 
 
+constexpr const std::size_t TStructDataStorage<::module2::Struct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::module2::Struct>::fields_size> TStructDataStorage<::module2::Struct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::module2::Struct>::fields_size> TStructDataStorage<::module2::Struct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::module2::Struct>::fields_size> TStructDataStorage<::module2::Struct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::module2::BigStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::module2::BigStruct>::fields_size> TStructDataStorage<::module2::BigStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::module2::BigStruct>::fields_size> TStructDataStorage<::module2::BigStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::module2::BigStruct>::fields_size> TStructDataStorage<::module2::BigStruct>::fields_types;
+
 } // namespace thrift
 } // namespace apache

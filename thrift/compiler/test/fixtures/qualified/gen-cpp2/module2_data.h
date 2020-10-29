@@ -13,4 +13,47 @@
 namespace apache { namespace thrift {
 
 
+
+template <> struct TStructDataStorage<::module2::Struct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "first",
+    "second",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::module2::BigStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "s",
+    "id",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_I32,
+  }};
+};
+
+
 }} // apache::thrift

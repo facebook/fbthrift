@@ -27,4 +27,107 @@ template <> struct TEnumDataStorage<::cpp2::MyEnumA> {
   }};
 };
 
+
+template <> struct TStructDataStorage<::cpp2::SmallStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "small_A",
+    "small_B",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_BOOL,
+    TType::T_I32,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::containerStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 22;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "fieldA",
+    "fieldB",
+    "fieldC",
+    "fieldD",
+    "fieldE",
+    "fieldF",
+    "fieldG",
+    "fieldH",
+    "fieldI",
+    "fieldJ",
+    "fieldK",
+    "fieldL",
+    "fieldM",
+    "fieldN",
+    "fieldO",
+    "fieldP",
+    "fieldQ",
+    "fieldR",
+    "fieldS",
+    "fieldT",
+    "fieldU",
+    "fieldX",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    23,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_BOOL,
+    TType::T_MAP,
+    TType::T_SET,
+    TType::T_STRING,
+    TType::T_STRING,
+    TType::T_LIST,
+    TType::T_MAP,
+    TType::T_LIST,
+    TType::T_BOOL,
+    TType::T_MAP,
+    TType::T_LIST,
+    TType::T_SET,
+    TType::T_MAP,
+    TType::T_LIST,
+    TType::T_LIST,
+    TType::T_LIST,
+    TType::T_I32,
+    TType::T_MAP,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
 }} // apache::thrift

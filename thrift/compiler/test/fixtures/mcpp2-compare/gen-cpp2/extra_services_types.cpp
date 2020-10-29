@@ -17,58 +17,15 @@ namespace thrift {
 namespace detail {
 
 void TccStructTraits<::extra::svc::containerStruct2>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) noexcept {
-  using TType = apache::thrift::protocol::TType;
-  constexpr size_t _size = 13;
-  static constexpr folly::StringPiece _names[] = {
-    "fieldA",
-    "req_fieldA",
-    "opt_fieldA",
-    "fieldB",
-    "req_fieldB",
-    "opt_fieldB",
-    "fieldC",
-    "req_fieldC",
-    "opt_fieldC",
-    "fieldD",
-    "fieldE",
-    "req_fieldE",
-    "opt_fieldE",
-  };
-  static constexpr int16_t _ids[] = {
-    1,
-    101,
-    201,
-    2,
-    102,
-    202,
-    3,
-    103,
-    203,
-    4,
-    5,
-    105,
-    205,
-  };
-  static constexpr TType _types[] = {
-    TType::T_BOOL,
-    TType::T_BOOL,
-    TType::T_BOOL,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_STRING,
-    TType::T_STRING,
-    TType::T_STRING,
-    TType::T_STRING,
-  };
-  static constexpr st::translate_field_name_table
-      table{_size, _names, _ids, _types};
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::extra::svc::containerStruct2>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
   st::translate_field_name(_fname, fid, _ftype, table);
 }
 

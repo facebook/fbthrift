@@ -59,4 +59,31 @@ template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>:
 <%/struct:union?%>
 <%/program:structs%>
 
+<%#program:structs%>
+
+template <> struct TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = <%struct:fields_size%>;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    <%#struct:fields%>
+    "<%field:name%>",
+    <%/struct:fields%>
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    <%#struct:fields%>
+    <%field:key%>,
+    <%/struct:fields%>
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    <%#struct:fields%><%#field:type%>
+    TType::<% > module_types_tcc/struct_type%>,
+    <%/field:type%><%/struct:fields%>
+  }};
+};
+
+<%/program:structs%>
+
 }} // apache::thrift

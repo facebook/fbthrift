@@ -23,5 +23,18 @@ constexpr const std::array<::test::fixtures::tablebased::ExampleUnion::Type, 2> 
 constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::tablebased::ExampleUnion::Type>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_types;
+
 } // namespace thrift
 } // namespace apache

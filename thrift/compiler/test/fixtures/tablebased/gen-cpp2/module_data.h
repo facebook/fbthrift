@@ -38,4 +38,95 @@ template <> struct TEnumDataStorage<::test::fixtures::tablebased::ExampleUnion::
   }};
 };
 
+
+template <> struct TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 5;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "fieldA",
+    "fieldB",
+    "fieldC",
+    "fieldD",
+    "fieldE",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+    4,
+    5,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I32,
+    TType::T_STRING,
+    TType::T_STRING,
+    TType::T_STRING,
+    TType::T_I32,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::test::fixtures::tablebased::ContainerStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 8;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "fieldA",
+    "fieldB",
+    "fieldC",
+    "fieldD",
+    "fieldE",
+    "fieldF",
+    "fieldG",
+    "fieldH",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    12,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_LIST,
+    TType::T_LIST,
+    TType::T_LIST,
+    TType::T_LIST,
+    TType::T_LIST,
+    TType::T_SET,
+    TType::T_MAP,
+    TType::T_LIST,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::test::fixtures::tablebased::ExampleUnion> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "fieldA",
+    "fieldB",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
 }} // apache::thrift

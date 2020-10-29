@@ -66,6 +66,10 @@ template <typename T>
 struct TEnumDataStorage {
   static_assert(sizeof(T) == ~0ull, "invalid use of base template");
 };
+template <typename T>
+struct TStructDataStorage {
+  static_assert(sizeof(T) == ~0ull, "invalid use of base template");
+};
 
 /**
  * Specialization defn in _types.h.

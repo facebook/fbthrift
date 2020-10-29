@@ -18,5 +18,14 @@ constexpr const std::array<::some::ns::EnumB, 1> TEnumDataStorage<::some::ns::En
 constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::some::ns::EnumB>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::some::ns::ModuleA>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::ns::ModuleB>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_types;
+
 } // namespace thrift
 } // namespace apache

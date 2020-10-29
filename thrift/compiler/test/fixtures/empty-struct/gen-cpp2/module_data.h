@@ -22,4 +22,35 @@ template <> struct TEnumDataStorage<::cpp2::Nada::Type> {
   }};
 };
 
+
+template <> struct TStructDataStorage<::cpp2::Empty> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 0;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::Nada> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 0;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+  }};
+};
+
+
 }} // apache::thrift

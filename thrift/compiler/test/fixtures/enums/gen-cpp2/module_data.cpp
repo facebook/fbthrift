@@ -18,5 +18,10 @@ constexpr const std::array<::cpp2::Metasyntactic, 4> TEnumDataStorage<::cpp2::Me
 constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Metasyntactic>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::cpp2::SomeStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SomeStruct>::fields_size> TStructDataStorage<::cpp2::SomeStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::SomeStruct>::fields_size> TStructDataStorage<::cpp2::SomeStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SomeStruct>::fields_size> TStructDataStorage<::cpp2::SomeStruct>::fields_types;
+
 } // namespace thrift
 } // namespace apache

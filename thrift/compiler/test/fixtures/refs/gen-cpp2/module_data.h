@@ -38,4 +38,302 @@ template <> struct TEnumDataStorage<::cpp2::MyUnion::Type> {
   }};
 };
 
+
+template <> struct TStructDataStorage<::cpp2::MyUnion> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "anInteger",
+    "aString",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I32,
+    TType::T_STRING,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::MyField> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "opt_value",
+    "value",
+    "req_value",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I64,
+    TType::T_I64,
+    TType::T_I64,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::MyStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "opt_ref",
+    "ref",
+    "req_ref",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithUnion> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "u",
+    "aDouble",
+    "f",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_DOUBLE,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::RecursiveStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 1;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "mes",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_LIST,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithContainers> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 6;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "list_ref",
+    "set_ref",
+    "map_ref",
+    "list_ref_unique",
+    "set_ref_shared",
+    "list_ref_shared_const",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_LIST,
+    TType::T_SET,
+    TType::T_MAP,
+    TType::T_LIST,
+    TType::T_SET,
+    TType::T_LIST,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithSharedConst> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "opt_shared_const",
+    "shared_const",
+    "req_shared_const",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::Empty> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 0;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithRef> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "def_field",
+    "opt_field",
+    "req_field",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithRefTypeUnique> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "def_field",
+    "opt_field",
+    "req_field",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithRefTypeShared> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "def_field",
+    "opt_field",
+    "req_field",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithRefTypeSharedConst> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "def_field",
+    "opt_field",
+    "req_field",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 1;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "def_field",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+  }};
+};
+
+
 }} // apache::thrift

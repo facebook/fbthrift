@@ -18,5 +18,18 @@ constexpr const std::array<::cpp2::Animal, 3> TEnumDataStorage<::cpp2::Animal>::
 constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::Animal>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::cpp2::Color>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::Vehicle>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::Person>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_types;
+
 } // namespace thrift
 } // namespace apache

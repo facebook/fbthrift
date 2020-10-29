@@ -29,4 +29,32 @@ template <> struct TEnumDataStorage<::cpp2::Metasyntactic> {
   }};
 };
 
+
+template <> struct TStructDataStorage<::cpp2::SomeStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 4;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "reasonable",
+    "fine",
+    "questionable",
+    "tags",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+    4,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I32,
+    TType::T_I32,
+    TType::T_I32,
+    TType::T_SET,
+  }};
+};
+
+
 }} // apache::thrift

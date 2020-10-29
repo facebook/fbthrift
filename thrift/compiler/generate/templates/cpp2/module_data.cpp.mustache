@@ -40,5 +40,12 @@ constexpr const std::array<folly::StringPiece, <%struct:num_union_members%>> TEn
 <%/struct:union?%>
 <%/program:structs%>
 
+<%#program:structs%>
+constexpr const std::size_t TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_types;
+<%/program:structs%>
+
 } // namespace thrift
 } // namespace apache

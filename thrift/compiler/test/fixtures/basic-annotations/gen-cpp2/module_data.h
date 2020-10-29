@@ -27,4 +27,104 @@ template <> struct TEnumDataStorage<::cpp2::MyEnum> {
   }};
 };
 
+
+template <> struct TStructDataStorage<::cpp2::MyStructNestedAnnotation> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 1;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "name",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRING,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::MyStructAnnotation> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 4;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "count",
+    "name",
+    "extra",
+    "nest",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+    4,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I64,
+    TType::T_STRING,
+    TType::T_STRING,
+    TType::T_STRUCT,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::MyStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 6;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "major",
+    "package",
+    "annotation_with_quote",
+    "class_",
+    "annotation_with_trailing_comma",
+    "empty_annotations",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I64,
+    TType::T_STRING,
+    TType::T_STRING,
+    TType::T_STRING,
+    TType::T_STRING,
+    TType::T_STRING,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::SecretStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "id",
+    "password",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I64,
+    TType::T_STRING,
+  }};
+};
+
+
 }} // apache::thrift

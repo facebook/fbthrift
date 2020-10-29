@@ -25,4 +25,26 @@ template <> struct TEnumDataStorage<::cpp2::MyEnum> {
   }};
 };
 
+
+template <> struct TStructDataStorage<::cpp2::MyStruct> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "MyIntField",
+    "MyStringField",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I64,
+    TType::T_STRING,
+  }};
+};
+
+
 }} // apache::thrift

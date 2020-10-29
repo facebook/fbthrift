@@ -48,5 +48,66 @@ constexpr const std::array<::some::valid::ns::FloatUnion::Type, 2> TEnumDataStor
 constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::Empty>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::Empty>::fields_size> TStructDataStorage<::some::valid::ns::Empty>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::Empty>::fields_size> TStructDataStorage<::some::valid::ns::Empty>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::Empty>::fields_size> TStructDataStorage<::some::valid::ns::Empty>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::ASimpleStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::ASimpleStruct>::fields_size> TStructDataStorage<::some::valid::ns::ASimpleStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::ASimpleStruct>::fields_size> TStructDataStorage<::some::valid::ns::ASimpleStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::ASimpleStruct>::fields_size> TStructDataStorage<::some::valid::ns::ASimpleStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept>::fields_size> TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept>::fields_size> TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept>::fields_size> TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::MyStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::MyStruct>::fields_size> TStructDataStorage<::some::valid::ns::MyStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::MyStruct>::fields_size> TStructDataStorage<::some::valid::ns::MyStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::MyStruct>::fields_size> TStructDataStorage<::some::valid::ns::MyStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_size> TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_size> TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_size> TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_size> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_size> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_size> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::AnException>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::AnException>::fields_size> TStructDataStorage<::some::valid::ns::AnException>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::AnException>::fields_size> TStructDataStorage<::some::valid::ns::AnException>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::AnException>::fields_size> TStructDataStorage<::some::valid::ns::AnException>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::AnotherException>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::AnotherException>::fields_size> TStructDataStorage<::some::valid::ns::AnotherException>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::AnotherException>::fields_size> TStructDataStorage<::some::valid::ns::AnotherException>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::AnotherException>::fields_size> TStructDataStorage<::some::valid::ns::AnotherException>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::containerStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::containerStruct>::fields_size> TStructDataStorage<::some::valid::ns::containerStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::containerStruct>::fields_size> TStructDataStorage<::some::valid::ns::containerStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::containerStruct>::fields_size> TStructDataStorage<::some::valid::ns::containerStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::MyIncludedStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::MyIncludedStruct>::fields_size> TStructDataStorage<::some::valid::ns::MyIncludedStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::MyIncludedStruct>::fields_size> TStructDataStorage<::some::valid::ns::MyIncludedStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::MyIncludedStruct>::fields_size> TStructDataStorage<::some::valid::ns::MyIncludedStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::AnnotatedStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::AnnotatedStruct>::fields_size> TStructDataStorage<::some::valid::ns::AnnotatedStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::AnnotatedStruct>::fields_size> TStructDataStorage<::some::valid::ns::AnnotatedStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::AnnotatedStruct>::fields_size> TStructDataStorage<::some::valid::ns::AnnotatedStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::ComplexContainerStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::ComplexContainerStruct>::fields_size> TStructDataStorage<::some::valid::ns::ComplexContainerStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::ComplexContainerStruct>::fields_size> TStructDataStorage<::some::valid::ns::ComplexContainerStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::ComplexContainerStruct>::fields_size> TStructDataStorage<::some::valid::ns::ComplexContainerStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::FloatStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::FloatStruct>::fields_size> TStructDataStorage<::some::valid::ns::FloatStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::FloatStruct>::fields_size> TStructDataStorage<::some::valid::ns::FloatStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::FloatStruct>::fields_size> TStructDataStorage<::some::valid::ns::FloatStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::FloatUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::FloatUnion>::fields_size> TStructDataStorage<::some::valid::ns::FloatUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::FloatUnion>::fields_size> TStructDataStorage<::some::valid::ns::FloatUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::FloatUnion>::fields_size> TStructDataStorage<::some::valid::ns::FloatUnion>::fields_types;
+constexpr const std::size_t TStructDataStorage<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::fields_size> TStructDataStorage<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::fields_size> TStructDataStorage<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::fields_size> TStructDataStorage<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::fields_types;
+
 } // namespace thrift
 } // namespace apache

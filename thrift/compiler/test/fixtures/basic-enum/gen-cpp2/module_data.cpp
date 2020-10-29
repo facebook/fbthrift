@@ -28,5 +28,10 @@ constexpr const std::array<::test::fixtures::enumstrict::MyBigEnum, 20> TEnumDat
 constexpr const std::array<folly::StringPiece, 20> TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_types;
+
 } // namespace thrift
 } // namespace apache

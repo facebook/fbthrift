@@ -13,4 +13,86 @@
 namespace apache { namespace thrift {
 
 
+
+template <> struct TStructDataStorage<::cpp2::Mixin1> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 1;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "field1",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRING,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::Mixin2> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 2;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "m1",
+    "field2",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRUCT,
+    TType::T_STRING,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::Mixin3Base> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 1;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "field3",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRING,
+  }};
+};
+
+
+template <> struct TStructDataStorage<::cpp2::Foo> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 3;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "field4",
+    "m2",
+    "m3",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+    2,
+    3,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_STRING,
+    TType::T_STRUCT,
+    TType::T_STRUCT,
+  }};
+};
+
+
 }} // apache::thrift

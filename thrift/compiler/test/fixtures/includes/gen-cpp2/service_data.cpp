@@ -13,5 +13,6 @@ namespace apache {
 namespace thrift {
 
 
+
 } // namespace thrift
 } // namespace apache

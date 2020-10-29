@@ -23,5 +23,18 @@ constexpr const std::array<::cpp2::MyUnion::Type, 3> TEnumDataStorage<::cpp2::My
 constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyUnion::Type>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::cpp2::MyDataItem>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::MyStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::MyUnion>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_types;
+
 } // namespace thrift
 } // namespace apache

@@ -23,4 +23,23 @@ template <> struct TEnumDataStorage<::cpp2::B> {
   }};
 };
 
+
+template <> struct TStructDataStorage<::cpp2::A> {
+ private:
+  using TType = apache::thrift::protocol::TType;
+
+ public:
+  static constexpr const std::size_t fields_size = 1;
+  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
+    "useless_field",
+  }};
+  static constexpr std::array<int16_t, fields_size> fields_ids = {{
+    1,
+  }};
+  static constexpr std::array<TType, fields_size> fields_types = {{
+    TType::T_I32,
+  }};
+};
+
+
 }} // apache::thrift

@@ -13,5 +13,10 @@ namespace apache {
 namespace thrift {
 
 
+constexpr const std::size_t TStructDataStorage<::extra::svc::containerStruct2>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_types;
+
 } // namespace thrift
 } // namespace apache

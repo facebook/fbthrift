@@ -13,5 +13,22 @@ namespace apache {
 namespace thrift {
 
 
+constexpr const std::size_t TStructDataStorage<::cpp2::Mixin1>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::Mixin2>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::Mixin3Base>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_types;
+constexpr const std::size_t TStructDataStorage<::cpp2::Foo>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_types;
+
 } // namespace thrift
 } // namespace apache

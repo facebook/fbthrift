@@ -38,5 +38,10 @@ constexpr const std::array<::facebook::ns::qwerty::AnEnumE, 1> TEnumDataStorage<
 constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::names;
 
 
+constexpr const std::size_t TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size;
+constexpr const std::array<folly::StringPiece, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_names;
+constexpr const std::array<int16_t, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_ids;
+constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_types;
+
 } // namespace thrift
 } // namespace apache
