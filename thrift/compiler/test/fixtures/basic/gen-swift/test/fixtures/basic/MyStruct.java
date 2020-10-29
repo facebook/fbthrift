@@ -45,7 +45,7 @@ public final class MyStruct {
       this.myIntField = 0L;
       this.myStringField = null;
       this.myDataField = null;
-      this.myEnum = test.fixtures.basic.MyEnum.fromInteger(0);
+      this.myEnum = null;
     }
     
     public static class Builder {
@@ -54,7 +54,7 @@ public final class MyStruct {
         private long myIntField = 0L;
         private String myStringField = null;
         private test.fixtures.basic.MyDataItem myDataField = null;
-        private test.fixtures.basic.MyEnum myEnum = test.fixtures.basic.MyEnum.fromInteger(0);
+        private test.fixtures.basic.MyEnum myEnum = null;
     
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {

@@ -42,9 +42,9 @@ public final class SomeStruct {
     
     @ThriftConstructor
     protected SomeStruct() {
-      this.reasonable = test.fixtures.enums.Metasyntactic.fromInteger(0);
-      this.fine = test.fixtures.enums.Metasyntactic.fromInteger(0);
-      this.questionable = test.fixtures.enums.Metasyntactic.fromInteger(0);
+      this.reasonable = null;
+      this.fine = null;
+      this.questionable = null;
       this.tags = null;
     }
     
