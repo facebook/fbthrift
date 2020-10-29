@@ -19,7 +19,7 @@
 
 #include <stdint.h>
 
-#include <initializer_list>
+#include <cassert>
 #include <memory>
 #include <string>
 #include <utility>
@@ -66,7 +66,44 @@ class t_const_value {
   t_const_value(t_const_value&&) = delete;
   t_const_value& operator=(const t_const_value&) = delete;
 
-  std::unique_ptr<t_const_value> clone() const;
+  std::unique_ptr<t_const_value> clone() const {
+    auto clone = std::make_unique<t_const_value>();
+
+    switch (get_type()) {
+      case CV_BOOL:
+        clone->set_bool(get_bool());
+        break;
+      case CV_INTEGER:
+        clone->set_integer(get_integer());
+        break;
+      case CV_DOUBLE:
+        clone->set_double(get_double());
+        break;
+      case CV_STRING:
+        clone->set_string(get_string());
+        break;
+      case CV_MAP:
+        clone->set_map();
+        for (auto const& map_elem : get_map()) {
+          clone->add_map(map_elem.first->clone(), map_elem.second->clone());
+        }
+        break;
+      case CV_LIST:
+        clone->set_list();
+        for (auto const& list_elem : get_list()) {
+          clone->add_list(list_elem->clone());
+        }
+        break;
+    }
+
+    clone->set_owner(get_owner());
+    clone->set_ttype(get_ttype());
+    clone->set_is_enum(is_enum());
+    clone->set_enum(get_enum());
+    clone->set_enum_value(get_enum_value());
+
+    return clone;
+  }
 
   void assign(t_const_value&& value) {
     *this = std::move(value);
@@ -78,7 +115,7 @@ class t_const_value {
   }
 
   const std::string& get_string() const {
-    check_val_type({CV_STRING});
+    assert(valType_ == CV_STRING);
     return stringVal_;
   }
 
@@ -88,7 +125,7 @@ class t_const_value {
   }
 
   int64_t get_integer() const {
-    check_val_type({CV_INTEGER, CV_BOOL});
+    assert(valType_ == CV_INTEGER || valType_ == CV_BOOL);
     return intVal_;
   }
 
@@ -98,7 +135,7 @@ class t_const_value {
   }
 
   double get_double() const {
-    check_val_type({CV_INTEGER, CV_DOUBLE});
+    assert(valType_ == CV_INTEGER || valType_ == CV_DOUBLE);
     return doubleVal_;
   }
 
@@ -111,7 +148,7 @@ class t_const_value {
   }
 
   bool get_bool() const {
-    check_val_type({CV_BOOL});
+    assert(valType_ == CV_BOOL);
     return boolVal_;
   }
 
@@ -148,7 +185,19 @@ class t_const_value {
     return valType_;
   }
 
-  bool is_empty() const;
+  bool is_empty() const {
+    switch (valType_) {
+      case CV_MAP:
+        return mapVal_.empty();
+      case CV_LIST:
+        return listVal_.empty();
+      case CV_STRING:
+        return stringVal_.empty();
+      default:
+        return false;
+    }
+    return false;
+  }
 
   void set_owner(t_const* owner) {
     owner_ = owner;
@@ -191,8 +240,6 @@ class t_const_value {
   }
 
  private:
-  void check_val_type(std::initializer_list<t_const_value_type> types) const;
-
   // Use a vector of pairs to store the contents of the map so that we
   // preserve thrift-file ordering when generating per-language source.
   std::vector<

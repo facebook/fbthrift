@@ -34,7 +34,6 @@ ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 add_library(
   compiler_ast
 
-  ast/t_const_value.cc
   ast/t_program.cc
   ast/t_struct.cc
   ast/t_type.cc
