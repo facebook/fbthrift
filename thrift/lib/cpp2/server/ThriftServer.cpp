@@ -57,6 +57,7 @@ DEFINE_string(
     "The name of the service. Associates the service with ACLs and keys");
 
 THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
+THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
 
 namespace apache {
 namespace thrift {
@@ -776,6 +777,10 @@ ThriftServer::defaultNextProtocols() {
             "http",
             "rs"};
       });
+}
+
+folly::observer::Observer<bool> ThriftServer::enableStopTLS() {
+  return THRIFT_FLAG_OBSERVE(server_enable_stoptls);
 }
 } // namespace thrift
 } // namespace apache

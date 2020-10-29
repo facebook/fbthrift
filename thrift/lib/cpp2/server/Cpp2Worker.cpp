@@ -333,7 +333,8 @@ Cpp2Worker::getThriftParametersContext() {
   }
 
   auto thriftParametersContext = ThriftParametersContext();
-  thriftParametersContext.setUseStopTLS(thriftConfig->enableStopTLS);
+  thriftParametersContext.setUseStopTLS(
+      thriftConfig->enableStopTLS || **ThriftServer::enableStopTLS());
   return thriftParametersContext;
 }
 

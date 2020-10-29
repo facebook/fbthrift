@@ -577,6 +577,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return allowPlaintextOnLoopback_;
   }
 
+  static folly::observer::Observer<bool> enableStopTLS();
+
   void setAcceptorFactory(
       const std::shared_ptr<wangle::AcceptorFactory>& acceptorFactory) {
     acceptorFactory_ = acceptorFactory;
