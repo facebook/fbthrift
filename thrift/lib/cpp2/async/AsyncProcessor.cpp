@@ -82,9 +82,10 @@ bool GeneratedAsyncProcessor::createInteraction(
     ResponseChannelRequest::UniquePtr& req,
     int64_t id,
     const std::string& name,
-    Cpp2ConnContext& conn,
+    Cpp2RequestContext& ctx,
     concurrency::ThreadManager* tm,
-    folly::EventBase& eb) {
+    folly::EventBase& eb,
+    ServerInterface* si) {
   eb.dcheckIsInEventBaseThread();
 
   auto nullthrows = [](std::unique_ptr<Tile> tile) {
@@ -94,9 +95,12 @@ bool GeneratedAsyncProcessor::createInteraction(
     }
     return tile;
   };
+  auto& conn = *ctx.getConnectionContext();
 
   // In the eb model we create the interaction inline.
   if (!tm) {
+    si->setEventBase(&eb);
+    si->setConnectionContext(&ctx);
     auto tile = folly::makeTryWith(
         [&] { return nullthrows(createInteractionImpl(name)); });
     if (tile.hasException()) {
@@ -118,7 +122,14 @@ bool GeneratedAsyncProcessor::createInteraction(
     return false;
   }
 
-  folly::via(tm, [=] { return nullthrows(createInteractionImpl(name)); })
+  folly::via(
+      tm,
+      [=, eb = &eb, ctx = &ctx] {
+        si->setEventBase(eb);
+        si->setThreadManager(tm);
+        si->setConnectionContext(ctx);
+        return nullthrows(createInteractionImpl(name));
+      })
       .via(&eb)
       .thenTry([&conn, id, tm, &eb, promisePtr](auto&& t) {
         auto promise = std::unique_ptr<TilePromise>(promisePtr);
@@ -257,6 +268,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     RpcKind kind,
+    ServerInterface* si,
     const char* interaction) {
   if (!validateRpcKind(req, kind)) {
     return false;
@@ -272,9 +284,10 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
                      req,
                      interactionId,
                      *interactionCreate->interactionName_ref(),
-                     *ctx->getConnectionContext(),
+                     *ctx,
                      tm,
-                     *eb)) {
+                     *eb,
+                     si)) {
         // Duplicate id is a contract violation so close the connection.
         // Terminate this interaction first so queued requests can't use it
         // (which could result in UB).

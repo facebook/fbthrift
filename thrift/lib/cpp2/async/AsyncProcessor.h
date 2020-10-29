@@ -164,6 +164,8 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase&) noexcept;
 };
 
+class ServerInterface;
+
 class GeneratedAsyncProcessor : public AsyncProcessor {
  public:
   virtual const char* getServiceName() = 0;
@@ -214,6 +216,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       RpcKind kind,
+      ServerInterface* si,
       const char* interaction = nullptr);
 
   template <typename ChildType>
@@ -247,9 +250,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       ResponseChannelRequest::UniquePtr& req,
       int64_t id,
       const std::string& name,
-      Cpp2ConnContext& conn,
+      Cpp2RequestContext& ctx,
       concurrency::ThreadManager* tm,
-      folly::EventBase& eb);
+      folly::EventBase& eb,
+      ServerInterface* si);
 
  protected:
   virtual std::unique_ptr<Tile> createInteractionImpl(const std::string& name);
