@@ -292,6 +292,10 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::createSSLHelper(
     std::chrono::steady_clock::time_point acceptTime,
     wangle::TransportInfo& tInfo) {
   if (accConfig_.fizzConfig.enableFizz) {
+    if (auto parametersContext = getThriftParametersContext()) {
+      fizzPeeker_.setThriftParametersContext(
+          folly::copy_to_shared_ptr(*parametersContext));
+    }
     return getFizzPeeker()->getHelper(bytes, clientAddr, acceptTime, tInfo);
   }
   return defaultPeekingCallback_.getHelper(
@@ -313,6 +317,24 @@ bool Cpp2Worker::shouldPerformSSL(
   } else {
     return sslPolicy != SSLPolicy::DISABLED && TLSHelper::looksLikeTLS(bytes);
   }
+}
+
+std::optional<ThriftParametersContext>
+Cpp2Worker::getThriftParametersContext() {
+  auto thriftConfigBase =
+      folly::get_ptr(accConfig_.customConfigMap, "thrift_tls_config");
+  if (!thriftConfigBase) {
+    return std::nullopt;
+  }
+  assert(static_cast<ThriftTlsConfig*>((*thriftConfigBase).get()));
+  auto thriftConfig = static_cast<ThriftTlsConfig*>((*thriftConfigBase).get());
+  if (!thriftConfig->enableThriftParamsNegotiation) {
+    return std::nullopt;
+  }
+
+  auto thriftParametersContext = ThriftParametersContext();
+  thriftParametersContext.setUseStopTLS(thriftConfig->enableStopTLS);
+  return thriftParametersContext;
 }
 
 wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(

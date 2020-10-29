@@ -84,19 +84,6 @@ class Cpp2Worker : public wangle::Acceptor,
       wangle::SSLStats* stats,
       std::shared_ptr<const fizz::server::FizzServerContext> fizzContext)
       override {
-    if (auto thriftConfigBase =
-            folly::get_ptr(accConfig_.customConfigMap, "thrift_tls_config")) {
-      assert(static_cast<ThriftTlsConfig*>((*thriftConfigBase).get()));
-      auto thriftConfig =
-          static_cast<ThriftTlsConfig*>((*thriftConfigBase).get());
-      if (thriftConfig->enableThriftParamsNegotiation) {
-        auto thriftParametersContext =
-            std::make_shared<ThriftParametersContext>();
-        thriftParametersContext->setUseStopTLS(thriftConfig->enableStopTLS);
-        fizzPeeker_.setThriftParametersContext(
-            std::move(thriftParametersContext));
-      }
-    }
     securityProtocolCtxManager_.addPeeker(this);
     Acceptor::init(serverSocket, eventBase, stats, fizzContext);
   }
@@ -288,6 +275,8 @@ class Cpp2Worker : public wangle::Acceptor,
   bool shouldPerformSSL(
       const std::vector<uint8_t>& bytes,
       const folly::SocketAddress& clientAddr);
+
+  std::optional<ThriftParametersContext> getThriftParametersContext();
 
   friend class Cpp2Connection;
   friend class ThriftServer;
