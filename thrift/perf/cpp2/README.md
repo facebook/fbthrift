@@ -71,7 +71,7 @@ the transport flag. We currently support http2, and reactive sockets.
 
 `--transport="http2"`
 
-`--transport="rsocket"`
+`--transport="rocket"`
 
 ## Reading the metrics
 
@@ -109,5 +109,5 @@ get executed successfully.
 
 Compare Single RPC download/upload perf against Streaming RPC download/upload of data.
 
-`./client --host="IP" --transport="rsocket" --num_clients=1 --max_outstanding_ops=1 --download_weight=1 --upload_weight=1`
-`./client --host="IP" --transport="rsocket" --num_clients=1 --max_outstanding_ops=1 --stream_weight=1`
+`./client --host="IP" --transport="rocket" --num_clients=1 --max_outstanding_ops=1 --download_weight=1 --upload_weight=1`
+`./client --host="IP" --transport="rocket" --num_clients=1 --max_outstanding_ops=1 --stream_weight=1`
