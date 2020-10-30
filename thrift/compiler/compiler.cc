@@ -429,26 +429,27 @@ compile_result compile(std::vector<std::string> arguments) {
 
   program_bundle->get_root_program()->set_include_prefix(include_prefix);
 
-  bool success;
   try {
-    auto generation_context = (out_path.size() > 0)
+    auto generation_context = !out_path.empty()
         ? t_generation_context{out_path, out_path_is_absolute}
         : t_generation_context{};
-    std::set<std::string> already_generated{
-        program_bundle->get_root_program()->get_path()};
-    success = generate(
+    auto already_generated =
+        std::set<std::string>{program_bundle->get_root_program()->get_path()};
+    bool success = generate(
         program_bundle->get_root_program(),
         generation_context,
         generator_strings,
         already_generated);
+    if (success) {
+      result.retcode = compile_retcode::SUCCESS;
+    }
   } catch (const std::exception& e) {
-    std::cerr << e.what() << std::endl;
-    return result;
-  }
-
-  // Finished
-  if (success) {
-    result.retcode = compile_retcode::SUCCESS;
+    result.diagnostics.push_back(diagnostic_message(
+        diagnostic_level::FAILURE,
+        program_bundle->get_root_program()->get_path(),
+        0,
+        {},
+        e.what()));
   }
   return result;
 }

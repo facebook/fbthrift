@@ -187,38 +187,43 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
 
 void dump_diagnostics(
     const std::vector<diagnostic_message>& diagnostic_messages) {
+  char lineno[16];
   for (auto const& message : diagnostic_messages) {
+    if (message.lineno > 0) {
+      sprintf(lineno, ":%d", message.lineno);
+    } else {
+      *lineno = '\0';
+    }
     switch (message.level) {
       case diagnostic_level::YY_ERROR:
         fprintf(
             stderr,
-            "[ERROR:%s:%d] (last token was '%s')\n%s\n",
+            "[ERROR:%s%s] (last token was '%s')\n%s\n",
             message.filename.c_str(),
-            message.lineno,
+            lineno,
             message.last_token.c_str(),
             message.message.c_str());
         break;
       case diagnostic_level::WARNING:
         fprintf(
             stderr,
-            "[WARNING:%s:%d] %s\n",
+            "[WARNING:%s%s] %s\n",
             message.filename.c_str(),
-            message.lineno,
+            lineno,
             message.message.c_str());
         break;
       case diagnostic_level::VERBOSE:
         fprintf(stderr, "%s", message.message.c_str());
         break;
       case diagnostic_level::DBG:
-        fprintf(
-            stderr, "[PARSE:%d] %s\n", message.lineno, message.message.c_str());
+        fprintf(stderr, "[PARSE%s] %s\n", lineno, message.message.c_str());
         break;
       case diagnostic_level::FAILURE:
         fprintf(
             stderr,
-            "[FAILURE:%s:%d] %s\n",
+            "[FAILURE:%s%s] %s\n",
             message.filename.c_str(),
-            message.lineno,
+            lineno,
             message.message.c_str());
         break;
     }
