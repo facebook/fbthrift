@@ -517,7 +517,6 @@ TEST(InteractionCodegenTest, ReuseIdDuringConstructor) {
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  runner.getThriftServer().getThreadManager()->addWorker();
   folly::EventBase eb;
   CalculatorAsyncClient client(
       RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
@@ -530,7 +529,7 @@ TEST(InteractionCodegenTest, ReuseIdDuringConstructor) {
     adder.semifuture_noop().via(&eb).getVia(&eb);
     handler->b1.wait();
   } // sends termination while constructor is blocked
-  client.sync_addPrimitive(0, 0);
+  eb.loopOnce();
 
   auto id = client.getChannel()->registerInteraction("Addition", 1);
   CalculatorAsyncClient::Addition adder(
