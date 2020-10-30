@@ -27,6 +27,7 @@
 #include <fatal/type/trie.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
+#include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
@@ -208,6 +209,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_LIST;
 
   using elem_type = typename Type::value_type;
+  using elem_ttype = protocol_type<ElemClass, elem_type>;
 
   static_assert(
       !std::is_same<ElemClass, type_class::unknown>(),
@@ -230,7 +232,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
       if (reported_type != protocol::T_STOP) {
-        assert(reported_type == elem_methods::ttype_value);
+        assert(reported_type == elem_ttype::value);
       }
 
       for (decltype(list_size) i = 0; protocol.peekList(); i++) {
@@ -241,7 +243,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         elem_methods::read(protocol, out[i]);
       }
     } else {
-      assert(reported_type == elem_methods::ttype_value);
+      assert(reported_type == elem_ttype::value);
       out.resize(list_size);
       for (decltype(list_size) i = 0; i < list_size; i++) {
         elem_methods::read(protocol, out[i]);
@@ -254,7 +256,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
-    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
+    xfer += protocol.writeListBegin(elem_ttype::value, out.size());
 
     for (auto const& elem : out) {
       xfer += elem_methods::write(protocol, elem);
@@ -267,8 +269,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serialized_size(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
-    xfer +=
-        protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
+    xfer += protocol.serializedSizeListBegin(elem_ttype::value, out.size());
 
     for (auto const& elem : out) {
       xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
@@ -287,6 +288,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   // TODO: fair amount of shared code bewteen this and specialization for
   // type_class::list
   using elem_type = typename Type::value_type;
+  using elem_ttype = protocol_type<ElemClass, elem_type>;
 
   static_assert(
       !std::is_same<ElemClass, type_class::unknown>(),
@@ -316,7 +318,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         consume_elem(protocol, out);
       }
     } else {
-      assert(reported_type == elem_methods::ttype_value);
+      assert(reported_type == elem_ttype::value);
       for (decltype(set_size) i = 0; i < set_size; i++) {
         consume_elem(protocol, out);
       }
@@ -328,7 +330,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
     std::size_t xfer = 0;
-    xfer += protocol.writeSetBegin(elem_methods::ttype_value, in.size());
+    xfer += protocol.writeSetBegin(elem_ttype::value, in.size());
     for (auto const& elem : in) {
       xfer += elem_methods::write(protocol, elem);
     }
@@ -339,8 +341,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serialized_size(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
-    xfer +=
-        protocol.serializedSizeSetBegin(elem_methods::ttype_value, out.size());
+    xfer += protocol.serializedSizeSetBegin(elem_ttype::value, out.size());
 
     for (auto const& elem : out) {
       xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
@@ -371,6 +372,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   using key_methods = protocol_methods<KeyClass, key_type>;
   using mapped_methods = protocol_methods<MappedClass, mapped_type>;
 
+  using key_ttype = protocol_type<KeyClass, key_type>;
+  using mapped_ttype = protocol_type<MappedClass, mapped_type>;
+
  private:
   template <typename Protocol>
   static void consume_elem(Protocol& protocol, Type& out) {
@@ -400,8 +404,8 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       // CompactProtocol does not transmit key/mapped types if
       // the map is empty
       if (map_size > 0) {
-        assert(key_methods::ttype_value == rpt_key_type);
-        assert(mapped_methods::ttype_value == rpt_mapped_type);
+        assert(key_ttype::value == rpt_key_type);
+        assert(mapped_ttype::value == rpt_mapped_type);
       }
       for (decltype(map_size) i = 0; i < map_size; i++) {
         consume_elem(protocol, out);
@@ -414,10 +418,10 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
-    DVLOG(3) << "start map write: " << key_methods::ttype_value << "/"
-             << mapped_methods::ttype_value << " (" << out.size() << ")";
+    DVLOG(3) << "start map write: " << key_ttype::value << "/"
+             << mapped_ttype::value << " (" << out.size() << ")";
     xfer += protocol.writeMapBegin(
-        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
+        key_ttype::value, mapped_ttype::value, out.size());
 
     for (auto const& elem_pair : out) {
       xfer += key_methods::write(protocol, elem_pair.first);
@@ -432,7 +436,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   static std::size_t serialized_size(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
     xfer += protocol.serializedSizeMapBegin(
-        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
+        key_ttype::value, mapped_ttype::value, out.size());
 
     for (auto const& elem_pair : out) {
       xfer += key_methods ::template serialized_size<ZeroCopy>(
@@ -560,6 +564,11 @@ struct protocol_methods<type_class::variant, Union> {
       fatal::transform<typename traits::descriptors, fatal::get_type::id>>;
 
  private:
+  template <typename Descriptor>
+  inline static constexpr protocol::TType protocol_type_of_v = protocol_type_v<
+      typename Descriptor::metadata::type_class,
+      typename Descriptor::type>;
+
   // Visitor for a trie of union field names,
   // for mapping member field `fname` to  field `fid` and `ftype`
   struct member_fname_to_fid {
@@ -588,7 +597,7 @@ struct protocol_methods<type_class::variant, Union> {
                << ", ftype: " << ftype;
 
       fid = descriptor::metadata::id::value;
-      ftype = protocol_methods<field_tclass, field_type>::ttype_value;
+      ftype = protocol_type_v<field_tclass, field_type>;
     }
   };
 
@@ -612,7 +621,7 @@ struct protocol_methods<type_class::variant, Union> {
           typename descriptor::metadata::type_class,
           typename descriptor::type>;
 
-      if (ftype == field_methods::ttype_value) {
+      if (ftype == protocol_type_of_v<descriptor>) {
         typename descriptor::type tmp;
         typename descriptor::setter field_setter;
         field_methods::read(protocol, tmp);
@@ -688,11 +697,11 @@ struct protocol_methods<type_class::variant, Union> {
       DVLOG(3) << "writing union field "
                << fatal::z_data<typename descriptor::metadata::name>()
                << ", fid: " << descriptor::metadata::id::value
-               << ", ttype: " << methods::ttype_value;
+               << ", ttype: " << protocol_type_of_v<descriptor>;
 
       xfer += protocol.writeFieldBegin(
           fatal::z_data<typename descriptor::metadata::name>(),
-          methods::ttype_value,
+          protocol_type_of_v<descriptor>,
           descriptor::metadata::id::value);
       auto const& tmp = getter(obj);
       using member_type = folly::remove_cvref_t<decltype(tmp)>;
@@ -736,11 +745,11 @@ struct protocol_methods<type_class::variant, Union> {
       DVLOG(3) << "sizing union field "
                << fatal::z_data<typename descriptor::metadata::name>()
                << ", fid: " << descriptor::metadata::id::value
-               << ", ttype: " << methods::ttype_value;
+               << ", ttype: " << protocol_type_of_v<descriptor>;
 
       xfer += protocol.serializedFieldSize(
           fatal::z_data<typename descriptor::metadata::name>(),
-          methods::ttype_value,
+          protocol_type_of_v<descriptor>,
           descriptor::metadata::id::value);
       auto const& tmp = getter(obj);
       using member_type = folly::remove_cvref_t<decltype(tmp)>;
@@ -779,15 +788,17 @@ struct protocol_methods<type_class::structure, Struct> {
 
   using isset_array = std::bitset<fatal::size<required_fields>::value>;
 
+  template <typename Member>
+  inline static constexpr protocol::TType protocol_type_of_v =
+      protocol_type_v<typename Member::type_class, typename Member::type>;
+
   // mapping member fname -> fid
   struct member_fname_to_fid {
     template <typename Member>
     void
     operator()(fatal::tag<Member>, field_id_t& fid, protocol::TType& ftype) {
       fid = Member::id::value;
-      ftype =
-          protocol_methods<typename Member::type_class, typename Member::type>::
-              ttype_value;
+      ftype = protocol_type_of_v<Member>;
 
       DVLOG(3) << "matched string: " << fatal::z_data<typename Member::name>()
                << ", fid: " << fid << ", ftype: " << ftype;
@@ -925,7 +936,7 @@ struct protocol_methods<type_class::structure, Struct> {
       // TODO: can maybe get rid of get_const?
       xfer += protocol.writeFieldBegin(
           fatal::z_data<typename Member::name>(),
-          Methods::ttype_value,
+          protocol_type_of_v<Member>,
           Member::id::value);
       xfer += Methods::write(
           protocol, apache::thrift::detail::deref<MemberType>::get_const(in));
@@ -975,7 +986,7 @@ struct protocol_methods<type_class::structure, Struct> {
                  << fatal::z_data<typename field_traits::name>();
         xfer += protocol.writeFieldBegin(
             fatal::z_data<typename Member::name>(),
-            Methods::ttype_value,
+            protocol_type_of_v<Member>,
             Member::id::value);
         xfer += protocol.writeStructBegin(
             fatal::z_data<typename field_traits::name>());
@@ -1032,8 +1043,8 @@ struct protocol_methods<type_class::structure, Struct> {
       if ((Member::optional::value == optionality::required_of_writer) ||
           Member::is_set(in)) {
         DVLOG(3) << "start field write: "
-                 << fatal::z_data<typename Member::name>()
-                 << " ttype:" << methods::ttype_value
+                 << fatal::z_data<typename Member::name>() //
+                 << " ttype:" << protocol_type_of_v<Member> //
                  << ", id:" << Member::id::value;
 
         auto const& got = typename Member::getter{}(in);
@@ -1089,7 +1100,7 @@ struct protocol_methods<type_class::structure, Struct> {
       std::size_t xfer = 0;
       xfer += protocol.serializedFieldSize(
           fatal::z_data<typename Member::name>(),
-          Methods::ttype_value,
+          protocol_type_of_v<Member>,
           Member::id::value);
       xfer += Methods::template serialized_size<ZeroCopy>(
           protocol, apache::thrift::detail::deref<MemberType>::get_const(in));
@@ -1138,7 +1149,7 @@ struct protocol_methods<type_class::structure, Struct> {
                  << fatal::z_data<typename field_traits::name>();
         xfer += protocol.serializedFieldSize(
             fatal::z_data<typename Member::name>(),
-            Methods::ttype_value,
+            protocol_type_of_v<Member>,
             Member::id::value);
         xfer += protocol.serializedStructSize(
             fatal::z_data<typename field_traits::name>());
