@@ -460,6 +460,12 @@ class mstch_base : public mstch::object {
     return a;
   }
 
+  bool has_option(const std::string& option) const;
+  std::string get_option(const std::string& option) const;
+
+  // Registers has_option(option) under the given name.
+  void register_has_option(std::string key, std::string option);
+
  protected:
   std::shared_ptr<mstch_generators const> generators_;
   std::shared_ptr<mstch_cache> cache_;
@@ -1263,6 +1269,9 @@ class mstch_program : public mstch_base {
             {"program:constants?", &mstch_program::has_constants},
             {"program:any_types?", &mstch_program::has_any_types},
         });
+    register_has_option("program:frozen?", "frozen");
+    register_has_option("program:json?", "json");
+    register_has_option("program:nimble?", "nimble");
   }
 
   virtual std::string get_program_namespace(t_program const*) {

@@ -16,14 +16,31 @@
 
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
-using namespace std;
-
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 namespace {
 constexpr auto kAnyTypeNameAnnotation = "any_type.name";
+}
+
+bool mstch_base::has_option(const std::string& option) const {
+  return cache_->parsed_options_.find(option) != cache_->parsed_options_.end();
+}
+
+std::string mstch_base::get_option(const std::string& option) const {
+  auto itr = cache_->parsed_options_.find(option);
+  if (itr != cache_->parsed_options_.end()) {
+    return itr->second;
+  }
+  return {};
+}
+
+void mstch_base::register_has_option(std::string key, std::string option) {
+  register_method(
+      std::move(key), [this, option = std::move(option)]() -> mstch::node {
+        return has_option(option);
+      });
 }
 
 std::shared_ptr<mstch_base> enum_value_generator::generate(

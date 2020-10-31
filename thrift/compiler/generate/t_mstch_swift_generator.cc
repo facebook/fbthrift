@@ -242,8 +242,6 @@ class mstch_swift_struct : public mstch_struct {
         this,
         {
             {"struct:javaPackage", &mstch_swift_struct::java_package},
-            {"struct:extendRuntimeException?",
-             &mstch_swift_struct::is_extend_runtime_exception},
             {"struct:unionFieldTypeUnique?",
              &mstch_swift_struct::is_union_field_type_unique},
             {"struct:asBean?", &mstch_swift_struct::is_as_bean},
@@ -257,13 +255,11 @@ class mstch_swift_struct : public mstch_struct {
             {"struct:needsExceptionMessage?",
              &mstch_swift_struct::needs_exception_message},
         });
+    register_has_option(
+        "struct:extendRuntimeException?", "legacy_extend_runtime_exception");
   }
   mstch::node java_package() {
     return get_namespace_or_default(*(strct_->get_program()));
-  }
-  mstch::node is_extend_runtime_exception() {
-    return cache_->parsed_options_.count("legacy_extend_runtime_exception") !=
-        0;
   }
   mstch::node is_struct_union() {
     return strct_->is_union();

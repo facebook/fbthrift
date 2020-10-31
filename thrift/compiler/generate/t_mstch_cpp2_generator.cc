@@ -449,16 +449,16 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_indirection?", &mstch_cpp2_type::cpp_indirection},
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
             {"type:namespace_cpp2", &mstch_cpp2_type::namespace_cpp2},
-            {"type:sync_methods_return_try?",
-             &mstch_cpp2_type::sync_methods_return_try},
             {"type:cpp_declare_hash", &mstch_cpp2_type::cpp_declare_hash},
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
-            {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
             {"type:program_name", &mstch_cpp2_type::program_name},
             {"type:cpp_use_allocator?", &mstch_cpp2_type::cpp_use_allocator},
         });
+    register_has_option(
+        "type:sync_methods_return_try?", "sync_methods_return_try");
+    register_has_option("type:no_getters_setters?", "no_getters_setters");
   }
   std::string get_type_namespace(t_program const* program) override {
     return cpp2::get_gen_namespace(*program);
@@ -568,12 +568,6 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node namespace_cpp2() {
     return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
-  }
-  mstch::node sync_methods_return_try() {
-    return cache_->parsed_options_.count("sync_methods_return_try") != 0;
-  }
-  mstch::node no_getters_setters() {
-    return cache_->parsed_options_.count("no_getters_setters") != 0;
   }
   mstch::node fatal_type_class() {
     return get_fatal_type_class(resolved_type_);
@@ -731,7 +725,7 @@ class mstch_cpp2_field : public mstch_field {
     // Add terse writes for unqualified fields when comparison is cheap:
     // (e.g. i32/i64, empty strings/list/map)
     auto t = field_->get_type()->get_true_type();
-    return cache_->parsed_options_.count("terse_writes") != 0 &&
+    return has_option("terse_writes") &&
         field_->get_req() != t_field::e_req::T_OPTIONAL &&
         field_->get_req() != t_field::e_req::T_REQUIRED &&
         (is_cpp_ref_unique_either(field_) ||
@@ -766,8 +760,7 @@ class mstch_cpp2_field : public mstch_field {
     } else if (req == t_field::e_req::T_OPTIONAL) {
       // Optional fields are always private.
     } else if (req == t_field::e_req::T_OPT_IN_REQ_OUT) {
-      isPrivate =
-          cache_->parsed_options_.count("deprecated_public_fields") == 0;
+      isPrivate = !has_option("deprecated_public_fields");
     }
     return std::string(isPrivate ? "private" : "public");
   }
@@ -815,8 +808,6 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
-            {"struct:no_getters_setters?",
-             &mstch_cpp2_struct::no_getters_setters},
             {"struct:fatal_annotations?",
              &mstch_cpp2_struct::has_fatal_annotations},
             {"struct:fatal_annotations", &mstch_cpp2_struct::fatal_annotations},
@@ -828,6 +819,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_allocator", &mstch_cpp2_struct::cpp_allocator},
             {"struct:cpp_allocator_via", &mstch_cpp2_struct::cpp_allocator_via},
         });
+    register_has_option("struct:no_getters_setters?", "no_getters_setters");
   }
   mstch::node fields_size() {
     return std::to_string(strct_->get_members().size());
@@ -986,9 +978,6 @@ class mstch_cpp2_struct : public mstch_struct {
       }
     }
     return false;
-  }
-  mstch::node no_getters_setters() {
-    return cache_->parsed_options_.count("no_getters_setters") != 0;
   }
   mstch::node has_fatal_annotations() {
     return get_fatal_annotations(strct_->annotations_).size() > 0;
@@ -1339,11 +1328,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:cpp_declare_hash?",
              &mstch_cpp2_program::cpp_declare_hash},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
-            {"program:frozen?", &mstch_cpp2_program::frozen},
             {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
-            {"program:tablebased?", &mstch_cpp2_program::tablebased},
-            {"program:json?", &mstch_cpp2_program::json},
-            {"program:nimble?", &mstch_cpp2_program::nimble},
             {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
             {"program:fatal_enums", &mstch_cpp2_program::fatal_enums},
             {"program:fatal_unions", &mstch_cpp2_program::fatal_unions},
@@ -1354,10 +1339,11 @@ class mstch_cpp2_program : public mstch_program {
              &mstch_cpp2_program::fatal_identifiers},
             {"program:fatal_data_member",
              &mstch_cpp2_program::fatal_data_member},
-            {"program:enforce_required?",
-             &mstch_cpp2_program::enforce_required},
-            {"program:gen_metadata?", &mstch_cpp2_program::gen_metadata},
         });
+    register_has_option("program:tablebased?", "tablebased");
+    register_has_option("program:no_metadata?", "no_metadata");
+    register_has_option(
+        "program:enforce_required?", "deprecated_enforce_required");
   }
   std::string get_program_namespace(t_program const* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
@@ -1478,21 +1464,8 @@ class mstch_cpp2_program : public mstch_program {
     }
     return a;
   }
-  mstch::node frozen() {
-    return cache_->parsed_options_.count("frozen") != 0;
-  }
-  mstch::node tablebased() {
-    return cache_->parsed_options_.count("tablebased") != 0;
-  }
   mstch::node frozen_packed() {
-    auto iter = cache_->parsed_options_.find("frozen");
-    return iter != cache_->parsed_options_.end() && iter->second == "packed";
-  }
-  mstch::node json() {
-    return cache_->parsed_options_.count("json") != 0;
-  }
-  mstch::node nimble() {
-    return cache_->parsed_options_.count("nimble") != 0;
+    return get_option("frozen") == "packed";
   }
   mstch::node fatal_languages() {
     mstch::array a;
@@ -1608,12 +1581,6 @@ class mstch_cpp2_program : public mstch_program {
       a.push_back(*f);
     }
     return a;
-  }
-  mstch::node enforce_required() {
-    return cache_->parsed_options_.count("deprecated_enforce_required") != 0;
-  }
-  mstch::node gen_metadata() {
-    return cache_->parsed_options_.count("no_metadata") == 0;
   }
 
  private:
@@ -1921,10 +1888,10 @@ void t_mstch_cpp2_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
 
-  if (cache_->parsed_options_.count("any")) {
+  if (has_option("any")) {
     generate_sinit(program);
   }
-  if (cache_->parsed_options_.count("reflection")) {
+  if (has_option("reflection")) {
     generate_reflection(program);
   }
   generate_structs(program);
@@ -1970,7 +1937,7 @@ void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
   const auto& prog = cached_program(program);
 
   render_to_file(prog, "module_metadata.h", name + "_metadata.h");
-  if (cache_->parsed_options_.count("no_metadata") == 0) {
+  if (!has_option("no_metadata")) {
     render_to_file(prog, "module_metadata.cpp", name + "_metadata.cpp");
   }
 }
@@ -2037,7 +2004,7 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
       prog,
       "module_types_custom_protocol.h",
       name + "_types_custom_protocol.h");
-  if (cache_->parsed_options_.count("frozen2")) {
+  if (has_option("frozen2")) {
     render_to_file(prog, "module_layouts.h", name + "_layouts.h");
     render_to_file(prog, "module_layouts.cpp", name + "_layouts.cpp");
   }

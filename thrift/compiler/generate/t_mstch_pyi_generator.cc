@@ -104,14 +104,12 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
     };
     includeNamespaces.push_back(include_ns);
   }
-  auto const asyncio = cache_->parsed_options_.count("asyncio") != 0;
-  auto const json = cache_->parsed_options_.count("json") != 0;
   mstch::map result{
       {"returnTypes", get_return_types(program)},
       {"pyNamespaces", pyNamespaces},
       {"includeNamespaces", includeNamespaces},
-      {"asyncio?", asyncio},
-      {"json?", json},
+      {"asyncio?", has_option("asyncio")},
+      {"json?", has_option("json")},
   };
   add_container_types(program, result);
   return result;
@@ -363,7 +361,7 @@ std::string t_mstch_pyi_generator::flatten_type_name(const t_type& type) const {
 vector<std::string> t_mstch_pyi_generator::get_py_namespace_raw(
     const t_program& program,
     const string& tail) {
-  auto const asyncio = cache_->parsed_options_.count("asyncio") != 0;
+  auto const asyncio = has_option("asyncio");
   auto& py_namespace = program.get_namespace("py");
   auto& py_asyncio_namespace = program.get_namespace("py.asyncio");
   auto _namespace = asyncio && !py_asyncio_namespace.empty()

@@ -206,8 +206,8 @@ class t_mstch_generator : public t_generator {
     }
   }
 
-  bool has_option(const std::string& key) const;
-  std::unique_ptr<std::string> get_option(const std::string& key);
+  bool has_option(const std::string& option) const;
+  std::string get_option(const std::string& option);
 
  private:
   std::map<std::string, std::string> template_map_;

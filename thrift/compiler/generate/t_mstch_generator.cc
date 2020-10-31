@@ -478,17 +478,16 @@ void t_mstch_generator::write_output(
   record_genfile(abs_path.string());
 }
 
-bool t_mstch_generator::has_option(const std::string& key) const {
-  return parsed_options_.find(key) != parsed_options_.end();
+bool t_mstch_generator::has_option(const std::string& option) const {
+  return parsed_options_.find(option) != parsed_options_.end();
 }
 
-std::unique_ptr<std::string> t_mstch_generator::get_option(
-    const std::string& key) {
-  auto itr = parsed_options_.find(key);
-  if (itr == parsed_options_.end()) {
-    return nullptr;
+std::string t_mstch_generator::get_option(const std::string& option) {
+  auto itr = parsed_options_.find(option);
+  if (itr != parsed_options_.end()) {
+    return itr->second;
   }
-  return std::unique_ptr<std::string>(new std::string(itr->second));
+  return {};
 }
 
 mstch::map t_mstch_generator::prepend_prefix(

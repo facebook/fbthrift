@@ -35,60 +35,60 @@ namespace detail {
 namespace md {
 
 <%#program:enums%>
-<%#program:gen_metadata?%>
+<%^program:no_metadata?%>
 template <>
 class EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
-<%/program:gen_metadata?%>
-<%^program:gen_metadata?%>
+<%/program:no_metadata?%>
+<%#program:no_metadata?%>
 template <>
 class EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>
     : private EmptyMetadata {
  public:
   using EmptyMetadata::gen;
 };
-<%/program:gen_metadata?%>
+<%/program:no_metadata?%>
 <%/program:enums%>
 <%#program:structs%>
-<%#program:gen_metadata?%>
+<%^program:no_metadata?%>
 template <>
 class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
-<%/program:gen_metadata?%>
-<%^program:gen_metadata?%>
+<%/program:no_metadata?%>
+<%#program:no_metadata?%>
 template <>
 class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>
     : private EmptyMetadata {
  public:
   using EmptyMetadata::gen;
 };
-<%/program:gen_metadata?%>
+<%/program:no_metadata?%>
 <%/program:structs%>
 <%#program:structs%>
 <%#struct:exception?%>
-<%#program:gen_metadata?%>
+<%^program:no_metadata?%>
 template <>
 class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
-<%/program:gen_metadata?%>
-<%^program:gen_metadata?%>
+<%/program:no_metadata?%>
+<%#program:no_metadata?%>
 template <>
 class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>
     : private EmptyMetadata {
  public:
   using EmptyMetadata::gen;
 };
-<%/program:gen_metadata?%>
+<%/program:no_metadata?%>
 <%/struct:exception?%>
 <%/program:structs%>
 <%#program:services%>
-<%#program:gen_metadata?%>
+<%^program:no_metadata?%>
 template <>
 class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf> {
  public:
@@ -98,15 +98,15 @@ class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>Sv
   static void gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& context);
 <%/function:starts_interaction?%><%/service:functions%>
 };
-<%/program:gen_metadata?%>
-<%^program:gen_metadata?%>
+<%/program:no_metadata?%>
+<%#program:no_metadata?%>
 template <>
 class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>
     : private EmptyServiceMetadata {
  public:
   using EmptyServiceMetadata::gen;
 };
-<%/program:gen_metadata?%>
+<%/program:no_metadata?%>
 <%/program:services%>
 } // namespace md
 } // namespace detail

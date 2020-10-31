@@ -1326,8 +1326,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
         generateRootPath_{package_to_path()} {
     out_dir_base_ = "gen-py3";
     auto include_prefix = get_option("include_prefix");
-    if (include_prefix && !include_prefix->empty()) {
-      program->set_include_prefix(*include_prefix);
+    if (!include_prefix.empty()) {
+      program->set_include_prefix(std::move(include_prefix));
     }
   }
 
