@@ -51,14 +51,20 @@ class object_t {
   }
 
   bool has(const std::string& name) const {
-    return methods.count(name) != 0;
+    return methods.find(name) != methods.end();
   }
 
  protected:
+  bool register_method(std::string name, std::function<N()> method) {
+    return methods.emplace(std::move(name), std::move(method)).second;
+  }
+
   template <class S>
-  void register_methods(S* s, std::map<std::string, N (S::*)()> methods_) {
-    for (auto& item : methods_) {
-      methods.insert({item.first, std::bind(item.second, s)});
+  void register_methods(
+      S* s,
+      const std::map<std::string, N (S::*)()>& methods_) {
+    for (const auto& item : methods_) {
+      register_method(item.first, [s, m = item.second]() { return (s->*m)(); });
     }
   }
 
