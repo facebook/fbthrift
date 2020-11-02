@@ -27,10 +27,16 @@ struct Mixin3Base {
   1: string field3;
 }
 
+union Union {
+  1: string field5;
+  2: string field6;
+}
+
 typedef Mixin3Base Mixin3
 
 struct Foo {
   1: string field4;
   2: Mixin2 m2 (cpp.mixin);
   3: Mixin3 m3 (cpp.mixin);
+  4: Union u (cpp.mixin);
 }

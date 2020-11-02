@@ -369,26 +369,6 @@ class CompilerFailureTest(unittest.TestCase):
             err, "[FAILURE:foo.thrift:2] Union `B` can not have mixin field `a`.\n"
         )
 
-    def test_union_as_mixin(self):
-        write_file(
-            "foo.thrift",
-            textwrap.dedent(
-                """\
-                union A { 1: i32 i }
-                struct B {
-                1: A a (cpp.mixin);
-                }
-                """
-            ),
-        )
-
-        ret, out, err = self.run_thrift("foo.thrift")
-
-        self.assertEqual(ret, 1)
-        self.assertEqual(
-            err, "[FAILURE:foo.thrift:3] Mixin field `a` is not a struct but union.\n"
-        )
-
     def test_mixin_with_cpp_ref(self):
         write_file(
             "foo.thrift",

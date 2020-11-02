@@ -23,18 +23,32 @@ TEST(Mixin, Simple) {
   s.m2_ref()->field2_ref() = "2";
   s.m3_ref()->field3_ref() = "3";
   s.field4_ref() = "4";
+  s.u_ref()->field5_ref() = "5";
   EXPECT_EQ(s.field1_ref().value(), "1");
   EXPECT_EQ(s.field2_ref().value(), "2");
   EXPECT_EQ(s.field3_ref().value(), "3");
   EXPECT_EQ(s.field4_ref().value(), "4");
+  EXPECT_EQ(s.field5_ref().value(), "5");
+  EXPECT_FALSE(s.field6_ref().has_value());
+
+  s.u_ref()->field6_ref() = "6";
+  EXPECT_FALSE(s.field5_ref().has_value());
+  EXPECT_EQ(s.field6_ref().value(), "6");
 
   s.field1_ref() = "11";
   s.field2_ref() = "22";
   s.field3_ref() = "33";
   s.field4_ref() = "44";
+  s.field5_ref() = "55";
 
   EXPECT_EQ(s.m2_ref()->m1_ref()->field1_ref().value(), "11");
   EXPECT_EQ(s.m2_ref()->field2_ref().value(), "22");
   EXPECT_EQ(s.m3_ref()->field3_ref().value(), "33");
   EXPECT_EQ(s.field4_ref().value(), "44");
+  EXPECT_EQ(s.u_ref()->field5_ref().value(), "55");
+  EXPECT_FALSE(s.u_ref()->field6_ref().has_value());
+
+  s.field6_ref() = "66";
+  EXPECT_FALSE(s.u_ref()->field5_ref().has_value());
+  EXPECT_EQ(s.u_ref()->field6_ref().value(), "66");
 }
