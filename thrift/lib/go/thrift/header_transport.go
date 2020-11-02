@@ -305,6 +305,11 @@ func (t *HeaderTransport) Close() error {
 	return t.transport.Close()
 }
 
+// UnderlyingTransport Get the underlying transport
+func (t *HeaderTransport) UnderlyingTransport() Transport {
+	return t.transport
+}
+
 // Read Read from the current framebuffer. EOF if the frame is done.
 func (t *HeaderTransport) Read(buf []byte) (int, error) {
 	n, err := t.framebuf.Read(buf)
