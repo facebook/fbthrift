@@ -537,3 +537,8 @@ TEST(Frozen, TrivialCopyable) {
   auto view = freeze(s);
   EXPECT_EQ(view.field(), 42);
 }
+
+TEST(Frozen, Empty) {
+  Empty s;
+  FOLLY_MAYBE_UNUSED auto view = freeze(s);
+}

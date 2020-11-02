@@ -119,12 +119,14 @@
   pos = root.layoutField(self, pos, this->NAME##Field, x.NAME);
 #define FROZEN_LAYOUT_FIELD_UNIQUE_REF FROZEN_LAYOUT_FIELD_REQ
 #define FROZEN_LAYOUT_FIELD_SHARED_REF FROZEN_LAYOUT_FIELD_REQ
-#define FROZEN_LAYOUT(TYPE, ...)                           \
-  FieldPosition Layout<TYPE>::layout(                      \
-      LayoutRoot& root, const T& x, LayoutPosition self) { \
-    FieldPosition pos = startFieldPosition();              \
-    __VA_ARGS__;                                           \
-    return pos;                                            \
+#define FROZEN_LAYOUT(TYPE, ...)                \
+  FieldPosition Layout<TYPE>::layout(           \
+      FOLLY_MAYBE_UNUSED LayoutRoot& root,      \
+      FOLLY_MAYBE_UNUSED const T& x,            \
+      FOLLY_MAYBE_UNUSED LayoutPosition self) { \
+    FieldPosition pos = startFieldPosition();   \
+    __VA_ARGS__;                                \
+    return pos;                                 \
   }
 
 #define FROZEN_FREEZE_FIELD(NAME) \
@@ -136,10 +138,12 @@
 #define FROZEN_FREEZE_FIELD_UNIQUE_REF FROZEN_FREEZE_FIELD_REQ
 #define FROZEN_FREEZE_FIELD_SHARED_REF FROZEN_FREEZE_FIELD_REQ
 
-#define FROZEN_FREEZE(TYPE, ...)                                               \
-  void Layout<TYPE>::freeze(FreezeRoot& root, const T& x, FreezePosition self) \
-      const {                                                                  \
-    __VA_ARGS__;                                                               \
+#define FROZEN_FREEZE(TYPE, ...)                      \
+  void Layout<TYPE>::freeze(                          \
+      FOLLY_MAYBE_UNUSED FreezeRoot& root,            \
+      FOLLY_MAYBE_UNUSED const T& x,                  \
+      FOLLY_MAYBE_UNUSED FreezePosition self) const { \
+    __VA_ARGS__;                                      \
   }
 
 #define FROZEN_THAW_FIELD(NAME)                          \
@@ -152,9 +156,10 @@
 #define FROZEN_THAW_FIELD_UNIQUE_REF FROZEN_THAW_FIELD_REQ
 #define FROZEN_THAW_FIELD_SHARED_REF FROZEN_THAW_FIELD_REQ
 
-#define FROZEN_THAW(TYPE, ...)                               \
-  void Layout<TYPE>::thaw(ViewPosition self, T& out) const { \
-    __VA_ARGS__;                                             \
+#define FROZEN_THAW(TYPE, ...)                                                 \
+  void Layout<TYPE>::thaw(                                                     \
+      FOLLY_MAYBE_UNUSED ViewPosition self, FOLLY_MAYBE_UNUSED T& out) const { \
+    __VA_ARGS__;                                                               \
   }
 #define FROZEN_DEBUG_FIELD(NAME) this->NAME##Field.print(os, level + 1);
 #define FROZEN_DEBUG(TYPE, ...)                                 \

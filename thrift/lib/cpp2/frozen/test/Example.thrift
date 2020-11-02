@@ -159,3 +159,6 @@ struct User {
 struct TriviallyCopyableStruct {
   1: required i32 field
 }
+
+struct Empty {
+}
