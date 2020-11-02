@@ -927,7 +927,10 @@ ClientChannel::SaturationStatus RocketClientChannel::getSaturationStatus() {
 
 void RocketClientChannel::closeNow() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  rclient_.reset();
+  if (auto rclient = std::move(rclient_)) {
+    rclient->close(transport::TTransportException(
+        transport::TTransportException::INTERRUPTED, "Client shutdown."));
+  }
 }
 
 void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {

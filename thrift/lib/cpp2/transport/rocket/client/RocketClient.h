@@ -240,6 +240,9 @@ class RocketClient : public folly::DelayedDestruction,
   }
   void terminateInteraction(int64_t id);
 
+  // Request connection close and fail all the requests.
+  void close(apache::thrift::transport::TTransportException ex) noexcept;
+
  private:
   folly::EventBase* evb_;
   folly::AsyncTransport::UniquePtr socket_;
@@ -513,8 +516,6 @@ class RocketClient : public folly::DelayedDestruction,
     });
   }
 
-  // Request connection close and fail all the requests.
-  void close(apache::thrift::transport::TTransportException ex) noexcept;
   // Close the connection and fail all the requests *inline*. This should not be
   // called inline from any of the callbacks triggered by RocketClient.
   void closeNow(apache::thrift::transport::TTransportException ex) noexcept;
