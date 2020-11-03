@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 
+#include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchData_layouts.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchData_types.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchData_types_custom_protocol.h>
 

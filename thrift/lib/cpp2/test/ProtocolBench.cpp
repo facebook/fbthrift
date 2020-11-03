@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/Structs.h>
 
@@ -28,6 +29,24 @@ using namespace std;
 using namespace folly;
 using namespace apache::thrift;
 using namespace thrift::benchmark;
+
+struct FrozenSerializer {
+  template <class T>
+  static void serialize(const T& obj, folly::IOBufQueue* out) {
+    auto p = new string(frozen::freezeToString(obj));
+    out->append(folly::IOBuf::takeOwnership(
+        p->data(),
+        p->size(),
+        [](void*, void* p) { delete static_cast<string*>(p); },
+        static_cast<void*>(p)));
+  }
+  template <class T>
+  static size_t deserialize(folly::IOBuf* iobuf, T& t) {
+    auto view = frozen::mapFrozen<T>(iobuf->coalesce());
+    t = view.thaw();
+    return 0;
+  }
+};
 
 // The benckmark is to measure single struct use case, the iteration here is
 // more like a benchmark artifact, so avoid doing optimizationon iteration
@@ -97,6 +116,7 @@ X(Compact)
 X(SimpleJSON)
 X(JSON)
 X(Nimble)
+X(Frozen)
 
 int main(int argc, char** argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
