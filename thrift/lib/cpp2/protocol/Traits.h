@@ -50,7 +50,7 @@ struct protocol_type_<type_class::integral> {
       sizeof(Type) == 2 ? protocol::TType::T_I16 :
       sizeof(Type) == 4 ? protocol::TType::T_I32 :
       sizeof(Type) == 8 ? protocol::TType::T_I64 :
-      detail::protocol_type_ill_formed_();
+      protocol_type_ill_formed_();
   // clang-format on
 };
 
@@ -61,7 +61,7 @@ struct protocol_type_<type_class::floating_point> {
   static constexpr protocol::TType apply =
       sizeof(Type) == 4 ? protocol::TType::T_FLOAT :
       sizeof(Type) == 8 ? protocol::TType::T_DOUBLE :
-      detail::protocol_type_ill_formed_();
+      protocol_type_ill_formed_();
   // clang-format on
 };
 
@@ -114,8 +114,7 @@ struct protocol_type_<type_class::map<KeyTypeClass, MappedTypeClass>> {
 };
 
 template <typename IndirectedTypeClass, typename Indirection>
-struct protocol_type_<
-    detail::indirection_tag<IndirectedTypeClass, Indirection>> {
+struct protocol_type_<indirection_tag<IndirectedTypeClass, Indirection>> {
   template <typename Type>
   static constexpr protocol::TType apply =
       protocol_type_<IndirectedTypeClass>::template apply<
@@ -131,7 +130,7 @@ struct protocol_type_<
 //  enum TType.
 template <typename TypeClass, typename Type>
 FOLLY_INLINE_VARIABLE constexpr protocol::TType protocol_type_v =
-    detail::protocol_type_<TypeClass>::template apply<Type>;
+    ::apache::thrift::detail::protocol_type_<TypeClass>::template apply<Type>;
 template <typename TypeClass, typename Type>
 struct protocol_type //
     : std::integral_constant< //
