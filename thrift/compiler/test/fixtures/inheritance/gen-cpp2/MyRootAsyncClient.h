@@ -27,7 +27,6 @@ class MyRootAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-
   virtual void do_root(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_root(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:

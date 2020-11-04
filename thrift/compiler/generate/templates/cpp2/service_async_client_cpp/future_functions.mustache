@@ -42,9 +42,6 @@ folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_n
 <%/service:reduced_client?%>
 
 folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  <%#service:interaction?%>
-  setInteraction(rpcOptions);
-  <%/service:interaction?%>
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_<%function:cpp_name%>, channel_);
   auto callback = std::move(callbackAndFuture.first);
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);

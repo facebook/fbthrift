@@ -28,7 +28,6 @@ class MyLeafAsyncClient : public ::cpp2::MyNodeAsyncClient {
   }
 
 
-
   virtual void do_leaf(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_leaf(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:

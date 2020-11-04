@@ -34,9 +34,9 @@
   <%type:name%> <%function:cpp_name%>();
 <%/function:starts_interaction?%><%^function:starts_interaction?%>
 <%^function:returns_sink?%>
-<%#service:reduced_client?%>private:<%/service:reduced_client?%>
+<%^service:reduced_client?%>
   virtual void <%function:cpp_name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
-  virtual void <%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual<%/service:reduced_client?%> void <%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
 <%/function:returns_sink?%>
  protected:
   void <%function:cpp_name%>Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>);

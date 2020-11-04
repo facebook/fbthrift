@@ -28,7 +28,6 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
   }
 
 
-
   virtual void pang(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:

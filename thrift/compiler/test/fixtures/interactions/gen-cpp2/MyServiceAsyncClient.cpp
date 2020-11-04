@@ -257,12 +257,9 @@ void MyServiceAsyncClient::MyInteraction::encodeT(Protocol_* prot, apache::thrif
 }
 
 
-void MyServiceAsyncClient::MyInteraction::frobnicate(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  frobnicate(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::MyInteraction::frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  setInteraction(rpcOptions);
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -303,7 +300,6 @@ folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobn
 }
 
 folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteraction::semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_frobnicate, channel_);
   auto callback = std::move(callbackAndFuture.first);
   frobnicate(rpcOptions, std::move(callback));
@@ -350,12 +346,9 @@ int32_t MyServiceAsyncClient::MyInteraction::recv_frobnicate(::apache::thrift::C
   }
   return _return;
 }
-void MyServiceAsyncClient::MyInteraction::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  ping(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::MyInteraction::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  setInteraction(rpcOptions);
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -406,12 +399,9 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteraction::semifuture_p
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceAsyncClient::MyInteraction::truthify(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  truthify(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::MyInteraction::truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  setInteraction(rpcOptions);
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -454,7 +444,6 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClie
 }
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClient::MyInteraction::semifuture_truthify(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_truthify, channel_);
   auto callback = std::move(callbackAndFuture.first);
   truthify(rpcOptions, std::move(callback));
@@ -646,12 +635,9 @@ void MyServiceAsyncClient::MyInteractionFast::encodeT(Protocol_* prot, apache::t
 }
 
 
-void MyServiceAsyncClient::MyInteractionFast::frobnicate(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  frobnicate(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::MyInteractionFast::frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  setInteraction(rpcOptions);
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -692,7 +678,6 @@ folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_f
 }
 
 folly::SemiFuture<int32_t> MyServiceAsyncClient::MyInteractionFast::semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_frobnicate, channel_);
   auto callback = std::move(callbackAndFuture.first);
   frobnicate(rpcOptions, std::move(callback));
@@ -739,12 +724,9 @@ int32_t MyServiceAsyncClient::MyInteractionFast::recv_frobnicate(::apache::thrif
   }
   return _return;
 }
-void MyServiceAsyncClient::MyInteractionFast::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  ping(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::MyInteractionFast::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  setInteraction(rpcOptions);
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -795,12 +777,9 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteractionFast::semifutu
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceAsyncClient::MyInteractionFast::truthify(std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  truthify(rpcOptions, std::move(callback));
-}
 
 void MyServiceAsyncClient::MyInteractionFast::truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  setInteraction(rpcOptions);
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -843,7 +822,6 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClie
 }
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClient::MyInteractionFast::semifuture_truthify(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_truthify, channel_);
   auto callback = std::move(callbackAndFuture.first);
   truthify(rpcOptions, std::move(callback));

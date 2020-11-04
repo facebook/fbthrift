@@ -27,7 +27,6 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-
   virtual void hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
   virtual void hasDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
  protected:
@@ -94,7 +93,6 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void hasDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
-
   virtual void getDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
   virtual void getDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
  protected:
@@ -161,7 +159,6 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void getDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
-
   virtual void putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
   virtual void putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
  protected:
@@ -217,7 +214,6 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
  public:
-
   virtual void lobDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
   virtual void lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
  protected:

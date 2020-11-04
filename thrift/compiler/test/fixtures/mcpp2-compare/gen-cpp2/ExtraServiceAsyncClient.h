@@ -29,7 +29,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   }
 
 
-
   virtual void simple_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void simple_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -94,7 +93,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void simple_functionT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void throws_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void throws_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -148,7 +146,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void throws_functionT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void throws_function2(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
   virtual void throws_function2(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
  protected:
@@ -213,7 +210,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void throws_function2T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1);
  public:
-
   virtual void throws_function3(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const ::std::string& param2);
   virtual void throws_function3(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const ::std::string& param2);
  protected:
@@ -278,7 +274,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void throws_function3T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const ::std::string& param2);
  public:
-
   virtual void oneway_void_ret(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void oneway_void_ret(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -325,7 +320,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void oneway_void_retT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
  protected:
@@ -372,7 +366,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
  public:
-
   virtual void oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2);
   virtual void oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2);
  protected:
@@ -419,7 +412,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void oneway_void_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2);
  public:
-
   virtual void oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
   virtual void oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
  protected:
@@ -466,7 +458,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   template <typename Protocol_>
   void oneway_void_ret_struct_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::MyStruct& param1);
  public:
-
   virtual void oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1);
   virtual void oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1);
  protected:

@@ -27,7 +27,6 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-
   virtual void f(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void f(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:

@@ -29,7 +29,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-
   virtual void noReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void noReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -83,7 +82,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void noReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void boolReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void boolReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -148,7 +146,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void boolReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void i16Return(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void i16Return(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -213,7 +210,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void i16ReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void i32Return(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void i32Return(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -278,7 +274,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void i32ReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void i64Return(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void i64Return(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -343,7 +338,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void i64ReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void floatReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void floatReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -408,7 +402,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void floatReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void doubleReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doubleReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -473,7 +466,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void doubleReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void stringReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void stringReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -538,7 +530,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void stringReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void binaryReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void binaryReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -603,7 +594,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void binaryReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void mapReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void mapReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -668,7 +658,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void mapReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void simpleTypedefReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void simpleTypedefReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -733,7 +722,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void simpleTypedefReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void complexTypedefReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void complexTypedefReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -798,7 +786,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void complexTypedefReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -863,7 +850,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void list_mostComplexTypedefReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void enumReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void enumReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -928,7 +914,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void enumReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void list_EnumReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void list_EnumReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -993,7 +978,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void list_EnumReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void structReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void structReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -1058,7 +1042,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void structReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void set_StructReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void set_StructReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -1123,7 +1106,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void set_StructReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void unionReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void unionReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -1188,7 +1170,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void unionReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void list_UnionReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void list_UnionReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -1253,7 +1234,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void list_UnionReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void readDataEb(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
   virtual void readDataEb(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
  protected:
@@ -1318,7 +1298,6 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void readDataEbT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t size);
  public:
-
   virtual void readData(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
   virtual void readData(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
  protected:

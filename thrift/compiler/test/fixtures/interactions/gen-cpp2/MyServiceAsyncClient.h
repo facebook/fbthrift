@@ -40,9 +40,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   }
 
 
-private:
-  virtual void frobnicate(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
@@ -81,9 +79,7 @@ private:
   template <typename Protocol_>
   void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-private:
-  virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
@@ -120,9 +116,7 @@ private:
   template <typename Protocol_>
   void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-private:
-  virtual void truthify(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void truthifyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
  public:
@@ -186,9 +180,7 @@ private:
   }
 
 
-private:
-  virtual void frobnicate(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
@@ -227,9 +219,7 @@ private:
   template <typename Protocol_>
   void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-private:
-  virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
@@ -266,9 +256,7 @@ private:
   template <typename Protocol_>
   void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-private:
-  virtual void truthify(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ void truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
   void truthifyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
  public:
@@ -324,7 +312,6 @@ private:
 };
   MyInteraction createMyInteraction();
   MyInteractionFast createMyInteractionFast();
-
   virtual void foo(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void foo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:

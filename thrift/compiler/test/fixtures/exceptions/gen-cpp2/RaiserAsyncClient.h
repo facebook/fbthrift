@@ -27,7 +27,6 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-
   virtual void doBland(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doBland(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -81,7 +80,6 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void doRaise(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void doRaise(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -135,7 +133,6 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void doRaiseT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void get200(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get200(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
@@ -200,7 +197,6 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void get200T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-
   virtual void get500(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void get500(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:

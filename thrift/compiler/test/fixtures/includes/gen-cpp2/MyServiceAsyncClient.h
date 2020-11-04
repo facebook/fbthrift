@@ -29,7 +29,6 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-
   virtual void query(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  protected:
@@ -83,7 +82,6 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void queryT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  public:
-
   virtual void has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
  protected:

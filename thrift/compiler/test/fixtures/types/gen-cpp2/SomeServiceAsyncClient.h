@@ -28,7 +28,6 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 
 
-
   virtual void bounce_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
   virtual void bounce_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
  protected:
@@ -93,7 +92,6 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void bounce_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
  public:
-
   virtual void binary_keyed_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& r);
   virtual void binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& r);
  protected:
