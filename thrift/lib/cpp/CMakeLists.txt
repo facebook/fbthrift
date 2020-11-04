@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
 
 add_library(
   thrift-core
@@ -48,27 +47,6 @@ target_link_libraries(
     Folly::folly
     ${LIBGFLAGS_LIBRARY}
     ${GLOG_LIBRARIES}
-)
-
-bypass_source_check("${reflection-cpp2-SOURCES}")
-add_library(
-  protocol
-
-  protocol/TDebugProtocol.cpp
-  protocol/TJSONProtocol.cpp
-  protocol/TBase64Utils.cpp
-  protocol/TProtocolException.cpp
-  protocol/TSimpleJSONProtocol.cpp
-  ${reflection-cpp2-SOURCES}
-)
-add_dependencies(protocol reflection-cpp2-target)
-target_link_libraries(
-  protocol
-  PUBLIC
-    fmt::fmt
-    Folly::folly
-    ${GLOG_LIBRARIES}
-    thrift-core
 )
 
 add_library(
@@ -135,7 +113,7 @@ target_link_libraries(
   INTERFACE
     async
     concurrency
-    protocol
+    thriftprotocol
     transport
     Folly::folly
     ${GLOG_LIBRARIES}
@@ -157,7 +135,7 @@ endforeach()
 
 if (BUILD_SHARED_LIBS)
   # all but thrift since it's an interface
-  set_target_properties(thrift-core concurrency protocol transport async
+  set_target_properties(thrift-core concurrency transport async
     PROPERTIES VERSION ${PROJECT_VERSION}
     )
 endif()
@@ -166,7 +144,6 @@ install(
   TARGETS
     thrift-core
     concurrency
-    protocol
     transport
     async
     thrift

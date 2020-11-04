@@ -27,6 +27,7 @@ set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
+get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
 
 bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
@@ -74,6 +75,7 @@ target_link_libraries(
     Folly::folly
 )
 
+bypass_source_check("${reflection-cpp2-SOURCES}")
 add_library(
   thriftprotocol
 
@@ -85,13 +87,24 @@ add_library(
   protocol/JSONProtocol.cpp
   protocol/Serializer.cpp
   protocol/VirtualProtocol.cpp
+
+  ../cpp/protocol/TDebugProtocol.cpp
+  ../cpp/protocol/TJSONProtocol.cpp
+  ../cpp/protocol/TBase64Utils.cpp
+  ../cpp/protocol/TProtocolException.cpp
+  ../cpp/protocol/TSimpleJSONProtocol.cpp
+  ${reflection-cpp2-SOURCES}
 )
+add_dependencies(thriftprotocol reflection-cpp2-target)
 target_link_libraries(
   thriftprotocol
   PUBLIC
+    fmt::fmt
     thrift
     Folly::folly
     wangle::wangle
+    ${GLOG_LIBRARIES}
+    thrift-core
 )
 
 add_library(
