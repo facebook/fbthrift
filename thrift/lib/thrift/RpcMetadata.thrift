@@ -141,10 +141,8 @@ struct RequestRpcMetadata {
   // Any frequently used key-value pair in this map should be replaced
   // by a field in this struct.
   8: optional map<string, string> otherMetadata;
-  // The host supporting the RPC.  Needed for some HTTP2 transports.
-  9: optional string host;
-  // The URL supporting the RPC.  Needed for some HTTP2 transports.
-  10: optional string url;
+  // 9: Deprecated
+  // 10: Deprecated
   // The CRC32C of the RPC message.
   11: optional i32 (cpp.type = "std::uint32_t") crc32c;
   12: optional i64 (cpp.type = "std::uint64_t") flags;

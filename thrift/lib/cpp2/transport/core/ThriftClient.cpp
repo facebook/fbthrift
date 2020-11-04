@@ -102,36 +102,38 @@ void ThriftClient::sendRequestNoResponse(
       std::move(cb));
 }
 
-std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
+std::unique_ptr<ThriftChannelIf::RequestMetadata>
+ThriftClient::createRequestMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
     apache::thrift::ProtocolId protocolId,
     THeader* header) {
-  auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->protocol_ref() = protocolId;
-  metadata->kind_ref() = kind;
+  auto requestMetadata = std::make_unique<ThriftChannelIf::RequestMetadata>();
+  auto& metadata = requestMetadata->requestRpcMetadata;
+  metadata.protocol_ref() = protocolId;
+  metadata.kind_ref() = kind;
   if (!httpHost_.empty()) {
-    metadata->host_ref() = httpHost_;
+    requestMetadata->host = httpHost_;
   }
   if (!httpUrl_.empty()) {
-    metadata->url_ref() = httpUrl_;
+    requestMetadata->url = httpUrl_;
   }
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    metadata->clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
+    metadata.clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
   } else {
-    metadata->clientTimeoutMs_ref() = kDefaultRpcTimeout.count();
+    metadata.clientTimeoutMs_ref() = kDefaultRpcTimeout.count();
   }
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
-    metadata->queueTimeoutMs_ref() = rpcOptions.getQueueTimeout().count();
+    metadata.queueTimeoutMs_ref() = rpcOptions.getQueueTimeout().count();
   }
   if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
-    metadata->priority_ref() =
+    metadata.priority_ref() =
         static_cast<RpcPriority>(rpcOptions.getPriority());
   }
   if (header->getCrc32c().has_value()) {
-    metadata->crc32c_ref() = header->getCrc32c().value();
+    metadata.crc32c_ref() = header->getCrc32c().value();
   }
-  auto otherMetadata = metadata->otherMetadata_ref();
+  auto otherMetadata = metadata.otherMetadata_ref();
   otherMetadata = header->releaseWriteHeaders();
   auto* eh = header->getExtraWriteHeaders();
   if (eh) {
@@ -147,7 +149,7 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
   if (otherMetadata->empty()) {
     otherMetadata.reset();
   }
-  return metadata;
+  return requestMetadata;
 }
 
 void ThriftClient::sendRequestHelper(
@@ -159,7 +161,7 @@ void ThriftClient::sendRequestHelper(
   DestructorGuard dg(this);
   auto callbackEvb =
       cb->isInlineSafe() ? connection_->getEventBase() : callbackEvb_;
-  auto metadata = createRequestRpcMetadata(
+  auto metadata = createRequestMetadata(
       rpcOptions,
       kind,
       static_cast<apache::thrift::ProtocolId>(protocolId_),
@@ -168,7 +170,8 @@ void ThriftClient::sendRequestHelper(
       callbackEvb,
       kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       std::move(cb),
-      std::chrono::milliseconds(metadata->clientTimeoutMs_ref().value_or(0)));
+      std::chrono::milliseconds(
+          metadata->requestRpcMetadata.clientTimeoutMs_ref().value_or(0)));
   auto conn = connection_;
   connection_->getEventBase()->runInEventBaseThread([conn = std::move(conn),
                                                      metadata =
@@ -183,7 +186,7 @@ void ThriftClient::sendRequestHelper(
 
 void ThriftClient::getChannelAndSendThriftRequest(
     ClientConnectionIf* connection,
-    RequestRpcMetadata&& metadata,
+    ThriftChannelIf::RequestMetadata&& metadata,
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(connection->getEventBase()->isInEventBaseThread());

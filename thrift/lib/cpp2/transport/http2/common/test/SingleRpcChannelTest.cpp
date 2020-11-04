@@ -249,9 +249,9 @@ folly::Future<RequestState> sendRequest(
   // Send a bad request.
   evb.runInEventBaseThread(
       [&channel, url = std::move(url), cb = std::move(cb)]() mutable {
-        RequestRpcMetadata metadata;
-        metadata.url_ref() = url;
-        metadata.kind_ref() =
+        ThriftChannelIf::RequestMetadata metadata;
+        metadata.url = url;
+        metadata.requestRpcMetadata.kind_ref() =
             ::apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
         channel.sendThriftRequest(
             std::move(metadata), folly::IOBuf::create(1), std::move(cb));

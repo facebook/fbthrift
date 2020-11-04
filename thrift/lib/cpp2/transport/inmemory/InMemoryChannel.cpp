@@ -48,11 +48,13 @@ void InMemoryChannel::sendThriftResponse(
 }
 
 void InMemoryChannel::sendThriftRequest(
-    RequestRpcMetadata&& metadata,
+    RequestMetadata&& requestMetadata,
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   CHECK(evb_->isInEventBaseThread());
   CHECK(payload);
+
+  auto& metadata = requestMetadata.requestRpcMetadata;
   {
     auto envelopeAndRequest =
         EnvelopeUtil::stripRequestEnvelope(std::move(payload));

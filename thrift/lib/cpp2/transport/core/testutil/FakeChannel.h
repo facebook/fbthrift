@@ -45,7 +45,7 @@ class FakeChannel : public ThriftChannelIf {
   }
 
   void sendThriftRequest(
-      RequestRpcMetadata&& /*metadata*/,
+      RequestMetadata&& /*metadata*/,
       std::unique_ptr<folly::IOBuf> /*payload*/,
       std::unique_ptr<ThriftClientCallback> /*callback*/) noexcept override {
     LOG(FATAL) << "sendThriftRequest() unused in this fake object.";

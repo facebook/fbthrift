@@ -101,9 +101,10 @@ void SingleRpcChannel::sendThriftResponse(
 }
 
 void SingleRpcChannel::sendThriftRequest(
-    RequestRpcMetadata&& metadata,
+    RequestMetadata&& requestMetadata,
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
+  auto& metadata = requestMetadata.requestRpcMetadata;
   DCHECK(evb_->isInEventBaseThread());
   DCHECK(metadata.kind_ref());
   DCHECK(
@@ -127,12 +128,10 @@ void SingleRpcChannel::sendThriftRequest(
   }
   HTTPMessage msg;
   msg.setMethod(HTTPMethod::POST);
-  auto url = metadata.url_ref();
-  msg.setURL(url ? *url : std::string());
+  msg.setURL(std::move(requestMetadata.url));
   auto& msgHeaders = msg.getHeaders();
   msgHeaders.set(
-      HTTPHeaderCode::HTTP_HEADER_HOST,
-      metadata.host_ref() ? *metadata.host_ref() : std::string());
+      HTTPHeaderCode::HTTP_HEADER_HOST, std::move(requestMetadata.host));
   msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
   msgHeaders.set(
       HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift");
@@ -263,7 +262,8 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     sendThriftErrorResponse("Proxygen stream has no body");
     return;
   }
-  RequestRpcMetadata metadata;
+  RequestMetadata requestMetadata;
+  auto& metadata = requestMetadata.requestRpcMetadata;
   {
     auto envelopeAndRequest =
         EnvelopeUtil::stripRequestEnvelope(std::move(contents_));

@@ -48,6 +48,12 @@ class ThriftClientCallback;
  */
 class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
  public:
+  struct RequestMetadata {
+    RequestRpcMetadata requestRpcMetadata;
+    std::string host;
+    std::string url;
+  };
+
   ThriftChannelIf() {}
 
   virtual ~ThriftChannelIf() = default;
@@ -76,7 +82,7 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   // "callback" must not be destroyed until it has received the call
   // back to "onThriftResponse()".
   virtual void sendThriftRequest(
-      RequestRpcMetadata&& metadata,
+      RequestMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept = 0;
 
