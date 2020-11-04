@@ -141,8 +141,6 @@ using disable_if_smart_pointer =
 // read/write/serializedSize(ZC) methods.
 template <typename Type, protocol::TType TTypeValue>
 struct legacy_fallback_methods {
-  constexpr static protocol::TType ttype_value = TTypeValue;
-
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     Cpp2Ops<Type>::read(&protocol, &out);
@@ -171,8 +169,6 @@ struct protocol_methods<
     typename apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
   using value_type = typename PtrType::element_type;
   using type_methods = protocol_methods<TypeClass, value_type>;
-
-  constexpr static protocol::TType ttype_value = type_methods::ttype_value;
 
   template <typename Protocol>
   static void read(Protocol& protocol, PtrType& out) {
@@ -206,8 +202,6 @@ struct protocol_methods<type_class::enumeration, Type>
 // Lists
 template <typename ElemClass, typename Type>
 struct protocol_methods<type_class::list<ElemClass>, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_LIST;
-
   using elem_type = typename Type::value_type;
   using elem_ttype = protocol_type<ElemClass, elem_type>;
 
@@ -283,8 +277,6 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
 // Sets
 template <typename ElemClass, typename Type>
 struct protocol_methods<type_class::set<ElemClass>, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_SET;
-
   // TODO: fair amount of shared code bewteen this and specialization for
   // type_class::list
   using elem_type = typename Type::value_type;
@@ -355,8 +347,6 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
 // Maps
 template <typename KeyClass, typename MappedClass, typename Type>
 struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_MAP;
-
   using key_type =
       folly::remove_cvref_t<decltype(std::declval<Type>().begin()->first)>;
   using mapped_type =
@@ -554,8 +544,6 @@ struct deref<PtrType, enable_if_smart_pointer<PtrType>> {
 // specialization for variants (Thrift unions)
 template <typename Union>
 struct protocol_methods<type_class::variant, Union> {
-  constexpr static protocol::TType ttype_value = protocol::T_STRUCT; // overlaps
-
   using traits = fatal::variant_traits<Union>;
   using enum_traits = fatal::enum_traits<typename traits::id>;
 
@@ -775,8 +763,6 @@ struct protocol_methods<type_class::variant, Union> {
 // specialization for structs
 template <typename Struct>
 struct protocol_methods<type_class::structure, Struct> {
-  constexpr static protocol::TType ttype_value = protocol::T_STRUCT;
-
  private:
   using traits = apache::thrift::reflect_struct<Struct>;
 
@@ -828,7 +814,7 @@ struct protocol_methods<type_class::structure, Struct> {
 
       using member_type = folly::remove_cvref_t<decltype(getter{}(obj))>;
 
-      if (ftype == protocol_method::ttype_value) {
+      if (ftype == protocol_type_of_v<member>) {
         apache::thrift::detail::mark_isset<
             folly::to_underlying(member::optional::value),
             required_fields,

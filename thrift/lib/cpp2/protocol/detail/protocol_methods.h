@@ -286,8 +286,6 @@ template <typename TypeClass, typename Type, typename Enable = void>
 struct protocol_methods;
 
 #define THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(Class, Type, Method)      \
-  constexpr static protocol::TType ttype_value =                             \
-      protocol_type_v<type_class::Class, Type>;                              \
   template <typename Protocol>                                               \
   static void read(Protocol& protocol, Type& out) {                          \
     protocol.read##Method(out);                                              \
@@ -311,8 +309,6 @@ struct protocol_methods;
   }
 
 // stamp out specializations for primitive types
-// TODO: Perhaps change ttype_value to a static constexpr member function, as
-// those might instantiate faster than a constexpr objects
 #define THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(Class, Type, Method) \
   template <>                                                          \
   struct protocol_methods<type_class::Class, Type> {                   \
@@ -328,8 +324,6 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64);
 // Macros for defining protocol_methods for unsigned integers
 // Need special macros due to the casts needed
 #define THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI(Class, Type, Method)          \
-  constexpr static protocol::TType ttype_value =                             \
-      protocol_type_v<type_class::Class, Type>;                              \
   using SignedType = std::make_signed_t<Type>;                               \
   template <typename Protocol>                                               \
   static void read(Protocol& protocol, Type& out) {                          \
@@ -358,8 +352,6 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64);
   }
 
 // stamp out specializations for unsigned integer primitive types
-// TODO: Perhaps change ttype_value to a static constexpr member function, as
-// those might instantiate faster than a constexpr objects
 #define THRIFT_PROTOCOL_METHODS_REGISTER_UI(Class, Type, Method) \
   template <>                                                    \
   struct protocol_methods<type_class::Class, Type> {             \
@@ -431,8 +423,6 @@ struct protocol_methods<type_class::binary, Type> {
  */
 template <typename Type>
 struct protocol_methods<type_class::enumeration, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_I32;
-
   // Thrift enums are always read as int32_t
   using int_type = std::int32_t;
   using int_methods = protocol_methods<type_class::integral, int_type>;
@@ -472,8 +462,6 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   static_assert(
       !std::is_same<ElemClass, type_class::unknown>(),
       "Unable to serialize unknown list element");
-
-  constexpr static protocol::TType ttype_value = protocol::T_LIST;
 
   using elem_type = typename Type::value_type;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
@@ -558,8 +546,6 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   static_assert(
       !std::is_same<ElemClass, type_class::unknown>(),
       "Unable to serialize unknown type");
-
-  constexpr static protocol::TType ttype_value = protocol::T_SET;
 
   using elem_type = typename Type::value_type;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
@@ -659,8 +645,6 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   static_assert(
       !std::is_same<MappedClass, type_class::unknown>(),
       "Unable to serialize unknown mapped type in map");
-
-  constexpr static protocol::TType ttype_value = protocol::T_MAP;
 
   using key_type = typename Type::key_type;
   using mapped_type = typename Type::mapped_type;
@@ -779,9 +763,6 @@ struct protocol_methods<indirection_tag<ElemClass, Indirection>, Type> {
       std::remove_reference_t<folly::invoke_result_t<indirection, Type&>>;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
 
-  // Forward the ttype_value from the internal element
-  constexpr static protocol::TType ttype_value = elem_methods::ttype_value;
-
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     elem_methods::read(protocol, indirection{}(out));
@@ -809,8 +790,6 @@ struct protocol_methods<indirection_tag<ElemClass, Indirection>, Type> {
  */
 template <typename Type>
 struct protocol_methods<type_class::structure, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_STRUCT;
-
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     Cpp2Ops<Type>::read(&protocol, &out);
