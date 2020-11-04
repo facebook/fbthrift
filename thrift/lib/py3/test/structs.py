@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 import copy
 import math
 import unittest
@@ -87,20 +89,20 @@ class StructTests(unittest.TestCase):
 
     def test_optional_struct_creation(self) -> None:
         with self.assertRaises(TypeError):
-            easy(1, [1, 1], "test", Integers(tiny=1))  # type: ignore
+            # pyre-fixme[19]: Expected 0 positional arguments.
+            easy(1, [1, 1], "test", Integers(tiny=1))
         easy(val=1, an_int=Integers(small=500))
         with self.assertRaises(TypeError):
-            easy(name=b"binary")  # type: ignore
+            # pyre-fixme[6]: Expected `Optional[str]` for 1st param but got `bytes`.
+            easy(name=b"binary")
         # Only Required Fields don't accept None
         easy(val=5, an_int=None)
 
     def test_required_fields_not_enforced(self) -> None:
         # None is not acceptable as a string
-        hard(  # type: ignore
-            val=1, val_list=[1, 2], name=None, an_int=Integers(small=1)
-        )
+        hard(val=1, val_list=[1, 2], name=None, an_int=Integers(small=1))
 
-        hard(val=1, val_list=[1, 2])  # type: ignore
+        hard(val=1, val_list=[1, 2])
 
     def test_call_replace(self) -> None:
         x = easy(val=1, an_int=Integers(small=300), name="foo")
@@ -128,22 +130,32 @@ class StructTests(unittest.TestCase):
     def test_runtime_checks(self) -> None:
         x = Runtime()
         with self.assertRaises(TypeError):
-            x(bool_val=5)  # type: ignore
+            # pyre-fixme[6]: Expected `Union[None, bool, thrift.py3.types.__NotSet]`
+            #  for 1st param but got `int`.
+            x(bool_val=5)
 
         with self.assertRaises(TypeError):
-            Runtime(bool_val=5)  # type: ignore
+            # pyre-fixme[6]: Expected `Optional[bool]` for 1st param but got `int`.
+            Runtime(bool_val=5)
 
         with self.assertRaises(TypeError):
-            x(enum_val=2)  # type: ignore
+            # pyre-fixme[6]: Expected `Union[None, Color,
+            #  thrift.py3.types.__NotSet]` for 1st param but got `int`.
+            x(enum_val=2)
 
         with self.assertRaises(TypeError):
-            Runtime(enum_val=2)  # type: ignore
+            # pyre-fixme[6]: Expected `Optional[Color]` for 1st param but got `int`.
+            Runtime(enum_val=2)
 
         with self.assertRaises(TypeError):
-            x(int_list_val=["foo", "bar", "baz"])  # type: ignore
+            # pyre-fixme[6]: Expected `Union[None, typing.Sequence[int],
+            #  thrift.py3.types.__NotSet]` for 1st param but got `List[str]`.
+            x(int_list_val=["foo", "bar", "baz"])
 
         with self.assertRaises(TypeError):
-            Runtime(int_list_val=["foo", "bar", "baz"])  # type: ignore
+            # pyre-fixme[6]: Expected `Optional[typing.Sequence[int]]` for 1st param
+            #  but got `List[str]`.
+            Runtime(int_list_val=["foo", "bar", "baz"])
 
     def test_reserved(self) -> None:
         x = Reserved(
@@ -213,11 +225,12 @@ class NumericalConversionsTests(unittest.TestCase):
 
     def test_float_to_int_required_field(self) -> None:
         with self.assertRaises(TypeError):
-            numerical(req_int_val=math.pi, req_float_val=math.pi)  # type: ignore
+            # pyre-fixme[6]: Expected `Optional[int]` for 1st param but got `float`.
+            numerical(req_int_val=math.pi, req_float_val=math.pi)
 
     def test_float_to_int_unqualified_field(self) -> None:
         with self.assertRaises(TypeError):
-            numerical(  # type: ignore
+            numerical(
                 req_int_val=5,
                 req_float_val=math.pi,
                 # pyre-fixme[6]: Expected `Optional[int]` for 3rd param but got `float`.
@@ -229,5 +242,7 @@ class NumericalConversionsTests(unittest.TestCase):
             numerical(
                 req_int_val=5,
                 req_float_val=math.pi,
-                int_list=[math.pi, math.e],  # type: ignore
+                # pyre-fixme[6]: Expected `Optional[typing.Sequence[int]]` for 3rd
+                #  param but got `List[float]`.
+                int_list=[math.pi, math.e],
             )

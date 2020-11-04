@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 import asyncio
 import pickle
 import unittest
@@ -72,20 +74,27 @@ class SerializerTests(unittest.TestCase):
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
-            serialize(None, Protocol.JSON)  # type: ignore
+            # pyre-fixme[6]: Expected `sT` for 1st param but got `None`.
+            serialize(None, Protocol.JSON)
 
     def test_sanity(self) -> None:
         with self.assertRaises(TypeError):
-            serialize(1, Protocol.COMPACT)  # type: ignore
+            # pyre-fixme[6]: Expected `sT` for 1st param but got `int`.
+            serialize(1, Protocol.COMPACT)
 
         with self.assertRaises(TypeError):
-            serialize(easy(), None)  # type: ignore
+            # pyre-fixme[6]: Expected `Protocol` for 2nd param but got `None`.
+            serialize(easy(), None)
 
         with self.assertRaises(TypeError):
-            deserialize(Protocol, b"")  # type: ignore
+            # pyre-fixme[6]: Expected `Type[Variable[thrift.py3.serializer.sT (bound
+            #  to Struct)]]` for 1st param but got `Type[Protocol]`.
+            deserialize(Protocol, b"")
 
         with self.assertRaises(TypeError):
-            deserialize(easy, Protocol)  # type: ignore
+            # pyre-fixme[6]: Expected `Union[bytearray, bytes, folly.iobuf.IOBuf,
+            #  memoryview]` for 2nd param but got `Type[Protocol]`.
+            deserialize(easy, Protocol)
 
     def test_from_thread_pool(self) -> None:
         control = easy(val=5, val_list=[1, 2, 3, 4])
@@ -123,7 +132,6 @@ class SerializerTests(unittest.TestCase):
 
     def pickle_round_robin(
         self,
-        # pyre-fixme[2]: Parameter annotation cannot contain `Any`.
         control: Union[Struct, Mapping[Any, Any], Sequence[Any], AbstractSet[Any]],
     ) -> None:
         encoded = pickle.dumps(control, protocol=pickle.HIGHEST_PROTOCOL)

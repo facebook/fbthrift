@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 import itertools
 import unittest
 
@@ -31,7 +33,9 @@ class ListTests(unittest.TestCase):
 
     def test_list_of_None(self) -> None:
         with self.assertRaises(TypeError):
-            I32List([None, None, None])  # type: ignore
+            # pyre-fixme[6]: Expected `Optional[typing.Sequence[int]]` for 1st param
+            #  but got `List[None]`.
+            I32List([None, None, None])
 
     def test_list_creation_with_list_items(self) -> None:
         a = ["one", "two", "three"]
@@ -40,7 +44,10 @@ class ListTests(unittest.TestCase):
         d = ["I", "II", "III"]
         StrList2D([a, b, c, d])
         with self.assertRaises(TypeError):
-            StrList2D([a, [None]])  # type: ignore
+            # pyre-fixme[6]: Expected
+            #  `Optional[typing.Sequence[typing.Sequence[str]]]` for 1st param but got
+            #  `List[typing.Union[typing.List[None], typing.List[str]]]`.
+            StrList2D([a, [None]])
 
     def test_list_add(self) -> None:
         other_list = [99, 88, 77, 66, 55]
@@ -54,13 +61,15 @@ class ListTests(unittest.TestCase):
         new_list = other_list + int_list
         self.assertIsInstance(new_list, list)
         self.assertEquals(new_list, list(itertools.chain(other_list, int_list)))
-        new_list = tuple(other_list) + int_list  # type: ignore
+        new_list = tuple(other_list) + int_list
         self.assertIsInstance(new_list, tuple)
 
     def test_list_creation(self) -> None:
         I32List(range(10))
         with self.assertRaises(TypeError):
-            I32List([1, "b", "c", "four"])  # type: ignore
+            # pyre-fixme[6]: Expected `Optional[typing.Sequence[int]]` for 1st param
+            #  but got `List[typing.Union[int, str]]`.
+            I32List([1, "b", "c", "four"])
 
     def test_hashability(self) -> None:
         hash(easy().val_list)

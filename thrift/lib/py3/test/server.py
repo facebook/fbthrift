@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 import asyncio
 import sys
 import types
@@ -119,7 +121,8 @@ class ServicesTests(unittest.TestCase):
         # Create a broken client
         h = Handler()
         loop = asyncio.get_event_loop()
-        coro = h.invert(RequestContext(), False)  # type: ignore
+        # pyre-fixme[19]: Expected 1 positional argument.
+        coro = h.invert(RequestContext(), False)
         value = loop.run_until_complete(coro)
         self.assertTrue(value)
 

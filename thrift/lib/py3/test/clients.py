@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 import asyncio
 import errno
 import os
@@ -39,8 +41,7 @@ async def bad_client_connect() -> None:
 
 
 class ThriftClientTestProxy:  # noqa: B903
-    def __init__(self, inner) -> None:  # type: ignore
-        # pyre-fixme[4]: Attribute must be annotated.
+    def __init__(self, inner) -> None:
         self.inner = inner
 
 
@@ -69,22 +70,28 @@ class ClientTests(unittest.TestCase):
         client = TestingService()
         with self.assertRaises(TypeError):
             # missing argument
-            client.take_it_easy(9)  # type: ignore
+            # pyre-fixme[20]: Argument `what` expected.
+            client.take_it_easy(9)
         with self.assertRaises(TypeError):
             # Should be an easy type
-            client.take_it_easy(9, None)  # type: ignore
+            # pyre-fixme[6]: Expected `easy` for 2nd param but got `None`.
+            client.take_it_easy(9, None)
         with self.assertRaises(TypeError):
             # Should not be None
-            client.takes_a_list(None)  # type: ignore
+            # pyre-fixme[6]: Expected `Sequence[int]` for 1st param but got `None`.
+            client.takes_a_list(None)
         with self.assertRaises(TypeError):
             # Should be a bool
-            client.invert(None)  # type: ignore
+            # pyre-fixme[6]: Expected `bool` for 1st param but got `None`.
+            client.invert(None)
         with self.assertRaises(TypeError):
             # None is not a Color
-            client.pick_a_color(None)  # type: ignore
+            # pyre-fixme[6]: Expected `Color` for 1st param but got `None`.
+            client.pick_a_color(None)
         with self.assertRaises(TypeError):
             # None is not an int
-            client.take_it_easy(None, easy())  # type: ignore
+            # pyre-fixme[6]: Expected `int` for 1st param but got `None`.
+            client.take_it_easy(None, easy())
 
     def test_bad_unix_domain_socket_raises_TransportError_on_connection(self) -> None:
         with tempfile.TemporaryDirectory() as tempdir, socket.socket(
@@ -146,19 +153,23 @@ class ClientTests(unittest.TestCase):
             # This is safe because we do type checks before we touch
             # state checks
             loop.run_until_complete(
-                client.takes_a_list([1, "b", "three"])  # type: ignore
+                # pyre-fixme[6]: Expected `Sequence[int]` for 1st param but got
+                #  `Sequence[typing.Union[int, str]]`.
+                client.takes_a_list([1, "b", "three"])
             )
 
     def test_rpc_non_container_types(self) -> None:
         client = TestingService()
         with self.assertRaises(TypeError):
-            client.complex_action(b"foo", "bar", "nine", fourth="baz")  # type: ignore
+            # pyre-fixme[6]: Expected `str` for 1st param but got `bytes`.
+            client.complex_action(b"foo", "bar", "nine", fourth="baz")
 
     def test_rpc_enum_args(self) -> None:
         client = TestingService()
         loop = asyncio.get_event_loop()
         with self.assertRaises(TypeError):
-            loop.run_until_complete(client.pick_a_color(0))  # type: ignore
+            # pyre-fixme[6]: Expected `Color` for 1st param but got `int`.
+            loop.run_until_complete(client.pick_a_color(0))
 
         with self.assertRaises(asyncio.InvalidStateError):
             loop.run_until_complete(client.pick_a_color(Color.red))
@@ -191,7 +202,8 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(get_proxy_factory(), None)
 
         # Should be able to assign/get a test factory
-        install_proxy_factory(ThriftClientTestProxy)  # type: ignore
+        # pyre-fixme[6]: Expected `Optional[typing.Callable[[typing.Type[thrift.py3.c...
+        install_proxy_factory(ThriftClientTestProxy)
         self.assertEqual(get_proxy_factory(), ThriftClientTestProxy)
 
         # Should be able to unhook a factory
@@ -202,7 +214,6 @@ class ClientTests(unittest.TestCase):
         loop = asyncio.get_event_loop()
         test_helper = ClientEventHandlerTestHelper()
 
-        # pyre-fixme[53]: Captured variable `test_helper` is not annotated.
         async def test() -> None:
             self.assertFalse(test_helper.is_handler_called())
             async with test_helper.get_client(TestingService, port=1) as cli:
@@ -225,7 +236,8 @@ class RpcOptionsTests(unittest.TestCase):
         self.assertIn("test", headers)
         self.assertEqual(headers["test"], "test")
         with self.assertRaises(TypeError):
-            options.set_header("count", 1)  # type: ignore
+            # pyre-fixme[6]: Expected `str` for 2nd param but got `int`.
+            options.set_header("count", 1)
 
     def test_timeout(self) -> None:
         options = RpcOptions()
@@ -235,7 +247,8 @@ class RpcOptionsTests(unittest.TestCase):
         options.chunk_timeout = options.queue_timeout = options.timeout
         self.assertEqual(options.chunk_timeout, options.queue_timeout)
         with self.assertRaises(TypeError):
-            options.timeout = "1"  # type: ignore
+            # pyre-fixme[8]: Attribute has type `float`; used as `str`.
+            options.timeout = "1"
 
     def test_priority(self) -> None:
         options = RpcOptions()
@@ -243,7 +256,8 @@ class RpcOptionsTests(unittest.TestCase):
         options.priority = Priority.HIGH
         self.assertEquals(options.priority, Priority.HIGH)
         with self.assertRaises(TypeError):
-            options.priority = 1  # type: ignore
+            # pyre-fixme[8]: Attribute has type `Priority`; used as `int`.
+            options.priority = 1
 
     def test_chunk_buffer_size(self) -> None:
         options = RpcOptions()
@@ -251,4 +265,5 @@ class RpcOptionsTests(unittest.TestCase):
         options.chunk_buffer_size = 200
         self.assertEquals(options.chunk_buffer_size, 200)
         with self.assertRaises(TypeError):
-            options.chunk_buffer_size = "1"  # type: ignore
+            # pyre-fixme[8]: Attribute has type `int`; used as `str`.
+            options.chunk_buffer_size = "1"
