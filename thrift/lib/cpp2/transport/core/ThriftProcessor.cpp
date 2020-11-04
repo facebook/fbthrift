@@ -46,8 +46,7 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(cpp2Processor_);
 
   bool invalidMetadata =
-      !(metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref() &&
-        metadata.seqId_ref());
+      !(metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref());
 
   bool invalidChecksum = metadata.crc32c_ref() &&
       *metadata.crc32c_ref() != apache::thrift::checksum::crc32c(*payload);
