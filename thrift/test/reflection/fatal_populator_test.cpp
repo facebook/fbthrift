@@ -88,5 +88,55 @@ TYPED_TEST(MultiProtocolTest, test_unions_populate) {
     ASSERT_EQ(a, b);
   }
 }
+
+TYPED_TEST(MultiProtocolTest, test_populating_optional_fields_p0) {
+  std::mt19937 rng;
+  populator_opts opts;
+  opts.optional_field_prob = 0;
+
+  uint32_t set_count = 0;
+  for (int i = 0; i < 100; i++) {
+    nested1 t;
+    populator::populate(t, opts, rng);
+    if (t.nfield00_ref().has_value()) {
+      set_count++;
+    }
+  }
+  ASSERT_EQ(0, set_count);
+}
+
+TYPED_TEST(MultiProtocolTest, test_populating_optional_fields_p30) {
+  std::mt19937 rng;
+  populator_opts opts;
+  opts.optional_field_prob = 0.3;
+
+  uint32_t set_count = 0;
+  for (int i = 0; i < 1000; i++) {
+    nested1 t;
+    populator::populate(t, opts, rng);
+    if (t.nfield00_ref().has_value()) {
+      set_count++;
+    }
+  }
+  // For 1000 samples, p=30%, confidence level 0.9999, Wilson confidence
+  // interval is [0.246945 , 0.359020]
+  ASSERT_NEAR(300, set_count, 60);
+}
+
+TYPED_TEST(MultiProtocolTest, test_populating_optional_fields_p100) {
+  std::mt19937 rng;
+  populator_opts opts;
+  opts.optional_field_prob = 1.0;
+
+  uint32_t set_count = 0;
+  for (int i = 0; i < 100; i++) {
+    nested1 t;
+    populator::populate(t, opts, rng);
+    if (t.nfield00_ref().has_value()) {
+      set_count++;
+    }
+  }
+  ASSERT_EQ(100, set_count);
+}
 } // namespace simple_cpp_reflection
 } // namespace test_cpp2

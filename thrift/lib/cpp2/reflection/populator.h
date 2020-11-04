@@ -52,9 +52,19 @@ struct populator_opts {
   range<> map_len = range<>(0, 0xFF);
   range<> bin_len = range<>(0, 0xFF);
   range<> str_len = range<>(0, 0xFF);
+  // Probability to use for populating optional fields.
+  float optional_field_prob = 0.0;
 };
 
 namespace detail {
+// generate a value with a Bernoulli distribution:
+// p is the probability of true, (1-p) for false
+template <typename Rng>
+bool get_bernoulli(Rng& rng, float p) {
+  std::bernoulli_distribution gen(p);
+  return gen(rng);
+}
+
 // generate a value of type Int within [range.min, range.max]
 template <typename Int, typename Rng>
 Int rand_in_range(Rng& rng, populator_opts::range<Int> const& range) {
@@ -376,7 +386,6 @@ struct populator_methods<type_class::structure, Struct> {
       typename TypeClass,
       typename MemberType,
       typename Methods,
-      optionality optional,
       typename Enable = void>
   struct field_populator;
 
@@ -385,14 +394,12 @@ struct populator_methods<type_class::structure, Struct> {
       typename Member,
       typename TypeClass,
       typename MemberType,
-      typename Methods,
-      optionality opt>
+      typename Methods>
   struct field_populator<
       Member,
       TypeClass,
       MemberType,
       Methods,
-      opt,
       detail::disable_if_smart_pointer<MemberType>> {
     template <typename Rng>
     static void
@@ -402,17 +409,12 @@ struct populator_methods<type_class::structure, Struct> {
   };
 
   // writer for default/required ref structs
-  template <
-      typename Member,
-      typename PtrType,
-      typename Methods,
-      optionality opt>
+  template <typename Member, typename PtrType, typename Methods>
   struct field_populator<
       Member,
       type_class::structure,
       PtrType,
       Methods,
-      opt,
       detail::enable_if_smart_pointer<PtrType>> {
     using struct_type = typename PtrType::element_type;
 
@@ -422,38 +424,8 @@ struct populator_methods<type_class::structure, Struct> {
       // if not present, and this isn't an optional field,
       // populate out an empty struct
       // TODO: always populate this field
-      field_populator<
-          Member,
-          type_class::structure,
-          struct_type,
-          Methods,
-          opt>::populate(rng, opts, detail::deref<PtrType>::clear_and_get(out));
-    }
-  };
-
-  // writer for optional ref structs
-  // 50/50 chance that they will be populated
-  template <typename Member, typename PtrType, typename Methods>
-  struct field_populator<
-      Member,
-      type_class::structure,
-      PtrType,
-      Methods,
-      optionality::optional,
-      detail::enable_if_smart_pointer<PtrType>> {
-    template <typename Rng>
-    static void populate(Rng& rng, populator_opts const& opts, PtrType& out) {
-      auto const range = populator_opts::range<>(0, 1);
-      if (detail::rand_in_range(rng, range)) {
-        field_populator<
-            Member,
-            type_class::structure,
-            PtrType,
-            Methods,
-            optionality::required>::populate(rng, opts, out);
-      } else {
-        out.reset();
-      }
+      field_populator<Member, type_class::structure, struct_type, Methods>::
+          populate(rng, opts, detail::deref<PtrType>::clear_and_get(out));
     }
   };
 
@@ -470,15 +442,24 @@ struct populator_methods<type_class::structure, Struct> {
       auto& got = typename Member::getter{}(out);
       using member_type = folly::remove_cvref_t<decltype(got)>;
 
+      // Popualate optional fields with `optional_field_prob` probability.
+      auto const skip = //
+          Member::optional::value == optionality::optional &&
+          !detail::get_bernoulli(rng, opts.optional_field_prob);
+      if (skip) {
+        return;
+      }
+
       DVLOG(3) << "populating member: "
                << fatal::z_data<typename Member::name>();
+
+      Member::mark_set(out, true);
 
       field_populator<
           Member,
           typename Member::type_class,
           member_type,
-          methods,
-          Member::optional::value>::populate(rng, opts, got);
+          methods>::populate(rng, opts, got);
     }
   };
 
