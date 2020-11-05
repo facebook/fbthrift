@@ -34,6 +34,10 @@ add_library(
   thriftmetadata
 
   ${metadata-cpp2-SOURCES}
+  gen/module_types_cpp.cpp
+  protocol/CompactProtocol.cpp # can't link against thriftprotocol, dep cycle
+  ../cpp/protocol/TProtocolException.cpp
+  ../cpp/util/VarintUtils.cpp
 )
 add_dependencies(thriftmetadata metadata-cpp2-target)
 target_link_libraries(
@@ -57,6 +61,7 @@ target_link_libraries(
   PUBLIC
     Folly::folly
     thriftmetadata
+    thriftprotocol
     ${GLOG_LIBRARIES}
     ${LIBGFLAGS_LIBRARY}
 )
@@ -67,6 +72,9 @@ add_library(
 
   ${RpcMetadata-cpp2-SOURCES}
   gen/module_types_cpp.cpp
+  protocol/CompactProtocol.cpp # can't link against thriftprotocol, dep cycle
+  ../cpp/protocol/TProtocolException.cpp
+  ../cpp/util/VarintUtils.cpp
 )
 add_dependencies(rpcmetadata RpcMetadata-cpp2-target)
 target_link_libraries(
@@ -93,6 +101,7 @@ add_library(
   ../cpp/protocol/TBase64Utils.cpp
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/protocol/TSimpleJSONProtocol.cpp
+  ../cpp/util/VarintUtils.cpp
   ${reflection-cpp2-SOURCES}
 )
 add_dependencies(thriftprotocol reflection-cpp2-target)

@@ -40,6 +40,7 @@ add_library(
   ast/t_typedef.cc
   ast/base_types.cc
   ast/t_scope.cc
+  ast/visitor.cc
 )
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES})
 
@@ -115,10 +116,12 @@ add_library(
 
   ${GENERATOR_FILES}
   $<TARGET_OBJECTS:compiler_generate_templates>
+  validator/validator.cc
 )
 target_link_libraries(
   compiler_generators
 
+  compiler_ast
   compiler_base
   compiler_lib
   mustache_lib
@@ -142,7 +145,6 @@ add_executable(
   compiler.cc
   mutator/mutator.cc
   validator/diagnostic.cc
-  validator/validator.cc
   ast/visitor.cc
 )
 target_link_libraries(
