@@ -252,14 +252,14 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_ping(?int $expectedsequenceid = null): void {
+  protected function recvImpl_ping(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('ping', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_ping_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_ping_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_ping_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_ping_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -345,14 +345,14 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_getRandomData(?int $expectedsequenceid = null): string {
+  protected function recvImpl_getRandomData(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('getRandomData', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_getRandomData_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_getRandomData_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_getRandomData_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_getRandomData_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -446,14 +446,14 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_hasDataById(?int $expectedsequenceid = null): bool {
+  protected function recvImpl_hasDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): bool {
     try {
       $this->eventHandler_->preRecv('hasDataById', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_hasDataById_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_hasDataById_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_hasDataById_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_hasDataById_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -547,14 +547,14 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_getDataById(?int $expectedsequenceid = null): string {
+  protected function recvImpl_getDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('getDataById', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_getDataById_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_getDataById_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_getDataById_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_getDataById_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -649,14 +649,14 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_putDataById(?int $expectedsequenceid = null): void {
+  protected function recvImpl_putDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('putDataById', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_putDataById_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_putDataById_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_putDataById_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_putDataById_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

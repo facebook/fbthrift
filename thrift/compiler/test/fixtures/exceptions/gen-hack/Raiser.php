@@ -212,14 +212,14 @@ trait RaiserClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_doBland(?int $expectedsequenceid = null): void {
+  protected function recvImpl_doBland(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('doBland', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_doBland_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_doBland_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_doBland_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_doBland_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -305,14 +305,14 @@ trait RaiserClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_doRaise(?int $expectedsequenceid = null): void {
+  protected function recvImpl_doRaise(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('doRaise', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_doRaise_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_doRaise_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_doRaise_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_doRaise_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -413,14 +413,14 @@ trait RaiserClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_get200(?int $expectedsequenceid = null): string {
+  protected function recvImpl_get200(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('get200', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_get200_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_get200_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_get200_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_get200_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -512,14 +512,14 @@ trait RaiserClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_get500(?int $expectedsequenceid = null): string {
+  protected function recvImpl_get500(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('get500', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_get500_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'Raiser_get500_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_get500_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'Raiser_get500_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

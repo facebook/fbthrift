@@ -113,14 +113,14 @@ trait BarClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_baz(?int $expectedsequenceid = null): string {
+  protected function recvImpl_baz(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('baz', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'Bar_baz_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'Bar_baz_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

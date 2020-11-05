@@ -108,14 +108,14 @@ trait TestServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_ping(?int $expectedsequenceid = null): int {
+  protected function recvImpl_ping(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
     try {
       $this->eventHandler_->preRecv('ping', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, '\hack_ns2\TestService_ping_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, '\hack_ns2\TestService_ping_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, '\hack_ns2\TestService_ping_result');
+        $result = \thrift_protocol_read_compact($this->input_, '\hack_ns2\TestService_ping_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

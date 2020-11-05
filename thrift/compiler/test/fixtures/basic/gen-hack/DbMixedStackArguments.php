@@ -134,14 +134,14 @@ trait DbMixedStackArgumentsClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_getDataByKey0(?int $expectedsequenceid = null): string {
+  protected function recvImpl_getDataByKey0(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('getDataByKey0', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'DbMixedStackArguments_getDataByKey0_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'DbMixedStackArguments_getDataByKey0_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'DbMixedStackArguments_getDataByKey0_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'DbMixedStackArguments_getDataByKey0_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -235,14 +235,14 @@ trait DbMixedStackArgumentsClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_getDataByKey1(?int $expectedsequenceid = null): string {
+  protected function recvImpl_getDataByKey1(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('getDataByKey1', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'DbMixedStackArguments_getDataByKey1_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'DbMixedStackArguments_getDataByKey1_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'DbMixedStackArguments_getDataByKey1_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'DbMixedStackArguments_getDataByKey1_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

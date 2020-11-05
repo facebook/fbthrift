@@ -220,14 +220,14 @@ trait NestedContainersClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_mapList(?int $expectedsequenceid = null): void {
+  protected function recvImpl_mapList(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('mapList', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_mapList_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_mapList_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_mapList_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_mapList_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -315,14 +315,14 @@ trait NestedContainersClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_mapSet(?int $expectedsequenceid = null): void {
+  protected function recvImpl_mapSet(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('mapSet', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_mapSet_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_mapSet_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_mapSet_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_mapSet_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -412,14 +412,14 @@ trait NestedContainersClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_listMap(?int $expectedsequenceid = null): void {
+  protected function recvImpl_listMap(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('listMap', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_listMap_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_listMap_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_listMap_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_listMap_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -507,14 +507,14 @@ trait NestedContainersClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_listSet(?int $expectedsequenceid = null): void {
+  protected function recvImpl_listSet(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('listSet', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_listSet_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_listSet_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_listSet_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_listSet_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -608,14 +608,14 @@ trait NestedContainersClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_turtles(?int $expectedsequenceid = null): void {
+  protected function recvImpl_turtles(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('turtles', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_turtles_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'NestedContainers_turtles_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_turtles_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'NestedContainers_turtles_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

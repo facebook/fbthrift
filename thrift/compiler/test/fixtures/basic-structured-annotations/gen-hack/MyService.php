@@ -132,14 +132,14 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_first(?int $expectedsequenceid = null): string {
+  protected function recvImpl_first(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
       $this->eventHandler_->preRecv('first', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_first_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_first_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_first_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_first_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -233,14 +233,14 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_second(?int $expectedsequenceid = null): bool {
+  protected function recvImpl_second(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): bool {
     try {
       $this->eventHandler_->preRecv('second', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_second_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_second_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_second_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_second_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

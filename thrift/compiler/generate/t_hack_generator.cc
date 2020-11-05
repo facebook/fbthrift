@@ -219,7 +219,8 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       t_service* tservice,
       t_function* tfunction,
-      bool rpc_options);
+      bool rpc_options,
+      bool legacy_arrays = false);
   void generate_service_processor(t_service* tservice, bool mangle, bool async);
   void generate_process_function(
       t_service* tservice,
@@ -4011,7 +4012,8 @@ void t_hack_generator::_generate_recvImpl(
       << function_signature(
              &recv_function,
              "",
-             "?int $expectedsequenceid = null",
+             "?int $expectedsequenceid = null"
+             ", shape(?'read_options' => int) $options = shape()",
              return_typehint)
       << " {\n";
   indent_up();
@@ -4030,6 +4032,7 @@ void t_hack_generator::_generate_recvImpl(
       << "$this->input_"
       << ", '" << resultname << "'"
       << ", $this->input_->isStrictRead()"
+      << ", Shapes::idx($options, 'read_options', 0)"
       << ");\n";
 
   indent_down();
@@ -4040,6 +4043,7 @@ void t_hack_generator::_generate_recvImpl(
   out << indent() << "$result = \\thrift_protocol_read_compact("
       << "$this->input_"
       << ", '" << resultname << "'"
+      << ", Shapes::idx($options, 'read_options', 0)"
       << ");\n";
   scope_down(out);
 
@@ -4277,6 +4281,10 @@ void t_hack_generator::_generate_service_client_children(
   // generate functions as necessary
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     _generate_service_client_child_fn(out, tservice, *f_iter, rpc_options);
+    if (no_use_hack_collections_) {
+      _generate_service_client_child_fn(
+          out, tservice, *f_iter, rpc_options, /*legacy_arrays*/ true);
+    }
   }
 
   if (!async) {
@@ -4334,11 +4342,13 @@ void t_hack_generator::_generate_service_client_child_fn(
     ofstream& out,
     t_service* tservice,
     t_function* tfunction,
-    bool rpc_options) {
+    bool rpc_options,
+    bool legacy_arrays) {
   t_struct* arg_struct = tfunction->get_arglist();
   const vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator fld_iter;
-  string funname = tfunction->get_name();
+  string funname =
+      tfunction->get_name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
   const string& tservice_name = tservice->get_name();
   string return_typehint = type_to_typehint(tfunction->get_returntype());
   string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
@@ -4398,7 +4408,12 @@ void t_hack_generator::_generate_service_client_child_fn(
     if (!tfunction->get_returntype()->is_void()) {
       out << "return ";
     }
-    out << "$this->recvImpl_" << funname << "($currentseqid);\n";
+    out << "$this->recvImpl_" << tfunction->get_name() << "("
+        << "$currentseqid";
+    if (legacy_arrays) {
+      out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
+    }
+    out << ");\n";
   } else {
     out << indent() << "$channel = $this->channel_;\n"
         << indent() << "$out_transport = $this->output_->getTransport();\n"

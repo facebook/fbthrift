@@ -104,14 +104,14 @@ trait MyServicePrioChildClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_pang(?int $expectedsequenceid = null): void {
+  protected function recvImpl_pang(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
       $this->eventHandler_->preRecv('pang', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioChild_pang_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioChild_pang_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioChild_pang_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioChild_pang_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {

@@ -134,14 +134,14 @@ trait SomeServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_bounce_map(?int $expectedsequenceid = null): Map<int, string> {
+  protected function recvImpl_bounce_map(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Map<int, string> {
     try {
       $this->eventHandler_->preRecv('bounce_map', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_bounce_map_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_bounce_map_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_bounce_map_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_bounce_map_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -235,14 +235,14 @@ trait SomeServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_binary_keyed_map(?int $expectedsequenceid = null): Map<string, int> {
+  protected function recvImpl_binary_keyed_map(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Map<string, int> {
     try {
       $this->eventHandler_->preRecv('binary_keyed_map', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_binary_keyed_map_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_binary_keyed_map_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_binary_keyed_map_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_binary_keyed_map_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
