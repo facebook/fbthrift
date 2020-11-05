@@ -20,6 +20,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/futures/Future.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
@@ -97,11 +98,13 @@ class DivisionRequestCallback : public RequestCallback {
 //    divide(15, 5); divide(1, 0); divide(7, 1);
 template <class Handler>
 void testClientWithHandler() {
+  folly::ScopedEventBaseThread runner;
   auto handler = std::make_shared<Handler>();
   auto pFac =
       std::make_shared<ThriftServerAsyncProcessorFactory<Handler>>(handler);
   apache::thrift::server::ServerConfigsMock serverConfigs;
-  auto connection = std::make_shared<InMemoryConnection>(pFac, serverConfigs);
+  auto connection = std::make_shared<InMemoryConnection>(
+      runner.getEventBase(), pFac, serverConfigs);
   auto thriftClient = ThriftClient::Ptr(new ThriftClient(connection));
   thriftClient->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   auto divisionClient =

@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/io/async/AsyncTransport.h>
-#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
@@ -29,6 +28,7 @@ namespace thrift {
 class InMemoryConnection : public ClientConnectionIf {
  public:
   InMemoryConnection(
+      folly::EventBase* eventBase,
       std::shared_ptr<AsyncProcessorFactory> pFac,
       server::ServerConfigs& serverConfigs);
   virtual ~InMemoryConnection() override = default;
@@ -53,7 +53,10 @@ class InMemoryConnection : public ClientConnectionIf {
   CLIENT_TYPE getClientType() override;
 
  private:
-  folly::ScopedEventBaseThread runner_;
+  // InMemoryConnection shouldn't own the thread driving the event base because
+  // due to delayed destruction the connection may be destroyed on the event
+  // base thread (T78297279).
+  folly::EventBase* eventBase_;
   std::shared_ptr<AsyncProcessorFactory> pFac_;
   std::shared_ptr<concurrency::ThreadManager> threadManager_;
   std::unique_ptr<ThriftProcessor> processor_;

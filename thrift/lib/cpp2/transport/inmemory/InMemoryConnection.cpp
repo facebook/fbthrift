@@ -27,8 +27,10 @@ namespace apache {
 namespace thrift {
 
 InMemoryConnection::InMemoryConnection(
+    folly::EventBase* eventBase,
     std::shared_ptr<AsyncProcessorFactory> pFac,
-    server::ServerConfigs& serverConfigs) {
+    server::ServerConfigs& serverConfigs)
+    : eventBase_(eventBase) {
   CHECK_GT(FLAGS_thrift_num_cpu_threads, 0);
   threadManager_ = PriorityThreadManager::newPriorityThreadManager(
       FLAGS_thrift_num_cpu_threads);
@@ -40,8 +42,7 @@ InMemoryConnection::InMemoryConnection(
 }
 
 std::shared_ptr<ThriftChannelIf> InMemoryConnection::getChannel() {
-  return std::make_shared<InMemoryChannel>(
-      processor_.get(), runner_.getEventBase());
+  return std::make_shared<InMemoryChannel>(processor_.get(), eventBase_);
 }
 
 void InMemoryConnection::setMaxPendingRequests(uint32_t) {
@@ -53,7 +54,7 @@ void InMemoryConnection::setCloseCallback(ThriftClient*, CloseCallback*) {
 }
 
 folly::EventBase* InMemoryConnection::getEventBase() const {
-  return runner_.getEventBase();
+  return eventBase_;
 }
 
 folly::AsyncTransport* InMemoryConnection::getTransport() {

@@ -90,12 +90,13 @@ static std::unique_ptr<AsyncClient> newRocketClient(
 
 template <typename AsyncClient, typename ServiceHandler>
 static std::unique_ptr<AsyncClient> newInMemoryClient(
+    folly::EventBase* evb,
     std::shared_ptr<ServiceHandler> handler,
     ServerConfigsMock& serverConfigs) {
   auto pFac =
       std::make_shared<ThriftServerAsyncProcessorFactory<ServiceHandler>>(
           handler);
-  auto conn = std::make_shared<InMemoryConnection>(pFac, serverConfigs);
+  auto conn = std::make_shared<InMemoryConnection>(evb, pFac, serverConfigs);
   auto client = ThriftClient::Ptr(new ThriftClient(conn));
   client->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(client));

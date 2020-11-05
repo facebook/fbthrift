@@ -56,12 +56,13 @@ class EchoTest : public testing::Test {
   EchoTest() {
     handler_ = std::make_shared<EchoHandler>();
     client_ = newInMemoryClient<EchoAsyncClient, EchoHandler>(
-        handler_, serverConfigs_);
+        runner_.getEventBase(), handler_, serverConfigs_);
   }
 
   std::unique_ptr<EchoAsyncClient> client_;
 
  private:
+  folly::ScopedEventBaseThread runner_;
   ServerConfigsMock serverConfigs_;
   std::shared_ptr<EchoHandler> handler_;
 };

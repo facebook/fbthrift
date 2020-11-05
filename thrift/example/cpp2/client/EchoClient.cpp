@@ -53,8 +53,8 @@ int main(int argc, char* argv[]) {
   auto handler = std::make_shared<EchoHandler>();
   ServerConfigsMock serverConfigs;
   if (FLAGS_transport == "inmemory") {
-    client =
-        newInMemoryClient<EchoAsyncClient, EchoHandler>(handler, serverConfigs);
+    client = newInMemoryClient<EchoAsyncClient, EchoHandler>(
+        &evb, handler, serverConfigs);
   }
 
   // Prepare thrift request

@@ -17,6 +17,7 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/futures/Future.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/example/cpp2/server/ChatRoomService.h>
 #include <thrift/example/if/gen-cpp2/ChatRoomService.h>
@@ -60,12 +61,13 @@ class ChatRoomTest : public testing::Test {
     handler_ = std::make_shared<ChatRoomServiceHandler>();
     client_ =
         newInMemoryClient<ChatRoomServiceAsyncClient, ChatRoomServiceHandler>(
-            handler_, serverConfigs_);
+            runner_.getEventBase(), handler_, serverConfigs_);
   }
 
   std::unique_ptr<ChatRoomServiceAsyncClient> client_;
 
  private:
+  folly::ScopedEventBaseThread runner_;
   ServerConfigsMock serverConfigs_;
   std::shared_ptr<ChatRoomServiceHandler> handler_;
 };
