@@ -110,7 +110,7 @@ class TilePromise final : public Tile {
           std::move(task),
           0, // timeout
           0, // expiration
-          false); // upstream
+          true); // upstream
     }
     continuations_.clear();
     DCHECK_EQ(refCount_, 0u);

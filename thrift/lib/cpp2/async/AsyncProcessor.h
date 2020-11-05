@@ -765,7 +765,7 @@ void GeneratedAsyncProcessor::processInThread(
       std::move(task),
       0, // timeout
       0, // expiration
-      !tile || ctx->getInteractionCreate()); // upstream
+      true); // upstream
 }
 
 template <class F>
