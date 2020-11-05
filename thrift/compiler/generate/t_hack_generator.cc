@@ -202,6 +202,8 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       t_service* tservice,
       bool mangle);
+  void
+  _generate_recvImpl(ofstream& out, t_service* tservice, t_function* tfunction);
   void _generate_sendImpl_arg(
       ofstream& out,
       t_name_generator& namer,
@@ -212,6 +214,11 @@ class t_hack_generator : public t_oop_generator {
       t_service* tservice,
       bool mangle,
       bool async,
+      bool rpc_options);
+  void _generate_service_client_child_fn(
+      std::ofstream& out,
+      t_service* tservice,
+      t_function* tfunction,
       bool rpc_options);
   void generate_service_processor(t_service* tservice, bool mangle, bool async);
   void generate_process_function(
@@ -3966,160 +3973,7 @@ void t_hack_generator::_generate_service_client(
     scope_down(out);
 
     if (!(*f_iter)->is_oneway()) {
-      std::string resultname =
-          hack_name(tservice) + "_" + (*f_iter)->get_name() + "_result";
-
-      t_function recv_function(
-          (*f_iter)->get_returntype(),
-          string("recvImpl_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_));
-      string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-      // Open function
-      out << "\n";
-      if (arrprov_skip_frames_) {
-        indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
-      }
-      out << indent() << "protected function "
-          << function_signature(
-                 &recv_function,
-                 "",
-                 "?int $expectedsequenceid = null",
-                 return_typehint)
-          << " {\n";
-      indent_up();
-
-      out << indent() << "try {\n";
-      indent_up();
-
-      out << indent() << "$this->eventHandler_->preRecv('"
-          << (*f_iter)->get_name() << "', $expectedsequenceid);\n";
-
-      out << indent()
-          << "if ($this->input_ is \\TBinaryProtocolAccelerated) {\n";
-
-      indent_up();
-
-      out << indent() << "$result = \\thrift_protocol_read_binary("
-          << "$this->input_, '" << resultname
-          << "', $this->input_->isStrictRead());\n";
-
-      indent_down();
-
-      out << indent()
-          << "} else if ($this->input_ is \\TCompactProtocolAccelerated)\n";
-      scope_up(out);
-      out << indent()
-          << "$result = \\thrift_protocol_read_compact($this->input_, '"
-          << resultname << "');\n";
-      scope_down(out);
-
-      out << indent() << "else\n";
-      scope_up(out);
-
-      out << indent() << "$rseqid = 0;\n"
-          << indent() << "$fname = '';\n"
-          << indent() << "$mtype = 0;\n\n";
-
-      out << indent() << "$this->input_->readMessageBegin(\n"
-          << indent() << "  inout $fname,\n"
-          << indent() << "  inout $mtype,\n"
-          << indent() << "  inout $rseqid,\n"
-          << indent() << ");\n"
-          << indent() << "if ($mtype == \\TMessageType::EXCEPTION) {\n"
-          << indent() << "  $x = new \\TApplicationException();\n"
-          << indent() << "  $x->read($this->input_);\n"
-          << indent() << "  $this->input_->readMessageEnd();\n"
-          << indent() << "  throw $x;\n"
-          << indent() << "}\n";
-
-      out << indent() << "$result = " << resultname << "::fromShape();\n"
-          << indent() << "$result->read($this->input_);\n";
-
-      out << indent() << "$this->input_->readMessageEnd();\n";
-
-      out << indent()
-          << "if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {\n"
-          << indent() << "  throw new \\TProtocolException(\""
-          << (*f_iter)->get_name()
-          << " failed: sequence id is out of order\");\n"
-          << indent() << "}\n";
-
-      scope_down(out);
-      indent_down();
-      indent(out) << "} catch (\\THandlerShortCircuitException $ex) {\n";
-      indent_up();
-      out << indent() << "switch ($ex->resultType) {\n"
-          << indent()
-          << "  case \\THandlerShortCircuitException::R_EXPECTED_EX:\n"
-          << indent() << "    $this->eventHandler_->recvException('"
-          << (*f_iter)->get_name() << "', $expectedsequenceid, $ex->result);\n"
-          << indent() << "    throw $ex->result;\n"
-          << indent()
-          << "  case \\THandlerShortCircuitException::R_UNEXPECTED_EX:\n"
-          << indent() << "    $this->eventHandler_->recvError('"
-          << (*f_iter)->get_name() << "', $expectedsequenceid, $ex->result);\n"
-          << indent() << "    throw $ex->result;\n"
-          << indent() << "  case \\THandlerShortCircuitException::R_SUCCESS:\n"
-          << indent() << "  default:\n"
-          << indent() << "    $this->eventHandler_->postRecv('"
-          << (*f_iter)->get_name() << "', $expectedsequenceid, $ex->result);\n"
-          << indent() << "    return";
-
-      if (!(*f_iter)->get_returntype()->is_void()) {
-        out << " $ex->result";
-      }
-      out << ";\n" << indent() << "}\n";
-      indent_down();
-      out << indent() << "} catch (\\Exception $ex) {\n";
-      indent_up();
-      out << indent() << "$this->eventHandler_->recvError('"
-          << (*f_iter)->get_name() << "', $expectedsequenceid, $ex);\n"
-          << indent() << "throw $ex;\n";
-      indent_down();
-      out << indent() << "}\n";
-
-      // Careful, only return result if not a void function
-      if (!(*f_iter)->get_returntype()->is_void()) {
-        out << indent() << "if ($result->success !== null) {\n"
-            << indent() << "  $success = $result->success;\n"
-            << indent() << "  $this->eventHandler_->postRecv('"
-            << (*f_iter)->get_name() << "', $expectedsequenceid, $success);"
-            << "\n"
-            << indent() << "  return $success;\n"
-            << indent() << "}\n";
-      }
-
-      t_struct* xs = (*f_iter)->get_xceptions();
-      const std::vector<t_field*>& xceptions = xs->get_members();
-      vector<t_field*>::const_iterator x_iter;
-      for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-        out << indent() << "if ($result->" << (*x_iter)->get_name()
-            << " !== null) {\n"
-            << indent() << "  $x = $result->" << (*x_iter)->get_name() << ";"
-            << "\n"
-            << indent() << "  $this->eventHandler_->recvException('"
-            << (*f_iter)->get_name() << "', $expectedsequenceid, $x);\n"
-            << indent() << "  throw $x;\n"
-            << indent() << "}\n";
-      }
-
-      // Careful, only return _result if not a void function
-      if ((*f_iter)->get_returntype()->is_void()) {
-        out << indent() << "$this->eventHandler_->postRecv('"
-            << (*f_iter)->get_name() << "', $expectedsequenceid, null);\n"
-            << indent() << "return;\n";
-      } else {
-        out << indent() << "$x = new \\TApplicationException(\""
-            << (*f_iter)->get_name() << " failed: unknown result\""
-            << ", \\TApplicationException::MISSING_RESULT"
-            << ");\n"
-            << indent() << "$this->eventHandler_->recvError('"
-            << (*f_iter)->get_name() << "', $expectedsequenceid, $x);\n"
-            << indent() << "throw $x;\n";
-      }
-
-      // Close function
-      scope_down(out);
+      _generate_recvImpl(out, tservice, *f_iter);
     }
 
     out << "\n";
@@ -4134,6 +3988,166 @@ void t_hack_generator::_generate_service_client(
       out, tservice, mangle, /*async*/ false, /*rpc_options*/ false);
   _generate_service_client_children(
       out, tservice, mangle, /*async*/ true, /*rpc_options*/ true);
+}
+
+void t_hack_generator::_generate_recvImpl(
+    ofstream& out,
+    t_service* tservice,
+    t_function* tfunction) {
+  std::string resultname =
+      hack_name(tservice) + "_" + tfunction->get_name() + "_result";
+
+  t_function recv_function(
+      tfunction->get_returntype(),
+      string("recvImpl_") + tfunction->get_name(),
+      std::make_unique<t_struct>(program_));
+  string return_typehint = type_to_typehint(tfunction->get_returntype());
+  // Open function
+  out << "\n";
+  if (arrprov_skip_frames_) {
+    indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
+  }
+  out << indent() << "protected function "
+      << function_signature(
+             &recv_function,
+             "",
+             "?int $expectedsequenceid = null",
+             return_typehint)
+      << " {\n";
+  indent_up();
+
+  out << indent() << "try {\n";
+  indent_up();
+
+  out << indent() << "$this->eventHandler_->preRecv('" << tfunction->get_name()
+      << "', $expectedsequenceid);\n";
+
+  out << indent() << "if ($this->input_ is \\TBinaryProtocolAccelerated) {\n";
+
+  indent_up();
+
+  out << indent() << "$result = \\thrift_protocol_read_binary("
+      << "$this->input_"
+      << ", '" << resultname << "'"
+      << ", $this->input_->isStrictRead()"
+      << ");\n";
+
+  indent_down();
+
+  out << indent()
+      << "} else if ($this->input_ is \\TCompactProtocolAccelerated)\n";
+  scope_up(out);
+  out << indent() << "$result = \\thrift_protocol_read_compact("
+      << "$this->input_"
+      << ", '" << resultname << "'"
+      << ");\n";
+  scope_down(out);
+
+  out << indent() << "else\n";
+  scope_up(out);
+
+  out << indent() << "$rseqid = 0;\n"
+      << indent() << "$fname = '';\n"
+      << indent() << "$mtype = 0;\n\n";
+
+  out << indent() << "$this->input_->readMessageBegin(\n"
+      << indent() << "  inout $fname,\n"
+      << indent() << "  inout $mtype,\n"
+      << indent() << "  inout $rseqid,\n"
+      << indent() << ");\n"
+      << indent() << "if ($mtype == \\TMessageType::EXCEPTION) {\n"
+      << indent() << "  $x = new \\TApplicationException();\n"
+      << indent() << "  $x->read($this->input_);\n"
+      << indent() << "  $this->input_->readMessageEnd();\n"
+      << indent() << "  throw $x;\n"
+      << indent() << "}\n";
+
+  out << indent() << "$result = " << resultname << "::fromShape();\n"
+      << indent() << "$result->read($this->input_);\n";
+
+  out << indent() << "$this->input_->readMessageEnd();\n";
+
+  out << indent()
+      << "if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {\n"
+      << indent() << "  throw new \\TProtocolException(\""
+      << tfunction->get_name() << " failed: sequence id is out of order\");\n"
+      << indent() << "}\n";
+
+  scope_down(out);
+  indent_down();
+  indent(out) << "} catch (\\THandlerShortCircuitException $ex) {\n";
+  indent_up();
+  out << indent() << "switch ($ex->resultType) {\n"
+      << indent() << "  case \\THandlerShortCircuitException::R_EXPECTED_EX:\n"
+      << indent() << "    $this->eventHandler_->recvException('"
+      << tfunction->get_name() << "', $expectedsequenceid, $ex->result);\n"
+      << indent() << "    throw $ex->result;\n"
+      << indent()
+      << "  case \\THandlerShortCircuitException::R_UNEXPECTED_EX:\n"
+      << indent() << "    $this->eventHandler_->recvError('"
+      << tfunction->get_name() << "', $expectedsequenceid, $ex->result);\n"
+      << indent() << "    throw $ex->result;\n"
+      << indent() << "  case \\THandlerShortCircuitException::R_SUCCESS:\n"
+      << indent() << "  default:\n"
+      << indent() << "    $this->eventHandler_->postRecv('"
+      << tfunction->get_name() << "', $expectedsequenceid, $ex->result);\n"
+      << indent() << "    return";
+
+  if (!tfunction->get_returntype()->is_void()) {
+    out << " $ex->result";
+  }
+  out << ";\n" << indent() << "}\n";
+  indent_down();
+  out << indent() << "} catch (\\Exception $ex) {\n";
+  indent_up();
+  out << indent() << "$this->eventHandler_->recvError('"
+      << tfunction->get_name() << "', $expectedsequenceid, $ex);\n"
+      << indent() << "throw $ex;\n";
+  indent_down();
+  out << indent() << "}\n";
+
+  // Careful, only return result if not a void function
+  if (!tfunction->get_returntype()->is_void()) {
+    out << indent() << "if ($result->success !== null) {\n"
+        << indent() << "  $success = $result->success;\n"
+        << indent() << "  $this->eventHandler_->postRecv('"
+        << tfunction->get_name() << "', $expectedsequenceid, $success);"
+        << "\n"
+        << indent() << "  return $success;\n"
+        << indent() << "}\n";
+  }
+
+  t_struct* xs = tfunction->get_xceptions();
+  const std::vector<t_field*>& xceptions = xs->get_members();
+  vector<t_field*>::const_iterator x_iter;
+  for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
+    out << indent() << "if ($result->" << (*x_iter)->get_name()
+        << " !== null) {\n"
+        << indent() << "  $x = $result->" << (*x_iter)->get_name() << ";"
+        << "\n"
+        << indent() << "  $this->eventHandler_->recvException('"
+        << tfunction->get_name() << "', $expectedsequenceid, $x);\n"
+        << indent() << "  throw $x;\n"
+        << indent() << "}\n";
+  }
+
+  // Careful, only return _result if not a void function
+  if (tfunction->get_returntype()->is_void()) {
+    out << indent() << "$this->eventHandler_->postRecv('"
+        << tfunction->get_name() << "', $expectedsequenceid, null);\n"
+        << indent() << "return;\n";
+  } else {
+    out << indent() << "$x = new \\TApplicationException(\""
+        << tfunction->get_name() << " failed: unknown result\""
+        << ", \\TApplicationException::MISSING_RESULT"
+        << ");\n"
+        << indent() << "$this->eventHandler_->recvError('"
+        << tfunction->get_name() << "', $expectedsequenceid, $x);\n"
+        << indent() << "throw $x;\n";
+  }
+
+  // Close function
+  scope_down(out);
 }
 
 // If !strict_types, containers are typehinted as KeyedContainer<Key, Value>
@@ -4262,90 +4276,7 @@ void t_hack_generator::_generate_service_client_children(
 
   // generate functions as necessary
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
-    const vector<t_field*>& fields = arg_struct->get_members();
-    vector<t_field*>::const_iterator fld_iter;
-    string funname = (*f_iter)->get_name();
-    const string& tservice_name = tservice->get_name();
-    string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-    string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
-    string rpc_options_param =
-        rpc_options ? "$rpc_options" : "new \\RpcOptions()";
-
-    generate_php_docstring(out, *f_iter);
-    if (arrprov_skip_frames_) {
-      indent(out) << "<<__ProvenanceSkipFrame>>\n";
-    }
-    if (nullable_everything_) {
-      indent(out)
-          << "public async function " << funname << "("
-          << argument_list(
-                 (*f_iter)->get_arglist(), head_parameters, "", true, true)
-          << "): Awaitable<" + return_typehint + "> {\n";
-    } else {
-      indent(out) << "public async function "
-                  << function_signature(
-                         *f_iter,
-                         head_parameters,
-                         "",
-                         "Awaitable<" + return_typehint + ">")
-                  << " {\n";
-    }
-
-    indent_up();
-    indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
-                << "\", \"" << funname << "\");\n";
-    indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
-
-    bool first = true;
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      if (first) {
-        first = false;
-      } else {
-        out << ", ";
-      }
-      out << "$" << (*fld_iter)->get_name();
-    }
-    out << ");\n";
-
-    if (!(*f_iter)->is_oneway()) {
-      out << indent() << "$channel = $this->channel_;\n"
-          << indent() << "$out_transport = $this->output_->getTransport();\n"
-          << indent() << "$in_transport = $this->input_->getTransport();\n"
-          << indent()
-          << "if ($channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer) {\n";
-      indent_up();
-      out << indent() << "$msg = $out_transport->getBuffer();\n"
-          << indent() << "$out_transport->resetBuffer();\n"
-          << indent()
-          << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse("
-          << rpc_options_param << ", $msg);\n"
-          << indent() << "$in_transport->resetBuffer();\n"
-          << indent() << "$in_transport->write($result_msg);\n";
-      indent_down();
-      indent(out) << "} else {\n";
-      indent_up();
-      indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
-      scope_down(out);
-      out << indent();
-      if (!(*f_iter)->get_returntype()->is_void()) {
-        out << "return ";
-      }
-      out << "$this->recvImpl_" << funname << "($currentseqid);\n";
-    } else {
-      out << indent() << "$channel = $this->channel_;\n"
-          << indent() << "$out_transport = $this->output_->getTransport();\n"
-          << indent()
-          << "if ($channel !== null && $out_transport is \\TMemoryBuffer) {\n";
-      indent_up();
-      out << indent() << "$msg = $out_transport->getBuffer();\n"
-          << indent() << "$out_transport->resetBuffer();\n"
-          << indent() << "await $channel->genSendRequestNoResponse("
-          << rpc_options_param << ", $msg);\n";
-      scope_down(out);
-    }
-    scope_down(out);
-    out << "\n";
+    _generate_service_client_child_fn(out, tservice, *f_iter, rpc_options);
   }
 
   if (!async) {
@@ -4397,6 +4328,91 @@ void t_hack_generator::_generate_service_client_children(
 
   indent_down();
   out << "}\n\n";
+}
+
+void t_hack_generator::_generate_service_client_child_fn(
+    ofstream& out,
+    t_service* tservice,
+    t_function* tfunction,
+    bool rpc_options) {
+  t_struct* arg_struct = tfunction->get_arglist();
+  const vector<t_field*>& fields = arg_struct->get_members();
+  vector<t_field*>::const_iterator fld_iter;
+  string funname = tfunction->get_name();
+  const string& tservice_name = tservice->get_name();
+  string return_typehint = type_to_typehint(tfunction->get_returntype());
+  string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
+  string rpc_options_param =
+      rpc_options ? "$rpc_options" : "new \\RpcOptions()";
+
+  generate_php_docstring(out, tfunction);
+  if (arrprov_skip_frames_) {
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
+  }
+  indent(out) << "public async function " << funname << "("
+              << argument_list(
+                     tfunction->get_arglist(),
+                     head_parameters,
+                     "",
+                     true,
+                     nullable_everything_)
+              << "): Awaitable<" + return_typehint + "> {\n";
+
+  indent_up();
+  indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
+              << "\", \"" << tfunction->get_name() << "\");\n";
+  indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->get_name()
+              << "(";
+
+  bool first = true;
+  for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+    if (first) {
+      first = false;
+    } else {
+      out << ", ";
+    }
+    out << "$" << (*fld_iter)->get_name();
+  }
+  out << ");\n";
+
+  if (!tfunction->is_oneway()) {
+    out << indent() << "$channel = $this->channel_;\n"
+        << indent() << "$out_transport = $this->output_->getTransport();\n"
+        << indent() << "$in_transport = $this->input_->getTransport();\n"
+        << indent()
+        << "if ($channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer) {\n";
+    indent_up();
+    out << indent() << "$msg = $out_transport->getBuffer();\n"
+        << indent() << "$out_transport->resetBuffer();\n"
+        << indent()
+        << "list($result_msg, $_read_headers) = await $channel->genSendRequestResponse("
+        << rpc_options_param << ", $msg);\n"
+        << indent() << "$in_transport->resetBuffer();\n"
+        << indent() << "$in_transport->write($result_msg);\n";
+    indent_down();
+    indent(out) << "} else {\n";
+    indent_up();
+    indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
+    scope_down(out);
+    out << indent();
+    if (!tfunction->get_returntype()->is_void()) {
+      out << "return ";
+    }
+    out << "$this->recvImpl_" << funname << "($currentseqid);\n";
+  } else {
+    out << indent() << "$channel = $this->channel_;\n"
+        << indent() << "$out_transport = $this->output_->getTransport();\n"
+        << indent()
+        << "if ($channel !== null && $out_transport is \\TMemoryBuffer) {\n";
+    indent_up();
+    out << indent() << "$msg = $out_transport->getBuffer();\n"
+        << indent() << "$out_transport->resetBuffer();\n"
+        << indent() << "await $channel->genSendRequestNoResponse("
+        << rpc_options_param << ", $msg);\n";
+    scope_down(out);
+  }
+  scope_down(out);
+  out << "\n";
 }
 
 /**
