@@ -1,0 +1,79 @@
+/*
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#pragma once
+
+#include <future>
+
+#include <folly/executors/IOExecutor.h>
+#include <folly/io/async/EventBaseLocal.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+
+namespace apache {
+namespace thrift {
+
+class ThreadBoundAdaptorChannel : public apache::thrift::RequestChannel {
+ public:
+  ThreadBoundAdaptorChannel(
+      folly::EventBase* evb,
+      std::shared_ptr<apache::thrift::RequestChannel> threadSafeChannel);
+
+  // RequestChannel
+  void sendRequestResponse(
+      const apache::thrift::RpcOptions& options,
+      folly::StringPiece,
+      apache::thrift::SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::RequestClientCallback::Ptr cob) override;
+
+  void sendRequestNoResponse(
+      const apache::thrift::RpcOptions& options,
+      folly::StringPiece,
+      apache::thrift::SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::RequestClientCallback::Ptr cob) override;
+
+  void sendRequestStream(
+      const apache::thrift::RpcOptions& options,
+      folly::StringPiece,
+      apache::thrift::SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::StreamClientCallback* cob) override;
+
+  void sendRequestSink(
+      const apache::thrift::RpcOptions& options,
+      folly::StringPiece,
+      apache::thrift::SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::SinkClientCallback* cob) override;
+
+  void setCloseCallback(apache::thrift::CloseCallback*) override;
+
+  folly::EventBase* getEventBase() const override;
+
+  uint16_t getProtocolId() override;
+
+  void terminateInteraction(apache::thrift::InteractionId id) override;
+
+  apache::thrift::InteractionId createInteraction(
+      folly::StringPiece name) override;
+
+ private:
+  std::shared_ptr<apache::thrift::RequestChannel> threadSafeChannel_;
+  folly::EventBase* evb_;
+};
+} // namespace thrift
+} // namespace apache
