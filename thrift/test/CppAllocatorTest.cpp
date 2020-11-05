@@ -27,7 +27,8 @@ static const char* kTooLong =
     "This is too long for the small string optimization";
 
 TEST(CppAllocatorTest, UsesAllocator) {
-  ScopedThrowingAlloc alloc;
+  ScopedMaybeThrowAlloc alloc;
+  alloc.armed = true;
   UsesAllocatorParent s(alloc);
 
   EXPECT_THROW(s.child_ref()->aa_list_ref()->emplace_back(42), std::bad_alloc);

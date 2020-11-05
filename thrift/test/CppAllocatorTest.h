@@ -26,51 +26,62 @@
 #include "folly/sorted_vector_types.h"
 
 template <class T>
-struct ThrowingAllocator : private std::allocator<T> {
+struct MaybeThrowAllocator : private std::allocator<T> {
   using value_type = T;
 
-  ThrowingAllocator() = default;
-  ThrowingAllocator(const ThrowingAllocator&) noexcept = default;
-  ThrowingAllocator& operator=(const ThrowingAllocator&) noexcept = default;
+  MaybeThrowAllocator() = default;
+  MaybeThrowAllocator(const MaybeThrowAllocator&) noexcept = default;
+  MaybeThrowAllocator& operator=(const MaybeThrowAllocator&) noexcept = default;
   template <class U>
-  explicit ThrowingAllocator(const ThrowingAllocator<U>&) noexcept {}
-  ~ThrowingAllocator() = default;
+  explicit MaybeThrowAllocator(const MaybeThrowAllocator<U>& other) noexcept
+      : armed(other.armed) {}
+  ~MaybeThrowAllocator() = default;
 
-  T* allocate(size_t) {
-    throw std::bad_alloc();
+  T* allocate(size_t size) {
+    if (armed) {
+      throw std::bad_alloc();
+    }
+    return std::allocator<T>::allocate(size);
   }
 
-  void deallocate(T*, size_t) {}
+  void deallocate(T* mem, size_t size) {
+    if (armed) {
+      return;
+    }
+    return std::allocator<T>::deallocate(mem, size);
+  }
 
   template <class U>
   friend bool operator==(
-      ThrowingAllocator<T> const&,
-      ThrowingAllocator<U> const&) noexcept {
+      MaybeThrowAllocator<T> const&,
+      MaybeThrowAllocator<U> const&) noexcept {
     return true;
   }
 
   template <class U>
   friend bool operator!=(
-      ThrowingAllocator<T> const&,
-      ThrowingAllocator<U> const&) noexcept {
+      MaybeThrowAllocator<T> const&,
+      MaybeThrowAllocator<U> const&) noexcept {
     return false;
   }
+
+  bool armed = false;
 };
 
-using ScopedThrowingAlloc =
-    std::scoped_allocator_adaptor<ThrowingAllocator<char>>;
+using ScopedMaybeThrowAlloc =
+    std::scoped_allocator_adaptor<MaybeThrowAllocator<char>>;
 
 template <class T>
-using ThrowingVector = std::vector<T, ScopedThrowingAlloc>;
+using MaybeThrowVector = std::vector<T, ScopedMaybeThrowAlloc>;
 
 template <class T>
-using ThrowingSet = std::set<T, std::less<T>, ScopedThrowingAlloc>;
+using MaybeThrowSet = std::set<T, std::less<T>, ScopedMaybeThrowAlloc>;
 
 template <class K, class V>
-using ThrowingMap = std::map<K, V, std::less<K>, ScopedThrowingAlloc>;
+using MaybeThrowMap = std::map<K, V, std::less<K>, ScopedMaybeThrowAlloc>;
 
-using ThrowingString =
-    std::basic_string<char, std::char_traits<char>, ScopedThrowingAlloc>;
+using MaybeThrowString =
+    std::basic_string<char, std::char_traits<char>, ScopedMaybeThrowAlloc>;
 
 template <class T>
 struct StatefulAlloc : private std::allocator<T> {
