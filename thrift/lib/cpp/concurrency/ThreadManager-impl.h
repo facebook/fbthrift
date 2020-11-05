@@ -224,7 +224,7 @@ class ThreadManager::Impl : public ThreadManager,
       std::shared_ptr<Runnable> value,
       int64_t timeout,
       int64_t expiration,
-      bool cancellable) noexcept override;
+      bool upstream) noexcept override;
 
   /**
    * Implements folly::Executor::add()
@@ -270,7 +270,7 @@ class ThreadManager::Impl : public ThreadManager,
       std::shared_ptr<Runnable> value,
       int64_t timeout,
       int64_t expiration,
-      bool cancellable) noexcept;
+      bool upstream) noexcept;
 
   // returns a string to attach to namePrefix when recording
   // stats
