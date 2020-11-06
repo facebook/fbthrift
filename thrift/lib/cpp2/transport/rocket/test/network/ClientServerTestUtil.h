@@ -77,10 +77,6 @@ class RocketTestClient {
           MetadataOpaqueMap<std::string, std::string>{
               {"rando_key", "setup_data"}});
 
-  folly::EventBase& getEvb() {
-    return evb_;
-  }
-
   void reconnect();
   void connect();
   void disconnect();
