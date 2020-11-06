@@ -33,9 +33,11 @@ TEST(ThriftTypeInfoTest, ValidateThriftTypeInfo) {
   validateThriftTypeInfo(typeInfo);
   typeInfo.aliases_ref()->emplace(good2);
   validateThriftTypeInfo(typeInfo);
-  typeInfo.set_typeIdBytes(kMinTypeIdBytes);
+  typeInfo.set_typeHashBytes(kMinTypeHashBytes);
   validateThriftTypeInfo(typeInfo);
-  typeInfo.set_typeIdBytes(32);
+  typeInfo.set_typeHashBytes(32);
+  validateThriftTypeInfo(typeInfo);
+  typeInfo.set_typeHashBytes(64);
   validateThriftTypeInfo(typeInfo);
 
   {
@@ -57,13 +59,7 @@ TEST(ThriftTypeInfoTest, ValidateThriftTypeInfo) {
 
   {
     ThriftTypeInfo badType(typeInfo);
-    badType.set_typeIdBytes(1);
-    EXPECT_THROW(validateThriftTypeInfo(badType), std::invalid_argument);
-  }
-
-  {
-    ThriftTypeInfo badType(typeInfo);
-    badType.set_typeIdBytes(64);
+    badType.set_typeHashBytes(1);
     EXPECT_THROW(validateThriftTypeInfo(badType), std::invalid_argument);
   }
 }

@@ -31,7 +31,7 @@ struct Any {
   // The unique name for this type.
   1: optional string type;
   // A prefix of the SHA2-256 hash of the unique type name.
-  2: optional binary (cpp.type = "folly::fbstring") typeId;
+  2: optional binary (cpp.type = "folly::fbstring") typeHashPrefixSha2_256;
 
   // The standard protocol used or StandardProtocol::None.
   3: protocol.StandardProtocol protocol;

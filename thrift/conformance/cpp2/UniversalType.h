@@ -21,12 +21,15 @@
 #include <folly/FBString.h>
 #include <folly/Range.h>
 
+#include <thrift/conformance/if/gen-cpp2/thrift_type_info_constants.h>
+#include <thrift/conformance/if/gen-cpp2/thrift_type_info_types.h>
+
 namespace apache::thrift::conformance {
 
-using type_id_size_t = int8_t;
-inline constexpr type_id_size_t kDisableTypeId = 0;
-inline constexpr type_id_size_t kMinTypeIdBytes = 16;
-inline constexpr type_id_size_t kMaxTypeIdBytes = 32;
+using type_hash_size_t = int8_t;
+inline constexpr type_hash_size_t kDisableTypeHash = 0;
+inline constexpr type_hash_size_t kMinTypeHashBytes =
+    thrift_type_info_constants::minTypeHashBytes();
 
 // Validates that name is a valid universal type name of the form:
 // {domain}/{path}. For example: facebook.com/thrift/Value.
@@ -34,57 +37,57 @@ inline constexpr type_id_size_t kMaxTypeIdBytes = 32;
 // Throws std::invalid_argument on failure.
 void validateUniversalType(std::string_view name);
 
-// Validates that the given type id meets the size requirements.
+// Validates that the given type hash meets the size requirements.
 //
 // Throws std::invalid_argument on failure.
-void validateTypeId(folly::StringPiece typeId);
+void validateTypeHash(TypeHashAlgorithm alg, folly::StringPiece typeHash);
 
-// Validates that the given type id bytes size meets size requirements.
+// Validates that the given type hash bytes size meets size requirements.
 //
 // Throws std::invalid_argument on failure.
-void validateTypeIdBytes(type_id_size_t typeIdBytes);
+void validateTypeHashBytes(type_hash_size_t typeHashBytes);
 
-// Returns the type id for the given universal type name.
-folly::fbstring getTypeId(std::string_view name);
+// The number of bytes returned by the given type hash algorithm.
+type_hash_size_t getTypeHashSize(TypeHashAlgorithm alg);
 
-// Shrinks the fullTypeId to fit in the given number of bytes.
-folly::StringPiece getPartialTypeId(
-    folly::StringPiece fullTypeId,
-    type_id_size_t typeIdBytes);
+// Returns the type hash for the given universal type name.
+folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view name);
 
-// Returns true iff partialTypeId was derived from fullTypeId.
-bool matchesTypeId(
-    folly::StringPiece fullTypeId,
-    folly::StringPiece partialTypeId);
+// Shrinks the typeHash to fit in the given number of bytes.
+folly::StringPiece getTypeHashPrefix(
+    folly::StringPiece typeHash,
+    type_hash_size_t typeHashBytes);
 
-// Clamps the given type id bytes to a valid range.
-type_id_size_t clampTypeIdBytes(type_id_size_t typeIdBytes);
-
-// Returns the type id iff smaller than the name.
-folly::fbstring maybeGetTypeId(
+// Returns the type hash prefix iff smaller than the name.
+folly::fbstring maybeGetTypeHashPrefix(
+    TypeHashAlgorithm alg,
     std::string_view name,
-    type_id_size_t typeIdBytes);
+    type_hash_size_t typeHashBytes);
 
-// Returns true, if the given map contains an entry that matches the given
-// partial type id.
+// Returns true iff prefix was derived from typeHash.
+bool matchesTypeHash(folly::StringPiece typeHash, folly::StringPiece prefix);
+
+// Returns true, if the given sorted map contains an entry that matches the
+// given type hash prefix.
 template <typename C, typename K>
-bool containsTypeId(C& sortedMap, const K& partialTypeId) {
-  auto itr = sortedMap.lower_bound(partialTypeId);
-  return itr != sortedMap.end() && matchesTypeId(itr->first, partialTypeId);
+bool containsTypeHash(C& sortedMap, const K& typeHashPrefix) {
+  auto itr = sortedMap.lower_bound(typeHashPrefix);
+  return itr != sortedMap.end() && matchesTypeHash(itr->first, typeHashPrefix);
 }
 
-// Finds a matching id within the given sorted map.
+// Finds a matching hash within the given sorted map.
 //
 // Raises a std::runtime_error if the result is ambigous.
 template <typename C, typename K>
-auto findByTypeId(C& sortedMap, const K& partialTypeId) {
-  auto itr = sortedMap.lower_bound(partialTypeId);
-  if (itr == sortedMap.end() || !matchesTypeId(itr->first, partialTypeId)) {
+auto findByTypeHash(C& sortedMap, const K& typeHashPrefix) {
+  auto itr = sortedMap.lower_bound(typeHashPrefix);
+  if (itr == sortedMap.end() || !matchesTypeHash(itr->first, typeHashPrefix)) {
     return sortedMap.end();
   }
   auto next = itr;
-  if (++next != sortedMap.end() && matchesTypeId(next->first, partialTypeId)) {
-    folly::throw_exception<std::runtime_error>("type id look up ambigous");
+  if (++next != sortedMap.end() &&
+      matchesTypeHash(next->first, typeHashPrefix)) {
+    folly::throw_exception<std::runtime_error>("type hash look up ambigous");
   }
   return itr;
 }

@@ -23,7 +23,7 @@
 
 namespace apache::thrift::conformance {
 
-inline constexpr type_id_size_t kDefaultTypeIdBytes = -1;
+inline constexpr type_hash_size_t kDefaultTypeHashBytes = -1;
 
 // Creates an ThriftTypeInfo struct with the given names and configuration.
 //
@@ -32,7 +32,7 @@ inline constexpr type_id_size_t kDefaultTypeIdBytes = -1;
 template <typename C = std::initializer_list<const char*>>
 ThriftTypeInfo createThriftTypeInfo(
     C&& names,
-    type_id_size_t typeIdBytes = kDefaultTypeIdBytes);
+    type_hash_size_t typeHashBytes = kDefaultTypeHashBytes);
 
 // Raises std::invalid_argument if invalid.
 void validateThriftTypeInfo(const ThriftTypeInfo& type);
@@ -40,10 +40,10 @@ void validateThriftTypeInfo(const ThriftTypeInfo& type);
 // Implementation
 
 template <typename C>
-ThriftTypeInfo createThriftTypeInfo(C&& names, type_id_size_t typeIdBytes) {
+ThriftTypeInfo createThriftTypeInfo(C&& names, type_hash_size_t typeHashBytes) {
   ThriftTypeInfo type;
-  if (typeIdBytes != kDefaultTypeIdBytes) {
-    type.set_typeIdBytes(typeIdBytes);
+  if (typeHashBytes != kDefaultTypeHashBytes) {
+    type.set_typeHashBytes(typeHashBytes);
   }
   auto itr = names.begin();
   if (itr == names.end()) {

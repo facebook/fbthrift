@@ -39,7 +39,7 @@ ThriftTypeInfo testThriftType(const std::string& shortName) {
 
 ThriftTypeInfo testThriftType(std::initializer_list<const char*> names) {
   ThriftTypeInfo type;
-  type.set_typeIdBytes(0);
+  type.set_typeHashBytes(0);
   auto itr = names.begin();
   if (itr != names.end()) {
     type.set_name(thriftType(*itr++));
@@ -74,7 +74,7 @@ void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
 ThriftTypeInfo shortThriftType(int ordinal) {
   ThriftTypeInfo type;
   type.set_name(fmt::format("sh.or/t/{}", ordinal));
-  assert(type.get_name().size() <= kMinTypeIdBytes);
+  assert(type.get_name().size() <= kMinTypeHashBytes);
   return type;
 }
 
@@ -82,7 +82,9 @@ ThriftTypeInfo longThriftType(int ordinal) {
   ThriftTypeInfo type;
   type.set_name(
       fmt::format("seriously.long.type/seriously/long/type/{}", ordinal));
-  assert(type.get_name().size() > kMaxTypeIdBytes);
+  assert(
+      type.get_name().size() >
+      size_t(getTypeHashSize(TypeHashAlgorithm::Sha2_256)));
   return type;
 }
 

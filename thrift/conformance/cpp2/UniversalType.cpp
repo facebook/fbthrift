@@ -103,36 +103,7 @@ void checkDomain(folly::StringPiece domain) {
   }
 }
 
-[[noreturn]] void throwInvalidTypeIdSize() {
-  folly::throw_exception<std::invalid_argument>(
-      "TypeId size must be in the range [16, 32].");
-}
-
-void checkTypeIdSize(type_id_size_t typeIdBytes) {
-  if (typeIdBytes < kMinTypeIdBytes || typeIdBytes > kMaxTypeIdBytes) {
-    throwInvalidTypeIdSize();
-  }
-}
-
-} // namespace
-
-// TODO(afuller): Consider 'normalizing' a folly::Uri instead of
-// requiring the name be expressed in a restricted cononical form.
-void validateUniversalType(std::string_view name) {
-  // We require a minimum 1 domain and 2 path segements, though up to 4 path
-  // segements is likely to be common.
-  folly::small_vector<folly::StringPiece, 5> segs;
-  folly::splitTo<folly::StringPiece>('/', name, std::back_inserter(segs));
-  check(segs.size() >= 3, "not enough path segments");
-  checkDomain(segs[0]);
-  size_t i = 1;
-  for (; i < segs.size() - 1; ++i) {
-    checkPathSegment(segs[i]);
-  }
-  checkTypeSegment(segs[i]);
-}
-
-folly::fbstring getTypeId(std::string_view name) {
+folly::fbstring TypeHashSha2_256(std::string_view name) {
   // Save an initalized context.
   static EVP_MD_CTX* kBase = []() {
     auto ctx = newMdContext();
@@ -158,52 +129,100 @@ folly::fbstring getTypeId(std::string_view name) {
   return result;
 }
 
-void validateTypeId(folly::StringPiece typeId) {
-  if (typeId.size() > std::numeric_limits<type_id_size_t>::max()) {
-    throwInvalidTypeIdSize();
-  }
-  checkTypeIdSize(type_id_size_t(typeId.size()));
+type_hash_size_t TypeHashSizeSha2_256() {
+  return EVP_MD_size(EVP_sha256());
 }
 
-void validateTypeIdBytes(type_id_size_t typeIdBytes) {
-  if (typeIdBytes == kDisableTypeId) {
+} // namespace
+
+// TODO(afuller): Consider 'normalizing' a folly::Uri instead of
+// requiring the name be expressed in a restricted cononical form.
+void validateUniversalType(std::string_view name) {
+  // We require a minimum 1 domain and 2 path segements, though up to 4 path
+  // segements is likely to be common.
+  folly::small_vector<folly::StringPiece, 5> segs;
+  folly::splitTo<folly::StringPiece>('/', name, std::back_inserter(segs));
+  check(segs.size() >= 3, "not enough path segments");
+  checkDomain(segs[0]);
+  size_t i = 1;
+  for (; i < segs.size() - 1; ++i) {
+    checkPathSegment(segs[i]);
+  }
+  checkTypeSegment(segs[i]);
+}
+
+folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view name) {
+  switch (alg) {
+    case TypeHashAlgorithm::Sha2_256:
+      return TypeHashSha2_256(name);
+    default:
+      folly::throw_exception<std::runtime_error>(
+          "Unsupported type hash algorithm: " + std::to_string((int)alg));
+  }
+}
+
+type_hash_size_t getTypeHashSize(TypeHashAlgorithm alg) {
+  switch (alg) {
+    case TypeHashAlgorithm::Sha2_256:
+      return TypeHashSizeSha2_256();
+    default:
+      folly::throw_exception<std::runtime_error>(
+          "Unsupported type hash algorithm: " + std::to_string((int)alg));
+  }
+}
+
+void validateTypeHash(TypeHashAlgorithm alg, folly::StringPiece typeHash) {
+  auto maxBytes = getTypeHashSize(alg);
+  if (typeHash.size() > std::numeric_limits<type_hash_size_t>::max()) {
+    folly::throw_exception<std::invalid_argument>(fmt::format(
+        "Type hash size must be <= {}, was {}.", maxBytes, typeHash.size()));
+  }
+  auto typeHashBytes = type_hash_size_t(typeHash.size());
+  if (typeHashBytes < kMinTypeHashBytes || typeHashBytes > maxBytes) {
+    folly::throw_exception<std::invalid_argument>(fmt::format(
+        "Type hash size must be in the range [{}, {}], was {}.",
+        kMinTypeHashBytes,
+        maxBytes,
+        typeHashBytes));
+  }
+}
+
+void validateTypeHashBytes(type_hash_size_t typeHashBytes) {
+  if (typeHashBytes == kDisableTypeHash) {
     return;
   }
-  checkTypeIdSize(typeIdBytes);
+  if (typeHashBytes < kMinTypeHashBytes) {
+    folly::throw_exception<std::invalid_argument>(fmt::format(
+        "Type hash size must be >= {}, was {}.",
+        kMinTypeHashBytes,
+        typeHashBytes));
+  }
 }
 
-bool matchesTypeId(
-    folly::StringPiece fullTypeId,
-    folly::StringPiece partialTypeId) {
-  if (fullTypeId.size() < partialTypeId.size() || partialTypeId.empty()) {
+bool matchesTypeHash(folly::StringPiece typeHash, folly::StringPiece prefix) {
+  if (typeHash.size() < prefix.size() || prefix.empty()) {
     return false;
   }
-  return fullTypeId.subpiece(0, partialTypeId.size()) == partialTypeId;
+  return typeHash.subpiece(0, prefix.size()) == prefix;
 }
 
-type_id_size_t clampTypeIdBytes(type_id_size_t typeIdBytes) {
-  if (typeIdBytes == kDisableTypeId) {
-    return kDisableTypeId;
-  }
-  return std::clamp(typeIdBytes, kMinTypeIdBytes, kMaxTypeIdBytes);
+folly::StringPiece getTypeHashPrefix(
+    folly::StringPiece typeHash,
+    type_hash_size_t typeHashBytes) {
+  return typeHash.subpiece(0, typeHashBytes);
 }
 
-folly::StringPiece getPartialTypeId(
-    folly::StringPiece fullTypeId,
-    type_id_size_t typeIdBytes) {
-  return fullTypeId.subpiece(0, typeIdBytes);
-}
-
-folly::fbstring maybeGetTypeId(
+folly::fbstring maybeGetTypeHashPrefix(
+    TypeHashAlgorithm alg,
     std::string_view name,
-    type_id_size_t typeIdBytes) {
-  if (typeIdBytes == kDisableTypeId || // Type id disabled.
-      name.size() <= size_t(typeIdBytes)) { // Type name is smaller.
+    type_hash_size_t typeHashBytes) {
+  if (typeHashBytes == kDisableTypeHash || // Type hash disabled.
+      name.size() <= size_t(typeHashBytes)) { // Type name is smaller.
     return {};
   }
-  folly::fbstring result = getTypeId(name);
-  if (result.size() > size_t(typeIdBytes)) {
-    result.resize(typeIdBytes);
+  folly::fbstring result = getTypeHash(alg, name);
+  if (result.size() > size_t(typeHashBytes)) {
+    result.resize(typeHashBytes);
   }
   return result;
 }

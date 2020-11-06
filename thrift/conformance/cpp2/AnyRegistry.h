@@ -101,9 +101,10 @@ class AnyRegistry {
   const AnySerializer* getSerializerByName(
       const std::string_view name,
       const Protocol& protocol) const noexcept;
-  const AnySerializer* getSerializerById(
-      const folly::fbstring& typeId,
-      const Protocol& protocol) const noexcept;
+  const AnySerializer* getSerializerByHash(
+      TypeHashAlgorithm alg,
+      const folly::fbstring& typeHash,
+      const Protocol& protocol) const;
 
   // Compile-time Type overloads.
   template <typename C = std::initializer_list<const AnySerializer*>>
@@ -154,7 +155,7 @@ class AnyRegistry {
     TypeEntry(const std::type_info& typeInfo, ThriftTypeInfo type);
 
     const std::type_info& typeInfo;
-    const folly::fbstring typeId; // The type id to use, if applicable.
+    const folly::fbstring typeHash; // The type hash to use, if applicable.
     const ThriftTypeInfo type; // Referenced by nameIndex_.
     folly::F14FastMap<Protocol, const AnySerializer*> serializers;
   };
@@ -164,7 +165,7 @@ class AnyRegistry {
   folly::F14NodeMap<std::type_index, TypeEntry> registry_;
 
   folly::F14FastMap<std::string_view, TypeEntry*> nameIndex_;
-  std::map<folly::fbstring, TypeEntry*> idIndex_; // Must be sorted.
+  std::map<folly::fbstring, TypeEntry*> hashIndex_; // Must be sorted.
 
   TypeEntry* registerTypeImpl(
       const std::type_info& typeInfo,
@@ -176,14 +177,14 @@ class AnyRegistry {
       std::unique_ptr<AnySerializer> serializer,
       TypeEntry* entry);
 
-  bool genTypeIdsAndCheckForConflicts(
+  bool genTypeHashsAndCheckForConflicts(
       std::string_view name,
-      std::vector<folly::fbstring>* typeIds) const noexcept;
-  bool genTypeIdsAndCheckForConflicts(
-      const ThriftTypeInfo& type,
-      std::vector<folly::fbstring>* typeIds) const noexcept;
+      std::vector<folly::fbstring>* typeHashs) const noexcept;
+  bool genTypeHashsAndCheckForConflicts(
+      const ThriftTypeInfo& typeInfo,
+      std::vector<folly::fbstring>* typeHashs) const noexcept;
   void indexName(std::string_view name, TypeEntry* entry) noexcept;
-  void indexId(folly::fbstring&& id, TypeEntry* entry) noexcept;
+  void indexHash(folly::fbstring&& typeHash, TypeEntry* entry) noexcept;
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
@@ -194,7 +195,8 @@ class AnyRegistry {
   }
   // Look up TypeEntry by secondary index.
   const TypeEntry* getTypeEntryByName(std::string_view name) const noexcept;
-  const TypeEntry* getTypeEntryById(const folly::fbstring& name) const noexcept;
+  const TypeEntry* getTypeEntryByHash(const folly::fbstring& typeHash) const
+      noexcept;
   const TypeEntry* getTypeEntryFor(const Any& value) const noexcept;
 
   const AnySerializer* getSerializer(

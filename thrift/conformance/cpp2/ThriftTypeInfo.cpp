@@ -27,8 +27,8 @@ void validateThriftTypeInfo(const ThriftTypeInfo& type) {
     folly::throw_exception<std::invalid_argument>("alias matches name");
   }
 
-  if (type.typeIdBytes_ref()) {
-    validateTypeIdBytes(type.typeIdBytes_ref().value_unchecked());
+  if (type.typeHashBytes_ref()) {
+    validateTypeHashBytes(type.typeHashBytes_ref().value_unchecked());
   }
 }
 

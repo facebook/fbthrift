@@ -26,8 +26,12 @@ namespace go thrift.conformance.thrift_type_info
 //
 // The expected number of names that can be hashed before a
 // collision is 2^(8*minTypeHashBytes/2).
-const byte minTypeIdBytes = 16;
-const byte maxTypeIdBytes = 32;
+const byte minTypeHashBytes = 16;
+
+// The hash algorithms that can be used with type names.
+enum TypeHashAlgorithm {
+  Sha2_256 = 1,
+}
 
 // Language-independent type information.
 struct ThriftTypeInfo {
@@ -41,5 +45,5 @@ struct ThriftTypeInfo {
   //
   // 0 indicates a type hash should never be used.
   // unset indicates that the implemnation should decided.
-  3: optional byte typeIdBytes;
+  3: optional byte typeHashBytes;
 }
