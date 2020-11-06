@@ -115,9 +115,7 @@ struct dynamic_converter_impl<type_class::enumeration> {
 template <typename ValueTypeClass>
 struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
   template <typename T>
-  static void to(folly::dynamic& out, T const& input_, dynamic_format format) {
-    thrift_list_traits_adapter<T const> input{input_};
-
+  static void to(folly::dynamic& out, T const& input, dynamic_format format) {
     out = folly::dynamic::array;
 
     for (auto const& i : input) {
@@ -148,17 +146,14 @@ struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
 template <typename KeyTypeClass, typename MappedTypeClass>
 struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
-  static void to(folly::dynamic& out, T const& input_, dynamic_format format) {
-    using traits = thrift_map_traits<T>;
-    thrift_map_traits_adapter<T const> input{input_};
-
+  static void to(folly::dynamic& out, T const& input, dynamic_format format) {
     out = folly::dynamic::object;
 
-    for (auto const& i : input) {
+    for (auto const& [k, m] : input) {
       folly::dynamic key(folly::dynamic::object);
-      dynamic_converter_impl<KeyTypeClass>::to(key, traits::key(i), format);
+      dynamic_converter_impl<KeyTypeClass>::to(key, k, format);
       dynamic_converter_impl<MappedTypeClass>::to(
-          out[std::move(key)], traits::mapped(i), format);
+          out[std::move(key)], m, format);
     }
   }
 
@@ -168,14 +163,12 @@ struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
       folly::dynamic const& input,
       dynamic_format format,
       format_adherence adherence) {
-    using traits = thrift_map_traits<T>;
-
     if (input.empty()) {
       return;
     }
 
     for (auto const& i : input.items()) {
-      typename traits::key_type key;
+      typename T::key_type key;
       dynamic_converter_impl<KeyTypeClass>::from(
           key, i.first, format, adherence);
 
@@ -188,9 +181,7 @@ struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
 template <typename ValueTypeClass>
 struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
   template <typename T>
-  static void to(folly::dynamic& out, T const& input_, dynamic_format format) {
-    thrift_set_traits_adapter<T const> input{input_};
-
+  static void to(folly::dynamic& out, T const& input, dynamic_format format) {
     out = folly::dynamic::array;
 
     for (auto const& i : input) {
@@ -206,14 +197,12 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
       folly::dynamic const& input,
       dynamic_format format,
       format_adherence adherence) {
-    using traits = thrift_set_traits<T>;
-
     if (input.empty()) {
       return;
     }
 
     for (auto const& i : input) {
-      typename traits::value_type value;
+      typename T::value_type value;
       dynamic_converter_impl<ValueTypeClass>::from(value, i, format, adherence);
       out.insert(std::move(value));
     }

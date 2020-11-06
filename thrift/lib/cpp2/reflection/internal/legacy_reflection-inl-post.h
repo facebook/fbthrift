@@ -334,8 +334,7 @@ struct impl<T, type_class::variant> {
 
 template <typename T, typename ValueTypeClass>
 struct impl<T, type_class::list<ValueTypeClass>> {
-  using traits = thrift_list_traits<T>;
-  using value_type = typename traits::value_type;
+  using value_type = typename T::value_type;
   using value_helper = get_helper<value_type, ValueTypeClass>;
   static constexpr auto rname = "list<"_fs + value_helper::name() + ">";
   static id_t rid() {
@@ -352,8 +351,7 @@ struct impl<T, type_class::list<ValueTypeClass>> {
 
 template <typename T, typename ValueTypeClass>
 struct impl<T, type_class::set<ValueTypeClass>> {
-  using traits = thrift_set_traits<T>;
-  using value_type = typename traits::value_type;
+  using value_type = typename T::value_type;
   using value_helper = get_helper<value_type, ValueTypeClass>;
   static constexpr auto rname = "set<"_fs + value_helper::name() + ">";
   static id_t rid() {
@@ -370,10 +368,9 @@ struct impl<T, type_class::set<ValueTypeClass>> {
 
 template <typename T, typename KeyTypeClass, typename MappedTypeClass>
 struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
-  using traits = thrift_map_traits<T>;
-  using key_type = typename traits::key_type;
+  using key_type = typename T::key_type;
   using key_helper = get_helper<key_type, KeyTypeClass>;
-  using mapped_type = typename traits::mapped_type;
+  using mapped_type = typename T::mapped_type;
   using mapped_helper = get_helper<mapped_type, MappedTypeClass>;
   static constexpr auto rname =
       "map<"_fs + key_helper::name() + ", " + mapped_helper::name() + ">";
