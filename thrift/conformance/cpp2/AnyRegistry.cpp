@@ -19,7 +19,9 @@
 #include <glog/logging.h>
 
 #include <folly/CppAttributes.h>
+#include <folly/Demangle.h>
 #include <folly/Singleton.h>
+#include <folly/String.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
 #include <thrift/conformance/cpp2/ThriftTypeInfo.h>
@@ -46,13 +48,6 @@ folly::fbstring maybeGetTypeHash(
   }
   return conformance::maybeGetTypeHashPrefix(
       TypeHashAlgorithm::Sha2_256, type.get_name(), defaultTypeHashBytes);
-}
-
-const AnySerializer* checkFound(const AnySerializer* serializer) {
-  if (serializer == nullptr) {
-    folly::throw_exception<std::out_of_range>("serializer not found");
-  }
-  return serializer;
 }
 
 } // namespace
@@ -122,19 +117,19 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
     return store(any_cast<const Any&>(value), protocol);
   }
 
-  const auto* entry = getTypeEntry(value.type());
-  const auto* serializer = checkFound(getSerializer(entry, protocol));
+  const auto& entry = getAndCheckTypeEntry(value.type());
+  const auto& serializer = getAndCheckSerializer(entry, protocol);
 
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   // Allocate 16KB at a time; leave some room for the IOBuf overhead
   constexpr size_t kDesiredGrowth = (1 << 14) - 64;
-  serializer->encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
+  serializer.encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
 
   Any result;
-  if (entry->typeHash.empty()) {
-    result.set_type(entry->type.get_name());
+  if (entry.typeHash.empty()) {
+    result.set_type(entry.type.get_name());
   } else {
-    result.set_typeHashPrefixSha2_256(entry->typeHash);
+    result.set_typeHashPrefixSha2_256(entry.typeHash);
   }
   if (protocol.isCustom()) {
     result.customProtocol_ref() = protocol.custom();
@@ -153,16 +148,46 @@ Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
 }
 
 void AnyRegistry::load(const Any& value, any_ref out) const {
-  const auto* entry = getTypeEntryFor(value);
-  const auto* serializer = checkFound(getSerializer(entry, getProtocol(value)));
+  const auto& entry = getAndCheckTypeEntryFor(value);
+  const auto& serializer = getAndCheckSerializer(entry, getProtocol(value));
   folly::io::Cursor cursor(&*value.data_ref());
-  serializer->decode(entry->typeInfo, cursor, out);
+  serializer.decode(entry.typeInfo, cursor, out);
 }
 
 std::any AnyRegistry::load(const Any& value) const {
   std::any out;
   load(value, out);
   return out;
+}
+
+std::string AnyRegistry::debugString() const {
+  std::string result = "AnyRegistry[\n";
+  // Using the sorted map, hashIndex_, to produce stable results.
+  for (const auto& indx : hashIndex_) {
+    const TypeEntry& entry = *indx.second;
+    result += "  ";
+    result += entry.type.get_name();
+    result += " (";
+    result += folly::hexlify(indx.first);
+    result += ")";
+    if (!entry.serializers.empty()) {
+      result += ":\n";
+      // Convert to a set, so output is deterministic.
+      std::set<Protocol> protocols;
+      for (const auto& ser : entry.serializers) {
+        protocols.emplace(ser.first);
+      }
+      for (const auto& protocol : protocols) {
+        result += "    ";
+        result += protocol.name();
+        result += ",\n";
+      }
+    } else {
+      result += ",\n";
+    }
+  }
+  result += "]";
+  return result;
 }
 
 auto AnyRegistry::registerTypeImpl(
@@ -292,17 +317,17 @@ auto AnyRegistry::getTypeEntryByName(std::string_view name) const noexcept
   return itr->second;
 }
 
-auto AnyRegistry::getTypeEntryFor(const Any& value) const noexcept
-    -> const TypeEntry* {
+auto AnyRegistry::getAndCheckTypeEntryFor(const Any& value) const
+    -> const TypeEntry& {
   if (value.type_ref().has_value() &&
       !value.type_ref().value_unchecked().empty()) {
-    return getTypeEntryByName(value.type_ref().value_unchecked());
+    return getAndCheckTypeEntryByName(value.type_ref().value_unchecked());
   }
   if (value.typeHashPrefixSha2_256_ref().has_value()) {
-    return getTypeEntryByHash(
+    return getAndCheckTypeEntryByHash(
         value.typeHashPrefixSha2_256_ref().value_unchecked());
   }
-  return nullptr;
+  throw std::invalid_argument("any must have a type");
 }
 
 const AnySerializer* AnyRegistry::getSerializer(
@@ -317,6 +342,46 @@ const AnySerializer* AnyRegistry::getSerializer(
     return nullptr;
   }
   return itr->second;
+}
+
+auto AnyRegistry::getAndCheckTypeEntry(const std::type_info& typeInfo) const
+    -> const TypeEntry& {
+  const TypeEntry* result = getTypeEntry(typeInfo);
+  if (result == nullptr) {
+    throw std::out_of_range(
+        fmt::format("Type not registered: {}", folly::demangle(typeInfo)));
+  }
+  return *result;
+}
+
+auto AnyRegistry::getAndCheckTypeEntryByName(std::string_view name) const
+    -> const TypeEntry& {
+  const TypeEntry* result = getTypeEntryByName(name);
+  if (result == nullptr) {
+    throw std::out_of_range(fmt::format("Type name not registered: {}", name));
+  }
+  return *result;
+}
+
+auto AnyRegistry::getAndCheckTypeEntryByHash(
+    const folly::fbstring& typeHash) const -> const TypeEntry& {
+  const TypeEntry* result = getTypeEntryByHash(typeHash);
+  if (result == nullptr) {
+    throw std::out_of_range(
+        fmt::format("Type hash not registered: {}", folly::hexlify(typeHash)));
+  }
+  return *result;
+}
+
+const AnySerializer& AnyRegistry::getAndCheckSerializer(
+    const TypeEntry& entry,
+    const Protocol& protocol) const {
+  auto itr = entry.serializers.find(protocol);
+  if (itr == entry.serializers.end()) {
+    folly::throw_exception<std::out_of_range>(fmt::format(
+        "Serializer not found: {}#{}", entry.type.get_name(), protocol.name()));
+  }
+  return *itr->second;
 }
 
 } // namespace apache::thrift::conformance

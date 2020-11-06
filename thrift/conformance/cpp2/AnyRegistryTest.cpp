@@ -105,7 +105,7 @@ TEST(AnyRegistryTest, TypeNotFound) {
   EXPECT_THROW(registry.store<StandardProtocol::Binary>(1), std::out_of_range);
 
   Any any;
-  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+  EXPECT_THROW(registry.load<int>(any), std::invalid_argument);
   any.set_type(thriftType("int"));
   EXPECT_THROW(registry.load<int>(any), std::out_of_range);
   any.set_protocol(StandardProtocol::Binary);
@@ -124,7 +124,7 @@ TEST(AnyRegistryTest, ProtocolNotFound) {
   EXPECT_THROW(registry.store<StandardProtocol::Binary>(1), std::out_of_range);
 
   Any any;
-  EXPECT_THROW(registry.load<int>(any), std::out_of_range);
+  EXPECT_THROW(registry.load<int>(any), std::invalid_argument);
   any.set_type(thriftType("int"));
   EXPECT_THROW(registry.load<int>(any), std::out_of_range);
   any.set_protocol(StandardProtocol::Binary);
@@ -249,8 +249,8 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "");
   EXPECT_TRUE(hasProtocol(value, Protocol{}));
-  EXPECT_THROW(cregistry.load(value), std::out_of_range);
-  EXPECT_THROW(cregistry.load<float>(value), std::out_of_range);
+  EXPECT_THROW(cregistry.load(value), std::invalid_argument);
+  EXPECT_THROW(cregistry.load<float>(value), std::invalid_argument);
   value.set_type("foo");
   EXPECT_THROW(cregistry.load(value), std::out_of_range);
   EXPECT_THROW(cregistry.load<float>(value), std::out_of_range);
@@ -263,6 +263,16 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_EQ(std::any_cast<double>(cregistry.load(value)), 2.5);
   EXPECT_EQ(cregistry.load<double>(value), 2.5);
   EXPECT_THROW(cregistry.load<int>(value), std::bad_any_cast);
+
+  EXPECT_EQ(
+      cregistry.debugString(),
+      "AnyRegistry[\n"
+      "  facebook.com/thrift/double (319b4d9a143e15bbf818e1fe4556f46a578cb58acda43d5f40cf9a22886dc9d8):\n"
+      "    facebook.com/thrift/FollyToString,\n"
+      "  facebook.com/thrift/int (3fc51d1641587f7d26c7ab0dcb97b69f6ea48f9ea15ea626ec34e6069fc4b136):\n"
+      "    facebook.com/thrift/FollyToString,\n"
+      "    facebook.com/thrift/Number1,\n"
+      "]");
 }
 
 TEST(AnyRegistryTest, Aliases) {
@@ -352,10 +362,7 @@ TEST(AnyRegistryTest, Generated) {
 
   auto value = asValueStruct<type::i32_t>(1);
   auto any = AnyRegistry::generated().store<StandardProtocol::Compact>(value);
-  ASSERT_TRUE(any.type_ref());
-  EXPECT_EQ(any.type_ref().value_unchecked(), thriftType("Value"));
   EXPECT_EQ(AnyRegistry::generated().load<Value>(any), value);
-
   EXPECT_THROW(
       AnyRegistry::generated().store<StandardProtocol::Json>(value),
       std::out_of_range);

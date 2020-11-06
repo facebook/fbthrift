@@ -150,6 +150,9 @@ class AnyRegistry {
     return getTypeName(typeid(T));
   }
 
+  // Generates a summary of the contents of the registry.
+  std::string debugString() const;
+
  private:
   struct TypeEntry {
     TypeEntry(const std::type_info& typeInfo, ThriftTypeInfo type);
@@ -197,11 +200,19 @@ class AnyRegistry {
   const TypeEntry* getTypeEntryByName(std::string_view name) const noexcept;
   const TypeEntry* getTypeEntryByHash(const folly::fbstring& typeHash) const
       noexcept;
-  const TypeEntry* getTypeEntryFor(const Any& value) const noexcept;
 
   const AnySerializer* getSerializer(
       const TypeEntry* entry,
       const Protocol& protocol) const noexcept;
+
+  const TypeEntry& getAndCheckTypeEntry(const std::type_info& typeInfo) const;
+  const TypeEntry& getAndCheckTypeEntryByName(std::string_view name) const;
+  const TypeEntry& getAndCheckTypeEntryByHash(
+      const folly::fbstring& typeHash) const;
+  const TypeEntry& getAndCheckTypeEntryFor(const Any& value) const;
+  const AnySerializer& getAndCheckSerializer(
+      const TypeEntry& entry,
+      const Protocol& protocol) const;
 };
 
 // Implementation details.
