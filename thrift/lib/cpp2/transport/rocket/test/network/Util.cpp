@@ -40,7 +40,7 @@ std::string repeatPattern(folly::StringPiece pattern, size_t nbytes) {
   rv.reserve(nbytes);
   for (size_t remaining = nbytes; remaining != 0;) {
     const size_t toCopy = std::min<size_t>(pattern.size(), remaining);
-    std::copy_n(pattern.begin(), toCopy, std::back_inserter(rv));
+    rv.append(pattern.data(), 0, toCopy);
     remaining -= toCopy;
   }
   return rv;
