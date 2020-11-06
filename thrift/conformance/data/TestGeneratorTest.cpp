@@ -39,23 +39,21 @@ TEST(TestGeneratorTest, RoundTripSuite) {
       &getAnyStandardSerializer<Value, StandardProtocol::SimpleJson>());
   auto suite = createRoundTripSuite(registry);
 
-  constexpr size_t kNumProtocols = 4;
+  constexpr size_t kNumProtocols = 3;
   constexpr size_t kNumTypes = 8;
-  EXPECT_EQ(*suite.name_ref(), "Round Trip");
+  EXPECT_EQ(*suite.name_ref(), "RoundTripTest");
   ASSERT_EQ(suite.tests_ref()->size(), kNumProtocols * kNumTypes);
 
-  EXPECT_EQ(*suite.tests_ref()->at(0 * kNumTypes).name_ref(), "Binary: bool");
-  EXPECT_EQ(*suite.tests_ref()->at(1 * kNumTypes).name_ref(), "Compact: bool");
-  EXPECT_EQ(*suite.tests_ref()->at(2 * kNumTypes).name_ref(), "Json: bool");
-  EXPECT_EQ(
-      *suite.tests_ref()->at(3 * kNumTypes).name_ref(), "SimpleJson: bool");
+  EXPECT_EQ(*suite.tests_ref()->at(0 * kNumTypes).name_ref(), "Binary");
+  EXPECT_EQ(*suite.tests_ref()->at(1 * kNumTypes).name_ref(), "Compact");
+  EXPECT_EQ(*suite.tests_ref()->at(2 * kNumTypes).name_ref(), "SimpleJson");
 
   const auto& test = suite.tests_ref()->at(1);
-  EXPECT_EQ(*test.name_ref(), "Binary: byte");
+  EXPECT_EQ(*test.name_ref(), "Binary");
 
   ASSERT_GT(test.testCases_ref()->size(), 0);
   const auto& testCase = test.testCases_ref()->at(0);
-  EXPECT_EQ(*testCase.name_ref(), "zero");
+  EXPECT_EQ(*testCase.name_ref(), "byte/zero");
   EXPECT_EQ(testCase.test_ref()->getType(), TestCaseUnion::roundTrip);
 }
 

@@ -30,14 +30,14 @@ Test createRoundTripTest(
     const AnyRegistry& registry,
     const Protocol& protocol) {
   Test test;
-  test.name_ref() = fmt::format("{}: {}", protocol.name(), TT::getName());
+  test.name_ref() = protocol.name();
   for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
     RoundTripTestCase roundTrip;
     roundTrip.request_ref()->value_ref() =
         registry.store(asValueStruct<TT>(value.value), protocol);
 
     auto& testCase = test.testCases_ref()->emplace_back();
-    testCase.name_ref() = value.name;
+    testCase.name_ref() = fmt::format("{}/{}", TT::getName(), value.name);
     testCase.test_ref()->set_roundTrip(std::move(roundTrip));
   }
 
@@ -70,13 +70,11 @@ void addRoundTripToSuite(
 
 TestSuite createRoundTripSuite(const AnyRegistry& registry) {
   TestSuite suite;
-  suite.name_ref() = "Round Trip";
+  suite.name_ref() = "RoundTripTest";
   addRoundTripToSuite(
       registry, getStandardProtocol<StandardProtocol::Binary>(), suite);
   addRoundTripToSuite(
       registry, getStandardProtocol<StandardProtocol::Compact>(), suite);
-  addRoundTripToSuite(
-      registry, getStandardProtocol<StandardProtocol::Json>(), suite);
   addRoundTripToSuite(
       registry, getStandardProtocol<StandardProtocol::SimpleJson>(), suite);
   return suite;

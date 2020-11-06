@@ -21,6 +21,7 @@
 
 namespace apache::thrift::conformance::data {
 
-TestSuite createRoundTripSuite(const AnyRegistry& registry);
+TestSuite createRoundTripSuite(
+    const AnyRegistry& registry = AnyRegistry::generated());
 
 } // namespace apache::thrift::conformance::data

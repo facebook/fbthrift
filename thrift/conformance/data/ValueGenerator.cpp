@@ -29,8 +29,8 @@ void addStringValues(NamedValues<TT>& values) {
   values.emplace_back("a", "lower");
   values.emplace_back("A", "upper");
   values.emplace_back(" a ", "spaces");
-  values.emplace_back(" a", "leading space");
-  values.emplace_back("a ", "trailing space");
+  values.emplace_back(" a", "leading_space");
+  values.emplace_back("a ", "trailing_space");
   values.emplace_back("Hello", "utf8");
   if constexpr (TT::kBaseType == BaseType::Binary) {
     values.emplace_back("\x72\x01\xff", "bad_utf8");
@@ -52,29 +52,29 @@ void addNumericValues(NamedValues<TT>& values) {
   values.emplace_back(numeric_limits::max(), "max");
 
   if constexpr (!numeric_limits::is_integer) {
-    values.emplace_back(1UL << numeric_limits::digits, "max int");
-    values.emplace_back(-values.back().value, "min int");
-    values.emplace_back((1UL << numeric_limits::digits) - 1, "max digits");
-    values.emplace_back(-values.back().value, "-max digits");
+    values.emplace_back(1UL << numeric_limits::digits, "max_int");
+    values.emplace_back(-values.back().value, "min_int");
+    values.emplace_back((1UL << numeric_limits::digits) - 1, "max_digits");
+    values.emplace_back(-values.back().value, "neg_max_digits");
   }
   if constexpr (numeric_limits::has_infinity) {
-    values.emplace_back(numeric_limits::infinity(), "+inf");
-    values.emplace_back(-numeric_limits::infinity(), "-inf");
+    values.emplace_back(numeric_limits::infinity(), "inf");
+    values.emplace_back(-numeric_limits::infinity(), "neg_inf");
   }
 
   // Minutiae
   values.emplace_back(1, "one");
   if constexpr (numeric_limits::is_signed) {
-    values.emplace_back(-1, "-one");
+    values.emplace_back(-1, "neg_one");
   }
 
   if constexpr (numeric_limits::epsilon() != 0) {
     values.emplace_back(numeric_limits::epsilon(), "epsilon");
-    values.emplace_back(-numeric_limits::epsilon(), "-epsilon");
+    values.emplace_back(-numeric_limits::epsilon(), "neg_epsilon");
   }
   if constexpr (numeric_limits::has_denorm == std::denorm_present) {
     values.emplace_back(numeric_limits::denorm_min(), "denorm_min");
-    values.emplace_back(-numeric_limits::denorm_min(), "-denorm_min");
+    values.emplace_back(-numeric_limits::denorm_min(), "neg_denorm_min");
   }
 
   if constexpr (!key) {
@@ -82,7 +82,7 @@ void addNumericValues(NamedValues<TT>& values) {
       values.emplace_back(numeric_limits::quiet_NaN(), "NaN");
     }
     if (auto nzero = -static_cast<T>(0); std::signbit(nzero)) {
-      values.emplace_back(nzero, "-zero");
+      values.emplace_back(nzero, "neg_zero");
     }
   }
 }
