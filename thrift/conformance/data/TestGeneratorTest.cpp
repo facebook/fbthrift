@@ -37,16 +37,24 @@ TEST(TestGeneratorTest, RoundTripSuite) {
       &getAnyStandardSerializer<Value, StandardProtocol::Json>());
   registry.registerSerializer<Value>(
       &getAnyStandardSerializer<Value, StandardProtocol::SimpleJson>());
-  auto suite = createRoundTripSuite(registry);
+  auto suite = createRoundTripSuite(
+      {
+          StandardProtocol::Binary,
+          StandardProtocol::Compact,
+          StandardProtocol::Json,
+          StandardProtocol::SimpleJson,
+      },
+      registry);
 
-  constexpr size_t kNumProtocols = 3;
+  constexpr size_t kNumProtocols = 4;
   constexpr size_t kNumTypes = 8;
   EXPECT_EQ(*suite.name_ref(), "RoundTripTest");
   ASSERT_EQ(suite.tests_ref()->size(), kNumProtocols * kNumTypes);
 
   EXPECT_EQ(*suite.tests_ref()->at(0 * kNumTypes).name_ref(), "Binary");
   EXPECT_EQ(*suite.tests_ref()->at(1 * kNumTypes).name_ref(), "Compact");
-  EXPECT_EQ(*suite.tests_ref()->at(2 * kNumTypes).name_ref(), "SimpleJson");
+  EXPECT_EQ(*suite.tests_ref()->at(2 * kNumTypes).name_ref(), "Json");
+  EXPECT_EQ(*suite.tests_ref()->at(3 * kNumTypes).name_ref(), "SimpleJson");
 
   const auto& test = suite.tests_ref()->at(1);
   EXPECT_EQ(*test.name_ref(), "Binary");

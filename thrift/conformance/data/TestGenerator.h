@@ -16,12 +16,28 @@
 
 #pragma once
 
+#include <thrift/conformance/data/internal/TestGenerator.h>
+
+#include <set>
+
 #include <thrift/conformance/cpp2/AnyRegistry.h>
+#include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
 
 namespace apache::thrift::conformance::data {
 
 TestSuite createRoundTripSuite(
+    const std::set<Protocol>& protocols,
     const AnyRegistry& registry = AnyRegistry::generated());
+
+inline TestSuite createRoundTripSuite(
+    const std::set<StandardProtocol>& protocols = detail::kDefaultProtocols,
+    const AnyRegistry& registry = AnyRegistry::generated()) {
+  return createRoundTripSuite(detail::toProtocols(protocols), registry);
+}
+
+inline TestSuite createRoundTripSuite(const AnyRegistry& registry) {
+  return createRoundTripSuite(detail::kDefaultProtocols, registry);
+}
 
 } // namespace apache::thrift::conformance::data

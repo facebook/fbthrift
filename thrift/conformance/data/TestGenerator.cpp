@@ -44,6 +44,8 @@ Test createRoundTripTest(
   return test;
 }
 
+} // namespace
+
 void addRoundTripToSuite(
     const AnyRegistry& registry,
     const Protocol& protocol,
@@ -66,17 +68,14 @@ void addRoundTripToSuite(
       createRoundTripTest<type::binary_t>(registry, protocol));
 }
 
-} // namespace
-
-TestSuite createRoundTripSuite(const AnyRegistry& registry) {
+TestSuite createRoundTripSuite(
+    const std::set<Protocol>& protocols,
+    const AnyRegistry& registry) {
   TestSuite suite;
   suite.name_ref() = "RoundTripTest";
-  addRoundTripToSuite(
-      registry, getStandardProtocol<StandardProtocol::Binary>(), suite);
-  addRoundTripToSuite(
-      registry, getStandardProtocol<StandardProtocol::Compact>(), suite);
-  addRoundTripToSuite(
-      registry, getStandardProtocol<StandardProtocol::SimpleJson>(), suite);
+  for (const auto& protocol : protocols) {
+    addRoundTripToSuite(registry, protocol, suite);
+  }
   return suite;
 }
 
