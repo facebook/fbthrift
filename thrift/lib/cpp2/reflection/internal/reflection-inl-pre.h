@@ -87,21 +87,13 @@ struct chained_data_member_accessor<V, A...> {
   }
 };
 
-template <typename A>
-struct invoker_adaptor : private A {
-  using A::operator();
-};
-
 template <typename G>
-struct getter_direct_getter;
-template <typename G>
-struct getter_direct_getter<invoker_adaptor<G>> {
-  using type = invoker_adaptor<G>;
+struct getter_direct_getter {
+  using type = G;
 };
 template <typename V, typename... A>
-struct getter_direct_getter<
-    invoker_adaptor<chained_data_member_accessor<V, A...>>> {
-  using type = invoker_adaptor<V>;
+struct getter_direct_getter<chained_data_member_accessor<V, A...>> {
+  using type = V;
 };
 template <typename G>
 using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;

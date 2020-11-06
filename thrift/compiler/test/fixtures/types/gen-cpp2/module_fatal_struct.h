@@ -321,10 +321,8 @@ struct decorated_struct_apache_thrift_fixtures_types_module__struct_unique_membe
     ::std::string,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::field
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::field
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::field
@@ -433,10 +431,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
     ::std::vector<int32_t>,
     12,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldA
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldA
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldA
@@ -451,10 +447,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
     std::list<int32_t>,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldB
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldB
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldB
@@ -469,10 +463,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
     std::deque<int32_t>,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldC
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldC
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldC
@@ -487,10 +479,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
     folly::fbvector<int32_t>,
     4,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldD
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldD
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldD
@@ -505,10 +495,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
     folly::small_vector<int32_t>,
     5,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldE
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldE
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldE
@@ -523,10 +511,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
     folly::sorted_vector_set<int32_t>,
     6,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldF
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldF
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldF
@@ -541,10 +527,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
     folly::sorted_vector_map<int32_t, ::std::string>,
     7,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldG
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldG
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldG
@@ -559,10 +543,8 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
      ::apache::thrift::fixtures::types::SomeMap,
     8,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldH
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldH
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldH
@@ -608,10 +590,8 @@ struct CppTypeStruct_apache_thrift_fixtures_types_module__struct_unique_member_i
     std::list<int32_t>,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::fieldA
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::fieldA
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::fieldA
@@ -670,10 +650,8 @@ struct VirtualStruct_apache_thrift_fixtures_types_module__struct_unique_member_i
     int64_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyIntField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyIntField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyIntField
@@ -728,10 +706,8 @@ struct MyStructWithForwardRefEnum_apache_thrift_fixtures_types_module__struct_un
      ::apache::thrift::fixtures::types::MyForwardRefEnum,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::a
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::a
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::a
@@ -746,10 +722,8 @@ struct MyStructWithForwardRefEnum_apache_thrift_fixtures_types_module__struct_un
      ::apache::thrift::fixtures::types::MyForwardRefEnum,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::b
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::b
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::b
@@ -804,10 +778,8 @@ struct TrivialNumeric_apache_thrift_fixtures_types_module__struct_unique_member_
     int32_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::a
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::a
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::a
@@ -822,10 +794,8 @@ struct TrivialNumeric_apache_thrift_fixtures_types_module__struct_unique_member_
     bool,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::b
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::b
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::b
@@ -880,10 +850,8 @@ struct TrivialNestedWithDefault_apache_thrift_fixtures_types_module__struct_uniq
     int32_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::z
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::z
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::z
@@ -898,10 +866,8 @@ struct TrivialNestedWithDefault_apache_thrift_fixtures_types_module__struct_uniq
      ::apache::thrift::fixtures::types::TrivialNumeric,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::n
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::n
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::n
@@ -956,10 +922,8 @@ struct ComplexString_apache_thrift_fixtures_types_module__struct_unique_member_i
     ::std::string,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::a
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::a
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::a
@@ -974,10 +938,8 @@ struct ComplexString_apache_thrift_fixtures_types_module__struct_unique_member_i
     ::std::map<::std::string, int32_t>,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::b
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::b
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::b
@@ -1032,10 +994,8 @@ struct ComplexNestedWithDefault_apache_thrift_fixtures_types_module__struct_uniq
     ::std::string,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::z
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::z
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::z
@@ -1050,10 +1010,8 @@ struct ComplexNestedWithDefault_apache_thrift_fixtures_types_module__struct_uniq
      ::apache::thrift::fixtures::types::ComplexString,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::n
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::n
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::n
@@ -1148,10 +1106,8 @@ struct MinPadding_apache_thrift_fixtures_types_module__struct_unique_member_info
     int8_t,
     1,
     ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::small
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::small
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::small
@@ -1166,10 +1122,8 @@ struct MinPadding_apache_thrift_fixtures_types_module__struct_unique_member_info
     int64_t,
     2,
     ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::big
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::big
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::big
@@ -1184,10 +1138,8 @@ struct MinPadding_apache_thrift_fixtures_types_module__struct_unique_member_info
     int16_t,
     3,
     ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::medium
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::medium
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::medium
@@ -1202,10 +1154,8 @@ struct MinPadding_apache_thrift_fixtures_types_module__struct_unique_member_info
     int32_t,
     4,
     ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::biggish
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::biggish
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::biggish
@@ -1220,10 +1170,8 @@ struct MinPadding_apache_thrift_fixtures_types_module__struct_unique_member_info
     int8_t,
     5,
     ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::tiny
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::tiny
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::tiny
@@ -1344,10 +1292,8 @@ struct MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_l
     int64_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyIntField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyIntField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyIntField
@@ -1362,10 +1308,8 @@ struct MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_l
     ::std::string,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyStringField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyStringField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyStringField
@@ -1380,10 +1324,8 @@ struct MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_l
     int64_t,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::majorVer
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::majorVer
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::majorVer
@@ -1398,10 +1340,8 @@ struct MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_l
      ::apache::thrift::fixtures::types::MyDataItem,
     4,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::data
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::data
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::data
@@ -1447,10 +1387,8 @@ struct Renaming_apache_thrift_fixtures_types_module__struct_unique_member_info_l
     int64_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::bar
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::bar
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::bar
@@ -1505,10 +1443,8 @@ struct AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_member_
      ::apache::thrift::fixtures::types::TBinary,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::binary_field
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::binary_field
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::binary_field
@@ -1523,10 +1459,8 @@ struct AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_member_
      ::apache::thrift::fixtures::types::SomeListOfTypeMap,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::list_field
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::list_field
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::list_field
@@ -1572,10 +1506,8 @@ struct ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_mem
      ::apache::thrift::fixtures::types::ForwardUsageRoot,
     1,
     ::apache::thrift::optionality::optional,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::foo
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::foo
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::foo
@@ -1630,10 +1562,8 @@ struct ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_membe
      ::apache::thrift::fixtures::types::ForwardUsageStruct,
     1,
     ::apache::thrift::optionality::optional,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::ForwardUsageStruct
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::ForwardUsageStruct
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::ForwardUsageStruct
@@ -1648,10 +1578,8 @@ struct ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_membe
      ::apache::thrift::fixtures::types::ForwardUsageByRef,
     2,
     ::apache::thrift::optionality::optional,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::ForwardUsageByRef
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::ForwardUsageByRef
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::ForwardUsageByRef
@@ -1697,10 +1625,8 @@ struct ForwardUsageByRef_apache_thrift_fixtures_types_module__struct_unique_memb
      ::apache::thrift::fixtures::types::ForwardUsageRoot,
     1,
     ::apache::thrift::optionality::optional,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::foo
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::foo
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::foo
@@ -1794,10 +1720,8 @@ struct NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_uniq
     int64_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::boolField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::boolField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::boolField
@@ -1928,10 +1852,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     bool,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyBoolField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyBoolField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyBoolField
@@ -1946,10 +1868,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     int64_t,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyIntField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyIntField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyIntField
@@ -1964,10 +1884,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     ::std::string,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyStringField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyStringField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyStringField
@@ -1982,10 +1900,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     ::std::string,
     4,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyStringField2
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyStringField2
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyStringField2
@@ -2000,10 +1916,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     ::std::string,
     5,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyBinaryField
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyBinaryField
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyBinaryField
@@ -2018,10 +1932,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     ::std::string,
     6,
     ::apache::thrift::optionality::optional,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyBinaryField2
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyBinaryField2
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyBinaryField2
@@ -2036,10 +1948,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     ::std::string,
     7,
     ::apache::thrift::optionality::required,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyBinaryField3
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyBinaryField3
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyBinaryField3
@@ -2054,10 +1964,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     ::std::vector<::std::string>,
     8,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyBinaryListField4
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyBinaryListField4
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyBinaryListField4
@@ -2072,10 +1980,8 @@ struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_uni
     ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>,
     9,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::MyMapEnumAndInt
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::MyMapEnumAndInt
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::MyMapEnumAndInt
@@ -2170,10 +2076,8 @@ struct AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_
     ::std::vector<int32_t>,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::aa_list
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::aa_list
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::aa_list
@@ -2188,10 +2092,8 @@ struct AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_
     ::std::set<int32_t>,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::aa_set
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::aa_set
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::aa_set
@@ -2206,10 +2108,8 @@ struct AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_
     ::std::map<int32_t, int32_t>,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::aa_map
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::aa_map
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::aa_map
@@ -2224,10 +2124,8 @@ struct AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_
     ::std::string,
     4,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::aa_string
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::aa_string
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::aa_string
@@ -2242,10 +2140,8 @@ struct AllocatorAware_apache_thrift_fixtures_types_module__struct_unique_member_
     int32_t,
     5,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::not_a_container
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::not_a_container
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::not_a_container
@@ -2304,10 +2200,8 @@ struct AllocatorAware2_apache_thrift_fixtures_types_module__struct_unique_member
     int32_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::not_a_container
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::not_a_container
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::not_a_container

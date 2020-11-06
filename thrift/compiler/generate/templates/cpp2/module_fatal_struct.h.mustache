@@ -139,23 +139,19 @@ struct <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list
     <%field:key%>,
     ::apache::thrift::optionality::<%field:fatal_required_qualifier%>,
     <%#field:type%><%#type:cpp_indirection?%>
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
-        ::apache::thrift::detail::reflection_impl::data_member_accessor<
-          ::apache::thrift::tag::<%field:cpp_name%>
-        >,
-        ::apache::thrift::detail::apply_indirection_fn
-      >
+    ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::tag::<%field:cpp_name%>
+      >,
+      ::apache::thrift::detail::apply_indirection_fn
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::<%field:cpp_name%>
     >,
     <%/type:cpp_indirection?%><%/field:type%>
     <%#field:type%><%^type:cpp_indirection?%>
-    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
-      ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::tag::<%field:cpp_name%>
-      >
+    ::apache::thrift::detail::reflection_impl::data_member_accessor<
+      ::apache::thrift::tag::<%field:cpp_name%>
     >,
     ::apache::thrift::detail::invoke_reffer<
       ::apache::thrift::tag::<%field:cpp_name%>
