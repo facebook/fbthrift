@@ -549,6 +549,262 @@ void ThreadManager::Impl::setupQueueObservers() {
   }
 }
 
+class PriorityThreadManager::PriorityImpl
+    : public PriorityThreadManager,
+      public folly::DefaultKeepAliveExecutor {
+ public:
+  explicit PriorityImpl(
+      const std::array<
+          std::pair<std::shared_ptr<ThreadFactory>, size_t>,
+          N_PRIORITIES>& factories,
+      bool enableTaskStats = false) {
+    for (int i = 0; i < N_PRIORITIES; i++) {
+      std::unique_ptr<ThreadManager> m(
+          new ThreadManager::Impl(enableTaskStats));
+      m->threadFactory(factories[i].first);
+      managers_[i] = std::move(m);
+      counts_[i] = factories[i].second;
+    }
+  }
+
+  ~PriorityImpl() override {
+    if (!std::exchange(keepAliveJoined_, true)) {
+      joinKeepAlive();
+    }
+  }
+
+  void start() override {
+    Guard g(mutex_);
+    for (int i = 0; i < N_PRIORITIES; i++) {
+      if (managers_[i]->state() == STARTED) {
+        continue;
+      }
+      managers_[i]->start();
+      managers_[i]->addWorker(counts_[i]);
+    }
+  }
+
+  void stop() override {
+    Guard g(mutex_);
+    joinKeepAliveOnce();
+    for (auto& m : managers_) {
+      m->stop();
+    }
+  }
+
+  void join() override {
+    Guard g(mutex_);
+    joinKeepAliveOnce();
+    for (auto& m : managers_) {
+      m->join();
+    }
+  }
+
+  std::string getNamePrefix() const override {
+    return managers_[0]->getNamePrefix();
+  }
+
+  void setNamePrefix(const std::string& name) override {
+    for (int i = 0; i < N_PRIORITIES; i++) {
+      managers_[i]->setNamePrefix(folly::to<std::string>(name, "-pri", i));
+    }
+  }
+
+  void addWorker(size_t value) override {
+    addWorker(NORMAL, value);
+  }
+
+  void removeWorker(size_t value) override {
+    removeWorker(NORMAL, value);
+  }
+
+  void addWorker(PRIORITY priority, size_t value) override {
+    managers_[priority]->addWorker(value);
+  }
+
+  void removeWorker(PRIORITY priority, size_t value) override {
+    managers_[priority]->removeWorker(value);
+  }
+
+  size_t workerCount(PRIORITY priority) override {
+    return managers_[priority]->workerCount();
+  }
+
+  STATE state() const override {
+    size_t started = 0;
+    Guard g(mutex_);
+    for (auto& m : managers_) {
+      STATE cur_state = m->state();
+      switch (cur_state) {
+        case UNINITIALIZED:
+        case STARTING:
+        case JOINING:
+        case STOPPING:
+          return cur_state;
+        case STARTED:
+          started++;
+          break;
+        case STOPPED:
+          break;
+      }
+    }
+    if (started == 0) {
+      return STOPPED;
+    }
+    return STARTED;
+  }
+
+  std::shared_ptr<ThreadFactory> threadFactory() const override {
+    throw IllegalStateException("Not implemented");
+    return std::shared_ptr<ThreadFactory>();
+  }
+
+  void threadFactory(std::shared_ptr<ThreadFactory> value) override {
+    Guard g(mutex_);
+    for (auto& m : managers_) {
+      m->threadFactory(value);
+    }
+  }
+
+  void add(
+      std::shared_ptr<Runnable> task,
+      int64_t timeout = 0,
+      int64_t expiration = 0,
+      bool upstream = false) noexcept override {
+    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
+    PRIORITY prio = p ? p->getPriority() : NORMAL;
+    add(prio, std::move(task), timeout, expiration, upstream);
+  }
+
+  void add(
+      PRIORITY priority,
+      std::shared_ptr<Runnable> task,
+      int64_t timeout = 0,
+      int64_t expiration = 0,
+      bool upstream = false) noexcept override {
+    managers_[priority]->add(std::move(task), timeout, expiration, upstream);
+  }
+
+  /**
+   * Implements folly::Executor::add()
+   */
+  void add(folly::Func f) override {
+    add(FunctionRunner::create(std::move(f)));
+  }
+
+  /**
+   * Implements folly::Executor::addWithPriority()
+   * Maps executor priority task to respective PriorityThreadManager threads:
+   *  >= 3 pri tasks to 'HIGH_IMPORTANT' threads,
+   *  2 pri tasks to 'HIGH' threads,
+   *  1 pri tasks to 'IMPORTANT' threads,
+   *  0 pri tasks to 'NORMAL' threads,
+   *  <= -1 pri tasks to 'BEST_EFFORT' threads,
+   */
+  void addWithPriority(folly::Func f, int8_t priority) override {
+    auto prio = translatePriority(priority);
+    add(prio, FunctionRunner::create(std::move(f)));
+  }
+
+  template <typename T>
+  size_t sum(T method) const {
+    size_t count = 0;
+    for (const auto& m : managers_) {
+      count += ((*m).*method)();
+    }
+    return count;
+  }
+
+  size_t idleWorkerCount() const override {
+    return sum(&ThreadManager::idleWorkerCount);
+  }
+
+  size_t idleWorkerCount(PRIORITY priority) const override {
+    return managers_[priority]->idleWorkerCount();
+  }
+
+  size_t workerCount() const override {
+    return sum(&ThreadManager::workerCount);
+  }
+
+  size_t pendingTaskCount() const override {
+    return sum(&ThreadManager::pendingTaskCount);
+  }
+
+  size_t pendingUpstreamTaskCount() const override {
+    return sum(&ThreadManager::pendingUpstreamTaskCount);
+  }
+
+  size_t pendingTaskCount(PRIORITY priority) const override {
+    return managers_[priority]->pendingTaskCount();
+  }
+
+  size_t totalTaskCount() const override {
+    return sum(&ThreadManager::totalTaskCount);
+  }
+
+  size_t expiredTaskCount() override {
+    return sum(&ThreadManager::expiredTaskCount);
+  }
+
+  void remove(std::shared_ptr<Runnable> /*task*/) override {
+    throw IllegalStateException("Not implemented");
+  }
+
+  std::shared_ptr<Runnable> removeNextPending() override {
+    throw IllegalStateException("Not implemented");
+    return std::shared_ptr<Runnable>();
+  }
+
+  void clearPending() override {
+    for (const auto& m : managers_) {
+      m->clearPending();
+    }
+  }
+
+  void setExpireCallback(ExpireCallback expireCallback) override {
+    for (const auto& m : managers_) {
+      m->setExpireCallback(expireCallback);
+    }
+  }
+
+  void setCodelCallback(ExpireCallback expireCallback) override {
+    for (const auto& m : managers_) {
+      m->setCodelCallback(expireCallback);
+    }
+  }
+
+  void setThreadInitCallback(InitCallback /*initCallback*/) override {
+    throw IllegalStateException("Not implemented");
+  }
+
+  void enableCodel(bool enabled) override {
+    for (const auto& m : managers_) {
+      m->enableCodel(enabled);
+    }
+  }
+
+  folly::Codel* getCodel() override {
+    return getCodel(NORMAL);
+  }
+
+  folly::Codel* getCodel(PRIORITY priority) override {
+    return managers_[priority]->getCodel();
+  }
+
+ private:
+  void joinKeepAliveOnce() {
+    if (!std::exchange(keepAliveJoined_, true)) {
+      joinKeepAlive();
+    }
+  }
+
+  std::unique_ptr<ThreadManager> managers_[N_PRIORITIES];
+  size_t counts_[N_PRIORITIES];
+  Mutex mutex_;
+  bool keepAliveJoined_{false};
+};
+
 std::shared_ptr<ThreadManager> ThreadManager::newThreadManager() {
   return std::make_shared<ThreadManager::Impl>();
 }
