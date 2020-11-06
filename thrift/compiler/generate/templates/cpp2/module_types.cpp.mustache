@@ -27,8 +27,8 @@
 
 <%#program:any_types?%>
 namespace {
-apache::thrift::conformance::AnyType anyTypeFor(std::string name) {
-    apache::thrift::conformance::AnyType type;
+apache::thrift::conformance::ThriftTypeInfo typeFor(std::string name) {
+    apache::thrift::conformance::ThriftTypeInfo type;
     type.set_name(std::move(name));
     return type;
 }
@@ -100,7 +100,7 @@ FOLLY_EXPORT bool __fbthrift_static_init_<%struct:name%> = (
 <%/program:json?%>
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary
-    >(anyTypeFor("<%struct:any_type%>")), true);
+    >(typeFor("<%struct:any_type%>")), true);
 
 <%/struct:any_type%>
 

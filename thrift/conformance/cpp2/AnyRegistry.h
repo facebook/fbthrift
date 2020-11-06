@@ -36,6 +36,7 @@
 #include <thrift/conformance/cpp2/AnySerializer.h>
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/if/gen-cpp2/any_types.h>
+#include <thrift/conformance/if/gen-cpp2/thrift_type_info_types.h>
 
 namespace apache::thrift::conformance {
 
@@ -73,7 +74,7 @@ class AnyRegistry {
   //
   // Throws std::invalid_argument if type is invalid.
   // Returns false iff the type conflicts with an existing registration.
-  bool registerType(const std::type_info& typeInfo, AnyType type);
+  bool registerType(const std::type_info& typeInfo, ThriftTypeInfo type);
 
   // Register a serializer for a given type.
   //
@@ -82,20 +83,20 @@ class AnyRegistry {
   // Throws std::invalid_argument if serializer contains an invalid protocol.
   // Returns false iff the serializer conflicts with an existing registration.
   bool registerSerializer(
-      const std::type_info& type,
+      const std::type_info& typeInfo,
       const AnySerializer* serializer);
   bool registerSerializer(
-      const std::type_info& type,
+      const std::type_info& typeInfo,
       std::unique_ptr<AnySerializer> serializer);
 
   // Returns the unique type name for the given type, or "" if the type has not
   // been registered.
-  std::string_view getTypeName(const std::type_info& type) const noexcept;
+  std::string_view getTypeName(const std::type_info& typeInfo) const noexcept;
 
   // Returns the serializer for the given type and protocol, or nullptr if
   // no matching serializer is found.
   const AnySerializer* getSerializer(
-      const std::type_info& type,
+      const std::type_info& typeInfo,
       const Protocol& protocol) const noexcept;
   const AnySerializer* getSerializerByName(
       const std::string_view name,
@@ -106,19 +107,21 @@ class AnyRegistry {
 
   // Compile-time Type overloads.
   template <typename C = std::initializer_list<const AnySerializer*>>
-  bool
-  registerType(const std::type_info& typeInfo, AnyType type, C&& serializers);
+  bool registerType(
+      const std::type_info& typeInfo,
+      ThriftTypeInfo type,
+      C&& serializers);
 
   template <
       typename T,
       typename C = std::initializer_list<const AnySerializer*>>
-  bool registerType(AnyType type, C&& serializers) {
+  bool registerType(ThriftTypeInfo type, C&& serializers) {
     return registerType(
         typeid(T), std::move(type), std::forward<C>(serializers));
   }
 
   template <typename T, StandardProtocol... Ps>
-  bool registerType(AnyType type) {
+  bool registerType(ThriftTypeInfo type) {
     return registerType(
         typeid(T), std::move(type), {&getAnyStandardSerializer<T, Ps>()...});
   }
@@ -148,11 +151,11 @@ class AnyRegistry {
 
  private:
   struct TypeEntry {
-    TypeEntry(const std::type_info& typeInfo, AnyType type);
+    TypeEntry(const std::type_info& typeInfo, ThriftTypeInfo type);
 
     const std::type_info& typeInfo;
     const folly::fbstring typeId; // The type id to use, if applicable.
-    const AnyType type; // Referenced by nameIndex_.
+    const ThriftTypeInfo type; // Referenced by nameIndex_.
     folly::F14FastMap<Protocol, const AnySerializer*> serializers;
   };
 
@@ -163,7 +166,9 @@ class AnyRegistry {
   folly::F14FastMap<std::string_view, TypeEntry*> nameIndex_;
   std::map<folly::fbstring, TypeEntry*> idIndex_; // Must be sorted.
 
-  TypeEntry* registerTypeImpl(const std::type_info& typeInfo, AnyType type);
+  TypeEntry* registerTypeImpl(
+      const std::type_info& typeInfo,
+      ThriftTypeInfo type);
   static bool registerSerializerImpl(
       const AnySerializer* serializer,
       TypeEntry* entry);
@@ -175,16 +180,17 @@ class AnyRegistry {
       std::string_view name,
       std::vector<folly::fbstring>* typeIds) const noexcept;
   bool genTypeIdsAndCheckForConflicts(
-      const AnyType& type,
+      const ThriftTypeInfo& type,
       std::vector<folly::fbstring>* typeIds) const noexcept;
   void indexName(std::string_view name, TypeEntry* entry) noexcept;
   void indexId(folly::fbstring&& id, TypeEntry* entry) noexcept;
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
-  const TypeEntry* getTypeEntry(const std::type_index& index) const noexcept;
-  const TypeEntry* getTypeEntry(const std::type_info& type) const noexcept {
-    return getTypeEntry(std::type_index(type));
+  const TypeEntry* getTypeEntry(const std::type_index& typeIndex) const
+      noexcept;
+  const TypeEntry* getTypeEntry(const std::type_info& typeInfo) const noexcept {
+    return getTypeEntry(std::type_index(typeInfo));
   }
   // Look up TypeEntry by secondary index.
   const TypeEntry* getTypeEntryByName(std::string_view name) const noexcept;
@@ -208,7 +214,7 @@ T AnyRegistry::load(const Any& value) const {
 template <typename C>
 bool AnyRegistry::registerType(
     const std::type_info& typeInfo,
-    AnyType type,
+    ThriftTypeInfo type,
     C&& serializers) {
   TypeEntry* entry = registerTypeImpl(typeInfo, std::move(type));
   if (entry == nullptr) {
@@ -235,7 +241,7 @@ bool AnyRegistry::registerType(
 namespace detail {
 
 template <typename Struct, StandardProtocol... Ps>
-void registerGeneratedStruct(const AnyType& type) {
+void registerGeneratedStruct(const ThriftTypeInfo& type) {
   if (!getGeneratedAnyRegistry().registerType<Struct, Ps...>(type)) {
     folly::throw_exception<std::runtime_error>(
         "Could not register: " + type.get_name());

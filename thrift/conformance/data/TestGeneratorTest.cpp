@@ -17,10 +17,10 @@
 #include <thrift/conformance/data/TestGenerator.h>
 
 #include <folly/portability/GTest.h>
-#include <thrift/conformance/cpp2/Any.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/cpp2/Object.h>
+#include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 #include <thrift/conformance/if/gen-cpp2/object_types_custom_protocol.h>
 
 namespace apache::thrift::conformance::data {
@@ -28,7 +28,7 @@ namespace apache::thrift::conformance::data {
 TEST(TestGeneratorTest, RoundTripSuite) {
   AnyRegistry registry;
   registry.registerType<Value>(
-      createAnyType({"facebook.com/thrift/conformance/Value"}));
+      createThriftTypeInfo({"facebook.com/thrift/conformance/Value"}));
   registry.registerSerializer<Value>(
       &getAnyStandardSerializer<Value, StandardProtocol::Binary>());
   registry.registerSerializer<Value>(

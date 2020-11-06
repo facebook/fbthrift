@@ -26,9 +26,6 @@ cpp_include "<folly/io/IOBuf.h>"
 
 include "thrift/conformance/if/protocol.thrift"
 
-const byte minTypeIdBytes = 16;
-const byte maxTypeIdBytes = 32;
-
 // Any encoded thrift value.
 struct Any {
   // The unique name for this type.
@@ -46,22 +43,4 @@ struct Any {
   // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> to make
   // moves cheaper (profile to see if this is better).
   5: binary (cpp.type = "folly::IOBuf") data;
-}
-
-// A configuration for a type used with Any.
-//
-// TODO(afuller): Use this as a structured annotation to enable Any support for
-// a struct.
-struct AnyType {
-  // The name of the type.
-  1: string name;
-
-  // The list of alias for this type.
-  2: set<string> aliases;
-
-  // The default number of bytes to use in a typeId for this type.
-  //
-  // 0 indicates a type_id should never be used.
-  // unset indicates that the implemnation should decided.
-  3: optional byte typeIdBytes;
 }

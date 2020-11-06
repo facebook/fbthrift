@@ -30,7 +30,7 @@ namespace {
 TEST(AnyRegistryTest, ShortType) {
   AnyRegistry registry;
   FollyToStringSerializer<int> intCodec;
-  EXPECT_TRUE(registry.registerType<int>(shortAnyType(), {&intCodec}));
+  EXPECT_TRUE(registry.registerType<int>(shortThriftType(), {&intCodec}));
 
   // Should use the type name because it is shorter than the id.
   Any any = registry.store(1, kFollyToStringProtocol);
@@ -43,7 +43,7 @@ constexpr int kUnsetTypeId = -1;
 void checkLongType(int typeBytes, int expectedOutBytes) {
   AnyRegistry registry;
   FollyToStringSerializer<int> intCodec;
-  auto longType = longAnyType();
+  auto longType = longThriftType();
   if (typeBytes == kUnsetTypeId) {
     longType.typeIdBytes_ref().reset();
   } else {
@@ -85,7 +85,7 @@ TEST(AnyRegistryTest, LongType) {
 TEST(AnyRegistryTest, ShortTypeId) {
   AnyRegistry registry;
   FollyToStringSerializer<int> intCodec;
-  auto longType = longAnyType();
+  auto longType = longThriftType();
   EXPECT_TRUE(registry.registerType<int>(longType, {&intCodec}));
   Any any = registry.store(1, kFollyToStringProtocol);
   any.set_typeId(any.typeId_ref()->substr(0, 8));
@@ -112,7 +112,7 @@ TEST(AnyRegistryTest, TypeNotFound) {
 
 TEST(AnyRegistryTest, ProtocolNotFound) {
   AnyRegistry registry;
-  EXPECT_TRUE(registry.registerType<int>(testAnyType("int")));
+  EXPECT_TRUE(registry.registerType<int>(testThriftType("int")));
   EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
   EXPECT_EQ((registry.getSerializer<int, StandardProtocol::Binary>()), nullptr);
 
@@ -129,7 +129,7 @@ TEST(AnyRegistryTest, ProtocolNotFound) {
 TEST(AnyRegistryTest, TypeIdToShort) {
   AnyRegistry registry;
   FollyToStringSerializer<int> intCodec;
-  auto anyType = longAnyType();
+  auto anyType = longThriftType();
   anyType.set_typeIdBytes(17);
   EXPECT_TRUE(registry.registerType<int>(anyType, {&intCodec}));
   Any any = registry.store(1, intCodec.getProtocol());
@@ -157,16 +157,16 @@ TEST(AnyRegistryTest, Behavior) {
 
   // Empty string is rejected.
   EXPECT_THROW(
-      registry.registerType<int>(testAnyType("")), std::invalid_argument);
+      registry.registerType<int>(testThriftType("")), std::invalid_argument);
 
-  EXPECT_TRUE(registry.registerType<int>(testAnyType("int")));
+  EXPECT_TRUE(registry.registerType<int>(testThriftType("int")));
   EXPECT_EQ(cregistry.getTypeName(typeid(int)), thriftType("int"));
   EXPECT_EQ(cregistry.getSerializer<int>(kFollyToStringProtocol), nullptr);
 
   // Conflicting and duplicate registrations are rejected.
-  EXPECT_FALSE(registry.registerType<int>(testAnyType("int")));
-  EXPECT_FALSE(registry.registerType<int>(testAnyType("other-int")));
-  EXPECT_FALSE(registry.registerType<double>(testAnyType("int")));
+  EXPECT_FALSE(registry.registerType<int>(testThriftType("int")));
+  EXPECT_FALSE(registry.registerType<int>(testThriftType("other-int")));
+  EXPECT_FALSE(registry.registerType<double>(testThriftType("int")));
 
   EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
   EXPECT_EQ(cregistry.getTypeName<int>(), thriftType("int"));
@@ -178,7 +178,7 @@ TEST(AnyRegistryTest, Behavior) {
   Number1Serializer number1Codec;
   EXPECT_TRUE(registry.registerSerializer<int>(&number1Codec));
 
-  EXPECT_TRUE(registry.registerType<double>(testAnyType("double")));
+  EXPECT_TRUE(registry.registerType<double>(testThriftType("double")));
 
   // nullptr is rejected.
   EXPECT_FALSE(registry.registerSerializer<double>(nullptr));
@@ -265,7 +265,7 @@ TEST(AnyRegistryTest, Aliases) {
   Number1Serializer oneCodec;
 
   EXPECT_TRUE(registry.registerType<int>(
-      testAnyType({"int", "Int", "Integer"}), {&oneCodec, &intCodec}));
+      testThriftType({"int", "Int", "Integer"}), {&oneCodec, &intCodec}));
   EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
   EXPECT_EQ(
       registry.getSerializerByName(thriftType("int"), oneCodec.getProtocol()),
@@ -306,7 +306,7 @@ TEST(AnyRegistryTest, ForwardCompat_Any) {
   const AnyRegistry& cregistry = registry;
   FollyToStringSerializer<int> intCodec;
 
-  EXPECT_TRUE(registry.registerType<int>(testAnyType("int")));
+  EXPECT_TRUE(registry.registerType<int>(testThriftType("int")));
   EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
 
   Any any = cregistry.store(1, kFollyToStringProtocol);
@@ -323,7 +323,7 @@ TEST(AnyRegistryTest, StdProtocol) {
   const AnyRegistry& cregistry = registry;
   registry
       .registerType<Value, StandardProtocol::Binary, StandardProtocol::Compact>(
-          testAnyType("Value"));
+          testThriftType("Value"));
 
   auto value = asValueStruct<type::i32_t>(1);
   auto any = cregistry.store<StandardProtocol::Compact>(value);
@@ -336,11 +336,11 @@ TEST(AnyRegistryTest, Generated) {
   detail::registerGeneratedStruct<
       Value,
       StandardProtocol::Binary,
-      StandardProtocol::Compact>(testAnyType("Value"));
+      StandardProtocol::Compact>(testThriftType("Value"));
 
   // Double regeister fails with a runtime error.
   EXPECT_THROW(
-      detail::registerGeneratedStruct<Value>(testAnyType("Value")),
+      detail::registerGeneratedStruct<Value>(testThriftType("Value")),
       std::runtime_error);
 
   auto value = asValueStruct<type::i32_t>(1);

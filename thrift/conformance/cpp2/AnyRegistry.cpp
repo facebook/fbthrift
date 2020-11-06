@@ -22,6 +22,7 @@
 #include <folly/Singleton.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
+#include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 #include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
@@ -37,7 +38,7 @@ AnyRegistry& getGeneratedAnyRegistry() {
 namespace {
 
 folly::fbstring maybeGetTypeId(
-    const AnyType& type,
+    const ThriftTypeInfo& type,
     type_id_size_t defaultTypeIdBytes = kMinTypeIdBytes) {
   if (type.typeIdBytes_ref().has_value()) {
     // Use the custom size.
@@ -55,10 +56,14 @@ const AnySerializer* checkFound(const AnySerializer* serializer) {
 
 } // namespace
 
-AnyRegistry::TypeEntry::TypeEntry(const std::type_info& typeInfo, AnyType type)
+AnyRegistry::TypeEntry::TypeEntry(
+    const std::type_info& typeInfo,
+    ThriftTypeInfo type)
     : typeInfo(typeInfo), typeId(maybeGetTypeId(type)), type(std::move(type)) {}
 
-bool AnyRegistry::registerType(const std::type_info& typeInfo, AnyType type) {
+bool AnyRegistry::registerType(
+    const std::type_info& typeInfo,
+    ThriftTypeInfo type) {
   return registerTypeImpl(typeInfo, std::move(type)) != nullptr;
 }
 
@@ -152,9 +157,10 @@ std::any AnyRegistry::load(const Any& value) const {
   return out;
 }
 
-auto AnyRegistry::registerTypeImpl(const std::type_info& typeInfo, AnyType type)
-    -> TypeEntry* {
-  validateAnyType(type);
+auto AnyRegistry::registerTypeImpl(
+    const std::type_info& typeInfo,
+    ThriftTypeInfo type) -> TypeEntry* {
+  validateThriftTypeInfo(type);
   std::vector<folly::fbstring> typeIds;
   typeIds.reserve(type.aliases_ref()->size() + 1);
   if (!genTypeIdsAndCheckForConflicts(type, &typeIds)) {
@@ -221,7 +227,7 @@ bool AnyRegistry::genTypeIdsAndCheckForConflicts(
 }
 
 bool AnyRegistry::genTypeIdsAndCheckForConflicts(
-    const AnyType& type,
+    const ThriftTypeInfo& type,
     std::vector<folly::fbstring>* typeIds) const noexcept {
   // Ensure name and all aliases are availabile.
   if (!genTypeIdsAndCheckForConflicts(*type.name_ref(), typeIds)) {
@@ -245,9 +251,9 @@ void AnyRegistry::indexId(folly::fbstring&& id, TypeEntry* entry) noexcept {
   DCHECK(res.second);
 }
 
-auto AnyRegistry::getTypeEntry(const std::type_index& index) const noexcept
+auto AnyRegistry::getTypeEntry(const std::type_index& typeIndex) const noexcept
     -> const TypeEntry* {
-  auto itr = registry_.find(index);
+  auto itr = registry_.find(typeIndex);
   if (itr == registry_.end()) {
     return nullptr;
   }

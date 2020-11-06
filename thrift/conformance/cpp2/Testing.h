@@ -29,9 +29,9 @@
 #include <thrift/conformance/cpp2/AnySerializer.h>
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/cpp2/Protocol.h>
-#include <thrift/conformance/if/gen-cpp2/any_types.tcc>
-#include <thrift/conformance/if/gen-cpp2/object_types.tcc>
-#include <thrift/conformance/if/gen-cpp2/protocol_types.tcc>
+#include <thrift/conformance/cpp2/ThriftTypeInfo.h>
+#include <thrift/conformance/if/gen-cpp2/any_types_custom_protocol.h>
+#include <thrift/conformance/if/gen-cpp2/object_types_custom_protocol.h>
 
 // Helper so gtest prints out the line number when running the given check.
 #define THRIFT_SCOPED_CHECK(check) \
@@ -49,14 +49,14 @@ inline const Protocol& UnknownProtocol() {
   return getStandardProtocol<kUnknownStdProtocol>();
 }
 
-// Creates an AnyType for tests using the given name(s).
-AnyType testAnyType(const std::string& shortName);
-AnyType testAnyType(std::initializer_list<const char*> names);
+// Creates an ThriftTypeInfo for tests using the given name(s).
+ThriftTypeInfo testThriftType(const std::string& shortName);
+ThriftTypeInfo testThriftType(std::initializer_list<const char*> names);
 
-// Creates an AnyType that is smaller than the associated type id.
-AnyType shortAnyType(int ordinal = 1);
-// Creates an AnyType that is larger than the associated type id.
-AnyType longAnyType(int ordinal = 1);
+// Creates an ThriftTypeInfo that is smaller than the associated type id.
+ThriftTypeInfo shortThriftType(int ordinal = 1);
+// Creates an ThriftTypeInfo that is larger than the associated type id.
+ThriftTypeInfo longThriftType(int ordinal = 1);
 
 // Returns the full thrift type name, for the given type.
 std::string thriftType(std::string_view type);

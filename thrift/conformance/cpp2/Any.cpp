@@ -44,28 +44,6 @@ bool hasProtocol(const Any& any, const Protocol& protocol) noexcept {
   return protocol.isNone();
 }
 
-void validateAnyType(const AnyType& type) {
-  validateUniversalType(*type.name_ref());
-  for (const auto& alias : *type.aliases_ref()) {
-    validateUniversalType(alias);
-  }
-  // Note: We don't need to valudate 0 or unset (as unset indicates the
-  // implementation should decide).
-  auto typeIdBytes = type.typeIdBytes_ref().value_or(0);
-  if (typeIdBytes != 0 &&
-      (typeIdBytes < any_constants::minTypeIdBytes() ||
-       typeIdBytes > any_constants::maxTypeIdBytes())) {
-    folly::throw_exception<std::invalid_argument>(fmt::format(
-        "typeIdBytes must be between {} and {}: {}",
-        any_constants::minTypeIdBytes(),
-        any_constants::maxTypeIdBytes(),
-        typeIdBytes));
-  }
-  if (type.aliases_ref()->find(*type.name_ref()) != type.aliases_ref()->end()) {
-    folly::throw_exception<std::invalid_argument>("alias matches name");
-  }
-}
-
 void validateAny(const Any& any) {
   if (any.type_ref().has_value() && !any.type_ref().value_unchecked().empty()) {
     validateUniversalType(any.type_ref().value_unchecked());

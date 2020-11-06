@@ -33,12 +33,12 @@ std::string thriftType(std::string_view type) {
   return fmt::format("facebook.com/thrift/{}", type);
 }
 
-AnyType testAnyType(const std::string& shortName) {
-  return testAnyType({shortName.c_str()});
+ThriftTypeInfo testThriftType(const std::string& shortName) {
+  return testThriftType({shortName.c_str()});
 }
 
-AnyType testAnyType(std::initializer_list<const char*> names) {
-  AnyType type;
+ThriftTypeInfo testThriftType(std::initializer_list<const char*> names) {
+  ThriftTypeInfo type;
   type.set_typeIdBytes(0);
   auto itr = names.begin();
   if (itr != names.end()) {
@@ -71,18 +71,18 @@ void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
   }
 }
 
-AnyType shortAnyType(int ordinal) {
-  AnyType type;
+ThriftTypeInfo shortThriftType(int ordinal) {
+  ThriftTypeInfo type;
   type.set_name(fmt::format("sh.or/t/{}", ordinal));
-  assert(type.get_name().size() <= any_constants::minTypeIdBytes());
+  assert(type.get_name().size() <= kMinTypeIdBytes);
   return type;
 }
 
-AnyType longAnyType(int ordinal) {
-  AnyType type;
+ThriftTypeInfo longThriftType(int ordinal) {
+  ThriftTypeInfo type;
   type.set_name(
       fmt::format("seriously.long.type/seriously/long/type/{}", ordinal));
-  assert(type.get_name().size() > any_constants::maxTypeIdBytes());
+  assert(type.get_name().size() > kMaxTypeIdBytes);
   return type;
 }
 

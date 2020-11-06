@@ -106,49 +106,5 @@ TEST(AnyTest, ValidateAny) {
   validateAny(any);
 }
 
-TEST(AnyTest, ValidateAnyType) {
-  const auto bad = "foo.com:42/my/type";
-  const auto good1 = "foo.com/my/type";
-  const auto good2 = "foo.com/my/other-type";
-  AnyType type;
-  EXPECT_THROW(validateAnyType(type), std::invalid_argument);
-  type.name_ref() = good1;
-  validateAnyType(type);
-  type.aliases_ref()->emplace(good2);
-  validateAnyType(type);
-  type.set_typeIdBytes(any_constants::minTypeIdBytes());
-  validateAnyType(type);
-  type.set_typeIdBytes(any_constants::maxTypeIdBytes());
-  validateAnyType(type);
-
-  {
-    AnyType badType(type);
-    badType.set_name(bad);
-    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
-  }
-
-  {
-    AnyType badType(type);
-    badType.aliases_ref()->emplace(good1); // Duplicate name.
-    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
-  }
-  {
-    AnyType badType(type);
-    badType.aliases_ref()->emplace(bad);
-    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
-  }
-
-  {
-    AnyType badType(type);
-    badType.set_typeIdBytes(1);
-    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
-  }
-  {
-    AnyType badType(type);
-    badType.set_typeIdBytes(100);
-    EXPECT_THROW(validateAnyType(badType), std::invalid_argument);
-  }
-}
-
 } // namespace
 } // namespace apache::thrift::conformance

@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-#pragma once
-
-#include <thrift/conformance/cpp2/Protocol.h>
-#include <thrift/conformance/if/gen-cpp2/any_types.h>
+#include "thrift/conformance/cpp2/ThriftTypeInfo.h"
 
 namespace apache::thrift::conformance {
 
-// Returns the protocol used by the given any.
-Protocol getProtocol(const Any& any) noexcept;
+void validateThriftTypeInfo(const ThriftTypeInfo& type) {
+  validateUniversalType(*type.name_ref());
+  for (const auto& alias : *type.aliases_ref()) {
+    validateUniversalType(alias);
+  }
+  if (type.aliases_ref()->find(*type.name_ref()) != type.aliases_ref()->end()) {
+    folly::throw_exception<std::invalid_argument>("alias matches name");
+  }
 
-// Returns true iff the any is encoded using the given protocol.
-bool hasProtocol(const Any& any, const Protocol& protocol) noexcept;
-
-// Raises std::invalid_argument if invalid.
-void validateAny(const Any& any);
+  if (type.typeIdBytes_ref()) {
+    validateTypeIdBytes(type.typeIdBytes_ref().value_unchecked());
+  }
+}
 
 } // namespace apache::thrift::conformance

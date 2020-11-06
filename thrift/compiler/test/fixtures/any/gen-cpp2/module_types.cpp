@@ -13,8 +13,8 @@
 #include "thrift/compiler/test/fixtures/any/gen-cpp2/module_data.h"
 
 namespace {
-apache::thrift::conformance::AnyType anyTypeFor(std::string name) {
-    apache::thrift::conformance::AnyType type;
+apache::thrift::conformance::ThriftTypeInfo typeFor(std::string name) {
+    apache::thrift::conformance::ThriftTypeInfo type;
     type.set_name(std::move(name));
     return type;
 }
@@ -52,7 +52,7 @@ FOLLY_EXPORT bool __fbthrift_static_init_MyStruct = (
         MyStruct,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary
-    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyStruct")), true);
+    >(typeFor("facebook.com/thrift/compiler/test/fictures/any/MyStruct")), true);
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -163,7 +163,7 @@ FOLLY_EXPORT bool __fbthrift_static_init_MyUnion = (
         MyUnion,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary
-    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyUnion")), true);
+    >(typeFor("facebook.com/thrift/compiler/test/fictures/any/MyUnion")), true);
 
 
 void MyUnion::__clear() {
@@ -254,7 +254,7 @@ FOLLY_EXPORT bool __fbthrift_static_init_MyException = (
         MyException,
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary
-    >(anyTypeFor("facebook.com/thrift/compiler/test/fictures/any/MyException")), true);
+    >(typeFor("facebook.com/thrift/compiler/test/fictures/any/MyException")), true);
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
