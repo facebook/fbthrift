@@ -51,7 +51,7 @@ struct TestCase {
   2: optional string description;
 
   // The test case to run.
-  3: TestCaseUnion test;
+  3: TestCaseUnion test (cpp.mixin);
 }
 
 // A union of all supported test case types.
