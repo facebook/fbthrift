@@ -114,4 +114,4 @@ TEST_P(RandomTestWithSeed, test) {
 INSTANTIATE_TEST_CASE_P(
     RandomTest,
     RandomTestWithSeed,
-    testing::Range(0, 1'000));
+    testing::Range(0, folly::kIsDebug ? 16 : 256));
