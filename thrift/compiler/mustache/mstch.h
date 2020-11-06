@@ -31,6 +31,7 @@ SOFTWARE.
 #include <functional>
 #include <map>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -55,8 +56,12 @@ class object_t {
   }
 
  protected:
-  bool register_method(std::string name, std::function<N()> method) {
-    return methods.emplace(std::move(name), std::move(method)).second;
+  void register_method(std::string name, std::function<N()> method) {
+    auto result = methods.emplace(std::move(name), std::move(method));
+    if (!result.second) {
+      throw std::runtime_error(
+          "Method already registered: " + result.first->first);
+    }
   }
 
   template <class S>
