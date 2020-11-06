@@ -20,7 +20,7 @@
 
 namespace apache::thrift::conformance {
 
-// Creates a Value struct for the given value
+// Creates a Value struct for the given value.
 //
 // TT: The thrift type to use, for example
 // apache::thrift::conformance::type::binary_t.

@@ -350,11 +350,6 @@ TEST(AnyRegistryTest, StdProtocol) {
 }
 
 TEST(AnyRegistryTest, Generated) {
-  detail::registerGeneratedStruct<
-      Value,
-      StandardProtocol::Binary,
-      StandardProtocol::Compact>(testThriftType("Value"));
-
   // Double regeister fails with a runtime error.
   EXPECT_THROW(
       detail::registerGeneratedStruct<Value>(testThriftType("Value")),
