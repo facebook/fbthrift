@@ -48,7 +48,7 @@ class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     }}{{service:programName}}_clients.{{/service:externalProgram?}}{{service:name}}{{!
   }}{{/service:extends}}{{^service:extends?}}thrift.py3.client.Client{{/service:extends?}}):
 
-{{#service:functions}}
+{{#service:supportedFunctions}}
     async def {{function:name}}(
         self{{#function:args}},
         {{field:py_name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}},
@@ -58,8 +58,8 @@ class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         }}{{^type:streamresponse?}}{{> types/PEP484Type}}{{/type:streamresponse?}}{{!
         }}{{/function:returnType}}: ...
 
-{{/service:functions}}
-{{^service:functions?}}
+{{/service:supportedFunctions}}
+{{^service:supportedFunctions}}
     pass
-{{/service:functions?}}
+{{/service:supportedFunctions}}
 {{/program:services}}

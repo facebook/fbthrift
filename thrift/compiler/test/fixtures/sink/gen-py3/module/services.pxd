@@ -10,12 +10,5 @@ from thrift.py3.server cimport ServiceInterface
 
 cdef class SinkServiceInterface(ServiceInterface):
     # these are to avoid weird Cython multiple inheritance issue
-    cdef bint _for_cython_method
-    cdef bint _for_cython_methodAndReponse
-    cdef bint _for_cython_methodThrow
-    cdef bint _for_cython_methodSinkThrow
-    cdef bint _for_cython_methodFinalThrow
-    cdef bint _for_cython_methodBothThrow
-    cdef bint _for_cython_methodFast
     pass
 

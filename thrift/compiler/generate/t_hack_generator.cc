@@ -547,6 +547,17 @@ class t_hack_generator : public t_oop_generator {
   }
 
   bool is_hack_const_type(t_type* type);
+
+  std::vector<t_function*> get_supported_functions(t_service* tservice) {
+    std::vector<t_function*> funcs;
+    for (auto func : tservice->get_functions()) {
+      if (!func->returns_stream() && !func->returns_sink() &&
+          !func->get_returntype()->is_service()) {
+        funcs.push_back(func);
+      }
+    }
+    return funcs;
+  }
   /**
    * File streams
    */
@@ -3078,7 +3089,7 @@ void t_hack_generator::generate_service_processor(
     bool mangle,
     bool async) {
   // Generate the dispatch methods
-  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*> functions = get_supported_functions(tservice);
   vector<t_function*>::iterator f_iter;
 
   string suffix = async ? "Async" : "Sync";
@@ -3297,7 +3308,7 @@ void t_hack_generator::generate_process_function(
 void t_hack_generator::generate_service_helpers(
     t_service* tservice,
     bool mangle) {
-  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*> functions = get_supported_functions(tservice);
   vector<t_function*>::iterator f_iter;
 
   f_service_ << "// HELPER FUNCTIONS AND STRUCTURES\n\n";
@@ -3798,7 +3809,7 @@ void t_hack_generator::generate_service_interface(
   f_service_ << "interface " << long_name << suffix << "If extends "
              << extends_if << " {\n";
   indent_up();
-  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*> functions = get_supported_functions(tservice);
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     // Add a blank line before the start of a new function definition
@@ -3856,7 +3867,7 @@ void t_hack_generator::_generate_service_client(
   indent_up();
 
   // Generate client method implementations
-  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*> functions = get_supported_functions(tservice);
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* arg_struct = (*f_iter)->get_arglist();
@@ -4275,7 +4286,7 @@ void t_hack_generator::_generate_service_client_children(
   indent_up();
 
   // Generate client method implementations
-  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*> functions = get_supported_functions(tservice);
   vector<t_function*>::const_iterator f_iter;
 
   // generate functions as necessary

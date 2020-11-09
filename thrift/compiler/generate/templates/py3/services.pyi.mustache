@@ -50,7 +50,7 @@ class {{service:name}}Interface(
     {{/service:extends?}}
     metaclass=ABCMeta,
 ):
-    {{#service:functions}}{{^function:returns_sink?}}
+    {{#service:supportedFunctions}}
 
     @staticmethod
     def pass_context_{{function:name}}(
@@ -68,7 +68,7 @@ class {{service:name}}Interface(
         self{{#function:args}},
         {{field:py_name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
     ) -> {{#function:returnType}}{{> services/ReturnTypePEP484Type}}{{/function:returnType}}: ...
-    {{/function:returns_sink?}}{{/service:functions}}
+    {{/service:supportedFunctions}}
     pass
 
 

@@ -187,7 +187,8 @@ mstch::map t_mstch_pyi_generator::extend_service(const t_service& service) {
 mstch::map t_mstch_pyi_generator::extend_function(const t_function& func) {
   // Stream and sink functions are not supported, see
   // t_py_generator::get_functions.
-  const bool isSupported = !func.returns_stream() && !func.returns_sink();
+  const bool isSupported = !func.returns_stream() && !func.returns_sink() &&
+      !func.get_returntype()->is_service();
   mstch::map result{
       {"isSupported?", isSupported},
   };

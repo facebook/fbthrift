@@ -20,38 +20,4 @@ _SinkServiceT = _typing.TypeVar('_SinkServiceT', bound='SinkService')
 
 class SinkService(thrift.py3.client.Client):
 
-    async def method(
-        self,
-        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> : ...
-
-    async def methodAndReponse(
-        self,
-        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> : ...
-
-    async def methodThrow(
-        self,
-        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> : ...
-
-    async def methodSinkThrow(
-        self,
-        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> : ...
-
-    async def methodFinalThrow(
-        self,
-        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> : ...
-
-    async def methodBothThrow(
-        self,
-        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> : ...
-
-    async def methodFast(
-        self,
-        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> : ...
-
+    pass

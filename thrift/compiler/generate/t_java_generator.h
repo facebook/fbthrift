@@ -331,7 +331,8 @@ class t_java_generator : public t_oop_generator {
   // E.g. Java doesn't support streaming, so all streaming methods are skipped
   bool can_generate_method(t_function* func) {
     return !func->get_returntype()->is_streamresponse() &&
-        !func->get_returntype()->is_sink();
+        !func->get_returntype()->is_sink() &&
+        !func->get_returntype()->is_service();
   }
 
   bool is_field_sensitive(t_field* field) {

@@ -124,7 +124,7 @@ cdef class {{service:name}}Interface(
             <PyObject *> self,
             get_executor()
         )
-{{#service:functions}}{{^function:returns_sink?}}
+{{#service:supportedFunctions}}
 
     @staticmethod
     def pass_context_{{function:name}}(fn):
@@ -134,7 +134,7 @@ cdef class {{service:name}}Interface(
             self{{#function:args}},
             {{field:py_name}}{{/function:args}}):
         raise NotImplementedError("async def {{function:name}} is not implemented")
-{{/function:returns_sink?}}{{/service:functions}}
+{{/service:supportedFunctions}}
 
     @classmethod
     def __get_reflection__(cls):

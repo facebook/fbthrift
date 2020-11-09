@@ -23,23 +23,8 @@ public class PubSubStreamingServiceClientImpl extends AbstractThriftClient imple
 
 
     // Method Handlers
-    private ThriftMethodHandler returnstreamMethodHandler;
-    private ThriftMethodHandler streamthrowsMethodHandler;
-    private ThriftMethodHandler boththrowsMethodHandler;
-    private ThriftMethodHandler responseandstreamthrowsMethodHandler;
-    private ThriftMethodHandler returnstreamFastMethodHandler;
 
     // Method Exceptions
-    private static final Class[] returnstreamExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] streamthrowsExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] boththrowsExceptions = new Class[] {
-        test.fixtures.stream.FooEx.class, org.apache.thrift.TException.class};
-    private static final Class[] responseandstreamthrowsExceptions = new Class[] {
-        test.fixtures.stream.FooEx.class, org.apache.thrift.TException.class};
-    private static final Class[] returnstreamFastExceptions = new Class[] {
-        org.apache.thrift.TException.class};
 
     public PubSubStreamingServiceClientImpl(
         RequestChannel channel,
@@ -56,11 +41,6 @@ public class PubSubStreamingServiceClientImpl extends AbstractThriftClient imple
           });
 
       // Set method handlers
-      returnstreamMethodHandler = methodHandlerMap.get("returnstream");
-      streamthrowsMethodHandler = methodHandlerMap.get("streamthrows");
-      boththrowsMethodHandler = methodHandlerMap.get("boththrows");
-      responseandstreamthrowsMethodHandler = methodHandlerMap.get("responseandstreamthrows");
-      returnstreamFastMethodHandler = methodHandlerMap.get("returnstreamFast");
     }
 
     public PubSubStreamingServiceClientImpl(
@@ -80,11 +60,6 @@ public class PubSubStreamingServiceClientImpl extends AbstractThriftClient imple
           });
 
       // Set method handlers
-      returnstreamMethodHandler = methodHandlerMap.get("returnstream");
-      streamthrowsMethodHandler = methodHandlerMap.get("streamthrows");
-      boththrowsMethodHandler = methodHandlerMap.get("boththrows");
-      responseandstreamthrowsMethodHandler = methodHandlerMap.get("responseandstreamthrows");
-      returnstreamFastMethodHandler = methodHandlerMap.get("returnstreamFast");
     }
 
     @java.lang.Override

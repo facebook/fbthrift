@@ -23,29 +23,8 @@ import reactor.core.publisher.Mono;
 public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements SinkService.Async {
 
     // Method Handlers
-    private ThriftMethodHandler methodMethodHandler;
-    private ThriftMethodHandler methodAndReponseMethodHandler;
-    private ThriftMethodHandler methodThrowMethodHandler;
-    private ThriftMethodHandler methodSinkThrowMethodHandler;
-    private ThriftMethodHandler methodFinalThrowMethodHandler;
-    private ThriftMethodHandler methodBothThrowMethodHandler;
-    private ThriftMethodHandler methodFastMethodHandler;
 
     // Method Exceptions
-    private static final Class[] methodExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] methodAndReponseExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] methodThrowExceptions = new Class[] {
-        test.fixtures.sink.InitialException.class, org.apache.thrift.TException.class};
-    private static final Class[] methodSinkThrowExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] methodFinalThrowExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] methodBothThrowExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] methodFastExceptions = new Class[] {
-        org.apache.thrift.TException.class};
 
     public SinkServiceAsyncClientImpl(
         RequestChannel channel,
@@ -62,13 +41,6 @@ public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements 
           });
 
       // Set method handlers
-      methodMethodHandler = methodHandlerMap.get("method");
-      methodAndReponseMethodHandler = methodHandlerMap.get("methodAndReponse");
-      methodThrowMethodHandler = methodHandlerMap.get("methodThrow");
-      methodSinkThrowMethodHandler = methodHandlerMap.get("methodSinkThrow");
-      methodFinalThrowMethodHandler = methodHandlerMap.get("methodFinalThrow");
-      methodBothThrowMethodHandler = methodHandlerMap.get("methodBothThrow");
-      methodFastMethodHandler = methodHandlerMap.get("methodFast");
     }
 
     public SinkServiceAsyncClientImpl(
@@ -88,13 +60,6 @@ public class SinkServiceAsyncClientImpl extends AbstractThriftClient implements 
           });
 
       // Set method handlers
-      methodMethodHandler = methodHandlerMap.get("method");
-      methodAndReponseMethodHandler = methodHandlerMap.get("methodAndReponse");
-      methodThrowMethodHandler = methodHandlerMap.get("methodThrow");
-      methodSinkThrowMethodHandler = methodHandlerMap.get("methodSinkThrow");
-      methodFinalThrowMethodHandler = methodHandlerMap.get("methodFinalThrow");
-      methodBothThrowMethodHandler = methodHandlerMap.get("methodBothThrow");
-      methodFastMethodHandler = methodHandlerMap.get("methodFast");
     }
 
     @java.lang.Override

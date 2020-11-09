@@ -30,7 +30,7 @@ thread that will pass data to the cython callback.
 
 
 {{#program:services}}
-{{#service:functions}}{{^function:returns_sink?}}
+{{#service:supportedFunctions}}
 folly::Future<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:returnType}}>
 {{service:name}}ClientWrapper::{{function:cppName}}(
     apache::thrift::RpcOptions& rpcOptions{{#function:args}},
@@ -55,7 +55,7 @@ folly::Future<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:ret
   return _future;
 }
 
-{{/function:returns_sink?}}{{/service:functions}}
+{{/service:supportedFunctions}}
 {{/program:services}}{{!
 }}{{#program:cppNamespaces}}} // namespace {{value}}
 {{/program:cppNamespaces}}

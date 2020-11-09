@@ -44,9 +44,9 @@ cdef class {{service:name}}Interface({{#service:extends}}{{#service:externalProg
     {{#service:functions?}}
     # these are to avoid weird Cython multiple inheritance issue
     {{/service:functions?}}
-    {{#service:functions}}
+    {{#service:supportedFunctions}}
     cdef bint _for_cython_{{function:name }}
-    {{/service:functions}}
+    {{/service:supportedFunctions}}
     pass
 
 {{/program:services}}

@@ -46,7 +46,7 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
             {{/service:annotations}}
         },
     )
-{{#service:functions}}{{^function:returns_sink?}}
+{{#service:supportedFunctions}}
     spec.add_method(
         __MethodSpec.create(
             name="{{function:name}}",
@@ -85,6 +85,6 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
             },
         )
     )
-{{/function:returns_sink?}}{{/service:functions}}
+{{/service:supportedFunctions}}
     return spec
 {{/program:services}}

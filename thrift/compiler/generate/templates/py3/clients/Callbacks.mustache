@@ -26,7 +26,7 @@ executed in the asyncio loop.
 }}
 
 {{#program:services}}
-{{#service:functions}}{{^function:returns_sink?}}
+{{#service:supportedFunctions}}
 cdef void {{service:name}}_{{function:name}}_callback(
     cFollyTry[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}]&& result,
     PyObject* userdata
@@ -53,5 +53,5 @@ cdef void {{service:name}}_{{function:name}}_callback(
             {{! Most likely this is only ever unicode decode errors }}
             pyfuture.set_exception(ex.with_traceback(None))
 
-{{/function:returns_sink?}}{{/service:functions}}
+{{/service:supportedFunctions}}
 {{/program:services}}

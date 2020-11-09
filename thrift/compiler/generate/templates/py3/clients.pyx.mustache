@@ -116,7 +116,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
             cmove(channel)
         )
 
-{{#service:functions}}{{^function:returns_sink?}}
+{{#service:supportedFunctions}}
     @cython.always_allow_keywords(True)
     def {{function:name}}(
             {{service:name}} self{{#function:args}},
@@ -157,7 +157,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         )
         return asyncio_shield(__future)
 
-{{/function:returns_sink?}}{{/service:functions}}
+{{/service:supportedFunctions}}
 
     @classmethod
     def __get_reflection__(cls):

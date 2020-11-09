@@ -2954,6 +2954,9 @@ void t_java_generator::generate_service_server(t_service* tservice) {
   }
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if (!can_generate_method(*f_iter)) {
+      continue;
+    }
     f_service_ << indent() << "processMap_.put(\"" << (*f_iter)->get_name()
                << "\", new " << (*f_iter)->get_name() << "());" << endl;
   }

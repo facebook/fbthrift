@@ -33,8 +33,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
     public interface Async extends java.io.Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
         @java.lang.Override void close();
 
-        {{#service:functions}}
-        {{^function:returns_streams?}}{{^function:returns_sink?}}
+        {{#service:supportedFunctions}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                       oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                       exception = { {{/first?}}
@@ -45,12 +44,10 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{^last?}}
 
         {{/last?}}
-        {{/function:returns_sink?}}{{/function:returns_streams?}}
-        {{/service:functions}}
+        {{/service:supportedFunctions}}
     }
     @java.lang.Override void close();
-    {{#service:functions}}
-    {{^function:returns_streams?}}{{^function:returns_sink?}}
+    {{#service:supportedFunctions}}
 
     @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                   oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
@@ -61,6 +58,5 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
-    {{/function:returns_sink?}}{{/function:returns_streams?}}
-    {{/service:functions}}
+    {{/service:supportedFunctions}}
 }

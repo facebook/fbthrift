@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+namespace java test.fixtures.interactions
+namespace java.swift test.fixtures.interactions
+namespace py test.fixtures.interactions
+namespace py3 test.fixtures.interactions
+
 interaction MyInteraction {
   i32 frobnicate();
   oneway void ping();

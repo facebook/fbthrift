@@ -31,7 +31,7 @@ sets the converted value on that promise.
 }}
 
 {{#program:services}}
-{{#service:functions}}
+{{#service:supportedFunctions}}
 cdef api void call_cy_{{service:name}}_{{function:name}}(
     object self,
     Cpp2RequestContext* ctx,
@@ -109,5 +109,5 @@ async def {{service:name}}_{{function:name}}_coro(
     else:
         promise.cPromise.setValue({{#function:returnType}}{{> services/CythonReturnValue}}{{/function:returnType}})
 
-{{/service:functions}}
+{{/service:supportedFunctions}}
 {{/program:services}}

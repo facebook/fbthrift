@@ -51,14 +51,14 @@ class {{service:name}}Wrapper : {{!
 {{/service:extends?}}
   public:
     explicit {{service:name}}Wrapper(PyObject *if_object, folly::Executor *exc);
-    {{#service:functions}}{{^function:returns_sink?}}
+{{#service:supportedFunctions}}
     void async_{{#function:eb}}eb{{/function:eb}}{{^function:eb}}tm{{/function:eb}}_{{function:cppName}}({{> services/CppHandlerCallbackType}} callback{{#function:args}}
         , {{#field:type}}{{!
                 }}{{^function:stack_arguments?}}{{> types/CppArgType}}{{/function:stack_arguments?}}{{!
                 }}{{#function:stack_arguments?}}{{> types/CppStackArgType}}{{/function:stack_arguments?}}{{!
             }}{{/field:type}} {{field:py_name}}{{#last?}}
     {{/last?}}{{/function:args}}) override;
-{{/function:returns_sink?}}{{/service:functions}}};
+{{/service:supportedFunctions}}};
 
 std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object, folly::Executor *exc);
 {{^last?}}

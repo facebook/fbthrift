@@ -449,7 +449,9 @@ class mstch_py3_program : public mstch_program {
   mstch::node unique_functions_by_return_type() {
     std::vector<const t_function*> functions;
     for (auto& kv : uniqueFunctionsByReturnType_) {
-      functions.push_back(kv.second);
+      if (!kv.second->get_returntype()->is_service()) {
+        functions.push_back(kv.second);
+      }
     }
 
     return generate_functions(functions);
@@ -737,6 +739,8 @@ class mstch_py3_service : public mstch_service {
             {"service:py3Namespaces", &mstch_py3_service::py3Namespaces},
             {"service:programName", &mstch_py3_service::programName},
             {"service:includePrefix", &mstch_py3_service::includePrefix},
+            {"service:supportedFunctions",
+             &mstch_py3_service::get_supported_functions},
         });
   }
 
@@ -760,6 +764,16 @@ class mstch_py3_service : public mstch_service {
 
   mstch::node includePrefix() {
     return service_->get_program()->get_include_prefix();
+  }
+
+  mstch::node get_supported_functions() {
+    std::vector<t_function*> funcs;
+    for (auto func : service_->get_functions()) {
+      if (!func->returns_sink() && !func->get_returntype()->is_service()) {
+        funcs.push_back(func);
+      }
+    }
+    return generate_functions(funcs);
   }
 
  protected:

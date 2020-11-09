@@ -90,11 +90,6 @@ public class PubSubStreamingService {
     {
       iface_ = iface;
       event_handler_ = new TProcessorEventHandler(); // Empty handler
-      processMap_.put("returnstream", new returnstream());
-      processMap_.put("streamthrows", new streamthrows());
-      processMap_.put("boththrows", new boththrows());
-      processMap_.put("responseandstreamthrows", new responseandstreamthrows());
-      processMap_.put("returnstreamFast", new returnstreamFast());
     }
 
     protected static interface ProcessFunction {
