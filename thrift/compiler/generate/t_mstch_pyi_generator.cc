@@ -96,7 +96,9 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
     auto const hasServices = included_program->get_services().size() > 0;
     auto const hasStructs = included_program->get_objects().size() > 0;
     auto const hasEnums = included_program->get_enums().size() > 0;
-    auto const hasTypes = hasStructs || hasEnums;
+    auto const hasTypedefs = included_program->get_typedefs().size() > 0;
+    auto const hasConsts = included_program->get_consts().size() > 0;
+    auto const hasTypes = hasStructs || hasEnums || hasTypedefs || hasConsts;
     const mstch::map include_ns{
         {"includeNamespace", ns},
         {"hasServices?", hasServices},
