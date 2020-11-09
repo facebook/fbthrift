@@ -62,10 +62,7 @@ struct variant_member_field_id {
 };
 
 template <typename A>
-struct data_member_accessor : private invoke_reffer_thru_or_access_field<A> {
- public:
-  using invoke_reffer_thru_or_access_field<A>::operator();
-};
+using data_member_accessor = invoke_reffer_thru_or_access_field<A>;
 
 template <typename... A>
 struct chained_data_member_accessor;
