@@ -75,6 +75,13 @@ ESCAPE_CHAR_VALS = [b'"', b'\\', b'\b', b'\f', b'\n', b'\r', b'\t']
 
 NUMERIC_CHAR = b'+-.0123456789Ee'
 
+WHITESPACE_CHARS = {
+    JSON_NEW_LINE,
+    TAB,
+    JSON_CARRIAGE_RETURN,
+    JSON_SPACE,
+}
+
 def hexChar(x):
     x &= 0x0f
     return hex(x)[2:]
@@ -336,10 +343,7 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
         skipped = 0
         while True:
             ch = self.reader.peek()
-            if ch not in (JSON_NEW_LINE,
-                          TAB,
-                          JSON_CARRIAGE_RETURN,
-                          JSON_SPACE):
+            if ch not in WHITESPACE_CHARS:
                 break
             self.reader.read()
             skipped += 1
