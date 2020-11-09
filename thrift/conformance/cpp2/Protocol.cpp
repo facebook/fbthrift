@@ -29,6 +29,15 @@ Protocol::Protocol(ProtocolStruct protocolStruct) noexcept
   }
 }
 
+Protocol Protocol::fromName(const char* name) {
+  StandardProtocol standard;
+  if (TEnumTraits<StandardProtocol>::findValue(name, &standard)) {
+    return Protocol(standard);
+  }
+  validateUniversalType(name);
+  return Protocol(name);
+}
+
 std::string_view Protocol::name() const noexcept {
   if (!custom_.empty()) {
     return custom_;

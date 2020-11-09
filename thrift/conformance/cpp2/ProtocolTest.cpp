@@ -48,7 +48,7 @@ TEST(ProtocolTest, Standard) {
   testStandardProtocol<StandardProtocol::SimpleJson>("SimpleJson");
 }
 
-TEST(Protocol, Empty) {
+TEST(ProtocolTest, Empty) {
   Protocol empty;
   validateProtocol(empty);
   EXPECT_EQ(empty.name(), "Custom");
@@ -63,7 +63,7 @@ TEST(Protocol, Empty) {
   EXPECT_THROW(validateProtocol(Protocol{"Custom"}), std::invalid_argument);
 }
 
-TEST(Protocol, Unknown) {
+TEST(ProtocolTest, Unknown) {
   EXPECT_EQ(UnknownProtocol().name(), "");
 }
 
@@ -76,11 +76,36 @@ TEST(ProtocolTest, Custom) {
   EXPECT_NE(Protocol("bye"), protocol);
 }
 
-TEST(AnyTest, ValidateProtocol) {
+TEST(ProtocolTest, ValidateProtocol) {
   const auto good = "foo.com/my/protocol";
   const auto bad = "foo.com:42/my/protocol";
   EXPECT_THROW(validateProtocol(Protocol{bad}), std::invalid_argument);
   validateProtocol(Protocol{good});
+}
+
+TEST(ProtocolTest, FromName) {
+  EXPECT_EQ(
+      Protocol::fromName("Binary"),
+      getStandardProtocol<StandardProtocol::Binary>());
+  EXPECT_EQ(
+      Protocol::fromName("Compact"),
+      getStandardProtocol<StandardProtocol::Compact>());
+  EXPECT_EQ(
+      Protocol::fromName("Json"),
+      getStandardProtocol<StandardProtocol::Json>());
+  EXPECT_EQ(
+      Protocol::fromName("SimpleJson"),
+      getStandardProtocol<StandardProtocol::SimpleJson>());
+
+  // Case sensitive.
+  EXPECT_THROW(Protocol::fromName("binary"), std::invalid_argument);
+  // Rejects invalid custom names.
+  EXPECT_THROW(Protocol::fromName("foo.com:42/my/protocol"), std::invalid_argument);
+
+  // Accepts valid custom names.
+  EXPECT_EQ(
+      Protocol::fromName("foo.com/my/protocol"),
+      Protocol("foo.com/my/protocol"));
 }
 
 } // namespace

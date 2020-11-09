@@ -44,6 +44,15 @@ class Protocol {
   explicit Protocol(std::string custom) noexcept : custom_(std::move(custom)) {}
   explicit Protocol(ProtocolStruct protocol) noexcept;
 
+  // Returns a protocol for the given name.
+  //
+  // Unlike the normal constructors, throws std::invalid_argument, if the name
+  // is invalid.
+  static Protocol fromName(const char* name);
+  static Protocol fromName(const std::string& name) {
+    return fromName(name.c_str());
+  }
+
   Protocol& operator=(const Protocol&) = default;
   Protocol& operator=(Protocol&&) = default;
 
