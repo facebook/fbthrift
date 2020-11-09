@@ -125,6 +125,11 @@ class Foo implements \IThriftStruct {
     );
   }
 
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
+  }
+
   public function getName(): string {
     return 'Foo';
   }
@@ -269,6 +274,11 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
         'foo_struct' => Shapes::idx($shape, 'foo_struct'),
       },
     );
+  }
+
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
   }
 
   public function getName(): string {
@@ -484,6 +494,11 @@ class Baz extends \TException implements \IThriftStruct {
     );
   }
 
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
+  }
+
   public function getName(): string {
     return 'Baz';
   }
@@ -560,6 +575,11 @@ class OptBaz extends \TException implements \IThriftStruct {
         'message' => Shapes::idx($shape, 'message'),
       },
     );
+  }
+
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
   }
 
   public function getName(): string {

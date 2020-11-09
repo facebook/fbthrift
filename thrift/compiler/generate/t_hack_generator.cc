@@ -615,8 +615,9 @@ class t_hack_generator : public t_oop_generator {
   bool map_construct_;
 
   /**
-   * True if structs should have a fromMap_DEPRECATED method, only to migrate
-   * away from map_construct
+   * True if structs should generate a positional constructor if mapconstruct
+   * is specified assuming callsites already use fromMap_DEPRECATED.
+   * Note: This parameter was repurposed.
    */
   bool from_map_construct_;
 
@@ -2788,7 +2789,7 @@ void t_hack_generator::_generate_php_struct_definition(
   generate_php_struct_from_shape(out, tstruct);
   out << "\n";
 
-  if (from_map_construct_) {
+  if (map_construct_) {
     generate_php_struct_from_map(out, tstruct, is_exception);
     out << "\n";
   }
@@ -2908,79 +2909,93 @@ void t_hack_generator::generate_php_struct_from_map(
     ofstream& out,
     t_struct* tstruct,
     bool is_exception) {
+  out << indent() << "<<__Rx>>\n";
   out << indent() << "public static function fromMap_DEPRECATED(";
   if (strict_types_) {
     // Generate constructor from Map
-    out << (const_collections_ ? "Const" : "") << "Map<string, mixed> $maps";
+    out << (const_collections_ ? "Const" : "")
+        << "Map<string, mixed> $maps = Map {}";
   } else {
     // Generate constructor from KeyedContainer
     out << (soft_attribute_ ? "<<__Soft>> " : "@")
-        << "KeyedContainer<string, mixed> $map";
+        << "KeyedContainer<string, mixed> $map = " << array_keyword_ << "[]";
   }
   out << "): this {\n";
   indent_up();
-  out << indent() << "return new static(\n";
-  indent_up();
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
-    string name = (*m_iter)->get_name();
-    string cast;
-    string dval = "";
-    if ((*m_iter)->get_value() != nullptr &&
-        !(t->is_struct() || t->is_xception())) {
-      dval = render_const_value(t, (*m_iter)->get_value());
-    } else if (
-        is_exception &&
-        ((*m_iter)->get_name() == "code" || (*m_iter)->get_name() == "line")) {
-      if (t->is_any_int()) {
-        dval = "0";
+  if (from_map_construct_) {
+    out << indent() << "return new static(\n";
+    indent_up();
+    const vector<t_field*>& members = tstruct->get_members();
+    vector<t_field*>::const_iterator m_iter;
+    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+      t_type* t = (*m_iter)->get_type()->get_true_type();
+      string name = (*m_iter)->get_name();
+      string cast;
+      string dval = "";
+      if ((*m_iter)->get_value() != nullptr &&
+          !(t->is_struct() || t->is_xception())) {
+        dval = render_const_value(t, (*m_iter)->get_value());
+      } else if (
+          is_exception &&
+          ((*m_iter)->get_name() == "code" ||
+           (*m_iter)->get_name() == "line")) {
+        if (t->is_any_int()) {
+          dval = "0";
+        } else {
+          // just use the lowest value
+          t_enum* tenum = (t_enum*)t;
+          dval = hack_name(tenum) +
+              "::" + (*(tenum->get_enum_values().begin()))->get_name();
+        }
+      } else if (
+          is_exception &&
+          ((*m_iter)->get_name() == "message" ||
+           (*m_iter)->get_name() == "file")) {
+        dval = "''";
+      } else if (tstruct->is_union() || nullable_everything_) {
+        dval = "null";
       } else {
-        // just use the lowest value
-        t_enum* tenum = (t_enum*)t;
-        dval = hack_name(tenum) +
-            "::" + (*(tenum->get_enum_values().begin()))->get_name();
+        dval = render_default_value(t);
       }
-    } else if (
-        is_exception &&
-        ((*m_iter)->get_name() == "message" ||
-         (*m_iter)->get_name() == "file")) {
-      dval = "''";
-    } else if (tstruct->is_union() || nullable_everything_) {
-      dval = "null";
-    } else {
-      dval = render_default_value(t);
-    }
 
-    if ((tstruct->is_union() || nullable_everything_) &&
-        !(is_exception && is_base_exception_property(*m_iter))) {
-      cast = "";
-    } else {
-      cast = type_to_cast(t);
-    }
+      if ((tstruct->is_union() || nullable_everything_) &&
+          !(is_exception && is_base_exception_property(*m_iter))) {
+        cast = "";
+      } else {
+        cast = type_to_cast(t);
+      }
 
-    if (strict_types_) {
-      if (t->is_container() || t->is_enum()) {
-        out << indent()
-            << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
+      if (strict_types_) {
+        if (t->is_container() || t->is_enum()) {
+          out << indent()
+              << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
+        }
+        out << indent() << cast << (cast != "" ? "(" : "") << "$map->get('"
+            << name << "')" << (cast != "" ? " ?: " + dval + ")" : "") << ",\n";
+      } else {
+        if (is_exception && name == "code" && t->is_enum()) {
+          out << indent()
+              << "/* HH_FIXME[4110] exposed by decl fixme scope refinement */\n";
+        } else if (cast == "") {
+          out << indent()
+              << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
+        }
+        out << indent() << cast << "idx($map, '" << name << "'"
+            << (dval != "null" && cast != "" ? ", " + dval : "") << ")"
+            << ",\n";
       }
-      out << indent() << cast << (cast != "" ? "(" : "") << "$map->get('"
-          << name << "')" << (cast != "" ? " ?: " + dval + ")" : "") << ",\n";
-    } else {
-      if (is_exception && name == "code" && t->is_enum()) {
-        out << indent()
-            << "/* HH_FIXME[4110] exposed by decl fixme scope refinement */\n";
-      } else if (cast == "") {
-        out << indent() << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
-      }
-      out << indent() << cast << "idx($map, '" << name << "'"
-          << (dval != "null" && cast != "" ? ", " + dval : "") << ")"
-          << ",\n";
     }
+    indent_down();
+    out << indent() << ");\n";
+  } else {
+    // It's good to have this by default even with an old map constructor.
+    // Codemods can then switch to either fromShape or fromMap_DEPRECATED
+    // in one sweep, allowing to deprecate mapconstruct afterwards even
+    // if not all fromMap_DEPRECATED are migrated. A case for fromMAP_DEPRECATED
+    // is when the argument is a variable rather than inline literal,
+    // e.g. https://fburl.com/diffusion/7un25tts
+    out << indent() << "return new static($map);\n";
   }
-  indent_down();
-  out << indent() << ");\n";
   indent_down();
   out << indent() << "}\n";
 }

@@ -109,7 +109,8 @@ class Foo implements \IThriftStruct {
     );
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = darray[]): this {
     return new static(
       /* HH_FIXME[4110] previously hidden by unsafe */
       idx($map, 'a'),
@@ -243,7 +244,8 @@ class Baz extends \TException implements \IThriftStruct {
     );
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = darray[]): this {
     return new static(
       (string)idx($map, 'message', ''),
       /* HH_FIXME[4110] previously hidden by unsafe */
@@ -330,7 +332,8 @@ class OptBaz extends \TException implements \IThriftStruct {
     );
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = darray[]): this {
     return new static(
       (string)idx($map, 'message', ''),
     );

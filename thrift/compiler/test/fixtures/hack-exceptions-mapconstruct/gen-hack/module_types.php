@@ -82,6 +82,11 @@ class MyException1 extends \TException implements \IThriftStruct {
     );
   }
 
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
+  }
+
   public function getName(): string {
     return 'MyException1';
   }
@@ -174,6 +179,11 @@ class MyException2 extends \TException implements \IThriftStruct {
         'code' => Shapes::idx($shape, 'code'),
       },
     );
+  }
+
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
   }
 
   public function getName(): string {
@@ -270,6 +280,11 @@ class MyException3 extends \TException implements \IThriftStruct {
     );
   }
 
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
+  }
+
   public function getName(): string {
     return 'MyException3';
   }
@@ -364,6 +379,11 @@ class MyException4 extends \TException implements \IThriftStruct {
     );
   }
 
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
+  }
+
   public function getName(): string {
     return 'MyException4';
   }
@@ -445,6 +465,11 @@ class MyException5 extends \TException implements \IThriftStruct {
         'code' => Shapes::idx($shape, 'code'),
       },
     );
+  }
+
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
   }
 
   public function getName(): string {

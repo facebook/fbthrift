@@ -497,6 +497,11 @@ class Bar_baz_args implements \IThriftStruct {
     );
   }
 
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
+  }
+
   public function getName(): string {
     return 'Bar_baz_args';
   }
@@ -567,6 +572,11 @@ class Bar_baz_result implements \IThriftStruct {
         'success' => Shapes::idx($shape, 'success'),
       },
     );
+  }
+
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+    return new static($map);
   }
 
   public function getName(): string {

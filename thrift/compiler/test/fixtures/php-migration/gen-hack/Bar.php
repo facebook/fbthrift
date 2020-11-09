@@ -573,7 +573,8 @@ class Bar_baz_args implements \IThriftStruct {
     );
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = darray[]): this {
     return new static(
       /* HH_FIXME[4110] previously hidden by unsafe */
       idx($map, 'a'),
@@ -658,7 +659,8 @@ class Bar_baz_result implements \IThriftStruct {
     );
   }
 
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = darray[]): this {
     return new static(
       /* HH_FIXME[4110] previously hidden by unsafe */
       idx($map, 'success'),

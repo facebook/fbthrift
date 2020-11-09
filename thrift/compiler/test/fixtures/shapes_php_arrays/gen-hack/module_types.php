@@ -223,6 +223,11 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
+  <<__Rx>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = darray[]): this {
+    return new static($map);
+  }
+
   public function getName(): string {
     return 'Foo';
   }
