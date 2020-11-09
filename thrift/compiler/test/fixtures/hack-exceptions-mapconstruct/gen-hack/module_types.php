@@ -67,9 +67,9 @@ class MyException1 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
+    $this->message = (string)idx($vals, 'message') ?? '';
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
-    $this->code = idx($vals, 'code', MyEnum::MyValue1);
+    $this->code = idx($vals, 'code') ?? MyEnum::MyValue1;
   }
 
   <<__Rx>>
@@ -166,9 +166,9 @@ class MyException2 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
+    $this->message = (string)idx($vals, 'message') ?? '';
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
-    $this->code = idx($vals, 'code', MyEnum::MyValue1);
+    $this->code = idx($vals, 'code') ?? MyEnum::MyValue1;
   }
 
   <<__Rx>>
@@ -265,9 +265,9 @@ class MyException3 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
+    $this->message = (string)idx($vals, 'message') ?? '';
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
-    $this->code = idx($vals, 'code', MyEnum::MyValue1);
+    $this->code = idx($vals, 'code') ?? MyEnum::MyValue1;
   }
 
   <<__Rx>>
@@ -364,9 +364,9 @@ class MyException4 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
+    $this->message = (string)idx($vals, 'message') ?? '';
     /* HH_FIXME[4110] exposed by decl fixme scope refinement */
-    $this->code = idx($vals, 'code', MyEnum::MyValue2);
+    $this->code = idx($vals, 'code') ?? MyEnum::MyValue2;
   }
 
   <<__Rx>>
@@ -453,8 +453,8 @@ class MyException5 extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
-    $this->code = (int)idx($vals, 'code', 0);
+    $this->message = (string)idx($vals, 'message') ?? '';
+    $this->code = (int)idx($vals, 'code') ?? 0;
   }
 
   <<__Rx>>

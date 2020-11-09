@@ -2741,7 +2741,7 @@ void t_hack_generator::_generate_php_struct_definition(
             << (*m_iter)->get_name() << "'"
             << (needs_optional_check && dval == "null"
                     ? "]"
-                    : (dval != "null" ? ", " + dval : "") + ")")
+                    : ")" + (dval != "null" ? " ?? " + dval : ""))
             << ";\n";
         if (tstruct->is_union()) {
           out << indent()

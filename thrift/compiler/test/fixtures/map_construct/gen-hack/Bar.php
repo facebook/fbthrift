@@ -475,13 +475,13 @@ class Bar_baz_args implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->a = idx($vals, 'a', Set {});
+    $this->a = idx($vals, 'a') ?? Set {};
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->b = idx($vals, 'b', Vector {});
-    $this->c = (int)idx($vals, 'c', 0);
+    $this->b = idx($vals, 'b') ?? Vector {};
+    $this->c = (int)idx($vals, 'c') ?? 0;
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->d = idx($vals, 'd');
-    $this->e = (int)idx($vals, 'e', 4);
+    $this->e = (int)idx($vals, 'e') ?? 4;
   }
 
   <<__Rx>>

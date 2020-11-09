@@ -191,20 +191,20 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
-    $this->just_int = (int)idx($vals, 'just_int', 0);
+    $this->just_int = (int)idx($vals, 'just_int') ?? 0;
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->list_of_strings = idx($vals, 'list_of_strings', Vector {});
+    $this->list_of_strings = idx($vals, 'list_of_strings') ?? Vector {};
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->set_of_ints = idx($vals, 'set_of_ints', darray[]);
+    $this->set_of_ints = idx($vals, 'set_of_ints') ?? darray[];
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_list_of_strings = idx($vals, 'map_of_list_of_strings', Map {});
+    $this->map_of_list_of_strings = idx($vals, 'map_of_list_of_strings') ?? Map {};
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_set_of_strings = idx($vals, 'map_of_set_of_strings', Map {});
+    $this->map_of_set_of_strings = idx($vals, 'map_of_set_of_strings') ?? Map {};
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_strings_to_map_of_string_ints = idx($vals, 'map_of_strings_to_map_of_string_ints', Map {});
+    $this->map_of_strings_to_map_of_string_ints = idx($vals, 'map_of_strings_to_map_of_string_ints') ?? Map {};
     if (C\contains_key($vals, 'optional_map_of_map_of_sets')) {
       /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->optional_map_of_map_of_sets = idx($vals, 'optional_map_of_map_of_sets', Map {});
+      $this->optional_map_of_map_of_sets = idx($vals, 'optional_map_of_map_of_sets') ?? Map {};
     }
   }
 

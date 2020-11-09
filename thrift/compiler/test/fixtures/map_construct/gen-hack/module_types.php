@@ -104,13 +104,13 @@ class Foo implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->a = idx($vals, 'a', Vector {});
+    $this->a = idx($vals, 'a') ?? Vector {};
     if (C\contains_key($vals, 'b')) {
       /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->b = idx($vals, 'b', Map {});
+      $this->b = idx($vals, 'b') ?? Map {};
     }
-    $this->c = (int)idx($vals, 'c', 7);
-    $this->d = (bool)idx($vals, 'd', false);
+    $this->c = (int)idx($vals, 'c') ?? 7;
+    $this->d = (bool)idx($vals, 'd') ?? false;
   }
 
   <<__Rx>>
@@ -474,12 +474,12 @@ class Baz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
+    $this->message = (string)idx($vals, 'message') ?? '';
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->some_field = idx($vals, 'some_field');
     /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->some_container = idx($vals, 'some_container', Set {});
-    $this->code = (int)idx($vals, 'code', 0);
+    $this->some_container = idx($vals, 'some_container') ?? Set {};
+    $this->code = (int)idx($vals, 'code') ?? 0;
   }
 
   <<__Rx>>
@@ -565,7 +565,7 @@ class OptBaz extends \TException implements \IThriftStruct {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
-    $this->message = (string)idx($vals, 'message', '');
+    $this->message = (string)idx($vals, 'message') ?? '';
   }
 
   <<__Rx>>
