@@ -121,7 +121,7 @@ add_library(
 
   Flags.cpp
   GeneratedCodeHelper.cpp
-  Flags.cpp
+  PluggableFunction.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp
   async/ClientSinkBridge.cpp
