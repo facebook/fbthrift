@@ -182,7 +182,7 @@ public final class DataUnion {
         break;
       }
       default:
-          throw new IllegalStateException("Cannot write union with unknown field ");
+          // ignore unknown field
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
