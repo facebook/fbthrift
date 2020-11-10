@@ -864,7 +864,7 @@ class mstch_cpp2_struct : public mstch_struct {
 
   mstch::node mixin_fields() {
     mstch::array fields;
-    for (auto i : strct_->get_mixins_and_members()) {
+    for (auto i : cpp2::get_mixins_and_members(*strct_)) {
       fields.push_back(mstch::map{{"mixin:name", i.mixin->get_name()},
                                   {"mixin:field_name", i.member->get_name()}});
     }

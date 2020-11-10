@@ -69,6 +69,27 @@ bool is_stack_arguments(
 
 int32_t get_split_count(std::map<std::string, std::string> const& options);
 
+struct mixin_member {
+  t_field* mixin;
+  t_field* member;
+};
+
+/**
+ * Returns a list of pairs of mixin and mixin's members
+ * e.g. for Thrift IDL
+ *
+ * struct Mixin1 { 1: i32 m1; }
+ * struct Mixin2 { 1: i32 m2; }
+ * struct Strct {
+ *   1: mixin Mixin1 f1;
+ *   2: mixin Mixin2 f2;
+ *   3: i32 m3;
+ * }
+ *
+ * this returns {{.mixin="f1", .member="m1"}, {.mixin="f2", .member="m2"}}
+ */
+std::vector<mixin_member> get_mixins_and_members(const t_struct& strct);
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

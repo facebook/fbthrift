@@ -331,7 +331,7 @@ bool field_names_uniqueness_validator::visit(t_struct* s) {
     }
   }
 
-  for (auto i : s->get_mixins_and_members()) {
+  for (auto i : cpp2::get_mixins_and_members(*s)) {
     auto res =
         memberToParent.emplace(i.member->get_name(), i.mixin->get_name());
     if (!res.second) {

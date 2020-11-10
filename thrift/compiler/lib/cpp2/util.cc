@@ -192,6 +192,34 @@ int32_t get_split_count(std::map<std::string, std::string> const& options) {
   return std::stoi(iter->second);
 }
 
+static void get_mixins_and_members_impl(
+    const t_struct& strct,
+    t_field* top_level_mixin,
+    std::vector<mixin_member>& out) {
+  for (auto* member : strct.get_members()) {
+    if (member->is_mixin()) {
+      assert(member->get_type()->get_true_type()->is_struct());
+      auto mixin_struct =
+          static_cast<const t_struct*>(member->get_type()->get_true_type());
+      auto mixin = top_level_mixin ? top_level_mixin : member;
+
+      // import members from mixin field
+      for (auto* member_from_mixin : mixin_struct->get_members()) {
+        out.push_back({mixin, member_from_mixin});
+      }
+
+      // import members from nested mixin field
+      get_mixins_and_members_impl(*mixin_struct, mixin, out);
+    }
+  }
+}
+
+std::vector<mixin_member> get_mixins_and_members(const t_struct& strct) {
+  std::vector<mixin_member> ret;
+  get_mixins_and_members_impl(strct, nullptr, ret);
+  return ret;
+}
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift
