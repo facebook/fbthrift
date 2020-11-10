@@ -110,7 +110,7 @@ class TilePromise final : public Tile {
           std::move(task),
           0, // timeout
           0, // expiration
-          true); // upstream
+          concurrency::ThreadManager::Source::EXISTING_INTERACTION);
     }
     continuations_.clear();
     DCHECK_EQ(refCount_, 0u);

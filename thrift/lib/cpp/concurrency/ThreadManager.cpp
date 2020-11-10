@@ -315,8 +315,8 @@ void ThreadManager::Impl::add(
     std::shared_ptr<Runnable> value,
     int64_t timeout,
     int64_t expiration,
-    bool upstream) noexcept {
-  add(0, value, timeout, expiration, upstream);
+    ThreadManager::Source source) noexcept {
+  add(0, value, timeout, expiration, source);
 }
 
 void ThreadManager::Impl::add(
@@ -324,7 +324,7 @@ void ThreadManager::Impl::add(
     std::shared_ptr<Runnable> value,
     int64_t /*timeout*/,
     int64_t expiration,
-    bool upstream) noexcept {
+    ThreadManager::Source source) noexcept {
   CHECK(
       state_ != ThreadManager::UNINITIALIZED &&
       state_ != ThreadManager::STARTING)
@@ -335,7 +335,7 @@ void ThreadManager::Impl::add(
     return;
   }
 
-  priority = 2 * priority + (upstream ? 1 : 0);
+  priority = 3 * priority + static_cast<int>(source);
   auto const qpriority = std::min(tasks_.priorities() - 1, priority);
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration}, qpriority);
@@ -666,23 +666,25 @@ class PriorityThreadManager::PriorityImpl
     }
   }
 
+  using PriorityThreadManager::add;
+  using ThreadManager::add;
   void add(
       std::shared_ptr<Runnable> task,
-      int64_t timeout = 0,
-      int64_t expiration = 0,
-      bool upstream = false) noexcept override {
+      int64_t timeout,
+      int64_t expiration,
+      ThreadManager::Source source) noexcept override {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
-    add(prio, std::move(task), timeout, expiration, upstream);
+    add(prio, std::move(task), timeout, expiration, source);
   }
 
   void add(
       PRIORITY priority,
       std::shared_ptr<Runnable> task,
-      int64_t timeout = 0,
-      int64_t expiration = 0,
-      bool upstream = false) noexcept override {
-    managers_[priority]->add(std::move(task), timeout, expiration, upstream);
+      int64_t timeout,
+      int64_t expiration,
+      ThreadManager::Source source) noexcept override {
+    managers_[priority]->add(std::move(task), timeout, expiration, source);
   }
 
   /**

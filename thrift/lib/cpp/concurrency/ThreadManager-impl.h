@@ -139,7 +139,7 @@ class ThreadManager::Impl : public ThreadManager,
         executingTimeUs_(0),
         numTasks_(0),
         state_(ThreadManager::UNINITIALIZED),
-        tasks_(2 * numPriorities),
+        tasks_(3 * numPriorities),
         deadWorkers_(),
         namePrefix_(""),
         namePrefixCounter_(0),
@@ -201,8 +201,9 @@ class ThreadManager::Impl : public ThreadManager,
 
   size_t pendingUpstreamTaskCount() const override {
     size_t count = 0;
-    for (size_t i = 1; i < tasks_.priorities(); i += 2) {
+    for (size_t i = 1; i < tasks_.priorities(); i += 3) {
       count += tasks_.at_priority(i).size();
+      count += tasks_.at_priority(i + 1).size();
     }
     return count;
   }
@@ -224,13 +225,15 @@ class ThreadManager::Impl : public ThreadManager,
       std::shared_ptr<Runnable> value,
       int64_t timeout,
       int64_t expiration,
-      bool upstream) noexcept override;
+      apache::thrift::concurrency::ThreadManager::Source
+          source) noexcept override;
+  using ThreadManager::add;
 
   /**
    * Implements folly::Executor::add()
    */
   void add(folly::Func f) override {
-    add(FunctionRunner::create(std::move(f)), 0LL, 0LL, false);
+    add(FunctionRunner::create(std::move(f)));
   }
 
   void remove(std::shared_ptr<Runnable> task) override;
@@ -270,7 +273,7 @@ class ThreadManager::Impl : public ThreadManager,
       std::shared_ptr<Runnable> value,
       int64_t timeout,
       int64_t expiration,
-      bool upstream) noexcept;
+      apache::thrift::concurrency::ThreadManager::Source source) noexcept;
 
   // returns a string to attach to namePrefix when recording
   // stats
@@ -381,17 +384,19 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
     apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority_;
   };
 
+  using ThreadManager::add;
   using ThreadManager::Impl::add;
 
   void add(
       std::shared_ptr<Runnable> task,
-      int64_t timeout = 0,
-      int64_t expiration = 0,
-      bool upstream = false) noexcept override {
+      int64_t timeout,
+      int64_t expiration,
+      apache::thrift::concurrency::ThreadManager::Source
+          source) noexcept override {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
     ThreadManager::Impl::add(
-        prio, std::move(task), timeout, expiration, upstream);
+        prio, std::move(task), timeout, expiration, source);
   }
 
   /**
@@ -408,7 +413,7 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
         std::make_shared<PriorityFunctionRunner>(HIGH_IMPORTANT, std::move(f)),
         0,
         0,
-        false);
+        apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   }
 
   /**
@@ -421,7 +426,7 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
         std::make_shared<PriorityFunctionRunner>(prio, std::move(f)),
         0,
         0,
-        false);
+        apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   }
 
   uint8_t getNumPriorities() const override {

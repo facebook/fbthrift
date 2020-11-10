@@ -765,7 +765,9 @@ void GeneratedAsyncProcessor::processInThread(
       std::move(task),
       0, // timeout
       0, // expiration
-      true); // upstream
+      tile && !ctx->getInteractionCreate()
+          ? concurrency::ThreadManager::Source::EXISTING_INTERACTION
+          : concurrency::ThreadManager::Source::UPSTREAM);
 }
 
 template <class F>

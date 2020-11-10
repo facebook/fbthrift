@@ -151,6 +151,12 @@ class ThreadManager : public virtual folly::Executor {
    */
   virtual size_t expiredTaskCount() = 0;
 
+  enum class Source {
+    INTERNAL = 0,
+    EXISTING_INTERACTION = 1,
+    UPSTREAM = 2,
+  };
+
   /**
    * Adds a task to be executed at some time in the future by a worker thread.
    *
@@ -168,9 +174,19 @@ class ThreadManager : public virtual folly::Executor {
    */
   virtual void add(
       std::shared_ptr<Runnable> task,
+      int64_t timeout,
+      int64_t expiration,
+      Source source) noexcept = 0;
+  void add(
+      std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool upstream = false) noexcept = 0;
+      bool upstream = false) noexcept {
+    add(std::move(task),
+        timeout,
+        expiration,
+        upstream ? Source::UPSTREAM : Source::INTERNAL);
+  }
 
   /**
    * Implements folly::Executor::add()
@@ -314,9 +330,21 @@ class PriorityThreadManager : public ThreadManager {
   virtual void add(
       PRIORITY priority,
       std::shared_ptr<Runnable> task,
+      int64_t timeout,
+      int64_t expiration,
+      ThreadManager::Source source) noexcept = 0;
+  void add(
+      PRIORITY priority,
+      std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool upstream = false) noexcept = 0;
+      bool upstream = false) noexcept {
+    add(priority,
+        std::move(task),
+        timeout,
+        expiration,
+        upstream ? Source::UPSTREAM : Source::INTERNAL);
+  }
 
   uint8_t getNumPriorities() const override {
     return N_PRIORITIES;
@@ -409,9 +437,9 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
 
   void add(
       std::shared_ptr<Runnable> task,
-      int64_t /*timeout*/ = 0,
-      int64_t /*expiration*/ = 0,
-      bool /*upstream*/ = false) noexcept override {
+      int64_t /*timeout*/,
+      int64_t /*expiration*/,
+      ThreadManager::Source /*source*/) noexcept override {
     ka_->add([=] { task->run(); });
   }
   void add(folly::Func f) override {
