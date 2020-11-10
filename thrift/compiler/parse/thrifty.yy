@@ -1247,9 +1247,6 @@ Field:
             }
             break;
           }
-          if (it.first == "cpp.mixin") {
-            $$->mark_as_mixin();
-          }
         }
         $$->annotations_ = std::move($8->annotations_);
         $$->annotation_objects_ = std::move($8->annotation_objects_);

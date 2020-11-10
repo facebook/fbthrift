@@ -88,10 +88,6 @@ class t_field : public t_annotated {
     next_ = field;
   }
 
-  void mark_as_mixin() {
-    mixin_ = true;
-  }
-
   /**
    * t_field getters
    */
@@ -123,10 +119,6 @@ class t_field : public t_annotated {
     return req_;
   }
 
-  bool is_mixin() const {
-    return mixin_;
-  }
-
   /**
    * Thrift AST nodes are meant to be non-copyable and non-movable, and should
    * never be cloned. This method exists to grand-father specific uses in the
@@ -151,7 +143,6 @@ class t_field : public t_annotated {
   int32_t key_{0};
   std::unique_ptr<t_const_value> value_{nullptr};
   t_field* next_{nullptr};
-  bool mixin_{false};
 
   e_req req_{T_OPT_IN_REQ_OUT};
 };
