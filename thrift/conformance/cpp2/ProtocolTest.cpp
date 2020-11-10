@@ -100,7 +100,8 @@ TEST(ProtocolTest, FromName) {
   // Case sensitive.
   EXPECT_THROW(Protocol::fromName("binary"), std::invalid_argument);
   // Rejects invalid custom names.
-  EXPECT_THROW(Protocol::fromName("foo.com:42/my/protocol"), std::invalid_argument);
+  EXPECT_THROW(
+      Protocol::fromName("foo.com:42/my/protocol"), std::invalid_argument);
 
   // Accepts valid custom names.
   EXPECT_EQ(
