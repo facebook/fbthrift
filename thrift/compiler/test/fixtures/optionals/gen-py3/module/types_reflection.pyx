@@ -37,6 +37,7 @@ cdef __StructSpec get_reflection__Color():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="red",
             type=float,
             kind=__NumberType.DOUBLE,
@@ -48,6 +49,7 @@ cdef __StructSpec get_reflection__Color():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="green",
             type=float,
             kind=__NumberType.DOUBLE,
@@ -59,6 +61,7 @@ cdef __StructSpec get_reflection__Color():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="blue",
             type=float,
             kind=__NumberType.DOUBLE,
@@ -70,6 +73,7 @@ cdef __StructSpec get_reflection__Color():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="alpha",
             type=float,
             kind=__NumberType.DOUBLE,
@@ -94,6 +98,7 @@ cdef __StructSpec get_reflection__Vehicle():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="color",
             type=_module_types.Color,
             kind=__NumberType.NOT_A_NUMBER,
@@ -105,6 +110,7 @@ cdef __StructSpec get_reflection__Vehicle():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="licensePlate",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -116,6 +122,7 @@ cdef __StructSpec get_reflection__Vehicle():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="description",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -127,6 +134,7 @@ cdef __StructSpec get_reflection__Vehicle():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="name",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -138,6 +146,7 @@ cdef __StructSpec get_reflection__Vehicle():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="hasAC",
             type=bool,
             kind=__NumberType.NOT_A_NUMBER,
@@ -162,6 +171,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="id",
             type=int,
             kind=__NumberType.I64,
@@ -173,6 +183,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="name",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -184,6 +195,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="age",
             type=int,
             kind=__NumberType.I16,
@@ -195,6 +207,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="address",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -206,6 +219,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="favoriteColor",
             type=_module_types.Color,
             kind=__NumberType.NOT_A_NUMBER,
@@ -217,6 +231,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=6,
             name="friends",
             type=_module_types.Set__i64,
             kind=__NumberType.NOT_A_NUMBER,
@@ -228,6 +243,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=7,
             name="bestFriend",
             type=int,
             kind=__NumberType.I64,
@@ -239,6 +255,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=8,
             name="petNames",
             type=_module_types.Map__Animal_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -250,6 +267,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=9,
             name="afraidOfAnimal",
             type=_module_types.Animal,
             kind=__NumberType.NOT_A_NUMBER,
@@ -261,6 +279,7 @@ cdef __StructSpec get_reflection__Person():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=10,
             name="vehicles",
             type=_module_types.List__Vehicle,
             kind=__NumberType.NOT_A_NUMBER,

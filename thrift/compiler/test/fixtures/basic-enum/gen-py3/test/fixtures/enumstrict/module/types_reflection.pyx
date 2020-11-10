@@ -37,6 +37,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="myEnum",
             type=_test_fixtures_enumstrict_module_types.MyEnum,
             kind=__NumberType.NOT_A_NUMBER,
@@ -48,6 +49,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="myBigEnum",
             type=_test_fixtures_enumstrict_module_types.MyBigEnum,
             kind=__NumberType.NOT_A_NUMBER,

@@ -37,6 +37,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="MyIntField",
             type=int,
             kind=__NumberType.I64,
@@ -48,6 +49,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="MyStringField",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -59,6 +61,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="MyDataField",
             type=_module_types.MyDataItem,
             kind=__NumberType.NOT_A_NUMBER,
@@ -70,6 +73,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="myEnum",
             type=_module_types.MyEnum,
             kind=__NumberType.NOT_A_NUMBER,
@@ -102,6 +106,7 @@ cdef __StructSpec get_reflection__MyUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="myEnum",
             type=_module_types.MyEnum,
             kind=__NumberType.NOT_A_NUMBER,
@@ -113,6 +118,7 @@ cdef __StructSpec get_reflection__MyUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="myStruct",
             type=_module_types.MyStruct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -124,6 +130,7 @@ cdef __StructSpec get_reflection__MyUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="myDataItem",
             type=_module_types.MyDataItem,
             kind=__NumberType.NOT_A_NUMBER,

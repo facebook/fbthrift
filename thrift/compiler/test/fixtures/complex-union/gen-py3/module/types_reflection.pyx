@@ -32,6 +32,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="intValue",
             type=int,
             kind=__NumberType.I64,
@@ -43,6 +44,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="stringValue",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -54,6 +56,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="intListValue",
             type=_module_types.List__i64,
             kind=__NumberType.NOT_A_NUMBER,
@@ -65,6 +68,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="stringListValue",
             type=_module_types.List__string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -76,6 +80,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=9,
             name="typedefValue",
             type=_module_types.Map__i16_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -87,6 +92,7 @@ cdef __StructSpec get_reflection__ComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=14,
             name="stringRef",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -106,6 +112,7 @@ cdef __StructSpec get_reflection__ListUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="intListValue",
             type=_module_types.List__i64,
             kind=__NumberType.NOT_A_NUMBER,
@@ -117,6 +124,7 @@ cdef __StructSpec get_reflection__ListUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="stringListValue",
             type=_module_types.List__string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -136,6 +144,7 @@ cdef __StructSpec get_reflection__DataUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="binaryData",
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
@@ -147,6 +156,7 @@ cdef __StructSpec get_reflection__DataUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="stringData",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -171,6 +181,7 @@ cdef __StructSpec get_reflection__Val():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="strVal",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -182,6 +193,7 @@ cdef __StructSpec get_reflection__Val():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="intVal",
             type=int,
             kind=__NumberType.I32,
@@ -193,6 +205,7 @@ cdef __StructSpec get_reflection__Val():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=9,
             name="typedefValue",
             type=_module_types.Map__i16_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -212,6 +225,7 @@ cdef __StructSpec get_reflection__ValUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="v1",
             type=_module_types.Val,
             kind=__NumberType.NOT_A_NUMBER,
@@ -223,6 +237,7 @@ cdef __StructSpec get_reflection__ValUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="v2",
             type=_module_types.Val,
             kind=__NumberType.NOT_A_NUMBER,
@@ -242,6 +257,7 @@ cdef __StructSpec get_reflection__VirtualComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="thingOne",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -253,6 +269,7 @@ cdef __StructSpec get_reflection__VirtualComplexUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="thingTwo",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -277,6 +294,7 @@ cdef __StructSpec get_reflection__NonCopyableStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="num",
             type=int,
             kind=__NumberType.I64,
@@ -296,6 +314,7 @@ cdef __StructSpec get_reflection__NonCopyableUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="s",
             type=_module_types.NonCopyableStruct,
             kind=__NumberType.NOT_A_NUMBER,

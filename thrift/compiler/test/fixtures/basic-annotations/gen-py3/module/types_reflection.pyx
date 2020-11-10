@@ -37,6 +37,7 @@ cdef __StructSpec get_reflection__MyStructNestedAnnotation():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="name",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -61,6 +62,7 @@ cdef __StructSpec get_reflection__MyStructAnnotation():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="count",
             type=int,
             kind=__NumberType.I64,
@@ -72,6 +74,7 @@ cdef __StructSpec get_reflection__MyStructAnnotation():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="name",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -83,6 +86,7 @@ cdef __StructSpec get_reflection__MyStructAnnotation():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="extra",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -94,6 +98,7 @@ cdef __StructSpec get_reflection__MyStructAnnotation():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="nest",
             type=_module_types.MyStructNestedAnnotation,
             kind=__NumberType.NOT_A_NUMBER,
@@ -118,6 +123,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="major",
             type=int,
             kind=__NumberType.I64,
@@ -129,6 +135,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="package",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -140,6 +147,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="annotation_with_quote",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -151,6 +159,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="class_",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -162,6 +171,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="annotation_with_trailing_comma",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -173,6 +183,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=6,
             name="empty_annotations",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -197,6 +208,7 @@ cdef __StructSpec get_reflection__SecretStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="id",
             type=int,
             kind=__NumberType.I64,
@@ -208,6 +220,7 @@ cdef __StructSpec get_reflection__SecretStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="password",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,

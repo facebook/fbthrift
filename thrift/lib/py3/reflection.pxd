@@ -52,6 +52,7 @@ cdef class StructSpec:
 
 
 cdef class FieldSpec:
+    cdef readonly int id
     cdef readonly str name
     cdef readonly object type
     cdef readonly object kind
@@ -61,6 +62,7 @@ cdef class FieldSpec:
 
     @staticmethod
     cdef create(
+        int id,
         str name,
         object type,
         NumberType kind,

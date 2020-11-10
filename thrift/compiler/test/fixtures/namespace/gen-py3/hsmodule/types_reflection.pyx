@@ -37,6 +37,7 @@ cdef __StructSpec get_reflection__HsFoo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="MyInt",
             type=int,
             kind=__NumberType.I64,

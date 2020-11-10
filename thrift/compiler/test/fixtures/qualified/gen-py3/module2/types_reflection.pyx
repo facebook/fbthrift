@@ -39,6 +39,7 @@ cdef __StructSpec get_reflection__Struct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="first",
             type=_module0_types.Struct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -50,6 +51,7 @@ cdef __StructSpec get_reflection__Struct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="second",
             type=_module1_types.Struct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -74,6 +76,7 @@ cdef __StructSpec get_reflection__BigStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="s",
             type=_module2_types.Struct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -85,6 +88,7 @@ cdef __StructSpec get_reflection__BigStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="id",
             type=int,
             kind=__NumberType.I32,

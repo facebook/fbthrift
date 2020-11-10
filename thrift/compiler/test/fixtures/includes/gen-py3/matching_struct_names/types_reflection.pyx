@@ -38,6 +38,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -62,6 +63,7 @@ cdef __StructSpec get_reflection__Combo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="listOfOurMyStructLists",
             type=_matching_struct_names_types.List__List__MyStruct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -73,6 +75,7 @@ cdef __StructSpec get_reflection__Combo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="theirMyStructList",
             type=_matching_struct_names_types.List__module_MyStruct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -84,6 +87,7 @@ cdef __StructSpec get_reflection__Combo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="ourMyStructList",
             type=_matching_struct_names_types.List__MyStruct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -95,6 +99,7 @@ cdef __StructSpec get_reflection__Combo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="listOfTheirMyStructList",
             type=_matching_struct_names_types.List__List__module_MyStruct,
             kind=__NumberType.NOT_A_NUMBER,

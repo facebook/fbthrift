@@ -37,6 +37,7 @@ cdef __StructSpec get_reflection__Foo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="myInteger",
             type=int,
             kind=__NumberType.I32,
@@ -48,6 +49,7 @@ cdef __StructSpec get_reflection__Foo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="myString",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -59,6 +61,7 @@ cdef __StructSpec get_reflection__Foo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="myBools",
             type=_module_types.List__bool,
             kind=__NumberType.NOT_A_NUMBER,
@@ -70,6 +73,7 @@ cdef __StructSpec get_reflection__Foo():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="myNumbers",
             type=_module_types.List__i32,
             kind=__NumberType.NOT_A_NUMBER,

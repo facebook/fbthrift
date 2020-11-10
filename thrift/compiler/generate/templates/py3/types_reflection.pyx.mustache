@@ -83,6 +83,7 @@ cdef __StructSpec get_reflection__{{struct:name}}():
 {{#struct:fields}}
     spec.add_field(
         __FieldSpec.create(
+            id={{field:key}},
             name="{{field:name}}",
             type={{#field:type}}{{> types/PythonType}}{{/field:type}},
             kind={{#field:type}}{{> types/ThriftNumberType}}{{/field:type}},

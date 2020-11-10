@@ -38,6 +38,7 @@ cdef __StructSpec get_reflection__decorated_struct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -62,6 +63,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=12,
             name="fieldA",
             type=_module_types.List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -73,6 +75,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="fieldB",
             type=_module_types.std_list__List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -84,6 +87,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="fieldC",
             type=_module_types.std_deque__List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -95,6 +99,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="fieldD",
             type=_module_types.folly_fbvector__List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -106,6 +111,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="fieldE",
             type=_module_types.folly_small_vector__List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -117,6 +123,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=6,
             name="fieldF",
             type=_module_types.folly_sorted_vector_set__Set__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -128,6 +135,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=7,
             name="fieldG",
             type=_module_types.folly_sorted_vector_map__Map__i32_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -139,6 +147,7 @@ cdef __StructSpec get_reflection__ContainerStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=8,
             name="fieldH",
             type=_module_types.std_unordered_map__Map__i32_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -163,6 +172,7 @@ cdef __StructSpec get_reflection__CppTypeStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="fieldA",
             type=_module_types.std_list_int32_t__List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -187,6 +197,7 @@ cdef __StructSpec get_reflection__VirtualStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="MyIntField",
             type=int,
             kind=__NumberType.I64,
@@ -211,6 +222,7 @@ cdef __StructSpec get_reflection__MyStructWithForwardRefEnum():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="a",
             type=_module_types.MyForwardRefEnum,
             kind=__NumberType.NOT_A_NUMBER,
@@ -222,6 +234,7 @@ cdef __StructSpec get_reflection__MyStructWithForwardRefEnum():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="b",
             type=_module_types.MyForwardRefEnum,
             kind=__NumberType.NOT_A_NUMBER,
@@ -246,6 +259,7 @@ cdef __StructSpec get_reflection__TrivialNumeric():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="a",
             type=int,
             kind=__NumberType.I32,
@@ -257,6 +271,7 @@ cdef __StructSpec get_reflection__TrivialNumeric():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="b",
             type=bool,
             kind=__NumberType.NOT_A_NUMBER,
@@ -281,6 +296,7 @@ cdef __StructSpec get_reflection__TrivialNestedWithDefault():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="z",
             type=int,
             kind=__NumberType.I32,
@@ -292,6 +308,7 @@ cdef __StructSpec get_reflection__TrivialNestedWithDefault():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="n",
             type=_module_types.TrivialNumeric,
             kind=__NumberType.NOT_A_NUMBER,
@@ -316,6 +333,7 @@ cdef __StructSpec get_reflection__ComplexString():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="a",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -327,6 +345,7 @@ cdef __StructSpec get_reflection__ComplexString():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="b",
             type=_module_types.Map__string_i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -351,6 +370,7 @@ cdef __StructSpec get_reflection__ComplexNestedWithDefault():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="z",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -362,6 +382,7 @@ cdef __StructSpec get_reflection__ComplexNestedWithDefault():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="n",
             type=_module_types.ComplexString,
             kind=__NumberType.NOT_A_NUMBER,
@@ -386,6 +407,7 @@ cdef __StructSpec get_reflection__MinPadding():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="small",
             type=int,
             kind=__NumberType.BYTE,
@@ -397,6 +419,7 @@ cdef __StructSpec get_reflection__MinPadding():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="big",
             type=int,
             kind=__NumberType.I64,
@@ -408,6 +431,7 @@ cdef __StructSpec get_reflection__MinPadding():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="medium",
             type=int,
             kind=__NumberType.I16,
@@ -419,6 +443,7 @@ cdef __StructSpec get_reflection__MinPadding():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="biggish",
             type=int,
             kind=__NumberType.I32,
@@ -430,6 +455,7 @@ cdef __StructSpec get_reflection__MinPadding():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="tiny",
             type=int,
             kind=__NumberType.BYTE,
@@ -454,6 +480,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="MyIntField",
             type=int,
             kind=__NumberType.I64,
@@ -465,6 +492,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="MyStringField",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -476,6 +504,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="majorVer",
             type=int,
             kind=__NumberType.I64,
@@ -487,6 +516,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="data",
             type=_module_types.MyDataItem,
             kind=__NumberType.NOT_A_NUMBER,
@@ -524,6 +554,7 @@ cdef __StructSpec get_reflection__Renaming():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="foo",
             type=int,
             kind=__NumberType.I64,
@@ -548,6 +579,7 @@ cdef __StructSpec get_reflection__AnnotatedTypes():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="binary_field",
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
@@ -559,6 +591,7 @@ cdef __StructSpec get_reflection__AnnotatedTypes():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="list_field",
             type=_module_types.List__std_unordered_map__Map__i32_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -583,6 +616,7 @@ cdef __StructSpec get_reflection__ForwardUsageRoot():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="ForwardUsageStruct",
             type=_module_types.ForwardUsageStruct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -594,6 +628,7 @@ cdef __StructSpec get_reflection__ForwardUsageRoot():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="ForwardUsageByRef",
             type=_module_types.ForwardUsageByRef,
             kind=__NumberType.NOT_A_NUMBER,
@@ -618,6 +653,7 @@ cdef __StructSpec get_reflection__ForwardUsageStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="foo",
             type=_module_types.ForwardUsageRoot,
             kind=__NumberType.NOT_A_NUMBER,
@@ -642,6 +678,7 @@ cdef __StructSpec get_reflection__ForwardUsageByRef():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="foo",
             type=_module_types.ForwardUsageRoot,
             kind=__NumberType.NOT_A_NUMBER,
@@ -679,6 +716,7 @@ cdef __StructSpec get_reflection__NoexceptMoveSimpleStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="boolField",
             type=int,
             kind=__NumberType.I64,
@@ -703,6 +741,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="MyBoolField",
             type=bool,
             kind=__NumberType.NOT_A_NUMBER,
@@ -714,6 +753,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="MyIntField",
             type=int,
             kind=__NumberType.I64,
@@ -725,6 +765,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="MyStringField",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -736,6 +777,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="MyStringField2",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -747,6 +789,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="MyBinaryField",
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
@@ -758,6 +801,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=6,
             name="MyBinaryField2",
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
@@ -769,6 +813,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=7,
             name="MyBinaryField3",
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
@@ -780,6 +825,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=8,
             name="MyBinaryListField4",
             type=_module_types.List__binary,
             kind=__NumberType.NOT_A_NUMBER,
@@ -791,6 +837,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=9,
             name="MyMapEnumAndInt",
             type=_module_types.Map__MyEnumA_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -810,6 +857,7 @@ cdef __StructSpec get_reflection__NoExceptMoveUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="string_field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -821,6 +869,7 @@ cdef __StructSpec get_reflection__NoExceptMoveUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="i32_field",
             type=int,
             kind=__NumberType.I32,
@@ -845,6 +894,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="aa_list",
             type=_module_types.List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -856,6 +906,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="aa_set",
             type=_module_types.Set__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -867,6 +918,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="aa_map",
             type=_module_types.Map__i32_i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -878,6 +930,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="aa_string",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -889,6 +942,7 @@ cdef __StructSpec get_reflection__AllocatorAware():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="not_a_container",
             type=int,
             kind=__NumberType.I32,
@@ -913,6 +967,7 @@ cdef __StructSpec get_reflection__AllocatorAware2():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="not_a_container",
             type=int,
             kind=__NumberType.I32,

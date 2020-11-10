@@ -99,6 +99,7 @@ cdef class StructSpec:
 cdef class FieldSpec:
     def __cinit__(
         self,
+        int id,
         str name,
         type,
         NumberType kind,
@@ -106,6 +107,7 @@ cdef class FieldSpec:
         default,
         dict annotations = {},
     ):
+        self.id = id
         self.name = name
         self.type = type
         self.kind = NumberType(kind)
@@ -115,6 +117,7 @@ cdef class FieldSpec:
 
     @staticmethod
     cdef create(
+        int id,
         str name,
         object type,
         NumberType kind,
@@ -122,9 +125,10 @@ cdef class FieldSpec:
         object default,
         dict annotations,
     ):
-        return FieldSpec.__new__(FieldSpec, name, type, kind, qualifier, default, annotations)
+        return FieldSpec.__new__(FieldSpec, id, name, type, kind, qualifier, default, annotations)
 
     def __iter__(self):
+        yield self.id
         yield self.name
         yield self.type
         yield self.kind

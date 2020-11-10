@@ -37,6 +37,7 @@ cdef __StructSpec get_reflection__InitialResponse():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="content",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -61,6 +62,7 @@ cdef __StructSpec get_reflection__FinalResponse():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="content",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -85,6 +87,7 @@ cdef __StructSpec get_reflection__SinkPayload():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="content",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -109,6 +112,7 @@ cdef __StructSpec get_reflection__CompatibleWithKeywordSink():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="sink",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -133,6 +137,7 @@ cdef __StructSpec get_reflection__InitialException():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="reason",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -157,6 +162,7 @@ cdef __StructSpec get_reflection__SinkException1():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="reason",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -181,6 +187,7 @@ cdef __StructSpec get_reflection__SinkException2():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="reason",
             type=int,
             kind=__NumberType.I64,

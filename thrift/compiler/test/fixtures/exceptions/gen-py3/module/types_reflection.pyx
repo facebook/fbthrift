@@ -50,6 +50,7 @@ cdef __StructSpec get_reflection__Fiery():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="message",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -74,6 +75,7 @@ cdef __StructSpec get_reflection__Serious():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="sonnet",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -98,6 +100,7 @@ cdef __StructSpec get_reflection__ComplexFieldNames():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="error_message",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -109,6 +112,7 @@ cdef __StructSpec get_reflection__ComplexFieldNames():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="internal_error_message",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -133,6 +137,7 @@ cdef __StructSpec get_reflection__CustomFieldNames():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="error_message",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -144,6 +149,7 @@ cdef __StructSpec get_reflection__CustomFieldNames():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="internal_error_message",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,

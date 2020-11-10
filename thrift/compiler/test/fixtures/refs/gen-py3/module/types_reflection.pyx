@@ -32,6 +32,7 @@ cdef __StructSpec get_reflection__MyUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="anInteger",
             type=int,
             kind=__NumberType.I32,
@@ -43,6 +44,7 @@ cdef __StructSpec get_reflection__MyUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="aString",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -67,6 +69,7 @@ cdef __StructSpec get_reflection__MyField():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="opt_value",
             type=int,
             kind=__NumberType.I64,
@@ -78,6 +81,7 @@ cdef __StructSpec get_reflection__MyField():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="value",
             type=int,
             kind=__NumberType.I64,
@@ -89,6 +93,7 @@ cdef __StructSpec get_reflection__MyField():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="req_value",
             type=int,
             kind=__NumberType.I64,
@@ -113,6 +118,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="opt_ref",
             type=_module_types.MyField,
             kind=__NumberType.NOT_A_NUMBER,
@@ -124,6 +130,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="ref",
             type=_module_types.MyField,
             kind=__NumberType.NOT_A_NUMBER,
@@ -135,6 +142,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="req_ref",
             type=_module_types.MyField,
             kind=__NumberType.NOT_A_NUMBER,
@@ -159,6 +167,7 @@ cdef __StructSpec get_reflection__StructWithUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="u",
             type=_module_types.MyUnion,
             kind=__NumberType.NOT_A_NUMBER,
@@ -170,6 +179,7 @@ cdef __StructSpec get_reflection__StructWithUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="aDouble",
             type=float,
             kind=__NumberType.DOUBLE,
@@ -181,6 +191,7 @@ cdef __StructSpec get_reflection__StructWithUnion():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="f",
             type=_module_types.MyField,
             kind=__NumberType.NOT_A_NUMBER,
@@ -205,6 +216,7 @@ cdef __StructSpec get_reflection__RecursiveStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="mes",
             type=_module_types.List__RecursiveStruct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -229,6 +241,7 @@ cdef __StructSpec get_reflection__StructWithContainers():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="list_ref",
             type=_module_types.List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -240,6 +253,7 @@ cdef __StructSpec get_reflection__StructWithContainers():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="set_ref",
             type=_module_types.Set__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -251,6 +265,7 @@ cdef __StructSpec get_reflection__StructWithContainers():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="map_ref",
             type=_module_types.Map__i32_i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -262,6 +277,7 @@ cdef __StructSpec get_reflection__StructWithContainers():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=4,
             name="list_ref_unique",
             type=_module_types.List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -273,6 +289,7 @@ cdef __StructSpec get_reflection__StructWithContainers():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=5,
             name="set_ref_shared",
             type=_module_types.Set__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -284,6 +301,7 @@ cdef __StructSpec get_reflection__StructWithContainers():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=6,
             name="list_ref_shared_const",
             type=_module_types.List__i32,
             kind=__NumberType.NOT_A_NUMBER,
@@ -308,6 +326,7 @@ cdef __StructSpec get_reflection__StructWithSharedConst():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="opt_shared_const",
             type=_module_types.MyField,
             kind=__NumberType.NOT_A_NUMBER,
@@ -319,6 +338,7 @@ cdef __StructSpec get_reflection__StructWithSharedConst():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="shared_const",
             type=_module_types.MyField,
             kind=__NumberType.NOT_A_NUMBER,
@@ -330,6 +350,7 @@ cdef __StructSpec get_reflection__StructWithSharedConst():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="req_shared_const",
             type=_module_types.MyField,
             kind=__NumberType.NOT_A_NUMBER,
@@ -367,6 +388,7 @@ cdef __StructSpec get_reflection__StructWithRef():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="def_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -378,6 +400,7 @@ cdef __StructSpec get_reflection__StructWithRef():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="opt_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -389,6 +412,7 @@ cdef __StructSpec get_reflection__StructWithRef():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="req_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -413,6 +437,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeUnique():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="def_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -424,6 +449,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeUnique():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="opt_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -435,6 +461,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeUnique():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="req_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -459,6 +486,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeShared():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="def_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -470,6 +498,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeShared():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="opt_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -481,6 +510,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeShared():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="req_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -505,6 +535,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeSharedConst():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="def_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -516,6 +547,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeSharedConst():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="opt_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -527,6 +559,7 @@ cdef __StructSpec get_reflection__StructWithRefTypeSharedConst():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="req_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,
@@ -551,6 +584,7 @@ cdef __StructSpec get_reflection__StructWithRefAndAnnotCppNoexceptMoveCtor():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="def_field",
             type=_module_types.Empty,
             kind=__NumberType.NOT_A_NUMBER,

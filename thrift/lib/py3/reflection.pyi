@@ -55,6 +55,7 @@ class Qualifier(Enum):
     OPTIONAL: Qualifier = ...
 
 class StructSpec:
+    id: int
     name: str
     fields: Sequence[FieldSpec]
     kind: StructType

@@ -38,6 +38,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="MyIncludedField",
             type=_includes_types.Included,
             kind=__NumberType.NOT_A_NUMBER,
@@ -49,6 +50,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="MyOtherIncludedField",
             type=_includes_types.Included,
             kind=__NumberType.NOT_A_NUMBER,
@@ -60,6 +62,7 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=3,
             name="MyIncludedInt",
             type=int,
             kind=__NumberType.I64,
