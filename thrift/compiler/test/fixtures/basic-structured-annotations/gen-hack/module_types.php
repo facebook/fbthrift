@@ -61,7 +61,12 @@ class structured_annotation_inline implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'count'),
       Shapes::idx($shape, 'name'),
@@ -129,7 +134,12 @@ class structured_annotation_with_default implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'name'),
     );
@@ -218,7 +228,12 @@ class structured_annotation_recursive implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'name'),
       Shapes::idx($shape, 'recurse'),
@@ -291,7 +306,12 @@ class structured_annotation_forward implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'count'),
     );
@@ -367,7 +387,12 @@ class structured_annotation_nested implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'name'),
       Shapes::idx($shape, 'nest'),
@@ -471,7 +496,12 @@ class MyStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'annotated_field'),
       Shapes::idx($shape, 'annotated_type'),
@@ -610,7 +640,12 @@ class MyException extends \TException implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'context'),
     );
@@ -712,7 +747,12 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'first'),
       Shapes::idx($shape, 'second'),

@@ -54,7 +54,12 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'name'),
     );
@@ -185,7 +190,12 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'count'),
       Shapes::idx($shape, 'name'),
@@ -267,7 +277,7 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'nest') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['nest']);
-      $_tmp1 = MyStructNestedAnnotation::fromShape();
+      $_tmp1 = MyStructNestedAnnotation::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->nest = $_tmp1;
     }    
@@ -378,7 +388,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'major'),
       Shapes::idx($shape, 'package'),
@@ -544,7 +559,12 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'id'),
       Shapes::idx($shape, 'password'),

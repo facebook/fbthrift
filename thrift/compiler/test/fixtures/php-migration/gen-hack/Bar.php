@@ -91,7 +91,7 @@ trait BarClientBase {
       'c' => $c === null ? null : $c,
       'd' => $d === null ? null : $d,
       'e' => $e === null ? null : $e,
-    ));
+));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -154,7 +154,7 @@ trait BarClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Bar_baz_result::fromShape();
+        $result = Bar_baz_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -387,12 +387,12 @@ abstract class BarAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
-      $args = Bar_baz_args::fromShape();
+      $args = Bar_baz_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
-    $result = Bar_baz_result::fromShape();
+    $result = Bar_baz_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = await $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
@@ -438,12 +438,12 @@ abstract class BarSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
-      $args = Bar_baz_args::fromShape();
+      $args = Bar_baz_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
-    $result = Bar_baz_result::fromShape();
+    $result = Bar_baz_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
@@ -563,7 +563,12 @@ class Bar_baz_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -653,7 +658,12 @@ class Bar_baz_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );

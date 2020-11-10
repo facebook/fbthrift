@@ -67,7 +67,8 @@ trait MyServiceClientBase {
 
   protected function sendImpl_foo(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_foo_args::fromShape();
+    $args = MyService_foo_args::fromShape(shape(
+));
     try {
       $this->eventHandler_->preSend('foo', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -130,7 +131,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_foo_result::fromShape();
+        $result = MyService_foo_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -271,7 +272,12 @@ class MyService_foo_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -313,7 +319,12 @@ class MyService_foo_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }

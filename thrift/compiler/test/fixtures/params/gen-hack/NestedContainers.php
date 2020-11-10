@@ -183,7 +183,7 @@ trait NestedContainersClientBase {
       'foo' => (new Map($foo))->map(
         $_val0 ==> new Vector($_val0)
       ),
-    ));
+));
     try {
       $this->eventHandler_->preSend('mapList', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -246,7 +246,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = NestedContainers_mapList_result::fromShape();
+        $result = NestedContainers_mapList_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -278,7 +278,7 @@ trait NestedContainersClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = NestedContainers_mapSet_args::fromShape(shape(
       'foo' => new Map($foo),
-    ));
+));
     try {
       $this->eventHandler_->preSend('mapSet', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -341,7 +341,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = NestedContainers_mapSet_result::fromShape();
+        $result = NestedContainers_mapSet_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -375,7 +375,7 @@ trait NestedContainersClientBase {
       'foo' => (new Vector($foo))->map(
         $_val0 ==> new Map($_val0)
       ),
-    ));
+));
     try {
       $this->eventHandler_->preSend('listMap', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -438,7 +438,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = NestedContainers_listMap_result::fromShape();
+        $result = NestedContainers_listMap_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -470,7 +470,7 @@ trait NestedContainersClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = NestedContainers_listSet_args::fromShape(shape(
       'foo' => new Vector($foo),
-    ));
+));
     try {
       $this->eventHandler_->preSend('listSet', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -533,7 +533,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = NestedContainers_listSet_result::fromShape();
+        $result = NestedContainers_listSet_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -571,7 +571,7 @@ trait NestedContainersClientBase {
           )
         )
       ),
-    ));
+));
     try {
       $this->eventHandler_->preSend('turtles', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -634,7 +634,7 @@ trait NestedContainersClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = NestedContainers_turtles_result::fromShape();
+        $result = NestedContainers_turtles_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -1068,12 +1068,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapList_args');
     } else {
-      $args = NestedContainers_mapList_args::fromShape();
+      $args = NestedContainers_mapList_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
-    $result = NestedContainers_mapList_result::fromShape();
+    $result = NestedContainers_mapList_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
       await $this->handler->mapList($args->foo);
@@ -1112,12 +1112,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapSet_args');
     } else {
-      $args = NestedContainers_mapSet_args::fromShape();
+      $args = NestedContainers_mapSet_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
-    $result = NestedContainers_mapSet_result::fromShape();
+    $result = NestedContainers_mapSet_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
       await $this->handler->mapSet($args->foo);
@@ -1156,12 +1156,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listMap_args');
     } else {
-      $args = NestedContainers_listMap_args::fromShape();
+      $args = NestedContainers_listMap_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
-    $result = NestedContainers_listMap_result::fromShape();
+    $result = NestedContainers_listMap_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
       await $this->handler->listMap($args->foo);
@@ -1200,12 +1200,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listSet_args');
     } else {
-      $args = NestedContainers_listSet_args::fromShape();
+      $args = NestedContainers_listSet_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
-    $result = NestedContainers_listSet_result::fromShape();
+    $result = NestedContainers_listSet_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
       await $this->handler->listSet($args->foo);
@@ -1244,12 +1244,12 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_turtles_args');
     } else {
-      $args = NestedContainers_turtles_args::fromShape();
+      $args = NestedContainers_turtles_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
-    $result = NestedContainers_turtles_result::fromShape();
+    $result = NestedContainers_turtles_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
       await $this->handler->turtles($args->foo);
@@ -1295,12 +1295,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapList_args');
     } else {
-      $args = NestedContainers_mapList_args::fromShape();
+      $args = NestedContainers_mapList_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
-    $result = NestedContainers_mapList_result::fromShape();
+    $result = NestedContainers_mapList_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
       $this->handler->mapList($args->foo);
@@ -1339,12 +1339,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_mapSet_args');
     } else {
-      $args = NestedContainers_mapSet_args::fromShape();
+      $args = NestedContainers_mapSet_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
-    $result = NestedContainers_mapSet_result::fromShape();
+    $result = NestedContainers_mapSet_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
       $this->handler->mapSet($args->foo);
@@ -1383,12 +1383,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listMap_args');
     } else {
-      $args = NestedContainers_listMap_args::fromShape();
+      $args = NestedContainers_listMap_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
-    $result = NestedContainers_listMap_result::fromShape();
+    $result = NestedContainers_listMap_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
       $this->handler->listMap($args->foo);
@@ -1427,12 +1427,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_listSet_args');
     } else {
-      $args = NestedContainers_listSet_args::fromShape();
+      $args = NestedContainers_listSet_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
-    $result = NestedContainers_listSet_result::fromShape();
+    $result = NestedContainers_listSet_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
       $this->handler->listSet($args->foo);
@@ -1471,12 +1471,12 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'NestedContainers_turtles_args');
     } else {
-      $args = NestedContainers_turtles_args::fromShape();
+      $args = NestedContainers_turtles_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
-    $result = NestedContainers_turtles_result::fromShape();
+    $result = NestedContainers_turtles_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
       $this->handler->turtles($args->foo);
@@ -1557,7 +1557,12 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -1621,7 +1626,12 @@ class NestedContainers_mapList_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1689,7 +1699,12 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -1753,7 +1768,12 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1821,7 +1841,12 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -1885,7 +1910,12 @@ class NestedContainers_listMap_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1949,7 +1979,12 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -2013,7 +2048,12 @@ class NestedContainers_listSet_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -2100,7 +2140,12 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -2179,7 +2224,12 @@ class NestedContainers_turtles_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }

@@ -67,7 +67,8 @@ trait MyServicePrioChildClientBase {
 
   protected function sendImpl_pang(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyServicePrioChild_pang_args::fromShape();
+    $args = MyServicePrioChild_pang_args::fromShape(shape(
+));
     try {
       $this->eventHandler_->preSend('pang', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -130,7 +131,7 @@ trait MyServicePrioChildClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyServicePrioChild_pang_result::fromShape();
+        $result = MyServicePrioChild_pang_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -264,12 +265,12 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
-      $args = MyServicePrioChild_pang_args::fromShape();
+      $args = MyServicePrioChild_pang_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'pang', $args);
-    $result = MyServicePrioChild_pang_result::fromShape();
+    $result = MyServicePrioChild_pang_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
       await $this->handler->pang();
@@ -315,12 +316,12 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
-      $args = MyServicePrioChild_pang_args::fromShape();
+      $args = MyServicePrioChild_pang_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'pang', $args);
-    $result = MyServicePrioChild_pang_result::fromShape();
+    $result = MyServicePrioChild_pang_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
       $this->handler->pang();
@@ -378,7 +379,12 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -439,7 +445,12 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }

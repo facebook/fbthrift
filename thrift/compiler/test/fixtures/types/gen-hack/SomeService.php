@@ -97,7 +97,7 @@ trait SomeServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = SomeService_bounce_map_args::fromShape(shape(
       'm' => $m,
-    ));
+));
     try {
       $this->eventHandler_->preSend('bounce_map', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -160,7 +160,7 @@ trait SomeServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = SomeService_bounce_map_result::fromShape();
+        $result = SomeService_bounce_map_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -198,7 +198,7 @@ trait SomeServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = SomeService_binary_keyed_map_args::fromShape(shape(
       'r' => new Vector($r),
-    ));
+));
     try {
       $this->eventHandler_->preSend('binary_keyed_map', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -261,7 +261,7 @@ trait SomeServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = SomeService_binary_keyed_map_result::fromShape();
+        $result = SomeService_binary_keyed_map_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -500,7 +500,12 @@ class SomeService_bounce_map_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'm'),
     );
@@ -582,7 +587,12 @@ class SomeService_bounce_map_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
@@ -661,7 +671,12 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'r'),
     );
@@ -743,7 +758,12 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );

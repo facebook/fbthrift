@@ -66,7 +66,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'map_of_string_to_string'),
@@ -442,7 +447,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
       Shapes::idx($shape, 'map_of_string_to_i32'),
@@ -1008,7 +1018,12 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
       Shapes::idx($shape, 'map_of_string_to_i32'),

@@ -97,7 +97,7 @@ trait DbMixedStackArgumentsClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
       'key' => $key,
-    ));
+));
     try {
       $this->eventHandler_->preSend('getDataByKey0', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -160,7 +160,7 @@ trait DbMixedStackArgumentsClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = DbMixedStackArguments_getDataByKey0_result::fromShape();
+        $result = DbMixedStackArguments_getDataByKey0_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -198,7 +198,7 @@ trait DbMixedStackArgumentsClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
       'key' => $key,
-    ));
+));
     try {
       $this->eventHandler_->preSend('getDataByKey1', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -261,7 +261,7 @@ trait DbMixedStackArgumentsClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = DbMixedStackArguments_getDataByKey1_result::fromShape();
+        $result = DbMixedStackArguments_getDataByKey1_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -476,12 +476,12 @@ abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProce
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey0_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey0_args::fromShape();
+      $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey0', $args);
-    $result = DbMixedStackArguments_getDataByKey0_result::fromShape();
+    $result = DbMixedStackArguments_getDataByKey0_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getDataByKey0', $args);
       $result->success = await $this->handler->getDataByKey0($args->key);
@@ -520,12 +520,12 @@ abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProce
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey1_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey1_args::fromShape();
+      $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey1', $args);
-    $result = DbMixedStackArguments_getDataByKey1_result::fromShape();
+    $result = DbMixedStackArguments_getDataByKey1_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getDataByKey1', $args);
       $result->success = await $this->handler->getDataByKey1($args->key);
@@ -571,12 +571,12 @@ abstract class DbMixedStackArgumentsSyncProcessorBase extends \ThriftSyncProcess
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey0_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey0_args::fromShape();
+      $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey0', $args);
-    $result = DbMixedStackArguments_getDataByKey0_result::fromShape();
+    $result = DbMixedStackArguments_getDataByKey0_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getDataByKey0', $args);
       $result->success = $this->handler->getDataByKey0($args->key);
@@ -615,12 +615,12 @@ abstract class DbMixedStackArgumentsSyncProcessorBase extends \ThriftSyncProcess
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey1_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey1_args::fromShape();
+      $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape());
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey1', $args);
-    $result = DbMixedStackArguments_getDataByKey1_result::fromShape();
+    $result = DbMixedStackArguments_getDataByKey1_result::fromShape(shape());
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getDataByKey1', $args);
       $result->success = $this->handler->getDataByKey1($args->key);
@@ -687,7 +687,12 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'key'),
     );
@@ -765,7 +770,12 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
@@ -836,7 +846,12 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'key'),
     );
@@ -914,7 +929,12 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );

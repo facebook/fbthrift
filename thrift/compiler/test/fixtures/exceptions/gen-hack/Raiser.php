@@ -175,7 +175,8 @@ trait RaiserClientBase {
 
   protected function sendImpl_doBland(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_doBland_args::fromShape();
+    $args = Raiser_doBland_args::fromShape(shape(
+));
     try {
       $this->eventHandler_->preSend('doBland', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -238,7 +239,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_doBland_result::fromShape();
+        $result = Raiser_doBland_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -268,7 +269,8 @@ trait RaiserClientBase {
 
   protected function sendImpl_doRaise(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_doRaise_args::fromShape();
+    $args = Raiser_doRaise_args::fromShape(shape(
+));
     try {
       $this->eventHandler_->preSend('doRaise', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -331,7 +333,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_doRaise_result::fromShape();
+        $result = Raiser_doRaise_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -376,7 +378,8 @@ trait RaiserClientBase {
 
   protected function sendImpl_get200(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_get200_args::fromShape();
+    $args = Raiser_get200_args::fromShape(shape(
+));
     try {
       $this->eventHandler_->preSend('get200', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -439,7 +442,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_get200_result::fromShape();
+        $result = Raiser_get200_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -475,7 +478,8 @@ trait RaiserClientBase {
 
   protected function sendImpl_get500(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_get500_args::fromShape();
+    $args = Raiser_get500_args::fromShape(shape(
+));
     try {
       $this->eventHandler_->preSend('get500', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -538,7 +542,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_get500_result::fromShape();
+        $result = Raiser_get500_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -943,7 +947,12 @@ class Raiser_doBland_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -985,7 +994,12 @@ class Raiser_doBland_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1027,7 +1041,12 @@ class Raiser_doRaise_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1093,7 +1112,12 @@ class Raiser_doRaise_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'b'),
       Shapes::idx($shape, 'f'),
@@ -1150,7 +1174,12 @@ class Raiser_get200_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1199,7 +1228,12 @@ class Raiser_get200_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
@@ -1246,7 +1280,12 @@ class Raiser_get500_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1319,7 +1358,12 @@ class Raiser_get500_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
       Shapes::idx($shape, 'f'),

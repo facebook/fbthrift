@@ -80,7 +80,12 @@ class decorated_struct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'field'),
     );
@@ -289,7 +294,12 @@ class ContainerStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'fieldA'),
       Shapes::idx($shape, 'fieldB'),
@@ -511,7 +521,12 @@ class CppTypeStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'fieldA'),
     );
@@ -598,7 +613,12 @@ class VirtualStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
     );
@@ -688,7 +708,12 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -781,7 +806,12 @@ class TrivialNumeric implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -882,7 +912,12 @@ class TrivialNestedWithDefault implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'z'),
       Shapes::idx($shape, 'n'),
@@ -931,7 +966,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     }    
     if (idx($parsed, 'n') !== null) {
       $_tmp1 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
-      $_tmp2 = TrivialNumeric::fromShape();
+      $_tmp2 = TrivialNumeric::fromShape(shape());
       $_tmp2->readFromJson($_tmp1);
       $this->n = $_tmp2;
     }    
@@ -994,7 +1029,12 @@ class ComplexString implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -1102,7 +1142,12 @@ class ComplexNestedWithDefault implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'z'),
       Shapes::idx($shape, 'n'),
@@ -1146,7 +1191,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     }    
     if (idx($parsed, 'n') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
-      $_tmp1 = ComplexString::fromShape();
+      $_tmp1 = ComplexString::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->n = $_tmp1;
     }    
@@ -1236,7 +1281,12 @@ class MinPadding implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'small'),
       Shapes::idx($shape, 'big'),
@@ -1411,7 +1461,12 @@ class MyStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
       Shapes::idx($shape, 'MyStringField'),
@@ -1472,7 +1527,7 @@ class MyStruct implements \IThriftStruct {
     }    
     if (idx($parsed, 'data') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['data']);
-      $_tmp1 = MyDataItem::fromShape();
+      $_tmp1 = MyDataItem::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->data = $_tmp1;
     }    
@@ -1502,7 +1557,12 @@ class MyDataItem implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -1570,7 +1630,12 @@ class Renaming implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -1671,7 +1736,12 @@ class AnnotatedTypes implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'binary_field'),
       Shapes::idx($shape, 'list_field'),
@@ -1782,7 +1852,12 @@ class ForwardUsageRoot implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'ForwardUsageStruct'),
       Shapes::idx($shape, 'ForwardUsageByRef'),
@@ -1823,13 +1898,13 @@ class ForwardUsageRoot implements \IThriftStruct {
 
     if (idx($parsed, 'ForwardUsageStruct') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageStruct']);
-      $_tmp1 = ForwardUsageStruct::fromShape();
+      $_tmp1 = ForwardUsageStruct::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->ForwardUsageStruct = $_tmp1;
     }    
     if (idx($parsed, 'ForwardUsageByRef') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageByRef']);
-      $_tmp3 = ForwardUsageByRef::fromShape();
+      $_tmp3 = ForwardUsageByRef::fromShape(shape());
       $_tmp3->readFromJson($_tmp2);
       $this->ForwardUsageByRef = $_tmp3;
     }    
@@ -1872,7 +1947,12 @@ class ForwardUsageStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -1908,7 +1988,7 @@ class ForwardUsageStruct implements \IThriftStruct {
 
     if (idx($parsed, 'foo') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
-      $_tmp1 = ForwardUsageRoot::fromShape();
+      $_tmp1 = ForwardUsageRoot::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
     }    
@@ -1951,7 +2031,12 @@ class ForwardUsageByRef implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
@@ -1987,7 +2072,7 @@ class ForwardUsageByRef implements \IThriftStruct {
 
     if (idx($parsed, 'foo') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
-      $_tmp1 = ForwardUsageRoot::fromShape();
+      $_tmp1 = ForwardUsageRoot::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
     }    
@@ -2017,7 +2102,12 @@ class NoexceptMoveEmpty implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -2085,7 +2175,12 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'boolField'),
     );
@@ -2275,7 +2370,12 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyBoolField'),
       Shapes::idx($shape, 'MyIntField'),
@@ -2459,7 +2559,12 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'string_field'),
       Shapes::idx($shape, 'i32_field'),
@@ -2668,7 +2773,12 @@ class AllocatorAware implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'aa_list'),
       Shapes::idx($shape, 'aa_set'),
@@ -2817,7 +2927,12 @@ class AllocatorAware2 implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'not_a_container'),
     );

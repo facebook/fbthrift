@@ -94,7 +94,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
       Shapes::idx($shape, 'MyStringField'),
@@ -173,7 +178,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'MyDataField') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['MyDataField']);
-      $_tmp1 = MyDataItem::fromShape();
+      $_tmp1 = MyDataItem::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->MyDataField = $_tmp1;
     }    
@@ -208,7 +213,12 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -339,7 +349,12 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'myEnum'),
       Shapes::idx($shape, 'myStruct'),
@@ -484,14 +499,14 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     }    
     if (idx($parsed, 'myStruct') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myStruct']);
-      $_tmp1 = MyStruct::fromShape();
+      $_tmp1 = MyStruct::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->myStruct = $_tmp1;
       $this->_type = MyUnionEnum::myStruct;
     }    
     if (idx($parsed, 'myDataItem') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['myDataItem']);
-      $_tmp3 = MyDataItem::fromShape();
+      $_tmp3 = MyDataItem::fromShape(shape());
       $_tmp3->readFromJson($_tmp2);
       $this->myDataItem = $_tmp3;
       $this->_type = MyUnionEnum::myDataItem;

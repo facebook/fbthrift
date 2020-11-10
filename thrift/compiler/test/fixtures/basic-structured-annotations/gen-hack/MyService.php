@@ -95,7 +95,8 @@ trait MyServiceClientBase {
 
   protected function sendImpl_first(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_first_args::fromShape();
+    $args = MyService_first_args::fromShape(shape(
+));
     try {
       $this->eventHandler_->preSend('first', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -158,7 +159,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_first_result::fromShape();
+        $result = MyService_first_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -196,7 +197,7 @@ trait MyServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_second_args::fromShape(shape(
       'count' => $count,
-    ));
+));
     try {
       $this->eventHandler_->preSend('second', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -259,7 +260,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_second_result::fromShape();
+        $result = MyService_second_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -481,7 +482,12 @@ class MyService_first_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
   }
@@ -530,7 +536,12 @@ class MyService_first_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
@@ -596,7 +607,12 @@ class MyService_second_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'count'),
     );
@@ -650,7 +666,12 @@ class MyService_second_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );

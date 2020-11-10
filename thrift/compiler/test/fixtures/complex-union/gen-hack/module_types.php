@@ -155,7 +155,12 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'intValue'),
       Shapes::idx($shape, 'stringValue'),
@@ -462,7 +467,12 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'intListValue'),
       Shapes::idx($shape, 'stringListValue'),
@@ -640,7 +650,12 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'binaryData'),
       Shapes::idx($shape, 'stringData'),
@@ -809,7 +824,12 @@ class Val implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'strVal'),
       Shapes::idx($shape, 'intVal'),
@@ -942,7 +962,12 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'v1'),
       Shapes::idx($shape, 'v2'),
@@ -1034,14 +1059,14 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
 
     if (idx($parsed, 'v1') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['v1']);
-      $_tmp1 = Val::fromShape();
+      $_tmp1 = Val::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->v1 = $_tmp1;
       $this->_type = ValUnionEnum::v1;
     }    
     if (idx($parsed, 'v2') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['v2']);
-      $_tmp3 = Val::fromShape();
+      $_tmp3 = Val::fromShape(shape());
       $_tmp3->readFromJson($_tmp2);
       $this->v2 = $_tmp3;
       $this->_type = ValUnionEnum::v2;
@@ -1112,7 +1137,12 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'thingOne'),
       Shapes::idx($shape, 'thingTwo'),
@@ -1249,7 +1279,12 @@ class NonCopyableStruct implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'num'),
     );
@@ -1337,7 +1372,12 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 's'),
     );
@@ -1406,7 +1446,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
 
     if (idx($parsed, 's') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['s']);
-      $_tmp1 = NonCopyableStruct::fromShape();
+      $_tmp1 = NonCopyableStruct::fromShape(shape());
       $_tmp1->readFromJson($_tmp0);
       $this->s = $_tmp1;
       $this->_type = NonCopyableUnionEnum::s;

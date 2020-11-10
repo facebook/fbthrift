@@ -71,7 +71,7 @@ trait TestServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = \hack_ns2\TestService_ping_args::fromShape(shape(
       'str_arg' => $str_arg,
-    ));
+));
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -134,7 +134,7 @@ trait TestServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = \hack_ns2\TestService_ping_result::fromShape();
+        $result = \hack_ns2\TestService_ping_result::fromShape(shape());
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -289,7 +289,12 @@ class TestService_ping_args implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'str_arg'),
     );
@@ -343,7 +348,12 @@ class TestService_ping_result implements \IThriftStruct {
   }
 
   <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape = shape()): this {
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx>>
+  public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
