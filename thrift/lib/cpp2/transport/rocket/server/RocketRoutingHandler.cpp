@@ -28,6 +28,7 @@
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncTransport.h>
 
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
@@ -35,39 +36,19 @@
 
 namespace apache {
 namespace thrift {
-namespace rocket {
-#if FOLLY_HAVE_WEAK_SYMBOLS
-FOLLY_ATTR_WEAK std::unique_ptr<SetupFrameHandler> createDebugSetupFrameHandler(
-    ThriftServer&);
-#else
-constexpr std::unique_ptr<SetupFrameHandler> (*createDebugSetupFrameHandler)(
-    ThriftServer&) = nullptr;
-#endif
-} // namespace rocket
+namespace {
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
+    createRocketDebugSetupFrameHandler,
+    apache::thrift::ThriftServer&) {
+  return {};
+}
+} // namespace
 
 RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
-  using CreateDebugSetupFrameHandler =
-      std::unique_ptr<rocket::SetupFrameHandler> (*)(ThriftServer&);
-  auto createDebugSetupFrameHandlerPtr = [&]() -> CreateDebugSetupFrameHandler {
-    if (rocket::createDebugSetupFrameHandler) {
-      return rocket::createDebugSetupFrameHandler;
-    } else {
-      CreateDebugSetupFrameHandler (*createDebugSetupFrameHandlerGetPtr)() =
-#ifdef FOLLY_HAVE_LINUX_VDSO
-          reinterpret_cast<CreateDebugSetupFrameHandler (*)()>(dlsym(
-              RTLD_DEFAULT,
-              "apache_thrift_rocket_createDebugSetupFrameHandler_get_ptr"));
-#else
-          nullptr;
-#endif
-      if (createDebugSetupFrameHandlerGetPtr) {
-        return createDebugSetupFrameHandlerGetPtr();
-      }
-      return nullptr;
-    }
-  }();
-  if (createDebugSetupFrameHandlerPtr) {
-    setupFrameHandlers_.push_back(createDebugSetupFrameHandlerPtr(server));
+  if (auto debugSetupFrameHandler =
+          THRIFT_PLUGGABLE_FUNC(createRocketDebugSetupFrameHandler)(server)) {
+    setupFrameHandlers_.push_back(std::move(debugSetupFrameHandler));
   }
 }
 

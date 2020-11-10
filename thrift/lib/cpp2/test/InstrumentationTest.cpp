@@ -21,6 +21,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <folly/synchronization/Baton.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -222,18 +223,14 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
   folly::ThreadLocal<RequestsRegistry> reqRegistry_;
 };
 
-namespace apache {
-namespace thrift {
-namespace rocket {
-#if FOLLY_HAVE_WEAK_SYMBOLS
-std::unique_ptr<SetupFrameHandler> createDebugSetupFrameHandler(
-    ThriftServer& thriftServer) {
+namespace {
+THRIFT_PLUGGABLE_FUNC_SET(
+    std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
+    createRocketDebugSetupFrameHandler,
+    apache::thrift::ThriftServer& thriftServer) {
   return std::make_unique<DebuggingFrameHandler>(thriftServer);
 }
-#endif
-} // namespace rocket
-} // namespace thrift
-} // namespace apache
+} // namespace
 
 class RequestInstrumentationTest : public testing::Test {
  protected:
