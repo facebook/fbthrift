@@ -2100,7 +2100,7 @@ class annotation_validator : public validator {
 
 bool annotation_validator::visit(t_struct* s) {
   for (auto* member : s->get_members()) {
-    if (!member->is_mixin()) {
+    if (!cpp2::is_mixin(*member)) {
       continue;
     }
     for (const auto& i : member->annotations_) {

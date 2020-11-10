@@ -285,7 +285,7 @@ bool union_no_qualified_fields_validator::visit(t_struct* s) {
 
 bool mixin_type_correctness_validator::visit(t_struct* s) {
   for (auto* member : s->get_members()) {
-    if (member->is_mixin()) {
+    if (cpp2::is_mixin(*member)) {
       auto* member_type = member->get_type()->get_true_type();
       const auto& name = member->get_name();
       if (s->is_union()) {
@@ -315,7 +315,7 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
 bool field_names_uniqueness_validator::visit(t_struct* s) {
   // If member is not struct, we couldn't extract field from mixin
   for (auto* member : s->get_members()) {
-    if (member->is_mixin() &&
+    if (cpp2::is_mixin(*member) &&
         !member->get_type()->get_true_type()->is_struct()) {
       return true;
     }

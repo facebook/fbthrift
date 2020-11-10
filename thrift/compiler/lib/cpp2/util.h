@@ -69,6 +69,8 @@ bool is_stack_arguments(
 
 int32_t get_split_count(std::map<std::string, std::string> const& options);
 
+bool is_mixin(const t_field& field);
+
 struct mixin_member {
   t_field* mixin;
   t_field* member;

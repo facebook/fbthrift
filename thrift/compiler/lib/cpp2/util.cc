@@ -192,12 +192,16 @@ int32_t get_split_count(std::map<std::string, std::string> const& options) {
   return std::stoi(iter->second);
 }
 
+bool is_mixin(const t_field& field) {
+  return field.annotations_.count("cpp.mixin");
+}
+
 static void get_mixins_and_members_impl(
     const t_struct& strct,
     t_field* top_level_mixin,
     std::vector<mixin_member>& out) {
   for (auto* member : strct.get_members()) {
-    if (member->is_mixin()) {
+    if (is_mixin(*member)) {
       assert(member->get_type()->get_true_type()->is_struct());
       auto mixin_struct =
           static_cast<const t_struct*>(member->get_type()->get_true_type());
