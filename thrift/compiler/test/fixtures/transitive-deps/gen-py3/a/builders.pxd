@@ -12,6 +12,8 @@ cimport thrift.py3.builder
 
 cimport b.types as _b_types
 cimport b.builders as _b_builders
+cimport c.types as _c_types
+cimport c.builders as _c_builders
 
 cimport a.types as _a_types
 

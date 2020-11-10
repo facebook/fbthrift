@@ -15,6 +15,7 @@ from thrift.py3.reflection cimport (
 )
 
 cimport b.types as _b_types
+cimport c.types as _c_types
 
 cimport a.types as _a_types
 

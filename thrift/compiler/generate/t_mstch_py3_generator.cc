@@ -612,32 +612,50 @@ class mstch_py3_program : public mstch_program {
     }
   }
 
+  enum TypeDef { NoTypedef, HasTypedef };
+
   std::string visit_type(const t_type* orig_type) {
+    return visit_type_with_typedef(orig_type, TypeDef::NoTypedef);
+  }
+
+  std::string visit_type_with_typedef(
+      const t_type* orig_type,
+      TypeDef isTypedef) {
     auto trueType = orig_type->get_true_type();
     auto baseType =
         generators_->type_generator_->generate(trueType, generators_, cache_);
     mstch_py3_type* type = dynamic_cast<mstch_py3_type*>(baseType.get());
     const std::string& flatName = type->get_flat_name();
+    // Import all types either beneath a typedef, even if the current type is
+    // not directly a typedef
+    isTypedef = isTypedef == TypeDef::HasTypedef || orig_type->is_typedef()
+        ? TypeDef::HasTypedef
+        : TypeDef::NoTypedef;
     if (flatName.empty()) {
       std::string extra;
       if (trueType->is_list()) {
-        extra = "List__" + visit_type(get_list_elem_type(*trueType));
+        extra = "List__" +
+            visit_type_with_typedef(get_list_elem_type(*trueType), isTypedef);
       } else if (trueType->is_set()) {
-        extra = "Set__" + visit_type(get_set_elem_type(*trueType));
+        extra = "Set__" +
+            visit_type_with_typedef(get_set_elem_type(*trueType), isTypedef);
       } else if (trueType->is_map()) {
-        extra = "Map__" + visit_type(get_map_key_type(*trueType)) + "_" +
-            visit_type(get_map_val_type(*trueType));
+        extra = "Map__" +
+            visit_type_with_typedef(get_map_key_type(*trueType), isTypedef) +
+            "_" +
+            visit_type_with_typedef(get_map_val_type(*trueType), isTypedef);
       } else if (trueType->is_binary()) {
         extra = "binary";
       } else if (trueType->is_streamresponse()) {
         const t_type* respType = get_stream_first_response_type(*trueType);
         const t_type* elemType = get_stream_elem_type(*trueType);
         if (respType) {
-          extra += "ResponseAndStream__" + visit_type(respType) + "_";
+          extra += "ResponseAndStream__" +
+              visit_type_with_typedef(respType, isTypedef) + "_";
         } else {
           extra = "Stream__";
         }
-        const auto& elemTypeName = visit_type(elemType);
+        const auto& elemTypeName = visit_type_with_typedef(elemType, isTypedef);
         extra += elemTypeName;
         streamTypes_.emplace(elemTypeName, elemType);
       } else if (trueType->is_sink()) {
@@ -648,9 +666,10 @@ class mstch_py3_program : public mstch_program {
       type->set_flat_name(std::move(extra));
     }
     assert(!flatName.empty());
-    // If the original type is a typedef, then add the namespace of the
-    // *resolved* type:
-    if (orig_type->is_typedef()) {
+    // If this type or a parent of this type is a typedef,
+    // then add the namespace of the *resolved* type:
+    // (parent matters if you have eg. typedef list<list<type>>)
+    if (isTypedef == TypeDef::HasTypedef) {
       add_typedef_namespace(trueType);
     }
     bool inserted = seenTypeNames_.insert(flatName).second;

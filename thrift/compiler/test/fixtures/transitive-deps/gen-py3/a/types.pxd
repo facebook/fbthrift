@@ -32,6 +32,7 @@ from thrift.py3.types cimport (
 )
 from folly.optional cimport cOptional
 cimport b.types as _b_types
+cimport c.types as _c_types
 cdef extern from "src/gen-py3/a/types.h":
   pass
 
