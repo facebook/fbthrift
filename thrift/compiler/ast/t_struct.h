@@ -39,12 +39,6 @@ class t_program;
  *
  */
 class t_struct : public t_type {
- private:
-  struct mixin_member {
-    t_field* mixin;
-    t_field* member;
-  };
-
  public:
   explicit t_struct(t_program* program) : t_type(program) {}
 
@@ -224,25 +218,7 @@ class t_struct : public t_type {
     return clone;
   }
 
-  /**
-   * Returns a list of pairs of mixin and mixin's members
-   * e.g. for Thrift IDL
-   *
-   * struct Mixin1 { 1: i32 m1; }
-   * struct Mixin2 { 1: i32 m2; }
-   * struct Strct {
-   *   1: mixin Mixin1 f1;
-   *   2: mixin Mixin2 f2;
-   *   3: i32 m3;
-   * }
-   *
-   * this returns {{.mixin="f1", .member="m1"}, {.mixin="f2", .member="m2"}}
-   */
-  std::vector<mixin_member> get_mixins_and_members() const;
-
  private:
-  void get_mixins_and_members_impl(t_field*, std::vector<mixin_member>&) const;
-
   std::vector<std::unique_ptr<t_field>> members_;
   std::vector<t_field*> members_raw_;
   std::vector<t_field*> members_in_id_order_;

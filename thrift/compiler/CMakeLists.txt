@@ -35,7 +35,6 @@ add_library(
   compiler_ast
 
   ast/t_program.cc
-  ast/t_struct.cc
   ast/t_type.cc
   ast/t_typedef.cc
   ast/base_types.cc
