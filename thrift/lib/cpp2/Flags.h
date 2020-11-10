@@ -37,12 +37,6 @@ class FlagsBackend {
   getFlagObserverInt64(folly::StringPiece name) = 0;
 };
 
-#if FOLLY_HAVE_WEAK_SYMBOLS
-FOLLY_ATTR_WEAK std::unique_ptr<FlagsBackend> createFlagsBackend();
-#else
-constexpr std::unique_ptr<FlagsBackend> (*createFlagsBackend)() = nullptr;
-#endif
-
 FlagsBackend& getFlagsBackend();
 
 template <typename T>

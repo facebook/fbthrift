@@ -21,6 +21,7 @@
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 
 #include <folly/experimental/observer/SimpleObservable.h>
 
@@ -75,15 +76,13 @@ class TestFlagsBackend : public apache::thrift::detail::FlagsBackend {
       int64Observables_;
 };
 
+namespace {
 TestFlagsBackend* testBackendPtr;
 bool useDummyBackend{false};
 
-namespace apache {
-namespace thrift {
-namespace detail {
-
-#if FOLLY_HAVE_WEAK_SYMBOLS
-std::unique_ptr<apache::thrift::detail::FlagsBackend> createFlagsBackend() {
+THRIFT_PLUGGABLE_FUNC_SET(
+    std::unique_ptr<apache::thrift::detail::FlagsBackend>,
+    createFlagsBackend) {
   if (useDummyBackend) {
     return {};
   }
@@ -91,12 +90,7 @@ std::unique_ptr<apache::thrift::detail::FlagsBackend> createFlagsBackend() {
   testBackendPtr = testBackend.get();
   return testBackend;
 }
-#else
-#endif
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
+} // namespace
 
 TEST(Flags, Get) {
   EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));

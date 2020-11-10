@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/Flags.h>
 
+#include <thrift/lib/cpp2/PluggableFunction.h>
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -34,23 +36,22 @@ class FlagsBackendDummy : public apache::thrift::detail::FlagsBackend {
         []() -> folly::Optional<int64_t> { return folly::none; });
   }
 };
-} // namespace
 
-namespace {
-std::unique_ptr<FlagsBackend> getFlagsBackendImpl() {
-  std::unique_ptr<FlagsBackend> ret;
-  if (createFlagsBackend) {
-    ret = createFlagsBackend();
-  }
-  if (!ret) {
-    ret = std::make_unique<FlagsBackendDummy>();
-  }
-  return ret;
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    std::unique_ptr<FlagsBackend>,
+    createFlagsBackend) {
+  return {};
 }
 } // namespace
 
 apache::thrift::detail::FlagsBackend& getFlagsBackend() {
-  static auto& obj = *getFlagsBackendImpl().release();
+  static auto& obj = *[] {
+    auto backend = THRIFT_PLUGGABLE_FUNC(createFlagsBackend)();
+    if (!backend) {
+      backend = std::make_unique<FlagsBackendDummy>();
+    }
+    return backend.release();
+  }();
   return obj;
 }
 } // namespace detail
