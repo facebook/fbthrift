@@ -101,12 +101,17 @@ endforeach()
 include_directories(${PYTHON_INCLUDE_DIRS})
 
 # Build and Install Thrift Python Bindings using Python setuptools
+if (UNIX)
+  set(ROOT_ARG "--root \$DESTDIR/")
+endif ()
+
 install(CODE "
   execute_process(COMMAND
   python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py bdist_wheel
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)
   execute_process(COMMAND
   python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py install
+  --prefix ${CMAKE_INSTALL_PREFIX} ${ROOT_ARG}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)"
 )
 
