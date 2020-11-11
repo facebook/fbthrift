@@ -34,19 +34,6 @@
 
 namespace thrift_fatal_impl_detail {
 
-struct <% > fatal/fatal_prefix%>__struct_unique_member_pod_list {
-  <%#program:fatal_data_member%>
-  template <typename T_<% > fatal/fatal_prefix%>_struct_member_pod>
-
-  struct <% > fatal/fatal_prefix%>_struct_member_pod_<% . %> {
-    T_<% > fatal/fatal_prefix%>_struct_member_pod <% . %>;
-  };
-  <%^last?%>
-
-  <%/last?%>
-  <%/program:fatal_data_member%>
-};
-
 <%#program:structs%><%^struct:union?%>
 class <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations {
   class <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members {
@@ -158,7 +145,6 @@ struct <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list
     >,
     <%/type:cpp_indirection?%><%/field:type%>
     <%#field:type%><%type:fatal_type_class%><%/field:type%>,
-    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_member_pod_list::<% > fatal/fatal_prefix%>_struct_member_pod_<%field:cpp_name%>,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations::members::<%field:cpp_name%>>,
     <%struct:name%>
   >;

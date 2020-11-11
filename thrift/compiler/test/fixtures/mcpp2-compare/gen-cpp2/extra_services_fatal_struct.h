@@ -19,87 +19,6 @@ namespace extra { namespace svc {
 
 namespace thrift_fatal_impl_detail {
 
-struct extra_svc_extra_services__struct_unique_member_pod_list {
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_fieldA {
-    T_extra_svc_extra_services_struct_member_pod fieldA;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_req_fieldA {
-    T_extra_svc_extra_services_struct_member_pod req_fieldA;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_opt_fieldA {
-    T_extra_svc_extra_services_struct_member_pod opt_fieldA;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_fieldB {
-    T_extra_svc_extra_services_struct_member_pod fieldB;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_req_fieldB {
-    T_extra_svc_extra_services_struct_member_pod req_fieldB;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_opt_fieldB {
-    T_extra_svc_extra_services_struct_member_pod opt_fieldB;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_fieldC {
-    T_extra_svc_extra_services_struct_member_pod fieldC;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_req_fieldC {
-    T_extra_svc_extra_services_struct_member_pod req_fieldC;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_opt_fieldC {
-    T_extra_svc_extra_services_struct_member_pod opt_fieldC;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_fieldD {
-    T_extra_svc_extra_services_struct_member_pod fieldD;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_fieldE {
-    T_extra_svc_extra_services_struct_member_pod fieldE;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_req_fieldE {
-    T_extra_svc_extra_services_struct_member_pod req_fieldE;
-  };
-
-  template <typename T_extra_svc_extra_services_struct_member_pod>
-
-  struct extra_svc_extra_services_struct_member_pod_opt_fieldE {
-    T_extra_svc_extra_services_struct_member_pod opt_fieldE;
-  };
-
-};
-
 class containerStruct2_extra_svc_extra_services__struct_unique_annotations {
   class containerStruct2_extra_svc_extra_services__struct_unique_annotations_members {
     class containerStruct2_extra_svc_extra_services__struct_unique_annotations_members_fieldA {
@@ -249,7 +168,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::fieldA
     >,
     ::apache::thrift::type_class::integral,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldA>,
     containerStruct2
   >;
@@ -265,7 +183,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::req_fieldA
     >,
     ::apache::thrift::type_class::integral,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldA>,
     containerStruct2
   >;
@@ -281,7 +198,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::opt_fieldA
     >,
     ::apache::thrift::type_class::integral,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldA>,
     containerStruct2
   >;
@@ -297,7 +213,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::fieldB
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldB>,
     containerStruct2
   >;
@@ -313,7 +228,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::req_fieldB
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldB>,
     containerStruct2
   >;
@@ -329,7 +243,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::opt_fieldB
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldB>,
     containerStruct2
   >;
@@ -345,7 +258,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::fieldC
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldC>,
     containerStruct2
   >;
@@ -361,7 +273,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::req_fieldC
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldC>,
     containerStruct2
   >;
@@ -377,7 +288,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::opt_fieldC
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldC>,
     containerStruct2
   >;
@@ -393,7 +303,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::fieldD
     >,
     ::apache::thrift::type_class::string,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldD,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldD>,
     containerStruct2
   >;
@@ -409,7 +318,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::fieldE
     >,
     ::apache::thrift::type_class::string,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldE>,
     containerStruct2
   >;
@@ -425,7 +333,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::req_fieldE
     >,
     ::apache::thrift::type_class::string,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldE>,
     containerStruct2
   >;
@@ -441,7 +348,6 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
       ::apache::thrift::tag::opt_fieldE
     >,
     ::apache::thrift::type_class::string,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldE>,
     containerStruct2
   >;

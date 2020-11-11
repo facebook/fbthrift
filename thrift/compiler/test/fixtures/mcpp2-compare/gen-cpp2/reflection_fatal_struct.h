@@ -18,15 +18,6 @@ namespace cpp2 {
 
 namespace thrift_fatal_impl_detail {
 
-struct cpp2_reflection__struct_unique_member_pod_list {
-  template <typename T_cpp2_reflection_struct_member_pod>
-
-  struct cpp2_reflection_struct_member_pod_fieldA {
-    T_cpp2_reflection_struct_member_pod fieldA;
-  };
-
-};
-
 class ReflectionStruct_cpp2_reflection__struct_unique_annotations {
   class ReflectionStruct_cpp2_reflection__struct_unique_annotations_members {
     class ReflectionStruct_cpp2_reflection__struct_unique_annotations_members_fieldA {
@@ -68,7 +59,6 @@ struct ReflectionStruct_cpp2_reflection__struct_unique_member_info_list {
       ::apache::thrift::tag::fieldA
     >,
     ::apache::thrift::type_class::integral,
-    thrift_fatal_impl_detail::cpp2_reflection__struct_unique_member_pod_list::cpp2_reflection_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_annotations::members::fieldA>,
     ReflectionStruct
   >;

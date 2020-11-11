@@ -889,7 +889,6 @@ template <
     typename Getter,
     typename FieldRefGetter,
     typename TypeClass,
-    template <typename> class Pod,
     typename Annotations,
     typename Owner>
 struct reflected_struct_data_member {
@@ -1094,46 +1093,6 @@ struct reflected_struct_data_member {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using type_class = TypeClass;
-
-  /**
-   * A POD (plain old data) that holds a single data member with the same name
-   * as this member. The template parameter `T` defines the type of this POD's
-   * sole member, and defaults to `type`.
-   *
-   * This is useful when you need to create a class with an API compatible to
-   * the original Thrift struct.
-   *
-   * Example:
-   *
-   *  // MyModule.thrift
-   *
-   *  namespace cpp2 My.Namespace
-   *
-   *  struct MyStruct {
-   *    1: i32 fieldA
-   *    2: string fieldB
-   *    3: double fieldC
-   *  }
-   *
-   *  // C++
-   *
-   *  using info = reflect_struct<MyStruct>;
-   *  using member = info::member::fieldC;
-   *
-   *  member::pod<> original;
-   *
-   *  // yields `double`
-   *  using result1 = decltype(original.fieldC);
-   *
-   *  member::pod<bool> another;
-   *
-   *  // yields `bool`
-   *  using result2 = decltype(another.fieldC);
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  template <typename T = type>
-  using pod = Pod<T>;
 
   /**
    * An instantiation of `reflected_annotations` representing the annotations
