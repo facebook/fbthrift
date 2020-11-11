@@ -795,3 +795,54 @@ TEST_F(ThreadManagerTest, PriorityQueueThreadManagerExecutor) {
 
   EXPECT_EQ("bca", foo);
 }
+
+std::array<std::function<std::shared_ptr<ThreadManager>()>, 3> factories = {
+    std::bind(
+        (std::shared_ptr<ThreadManager>(*)(size_t, bool))
+            ThreadManager::newSimpleThreadManager,
+        1,
+        false),
+    std::bind(ThreadManager::newPriorityQueueThreadManager, 1, false),
+    []() -> std::shared_ptr<apache::thrift::concurrency::ThreadManager> {
+      return PriorityThreadManager::newPriorityThreadManager({{
+          1 /*HIGH_IMPORTANT*/,
+          2 /*HIGH*/,
+          3 /*IMPORTANT*/,
+          4 /*NORMAL*/,
+          5 /*BEST_EFFORT*/
+      }});
+    }};
+class JoinTest : public testing::TestWithParam<
+                     std::function<std::shared_ptr<ThreadManager>()>> {};
+
+TEST_P(JoinTest, Join) {
+  auto threadManager = GetParam()();
+  auto threadFactory = std::make_shared<PosixThreadFactory>();
+  threadManager->threadFactory(threadFactory);
+  threadManager->start();
+  folly::Baton<> wait1, wait2, joinStarted, joined;
+  // block the TM
+  threadManager->add(
+      FunctionRunner::create([&] { wait1.wait(); }), 0, 0, false);
+  threadManager->add(FunctionRunner::create([&] { wait2.wait(); }), 0, 0, true);
+  std::thread t([&] {
+    joinStarted.post();
+    threadManager->join();
+    joined.post();
+  });
+
+  joinStarted.wait();
+  EXPECT_FALSE(joined.try_wait_for(std::chrono::milliseconds(100)));
+  joined.reset();
+  wait1.post();
+  EXPECT_FALSE(joined.try_wait_for(std::chrono::milliseconds(100)));
+  joined.reset();
+  wait2.post();
+  EXPECT_TRUE(joined.try_wait_for(std::chrono::milliseconds(100)));
+  t.join();
+}
+
+INSTANTIATE_TEST_CASE_P(
+    ThreadManagerTest,
+    JoinTest,
+    ::testing::ValuesIn(factories));

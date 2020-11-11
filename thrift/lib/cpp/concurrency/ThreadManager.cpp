@@ -278,7 +278,7 @@ void ThreadManager::Impl::removeWorkerImpl(
     // Insert nullptr tasks onto the tasks queue to ask workers to exit
     // after all current tasks are completed
     for (size_t n = 0; n < value; ++n) {
-      auto const qpriority = tasks_.priorities() / 2; // median priority
+      auto const qpriority = tasks_.priorities() - 1;
       tasks_.at_priority(qpriority).enqueue(nullptr);
       ++totalTaskCount_;
     }
@@ -806,10 +806,6 @@ class PriorityThreadManager::PriorityImpl
   Mutex mutex_;
   bool keepAliveJoined_{false};
 };
-
-std::shared_ptr<ThreadManager> ThreadManager::newThreadManager() {
-  return std::make_shared<ThreadManager::Impl>();
-}
 
 void ThreadManager::setObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {

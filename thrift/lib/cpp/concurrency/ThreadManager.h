@@ -224,8 +224,6 @@ class ThreadManager : public virtual folly::Executor {
    */
   virtual void setThreadInitCallback(InitCallback initCallback) = 0;
 
-  static std::shared_ptr<ThreadManager> newThreadManager();
-
   /**
    * Creates a simple thread manager that uses count number of worker threads
    */
