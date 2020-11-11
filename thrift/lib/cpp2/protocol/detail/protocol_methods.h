@@ -511,6 +511,11 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     protocol.readListEnd();
   }
 
+  template <typename Protocol, typename Context>
+  static void readWithContext(Protocol& protocol, Type& out, Context&) {
+    read(protocol, out);
+  }
+
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
@@ -588,6 +593,11 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
       }
     }
     protocol.readSetEnd();
+  }
+
+  template <typename Protocol, typename Context>
+  static void readWithContext(Protocol& protocol, Type& out, Context&) {
+    read(protocol, out);
   }
 
   template <typename Protocol>
@@ -701,6 +711,11 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     protocol.readMapEnd();
   }
 
+  template <typename Protocol, typename Context>
+  static void readWithContext(Protocol& protocol, Type& out, Context&) {
+    read(protocol, out);
+  }
+
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
@@ -793,6 +808,10 @@ struct protocol_methods<type_class::structure, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     Cpp2Ops<Type>::read(&protocol, &out);
+  }
+  template <typename Protocol, typename Context>
+  static void readWithContext(Protocol& protocol, Type& out, Context&) {
+    read(protocol, out);
   }
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
