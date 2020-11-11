@@ -19,18 +19,7 @@
 #include <folly/Portability.h>
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
-
-namespace facebook {
-namespace thrift {
-#if FOLLY_HAVE_WEAK_SYMBOLS
-FOLLY_ATTR_WEAK std::unique_ptr<apache::thrift::LoggingEventRegistry>
-makeLoggingEventRegistry();
-#else
-constexpr std::unique_ptr<apache::thrift::LoggingEventRegistry> (
-    *makeLoggingEventRegistry)() = nullptr;
-#endif
-} // namespace thrift
-} // namespace facebook
+#include <thrift/lib/cpp2/PluggableFunction.h>
 
 namespace apache {
 namespace thrift {
@@ -54,16 +43,15 @@ class DefaultLoggingEventRegistry : public LoggingEventRegistry {
   }
 };
 
-std::unique_ptr<LoggingEventRegistry> makeRegistry() {
-  if (facebook::thrift::makeLoggingEventRegistry) {
-    return facebook::thrift::makeLoggingEventRegistry();
-  }
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    std::unique_ptr<apache::thrift::LoggingEventRegistry>,
+    makeLoggingEventRegistry) {
   return std::make_unique<DefaultLoggingEventRegistry>();
 }
 
 class Registry {
  public:
-  Registry() : reg_(makeRegistry()) {}
+  Registry() : reg_(THRIFT_PLUGGABLE_FUNC(makeLoggingEventRegistry)()) {}
 
   LoggingEventRegistry& getRegistry() const {
     return *reg_.get();

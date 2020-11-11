@@ -21,6 +21,7 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
@@ -86,16 +87,12 @@ class TestEventRegistry : public LoggingEventRegistry {
       connectionEventMap_;
 };
 
-} // namespace
-
-namespace facebook {
-namespace thrift {
-std::unique_ptr<apache::thrift::LoggingEventRegistry>
-makeLoggingEventRegistry() {
+THRIFT_PLUGGABLE_FUNC_SET(
+    std::unique_ptr<apache::thrift::LoggingEventRegistry>,
+    makeLoggingEventRegistry) {
   return std::make_unique<TestEventRegistry>();
 }
-} // namespace thrift
-} // namespace facebook
+} // namespace
 
 template <typename T>
 class LoggingEventTest : public testing::Test {
