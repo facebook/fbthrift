@@ -27,6 +27,8 @@ using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
+THRIFT_FLAG_DEFINE_bool(reschedule_handler_future_on_tm, true);
+
 namespace apache {
 namespace thrift {
 
