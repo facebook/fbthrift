@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -151,14 +156,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class SmallStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSmallStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cSmallStruct] _make_instance(
-        cSmallStruct* base_instance,
-        bint* __isNOTSET,
-        pbool small_A,
-        object small_B
-    ) except *
+    cdef __fbthrift_types_fields.__SmallStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSmallStruct])
@@ -167,6 +165,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
     cdef Map__string_bool __field_fieldB
     cdef Set__i32 __field_fieldC
     cdef List__List__List__i32 __field_fieldF
@@ -184,34 +183,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef SmallStruct __field_fieldT
     cdef SmallStruct __field_fieldU
     cdef SmallStruct __field_fieldX
-
-    @staticmethod
-    cdef unique_ptr[ccontainerStruct] _make_instance(
-        ccontainerStruct* base_instance,
-        bint* __isNOTSET,
-        pbool fieldA,
-        object fieldB,
-        object fieldC,
-        str fieldD,
-        str fieldE,
-        object fieldF,
-        object fieldG,
-        object fieldH,
-        pbool fieldI,
-        object fieldJ,
-        object fieldK,
-        object fieldL,
-        object fieldM,
-        object fieldN,
-        object fieldO,
-        object fieldP,
-        MyEnumA fieldQ,
-        object fieldR,
-        SmallStruct fieldS,
-        SmallStruct fieldT,
-        SmallStruct fieldU,
-        SmallStruct fieldX
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct])

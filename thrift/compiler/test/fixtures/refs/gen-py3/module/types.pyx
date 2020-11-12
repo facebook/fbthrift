@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -232,6 +234,12 @@ cdef class MyUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyUnion()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
+
     cdef __iobuf.IOBuf _serialize(MyUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -250,136 +258,23 @@ cdef class MyUnion(thrift.py3.types.Union):
 
 @__cython.auto_pickle(False)
 cdef class MyField(thrift.py3.types.Struct):
+    def __init__(MyField self, **kwargs):
+        self._cpp_obj = make_shared[cMyField]()
+        self._fields_setter = __fbthrift_types_fields.__MyField_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        MyField self, *,
-        opt_value=None,
-        value=None,
-        req_value=None
-    ):
-        if opt_value is not None:
-            if not isinstance(opt_value, int):
-                raise TypeError(f'opt_value is not a { int !r}.')
-            opt_value = <cint64_t> opt_value
-
-        if value is not None:
-            if not isinstance(value, int):
-                raise TypeError(f'value is not a { int !r}.')
-            value = <cint64_t> value
-
-        if req_value is not None:
-            if not isinstance(req_value, int):
-                raise TypeError(f'req_value is not a { int !r}.')
-            req_value = <cint64_t> req_value
-
-        self._cpp_obj = __to_shared_ptr(cmove(MyField._make_instance(
-          NULL,
-          NULL,
-          opt_value,
-          value,
-          req_value,
-        )))
-
-    def __call__(
-        MyField self,
-        opt_value=__NOTSET,
-        value=__NOTSET,
-        req_value=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if opt_value is ___NOTSET:
-            __isNOTSET[0] = True
-            opt_value = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if value is ___NOTSET:
-            __isNOTSET[1] = True
-            value = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if req_value is ___NOTSET:
-            __isNOTSET[2] = True
-            req_value = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(MyField self, **kwargs):
+        if not kwargs:
             return self
-
-        if opt_value is not None:
-            if not isinstance(opt_value, int):
-                raise TypeError(f'opt_value is not a { int !r}.')
-            opt_value = <cint64_t> opt_value
-
-        if value is not None:
-            if not isinstance(value, int):
-                raise TypeError(f'value is not a { int !r}.')
-            value = <cint64_t> value
-
-        if req_value is not None:
-            if not isinstance(req_value, int):
-                raise TypeError(f'req_value is not a { int !r}.')
-            req_value = <cint64_t> req_value
-
-        __fbthrift_inst = <MyField>MyField.__new__(MyField)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyField._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          opt_value,
-          value,
-          req_value,
-        )))
+        cdef MyField __fbthrift_inst = MyField.__new__(MyField)
+        __fbthrift_inst._cpp_obj = make_shared[cMyField](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyField_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cMyField] _make_instance(
-        cMyField* base_instance,
-        bint* __isNOTSET,
-        object opt_value ,
-        object value ,
-        object req_value 
-    ) except *:
-        cdef unique_ptr[cMyField] c_inst
-        if base_instance:
-            c_inst = make_unique[cMyField](deref(base_instance))
-        else:
-            c_inst = make_unique[cMyField]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and opt_value is None:
-                deref(c_inst).__isset.opt_value = False
-                pass
-
-            if not __isNOTSET[1] and value is None:
-                deref(c_inst).value_ref().assign(default_inst[cMyField]().value_ref().value())
-                deref(c_inst).__isset.value = False
-                pass
-
-            if not __isNOTSET[2] and req_value is None:
-                deref(c_inst).req_value_ref().assign(default_inst[cMyField]().req_value_ref().value())
-                pass
-
-        if opt_value is not None:
-            deref(c_inst).opt_value_ref().assign(opt_value)
-            deref(c_inst).__isset.opt_value = True
-        if value is not None:
-            deref(c_inst).value_ref().assign(value)
-            deref(c_inst).__isset.value = True
-        if req_value is not None:
-            deref(c_inst).req_value_ref().assign(req_value)
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyField", {
@@ -387,11 +282,6 @@ cdef class MyField(thrift.py3.types.Struct):
           "value": deref(self._cpp_obj).value_ref().has_value(),
           "req_value": deref(self._cpp_obj).req_value_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'opt_value', self.opt_value
-        yield 'value', self.value
-        yield 'req_value', self.req_value
 
     @staticmethod
     cdef create(shared_ptr[cMyField] cpp_obj):
@@ -438,6 +328,12 @@ cdef class MyField(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyField()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyField](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(MyField self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -454,124 +350,27 @@ cdef class MyField(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
+    def __init__(MyStruct self, **kwargs):
+        self._cpp_obj = make_shared[cMyStruct]()
+        self._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        MyStruct self, *,
-        MyField opt_ref=None,
-        MyField ref=None,
-        MyField req_ref=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          NULL,
-          NULL,
-          opt_ref,
-          ref,
-          req_ref,
-        )))
-
-    def __call__(
-        MyStruct self,
-        opt_ref=__NOTSET,
-        ref=__NOTSET,
-        req_ref=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if opt_ref is ___NOTSET:
-            __isNOTSET[0] = True
-            opt_ref = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if ref is ___NOTSET:
-            __isNOTSET[1] = True
-            ref = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if req_ref is ___NOTSET:
-            __isNOTSET[2] = True
-            req_ref = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(MyStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if opt_ref is not None:
-            if not isinstance(opt_ref, MyField):
-                raise TypeError(f'opt_ref is not a { MyField !r}.')
-
-        if ref is not None:
-            if not isinstance(ref, MyField):
-                raise TypeError(f'ref is not a { MyField !r}.')
-
-        if req_ref is not None:
-            if not isinstance(req_ref, MyField):
-                raise TypeError(f'req_ref is not a { MyField !r}.')
-
-        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          opt_ref,
-          ref,
-          req_ref,
-        )))
+        cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cMyStruct] _make_instance(
-        cMyStruct* base_instance,
-        bint* __isNOTSET,
-        MyField opt_ref ,
-        MyField ref ,
-        MyField req_ref 
-    ) except *:
-        cdef unique_ptr[cMyStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cMyStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cMyStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and opt_ref is None:
-                deref(c_inst).opt_ref.reset()
-                pass
-
-            if not __isNOTSET[1] and ref is None:
-                deref(c_inst).ref.reset()
-                pass
-
-            if not __isNOTSET[2] and req_ref is None:
-                deref(c_inst).req_ref.reset()
-                pass
-
-        if opt_ref is not None:
-            deref(c_inst).opt_ref = make_unique[cMyField](deref((<MyField?>opt_ref)._cpp_obj))
-        if ref is not None:
-            deref(c_inst).ref = make_unique[cMyField](deref((<MyField?>ref)._cpp_obj))
-        if req_ref is not None:
-            deref(c_inst).req_ref = make_unique[cMyField](deref((<MyField?>req_ref)._cpp_obj))
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
         })
-
-    def __iter__(self):
-        yield 'opt_ref', self.opt_ref
-        yield 'ref', self.ref
-        yield 'req_ref', self.req_ref
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -628,6 +427,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -644,134 +449,29 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithUnion(thrift.py3.types.Struct):
+    def __init__(StructWithUnion self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithUnion]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithUnion_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithUnion self, *,
-        MyUnion u=None,
-        aDouble=None,
-        MyField f=None
-    ):
-        if aDouble is not None:
-            if not isinstance(aDouble, (float, int)):
-                raise TypeError(f'aDouble is not a { float !r}.')
-
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithUnion._make_instance(
-          NULL,
-          NULL,
-          u,
-          aDouble,
-          f,
-        )))
-
-    def __call__(
-        StructWithUnion self,
-        u=__NOTSET,
-        aDouble=__NOTSET,
-        f=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if u is ___NOTSET:
-            __isNOTSET[0] = True
-            u = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if aDouble is ___NOTSET:
-            __isNOTSET[1] = True
-            aDouble = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if f is ___NOTSET:
-            __isNOTSET[2] = True
-            f = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithUnion self, **kwargs):
+        if not kwargs:
             return self
-
-        if u is not None:
-            if not isinstance(u, MyUnion):
-                raise TypeError(f'u is not a { MyUnion !r}.')
-
-        if aDouble is not None:
-            if not isinstance(aDouble, (float, int)):
-                raise TypeError(f'aDouble is not a { float !r}.')
-
-        if f is not None:
-            if not isinstance(f, MyField):
-                raise TypeError(f'f is not a { MyField !r}.')
-
-        __fbthrift_inst = <StructWithUnion>StructWithUnion.__new__(StructWithUnion)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithUnion._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          u,
-          aDouble,
-          f,
-        )))
+        cdef StructWithUnion __fbthrift_inst = StructWithUnion.__new__(StructWithUnion)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithUnion](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithUnion_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithUnion] _make_instance(
-        cStructWithUnion* base_instance,
-        bint* __isNOTSET,
-        MyUnion u ,
-        object aDouble ,
-        MyField f 
-    ) except *:
-        cdef unique_ptr[cStructWithUnion] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithUnion](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithUnion]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and u is None:
-                deref(c_inst).u.reset()
-                pass
-
-            if not __isNOTSET[1] and aDouble is None:
-                deref(c_inst).aDouble_ref().assign(default_inst[cStructWithUnion]().aDouble_ref().value())
-                deref(c_inst).__isset.aDouble = False
-                pass
-
-            if not __isNOTSET[2] and f is None:
-                deref(c_inst).f_ref().assign(default_inst[cStructWithUnion]().f_ref().value())
-                deref(c_inst).__isset.f = False
-                pass
-
-        if u is not None:
-            deref(c_inst).u = make_unique[cMyUnion](deref((<MyUnion?>u)._cpp_obj))
-        if aDouble is not None:
-            deref(c_inst).aDouble_ref().assign(aDouble)
-            deref(c_inst).__isset.aDouble = True
-        if f is not None:
-            deref(c_inst).f_ref().assign(deref((<MyField?> f)._cpp_obj))
-            deref(c_inst).__isset.f = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithUnion", {
           "aDouble": deref(self._cpp_obj).aDouble_ref().has_value(),
           "f": deref(self._cpp_obj).f_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'u', self.u
-        yield 'aDouble', self.aDouble
-        yield 'f', self.f
 
     @staticmethod
     cdef create(shared_ptr[cStructWithUnion] cpp_obj):
@@ -822,6 +522,12 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithUnion()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(StructWithUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -838,76 +544,28 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class RecursiveStruct(thrift.py3.types.Struct):
+    def __init__(RecursiveStruct self, **kwargs):
+        self._cpp_obj = make_shared[cRecursiveStruct]()
+        self._fields_setter = __fbthrift_types_fields.__RecursiveStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        RecursiveStruct self, *,
-        mes=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(RecursiveStruct._make_instance(
-          NULL,
-          NULL,
-          mes,
-        )))
-
-    def __call__(
-        RecursiveStruct self,
-        mes=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if mes is ___NOTSET:
-            __isNOTSET[0] = True
-            mes = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(RecursiveStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        __fbthrift_inst = <RecursiveStruct>RecursiveStruct.__new__(RecursiveStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(RecursiveStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          mes,
-        )))
+        cdef RecursiveStruct __fbthrift_inst = RecursiveStruct.__new__(RecursiveStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cRecursiveStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__RecursiveStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cRecursiveStruct] _make_instance(
-        cRecursiveStruct* base_instance,
-        bint* __isNOTSET,
-        object mes 
-    ) except *:
-        cdef unique_ptr[cRecursiveStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cRecursiveStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cRecursiveStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and mes is None:
-                deref(c_inst).__isset.mes = False
-                pass
-
-        if mes is not None:
-            deref(c_inst).mes_ref().assign(deref(List__RecursiveStruct(mes)._cpp_obj))
-            deref(c_inst).__isset.mes = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("RecursiveStruct", {
           "mes": deref(self._cpp_obj).mes_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'mes', self.mes
 
     @staticmethod
     cdef create(shared_ptr[cRecursiveStruct] cpp_obj):
@@ -946,6 +604,12 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__RecursiveStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cRecursiveStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(RecursiveStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -962,169 +626,27 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithContainers(thrift.py3.types.Struct):
+    def __init__(StructWithContainers self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithContainers]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithContainers_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithContainers self, *,
-        list_ref=None,
-        set_ref=None,
-        map_ref=None,
-        list_ref_unique=None,
-        set_ref_shared=None,
-        list_ref_shared_const=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithContainers._make_instance(
-          NULL,
-          NULL,
-          list_ref,
-          set_ref,
-          map_ref,
-          list_ref_unique,
-          set_ref_shared,
-          list_ref_shared_const,
-        )))
-
-    def __call__(
-        StructWithContainers self,
-        list_ref=__NOTSET,
-        set_ref=__NOTSET,
-        map_ref=__NOTSET,
-        list_ref_unique=__NOTSET,
-        set_ref_shared=__NOTSET,
-        list_ref_shared_const=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[6] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if list_ref is ___NOTSET:
-            __isNOTSET[0] = True
-            list_ref = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if set_ref is ___NOTSET:
-            __isNOTSET[1] = True
-            set_ref = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if map_ref is ___NOTSET:
-            __isNOTSET[2] = True
-            map_ref = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if list_ref_unique is ___NOTSET:
-            __isNOTSET[3] = True
-            list_ref_unique = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-        if set_ref_shared is ___NOTSET:
-            __isNOTSET[4] = True
-            set_ref_shared = None
-        else:
-            __isNOTSET[4] = False
-            __fbthrift_changed = True
-
-        if list_ref_shared_const is ___NOTSET:
-            __isNOTSET[5] = True
-            list_ref_shared_const = None
-        else:
-            __isNOTSET[5] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithContainers self, **kwargs):
+        if not kwargs:
             return self
-
-        __fbthrift_inst = <StructWithContainers>StructWithContainers.__new__(StructWithContainers)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithContainers._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          list_ref,
-          set_ref,
-          map_ref,
-          list_ref_unique,
-          set_ref_shared,
-          list_ref_shared_const,
-        )))
+        cdef StructWithContainers __fbthrift_inst = StructWithContainers.__new__(StructWithContainers)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithContainers](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithContainers_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithContainers] _make_instance(
-        cStructWithContainers* base_instance,
-        bint* __isNOTSET,
-        object list_ref ,
-        object set_ref ,
-        object map_ref ,
-        object list_ref_unique ,
-        object set_ref_shared ,
-        object list_ref_shared_const 
-    ) except *:
-        cdef unique_ptr[cStructWithContainers] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithContainers](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithContainers]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and list_ref is None:
-                deref(c_inst).list_ref.reset()
-                pass
-
-            if not __isNOTSET[1] and set_ref is None:
-                deref(c_inst).set_ref.reset()
-                pass
-
-            if not __isNOTSET[2] and map_ref is None:
-                deref(c_inst).map_ref.reset()
-                pass
-
-            if not __isNOTSET[3] and list_ref_unique is None:
-                deref(c_inst).list_ref_unique.reset()
-                pass
-
-            if not __isNOTSET[4] and set_ref_shared is None:
-                deref(c_inst).set_ref_shared.reset()
-                pass
-
-            if not __isNOTSET[5] and list_ref_shared_const is None:
-                deref(c_inst).list_ref_shared_const.reset()
-                pass
-
-        if list_ref is not None:
-            deref(c_inst).list_ref = make_unique[vector[cint32_t]](deref(List__i32(list_ref)._cpp_obj))
-        if set_ref is not None:
-            deref(c_inst).set_ref = make_unique[cset[cint32_t]](deref(Set__i32(set_ref)._cpp_obj))
-        if map_ref is not None:
-            deref(c_inst).map_ref = make_unique[cmap[cint32_t,cint32_t]](deref(Map__i32_i32(map_ref)._cpp_obj))
-        if list_ref_unique is not None:
-            deref(c_inst).list_ref_unique = make_unique[vector[cint32_t]](deref(List__i32(list_ref_unique)._cpp_obj))
-        if set_ref_shared is not None:
-            deref(c_inst).set_ref_shared = Set__i32(set_ref_shared)._cpp_obj
-        if list_ref_shared_const is not None:
-            deref(c_inst).list_ref_shared_const = const_pointer_cast(List__i32(list_ref_shared_const)._cpp_obj)
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithContainers", {
         })
-
-    def __iter__(self):
-        yield 'list_ref', self.list_ref
-        yield 'set_ref', self.set_ref
-        yield 'map_ref', self.map_ref
-        yield 'list_ref_unique', self.list_ref_unique
-        yield 'set_ref_shared', self.set_ref_shared
-        yield 'list_ref_shared_const', self.list_ref_shared_const
 
     @staticmethod
     cdef create(shared_ptr[cStructWithContainers] cpp_obj):
@@ -1208,6 +730,12 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithContainers()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithContainers](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 6
+
     cdef __iobuf.IOBuf _serialize(StructWithContainers self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -1224,124 +752,27 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
+    def __init__(StructWithSharedConst self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithSharedConst]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithSharedConst_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithSharedConst self, *,
-        MyField opt_shared_const=None,
-        MyField shared_const=None,
-        MyField req_shared_const=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithSharedConst._make_instance(
-          NULL,
-          NULL,
-          opt_shared_const,
-          shared_const,
-          req_shared_const,
-        )))
-
-    def __call__(
-        StructWithSharedConst self,
-        opt_shared_const=__NOTSET,
-        shared_const=__NOTSET,
-        req_shared_const=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if opt_shared_const is ___NOTSET:
-            __isNOTSET[0] = True
-            opt_shared_const = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if shared_const is ___NOTSET:
-            __isNOTSET[1] = True
-            shared_const = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if req_shared_const is ___NOTSET:
-            __isNOTSET[2] = True
-            req_shared_const = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithSharedConst self, **kwargs):
+        if not kwargs:
             return self
-
-        if opt_shared_const is not None:
-            if not isinstance(opt_shared_const, MyField):
-                raise TypeError(f'opt_shared_const is not a { MyField !r}.')
-
-        if shared_const is not None:
-            if not isinstance(shared_const, MyField):
-                raise TypeError(f'shared_const is not a { MyField !r}.')
-
-        if req_shared_const is not None:
-            if not isinstance(req_shared_const, MyField):
-                raise TypeError(f'req_shared_const is not a { MyField !r}.')
-
-        __fbthrift_inst = <StructWithSharedConst>StructWithSharedConst.__new__(StructWithSharedConst)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithSharedConst._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          opt_shared_const,
-          shared_const,
-          req_shared_const,
-        )))
+        cdef StructWithSharedConst __fbthrift_inst = StructWithSharedConst.__new__(StructWithSharedConst)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithSharedConst](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithSharedConst_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithSharedConst] _make_instance(
-        cStructWithSharedConst* base_instance,
-        bint* __isNOTSET,
-        MyField opt_shared_const ,
-        MyField shared_const ,
-        MyField req_shared_const 
-    ) except *:
-        cdef unique_ptr[cStructWithSharedConst] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithSharedConst](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithSharedConst]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and opt_shared_const is None:
-                deref(c_inst).opt_shared_const.reset()
-                pass
-
-            if not __isNOTSET[1] and shared_const is None:
-                deref(c_inst).shared_const.reset()
-                pass
-
-            if not __isNOTSET[2] and req_shared_const is None:
-                deref(c_inst).req_shared_const.reset()
-                pass
-
-        if opt_shared_const is not None:
-            deref(c_inst).opt_shared_const = const_pointer_cast((<MyField?>opt_shared_const)._cpp_obj)
-        if shared_const is not None:
-            deref(c_inst).shared_const = const_pointer_cast((<MyField?>shared_const)._cpp_obj)
-        if req_shared_const is not None:
-            deref(c_inst).req_shared_const = const_pointer_cast((<MyField?>req_shared_const)._cpp_obj)
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithSharedConst", {
         })
-
-    def __iter__(self):
-        yield 'opt_shared_const', self.opt_shared_const
-        yield 'shared_const', self.shared_const
-        yield 'req_shared_const', self.req_shared_const
 
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst] cpp_obj):
@@ -1398,6 +829,12 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithSharedConst()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithSharedConst](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(StructWithSharedConst self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -1414,44 +851,20 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class Empty(thrift.py3.types.Struct):
+    def __init__(Empty self, **kwargs):
+        self._cpp_obj = make_shared[cEmpty]()
+        self._fields_setter = __fbthrift_types_fields.__Empty_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Empty self, *
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(Empty._make_instance(
-          NULL,
-          NULL,
-        )))
-
-    def __call__(
-        Empty self
-    ):
+    def __call__(Empty self, **kwargs):
         return self
 
-    @staticmethod
-    cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance,
-        bint* __isNOTSET
-    ) except *:
-        cdef unique_ptr[cEmpty] c_inst
-        if base_instance:
-            c_inst = make_unique[cEmpty](deref(base_instance))
-        else:
-            c_inst = make_unique[cEmpty]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            pass
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Empty", {
         })
-
-    def __iter__(self):
-        yield from ()
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] cpp_obj):
@@ -1481,6 +894,12 @@ cdef class Empty(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Empty()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cEmpty](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 0
+
     cdef __iobuf.IOBuf _serialize(Empty self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -1497,124 +916,27 @@ cdef class Empty(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithRef(thrift.py3.types.Struct):
+    def __init__(StructWithRef self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithRef]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithRef_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithRef self, *,
-        Empty def_field=None,
-        Empty opt_field=None,
-        Empty req_field=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithRef._make_instance(
-          NULL,
-          NULL,
-          def_field,
-          opt_field,
-          req_field,
-        )))
-
-    def __call__(
-        StructWithRef self,
-        def_field=__NOTSET,
-        opt_field=__NOTSET,
-        req_field=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if def_field is ___NOTSET:
-            __isNOTSET[0] = True
-            def_field = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if opt_field is ___NOTSET:
-            __isNOTSET[1] = True
-            opt_field = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if req_field is ___NOTSET:
-            __isNOTSET[2] = True
-            req_field = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithRef self, **kwargs):
+        if not kwargs:
             return self
-
-        if def_field is not None:
-            if not isinstance(def_field, Empty):
-                raise TypeError(f'def_field is not a { Empty !r}.')
-
-        if opt_field is not None:
-            if not isinstance(opt_field, Empty):
-                raise TypeError(f'opt_field is not a { Empty !r}.')
-
-        if req_field is not None:
-            if not isinstance(req_field, Empty):
-                raise TypeError(f'req_field is not a { Empty !r}.')
-
-        __fbthrift_inst = <StructWithRef>StructWithRef.__new__(StructWithRef)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithRef._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          def_field,
-          opt_field,
-          req_field,
-        )))
+        cdef StructWithRef __fbthrift_inst = StructWithRef.__new__(StructWithRef)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithRef](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithRef_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithRef] _make_instance(
-        cStructWithRef* base_instance,
-        bint* __isNOTSET,
-        Empty def_field ,
-        Empty opt_field ,
-        Empty req_field 
-    ) except *:
-        cdef unique_ptr[cStructWithRef] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithRef](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithRef]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and def_field is None:
-                deref(c_inst).def_field.reset()
-                pass
-
-            if not __isNOTSET[1] and opt_field is None:
-                deref(c_inst).opt_field.reset()
-                pass
-
-            if not __isNOTSET[2] and req_field is None:
-                deref(c_inst).req_field.reset()
-                pass
-
-        if def_field is not None:
-            deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
-        if opt_field is not None:
-            deref(c_inst).opt_field = make_unique[cEmpty](deref((<Empty?>opt_field)._cpp_obj))
-        if req_field is not None:
-            deref(c_inst).req_field = make_unique[cEmpty](deref((<Empty?>req_field)._cpp_obj))
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithRef", {
         })
-
-    def __iter__(self):
-        yield 'def_field', self.def_field
-        yield 'opt_field', self.opt_field
-        yield 'req_field', self.req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRef] cpp_obj):
@@ -1671,6 +993,12 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithRef()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithRef](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(StructWithRef self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -1687,124 +1015,27 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
+    def __init__(StructWithRefTypeUnique self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithRefTypeUnique]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithRefTypeUnique_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithRefTypeUnique self, *,
-        Empty def_field=None,
-        Empty opt_field=None,
-        Empty req_field=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithRefTypeUnique._make_instance(
-          NULL,
-          NULL,
-          def_field,
-          opt_field,
-          req_field,
-        )))
-
-    def __call__(
-        StructWithRefTypeUnique self,
-        def_field=__NOTSET,
-        opt_field=__NOTSET,
-        req_field=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if def_field is ___NOTSET:
-            __isNOTSET[0] = True
-            def_field = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if opt_field is ___NOTSET:
-            __isNOTSET[1] = True
-            opt_field = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if req_field is ___NOTSET:
-            __isNOTSET[2] = True
-            req_field = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithRefTypeUnique self, **kwargs):
+        if not kwargs:
             return self
-
-        if def_field is not None:
-            if not isinstance(def_field, Empty):
-                raise TypeError(f'def_field is not a { Empty !r}.')
-
-        if opt_field is not None:
-            if not isinstance(opt_field, Empty):
-                raise TypeError(f'opt_field is not a { Empty !r}.')
-
-        if req_field is not None:
-            if not isinstance(req_field, Empty):
-                raise TypeError(f'req_field is not a { Empty !r}.')
-
-        __fbthrift_inst = <StructWithRefTypeUnique>StructWithRefTypeUnique.__new__(StructWithRefTypeUnique)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithRefTypeUnique._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          def_field,
-          opt_field,
-          req_field,
-        )))
+        cdef StructWithRefTypeUnique __fbthrift_inst = StructWithRefTypeUnique.__new__(StructWithRefTypeUnique)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithRefTypeUnique](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithRefTypeUnique_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithRefTypeUnique] _make_instance(
-        cStructWithRefTypeUnique* base_instance,
-        bint* __isNOTSET,
-        Empty def_field ,
-        Empty opt_field ,
-        Empty req_field 
-    ) except *:
-        cdef unique_ptr[cStructWithRefTypeUnique] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithRefTypeUnique](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithRefTypeUnique]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and def_field is None:
-                deref(c_inst).def_field.reset()
-                pass
-
-            if not __isNOTSET[1] and opt_field is None:
-                deref(c_inst).opt_field.reset()
-                pass
-
-            if not __isNOTSET[2] and req_field is None:
-                deref(c_inst).req_field.reset()
-                pass
-
-        if def_field is not None:
-            deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
-        if opt_field is not None:
-            deref(c_inst).opt_field = make_unique[cEmpty](deref((<Empty?>opt_field)._cpp_obj))
-        if req_field is not None:
-            deref(c_inst).req_field = make_unique[cEmpty](deref((<Empty?>req_field)._cpp_obj))
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithRefTypeUnique", {
         })
-
-    def __iter__(self):
-        yield 'def_field', self.def_field
-        yield 'opt_field', self.opt_field
-        yield 'req_field', self.req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique] cpp_obj):
@@ -1861,6 +1092,12 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithRefTypeUnique()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithRefTypeUnique](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(StructWithRefTypeUnique self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -1877,124 +1114,27 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
+    def __init__(StructWithRefTypeShared self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithRefTypeShared]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithRefTypeShared_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithRefTypeShared self, *,
-        Empty def_field=None,
-        Empty opt_field=None,
-        Empty req_field=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithRefTypeShared._make_instance(
-          NULL,
-          NULL,
-          def_field,
-          opt_field,
-          req_field,
-        )))
-
-    def __call__(
-        StructWithRefTypeShared self,
-        def_field=__NOTSET,
-        opt_field=__NOTSET,
-        req_field=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if def_field is ___NOTSET:
-            __isNOTSET[0] = True
-            def_field = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if opt_field is ___NOTSET:
-            __isNOTSET[1] = True
-            opt_field = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if req_field is ___NOTSET:
-            __isNOTSET[2] = True
-            req_field = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithRefTypeShared self, **kwargs):
+        if not kwargs:
             return self
-
-        if def_field is not None:
-            if not isinstance(def_field, Empty):
-                raise TypeError(f'def_field is not a { Empty !r}.')
-
-        if opt_field is not None:
-            if not isinstance(opt_field, Empty):
-                raise TypeError(f'opt_field is not a { Empty !r}.')
-
-        if req_field is not None:
-            if not isinstance(req_field, Empty):
-                raise TypeError(f'req_field is not a { Empty !r}.')
-
-        __fbthrift_inst = <StructWithRefTypeShared>StructWithRefTypeShared.__new__(StructWithRefTypeShared)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithRefTypeShared._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          def_field,
-          opt_field,
-          req_field,
-        )))
+        cdef StructWithRefTypeShared __fbthrift_inst = StructWithRefTypeShared.__new__(StructWithRefTypeShared)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithRefTypeShared](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithRefTypeShared_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithRefTypeShared] _make_instance(
-        cStructWithRefTypeShared* base_instance,
-        bint* __isNOTSET,
-        Empty def_field ,
-        Empty opt_field ,
-        Empty req_field 
-    ) except *:
-        cdef unique_ptr[cStructWithRefTypeShared] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithRefTypeShared](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithRefTypeShared]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and def_field is None:
-                deref(c_inst).def_field.reset()
-                pass
-
-            if not __isNOTSET[1] and opt_field is None:
-                deref(c_inst).opt_field.reset()
-                pass
-
-            if not __isNOTSET[2] and req_field is None:
-                deref(c_inst).req_field.reset()
-                pass
-
-        if def_field is not None:
-            deref(c_inst).def_field = (<Empty?>def_field)._cpp_obj
-        if opt_field is not None:
-            deref(c_inst).opt_field = (<Empty?>opt_field)._cpp_obj
-        if req_field is not None:
-            deref(c_inst).req_field = (<Empty?>req_field)._cpp_obj
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithRefTypeShared", {
         })
-
-    def __iter__(self):
-        yield 'def_field', self.def_field
-        yield 'opt_field', self.opt_field
-        yield 'req_field', self.req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared] cpp_obj):
@@ -2051,6 +1191,12 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithRefTypeShared()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithRefTypeShared](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(StructWithRefTypeShared self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -2067,124 +1213,27 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
+    def __init__(StructWithRefTypeSharedConst self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithRefTypeSharedConst]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithRefTypeSharedConst_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithRefTypeSharedConst self, *,
-        Empty def_field=None,
-        Empty opt_field=None,
-        Empty req_field=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithRefTypeSharedConst._make_instance(
-          NULL,
-          NULL,
-          def_field,
-          opt_field,
-          req_field,
-        )))
-
-    def __call__(
-        StructWithRefTypeSharedConst self,
-        def_field=__NOTSET,
-        opt_field=__NOTSET,
-        req_field=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if def_field is ___NOTSET:
-            __isNOTSET[0] = True
-            def_field = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if opt_field is ___NOTSET:
-            __isNOTSET[1] = True
-            opt_field = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if req_field is ___NOTSET:
-            __isNOTSET[2] = True
-            req_field = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithRefTypeSharedConst self, **kwargs):
+        if not kwargs:
             return self
-
-        if def_field is not None:
-            if not isinstance(def_field, Empty):
-                raise TypeError(f'def_field is not a { Empty !r}.')
-
-        if opt_field is not None:
-            if not isinstance(opt_field, Empty):
-                raise TypeError(f'opt_field is not a { Empty !r}.')
-
-        if req_field is not None:
-            if not isinstance(req_field, Empty):
-                raise TypeError(f'req_field is not a { Empty !r}.')
-
-        __fbthrift_inst = <StructWithRefTypeSharedConst>StructWithRefTypeSharedConst.__new__(StructWithRefTypeSharedConst)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithRefTypeSharedConst._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          def_field,
-          opt_field,
-          req_field,
-        )))
+        cdef StructWithRefTypeSharedConst __fbthrift_inst = StructWithRefTypeSharedConst.__new__(StructWithRefTypeSharedConst)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithRefTypeSharedConst](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithRefTypeSharedConst_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithRefTypeSharedConst] _make_instance(
-        cStructWithRefTypeSharedConst* base_instance,
-        bint* __isNOTSET,
-        Empty def_field ,
-        Empty opt_field ,
-        Empty req_field 
-    ) except *:
-        cdef unique_ptr[cStructWithRefTypeSharedConst] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithRefTypeSharedConst](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithRefTypeSharedConst]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and def_field is None:
-                deref(c_inst).def_field.reset()
-                pass
-
-            if not __isNOTSET[1] and opt_field is None:
-                deref(c_inst).opt_field.reset()
-                pass
-
-            if not __isNOTSET[2] and req_field is None:
-                deref(c_inst).req_field.reset()
-                pass
-
-        if def_field is not None:
-            deref(c_inst).def_field = const_pointer_cast((<Empty?>def_field)._cpp_obj)
-        if opt_field is not None:
-            deref(c_inst).opt_field = const_pointer_cast((<Empty?>opt_field)._cpp_obj)
-        if req_field is not None:
-            deref(c_inst).req_field = const_pointer_cast((<Empty?>req_field)._cpp_obj)
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithRefTypeSharedConst", {
         })
-
-    def __iter__(self):
-        yield 'def_field', self.def_field
-        yield 'opt_field', self.opt_field
-        yield 'req_field', self.req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst] cpp_obj):
@@ -2241,6 +1290,12 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithRefTypeSharedConst()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithRefTypeSharedConst](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
     cdef __iobuf.IOBuf _serialize(StructWithRefTypeSharedConst self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -2257,78 +1312,27 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
+    def __init__(StructWithRefAndAnnotCppNoexceptMoveCtor self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithRefAndAnnotCppNoexceptMoveCtor]()
+        self._fields_setter = __fbthrift_types_fields.__StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        StructWithRefAndAnnotCppNoexceptMoveCtor self, *,
-        Empty def_field=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(StructWithRefAndAnnotCppNoexceptMoveCtor._make_instance(
-          NULL,
-          NULL,
-          def_field,
-        )))
-
-    def __call__(
-        StructWithRefAndAnnotCppNoexceptMoveCtor self,
-        def_field=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if def_field is ___NOTSET:
-            __isNOTSET[0] = True
-            def_field = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(StructWithRefAndAnnotCppNoexceptMoveCtor self, **kwargs):
+        if not kwargs:
             return self
-
-        if def_field is not None:
-            if not isinstance(def_field, Empty):
-                raise TypeError(f'def_field is not a { Empty !r}.')
-
-        __fbthrift_inst = <StructWithRefAndAnnotCppNoexceptMoveCtor>StructWithRefAndAnnotCppNoexceptMoveCtor.__new__(StructWithRefAndAnnotCppNoexceptMoveCtor)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(StructWithRefAndAnnotCppNoexceptMoveCtor._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          def_field,
-        )))
+        cdef StructWithRefAndAnnotCppNoexceptMoveCtor __fbthrift_inst = StructWithRefAndAnnotCppNoexceptMoveCtor.__new__(StructWithRefAndAnnotCppNoexceptMoveCtor)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithRefAndAnnotCppNoexceptMoveCtor](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _make_instance(
-        cStructWithRefAndAnnotCppNoexceptMoveCtor* base_instance,
-        bint* __isNOTSET,
-        Empty def_field 
-    ) except *:
-        cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] c_inst
-        if base_instance:
-            c_inst = make_unique[cStructWithRefAndAnnotCppNoexceptMoveCtor](deref(base_instance))
-        else:
-            c_inst = make_unique[cStructWithRefAndAnnotCppNoexceptMoveCtor]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and def_field is None:
-                deref(c_inst).def_field.reset()
-                pass
-
-        if def_field is not None:
-            deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructWithRefAndAnnotCppNoexceptMoveCtor", {
         })
-
-    def __iter__(self):
-        yield 'def_field', self.def_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] cpp_obj):
@@ -2366,6 +1370,12 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__StructWithRefAndAnnotCppNoexceptMoveCtor()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithRefAndAnnotCppNoexceptMoveCtor](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
 
     cdef __iobuf.IOBuf _serialize(StructWithRefAndAnnotCppNoexceptMoveCtor self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

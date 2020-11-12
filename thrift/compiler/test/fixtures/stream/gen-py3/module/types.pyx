@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -61,44 +63,23 @@ cimport module.types_reflection as _types_reflection
 
 @__cython.auto_pickle(False)
 cdef class FooEx(thrift.py3.exceptions.GeneratedError):
+    def __init__(FooEx self, *args, **kwargs):
+        self._cpp_obj = make_shared[cFooEx]()
+        self._fields_setter = __fbthrift_types_fields.__FooEx_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
 
-    def __init__(
-        FooEx self
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(FooEx._make_instance(
-          NULL,
-          NULL,
-        )))
-        _builtins.Exception.__init__(self, )
-
-
-    @staticmethod
-    cdef unique_ptr[cFooEx] _make_instance(
-        cFooEx* base_instance,
-        bint* __isNOTSET
-    ) except *:
-        cdef unique_ptr[cFooEx] c_inst
-        if base_instance:
-            c_inst = make_unique[cFooEx](deref(base_instance))
-        else:
-            c_inst = make_unique[cFooEx]()
-
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("FooEx", {
         })
 
-    def __iter__(self):
-        yield from ()
-
     @staticmethod
     cdef create(shared_ptr[cFooEx] cpp_obj):
         __fbthrift_inst = <FooEx>FooEx.__new__(FooEx, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        _builtins.Exception.__init__(__fbthrift_inst, )
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
 
@@ -123,6 +104,12 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__FooEx()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFooEx](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 0
+
 
 
 
@@ -136,10 +123,10 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
 
     @staticmethod
     cdef void callback(
-        cFollyTry[cOptional[cint32_t]]&& result,
+        cFollyTry[__cOptional[cint32_t]]&& result,
         PyObject* userdata,
     ):
-        cdef cOptional[cint32_t] opt_val
+        cdef __cOptional[cint32_t] opt_val
         cdef cint32_t _value
         stream, pyfuture, rpc_options = <object> userdata
         if result.hasException[cFooEx]():
@@ -163,7 +150,7 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, self._rpc_options)
-        bridgeCoroTaskWith[cOptional[cint32_t]](
+        bridgeCoroTaskWith[__cOptional[cint32_t]](
             self._executor,
             deref(self._gen).getNext(),
             ClientBufferedStream__i32.callback,

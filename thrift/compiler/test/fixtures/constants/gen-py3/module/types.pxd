@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -241,15 +246,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class Internship(thrift.py3.types.Struct):
     cdef shared_ptr[cInternship] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cInternship] _make_instance(
-        cInternship* base_instance,
-        bint* __isNOTSET,
-        object weeks,
-        str title,
-        Company employer
-    ) except *
+    cdef __fbthrift_types_fields.__Internship_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cInternship])
@@ -258,14 +255,7 @@ cdef class Internship(thrift.py3.types.Struct):
 
 cdef class Range(thrift.py3.types.Struct):
     cdef shared_ptr[cRange] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cRange] _make_instance(
-        cRange* base_instance,
-        bint* __isNOTSET,
-        object min,
-        object max
-    ) except *
+    cdef __fbthrift_types_fields.__Range_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cRange])
@@ -274,14 +264,7 @@ cdef class Range(thrift.py3.types.Struct):
 
 cdef class struct1(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct1] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cstruct1] _make_instance(
-        cstruct1* base_instance,
-        bint* __isNOTSET,
-        object a,
-        str b
-    ) except *
+    cdef __fbthrift_types_fields.__struct1_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cstruct1])
@@ -290,18 +273,9 @@ cdef class struct1(thrift.py3.types.Struct):
 
 cdef class struct2(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct2] _cpp_obj
+    cdef __fbthrift_types_fields.__struct2_FieldsSetter _fields_setter
     cdef struct1 __field_c
     cdef List__i32 __field_d
-
-    @staticmethod
-    cdef unique_ptr[cstruct2] _make_instance(
-        cstruct2* base_instance,
-        bint* __isNOTSET,
-        object a,
-        str b,
-        struct1 c,
-        object d
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cstruct2])
@@ -310,16 +284,8 @@ cdef class struct2(thrift.py3.types.Struct):
 
 cdef class struct3(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct3] _cpp_obj
+    cdef __fbthrift_types_fields.__struct3_FieldsSetter _fields_setter
     cdef struct2 __field_c
-
-    @staticmethod
-    cdef unique_ptr[cstruct3] _make_instance(
-        cstruct3* base_instance,
-        bint* __isNOTSET,
-        str a,
-        object b,
-        struct2 c
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cstruct3])
@@ -328,15 +294,7 @@ cdef class struct3(thrift.py3.types.Struct):
 
 cdef class struct4(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct4] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cstruct4] _make_instance(
-        cstruct4* base_instance,
-        bint* __isNOTSET,
-        object a,
-        object b,
-        object c
-    ) except *
+    cdef __fbthrift_types_fields.__struct4_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cstruct4])

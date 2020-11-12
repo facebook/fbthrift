@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -128,12 +133,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class Banal(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cBanal] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cBanal] _make_instance(
-        cBanal* base_instance,
-        bint* __isNOTSET
-    ) except *
+    cdef __fbthrift_types_fields.__Banal_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cBanal])
@@ -142,13 +142,7 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
 
 cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cFiery] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cFiery] _make_instance(
-        cFiery* base_instance,
-        bint* __isNOTSET,
-        str message
-    ) except *
+    cdef __fbthrift_types_fields.__Fiery_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cFiery])
@@ -157,13 +151,7 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 
 cdef class Serious(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSerious] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cSerious] _make_instance(
-        cSerious* base_instance,
-        bint* __isNOTSET,
-        str sonnet
-    ) except *
+    cdef __fbthrift_types_fields.__Serious_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSerious])
@@ -172,14 +160,7 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
 cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cComplexFieldNames] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cComplexFieldNames] _make_instance(
-        cComplexFieldNames* base_instance,
-        bint* __isNOTSET,
-        str error_message,
-        str internal_error_message
-    ) except *
+    cdef __fbthrift_types_fields.__ComplexFieldNames_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cComplexFieldNames])
@@ -188,14 +169,7 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
 
 cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cCustomFieldNames] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cCustomFieldNames] _make_instance(
-        cCustomFieldNames* base_instance,
-        bint* __isNOTSET,
-        str error_message,
-        str internal_error_message
-    ) except *
+    cdef __fbthrift_types_fields.__CustomFieldNames_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cCustomFieldNames])

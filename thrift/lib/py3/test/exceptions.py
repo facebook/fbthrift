@@ -105,3 +105,13 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsInstance(x, Exception)
         self.assertIsInstance(x, Error)
         self.assertIsInstance(x, SimpleError)
+
+    def test_str(self) -> None:
+        x = UnusedError()
+        self.assertEqual(str(x), "")
+        x2 = UnusedError(message="hello")
+        self.assertEqual(str(x2), "hello")
+        y = SimpleError()
+        self.assertEqual(str(y), "Color.red")
+        y2 = SimpleError(color=Color.red)
+        self.assertEqual(str(y2), "Color.red")

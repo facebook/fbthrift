@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -59,81 +61,28 @@ cimport module.types_reflection as _types_reflection
 
 @__cython.auto_pickle(False)
 cdef class InitialResponse(thrift.py3.types.Struct):
+    def __init__(InitialResponse self, **kwargs):
+        self._cpp_obj = make_shared[cInitialResponse]()
+        self._fields_setter = __fbthrift_types_fields.__InitialResponse_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        InitialResponse self, *,
-        str content=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(InitialResponse._make_instance(
-          NULL,
-          NULL,
-          content,
-        )))
-
-    def __call__(
-        InitialResponse self,
-        content=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if content is ___NOTSET:
-            __isNOTSET[0] = True
-            content = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(InitialResponse self, **kwargs):
+        if not kwargs:
             return self
-
-        if content is not None:
-            if not isinstance(content, str):
-                raise TypeError(f'content is not a { str !r}.')
-
-        __fbthrift_inst = <InitialResponse>InitialResponse.__new__(InitialResponse)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(InitialResponse._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          content,
-        )))
+        cdef InitialResponse __fbthrift_inst = InitialResponse.__new__(InitialResponse)
+        __fbthrift_inst._cpp_obj = make_shared[cInitialResponse](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__InitialResponse_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cInitialResponse] _make_instance(
-        cInitialResponse* base_instance,
-        bint* __isNOTSET,
-        str content 
-    ) except *:
-        cdef unique_ptr[cInitialResponse] c_inst
-        if base_instance:
-            c_inst = make_unique[cInitialResponse](deref(base_instance))
-        else:
-            c_inst = make_unique[cInitialResponse]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and content is None:
-                deref(c_inst).content_ref().assign(default_inst[cInitialResponse]().content_ref().value())
-                deref(c_inst).__isset.content = False
-                pass
-
-        if content is not None:
-            deref(c_inst).content_ref().assign(cmove(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
-            deref(c_inst).__isset.content = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("InitialResponse", {
           "content": deref(self._cpp_obj).content_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'content', self.content
 
     @staticmethod
     cdef create(shared_ptr[cInitialResponse] cpp_obj):
@@ -168,6 +117,12 @@ cdef class InitialResponse(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__InitialResponse()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cInitialResponse](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(InitialResponse self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -184,81 +139,28 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class FinalResponse(thrift.py3.types.Struct):
+    def __init__(FinalResponse self, **kwargs):
+        self._cpp_obj = make_shared[cFinalResponse]()
+        self._fields_setter = __fbthrift_types_fields.__FinalResponse_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        FinalResponse self, *,
-        str content=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(FinalResponse._make_instance(
-          NULL,
-          NULL,
-          content,
-        )))
-
-    def __call__(
-        FinalResponse self,
-        content=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if content is ___NOTSET:
-            __isNOTSET[0] = True
-            content = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(FinalResponse self, **kwargs):
+        if not kwargs:
             return self
-
-        if content is not None:
-            if not isinstance(content, str):
-                raise TypeError(f'content is not a { str !r}.')
-
-        __fbthrift_inst = <FinalResponse>FinalResponse.__new__(FinalResponse)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(FinalResponse._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          content,
-        )))
+        cdef FinalResponse __fbthrift_inst = FinalResponse.__new__(FinalResponse)
+        __fbthrift_inst._cpp_obj = make_shared[cFinalResponse](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__FinalResponse_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cFinalResponse] _make_instance(
-        cFinalResponse* base_instance,
-        bint* __isNOTSET,
-        str content 
-    ) except *:
-        cdef unique_ptr[cFinalResponse] c_inst
-        if base_instance:
-            c_inst = make_unique[cFinalResponse](deref(base_instance))
-        else:
-            c_inst = make_unique[cFinalResponse]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and content is None:
-                deref(c_inst).content_ref().assign(default_inst[cFinalResponse]().content_ref().value())
-                deref(c_inst).__isset.content = False
-                pass
-
-        if content is not None:
-            deref(c_inst).content_ref().assign(cmove(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
-            deref(c_inst).__isset.content = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("FinalResponse", {
           "content": deref(self._cpp_obj).content_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'content', self.content
 
     @staticmethod
     cdef create(shared_ptr[cFinalResponse] cpp_obj):
@@ -293,6 +195,12 @@ cdef class FinalResponse(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__FinalResponse()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFinalResponse](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(FinalResponse self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -309,81 +217,28 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class SinkPayload(thrift.py3.types.Struct):
+    def __init__(SinkPayload self, **kwargs):
+        self._cpp_obj = make_shared[cSinkPayload]()
+        self._fields_setter = __fbthrift_types_fields.__SinkPayload_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        SinkPayload self, *,
-        str content=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(SinkPayload._make_instance(
-          NULL,
-          NULL,
-          content,
-        )))
-
-    def __call__(
-        SinkPayload self,
-        content=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if content is ___NOTSET:
-            __isNOTSET[0] = True
-            content = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(SinkPayload self, **kwargs):
+        if not kwargs:
             return self
-
-        if content is not None:
-            if not isinstance(content, str):
-                raise TypeError(f'content is not a { str !r}.')
-
-        __fbthrift_inst = <SinkPayload>SinkPayload.__new__(SinkPayload)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(SinkPayload._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          content,
-        )))
+        cdef SinkPayload __fbthrift_inst = SinkPayload.__new__(SinkPayload)
+        __fbthrift_inst._cpp_obj = make_shared[cSinkPayload](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__SinkPayload_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cSinkPayload] _make_instance(
-        cSinkPayload* base_instance,
-        bint* __isNOTSET,
-        str content 
-    ) except *:
-        cdef unique_ptr[cSinkPayload] c_inst
-        if base_instance:
-            c_inst = make_unique[cSinkPayload](deref(base_instance))
-        else:
-            c_inst = make_unique[cSinkPayload]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and content is None:
-                deref(c_inst).content_ref().assign(default_inst[cSinkPayload]().content_ref().value())
-                deref(c_inst).__isset.content = False
-                pass
-
-        if content is not None:
-            deref(c_inst).content_ref().assign(cmove(thrift.py3.types.bytes_to_string(content.encode('utf-8'))))
-            deref(c_inst).__isset.content = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkPayload", {
           "content": deref(self._cpp_obj).content_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'content', self.content
 
     @staticmethod
     cdef create(shared_ptr[cSinkPayload] cpp_obj):
@@ -418,6 +273,12 @@ cdef class SinkPayload(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__SinkPayload()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cSinkPayload](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(SinkPayload self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -434,81 +295,28 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
+    def __init__(CompatibleWithKeywordSink self, **kwargs):
+        self._cpp_obj = make_shared[cCompatibleWithKeywordSink]()
+        self._fields_setter = __fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        CompatibleWithKeywordSink self, *,
-        str sink=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(CompatibleWithKeywordSink._make_instance(
-          NULL,
-          NULL,
-          sink,
-        )))
-
-    def __call__(
-        CompatibleWithKeywordSink self,
-        sink=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if sink is ___NOTSET:
-            __isNOTSET[0] = True
-            sink = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(CompatibleWithKeywordSink self, **kwargs):
+        if not kwargs:
             return self
-
-        if sink is not None:
-            if not isinstance(sink, str):
-                raise TypeError(f'sink is not a { str !r}.')
-
-        __fbthrift_inst = <CompatibleWithKeywordSink>CompatibleWithKeywordSink.__new__(CompatibleWithKeywordSink)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(CompatibleWithKeywordSink._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          sink,
-        )))
+        cdef CompatibleWithKeywordSink __fbthrift_inst = CompatibleWithKeywordSink.__new__(CompatibleWithKeywordSink)
+        __fbthrift_inst._cpp_obj = make_shared[cCompatibleWithKeywordSink](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cCompatibleWithKeywordSink] _make_instance(
-        cCompatibleWithKeywordSink* base_instance,
-        bint* __isNOTSET,
-        str sink 
-    ) except *:
-        cdef unique_ptr[cCompatibleWithKeywordSink] c_inst
-        if base_instance:
-            c_inst = make_unique[cCompatibleWithKeywordSink](deref(base_instance))
-        else:
-            c_inst = make_unique[cCompatibleWithKeywordSink]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and sink is None:
-                deref(c_inst).sink_ref().assign(default_inst[cCompatibleWithKeywordSink]().sink_ref().value())
-                deref(c_inst).__isset.sink = False
-                pass
-
-        if sink is not None:
-            deref(c_inst).sink_ref().assign(cmove(thrift.py3.types.bytes_to_string(sink.encode('utf-8'))))
-            deref(c_inst).__isset.sink = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("CompatibleWithKeywordSink", {
           "sink": deref(self._cpp_obj).sink_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'sink', self.sink
 
     @staticmethod
     cdef create(shared_ptr[cCompatibleWithKeywordSink] cpp_obj):
@@ -543,6 +351,12 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__CompatibleWithKeywordSink()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cCompatibleWithKeywordSink](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(CompatibleWithKeywordSink self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -559,51 +373,24 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class InitialException(thrift.py3.exceptions.GeneratedError):
+    def __init__(InitialException self, *args, **kwargs):
+        self._cpp_obj = make_shared[cInitialException]()
+        self._fields_setter = __fbthrift_types_fields.__InitialException_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
 
-    def __init__(
-        InitialException self,
-        str reason=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(InitialException._make_instance(
-          NULL,
-          NULL,
-          reason,
-        )))
-        _builtins.Exception.__init__(self, self.reason)
-
-
-    @staticmethod
-    cdef unique_ptr[cInitialException] _make_instance(
-        cInitialException* base_instance,
-        bint* __isNOTSET,
-        str reason 
-    ) except *:
-        cdef unique_ptr[cInitialException] c_inst
-        if base_instance:
-            c_inst = make_unique[cInitialException](deref(base_instance))
-        else:
-            c_inst = make_unique[cInitialException]()
-
-        if reason is not None:
-            deref(c_inst).reason_ref().assign(cmove(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
-            deref(c_inst).__isset.reason = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("InitialException", {
           "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
 
-    def __iter__(self):
-        yield 'reason', self.reason
-
     @staticmethod
     cdef create(shared_ptr[cInitialException] cpp_obj):
         __fbthrift_inst = <InitialException>InitialException.__new__(InitialException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.reason)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
     @property
@@ -633,55 +420,34 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__InitialException()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cInitialException](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
 
 
 @__cython.auto_pickle(False)
 cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
+    def __init__(SinkException1 self, *args, **kwargs):
+        self._cpp_obj = make_shared[cSinkException1]()
+        self._fields_setter = __fbthrift_types_fields.__SinkException1_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
 
-    def __init__(
-        SinkException1 self,
-        str reason=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(SinkException1._make_instance(
-          NULL,
-          NULL,
-          reason,
-        )))
-        _builtins.Exception.__init__(self, self.reason)
-
-
-    @staticmethod
-    cdef unique_ptr[cSinkException1] _make_instance(
-        cSinkException1* base_instance,
-        bint* __isNOTSET,
-        str reason 
-    ) except *:
-        cdef unique_ptr[cSinkException1] c_inst
-        if base_instance:
-            c_inst = make_unique[cSinkException1](deref(base_instance))
-        else:
-            c_inst = make_unique[cSinkException1]()
-
-        if reason is not None:
-            deref(c_inst).reason_ref().assign(cmove(thrift.py3.types.bytes_to_string(reason.encode('utf-8'))))
-            deref(c_inst).__isset.reason = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkException1", {
           "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
 
-    def __iter__(self):
-        yield 'reason', self.reason
-
     @staticmethod
     cdef create(shared_ptr[cSinkException1] cpp_obj):
         __fbthrift_inst = <SinkException1>SinkException1.__new__(SinkException1, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.reason)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
     @property
@@ -711,60 +477,34 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__SinkException1()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cSinkException1](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
 
 
 @__cython.auto_pickle(False)
 cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
+    def __init__(SinkException2 self, *args, **kwargs):
+        self._cpp_obj = make_shared[cSinkException2]()
+        self._fields_setter = __fbthrift_types_fields.__SinkException2_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
 
-    def __init__(
-        SinkException2 self,
-        reason=None
-    ):
-        if reason is not None:
-            if not isinstance(reason, int):
-                raise TypeError(f'reason is not a { int !r}.')
-            reason = <cint64_t> reason
-
-        self._cpp_obj = __to_shared_ptr(cmove(SinkException2._make_instance(
-          NULL,
-          NULL,
-          reason,
-        )))
-        _builtins.Exception.__init__(self, self.reason)
-
-
-    @staticmethod
-    cdef unique_ptr[cSinkException2] _make_instance(
-        cSinkException2* base_instance,
-        bint* __isNOTSET,
-        object reason 
-    ) except *:
-        cdef unique_ptr[cSinkException2] c_inst
-        if base_instance:
-            c_inst = make_unique[cSinkException2](deref(base_instance))
-        else:
-            c_inst = make_unique[cSinkException2]()
-
-        if reason is not None:
-            deref(c_inst).reason_ref().assign(reason)
-            deref(c_inst).__isset.reason = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("SinkException2", {
           "reason": deref(self._cpp_obj).reason_ref().has_value(),
         })
 
-    def __iter__(self):
-        yield 'reason', self.reason
-
     @staticmethod
     cdef create(shared_ptr[cSinkException2] cpp_obj):
         __fbthrift_inst = <SinkException2>SinkException2.__new__(SinkException2, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.reason)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
     @property
@@ -793,6 +533,12 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__SinkException2()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cSinkException2](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
 
 
 

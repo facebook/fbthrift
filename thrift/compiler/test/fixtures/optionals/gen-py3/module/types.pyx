@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -90,161 +92,23 @@ __SetMetaClass(<PyTypeObject*> Animal, <PyTypeObject*> __AnimalMeta)
 
 @__cython.auto_pickle(False)
 cdef class Color(thrift.py3.types.Struct):
+    def __init__(Color self, **kwargs):
+        self._cpp_obj = make_shared[cColor]()
+        self._fields_setter = __fbthrift_types_fields.__Color_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Color self, *,
-        red=None,
-        green=None,
-        blue=None,
-        alpha=None
-    ):
-        if red is not None:
-            if not isinstance(red, (float, int)):
-                raise TypeError(f'red is not a { float !r}.')
-
-        if green is not None:
-            if not isinstance(green, (float, int)):
-                raise TypeError(f'green is not a { float !r}.')
-
-        if blue is not None:
-            if not isinstance(blue, (float, int)):
-                raise TypeError(f'blue is not a { float !r}.')
-
-        if alpha is not None:
-            if not isinstance(alpha, (float, int)):
-                raise TypeError(f'alpha is not a { float !r}.')
-
-        self._cpp_obj = __to_shared_ptr(cmove(Color._make_instance(
-          NULL,
-          NULL,
-          red,
-          green,
-          blue,
-          alpha,
-        )))
-
-    def __call__(
-        Color self,
-        red=__NOTSET,
-        green=__NOTSET,
-        blue=__NOTSET,
-        alpha=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[4] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if red is ___NOTSET:
-            __isNOTSET[0] = True
-            red = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if green is ___NOTSET:
-            __isNOTSET[1] = True
-            green = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if blue is ___NOTSET:
-            __isNOTSET[2] = True
-            blue = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if alpha is ___NOTSET:
-            __isNOTSET[3] = True
-            alpha = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(Color self, **kwargs):
+        if not kwargs:
             return self
-
-        if red is not None:
-            if not isinstance(red, (float, int)):
-                raise TypeError(f'red is not a { float !r}.')
-
-        if green is not None:
-            if not isinstance(green, (float, int)):
-                raise TypeError(f'green is not a { float !r}.')
-
-        if blue is not None:
-            if not isinstance(blue, (float, int)):
-                raise TypeError(f'blue is not a { float !r}.')
-
-        if alpha is not None:
-            if not isinstance(alpha, (float, int)):
-                raise TypeError(f'alpha is not a { float !r}.')
-
-        __fbthrift_inst = <Color>Color.__new__(Color)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Color._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          red,
-          green,
-          blue,
-          alpha,
-        )))
+        cdef Color __fbthrift_inst = Color.__new__(Color)
+        __fbthrift_inst._cpp_obj = make_shared[cColor](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__Color_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cColor] _make_instance(
-        cColor* base_instance,
-        bint* __isNOTSET,
-        object red ,
-        object green ,
-        object blue ,
-        object alpha 
-    ) except *:
-        cdef unique_ptr[cColor] c_inst
-        if base_instance:
-            c_inst = make_unique[cColor](deref(base_instance))
-        else:
-            c_inst = make_unique[cColor]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and red is None:
-                deref(c_inst).red_ref().assign(default_inst[cColor]().red_ref().value())
-                deref(c_inst).__isset.red = False
-                pass
-
-            if not __isNOTSET[1] and green is None:
-                deref(c_inst).green_ref().assign(default_inst[cColor]().green_ref().value())
-                deref(c_inst).__isset.green = False
-                pass
-
-            if not __isNOTSET[2] and blue is None:
-                deref(c_inst).blue_ref().assign(default_inst[cColor]().blue_ref().value())
-                deref(c_inst).__isset.blue = False
-                pass
-
-            if not __isNOTSET[3] and alpha is None:
-                deref(c_inst).alpha_ref().assign(default_inst[cColor]().alpha_ref().value())
-                deref(c_inst).__isset.alpha = False
-                pass
-
-        if red is not None:
-            deref(c_inst).red_ref().assign(red)
-            deref(c_inst).__isset.red = True
-        if green is not None:
-            deref(c_inst).green_ref().assign(green)
-            deref(c_inst).__isset.green = True
-        if blue is not None:
-            deref(c_inst).blue_ref().assign(blue)
-            deref(c_inst).__isset.blue = True
-        if alpha is not None:
-            deref(c_inst).alpha_ref().assign(alpha)
-            deref(c_inst).__isset.alpha = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Color", {
@@ -253,12 +117,6 @@ cdef class Color(thrift.py3.types.Struct):
           "blue": deref(self._cpp_obj).blue_ref().has_value(),
           "alpha": deref(self._cpp_obj).alpha_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'red', self.red
-        yield 'green', self.green
-        yield 'blue', self.blue
-        yield 'alpha', self.alpha
 
     @staticmethod
     cdef create(shared_ptr[cColor] cpp_obj):
@@ -308,6 +166,12 @@ cdef class Color(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Color()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cColor](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 4
+
     cdef __iobuf.IOBuf _serialize(Color self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -324,166 +188,23 @@ cdef class Color(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class Vehicle(thrift.py3.types.Struct):
+    def __init__(Vehicle self, **kwargs):
+        self._cpp_obj = make_shared[cVehicle]()
+        self._fields_setter = __fbthrift_types_fields.__Vehicle_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Vehicle self, *,
-        Color color=None,
-        str licensePlate=None,
-        str description=None,
-        str name=None,
-        pbool hasAC=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(Vehicle._make_instance(
-          NULL,
-          NULL,
-          color,
-          licensePlate,
-          description,
-          name,
-          hasAC,
-        )))
-
-    def __call__(
-        Vehicle self,
-        color=__NOTSET,
-        licensePlate=__NOTSET,
-        description=__NOTSET,
-        name=__NOTSET,
-        hasAC=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[5] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if color is ___NOTSET:
-            __isNOTSET[0] = True
-            color = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if licensePlate is ___NOTSET:
-            __isNOTSET[1] = True
-            licensePlate = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if description is ___NOTSET:
-            __isNOTSET[2] = True
-            description = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if name is ___NOTSET:
-            __isNOTSET[3] = True
-            name = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-        if hasAC is ___NOTSET:
-            __isNOTSET[4] = True
-            hasAC = None
-        else:
-            __isNOTSET[4] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(Vehicle self, **kwargs):
+        if not kwargs:
             return self
-
-        if color is not None:
-            if not isinstance(color, Color):
-                raise TypeError(f'color is not a { Color !r}.')
-
-        if licensePlate is not None:
-            if not isinstance(licensePlate, str):
-                raise TypeError(f'licensePlate is not a { str !r}.')
-
-        if description is not None:
-            if not isinstance(description, str):
-                raise TypeError(f'description is not a { str !r}.')
-
-        if name is not None:
-            if not isinstance(name, str):
-                raise TypeError(f'name is not a { str !r}.')
-
-        if hasAC is not None:
-            if not isinstance(hasAC, bool):
-                raise TypeError(f'hasAC is not a { bool !r}.')
-
-        __fbthrift_inst = <Vehicle>Vehicle.__new__(Vehicle)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Vehicle._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          color,
-          licensePlate,
-          description,
-          name,
-          hasAC,
-        )))
+        cdef Vehicle __fbthrift_inst = Vehicle.__new__(Vehicle)
+        __fbthrift_inst._cpp_obj = make_shared[cVehicle](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__Vehicle_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cVehicle] _make_instance(
-        cVehicle* base_instance,
-        bint* __isNOTSET,
-        Color color ,
-        str licensePlate ,
-        str description ,
-        str name ,
-        pbool hasAC 
-    ) except *:
-        cdef unique_ptr[cVehicle] c_inst
-        if base_instance:
-            c_inst = make_unique[cVehicle](deref(base_instance))
-        else:
-            c_inst = make_unique[cVehicle]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and color is None:
-                deref(c_inst).color_ref().assign(default_inst[cVehicle]().color_ref().value())
-                deref(c_inst).__isset.color = False
-                pass
-
-            if not __isNOTSET[1] and licensePlate is None:
-                deref(c_inst).__isset.licensePlate = False
-                pass
-
-            if not __isNOTSET[2] and description is None:
-                deref(c_inst).__isset.description = False
-                pass
-
-            if not __isNOTSET[3] and name is None:
-                deref(c_inst).__isset.name = False
-                pass
-
-            if not __isNOTSET[4] and hasAC is None:
-                deref(c_inst).hasAC_ref().assign(default_inst[cVehicle]().hasAC_ref().value_unchecked())
-                deref(c_inst).__isset.hasAC = False
-                pass
-
-        if color is not None:
-            deref(c_inst).color_ref().assign(deref((<Color?> color)._cpp_obj))
-            deref(c_inst).__isset.color = True
-        if licensePlate is not None:
-            deref(c_inst).licensePlate_ref().assign(cmove(thrift.py3.types.bytes_to_string(licensePlate.encode('utf-8'))))
-            deref(c_inst).__isset.licensePlate = True
-        if description is not None:
-            deref(c_inst).description_ref().assign(cmove(thrift.py3.types.bytes_to_string(description.encode('utf-8'))))
-            deref(c_inst).__isset.description = True
-        if name is not None:
-            deref(c_inst).name_ref().assign(cmove(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
-            deref(c_inst).__isset.name = True
-        if hasAC is not None:
-            deref(c_inst).hasAC_ref().assign(hasAC)
-            deref(c_inst).__isset.hasAC = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Vehicle", {
@@ -493,13 +214,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
           "name": deref(self._cpp_obj).name_ref().has_value(),
           "hasAC": deref(self._cpp_obj).hasAC_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'color', self.color
-        yield 'licensePlate', self.licensePlate
-        yield 'description', self.description
-        yield 'name', self.name
-        yield 'hasAC', self.hasAC
 
     @staticmethod
     cdef create(shared_ptr[cVehicle] cpp_obj):
@@ -562,6 +276,12 @@ cdef class Vehicle(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Vehicle()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cVehicle](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 5
+
     cdef __iobuf.IOBuf _serialize(Vehicle self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -578,287 +298,23 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class Person(thrift.py3.types.Struct):
+    def __init__(Person self, **kwargs):
+        self._cpp_obj = make_shared[cPerson]()
+        self._fields_setter = __fbthrift_types_fields.__Person_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Person self, *,
-        id=None,
-        str name=None,
-        age=None,
-        str address=None,
-        Color favoriteColor=None,
-        friends=None,
-        bestFriend=None,
-        petNames=None,
-        Animal afraidOfAnimal=None,
-        vehicles=None
-    ):
-        if id is not None:
-            if not isinstance(id, int):
-                raise TypeError(f'id is not a { int !r}.')
-            id = <cint64_t> id
-
-        if age is not None:
-            if not isinstance(age, int):
-                raise TypeError(f'age is not a { int !r}.')
-            age = <cint16_t> age
-
-        if bestFriend is not None:
-            if not isinstance(bestFriend, int):
-                raise TypeError(f'bestFriend is not a { int !r}.')
-            bestFriend = <cint64_t> bestFriend
-
-        self._cpp_obj = __to_shared_ptr(cmove(Person._make_instance(
-          NULL,
-          NULL,
-          id,
-          name,
-          age,
-          address,
-          favoriteColor,
-          friends,
-          bestFriend,
-          petNames,
-          afraidOfAnimal,
-          vehicles,
-        )))
-
-    def __call__(
-        Person self,
-        id=__NOTSET,
-        name=__NOTSET,
-        age=__NOTSET,
-        address=__NOTSET,
-        favoriteColor=__NOTSET,
-        friends=__NOTSET,
-        bestFriend=__NOTSET,
-        petNames=__NOTSET,
-        afraidOfAnimal=__NOTSET,
-        vehicles=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[10] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if id is ___NOTSET:
-            __isNOTSET[0] = True
-            id = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if name is ___NOTSET:
-            __isNOTSET[1] = True
-            name = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if age is ___NOTSET:
-            __isNOTSET[2] = True
-            age = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if address is ___NOTSET:
-            __isNOTSET[3] = True
-            address = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-        if favoriteColor is ___NOTSET:
-            __isNOTSET[4] = True
-            favoriteColor = None
-        else:
-            __isNOTSET[4] = False
-            __fbthrift_changed = True
-
-        if friends is ___NOTSET:
-            __isNOTSET[5] = True
-            friends = None
-        else:
-            __isNOTSET[5] = False
-            __fbthrift_changed = True
-
-        if bestFriend is ___NOTSET:
-            __isNOTSET[6] = True
-            bestFriend = None
-        else:
-            __isNOTSET[6] = False
-            __fbthrift_changed = True
-
-        if petNames is ___NOTSET:
-            __isNOTSET[7] = True
-            petNames = None
-        else:
-            __isNOTSET[7] = False
-            __fbthrift_changed = True
-
-        if afraidOfAnimal is ___NOTSET:
-            __isNOTSET[8] = True
-            afraidOfAnimal = None
-        else:
-            __isNOTSET[8] = False
-            __fbthrift_changed = True
-
-        if vehicles is ___NOTSET:
-            __isNOTSET[9] = True
-            vehicles = None
-        else:
-            __isNOTSET[9] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(Person self, **kwargs):
+        if not kwargs:
             return self
-
-        if id is not None:
-            if not isinstance(id, int):
-                raise TypeError(f'id is not a { int !r}.')
-            id = <cint64_t> id
-
-        if name is not None:
-            if not isinstance(name, str):
-                raise TypeError(f'name is not a { str !r}.')
-
-        if age is not None:
-            if not isinstance(age, int):
-                raise TypeError(f'age is not a { int !r}.')
-            age = <cint16_t> age
-
-        if address is not None:
-            if not isinstance(address, str):
-                raise TypeError(f'address is not a { str !r}.')
-
-        if favoriteColor is not None:
-            if not isinstance(favoriteColor, Color):
-                raise TypeError(f'favoriteColor is not a { Color !r}.')
-
-        if bestFriend is not None:
-            if not isinstance(bestFriend, int):
-                raise TypeError(f'bestFriend is not a { int !r}.')
-            bestFriend = <cint64_t> bestFriend
-
-        if afraidOfAnimal is not None:
-            if not isinstance(afraidOfAnimal, Animal):
-                raise TypeError(f'field afraidOfAnimal value: { afraidOfAnimal !r} is not of the enum type { Animal }.')
-
-        __fbthrift_inst = <Person>Person.__new__(Person)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Person._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          id,
-          name,
-          age,
-          address,
-          favoriteColor,
-          friends,
-          bestFriend,
-          petNames,
-          afraidOfAnimal,
-          vehicles,
-        )))
+        cdef Person __fbthrift_inst = Person.__new__(Person)
+        __fbthrift_inst._cpp_obj = make_shared[cPerson](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__Person_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cPerson] _make_instance(
-        cPerson* base_instance,
-        bint* __isNOTSET,
-        object id ,
-        str name ,
-        object age ,
-        str address ,
-        Color favoriteColor ,
-        object friends ,
-        object bestFriend ,
-        object petNames ,
-        Animal afraidOfAnimal ,
-        object vehicles 
-    ) except *:
-        cdef unique_ptr[cPerson] c_inst
-        if base_instance:
-            c_inst = make_unique[cPerson](deref(base_instance))
-        else:
-            c_inst = make_unique[cPerson]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and id is None:
-                deref(c_inst).id_ref().assign(default_inst[cPerson]().id_ref().value())
-                deref(c_inst).__isset.id = False
-                pass
-
-            if not __isNOTSET[1] and name is None:
-                deref(c_inst).name_ref().assign(default_inst[cPerson]().name_ref().value())
-                deref(c_inst).__isset.name = False
-                pass
-
-            if not __isNOTSET[2] and age is None:
-                deref(c_inst).__isset.age = False
-                pass
-
-            if not __isNOTSET[3] and address is None:
-                deref(c_inst).__isset.address = False
-                pass
-
-            if not __isNOTSET[4] and favoriteColor is None:
-                deref(c_inst).__isset.favoriteColor = False
-                pass
-
-            if not __isNOTSET[5] and friends is None:
-                deref(c_inst).__isset.friends = False
-                pass
-
-            if not __isNOTSET[6] and bestFriend is None:
-                deref(c_inst).__isset.bestFriend = False
-                pass
-
-            if not __isNOTSET[7] and petNames is None:
-                deref(c_inst).__isset.petNames = False
-                pass
-
-            if not __isNOTSET[8] and afraidOfAnimal is None:
-                deref(c_inst).__isset.afraidOfAnimal = False
-                pass
-
-            if not __isNOTSET[9] and vehicles is None:
-                deref(c_inst).__isset.vehicles = False
-                pass
-
-        if id is not None:
-            deref(c_inst).id_ref().assign(id)
-            deref(c_inst).__isset.id = True
-        if name is not None:
-            deref(c_inst).name_ref().assign(cmove(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
-            deref(c_inst).__isset.name = True
-        if age is not None:
-            deref(c_inst).age_ref().assign(age)
-            deref(c_inst).__isset.age = True
-        if address is not None:
-            deref(c_inst).address_ref().assign(cmove(thrift.py3.types.bytes_to_string(address.encode('utf-8'))))
-            deref(c_inst).__isset.address = True
-        if favoriteColor is not None:
-            deref(c_inst).favoriteColor_ref().assign(deref((<Color?> favoriteColor)._cpp_obj))
-            deref(c_inst).__isset.favoriteColor = True
-        if friends is not None:
-            deref(c_inst).friends_ref().assign(deref(Set__i64(friends)._cpp_obj))
-            deref(c_inst).__isset.friends = True
-        if bestFriend is not None:
-            deref(c_inst).bestFriend_ref().assign(bestFriend)
-            deref(c_inst).__isset.bestFriend = True
-        if petNames is not None:
-            deref(c_inst).petNames_ref().assign(deref(Map__Animal_string(petNames)._cpp_obj))
-            deref(c_inst).__isset.petNames = True
-        if afraidOfAnimal is not None:
-            deref(c_inst).afraidOfAnimal_ref().assign(<cAnimal><int>afraidOfAnimal)
-            deref(c_inst).__isset.afraidOfAnimal = True
-        if vehicles is not None:
-            deref(c_inst).vehicles_ref().assign(deref(List__Vehicle(vehicles)._cpp_obj))
-            deref(c_inst).__isset.vehicles = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Person", {
@@ -873,18 +329,6 @@ cdef class Person(thrift.py3.types.Struct):
           "afraidOfAnimal": deref(self._cpp_obj).afraidOfAnimal_ref().has_value(),
           "vehicles": deref(self._cpp_obj).vehicles_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'id', self.id
-        yield 'name', self.name
-        yield 'age', self.age
-        yield 'address', self.address
-        yield 'favoriteColor', self.favoriteColor
-        yield 'friends', self.friends
-        yield 'bestFriend', self.bestFriend
-        yield 'petNames', self.petNames
-        yield 'afraidOfAnimal', self.afraidOfAnimal
-        yield 'vehicles', self.vehicles
 
     @staticmethod
     cdef create(shared_ptr[cPerson] cpp_obj):
@@ -987,6 +431,12 @@ cdef class Person(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Person()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cPerson](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 10
 
     cdef __iobuf.IOBuf _serialize(Person self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

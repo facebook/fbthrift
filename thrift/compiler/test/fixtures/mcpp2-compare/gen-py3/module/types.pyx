@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -284,44 +286,20 @@ __SetMetaClass(<PyTypeObject*> __FloatUnionType, <PyTypeObject*> __FloatUnion_Un
 
 @__cython.auto_pickle(False)
 cdef class Empty(thrift.py3.types.Struct):
+    def __init__(Empty self, **kwargs):
+        self._cpp_obj = make_shared[cEmpty]()
+        self._fields_setter = __fbthrift_types_fields.__Empty_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Empty self, *
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(Empty._make_instance(
-          NULL,
-          NULL,
-        )))
-
-    def __call__(
-        Empty self
-    ):
+    def __call__(Empty self, **kwargs):
         return self
 
-    @staticmethod
-    cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance,
-        bint* __isNOTSET
-    ) except *:
-        cdef unique_ptr[cEmpty] c_inst
-        if base_instance:
-            c_inst = make_unique[cEmpty](deref(base_instance))
-        else:
-            c_inst = make_unique[cEmpty]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            pass
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Empty", {
         })
-
-    def __iter__(self):
-        yield from ()
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] cpp_obj):
@@ -351,6 +329,12 @@ cdef class Empty(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Empty()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cEmpty](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 0
+
     cdef __iobuf.IOBuf _serialize(Empty self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -367,87 +351,28 @@ cdef class Empty(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class ASimpleStruct(thrift.py3.types.Struct):
+    def __init__(ASimpleStruct self, **kwargs):
+        self._cpp_obj = make_shared[cASimpleStruct]()
+        self._fields_setter = __fbthrift_types_fields.__ASimpleStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        ASimpleStruct self, *,
-        boolField=None
-    ):
-        if boolField is not None:
-            if not isinstance(boolField, int):
-                raise TypeError(f'boolField is not a { int !r}.')
-            boolField = <cint64_t> boolField
-
-        self._cpp_obj = __to_shared_ptr(cmove(ASimpleStruct._make_instance(
-          NULL,
-          NULL,
-          boolField,
-        )))
-
-    def __call__(
-        ASimpleStruct self,
-        boolField=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if boolField is ___NOTSET:
-            __isNOTSET[0] = True
-            boolField = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(ASimpleStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if boolField is not None:
-            if not isinstance(boolField, int):
-                raise TypeError(f'boolField is not a { int !r}.')
-            boolField = <cint64_t> boolField
-
-        __fbthrift_inst = <ASimpleStruct>ASimpleStruct.__new__(ASimpleStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(ASimpleStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          boolField,
-        )))
+        cdef ASimpleStruct __fbthrift_inst = ASimpleStruct.__new__(ASimpleStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cASimpleStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__ASimpleStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cASimpleStruct] _make_instance(
-        cASimpleStruct* base_instance,
-        bint* __isNOTSET,
-        object boolField 
-    ) except *:
-        cdef unique_ptr[cASimpleStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cASimpleStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cASimpleStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and boolField is None:
-                deref(c_inst).boolField_ref().assign(default_inst[cASimpleStruct]().boolField_ref().value())
-                deref(c_inst).__isset.boolField = False
-                pass
-
-        if boolField is not None:
-            deref(c_inst).boolField_ref().assign(boolField)
-            deref(c_inst).__isset.boolField = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("ASimpleStruct", {
           "boolField": deref(self._cpp_obj).boolField_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'boolField', self.boolField
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStruct] cpp_obj):
@@ -484,6 +409,12 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__ASimpleStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cASimpleStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(ASimpleStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -500,87 +431,28 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
+    def __init__(ASimpleStructNoexcept self, **kwargs):
+        self._cpp_obj = make_shared[cASimpleStructNoexcept]()
+        self._fields_setter = __fbthrift_types_fields.__ASimpleStructNoexcept_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        ASimpleStructNoexcept self, *,
-        boolField=None
-    ):
-        if boolField is not None:
-            if not isinstance(boolField, int):
-                raise TypeError(f'boolField is not a { int !r}.')
-            boolField = <cint64_t> boolField
-
-        self._cpp_obj = __to_shared_ptr(cmove(ASimpleStructNoexcept._make_instance(
-          NULL,
-          NULL,
-          boolField,
-        )))
-
-    def __call__(
-        ASimpleStructNoexcept self,
-        boolField=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if boolField is ___NOTSET:
-            __isNOTSET[0] = True
-            boolField = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(ASimpleStructNoexcept self, **kwargs):
+        if not kwargs:
             return self
-
-        if boolField is not None:
-            if not isinstance(boolField, int):
-                raise TypeError(f'boolField is not a { int !r}.')
-            boolField = <cint64_t> boolField
-
-        __fbthrift_inst = <ASimpleStructNoexcept>ASimpleStructNoexcept.__new__(ASimpleStructNoexcept)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(ASimpleStructNoexcept._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          boolField,
-        )))
+        cdef ASimpleStructNoexcept __fbthrift_inst = ASimpleStructNoexcept.__new__(ASimpleStructNoexcept)
+        __fbthrift_inst._cpp_obj = make_shared[cASimpleStructNoexcept](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__ASimpleStructNoexcept_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cASimpleStructNoexcept] _make_instance(
-        cASimpleStructNoexcept* base_instance,
-        bint* __isNOTSET,
-        object boolField 
-    ) except *:
-        cdef unique_ptr[cASimpleStructNoexcept] c_inst
-        if base_instance:
-            c_inst = make_unique[cASimpleStructNoexcept](deref(base_instance))
-        else:
-            c_inst = make_unique[cASimpleStructNoexcept]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and boolField is None:
-                deref(c_inst).boolField_ref().assign(default_inst[cASimpleStructNoexcept]().boolField_ref().value())
-                deref(c_inst).__isset.boolField = False
-                pass
-
-        if boolField is not None:
-            deref(c_inst).boolField_ref().assign(boolField)
-            deref(c_inst).__isset.boolField = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("ASimpleStructNoexcept", {
           "boolField": deref(self._cpp_obj).boolField_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'boolField', self.boolField
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStructNoexcept] cpp_obj):
@@ -615,6 +487,12 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__ASimpleStructNoexcept()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cASimpleStructNoexcept](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(ASimpleStructNoexcept self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -631,260 +509,23 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
+    def __init__(MyStruct self, **kwargs):
+        self._cpp_obj = make_shared[cMyStruct]()
+        self._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        MyStruct self, *,
-        pbool MyBoolField=None,
-        MyIntField=None,
-        str MyStringField=None,
-        str MyStringField2=None,
-        bytes MyBinaryField=None,
-        bytes MyBinaryField2=None,
-        bytes MyBinaryField3=None,
-        MyBinaryListField4=None,
-        MyMapEnumAndInt=None
-    ):
-        if MyIntField is not None:
-            if not isinstance(MyIntField, int):
-                raise TypeError(f'MyIntField is not a { int !r}.')
-            MyIntField = <cint64_t> MyIntField
-
-        self._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          NULL,
-          NULL,
-          MyBoolField,
-          MyIntField,
-          MyStringField,
-          MyStringField2,
-          MyBinaryField,
-          MyBinaryField2,
-          MyBinaryField3,
-          MyBinaryListField4,
-          MyMapEnumAndInt,
-        )))
-
-    def __call__(
-        MyStruct self,
-        MyBoolField=__NOTSET,
-        MyIntField=__NOTSET,
-        MyStringField=__NOTSET,
-        MyStringField2=__NOTSET,
-        MyBinaryField=__NOTSET,
-        MyBinaryField2=__NOTSET,
-        MyBinaryField3=__NOTSET,
-        MyBinaryListField4=__NOTSET,
-        MyMapEnumAndInt=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[9] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if MyBoolField is ___NOTSET:
-            __isNOTSET[0] = True
-            MyBoolField = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if MyIntField is ___NOTSET:
-            __isNOTSET[1] = True
-            MyIntField = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if MyStringField is ___NOTSET:
-            __isNOTSET[2] = True
-            MyStringField = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if MyStringField2 is ___NOTSET:
-            __isNOTSET[3] = True
-            MyStringField2 = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-        if MyBinaryField is ___NOTSET:
-            __isNOTSET[4] = True
-            MyBinaryField = None
-        else:
-            __isNOTSET[4] = False
-            __fbthrift_changed = True
-
-        if MyBinaryField2 is ___NOTSET:
-            __isNOTSET[5] = True
-            MyBinaryField2 = None
-        else:
-            __isNOTSET[5] = False
-            __fbthrift_changed = True
-
-        if MyBinaryField3 is ___NOTSET:
-            __isNOTSET[6] = True
-            MyBinaryField3 = None
-        else:
-            __isNOTSET[6] = False
-            __fbthrift_changed = True
-
-        if MyBinaryListField4 is ___NOTSET:
-            __isNOTSET[7] = True
-            MyBinaryListField4 = None
-        else:
-            __isNOTSET[7] = False
-            __fbthrift_changed = True
-
-        if MyMapEnumAndInt is ___NOTSET:
-            __isNOTSET[8] = True
-            MyMapEnumAndInt = None
-        else:
-            __isNOTSET[8] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(MyStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if MyBoolField is not None:
-            if not isinstance(MyBoolField, bool):
-                raise TypeError(f'MyBoolField is not a { bool !r}.')
-
-        if MyIntField is not None:
-            if not isinstance(MyIntField, int):
-                raise TypeError(f'MyIntField is not a { int !r}.')
-            MyIntField = <cint64_t> MyIntField
-
-        if MyStringField is not None:
-            if not isinstance(MyStringField, str):
-                raise TypeError(f'MyStringField is not a { str !r}.')
-
-        if MyStringField2 is not None:
-            if not isinstance(MyStringField2, str):
-                raise TypeError(f'MyStringField2 is not a { str !r}.')
-
-        if MyBinaryField is not None:
-            if not isinstance(MyBinaryField, bytes):
-                raise TypeError(f'MyBinaryField is not a { bytes !r}.')
-
-        if MyBinaryField2 is not None:
-            if not isinstance(MyBinaryField2, bytes):
-                raise TypeError(f'MyBinaryField2 is not a { bytes !r}.')
-
-        if MyBinaryField3 is not None:
-            if not isinstance(MyBinaryField3, bytes):
-                raise TypeError(f'MyBinaryField3 is not a { bytes !r}.')
-
-        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          MyBoolField,
-          MyIntField,
-          MyStringField,
-          MyStringField2,
-          MyBinaryField,
-          MyBinaryField2,
-          MyBinaryField3,
-          MyBinaryListField4,
-          MyMapEnumAndInt,
-        )))
+        cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cMyStruct] _make_instance(
-        cMyStruct* base_instance,
-        bint* __isNOTSET,
-        pbool MyBoolField ,
-        object MyIntField ,
-        str MyStringField ,
-        str MyStringField2 ,
-        bytes MyBinaryField ,
-        bytes MyBinaryField2 ,
-        bytes MyBinaryField3 ,
-        object MyBinaryListField4 ,
-        object MyMapEnumAndInt 
-    ) except *:
-        cdef unique_ptr[cMyStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cMyStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cMyStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and MyBoolField is None:
-                deref(c_inst).MyBoolField_ref().assign(default_inst[cMyStruct]().MyBoolField_ref().value())
-                deref(c_inst).__isset.MyBoolField = False
-                pass
-
-            if not __isNOTSET[1] and MyIntField is None:
-                deref(c_inst).MyIntField_ref().assign(default_inst[cMyStruct]().MyIntField_ref().value())
-                deref(c_inst).__isset.MyIntField = False
-                pass
-
-            if not __isNOTSET[2] and MyStringField is None:
-                deref(c_inst).MyStringField_ref().assign(default_inst[cMyStruct]().MyStringField_ref().value())
-                deref(c_inst).__isset.MyStringField = False
-                pass
-
-            if not __isNOTSET[3] and MyStringField2 is None:
-                deref(c_inst).MyStringField2_ref().assign(default_inst[cMyStruct]().MyStringField2_ref().value())
-                deref(c_inst).__isset.MyStringField2 = False
-                pass
-
-            if not __isNOTSET[4] and MyBinaryField is None:
-                deref(c_inst).MyBinaryField_ref().assign(default_inst[cMyStruct]().MyBinaryField_ref().value())
-                deref(c_inst).__isset.MyBinaryField = False
-                pass
-
-            if not __isNOTSET[5] and MyBinaryField2 is None:
-                deref(c_inst).__isset.MyBinaryField2 = False
-                pass
-
-            if not __isNOTSET[6] and MyBinaryField3 is None:
-                deref(c_inst).MyBinaryField3_ref().assign(default_inst[cMyStruct]().MyBinaryField3_ref().value())
-                pass
-
-            if not __isNOTSET[7] and MyBinaryListField4 is None:
-                deref(c_inst).MyBinaryListField4_ref().assign(default_inst[cMyStruct]().MyBinaryListField4_ref().value())
-                deref(c_inst).__isset.MyBinaryListField4 = False
-                pass
-
-            if not __isNOTSET[8] and MyMapEnumAndInt is None:
-                deref(c_inst).MyMapEnumAndInt_ref().assign(default_inst[cMyStruct]().MyMapEnumAndInt_ref().value())
-                deref(c_inst).__isset.MyMapEnumAndInt = False
-                pass
-
-        if MyBoolField is not None:
-            deref(c_inst).MyBoolField_ref().assign(MyBoolField)
-            deref(c_inst).__isset.MyBoolField = True
-        if MyIntField is not None:
-            deref(c_inst).MyIntField_ref().assign(MyIntField)
-            deref(c_inst).__isset.MyIntField = True
-        if MyStringField is not None:
-            deref(c_inst).MyStringField_ref().assign(cmove(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8'))))
-            deref(c_inst).__isset.MyStringField = True
-        if MyStringField2 is not None:
-            deref(c_inst).MyStringField2_ref().assign(cmove(thrift.py3.types.bytes_to_string(MyStringField2.encode('utf-8'))))
-            deref(c_inst).__isset.MyStringField2 = True
-        if MyBinaryField is not None:
-            deref(c_inst).MyBinaryField_ref().assign(cmove(thrift.py3.types.bytes_to_string(MyBinaryField)))
-            deref(c_inst).__isset.MyBinaryField = True
-        if MyBinaryField2 is not None:
-            deref(c_inst).MyBinaryField2_ref().assign(cmove(thrift.py3.types.bytes_to_string(MyBinaryField2)))
-            deref(c_inst).__isset.MyBinaryField2 = True
-        if MyBinaryField3 is not None:
-            deref(c_inst).MyBinaryField3_ref().assign(cmove(thrift.py3.types.bytes_to_string(MyBinaryField3)))
-        if MyBinaryListField4 is not None:
-            deref(c_inst).MyBinaryListField4_ref().assign(deref(List__binary(MyBinaryListField4)._cpp_obj))
-            deref(c_inst).__isset.MyBinaryListField4 = True
-        if MyMapEnumAndInt is not None:
-            deref(c_inst).MyMapEnumAndInt_ref().assign(deref(Map__MyEnumA_string(MyMapEnumAndInt)._cpp_obj))
-            deref(c_inst).__isset.MyMapEnumAndInt = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
@@ -898,17 +539,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "MyBinaryListField4": deref(self._cpp_obj).MyBinaryListField4_ref().has_value(),
           "MyMapEnumAndInt": deref(self._cpp_obj).MyMapEnumAndInt_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'MyBoolField', self.MyBoolField
-        yield 'MyIntField', self.MyIntField
-        yield 'MyStringField', self.MyStringField
-        yield 'MyStringField2', self.MyStringField2
-        yield 'MyBinaryField', self.MyBinaryField
-        yield 'MyBinaryField2', self.MyBinaryField2
-        yield 'MyBinaryField3', self.MyBinaryField3
-        yield 'MyBinaryListField4', self.MyBinaryListField4
-        yield 'MyMapEnumAndInt', self.MyMapEnumAndInt
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -988,6 +618,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 9
 
     cdef __iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -1113,6 +749,12 @@ cdef class SimpleUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__SimpleUnion()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cSimpleUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
 
     cdef __iobuf.IOBuf _serialize(SimpleUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -1741,6 +1383,12 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__ComplexUnion()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cComplexUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 27
+
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -1759,128 +1407,13 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 @__cython.auto_pickle(False)
 cdef class AnException(thrift.py3.exceptions.GeneratedError):
+    def __init__(AnException self, *args, **kwargs):
+        self._cpp_obj = make_shared[cAnException]()
+        self._fields_setter = __fbthrift_types_fields.__AnException_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
 
-    def __init__(
-        AnException self,
-        code=None,
-        req_code=None,
-        str message2=None,
-        str req_message=None,
-        exception_list=None,
-        exception_set=None,
-        exception_map=None,
-        req_exception_map=None,
-        MyEnumA enum_field=None,
-        enum_container=None,
-        MyStruct a_struct=None,
-        a_set_struct=None,
-        a_union_list=None,
-        union_typedef=None,
-        a_union_typedef_list=None
-    ):
-        if code is not None:
-            if not isinstance(code, int):
-                raise TypeError(f'code is not a { int !r}.')
-            code = <cint32_t> code
-
-        if req_code is not None:
-            if not isinstance(req_code, int):
-                raise TypeError(f'req_code is not a { int !r}.')
-            req_code = <cint32_t> req_code
-
-        self._cpp_obj = __to_shared_ptr(cmove(AnException._make_instance(
-          NULL,
-          NULL,
-          code,
-          req_code,
-          message2,
-          req_message,
-          exception_list,
-          exception_set,
-          exception_map,
-          req_exception_map,
-          enum_field,
-          enum_container,
-          a_struct,
-          a_set_struct,
-          a_union_list,
-          union_typedef,
-          a_union_typedef_list,
-        )))
-        _builtins.Exception.__init__(self, self.code, self.req_code, self.message2, self.req_message, self.exception_list, self.exception_set, self.exception_map, self.req_exception_map, self.enum_field, self.enum_container, self.a_struct, self.a_set_struct, self.a_union_list, self.union_typedef, self.a_union_typedef_list)
-
-
-    @staticmethod
-    cdef unique_ptr[cAnException] _make_instance(
-        cAnException* base_instance,
-        bint* __isNOTSET,
-        object code ,
-        object req_code ,
-        str message2 ,
-        str req_message ,
-        object exception_list ,
-        object exception_set ,
-        object exception_map ,
-        object req_exception_map ,
-        MyEnumA enum_field ,
-        object enum_container ,
-        MyStruct a_struct ,
-        object a_set_struct ,
-        object a_union_list ,
-        object union_typedef ,
-        object a_union_typedef_list 
-    ) except *:
-        cdef unique_ptr[cAnException] c_inst
-        if base_instance:
-            c_inst = make_unique[cAnException](deref(base_instance))
-        else:
-            c_inst = make_unique[cAnException]()
-
-        if code is not None:
-            deref(c_inst).code_ref().assign(code)
-            deref(c_inst).__isset.code = True
-        if req_code is not None:
-            deref(c_inst).req_code_ref().assign(req_code)
-        if message2 is not None:
-            deref(c_inst).message2_ref().assign(cmove(thrift.py3.types.bytes_to_string(message2.encode('utf-8'))))
-            deref(c_inst).__isset.message2 = True
-        if req_message is not None:
-            deref(c_inst).req_message_ref().assign(cmove(thrift.py3.types.bytes_to_string(req_message.encode('utf-8'))))
-        if exception_list is not None:
-            deref(c_inst).exception_list_ref().assign(deref(List__i32(exception_list)._cpp_obj))
-            deref(c_inst).__isset.exception_list = True
-        if exception_set is not None:
-            deref(c_inst).exception_set_ref().assign(deref(Set__i64(exception_set)._cpp_obj))
-            deref(c_inst).__isset.exception_set = True
-        if exception_map is not None:
-            deref(c_inst).exception_map_ref().assign(deref(Map__string_i32(exception_map)._cpp_obj))
-            deref(c_inst).__isset.exception_map = True
-        if req_exception_map is not None:
-            deref(c_inst).req_exception_map_ref().assign(deref(Map__string_i32(req_exception_map)._cpp_obj))
-        if enum_field is not None:
-            deref(c_inst).enum_field_ref().assign(<cMyEnumA><int>enum_field)
-            deref(c_inst).__isset.enum_field = True
-        if enum_container is not None:
-            deref(c_inst).enum_container_ref().assign(deref(List__MyEnumA(enum_container)._cpp_obj))
-            deref(c_inst).__isset.enum_container = True
-        if a_struct is not None:
-            deref(c_inst).a_struct_ref().assign(deref((<MyStruct?> a_struct)._cpp_obj))
-            deref(c_inst).__isset.a_struct = True
-        if a_set_struct is not None:
-            deref(c_inst).a_set_struct_ref().assign(deref(Set__MyStruct(a_set_struct)._cpp_obj))
-            deref(c_inst).__isset.a_set_struct = True
-        if a_union_list is not None:
-            deref(c_inst).a_union_list_ref().assign(deref(List__SimpleUnion(a_union_list)._cpp_obj))
-            deref(c_inst).__isset.a_union_list = True
-        if union_typedef is not None:
-            deref(c_inst).union_typedef_ref().assign(deref(Set__SimpleUnion(union_typedef)._cpp_obj))
-            deref(c_inst).__isset.union_typedef = True
-        if a_union_typedef_list is not None:
-            deref(c_inst).a_union_typedef_list_ref().assign(deref(List__Set__SimpleUnion(a_union_typedef_list)._cpp_obj))
-            deref(c_inst).__isset.a_union_typedef_list = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AnException", {
@@ -1901,28 +1434,11 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
           "a_union_typedef_list": deref(self._cpp_obj).a_union_typedef_list_ref().has_value(),
         })
 
-    def __iter__(self):
-        yield 'code', self.code
-        yield 'req_code', self.req_code
-        yield 'message2', self.message2
-        yield 'req_message', self.req_message
-        yield 'exception_list', self.exception_list
-        yield 'exception_set', self.exception_set
-        yield 'exception_map', self.exception_map
-        yield 'req_exception_map', self.req_exception_map
-        yield 'enum_field', self.enum_field
-        yield 'enum_container', self.enum_container
-        yield 'a_struct', self.a_struct
-        yield 'a_set_struct', self.a_set_struct
-        yield 'a_union_list', self.a_union_list
-        yield 'union_typedef', self.union_typedef
-        yield 'a_union_typedef_list', self.a_union_typedef_list
-
     @staticmethod
     cdef create(shared_ptr[cAnException] cpp_obj):
         __fbthrift_inst = <AnException>AnException.__new__(AnException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.code, __fbthrift_inst.req_code, __fbthrift_inst.message2, __fbthrift_inst.req_message, __fbthrift_inst.exception_list, __fbthrift_inst.exception_set, __fbthrift_inst.exception_map, __fbthrift_inst.req_exception_map, __fbthrift_inst.enum_field, __fbthrift_inst.enum_container, __fbthrift_inst.a_struct, __fbthrift_inst.a_set_struct, __fbthrift_inst.a_union_list, __fbthrift_inst.union_typedef, __fbthrift_inst.a_union_typedef_list)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
     @property
@@ -2048,62 +1564,23 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__AnException()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cAnException](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 15
+
 
 
 @__cython.auto_pickle(False)
 cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
+    def __init__(AnotherException self, *args, **kwargs):
+        self._cpp_obj = make_shared[cAnotherException]()
+        self._fields_setter = __fbthrift_types_fields.__AnotherException_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
 
-    def __init__(
-        AnotherException self,
-        code=None,
-        req_code=None,
-        str message=None
-    ):
-        if code is not None:
-            if not isinstance(code, int):
-                raise TypeError(f'code is not a { int !r}.')
-            code = <cint32_t> code
-
-        if req_code is not None:
-            if not isinstance(req_code, int):
-                raise TypeError(f'req_code is not a { int !r}.')
-            req_code = <cint32_t> req_code
-
-        self._cpp_obj = __to_shared_ptr(cmove(AnotherException._make_instance(
-          NULL,
-          NULL,
-          code,
-          req_code,
-          message,
-        )))
-        _builtins.Exception.__init__(self, self.code, self.req_code, self.message)
-
-
-    @staticmethod
-    cdef unique_ptr[cAnotherException] _make_instance(
-        cAnotherException* base_instance,
-        bint* __isNOTSET,
-        object code ,
-        object req_code ,
-        str message 
-    ) except *:
-        cdef unique_ptr[cAnotherException] c_inst
-        if base_instance:
-            c_inst = make_unique[cAnotherException](deref(base_instance))
-        else:
-            c_inst = make_unique[cAnotherException]()
-
-        if code is not None:
-            deref(c_inst).code_ref().assign(code)
-            deref(c_inst).__isset.code = True
-        if req_code is not None:
-            deref(c_inst).req_code_ref().assign(req_code)
-        if message is not None:
-            deref(c_inst).message_ref().assign(cmove(thrift.py3.types.bytes_to_string(message.encode('utf-8'))))
-            deref(c_inst).__isset.message = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AnotherException", {
@@ -2112,16 +1589,11 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
           "message": deref(self._cpp_obj).message_ref().has_value(),
         })
 
-    def __iter__(self):
-        yield 'code', self.code
-        yield 'req_code', self.req_code
-        yield 'message', self.message
-
     @staticmethod
     cdef create(shared_ptr[cAnotherException] cpp_obj):
         __fbthrift_inst = <AnotherException>AnotherException.__new__(AnotherException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        _builtins.Exception.__init__(__fbthrift_inst, __fbthrift_inst.code, __fbthrift_inst.req_code, __fbthrift_inst.message)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         return __fbthrift_inst
 
     @property
@@ -2161,529 +1633,23 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__AnotherException()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cAnotherException](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
+
 
 
 @__cython.auto_pickle(False)
 cdef class containerStruct(thrift.py3.types.Struct):
+    def __init__(containerStruct self, **kwargs):
+        self._cpp_obj = make_shared[ccontainerStruct]()
+        self._fields_setter = __fbthrift_types_fields.__containerStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        containerStruct self, *,
-        pbool fieldA=None,
-        pbool req_fieldA=None,
-        pbool opt_fieldA=None,
-        fieldB=None,
-        req_fieldB=None,
-        opt_fieldB=None,
-        fieldC=None,
-        req_fieldC=None,
-        opt_fieldC=None,
-        str fieldD=None,
-        str fieldE=None,
-        str req_fieldE=None,
-        str opt_fieldE=None,
-        fieldF=None,
-        fieldG=None,
-        fieldH=None,
-        pbool fieldI=None,
-        fieldJ=None,
-        fieldK=None,
-        fieldL=None,
-        fieldM=None,
-        fieldN=None,
-        fieldO=None,
-        fieldP=None,
-        MyEnumA fieldQ=None,
-        MyEnumA fieldR=None,
-        MyEnumA req_fieldR=None,
-        MyEnumA opt_fieldR=None,
-        MyEnumA fieldS=None,
-        fieldT=None,
-        fieldU=None,
-        MyStruct fieldV=None,
-        MyStruct req_fieldV=None,
-        MyStruct opt_fieldV=None,
-        fieldW=None,
-        ComplexUnion fieldX=None,
-        ComplexUnion req_fieldX=None,
-        ComplexUnion opt_fieldX=None,
-        fieldY=None,
-        fieldZ=None,
-        fieldAA=None,
-        fieldAB=None,
-        MyEnumB fieldAC=None,
-        _includes_types.AnEnum fieldAD=None,
-        fieldAE=None,
-        str fieldSD=None
-    ):
-        if fieldN is not None:
-            if not isinstance(fieldN, int):
-                raise TypeError(f'fieldN is not a { int !r}.')
-            fieldN = <cint32_t> fieldN
-
-        self._cpp_obj = __to_shared_ptr(cmove(containerStruct._make_instance(
-          NULL,
-          NULL,
-          fieldA,
-          req_fieldA,
-          opt_fieldA,
-          fieldB,
-          req_fieldB,
-          opt_fieldB,
-          fieldC,
-          req_fieldC,
-          opt_fieldC,
-          fieldD,
-          fieldE,
-          req_fieldE,
-          opt_fieldE,
-          fieldF,
-          fieldG,
-          fieldH,
-          fieldI,
-          fieldJ,
-          fieldK,
-          fieldL,
-          fieldM,
-          fieldN,
-          fieldO,
-          fieldP,
-          fieldQ,
-          fieldR,
-          req_fieldR,
-          opt_fieldR,
-          fieldS,
-          fieldT,
-          fieldU,
-          fieldV,
-          req_fieldV,
-          opt_fieldV,
-          fieldW,
-          fieldX,
-          req_fieldX,
-          opt_fieldX,
-          fieldY,
-          fieldZ,
-          fieldAA,
-          fieldAB,
-          fieldAC,
-          fieldAD,
-          fieldAE,
-          fieldSD,
-        )))
-
-
-    @staticmethod
-    cdef unique_ptr[ccontainerStruct] _make_instance(
-        ccontainerStruct* base_instance,
-        bint* __isNOTSET,
-        pbool fieldA ,
-        pbool req_fieldA ,
-        pbool opt_fieldA ,
-        object fieldB ,
-        object req_fieldB ,
-        object opt_fieldB ,
-        object fieldC ,
-        object req_fieldC ,
-        object opt_fieldC ,
-        str fieldD ,
-        str fieldE ,
-        str req_fieldE ,
-        str opt_fieldE ,
-        object fieldF ,
-        object fieldG ,
-        object fieldH ,
-        pbool fieldI ,
-        object fieldJ ,
-        object fieldK ,
-        object fieldL ,
-        object fieldM ,
-        object fieldN ,
-        object fieldO ,
-        object fieldP ,
-        MyEnumA fieldQ ,
-        MyEnumA fieldR ,
-        MyEnumA req_fieldR ,
-        MyEnumA opt_fieldR ,
-        MyEnumA fieldS ,
-        object fieldT ,
-        object fieldU ,
-        MyStruct fieldV ,
-        MyStruct req_fieldV ,
-        MyStruct opt_fieldV ,
-        object fieldW ,
-        ComplexUnion fieldX ,
-        ComplexUnion req_fieldX ,
-        ComplexUnion opt_fieldX ,
-        object fieldY ,
-        object fieldZ ,
-        object fieldAA ,
-        object fieldAB ,
-        MyEnumB fieldAC ,
-        _includes_types.AnEnum fieldAD ,
-        object fieldAE ,
-        str fieldSD 
-    ) except *:
-        cdef unique_ptr[ccontainerStruct] c_inst
-        if base_instance:
-            raise TypeError("containerStruct is noncopyable")
-        else:
-            c_inst = make_unique[ccontainerStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA_ref().assign(default_inst[ccontainerStruct]().fieldA_ref().value())
-                deref(c_inst).__isset.fieldA = False
-                pass
-
-            if not __isNOTSET[1] and req_fieldA is None:
-                deref(c_inst).req_fieldA_ref().assign(default_inst[ccontainerStruct]().req_fieldA_ref().value())
-                pass
-
-            if not __isNOTSET[2] and opt_fieldA is None:
-                deref(c_inst).__isset.opt_fieldA = False
-                pass
-
-            if not __isNOTSET[3] and fieldB is None:
-                deref(c_inst).fieldB_ref().assign(default_inst[ccontainerStruct]().fieldB_ref().value())
-                deref(c_inst).__isset.fieldB = False
-                pass
-
-            if not __isNOTSET[4] and req_fieldB is None:
-                deref(c_inst).req_fieldB_ref().assign(default_inst[ccontainerStruct]().req_fieldB_ref().value())
-                pass
-
-            if not __isNOTSET[5] and opt_fieldB is None:
-                deref(c_inst).__isset.opt_fieldB = False
-                pass
-
-            if not __isNOTSET[6] and fieldC is None:
-                deref(c_inst).fieldC_ref().assign(default_inst[ccontainerStruct]().fieldC_ref().value())
-                deref(c_inst).__isset.fieldC = False
-                pass
-
-            if not __isNOTSET[7] and req_fieldC is None:
-                deref(c_inst).req_fieldC_ref().assign(default_inst[ccontainerStruct]().req_fieldC_ref().value())
-                pass
-
-            if not __isNOTSET[8] and opt_fieldC is None:
-                deref(c_inst).opt_fieldC_ref().assign(default_inst[ccontainerStruct]().opt_fieldC_ref().value_unchecked())
-                deref(c_inst).__isset.opt_fieldC = False
-                pass
-
-            if not __isNOTSET[9] and fieldD is None:
-                deref(c_inst).fieldD_ref().assign(default_inst[ccontainerStruct]().fieldD_ref().value())
-                deref(c_inst).__isset.fieldD = False
-                pass
-
-            if not __isNOTSET[10] and fieldE is None:
-                deref(c_inst).fieldE_ref().assign(default_inst[ccontainerStruct]().fieldE_ref().value())
-                deref(c_inst).__isset.fieldE = False
-                pass
-
-            if not __isNOTSET[11] and req_fieldE is None:
-                deref(c_inst).req_fieldE_ref().assign(default_inst[ccontainerStruct]().req_fieldE_ref().value())
-                pass
-
-            if not __isNOTSET[12] and opt_fieldE is None:
-                deref(c_inst).opt_fieldE_ref().assign(default_inst[ccontainerStruct]().opt_fieldE_ref().value_unchecked())
-                deref(c_inst).__isset.opt_fieldE = False
-                pass
-
-            if not __isNOTSET[13] and fieldF is None:
-                deref(c_inst).fieldF_ref().assign(default_inst[ccontainerStruct]().fieldF_ref().value())
-                deref(c_inst).__isset.fieldF = False
-                pass
-
-            if not __isNOTSET[14] and fieldG is None:
-                deref(c_inst).fieldG_ref().assign(default_inst[ccontainerStruct]().fieldG_ref().value())
-                deref(c_inst).__isset.fieldG = False
-                pass
-
-            if not __isNOTSET[15] and fieldH is None:
-                deref(c_inst).fieldH_ref().assign(default_inst[ccontainerStruct]().fieldH_ref().value())
-                deref(c_inst).__isset.fieldH = False
-                pass
-
-            if not __isNOTSET[16] and fieldI is None:
-                deref(c_inst).fieldI_ref().assign(default_inst[ccontainerStruct]().fieldI_ref().value())
-                deref(c_inst).__isset.fieldI = False
-                pass
-
-            if not __isNOTSET[17] and fieldJ is None:
-                deref(c_inst).fieldJ_ref().assign(default_inst[ccontainerStruct]().fieldJ_ref().value())
-                deref(c_inst).__isset.fieldJ = False
-                pass
-
-            if not __isNOTSET[18] and fieldK is None:
-                deref(c_inst).fieldK_ref().assign(default_inst[ccontainerStruct]().fieldK_ref().value())
-                deref(c_inst).__isset.fieldK = False
-                pass
-
-            if not __isNOTSET[19] and fieldL is None:
-                deref(c_inst).fieldL_ref().assign(default_inst[ccontainerStruct]().fieldL_ref().value())
-                deref(c_inst).__isset.fieldL = False
-                pass
-
-            if not __isNOTSET[20] and fieldM is None:
-                deref(c_inst).fieldM_ref().assign(default_inst[ccontainerStruct]().fieldM_ref().value())
-                deref(c_inst).__isset.fieldM = False
-                pass
-
-            if not __isNOTSET[21] and fieldN is None:
-                deref(c_inst).fieldN_ref().assign(default_inst[ccontainerStruct]().fieldN_ref().value())
-                deref(c_inst).__isset.fieldN = False
-                pass
-
-            if not __isNOTSET[22] and fieldO is None:
-                deref(c_inst).fieldO_ref().assign(default_inst[ccontainerStruct]().fieldO_ref().value())
-                deref(c_inst).__isset.fieldO = False
-                pass
-
-            if not __isNOTSET[23] and fieldP is None:
-                deref(c_inst).fieldP_ref().assign(default_inst[ccontainerStruct]().fieldP_ref().value())
-                deref(c_inst).__isset.fieldP = False
-                pass
-
-            if not __isNOTSET[24] and fieldQ is None:
-                deref(c_inst).fieldQ_ref().assign(default_inst[ccontainerStruct]().fieldQ_ref().value())
-                deref(c_inst).__isset.fieldQ = False
-                pass
-
-            if not __isNOTSET[25] and fieldR is None:
-                deref(c_inst).fieldR_ref().assign(default_inst[ccontainerStruct]().fieldR_ref().value())
-                deref(c_inst).__isset.fieldR = False
-                pass
-
-            if not __isNOTSET[26] and req_fieldR is None:
-                deref(c_inst).req_fieldR_ref().assign(default_inst[ccontainerStruct]().req_fieldR_ref().value())
-                pass
-
-            if not __isNOTSET[27] and opt_fieldR is None:
-                deref(c_inst).opt_fieldR_ref().assign(default_inst[ccontainerStruct]().opt_fieldR_ref().value_unchecked())
-                deref(c_inst).__isset.opt_fieldR = False
-                pass
-
-            if not __isNOTSET[28] and fieldS is None:
-                deref(c_inst).fieldS_ref().assign(default_inst[ccontainerStruct]().fieldS_ref().value())
-                deref(c_inst).__isset.fieldS = False
-                pass
-
-            if not __isNOTSET[29] and fieldT is None:
-                deref(c_inst).fieldT_ref().assign(default_inst[ccontainerStruct]().fieldT_ref().value())
-                deref(c_inst).__isset.fieldT = False
-                pass
-
-            if not __isNOTSET[30] and fieldU is None:
-                deref(c_inst).fieldU_ref().assign(default_inst[ccontainerStruct]().fieldU_ref().value())
-                deref(c_inst).__isset.fieldU = False
-                pass
-
-            if not __isNOTSET[31] and fieldV is None:
-                deref(c_inst).fieldV_ref().assign(default_inst[ccontainerStruct]().fieldV_ref().value())
-                deref(c_inst).__isset.fieldV = False
-                pass
-
-            if not __isNOTSET[32] and req_fieldV is None:
-                deref(c_inst).req_fieldV_ref().assign(default_inst[ccontainerStruct]().req_fieldV_ref().value())
-                pass
-
-            if not __isNOTSET[33] and opt_fieldV is None:
-                deref(c_inst).__isset.opt_fieldV = False
-                pass
-
-            if not __isNOTSET[34] and fieldW is None:
-                deref(c_inst).fieldW_ref().assign(default_inst[ccontainerStruct]().fieldW_ref().value())
-                deref(c_inst).__isset.fieldW = False
-                pass
-
-            if not __isNOTSET[35] and fieldX is None:
-                deref(c_inst).fieldX_ref().assign(default_inst[ccontainerStruct]().fieldX_ref().value())
-                deref(c_inst).__isset.fieldX = False
-                pass
-
-            if not __isNOTSET[36] and req_fieldX is None:
-                deref(c_inst).req_fieldX_ref().assign(default_inst[ccontainerStruct]().req_fieldX_ref().value())
-                pass
-
-            if not __isNOTSET[37] and opt_fieldX is None:
-                deref(c_inst).__isset.opt_fieldX = False
-                pass
-
-            if not __isNOTSET[38] and fieldY is None:
-                deref(c_inst).fieldY_ref().assign(default_inst[ccontainerStruct]().fieldY_ref().value())
-                deref(c_inst).__isset.fieldY = False
-                pass
-
-            if not __isNOTSET[39] and fieldZ is None:
-                deref(c_inst).fieldZ_ref().assign(default_inst[ccontainerStruct]().fieldZ_ref().value())
-                deref(c_inst).__isset.fieldZ = False
-                pass
-
-            if not __isNOTSET[40] and fieldAA is None:
-                deref(c_inst).fieldAA_ref().assign(default_inst[ccontainerStruct]().fieldAA_ref().value())
-                deref(c_inst).__isset.fieldAA = False
-                pass
-
-            if not __isNOTSET[41] and fieldAB is None:
-                deref(c_inst).fieldAB_ref().assign(default_inst[ccontainerStruct]().fieldAB_ref().value())
-                deref(c_inst).__isset.fieldAB = False
-                pass
-
-            if not __isNOTSET[42] and fieldAC is None:
-                deref(c_inst).fieldAC_ref().assign(default_inst[ccontainerStruct]().fieldAC_ref().value())
-                deref(c_inst).__isset.fieldAC = False
-                pass
-
-            if not __isNOTSET[43] and fieldAD is None:
-                deref(c_inst).fieldAD_ref().assign(default_inst[ccontainerStruct]().fieldAD_ref().value())
-                deref(c_inst).__isset.fieldAD = False
-                pass
-
-            if not __isNOTSET[44] and fieldAE is None:
-                deref(c_inst).fieldAE_ref().assign(default_inst[ccontainerStruct]().fieldAE_ref().value())
-                deref(c_inst).__isset.fieldAE = False
-                pass
-
-            if not __isNOTSET[45] and fieldSD is None:
-                deref(c_inst).fieldSD_ref().assign(default_inst[ccontainerStruct]().fieldSD_ref().value())
-                deref(c_inst).__isset.fieldSD = False
-                pass
-
-        if fieldA is not None:
-            deref(c_inst).fieldA_ref().assign(fieldA)
-            deref(c_inst).__isset.fieldA = True
-        if req_fieldA is not None:
-            deref(c_inst).req_fieldA_ref().assign(req_fieldA)
-        if opt_fieldA is not None:
-            deref(c_inst).opt_fieldA_ref().assign(opt_fieldA)
-            deref(c_inst).__isset.opt_fieldA = True
-        if fieldB is not None:
-            deref(c_inst).fieldB_ref().assign(deref(Map__string_bool(fieldB)._cpp_obj))
-            deref(c_inst).__isset.fieldB = True
-        if req_fieldB is not None:
-            deref(c_inst).req_fieldB_ref().assign(deref(Map__string_bool(req_fieldB)._cpp_obj))
-        if opt_fieldB is not None:
-            deref(c_inst).opt_fieldB_ref().assign(deref(Map__string_bool(opt_fieldB)._cpp_obj))
-            deref(c_inst).__isset.opt_fieldB = True
-        if fieldC is not None:
-            deref(c_inst).fieldC_ref().assign(deref(Set__i32(fieldC)._cpp_obj))
-            deref(c_inst).__isset.fieldC = True
-        if req_fieldC is not None:
-            deref(c_inst).req_fieldC_ref().assign(deref(Set__i32(req_fieldC)._cpp_obj))
-        if opt_fieldC is not None:
-            deref(c_inst).opt_fieldC_ref().assign(deref(Set__i32(opt_fieldC)._cpp_obj))
-            deref(c_inst).__isset.opt_fieldC = True
-        if fieldD is not None:
-            deref(c_inst).fieldD_ref().assign(cmove(thrift.py3.types.bytes_to_string(fieldD.encode('utf-8'))))
-            deref(c_inst).__isset.fieldD = True
-        if fieldE is not None:
-            deref(c_inst).fieldE_ref().assign(cmove(thrift.py3.types.bytes_to_string(fieldE.encode('utf-8'))))
-            deref(c_inst).__isset.fieldE = True
-        if req_fieldE is not None:
-            deref(c_inst).req_fieldE_ref().assign(cmove(thrift.py3.types.bytes_to_string(req_fieldE.encode('utf-8'))))
-        if opt_fieldE is not None:
-            deref(c_inst).opt_fieldE_ref().assign(cmove(thrift.py3.types.bytes_to_string(opt_fieldE.encode('utf-8'))))
-            deref(c_inst).__isset.opt_fieldE = True
-        if fieldF is not None:
-            deref(c_inst).fieldF_ref().assign(deref(List__List__i32(fieldF)._cpp_obj))
-            deref(c_inst).__isset.fieldF = True
-        if fieldG is not None:
-            deref(c_inst).fieldG_ref().assign(deref(Map__string_Map__string_Map__string_i32(fieldG)._cpp_obj))
-            deref(c_inst).__isset.fieldG = True
-        if fieldH is not None:
-            deref(c_inst).fieldH_ref().assign(deref(List__Set__i32(fieldH)._cpp_obj))
-            deref(c_inst).__isset.fieldH = True
-        if fieldI is not None:
-            deref(c_inst).fieldI_ref().assign(fieldI)
-            deref(c_inst).__isset.fieldI = True
-        if fieldJ is not None:
-            deref(c_inst).fieldJ_ref().assign(deref(Map__string_List__i32(fieldJ)._cpp_obj))
-            deref(c_inst).__isset.fieldJ = True
-        if fieldK is not None:
-            deref(c_inst).fieldK_ref().assign(deref(List__List__List__List__i32(fieldK)._cpp_obj))
-            deref(c_inst).__isset.fieldK = True
-        if fieldL is not None:
-            deref(c_inst).fieldL_ref().assign(deref(Set__Set__Set__bool(fieldL)._cpp_obj))
-            deref(c_inst).__isset.fieldL = True
-        if fieldM is not None:
-            deref(c_inst).fieldM_ref().assign(deref(Map__Set__List__i32_Map__List__Set__string_string(fieldM)._cpp_obj))
-            deref(c_inst).__isset.fieldM = True
-        if fieldN is not None:
-            deref(c_inst).fieldN_ref().assign(fieldN)
-            deref(c_inst).__isset.fieldN = True
-        if fieldO is not None:
-            deref(c_inst).fieldO_ref().assign(deref(List__Map__Empty_MyStruct(fieldO)._cpp_obj))
-            deref(c_inst).__isset.fieldO = True
-        if fieldP is not None:
-            deref(c_inst).fieldP_ref().assign(deref(List__List__List__Map__Empty_MyStruct(fieldP)._cpp_obj))
-            deref(c_inst).__isset.fieldP = True
-        if fieldQ is not None:
-            deref(c_inst).fieldQ_ref().assign(<cMyEnumA><int>fieldQ)
-            deref(c_inst).__isset.fieldQ = True
-        if fieldR is not None:
-            deref(c_inst).fieldR_ref().assign(<cMyEnumA><int>fieldR)
-            deref(c_inst).__isset.fieldR = True
-        if req_fieldR is not None:
-            deref(c_inst).req_fieldR_ref().assign(<cMyEnumA><int>req_fieldR)
-        if opt_fieldR is not None:
-            deref(c_inst).opt_fieldR_ref().assign(<cMyEnumA><int>opt_fieldR)
-            deref(c_inst).__isset.opt_fieldR = True
-        if fieldS is not None:
-            deref(c_inst).fieldS_ref().assign(<cMyEnumA><int>fieldS)
-            deref(c_inst).__isset.fieldS = True
-        if fieldT is not None:
-            deref(c_inst).fieldT_ref().assign(deref(List__MyEnumA(fieldT)._cpp_obj))
-            deref(c_inst).__isset.fieldT = True
-        if fieldU is not None:
-            deref(c_inst).fieldU_ref().assign(deref(List__MyEnumA(fieldU)._cpp_obj))
-            deref(c_inst).__isset.fieldU = True
-        if fieldV is not None:
-            deref(c_inst).fieldV_ref().assign(deref((<MyStruct?> fieldV)._cpp_obj))
-            deref(c_inst).__isset.fieldV = True
-        if req_fieldV is not None:
-            deref(c_inst).req_fieldV_ref().assign(deref((<MyStruct?> req_fieldV)._cpp_obj))
-        if opt_fieldV is not None:
-            deref(c_inst).opt_fieldV_ref().assign(deref((<MyStruct?> opt_fieldV)._cpp_obj))
-            deref(c_inst).__isset.opt_fieldV = True
-        if fieldW is not None:
-            deref(c_inst).fieldW_ref().assign(deref(Set__MyStruct(fieldW)._cpp_obj))
-            deref(c_inst).__isset.fieldW = True
-        if fieldX is not None:
-            deref(c_inst).fieldX_ref().assign(deref((<ComplexUnion?> fieldX)._cpp_obj))
-            deref(c_inst).__isset.fieldX = True
-        if req_fieldX is not None:
-            deref(c_inst).req_fieldX_ref().assign(deref((<ComplexUnion?> req_fieldX)._cpp_obj))
-        if opt_fieldX is not None:
-            deref(c_inst).opt_fieldX_ref().assign(deref((<ComplexUnion?> opt_fieldX)._cpp_obj))
-            deref(c_inst).__isset.opt_fieldX = True
-        if fieldY is not None:
-            deref(c_inst).fieldY_ref().assign(deref(List__ComplexUnion(fieldY)._cpp_obj))
-            deref(c_inst).__isset.fieldY = True
-        if fieldZ is not None:
-            deref(c_inst).fieldZ_ref().assign(deref(Set__SimpleUnion(fieldZ)._cpp_obj))
-            deref(c_inst).__isset.fieldZ = True
-        if fieldAA is not None:
-            deref(c_inst).fieldAA_ref().assign(deref(List__Set__SimpleUnion(fieldAA)._cpp_obj))
-            deref(c_inst).__isset.fieldAA = True
-        if fieldAB is not None:
-            deref(c_inst).fieldAB_ref().assign(deref(Map__Bar__double_Baz__i32(fieldAB)._cpp_obj))
-            deref(c_inst).__isset.fieldAB = True
-        if fieldAC is not None:
-            deref(c_inst).fieldAC_ref().assign(<cMyEnumB><int>fieldAC)
-            deref(c_inst).__isset.fieldAC = True
-        if fieldAD is not None:
-            deref(c_inst).fieldAD_ref().assign(<_includes_types.cAnEnum><int>fieldAD)
-            deref(c_inst).__isset.fieldAD = True
-        if fieldAE is not None:
-            deref(c_inst).fieldAE_ref().assign(deref(Map__string_i32(fieldAE)._cpp_obj))
-            deref(c_inst).__isset.fieldAE = True
-        if fieldSD is not None:
-            deref(c_inst).fieldSD_ref().assign(cmove(thrift.py3.types.bytes_to_string(fieldSD.encode('utf-8'))))
-            deref(c_inst).__isset.fieldSD = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("containerStruct", {
@@ -2734,54 +1700,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
           "fieldAE": deref(self._cpp_obj).fieldAE_ref().has_value(),
           "fieldSD": deref(self._cpp_obj).fieldSD_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'fieldA', self.fieldA
-        yield 'req_fieldA', self.req_fieldA
-        yield 'opt_fieldA', self.opt_fieldA
-        yield 'fieldB', self.fieldB
-        yield 'req_fieldB', self.req_fieldB
-        yield 'opt_fieldB', self.opt_fieldB
-        yield 'fieldC', self.fieldC
-        yield 'req_fieldC', self.req_fieldC
-        yield 'opt_fieldC', self.opt_fieldC
-        yield 'fieldD', self.fieldD
-        yield 'fieldE', self.fieldE
-        yield 'req_fieldE', self.req_fieldE
-        yield 'opt_fieldE', self.opt_fieldE
-        yield 'fieldF', self.fieldF
-        yield 'fieldG', self.fieldG
-        yield 'fieldH', self.fieldH
-        yield 'fieldI', self.fieldI
-        yield 'fieldJ', self.fieldJ
-        yield 'fieldK', self.fieldK
-        yield 'fieldL', self.fieldL
-        yield 'fieldM', self.fieldM
-        yield 'fieldN', self.fieldN
-        yield 'fieldO', self.fieldO
-        yield 'fieldP', self.fieldP
-        yield 'fieldQ', self.fieldQ
-        yield 'fieldR', self.fieldR
-        yield 'req_fieldR', self.req_fieldR
-        yield 'opt_fieldR', self.opt_fieldR
-        yield 'fieldS', self.fieldS
-        yield 'fieldT', self.fieldT
-        yield 'fieldU', self.fieldU
-        yield 'fieldV', self.fieldV
-        yield 'req_fieldV', self.req_fieldV
-        yield 'opt_fieldV', self.opt_fieldV
-        yield 'fieldW', self.fieldW
-        yield 'fieldX', self.fieldX
-        yield 'req_fieldX', self.req_fieldX
-        yield 'opt_fieldX', self.opt_fieldX
-        yield 'fieldY', self.fieldY
-        yield 'fieldZ', self.fieldZ
-        yield 'fieldAA', self.fieldAA
-        yield 'fieldAB', self.fieldAB
-        yield 'fieldAC', self.fieldAC
-        yield 'fieldAD', self.fieldAD
-        yield 'fieldAE', self.fieldAE
-        yield 'fieldSD', self.fieldSD
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct] cpp_obj):
@@ -3104,6 +2022,12 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__containerStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[ccontainerStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 46
+
     cdef __iobuf.IOBuf _serialize(containerStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -3120,147 +2044,23 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
+    def __init__(MyIncludedStruct self, **kwargs):
+        self._cpp_obj = make_shared[cMyIncludedStruct]()
+        self._fields_setter = __fbthrift_types_fields.__MyIncludedStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        MyIncludedStruct self, *,
-        MyIncludedInt=None,
-        _includes_types.AStruct MyIncludedStruct=None,
-        _includes_types.AStruct ARefField=None,
-        _includes_types.AStruct ARequiredField=None
-    ):
-        if MyIncludedInt is not None:
-            if not isinstance(MyIncludedInt, int):
-                raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            MyIncludedInt = <cint64_t> MyIncludedInt
-
-        self._cpp_obj = __to_shared_ptr(cmove(MyIncludedStruct._make_instance(
-          NULL,
-          NULL,
-          MyIncludedInt,
-          MyIncludedStruct,
-          ARefField,
-          ARequiredField,
-        )))
-
-    def __call__(
-        MyIncludedStruct self,
-        MyIncludedInt=__NOTSET,
-        MyIncludedStruct=__NOTSET,
-        ARefField=__NOTSET,
-        ARequiredField=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[4] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if MyIncludedInt is ___NOTSET:
-            __isNOTSET[0] = True
-            MyIncludedInt = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if MyIncludedStruct is ___NOTSET:
-            __isNOTSET[1] = True
-            MyIncludedStruct = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if ARefField is ___NOTSET:
-            __isNOTSET[2] = True
-            ARefField = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if ARequiredField is ___NOTSET:
-            __isNOTSET[3] = True
-            ARequiredField = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(MyIncludedStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if MyIncludedInt is not None:
-            if not isinstance(MyIncludedInt, int):
-                raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            MyIncludedInt = <cint64_t> MyIncludedInt
-
-        if MyIncludedStruct is not None:
-            if not isinstance(MyIncludedStruct, _includes_types.AStruct):
-                raise TypeError(f'MyIncludedStruct is not a { _includes_types.AStruct !r}.')
-
-        if ARefField is not None:
-            if not isinstance(ARefField, _includes_types.AStruct):
-                raise TypeError(f'ARefField is not a { _includes_types.AStruct !r}.')
-
-        if ARequiredField is not None:
-            if not isinstance(ARequiredField, _includes_types.AStruct):
-                raise TypeError(f'ARequiredField is not a { _includes_types.AStruct !r}.')
-
-        __fbthrift_inst = <MyIncludedStruct>MyIncludedStruct.__new__(MyIncludedStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyIncludedStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          MyIncludedInt,
-          MyIncludedStruct,
-          ARefField,
-          ARequiredField,
-        )))
+        cdef MyIncludedStruct __fbthrift_inst = MyIncludedStruct.__new__(MyIncludedStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cMyIncludedStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyIncludedStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cMyIncludedStruct] _make_instance(
-        cMyIncludedStruct* base_instance,
-        bint* __isNOTSET,
-        object MyIncludedInt ,
-        _includes_types.AStruct MyIncludedStruct ,
-        _includes_types.AStruct ARefField ,
-        _includes_types.AStruct ARequiredField 
-    ) except *:
-        cdef unique_ptr[cMyIncludedStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cMyIncludedStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cMyIncludedStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and MyIncludedInt is None:
-                deref(c_inst).MyIncludedInt_ref().assign(default_inst[cMyIncludedStruct]().MyIncludedInt_ref().value())
-                deref(c_inst).__isset.MyIncludedInt = False
-                pass
-
-            if not __isNOTSET[1] and MyIncludedStruct is None:
-                deref(c_inst).MyIncludedStruct_ref().assign(default_inst[cMyIncludedStruct]().MyIncludedStruct_ref().value())
-                deref(c_inst).__isset.MyIncludedStruct = False
-                pass
-
-            if not __isNOTSET[2] and ARefField is None:
-                deref(c_inst).ARefField.reset()
-                pass
-
-            if not __isNOTSET[3] and ARequiredField is None:
-                deref(c_inst).ARequiredField_ref().assign(default_inst[cMyIncludedStruct]().ARequiredField_ref().value())
-                pass
-
-        if MyIncludedInt is not None:
-            deref(c_inst).MyIncludedInt_ref().assign(MyIncludedInt)
-            deref(c_inst).__isset.MyIncludedInt = True
-        if MyIncludedStruct is not None:
-            deref(c_inst).MyIncludedStruct_ref().assign(deref((<_includes_types.AStruct?> MyIncludedStruct)._cpp_obj))
-            deref(c_inst).__isset.MyIncludedStruct = True
-        if ARefField is not None:
-            deref(c_inst).ARefField = make_unique[_includes_types.cAStruct](deref((<_includes_types.AStruct?>ARefField)._cpp_obj))
-        if ARequiredField is not None:
-            deref(c_inst).ARequiredField_ref().assign(deref((<_includes_types.AStruct?> ARequiredField)._cpp_obj))
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyIncludedStruct", {
@@ -3268,12 +2068,6 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
           "MyIncludedStruct": deref(self._cpp_obj).MyIncludedStruct_ref().has_value(),
           "ARequiredField": deref(self._cpp_obj).ARequiredField_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'MyIncludedInt', self.MyIncludedInt
-        yield 'MyIncludedStruct', self.MyIncludedStruct
-        yield 'ARefField', self.ARefField
-        yield 'ARequiredField', self.ARequiredField
 
     @staticmethod
     cdef create(shared_ptr[cMyIncludedStruct] cpp_obj):
@@ -3331,6 +2125,12 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyIncludedStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyIncludedStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 4
+
     cdef __iobuf.IOBuf _serialize(MyIncludedStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -3347,446 +2147,13 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
+    def __init__(AnnotatedStruct self, **kwargs):
+        self._cpp_obj = make_shared[cAnnotatedStruct]()
+        self._fields_setter = __fbthrift_types_fields.__AnnotatedStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        AnnotatedStruct self, *,
-        containerStruct no_annotation=None,
-        containerStruct cpp_unique_ref=None,
-        containerStruct cpp2_unique_ref=None,
-        container_with_ref=None,
-        containerStruct req_cpp_unique_ref=None,
-        containerStruct req_cpp2_unique_ref=None,
-        req_container_with_ref=None,
-        containerStruct opt_cpp_unique_ref=None,
-        containerStruct opt_cpp2_unique_ref=None,
-        opt_container_with_ref=None,
-        containerStruct ref_type_unique=None,
-        containerStruct ref_type_shared=None,
-        ref_type_const=None,
-        containerStruct req_ref_type_shared=None,
-        containerStruct req_ref_type_const=None,
-        req_ref_type_unique=None,
-        containerStruct opt_ref_type_const=None,
-        containerStruct opt_ref_type_unique=None,
-        opt_ref_type_shared=None,
-        base_type=None,
-        list_type=None,
-        set_type=None,
-        map_type=None,
-        map_struct_type=None,
-        __iobuf.IOBuf iobuf_type=None,
-        __iobuf.IOBuf iobuf_ptr=None,
-        list_i32_template=None,
-        list_string_template=None,
-        set_template=None,
-        map_template=None,
-        typedef_list_template=None,
-        typedef_deque_template=None,
-        typedef_set_template=None,
-        typedef_map_template=None,
-        indirection_a=None,
-        indirection_b=None,
-        indirection_c=None,
-        __iobuf.IOBuf iobuf_type_val=None,
-        __iobuf.IOBuf iobuf_ptr_val=None,
-        containerStruct struct_struct=None
-    ):
-        if base_type is not None:
-            if not isinstance(base_type, int):
-                raise TypeError(f'base_type is not a { int !r}.')
-            base_type = <cint32_t> base_type
-
-        if indirection_a is not None:
-            if not isinstance(indirection_a, int):
-                raise TypeError(f'indirection_a is not a { int !r}.')
-            indirection_a = <cint64_t> indirection_a
-
-        self._cpp_obj = __to_shared_ptr(cmove(AnnotatedStruct._make_instance(
-          NULL,
-          NULL,
-          no_annotation,
-          cpp_unique_ref,
-          cpp2_unique_ref,
-          container_with_ref,
-          req_cpp_unique_ref,
-          req_cpp2_unique_ref,
-          req_container_with_ref,
-          opt_cpp_unique_ref,
-          opt_cpp2_unique_ref,
-          opt_container_with_ref,
-          ref_type_unique,
-          ref_type_shared,
-          ref_type_const,
-          req_ref_type_shared,
-          req_ref_type_const,
-          req_ref_type_unique,
-          opt_ref_type_const,
-          opt_ref_type_unique,
-          opt_ref_type_shared,
-          base_type,
-          list_type,
-          set_type,
-          map_type,
-          map_struct_type,
-          iobuf_type,
-          iobuf_ptr,
-          list_i32_template,
-          list_string_template,
-          set_template,
-          map_template,
-          typedef_list_template,
-          typedef_deque_template,
-          typedef_set_template,
-          typedef_map_template,
-          indirection_a,
-          indirection_b,
-          indirection_c,
-          iobuf_type_val,
-          iobuf_ptr_val,
-          struct_struct,
-        )))
-
-
-    @staticmethod
-    cdef unique_ptr[cAnnotatedStruct] _make_instance(
-        cAnnotatedStruct* base_instance,
-        bint* __isNOTSET,
-        containerStruct no_annotation ,
-        containerStruct cpp_unique_ref ,
-        containerStruct cpp2_unique_ref ,
-        object container_with_ref ,
-        containerStruct req_cpp_unique_ref ,
-        containerStruct req_cpp2_unique_ref ,
-        object req_container_with_ref ,
-        containerStruct opt_cpp_unique_ref ,
-        containerStruct opt_cpp2_unique_ref ,
-        object opt_container_with_ref ,
-        containerStruct ref_type_unique ,
-        containerStruct ref_type_shared ,
-        object ref_type_const ,
-        containerStruct req_ref_type_shared ,
-        containerStruct req_ref_type_const ,
-        object req_ref_type_unique ,
-        containerStruct opt_ref_type_const ,
-        containerStruct opt_ref_type_unique ,
-        object opt_ref_type_shared ,
-        object base_type ,
-        object list_type ,
-        object set_type ,
-        object map_type ,
-        object map_struct_type ,
-        __iobuf.IOBuf iobuf_type ,
-        __iobuf.IOBuf iobuf_ptr ,
-        object list_i32_template ,
-        object list_string_template ,
-        object set_template ,
-        object map_template ,
-        object typedef_list_template ,
-        object typedef_deque_template ,
-        object typedef_set_template ,
-        object typedef_map_template ,
-        object indirection_a ,
-        object indirection_b ,
-        object indirection_c ,
-        __iobuf.IOBuf iobuf_type_val ,
-        __iobuf.IOBuf iobuf_ptr_val ,
-        containerStruct struct_struct 
-    ) except *:
-        cdef unique_ptr[cAnnotatedStruct] c_inst
-        if base_instance:
-            raise TypeError("AnnotatedStruct is noncopyable")
-        else:
-            c_inst = make_unique[cAnnotatedStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and no_annotation is None:
-                deref(c_inst).no_annotation_ref().assign(default_inst[cAnnotatedStruct]().no_annotation_ref().value())
-                deref(c_inst).__isset.no_annotation = False
-                pass
-
-            if not __isNOTSET[1] and cpp_unique_ref is None:
-                deref(c_inst).cpp_unique_ref.reset()
-                pass
-
-            if not __isNOTSET[2] and cpp2_unique_ref is None:
-                deref(c_inst).cpp2_unique_ref.reset()
-                pass
-
-            if not __isNOTSET[3] and container_with_ref is None:
-                deref(c_inst).container_with_ref.reset()
-                pass
-
-            if not __isNOTSET[4] and req_cpp_unique_ref is None:
-                deref(c_inst).req_cpp_unique_ref.reset()
-                pass
-
-            if not __isNOTSET[5] and req_cpp2_unique_ref is None:
-                deref(c_inst).req_cpp2_unique_ref.reset()
-                pass
-
-            if not __isNOTSET[6] and req_container_with_ref is None:
-                deref(c_inst).req_container_with_ref.reset()
-                pass
-
-            if not __isNOTSET[7] and opt_cpp_unique_ref is None:
-                deref(c_inst).opt_cpp_unique_ref.reset()
-                pass
-
-            if not __isNOTSET[8] and opt_cpp2_unique_ref is None:
-                deref(c_inst).opt_cpp2_unique_ref.reset()
-                pass
-
-            if not __isNOTSET[9] and opt_container_with_ref is None:
-                deref(c_inst).opt_container_with_ref.reset()
-                pass
-
-            if not __isNOTSET[10] and ref_type_unique is None:
-                deref(c_inst).ref_type_unique.reset()
-                pass
-
-            if not __isNOTSET[11] and ref_type_shared is None:
-                deref(c_inst).ref_type_shared.reset()
-                pass
-
-            if not __isNOTSET[12] and ref_type_const is None:
-                deref(c_inst).ref_type_const.reset()
-                pass
-
-            if not __isNOTSET[13] and req_ref_type_shared is None:
-                deref(c_inst).req_ref_type_shared.reset()
-                pass
-
-            if not __isNOTSET[14] and req_ref_type_const is None:
-                deref(c_inst).req_ref_type_const.reset()
-                pass
-
-            if not __isNOTSET[15] and req_ref_type_unique is None:
-                deref(c_inst).req_ref_type_unique.reset()
-                pass
-
-            if not __isNOTSET[16] and opt_ref_type_const is None:
-                deref(c_inst).opt_ref_type_const.reset()
-                pass
-
-            if not __isNOTSET[17] and opt_ref_type_unique is None:
-                deref(c_inst).opt_ref_type_unique.reset()
-                pass
-
-            if not __isNOTSET[18] and opt_ref_type_shared is None:
-                deref(c_inst).opt_ref_type_shared.reset()
-                pass
-
-            if not __isNOTSET[19] and base_type is None:
-                deref(c_inst).base_type_ref().assign(default_inst[cAnnotatedStruct]().base_type_ref().value())
-                deref(c_inst).__isset.base_type = False
-                pass
-
-            if not __isNOTSET[20] and list_type is None:
-                deref(c_inst).list_type_ref().assign(default_inst[cAnnotatedStruct]().list_type_ref().value())
-                deref(c_inst).__isset.list_type = False
-                pass
-
-            if not __isNOTSET[21] and set_type is None:
-                deref(c_inst).set_type_ref().assign(default_inst[cAnnotatedStruct]().set_type_ref().value())
-                deref(c_inst).__isset.set_type = False
-                pass
-
-            if not __isNOTSET[22] and map_type is None:
-                deref(c_inst).map_type_ref().assign(default_inst[cAnnotatedStruct]().map_type_ref().value())
-                deref(c_inst).__isset.map_type = False
-                pass
-
-            if not __isNOTSET[23] and map_struct_type is None:
-                deref(c_inst).map_struct_type_ref().assign(default_inst[cAnnotatedStruct]().map_struct_type_ref().value())
-                deref(c_inst).__isset.map_struct_type = False
-                pass
-
-            if not __isNOTSET[24] and iobuf_type is None:
-                deref(c_inst).iobuf_type_ref().assign(default_inst[cAnnotatedStruct]().iobuf_type_ref().value())
-                deref(c_inst).__isset.iobuf_type = False
-                pass
-
-            if not __isNOTSET[25] and iobuf_ptr is None:
-                deref(c_inst).__isset.iobuf_ptr = False
-                deref(c_inst).iobuf_ptr.reset()
-                pass
-
-            if not __isNOTSET[26] and list_i32_template is None:
-                deref(c_inst).list_i32_template_ref().assign(default_inst[cAnnotatedStruct]().list_i32_template_ref().value())
-                deref(c_inst).__isset.list_i32_template = False
-                pass
-
-            if not __isNOTSET[27] and list_string_template is None:
-                deref(c_inst).list_string_template_ref().assign(default_inst[cAnnotatedStruct]().list_string_template_ref().value())
-                deref(c_inst).__isset.list_string_template = False
-                pass
-
-            if not __isNOTSET[28] and set_template is None:
-                deref(c_inst).set_template_ref().assign(default_inst[cAnnotatedStruct]().set_template_ref().value())
-                deref(c_inst).__isset.set_template = False
-                pass
-
-            if not __isNOTSET[29] and map_template is None:
-                deref(c_inst).map_template_ref().assign(default_inst[cAnnotatedStruct]().map_template_ref().value())
-                deref(c_inst).__isset.map_template = False
-                pass
-
-            if not __isNOTSET[30] and typedef_list_template is None:
-                deref(c_inst).typedef_list_template_ref().assign(default_inst[cAnnotatedStruct]().typedef_list_template_ref().value())
-                deref(c_inst).__isset.typedef_list_template = False
-                pass
-
-            if not __isNOTSET[31] and typedef_deque_template is None:
-                deref(c_inst).typedef_deque_template_ref().assign(default_inst[cAnnotatedStruct]().typedef_deque_template_ref().value())
-                deref(c_inst).__isset.typedef_deque_template = False
-                pass
-
-            if not __isNOTSET[32] and typedef_set_template is None:
-                deref(c_inst).typedef_set_template_ref().assign(default_inst[cAnnotatedStruct]().typedef_set_template_ref().value())
-                deref(c_inst).__isset.typedef_set_template = False
-                pass
-
-            if not __isNOTSET[33] and typedef_map_template is None:
-                deref(c_inst).typedef_map_template_ref().assign(default_inst[cAnnotatedStruct]().typedef_map_template_ref().value())
-                deref(c_inst).__isset.typedef_map_template = False
-                pass
-
-            if not __isNOTSET[34] and indirection_a is None:
-                deref(c_inst).indirection_a_ref().assign(default_inst[cAnnotatedStruct]().indirection_a_ref().value())
-                deref(c_inst).__isset.indirection_a = False
-                pass
-
-            if not __isNOTSET[35] and indirection_b is None:
-                deref(c_inst).indirection_b_ref().assign(default_inst[cAnnotatedStruct]().indirection_b_ref().value())
-                deref(c_inst).__isset.indirection_b = False
-                pass
-
-            if not __isNOTSET[36] and indirection_c is None:
-                deref(c_inst).indirection_c_ref().assign(default_inst[cAnnotatedStruct]().indirection_c_ref().value())
-                deref(c_inst).__isset.indirection_c = False
-                pass
-
-            if not __isNOTSET[37] and iobuf_type_val is None:
-                deref(c_inst).iobuf_type_val_ref().assign(default_inst[cAnnotatedStruct]().iobuf_type_val_ref().value())
-                deref(c_inst).__isset.iobuf_type_val = False
-                pass
-
-            if not __isNOTSET[38] and iobuf_ptr_val is None:
-                deref(c_inst).__isset.iobuf_ptr_val = False
-                deref(c_inst).iobuf_ptr_val.reset()
-                pass
-
-            if not __isNOTSET[39] and struct_struct is None:
-                deref(c_inst).struct_struct_ref().assign(default_inst[cAnnotatedStruct]().struct_struct_ref().value())
-                deref(c_inst).__isset.struct_struct = False
-                pass
-
-        if no_annotation is not None:
-            deref(c_inst).no_annotation_ref().assign(deref((<containerStruct?> no_annotation)._cpp_obj))
-            deref(c_inst).__isset.no_annotation = True
-        if cpp_unique_ref is not None:
-            deref(c_inst).cpp_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>cpp_unique_ref)._cpp_obj))
-        if cpp2_unique_ref is not None:
-            deref(c_inst).cpp2_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>cpp2_unique_ref)._cpp_obj))
-        if container_with_ref is not None:
-            deref(c_inst).container_with_ref = make_unique[cmap[cint32_t,vector[string]]](deref(Map__i32_List__string(container_with_ref)._cpp_obj))
-        if req_cpp_unique_ref is not None:
-            deref(c_inst).req_cpp_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>req_cpp_unique_ref)._cpp_obj))
-        if req_cpp2_unique_ref is not None:
-            deref(c_inst).req_cpp2_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>req_cpp2_unique_ref)._cpp_obj))
-        if req_container_with_ref is not None:
-            deref(c_inst).req_container_with_ref = make_unique[vector[string]](deref(List__string(req_container_with_ref)._cpp_obj))
-        if opt_cpp_unique_ref is not None:
-            deref(c_inst).opt_cpp_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>opt_cpp_unique_ref)._cpp_obj))
-        if opt_cpp2_unique_ref is not None:
-            deref(c_inst).opt_cpp2_unique_ref = make_unique[ccontainerStruct](deref((<containerStruct?>opt_cpp2_unique_ref)._cpp_obj))
-        if opt_container_with_ref is not None:
-            deref(c_inst).opt_container_with_ref = make_unique[cset[cint32_t]](deref(Set__i32(opt_container_with_ref)._cpp_obj))
-        if ref_type_unique is not None:
-            deref(c_inst).ref_type_unique = make_unique[ccontainerStruct](deref((<containerStruct?>ref_type_unique)._cpp_obj))
-        if ref_type_shared is not None:
-            deref(c_inst).ref_type_shared = (<containerStruct?>ref_type_shared)._cpp_obj
-        if ref_type_const is not None:
-            deref(c_inst).ref_type_const = const_pointer_cast(Map__i32_List__string(ref_type_const)._cpp_obj)
-        if req_ref_type_shared is not None:
-            deref(c_inst).req_ref_type_shared = (<containerStruct?>req_ref_type_shared)._cpp_obj
-        if req_ref_type_const is not None:
-            deref(c_inst).req_ref_type_const = const_pointer_cast((<containerStruct?>req_ref_type_const)._cpp_obj)
-        if req_ref_type_unique is not None:
-            deref(c_inst).req_ref_type_unique = make_unique[vector[string]](deref(List__string(req_ref_type_unique)._cpp_obj))
-        if opt_ref_type_const is not None:
-            deref(c_inst).opt_ref_type_const = const_pointer_cast((<containerStruct?>opt_ref_type_const)._cpp_obj)
-        if opt_ref_type_unique is not None:
-            deref(c_inst).opt_ref_type_unique = make_unique[ccontainerStruct](deref((<containerStruct?>opt_ref_type_unique)._cpp_obj))
-        if opt_ref_type_shared is not None:
-            deref(c_inst).opt_ref_type_shared = Set__i32(opt_ref_type_shared)._cpp_obj
-        if base_type is not None:
-            deref(c_inst).base_type_ref().assign(base_type)
-            deref(c_inst).__isset.base_type = True
-        if list_type is not None:
-            deref(c_inst).list_type_ref().assign(deref(folly_small_vector_int64_t_8__List__i64(list_type)._cpp_obj))
-            deref(c_inst).__isset.list_type = True
-        if set_type is not None:
-            deref(c_inst).set_type_ref().assign(deref(folly_sorted_vector_set_std_string__Set__string(set_type)._cpp_obj))
-            deref(c_inst).__isset.set_type = True
-        if map_type is not None:
-            deref(c_inst).map_type_ref().assign(deref(FakeMap__Map__i64_double(map_type)._cpp_obj))
-            deref(c_inst).__isset.map_type = True
-        if map_struct_type is not None:
-            deref(c_inst).map_struct_type_ref().assign(deref(std_unordered_map_std_string_containerStruct__Map__string_containerStruct(map_struct_type)._cpp_obj))
-            deref(c_inst).__isset.map_struct_type = True
-        if iobuf_type is not None:
-            deref(c_inst).iobuf_type_ref().assign(deref((<__iobuf.IOBuf?>iobuf_type).c_clone()))
-            deref(c_inst).__isset.iobuf_type = True
-        if iobuf_ptr is not None:
-            deref(c_inst).iobuf_ptr_ref().assign((<__iobuf.IOBuf?>iobuf_ptr).c_clone())
-            deref(c_inst).__isset.iobuf_ptr = True
-        if list_i32_template is not None:
-            deref(c_inst).list_i32_template_ref().assign(deref(std_list__List__i32(list_i32_template)._cpp_obj))
-            deref(c_inst).__isset.list_i32_template = True
-        if list_string_template is not None:
-            deref(c_inst).list_string_template_ref().assign(deref(std_deque__List__string(list_string_template)._cpp_obj))
-            deref(c_inst).__isset.list_string_template = True
-        if set_template is not None:
-            deref(c_inst).set_template_ref().assign(deref(folly_sorted_vector_set__Set__string(set_template)._cpp_obj))
-            deref(c_inst).__isset.set_template = True
-        if map_template is not None:
-            deref(c_inst).map_template_ref().assign(deref(folly_sorted_vector_map__Map__i64_string(map_template)._cpp_obj))
-            deref(c_inst).__isset.map_template = True
-        if typedef_list_template is not None:
-            deref(c_inst).typedef_list_template_ref().assign(deref(std_list__List__i32(typedef_list_template)._cpp_obj))
-            deref(c_inst).__isset.typedef_list_template = True
-        if typedef_deque_template is not None:
-            deref(c_inst).typedef_deque_template_ref().assign(deref(std_deque__List__string(typedef_deque_template)._cpp_obj))
-            deref(c_inst).__isset.typedef_deque_template = True
-        if typedef_set_template is not None:
-            deref(c_inst).typedef_set_template_ref().assign(deref(folly_sorted_vector_set__Set__string(typedef_set_template)._cpp_obj))
-            deref(c_inst).__isset.typedef_set_template = True
-        if typedef_map_template is not None:
-            deref(c_inst).typedef_map_template_ref().assign(deref(folly_sorted_vector_map__Map__i64_string(typedef_map_template)._cpp_obj))
-            deref(c_inst).__isset.typedef_map_template = True
-        if indirection_a is not None:
-            deref(c_inst).indirection_a_ref().assign(indirection_a)
-            deref(c_inst).__isset.indirection_a = True
-        if indirection_b is not None:
-            deref(c_inst).indirection_b_ref().assign(deref(List__Bar__double(indirection_b)._cpp_obj))
-            deref(c_inst).__isset.indirection_b = True
-        if indirection_c is not None:
-            deref(c_inst).indirection_c_ref().assign(deref(Set__Baz__i32(indirection_c)._cpp_obj))
-            deref(c_inst).__isset.indirection_c = True
-        if iobuf_type_val is not None:
-            deref(c_inst).iobuf_type_val_ref().assign(deref((<__iobuf.IOBuf?>iobuf_type_val).c_clone()))
-            deref(c_inst).__isset.iobuf_type_val = True
-        if iobuf_ptr_val is not None:
-            deref(c_inst).iobuf_ptr_val_ref().assign((<__iobuf.IOBuf?>iobuf_ptr_val).c_clone())
-            deref(c_inst).__isset.iobuf_ptr_val = True
-        if struct_struct is not None:
-            deref(c_inst).struct_struct_ref().assign(deref((<containerStruct?> struct_struct)._cpp_obj))
-            deref(c_inst).__isset.struct_struct = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AnnotatedStruct", {
@@ -3813,48 +2180,6 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
           "iobuf_ptr_val": deref(self._cpp_obj).iobuf_ptr_val_ref().has_value(),
           "struct_struct": deref(self._cpp_obj).struct_struct_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'no_annotation', self.no_annotation
-        yield 'cpp_unique_ref', self.cpp_unique_ref
-        yield 'cpp2_unique_ref', self.cpp2_unique_ref
-        yield 'container_with_ref', self.container_with_ref
-        yield 'req_cpp_unique_ref', self.req_cpp_unique_ref
-        yield 'req_cpp2_unique_ref', self.req_cpp2_unique_ref
-        yield 'req_container_with_ref', self.req_container_with_ref
-        yield 'opt_cpp_unique_ref', self.opt_cpp_unique_ref
-        yield 'opt_cpp2_unique_ref', self.opt_cpp2_unique_ref
-        yield 'opt_container_with_ref', self.opt_container_with_ref
-        yield 'ref_type_unique', self.ref_type_unique
-        yield 'ref_type_shared', self.ref_type_shared
-        yield 'ref_type_const', self.ref_type_const
-        yield 'req_ref_type_shared', self.req_ref_type_shared
-        yield 'req_ref_type_const', self.req_ref_type_const
-        yield 'req_ref_type_unique', self.req_ref_type_unique
-        yield 'opt_ref_type_const', self.opt_ref_type_const
-        yield 'opt_ref_type_unique', self.opt_ref_type_unique
-        yield 'opt_ref_type_shared', self.opt_ref_type_shared
-        yield 'base_type', self.base_type
-        yield 'list_type', self.list_type
-        yield 'set_type', self.set_type
-        yield 'map_type', self.map_type
-        yield 'map_struct_type', self.map_struct_type
-        yield 'iobuf_type', self.iobuf_type
-        yield 'iobuf_ptr', self.iobuf_ptr
-        yield 'list_i32_template', self.list_i32_template
-        yield 'list_string_template', self.list_string_template
-        yield 'set_template', self.set_template
-        yield 'map_template', self.map_template
-        yield 'typedef_list_template', self.typedef_list_template
-        yield 'typedef_deque_template', self.typedef_deque_template
-        yield 'typedef_set_template', self.typedef_set_template
-        yield 'typedef_map_template', self.typedef_map_template
-        yield 'indirection_a', self.indirection_a
-        yield 'indirection_b', self.indirection_b
-        yield 'indirection_c', self.indirection_c
-        yield 'iobuf_type_val', self.iobuf_type_val
-        yield 'iobuf_ptr_val', self.iobuf_ptr_val
-        yield 'struct_struct', self.struct_struct
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct] cpp_obj):
@@ -4199,6 +2524,12 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__AnnotatedStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cAnnotatedStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 40
+
     cdef __iobuf.IOBuf _serialize(AnnotatedStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -4215,99 +2546,29 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
+    def __init__(ComplexContainerStruct self, **kwargs):
+        self._cpp_obj = make_shared[cComplexContainerStruct]()
+        self._fields_setter = __fbthrift_types_fields.__ComplexContainerStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        ComplexContainerStruct self, *,
-        map_of_iobufs=None,
-        map_of_iobuf_ptrs=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(ComplexContainerStruct._make_instance(
-          NULL,
-          NULL,
-          map_of_iobufs,
-          map_of_iobuf_ptrs,
-        )))
-
-    def __call__(
-        ComplexContainerStruct self,
-        map_of_iobufs=__NOTSET,
-        map_of_iobuf_ptrs=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[2] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if map_of_iobufs is ___NOTSET:
-            __isNOTSET[0] = True
-            map_of_iobufs = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if map_of_iobuf_ptrs is ___NOTSET:
-            __isNOTSET[1] = True
-            map_of_iobuf_ptrs = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(ComplexContainerStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        __fbthrift_inst = <ComplexContainerStruct>ComplexContainerStruct.__new__(ComplexContainerStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(ComplexContainerStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          map_of_iobufs,
-          map_of_iobuf_ptrs,
-        )))
+        cdef ComplexContainerStruct __fbthrift_inst = ComplexContainerStruct.__new__(ComplexContainerStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cComplexContainerStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__ComplexContainerStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cComplexContainerStruct] _make_instance(
-        cComplexContainerStruct* base_instance,
-        bint* __isNOTSET,
-        object map_of_iobufs ,
-        object map_of_iobuf_ptrs 
-    ) except *:
-        cdef unique_ptr[cComplexContainerStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cComplexContainerStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cComplexContainerStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and map_of_iobufs is None:
-                deref(c_inst).map_of_iobufs_ref().assign(default_inst[cComplexContainerStruct]().map_of_iobufs_ref().value())
-                deref(c_inst).__isset.map_of_iobufs = False
-                pass
-
-            if not __isNOTSET[1] and map_of_iobuf_ptrs is None:
-                deref(c_inst).map_of_iobuf_ptrs_ref().assign(default_inst[cComplexContainerStruct]().map_of_iobuf_ptrs_ref().value())
-                deref(c_inst).__isset.map_of_iobuf_ptrs = False
-                pass
-
-        if map_of_iobufs is not None:
-            deref(c_inst).map_of_iobufs_ref().assign(deref(Map__string_folly_IOBuf__binary(map_of_iobufs)._cpp_obj))
-            deref(c_inst).__isset.map_of_iobufs = True
-        if map_of_iobuf_ptrs is not None:
-            deref(c_inst).map_of_iobuf_ptrs_ref().assign(deref(Map__string_std_unique_ptr_folly_IOBuf__binary(map_of_iobuf_ptrs)._cpp_obj))
-            deref(c_inst).__isset.map_of_iobuf_ptrs = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("ComplexContainerStruct", {
           "map_of_iobufs": deref(self._cpp_obj).map_of_iobufs_ref().has_value(),
           "map_of_iobuf_ptrs": deref(self._cpp_obj).map_of_iobuf_ptrs_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'map_of_iobufs', self.map_of_iobufs
-        yield 'map_of_iobuf_ptrs', self.map_of_iobuf_ptrs
 
     @staticmethod
     cdef create(shared_ptr[cComplexContainerStruct] cpp_obj):
@@ -4351,6 +2612,12 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__ComplexContainerStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cComplexContainerStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
+
     cdef __iobuf.IOBuf _serialize(ComplexContainerStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -4367,115 +2634,29 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class FloatStruct(thrift.py3.types.Struct):
+    def __init__(FloatStruct self, **kwargs):
+        self._cpp_obj = make_shared[cFloatStruct]()
+        self._fields_setter = __fbthrift_types_fields.__FloatStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        FloatStruct self, *,
-        floatField=None,
-        doubleField=None
-    ):
-        if floatField is not None:
-            if not isinstance(floatField, (float, int)):
-                raise TypeError(f'floatField is not a { float !r}.')
-
-        if doubleField is not None:
-            if not isinstance(doubleField, (float, int)):
-                raise TypeError(f'doubleField is not a { float !r}.')
-
-        self._cpp_obj = __to_shared_ptr(cmove(FloatStruct._make_instance(
-          NULL,
-          NULL,
-          floatField,
-          doubleField,
-        )))
-
-    def __call__(
-        FloatStruct self,
-        floatField=__NOTSET,
-        doubleField=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[2] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if floatField is ___NOTSET:
-            __isNOTSET[0] = True
-            floatField = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if doubleField is ___NOTSET:
-            __isNOTSET[1] = True
-            doubleField = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(FloatStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if floatField is not None:
-            if not isinstance(floatField, (float, int)):
-                raise TypeError(f'floatField is not a { float !r}.')
-
-        if doubleField is not None:
-            if not isinstance(doubleField, (float, int)):
-                raise TypeError(f'doubleField is not a { float !r}.')
-
-        __fbthrift_inst = <FloatStruct>FloatStruct.__new__(FloatStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(FloatStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          floatField,
-          doubleField,
-        )))
+        cdef FloatStruct __fbthrift_inst = FloatStruct.__new__(FloatStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cFloatStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__FloatStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cFloatStruct] _make_instance(
-        cFloatStruct* base_instance,
-        bint* __isNOTSET,
-        object floatField ,
-        object doubleField 
-    ) except *:
-        cdef unique_ptr[cFloatStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cFloatStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cFloatStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and floatField is None:
-                deref(c_inst).floatField_ref().assign(default_inst[cFloatStruct]().floatField_ref().value())
-                deref(c_inst).__isset.floatField = False
-                pass
-
-            if not __isNOTSET[1] and doubleField is None:
-                deref(c_inst).doubleField_ref().assign(default_inst[cFloatStruct]().doubleField_ref().value())
-                deref(c_inst).__isset.doubleField = False
-                pass
-
-        if floatField is not None:
-            deref(c_inst).floatField_ref().assign(floatField)
-            deref(c_inst).__isset.floatField = True
-        if doubleField is not None:
-            deref(c_inst).doubleField_ref().assign(doubleField)
-            deref(c_inst).__isset.doubleField = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("FloatStruct", {
           "floatField": deref(self._cpp_obj).floatField_ref().has_value(),
           "doubleField": deref(self._cpp_obj).doubleField_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'floatField', self.floatField
-        yield 'doubleField', self.doubleField
 
     @staticmethod
     cdef create(shared_ptr[cFloatStruct] cpp_obj):
@@ -4514,6 +2695,12 @@ cdef class FloatStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__FloatStruct()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFloatStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
 
     cdef __iobuf.IOBuf _serialize(FloatStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -4660,6 +2847,12 @@ cdef class FloatUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__FloatUnion()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFloatUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
+
     cdef __iobuf.IOBuf _serialize(FloatUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -4678,85 +2871,28 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
 @__cython.auto_pickle(False)
 cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
+    def __init__(AllRequiredNoExceptMoveCtrStruct self, **kwargs):
+        self._cpp_obj = make_shared[cAllRequiredNoExceptMoveCtrStruct]()
+        self._fields_setter = __fbthrift_types_fields.__AllRequiredNoExceptMoveCtrStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        AllRequiredNoExceptMoveCtrStruct self, *,
-        intField=None
-    ):
-        if intField is not None:
-            if not isinstance(intField, int):
-                raise TypeError(f'intField is not a { int !r}.')
-            intField = <cint64_t> intField
-
-        self._cpp_obj = __to_shared_ptr(cmove(AllRequiredNoExceptMoveCtrStruct._make_instance(
-          NULL,
-          NULL,
-          intField,
-        )))
-
-    def __call__(
-        AllRequiredNoExceptMoveCtrStruct self,
-        intField=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if intField is ___NOTSET:
-            __isNOTSET[0] = True
-            intField = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(AllRequiredNoExceptMoveCtrStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if intField is not None:
-            if not isinstance(intField, int):
-                raise TypeError(f'intField is not a { int !r}.')
-            intField = <cint64_t> intField
-
-        __fbthrift_inst = <AllRequiredNoExceptMoveCtrStruct>AllRequiredNoExceptMoveCtrStruct.__new__(AllRequiredNoExceptMoveCtrStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(AllRequiredNoExceptMoveCtrStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          intField,
-        )))
+        cdef AllRequiredNoExceptMoveCtrStruct __fbthrift_inst = AllRequiredNoExceptMoveCtrStruct.__new__(AllRequiredNoExceptMoveCtrStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cAllRequiredNoExceptMoveCtrStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__AllRequiredNoExceptMoveCtrStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] _make_instance(
-        cAllRequiredNoExceptMoveCtrStruct* base_instance,
-        bint* __isNOTSET,
-        object intField 
-    ) except *:
-        cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cAllRequiredNoExceptMoveCtrStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cAllRequiredNoExceptMoveCtrStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and intField is None:
-                deref(c_inst).intField_ref().assign(default_inst[cAllRequiredNoExceptMoveCtrStruct]().intField_ref().value())
-                pass
-
-        if intField is not None:
-            deref(c_inst).intField_ref().assign(intField)
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("AllRequiredNoExceptMoveCtrStruct", {
           "intField": deref(self._cpp_obj).intField_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'intField', self.intField
 
     @staticmethod
     cdef create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct] cpp_obj):
@@ -4790,6 +2926,12 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__AllRequiredNoExceptMoveCtrStruct()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cAllRequiredNoExceptMoveCtrStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
 
     cdef __iobuf.IOBuf _serialize(AllRequiredNoExceptMoveCtrStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

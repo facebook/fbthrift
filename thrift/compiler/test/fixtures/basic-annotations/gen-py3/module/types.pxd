@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -143,13 +148,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructNestedAnnotation] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cMyStructNestedAnnotation] _make_instance(
-        cMyStructNestedAnnotation* base_instance,
-        bint* __isNOTSET,
-        str name
-    ) except *
+    cdef __fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyStructNestedAnnotation])
@@ -158,17 +157,8 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 
 cdef class MyStructAnnotation(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructAnnotation] _cpp_obj
+    cdef __fbthrift_types_fields.__MyStructAnnotation_FieldsSetter _fields_setter
     cdef MyStructNestedAnnotation __field_nest
-
-    @staticmethod
-    cdef unique_ptr[cMyStructAnnotation] _make_instance(
-        cMyStructAnnotation* base_instance,
-        bint* __isNOTSET,
-        object count,
-        str name,
-        str extra,
-        MyStructNestedAnnotation nest
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cMyStructAnnotation])
@@ -177,18 +167,7 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cMyStruct] _make_instance(
-        cMyStruct* base_instance,
-        bint* __isNOTSET,
-        object major,
-        str package,
-        str annotation_with_quote,
-        str class_,
-        str annotation_with_trailing_comma,
-        str empty_annotations
-    ) except *
+    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -197,14 +176,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 cdef class SecretStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSecretStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cSecretStruct] _make_instance(
-        cSecretStruct* base_instance,
-        bint* __isNOTSET,
-        object id,
-        str password
-    ) except *
+    cdef __fbthrift_types_fields.__SecretStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSecretStruct])

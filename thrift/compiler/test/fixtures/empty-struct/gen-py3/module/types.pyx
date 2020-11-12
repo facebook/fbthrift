@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -92,44 +94,20 @@ __SetMetaClass(<PyTypeObject*> __NadaType, <PyTypeObject*> __Nada_Union_TypeMeta
 
 @__cython.auto_pickle(False)
 cdef class Empty(thrift.py3.types.Struct):
+    def __init__(Empty self, **kwargs):
+        self._cpp_obj = make_shared[cEmpty]()
+        self._fields_setter = __fbthrift_types_fields.__Empty_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Empty self, *
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(Empty._make_instance(
-          NULL,
-          NULL,
-        )))
-
-    def __call__(
-        Empty self
-    ):
+    def __call__(Empty self, **kwargs):
         return self
 
-    @staticmethod
-    cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance,
-        bint* __isNOTSET
-    ) except *:
-        cdef unique_ptr[cEmpty] c_inst
-        if base_instance:
-            c_inst = make_unique[cEmpty](deref(base_instance))
-        else:
-            c_inst = make_unique[cEmpty]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            pass
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Empty", {
         })
-
-    def __iter__(self):
-        yield from ()
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] cpp_obj):
@@ -158,6 +136,12 @@ cdef class Empty(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Empty()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cEmpty](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 0
 
     cdef __iobuf.IOBuf _serialize(Empty self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -237,6 +221,12 @@ cdef class Nada(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Nada()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cNada](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 0
 
     cdef __iobuf.IOBuf _serialize(Nada self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

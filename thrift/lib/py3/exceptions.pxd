@@ -19,6 +19,7 @@ from cpython.ref cimport PyObject
 from folly cimport cFollyExceptionWrapper
 from libcpp.memory cimport shared_ptr
 from thrift.py3.common cimport RpcOptions
+from thrift.py3.std_libcpp cimport string_view, sv_to_str
 
 cdef extern from * namespace "std":
     cdef cppclass cException "std:Exception":
@@ -138,5 +139,8 @@ cdef class TransportError(LibraryError):
 
 cdef class GeneratedError(Error):
     cdef object __weakref__
+    cdef size_t __fbthrift_struct_size
     cdef object __fbthrift_isset(self)
     cdef object __cmp_sametype(self, other, int op)
+    cdef void __fbthrift_set_field(self, str name, object value) except *
+    cdef string_view __fbthrift_get_field_name_by_index(self, size_t idx)

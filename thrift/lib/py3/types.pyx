@@ -96,6 +96,14 @@ cdef class Struct:
     cdef object __fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
 
+    cdef string_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        raise NotImplementedError()
+
+    def __init__(self, **kwargs):
+        for name, value in kwargs.items():
+            if value is not None:
+                self.__fbthrift_set_field(name, value)
+
     def __hash__(self):
         if not self.__hash:
             value_tuple = tuple(v for _, v in self)
@@ -106,8 +114,9 @@ cdef class Struct:
         return self.__hash
 
     def __iter__(self):
-        # the derived struct class will override this in generated types.pyx
-        yield from ()
+        for i in range(self.__fbthrift_struct_size):
+            name = sv_to_str(self.__fbthrift_get_field_name_by_index(i))
+            yield name, getattr(self, name)
 
     cdef bint __noncomparable_eq(self, other):
         if self is other:
@@ -118,6 +127,9 @@ cdef class Struct:
                 return False
         # in case of no fields, only True when identity equal (begining).
         return name is not None
+
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        pass
 
     def __reduce__(self):
         return (deserialize, (type(self), serialize(self)))
@@ -166,6 +178,9 @@ cdef class Union(Struct):
 
     def __bool__(self):
         return self.type.value != 0
+
+    def __iter__(self):
+        yield from ()
 
     def get_type(self):
         return self.type
@@ -682,6 +697,10 @@ cdef class BadEnum:
 
     def __ne__(self, other):
         return not(self == other)
+
+cdef class StructFieldsSetter:
+    cdef void set_field(self, const char* name, object val) except *:
+        pass
 
 
 cdef translate_cpp_enum_to_python(object EnumClass, int value):

@@ -18,11 +18,16 @@
 
 #include <memory>
 #include <optional>
+#include <string_view>
+#include <unordered_map>
 
 #include <Python.h>
 #include <glog/logging.h>
 
 #include <folly/Indestructible.h>
+#include <folly/Range.h>
+
+#include <thrift/lib/cpp/Thrift.h>
 
 namespace thrift {
 namespace py3 {
@@ -340,6 +345,25 @@ struct map_iter {
     ++it;
   }
 };
+
+template <typename T>
+void reset_field(T& obj, uint16_t index);
+
+template <typename T>
+struct PyStructTraits {
+  using NamesMap = std::unordered_map<std::string_view, std::string_view>;
+  static const NamesMap& namesmap();
+};
+
+template <typename T>
+std::string_view get_field_name_by_index(size_t idx) {
+  static const typename PyStructTraits<T>::NamesMap map =
+      PyStructTraits<T>::namesmap();
+  using storage = apache::thrift::TStructDataStorage<T>;
+  auto const name = std::string_view(storage::fields_names.at(idx));
+  auto found = map.find(name);
+  return found == map.end() ? name : found->second;
+}
 
 } // namespace py3
 } // namespace thrift

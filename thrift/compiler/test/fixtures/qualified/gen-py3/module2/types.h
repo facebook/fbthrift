@@ -7,5 +7,61 @@
 
 #pragma once
 
+#include <functional>
+#include <folly/Range.h>
+
 #include <thrift/lib/py3/enums.h>
+#include "src/gen-cpp2/module2_data.h"
 #include "src/gen-cpp2/module2_types.h"
+namespace thrift {
+namespace py3 {
+
+
+
+template<>
+void reset_field<::module2::Struct>(
+    ::module2::Struct& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.first_ref().copy_from(default_inst<::module2::Struct>().first_ref());
+      return;
+    case 1:
+      obj.second_ref().copy_from(default_inst<::module2::Struct>().second_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::module2::BigStruct>(
+    ::module2::BigStruct& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.s_ref().copy_from(default_inst<::module2::BigStruct>().s_ref());
+      return;
+    case 1:
+      obj.id_ref().copy_from(default_inst<::module2::BigStruct>().id_ref());
+      return;
+  }
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::module2::Struct>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::module2::BigStruct>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+} // namespace py3
+} // namespace thrift

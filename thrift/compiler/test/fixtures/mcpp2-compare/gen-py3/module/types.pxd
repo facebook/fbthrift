@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,12 +27,16 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
 cimport includes.types as _includes_types
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -959,12 +964,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
 
 cdef class Empty(thrift.py3.types.Struct):
     cdef shared_ptr[cEmpty] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance,
-        bint* __isNOTSET
-    ) except *
+    cdef __fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cEmpty])
@@ -973,13 +973,7 @@ cdef class Empty(thrift.py3.types.Struct):
 
 cdef class ASimpleStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cASimpleStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cASimpleStruct] _make_instance(
-        cASimpleStruct* base_instance,
-        bint* __isNOTSET,
-        object boolField
-    ) except *
+    cdef __fbthrift_types_fields.__ASimpleStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStruct])
@@ -988,13 +982,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
 cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     cdef shared_ptr[cASimpleStructNoexcept] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cASimpleStructNoexcept] _make_instance(
-        cASimpleStructNoexcept* base_instance,
-        bint* __isNOTSET,
-        object boolField
-    ) except *
+    cdef __fbthrift_types_fields.__ASimpleStructNoexcept_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStructNoexcept])
@@ -1003,23 +991,9 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
     cdef List__binary __field_MyBinaryListField4
     cdef Map__MyEnumA_string __field_MyMapEnumAndInt
-
-    @staticmethod
-    cdef unique_ptr[cMyStruct] _make_instance(
-        cMyStruct* base_instance,
-        bint* __isNOTSET,
-        pbool MyBoolField,
-        object MyIntField,
-        str MyStringField,
-        str MyStringField2,
-        bytes MyBinaryField,
-        bytes MyBinaryField2,
-        bytes MyBinaryField3,
-        object MyBinaryListField4,
-        object MyMapEnumAndInt
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -1097,6 +1071,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cAnException] _cpp_obj
+    cdef __fbthrift_types_fields.__AnException_FieldsSetter _fields_setter
     cdef List__i32 __field_exception_list
     cdef Set__i64 __field_exception_set
     cdef Map__string_i32 __field_exception_map
@@ -1109,42 +1084,13 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef List__Set__SimpleUnion __field_a_union_typedef_list
 
     @staticmethod
-    cdef unique_ptr[cAnException] _make_instance(
-        cAnException* base_instance,
-        bint* __isNOTSET,
-        object code,
-        object req_code,
-        str message2,
-        str req_message,
-        object exception_list,
-        object exception_set,
-        object exception_map,
-        object req_exception_map,
-        MyEnumA enum_field,
-        object enum_container,
-        MyStruct a_struct,
-        object a_set_struct,
-        object a_union_list,
-        object union_typedef,
-        object a_union_typedef_list
-    ) except *
-
-    @staticmethod
     cdef create(shared_ptr[cAnException])
 
 
 
 cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cAnotherException] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cAnotherException] _make_instance(
-        cAnotherException* base_instance,
-        bint* __isNOTSET,
-        object code,
-        object req_code,
-        str message
-    ) except *
+    cdef __fbthrift_types_fields.__AnotherException_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cAnotherException])
@@ -1153,6 +1099,7 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
 
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
     cdef Map__string_bool __field_fieldB
     cdef Map__string_bool __field_req_fieldB
     cdef Map__string_bool __field_opt_fieldB
@@ -1184,77 +1131,16 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef Map__string_i32 __field_fieldAE
 
     @staticmethod
-    cdef unique_ptr[ccontainerStruct] _make_instance(
-        ccontainerStruct* base_instance,
-        bint* __isNOTSET,
-        pbool fieldA,
-        pbool req_fieldA,
-        pbool opt_fieldA,
-        object fieldB,
-        object req_fieldB,
-        object opt_fieldB,
-        object fieldC,
-        object req_fieldC,
-        object opt_fieldC,
-        str fieldD,
-        str fieldE,
-        str req_fieldE,
-        str opt_fieldE,
-        object fieldF,
-        object fieldG,
-        object fieldH,
-        pbool fieldI,
-        object fieldJ,
-        object fieldK,
-        object fieldL,
-        object fieldM,
-        object fieldN,
-        object fieldO,
-        object fieldP,
-        MyEnumA fieldQ,
-        MyEnumA fieldR,
-        MyEnumA req_fieldR,
-        MyEnumA opt_fieldR,
-        MyEnumA fieldS,
-        object fieldT,
-        object fieldU,
-        MyStruct fieldV,
-        MyStruct req_fieldV,
-        MyStruct opt_fieldV,
-        object fieldW,
-        ComplexUnion fieldX,
-        ComplexUnion req_fieldX,
-        ComplexUnion opt_fieldX,
-        object fieldY,
-        object fieldZ,
-        object fieldAA,
-        object fieldAB,
-        MyEnumB fieldAC,
-        _includes_types.AnEnum fieldAD,
-        object fieldAE,
-        str fieldSD
-    ) except *
-
-    @staticmethod
     cdef create(shared_ptr[ccontainerStruct])
 
 
 
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyIncludedStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__MyIncludedStruct_FieldsSetter _fields_setter
     cdef _includes_types.AStruct __field_MyIncludedStruct
     cdef _includes_types.AStruct __field_ARefField
     cdef _includes_types.AStruct __field_ARequiredField
-
-    @staticmethod
-    cdef unique_ptr[cMyIncludedStruct] _make_instance(
-        cMyIncludedStruct* base_instance,
-        bint* __isNOTSET,
-        object MyIncludedInt,
-        _includes_types.AStruct MyIncludedStruct,
-        _includes_types.AStruct ARefField,
-        _includes_types.AStruct ARequiredField
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cMyIncludedStruct])
@@ -1263,6 +1149,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAnnotatedStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__AnnotatedStruct_FieldsSetter _fields_setter
     cdef containerStruct __field_no_annotation
     cdef containerStruct __field_cpp_unique_ref
     cdef containerStruct __field_cpp2_unique_ref
@@ -1303,68 +1190,15 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef containerStruct __field_struct_struct
 
     @staticmethod
-    cdef unique_ptr[cAnnotatedStruct] _make_instance(
-        cAnnotatedStruct* base_instance,
-        bint* __isNOTSET,
-        containerStruct no_annotation,
-        containerStruct cpp_unique_ref,
-        containerStruct cpp2_unique_ref,
-        object container_with_ref,
-        containerStruct req_cpp_unique_ref,
-        containerStruct req_cpp2_unique_ref,
-        object req_container_with_ref,
-        containerStruct opt_cpp_unique_ref,
-        containerStruct opt_cpp2_unique_ref,
-        object opt_container_with_ref,
-        containerStruct ref_type_unique,
-        containerStruct ref_type_shared,
-        object ref_type_const,
-        containerStruct req_ref_type_shared,
-        containerStruct req_ref_type_const,
-        object req_ref_type_unique,
-        containerStruct opt_ref_type_const,
-        containerStruct opt_ref_type_unique,
-        object opt_ref_type_shared,
-        object base_type,
-        object list_type,
-        object set_type,
-        object map_type,
-        object map_struct_type,
-        __iobuf.IOBuf iobuf_type,
-        __iobuf.IOBuf iobuf_ptr,
-        object list_i32_template,
-        object list_string_template,
-        object set_template,
-        object map_template,
-        object typedef_list_template,
-        object typedef_deque_template,
-        object typedef_set_template,
-        object typedef_map_template,
-        object indirection_a,
-        object indirection_b,
-        object indirection_c,
-        __iobuf.IOBuf iobuf_type_val,
-        __iobuf.IOBuf iobuf_ptr_val,
-        containerStruct struct_struct
-    ) except *
-
-    @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct])
 
 
 
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexContainerStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__ComplexContainerStruct_FieldsSetter _fields_setter
     cdef Map__string_folly_IOBuf__binary __field_map_of_iobufs
     cdef Map__string_std_unique_ptr_folly_IOBuf__binary __field_map_of_iobuf_ptrs
-
-    @staticmethod
-    cdef unique_ptr[cComplexContainerStruct] _make_instance(
-        cComplexContainerStruct* base_instance,
-        bint* __isNOTSET,
-        object map_of_iobufs,
-        object map_of_iobuf_ptrs
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cComplexContainerStruct])
@@ -1373,14 +1207,7 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 
 cdef class FloatStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cFloatStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cFloatStruct] _make_instance(
-        cFloatStruct* base_instance,
-        bint* __isNOTSET,
-        object floatField,
-        object doubleField
-    ) except *
+    cdef __fbthrift_types_fields.__FloatStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cFloatStruct])
@@ -1411,13 +1238,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
 cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] _make_instance(
-        cAllRequiredNoExceptMoveCtrStruct* base_instance,
-        bint* __isNOTSET,
-        object intField
-    ) except *
+    cdef __fbthrift_types_fields.__AllRequiredNoExceptMoveCtrStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])

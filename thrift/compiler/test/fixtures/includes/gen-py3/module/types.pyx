@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -61,127 +63,23 @@ cimport module.types_reflection as _types_reflection
 
 @__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
+    def __init__(MyStruct self, **kwargs):
+        self._cpp_obj = make_shared[cMyStruct]()
+        self._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        MyStruct self, *,
-        _includes_types.Included MyIncludedField=None,
-        _includes_types.Included MyOtherIncludedField=None,
-        MyIncludedInt=None
-    ):
-        if MyIncludedInt is not None:
-            if not isinstance(MyIncludedInt, int):
-                raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            MyIncludedInt = <cint64_t> MyIncludedInt
-
-        self._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          NULL,
-          NULL,
-          MyIncludedField,
-          MyOtherIncludedField,
-          MyIncludedInt,
-        )))
-
-    def __call__(
-        MyStruct self,
-        MyIncludedField=__NOTSET,
-        MyOtherIncludedField=__NOTSET,
-        MyIncludedInt=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if MyIncludedField is ___NOTSET:
-            __isNOTSET[0] = True
-            MyIncludedField = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if MyOtherIncludedField is ___NOTSET:
-            __isNOTSET[1] = True
-            MyOtherIncludedField = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if MyIncludedInt is ___NOTSET:
-            __isNOTSET[2] = True
-            MyIncludedInt = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(MyStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if MyIncludedField is not None:
-            if not isinstance(MyIncludedField, _includes_types.Included):
-                raise TypeError(f'MyIncludedField is not a { _includes_types.Included !r}.')
-
-        if MyOtherIncludedField is not None:
-            if not isinstance(MyOtherIncludedField, _includes_types.Included):
-                raise TypeError(f'MyOtherIncludedField is not a { _includes_types.Included !r}.')
-
-        if MyIncludedInt is not None:
-            if not isinstance(MyIncludedInt, int):
-                raise TypeError(f'MyIncludedInt is not a { int !r}.')
-            MyIncludedInt = <cint64_t> MyIncludedInt
-
-        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          MyIncludedField,
-          MyOtherIncludedField,
-          MyIncludedInt,
-        )))
+        cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cMyStruct] _make_instance(
-        cMyStruct* base_instance,
-        bint* __isNOTSET,
-        _includes_types.Included MyIncludedField ,
-        _includes_types.Included MyOtherIncludedField ,
-        object MyIncludedInt 
-    ) except *:
-        cdef unique_ptr[cMyStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cMyStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cMyStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and MyIncludedField is None:
-                deref(c_inst).MyIncludedField_ref().assign(default_inst[cMyStruct]().MyIncludedField_ref().value())
-                deref(c_inst).__isset.MyIncludedField = False
-                pass
-
-            if not __isNOTSET[1] and MyOtherIncludedField is None:
-                deref(c_inst).MyOtherIncludedField_ref().assign(default_inst[cMyStruct]().MyOtherIncludedField_ref().value())
-                deref(c_inst).__isset.MyOtherIncludedField = False
-                pass
-
-            if not __isNOTSET[2] and MyIncludedInt is None:
-                deref(c_inst).MyIncludedInt_ref().assign(default_inst[cMyStruct]().MyIncludedInt_ref().value())
-                deref(c_inst).__isset.MyIncludedInt = False
-                pass
-
-        if MyIncludedField is not None:
-            deref(c_inst).MyIncludedField_ref().assign(deref((<_includes_types.Included?> MyIncludedField)._cpp_obj))
-            deref(c_inst).__isset.MyIncludedField = True
-        if MyOtherIncludedField is not None:
-            deref(c_inst).MyOtherIncludedField_ref().assign(deref((<_includes_types.Included?> MyOtherIncludedField)._cpp_obj))
-            deref(c_inst).__isset.MyOtherIncludedField = True
-        if MyIncludedInt is not None:
-            deref(c_inst).MyIncludedInt_ref().assign(MyIncludedInt)
-            deref(c_inst).__isset.MyIncludedInt = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
@@ -189,11 +87,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "MyOtherIncludedField": deref(self._cpp_obj).MyOtherIncludedField_ref().has_value(),
           "MyIncludedInt": deref(self._cpp_obj).MyIncludedInt_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'MyIncludedField', self.MyIncludedField
-        yield 'MyOtherIncludedField', self.MyOtherIncludedField
-        yield 'MyIncludedInt', self.MyIncludedInt
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -241,6 +134,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
 
     cdef __iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

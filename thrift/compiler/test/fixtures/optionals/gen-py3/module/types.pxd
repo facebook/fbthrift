@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -148,16 +153,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 cdef class Color(thrift.py3.types.Struct):
     cdef shared_ptr[cColor] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cColor] _make_instance(
-        cColor* base_instance,
-        bint* __isNOTSET,
-        object red,
-        object green,
-        object blue,
-        object alpha
-    ) except *
+    cdef __fbthrift_types_fields.__Color_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cColor])
@@ -166,18 +162,8 @@ cdef class Color(thrift.py3.types.Struct):
 
 cdef class Vehicle(thrift.py3.types.Struct):
     cdef shared_ptr[cVehicle] _cpp_obj
+    cdef __fbthrift_types_fields.__Vehicle_FieldsSetter _fields_setter
     cdef Color __field_color
-
-    @staticmethod
-    cdef unique_ptr[cVehicle] _make_instance(
-        cVehicle* base_instance,
-        bint* __isNOTSET,
-        Color color,
-        str licensePlate,
-        str description,
-        str name,
-        pbool hasAC
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cVehicle])
@@ -186,26 +172,11 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
 cdef class Person(thrift.py3.types.Struct):
     cdef shared_ptr[cPerson] _cpp_obj
+    cdef __fbthrift_types_fields.__Person_FieldsSetter _fields_setter
     cdef Color __field_favoriteColor
     cdef Set__i64 __field_friends
     cdef Map__Animal_string __field_petNames
     cdef List__Vehicle __field_vehicles
-
-    @staticmethod
-    cdef unique_ptr[cPerson] _make_instance(
-        cPerson* base_instance,
-        bint* __isNOTSET,
-        object id,
-        str name,
-        object age,
-        str address,
-        Color favoriteColor,
-        object friends,
-        object bestFriend,
-        object petNames,
-        Animal afraidOfAnimal,
-        object vehicles
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cPerson])

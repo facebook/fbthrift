@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,13 +27,17 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
 cimport module0.types as _module0_types
 cimport module1.types as _module1_types
+
+cimport module2.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module2/types.h":
   pass
 
@@ -84,16 +89,9 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
 
 cdef class Struct(thrift.py3.types.Struct):
     cdef shared_ptr[cStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
     cdef _module0_types.Struct __field_first
     cdef _module1_types.Struct __field_second
-
-    @staticmethod
-    cdef unique_ptr[cStruct] _make_instance(
-        cStruct* base_instance,
-        bint* __isNOTSET,
-        _module0_types.Struct first,
-        _module1_types.Struct second
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStruct])
@@ -102,15 +100,8 @@ cdef class Struct(thrift.py3.types.Struct):
 
 cdef class BigStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cBigStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__BigStruct_FieldsSetter _fields_setter
     cdef Struct __field_s
-
-    @staticmethod
-    cdef unique_ptr[cBigStruct] _make_instance(
-        cBigStruct* base_instance,
-        bint* __isNOTSET,
-        Struct s,
-        object id
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cBigStruct])

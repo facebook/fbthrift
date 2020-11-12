@@ -201,6 +201,34 @@ class StructTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             copy.deepcopy(x)
 
+    def test_init_with_invalid_field(self) -> None:
+        with self.assertRaises(TypeError):
+            # pyre-ignore[28]: intentionally used a wrong field name "val_lists" for test
+            easy(val=1, an_int=Integers(small=300), name="foo", val_lists=[1, 2, 3, 4])
+
+    def test_iterate(self) -> None:
+        x = Reserved(
+            from_="hello",
+            nonlocal_=3,
+            ok="bye",
+            is_cpdef=True,
+            move="Qh4xe1",
+            inst="foo",
+            changes="bar",
+        )
+        self.assertEqual(
+            list(x),
+            [
+                ("from_", "hello"),
+                ("nonlocal_", 3),
+                ("ok", "bye"),
+                ("is_cpdef", True),
+                ("move", "Qh4xe1"),
+                ("inst", "foo"),
+                ("changes", "bar"),
+            ],
+        )
+
 
 class NumericalConversionsTests(unittest.TestCase):
     def test_overflow(self) -> None:

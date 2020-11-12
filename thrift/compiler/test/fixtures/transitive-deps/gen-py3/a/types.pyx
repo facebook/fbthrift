@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -63,99 +65,29 @@ cimport a.types_reflection as _types_reflection
 
 @__cython.auto_pickle(False)
 cdef class A(thrift.py3.types.Struct):
+    def __init__(A self, **kwargs):
+        self._cpp_obj = make_shared[cA]()
+        self._fields_setter = __fbthrift_types_fields.__A_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        A self, *,
-        b=None,
-        other=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(A._make_instance(
-          NULL,
-          NULL,
-          b,
-          other,
-        )))
-
-    def __call__(
-        A self,
-        b=__NOTSET,
-        other=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[2] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if b is ___NOTSET:
-            __isNOTSET[0] = True
-            b = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if other is ___NOTSET:
-            __isNOTSET[1] = True
-            other = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(A self, **kwargs):
+        if not kwargs:
             return self
-
-        __fbthrift_inst = <A>A.__new__(A)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(A._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          b,
-          other,
-        )))
+        cdef A __fbthrift_inst = A.__new__(A)
+        __fbthrift_inst._cpp_obj = make_shared[cA](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__A_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cA] _make_instance(
-        cA* base_instance,
-        bint* __isNOTSET,
-        object b ,
-        object other 
-    ) except *:
-        cdef unique_ptr[cA] c_inst
-        if base_instance:
-            c_inst = make_unique[cA](deref(base_instance))
-        else:
-            c_inst = make_unique[cA]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and b is None:
-                deref(c_inst).b_ref().assign(default_inst[cA]().b_ref().value())
-                deref(c_inst).__isset.b = False
-                pass
-
-            if not __isNOTSET[1] and other is None:
-                deref(c_inst).other_ref().assign(default_inst[cA]().other_ref().value())
-                deref(c_inst).__isset.other = False
-                pass
-
-        if b is not None:
-            deref(c_inst).b_ref().assign(deref(List__List__c_C(b)._cpp_obj))
-            deref(c_inst).__isset.b = True
-        if other is not None:
-            deref(c_inst).other_ref().assign(deref(List__c_C(other)._cpp_obj))
-            deref(c_inst).__isset.other = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("A", {
           "b": deref(self._cpp_obj).b_ref().has_value(),
           "other": deref(self._cpp_obj).other_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'b', self.b
-        yield 'other', self.other
 
     @staticmethod
     cdef create(shared_ptr[cA] cpp_obj):
@@ -198,6 +130,12 @@ cdef class A(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__A()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cA](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
 
     cdef __iobuf.IOBuf _serialize(A self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

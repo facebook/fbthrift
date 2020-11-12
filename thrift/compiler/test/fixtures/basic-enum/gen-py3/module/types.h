@@ -7,11 +7,18 @@
 
 #pragma once
 
+#include <functional>
+#include <folly/Range.h>
+
 #include <thrift/lib/py3/enums.h>
+#include "src/gen-cpp2/module_data.h"
 #include "src/gen-cpp2/module_types.h"
+namespace thrift {
+namespace py3 {
+
 
 template<>
-const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3::PyEnumTraits<
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     ::test::fixtures::enumstrict::EmptyEnum>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
@@ -22,7 +29,7 @@ const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3:
 
 
 template<>
-const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3::PyEnumTraits<
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     ::test::fixtures::enumstrict::MyEnum>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
@@ -33,7 +40,7 @@ const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3:
 
 
 template<>
-const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3::PyEnumTraits<
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     ::test::fixtures::enumstrict::MyBigEnum>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
@@ -42,3 +49,29 @@ const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3:
   return *pairs;
 }
 
+
+
+template<>
+void reset_field<::test::fixtures::enumstrict::MyStruct>(
+    ::test::fixtures::enumstrict::MyStruct& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.myEnum_ref().copy_from(default_inst<::test::fixtures::enumstrict::MyStruct>().myEnum_ref());
+      return;
+    case 1:
+      obj.myBigEnum_ref().copy_from(default_inst<::test::fixtures::enumstrict::MyStruct>().myBigEnum_ref());
+      return;
+  }
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::test::fixtures::enumstrict::MyStruct>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+} // namespace py3
+} // namespace thrift

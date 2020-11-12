@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,13 +27,17 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
 cimport b.types as _b_types
 cimport c.types as _c_types
+
+cimport a.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/a/types.h":
   pass
 
@@ -65,16 +70,9 @@ cdef extern from "src/gen-cpp2/a_types_custom_protocol.h" namespace "::cpp2":
 
 cdef class A(thrift.py3.types.Struct):
     cdef shared_ptr[cA] _cpp_obj
+    cdef __fbthrift_types_fields.__A_FieldsSetter _fields_setter
     cdef List__List__c_C __field_b
     cdef List__c_C __field_other
-
-    @staticmethod
-    cdef unique_ptr[cA] _make_instance(
-        cA* base_instance,
-        bint* __isNOTSET,
-        object b,
-        object other
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cA])

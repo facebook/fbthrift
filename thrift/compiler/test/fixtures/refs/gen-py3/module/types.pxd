@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -321,15 +326,7 @@ cdef class MyUnion(thrift.py3.types.Union):
 
 cdef class MyField(thrift.py3.types.Struct):
     cdef shared_ptr[cMyField] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cMyField] _make_instance(
-        cMyField* base_instance,
-        bint* __isNOTSET,
-        object opt_value,
-        object value,
-        object req_value
-    ) except *
+    cdef __fbthrift_types_fields.__MyField_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyField])
@@ -338,18 +335,10 @@ cdef class MyField(thrift.py3.types.Struct):
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
     cdef MyField __field_opt_ref
     cdef MyField __field_ref
     cdef MyField __field_req_ref
-
-    @staticmethod
-    cdef unique_ptr[cMyStruct] _make_instance(
-        cMyStruct* base_instance,
-        bint* __isNOTSET,
-        MyField opt_ref,
-        MyField ref,
-        MyField req_ref
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -358,17 +347,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 cdef class StructWithUnion(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithUnion] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithUnion_FieldsSetter _fields_setter
     cdef MyUnion __field_u
     cdef MyField __field_f
-
-    @staticmethod
-    cdef unique_ptr[cStructWithUnion] _make_instance(
-        cStructWithUnion* base_instance,
-        bint* __isNOTSET,
-        MyUnion u,
-        object aDouble,
-        MyField f
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStructWithUnion])
@@ -377,14 +358,8 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
 cdef class RecursiveStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cRecursiveStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__RecursiveStruct_FieldsSetter _fields_setter
     cdef List__RecursiveStruct __field_mes
-
-    @staticmethod
-    cdef unique_ptr[cRecursiveStruct] _make_instance(
-        cRecursiveStruct* base_instance,
-        bint* __isNOTSET,
-        object mes
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cRecursiveStruct])
@@ -393,6 +368,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
 cdef class StructWithContainers(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithContainers] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithContainers_FieldsSetter _fields_setter
     cdef List__i32 __field_list_ref
     cdef Set__i32 __field_set_ref
     cdef Map__i32_i32 __field_map_ref
@@ -401,36 +377,16 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     cdef List__i32 __field_list_ref_shared_const
 
     @staticmethod
-    cdef unique_ptr[cStructWithContainers] _make_instance(
-        cStructWithContainers* base_instance,
-        bint* __isNOTSET,
-        object list_ref,
-        object set_ref,
-        object map_ref,
-        object list_ref_unique,
-        object set_ref_shared,
-        object list_ref_shared_const
-    ) except *
-
-    @staticmethod
     cdef create(shared_ptr[cStructWithContainers])
 
 
 
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithSharedConst] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithSharedConst_FieldsSetter _fields_setter
     cdef MyField __field_opt_shared_const
     cdef MyField __field_shared_const
     cdef MyField __field_req_shared_const
-
-    @staticmethod
-    cdef unique_ptr[cStructWithSharedConst] _make_instance(
-        cStructWithSharedConst* base_instance,
-        bint* __isNOTSET,
-        MyField opt_shared_const,
-        MyField shared_const,
-        MyField req_shared_const
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst])
@@ -439,12 +395,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
 cdef class Empty(thrift.py3.types.Struct):
     cdef shared_ptr[cEmpty] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance,
-        bint* __isNOTSET
-    ) except *
+    cdef __fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cEmpty])
@@ -453,18 +404,10 @@ cdef class Empty(thrift.py3.types.Struct):
 
 cdef class StructWithRef(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRef] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithRef_FieldsSetter _fields_setter
     cdef Empty __field_def_field
     cdef Empty __field_opt_field
     cdef Empty __field_req_field
-
-    @staticmethod
-    cdef unique_ptr[cStructWithRef] _make_instance(
-        cStructWithRef* base_instance,
-        bint* __isNOTSET,
-        Empty def_field,
-        Empty opt_field,
-        Empty req_field
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRef])
@@ -473,18 +416,10 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeUnique] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithRefTypeUnique_FieldsSetter _fields_setter
     cdef Empty __field_def_field
     cdef Empty __field_opt_field
     cdef Empty __field_req_field
-
-    @staticmethod
-    cdef unique_ptr[cStructWithRefTypeUnique] _make_instance(
-        cStructWithRefTypeUnique* base_instance,
-        bint* __isNOTSET,
-        Empty def_field,
-        Empty opt_field,
-        Empty req_field
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique])
@@ -493,18 +428,10 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeShared] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithRefTypeShared_FieldsSetter _fields_setter
     cdef Empty __field_def_field
     cdef Empty __field_opt_field
     cdef Empty __field_req_field
-
-    @staticmethod
-    cdef unique_ptr[cStructWithRefTypeShared] _make_instance(
-        cStructWithRefTypeShared* base_instance,
-        bint* __isNOTSET,
-        Empty def_field,
-        Empty opt_field,
-        Empty req_field
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared])
@@ -513,18 +440,10 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeSharedConst] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithRefTypeSharedConst_FieldsSetter _fields_setter
     cdef Empty __field_def_field
     cdef Empty __field_opt_field
     cdef Empty __field_req_field
-
-    @staticmethod
-    cdef unique_ptr[cStructWithRefTypeSharedConst] _make_instance(
-        cStructWithRefTypeSharedConst* base_instance,
-        bint* __isNOTSET,
-        Empty def_field,
-        Empty opt_field,
-        Empty req_field
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst])
@@ -533,14 +452,8 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _cpp_obj
+    cdef __fbthrift_types_fields.__StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter _fields_setter
     cdef Empty __field_def_field
-
-    @staticmethod
-    cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _make_instance(
-        cStructWithRefAndAnnotCppNoexceptMoveCtor* base_instance,
-        bint* __isNOTSET,
-        Empty def_field
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])

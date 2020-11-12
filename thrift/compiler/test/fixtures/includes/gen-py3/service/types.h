@@ -7,5 +7,15 @@
 
 #pragma once
 
+#include <functional>
+#include <folly/Range.h>
+
 #include <thrift/lib/py3/enums.h>
+#include "src/gen-cpp2/service_data.h"
 #include "src/gen-cpp2/service_types.h"
+namespace thrift {
+namespace py3 {
+
+
+} // namespace py3
+} // namespace thrift

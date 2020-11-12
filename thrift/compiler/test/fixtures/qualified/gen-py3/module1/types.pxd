@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module1.types_fields as __fbthrift_types_fields
+
 cdef extern from "gen-py3/module1/types.h":
   pass
 
@@ -71,14 +76,7 @@ cdef extern from "gen-cpp2/module1_types_custom_protocol.h" namespace "::module1
 
 cdef class Struct(thrift.py3.types.Struct):
     cdef shared_ptr[cStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cStruct] _make_instance(
-        cStruct* base_instance,
-        bint* __isNOTSET,
-        object first,
-        str second
-    ) except *
+    cdef __fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cStruct])

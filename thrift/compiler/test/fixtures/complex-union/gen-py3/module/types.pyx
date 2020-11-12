@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -441,6 +443,12 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__ComplexUnion()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cComplexUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 6
+
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -557,6 +565,12 @@ cdef class ListUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__ListUnion()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cListUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
 
     cdef __iobuf.IOBuf _serialize(ListUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -675,6 +689,12 @@ cdef class DataUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__DataUnion()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cDataUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
+
     cdef __iobuf.IOBuf _serialize(DataUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -693,123 +713,23 @@ cdef class DataUnion(thrift.py3.types.Union):
 
 @__cython.auto_pickle(False)
 cdef class Val(thrift.py3.types.Struct):
+    def __init__(Val self, **kwargs):
+        self._cpp_obj = make_shared[cVal]()
+        self._fields_setter = __fbthrift_types_fields.__Val_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Val self, *,
-        str strVal=None,
-        intVal=None,
-        typedefValue=None
-    ):
-        if intVal is not None:
-            if not isinstance(intVal, int):
-                raise TypeError(f'intVal is not a { int !r}.')
-            intVal = <cint32_t> intVal
-
-        self._cpp_obj = __to_shared_ptr(cmove(Val._make_instance(
-          NULL,
-          NULL,
-          strVal,
-          intVal,
-          typedefValue,
-        )))
-
-    def __call__(
-        Val self,
-        strVal=__NOTSET,
-        intVal=__NOTSET,
-        typedefValue=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if strVal is ___NOTSET:
-            __isNOTSET[0] = True
-            strVal = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if intVal is ___NOTSET:
-            __isNOTSET[1] = True
-            intVal = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if typedefValue is ___NOTSET:
-            __isNOTSET[2] = True
-            typedefValue = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(Val self, **kwargs):
+        if not kwargs:
             return self
-
-        if strVal is not None:
-            if not isinstance(strVal, str):
-                raise TypeError(f'strVal is not a { str !r}.')
-
-        if intVal is not None:
-            if not isinstance(intVal, int):
-                raise TypeError(f'intVal is not a { int !r}.')
-            intVal = <cint32_t> intVal
-
-        __fbthrift_inst = <Val>Val.__new__(Val)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Val._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          strVal,
-          intVal,
-          typedefValue,
-        )))
+        cdef Val __fbthrift_inst = Val.__new__(Val)
+        __fbthrift_inst._cpp_obj = make_shared[cVal](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__Val_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cVal] _make_instance(
-        cVal* base_instance,
-        bint* __isNOTSET,
-        str strVal ,
-        object intVal ,
-        object typedefValue 
-    ) except *:
-        cdef unique_ptr[cVal] c_inst
-        if base_instance:
-            c_inst = make_unique[cVal](deref(base_instance))
-        else:
-            c_inst = make_unique[cVal]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and strVal is None:
-                deref(c_inst).strVal_ref().assign(default_inst[cVal]().strVal_ref().value())
-                deref(c_inst).__isset.strVal = False
-                pass
-
-            if not __isNOTSET[1] and intVal is None:
-                deref(c_inst).intVal_ref().assign(default_inst[cVal]().intVal_ref().value())
-                deref(c_inst).__isset.intVal = False
-                pass
-
-            if not __isNOTSET[2] and typedefValue is None:
-                deref(c_inst).typedefValue_ref().assign(default_inst[cVal]().typedefValue_ref().value())
-                deref(c_inst).__isset.typedefValue = False
-                pass
-
-        if strVal is not None:
-            deref(c_inst).strVal_ref().assign(cmove(thrift.py3.types.bytes_to_string(strVal.encode('utf-8'))))
-            deref(c_inst).__isset.strVal = True
-        if intVal is not None:
-            deref(c_inst).intVal_ref().assign(intVal)
-            deref(c_inst).__isset.intVal = True
-        if typedefValue is not None:
-            deref(c_inst).typedefValue_ref().assign(deref(Map__i16_string(typedefValue)._cpp_obj))
-            deref(c_inst).__isset.typedefValue = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Val", {
@@ -817,11 +737,6 @@ cdef class Val(thrift.py3.types.Struct):
           "intVal": deref(self._cpp_obj).intVal_ref().has_value(),
           "typedefValue": deref(self._cpp_obj).typedefValue_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'strVal', self.strVal
-        yield 'intVal', self.intVal
-        yield 'typedefValue', self.typedefValue
 
     @staticmethod
     cdef create(shared_ptr[cVal] cpp_obj):
@@ -867,6 +782,12 @@ cdef class Val(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Val()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cVal](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 3
 
     cdef __iobuf.IOBuf _serialize(Val self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -982,6 +903,12 @@ cdef class ValUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__ValUnion()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cValUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
 
     cdef __iobuf.IOBuf _serialize(ValUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -1100,6 +1027,12 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__VirtualComplexUnion()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cVirtualComplexUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 2
+
     cdef __iobuf.IOBuf _serialize(VirtualComplexUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -1118,56 +1051,18 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
 @__cython.auto_pickle(False)
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
+    def __init__(NonCopyableStruct self, **kwargs):
+        self._cpp_obj = make_shared[cNonCopyableStruct]()
+        self._fields_setter = __fbthrift_types_fields.__NonCopyableStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        NonCopyableStruct self, *,
-        num=None
-    ):
-        if num is not None:
-            if not isinstance(num, int):
-                raise TypeError(f'num is not a { int !r}.')
-            num = <cint64_t> num
-
-        self._cpp_obj = __to_shared_ptr(cmove(NonCopyableStruct._make_instance(
-          NULL,
-          NULL,
-          num,
-        )))
-
-
-    @staticmethod
-    cdef unique_ptr[cNonCopyableStruct] _make_instance(
-        cNonCopyableStruct* base_instance,
-        bint* __isNOTSET,
-        object num 
-    ) except *:
-        cdef unique_ptr[cNonCopyableStruct] c_inst
-        if base_instance:
-            raise TypeError("NonCopyableStruct is noncopyable")
-        else:
-            c_inst = make_unique[cNonCopyableStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and num is None:
-                deref(c_inst).num_ref().assign(default_inst[cNonCopyableStruct]().num_ref().value())
-                deref(c_inst).__isset.num = False
-                pass
-
-        if num is not None:
-            deref(c_inst).num_ref().assign(num)
-            deref(c_inst).__isset.num = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("NonCopyableStruct", {
           "num": deref(self._cpp_obj).num_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'num', self.num
 
     @staticmethod
     cdef create(shared_ptr[cNonCopyableStruct] cpp_obj):
@@ -1198,6 +1093,12 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__NonCopyableStruct()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cNonCopyableStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
 
     cdef __iobuf.IOBuf _serialize(NonCopyableStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
@@ -1292,6 +1193,12 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__NonCopyableUnion()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cNonCopyableUnion](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
 
     cdef __iobuf.IOBuf _serialize(NonCopyableUnion self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

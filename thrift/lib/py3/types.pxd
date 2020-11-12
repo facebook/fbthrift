@@ -17,7 +17,7 @@ from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyObject, PyTypeObject
 from folly.iobuf cimport cIOBuf, IOBuf
 from folly.range cimport StringPiece as cStringPiece, Range as cRange
-from libc.stdint cimport uint32_t
+from libc.stdint cimport uint32_t, uint16_t
 from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
@@ -67,6 +67,8 @@ cdef extern from "thrift/lib/py3/types.h" namespace "::thrift::py3" nogil:
     size_t list_count[T](const shared_ptr[T]& list, ...)
     bint map_contains[T](const shared_ptr[T]& cpp_obj, ...)
     void map_getitem[T](const shared_ptr[T]& cpp_obj, ...)
+    void reset_field[T](T& obj, uint16_t index) except +
+    string_view get_field_name_by_index[T](size_t idx) except +
 
     cdef cppclass set_iter[T]:
         set_iter()
@@ -135,11 +137,15 @@ cdef __NotSet NOTSET
 cdef class Struct:
     cdef object __hash
     cdef object __weakref__
+    cdef size_t __fbthrift_struct_size
     cdef IOBuf _serialize(self, Protocol proto)
     cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
     cdef object __fbthrift_isset(self)
     cdef bint __noncomparable_eq(self, other)
     cdef object __cmp_sametype(self, other, int op)
+    cdef void __fbthrift_set_field(self, str name, object value) except *
+    cdef string_view __fbthrift_get_field_name_by_index(self, size_t idx)
+
 
 cdef class Union(Struct):
     pass
@@ -182,6 +188,10 @@ cdef class BadEnum:
     cdef object _enum
     cdef readonly int value
     cdef readonly str name
+
+
+cdef class StructFieldsSetter:
+    cdef void set_field(StructFieldsSetter self, const char* name, object value) except *
 
 
 cdef translate_cpp_enum_to_python(object EnumClass, int value)

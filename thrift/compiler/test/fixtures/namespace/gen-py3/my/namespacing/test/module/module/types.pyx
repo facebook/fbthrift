@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -59,87 +61,28 @@ cimport my.namespacing.test.module.module.types_reflection as _types_reflection
 
 @__cython.auto_pickle(False)
 cdef class Foo(thrift.py3.types.Struct):
+    def __init__(Foo self, **kwargs):
+        self._cpp_obj = make_shared[cFoo]()
+        self._fields_setter = __fbthrift_types_fields.__Foo_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Foo self, *,
-        MyInt=None
-    ):
-        if MyInt is not None:
-            if not isinstance(MyInt, int):
-                raise TypeError(f'MyInt is not a { int !r}.')
-            MyInt = <cint64_t> MyInt
-
-        self._cpp_obj = __to_shared_ptr(cmove(Foo._make_instance(
-          NULL,
-          NULL,
-          MyInt,
-        )))
-
-    def __call__(
-        Foo self,
-        MyInt=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if MyInt is ___NOTSET:
-            __isNOTSET[0] = True
-            MyInt = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(Foo self, **kwargs):
+        if not kwargs:
             return self
-
-        if MyInt is not None:
-            if not isinstance(MyInt, int):
-                raise TypeError(f'MyInt is not a { int !r}.')
-            MyInt = <cint64_t> MyInt
-
-        __fbthrift_inst = <Foo>Foo.__new__(Foo)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Foo._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          MyInt,
-        )))
+        cdef Foo __fbthrift_inst = Foo.__new__(Foo)
+        __fbthrift_inst._cpp_obj = make_shared[cFoo](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__Foo_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cFoo] _make_instance(
-        cFoo* base_instance,
-        bint* __isNOTSET,
-        object MyInt 
-    ) except *:
-        cdef unique_ptr[cFoo] c_inst
-        if base_instance:
-            c_inst = make_unique[cFoo](deref(base_instance))
-        else:
-            c_inst = make_unique[cFoo]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and MyInt is None:
-                deref(c_inst).MyInt_ref().assign(default_inst[cFoo]().MyInt_ref().value())
-                deref(c_inst).__isset.MyInt = False
-                pass
-
-        if MyInt is not None:
-            deref(c_inst).MyInt_ref().assign(MyInt)
-            deref(c_inst).__isset.MyInt = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Foo", {
           "MyInt": deref(self._cpp_obj).MyInt_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'MyInt', self.MyInt
 
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):
@@ -173,6 +116,12 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Foo()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFoo](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
 
     cdef __iobuf.IOBuf _serialize(Foo self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

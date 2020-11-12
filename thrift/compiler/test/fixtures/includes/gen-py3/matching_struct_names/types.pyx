@@ -11,12 +11,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -31,11 +31,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -47,6 +48,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -61,81 +63,28 @@ cimport matching_struct_names.types_reflection as _types_reflection
 
 @__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
+    def __init__(MyStruct self, **kwargs):
+        self._cpp_obj = make_shared[cMyStruct]()
+        self._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        MyStruct self, *,
-        str field=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          NULL,
-          NULL,
-          field,
-        )))
-
-    def __call__(
-        MyStruct self,
-        field=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if field is ___NOTSET:
-            __isNOTSET[0] = True
-            field = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(MyStruct self, **kwargs):
+        if not kwargs:
             return self
-
-        if field is not None:
-            if not isinstance(field, str):
-                raise TypeError(f'field is not a { str !r}.')
-
-        __fbthrift_inst = <MyStruct>MyStruct.__new__(MyStruct)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(MyStruct._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          field,
-        )))
+        cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cMyStruct] _make_instance(
-        cMyStruct* base_instance,
-        bint* __isNOTSET,
-        str field 
-    ) except *:
-        cdef unique_ptr[cMyStruct] c_inst
-        if base_instance:
-            c_inst = make_unique[cMyStruct](deref(base_instance))
-        else:
-            c_inst = make_unique[cMyStruct]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and field is None:
-                deref(c_inst).field_ref().assign(default_inst[cMyStruct]().field_ref().value())
-                deref(c_inst).__isset.field = False
-                pass
-
-        if field is not None:
-            deref(c_inst).field_ref().assign(cmove(thrift.py3.types.bytes_to_string(field.encode('utf-8'))))
-            deref(c_inst).__isset.field = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
           "field": deref(self._cpp_obj).field_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'field', self.field
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -170,6 +119,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
 
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyStruct](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 1
+
     cdef __iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data
         with nogil:
@@ -186,129 +141,23 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 @__cython.auto_pickle(False)
 cdef class Combo(thrift.py3.types.Struct):
+    def __init__(Combo self, **kwargs):
+        self._cpp_obj = make_shared[cCombo]()
+        self._fields_setter = __fbthrift_types_fields.__Combo_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
 
-    def __init__(
-        Combo self, *,
-        listOfOurMyStructLists=None,
-        theirMyStructList=None,
-        ourMyStructList=None,
-        listOfTheirMyStructList=None
-    ):
-        self._cpp_obj = __to_shared_ptr(cmove(Combo._make_instance(
-          NULL,
-          NULL,
-          listOfOurMyStructLists,
-          theirMyStructList,
-          ourMyStructList,
-          listOfTheirMyStructList,
-        )))
-
-    def __call__(
-        Combo self,
-        listOfOurMyStructLists=__NOTSET,
-        theirMyStructList=__NOTSET,
-        ourMyStructList=__NOTSET,
-        listOfTheirMyStructList=__NOTSET
-    ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[4] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        if listOfOurMyStructLists is ___NOTSET:
-            __isNOTSET[0] = True
-            listOfOurMyStructLists = None
-        else:
-            __isNOTSET[0] = False
-            __fbthrift_changed = True
-
-        if theirMyStructList is ___NOTSET:
-            __isNOTSET[1] = True
-            theirMyStructList = None
-        else:
-            __isNOTSET[1] = False
-            __fbthrift_changed = True
-
-        if ourMyStructList is ___NOTSET:
-            __isNOTSET[2] = True
-            ourMyStructList = None
-        else:
-            __isNOTSET[2] = False
-            __fbthrift_changed = True
-
-        if listOfTheirMyStructList is ___NOTSET:
-            __isNOTSET[3] = True
-            listOfTheirMyStructList = None
-        else:
-            __isNOTSET[3] = False
-            __fbthrift_changed = True
-
-
-        if not __fbthrift_changed:
+    def __call__(Combo self, **kwargs):
+        if not kwargs:
             return self
-
-        __fbthrift_inst = <Combo>Combo.__new__(Combo)
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove(Combo._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,
-          listOfOurMyStructLists,
-          theirMyStructList,
-          ourMyStructList,
-          listOfTheirMyStructList,
-        )))
+        cdef Combo __fbthrift_inst = Combo.__new__(Combo)
+        __fbthrift_inst._cpp_obj = make_shared[cCombo](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__Combo_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
 
-    @staticmethod
-    cdef unique_ptr[cCombo] _make_instance(
-        cCombo* base_instance,
-        bint* __isNOTSET,
-        object listOfOurMyStructLists ,
-        object theirMyStructList ,
-        object ourMyStructList ,
-        object listOfTheirMyStructList 
-    ) except *:
-        cdef unique_ptr[cCombo] c_inst
-        if base_instance:
-            c_inst = make_unique[cCombo](deref(base_instance))
-        else:
-            c_inst = make_unique[cCombo]()
-
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and listOfOurMyStructLists is None:
-                deref(c_inst).listOfOurMyStructLists_ref().assign(default_inst[cCombo]().listOfOurMyStructLists_ref().value())
-                deref(c_inst).__isset.listOfOurMyStructLists = False
-                pass
-
-            if not __isNOTSET[1] and theirMyStructList is None:
-                deref(c_inst).theirMyStructList_ref().assign(default_inst[cCombo]().theirMyStructList_ref().value())
-                deref(c_inst).__isset.theirMyStructList = False
-                pass
-
-            if not __isNOTSET[2] and ourMyStructList is None:
-                deref(c_inst).ourMyStructList_ref().assign(default_inst[cCombo]().ourMyStructList_ref().value())
-                deref(c_inst).__isset.ourMyStructList = False
-                pass
-
-            if not __isNOTSET[3] and listOfTheirMyStructList is None:
-                deref(c_inst).listOfTheirMyStructList_ref().assign(default_inst[cCombo]().listOfTheirMyStructList_ref().value())
-                deref(c_inst).__isset.listOfTheirMyStructList = False
-                pass
-
-        if listOfOurMyStructLists is not None:
-            deref(c_inst).listOfOurMyStructLists_ref().assign(deref(List__List__MyStruct(listOfOurMyStructLists)._cpp_obj))
-            deref(c_inst).__isset.listOfOurMyStructLists = True
-        if theirMyStructList is not None:
-            deref(c_inst).theirMyStructList_ref().assign(deref(List__module_MyStruct(theirMyStructList)._cpp_obj))
-            deref(c_inst).__isset.theirMyStructList = True
-        if ourMyStructList is not None:
-            deref(c_inst).ourMyStructList_ref().assign(deref(List__MyStruct(ourMyStructList)._cpp_obj))
-            deref(c_inst).__isset.ourMyStructList = True
-        if listOfTheirMyStructList is not None:
-            deref(c_inst).listOfTheirMyStructList_ref().assign(deref(List__List__module_MyStruct(listOfTheirMyStructList)._cpp_obj))
-            deref(c_inst).__isset.listOfTheirMyStructList = True
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("Combo", {
@@ -317,12 +166,6 @@ cdef class Combo(thrift.py3.types.Struct):
           "ourMyStructList": deref(self._cpp_obj).ourMyStructList_ref().has_value(),
           "listOfTheirMyStructList": deref(self._cpp_obj).listOfTheirMyStructList_ref().has_value(),
         })
-
-    def __iter__(self):
-        yield 'listOfOurMyStructLists', self.listOfOurMyStructLists
-        yield 'theirMyStructList', self.theirMyStructList
-        yield 'ourMyStructList', self.ourMyStructList
-        yield 'listOfTheirMyStructList', self.listOfTheirMyStructList
 
     @staticmethod
     cdef create(shared_ptr[cCombo] cpp_obj):
@@ -379,6 +222,12 @@ cdef class Combo(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Combo()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cCombo](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = 4
 
     cdef __iobuf.IOBuf _serialize(Combo self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

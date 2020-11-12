@@ -40,12 +40,12 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
-from libcpp.utility cimport move as cmove
 from cpython cimport bool as pbool
 from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
+from thrift.py3.std_libcpp cimport sv_to_str as __sv_to_str, string_view as __cstring_view
 from thrift.py3.types cimport (
     cSetOp as __cSetOp,
     richcmp as __richcmp,
@@ -60,11 +60,12 @@ from thrift.py3.types cimport (
     map_contains as __map_contains,
     map_getitem as __map_getitem,
     reference_shared_ptr as __reference_shared_ptr,
+    get_field_name_by_index as __get_field_name_by_index,
+    reset_field as __reset_field,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
-    default_inst,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -76,6 +77,7 @@ cimport thrift.py3.serializer as serializer
 import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
+from folly.range cimport Range as __cRange
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -101,192 +103,32 @@ cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:
 {{^struct:union?}}
 @__cython.auto_pickle(False)
 cdef class {{struct:name}}({{> types/PythonStructClass}}):
-
-    {{^struct:exception?}}
-    def __init__(
-        {{struct:name}} self, *{{#struct:fields}},
-        {{#field:type}}{{!
-            }}{{!  # If we can set a None then type it
-                }}{{#type:cythonTypeNoneable?}}{{!
-                    }}{{> types/CythonPythonType}} {{!
-                }}{{/type:cythonTypeNoneable?}}{{!
-            }}{{field:py_name}}{{!
-                }}=None{{!
-        }}{{/field:type}}{{/struct:fields}}
-    ):
-    {{/struct:exception?}}
-    {{#struct:exception?}}{{! Python exceptions are weird about keyword only}}
-    def __init__(
-        {{struct:name}} self{{#struct:fields}},
-        {{#field:type}}{{!
-                }}{{#type:cythonTypeNoneable?}}{{!
-                    }}{{> types/CythonPythonType}} {{!
-                }}{{/type:cythonTypeNoneable?}}{{!
-            }}{{field:py_name}}=None{{!
-        }}{{/field:type}}{{/struct:fields}}
-    ):
-        {{#struct:fields}}
-        {{/struct:fields}}
-    {{/struct:exception?}}
-        {{#struct:fields}}
-        {{#field:type}}
-        {{^type:cythonTypeNoneable?}}
-        {{^type:container?}}
-        if {{field:py_name}} is not None:
-            {{#type:number?}}
-            if not isinstance({{field:py_name}}, {{> types/PythonIsInstanceType}}):
-                raise TypeError(f'{{field:py_name}} is not a { {{> types/PythonType}} !r}.')
-            {{#type:integer?}}
-            {{! inject cython int overflow checks }}
-            {{field:py_name}} = <{{> types/CythonPythonType}}> {{field:py_name}}
-            {{/type:integer?}}
-            {{/type:number?}}
-
-        {{/type:container?}}
-        {{/type:cythonTypeNoneable?}}
-        {{/field:type}}
-        {{/struct:fields}}
-        self._cpp_obj = __to_shared_ptr(cmove({{struct:name}}._make_instance(
-          NULL,
-          NULL,{{#struct:fields}}
-          {{field:py_name}},{{/struct:fields}}
-        )))
-        {{#struct:exception?}}
-        _builtins.Exception.__init__(self, {{#struct:fields}}self.{{field:py_name}}{{^last?}}, {{/last?}}{{/struct:fields}})
-        {{/struct:exception?}}
-
+    def __init__({{struct:name}} self,{{#struct:exception?}} *args,{{/struct:exception?}} **kwargs):
+        self._cpp_obj = make_shared[c{{struct:name}}]()
+        self._fields_setter = __fbthrift_types_fields.__{{struct:name}}_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__({{#struct:exception?}} *args, {{/struct:exception?}}**kwargs)
     {{^struct:exception?}}
     {{^struct:cpp_noncopyable?}}
-    def __call__(
-        {{struct:name}} self{{#struct:fields}},
-        {{field:py_name}}=__NOTSET{{/struct:fields}}
-    ):
+
+    def __call__({{struct:name}} self, **kwargs):
         {{^struct:fields?}}
         return self
         {{/struct:fields?}}
         {{#struct:fields?}}
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[{{struct:size}}] __isNOTSET  # so make_instance is typed
-
-        __fbthrift_changed = False
-        {{#struct:fields}}
-        if {{field:py_name}} is ___NOTSET:
-            __isNOTSET[{{field:index}}] = True
-            {{field:py_name}} = None
-        else:
-            __isNOTSET[{{field:index}}] = False
-            __fbthrift_changed = True
-
-        {{/struct:fields}}
-
-        if not __fbthrift_changed:
+        if not kwargs:
             return self
-        {{/struct:fields?}}
-        {{#struct:fields}}
-        {{#first?}}
-
-        {{/first?}}
-        {{#field:type}}
-        {{^type:container?}}
-        if {{field:py_name}} is not None:
-            {{#type:enum?}}
-            if not isinstance({{field:py_name}}, {{> types/PythonType}}):
-                raise TypeError(f'field {{field:py_name}} value: { {{field:py_name}} !r} is not of the enum type { {{> types/PythonType}} }.')
-            {{/type:enum?}}
-            {{^type:enum?}}
-            if not isinstance({{field:py_name}}, {{> types/PythonIsInstanceType}}):
-                raise TypeError(f'{{field:py_name}} is not a { {{> types/PythonType}} !r}.')
-            {{#type:integer?}}
-            {{! inject cython int overflow checks }}
-            {{field:py_name}} = <{{> types/CythonPythonType}}> {{field:py_name}}
-            {{/type:integer?}}
-            {{/type:enum?}}
-
-        {{/type:container?}}
-        {{/field:type}}
-        {{/struct:fields}}
-        {{#struct:fields?}}
-        __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        __fbthrift_inst._cpp_obj = __to_shared_ptr(cmove({{struct:name}}._make_instance(
-          self._cpp_obj.get(),
-          __isNOTSET,{{#struct:fields}}
-          {{field:py_name}},{{/struct:fields}}
-        )))
+        cdef {{struct:name}} __fbthrift_inst = {{struct:name}}.__new__({{struct:name}})
+        __fbthrift_inst._cpp_obj = make_shared[c{{struct:name}}](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__{{struct:name}}_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, __fbthrift_value in kwargs.items():
+            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
         return __fbthrift_inst
         {{/struct:fields?}}
     {{/struct:cpp_noncopyable?}}
     {{/struct:exception?}}
 
-    @staticmethod
-    cdef unique_ptr[c{{struct:name}}] _make_instance(
-        c{{struct:name}}* base_instance,
-        bint* __isNOTSET{{#struct:fields}},
-        {{#field:type}}{{!
-            }}{{#type:cythonTypeNoneable?}}{{!
-                }}{{> types/CythonPythonType}} {{!
-            }}{{/type:cythonTypeNoneable?}}{{!
-            }}{{^type:cythonTypeNoneable?}}{{!
-                }}object {{!
-            }}{{/type:cythonTypeNoneable?}}{{!
-            }}{{field:py_name}}{{!
-        }} {{/field:type}}{{/struct:fields}}
-    ) except *:
-        cdef unique_ptr[c{{struct:name}}] c_inst
-        if base_instance:
-            {{#struct:cpp_noncopyable?}}
-            raise TypeError("{{struct:name}} is noncopyable")
-            {{/struct:cpp_noncopyable?}}
-            {{^struct:cpp_noncopyable?}}
-            c_inst = make_unique[c{{struct:name}}](deref(base_instance))
-            {{/struct:cpp_noncopyable?}}
-        else:
-            c_inst = make_unique[c{{struct:name}}]()
-
-        {{! We never have a base_instance for exceptions (because they have
-            no __call__, so don't generate this part for them because it
-            references the _defaults object, which they also don't have )}}
-        {{^struct:exception?}}
-        if base_instance:
-            # Convert None's to default value. (or unset)
-            {{#struct:fields}}
-            if not __isNOTSET[{{field:index}}] and {{field:py_name}} is None:
-                {{#field:hasDefaultValue?}}
-                {{#field:has_ref_accessor?}}
-                deref(c_inst).{{field:py_name}}_ref().assign(default_inst[c{{struct:name}}]().{{> CythonFieldValueRef}})
-                {{/field:has_ref_accessor?}}
-                {{^field:has_ref_accessor?}}
-                deref(c_inst).{{field:py_name}} = default_inst[c{{struct:name}}]().{{> CythonFieldValueRef}}
-                {{/field:has_ref_accessor?}}
-                {{/field:hasDefaultValue?}}
-                {{#field:isset?}}
-                deref(c_inst).__isset.{{field:py_name}} = False
-                {{/field:isset?}}
-                {{#field:reference?}}
-                deref(c_inst).{{field:py_name}}.reset()
-                {{/field:reference?}}
-                pass
-
-            {{/struct:fields}}{{!
-            }}{{^struct:fields}}
-            pass
-            {{/struct:fields}}
-        {{/struct:exception?}}
-        {{#struct:fields}}{{#field:type}}
-        if {{field:py_name}} is not None:
-            {{#field:has_ref_accessor?}}
-            deref(c_inst).{{field:py_name}}_ref().assign({{> CythonFieldValueForAssignment}})
-            {{/field:has_ref_accessor?}}
-            {{^field:has_ref_accessor?}}
-            deref(c_inst).{{field:py_name}} = {{> CythonFieldValueForAssignment}}
-            {{/field:has_ref_accessor?}}
-            {{! This should also be inside the if statement, so indent appropriately }}
-            {{#field:isset?}}
-            deref(c_inst).__isset.{{field:py_name}} = True
-            {{/field:isset?}}
-        {{/field:type}}{{/struct:fields}}
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return cmove(c_inst)
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object __fbthrift_isset(self):
         return thrift.py3.types._IsSet("{{struct:name}}", {
@@ -297,20 +139,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/struct:fields}}
         })
 
-    def __iter__(self):
-        {{#struct:fields}}
-        yield '{{field:py_name}}', self.{{field:py_name}}
-        {{/struct:fields}}
-        {{^struct:fields}}
-        yield from ()
-        {{/struct:fields}}
-
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         __fbthrift_inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}}{{#struct:exception?}}, (<bytes>deref(cpp_obj).what()).decode('utf-8'){{/struct:exception?}})
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         {{#struct:exception?}}
-        _builtins.Exception.__init__(__fbthrift_inst, {{#struct:fields}}__fbthrift_inst.{{field:py_name}}{{^last?}}, {{/last?}}{{/struct:fields}})
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
         {{/struct:exception?}}
         return __fbthrift_inst
 
@@ -537,6 +371,12 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__{{struct:name}}()
+
+    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[c{{struct:name}}](idx)
+
+    def __cinit__(self):
+        self.__fbthrift_struct_size = {{struct:size}}
 
     {{^struct:exception?}}
     cdef __iobuf.IOBuf _serialize({{struct:name}} self, __Protocol proto):
@@ -928,10 +768,10 @@ cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
 
     @staticmethod
     cdef void callback(
-        cFollyTry[cOptional[{{> types/CythonCppType}}]]&& result,
+        cFollyTry[__cOptional[{{> types/CythonCppType}}]]&& result,
         PyObject* userdata,
     ):
-        cdef cOptional[{{> types/CythonCppType}}] opt_val
+        cdef __cOptional[{{> types/CythonCppType}}] opt_val
         cdef {{> types/CythonCppType}} _value
         stream, pyfuture, rpc_options = <object> userdata
         if {{#program:stream_exceptions}}{{!
@@ -960,7 +800,7 @@ cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, self._rpc_options)
-        bridgeCoroTaskWith[cOptional[{{> types/CythonCppType}}]](
+        bridgeCoroTaskWith[__cOptional[{{> types/CythonCppType}}]](
             self._executor,
             deref(self._gen).getNext(),
             ClientBufferedStream__{{type:flat_name}}.callback,

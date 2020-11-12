@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -188,13 +193,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
 
 cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSimpleException] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cSimpleException] _make_instance(
-        cSimpleException* base_instance,
-        bint* __isNOTSET,
-        object err_code
-    ) except *
+    cdef __fbthrift_types_fields.__SimpleException_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSimpleException])
@@ -203,14 +202,8 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
 
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cOptionalRefStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__OptionalRefStruct_FieldsSetter _fields_setter
     cdef __iobuf.IOBuf __field_optional_blob
-
-    @staticmethod
-    cdef unique_ptr[cOptionalRefStruct] _make_instance(
-        cOptionalRefStruct* base_instance,
-        bint* __isNOTSET,
-        __iobuf.IOBuf optional_blob
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cOptionalRefStruct])
@@ -219,19 +212,7 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
 cdef class SimpleStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSimpleStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cSimpleStruct] _make_instance(
-        cSimpleStruct* base_instance,
-        bint* __isNOTSET,
-        pbool is_on,
-        object tiny_int,
-        object small_int,
-        object nice_sized_int,
-        object big_int,
-        object real,
-        object smaller_real
-    ) except *
+    cdef __fbthrift_types_fields.__SimpleStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct])
@@ -240,23 +221,9 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
 cdef class ComplexStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__ComplexStruct_FieldsSetter _fields_setter
     cdef SimpleStruct __field_structOne
     cdef SimpleStruct __field_structTwo
-
-    @staticmethod
-    cdef unique_ptr[cComplexStruct] _make_instance(
-        cComplexStruct* base_instance,
-        bint* __isNOTSET,
-        SimpleStruct structOne,
-        SimpleStruct structTwo,
-        object an_integer,
-        str name,
-        AnEnum an_enum,
-        bytes some_bytes,
-        str sender,
-        str cdef_,
-        bytes bytes_with_cpp_type
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cComplexStruct])
@@ -286,14 +253,8 @@ cdef class BinaryUnion(thrift.py3.types.Union):
 
 cdef class BinaryUnionStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cBinaryUnionStruct] _cpp_obj
+    cdef __fbthrift_types_fields.__BinaryUnionStruct_FieldsSetter _fields_setter
     cdef BinaryUnion __field_u
-
-    @staticmethod
-    cdef unique_ptr[cBinaryUnionStruct] _make_instance(
-        cBinaryUnionStruct* base_instance,
-        bint* __isNOTSET,
-        BinaryUnion u
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cBinaryUnionStruct])

@@ -19,6 +19,8 @@ from libcpp.vector cimport vector
 from thrift.py3.common import RpcOptions
 
 from enum import Enum, Flag
+import builtins as _builtins
+import itertools
 
 class TransportErrorType(Enum):
     UNKNOWN = cTTransportExceptionType__UNKNOWN
@@ -85,6 +87,24 @@ cdef create_Error(shared_ptr[cTException] ex):
 
 cdef class GeneratedError(Error):
     """This is the base class for all Generated Thrift Exceptions"""
+
+    def __init__(self, *args, **kwargs):
+        names_iter = self.__iter_names()
+        for idx, value in enumerate(args):
+            try:
+                name = next(names_iter)
+            except StopIteration:
+                raise TypeError(f"{type(self).__name__}() only takes {idx} arguments")
+            else:
+                self.__fbthrift_set_field(name, value)
+        for name in names_iter:
+            value = kwargs.pop(name, None)
+            if value is not None:
+                self.__fbthrift_set_field(name, value)
+        if kwargs:  # still something left
+            raise TypeError(f"{type(self).__name__}() found duplicate/undefined arguments {repr(kwargs)}")
+        _builtins.Exception.__init__(self, *(value for _, value in self))
+
     cdef object __fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
 
@@ -97,9 +117,23 @@ cdef class GeneratedError(Error):
             return NotImplemented
         # otherwise returns None
 
+    cdef void __fbthrift_set_field(self, str name, object value) except *:
+        pass
+
+    cdef string_view __fbthrift_get_field_name_by_index(self, size_t idx):
+        raise NotImplementedError()
+
     def __repr__(self):
         fields = ", ".join(f"{name}={repr(value)}" for name, value in self)
         return f"{type(self).__name__}({fields})"
+
+    def __iter_names(self):
+        for i in range(self.__fbthrift_struct_size):
+            yield sv_to_str(self.__fbthrift_get_field_name_by_index(i))
+
+    def __iter__(self):
+        for name in self.__iter_names():
+            yield name, getattr(self, name)
 
 
 cdef class ApplicationError(Error):

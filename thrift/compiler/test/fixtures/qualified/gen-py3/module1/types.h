@@ -7,11 +7,18 @@
 
 #pragma once
 
+#include <functional>
+#include <folly/Range.h>
+
 #include <thrift/lib/py3/enums.h>
+#include "gen-cpp2/module1_data.h"
 #include "gen-cpp2/module1_types.h"
+namespace thrift {
+namespace py3 {
+
 
 template<>
-const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3::PyEnumTraits<
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     ::module1::Enum>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
@@ -20,3 +27,29 @@ const std::vector<std::pair<std::string_view, std::string_view>>& ::thrift::py3:
   return *pairs;
 }
 
+
+
+template<>
+void reset_field<::module1::Struct>(
+    ::module1::Struct& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.first_ref().copy_from(default_inst<::module1::Struct>().first_ref());
+      return;
+    case 1:
+      obj.second_ref().copy_from(default_inst<::module1::Struct>().second_ref());
+      return;
+  }
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::module1::Struct>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+} // namespace py3
+} // namespace thrift

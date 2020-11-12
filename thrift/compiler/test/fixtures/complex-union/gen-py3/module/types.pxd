@@ -16,6 +16,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.utility cimport move as cmove
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
@@ -26,11 +27,15 @@ cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
+    bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
-from folly.optional cimport cOptional
+from folly.optional cimport cOptional as __cOptional
+
+cimport module.types_fields as __fbthrift_types_fields
+
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
@@ -279,16 +284,8 @@ cdef class DataUnion(thrift.py3.types.Union):
 
 cdef class Val(thrift.py3.types.Struct):
     cdef shared_ptr[cVal] _cpp_obj
+    cdef __fbthrift_types_fields.__Val_FieldsSetter _fields_setter
     cdef Map__i16_string __field_typedefValue
-
-    @staticmethod
-    cdef unique_ptr[cVal] _make_instance(
-        cVal* base_instance,
-        bint* __isNOTSET,
-        str strVal,
-        object intVal,
-        object typedefValue
-    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cVal])
@@ -341,13 +338,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cNonCopyableStruct] _cpp_obj
-
-    @staticmethod
-    cdef unique_ptr[cNonCopyableStruct] _make_instance(
-        cNonCopyableStruct* base_instance,
-        bint* __isNOTSET,
-        object num
-    ) except *
+    cdef __fbthrift_types_fields.__NonCopyableStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cNonCopyableStruct])
