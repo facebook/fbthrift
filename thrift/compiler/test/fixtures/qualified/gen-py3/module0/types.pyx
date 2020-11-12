@@ -18,12 +18,24 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
+    cSetOp as __cSetOp,
+    richcmp as __richcmp,
+    set_op as __set_op,
+    setcmp as __setcmp,
+    list_index as __list_index,
+    list_count as __list_count,
+    list_slice as __list_slice,
+    list_getitem as __list_getitem,
+    set_iter as __set_iter,
+    map_iter as __map_iter,
+    map_contains as __map_contains,
+    map_getitem as __map_getitem,
+    reference_shared_ptr as __reference_shared_ptr,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
     default_inst,
-    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -212,34 +224,13 @@ cdef class Struct(thrift.py3.types.Struct):
         )
         return Struct.create(cmove(cpp_obj))
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if not (
-                isinstance(self, Struct) and
-                isinstance(other, Struct)):
-            if cop == Py_EQ:  # different types are never equal
-                return False
-            elif cop == Py_NE:  # different types are always notequal
-                return True
-            else:
-                return NotImplemented
-
-        cdef cStruct* cself = (<Struct>self)._cpp_obj.get()
-        cdef cStruct* cother = (<Struct>other)._cpp_obj.get()
-        if cop == Py_EQ:
-            return deref(cself) == deref(cother)
-        elif cop == Py_NE:
-            return deref(cself) != deref(cother)
-        elif cop == Py_LT:
-            return deref(cself) < deref(cother)
-        elif cop == Py_LE:
-            return deref(cself) <= deref(cother)
-        elif cop == Py_GT:
-            return deref(cself) > deref(cother)
-        elif cop == Py_GE:
-            return deref(cself) >= deref(cother)
-        else:
-            return NotImplemented
+    def __richcmp__(self, other, int op):
+        r = self.__cmp_sametype(other, op)
+        return __richcmp[cStruct](
+            self._cpp_obj,
+            (<Struct>other)._cpp_obj,
+            op,
+        ) if r is None else r
 
     @staticmethod
     def __get_reflection__():
@@ -292,94 +283,42 @@ cdef class List__Enum(thrift.py3.types.List):
                 deref(c_inst).push_back(<cEnum><int>item)
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[cEnum]] c_inst
-        cdef cEnum citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[cEnum]]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__Enum.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            citem = deref(self._cpp_obj)[index]
-            return translate_cpp_enum_to_python(Enum, <int> citem)
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__Enum.create(
+            __list_slice[vector[cEnum]](self._cpp_obj, start, stop, step)
+        )
 
-    def __contains__(self, item):
+    cdef _get_single_item(self, size_t index):
+        cdef cEnum citem
+        __list_getitem(self._cpp_obj, index, citem)
+        return translate_cpp_enum_to_python(Enum, <int> citem)
+
+    cdef _check_item_type(self, item):
         if not self or item is None:
-            return False
-        if not isinstance(item, Enum):
-            return False
-        return std_libcpp.find[vector[cEnum].iterator, cEnum](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), <cEnum><int>item) != deref(self._cpp_obj).end()
-
-    def __iter__(self):
-        if not self:
             return
-        cdef cEnum citem
-        cdef vector[cEnum].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = deref(loc)
-            yield translate_cpp_enum_to_python(Enum, <int> citem)
-            inc(loc)
+        if isinstance(item, Enum):
+            return item
 
-    def __reversed__(self):
-        if not self:
-            return
-        cdef cEnum citem
-        cdef vector[cEnum].reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            citem = deref(loc)
-            yield translate_cpp_enum_to_python(Enum, <int> citem)
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+    def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        if not isinstance(item, Enum):
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef cEnum citem = <cEnum><int>item
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[cEnum]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
             raise err
-        cdef vector[cEnum].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef vector[cEnum].iterator loc = std_libcpp.find[vector[cEnum].iterator, cEnum](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            <cEnum><int>item        )
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
-        if not isinstance(item, Enum):
-            return 0
-        return <cint64_t> std_libcpp.count[vector[cEnum].iterator, cEnum](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), <cEnum><int>item)
+        cdef cEnum citem = <cEnum><int>item
+        return __list_count[vector[cEnum]](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():

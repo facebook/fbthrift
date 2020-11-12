@@ -17,6 +17,10 @@
 #pragma once
 
 #include <memory>
+#include <optional>
+
+#include <Python.h>
+#include <glog/logging.h>
 
 #include <folly/Indestructible.h>
 
@@ -43,6 +47,299 @@ const T& default_inst() {
   static const folly::Indestructible<T> inst{};
   return *inst;
 }
+
+template <typename T>
+bool richcmp(const std::shared_ptr<T>& a, const std::shared_ptr<T>& b, int op) {
+  switch (op) {
+    case Py_LT:
+      return *a < *b;
+    case Py_LE:
+      return *a <= *b;
+    case Py_EQ:
+      return *a == *b;
+    case Py_NE:
+      return *a != *b;
+    case Py_GT:
+      return *a > *b;
+    case Py_GE:
+      return *a >= *b;
+    default:
+      LOG(FATAL) << "Invalid op in richcmp " << op;
+  }
+}
+
+template <typename T>
+bool setcmp(const std::shared_ptr<T>& a, const std::shared_ptr<T>& b, int op) {
+  auto sa = a->size();
+  auto sb = b->size();
+  // reduce to LE with additional size check
+  switch (op) {
+    case Py_LT: // subset
+      return sa < sb && setcmp(a, b, Py_LE);
+    case Py_EQ:
+      return sa == sb && setcmp(a, b, Py_LE);
+    case Py_NE:
+      return sa != sb || !setcmp(a, b, Py_LE);
+    case Py_GT: // strict superset
+      return sa > sb && setcmp(b, a, Py_LE);
+    case Py_GE: // superset
+      return setcmp(b, a, Py_LE);
+    case Py_LE:
+      for (const auto& e : *a) {
+        if (b->find(e) == b->end()) {
+          return false;
+        }
+      }
+      return true;
+    default:
+      LOG(FATAL) << "Invalid op in richcmp " << op;
+  }
+}
+
+template <typename T>
+std::shared_ptr<T> setand(
+    const std::shared_ptr<T>& a,
+    const std::shared_ptr<T>& b) {
+  T out;
+  for (const auto& e : *a) {
+    if (b->find(e) != b->end()) {
+      out.insert(e);
+    }
+  }
+  return std::make_shared<T>(std::move(out));
+}
+
+template <typename T>
+std::shared_ptr<T> setsub(
+    const std::shared_ptr<T>& a,
+    const std::shared_ptr<T>& b) {
+  T out;
+  for (const auto& e : *a) {
+    if (b->find(e) == b->end()) {
+      out.insert(e);
+    }
+  }
+  return std::make_shared<T>(std::move(out));
+}
+
+template <typename T>
+std::shared_ptr<T> setor(
+    const std::shared_ptr<T>& a,
+    const std::shared_ptr<T>& b) {
+  T out;
+  for (const auto& e : *a) {
+    out.insert(e);
+  }
+  for (const auto& e : *b) {
+    out.insert(e);
+  }
+  return std::make_shared<T>(std::move(out));
+}
+
+template <typename T>
+std::shared_ptr<T> setxor(
+    const std::shared_ptr<T>& a,
+    const std::shared_ptr<T>& b) {
+  T out;
+  for (const auto& e : *a) {
+    if (b->find(e) == b->end()) {
+      out.insert(e);
+    }
+  }
+  for (const auto& e : *b) {
+    if (a->find(e) == a->end()) {
+      out.insert(e);
+    }
+  }
+  return std::make_shared<T>(std::move(out));
+}
+
+enum SetOp {
+  AND,
+  OR,
+  SUB,
+  XOR,
+  REVSUB,
+};
+
+template <typename T>
+std::shared_ptr<T>
+set_op(const std::shared_ptr<T>& a, const std::shared_ptr<T>& b, SetOp op) {
+  switch (op) {
+    case SetOp::AND:
+      return setand(a, b);
+    case SetOp::OR:
+      return setor(a, b);
+    case SetOp::SUB:
+      return setsub(a, b);
+    case SetOp::XOR:
+      return setxor(a, b);
+    case SetOp::REVSUB:
+      return setsub(b, a);
+  }
+}
+
+template <typename T>
+std::optional<size_t> list_index(
+    const std::shared_ptr<T>& list,
+    int start,
+    int stop,
+    const typename T::value_type& item) {
+  if (start >= stop) {
+    return std::nullopt;
+  }
+  auto end = std::next(list->begin(), stop);
+  auto found = std::find(std::next(list->begin(), start), end, item);
+  return found != end ? std::optional{std::distance(list->begin(), found)}
+                      : std::nullopt;
+}
+
+template <typename T>
+size_t list_count(
+    const std::shared_ptr<T>& list,
+    const typename T::value_type& item) {
+  return std::count(list->begin(), list->end(), item);
+}
+
+template <typename T>
+std::shared_ptr<T>
+list_slice(const std::shared_ptr<T>& cpp_obj, int start, int stop, int step) {
+  DCHECK(step != 0 && start >= -1 && stop >= -1);
+  T res{};
+  if (step > 0) {
+    for (auto it = std::next(cpp_obj->begin(), start); start < stop;
+         start += step, it += step) {
+      res.push_back(*it);
+    }
+  } else {
+    for (auto it = std::next(cpp_obj->rbegin(), cpp_obj->size() - start - 1);
+         start > stop;
+         start += step, it -= step) {
+      res.push_back(*it);
+    }
+  }
+  return std::make_shared<T>(std::move(res));
+}
+
+template <typename T, typename V>
+void list_getitem(
+    const std::shared_ptr<T>& cpp_obj,
+    int index,
+    std::shared_ptr<V>& out) {
+  // the caller need to make sure index is valid
+  DCHECK(index >= 0 && index < cpp_obj->size());
+  out = std::shared_ptr<V>(cpp_obj, &cpp_obj->operator[](index));
+}
+template <typename T, typename V>
+void list_getitem(const std::shared_ptr<T>& cpp_obj, int index, V& out) {
+  // the caller need to make sure index is valid
+  DCHECK(index >= 0 && index < cpp_obj->size());
+  out = cpp_obj->operator[](index);
+}
+
+template <typename T>
+struct set_iter {
+  set_iter() = default;
+  set_iter(const std::shared_ptr<T>& cpp_obj) : it{cpp_obj->begin()} {}
+  typename T::iterator it;
+  template <typename V>
+  void genNext(const std::shared_ptr<T>& cpp_obj, std::shared_ptr<V>& out) {
+    out = std::shared_ptr<V>(cpp_obj, const_cast<V*>(&*it));
+    ++it;
+  }
+  template <typename V>
+  void genNext(const std::shared_ptr<T>& cpp_obj, V& out) {
+    out = *it;
+    ++it;
+  }
+};
+
+template <typename T>
+bool map_contains(
+    const std::shared_ptr<T>& cpp_obj,
+    const typename T::key_type key) {
+  return cpp_obj->find(key) != cpp_obj->end();
+}
+
+template <typename T, typename V>
+void map_getitem(
+    const std::shared_ptr<T>& cpp_obj,
+    const typename T::key_type key,
+    std::shared_ptr<V>& out) {
+  out = std::shared_ptr<V>(cpp_obj, &cpp_obj->operator[](key));
+}
+
+template <typename T, typename V>
+void map_getitem(
+    const std::shared_ptr<T>& cpp_obj,
+    const typename T::key_type key,
+    V& out) {
+  out = cpp_obj->operator[](key);
+}
+
+template <typename T>
+struct map_iter {
+  map_iter() = default;
+  map_iter(const std::shared_ptr<T>& cpp_obj) : it{cpp_obj->begin()} {}
+  typename T::iterator it;
+  template <typename K>
+  void genNextKey(const std::shared_ptr<T>& cpp_obj, std::shared_ptr<K>& out) {
+    out = std::shared_ptr<K>(cpp_obj, const_cast<K*>(&it->first));
+    ++it;
+  }
+  template <typename K>
+  void genNextKey(const std::shared_ptr<T>& cpp_obj, K& out) {
+    out = it->first;
+    ++it;
+  }
+  template <typename V>
+  void genNextValue(
+      const std::shared_ptr<T>& cpp_obj,
+      std::shared_ptr<V>& out) {
+    out = std::shared_ptr<V>(cpp_obj, const_cast<V*>(&it->second));
+    ++it;
+  }
+  template <typename V>
+  void genNextValue(const std::shared_ptr<T>& cpp_obj, V& out) {
+    out = it->second;
+    ++it;
+  }
+  template <typename K, typename V>
+  void
+  genNextItem(const std::shared_ptr<T>& cpp_obj, K& key_out, V& value_out) {
+    key_out = it->first;
+    value_out = it->second;
+    ++it;
+  }
+  template <typename K, typename V>
+  void genNextItem(
+      const std::shared_ptr<T>& cpp_obj,
+      K& key_out,
+      std::shared_ptr<V>& value_out) {
+    key_out = it->first;
+    value_out = std::shared_ptr<V>(cpp_obj, const_cast<V*>(&it->second));
+    ++it;
+  }
+  template <typename K, typename V>
+  void genNextItem(
+      const std::shared_ptr<T>& cpp_obj,
+      std::shared_ptr<K>& key_out,
+      V& value_out) {
+    key_out = std::shared_ptr<K>(cpp_obj, const_cast<K*>(&it->first));
+    value_out = it->second;
+    ++it;
+  }
+
+  template <typename K, typename V>
+  void genNextItem(
+      const std::shared_ptr<T>& cpp_obj,
+      std::shared_ptr<K>& key_out,
+      std::shared_ptr<V>& value_out) {
+    key_out = std::shared_ptr<K>(cpp_obj, const_cast<K*>(&it->first));
+    value_out = std::shared_ptr<V>(cpp_obj, const_cast<V*>(&it->second));
+    ++it;
+  }
+};
 
 } // namespace py3
 } // namespace thrift

@@ -18,12 +18,24 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
+    cSetOp as __cSetOp,
+    richcmp as __richcmp,
+    set_op as __set_op,
+    setcmp as __setcmp,
+    list_index as __list_index,
+    list_count as __list_count,
+    list_slice as __list_slice,
+    list_getitem as __list_getitem,
+    set_iter as __set_iter,
+    map_iter as __map_iter,
+    map_contains as __map_contains,
+    map_getitem as __map_getitem,
+    reference_shared_ptr as __reference_shared_ptr,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
     default_inst,
-    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -236,34 +248,13 @@ cdef class Foo(thrift.py3.types.Struct):
         )
         return Foo.create(cmove(cpp_obj))
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if not (
-                isinstance(self, Foo) and
-                isinstance(other, Foo)):
-            if cop == Py_EQ:  # different types are never equal
-                return False
-            elif cop == Py_NE:  # different types are always notequal
-                return True
-            else:
-                return NotImplemented
-
-        cdef cFoo* cself = (<Foo>self)._cpp_obj.get()
-        cdef cFoo* cother = (<Foo>other)._cpp_obj.get()
-        if cop == Py_EQ:
-            return deref(cself) == deref(cother)
-        elif cop == Py_NE:
-            return deref(cself) != deref(cother)
-        elif cop == Py_LT:
-            return deref(cself) < deref(cother)
-        elif cop == Py_LE:
-            return deref(cself) <= deref(cother)
-        elif cop == Py_GT:
-            return deref(cself) > deref(cother)
-        elif cop == Py_GE:
-            return deref(cself) >= deref(cother)
-        else:
-            return NotImplemented
+    def __richcmp__(self, other, int op):
+        r = self.__cmp_sametype(other, op)
+        return __richcmp[cFoo](
+            self._cpp_obj,
+            (<Foo>other)._cpp_obj,
+            op,
+        ) if r is None else r
 
     @staticmethod
     def __get_reflection__():
@@ -316,94 +307,42 @@ cdef class List__bool(thrift.py3.types.List):
                 deref(c_inst).push_back(item)
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[cbool]] c_inst
-        cdef cbool citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[cbool]]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__bool.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            citem = deref(self._cpp_obj)[index]
-            return citem
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__bool.create(
+            __list_slice[vector[cbool]](self._cpp_obj, start, stop, step)
+        )
 
-    def __contains__(self, item):
+    cdef _get_single_item(self, size_t index):
+        cdef cbool citem
+        __list_getitem(self._cpp_obj, index, citem)
+        return citem
+
+    cdef _check_item_type(self, item):
         if not self or item is None:
-            return False
-        if not isinstance(item, bool):
-            return False
-        return std_libcpp.find[vector[cbool].iterator, cbool](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
-
-    def __iter__(self):
-        if not self:
             return
-        cdef cbool citem
-        cdef vector[cbool].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = deref(loc)
-            yield citem
-            inc(loc)
+        if isinstance(item, bool):
+            return item
 
-    def __reversed__(self):
-        if not self:
-            return
-        cdef cbool citem
-        cdef vector[cbool].reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            citem = deref(loc)
-            yield citem
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+    def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        if not isinstance(item, bool):
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef cbool citem = item
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[cbool]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
             raise err
-        cdef vector[cbool].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef vector[cbool].iterator loc = std_libcpp.find[vector[cbool].iterator, cbool](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            item        )
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
-        if not isinstance(item, bool):
-            return 0
-        return <cint64_t> std_libcpp.count[vector[cbool].iterator, cbool](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+        cdef cbool citem = item
+        return __list_count[vector[cbool]](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():
@@ -446,94 +385,42 @@ cdef class List__i32(thrift.py3.types.List):
                 deref(c_inst).push_back(item)
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[cint32_t]] c_inst
-        cdef cint32_t citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[cint32_t]]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__i32.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            citem = deref(self._cpp_obj)[index]
-            return citem
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__i32.create(
+            __list_slice[vector[cint32_t]](self._cpp_obj, start, stop, step)
+        )
 
-    def __contains__(self, item):
+    cdef _get_single_item(self, size_t index):
+        cdef cint32_t citem = 0
+        __list_getitem(self._cpp_obj, index, citem)
+        return citem
+
+    cdef _check_item_type(self, item):
         if not self or item is None:
-            return False
-        if not isinstance(item, int):
-            return False
-        return std_libcpp.find[vector[cint32_t].iterator, cint32_t](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item) != deref(self._cpp_obj).end()
-
-    def __iter__(self):
-        if not self:
             return
-        cdef cint32_t citem
-        cdef vector[cint32_t].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = deref(loc)
-            yield citem
-            inc(loc)
+        if isinstance(item, int):
+            return item
 
-    def __reversed__(self):
-        if not self:
-            return
-        cdef cint32_t citem
-        cdef vector[cint32_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            citem = deref(loc)
-            yield citem
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+    def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        if not isinstance(item, int):
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef cint32_t citem = item
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[cint32_t]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
             raise err
-        cdef vector[cint32_t].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef vector[cint32_t].iterator loc = std_libcpp.find[vector[cint32_t].iterator, cint32_t](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            item        )
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
-        if not isinstance(item, int):
-            return 0
-        return <cint64_t> std_libcpp.count[vector[cint32_t].iterator, cint32_t](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+        cdef cint32_t citem = item
+        return __list_count[vector[cint32_t]](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():

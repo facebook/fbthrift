@@ -47,12 +47,24 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
+    cSetOp as __cSetOp,
+    richcmp as __richcmp,
+    set_op as __set_op,
+    setcmp as __setcmp,
+    list_index as __list_index,
+    list_count as __list_count,
+    list_slice as __list_slice,
+    list_getitem as __list_getitem,
+    set_iter as __set_iter,
+    map_iter as __map_iter,
+    map_contains as __map_contains,
+    map_getitem as __map_getitem,
+    reference_shared_ptr as __reference_shared_ptr,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
     default_inst,
-    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -492,46 +504,35 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         )
         return {{struct:name}}.create(cmove(cpp_obj))
         {{/struct:cpp_noncopyable?}}
+    {{#struct:cpp_noncomparable}}
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if not (
-                isinstance(self, {{struct:name}}) and
-                isinstance(other, {{struct:name}})):
-            if cop == Py_EQ:  # different types are never equal
-                return False
-            elif cop == Py_NE:  # different types are always notequal
-                return True
-            else:
-                return NotImplemented
+    def __eq__({{struct:name}} self, other):
+        return isinstance(other, {{struct:name}}) and self.__noncomparable_eq(other)
+    {{/struct:cpp_noncomparable}}
+    {{^struct:is_struct_orderable?}}
 
-        {{#struct:cpp_noncomparable}}
-        {{! There are no comparable ops on C++ class so we do default py_object behavior }}
-        if cop == Py_EQ:
-            return self.__noncomparable_eq(other)
-        elif cop == Py_NE:
-            return not self.__noncomparable_eq(other)
-        {{/struct:cpp_noncomparable}}
-        {{^struct:cpp_noncomparable}}
-        cdef c{{struct:name}}* cself = (<{{struct:name}}>self)._cpp_obj.get()
-        cdef c{{struct:name}}* cother = (<{{struct:name}}>other)._cpp_obj.get()
-        if cop == Py_EQ:
-            return deref(cself) == deref(cother)
-        elif cop == Py_NE:
-            return deref(cself) != deref(cother)
-        {{#struct:is_struct_orderable?}}
-        elif cop == Py_LT:
-            return deref(cself) < deref(cother)
-        elif cop == Py_LE:
-            return deref(cself) <= deref(cother)
-        elif cop == Py_GT:
-            return deref(cself) > deref(cother)
-        elif cop == Py_GE:
-            return deref(cself) >= deref(cother)
-        {{/struct:is_struct_orderable?}}
-        {{/struct:cpp_noncomparable}}
-        else:
-            return NotImplemented
+    def __eq__({{struct:name}} self, other):
+        if not isinstance(other, {{struct:name}}):
+            return False
+        return deref(self._cpp_obj.get()) == deref((<{{struct:name}}>other)._cpp_obj.get())
+
+    def __ne__({{struct:name}} self, other):
+        if not isinstance(other, {{struct:name}}):
+            return True
+        return deref(self._cpp_obj) != deref((<{{struct:name}}>other)._cpp_obj)
+    {{/struct:is_struct_orderable?}}
+    {{^struct:cpp_noncomparable}}
+    {{#struct:is_struct_orderable?}}
+
+    def __richcmp__(self, other, int op):
+        r = self.__cmp_sametype(other, op)
+        return __richcmp[c{{struct:name}}](
+            self._cpp_obj,
+            (<{{struct:name}}>other)._cpp_obj,
+            op,
+        ) if r is None else r
+    {{/struct:is_struct_orderable?}}
+    {{/struct:cpp_noncomparable}}
 
     @staticmethod
     def __get_reflection__():
@@ -622,147 +623,57 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
                 {{/type:listElemType}}
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[{{> types/CythonCppType}}] c_inst
-        cdef {{#type:listElemType}}{{!
-            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }}{{/type:listElemType}} citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[{{> types/CythonCppType}}]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return {{> types/CythonPythonType}}.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            {{#type:listElemType}}
-            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(self._cpp_obj)[index]{{!
-                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
-            return {{> ContainerCythonCppToPythonItem}}
-            {{/type:listElemType}}
-
-    def __contains__(self, item):
-        if not self or item is None:
-            return False
-        {{#type:listElemType}}
-        {{#type:container?}}
-        try:
-            if not isinstance(item, {{> types/PythonType}}):
-                item = {{> types/PythonType}}(item)
-        except Exception:
-            return False
-        {{/type:container?}}
-        if not isinstance(item, {{> types/PythonType}}):
-            return False
-        {{/type:listElemType}}
-        return std_libcpp.find[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), {{> CythonPythonToCppItem}}) != deref(self._cpp_obj).end()
-        {{/type:listElemType}}
-
-    def __iter__(self):
-        if not self:
-            return
-        cdef {{#type:listElemType}}{{!
-            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }}{{/type:listElemType}} citem
-        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            {{#type:listElemType}}
-            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(loc){{!
-                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
-            yield {{> ContainerCythonCppToPythonItem}}
-            {{/type:listElemType}}
-            inc(loc)
-
-    def __reversed__(self):
-        if not self:
-            return
-        cdef {{#type:listElemType}}{{!
-            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }}{{/type:listElemType}} citem
-        cdef {{>types/CythonCppType}}.reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            {{#type:listElemType}}
-            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(loc){{!
-                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
-            yield {{> ContainerCythonCppToPythonItem}}
-            {{/type:listElemType}}
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
-        err = ValueError(f'{item} is not in list')
-        if not self or item is None:
-            raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        {{#type:listElemType}}
-        {{#type:container?}}
-        try:
-            if not isinstance(item, {{> types/PythonType}}):
-                item = {{> types/PythonType}}(item)
-        except Exception:
-            raise err from None
-        {{/type:container?}}
-        if not isinstance(item, {{> types/PythonType}}):
-            raise err
-        {{/type:listElemType}}
-        cdef {{>types/CythonCppType}}.iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef {{>types/CythonCppType}}.iterator loc = {{!
-            }}std_libcpp.find[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            {{> CythonPythonToCppItem}}
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return {{> types/CythonPythonType}}.create(
+            __list_slice[{{> types/CythonCppType}}](self._cpp_obj, start, stop, step)
         )
+
+    cdef _get_single_item(self, size_t index):
+        {{#type:listElemType}}
+        cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+        __list_getitem(self._cpp_obj, index, citem)
+        return {{> ContainerCythonCppToPythonItem}}
         {{/type:listElemType}}
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+
+    cdef _check_item_type(self, item):
+        if not self or item is None:
+            return
+        {{#type:listElemType}}
+        if isinstance(item, {{> types/PythonType}}):
+            return item
+        {{#type:container?}}
+        try:
+            return {{> types/PythonType}}(item)
+        except:
+            pass
+        {{/type:container?}}
+        {{/type:listElemType}}
+
+    def index(self, item, start=0, stop=None):
+        err = ValueError(f'{item} is not in list')
+        item = self._check_item_type(item)
+        if item is None:
+            raise err
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        {{#type:listElemType}}
+        cdef {{>types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
+        {{/type:listElemType}}
+        cdef std_libcpp.optional[size_t] found = __list_index[{{> types/CythonCppType}}](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
+            raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
         {{#type:listElemType}}
-        {{#type:container?}}
-        try:
-            if not isinstance(item, {{> types/PythonType}}):
-                item = {{> types/PythonType}}(item)
-        except Exception:
-            return 0
-        {{/type:container?}}
-        if not isinstance(item, {{> types/PythonType}}):
-            return 0
+        cdef {{>types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
         {{/type:listElemType}}
-        return <cint64_t> std_libcpp.count[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), {{> CythonPythonToCppItem}})
-        {{/type:listElemType}}
+        return __list_count[{{>types/CythonCppType}}](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():
@@ -820,179 +731,37 @@ Sequence.register({{> types/CythonPythonType}})
     def __iter__(self):
         if not self:
             return
-        cdef {{#type:setElemType}}{{!
-            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }}{{/type:setElemType}} citem
-        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            {{#type:setElemType}}
-            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(loc){{!
-                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
+        cdef __set_iter[{{> types/CythonCppType}}] itr = __set_iter[{{> types/CythonCppType}}](self._cpp_obj)
+        {{#type:setElemType}}
+        cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNext(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
-            {{/type:setElemType}}
-            inc(loc)
+        {{/type:setElemType}}
 
     def __hash__(self):
         return super().__hash__()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        cdef shared_ptr[{{> types/CythonCppType}}] cself, cother
-        cdef {{>types/CythonCppType}}.iterator loc
-        if (isinstance(self, {{> types/CythonPythonType}}) and
-                isinstance(other, {{> types/CythonPythonType}})):
-            cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
-            cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
+    def __richcmp__(self, other, int op):
+        if isinstance(other, {{> types/CythonPythonType}}):
             # C level comparisons
-            if cop == Py_LT:    # Less Than (strict subset)
-                if not deref(cself).size() < deref(cother).size():
-                    return False
-                loc = deref(cself).begin()
-                while loc != deref(cself).end():
-                    if not deref(cother).count(deref(loc)):
-                        return False
-                    inc(loc)
-                return True
-            elif cop == Py_LE:  # Less Than or Equal To  (subset)
-                loc = deref(cself).begin()
-                while loc != deref(cself).end():
-                    if not deref(cother).count(deref(loc)):
-                        return False
-                    inc(loc)
-                return True
-            elif cop == Py_EQ:  # Equivalent
-                if deref(cself).size() != deref(cother).size():
-                    return False
-                loc = deref(cself).begin()
-                while loc != deref(cself).end():
-                    if not deref(cother).count(deref(loc)):
-                        return False
-                    inc(loc)
-                return True
-            elif cop == Py_NE:  # Not Equivalent
-                loc = deref(cself).begin()
-                while loc != deref(cself).end():
-                    if not deref(cother).count(deref(loc)):
-                        return True
-                    inc(loc)
-                return deref(cself).size() != deref(cother).size()
-            elif cop == Py_GT:  # Greater Than (strict superset)
-                if not deref(cself).size() > deref(cother).size():
-                    return False
-                loc = deref(cother).begin()
-                while loc != deref(cother).end():
-                    if not deref(cself).count(deref(loc)):
-                        return False
-                    inc(loc)
-                return True
-            elif cop == Py_GE:  # Greater Than or Equal To (superset)
-                loc = deref(cother).begin()
-                while loc != deref(cother).end():
-                    if not deref(cself).count(deref(loc)):
-                        return False
-                    inc(loc)
-                return True
+            return __setcmp(
+                self._cpp_obj,
+                (<{{> types/CythonPythonType}}> other)._cpp_obj,
+                op,
+            )
+        return self.__py_richcmp(other, op)
 
-        # Python level comparisons
-        if cop == Py_LT:
-            return Set.__lt__(self, other)
-        elif cop == Py_LE:
-            return Set.__le__(self, other)
-        elif cop == Py_EQ:
-            return Set.__eq__(self, other)
-        elif cop == Py_NE:
-            return Set.__ne__(self, other)
-        elif cop == Py_GT:
-            return Set.__gt__(self, other)
-        elif cop == Py_GE:
-            return Set.__ge__(self, other)
-
-    def __and__(self, other):
-        if not isinstance(self, {{> types/CythonPythonType}}):
-            self = {{> types/CythonPythonType}}(self)
+    cdef __do_set_op(self, other, __cSetOp op):
         if not isinstance(other, {{> types/CythonPythonType}}):
             other = {{> types/CythonPythonType}}(other)
-
-        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
-            make_shared[{{> types/CythonCppType}}]()
-
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
-        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
-
-        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
-        while loc != deref(cself).end():
-            if deref(cother).count(deref(loc)) > 0:
-                deref(shretval).insert(deref(loc))
-            inc(loc)
-        return {{> types/CythonPythonType}}.create(cmove(shretval))
-
-    def __sub__(self, other):
-        if not isinstance(self, {{> types/CythonPythonType}}):
-            self = {{> types/CythonPythonType}}(self)
-        if not isinstance(other, {{> types/CythonPythonType}}):
-            other = {{> types/CythonPythonType}}(other)
-
-        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
-            make_shared[{{> types/CythonCppType}}]()
-
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
-        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
-
-        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
-        while loc != deref(cself).end():
-            if deref(cother).count(deref(loc)) == 0:
-                deref(shretval).insert(deref(loc))
-            inc(loc)
-        return {{> types/CythonPythonType}}.create(cmove(shretval))
-
-    def __or__(self, other):
-        if not isinstance(self, {{> types/CythonPythonType}}):
-            self = {{> types/CythonPythonType}}(self)
-        if not isinstance(other, {{> types/CythonPythonType}}):
-            other = {{> types/CythonPythonType}}(other)
-
-        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
-            make_shared[{{> types/CythonCppType}}]()
-
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
-        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
-
-        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
-        while loc != deref(cself).end():
-            deref(shretval).insert(deref(loc))
-            inc(loc)
-        loc = deref(cother).begin()
-        while loc != deref(cother).end():
-            deref(shretval).insert(deref(loc))
-            inc(loc)
-        return {{> types/CythonPythonType}}.create(cmove(shretval))
-
-    def __xor__(self, other):
-        if not isinstance(self, {{> types/CythonPythonType}}):
-            self = {{> types/CythonPythonType}}(self)
-        if not isinstance(other, {{> types/CythonPythonType}}):
-            other = {{> types/CythonPythonType}}(other)
-
-        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
-            make_shared[{{> types/CythonCppType}}]()
-
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
-        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
-
-        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
-        while loc != deref(cself).end():
-            if deref(cother).count(deref(loc)) == 0:
-                deref(shretval).insert(deref(loc))
-            inc(loc)
-        loc = deref(cother).begin()
-        while loc != deref(cother).end():
-            if deref(cself).count(deref(loc)) == 0:
-                deref(shretval).insert(deref(loc))
-            inc(loc)
-        return {{> types/CythonPythonType}}.create(cmove(shretval))
-
+        cdef shared_ptr[{{> types/CythonCppType}}] result
+        return {{> types/CythonPythonType}}.create(__set_op[{{> types/CythonCppType}}](
+            self._cpp_obj,
+            (<{{> types/CythonPythonType}}>other)._cpp_obj,
+            op,
+        ))
 
     @staticmethod
     def __get_reflection__():
@@ -1046,129 +815,84 @@ Set.register({{> types/CythonPythonType}})
                     }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}
         return c_inst
 
-    def __getitem__(self, key):
-        err = KeyError(f'{key}')
+    cdef _check_key_type(self, key):
         if not self or key is None:
-            raise err
+            return
         {{#type:keyType}}
+        if isinstance(key, {{> types/PythonType}}):
+            return key
         {{#type:container?}}
         try:
-            if not isinstance(key, {{> types/PythonType}}):
-                key = {{> types/PythonType}}(key)
-        except Exception:
-            raise err from None
+            return {{> types/PythonType}}(key)
+        except:
+            pass
         {{/type:container?}}
-        if not isinstance(key, {{> types/PythonType}}):
-            raise err from None
         {{/type:keyType}}
-        cdef {{> types/CythonCppType}}.iterator iter = deref(
-            self._cpp_obj).find({{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}})
-        if iter == deref(self._cpp_obj).end():
+
+    def __getitem__(self, key):
+        err = KeyError(f'{key}')
+        key = self._check_key_type(key)
+        if key is None:
             raise err
-        cdef {{#type:valueType}}{{!
-        }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }} citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                }}deref(iter).second{{!
-            }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}{{/type:valueType}}
-        return {{#type:valueType}}{{!
-            }}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
+        {{#type:keyType}}
+        cdef {{> types/CythonCppType}} ckey = {{> CythonPythonToCppKey}}
+        {{/type:keyType}}
+        if not __map_contains(self._cpp_obj, ckey):
+            raise err
+        {{#type:valueType}}
+        cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+        __map_getitem(self._cpp_obj, ckey, citem)
+        return {{> ContainerCythonCppToPythonItem}}
+        {{/type:valueType}}
 
     def __iter__(self):
         if not self:
             return
-        cdef {{#type:keyType}}{{!
-            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }}{{/type:keyType}} citem
-        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            {{#type:keyType}}
-            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(loc).first{{!
-                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
+        cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
+        {{#type:keyType}}
+        cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextKey(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
-            {{/type:keyType}}
-            inc(loc)
+        {{/type:keyType}}
 
     def __contains__(self, key):
-        if not self or key is None:
+        key = self._check_key_type(key)
+        if key is None:
             return False
         {{#type:keyType}}
-        {{#type:container?}}
-        try:
-            if not isinstance(key, {{> types/PythonType}}):
-                key = {{> types/PythonType}}(key)
-        except Exception:
-            return False
-        {{/type:container?}}
-        if not isinstance(key, {{> types/PythonType}}):
-            return False
         cdef {{> types/CythonCppType}} ckey = {{> CythonPythonToCppKey}}
         {{/type:keyType}}
-        return deref(self._cpp_obj).count(ckey) > 0
-
-    def get(self, key, default=None):
-        if not self or key is None:
-            return default
-        {{! Convert the key once }}
-        {{#type:keyType}}
-        {{#type:container?}}
-        try:
-            if not isinstance(key, {{> types/PythonType}}):
-                key = {{> types/PythonType}}(key)
-        except Exception:
-            return default
-        {{/type:container?}}
-        if not isinstance(key, {{> types/PythonType}}):
-            return default
-        {{/type:keyType}}
-        if key not in self:
-            return default
-        return self[key]
+        return __map_contains(self._cpp_obj, ckey)
 
     def values(self):
         if not self:
             return
-        cdef {{#type:valueType}}{{!
-          }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-          }}{{^type:simple?}}]{{/type:simple?}}{{!
-          }}{{/type:valueType}}{{!!
-          }} citem
-        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            {{#type:valueType}}
-            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(loc).second{{!
-                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
+        cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
+        {{#type:valueType}}
+        cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextValue(self._cpp_obj, citem)
             yield {{> ContainerCythonCppToPythonItem}}
-            {{/type:valueType}}
-            inc(loc)
+        {{/type:valueType}}
 
     def items(self):
         if not self:
             return
-        cdef {{#type:keyType}}{{!
-          }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }}{{/type:keyType}}{{!
-          }} ckey
-        cdef {{#type:valueType}}{{!
-          }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
-            }}{{^type:simple?}}]{{/type:simple?}}{{!
-            }}{{/type:valueType}} citem
-        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            {{#type:keyType}}
-            ckey = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(loc).first{{!
-                    }}{{^type:simple?}}, self._cpp_obj){{/type:simple?}}
-            {{/type:keyType}}
-            {{#type:valueType}}
-            citem = {{^type:simple?}}__reference_shared_ptr({{/type:simple?}}{{!
-                    }}deref(loc).second{{!
-                    }}{{^type:simple?}} ,self._cpp_obj){{/type:simple?}}
-            {{/type:valueType}}
+        cdef __map_iter[{{> types/CythonCppType}}] itr = __map_iter[{{> types/CythonCppType}}](self._cpp_obj)
+        {{#type:keyType}}
+        cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} ckey{{#type:number?}} = 0{{/type:number?}}
+        {{/type:keyType}}
+        {{#type:valueType}}
+        cdef {{^type:simple?}}shared_ptr[{{> types/CythonCppType}}]{{/type:simple?}}{{!
+            }}{{#type:simple?}}{{> types/CythonCppType}}{{/type:simple?}} citem{{#type:number?}} = 0{{/type:number?}}
+        {{/type:valueType}}
+        for i in range(deref(self._cpp_obj).size()):
+            itr.genNextItem(self._cpp_obj, ckey, citem)
             yield ({{!
               }}{{#type:keyType}}{{!
               }}{{> ContainerCythonCppToPythonKey}}{{!
@@ -1176,7 +900,6 @@ Set.register({{> types/CythonPythonType}})
               }}{{#type:valueType}}{{!
               }}{{> ContainerCythonCppToPythonItem}}{{!
               }}{{/type:valueType}})
-            inc(loc)
 
     @staticmethod
     def __get_reflection__():

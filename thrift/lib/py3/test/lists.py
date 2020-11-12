@@ -18,7 +18,7 @@
 import itertools
 import unittest
 
-from testing.types import I32List, StringList, StrList2D, easy, int_list
+from testing.types import I32List, StringList, StrList2D, Uint32List, easy, int_list
 from thrift.py3.types import Container
 
 
@@ -95,6 +95,9 @@ class ListTests(unittest.TestCase):
         self.assertEqual(x[:5], y[:5])
         self.assertEqual(x[:0], y[:0])
         self.assertEqual(x[-5:-1], y[-5:-1])
+        self.assertEqual(x[::-1], y[::-1])
+        self.assertEqual(x[::-3], y[::-3])
+        self.assertEqual(x[-1:-5:-1], y[-1:-5:-1])
 
     def test_comparisons(self) -> None:
         x = I32List([1, 2, 3, 4])
@@ -126,3 +129,9 @@ class ListTests(unittest.TestCase):
         StringList(["hello", "world"])
         with self.assertRaises(TypeError):
             StringList("hello")
+
+    def test_custom_cpp_type_list(self) -> None:
+        x = [1, 2, 3, 4]
+        y = Uint32List(x)
+        self.assertEqual(y[1], 2)
+        self.assertEqual(list(y), x)

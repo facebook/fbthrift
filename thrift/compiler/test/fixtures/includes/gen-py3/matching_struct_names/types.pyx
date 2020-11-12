@@ -18,12 +18,24 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types cimport (
+    cSetOp as __cSetOp,
+    richcmp as __richcmp,
+    set_op as __set_op,
+    setcmp as __setcmp,
+    list_index as __list_index,
+    list_count as __list_count,
+    list_slice as __list_slice,
+    list_getitem as __list_getitem,
+    set_iter as __set_iter,
+    map_iter as __map_iter,
+    map_contains as __map_contains,
+    map_getitem as __map_getitem,
+    reference_shared_ptr as __reference_shared_ptr,
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     const_pointer_cast,
     constant_shared_ptr,
     default_inst,
-    reference_shared_ptr as __reference_shared_ptr,
     NOTSET as __NOTSET,
     EnumData as __EnumData,
     EnumFlagsData as __EnumFlagsData,
@@ -146,34 +158,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
         )
         return MyStruct.create(cmove(cpp_obj))
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if not (
-                isinstance(self, MyStruct) and
-                isinstance(other, MyStruct)):
-            if cop == Py_EQ:  # different types are never equal
-                return False
-            elif cop == Py_NE:  # different types are always notequal
-                return True
-            else:
-                return NotImplemented
-
-        cdef cMyStruct* cself = (<MyStruct>self)._cpp_obj.get()
-        cdef cMyStruct* cother = (<MyStruct>other)._cpp_obj.get()
-        if cop == Py_EQ:
-            return deref(cself) == deref(cother)
-        elif cop == Py_NE:
-            return deref(cself) != deref(cother)
-        elif cop == Py_LT:
-            return deref(cself) < deref(cother)
-        elif cop == Py_LE:
-            return deref(cself) <= deref(cother)
-        elif cop == Py_GT:
-            return deref(cself) > deref(cother)
-        elif cop == Py_GE:
-            return deref(cself) >= deref(cother)
-        else:
-            return NotImplemented
+    def __richcmp__(self, other, int op):
+        r = self.__cmp_sametype(other, op)
+        return __richcmp[cMyStruct](
+            self._cpp_obj,
+            (<MyStruct>other)._cpp_obj,
+            op,
+        ) if r is None else r
 
     @staticmethod
     def __get_reflection__():
@@ -377,34 +368,13 @@ cdef class Combo(thrift.py3.types.Struct):
         )
         return Combo.create(cmove(cpp_obj))
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if not (
-                isinstance(self, Combo) and
-                isinstance(other, Combo)):
-            if cop == Py_EQ:  # different types are never equal
-                return False
-            elif cop == Py_NE:  # different types are always notequal
-                return True
-            else:
-                return NotImplemented
-
-        cdef cCombo* cself = (<Combo>self)._cpp_obj.get()
-        cdef cCombo* cother = (<Combo>other)._cpp_obj.get()
-        if cop == Py_EQ:
-            return deref(cself) == deref(cother)
-        elif cop == Py_NE:
-            return deref(cself) != deref(cother)
-        elif cop == Py_LT:
-            return deref(cself) < deref(cother)
-        elif cop == Py_LE:
-            return deref(cself) <= deref(cother)
-        elif cop == Py_GT:
-            return deref(cself) > deref(cother)
-        elif cop == Py_GE:
-            return deref(cself) >= deref(cother)
-        else:
-            return NotImplemented
+    def __richcmp__(self, other, int op):
+        r = self.__cmp_sametype(other, op)
+        return __richcmp[cCombo](
+            self._cpp_obj,
+            (<Combo>other)._cpp_obj,
+            op,
+        ) if r is None else r
 
     @staticmethod
     def __get_reflection__():
@@ -457,94 +427,42 @@ cdef class List__MyStruct(thrift.py3.types.List):
                 deref(c_inst).push_back(deref((<MyStruct>item)._cpp_obj))
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[cMyStruct]] c_inst
-        cdef shared_ptr[cMyStruct] citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[cMyStruct]]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__MyStruct.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
-            return MyStruct.create(citem)
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__MyStruct.create(
+            __list_slice[vector[cMyStruct]](self._cpp_obj, start, stop, step)
+        )
 
-    def __contains__(self, item):
+    cdef _get_single_item(self, size_t index):
+        cdef shared_ptr[cMyStruct] citem
+        __list_getitem(self._cpp_obj, index, citem)
+        return MyStruct.create(citem)
+
+    cdef _check_item_type(self, item):
         if not self or item is None:
-            return False
-        if not isinstance(item, MyStruct):
-            return False
-        return std_libcpp.find[vector[cMyStruct].iterator, cMyStruct](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<MyStruct>item)._cpp_obj)) != deref(self._cpp_obj).end()
-
-    def __iter__(self):
-        if not self:
             return
-        cdef shared_ptr[cMyStruct] citem
-        cdef vector[cMyStruct].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield MyStruct.create(citem)
-            inc(loc)
+        if isinstance(item, MyStruct):
+            return item
 
-    def __reversed__(self):
-        if not self:
-            return
-        cdef shared_ptr[cMyStruct] citem
-        cdef vector[cMyStruct].reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield MyStruct.create(citem)
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+    def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        if not isinstance(item, MyStruct):
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef cMyStruct citem = deref((<MyStruct>item)._cpp_obj)
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[cMyStruct]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
             raise err
-        cdef vector[cMyStruct].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef vector[cMyStruct].iterator loc = std_libcpp.find[vector[cMyStruct].iterator, cMyStruct](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            deref((<MyStruct>item)._cpp_obj)        )
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
-        if not isinstance(item, MyStruct):
-            return 0
-        return <cint64_t> std_libcpp.count[vector[cMyStruct].iterator, cMyStruct](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<MyStruct>item)._cpp_obj))
+        cdef cMyStruct citem = deref((<MyStruct>item)._cpp_obj)
+        return __list_count[vector[cMyStruct]](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():
@@ -588,109 +506,46 @@ cdef class List__List__MyStruct(thrift.py3.types.List):
                 deref(c_inst).push_back(deref((<List__MyStruct>item)._cpp_obj))
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[vector[cMyStruct]]] c_inst
-        cdef shared_ptr[vector[cMyStruct]] citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[vector[cMyStruct]]]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__List__MyStruct.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
-            return List__MyStruct.create(citem)
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__List__MyStruct.create(
+            __list_slice[vector[vector[cMyStruct]]](self._cpp_obj, start, stop, step)
+        )
 
-    def __contains__(self, item):
+    cdef _get_single_item(self, size_t index):
+        cdef shared_ptr[vector[cMyStruct]] citem
+        __list_getitem(self._cpp_obj, index, citem)
+        return List__MyStruct.create(citem)
+
+    cdef _check_item_type(self, item):
         if not self or item is None:
-            return False
+            return
+        if isinstance(item, List__MyStruct):
+            return item
         try:
-            if not isinstance(item, List__MyStruct):
-                item = List__MyStruct(item)
-        except Exception:
-            return False
-        if not isinstance(item, List__MyStruct):
-            return False
-        return std_libcpp.find[vector[vector[cMyStruct]].iterator, vector[cMyStruct]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__MyStruct>item)._cpp_obj)) != deref(self._cpp_obj).end()
+            return List__MyStruct(item)
+        except:
+            pass
 
-    def __iter__(self):
-        if not self:
-            return
-        cdef shared_ptr[vector[cMyStruct]] citem
-        cdef vector[vector[cMyStruct]].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield List__MyStruct.create(citem)
-            inc(loc)
-
-    def __reversed__(self):
-        if not self:
-            return
-        cdef shared_ptr[vector[cMyStruct]] citem
-        cdef vector[vector[cMyStruct]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield List__MyStruct.create(citem)
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+    def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        try:
-            if not isinstance(item, List__MyStruct):
-                item = List__MyStruct(item)
-        except Exception:
-            raise err from None
-        if not isinstance(item, List__MyStruct):
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef vector[cMyStruct] citem = deref((<List__MyStruct>item)._cpp_obj)
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[vector[cMyStruct]]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
             raise err
-        cdef vector[vector[cMyStruct]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef vector[vector[cMyStruct]].iterator loc = std_libcpp.find[vector[vector[cMyStruct]].iterator, vector[cMyStruct]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            deref((<List__MyStruct>item)._cpp_obj)        )
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
-        try:
-            if not isinstance(item, List__MyStruct):
-                item = List__MyStruct(item)
-        except Exception:
-            return 0
-        if not isinstance(item, List__MyStruct):
-            return 0
-        return <cint64_t> std_libcpp.count[vector[vector[cMyStruct]].iterator, vector[cMyStruct]](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__MyStruct>item)._cpp_obj))
+        cdef vector[cMyStruct] citem = deref((<List__MyStruct>item)._cpp_obj)
+        return __list_count[vector[vector[cMyStruct]]](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():
@@ -732,94 +587,42 @@ cdef class List__module_MyStruct(thrift.py3.types.List):
                 deref(c_inst).push_back(deref((<_module_types.MyStruct>item)._cpp_obj))
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[_module_types.cMyStruct]] c_inst
-        cdef shared_ptr[_module_types.cMyStruct] citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[_module_types.cMyStruct]]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__module_MyStruct.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
-            return _module_types.MyStruct.create(citem)
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__module_MyStruct.create(
+            __list_slice[vector[_module_types.cMyStruct]](self._cpp_obj, start, stop, step)
+        )
 
-    def __contains__(self, item):
+    cdef _get_single_item(self, size_t index):
+        cdef shared_ptr[_module_types.cMyStruct] citem
+        __list_getitem(self._cpp_obj, index, citem)
+        return _module_types.MyStruct.create(citem)
+
+    cdef _check_item_type(self, item):
         if not self or item is None:
-            return False
-        if not isinstance(item, _module_types.MyStruct):
-            return False
-        return std_libcpp.find[vector[_module_types.cMyStruct].iterator, _module_types.cMyStruct](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<_module_types.MyStruct>item)._cpp_obj)) != deref(self._cpp_obj).end()
-
-    def __iter__(self):
-        if not self:
             return
-        cdef shared_ptr[_module_types.cMyStruct] citem
-        cdef vector[_module_types.cMyStruct].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield _module_types.MyStruct.create(citem)
-            inc(loc)
+        if isinstance(item, _module_types.MyStruct):
+            return item
 
-    def __reversed__(self):
-        if not self:
-            return
-        cdef shared_ptr[_module_types.cMyStruct] citem
-        cdef vector[_module_types.cMyStruct].reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield _module_types.MyStruct.create(citem)
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+    def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        if not isinstance(item, _module_types.MyStruct):
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[_module_types.cMyStruct]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
             raise err
-        cdef vector[_module_types.cMyStruct].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef vector[_module_types.cMyStruct].iterator loc = std_libcpp.find[vector[_module_types.cMyStruct].iterator, _module_types.cMyStruct](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            deref((<_module_types.MyStruct>item)._cpp_obj)        )
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
-        if not isinstance(item, _module_types.MyStruct):
-            return 0
-        return <cint64_t> std_libcpp.count[vector[_module_types.cMyStruct].iterator, _module_types.cMyStruct](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<_module_types.MyStruct>item)._cpp_obj))
+        cdef _module_types.cMyStruct citem = deref((<_module_types.MyStruct>item)._cpp_obj)
+        return __list_count[vector[_module_types.cMyStruct]](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():
@@ -863,109 +666,46 @@ cdef class List__List__module_MyStruct(thrift.py3.types.List):
                 deref(c_inst).push_back(deref((<List__module_MyStruct>item)._cpp_obj))
         return c_inst
 
-    def __getitem__(self, object index_obj):
-        cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] c_inst
-        cdef shared_ptr[vector[_module_types.cMyStruct]] citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[vector[_module_types.cMyStruct]]]()
-            sz = deref(self._cpp_obj).size()
-            for index in range(*index_obj.indices(sz)):
-                deref(c_inst).push_back(deref(self._cpp_obj)[index])
-            return List__List__module_MyStruct.create(cmove(c_inst))
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size + index
-            if index >= size or index < 0:
-                raise IndexError('list index out of range')
-            citem = __reference_shared_ptr(deref(self._cpp_obj)[index], self._cpp_obj)
-            return List__module_MyStruct.create(citem)
+    cdef _get_slice(self, slice index_obj):
+        cdef int start, stop, step
+        start, stop, step = index_obj.indices(deref(self._cpp_obj).size())
+        return List__List__module_MyStruct.create(
+            __list_slice[vector[vector[_module_types.cMyStruct]]](self._cpp_obj, start, stop, step)
+        )
 
-    def __contains__(self, item):
+    cdef _get_single_item(self, size_t index):
+        cdef shared_ptr[vector[_module_types.cMyStruct]] citem
+        __list_getitem(self._cpp_obj, index, citem)
+        return List__module_MyStruct.create(citem)
+
+    cdef _check_item_type(self, item):
         if not self or item is None:
-            return False
+            return
+        if isinstance(item, List__module_MyStruct):
+            return item
         try:
-            if not isinstance(item, List__module_MyStruct):
-                item = List__module_MyStruct(item)
-        except Exception:
-            return False
-        if not isinstance(item, List__module_MyStruct):
-            return False
-        return std_libcpp.find[vector[vector[_module_types.cMyStruct]].iterator, vector[_module_types.cMyStruct]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__module_MyStruct>item)._cpp_obj)) != deref(self._cpp_obj).end()
+            return List__module_MyStruct(item)
+        except:
+            pass
 
-    def __iter__(self):
-        if not self:
-            return
-        cdef shared_ptr[vector[_module_types.cMyStruct]] citem
-        cdef vector[vector[_module_types.cMyStruct]].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield List__module_MyStruct.create(citem)
-            inc(loc)
-
-    def __reversed__(self):
-        if not self:
-            return
-        cdef shared_ptr[vector[_module_types.cMyStruct]] citem
-        cdef vector[vector[_module_types.cMyStruct]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
-        while loc != deref(self._cpp_obj).rend():
-            citem = __reference_shared_ptr(deref(loc), self._cpp_obj)
-            yield List__module_MyStruct.create(citem)
-            inc(loc)
-
-    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+    def index(self, item, start=0, stop=None):
         err = ValueError(f'{item} is not in list')
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             raise err
-        offset_begin = offset_end = 0
-        if stop is not __NOTSET or start is not __NOTSET:
-            # Like self[start:stop].index(item)
-            size = len(self)
-            stop = stop if stop is not __NOTSET else size
-            start = start if start is not __NOTSET else 0
-            # Convert stop to a negative position.
-            if stop > 0:
-                stop = min(stop - size, 0)
-            if stop <= -size:
-                raise err  # List would be empty
-            offset_end = -stop
-            # Convert start to always be positive
-            if start < 0:
-                start = max(size + start, 0)
-            if start >= size:
-                raise err  # past end of list
-            offset_begin = start
-
-        try:
-            if not isinstance(item, List__module_MyStruct):
-                item = List__module_MyStruct(item)
-        except Exception:
-            raise err from None
-        if not isinstance(item, List__module_MyStruct):
+        cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
+        cdef vector[_module_types.cMyStruct] citem = deref((<List__module_MyStruct>item)._cpp_obj)
+        cdef std_libcpp.optional[size_t] found = __list_index[vector[vector[_module_types.cMyStruct]]](self._cpp_obj, indices[0], indices[1], citem)
+        if not found.has_value():
             raise err
-        cdef vector[vector[_module_types.cMyStruct]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <cint64_t>offset_end)
-        cdef vector[vector[_module_types.cMyStruct]].iterator loc = std_libcpp.find[vector[vector[_module_types.cMyStruct]].iterator, vector[_module_types.cMyStruct]](
-            std_libcpp.next(deref(self._cpp_obj).begin(), <cint64_t>offset_begin),
-            end,
-            deref((<List__module_MyStruct>item)._cpp_obj)        )
-        if loc != end:
-            return <cint64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
-        raise err
+        return found.value()
 
     def count(self, item):
-        if not self or item is None:
+        item = self._check_item_type(item)
+        if item is None:
             return 0
-        try:
-            if not isinstance(item, List__module_MyStruct):
-                item = List__module_MyStruct(item)
-        except Exception:
-            return 0
-        if not isinstance(item, List__module_MyStruct):
-            return 0
-        return <cint64_t> std_libcpp.count[vector[vector[_module_types.cMyStruct]].iterator, vector[_module_types.cMyStruct]](
-            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__module_MyStruct>item)._cpp_obj))
+        cdef vector[_module_types.cMyStruct] citem = deref((<List__module_MyStruct>item)._cpp_obj)
+        return __list_count[vector[vector[_module_types.cMyStruct]]](self._cpp_obj, citem)
 
     @staticmethod
     def __get_reflection__():

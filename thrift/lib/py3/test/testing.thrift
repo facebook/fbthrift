@@ -15,6 +15,8 @@
  */
 
 cpp_include "<deque>"
+cpp_include "folly/container/F14Map.h"
+cpp_include "folly/FBString.h"
 
 const list<i16> int_list = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
@@ -37,6 +39,8 @@ typedef i64 TimeStamp
 typedef byte Byte
 typedef float Float
 typedef double Double
+typedef map<string, string> (cpp.type = "folly::F14FastMap<std::string, folly::fbstring>") F14MapFollyString
+typedef list<i32> (cpp2.type = "std::vector<uint32_t>") Uint32List
 
 exception UnusedError {
     1: string message

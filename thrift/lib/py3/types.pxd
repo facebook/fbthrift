@@ -49,9 +49,36 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const T] const_pointer_cast "std::const_pointer_cast"[T](shared_ptr[T])
 
 cdef extern from "thrift/lib/py3/types.h" namespace "::thrift::py3" nogil:
+    cdef enum cSetOp "::thrift::py3::SetOp":
+        AND
+        OR
+        SUB
+        XOR
+        REVSUB
     shared_ptr[T] constant_shared_ptr[T](T)
     shared_ptr[T] reference_shared_ptr[T](const T& ref, ...)
     const T& default_inst[T]()
+    bint richcmp[T](const shared_ptr[T]& a, const shared_ptr[T]& b, int op)
+    bint setcmp[T](const shared_ptr[T]& a, const shared_ptr[T]& b, int op)
+    shared_ptr[T] set_op[T](const shared_ptr[T]& a, const shared_ptr[T]& b, cSetOp op)
+    optional[size_t] list_index[T](const shared_ptr[T]& list, int start, int stop, ...)
+    shared_ptr[T] list_slice[T](const shared_ptr[T]& cpp_obj, int start, int stop, int step)
+    void list_getitem[T](const shared_ptr[T]& cpp_obj, int index, ...)
+    size_t list_count[T](const shared_ptr[T]& list, ...)
+    bint map_contains[T](const shared_ptr[T]& cpp_obj, ...)
+    void map_getitem[T](const shared_ptr[T]& cpp_obj, ...)
+
+    cdef cppclass set_iter[T]:
+        set_iter()
+        set_iter(const shared_ptr[T]& cpp_obj)
+        void genNext(const shared_ptr[T]& cpp_obj, ...)
+    cdef cppclass map_iter[T]:
+        map_iter()
+        map_iter(const shared_ptr[T]& cpp_obj)
+        void genNextKey(const shared_ptr[T]& cpp_obj, ...)
+        void genNextValue(const shared_ptr[T]& cpp_obj, ...)
+        void genNextItem(const shared_ptr[T]& cpp_obj, ...)
+
 
 ctypedef PyObject* PyObjectPtr
 ctypedef optional[int] cOptionalInt
@@ -112,7 +139,7 @@ cdef class Struct:
     cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
     cdef object __fbthrift_isset(self)
     cdef bint __noncomparable_eq(self, other)
-
+    cdef object __cmp_sametype(self, other, int op)
 
 cdef class Union(Struct):
     pass
@@ -124,15 +151,18 @@ cdef class Container:
 
 
 cdef class List(Container):
-    pass
-
+    cdef int _normalize_index(self, int index) except *
+    cdef _get_slice(self, slice index_obj)
+    cdef _get_single_item(self, size_t index)
+    cdef _check_item_type(self, item)
 
 cdef class Set(Container):
-    pass
+    cdef __py_richcmp(self, other, int op)
+    cdef __do_set_op(self, other, cSetOp op)
 
 
 cdef class Map(Container):
-    pass
+    cdef _check_key_type(self, key)
 
 
 cdef class CompiledEnum:

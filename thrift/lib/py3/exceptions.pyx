@@ -14,6 +14,7 @@
 
 from cython.operator cimport dereference as deref
 from cpython.exc cimport PyErr_Occurred
+from cpython.object cimport Py_LT, Py_EQ, Py_NE
 from libcpp.vector cimport vector
 from thrift.py3.common import RpcOptions
 
@@ -86,6 +87,15 @@ cdef class GeneratedError(Error):
     """This is the base class for all Generated Thrift Exceptions"""
     cdef object __fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
+
+    cdef object __cmp_sametype(self, other, int op):
+        if not isinstance(other, type(self)):
+            if op == Py_EQ:  # different types are never equal
+                return False
+            if op == Py_NE:  # different types are always notequal
+                return True
+            return NotImplemented
+        # otherwise returns None
 
     def __repr__(self):
         fields = ", ".join(f"{name}={repr(value)}" for name, value in self)

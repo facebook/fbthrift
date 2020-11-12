@@ -139,3 +139,4 @@ cdef class TransportError(LibraryError):
 cdef class GeneratedError(Error):
     cdef object __weakref__
     cdef object __fbthrift_isset(self)
+    cdef object __cmp_sametype(self, other, int op)

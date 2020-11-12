@@ -39,6 +39,7 @@ cdef __StructSpec get_reflection__A():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=1,
             name="b",
             type=_a_types.List__List__c_C,
             kind=__NumberType.NOT_A_NUMBER,
@@ -50,6 +51,7 @@ cdef __StructSpec get_reflection__A():
     )
     spec.add_field(
         __FieldSpec.create(
+            id=2,
             name="other",
             type=_a_types.List__c_C,
             kind=__NumberType.NOT_A_NUMBER,

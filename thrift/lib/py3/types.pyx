@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable, Mapping, Set as pySet
 import enum
 import itertools
 import warnings
 cimport cython
 
-from cpython.object cimport Py_LT, Py_EQ
+from cpython.object cimport Py_LT, Py_EQ, Py_NE, Py_GT, Py_GE, Py_LE
 from cython.operator cimport dereference as deref, postincrement as inc
 from folly.cast cimport down_cast_ptr
 from folly.iobuf import IOBuf
@@ -132,6 +132,16 @@ cdef class Struct:
         """
         return self.__copy__()
 
+    cdef object __cmp_sametype(self, other, int op):
+        if (not isinstance(self, Struct) or not isinstance(other, Struct) or
+                (not isinstance(other, type(self)) and not isinstance(self, type(other)))):
+            if op == Py_EQ:  # different types are never equal
+                return False
+            if op == Py_NE:  # different types are always notequal
+                return True
+            return NotImplemented
+        # otherwise returns None
+
 
 SetMetaClass(<PyTypeObject*> Struct, <PyTypeObject*> StructMeta)
 
@@ -172,6 +182,8 @@ cdef class Container:
             self.__hash = hash(tuple(self))
         return self.__hash
 
+    def __len__(self):
+        raise NotImplementedError()
 
 @cython.auto_pickle(False)
 cdef class List(Container):
@@ -213,6 +225,43 @@ cdef class List(Container):
     def __reduce__(self):
         return (type(self), (list(self), ))
 
+    def __getitem__(self, object index_obj):
+        if isinstance(index_obj, slice):
+            return self._get_slice(index_obj)
+        return self._get_single_item(self._normalize_index(<int?>index_obj))
+
+    def __contains__(self, item):
+        try:
+            self.index(item)
+        except ValueError:
+            return False
+        return True
+
+    def __iter__(self):
+        for i in range(len(self)):
+            yield self._get_single_item(i)
+
+    def __reversed__(self):
+        for i in reversed(range(len(self))):
+            yield self._get_single_item(i)
+
+    cdef int _normalize_index(self, int index) except *:
+        cdef int size = len(self)
+        # Convert a negative index
+        if index < 0:
+            index = size + index
+        if index >= size or index < 0:
+            raise IndexError('list index out of range')
+        return index
+
+    cdef _get_slice(self, slice index_obj):
+        raise NotImplementedError()
+
+    cdef _get_single_item(self, size_t index):
+        raise NotImplementedError()
+
+    cdef _check_item_type(self, item):
+        raise NotImplementedError()
 
 @cython.auto_pickle(False)
 cdef class Set(Container):
@@ -248,6 +297,43 @@ cdef class Set(Container):
 
     def issuperset(self, other):
         return self >= other
+
+    cdef __py_richcmp(self, other, int op):
+        if op == Py_LT:
+            return pySet.__lt__(self, other)
+        elif op == Py_LE:
+            return pySet.__le__(self, other)
+        elif op == Py_EQ:
+            return pySet.__eq__(self, other)
+        elif op == Py_NE:
+            return pySet.__ne__(self, other)
+        elif op == Py_GT:
+            return pySet.__gt__(self, other)
+        elif op == Py_GE:
+            return pySet.__ge__(self, other)
+
+    cdef __do_set_op(self, other, cSetOp op):
+        raise NotImplementedError()
+
+    def __and__(self, other):
+        if isinstance(self, Set):
+            return (<Set>self).__do_set_op(other, cSetOp.AND)
+        return (<Set>other).__do_set_op(self, cSetOp.AND)
+
+    def __sub__(self, other):
+        if isinstance(self, Set):
+            return (<Set>self).__do_set_op(other, cSetOp.SUB)
+        return  (<Set>other).__do_set_op(self, cSetOp.REVSUB)
+
+    def __or__(self, other):
+        if isinstance(self, Set):
+            return (<Set>self).__do_set_op(other, cSetOp.OR)
+        return  (<Set>other).__do_set_op(self, cSetOp.OR)
+
+    def __xor__(self, other):
+        if isinstance(self, Set):
+            return (<Set>self).__do_set_op(other, cSetOp.XOR)
+        return  (<Set>other).__do_set_op(self, cSetOp.XOR)
 
 
 @cython.auto_pickle(False)
@@ -288,6 +374,16 @@ cdef class Map(Container):
 
     def keys(self):
         return self.__iter__()
+
+    def get(self, key, default=None):
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            return default
+
+    cdef _check_key_type(self, key):
+        raise NotImplementedError()
+
 
 
 @cython.auto_pickle(False)

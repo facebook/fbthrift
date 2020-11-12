@@ -27,31 +27,48 @@ class SetTests(unittest.TestCase):
     def test_and(self) -> None:
         x = SetI32({1, 3, 4, 5})
         y = SetI32({1, 2, 4, 6})
+        z = {1, 2, 4, 6}
         self.assertEqual(x & y, set(x) & set(y))
         self.assertEqual(y & x, set(y) & set(x))
+        self.assertEqual(x & z, set(x) & set(y))
+        self.assertEqual(z & x, set(y) & set(x))
+        self.assertEqual(x.intersection(y), set(x) & set(y))
 
     def test_or(self) -> None:
         x = SetI32({1, 3, 4, 5})
         y = SetI32({1, 2, 4, 6})
+        z = {1, 3, 4, 5}
         self.assertEqual(x | y, set(x) | set(y))
         self.assertEqual(y | x, set(y) | set(x))
+        self.assertEqual(z | y, set(x) | set(y))
+        self.assertEqual(y | z, set(y) | set(x))
+        self.assertEqual(x.union(y), set(x) | set(y))
 
     def test_xor(self) -> None:
         x = SetI32({1, 3, 4, 5})
         y = SetI32({1, 2, 4, 6})
+        z = {1, 2, 4, 6}
         self.assertEqual(x ^ y, set(x) ^ set(y))
         self.assertEqual(y ^ x, set(y) ^ set(x))
+        self.assertEqual(z ^ x, set(y) ^ set(x))
+        self.assertEqual(x ^ z, set(x) ^ set(y))
+        self.assertEqual(x.symmetric_difference(y), set(x) ^ set(y))
 
     def test_sub(self) -> None:
         x = SetI32({1, 3, 4, 5})
         y = SetI32({1, 2, 4, 6})
+        z = {1, 2, 4, 6}
         self.assertEqual(x - y, set(x) - set(y))
         self.assertEqual(y - x, set(y) - set(x))
+        self.assertEqual(z - x, set(y) - set(x))
+        self.assertEqual(x - z, set(x) - set(y))
+        self.assertEqual(x.difference(y), set(x) - set(y))
 
     def test_comparisons(self) -> None:
         x = SetI32({1, 2, 3, 4})
         y = SetI32({1, 2, 3})
         x2 = copy.copy(x)
+        y2 = {1, 2, 3}
 
         def eq(t: AbstractSet[Any], s: AbstractSet[Any]) -> Tuple[bool, ...]:
             return (t == s, set(t) == s, t == set(s), set(t) == set(s))
@@ -73,29 +90,35 @@ class SetTests(unittest.TestCase):
 
         # = and != testing
         self.assertTrue(all(eq(x, x2)))
+        self.assertTrue(all(eq(y2, y)))
         self.assertTrue(all(neq(x, y)))
         self.assertFalse(any(eq(x, y)))
         self.assertFalse(any(neq(x, x2)))
+        self.assertFalse(any(neq(y2, y)))
 
         # lt
         self.assertTrue(all(lt(y, x)))
         self.assertFalse(any(lt(x, y)))
         self.assertFalse(any(lt(x, x2)))
+        self.assertFalse(any(lt(y2, y)))
 
         # gt
         self.assertTrue(all(gt(x, y)))
         self.assertFalse(any(gt(y, x)))
         self.assertFalse(any(gt(x, x2)))
+        self.assertFalse(any(gt(y2, y)))
 
         # le
         self.assertTrue(all(le(y, x)))
         self.assertFalse(any(le(x, y)))
         self.assertTrue(all(le(x, x2)))
+        self.assertTrue(all(le(y2, y)))
 
         # ge
         self.assertTrue(all(ge(x, y)))
         self.assertFalse(any(ge(y, x)))
         self.assertTrue(all(ge(x, x2)))
+        self.assertTrue(all(ge(y2, y)))
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):

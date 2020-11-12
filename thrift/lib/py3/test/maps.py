@@ -19,6 +19,7 @@ import unittest
 from typing import Dict, List
 
 from testing.types import (
+    F14MapFollyString,
     LocationMap,
     StrI32ListMap,
     StrIntMap,
@@ -130,3 +131,11 @@ class MapTests(unittest.TestCase):
         self.assertIsInstance(StrIntMap(), Container)
         self.assertIsInstance(StrStrIntListMapMap(), Container)
         self.assertIsInstance(StrStrMap(), Container)
+
+    def test_custom_cpp_type(self) -> None:
+        x = {"foo": "foo_value"}
+        tx = F14MapFollyString(x)
+        self.assertEqual(x["foo"], tx["foo"])
+        self.assertEqual(list(x.values()), list(tx.values()))
+        self.assertEqual(list(x.keys()), list(tx.keys()))
+        self.assertEqual(list(x.items()), list(tx.items()))
