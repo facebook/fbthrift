@@ -381,12 +381,14 @@ pub mod client {
     /// needing ClientFactory trait in scope, avoids unidiomatic
     /// make_Trait name.
     ///
-    /// ```text
+    /// ```
+    /// # const _: &str = stringify! {
     /// use bgs::client::BuckGraphService;
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
     /// let client = BuckGraphService::new(protocol, transport);
+    /// # };
     /// ```
     impl dyn MyRoot {
         pub fn new<P, T>(
@@ -531,12 +533,14 @@ pub mod client {
     /// needing ClientFactory trait in scope, avoids unidiomatic
     /// make_Trait name.
     ///
-    /// ```text
+    /// ```
+    /// # const _: &str = stringify! {
     /// use bgs::client::BuckGraphService;
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
     /// let client = BuckGraphService::new(protocol, transport);
+    /// # };
     /// ```
     impl dyn MyNode {
         pub fn new<P, T>(
@@ -695,12 +699,14 @@ pub mod client {
     /// needing ClientFactory trait in scope, avoids unidiomatic
     /// make_Trait name.
     ///
-    /// ```text
+    /// ```
+    /// # const _: &str = stringify! {
     /// use bgs::client::BuckGraphService;
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
     /// let client = BuckGraphService::new(protocol, transport);
+    /// # };
     /// ```
     impl dyn MyLeaf {
         pub fn new<P, T>(
@@ -1416,7 +1422,7 @@ pub mod server {
 ///
 /// As an example of the generated API, for the following thrift service:
 ///
-/// ```text
+/// ```thrift
 /// service MyService {
 ///     FunctionResponse myFunction(
 ///         1: FunctionRequest request,
@@ -1429,10 +1435,10 @@ pub mod server {
 /// }
 /// ```
 ///
-///
 /// we would end up with this mock object under crate::mock::MyService:
 ///
-/// ```text
+/// ```
+/// # const _: &str = stringify! {
 /// impl crate::client::MyService for MyService<'mock> {...}
 ///
 /// pub struct MyService<'mock> {
@@ -1468,12 +1474,13 @@ pub mod server {
 ///
 /// impl From<StorageException> for MyFunctionExn {...}
 /// impl From<NotFoundException> for MyFunctionExn {...}
+/// # };
 /// ```
-///
 ///
 /// The intended usage from a test would be:
 ///
-/// ```text
+/// ```
+/// # const _: &str = stringify! {
 /// use std::sync::Arc;
 /// use thrift_if::client::MyService;
 ///
@@ -1501,6 +1508,7 @@ pub mod server {
 /// fn do_the_thing(
 ///     client: Arc<dyn MyService + Send + Sync + 'static>,
 /// ) -> impl Future<Item = Out> {...}
+/// # };
 /// ```
 pub mod mock {
     pub struct MyRoot<'mock> {

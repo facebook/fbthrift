@@ -216,12 +216,14 @@
     /// needing ClientFactory trait in scope, avoids unidiomatic
     /// make_Trait name.
     ///
-    /// ```text
+    /// ```
+    /// # const _: &str = stringify! {
     /// use bgs::client::BuckGraphService;
     ///
     /// let protocol = BinaryProtocol::new();
     /// let transport = HttpClient::new();
     /// let client = BuckGraphService::new(protocol, transport);
+    /// # };
     /// ```
     impl dyn {{service:name}} {
         {{#service:annotations}}
