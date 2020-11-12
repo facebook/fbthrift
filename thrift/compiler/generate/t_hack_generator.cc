@@ -2719,14 +2719,17 @@ void t_hack_generator::_generate_php_struct_definition(
             << "($vals->get('" << (*m_iter)->get_name() << "') ?: " << dval
             << ");\n";
       } else {
+        // TODO (partisan): This can probably be simplified to optional field
+        // being directly assigned the idx with no existance check at all. It's
+        // important to check corner cases though.
         bool needs_optional_check = tstruct->is_union() ||
             ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
              (*m_iter)->get_value() == nullptr &&
              !(is_exception && is_base_exception_property(*m_iter)));
 
         if (needs_optional_check) {
-          out << indent() << "if (C\\contains_key($vals, '"
-              << (*m_iter)->get_name() << "')) {\n";
+          out << indent() << "if (idx($vals, '" << (*m_iter)->get_name()
+              << "') !== null) {\n";
           indent_up();
         }
 
@@ -2741,9 +2744,8 @@ void t_hack_generator::_generate_php_struct_definition(
             << (needs_optional_check && dval == "null" ? "$vals['"
                                                        : "idx($vals, '")
             << (*m_iter)->get_name() << "'"
-            << (needs_optional_check && dval == "null"
-                    ? "]"
-                    : ")" + (dval != "null" ? " ?? " + dval : ""))
+            << (needs_optional_check && dval == "null" ? "]" : ")") +
+                (!needs_optional_check && dval != "null" ? " ?? " + dval : "")
             << ";\n";
         if (tstruct->is_union()) {
           out << indent()

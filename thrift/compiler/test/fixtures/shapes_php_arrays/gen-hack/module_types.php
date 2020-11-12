@@ -202,9 +202,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     $this->map_of_set_of_strings = idx($vals, 'map_of_set_of_strings') ?? Map {};
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->map_of_strings_to_map_of_string_ints = idx($vals, 'map_of_strings_to_map_of_string_ints') ?? Map {};
-    if (C\contains_key($vals, 'optional_map_of_map_of_sets')) {
+    if (idx($vals, 'optional_map_of_map_of_sets') !== null) {
       /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->optional_map_of_map_of_sets = idx($vals, 'optional_map_of_map_of_sets') ?? Map {};
+      $this->optional_map_of_map_of_sets = idx($vals, 'optional_map_of_map_of_sets');
     }
   }
 

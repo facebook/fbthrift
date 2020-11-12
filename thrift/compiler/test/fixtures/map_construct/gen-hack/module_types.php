@@ -105,9 +105,9 @@ class Foo implements \IThriftStruct {
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->a = idx($vals, 'a') ?? Vector {};
-    if (C\contains_key($vals, 'b')) {
+    if (idx($vals, 'b') !== null) {
       /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->b = idx($vals, 'b') ?? Map {};
+      $this->b = idx($vals, 'b');
     }
     $this->c = (int)idx($vals, 'c') ?? 7;
     $this->d = (bool)idx($vals, 'd') ?? false;
@@ -249,20 +249,20 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     $this->_type = TestUnionEnum::_EMPTY_;
-    if (C\contains_key($vals, 'string_field')) {
+    if (idx($vals, 'string_field') !== null) {
       $this->string_field = (string)$vals['string_field'];
       $this->_type = TestUnionEnum::string_field;
     }
-    if (C\contains_key($vals, 'int_field')) {
+    if (idx($vals, 'int_field') !== null) {
       $this->int_field = (int)$vals['int_field'];
       $this->_type = TestUnionEnum::int_field;
     }
-    if (C\contains_key($vals, 'enum_field')) {
+    if (idx($vals, 'enum_field') !== null) {
       /* HH_FIXME[4110] previously hidden by unsafe */
       $this->enum_field = $vals['enum_field'];
       $this->_type = TestUnionEnum::enum_field;
     }
-    if (C\contains_key($vals, 'foo_struct')) {
+    if (idx($vals, 'foo_struct') !== null) {
       /* HH_FIXME[4110] previously hidden by unsafe */
       $this->foo_struct = $vals['foo_struct'];
       $this->_type = TestUnionEnum::foo_struct;
