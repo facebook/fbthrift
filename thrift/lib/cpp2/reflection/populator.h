@@ -29,6 +29,7 @@
 #include <fatal/type/convert.h>
 #include <folly/Traits.h>
 #include <folly/io/Cursor.h>
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 #include <thrift/lib/cpp2/reflection/serializer.h>
@@ -486,8 +487,8 @@ struct populator_methods<type_class::structure, Struct> {
 
 template <typename Type, typename Rng>
 void populate(Type& out, populator_opts const& opts, Rng& rng) {
-  return populator_methods<reflect_type_class<Type>, Type>::populate(
-      rng, opts, out);
+  using TypeClass = type_class_of_thrift_class_t<Type>;
+  return populator_methods<TypeClass, Type>::populate(rng, opts, out);
 }
 
 } // namespace populator
