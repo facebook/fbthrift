@@ -478,10 +478,10 @@ class Bar_baz_args implements \IThriftStruct {
     $this->a = idx($vals, 'a') ?? Set {};
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->b = idx($vals, 'b') ?? Vector {};
-    $this->c = (int)idx($vals, 'c') ?? 0;
+    $this->c = (int)(idx($vals, 'c') ?? 0);
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->d = idx($vals, 'd');
-    $this->e = (int)idx($vals, 'e') ?? 4;
+    $this->e = (int)(idx($vals, 'e') ?? 4);
   }
 
   <<__Rx>>

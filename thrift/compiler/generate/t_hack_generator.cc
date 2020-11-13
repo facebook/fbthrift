@@ -2716,8 +2716,10 @@ void t_hack_generator::_generate_php_struct_definition(
               << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
         }
         out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
-            << "($vals->get('" << (*m_iter)->get_name() << "') ?: " << dval
-            << ");\n";
+            << (cast != "" && dval != "null" ? "(" : "") << "$vals->get('"
+            << (*m_iter)->get_name() << "')"
+            << (dval != "null" ? " ?? " + dval : "")
+            << (cast != "" && dval != "null" ? ")" : "") << ";\n";
       } else {
         // TODO (partisan): This can probably be simplified to optional field
         // being directly assigned the idx with no existance check at all. It's
@@ -2741,12 +2743,13 @@ void t_hack_generator::_generate_php_struct_definition(
               << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
         }
         out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
+            << (cast != "" && dval != "null" ? "(" : "")
             << (needs_optional_check && dval == "null" ? "$vals['"
                                                        : "idx($vals, '")
             << (*m_iter)->get_name() << "'"
             << (needs_optional_check && dval == "null" ? "]" : ")") +
                 (!needs_optional_check && dval != "null" ? " ?? " + dval : "")
-            << ";\n";
+            << (cast != "" && dval != "null" ? ")" : "") << ";\n";
         if (tstruct->is_union()) {
           out << indent()
               << "$this->_type = " << union_field_to_enum(tstruct, *m_iter)

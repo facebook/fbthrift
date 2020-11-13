@@ -191,7 +191,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
-    $this->just_int = (int)idx($vals, 'just_int') ?? 0;
+    $this->just_int = (int)(idx($vals, 'just_int') ?? 0);
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->list_of_strings = idx($vals, 'list_of_strings') ?? Vector {};
     /* HH_FIXME[4110] previously hidden by unsafe */
