@@ -3633,8 +3633,7 @@ _readField_field2:
 _readField_field3:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::test_cpp2::cpp_reflection::structA> ptr = std::make_unique< ::test_cpp2::cpp_reflection::structA>();
+    auto ptr = std::make_unique< ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::test_cpp2::cpp_reflection::structA>::read(*iprot, *ptr);
     this->field3 = std::move(ptr);
     _readState.afterSubobject(iprot);

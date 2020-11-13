@@ -177,7 +177,7 @@ _readField_FieldA:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr< ::a::different::ns::AStruct> ptr = std::make_unique< ::a::different::ns::AStruct>();
+    auto ptr = std::make_shared< ::a::different::ns::AStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::a::different::ns::AStruct>::read(*iprot, *ptr);
     this->FieldA = std::move(ptr);
     _readState.afterSubobject(iprot);

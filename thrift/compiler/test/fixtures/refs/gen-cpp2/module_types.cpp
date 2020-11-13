@@ -726,8 +726,8 @@ void StructWithContainers::__clear() {
   set_ref.reset(new typename decltype(set_ref)::element_type());
   map_ref.reset(new typename decltype(map_ref)::element_type());
   list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
-  set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
-  list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
+  set_ref_shared = std::make_shared<::std::set<int32_t>>();
+  list_ref_shared_const = std::make_shared<::std::vector<int32_t>>();
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
@@ -895,8 +895,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithSharedConst::__clear() {
   // clear all fields
   opt_shared_const.reset();
-  if (shared_const) shared_const.reset(new typename decltype(shared_const)::element_type());
-  if (req_shared_const) req_shared_const.reset(new typename decltype(req_shared_const)::element_type());
+  if (shared_const) shared_const = std::make_shared< ::cpp2::MyField>();
+  if (req_shared_const) req_shared_const = std::make_shared< ::cpp2::MyField>();
 }
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {

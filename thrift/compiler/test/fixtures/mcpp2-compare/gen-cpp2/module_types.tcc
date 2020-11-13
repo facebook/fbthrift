@@ -4615,8 +4615,7 @@ _readField_MyIncludedStruct:
 _readField_ARefField:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::AStruct> ptr = std::make_unique< ::some::valid::ns::AStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::AStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::AStruct>::read(*iprot, *ptr);
     this->ARefField = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4838,8 +4837,7 @@ _readField_no_annotation:
 _readField_cpp_unique_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->cpp_unique_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4855,8 +4853,7 @@ _readField_cpp_unique_ref:
 _readField_cpp2_unique_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->cpp2_unique_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4872,8 +4869,7 @@ _readField_cpp2_unique_ref:
 _readField_container_with_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> ptr = std::make_unique<::std::map<int32_t, ::std::vector<::std::string>>>();
+    auto ptr = std::make_unique<::std::map<int32_t, ::std::vector<::std::string>>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<int32_t, ::std::vector<::std::string>>>::read(*iprot, *ptr);
     this->container_with_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4889,8 +4885,7 @@ _readField_container_with_ref:
 _readField_req_cpp_unique_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->req_cpp_unique_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4906,8 +4901,7 @@ _readField_req_cpp_unique_ref:
 _readField_req_cpp2_unique_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->req_cpp2_unique_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4923,8 +4917,7 @@ _readField_req_cpp2_unique_ref:
 _readField_req_container_with_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr<::std::vector<::std::string>> ptr = std::make_unique<::std::vector<::std::string>>();
+    auto ptr = std::make_unique<::std::vector<::std::string>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, *ptr);
     this->req_container_with_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4940,8 +4933,7 @@ _readField_req_container_with_ref:
 _readField_opt_cpp_unique_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->opt_cpp_unique_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4957,8 +4949,7 @@ _readField_opt_cpp_unique_ref:
 _readField_opt_cpp2_unique_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->opt_cpp2_unique_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4974,8 +4965,7 @@ _readField_opt_cpp2_unique_ref:
 _readField_opt_container_with_ref:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr<::std::set<int32_t>> ptr = std::make_unique<::std::set<int32_t>>();
+    auto ptr = std::make_unique<::std::set<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, *ptr);
     this->opt_container_with_ref = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -4991,8 +4981,7 @@ _readField_opt_container_with_ref:
 _readField_ref_type_unique:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->ref_type_unique = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5009,7 +4998,7 @@ _readField_ref_type_shared:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_shared< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->ref_type_shared = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5026,7 +5015,7 @@ _readField_ref_type_const:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> ptr = std::make_unique<::std::map<int32_t, ::std::vector<::std::string>>>();
+    auto ptr = std::make_shared<::std::map<int32_t, ::std::vector<::std::string>>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::string>>, ::std::map<int32_t, ::std::vector<::std::string>>>::read(*iprot, *ptr);
     this->ref_type_const = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5043,7 +5032,7 @@ _readField_req_ref_type_shared:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_shared< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->req_ref_type_shared = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5060,7 +5049,7 @@ _readField_req_ref_type_const:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_shared< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->req_ref_type_const = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5076,8 +5065,7 @@ _readField_req_ref_type_const:
 _readField_req_ref_type_unique:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr<::std::vector<::std::string>> ptr = std::make_unique<::std::vector<::std::string>>();
+    auto ptr = std::make_unique<::std::vector<::std::string>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, *ptr);
     this->req_ref_type_unique = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5094,7 +5082,7 @@ _readField_opt_ref_type_const:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_shared< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->opt_ref_type_const = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5110,8 +5098,7 @@ _readField_opt_ref_type_const:
 _readField_opt_ref_type_unique:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
+    auto ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::some::valid::ns::containerStruct>::read(*iprot, *ptr);
     this->opt_ref_type_unique = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -5128,7 +5115,7 @@ _readField_opt_ref_type_shared:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr<::std::set<int32_t>> ptr = std::make_unique<::std::set<int32_t>>();
+    auto ptr = std::make_shared<::std::set<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, *ptr);
     this->opt_ref_type_shared = std::move(ptr);
     _readState.afterSubobject(iprot);

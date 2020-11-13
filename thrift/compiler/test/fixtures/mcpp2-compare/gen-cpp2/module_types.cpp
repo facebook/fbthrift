@@ -2862,9 +2862,9 @@ void AnnotatedStruct::__clear() {
   opt_container_with_ref.reset();
   if (ref_type_unique) ref_type_unique->__clear();
   if (ref_type_shared) ref_type_shared->__clear();
-  ref_type_const.reset(new typename decltype(ref_type_const)::element_type());
+  ref_type_const = std::make_shared<::std::map<int32_t, ::std::vector<::std::string>>>();
   if (req_ref_type_shared) req_ref_type_shared->__clear();
-  if (req_ref_type_const) req_ref_type_const.reset(new typename decltype(req_ref_type_const)::element_type());
+  if (req_ref_type_const) req_ref_type_const = std::make_shared< ::some::valid::ns::containerStruct>();
   req_ref_type_unique.reset(new typename decltype(req_ref_type_unique)::element_type());
   opt_ref_type_const.reset();
   opt_ref_type_unique.reset();

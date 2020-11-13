@@ -652,6 +652,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
             {"field:cpp_ref_shared_const?",
              &mstch_cpp2_field::cpp_ref_shared_const},
+            {"field:cpp_ref_shared_or_shared_const?",
+             &mstch_cpp2_field::cpp_ref_shared_or_shared_const},
             {"field:cpp_noncopyable?", &mstch_cpp2_field::cpp_noncopyable},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
             {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
@@ -690,6 +692,10 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_ref_shared_const() {
     return get_annotation("cpp.ref_type") == "shared_const" ||
         get_annotation("cpp2.ref_type") == "shared_const";
+  }
+  mstch::node cpp_ref_shared_or_shared_const() {
+    return boost::get<bool>(cpp_ref_shared()) ||
+        boost::get<bool>(cpp_ref_shared_const());
   }
   mstch::node cpp_noncopyable() {
     auto type = field_->get_type();

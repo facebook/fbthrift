@@ -2514,8 +2514,7 @@ _readField_ForwardUsageStruct:
 _readField_ForwardUsageByRef:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ptr = std::make_unique< ::apache::thrift::fixtures::types::ForwardUsageByRef>();
+    auto ptr = std::make_unique< ::apache::thrift::fixtures::types::ForwardUsageByRef>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::apache::thrift::fixtures::types::ForwardUsageByRef>::read(*iprot, *ptr);
     this->ForwardUsageByRef = std::move(ptr);
     _readState.afterSubobject(iprot);

@@ -507,8 +507,7 @@ _readField_fieldQ:
 _readField_fieldR:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr<::std::map<::std::string, bool>> ptr = std::make_unique<::std::map<::std::string, bool>>();
+    auto ptr = std::make_unique<::std::map<::std::string, bool>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::read(*iprot, *ptr);
     this->fieldR = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -524,8 +523,7 @@ _readField_fieldR:
 _readField_fieldS:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+    auto ptr = std::make_unique< ::cpp2::SmallStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldS = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -542,7 +540,7 @@ _readField_fieldT:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+    auto ptr = std::make_shared< ::cpp2::SmallStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldT = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -559,7 +557,7 @@ _readField_fieldU:
   {
     _readState.beforeSubobject(iprot);
     
-    std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+    auto ptr = std::make_shared< ::cpp2::SmallStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldU = std::move(ptr);
     _readState.afterSubobject(iprot);
@@ -575,8 +573,7 @@ _readField_fieldU:
 _readField_fieldX:
   {
     _readState.beforeSubobject(iprot);
-    
-    std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+    auto ptr = std::make_unique< ::cpp2::SmallStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::SmallStruct>::read(*iprot, *ptr);
     this->fieldX = std::move(ptr);
     _readState.afterSubobject(iprot);

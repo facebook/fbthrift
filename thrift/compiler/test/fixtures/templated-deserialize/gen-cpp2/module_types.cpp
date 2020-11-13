@@ -331,7 +331,7 @@ void containerStruct::__clear() {
   fieldR.reset(new typename decltype(fieldR)::element_type());
   if (fieldS) fieldS->__clear();
   if (fieldT) fieldT->__clear();
-  if (fieldU) fieldU.reset(new typename decltype(fieldU)::element_type());
+  if (fieldU) fieldU = std::make_shared< ::cpp2::SmallStruct>();
   if (fieldX) fieldX->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

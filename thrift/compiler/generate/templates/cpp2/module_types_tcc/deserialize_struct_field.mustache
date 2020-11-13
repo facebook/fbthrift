@@ -19,8 +19,12 @@
 %>_readState.beforeSubobject(iprot);
 <%/type:resolves_to_container_or_struct?%><%!
 %><%#field:cpp_ref?%>
-
-std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<%!
+<%^field:cpp_ref_shared_or_shared_const?%>
+auto ptr = std::make_unique<<% > types/type%>>();<%!
+%><%/field:cpp_ref_shared_or_shared_const?%><%!
+%><%#field:cpp_ref_shared_or_shared_const?%>
+auto ptr = std::make_shared<<% > types/type%>>();<%!
+%><%/field:cpp_ref_shared_or_shared_const?%><%!
 %><%#type:resolves_to_fixed_size?%><%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, *ptr, _readState);<%!
 %><%/type:resolves_to_fixed_size?%><%!
