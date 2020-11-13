@@ -24,7 +24,7 @@ template <typename T>
 using remove_const_reference =
     typename std::remove_const<typename std::remove_reference<T>::type>::type;
 
-template <typename T>
+template <typename T, typename TypeClass>
 struct merge;
 template <typename TypeClass>
 struct merge_impl;

@@ -26,6 +26,7 @@
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 

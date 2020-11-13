@@ -23,25 +23,6 @@ cpp_include "thrift/test/reflection/fatal_merge_types.h"
 
 namespace cpp2 apache.thrift.test
 
-enum FooBar {
-  kFoo = 0,
-  kBar = 1,
-}
-
-struct EnumExample {
-  1: FooBar src,
-  2: FooBar dst,
-  3: FooBar exp,
-  4: FooBar nil,
-}
-
-const EnumExample kEnumExample = {
-  "src": FooBar.kBar,
-  "dst": FooBar.kFoo,
-  "exp": FooBar.kBar,
-  "nil": FooBar.kBar,
-}
-
 struct Basic {
   1: string b,
   2: optional string b_opt,

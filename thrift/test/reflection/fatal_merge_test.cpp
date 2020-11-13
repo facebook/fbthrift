@@ -53,7 +53,6 @@ class FatalMergeTest : public testing::Test {};
         *example.nil_ref(), src, make_debug_output_callback(LOG(ERROR)))); \
   }
 
-TEST_GROUP(enumeration, kEnumExample)
 TEST_GROUP(structure, kBasicExample)
 TEST_GROUP(optional, kBasicOptionalExample)
 TEST_GROUP(list, kBasicListExample)

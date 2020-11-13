@@ -20,14 +20,9 @@ namespace apache {
 namespace thrift {
 namespace merge_into_detail {
 
-template <typename T>
+template <typename T, typename TypeClass>
 struct merge {
-  using impl = merge_impl<reflect_type_class<T>>;
-  static constexpr auto is_complete = fatal::is_complete<impl>::value;
-  static_assert(is_complete, "merge_into: incomplete type");
-  static constexpr auto is_known =
-      !std::is_same<reflect_type_class<T>, type_class::unknown>::value;
-  static_assert(is_known, "merge_into: missing reflection metadata");
+  using impl = merge_impl<TypeClass>;
 
   //  regular
   static void go(const T& src, T& dst) {
@@ -96,8 +91,9 @@ struct merge_impl<type_class::structure> {
     void operator()(fatal::indexed<MemberInfo, Index>, Src<T>& src, T& dst)
         const {
       using mgetter = typename MemberInfo::getter;
+      using mclass = typename MemberInfo::type_class;
       using mtype = folly::remove_cvref_t<decltype(mgetter{}(src))>;
-      using merge_field = merge<typename deref<mtype>::type>;
+      using merge_field = merge<typename deref<mtype>::type, mclass>;
       using mref = fatal::conditional<Move, mtype&&, const mtype&>;
       if (MemberInfo::optional::value == optionality::optional &&
           !MemberInfo::is_set(src)) {
@@ -151,14 +147,14 @@ struct merge_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   static void go(const T& src, T& dst) {
     using M = typename T::mapped_type;
     for (const auto& kv : src) {
-      merge<M>::go(kv.second, dst[kv.first]);
+      merge<M, MappedTypeClass>::go(kv.second, dst[kv.first]);
     }
   }
   template <typename T>
   static void go(T&& src, T& dst) {
     using M = typename T::mapped_type;
     for (auto& kv : src) {
-      merge<M>::go(std::move(kv.second), dst[kv.first]);
+      merge<M, MappedTypeClass>::go(std::move(kv.second), dst[kv.first]);
     }
   }
 };
@@ -176,7 +172,9 @@ void merge_into(T&& src, merge_into_detail::remove_const_reference<T>& dst) {
   constexpr auto r = std::is_rvalue_reference<T&&>::value;
   using D = typename merge_into_detail::remove_const_reference<T>;
   using W = fatal::conditional<!c && r, T&&, const D&>;
-  merge_into_detail::merge<D>::go(static_cast<W>(src), dst);
+  using TC = type_class_of_thrift_class_t<folly::remove_cvref_t<T>>;
+  static_assert(!std::is_void_v<TC>, "merge_into: not a structure type");
+  merge_into_detail::merge<D, TC>::go(static_cast<W>(src), dst);
 }
 
 } // namespace thrift
