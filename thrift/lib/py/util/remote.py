@@ -443,6 +443,16 @@ class RemoteClient(object):
         self._exit(status=0)
 
 
+def ssl_parsed_bool(arg):
+    if isinstance(arg, bool):
+        return arg
+    if arg in ('true', '1'):
+        return True
+    elif arg in ('false', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('argument must be one of true, 1, false, or 0')
+
 class RemoteTransportClient(RemoteClient):
     """Abstract class for clients with transport manually opened and closed"""
     CMDLINE_OPTIONS = [
@@ -456,8 +466,11 @@ class RemoteTransportClient(RemoteClient):
         ), (
             ('-s', '--ssl'),
             {
-                'action': 'store_true',
-                'default': False,
+                'action': 'store',
+                'type': ssl_parsed_bool,
+                'default': True,
+                'const': True,
+                'nargs': '?',
                 'help': 'Use SSL socket'
             }
         ), (
