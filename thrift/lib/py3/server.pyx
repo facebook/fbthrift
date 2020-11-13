@@ -257,6 +257,9 @@ cdef class ThriftServer:
     def stop_listening(self):
         self.server.get().stopListening()
 
+    def use_existing_socket(self, socket):
+        self.server.get().useExistingSocket(socket)
+
 
 cdef class ConnectionContext:
     @staticmethod

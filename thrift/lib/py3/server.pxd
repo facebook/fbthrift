@@ -112,6 +112,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setQueueTimeout(milliseconds timeout)
         milliseconds getQueueTimeout()
         void setIsOverloaded(cIsOverloadedFunc isOverloaded)
+        void useExistingSocket(int socket) except +
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs
