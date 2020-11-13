@@ -122,6 +122,24 @@ std::false_type reserve_if_possible(T&&...) {
   return {};
 }
 
+// When possible, it is cheaper to avoid the call to back() after emplace_back()
+// for types where the cost is non-trivial (for example containers with small
+// object optimization). This provides a fallback for pre-C++17 containers. It
+// can be removed when C++17 is the minimum supported version.
+template <typename Container>
+auto emplace_back_default(Container& c) -> typename std::enable_if<
+    !std::is_same<decltype(c.emplace_back()), void>::value,
+    typename Container::reference>::type {
+  return c.emplace_back();
+}
+template <typename Container>
+auto emplace_back_default(Container& c) -> typename std::enable_if<
+    std::is_same<decltype(c.emplace_back()), void>::value,
+    typename Container::reference>::type {
+  c.emplace_back();
+  return c.back();
+}
+
 template <typename Void, typename T>
 constexpr bool sorted_unique_constructible_ = false;
 template <typename T>
@@ -168,14 +186,16 @@ deserialize_known_length_map(
   bool sorted = true;
   typename Map::container_type tmp(map.get_allocator());
   reserve_if_possible(&tmp, map_size);
-  tmp.emplace_back();
-  kr(tmp[0].first);
-  mr(tmp[0].second);
+  {
+    auto& elem0 = emplace_back_default(tmp);
+    kr(elem0.first);
+    mr(elem0.second);
+  }
   for (size_t i = 1; i < map_size; ++i) {
-    tmp.emplace_back();
-    kr(tmp[i].first);
-    mr(tmp[i].second);
-    sorted = sorted && map.key_comp()(tmp[i - 1].first, tmp[i].first);
+    auto& elem = emplace_back_default(tmp);
+    kr(elem.first);
+    mr(elem.second);
+    sorted = sorted && map.key_comp()(tmp[i - 1].first, elem.first);
   }
 
   using folly::sorted_unique;
@@ -233,12 +253,14 @@ deserialize_known_length_set(
   bool sorted = true;
   typename Set::container_type tmp(set.get_allocator());
   reserve_if_possible(&tmp, set_size);
-  tmp.emplace_back();
-  vr(tmp[0]);
+  {
+    auto& elem0 = emplace_back_default(tmp);
+    vr(elem0);
+  }
   for (size_t i = 1; i < set_size; ++i) {
-    tmp.emplace_back();
-    vr(tmp[i]);
-    sorted = sorted && set.key_comp()(tmp[i - 1], tmp[i]);
+    auto& elem = emplace_back_default(tmp);
+    vr(elem);
+    sorted = sorted && set.key_comp()(tmp[i - 1], elem);
   }
 
   using folly::sorted_unique;
@@ -480,8 +502,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       while (protocol.peekList()) {
-        out.emplace_back();
-        elem_methods::read(protocol, out.back());
+        elem_methods::read(protocol, emplace_back_default(out));
       }
     } else {
       if (reported_type != WireTypeInfo::fromTType(elem_ttype::value)) {
@@ -494,11 +515,11 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         using traits = std::iterator_traits<typename Type::iterator>;
         using cat = typename traits::iterator_category;
         if (reserve_if_possible(&out, list_size) ||
+            // use bidi as a hint for doubly linked list containers like
+            // std::list
             std::is_same<cat, std::bidirectional_iterator_tag>::value) {
-          // use bidi as a hint for doubly linked list containers like std::list
           while (list_size--) {
-            out.emplace_back();
-            elem_methods::read(protocol, out.back());
+            elem_methods::read(protocol, emplace_back_default(out));
           }
         } else {
           out.resize(list_size);
