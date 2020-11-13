@@ -36,7 +36,8 @@
           "spec_args" : "MyEnum",
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "MyDataItem" : {
       "lineno" : 34,
@@ -44,7 +45,8 @@
       "is_union" : false,
       "fields" : {
 
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "MyUnion" : {
       "lineno" : 36,
@@ -66,7 +68,8 @@
           "spec_args" : "MyDataItem",
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     }
   },
   "services" : {

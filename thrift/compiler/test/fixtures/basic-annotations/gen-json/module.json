@@ -24,7 +24,8 @@
           "annotations" : {
           }
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "MyStructAnnotation" : {
       "lineno" : 30,
@@ -59,7 +60,8 @@
           "annotations" : {
           }
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "MyStruct" : {
       "lineno" : 37,
@@ -113,7 +115,8 @@
           "annotations" : {
           }
         }
-      }
+      },
+      "annotation_last_lineno" : 56
     },
     "SecretStruct" : {
       "lineno" : 77,
@@ -135,7 +138,8 @@
             "java.sensitive" : "1"
           }
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     }
   },
   "services" : {

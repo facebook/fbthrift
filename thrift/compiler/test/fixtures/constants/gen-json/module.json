@@ -426,7 +426,8 @@
           "spec_args" : "Company",
           "required" : false
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "Range" : {
       "lineno" : 82,
@@ -443,7 +444,8 @@
           "spec_args" : null,
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "struct1" : {
       "lineno" : 107,
@@ -462,7 +464,8 @@
           "required" : true,
           "default_value" : "<uninitialized>"
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "struct2" : {
       "lineno" : 126,
@@ -489,7 +492,8 @@
           "spec_args" : { "type_enum" : "I32", "spec_args" : null} ,
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "struct3" : {
       "lineno" : 163,
@@ -511,7 +515,8 @@
           "spec_args" : "struct2",
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "struct4" : {
       "lineno" : 193,
@@ -533,7 +538,8 @@
           "spec_args" : null,
           "required" : false
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "union1" : {
       "lineno" : 205,
@@ -550,7 +556,8 @@
           "spec_args" : null,
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "union2" : {
       "lineno" : 220,
@@ -577,7 +584,8 @@
           "spec_args" : "union1",
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     }
   }
 }

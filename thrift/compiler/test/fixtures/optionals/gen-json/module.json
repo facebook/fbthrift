@@ -44,7 +44,8 @@
           "spec_args" : null,
           "required" : true
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "Vehicle" : {
       "lineno" : 32,
@@ -77,7 +78,8 @@
           "required" : false,
           "default_value" : false
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     },
     "Person" : {
       "lineno" : 42,
@@ -134,7 +136,8 @@
           "spec_args" : { "type_enum" : "STRUCT", "spec_args" : "Vehicle"} ,
           "required" : false
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     }
   }
 }

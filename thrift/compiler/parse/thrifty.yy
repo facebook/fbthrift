@@ -84,6 +84,7 @@ enum class LineType {
   kFunction,
   kField,
   kXception,
+  kAnnotationLastLineno,
 };
 
 // The LinenoStack class is used for keeping track of line number and automatic
@@ -921,6 +922,7 @@ Struct:
       if ($8) {
         $$->annotations_ = std::move($8->annotations_);
         $$->annotation_objects_ = std::move($8->annotation_objects_);
+        $$->annotation_last_lineno_ = $8->annotation_last_lineno_;
         delete $8;
       }
       if ($1) {
@@ -1617,10 +1619,15 @@ ListType:
     }
 
 TypeAnnotations:
-  "(" TypeAnnotationList CommaOrSemicolonOptional ")"
+  "(" TypeAnnotationList CommaOrSemicolonOptional 
+    {
+      lineno_stack.push(LineType::kAnnotationLastLineno, driver.scanner->get_lineno());
+    }
+  ")"
     {
       driver.debug("TypeAnnotations => ( TypeAnnotationList CommaOrSemicolonOptional)");
       $$ = $2;
+      $$->annotation_last_lineno_ = lineno_stack.pop(LineType::kAnnotationLastLineno);
     }
 | "(" ")"
     {

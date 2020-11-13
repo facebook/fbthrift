@@ -43,6 +43,8 @@ class t_annotated : public t_doc {
   // relying on copies.
   std::map<std::string, std::shared_ptr<t_const>> annotation_objects_;
   std::vector<std::shared_ptr<t_const>> structured_annotations_;
+
+  int annotation_last_lineno_ = -1;
 };
 
 /**

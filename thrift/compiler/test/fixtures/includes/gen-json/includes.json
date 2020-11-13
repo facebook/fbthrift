@@ -45,7 +45,8 @@
           "required" : true,
           "default_value" : { "a" : 2 }
         }
-      }
+      },
+      "annotation_last_lineno" : -1
     }
   }
 }

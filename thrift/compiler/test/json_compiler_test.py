@@ -114,6 +114,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
+                        "annotation_last_lineno": -1,
                     },
                 },
             },
@@ -143,6 +144,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
+                        "annotation_last_lineno": -1,
                     },
                     "DataHolder": {
                         "fields": {
@@ -155,6 +157,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 3,
+                        "annotation_last_lineno": -1,
                     },
                 },
             },
@@ -184,6 +187,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
+                        "annotation_last_lineno": -1,
                     },
                     "DataHolder": {
                         "fields": {
@@ -205,6 +209,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 3,
+                        "annotation_last_lineno": -1,
                     },
                 },
             },
@@ -236,6 +241,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 4,
+                        "annotation_last_lineno": -1,
                     },
                     "DataHolder": {
                         "fields": {
@@ -248,6 +254,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
+                        "annotation_last_lineno": -1,
                     },
                 },
             },
@@ -260,7 +267,7 @@ class JsonCompilerTest(unittest.TestCase):
                 """\
             struct DataHolder {
               1: string data (foo="bar", ignore)
-            }
+            } (my_annotation_key = "my_annotation_value")
         """
             ),
             annotate=True,
@@ -286,6 +293,7 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
+                        "annotation_last_lineno": 3,
                     },
                 },
             },
