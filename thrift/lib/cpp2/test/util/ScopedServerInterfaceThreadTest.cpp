@@ -255,12 +255,6 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   folly::Future<int64_t> future_add(int64_t a, int64_t b) override {
     requestSem_.post();
 
-    if (a + b == 6666) {
-      // A hack to avoid crashing when sleep future gets complete on
-      // Timekeeper thread shutdown.
-      return infiniteFuture().thenValue([res = a + b](auto&&) { return res; });
-    }
-
     return folly::futures::sleep(std::chrono::milliseconds(a + b))
         .via(folly::getGlobalCPUExecutor())
         .thenValue([=](auto&&) { return a + b; });
@@ -292,11 +286,6 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   }
 
  private:
-  folly::Future<folly::Unit> infiniteFuture() {
-    static folly::Indestructible<folly::SharedPromise<folly::Unit>> promise;
-    return promise->getFuture();
-  }
-
   folly::LifoSem requestSem_;
 };
 
