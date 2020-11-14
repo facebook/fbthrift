@@ -84,6 +84,10 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
     return server_;
   }
 
+  void releaseServer() {
+    server_.reset();
+  }
+
  private:
   enum StateEnum {
     STATE_NOT_STARTED,
@@ -218,7 +222,9 @@ void ScopedServerThread::Helper::run() {
 }
 
 void ScopedServerThread::Helper::stop() {
-  server_->stop();
+  if (server_) {
+    server_->stop();
+  }
 }
 
 void ScopedServerThread::Helper::waitUntilStarted() {
@@ -326,7 +332,9 @@ void ScopedServerThread::stop() {
 void ScopedServerThread::join() {
   if (thread_) {
     thread_->join();
-    thread_.reset();
+  }
+  if (helper_) {
+    helper_->releaseServer();
   }
 }
 
