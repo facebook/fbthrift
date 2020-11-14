@@ -1162,7 +1162,7 @@ namespace detail {
 namespace si {
 
 template <typename F>
-using ret = typename std::result_of<F()>::type;
+using ret = typename folly::invoke_result_t<F>;
 template <typename F>
 using ret_lift = typename folly::lift_unit<ret<F>>::type;
 template <typename F>
