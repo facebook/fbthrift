@@ -18,13 +18,11 @@ struct VisitUnion<::some::valid::ns::SimpleUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::some::valid::ns::SimpleUnion>;
     switch (t.getType()) {
     case Union::Type::intValue:
-      return f(get_metadata(0), *static_cast<T&&>(t).intValue_ref());
+      return f(0, *static_cast<T&&>(t).intValue_ref());
     case Union::Type::stringValue:
-      return f(get_metadata(1), *static_cast<T&&>(t).stringValue_ref());
+      return f(1, *static_cast<T&&>(t).stringValue_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -34,63 +32,61 @@ struct VisitUnion<::some::valid::ns::ComplexUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::some::valid::ns::ComplexUnion>;
     switch (t.getType()) {
     case Union::Type::intValue:
-      return f(get_metadata(0), *static_cast<T&&>(t).intValue_ref());
+      return f(0, *static_cast<T&&>(t).intValue_ref());
     case Union::Type::opt_intValue:
-      return f(get_metadata(1), *static_cast<T&&>(t).opt_intValue_ref());
+      return f(1, *static_cast<T&&>(t).opt_intValue_ref());
     case Union::Type::stringValue:
-      return f(get_metadata(2), *static_cast<T&&>(t).stringValue_ref());
+      return f(2, *static_cast<T&&>(t).stringValue_ref());
     case Union::Type::opt_stringValue:
-      return f(get_metadata(3), *static_cast<T&&>(t).opt_stringValue_ref());
+      return f(3, *static_cast<T&&>(t).opt_stringValue_ref());
     case Union::Type::intValue2:
-      return f(get_metadata(4), *static_cast<T&&>(t).intValue2_ref());
+      return f(4, *static_cast<T&&>(t).intValue2_ref());
     case Union::Type::intValue3:
-      return f(get_metadata(5), *static_cast<T&&>(t).intValue3_ref());
+      return f(5, *static_cast<T&&>(t).intValue3_ref());
     case Union::Type::doubelValue:
-      return f(get_metadata(6), *static_cast<T&&>(t).doubelValue_ref());
+      return f(6, *static_cast<T&&>(t).doubelValue_ref());
     case Union::Type::boolValue:
-      return f(get_metadata(7), *static_cast<T&&>(t).boolValue_ref());
+      return f(7, *static_cast<T&&>(t).boolValue_ref());
     case Union::Type::union_list:
-      return f(get_metadata(8), *static_cast<T&&>(t).union_list_ref());
+      return f(8, *static_cast<T&&>(t).union_list_ref());
     case Union::Type::union_set:
-      return f(get_metadata(9), *static_cast<T&&>(t).union_set_ref());
+      return f(9, *static_cast<T&&>(t).union_set_ref());
     case Union::Type::union_map:
-      return f(get_metadata(10), *static_cast<T&&>(t).union_map_ref());
+      return f(10, *static_cast<T&&>(t).union_map_ref());
     case Union::Type::opt_union_map:
-      return f(get_metadata(11), *static_cast<T&&>(t).opt_union_map_ref());
+      return f(11, *static_cast<T&&>(t).opt_union_map_ref());
     case Union::Type::enum_field:
-      return f(get_metadata(12), *static_cast<T&&>(t).enum_field_ref());
+      return f(12, *static_cast<T&&>(t).enum_field_ref());
     case Union::Type::enum_container:
-      return f(get_metadata(13), *static_cast<T&&>(t).enum_container_ref());
+      return f(13, *static_cast<T&&>(t).enum_container_ref());
     case Union::Type::a_struct:
-      return f(get_metadata(14), *static_cast<T&&>(t).a_struct_ref());
+      return f(14, *static_cast<T&&>(t).a_struct_ref());
     case Union::Type::a_set_struct:
-      return f(get_metadata(15), *static_cast<T&&>(t).a_set_struct_ref());
+      return f(15, *static_cast<T&&>(t).a_set_struct_ref());
     case Union::Type::a_union:
-      return f(get_metadata(16), *static_cast<T&&>(t).a_union_ref());
+      return f(16, *static_cast<T&&>(t).a_union_ref());
     case Union::Type::opt_a_union:
-      return f(get_metadata(17), *static_cast<T&&>(t).opt_a_union_ref());
+      return f(17, *static_cast<T&&>(t).opt_a_union_ref());
     case Union::Type::a_union_list:
-      return f(get_metadata(18), *static_cast<T&&>(t).a_union_list_ref());
+      return f(18, *static_cast<T&&>(t).a_union_list_ref());
     case Union::Type::a_union_typedef:
-      return f(get_metadata(19), *static_cast<T&&>(t).a_union_typedef_ref());
+      return f(19, *static_cast<T&&>(t).a_union_typedef_ref());
     case Union::Type::a_union_typedef_list:
-      return f(get_metadata(20), *static_cast<T&&>(t).a_union_typedef_list_ref());
+      return f(20, *static_cast<T&&>(t).a_union_typedef_list_ref());
     case Union::Type::MyBinaryField:
-      return f(get_metadata(21), *static_cast<T&&>(t).MyBinaryField_ref());
+      return f(21, *static_cast<T&&>(t).MyBinaryField_ref());
     case Union::Type::MyBinaryField2:
-      return f(get_metadata(22), *static_cast<T&&>(t).MyBinaryField2_ref());
+      return f(22, *static_cast<T&&>(t).MyBinaryField2_ref());
     case Union::Type::MyBinaryListField4:
-      return f(get_metadata(23), *static_cast<T&&>(t).MyBinaryListField4_ref());
+      return f(23, *static_cast<T&&>(t).MyBinaryListField4_ref());
     case Union::Type::ref_field:
-      return f(get_metadata(24), *static_cast<T&&>(t).ref_field_ref());
+      return f(24, *static_cast<T&&>(t).ref_field_ref());
     case Union::Type::ref_field2:
-      return f(get_metadata(25), *static_cast<T&&>(t).ref_field2_ref());
+      return f(25, *static_cast<T&&>(t).ref_field2_ref());
     case Union::Type::excp_field:
-      return f(get_metadata(26), *static_cast<T&&>(t).excp_field_ref());
+      return f(26, *static_cast<T&&>(t).excp_field_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -100,13 +96,11 @@ struct VisitUnion<::some::valid::ns::FloatUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::some::valid::ns::FloatUnion>;
     switch (t.getType()) {
     case Union::Type::floatSide:
-      return f(get_metadata(0), *static_cast<T&&>(t).floatSide_ref());
+      return f(0, *static_cast<T&&>(t).floatSide_ref());
     case Union::Type::doubleSide:
-      return f(get_metadata(1), *static_cast<T&&>(t).doubleSide_ref());
+      return f(1, *static_cast<T&&>(t).doubleSide_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

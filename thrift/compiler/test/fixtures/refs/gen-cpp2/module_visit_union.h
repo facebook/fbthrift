@@ -18,13 +18,11 @@ struct VisitUnion<::cpp2::MyUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::MyUnion>;
     switch (t.getType()) {
     case Union::Type::anInteger:
-      return f(get_metadata(0), *static_cast<T&&>(t).anInteger_ref());
+      return f(0, *static_cast<T&&>(t).anInteger_ref());
     case Union::Type::aString:
-      return f(get_metadata(1), *static_cast<T&&>(t).aString_ref());
+      return f(1, *static_cast<T&&>(t).aString_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

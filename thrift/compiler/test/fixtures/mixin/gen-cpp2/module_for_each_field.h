@@ -17,10 +17,7 @@ template <>
 struct ForEachField<::cpp2::Mixin1> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Mixin1>;
-
-    f(get_metadata(0), static_cast<T&&>(t).field1_ref()...);
+    f(0, static_cast<T&&>(t).field1_ref()...);
   }
 };
 
@@ -28,11 +25,8 @@ template <>
 struct ForEachField<::cpp2::Mixin2> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Mixin2>;
-
-    f(get_metadata(0), static_cast<T&&>(t).m1_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).field2_ref()...);
+    f(0, static_cast<T&&>(t).m1_ref()...);
+    f(1, static_cast<T&&>(t).field2_ref()...);
   }
 };
 
@@ -40,10 +34,7 @@ template <>
 struct ForEachField<::cpp2::Mixin3Base> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Mixin3Base>;
-
-    f(get_metadata(0), static_cast<T&&>(t).field3_ref()...);
+    f(0, static_cast<T&&>(t).field3_ref()...);
   }
 };
 
@@ -51,12 +42,9 @@ template <>
 struct ForEachField<::cpp2::Foo> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Foo>;
-
-    f(get_metadata(0), static_cast<T&&>(t).field4_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).m2_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).m3_ref()...);
+    f(0, static_cast<T&&>(t).field4_ref()...);
+    f(1, static_cast<T&&>(t).m2_ref()...);
+    f(2, static_cast<T&&>(t).m3_ref()...);
   }
 };
 } // namespace detail

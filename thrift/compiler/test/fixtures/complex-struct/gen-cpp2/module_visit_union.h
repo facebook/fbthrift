@@ -18,21 +18,19 @@ struct VisitUnion<::cpp2::MyUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::MyUnion>;
     switch (t.getType()) {
     case Union::Type::myEnum:
-      return f(get_metadata(0), *static_cast<T&&>(t).myEnum_ref());
+      return f(0, *static_cast<T&&>(t).myEnum_ref());
     case Union::Type::myStruct:
-      return f(get_metadata(1), *static_cast<T&&>(t).myStruct_ref());
+      return f(1, *static_cast<T&&>(t).myStruct_ref());
     case Union::Type::myDataItem:
-      return f(get_metadata(2), *static_cast<T&&>(t).myDataItem_ref());
+      return f(2, *static_cast<T&&>(t).myDataItem_ref());
     case Union::Type::complexNestedStruct:
-      return f(get_metadata(3), *static_cast<T&&>(t).complexNestedStruct_ref());
+      return f(3, *static_cast<T&&>(t).complexNestedStruct_ref());
     case Union::Type::longValue:
-      return f(get_metadata(4), *static_cast<T&&>(t).longValue_ref());
+      return f(4, *static_cast<T&&>(t).longValue_ref());
     case Union::Type::intValue:
-      return f(get_metadata(5), *static_cast<T&&>(t).intValue_ref());
+      return f(5, *static_cast<T&&>(t).intValue_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -42,17 +40,15 @@ struct VisitUnion<::cpp2::MyUnionFloatFieldThrowExp> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::MyUnionFloatFieldThrowExp>;
     switch (t.getType()) {
     case Union::Type::myEnum:
-      return f(get_metadata(0), *static_cast<T&&>(t).myEnum_ref());
+      return f(0, *static_cast<T&&>(t).myEnum_ref());
     case Union::Type::setFloat:
-      return f(get_metadata(1), *static_cast<T&&>(t).setFloat_ref());
+      return f(1, *static_cast<T&&>(t).setFloat_ref());
     case Union::Type::myDataItem:
-      return f(get_metadata(2), *static_cast<T&&>(t).myDataItem_ref());
+      return f(2, *static_cast<T&&>(t).myDataItem_ref());
     case Union::Type::complexNestedStruct:
-      return f(get_metadata(3), *static_cast<T&&>(t).complexNestedStruct_ref());
+      return f(3, *static_cast<T&&>(t).complexNestedStruct_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

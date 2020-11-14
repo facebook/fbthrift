@@ -17,9 +17,6 @@ template <>
 struct ForEachField<::cpp2::FooEx> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::FooEx>;
-
   }
 };
 } // namespace detail

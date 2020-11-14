@@ -18,8 +18,6 @@ struct VisitUnion<::cpp2::Nada> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::Nada>;
     switch (t.getType()) {
     case Union::Type::__EMPTY__: ;
     }

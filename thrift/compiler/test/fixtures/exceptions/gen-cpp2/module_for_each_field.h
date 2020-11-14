@@ -17,9 +17,6 @@ template <>
 struct ForEachField<::cpp2::Banal> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Banal>;
-
   }
 };
 
@@ -27,10 +24,7 @@ template <>
 struct ForEachField<::cpp2::Fiery> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Fiery>;
-
-    f(get_metadata(0), static_cast<T&&>(t).message_ref()...);
+    f(0, static_cast<T&&>(t).message_ref()...);
   }
 };
 
@@ -38,10 +32,7 @@ template <>
 struct ForEachField<::cpp2::Serious> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Serious>;
-
-    f(get_metadata(0), static_cast<T&&>(t).sonnet_ref()...);
+    f(0, static_cast<T&&>(t).sonnet_ref()...);
   }
 };
 
@@ -49,11 +40,8 @@ template <>
 struct ForEachField<::cpp2::ComplexFieldNames> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::ComplexFieldNames>;
-
-    f(get_metadata(0), static_cast<T&&>(t).error_message_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).internal_error_message_ref()...);
+    f(0, static_cast<T&&>(t).error_message_ref()...);
+    f(1, static_cast<T&&>(t).internal_error_message_ref()...);
   }
 };
 
@@ -61,11 +49,8 @@ template <>
 struct ForEachField<::cpp2::CustomFieldNames> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::CustomFieldNames>;
-
-    f(get_metadata(0), static_cast<T&&>(t).error_message_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).internal_error_message_ref()...);
+    f(0, static_cast<T&&>(t).error_message_ref()...);
+    f(1, static_cast<T&&>(t).internal_error_message_ref()...);
   }
 };
 } // namespace detail

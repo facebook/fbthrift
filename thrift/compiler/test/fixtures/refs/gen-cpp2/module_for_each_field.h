@@ -17,11 +17,8 @@ template <>
 struct ForEachField<::cpp2::MyUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).anInteger_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).aString_ref()...);
+    f(0, static_cast<T&&>(t).anInteger_ref()...);
+    f(1, static_cast<T&&>(t).aString_ref()...);
   }
 };
 
@@ -29,12 +26,9 @@ template <>
 struct ForEachField<::cpp2::MyField> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyField>;
-
-    f(get_metadata(0), static_cast<T&&>(t).opt_value_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).value_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).req_value_ref()...);
+    f(0, static_cast<T&&>(t).opt_value_ref()...);
+    f(1, static_cast<T&&>(t).value_ref()...);
+    f(2, static_cast<T&&>(t).req_value_ref()...);
   }
 };
 
@@ -42,12 +36,9 @@ template <>
 struct ForEachField<::cpp2::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).opt_ref_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).ref_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).req_ref_ref()...);
+    f(0, static_cast<T&&>(t).opt_ref_ref()...);
+    f(1, static_cast<T&&>(t).ref_ref()...);
+    f(2, static_cast<T&&>(t).req_ref_ref()...);
   }
 };
 
@@ -55,12 +46,9 @@ template <>
 struct ForEachField<::cpp2::StructWithUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).u_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).aDouble_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).f_ref()...);
+    f(0, static_cast<T&&>(t).u_ref()...);
+    f(1, static_cast<T&&>(t).aDouble_ref()...);
+    f(2, static_cast<T&&>(t).f_ref()...);
   }
 };
 
@@ -68,10 +56,7 @@ template <>
 struct ForEachField<::cpp2::RecursiveStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::RecursiveStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).mes_ref()...);
+    f(0, static_cast<T&&>(t).mes_ref()...);
   }
 };
 
@@ -79,15 +64,12 @@ template <>
 struct ForEachField<::cpp2::StructWithContainers> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithContainers>;
-
-    f(get_metadata(0), static_cast<T&&>(t).list_ref_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).set_ref_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).map_ref_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).list_ref_unique_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).set_ref_shared_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).list_ref_shared_const_ref()...);
+    f(0, static_cast<T&&>(t).list_ref_ref()...);
+    f(1, static_cast<T&&>(t).set_ref_ref()...);
+    f(2, static_cast<T&&>(t).map_ref_ref()...);
+    f(3, static_cast<T&&>(t).list_ref_unique_ref()...);
+    f(4, static_cast<T&&>(t).set_ref_shared_ref()...);
+    f(5, static_cast<T&&>(t).list_ref_shared_const_ref()...);
   }
 };
 
@@ -95,12 +77,9 @@ template <>
 struct ForEachField<::cpp2::StructWithSharedConst> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithSharedConst>;
-
-    f(get_metadata(0), static_cast<T&&>(t).opt_shared_const_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).shared_const_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).req_shared_const_ref()...);
+    f(0, static_cast<T&&>(t).opt_shared_const_ref()...);
+    f(1, static_cast<T&&>(t).shared_const_ref()...);
+    f(2, static_cast<T&&>(t).req_shared_const_ref()...);
   }
 };
 
@@ -108,9 +87,6 @@ template <>
 struct ForEachField<::cpp2::Empty> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Empty>;
-
   }
 };
 
@@ -118,12 +94,9 @@ template <>
 struct ForEachField<::cpp2::StructWithRef> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithRef>;
-
-    f(get_metadata(0), static_cast<T&&>(t).def_field_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).opt_field_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).req_field_ref()...);
+    f(0, static_cast<T&&>(t).def_field_ref()...);
+    f(1, static_cast<T&&>(t).opt_field_ref()...);
+    f(2, static_cast<T&&>(t).req_field_ref()...);
   }
 };
 
@@ -131,12 +104,9 @@ template <>
 struct ForEachField<::cpp2::StructWithRefTypeUnique> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithRefTypeUnique>;
-
-    f(get_metadata(0), static_cast<T&&>(t).def_field_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).opt_field_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).req_field_ref()...);
+    f(0, static_cast<T&&>(t).def_field_ref()...);
+    f(1, static_cast<T&&>(t).opt_field_ref()...);
+    f(2, static_cast<T&&>(t).req_field_ref()...);
   }
 };
 
@@ -144,12 +114,9 @@ template <>
 struct ForEachField<::cpp2::StructWithRefTypeShared> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithRefTypeShared>;
-
-    f(get_metadata(0), static_cast<T&&>(t).def_field_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).opt_field_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).req_field_ref()...);
+    f(0, static_cast<T&&>(t).def_field_ref()...);
+    f(1, static_cast<T&&>(t).opt_field_ref()...);
+    f(2, static_cast<T&&>(t).req_field_ref()...);
   }
 };
 
@@ -157,12 +124,9 @@ template <>
 struct ForEachField<::cpp2::StructWithRefTypeSharedConst> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithRefTypeSharedConst>;
-
-    f(get_metadata(0), static_cast<T&&>(t).def_field_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).opt_field_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).req_field_ref()...);
+    f(0, static_cast<T&&>(t).def_field_ref()...);
+    f(1, static_cast<T&&>(t).opt_field_ref()...);
+    f(2, static_cast<T&&>(t).req_field_ref()...);
   }
 };
 
@@ -170,10 +134,7 @@ template <>
 struct ForEachField<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>;
-
-    f(get_metadata(0), static_cast<T&&>(t).def_field_ref()...);
+    f(0, static_cast<T&&>(t).def_field_ref()...);
   }
 };
 } // namespace detail

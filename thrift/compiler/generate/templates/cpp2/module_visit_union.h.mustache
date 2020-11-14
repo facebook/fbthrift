@@ -31,12 +31,10 @@ struct VisitUnion<<% > common/namespace_cpp2%><%struct:name%>> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<<% > common/namespace_cpp2%><%struct:name%>>;
     switch (t.getType()) {
     <%#struct:fields%>
     case Union::Type::<%field:cpp_name%>:
-      return f(get_metadata(<%field:index%>), *static_cast<T&&>(t).<%field:cpp_name%>_ref());
+      return f(<%field:index%>, *static_cast<T&&>(t).<%field:cpp_name%>_ref());
     <%/struct:fields%>
     case Union::Type::__EMPTY__: ;
     }

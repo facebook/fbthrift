@@ -17,10 +17,7 @@ template <>
 struct ForEachField<::a::different::ns::AStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::a::different::ns::AStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).FieldA_ref()...);
+    f(0, static_cast<T&&>(t).FieldA_ref()...);
   }
 };
 
@@ -28,10 +25,7 @@ template <>
 struct ForEachField<::a::different::ns::AStructB> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::a::different::ns::AStructB>;
-
-    f(get_metadata(0), static_cast<T&&>(t).FieldA_ref()...);
+    f(0, static_cast<T&&>(t).FieldA_ref()...);
   }
 };
 } // namespace detail

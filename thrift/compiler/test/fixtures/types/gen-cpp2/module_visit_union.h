@@ -18,13 +18,11 @@ struct VisitUnion<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::apache::thrift::fixtures::types::NoExceptMoveUnion>;
     switch (t.getType()) {
     case Union::Type::string_field:
-      return f(get_metadata(0), *static_cast<T&&>(t).string_field_ref());
+      return f(0, *static_cast<T&&>(t).string_field_ref());
     case Union::Type::i32_field:
-      return f(get_metadata(1), *static_cast<T&&>(t).i32_field_ref());
+      return f(1, *static_cast<T&&>(t).i32_field_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

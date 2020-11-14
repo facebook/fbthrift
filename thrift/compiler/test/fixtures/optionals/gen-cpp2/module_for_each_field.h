@@ -17,13 +17,10 @@ template <>
 struct ForEachField<::cpp2::Color> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Color>;
-
-    f(get_metadata(0), static_cast<T&&>(t).red_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).green_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).blue_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).alpha_ref()...);
+    f(0, static_cast<T&&>(t).red_ref()...);
+    f(1, static_cast<T&&>(t).green_ref()...);
+    f(2, static_cast<T&&>(t).blue_ref()...);
+    f(3, static_cast<T&&>(t).alpha_ref()...);
   }
 };
 
@@ -31,14 +28,11 @@ template <>
 struct ForEachField<::cpp2::Vehicle> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Vehicle>;
-
-    f(get_metadata(0), static_cast<T&&>(t).color_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).licensePlate_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).description_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).name_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).hasAC_ref()...);
+    f(0, static_cast<T&&>(t).color_ref()...);
+    f(1, static_cast<T&&>(t).licensePlate_ref()...);
+    f(2, static_cast<T&&>(t).description_ref()...);
+    f(3, static_cast<T&&>(t).name_ref()...);
+    f(4, static_cast<T&&>(t).hasAC_ref()...);
   }
 };
 
@@ -46,19 +40,16 @@ template <>
 struct ForEachField<::cpp2::Person> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Person>;
-
-    f(get_metadata(0), static_cast<T&&>(t).id_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).name_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).age_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).address_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).favoriteColor_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).friends_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).bestFriend_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).petNames_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).afraidOfAnimal_ref()...);
-    f(get_metadata(9), static_cast<T&&>(t).vehicles_ref()...);
+    f(0, static_cast<T&&>(t).id_ref()...);
+    f(1, static_cast<T&&>(t).name_ref()...);
+    f(2, static_cast<T&&>(t).age_ref()...);
+    f(3, static_cast<T&&>(t).address_ref()...);
+    f(4, static_cast<T&&>(t).favoriteColor_ref()...);
+    f(5, static_cast<T&&>(t).friends_ref()...);
+    f(6, static_cast<T&&>(t).bestFriend_ref()...);
+    f(7, static_cast<T&&>(t).petNames_ref()...);
+    f(8, static_cast<T&&>(t).afraidOfAnimal_ref()...);
+    f(9, static_cast<T&&>(t).vehicles_ref()...);
   }
 };
 } // namespace detail

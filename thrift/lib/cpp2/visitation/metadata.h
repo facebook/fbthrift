@@ -57,6 +57,17 @@ const auto& get_field_metadata(size_t idx) {
   return idx < fields.size() ? fields[idx] : *empty;
 }
 
+template <class T, class F>
+struct MetadataForwarder {
+  F f;
+
+  template <class... Args>
+  FOLLY_ERASE void operator()(size_t idx, Args&&... args) {
+    f(get_field_metadata<folly::remove_cvref_t<T>>(idx),
+      std::forward<Args>(args)...);
+  }
+};
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache

@@ -17,10 +17,7 @@ template <>
 struct ForEachField<::cpp2::ReflectionStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::ReflectionStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).fieldA_ref()...);
+    f(0, static_cast<T&&>(t).fieldA_ref()...);
   }
 };
 } // namespace detail

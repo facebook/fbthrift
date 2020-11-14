@@ -17,10 +17,7 @@ template <>
 struct ForEachField<::matching_module_name::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::matching_module_name::MyStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).OtherStructField_ref()...);
+    f(0, static_cast<T&&>(t).OtherStructField_ref()...);
   }
 };
 } // namespace detail

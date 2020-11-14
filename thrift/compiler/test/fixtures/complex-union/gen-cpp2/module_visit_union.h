@@ -18,21 +18,19 @@ struct VisitUnion<::cpp2::ComplexUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::ComplexUnion>;
     switch (t.getType()) {
     case Union::Type::intValue:
-      return f(get_metadata(0), *static_cast<T&&>(t).intValue_ref());
+      return f(0, *static_cast<T&&>(t).intValue_ref());
     case Union::Type::stringValue:
-      return f(get_metadata(1), *static_cast<T&&>(t).stringValue_ref());
+      return f(1, *static_cast<T&&>(t).stringValue_ref());
     case Union::Type::intListValue:
-      return f(get_metadata(2), *static_cast<T&&>(t).intListValue_ref());
+      return f(2, *static_cast<T&&>(t).intListValue_ref());
     case Union::Type::stringListValue:
-      return f(get_metadata(3), *static_cast<T&&>(t).stringListValue_ref());
+      return f(3, *static_cast<T&&>(t).stringListValue_ref());
     case Union::Type::typedefValue:
-      return f(get_metadata(4), *static_cast<T&&>(t).typedefValue_ref());
+      return f(4, *static_cast<T&&>(t).typedefValue_ref());
     case Union::Type::stringRef:
-      return f(get_metadata(5), *static_cast<T&&>(t).stringRef_ref());
+      return f(5, *static_cast<T&&>(t).stringRef_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -42,13 +40,11 @@ struct VisitUnion<::cpp2::ListUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::ListUnion>;
     switch (t.getType()) {
     case Union::Type::intListValue:
-      return f(get_metadata(0), *static_cast<T&&>(t).intListValue_ref());
+      return f(0, *static_cast<T&&>(t).intListValue_ref());
     case Union::Type::stringListValue:
-      return f(get_metadata(1), *static_cast<T&&>(t).stringListValue_ref());
+      return f(1, *static_cast<T&&>(t).stringListValue_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -58,13 +54,11 @@ struct VisitUnion<::cpp2::DataUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::DataUnion>;
     switch (t.getType()) {
     case Union::Type::binaryData:
-      return f(get_metadata(0), *static_cast<T&&>(t).binaryData_ref());
+      return f(0, *static_cast<T&&>(t).binaryData_ref());
     case Union::Type::stringData:
-      return f(get_metadata(1), *static_cast<T&&>(t).stringData_ref());
+      return f(1, *static_cast<T&&>(t).stringData_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -74,13 +68,11 @@ struct VisitUnion<::cpp2::ValUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::ValUnion>;
     switch (t.getType()) {
     case Union::Type::v1:
-      return f(get_metadata(0), *static_cast<T&&>(t).v1_ref());
+      return f(0, *static_cast<T&&>(t).v1_ref());
     case Union::Type::v2:
-      return f(get_metadata(1), *static_cast<T&&>(t).v2_ref());
+      return f(1, *static_cast<T&&>(t).v2_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -90,13 +82,11 @@ struct VisitUnion<::cpp2::VirtualComplexUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::VirtualComplexUnion>;
     switch (t.getType()) {
     case Union::Type::thingOne:
-      return f(get_metadata(0), *static_cast<T&&>(t).thingOne_ref());
+      return f(0, *static_cast<T&&>(t).thingOne_ref());
     case Union::Type::thingTwo:
-      return f(get_metadata(1), *static_cast<T&&>(t).thingTwo_ref());
+      return f(1, *static_cast<T&&>(t).thingTwo_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
@@ -106,11 +96,9 @@ struct VisitUnion<::cpp2::NonCopyableUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::cpp2::NonCopyableUnion>;
     switch (t.getType()) {
     case Union::Type::s:
-      return f(get_metadata(0), *static_cast<T&&>(t).s_ref());
+      return f(0, *static_cast<T&&>(t).s_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

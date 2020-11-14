@@ -17,10 +17,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::decorated_struct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::decorated_struct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).field_ref()...);
+    f(0, static_cast<T&&>(t).field_ref()...);
   }
 };
 
@@ -28,17 +25,14 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::ContainerStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::ContainerStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).fieldA_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).fieldB_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).fieldC_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).fieldD_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).fieldE_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).fieldF_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).fieldG_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).fieldH_ref()...);
+    f(0, static_cast<T&&>(t).fieldA_ref()...);
+    f(1, static_cast<T&&>(t).fieldB_ref()...);
+    f(2, static_cast<T&&>(t).fieldC_ref()...);
+    f(3, static_cast<T&&>(t).fieldD_ref()...);
+    f(4, static_cast<T&&>(t).fieldE_ref()...);
+    f(5, static_cast<T&&>(t).fieldF_ref()...);
+    f(6, static_cast<T&&>(t).fieldG_ref()...);
+    f(7, static_cast<T&&>(t).fieldH_ref()...);
   }
 };
 
@@ -46,10 +40,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::CppTypeStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::CppTypeStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).fieldA_ref()...);
+    f(0, static_cast<T&&>(t).fieldA_ref()...);
   }
 };
 
@@ -57,10 +48,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::VirtualStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::VirtualStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).MyIntField_ref()...);
+    f(0, static_cast<T&&>(t).MyIntField_ref()...);
   }
 };
 
@@ -68,11 +56,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>;
-
-    f(get_metadata(0), static_cast<T&&>(t).a_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).b_ref()...);
+    f(0, static_cast<T&&>(t).a_ref()...);
+    f(1, static_cast<T&&>(t).b_ref()...);
   }
 };
 
@@ -80,11 +65,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::TrivialNumeric> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::TrivialNumeric>;
-
-    f(get_metadata(0), static_cast<T&&>(t).a_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).b_ref()...);
+    f(0, static_cast<T&&>(t).a_ref()...);
+    f(1, static_cast<T&&>(t).b_ref()...);
   }
 };
 
@@ -92,11 +74,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::TrivialNestedWithDefault> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::TrivialNestedWithDefault>;
-
-    f(get_metadata(0), static_cast<T&&>(t).z_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).n_ref()...);
+    f(0, static_cast<T&&>(t).z_ref()...);
+    f(1, static_cast<T&&>(t).n_ref()...);
   }
 };
 
@@ -104,11 +83,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::ComplexString> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::ComplexString>;
-
-    f(get_metadata(0), static_cast<T&&>(t).a_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).b_ref()...);
+    f(0, static_cast<T&&>(t).a_ref()...);
+    f(1, static_cast<T&&>(t).b_ref()...);
   }
 };
 
@@ -116,11 +92,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::ComplexNestedWithDefault> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::ComplexNestedWithDefault>;
-
-    f(get_metadata(0), static_cast<T&&>(t).z_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).n_ref()...);
+    f(0, static_cast<T&&>(t).z_ref()...);
+    f(1, static_cast<T&&>(t).n_ref()...);
   }
 };
 
@@ -128,14 +101,11 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::MinPadding> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::MinPadding>;
-
-    f(get_metadata(0), static_cast<T&&>(t).small_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).big_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).medium_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).biggish_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).tiny_ref()...);
+    f(0, static_cast<T&&>(t).small_ref()...);
+    f(1, static_cast<T&&>(t).big_ref()...);
+    f(2, static_cast<T&&>(t).medium_ref()...);
+    f(3, static_cast<T&&>(t).biggish_ref()...);
+    f(4, static_cast<T&&>(t).tiny_ref()...);
   }
 };
 
@@ -143,9 +113,6 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::MyDataItem> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::MyDataItem>;
-
   }
 };
 
@@ -153,13 +120,10 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::MyStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).MyIntField_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).MyStringField_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).majorVer_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).data_ref()...);
+    f(0, static_cast<T&&>(t).MyIntField_ref()...);
+    f(1, static_cast<T&&>(t).MyStringField_ref()...);
+    f(2, static_cast<T&&>(t).majorVer_ref()...);
+    f(3, static_cast<T&&>(t).data_ref()...);
   }
 };
 
@@ -167,10 +131,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::Renaming> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::Renaming>;
-
-    f(get_metadata(0), static_cast<T&&>(t).bar_ref()...);
+    f(0, static_cast<T&&>(t).bar_ref()...);
   }
 };
 
@@ -178,11 +139,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::AnnotatedTypes> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::AnnotatedTypes>;
-
-    f(get_metadata(0), static_cast<T&&>(t).binary_field_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).list_field_ref()...);
+    f(0, static_cast<T&&>(t).binary_field_ref()...);
+    f(1, static_cast<T&&>(t).list_field_ref()...);
   }
 };
 
@@ -190,10 +148,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::ForwardUsageStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::ForwardUsageStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).foo_ref()...);
+    f(0, static_cast<T&&>(t).foo_ref()...);
   }
 };
 
@@ -201,11 +156,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::ForwardUsageRoot> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::ForwardUsageRoot>;
-
-    f(get_metadata(0), static_cast<T&&>(t).ForwardUsageStruct_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).ForwardUsageByRef_ref()...);
+    f(0, static_cast<T&&>(t).ForwardUsageStruct_ref()...);
+    f(1, static_cast<T&&>(t).ForwardUsageByRef_ref()...);
   }
 };
 
@@ -213,10 +165,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::ForwardUsageByRef> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::ForwardUsageByRef>;
-
-    f(get_metadata(0), static_cast<T&&>(t).foo_ref()...);
+    f(0, static_cast<T&&>(t).foo_ref()...);
   }
 };
 
@@ -224,9 +173,6 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::NoexceptMoveEmpty> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::NoexceptMoveEmpty>;
-
   }
 };
 
@@ -234,10 +180,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).boolField_ref()...);
+    f(0, static_cast<T&&>(t).boolField_ref()...);
   }
 };
 
@@ -245,18 +188,15 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).MyBoolField_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).MyIntField_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).MyStringField_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).MyStringField2_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).MyBinaryField_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).MyBinaryField2_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).MyBinaryField3_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).MyBinaryListField4_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).MyMapEnumAndInt_ref()...);
+    f(0, static_cast<T&&>(t).MyBoolField_ref()...);
+    f(1, static_cast<T&&>(t).MyIntField_ref()...);
+    f(2, static_cast<T&&>(t).MyStringField_ref()...);
+    f(3, static_cast<T&&>(t).MyStringField2_ref()...);
+    f(4, static_cast<T&&>(t).MyBinaryField_ref()...);
+    f(5, static_cast<T&&>(t).MyBinaryField2_ref()...);
+    f(6, static_cast<T&&>(t).MyBinaryField3_ref()...);
+    f(7, static_cast<T&&>(t).MyBinaryListField4_ref()...);
+    f(8, static_cast<T&&>(t).MyMapEnumAndInt_ref()...);
   }
 };
 
@@ -264,11 +204,8 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::NoExceptMoveUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).string_field_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).i32_field_ref()...);
+    f(0, static_cast<T&&>(t).string_field_ref()...);
+    f(1, static_cast<T&&>(t).i32_field_ref()...);
   }
 };
 
@@ -276,14 +213,11 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::AllocatorAware> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::AllocatorAware>;
-
-    f(get_metadata(0), static_cast<T&&>(t).aa_list_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).aa_set_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).aa_map_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).aa_string_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).not_a_container_ref()...);
+    f(0, static_cast<T&&>(t).aa_list_ref()...);
+    f(1, static_cast<T&&>(t).aa_set_ref()...);
+    f(2, static_cast<T&&>(t).aa_map_ref()...);
+    f(3, static_cast<T&&>(t).aa_string_ref()...);
+    f(4, static_cast<T&&>(t).not_a_container_ref()...);
   }
 };
 
@@ -291,10 +225,7 @@ template <>
 struct ForEachField<::apache::thrift::fixtures::types::AllocatorAware2> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::apache::thrift::fixtures::types::AllocatorAware2>;
-
-    f(get_metadata(0), static_cast<T&&>(t).not_a_container_ref()...);
+    f(0, static_cast<T&&>(t).not_a_container_ref()...);
   }
 };
 } // namespace detail

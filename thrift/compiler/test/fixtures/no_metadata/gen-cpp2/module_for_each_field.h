@@ -17,9 +17,6 @@ template <>
 struct ForEachField<::cpp2::MyDataItem> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyDataItem>;
-
   }
 };
 
@@ -27,13 +24,10 @@ template <>
 struct ForEachField<::cpp2::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).MyIntField_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).MyStringField_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).MyDataField_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).myEnum_ref()...);
+    f(0, static_cast<T&&>(t).MyIntField_ref()...);
+    f(1, static_cast<T&&>(t).MyStringField_ref()...);
+    f(2, static_cast<T&&>(t).MyDataField_ref()...);
+    f(3, static_cast<T&&>(t).myEnum_ref()...);
   }
 };
 
@@ -41,12 +35,9 @@ template <>
 struct ForEachField<::cpp2::MyUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).myEnum_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).myStruct_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).myDataItem_ref()...);
+    f(0, static_cast<T&&>(t).myEnum_ref()...);
+    f(1, static_cast<T&&>(t).myStruct_ref()...);
+    f(2, static_cast<T&&>(t).myDataItem_ref()...);
   }
 };
 } // namespace detail

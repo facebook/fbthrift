@@ -29,11 +29,8 @@ template <>
 struct ForEachField<<% > common/namespace_cpp2%><%struct:name%>> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<<% > common/namespace_cpp2%><%struct:name%>>;
-
     <%#struct:fields%>
-    f(get_metadata(<%field:index%>), static_cast<T&&>(t).<%field:cpp_name%>_ref()...);
+    f(<%field:index%>, static_cast<T&&>(t).<%field:cpp_name%>_ref()...);
     <%/struct:fields%>
   }
 };

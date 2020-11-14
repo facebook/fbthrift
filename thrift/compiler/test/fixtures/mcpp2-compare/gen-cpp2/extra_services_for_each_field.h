@@ -17,22 +17,19 @@ template <>
 struct ForEachField<::extra::svc::containerStruct2> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::extra::svc::containerStruct2>;
-
-    f(get_metadata(0), static_cast<T&&>(t).fieldA_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).req_fieldA_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).opt_fieldA_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).fieldB_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).req_fieldB_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).opt_fieldB_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).fieldC_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).req_fieldC_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).opt_fieldC_ref()...);
-    f(get_metadata(9), static_cast<T&&>(t).fieldD_ref()...);
-    f(get_metadata(10), static_cast<T&&>(t).fieldE_ref()...);
-    f(get_metadata(11), static_cast<T&&>(t).req_fieldE_ref()...);
-    f(get_metadata(12), static_cast<T&&>(t).opt_fieldE_ref()...);
+    f(0, static_cast<T&&>(t).fieldA_ref()...);
+    f(1, static_cast<T&&>(t).req_fieldA_ref()...);
+    f(2, static_cast<T&&>(t).opt_fieldA_ref()...);
+    f(3, static_cast<T&&>(t).fieldB_ref()...);
+    f(4, static_cast<T&&>(t).req_fieldB_ref()...);
+    f(5, static_cast<T&&>(t).opt_fieldB_ref()...);
+    f(6, static_cast<T&&>(t).fieldC_ref()...);
+    f(7, static_cast<T&&>(t).req_fieldC_ref()...);
+    f(8, static_cast<T&&>(t).opt_fieldC_ref()...);
+    f(9, static_cast<T&&>(t).fieldD_ref()...);
+    f(10, static_cast<T&&>(t).fieldE_ref()...);
+    f(11, static_cast<T&&>(t).req_fieldE_ref()...);
+    f(12, static_cast<T&&>(t).opt_fieldE_ref()...);
   }
 };
 } // namespace detail

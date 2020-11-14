@@ -17,10 +17,7 @@ template <>
 struct ForEachField<::cpp2::MyStructNestedAnnotation> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyStructNestedAnnotation>;
-
-    f(get_metadata(0), static_cast<T&&>(t).name_ref()...);
+    f(0, static_cast<T&&>(t).name_ref()...);
   }
 };
 
@@ -28,13 +25,10 @@ template <>
 struct ForEachField<::cpp2::MyStructAnnotation> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyStructAnnotation>;
-
-    f(get_metadata(0), static_cast<T&&>(t).count_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).name_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).extra_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).nest_ref()...);
+    f(0, static_cast<T&&>(t).count_ref()...);
+    f(1, static_cast<T&&>(t).name_ref()...);
+    f(2, static_cast<T&&>(t).extra_ref()...);
+    f(3, static_cast<T&&>(t).nest_ref()...);
   }
 };
 
@@ -42,15 +36,12 @@ template <>
 struct ForEachField<::cpp2::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::MyStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).majorVer_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).package_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).annotation_with_quote_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).class__ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).annotation_with_trailing_comma_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).empty_annotations_ref()...);
+    f(0, static_cast<T&&>(t).majorVer_ref()...);
+    f(1, static_cast<T&&>(t).package_ref()...);
+    f(2, static_cast<T&&>(t).annotation_with_quote_ref()...);
+    f(3, static_cast<T&&>(t).class__ref()...);
+    f(4, static_cast<T&&>(t).annotation_with_trailing_comma_ref()...);
+    f(5, static_cast<T&&>(t).empty_annotations_ref()...);
   }
 };
 
@@ -58,11 +49,8 @@ template <>
 struct ForEachField<::cpp2::SecretStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::SecretStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).id_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).password_ref()...);
+    f(0, static_cast<T&&>(t).id_ref()...);
+    f(1, static_cast<T&&>(t).password_ref()...);
   }
 };
 } // namespace detail

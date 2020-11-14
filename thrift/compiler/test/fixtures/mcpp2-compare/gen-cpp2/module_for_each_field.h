@@ -17,9 +17,6 @@ template <>
 struct ForEachField<::some::valid::ns::Empty> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::Empty>;
-
   }
 };
 
@@ -27,10 +24,7 @@ template <>
 struct ForEachField<::some::valid::ns::ASimpleStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::ASimpleStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).boolField_ref()...);
+    f(0, static_cast<T&&>(t).boolField_ref()...);
   }
 };
 
@@ -38,10 +32,7 @@ template <>
 struct ForEachField<::some::valid::ns::ASimpleStructNoexcept> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::ASimpleStructNoexcept>;
-
-    f(get_metadata(0), static_cast<T&&>(t).boolField_ref()...);
+    f(0, static_cast<T&&>(t).boolField_ref()...);
   }
 };
 
@@ -49,18 +40,15 @@ template <>
 struct ForEachField<::some::valid::ns::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::MyStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).MyBoolField_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).MyIntField_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).MyStringField_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).MyStringField2_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).MyBinaryField_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).MyBinaryField2_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).MyBinaryField3_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).MyBinaryListField4_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).MyMapEnumAndInt_ref()...);
+    f(0, static_cast<T&&>(t).MyBoolField_ref()...);
+    f(1, static_cast<T&&>(t).MyIntField_ref()...);
+    f(2, static_cast<T&&>(t).MyStringField_ref()...);
+    f(3, static_cast<T&&>(t).MyStringField2_ref()...);
+    f(4, static_cast<T&&>(t).MyBinaryField_ref()...);
+    f(5, static_cast<T&&>(t).MyBinaryField2_ref()...);
+    f(6, static_cast<T&&>(t).MyBinaryField3_ref()...);
+    f(7, static_cast<T&&>(t).MyBinaryListField4_ref()...);
+    f(8, static_cast<T&&>(t).MyMapEnumAndInt_ref()...);
   }
 };
 
@@ -68,11 +56,8 @@ template <>
 struct ForEachField<::some::valid::ns::SimpleUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::SimpleUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).intValue_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).stringValue_ref()...);
+    f(0, static_cast<T&&>(t).intValue_ref()...);
+    f(1, static_cast<T&&>(t).stringValue_ref()...);
   }
 };
 
@@ -80,36 +65,33 @@ template <>
 struct ForEachField<::some::valid::ns::ComplexUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::ComplexUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).intValue_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).opt_intValue_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).stringValue_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).opt_stringValue_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).intValue2_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).intValue3_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).doubelValue_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).boolValue_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).union_list_ref()...);
-    f(get_metadata(9), static_cast<T&&>(t).union_set_ref()...);
-    f(get_metadata(10), static_cast<T&&>(t).union_map_ref()...);
-    f(get_metadata(11), static_cast<T&&>(t).opt_union_map_ref()...);
-    f(get_metadata(12), static_cast<T&&>(t).enum_field_ref()...);
-    f(get_metadata(13), static_cast<T&&>(t).enum_container_ref()...);
-    f(get_metadata(14), static_cast<T&&>(t).a_struct_ref()...);
-    f(get_metadata(15), static_cast<T&&>(t).a_set_struct_ref()...);
-    f(get_metadata(16), static_cast<T&&>(t).a_union_ref()...);
-    f(get_metadata(17), static_cast<T&&>(t).opt_a_union_ref()...);
-    f(get_metadata(18), static_cast<T&&>(t).a_union_list_ref()...);
-    f(get_metadata(19), static_cast<T&&>(t).a_union_typedef_ref()...);
-    f(get_metadata(20), static_cast<T&&>(t).a_union_typedef_list_ref()...);
-    f(get_metadata(21), static_cast<T&&>(t).MyBinaryField_ref()...);
-    f(get_metadata(22), static_cast<T&&>(t).MyBinaryField2_ref()...);
-    f(get_metadata(23), static_cast<T&&>(t).MyBinaryListField4_ref()...);
-    f(get_metadata(24), static_cast<T&&>(t).ref_field_ref()...);
-    f(get_metadata(25), static_cast<T&&>(t).ref_field2_ref()...);
-    f(get_metadata(26), static_cast<T&&>(t).excp_field_ref()...);
+    f(0, static_cast<T&&>(t).intValue_ref()...);
+    f(1, static_cast<T&&>(t).opt_intValue_ref()...);
+    f(2, static_cast<T&&>(t).stringValue_ref()...);
+    f(3, static_cast<T&&>(t).opt_stringValue_ref()...);
+    f(4, static_cast<T&&>(t).intValue2_ref()...);
+    f(5, static_cast<T&&>(t).intValue3_ref()...);
+    f(6, static_cast<T&&>(t).doubelValue_ref()...);
+    f(7, static_cast<T&&>(t).boolValue_ref()...);
+    f(8, static_cast<T&&>(t).union_list_ref()...);
+    f(9, static_cast<T&&>(t).union_set_ref()...);
+    f(10, static_cast<T&&>(t).union_map_ref()...);
+    f(11, static_cast<T&&>(t).opt_union_map_ref()...);
+    f(12, static_cast<T&&>(t).enum_field_ref()...);
+    f(13, static_cast<T&&>(t).enum_container_ref()...);
+    f(14, static_cast<T&&>(t).a_struct_ref()...);
+    f(15, static_cast<T&&>(t).a_set_struct_ref()...);
+    f(16, static_cast<T&&>(t).a_union_ref()...);
+    f(17, static_cast<T&&>(t).opt_a_union_ref()...);
+    f(18, static_cast<T&&>(t).a_union_list_ref()...);
+    f(19, static_cast<T&&>(t).a_union_typedef_ref()...);
+    f(20, static_cast<T&&>(t).a_union_typedef_list_ref()...);
+    f(21, static_cast<T&&>(t).MyBinaryField_ref()...);
+    f(22, static_cast<T&&>(t).MyBinaryField2_ref()...);
+    f(23, static_cast<T&&>(t).MyBinaryListField4_ref()...);
+    f(24, static_cast<T&&>(t).ref_field_ref()...);
+    f(25, static_cast<T&&>(t).ref_field2_ref()...);
+    f(26, static_cast<T&&>(t).excp_field_ref()...);
   }
 };
 
@@ -117,24 +99,21 @@ template <>
 struct ForEachField<::some::valid::ns::AnException> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::AnException>;
-
-    f(get_metadata(0), static_cast<T&&>(t).code_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).req_code_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).message2_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).req_message_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).exception_list_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).exception_set_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).exception_map_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).req_exception_map_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).enum_field_ref()...);
-    f(get_metadata(9), static_cast<T&&>(t).enum_container_ref()...);
-    f(get_metadata(10), static_cast<T&&>(t).a_struct_ref()...);
-    f(get_metadata(11), static_cast<T&&>(t).a_set_struct_ref()...);
-    f(get_metadata(12), static_cast<T&&>(t).a_union_list_ref()...);
-    f(get_metadata(13), static_cast<T&&>(t).union_typedef_ref()...);
-    f(get_metadata(14), static_cast<T&&>(t).a_union_typedef_list_ref()...);
+    f(0, static_cast<T&&>(t).code_ref()...);
+    f(1, static_cast<T&&>(t).req_code_ref()...);
+    f(2, static_cast<T&&>(t).message2_ref()...);
+    f(3, static_cast<T&&>(t).req_message_ref()...);
+    f(4, static_cast<T&&>(t).exception_list_ref()...);
+    f(5, static_cast<T&&>(t).exception_set_ref()...);
+    f(6, static_cast<T&&>(t).exception_map_ref()...);
+    f(7, static_cast<T&&>(t).req_exception_map_ref()...);
+    f(8, static_cast<T&&>(t).enum_field_ref()...);
+    f(9, static_cast<T&&>(t).enum_container_ref()...);
+    f(10, static_cast<T&&>(t).a_struct_ref()...);
+    f(11, static_cast<T&&>(t).a_set_struct_ref()...);
+    f(12, static_cast<T&&>(t).a_union_list_ref()...);
+    f(13, static_cast<T&&>(t).union_typedef_ref()...);
+    f(14, static_cast<T&&>(t).a_union_typedef_list_ref()...);
   }
 };
 
@@ -142,12 +121,9 @@ template <>
 struct ForEachField<::some::valid::ns::AnotherException> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::AnotherException>;
-
-    f(get_metadata(0), static_cast<T&&>(t).code_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).req_code_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).message_ref()...);
+    f(0, static_cast<T&&>(t).code_ref()...);
+    f(1, static_cast<T&&>(t).req_code_ref()...);
+    f(2, static_cast<T&&>(t).message_ref()...);
   }
 };
 
@@ -155,55 +131,52 @@ template <>
 struct ForEachField<::some::valid::ns::containerStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::containerStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).fieldA_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).req_fieldA_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).opt_fieldA_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).fieldB_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).req_fieldB_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).opt_fieldB_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).fieldC_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).req_fieldC_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).opt_fieldC_ref()...);
-    f(get_metadata(9), static_cast<T&&>(t).fieldD_ref()...);
-    f(get_metadata(10), static_cast<T&&>(t).fieldE_ref()...);
-    f(get_metadata(11), static_cast<T&&>(t).req_fieldE_ref()...);
-    f(get_metadata(12), static_cast<T&&>(t).opt_fieldE_ref()...);
-    f(get_metadata(13), static_cast<T&&>(t).fieldF_ref()...);
-    f(get_metadata(14), static_cast<T&&>(t).fieldG_ref()...);
-    f(get_metadata(15), static_cast<T&&>(t).fieldH_ref()...);
-    f(get_metadata(16), static_cast<T&&>(t).fieldI_ref()...);
-    f(get_metadata(17), static_cast<T&&>(t).fieldJ_ref()...);
-    f(get_metadata(18), static_cast<T&&>(t).fieldK_ref()...);
-    f(get_metadata(19), static_cast<T&&>(t).fieldL_ref()...);
-    f(get_metadata(20), static_cast<T&&>(t).fieldM_ref()...);
-    f(get_metadata(21), static_cast<T&&>(t).fieldN_ref()...);
-    f(get_metadata(22), static_cast<T&&>(t).fieldO_ref()...);
-    f(get_metadata(23), static_cast<T&&>(t).fieldP_ref()...);
-    f(get_metadata(24), static_cast<T&&>(t).fieldQ_ref()...);
-    f(get_metadata(25), static_cast<T&&>(t).fieldR_ref()...);
-    f(get_metadata(26), static_cast<T&&>(t).req_fieldR_ref()...);
-    f(get_metadata(27), static_cast<T&&>(t).opt_fieldR_ref()...);
-    f(get_metadata(28), static_cast<T&&>(t).fieldS_ref()...);
-    f(get_metadata(29), static_cast<T&&>(t).fieldT_ref()...);
-    f(get_metadata(30), static_cast<T&&>(t).fieldU_ref()...);
-    f(get_metadata(31), static_cast<T&&>(t).fieldV_ref()...);
-    f(get_metadata(32), static_cast<T&&>(t).req_fieldV_ref()...);
-    f(get_metadata(33), static_cast<T&&>(t).opt_fieldV_ref()...);
-    f(get_metadata(34), static_cast<T&&>(t).fieldW_ref()...);
-    f(get_metadata(35), static_cast<T&&>(t).fieldX_ref()...);
-    f(get_metadata(36), static_cast<T&&>(t).req_fieldX_ref()...);
-    f(get_metadata(37), static_cast<T&&>(t).opt_fieldX_ref()...);
-    f(get_metadata(38), static_cast<T&&>(t).fieldY_ref()...);
-    f(get_metadata(39), static_cast<T&&>(t).fieldZ_ref()...);
-    f(get_metadata(40), static_cast<T&&>(t).fieldAA_ref()...);
-    f(get_metadata(41), static_cast<T&&>(t).fieldAB_ref()...);
-    f(get_metadata(42), static_cast<T&&>(t).fieldAC_ref()...);
-    f(get_metadata(43), static_cast<T&&>(t).fieldAD_ref()...);
-    f(get_metadata(44), static_cast<T&&>(t).fieldAE_ref()...);
-    f(get_metadata(45), static_cast<T&&>(t).fieldSD_ref()...);
+    f(0, static_cast<T&&>(t).fieldA_ref()...);
+    f(1, static_cast<T&&>(t).req_fieldA_ref()...);
+    f(2, static_cast<T&&>(t).opt_fieldA_ref()...);
+    f(3, static_cast<T&&>(t).fieldB_ref()...);
+    f(4, static_cast<T&&>(t).req_fieldB_ref()...);
+    f(5, static_cast<T&&>(t).opt_fieldB_ref()...);
+    f(6, static_cast<T&&>(t).fieldC_ref()...);
+    f(7, static_cast<T&&>(t).req_fieldC_ref()...);
+    f(8, static_cast<T&&>(t).opt_fieldC_ref()...);
+    f(9, static_cast<T&&>(t).fieldD_ref()...);
+    f(10, static_cast<T&&>(t).fieldE_ref()...);
+    f(11, static_cast<T&&>(t).req_fieldE_ref()...);
+    f(12, static_cast<T&&>(t).opt_fieldE_ref()...);
+    f(13, static_cast<T&&>(t).fieldF_ref()...);
+    f(14, static_cast<T&&>(t).fieldG_ref()...);
+    f(15, static_cast<T&&>(t).fieldH_ref()...);
+    f(16, static_cast<T&&>(t).fieldI_ref()...);
+    f(17, static_cast<T&&>(t).fieldJ_ref()...);
+    f(18, static_cast<T&&>(t).fieldK_ref()...);
+    f(19, static_cast<T&&>(t).fieldL_ref()...);
+    f(20, static_cast<T&&>(t).fieldM_ref()...);
+    f(21, static_cast<T&&>(t).fieldN_ref()...);
+    f(22, static_cast<T&&>(t).fieldO_ref()...);
+    f(23, static_cast<T&&>(t).fieldP_ref()...);
+    f(24, static_cast<T&&>(t).fieldQ_ref()...);
+    f(25, static_cast<T&&>(t).fieldR_ref()...);
+    f(26, static_cast<T&&>(t).req_fieldR_ref()...);
+    f(27, static_cast<T&&>(t).opt_fieldR_ref()...);
+    f(28, static_cast<T&&>(t).fieldS_ref()...);
+    f(29, static_cast<T&&>(t).fieldT_ref()...);
+    f(30, static_cast<T&&>(t).fieldU_ref()...);
+    f(31, static_cast<T&&>(t).fieldV_ref()...);
+    f(32, static_cast<T&&>(t).req_fieldV_ref()...);
+    f(33, static_cast<T&&>(t).opt_fieldV_ref()...);
+    f(34, static_cast<T&&>(t).fieldW_ref()...);
+    f(35, static_cast<T&&>(t).fieldX_ref()...);
+    f(36, static_cast<T&&>(t).req_fieldX_ref()...);
+    f(37, static_cast<T&&>(t).opt_fieldX_ref()...);
+    f(38, static_cast<T&&>(t).fieldY_ref()...);
+    f(39, static_cast<T&&>(t).fieldZ_ref()...);
+    f(40, static_cast<T&&>(t).fieldAA_ref()...);
+    f(41, static_cast<T&&>(t).fieldAB_ref()...);
+    f(42, static_cast<T&&>(t).fieldAC_ref()...);
+    f(43, static_cast<T&&>(t).fieldAD_ref()...);
+    f(44, static_cast<T&&>(t).fieldAE_ref()...);
+    f(45, static_cast<T&&>(t).fieldSD_ref()...);
   }
 };
 
@@ -211,13 +184,10 @@ template <>
 struct ForEachField<::some::valid::ns::MyIncludedStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::MyIncludedStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).MyIncludedInt_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).MyIncludedStruct_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).ARefField_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).ARequiredField_ref()...);
+    f(0, static_cast<T&&>(t).MyIncludedInt_ref()...);
+    f(1, static_cast<T&&>(t).MyIncludedStruct_ref()...);
+    f(2, static_cast<T&&>(t).ARefField_ref()...);
+    f(3, static_cast<T&&>(t).ARequiredField_ref()...);
   }
 };
 
@@ -225,49 +195,46 @@ template <>
 struct ForEachField<::some::valid::ns::AnnotatedStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::AnnotatedStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).no_annotation_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).cpp_unique_ref_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).cpp2_unique_ref_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).container_with_ref_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).req_cpp_unique_ref_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).req_cpp2_unique_ref_ref()...);
-    f(get_metadata(6), static_cast<T&&>(t).req_container_with_ref_ref()...);
-    f(get_metadata(7), static_cast<T&&>(t).opt_cpp_unique_ref_ref()...);
-    f(get_metadata(8), static_cast<T&&>(t).opt_cpp2_unique_ref_ref()...);
-    f(get_metadata(9), static_cast<T&&>(t).opt_container_with_ref_ref()...);
-    f(get_metadata(10), static_cast<T&&>(t).ref_type_unique_ref()...);
-    f(get_metadata(11), static_cast<T&&>(t).ref_type_shared_ref()...);
-    f(get_metadata(12), static_cast<T&&>(t).ref_type_const_ref()...);
-    f(get_metadata(13), static_cast<T&&>(t).req_ref_type_shared_ref()...);
-    f(get_metadata(14), static_cast<T&&>(t).req_ref_type_const_ref()...);
-    f(get_metadata(15), static_cast<T&&>(t).req_ref_type_unique_ref()...);
-    f(get_metadata(16), static_cast<T&&>(t).opt_ref_type_const_ref()...);
-    f(get_metadata(17), static_cast<T&&>(t).opt_ref_type_unique_ref()...);
-    f(get_metadata(18), static_cast<T&&>(t).opt_ref_type_shared_ref()...);
-    f(get_metadata(19), static_cast<T&&>(t).base_type_ref()...);
-    f(get_metadata(20), static_cast<T&&>(t).list_type_ref()...);
-    f(get_metadata(21), static_cast<T&&>(t).set_type_ref()...);
-    f(get_metadata(22), static_cast<T&&>(t).map_type_ref()...);
-    f(get_metadata(23), static_cast<T&&>(t).map_struct_type_ref()...);
-    f(get_metadata(24), static_cast<T&&>(t).iobuf_type_ref()...);
-    f(get_metadata(25), static_cast<T&&>(t).iobuf_ptr_ref()...);
-    f(get_metadata(26), static_cast<T&&>(t).list_i32_template_ref()...);
-    f(get_metadata(27), static_cast<T&&>(t).list_string_template_ref()...);
-    f(get_metadata(28), static_cast<T&&>(t).set_template_ref()...);
-    f(get_metadata(29), static_cast<T&&>(t).map_template_ref()...);
-    f(get_metadata(30), static_cast<T&&>(t).typedef_list_template_ref()...);
-    f(get_metadata(31), static_cast<T&&>(t).typedef_deque_template_ref()...);
-    f(get_metadata(32), static_cast<T&&>(t).typedef_set_template_ref()...);
-    f(get_metadata(33), static_cast<T&&>(t).typedef_map_template_ref()...);
-    f(get_metadata(34), static_cast<T&&>(t).indirection_a_ref()...);
-    f(get_metadata(35), static_cast<T&&>(t).indirection_b_ref()...);
-    f(get_metadata(36), static_cast<T&&>(t).indirection_c_ref()...);
-    f(get_metadata(37), static_cast<T&&>(t).iobuf_type_val_ref()...);
-    f(get_metadata(38), static_cast<T&&>(t).iobuf_ptr_val_ref()...);
-    f(get_metadata(39), static_cast<T&&>(t).struct_struct_ref()...);
+    f(0, static_cast<T&&>(t).no_annotation_ref()...);
+    f(1, static_cast<T&&>(t).cpp_unique_ref_ref()...);
+    f(2, static_cast<T&&>(t).cpp2_unique_ref_ref()...);
+    f(3, static_cast<T&&>(t).container_with_ref_ref()...);
+    f(4, static_cast<T&&>(t).req_cpp_unique_ref_ref()...);
+    f(5, static_cast<T&&>(t).req_cpp2_unique_ref_ref()...);
+    f(6, static_cast<T&&>(t).req_container_with_ref_ref()...);
+    f(7, static_cast<T&&>(t).opt_cpp_unique_ref_ref()...);
+    f(8, static_cast<T&&>(t).opt_cpp2_unique_ref_ref()...);
+    f(9, static_cast<T&&>(t).opt_container_with_ref_ref()...);
+    f(10, static_cast<T&&>(t).ref_type_unique_ref()...);
+    f(11, static_cast<T&&>(t).ref_type_shared_ref()...);
+    f(12, static_cast<T&&>(t).ref_type_const_ref()...);
+    f(13, static_cast<T&&>(t).req_ref_type_shared_ref()...);
+    f(14, static_cast<T&&>(t).req_ref_type_const_ref()...);
+    f(15, static_cast<T&&>(t).req_ref_type_unique_ref()...);
+    f(16, static_cast<T&&>(t).opt_ref_type_const_ref()...);
+    f(17, static_cast<T&&>(t).opt_ref_type_unique_ref()...);
+    f(18, static_cast<T&&>(t).opt_ref_type_shared_ref()...);
+    f(19, static_cast<T&&>(t).base_type_ref()...);
+    f(20, static_cast<T&&>(t).list_type_ref()...);
+    f(21, static_cast<T&&>(t).set_type_ref()...);
+    f(22, static_cast<T&&>(t).map_type_ref()...);
+    f(23, static_cast<T&&>(t).map_struct_type_ref()...);
+    f(24, static_cast<T&&>(t).iobuf_type_ref()...);
+    f(25, static_cast<T&&>(t).iobuf_ptr_ref()...);
+    f(26, static_cast<T&&>(t).list_i32_template_ref()...);
+    f(27, static_cast<T&&>(t).list_string_template_ref()...);
+    f(28, static_cast<T&&>(t).set_template_ref()...);
+    f(29, static_cast<T&&>(t).map_template_ref()...);
+    f(30, static_cast<T&&>(t).typedef_list_template_ref()...);
+    f(31, static_cast<T&&>(t).typedef_deque_template_ref()...);
+    f(32, static_cast<T&&>(t).typedef_set_template_ref()...);
+    f(33, static_cast<T&&>(t).typedef_map_template_ref()...);
+    f(34, static_cast<T&&>(t).indirection_a_ref()...);
+    f(35, static_cast<T&&>(t).indirection_b_ref()...);
+    f(36, static_cast<T&&>(t).indirection_c_ref()...);
+    f(37, static_cast<T&&>(t).iobuf_type_val_ref()...);
+    f(38, static_cast<T&&>(t).iobuf_ptr_val_ref()...);
+    f(39, static_cast<T&&>(t).struct_struct_ref()...);
   }
 };
 
@@ -275,11 +242,8 @@ template <>
 struct ForEachField<::some::valid::ns::ComplexContainerStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::ComplexContainerStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).map_of_iobufs_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).map_of_iobuf_ptrs_ref()...);
+    f(0, static_cast<T&&>(t).map_of_iobufs_ref()...);
+    f(1, static_cast<T&&>(t).map_of_iobuf_ptrs_ref()...);
   }
 };
 
@@ -287,11 +251,8 @@ template <>
 struct ForEachField<::some::valid::ns::FloatStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::FloatStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).floatField_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).doubleField_ref()...);
+    f(0, static_cast<T&&>(t).floatField_ref()...);
+    f(1, static_cast<T&&>(t).doubleField_ref()...);
   }
 };
 
@@ -299,11 +260,8 @@ template <>
 struct ForEachField<::some::valid::ns::FloatUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::FloatUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).floatSide_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).doubleSide_ref()...);
+    f(0, static_cast<T&&>(t).floatSide_ref()...);
+    f(1, static_cast<T&&>(t).doubleSide_ref()...);
   }
 };
 
@@ -311,10 +269,7 @@ template <>
 struct ForEachField<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).intField_ref()...);
+    f(0, static_cast<T&&>(t).intField_ref()...);
   }
 };
 } // namespace detail

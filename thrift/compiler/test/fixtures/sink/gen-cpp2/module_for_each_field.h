@@ -17,10 +17,7 @@ template <>
 struct ForEachField<::cpp2::InitialResponse> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::InitialResponse>;
-
-    f(get_metadata(0), static_cast<T&&>(t).content_ref()...);
+    f(0, static_cast<T&&>(t).content_ref()...);
   }
 };
 
@@ -28,10 +25,7 @@ template <>
 struct ForEachField<::cpp2::FinalResponse> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::FinalResponse>;
-
-    f(get_metadata(0), static_cast<T&&>(t).content_ref()...);
+    f(0, static_cast<T&&>(t).content_ref()...);
   }
 };
 
@@ -39,10 +33,7 @@ template <>
 struct ForEachField<::cpp2::SinkPayload> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::SinkPayload>;
-
-    f(get_metadata(0), static_cast<T&&>(t).content_ref()...);
+    f(0, static_cast<T&&>(t).content_ref()...);
   }
 };
 
@@ -50,10 +41,7 @@ template <>
 struct ForEachField<::cpp2::CompatibleWithKeywordSink> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::CompatibleWithKeywordSink>;
-
-    f(get_metadata(0), static_cast<T&&>(t).sink_ref()...);
+    f(0, static_cast<T&&>(t).sink_ref()...);
   }
 };
 
@@ -61,10 +49,7 @@ template <>
 struct ForEachField<::cpp2::InitialException> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::InitialException>;
-
-    f(get_metadata(0), static_cast<T&&>(t).reason_ref()...);
+    f(0, static_cast<T&&>(t).reason_ref()...);
   }
 };
 
@@ -72,10 +57,7 @@ template <>
 struct ForEachField<::cpp2::SinkException1> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::SinkException1>;
-
-    f(get_metadata(0), static_cast<T&&>(t).reason_ref()...);
+    f(0, static_cast<T&&>(t).reason_ref()...);
   }
 };
 
@@ -83,10 +65,7 @@ template <>
 struct ForEachField<::cpp2::SinkException2> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::SinkException2>;
-
-    f(get_metadata(0), static_cast<T&&>(t).reason_ref()...);
+    f(0, static_cast<T&&>(t).reason_ref()...);
   }
 };
 } // namespace detail

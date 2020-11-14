@@ -17,11 +17,8 @@ template <>
 struct ForEachField<::test::fixtures::enumstrict::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::test::fixtures::enumstrict::MyStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).myEnum_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).myBigEnum_ref()...);
+    f(0, static_cast<T&&>(t).myEnum_ref()...);
+    f(1, static_cast<T&&>(t).myBigEnum_ref()...);
   }
 };
 } // namespace detail

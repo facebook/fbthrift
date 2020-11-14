@@ -17,11 +17,8 @@ template <>
 struct ForEachField<::module2::Struct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::module2::Struct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).first_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).second_ref()...);
+    f(0, static_cast<T&&>(t).first_ref()...);
+    f(1, static_cast<T&&>(t).second_ref()...);
   }
 };
 
@@ -29,11 +26,8 @@ template <>
 struct ForEachField<::module2::BigStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::module2::BigStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).s_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).id_ref()...);
+    f(0, static_cast<T&&>(t).s_ref()...);
+    f(1, static_cast<T&&>(t).id_ref()...);
   }
 };
 } // namespace detail

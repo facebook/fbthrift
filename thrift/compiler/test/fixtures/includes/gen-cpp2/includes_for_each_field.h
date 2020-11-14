@@ -17,11 +17,8 @@ template <>
 struct ForEachField<::cpp2::Included> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Included>;
-
-    f(get_metadata(0), static_cast<T&&>(t).MyIntField_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).MyTransitiveField_ref()...);
+    f(0, static_cast<T&&>(t).MyIntField_ref()...);
+    f(1, static_cast<T&&>(t).MyTransitiveField_ref()...);
   }
 };
 } // namespace detail

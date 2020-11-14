@@ -17,15 +17,12 @@ template <>
 struct ForEachField<::cpp2::ComplexUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::ComplexUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).intValue_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).stringValue_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).intListValue_ref()...);
-    f(get_metadata(3), static_cast<T&&>(t).stringListValue_ref()...);
-    f(get_metadata(4), static_cast<T&&>(t).typedefValue_ref()...);
-    f(get_metadata(5), static_cast<T&&>(t).stringRef_ref()...);
+    f(0, static_cast<T&&>(t).intValue_ref()...);
+    f(1, static_cast<T&&>(t).stringValue_ref()...);
+    f(2, static_cast<T&&>(t).intListValue_ref()...);
+    f(3, static_cast<T&&>(t).stringListValue_ref()...);
+    f(4, static_cast<T&&>(t).typedefValue_ref()...);
+    f(5, static_cast<T&&>(t).stringRef_ref()...);
   }
 };
 
@@ -33,11 +30,8 @@ template <>
 struct ForEachField<::cpp2::ListUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::ListUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).intListValue_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).stringListValue_ref()...);
+    f(0, static_cast<T&&>(t).intListValue_ref()...);
+    f(1, static_cast<T&&>(t).stringListValue_ref()...);
   }
 };
 
@@ -45,11 +39,8 @@ template <>
 struct ForEachField<::cpp2::DataUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::DataUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).binaryData_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).stringData_ref()...);
+    f(0, static_cast<T&&>(t).binaryData_ref()...);
+    f(1, static_cast<T&&>(t).stringData_ref()...);
   }
 };
 
@@ -57,12 +48,9 @@ template <>
 struct ForEachField<::cpp2::Val> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::Val>;
-
-    f(get_metadata(0), static_cast<T&&>(t).strVal_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).intVal_ref()...);
-    f(get_metadata(2), static_cast<T&&>(t).typedefValue_ref()...);
+    f(0, static_cast<T&&>(t).strVal_ref()...);
+    f(1, static_cast<T&&>(t).intVal_ref()...);
+    f(2, static_cast<T&&>(t).typedefValue_ref()...);
   }
 };
 
@@ -70,11 +58,8 @@ template <>
 struct ForEachField<::cpp2::ValUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::ValUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).v1_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).v2_ref()...);
+    f(0, static_cast<T&&>(t).v1_ref()...);
+    f(1, static_cast<T&&>(t).v2_ref()...);
   }
 };
 
@@ -82,11 +67,8 @@ template <>
 struct ForEachField<::cpp2::VirtualComplexUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::VirtualComplexUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).thingOne_ref()...);
-    f(get_metadata(1), static_cast<T&&>(t).thingTwo_ref()...);
+    f(0, static_cast<T&&>(t).thingOne_ref()...);
+    f(1, static_cast<T&&>(t).thingTwo_ref()...);
   }
 };
 
@@ -94,10 +76,7 @@ template <>
 struct ForEachField<::cpp2::NonCopyableStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::NonCopyableStruct>;
-
-    f(get_metadata(0), static_cast<T&&>(t).num_ref()...);
+    f(0, static_cast<T&&>(t).num_ref()...);
   }
 };
 
@@ -105,10 +84,7 @@ template <>
 struct ForEachField<::cpp2::NonCopyableUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata =
-        get_field_metadata<::cpp2::NonCopyableUnion>;
-
-    f(get_metadata(0), static_cast<T&&>(t).s_ref()...);
+    f(0, static_cast<T&&>(t).s_ref()...);
   }
 };
 } // namespace detail

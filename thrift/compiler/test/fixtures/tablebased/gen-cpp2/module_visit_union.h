@@ -18,13 +18,11 @@ struct VisitUnion<::test::fixtures::tablebased::ExampleUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;
-    FOLLY_MAYBE_UNUSED constexpr auto get_metadata = 
-        get_field_metadata<::test::fixtures::tablebased::ExampleUnion>;
     switch (t.getType()) {
     case Union::Type::fieldA:
-      return f(get_metadata(0), *static_cast<T&&>(t).fieldA_ref());
+      return f(0, *static_cast<T&&>(t).fieldA_ref());
     case Union::Type::fieldB:
-      return f(get_metadata(1), *static_cast<T&&>(t).fieldB_ref());
+      return f(1, *static_cast<T&&>(t).fieldB_ref());
     case Union::Type::__EMPTY__: ;
     }
   }
