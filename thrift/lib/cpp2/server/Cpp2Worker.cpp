@@ -97,14 +97,8 @@ void Cpp2Worker::onNewConnection(
     case wangle::SecureTransportType::NONE: {
       THRIFT_CONNECTION_EVENT(non_tls).log(*this, *sock.get());
 
-      auto peekingManager = new PeekingManager(
-          shared_from_this(),
-          *addr,
-          nextProtocolName,
-          secureTransportType,
-          tinfo,
-          server_);
-      peekingManager->start(std::move(sock), server_->getObserverShared());
+      new TransportPeekingManager(
+          shared_from_this(), *addr, tinfo, server_, std::move(sock));
       break;
     }
     case wangle::SecureTransportType::TLS:
@@ -199,15 +193,13 @@ void Cpp2Worker::plaintextConnectionReady(
     const folly::SocketAddress& clientAddr,
     wangle::TransportInfo& tinfo) {
   sock->setShutdownSocketSet(server_->wShutdownSocketSet_);
-  auto peekingManager = new PeekingManager(
+  new CheckTLSPeekingManager(
       shared_from_this(),
       clientAddr,
-      {},
-      SecureTransportType::NONE,
       tinfo,
       server_,
-      /* checkTLS */ true);
-  peekingManager->start(std::move(sock), server_->getObserverShared());
+      std::move(sock),
+      server_->getObserverShared());
 }
 
 void Cpp2Worker::useExistingChannel(

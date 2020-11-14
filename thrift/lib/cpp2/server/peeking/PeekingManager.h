@@ -43,32 +43,135 @@ constexpr uint8_t kPeekBytes = 13;
  * what kind of protocol they are talking to route to the
  * appropriate handlers.
  */
-class PeekingManager : public wangle::ManagedConnection,
-                       public wangle::SocketPeeker::Callback {
+class PeekingManagerBase : public wangle::ManagedConnection {
  public:
-  PeekingManager(
+  PeekingManagerBase(
       std::shared_ptr<apache::thrift::Cpp2Worker> acceptor,
       const folly::SocketAddress& clientAddr,
-      const std::string& nextProtocolName,
-      wangle::SecureTransportType secureTransportType,
       wangle::TransportInfo tinfo,
-      apache::thrift::ThriftServer* server,
-      bool checkTLS = false)
+      apache::thrift::ThriftServer* server)
       : acceptor_(acceptor),
         clientAddr_(clientAddr),
-        nextProtocolName_(nextProtocolName),
-        secureTransportType_(secureTransportType),
         tinfo_(std::move(tinfo)),
-        server_(server),
-        checkTLS_(checkTLS) {}
+        server_(server) {
+    acceptor_->getConnectionManager()->addConnection(this, true);
+  }
 
-  ~PeekingManager() override = default;
+  void timeoutExpired() noexcept override {
+    dropConnection();
+  }
 
-  void start(
-      folly::AsyncTransport::UniquePtr socket,
-      std::shared_ptr<apache::thrift::server::TServerObserver> obs) noexcept {
-    socket_ = std::move(socket);
-    observer_ = std::move(obs);
+  void dropConnection(const std::string& /* errorMsg */ = "") override {
+    acceptor_->getConnectionManager()->removeConnection(this);
+    destroy();
+  }
+
+  void describe(std::ostream& os) const override {
+    os << "Peeking the socket " << clientAddr_;
+  }
+
+  bool isBusy() const override {
+    return true;
+  }
+
+  void notifyPendingShutdown() override {}
+
+  void closeWhenIdle() override {}
+
+  void dumpConnectionState(uint8_t /* loglevel */) override {}
+
+ protected:
+  const std::shared_ptr<apache::thrift::Cpp2Worker> acceptor_;
+  const folly::SocketAddress clientAddr_;
+  wangle::TransportInfo tinfo_;
+  ThriftServer* const server_;
+};
+
+class CheckTLSPeekingManager : public PeekingManagerBase,
+                               public wangle::SocketPeeker::Callback {
+ public:
+  CheckTLSPeekingManager(
+      std::shared_ptr<apache::thrift::Cpp2Worker> acceptor,
+      const folly::SocketAddress& clientAddr,
+      wangle::TransportInfo tinfo,
+      apache::thrift::ThriftServer* server,
+      folly::AsyncSocket::UniquePtr socket,
+      std::shared_ptr<apache::thrift::server::TServerObserver> obs)
+      : PeekingManagerBase(
+            std::move(acceptor),
+            clientAddr,
+            std::move(tinfo),
+            server),
+        socket_(std::move(socket)),
+        observer_(std::move(obs)),
+        peeker_(new wangle::SocketPeeker(*socket_, this, kPeekBytes)) {
+    peeker_->start();
+  }
+
+  ~CheckTLSPeekingManager() override {
+    if (socket_) {
+      socket_->closeNow();
+    }
+  }
+
+  void peekSuccess(std::vector<uint8_t> peekBytes) noexcept override {
+    folly::DelayedDestruction::DestructorGuard dg(this);
+    dropConnection();
+    if (TLSHelper::looksLikeTLS(peekBytes)) {
+      LOG(ERROR) << "Received SSL connection on non SSL port";
+      sendPlaintextTLSAlert(peekBytes);
+      if (observer_) {
+        observer_->protocolError();
+      }
+      return;
+    }
+    acceptor_->connectionReady(
+        std::move(socket_),
+        std::move(clientAddr_),
+        {},
+        SecureTransportType::NONE,
+        tinfo_);
+  }
+
+  void sendPlaintextTLSAlert(const std::vector<uint8_t>& peekBytes) {
+    uint8_t major = peekBytes[1];
+    uint8_t minor = peekBytes[2];
+    auto alert = TLSHelper::getPlaintextAlert(
+        major, minor, TLSHelper::Alert::UNEXPECTED_MESSAGE);
+    socket_->writeChain(nullptr, std::move(alert));
+  }
+
+  void peekError(const folly::AsyncSocketException&) noexcept override {
+    dropConnection();
+  }
+
+  void dropConnection(const std::string& errorMsg = "") override {
+    folly::DelayedDestruction::DestructorGuard dg(this);
+    peeker_ = nullptr;
+    PeekingManagerBase::dropConnection(errorMsg);
+  }
+
+ private:
+  folly::AsyncSocket::UniquePtr socket_;
+  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
+  typename wangle::SocketPeeker::UniquePtr peeker_;
+};
+
+class TransportPeekingManager : public PeekingManagerBase,
+                                public wangle::SocketPeeker::Callback {
+ public:
+  TransportPeekingManager(
+      std::shared_ptr<apache::thrift::Cpp2Worker> acceptor,
+      const folly::SocketAddress& clientAddr,
+      wangle::TransportInfo tinfo,
+      apache::thrift::ThriftServer* server,
+      folly::AsyncTransport::UniquePtr socket)
+      : PeekingManagerBase(
+            std::move(acceptor),
+            clientAddr,
+            std::move(tinfo),
+            server),
+        socket_(std::move(socket)) {
     auto underlyingSocket =
         socket_->getUnderlyingTransport<folly::AsyncSocket>();
     CHECK(underlyingSocket) << "Underlying socket is not a AsyncSocket type";
@@ -78,48 +181,16 @@ class PeekingManager : public wangle::ManagedConnection,
     peeker_->start();
   }
 
+  ~TransportPeekingManager() override {
+    if (socket_) {
+      socket_->closeNow();
+    }
+  }
+
   void peekSuccess(std::vector<uint8_t> peekBytes) noexcept override {
     folly::DelayedDestruction::DestructorGuard dg(this);
-    peeker_ = nullptr;
-    acceptor_->getConnectionManager()->removeConnection(this);
+    dropConnection();
 
-    if (checkTLS_) {
-      checkTLSBytes(peekBytes);
-    } else {
-      checkConnectionBytes(peekBytes);
-    }
-    destroy();
-  }
-
-  /**
-   * This rejects SSL connections with an alert. It is
-   * useful for cases where clients might send SSL connections on
-   * a plaintext port and you need to fail fast to tell clients to
-   * go away.
-   */
-  void checkTLSBytes(std::vector<uint8_t>& peekBytes) {
-    if (TLSHelper::looksLikeTLS(peekBytes)) {
-      LOG(ERROR) << "Received SSL connection on non SSL port";
-      sendPlaintextTLSAlert(peekBytes);
-      if (observer_) {
-        observer_->protocolError();
-      }
-      dropConnection();
-      return;
-    }
-    acceptor_->connectionReady(
-        std::move(socket_),
-        std::move(clientAddr_),
-        std::move(nextProtocolName_),
-        secureTransportType_,
-        tinfo_);
-  }
-
-  /**
-   * Route the socket to a handler if the handler determines that it
-   * is able to handle the connection by peeking in the first few bytes.
-   */
-  void checkConnectionBytes(std::vector<uint8_t>& peekBytes) {
     try {
       // Check for new transports
       bool acceptedHandler = false;
@@ -140,68 +211,26 @@ class PeekingManager : public wangle::ManagedConnection,
       if (!acceptedHandler) {
         acceptor_->handleHeader(std::move(socket_), &clientAddr_);
       }
-    } catch (const std::exception& e) {
-      LOG(ERROR) << __func__
-                 << " failed, dropping connection: " << folly::exceptionStr(e);
-      dropConnection();
     } catch (...) {
-      LOG(ERROR) << __func__
-                 << " failed with unrecognized exception, dropping connection";
-      dropConnection();
+      LOG(ERROR) << __func__ << " failed, dropping connection: "
+                 << folly::exceptionStr(std::current_exception());
     }
-  }
-
-  void sendPlaintextTLSAlert(const std::vector<uint8_t>& peekBytes) {
-    uint8_t major = peekBytes[1];
-    uint8_t minor = peekBytes[2];
-    auto alert = TLSHelper::getPlaintextAlert(
-        major, minor, TLSHelper::Alert::UNEXPECTED_MESSAGE);
-    socket_->writeChain(nullptr, std::move(alert));
   }
 
   void peekError(const folly::AsyncSocketException&) noexcept override {
     dropConnection();
   }
 
-  void timeoutExpired() noexcept override {
-    dropConnection();
-  }
-
-  void dropConnection(const std::string& /* errorMsg */ = "") override {
+  void dropConnection(const std::string& errorMsg = "") override {
+    folly::DelayedDestruction::DestructorGuard dg(this);
     peeker_ = nullptr;
-    acceptor_->getConnectionManager()->removeConnection(this);
-    if (socket_) {
-      socket_->closeNow();
-    }
-    destroy();
+    PeekingManagerBase::dropConnection(errorMsg);
   }
-
-  void describe(std::ostream& os) const override {
-    os << "Peeking the socket " << clientAddr_;
-  }
-
-  bool isBusy() const override {
-    return true;
-  }
-
-  void notifyPendingShutdown() override {}
-
-  void closeWhenIdle() override {}
-
-  void dumpConnectionState(uint8_t /* loglevel */) override {}
 
  private:
   folly::AsyncTransport::UniquePtr socket_;
-  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
   typename wangle::SocketPeeker::UniquePtr peeker_;
-
-  std::shared_ptr<apache::thrift::Cpp2Worker> acceptor_;
-  folly::SocketAddress clientAddr_;
-  std::string nextProtocolName_;
-  wangle::SecureTransportType secureTransportType_;
-  wangle::TransportInfo tinfo_;
-  ThriftServer* server_;
-  bool checkTLS_;
 };
+
 } // namespace thrift
 } // namespace apache
