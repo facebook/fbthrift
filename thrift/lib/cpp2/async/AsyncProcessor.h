@@ -659,7 +659,9 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
   smsg.protocolType = prot->protocolType();
   smsg.buffer = queue.front();
   ctx->onWriteData(smsg);
-  DCHECK_LE(queue.chainLength(), std::numeric_limits<int>::max());
+  DCHECK_LE(
+      queue.chainLength(),
+      static_cast<size_t>(std::numeric_limits<int>::max()));
   ctx->postWrite(folly::to_narrow(queue.chainLength()));
   return queue;
 }
