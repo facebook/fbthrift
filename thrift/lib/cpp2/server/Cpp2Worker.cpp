@@ -195,19 +195,15 @@ void Cpp2Worker::markSocketAccepted(folly::AsyncSocket* sock) {
 }
 
 void Cpp2Worker::plaintextConnectionReady(
-    folly::AsyncTransport::UniquePtr sock,
+    folly::AsyncSocket::UniquePtr sock,
     const folly::SocketAddress& clientAddr,
-    const std::string& nextProtocolName,
-    wangle::SecureTransportType secureTransportType,
     wangle::TransportInfo& tinfo) {
-  auto asyncSocket = sock->getUnderlyingTransport<folly::AsyncSocket>();
-  CHECK(asyncSocket) << "Underlying socket is not a AsyncSocket type";
-  asyncSocket->setShutdownSocketSet(server_->wShutdownSocketSet_);
+  sock->setShutdownSocketSet(server_->wShutdownSocketSet_);
   auto peekingManager = new PeekingManager(
       shared_from_this(),
       clientAddr,
-      nextProtocolName,
-      secureTransportType,
+      {},
+      SecureTransportType::NONE,
       tinfo,
       server_,
       /* checkTLS */ true);

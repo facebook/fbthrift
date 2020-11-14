@@ -194,10 +194,8 @@ class Cpp2Worker : public wangle::Acceptor,
   void markSocketAccepted(folly::AsyncSocket* sock);
 
   void plaintextConnectionReady(
-      folly::AsyncTransport::UniquePtr sock,
+      folly::AsyncSocket::UniquePtr sock,
       const folly::SocketAddress& clientAddr,
-      const std::string& nextProtocolName,
-      wangle::SecureTransportType secureTransportType,
       wangle::TransportInfo& tinfo) override;
 
   void requestStop();
