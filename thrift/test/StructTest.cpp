@@ -630,3 +630,14 @@ TEST_F(StructTest, clear) {
   EXPECT_EQ(0, *obj.req_field_ref());
   EXPECT_FALSE(obj.opt_field_ref());
 }
+
+TEST_F(StructTest, BasicIndirection) {
+  BasicIndirection obj;
+  obj.raw.def_field_ref() = 7;
+  obj.raw.req_field_ref() = 8;
+  obj.raw.opt_field_ref() = 9;
+  apache::thrift::CompactSerializer ser;
+  auto obj2 =
+      ser.deserialize<BasicIndirection>(ser.serialize<std::string>(obj));
+  EXPECT_EQ(obj.raw, obj2.raw);
+}

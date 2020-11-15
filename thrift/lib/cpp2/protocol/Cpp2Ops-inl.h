@@ -723,7 +723,11 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
 };
 
 template <class T>
-class Cpp2Ops<T, folly::void_t<typename T::__fbthrift_cpp2_type>> {
+class Cpp2Ops<
+    T,
+    std::enable_if_t<
+        is_thrift_class_v<T> &&
+        !folly::is_detected_v<detect_indirection_fn_t, T>>> {
  public:
   typedef T Type;
   static constexpr protocol::TType thriftType() {
@@ -744,6 +748,37 @@ class Cpp2Ops<T, folly::void_t<typename T::__fbthrift_cpp2_type>> {
   template <class Protocol>
   static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
     return value->serializedSizeZC(prot);
+  }
+};
+
+template <class T>
+class Cpp2Ops<
+    T,
+    std::enable_if_t<folly::is_detected_v<detect_indirection_fn_t, T>>> {
+ private:
+  using S = folly::remove_cvref_t<
+      folly::invoke_result_t<detail::apply_indirection_fn, T>>;
+
+ public:
+  using Type = T;
+  static constexpr protocol::TType thriftType() {
+    return Cpp2Ops<S>::thriftType();
+  }
+  template <class Protocol>
+  static uint32_t write(Protocol* prot, const Type* value) {
+    return Cpp2Ops<S>::write(prot, &apply_indirection(*value));
+  }
+  template <class Protocol>
+  static void read(Protocol* prot, Type* value) {
+    return Cpp2Ops<S>::read(prot, &apply_indirection(*value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return Cpp2Ops<S>::serializedSize(prot, &apply_indirection(*value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return Cpp2Ops<S>::serializedSizeZC(prot, &apply_indirection(*value));
   }
 };
 

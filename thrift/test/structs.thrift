@@ -46,6 +46,10 @@ struct BasicRefsAnnotCppNoexceptMoveCtor {
   1: HasInt def_field (cpp.ref),
 } (cpp.noexcept_move_ctor)
 
+typedef Basic (
+    cpp.type = "WrappedTypeField<Basic>",
+    cpp.indirection) BasicIndirection
+
 typedef binary (cpp.type = "WrappedTypeField<folly::IOBuf>",
              cpp.indirection) t_foo
 typedef binary (cpp.type = "WrappedTypeField<std::string>",
