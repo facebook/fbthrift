@@ -232,7 +232,7 @@ void ThriftServer::touchRequestTimestamp() noexcept {
 }
 
 void ThriftServer::setup() {
-  DCHECK_NOTNULL(getProcessorFactory().get());
+  DCHECK(getProcessorFactory().get());
   auto nWorkers = getNumIOWorkerThreads();
   DCHECK_GT(nWorkers, 0u);
 
