@@ -58,6 +58,7 @@ DEFINE_string(
 
 THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
+THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, false);
 
 namespace apache {
 namespace thrift {
@@ -123,6 +124,19 @@ ThriftServer::~ThriftServer() {
   }
   stopCPUWorkers();
   stopWorkers();
+}
+
+SSLPolicy ThriftServer::getSSLPolicy() const {
+  // If it's explicitly set in constructor through gflags or through the
+  // setSSLPolicy setter, then use that value.
+  if (sslPolicy_.has_value()) {
+    return *sslPolicy_;
+  }
+  // Otherwise, fallback to default (currently defined through a ThriftFlag).
+  // PERMITTED is the old default. REQUIRED is the new default we're migrating
+  // to. We can use ThriftFlags to opt-out services.
+  return THRIFT_FLAG(ssl_policy_default_required) ? SSLPolicy::REQUIRED
+                                                  : SSLPolicy::PERMITTED;
 }
 
 void ThriftServer::useExistingSocket(

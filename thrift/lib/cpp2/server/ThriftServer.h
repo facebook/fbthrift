@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <map>
 #include <mutex>
+#include <optional>
 #include <vector>
 
 #include <folly/Memory.h>
@@ -94,7 +95,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   ThriftTlsConfig thriftConfig_;
 
   // Security negotiation settings
-  SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
+  std::optional<SSLPolicy> sslPolicy_;
   bool strictSSL_ = false;
   // whether we allow plaintext connections from loopback in REQUIRED mode
   bool allowPlaintextOnLoopback_ = false;
@@ -553,8 +554,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return const_cast<ThriftServer*>(this)->getEventBaseManager();
   }
 
-  SSLPolicy getSSLPolicy() const {
-    return sslPolicy_;
+  SSLPolicy getSSLPolicy() const;
+
+  // Convenience method to check if SSLPolicy is explicitly set
+  bool isSSLPolicySet() const {
+    return sslPolicy_.has_value();
   }
 
   void setSSLPolicy(SSLPolicy policy) {
