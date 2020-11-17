@@ -27,17 +27,11 @@
 
 <% > common/namespace_cpp2_begin%>
 
-
 // Explicitly reference the static init varaibles.
 //
 // If this file is always linked (e.g. link_whole), it will force
 // static linking to include the intialization logic.
-<%#program:structs%>
-<%#struct:any_type%>
-extern FOLLY_EXPORT bool __fbthrift_static_init_<%struct:name%>;
-FOLLY_EXPORT auto __fbthrift_static_reg_<%struct:name%> =
-    &__fbthrift_static_init_<%struct:name%>;
-<%/struct:any_type%>
-
-<%/program:structs%>
+extern FOLLY_EXPORT bool __fbthrift_static_init_<%program:name%>;
+FOLLY_EXPORT auto __fbthrift_static_reg_<%program:name%> =
+    &__fbthrift_static_init_<%program:name%>;
 <% > common/namespace_cpp2_end%>

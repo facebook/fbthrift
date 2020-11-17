@@ -15,21 +15,11 @@
 #endif
 
 namespace cpp2 {
-
 // Explicitly reference the static init varaibles.
 //
 // If this file is always linked (e.g. link_whole), it will force
 // static linking to include the intialization logic.
-extern FOLLY_EXPORT bool __fbthrift_static_init_MyStruct;
-FOLLY_EXPORT auto __fbthrift_static_reg_MyStruct =
-    &__fbthrift_static_init_MyStruct;
-
-extern FOLLY_EXPORT bool __fbthrift_static_init_MyUnion;
-FOLLY_EXPORT auto __fbthrift_static_reg_MyUnion =
-    &__fbthrift_static_init_MyUnion;
-
-extern FOLLY_EXPORT bool __fbthrift_static_init_MyException;
-FOLLY_EXPORT auto __fbthrift_static_reg_MyException =
-    &__fbthrift_static_init_MyException;
-
+extern FOLLY_EXPORT bool __fbthrift_static_init_module;
+FOLLY_EXPORT auto __fbthrift_static_reg_module =
+    &__fbthrift_static_init_module;
 } // cpp2

@@ -20,6 +20,29 @@ apache::thrift::conformance::ThriftTypeInfo typeFor(std::string name) {
 }
 } // namespace
 
+namespace cpp2 {
+// Static-init time registration for dynamically-linked libraries.
+//
+// To include in statically-linked libraties, link whole (e.g. --whole-archive)
+// `module_sinit.cpp`.
+FOLLY_EXPORT bool __fbthrift_static_init_module = (
+    apache::thrift::conformance::detail::registerGeneratedStruct<
+        MyStruct,
+        apache::thrift::conformance::StandardProtocol::Compact,
+        apache::thrift::conformance::StandardProtocol::Binary>(
+        typeFor("facebook.com/thrift/compiler/test/fixtures/any/MyStruct")),
+    apache::thrift::conformance::detail::registerGeneratedStruct<
+        MyUnion,
+        apache::thrift::conformance::StandardProtocol::Compact,
+        apache::thrift::conformance::StandardProtocol::Binary>(
+        typeFor("facebook.com/thrift/compiler/test/fixtures/any/MyUnion")),
+    apache::thrift::conformance::detail::registerGeneratedStruct<
+        MyException,
+        apache::thrift::conformance::StandardProtocol::Compact,
+        apache::thrift::conformance::StandardProtocol::Binary>(
+        typeFor("facebook.com/thrift/compiler/test/fixtures/any/MyException")),
+    true);
+} // cpp2
 
 namespace apache {
 namespace thrift {
@@ -43,17 +66,6 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
-// Static-init time registration for dynamically-linked libraries.
-//
-// To include in statically-linked libraties, link whole (e.g. --whole-archive)
-// `module_sinit.cpp`.
-FOLLY_EXPORT bool __fbthrift_static_init_MyStruct = (
-    apache::thrift::conformance::detail::registerGeneratedStruct<
-        MyStruct,
-        apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary
-    >(typeFor("facebook.com/thrift/compiler/test/fictures/any/MyStruct")), true);
-
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg) :
@@ -154,17 +166,6 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }
 }} // apache::thrift
 namespace cpp2 {
-// Static-init time registration for dynamically-linked libraries.
-//
-// To include in statically-linked libraties, link whole (e.g. --whole-archive)
-// `module_sinit.cpp`.
-FOLLY_EXPORT bool __fbthrift_static_init_MyUnion = (
-    apache::thrift::conformance::detail::registerGeneratedStruct<
-        MyUnion,
-        apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary
-    >(typeFor("facebook.com/thrift/compiler/test/fictures/any/MyUnion")), true);
-
 
 void MyUnion::__clear() {
   // clear all fields
@@ -245,17 +246,6 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
-// Static-init time registration for dynamically-linked libraries.
-//
-// To include in statically-linked libraties, link whole (e.g. --whole-archive)
-// `module_sinit.cpp`.
-FOLLY_EXPORT bool __fbthrift_static_init_MyException = (
-    apache::thrift::conformance::detail::registerGeneratedStruct<
-        MyException,
-        apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary
-    >(typeFor("facebook.com/thrift/compiler/test/fictures/any/MyException")), true);
-
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string myString__arg) :

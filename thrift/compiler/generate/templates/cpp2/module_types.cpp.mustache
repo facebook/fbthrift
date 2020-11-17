@@ -34,6 +34,26 @@ apache::thrift::conformance::ThriftTypeInfo typeFor(std::string name) {
 }
 } // namespace
 
+<% > common/namespace_cpp2_begin%>
+
+// Static-init time registration for dynamically-linked libraries.
+//
+// To include in statically-linked libraties, link whole (e.g. --whole-archive)
+// `<%program:name%>_sinit.cpp`.
+FOLLY_EXPORT bool __fbthrift_static_init_<%program:name%> = (
+<%#program:structs%>
+    apache::thrift::conformance::detail::registerGeneratedStruct<
+        <%struct:name%>,
+<%#program:json?%>
+        apache::thrift::conformance::StandardProtocol::SimpleJson,
+<%/program:json?%>
+        apache::thrift::conformance::StandardProtocol::Compact,
+        apache::thrift::conformance::StandardProtocol::Binary>(
+        typeFor("<%struct:any_type%>")),
+<%/program:structs%>
+    true);
+<% > common/namespace_cpp2_end%>
+
 <%/program:any_types?%>
 <% > module_types_cpp/declare_enums%>
 <%#program:tablebased?%>
@@ -87,22 +107,6 @@ FOLLY_POP_WARNING
 
 <% > common/namespace_cpp2_begin%>
 
-<%#struct:any_type%>
-// Static-init time registration for dynamically-linked libraries.
-//
-// To include in statically-linked libraties, link whole (e.g. --whole-archive)
-// `<%program:name%>_sinit.cpp`.
-FOLLY_EXPORT bool __fbthrift_static_init_<%struct:name%> = (
-    apache::thrift::conformance::detail::registerGeneratedStruct<
-        <%struct:name%>,
-<%#program:json?%>
-        apache::thrift::conformance::StandardProtocol::SimpleJson,
-<%/program:json?%>
-        apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary
-    >(typeFor("<%struct:any_type%>")), true);
-
-<%/struct:any_type%>
 
 <%^struct:union?%>
 <%^struct:cpp_noncopyable%>
