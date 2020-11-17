@@ -1,0 +1,7 @@
+# TODO(afuller): Fix equivelence check in GTestHarness.
+cpp2/RoundTripTest/double/NaN.Compact
+cpp2/RoundTripTest/double/NaN.SimpleJson
+cpp2/RoundTripTest/double/NaN.Binary
+cpp2/RoundTripTest/float/NaN.Compact
+cpp2/RoundTripTest/float/NaN.Binary
+cpp2/RoundTripTest/float/NaN.SimpleJson
