@@ -27,6 +27,7 @@
 #include <fatal/type/trie.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
@@ -1248,26 +1249,30 @@ struct protocol_methods<type_class::structure, Struct> {
 
 template <typename Type, typename Protocol>
 std::size_t serializer_read(Type& out, Protocol& protocol) {
+  using TypeClass = type_class_of_thrift_class_t<Type>;
   auto xferStart = protocol.getCursorPosition();
-  protocol_methods<reflect_type_class<Type>, Type>::read(protocol, out);
+  protocol_methods<TypeClass, Type>::read(protocol, out);
   return protocol.getCursorPosition() - xferStart;
 }
 
 template <typename Type, typename Protocol>
 std::size_t serializer_write(Type const& in, Protocol& protocol) {
-  return protocol_methods<reflect_type_class<Type>, Type>::write(protocol, in);
+  using TypeClass = type_class_of_thrift_class_t<Type>;
+  return protocol_methods<TypeClass, Type>::write(protocol, in);
 }
 
 template <typename Type, typename Protocol>
 std::size_t serializer_serialized_size(Type const& in, Protocol& protocol) {
-  return protocol_methods<reflect_type_class<Type>, Type>::
-      template serialized_size<false>(protocol, in);
+  using TypeClass = type_class_of_thrift_class_t<Type>;
+  return protocol_methods<TypeClass, Type>::template serialized_size<false>(
+      protocol, in);
 }
 
 template <typename Type, typename Protocol>
 std::size_t serializer_serialized_size_zc(Type const& in, Protocol& protocol) {
-  return protocol_methods<reflect_type_class<Type>, Type>::
-      template serialized_size<true>(protocol, in);
+  using TypeClass = type_class_of_thrift_class_t<Type>;
+  return protocol_methods<TypeClass, Type>::template serialized_size<true>(
+      protocol, in);
 }
 
 } // namespace thrift
