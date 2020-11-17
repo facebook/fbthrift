@@ -27,6 +27,9 @@ Protocol getProtocol(const Any& any) noexcept;
 // Returns true iff the any is encoded using the given protocol.
 bool hasProtocol(const Any& any, const Protocol& protocol) noexcept;
 
+// Sets the given protocol on the given any.
+void setProtocol(const Protocol& protocol, Any& any) noexcept;
+
 // Raises std::invalid_argument if invalid.
 void validateAny(const Any& any);
 

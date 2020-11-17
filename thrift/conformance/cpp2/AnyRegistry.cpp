@@ -131,11 +131,7 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
   } else {
     result.set_typeHashPrefixSha2_256(entry.typeHash);
   }
-  if (protocol.isCustom()) {
-    result.customProtocol_ref() = protocol.custom();
-  } else {
-    result.protocol_ref() = protocol.standard();
-  }
+  setProtocol(protocol, result);
   result.set_data(queue.moveAsValue());
   return result;
 }

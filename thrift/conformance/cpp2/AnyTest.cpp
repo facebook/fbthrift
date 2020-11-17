@@ -23,10 +23,38 @@
 namespace apache::thrift::conformance {
 namespace {
 
+TEST(AnyTest, SetProtocol) {
+  Any any;
+  Protocol customProtocol("Hi");
+  setProtocol(customProtocol, any);
+  EXPECT_TRUE(hasProtocol(any, customProtocol));
+  EXPECT_EQ(getProtocol(any), customProtocol);
+  EXPECT_TRUE(any.customProtocol_ref().has_value());
+  EXPECT_TRUE(any.protocol_ref().has_value());
+
+  setProtocol(getStandardProtocol<StandardProtocol::Compact>(), any);
+  EXPECT_TRUE(
+      hasProtocol(any, getStandardProtocol<StandardProtocol::Compact>()));
+  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Compact>());
+  EXPECT_FALSE(any.customProtocol_ref().has_value());
+  EXPECT_FALSE(any.protocol_ref().has_value());
+
+  setProtocol(customProtocol, any);
+  EXPECT_TRUE(any.customProtocol_ref().has_value());
+  EXPECT_TRUE(any.protocol_ref().has_value());
+
+  setProtocol(getStandardProtocol<StandardProtocol::Binary>(), any);
+  EXPECT_TRUE(
+      hasProtocol(any, getStandardProtocol<StandardProtocol::Binary>()));
+  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Binary>());
+  EXPECT_FALSE(any.customProtocol_ref().has_value());
+  EXPECT_TRUE(any.protocol_ref().has_value());
+}
+
 TEST(AnyTest, None) {
   Any any;
   validateAny(any);
-  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Custom>());
+  EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Compact>());
   any.set_protocol(StandardProtocol::Custom);
   validateAny(any);
   EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Custom>());
@@ -61,6 +89,7 @@ TEST(AnyTest, Standard) {
 
 TEST(AnyTest, Custom) {
   Any any;
+  any.set_protocol(StandardProtocol::Custom);
   any.set_customProtocol("Hi");
   EXPECT_EQ(getProtocol(any), Protocol("Hi"));
   EXPECT_TRUE(hasProtocol(any, Protocol("Hi")));
@@ -83,6 +112,7 @@ TEST(AnyTest, Unknown) {
 TEST(AnyTest, Custom_EmptyString) {
   Any any;
   // Empty string protocol is the same as None
+  any.set_protocol(StandardProtocol::Custom);
   any.set_customProtocol("");
   EXPECT_TRUE(any.customProtocol_ref().has_value());
   EXPECT_EQ(getProtocol(any), kNoProtocol);

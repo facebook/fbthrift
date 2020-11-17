@@ -33,10 +33,11 @@ struct Any {
   // A prefix of the SHA2-256 hash of the unique type name.
   2: optional binary (cpp.type = "folly::fbstring") typeHashPrefixSha2_256;
 
-  // The standard protocol used or StandardProtocol::None.
-  3: protocol.StandardProtocol protocol;
+  // The standard protocol used or StandardProtocol::Custom.
+  // Assumed to be StandardProtocol::Compact, if unset.
+  3: optional protocol.StandardProtocol protocol;
   // The name of the custom protocol used, iff
-  // protocol == StandardProtocol::None.
+  // protocol == StandardProtocol::Custom.
   4: optional string customProtocol;
 
   // The encoded value.

@@ -53,10 +53,16 @@ std::string_view Protocol::name() const noexcept {
 
 ProtocolStruct Protocol::asStruct() const noexcept {
   ProtocolStruct result;
-  if (!custom_.empty()) {
-    result.custom_ref() = custom_;
-  } else {
-    result.standard_ref() = standard_;
+  switch (standard_) {
+    case StandardProtocol::Compact:
+      // Leave unset.
+      break;
+    case StandardProtocol::Custom:
+      result.set_custom(custom_);
+      // fall through
+    default:
+      result.standard_ref() = standard_;
+      break;
   }
   return result;
 }

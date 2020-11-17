@@ -249,7 +249,8 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_FALSE(value.type_ref().has_value());
   EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
   EXPECT_EQ(toString(*value.data_ref()), "");
-  EXPECT_TRUE(hasProtocol(value, Protocol{}));
+  EXPECT_TRUE(
+      hasProtocol(value, getStandardProtocol<StandardProtocol::Compact>()));
   EXPECT_THROW(cregistry.load(value), std::invalid_argument);
   EXPECT_THROW(cregistry.load<float>(value), std::invalid_argument);
   value.set_type("foo");

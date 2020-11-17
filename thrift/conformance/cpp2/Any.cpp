@@ -23,8 +23,11 @@
 namespace apache::thrift::conformance {
 
 Protocol getProtocol(const Any& any) noexcept {
-  if (any.protocol_ref() != StandardProtocol::Custom) {
-    return Protocol(*any.protocol_ref());
+  if (!any.protocol_ref()) {
+    return getStandardProtocol<StandardProtocol::Compact>();
+  }
+  if (*any.protocol_ref() != StandardProtocol::Custom) {
+    return Protocol(*any.get_protocol());
   }
   if (any.customProtocol_ref()) {
     return Protocol(any.customProtocol_ref().value_unchecked());
@@ -33,8 +36,11 @@ Protocol getProtocol(const Any& any) noexcept {
 }
 
 bool hasProtocol(const Any& any, const Protocol& protocol) noexcept {
-  if (any.protocol_ref() != StandardProtocol::Custom) {
-    return any.protocol_ref() == protocol.standard();
+  if (any.get_protocol() == nullptr) {
+    return protocol.standard() == StandardProtocol::Compact;
+  }
+  if (*any.get_protocol() != StandardProtocol::Custom) {
+    return *any.get_protocol() == protocol.standard();
   }
   if (any.customProtocol_ref() &&
       !any.customProtocol_ref().value_unchecked().empty()) {
@@ -42,6 +48,23 @@ bool hasProtocol(const Any& any, const Protocol& protocol) noexcept {
   }
   // `any` has no protocol.
   return protocol.isNone();
+}
+
+void setProtocol(const Protocol& protocol, Any& any) noexcept {
+  switch (protocol.standard()) {
+    case StandardProtocol::Compact:
+      any.protocol_ref().reset();
+      any.customProtocol_ref().reset();
+      break;
+    case StandardProtocol::Custom:
+      any.set_protocol(StandardProtocol::Custom);
+      any.set_customProtocol(protocol.custom());
+      break;
+    default:
+      any.set_protocol(protocol.standard());
+      any.customProtocol_ref().reset();
+      break;
+  }
 }
 
 void validateAny(const Any& any) {
