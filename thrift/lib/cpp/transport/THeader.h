@@ -377,8 +377,16 @@ class THeader {
     crc32c_ = crc32c;
   }
 
-  folly::Optional<uint32_t> getCrc32c() {
+  folly::Optional<uint32_t> getCrc32c() const {
     return crc32c_;
+  }
+
+  void setServerLoad(folly::Optional<int64_t> load) {
+    serverLoad_ = load;
+  }
+
+  folly::Optional<int64_t> getServerLoad() const {
+    return serverLoad_;
   }
 
   apache::thrift::concurrency::PRIORITY getCallPriority();
@@ -506,6 +514,7 @@ class THeader {
 
   // CRC32C of message payload for checksum.
   folly::Optional<uint32_t> crc32c_;
+  folly::Optional<int64_t> serverLoad_;
 };
 
 } // namespace transport

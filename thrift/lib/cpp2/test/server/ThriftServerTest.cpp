@@ -310,21 +310,30 @@ void doLoadHeaderTest(bool isRocket) {
   auto makeClient = [=](auto& runner) {
     if (!isRocket) {
       return runner.template newClient<TestServiceAsyncClient>(
-          nullptr /* executor */, [](auto socket) mutable {
+          folly::getGlobalCPUExecutor().get(), [](auto socket) mutable {
             return HeaderClientChannel::newChannel(std::move(socket));
           });
     } else {
       return runner.template newClient<TestServiceAsyncClient>(
-          nullptr /* executor */, [](auto socket) mutable {
+          folly::getGlobalCPUExecutor().get(), [](auto socket) mutable {
             return RocketClientChannel::newChannel(std::move(socket));
           });
     }
   };
 
-  auto checkLoadHeader = [](const auto& headers,
+  auto checkLoadHeader = [](const auto& header,
                             folly::Optional<std::string> loadMetric) {
-    auto* load = folly::get_ptr(headers, THeader::QUERY_LOAD_HEADER);
-    ASSERT_EQ(loadMetric.hasValue(), load != nullptr);
+    auto& headers = header.getHeaders();
+    auto load = [&]() -> folly::Optional<int64_t> {
+      if (auto value = header.getServerLoad()) {
+        return value;
+      }
+      if (auto* loadPtr = folly::get_ptr(headers, THeader::QUERY_LOAD_HEADER)) {
+        return folly::to<int64_t>(*loadPtr);
+      }
+      return {};
+    }();
+    ASSERT_EQ(loadMetric.hasValue(), load.has_value());
 
     if (!loadMetric) {
       return;
@@ -332,9 +341,9 @@ void doLoadHeaderTest(bool isRocket) {
 
     folly::StringPiece loadSp(*loadMetric);
     if (loadSp.removePrefix("custom_load_metric_")) {
-      EXPECT_EQ(loadSp, *load);
+      EXPECT_EQ(loadSp, std::to_string(*load));
     } else if (loadSp.empty()) {
-      EXPECT_EQ(folly::to<std::string>(kEmptyMetricLoad), *load);
+      EXPECT_EQ(kEmptyMetricLoad, *load);
     } else {
       FAIL() << "Unexpected load metric";
     }
@@ -376,8 +385,8 @@ void doLoadHeaderTest(bool isRocket) {
   {
     // No load header
     RpcOptions options;
-    client->sync_voidResponse(options);
-    checkLoadHeader(options.getReadHeaders(), folly::none);
+    auto [_, header] = client->header_semifuture_voidResponse(options).get();
+    checkLoadHeader(*header, folly::none);
   }
 
   {
@@ -385,8 +394,8 @@ void doLoadHeaderTest(bool isRocket) {
     RpcOptions options;
     const std::string kLoadMetric;
     options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
-    client->sync_voidResponse(options);
-    checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+    auto [_, header] = client->header_semifuture_voidResponse(options).get();
+    checkLoadHeader(*header, kLoadMetric);
   }
 
   {
@@ -394,17 +403,56 @@ void doLoadHeaderTest(bool isRocket) {
     RpcOptions options;
     const std::string kLoadMetric{"custom_load_metric_789"};
     options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
-    client->sync_voidResponse(options);
-    checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+    auto [_, header] = client->header_semifuture_voidResponse(options).get();
+    checkLoadHeader(*header, kLoadMetric);
   }
+
+  class ServerErrorCallback : public RequestCallback {
+   public:
+    ~ServerErrorCallback() override = default;
+
+    static std::unique_ptr<RequestCallback> create(
+        folly::fibers::Baton& baton,
+        THeader& header,
+        folly::exception_wrapper& ew) {
+      return {new ServerErrorCallback(baton, header, ew), {}};
+    }
+    void requestSent() override {}
+    void replyReceived(ClientReceiveState&& state) override {
+      header_ = *state.extractHeader();
+      ew_ = folly::try_and_catch<std::exception>(
+          [&] { TestServiceAsyncClient::recv_voidResponse(state); });
+      baton_.post();
+    }
+    void requestError(ClientReceiveState&&) override {
+      ADD_FAILURE();
+    }
+
+   private:
+    folly::fibers::Baton& baton_;
+    THeader& header_;
+    folly::exception_wrapper& ew_;
+
+    ServerErrorCallback(
+        folly::fibers::Baton& baton,
+        THeader& header,
+        folly::exception_wrapper& ew)
+        : baton_(baton), header_(header), ew_(ew) {}
+  };
 
   {
     // Force server overload. Load should still be returned on server overload.
     RpcOptions options;
     const std::string kLoadMetric;
     options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
-    auto ew = folly::try_and_catch<std::exception>(
-        [&] { client->sync_voidResponse(options); });
+
+    folly::fibers::Baton baton;
+    THeader header;
+    folly::exception_wrapper ew;
+    auto callback = ServerErrorCallback::create(baton, header, ew);
+    client->voidResponse(options, std::move(callback));
+    baton.wait();
+
     // Check that request was actually rejected due to server overload
     const bool matched =
         ew.with_exception([](const TApplicationException& tae) {
@@ -413,7 +461,7 @@ void doLoadHeaderTest(bool isRocket) {
               tae.getType());
         });
     ASSERT_TRUE(matched);
-    checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+    checkLoadHeader(header, kLoadMetric);
   }
 
   {
@@ -432,8 +480,14 @@ void doLoadHeaderTest(bool isRocket) {
     const std::string kLoadMetric;
     options.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
     options.setQueueTimeout(std::chrono::milliseconds(10));
-    auto ew = folly::try_and_catch<std::exception>(
-        [&] { client->sync_voidResponse(options); });
+
+    folly::fibers::Baton baton;
+    THeader header;
+    folly::exception_wrapper ew;
+    auto callback = ServerErrorCallback::create(baton, header, ew);
+    client->voidResponse(options, std::move(callback));
+    baton.wait();
+
     // Check that request was actually rejected due to queue timeout
     const bool matched =
         ew.with_exception([](const TApplicationException& tae) {
@@ -441,13 +495,13 @@ void doLoadHeaderTest(bool isRocket) {
         });
     ASSERT_TRUE(matched);
     if (isRocket) {
-      checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+      checkLoadHeader(header, kLoadMetric);
     } else {
-      checkLoadHeader(options.getReadHeaders(), folly::none);
+      checkLoadHeader(header, folly::none);
     }
 
     EXPECT_EQ(
-        *folly::get_ptr(options.getReadHeaders(), "ex"),
+        *folly::get_ptr(header.getHeaders(), "ex"),
         kServerQueueTimeoutErrorCode);
   }
 
@@ -473,8 +527,14 @@ void doLoadHeaderTest(bool isRocket) {
       runner.getThriftServer().setTaskExpireTime(prevTaskExpireTime);
       runner.getThriftServer().setUseClientTimeout(prevUseClientTimeout);
     });
-    auto ew = folly::try_and_catch<std::exception>(
-        [&] { client->sync_voidResponse(options); });
+
+    folly::fibers::Baton baton;
+    THeader header;
+    folly::exception_wrapper ew;
+    auto callback = ServerErrorCallback::create(baton, header, ew);
+    client->voidResponse(options, std::move(callback));
+    baton.wait();
+
     // Check that request was actually rejected due to task timeout
     const bool matched =
         ew.with_exception([](const TApplicationException& tae) {
@@ -482,13 +542,13 @@ void doLoadHeaderTest(bool isRocket) {
         });
     ASSERT_TRUE(matched);
     if (isRocket) {
-      checkLoadHeader(options.getReadHeaders(), kLoadMetric);
+      checkLoadHeader(header, kLoadMetric);
     } else {
-      checkLoadHeader(options.getReadHeaders(), folly::none);
+      checkLoadHeader(header, folly::none);
     }
 
     EXPECT_EQ(
-        *folly::get_ptr(options.getReadHeaders(), "ex"), kTaskExpiredErrorCode);
+        *folly::get_ptr(header.getHeaders(), "ex"), kTaskExpiredErrorCode);
   }
 }
 } // namespace

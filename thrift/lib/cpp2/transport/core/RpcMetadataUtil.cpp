@@ -101,11 +101,10 @@ void fillTHeaderFromResponseRpcMetadata(
     transport::THeader& header) {
   std::map<std::string, std::string> otherMetadata;
   if (responseMetadata.otherMetadata_ref()) {
-    otherMetadata = std::move(*responseMetadata.otherMetadata_ref());
+    header.setReadHeaders(std::move(*responseMetadata.otherMetadata_ref()));
   }
   if (auto load = responseMetadata.load_ref()) {
-    otherMetadata[transport::THeader::QUERY_LOAD_HEADER] =
-        folly::to<std::string>(*load);
+    header.setServerLoad(*load);
   }
   if (auto crc32c = responseMetadata.crc32c_ref()) {
     header.setCrc32c(*crc32c);
@@ -129,7 +128,6 @@ void fillTHeaderFromResponseRpcMetadata(
       header.setReadTransform(static_cast<uint16_t>(transform));
     }
   }
-  header.setReadHeaders(std::move(otherMetadata));
 }
 
 void fillResponseRpcMetadataFromTHeader(

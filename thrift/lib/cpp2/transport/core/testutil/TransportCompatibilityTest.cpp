@@ -535,9 +535,15 @@ void TransportCompatibilityTest::TestRequestResponse_Header_Load() {
     const auto readHeaders =
         std::move(resultAndHeaders.second)->releaseHeaders();
     EXPECT_NE(readHeaders.end(), readHeaders.find("header_from_server"));
-    const auto loadIt = readHeaders.find(THeader::QUERY_LOAD_HEADER);
-    ASSERT_NE(readHeaders.end(), loadIt);
-    EXPECT_EQ(123, folly::to<int64_t>(loadIt->second));
+    auto load = [&]() -> int64_t {
+      if (auto value = resultAndHeaders.second->getServerLoad()) {
+        return *value;
+      }
+      auto* loadPtr = folly::get_ptr(readHeaders, THeader::QUERY_LOAD_HEADER);
+      EXPECT_NE(nullptr, loadPtr);
+      return folly::to<int64_t>(*loadPtr);
+    }();
+    EXPECT_EQ(123, load);
   });
 }
 
