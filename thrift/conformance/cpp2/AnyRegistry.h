@@ -70,7 +70,7 @@ class AnyRegistry {
   template <typename T>
   T load(const Any& value) const;
 
-  // Register a type's unique name.
+  // Register a type.
   //
   // Throws std::invalid_argument if type is invalid.
   // Returns false iff the type conflicts with an existing registration.
@@ -89,17 +89,17 @@ class AnyRegistry {
       const std::type_info& typeInfo,
       std::unique_ptr<AnySerializer> serializer);
 
-  // Returns the unique type name for the given type, or "" if the type has not
+  // Returns the unique type uri for the given type, or "" if the type has not
   // been registered.
-  std::string_view getTypeName(const std::type_info& typeInfo) const noexcept;
+  std::string_view getTypeUri(const std::type_info& typeInfo) const noexcept;
 
   // Returns the serializer for the given type and protocol, or nullptr if
   // no matching serializer is found.
   const AnySerializer* getSerializer(
       const std::type_info& typeInfo,
       const Protocol& protocol) const noexcept;
-  const AnySerializer* getSerializerByName(
-      const std::string_view name,
+  const AnySerializer* getSerializerByUri(
+      const std::string_view uri,
       const Protocol& protocol) const noexcept;
   const AnySerializer* getSerializerByHash(
       TypeHashAlgorithm alg,
@@ -146,8 +146,8 @@ class AnyRegistry {
   }
 
   template <typename T>
-  std::string_view getTypeName() const noexcept {
-    return getTypeName(typeid(T));
+  std::string_view getTypeUri() const noexcept {
+    return getTypeUri(typeid(T));
   }
 
   // Generates a summary of the contents of the registry.
@@ -159,15 +159,15 @@ class AnyRegistry {
 
     const std::type_info& typeInfo;
     const folly::fbstring typeHash; // The type hash to use, if applicable.
-    const ThriftTypeInfo type; // Referenced by nameIndex_.
+    const ThriftTypeInfo type; // Referenced by uriIndex_.
     folly::F14FastMap<Protocol, const AnySerializer*> serializers;
   };
 
   std::forward_list<std::unique_ptr<AnySerializer>> ownedSerializers_;
-  // Referenced by nameIndex_ and idIndex_, so must be a Node map.
+  // Referenced by uriIndex_ and idIndex_, so must be a Node map.
   folly::F14NodeMap<std::type_index, TypeEntry> registry_;
 
-  folly::F14FastMap<std::string_view, TypeEntry*> nameIndex_;
+  folly::F14FastMap<std::string_view, TypeEntry*> uriIndex_;
   std::map<folly::fbstring, TypeEntry*> hashIndex_; // Must be sorted.
 
   TypeEntry* registerTypeImpl(
@@ -181,12 +181,12 @@ class AnyRegistry {
       TypeEntry* entry);
 
   bool genTypeHashsAndCheckForConflicts(
-      std::string_view name,
+      std::string_view uri,
       std::vector<folly::fbstring>* typeHashs) const noexcept;
   bool genTypeHashsAndCheckForConflicts(
       const ThriftTypeInfo& typeInfo,
       std::vector<folly::fbstring>* typeHashs) const noexcept;
-  void indexName(std::string_view name, TypeEntry* entry) noexcept;
+  void indexUri(std::string_view uri, TypeEntry* entry) noexcept;
   void indexHash(folly::fbstring&& typeHash, TypeEntry* entry) noexcept;
 
   // Gets the TypeEntry for the given type, or null if the type has not been
@@ -197,7 +197,7 @@ class AnyRegistry {
     return getTypeEntry(std::type_index(typeInfo));
   }
   // Look up TypeEntry by secondary index.
-  const TypeEntry* getTypeEntryByName(std::string_view name) const noexcept;
+  const TypeEntry* getTypeEntryByUri(std::string_view uri) const noexcept;
   const TypeEntry* getTypeEntryByHash(const folly::fbstring& typeHash) const
       noexcept;
 
@@ -206,7 +206,7 @@ class AnyRegistry {
       const Protocol& protocol) const noexcept;
 
   const TypeEntry& getAndCheckTypeEntry(const std::type_info& typeInfo) const;
-  const TypeEntry& getAndCheckTypeEntryByName(std::string_view name) const;
+  const TypeEntry& getAndCheckTypeEntryByUri(std::string_view uri) const;
   const TypeEntry& getAndCheckTypeEntryByHash(
       const folly::fbstring& typeHash) const;
   const TypeEntry& getAndCheckTypeEntryFor(const Any& value) const;
@@ -257,7 +257,7 @@ template <typename Struct, StandardProtocol... Ps>
 void registerGeneratedStruct(const ThriftTypeInfo& type) {
   if (!getGeneratedAnyRegistry().registerType<Struct, Ps...>(type)) {
     folly::throw_exception<std::runtime_error>(
-        "Could not register: " + type.get_name());
+        "Could not register: " + type.get_uri());
   }
 }
 

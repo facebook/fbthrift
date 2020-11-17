@@ -22,43 +22,42 @@ namespace {
 
 using conformance::StandardProtocol;
 template <conformance::StandardProtocol P>
-bool isRegistered(std::string_view name) {
-  return conformance::AnyRegistry::generated().getSerializerByName(
-             name, conformance::getStandardProtocol<P>()) != nullptr;
+bool isRegistered(std::string_view uri) {
+  return conformance::AnyRegistry::generated().getSerializerByUri(
+             uri, conformance::getStandardProtocol<P>()) != nullptr;
 }
 
 TEST(AnyTest, Registered) {
   {
-    constexpr auto kTypeName = "facebook.com/thrift/test/AnyTestStruct";
-    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kTypeName));
-    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+    constexpr auto kType = "facebook.com/thrift/test/AnyTestStruct";
+    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kType));
+    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kType));
   }
 
   {
-    constexpr auto kTypeName = "facebook.com/thrift/test/AnyTestException";
-    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kTypeName));
-    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+    constexpr auto kType = "facebook.com/thrift/test/AnyTestException";
+    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kType));
+    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kType));
   }
 
   { // Has Json enabled.
-    constexpr auto kTypeName = "facebook.com/thrift/test/AnyTestUnion";
-    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kTypeName));
-    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kTypeName));
-    EXPECT_TRUE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+    constexpr auto kType = "facebook.com/thrift/test/AnyTestUnion";
+    EXPECT_TRUE(isRegistered<StandardProtocol::Binary>(kType));
+    EXPECT_TRUE(isRegistered<StandardProtocol::Compact>(kType));
+    EXPECT_TRUE(isRegistered<StandardProtocol::SimpleJson>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kType));
   }
 
   { // Does not have `any` in buck target options.
-    constexpr auto kTypeName =
-        "facebook.com/thrift/test/AnyTestMissingAnyOption";
-    EXPECT_FALSE(isRegistered<StandardProtocol::Binary>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::Compact>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kTypeName));
-    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kTypeName));
+    constexpr auto kType = "facebook.com/thrift/test/AnyTestMissingAnyOption";
+    EXPECT_FALSE(isRegistered<StandardProtocol::Binary>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Compact>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::SimpleJson>(kType));
+    EXPECT_FALSE(isRegistered<StandardProtocol::Json>(kType));
   }
 }
 

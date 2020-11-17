@@ -29,9 +29,9 @@ TEST(ThriftTypeInfoTest, ValidateThriftTypeInfo) {
   const auto good2 = "foo.com/my/other-typeInfo";
   ThriftTypeInfo typeInfo;
   EXPECT_THROW(validateThriftTypeInfo(typeInfo), std::invalid_argument);
-  typeInfo.name_ref() = good1;
+  typeInfo.uri_ref() = good1;
   validateThriftTypeInfo(typeInfo);
-  typeInfo.aliases_ref()->emplace(good2);
+  typeInfo.altUris_ref()->emplace(good2);
   validateThriftTypeInfo(typeInfo);
   typeInfo.set_typeHashBytes(kMinTypeHashBytes);
   validateThriftTypeInfo(typeInfo);
@@ -42,18 +42,18 @@ TEST(ThriftTypeInfoTest, ValidateThriftTypeInfo) {
 
   {
     ThriftTypeInfo badType(typeInfo);
-    badType.set_name(bad);
+    badType.set_uri(bad);
     EXPECT_THROW(validateThriftTypeInfo(badType), std::invalid_argument);
   }
 
   {
     ThriftTypeInfo badType(typeInfo);
-    badType.aliases_ref()->emplace(good1); // Duplicate name.
+    badType.altUris_ref()->emplace(good1); // Duplicate uri.
     EXPECT_THROW(validateThriftTypeInfo(badType), std::invalid_argument);
   }
   {
     ThriftTypeInfo badType(typeInfo);
-    badType.aliases_ref()->emplace(bad);
+    badType.altUris_ref()->emplace(bad);
     EXPECT_THROW(validateThriftTypeInfo(badType), std::invalid_argument);
   }
 

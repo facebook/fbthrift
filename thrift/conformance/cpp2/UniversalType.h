@@ -31,11 +31,13 @@ inline constexpr type_hash_size_t kDisableTypeHash = 0;
 inline constexpr type_hash_size_t kMinTypeHashBytes =
     thrift_type_info_constants::minTypeHashBytes();
 
-// Validates that name is a valid universal type name of the form:
+// Validates that uri is a valid universal type uri of the form:
 // {domain}/{path}. For example: facebook.com/thrift/Value.
 //
+// The scheme "fbthrift://"" is implied and not included in the uri.
+//
 // Throws std::invalid_argument on failure.
-void validateUniversalType(std::string_view name);
+void validateUniversalType(std::string_view uri);
 
 // Validates that the given type hash meets the size requirements.
 //
@@ -50,18 +52,20 @@ void validateTypeHashBytes(type_hash_size_t typeHashBytes);
 // The number of bytes returned by the given type hash algorithm.
 type_hash_size_t getTypeHashSize(TypeHashAlgorithm alg);
 
-// Returns the type hash for the given universal type name.
-folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view name);
+// Returns the type hash for the given universal type uri.
+//
+// The hash includes the implied scheme, "fbthrift://".
+folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view uri);
 
 // Shrinks the typeHash to fit in the given number of bytes.
 folly::StringPiece getTypeHashPrefix(
     folly::StringPiece typeHash,
     type_hash_size_t typeHashBytes);
 
-// Returns the type hash prefix iff smaller than the name.
+// Returns the type hash prefix iff smaller than the uri.
 folly::fbstring maybeGetTypeHashPrefix(
     TypeHashAlgorithm alg,
-    std::string_view name,
+    std::string_view uri,
     type_hash_size_t typeHashBytes);
 
 // Returns true iff prefix was derived from typeHash.

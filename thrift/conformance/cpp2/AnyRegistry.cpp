@@ -47,7 +47,7 @@ folly::fbstring maybeGetTypeHash(
     defaultTypeHashBytes = type.typeHashBytes_ref().value_unchecked();
   }
   return conformance::maybeGetTypeHashPrefix(
-      TypeHashAlgorithm::Sha2_256, type.get_name(), defaultTypeHashBytes);
+      TypeHashAlgorithm::Sha2_256, type.get_uri(), defaultTypeHashBytes);
 }
 
 } // namespace
@@ -79,13 +79,13 @@ bool AnyRegistry::registerSerializer(
       std::move(serializer), &registry_.at(std::type_index(type)));
 }
 
-std::string_view AnyRegistry::getTypeName(const std::type_info& type) const
+std::string_view AnyRegistry::getTypeUri(const std::type_info& type) const
     noexcept {
   const auto* entry = getTypeEntry(type);
   if (entry == nullptr) {
     return {};
   }
-  return entry->type.get_name();
+  return entry->type.get_uri();
 }
 
 const AnySerializer* AnyRegistry::getSerializer(
@@ -94,10 +94,10 @@ const AnySerializer* AnyRegistry::getSerializer(
   return getSerializer(getTypeEntry(type), protocol);
 }
 
-const AnySerializer* AnyRegistry::getSerializerByName(
-    const std::string_view name,
+const AnySerializer* AnyRegistry::getSerializerByUri(
+    const std::string_view uri,
     const Protocol& protocol) const noexcept {
-  return getSerializer(getTypeEntryByName(name), protocol);
+  return getSerializer(getTypeEntryByUri(uri), protocol);
 }
 
 const AnySerializer* AnyRegistry::getSerializerByHash(
@@ -127,7 +127,7 @@ Any AnyRegistry::store(any_ref value, const Protocol& protocol) const {
 
   Any result;
   if (entry.typeHash.empty()) {
-    result.set_type(entry.type.get_name());
+    result.set_type(entry.type.get_uri());
   } else {
     result.set_typeHashPrefixSha2_256(entry.typeHash);
   }
@@ -166,7 +166,7 @@ std::string AnyRegistry::debugString() const {
   for (const auto& indx : hashIndex_) {
     const TypeEntry& entry = *indx.second;
     result += "  ";
-    result += entry.type.get_name();
+    result += entry.type.get_uri();
     result += " (";
     result += folly::hexlify(indx.first);
     result += ")";
@@ -195,7 +195,7 @@ auto AnyRegistry::registerTypeImpl(
     ThriftTypeInfo type) -> TypeEntry* {
   validateThriftTypeInfo(type);
   std::vector<folly::fbstring> typeHashs;
-  typeHashs.reserve(type.aliases_ref()->size() + 1);
+  typeHashs.reserve(type.altUris_ref()->size() + 1);
   if (!genTypeHashsAndCheckForConflicts(type, &typeHashs)) {
     return nullptr;
   }
@@ -209,9 +209,9 @@ auto AnyRegistry::registerTypeImpl(
   TypeEntry* entry = &result.first->second;
 
   // Add to secondary indexes.
-  indexName(*entry->type.name_ref(), entry);
-  for (const auto& alias : *entry->type.aliases_ref()) {
-    indexName(alias, entry);
+  indexUri(*entry->type.uri_ref(), entry);
+  for (const auto& alias : *entry->type.altUris_ref()) {
+    indexUri(alias, entry);
   }
 
   for (auto& hash : typeHashs) {
@@ -242,13 +242,13 @@ bool AnyRegistry::registerSerializerImpl(
 }
 
 bool AnyRegistry::genTypeHashsAndCheckForConflicts(
-    std::string_view name,
+    std::string_view uri,
     std::vector<folly::fbstring>* typeHashs) const noexcept {
-  if (name.empty() || nameIndex_.contains(name)) {
+  if (uri.empty() || uriIndex_.contains(uri)) {
     return false; // Already exists.
   }
 
-  auto typeHash = getTypeHash(TypeHashAlgorithm::Sha2_256, name);
+  auto typeHash = getTypeHash(TypeHashAlgorithm::Sha2_256, uri);
   // Find shortest valid type hash prefix.
   folly::fbstring minTypeHash(getTypeHashPrefix(typeHash, kMinTypeHashBytes));
   // Check if the minimum type hash would be ambiguous.
@@ -262,11 +262,11 @@ bool AnyRegistry::genTypeHashsAndCheckForConflicts(
 bool AnyRegistry::genTypeHashsAndCheckForConflicts(
     const ThriftTypeInfo& type,
     std::vector<folly::fbstring>* typeHashs) const noexcept {
-  // Ensure name and all aliases are availabile.
-  if (!genTypeHashsAndCheckForConflicts(*type.name_ref(), typeHashs)) {
+  // Ensure uri and all aliases are availabile.
+  if (!genTypeHashsAndCheckForConflicts(*type.uri_ref(), typeHashs)) {
     return false;
   }
-  for (const auto& alias : *type.aliases_ref()) {
+  for (const auto& alias : *type.altUris_ref()) {
     if (!genTypeHashsAndCheckForConflicts(alias, typeHashs)) {
       return false;
     }
@@ -274,8 +274,8 @@ bool AnyRegistry::genTypeHashsAndCheckForConflicts(
   return true;
 }
 
-void AnyRegistry::indexName(std::string_view name, TypeEntry* entry) noexcept {
-  auto res = nameIndex_.emplace(name, entry);
+void AnyRegistry::indexUri(std::string_view uri, TypeEntry* entry) noexcept {
+  auto res = uriIndex_.emplace(uri, entry);
   DCHECK(res.second);
 }
 
@@ -308,10 +308,10 @@ auto AnyRegistry::getTypeEntryByHash(const folly::fbstring& typeHash) const
   return itr->second;
 }
 
-auto AnyRegistry::getTypeEntryByName(std::string_view name) const noexcept
+auto AnyRegistry::getTypeEntryByUri(std::string_view uri) const noexcept
     -> const TypeEntry* {
-  auto itr = nameIndex_.find(name);
-  if (itr == nameIndex_.end()) {
+  auto itr = uriIndex_.find(uri);
+  if (itr == uriIndex_.end()) {
     return nullptr;
   }
   return itr->second;
@@ -321,7 +321,7 @@ auto AnyRegistry::getAndCheckTypeEntryFor(const Any& value) const
     -> const TypeEntry& {
   if (value.type_ref().has_value() &&
       !value.type_ref().value_unchecked().empty()) {
-    return getAndCheckTypeEntryByName(value.type_ref().value_unchecked());
+    return getAndCheckTypeEntryByUri(value.type_ref().value_unchecked());
   }
   if (value.typeHashPrefixSha2_256_ref().has_value()) {
     return getAndCheckTypeEntryByHash(
@@ -354,11 +354,11 @@ auto AnyRegistry::getAndCheckTypeEntry(const std::type_info& typeInfo) const
   return *result;
 }
 
-auto AnyRegistry::getAndCheckTypeEntryByName(std::string_view name) const
+auto AnyRegistry::getAndCheckTypeEntryByUri(std::string_view uri) const
     -> const TypeEntry& {
-  const TypeEntry* result = getTypeEntryByName(name);
+  const TypeEntry* result = getTypeEntryByUri(uri);
   if (result == nullptr) {
-    throw std::out_of_range(fmt::format("Type name not registered: {}", name));
+    throw std::out_of_range(fmt::format("Type uri not registered: {}", uri));
   }
   return *result;
 }
@@ -379,7 +379,7 @@ const AnySerializer& AnyRegistry::getAndCheckSerializer(
   auto itr = entry.serializers.find(protocol);
   if (itr == entry.serializers.end()) {
     folly::throw_exception<std::out_of_range>(fmt::format(
-        "Serializer not found: {}#{}", entry.type.get_name(), protocol.name()));
+        "Serializer not found: {}#{}", entry.type.get_uri(), protocol.name()));
   }
   return *itr->second;
 }

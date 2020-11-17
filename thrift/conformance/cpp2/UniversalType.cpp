@@ -103,7 +103,7 @@ void checkDomain(folly::StringPiece domain) {
   }
 }
 
-folly::fbstring TypeHashSha2_256(std::string_view name) {
+folly::fbstring TypeHashSha2_256(std::string_view uri) {
   // Save an initalized context.
   static EVP_MD_CTX* kBase = []() {
     auto ctx = newMdContext();
@@ -116,8 +116,8 @@ folly::fbstring TypeHashSha2_256(std::string_view name) {
   // Copy the base context.
   auto ctx = newMdContext();
   checkResult(EVP_MD_CTX_copy_ex(ctx.get(), kBase));
-  // Digest the name.
-  checkResult(EVP_DigestUpdate(ctx.get(), name.data(), name.size()));
+  // Digest the uri.
+  checkResult(EVP_DigestUpdate(ctx.get(), uri.data(), uri.size()));
 
   // Get the result.
   folly::fbstring result(EVP_MD_CTX_size(ctx.get()), 0);
@@ -136,12 +136,12 @@ type_hash_size_t TypeHashSizeSha2_256() {
 } // namespace
 
 // TODO(afuller): Consider 'normalizing' a folly::Uri instead of
-// requiring the name be expressed in a restricted cononical form.
-void validateUniversalType(std::string_view name) {
+// requiring the uri be expressed in a restricted cononical form.
+void validateUniversalType(std::string_view uri) {
   // We require a minimum 1 domain and 2 path segements, though up to 4 path
   // segements is likely to be common.
   folly::small_vector<folly::StringPiece, 5> segs;
-  folly::splitTo<folly::StringPiece>('/', name, std::back_inserter(segs));
+  folly::splitTo<folly::StringPiece>('/', uri, std::back_inserter(segs));
   check(segs.size() >= 3, "not enough path segments");
   checkDomain(segs[0]);
   size_t i = 1;
@@ -151,10 +151,10 @@ void validateUniversalType(std::string_view name) {
   checkTypeSegment(segs[i]);
 }
 
-folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view name) {
+folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view uri) {
   switch (alg) {
     case TypeHashAlgorithm::Sha2_256:
-      return TypeHashSha2_256(name);
+      return TypeHashSha2_256(uri);
     default:
       folly::throw_exception<std::runtime_error>(
           "Unsupported type hash algorithm: " + std::to_string((int)alg));
@@ -214,13 +214,13 @@ folly::StringPiece getTypeHashPrefix(
 
 folly::fbstring maybeGetTypeHashPrefix(
     TypeHashAlgorithm alg,
-    std::string_view name,
+    std::string_view uri,
     type_hash_size_t typeHashBytes) {
   if (typeHashBytes == kDisableTypeHash || // Type hash disabled.
-      name.size() <= size_t(typeHashBytes)) { // Type name is smaller.
+      uri.size() <= size_t(typeHashBytes)) { // Type uri is smaller.
     return {};
   }
-  folly::fbstring result = getTypeHash(alg, name);
+  folly::fbstring result = getTypeHash(alg, uri);
   if (result.size() > size_t(typeHashBytes)) {
     result.resize(typeHashBytes);
   }

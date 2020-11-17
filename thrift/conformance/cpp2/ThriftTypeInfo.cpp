@@ -19,12 +19,13 @@
 namespace apache::thrift::conformance {
 
 void validateThriftTypeInfo(const ThriftTypeInfo& type) {
-  validateUniversalType(*type.name_ref());
-  for (const auto& alias : *type.aliases_ref()) {
-    validateUniversalType(alias);
+  validateUniversalType(*type.uri_ref());
+  for (const auto& uri : *type.altUris_ref()) {
+    validateUniversalType(uri);
   }
-  if (type.aliases_ref()->find(*type.name_ref()) != type.aliases_ref()->end()) {
-    folly::throw_exception<std::invalid_argument>("alias matches name");
+  if (type.altUris_ref()->find(*type.uri_ref()) != type.altUris_ref()->end()) {
+    folly::throw_exception<std::invalid_argument>(
+        "duplicate uri: " + *type.uri_ref());
   }
 
   if (type.typeHashBytes_ref()) {

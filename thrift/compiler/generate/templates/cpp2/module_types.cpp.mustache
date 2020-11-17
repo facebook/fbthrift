@@ -32,7 +32,7 @@
 namespace {
 apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
     apache::thrift::conformance::ThriftTypeInfo type;
-    type.set_name(std::move(uri));
+    type.set_uri(std::move(uri));
     return type;
 }
 } // namespace

@@ -35,15 +35,26 @@ enum TypeHashAlgorithm {
 
 // Language-independent type information.
 struct ThriftTypeInfo {
-  // The name of the type.
-  1: string name;
+  // The URI of the type. For example: "facebook.com/thrift/ThriftTypeInfo"
+  //
+  // The scheme "fbthrift://" is implied, and should not be included.
+  1: string uri;
 
-  // The other names for this type.
-  2: set<string> aliases;
+  // The other URIs for this type.
+  //
+  // The primary URI can be safely changed using the following steps:
+  // 1. Add the new URI to altUris.
+  // 2. Update all binaries/libraries, so they know about the new
+  // URI.
+  // 3. Move the old URI to altUris, and the new URI to uri.
+  //
+  // At this point all references to the old URI will continue to work, and
+  // all knew references will use the new URI.
+  2: set<string> altUris;
 
   // The default number of bytes to use in a type hash.
   //
   // 0 indicates a type hash should never be used.
-  // unset indicates that the implemnation should decided.
+  // Unset indicates that the implementation should decide.
   3: optional byte typeHashBytes;
 }

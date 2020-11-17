@@ -32,7 +32,7 @@ TEST(AnyRegistryTest, ShortType) {
   FollyToStringSerializer<int> intCodec;
   EXPECT_TRUE(registry.registerType<int>(shortThriftType(), {&intCodec}));
 
-  // Should use the type name because it is shorter than the id.
+  // Should use the type uri because it is shorter than the id.
   Any any = registry.store(1, kFollyToStringProtocol);
   EXPECT_TRUE(any.type_ref());
   EXPECT_FALSE(any.typeHashPrefixSha2_256_ref());
@@ -50,13 +50,13 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
   }
   EXPECT_TRUE(registry.registerType<int>(longType, {&intCodec}));
 
-  // Should use the type id because it is shorter than the name.
+  // Should use the type id because it is shorter than the uri.
   Any any = registry.store(1, kFollyToStringProtocol);
   if (expectedOutBytes == kDisableTypeHash) {
     EXPECT_FALSE(any.typeHashPrefixSha2_256_ref());
     EXPECT_TRUE(any.type_ref());
     EXPECT_EQ(
-        registry.getSerializerByName(*any.get_type(), intCodec.getProtocol()),
+        registry.getSerializerByUri(*any.get_type(), intCodec.getProtocol()),
         &intCodec);
   } else {
     EXPECT_FALSE(any.type_ref());
@@ -99,7 +99,7 @@ TEST(AnyRegistryTest, ShortTypeHash) {
 
 TEST(AnyRegistryTest, TypeNotFound) {
   AnyRegistry registry;
-  EXPECT_EQ(registry.getTypeName<int>(), "");
+  EXPECT_EQ(registry.getTypeUri<int>(), "");
   EXPECT_EQ((registry.getSerializer<int, StandardProtocol::Binary>()), nullptr);
 
   EXPECT_THROW(registry.store<StandardProtocol::Binary>(1), std::out_of_range);
@@ -118,7 +118,7 @@ TEST(AnyRegistryTest, TypeNotFound) {
 TEST(AnyRegistryTest, ProtocolNotFound) {
   AnyRegistry registry;
   EXPECT_TRUE(registry.registerType<int>(testThriftType("int")));
-  EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
+  EXPECT_EQ(registry.getTypeUri<int>(), thriftType("int"));
   EXPECT_EQ((registry.getSerializer<int, StandardProtocol::Binary>()), nullptr);
 
   EXPECT_THROW(registry.store<StandardProtocol::Binary>(1), std::out_of_range);
@@ -154,7 +154,7 @@ TEST(AnyRegistryTest, TypeHashToShort) {
 TEST(AnyRegistryTest, Behavior) {
   AnyRegistry registry;
   const AnyRegistry& cregistry = registry;
-  EXPECT_EQ(cregistry.getTypeName(typeid(int)), "");
+  EXPECT_EQ(cregistry.getTypeUri(typeid(int)), "");
   EXPECT_EQ(cregistry.getSerializer<int>(kFollyToStringProtocol), nullptr);
 
   FollyToStringSerializer<int> intCodec;
@@ -167,7 +167,7 @@ TEST(AnyRegistryTest, Behavior) {
       registry.registerType<int>(testThriftType("")), std::invalid_argument);
 
   EXPECT_TRUE(registry.registerType<int>(testThriftType("int")));
-  EXPECT_EQ(cregistry.getTypeName(typeid(int)), thriftType("int"));
+  EXPECT_EQ(cregistry.getTypeUri(typeid(int)), thriftType("int"));
   EXPECT_EQ(cregistry.getSerializer<int>(kFollyToStringProtocol), nullptr);
 
   // Conflicting and duplicate registrations are rejected.
@@ -176,7 +176,7 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_FALSE(registry.registerType<double>(testThriftType("int")));
 
   EXPECT_TRUE(registry.registerSerializer<int>(&intCodec));
-  EXPECT_EQ(cregistry.getTypeName<int>(), thriftType("int"));
+  EXPECT_EQ(cregistry.getTypeUri<int>(), thriftType("int"));
   EXPECT_EQ(cregistry.getSerializer<int>(kFollyToStringProtocol), &intCodec);
 
   // Duplicate registrations are rejected.
@@ -283,20 +283,20 @@ TEST(AnyRegistryTest, Aliases) {
 
   EXPECT_TRUE(registry.registerType<int>(
       testThriftType({"int", "Int", "Integer"}), {&oneCodec, &intCodec}));
-  EXPECT_EQ(registry.getTypeName<int>(), thriftType("int"));
+  EXPECT_EQ(registry.getTypeUri<int>(), thriftType("int"));
   EXPECT_EQ(
-      registry.getSerializerByName(thriftType("int"), oneCodec.getProtocol()),
+      registry.getSerializerByUri(thriftType("int"), oneCodec.getProtocol()),
       &oneCodec);
   EXPECT_EQ(
-      registry.getSerializerByName(thriftType("Int"), oneCodec.getProtocol()),
+      registry.getSerializerByUri(thriftType("Int"), oneCodec.getProtocol()),
       &oneCodec);
   EXPECT_EQ(
-      registry.getSerializerByName(
+      registry.getSerializerByUri(
           thriftType("Integer"), oneCodec.getProtocol()),
       &oneCodec);
 
   auto any = cregistry.store(1, kFollyToStringProtocol);
-  // Stored under the main type name.
+  // Stored under the main type uri.
   EXPECT_EQ(any.type_ref().value_or(""), thriftType("int"));
   EXPECT_EQ(cregistry.load<int>(any), 1);
 

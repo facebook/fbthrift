@@ -37,15 +37,15 @@ ThriftTypeInfo testThriftType(const std::string& shortName) {
   return testThriftType({shortName.c_str()});
 }
 
-ThriftTypeInfo testThriftType(std::initializer_list<const char*> names) {
+ThriftTypeInfo testThriftType(std::initializer_list<const char*> uris) {
   ThriftTypeInfo type;
   type.set_typeHashBytes(0);
-  auto itr = names.begin();
-  if (itr != names.end()) {
-    type.set_name(thriftType(*itr++));
+  auto itr = uris.begin();
+  if (itr != uris.end()) {
+    type.set_uri(thriftType(*itr++));
   }
-  while (itr != names.end()) {
-    type.aliases_ref()->emplace(thriftType(*itr++));
+  while (itr != uris.end()) {
+    type.altUris_ref()->emplace(thriftType(*itr++));
   }
   return type;
 }
@@ -73,17 +73,17 @@ void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
 
 ThriftTypeInfo shortThriftType(int ordinal) {
   ThriftTypeInfo type;
-  type.set_name(fmt::format("sh.or/t/{}", ordinal));
-  assert(type.get_name().size() <= kMinTypeHashBytes);
+  type.set_uri(fmt::format("sh.or/t/{}", ordinal));
+  assert(type.get_uri().size() <= kMinTypeHashBytes);
   return type;
 }
 
 ThriftTypeInfo longThriftType(int ordinal) {
   ThriftTypeInfo type;
-  type.set_name(
+  type.set_uri(
       fmt::format("seriously.long.type/seriously/long/type/{}", ordinal));
   assert(
-      type.get_name().size() >
+      type.get_uri().size() >
       size_t(getTypeHashSize(TypeHashAlgorithm::Sha2_256)));
   return type;
 }
