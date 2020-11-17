@@ -520,7 +520,7 @@ class mstch_py3_program : public mstch_program {
   }
 
   mstch::node hasStream() {
-    return !streamTypes_.empty();
+    return !has_option("no_stream") && !streamTypes_.empty();
   }
 
   mstch::node isTypeContext() {
@@ -787,8 +787,10 @@ class mstch_py3_service : public mstch_service {
 
   mstch::node get_supported_functions() {
     std::vector<t_function*> funcs;
+    bool no_stream = has_option("no_stream");
     for (auto func : service_->get_functions()) {
-      if (!func->returns_sink() && !func->get_returntype()->is_service()) {
+      if (!(no_stream && func->returns_stream()) && !func->returns_sink() &&
+          !func->get_returntype()->is_service()) {
         funcs.push_back(func);
       }
     }
