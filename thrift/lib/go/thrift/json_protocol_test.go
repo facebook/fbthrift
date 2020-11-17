@@ -681,7 +681,7 @@ func TestWriteJSONProtocolMap(t *testing.T) {
 	for k, value := range doubleValues {
 		ik, err := p.ReadI32()
 		if err != nil {
-			t.Fatalf("Bad key for %s index %v, wrote: %v, expected: %v, error: %s", thetype, k, ik, string(k), err.Error())
+			t.Fatalf("Bad key for %s index %v, wrote: %v, expected: %v, error: %s", thetype, k, ik, strconv.Itoa(k), err.Error())
 		}
 		if int(ik) != k {
 			t.Fatalf("Bad key for %s index %v, wrote: %v, expected: %v", thetype, k, ik, k)
