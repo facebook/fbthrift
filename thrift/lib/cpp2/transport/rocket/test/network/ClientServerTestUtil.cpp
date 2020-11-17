@@ -65,7 +65,6 @@ namespace rocket {
 namespace test {
 
 namespace {
-constexpr int32_t kversion = 10;
 std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
 makeTestResponse(
     std::unique_ptr<folly::IOBuf> requestMetadata,
@@ -296,15 +295,7 @@ void RocketTestClient::connect() {
     client_ = RocketClient::create(
         evb_,
         std::move(socket),
-        std::make_unique<rocket::SetupFrame>(makeTestSetupFrame()),
-        [this](MetadataPushFrame&& frame) {
-          CompactProtocolReader reader;
-          reader.setInput(frame.metadata());
-          ServerPushMetadata metadata;
-          metadata.read(&reader);
-          EXPECT_EQ(kversion, metadata.version_ref().value_or(0));
-          b_.post();
-        });
+        std::make_unique<rocket::SetupFrame>(makeTestSetupFrame()));
   });
 }
 
@@ -376,8 +367,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
       folly::EventBase& ioEvb,
       const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata)
       : ioEvb_(ioEvb), expectedSetupMetadata_(expectedSetupMetadata) {}
-  void handleSetupFrame(SetupFrame&& frame, RocketServerConnection& connection)
-      final {
+  void handleSetupFrame(SetupFrame&& frame, RocketServerConnection&) final {
     folly::io::Cursor cursor(frame.payload().buffer());
     // Validate Rocket protocol key
     uint32_t protocolKey;
@@ -393,13 +383,6 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     meta.read(&reader);
     EXPECT_EQ(reader.getCursorPosition(), frame.payload().metadataSize());
     EXPECT_EQ(expectedSetupMetadata_, meta.opaque_ref().value_or({}));
-    ServerPushMetadata serverMeta;
-    serverMeta.version_ref() = kversion;
-    CompactProtocolWriter compactProtocolWriter;
-    folly::IOBufQueue queue;
-    compactProtocolWriter.setOutput(&queue);
-    serverMeta.write(&compactProtocolWriter);
-    connection.sendMetadataPush(std::move(queue).move());
   }
 
   void handleRequestResponseFrame(

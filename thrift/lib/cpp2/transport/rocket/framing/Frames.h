@@ -517,10 +517,6 @@ class ErrorFrame {
 class MetadataPushFrame {
  public:
   explicit MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame);
-  static MetadataPushFrame makeFromMetadata(
-      std::unique_ptr<folly::IOBuf> metadata) {
-    return MetadataPushFrame(std::move(metadata), FromMetadata{});
-  }
 
   static constexpr FrameType frameType() {
     return FrameType::METADATA_PUSH;
@@ -534,17 +530,10 @@ class MetadataPushFrame {
     return std::move(metadata_);
   }
 
-  const folly::IOBuf* metadata() & {
-    return metadata_.get();
-  }
-
   void serialize(Serializer& writer) &&;
   std::unique_ptr<folly::IOBuf> serialize() &&;
 
  private:
-  struct FromMetadata {};
-  MetadataPushFrame(std::unique_ptr<folly::IOBuf> metadata, FromMetadata)
-      : metadata_(std::move(metadata)) {}
   std::unique_ptr<folly::IOBuf> metadata_;
 };
 

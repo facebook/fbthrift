@@ -608,17 +608,6 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
       rocket::Payload::makeFromMetadataAndData(queue.move(), {}));
 }
 
-void RocketClientChannel::handleMetadataPush(
-    rocket::MetadataPushFrame&& frame) {
-  CompactProtocolReader reader;
-  reader.setInput(frame.metadata());
-  ServerPushMetadata metadata;
-  metadata.read(&reader);
-  if (auto version = metadata.version_ref()) {
-    serverVersion_ = *version;
-  }
-}
-
 RocketClientChannel::RocketClientChannel(
     folly::AsyncTransport::UniquePtr socket,
     RequestSetupMetadata meta)
@@ -626,16 +615,11 @@ RocketClientChannel::RocketClientChannel(
       rclient_(rocket::RocketClient::create(
           *evb_,
           std::move(socket),
-          std::make_unique<rocket::SetupFrame>(makeSetupFrame(std::move(meta))),
-          [this](rocket::MetadataPushFrame&& frame) {
-            handleMetadataPush(std::move(frame));
-          })) {}
+          std::make_unique<rocket::SetupFrame>(
+              makeSetupFrame(std::move(meta))))) {}
 
 RocketClientChannel::~RocketClientChannel() {
   unsetOnDetachable();
-  if (rclient_) {
-    rclient_->setOnMetadataPush(nullptr);
-  }
   closeNow();
 }
 

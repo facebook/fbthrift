@@ -181,15 +181,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
     if (meta.dscpToReflect_ref() || meta.markToReflect_ref()) {
       connection.applyDscpAndMarkToSocket(meta);
     }
-
-    ServerPushMetadata serverMeta;
-    serverMeta.version_ref() = version_;
-    CompactProtocolWriter compactProtocolWriter;
-    folly::IOBufQueue queue;
-    compactProtocolWriter.setOutput(&queue);
-    serverMeta.write(&compactProtocolWriter);
-    connection.sendMetadataPush(std::move(queue).move());
-
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP,
