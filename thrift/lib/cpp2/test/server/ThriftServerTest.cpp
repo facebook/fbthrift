@@ -1880,3 +1880,28 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
 
   EXPECT_EQ(received_reply, server_reply);
 }
+
+TEST(ThriftServer, RocketOverSSLNoALPN) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSL(*server);
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  auto port = sst.getAddress()->getPort();
+  folly::SocketAddress loopback("::1", port);
+
+  auto ctx = makeClientSslContext();
+  folly::AsyncSSLSocket::UniquePtr sslSock(
+      new folly::AsyncSSLSocket(ctx, &base),
+      folly::AsyncSSLSocket::Destructor());
+  sslSock->connect(nullptr /* connect callback */, loopback);
+
+  TestServiceAsyncClient client(
+      RocketClientChannel::newChannel(std::move(sslSock)));
+
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+}

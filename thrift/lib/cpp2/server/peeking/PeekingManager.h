@@ -18,6 +18,7 @@
 
 #include <folly/ExceptionString.h>
 #include <folly/io/Cursor.h>
+#include <folly/io/async/DecoratedAsyncTransportWrapper.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
@@ -157,6 +158,60 @@ class CheckTLSPeekingManager : public PeekingManagerBase,
   typename wangle::SocketPeeker::UniquePtr peeker_;
 };
 
+class PreReceivedDataAsyncTransportWrapper
+    : public folly::DecoratedAsyncTransportWrapper<folly::AsyncTransport> {
+  using Base = folly::DecoratedAsyncTransportWrapper<folly::AsyncTransport>;
+
+ public:
+  using UniquePtr = std::unique_ptr<AsyncTransport, Destructor>;
+
+  static UniquePtr create(
+      folly::AsyncTransport::UniquePtr socket,
+      std::vector<uint8_t> preReceivedData) {
+    DCHECK(!socket->getReadCallback());
+    return UniquePtr(new PreReceivedDataAsyncTransportWrapper(
+        std::move(socket), std::move(preReceivedData)));
+  }
+
+  ReadCallback* getReadCallback() const override {
+    return readCallback_;
+  }
+
+  void setReadCB(folly::AsyncTransport::ReadCallback* callback) override {
+    folly::DelayedDestruction::DestructorGuard dg(this);
+    readCallback_ = callback;
+    if (preReceivedData_) {
+      if (!readCallback_) {
+        return;
+      }
+      const auto preReceivedData = std::exchange(preReceivedData_, {});
+      void* buf;
+      size_t bufSize;
+      callback->getReadBuffer(&buf, &bufSize);
+      CHECK(callback == readCallback_);
+      CHECK(bufSize >= preReceivedData->size());
+      std::memcpy(buf, preReceivedData->data(), preReceivedData->size());
+      callback->readDataAvailable(preReceivedData->size());
+    }
+    if (readCallback_ == callback) {
+      Base::setReadCB(callback);
+    }
+  }
+
+ private:
+  PreReceivedDataAsyncTransportWrapper(
+      folly::AsyncTransport::UniquePtr socket,
+      std::vector<uint8_t> preReceivedData)
+      : Base(std::move(socket)),
+        preReceivedData_(
+            preReceivedData.size() ? std::make_unique<std::vector<uint8_t>>(
+                                         std::move(preReceivedData))
+                                   : std::unique_ptr<std::vector<uint8_t>>()) {}
+
+  std::unique_ptr<std::vector<uint8_t>> preReceivedData_;
+  folly::AsyncTransport::ReadCallback* readCallback_{};
+};
+
 class TransportPeekingManager : public PeekingManagerBase,
                                 public wangle::SocketPeeker::Callback {
  public:
@@ -171,13 +226,8 @@ class TransportPeekingManager : public PeekingManagerBase,
             clientAddr,
             std::move(tinfo),
             server),
-        socket_(std::move(socket)) {
-    auto underlyingSocket =
-        socket_->getUnderlyingTransport<folly::AsyncSocket>();
-    CHECK(underlyingSocket) << "Underlying socket is not a AsyncSocket type";
-    acceptor_->getConnectionManager()->addConnection(this, true);
-    peeker_.reset(
-        new wangle::SocketPeeker(*underlyingSocket, this, kPeekBytes));
+        socket_(std::move(socket)),
+        peeker_(new wangle::TransportPeeker(*socket_, this, kPeekBytes)) {
     peeker_->start();
   }
 
@@ -191,6 +241,9 @@ class TransportPeekingManager : public PeekingManagerBase,
     folly::DelayedDestruction::DestructorGuard dg(this);
     dropConnection();
 
+    auto transport = PreReceivedDataAsyncTransportWrapper::create(
+        std::move(socket_), peekBytes);
+
     try {
       // Check for new transports
       bool acceptedHandler = false;
@@ -198,7 +251,7 @@ class TransportPeekingManager : public PeekingManagerBase,
         if (handler->canAcceptConnection(peekBytes)) {
           handler->handleConnection(
               acceptor_->getConnectionManager(),
-              std::move(socket_),
+              std::move(transport),
               &clientAddr_,
               tinfo_,
               acceptor_);
@@ -209,7 +262,7 @@ class TransportPeekingManager : public PeekingManagerBase,
 
       // Default to Header Transport
       if (!acceptedHandler) {
-        acceptor_->handleHeader(std::move(socket_), &clientAddr_);
+        acceptor_->handleHeader(std::move(transport), &clientAddr_);
       }
     } catch (...) {
       LOG(ERROR) << __func__ << " failed, dropping connection: "
@@ -229,7 +282,7 @@ class TransportPeekingManager : public PeekingManagerBase,
 
  private:
   folly::AsyncTransport::UniquePtr socket_;
-  typename wangle::SocketPeeker::UniquePtr peeker_;
+  typename wangle::TransportPeeker::UniquePtr peeker_;
 };
 
 } // namespace thrift

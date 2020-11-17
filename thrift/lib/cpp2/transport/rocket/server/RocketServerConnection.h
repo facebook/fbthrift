@@ -351,8 +351,8 @@ class RocketServerConnection final
       }
 
 #if defined(__linux__)
-      if (auto socket =
-              dynamic_cast<folly::AsyncSocket*>(connection_.socket_.get())) {
+      if (auto socket = connection_.socket_
+                            ->getUnderlyingTransport<folly::AsyncSocket>()) {
         tcp_info info;
         socklen_t infolen = sizeof(info);
         if (socket->getSockOpt(IPPROTO_TCP, TCP_INFO, &info, &infolen)) {

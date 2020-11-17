@@ -118,8 +118,8 @@ void Cpp2Worker::onNewConnection(
           }
         }
       }
-      // Default to header
-      handleHeader(std::move(sock), addr);
+      new TransportPeekingManager(
+          shared_from_this(), *addr, tinfo, server_, std::move(sock));
       break;
     case wangle::SecureTransportType::ZERO:
       LOG(ERROR) << "Unsupported Secure Transport Type: ZERO";
@@ -176,7 +176,8 @@ std::shared_ptr<folly::AsyncTransport> Cpp2Worker::createThriftTransport(
         fizzServer, fizz::server::AsyncFizzServer::Destructor());
   }
 
-  folly::AsyncSocket* tsock = dynamic_cast<folly::AsyncSocket*>(sock.get());
+  folly::AsyncSocket* tsock =
+      sock->getUnderlyingTransport<folly::AsyncSocket>();
   CHECK(tsock);
   markSocketAccepted(tsock);
   // use custom deleter for std::shared_ptr<folly::AsyncTransport> to allow
