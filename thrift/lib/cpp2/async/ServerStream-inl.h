@@ -22,7 +22,7 @@ namespace apache {
 namespace thrift {
 
 template <typename T>
-ClientBufferedStream<T> ServerStream<T>::toClientStream(
+ClientBufferedStream<T> ServerStream<T>::toClientStreamUnsafeDoNotUse(
     folly::EventBase* eb,
     size_t bufferSize) && {
   struct : public apache::thrift::detail::ClientStreamBridge::

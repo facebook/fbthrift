@@ -66,8 +66,12 @@ class ServerStream {
     return std::move(pair.first);
   }
 
-  // Helper for unit testing your service handler
-  ClientBufferedStream<T> toClientStream(
+  [[deprecated(
+      "Use ScopedServerInterfaceThread instead of invoking handler methods "
+      "directly. This approach changes the threading model and can hide race "
+      "conditions in production code.")]] //
+  ClientBufferedStream<T>
+  toClientStreamUnsafeDoNotUse(
       folly::EventBase* evb = folly::getEventBase(),
       size_t bufferSize = 100) &&;
 

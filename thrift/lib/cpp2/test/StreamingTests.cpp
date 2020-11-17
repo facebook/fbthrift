@@ -41,7 +41,7 @@ class DiffTypesStreamingService
   }
 
   apache::thrift::ClientBufferedStream<int32_t> clientDownloadObject(int64_t) {
-    return downloadObject(0).toClientStream(&evb_);
+    return downloadObject(0).toClientStreamUnsafeDoNotUse(&evb_);
   }
 
  protected:
@@ -75,7 +75,7 @@ TEST(StreamingTest, StreamPublisherCancellation) {
   int count = 0;
   auto subscription =
       std::move(streamAndPublisher.first)
-          .toClientStream()
+          .toClientStreamUnsafeDoNotUse()
           .subscribeExTry(folly::getEventBase(), [&count](auto value) mutable {
             if (value.hasValue()) {
               EXPECT_EQ(count++, *value);
@@ -118,7 +118,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceGeneratorCompiles) {
   DiffTypesStreamingService service;
 
   bool done = false;
-  service.downloadObject(0).toClientStream().subscribeInline(
+  service.downloadObject(0).toClientStreamUnsafeDoNotUse().subscribeInline(
       [first = true, &done](folly::Try<int32_t>&& t) mutable {
         if (first) {
           EXPECT_EQ(*t, 42);
@@ -147,7 +147,7 @@ TEST(StreamingTest, DiffTypesStreamingServicePublisherCompiles) {
   DiffTypesStreamingService service;
 
   bool done = false;
-  service.downloadObject(0).toClientStream().subscribeInline(
+  service.downloadObject(0).toClientStreamUnsafeDoNotUse().subscribeInline(
       [first = true, &done](folly::Try<int32_t>&& t) mutable {
         if (first) {
           EXPECT_EQ(*t, 42);
@@ -176,7 +176,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
   DiffTypesStreamingService service;
 
   bool done = false;
-  service.downloadObject(0).toClientStream().subscribeInline(
+  service.downloadObject(0).toClientStreamUnsafeDoNotUse().subscribeInline(
       [first = true, &done](folly::Try<int32_t>&& t) mutable {
         if (first) {
           EXPECT_EQ(*t, 42);
@@ -203,7 +203,9 @@ TEST(StreamingTest, WrapperToAsyncGenerator) {
     }
   };
   DiffTypesStreamingService service;
-  auto gen = service.downloadObject(0).toClientStream().toAsyncGenerator();
+  auto gen = service.downloadObject(0)
+                 .toClientStreamUnsafeDoNotUse()
+                 .toAsyncGenerator();
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     auto next = co_await gen.next();
     EXPECT_EQ(*next, 42);
