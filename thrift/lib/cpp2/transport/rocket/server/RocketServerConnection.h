@@ -117,6 +117,7 @@ class RocketServerConnection final
       Payload&& payload,
       Flags flags,
       ExtFrameType extFrameType);
+  void sendMetadataPush(std::unique_ptr<folly::IOBuf> metadata);
 
   void freeStream(StreamId streamId, bool markRequestComplete);
 
