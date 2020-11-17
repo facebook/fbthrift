@@ -73,7 +73,7 @@ void MultiSerializer::encode(any_ref value, folly::io::QueueAppender&& appender)
 
 ThriftTypeInfo shortThriftType(int ordinal) {
   ThriftTypeInfo type;
-  type.set_uri(fmt::format("sh.or/t/{}", ordinal));
+  type.set_uri(fmt::format("s.r/t/{}", ordinal));
   assert(type.get_uri().size() <= kMinTypeHashBytes);
   return type;
 }

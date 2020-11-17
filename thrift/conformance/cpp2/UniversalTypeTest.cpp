@@ -86,9 +86,9 @@ auto kBadNames = {
     "foo_bar.com/my/type",
 };
 
-constexpr auto kGoodIdSizes = {16, 24, 32};
+constexpr auto kGoodIdSizes = {8, 16, 24, 32};
 
-const auto kBadIdSizes = {1, 15, 33};
+const auto kBadIdSizes = {1, 7, 33, 255};
 
 auto Hash() {
   return EVP_sha256();

@@ -22,11 +22,15 @@ namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 namespace go thrift.conformance.thrift_type_info
 
-// The minimum number of bytes that can be used to identify a type.
+// The minimum and default number of bytes that can be used to identify
+// a type.
 //
-// The expected number of names that can be hashed before a
-// collision is 2^(8*minTypeHashBytes/2).
-const byte minTypeHashBytes = 16;
+// The expected number of types that can be hashed before a
+// collision is 2^(8*{numBytes}/2).
+// Which is ~4.3 billion types for the min, and ~18.45 quintillion
+// types for the default.
+const byte minTypeHashBytes = 8;
+const byte defaultTypeHashBytes = 16;
 
 // The hash algorithms that can be used with type names.
 enum TypeHashAlgorithm {

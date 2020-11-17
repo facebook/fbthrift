@@ -43,7 +43,7 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
   AnyRegistry registry;
   FollyToStringSerializer<int> intCodec;
   auto longType = longThriftType();
-  if (typeBytes == kDefaultTypeHashBytes) {
+  if (typeBytes == kTypeHashBytesNotSpecified) {
     longType.typeHashBytes_ref().reset();
   } else {
     longType.set_typeHashBytes(typeBytes);
@@ -78,8 +78,9 @@ TEST(AnyRegistryTest, LongType) {
   // Disabled is respected.
   THRIFT_SCOPED_CHECK(checkLongType(kDisableTypeHash, kDisableTypeHash));
 
-  // Unset uses minimum.
-  THRIFT_SCOPED_CHECK(checkLongType(kDefaultTypeHashBytes, kMinTypeHashBytes));
+  // Unset uses default.
+  THRIFT_SCOPED_CHECK(
+      checkLongType(kTypeHashBytesNotSpecified, kDefaultTypeHashBytes));
 
   // Type can increase bytes used.
   THRIFT_SCOPED_CHECK(checkLongType(24, 24));
@@ -93,7 +94,7 @@ TEST(AnyRegistryTest, ShortTypeHash) {
   EXPECT_TRUE(registry.registerType<int>(longType, {&intCodec}));
   Any any = registry.store(1, kFollyToStringProtocol);
   any.set_typeHashPrefixSha2_256(
-      any.typeHashPrefixSha2_256_ref()->substr(0, 8));
+      any.typeHashPrefixSha2_256_ref()->substr(0, 7));
   EXPECT_THROW(registry.load<int>(any), std::out_of_range);
 }
 
@@ -143,11 +144,11 @@ TEST(AnyRegistryTest, TypeHashToShort) {
   EXPECT_EQ(registry.load<int>(any), 1);
 
   any.set_typeHashPrefixSha2_256(
-      any.get_typeHashPrefixSha2_256()->substr(0, 16));
+      any.get_typeHashPrefixSha2_256()->substr(0, 8));
   EXPECT_EQ(registry.load<int>(any), 1);
 
   any.set_typeHashPrefixSha2_256(
-      any.get_typeHashPrefixSha2_256()->substr(0, 15));
+      any.get_typeHashPrefixSha2_256()->substr(0, 7));
   EXPECT_THROW(registry.load<int>(any), std::out_of_range);
 }
 

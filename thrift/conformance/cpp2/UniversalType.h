@@ -30,6 +30,8 @@ using type_hash_size_t = int8_t;
 inline constexpr type_hash_size_t kDisableTypeHash = 0;
 inline constexpr type_hash_size_t kMinTypeHashBytes =
     thrift_type_info_constants::minTypeHashBytes();
+inline constexpr type_hash_size_t kDefaultTypeHashBytes =
+    thrift_type_info_constants::defaultTypeHashBytes();
 
 // Validates that uri is a valid universal type uri of the form:
 // {domain}/{path}. For example: facebook.com/thrift/Value.
@@ -60,13 +62,13 @@ folly::fbstring getTypeHash(TypeHashAlgorithm alg, std::string_view uri);
 // Shrinks the typeHash to fit in the given number of bytes.
 folly::StringPiece getTypeHashPrefix(
     folly::StringPiece typeHash,
-    type_hash_size_t typeHashBytes);
+    type_hash_size_t typeHashBytes = kDefaultTypeHashBytes);
 
 // Returns the type hash prefix iff smaller than the uri.
 folly::fbstring maybeGetTypeHashPrefix(
     TypeHashAlgorithm alg,
     std::string_view uri,
-    type_hash_size_t typeHashBytes);
+    type_hash_size_t typeHashBytes = kDefaultTypeHashBytes);
 
 // Returns true iff prefix was derived from typeHash.
 bool matchesTypeHash(folly::StringPiece typeHash, folly::StringPiece prefix);
