@@ -33,7 +33,7 @@ struct Object {
 
   // The members of the object.
   2: map<string, Value> members;
-} (any_type.name = "facebook.com/thrift/Object")
+} (thrift.uri = "facebook.com/thrift/Object")
 
 // A dynamic value.
 union Value {
@@ -62,7 +62,7 @@ union Value {
 
   // A static object value.
   15: any.Any anyValue;
-} (any_type.name = "facebook.com/thrift/Value")
+} (thrift.uri = "facebook.com/thrift/Value")
 
 // An enumeration of all base types in thrift.
 //

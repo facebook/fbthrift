@@ -966,7 +966,7 @@ class mstch_struct : public mstch_base {
             {"struct:union?", &mstch_struct::is_union},
             {"struct:plain?", &mstch_struct::is_plain},
             {"struct:annotations", &mstch_struct::annotations},
-            {"struct:any_type", &mstch_struct::any_type},
+            {"struct:thrift_uri", &mstch_struct::thrift_uri},
         });
   }
   mstch::node name() {
@@ -988,7 +988,7 @@ class mstch_struct : public mstch_base {
   mstch::node annotations() {
     return mstch_base::annotations(strct_);
   }
-  mstch::node any_type();
+  mstch::node thrift_uri();
 
  protected:
   t_struct const* strct_;
@@ -1267,11 +1267,12 @@ class mstch_program : public mstch_base {
             {"program:services?", &mstch_program::has_services},
             {"program:typedefs?", &mstch_program::has_typedefs},
             {"program:constants?", &mstch_program::has_constants},
-            {"program:any_types?", &mstch_program::has_any_types},
+            {"program:thrift_uris?", &mstch_program::has_thrift_uris},
         });
     register_has_option("program:frozen?", "frozen");
     register_has_option("program:json?", "json");
     register_has_option("program:nimble?", "nimble");
+    register_has_option("program:any?", "any");
   }
 
   virtual std::string get_program_namespace(t_program const*) {
@@ -1309,7 +1310,7 @@ class mstch_program : public mstch_base {
         structs.cbegin(), structs.cend(), std::mem_fn(&t_struct::is_union));
   }
 
-  mstch::node has_any_types();
+  mstch::node has_thrift_uris();
   mstch::node structs();
   mstch::node enums();
   mstch::node services();

@@ -16,12 +16,12 @@
 
 struct MyStruct {
   1: string myString;
-} (any_type.name = "facebook.com/thrift/compiler/test/fixtures/any/MyStruct")
+} (thrift.uri = "facebook.com/thrift/compiler/test/fixtures/any/MyStruct")
 
 union MyUnion {
   1: string myString;
-} (any_type.name = "facebook.com/thrift/compiler/test/fixtures/any/MyUnion")
+} (thrift.uri = "facebook.com/thrift/compiler/test/fixtures/any/MyUnion")
 
 exception MyException {
   1: string myString;
-} (any_type.name = "facebook.com/thrift/compiler/test/fixtures/any/MyException")
+} (thrift.uri = "facebook.com/thrift/compiler/test/fixtures/any/MyException")

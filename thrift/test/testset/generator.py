@@ -84,7 +84,7 @@ def generate_class(class_type: str, name: str, types: List[str]) -> str:
     lines = [f"{class_type} {name} {{"]
     for i, t in enumerate(types):
         lines.append("  {0}: {1} field_{0};".format(i + 1, t))
-    lines.append(f'}} (any_type.name="facebook.com/thrift/test/testset/{name}")')
+    lines.append(f'}} (thrift.uri="facebook.com/thrift/test/testset/{name}")')
     return "\n".join(lines)
 
 

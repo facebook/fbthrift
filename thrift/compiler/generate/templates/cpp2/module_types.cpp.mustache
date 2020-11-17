@@ -19,17 +19,20 @@
 #include "<%program:include_prefix%><%program:name%>_types.tcc"
 
 #include <thrift/lib/cpp2/gen/module_types_cpp.h>
-<%#program:any_types?%>
+<%#program:any?%>
+<%#program:thrift_uris?%>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
-<%/program:any_types?%>
+<%/program:thrift_uris?%>
+<%/program:any?%>
 
 #include "<%program:include_prefix%><%program:name%>_data.h"
 
-<%#program:any_types?%>
+<%#program:any?%>
+<%#program:thrift_uris?%>
 namespace {
-apache::thrift::conformance::ThriftTypeInfo typeFor(std::string name) {
+apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
     apache::thrift::conformance::ThriftTypeInfo type;
-    type.set_name(std::move(name));
+    type.set_name(std::move(uri));
     return type;
 }
 } // namespace
@@ -49,12 +52,13 @@ FOLLY_EXPORT bool __fbthrift_static_init_<%program:name%> = (
 <%/program:json?%>
         apache::thrift::conformance::StandardProtocol::Compact,
         apache::thrift::conformance::StandardProtocol::Binary>(
-        typeFor("<%struct:any_type%>")),
+        typeFor("<%struct:thrift_uri%>")),
 <%/program:structs%>
     true);
 <% > common/namespace_cpp2_end%>
 
-<%/program:any_types?%>
+<%/program:thrift_uris?%>
+<%/program:any?%>
 <% > module_types_cpp/declare_enums%>
 <%#program:tablebased?%>
 namespace apache {

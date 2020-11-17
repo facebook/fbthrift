@@ -20,10 +20,6 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-namespace {
-constexpr auto kAnyTypeNameAnnotation = "any_type.name";
-}
-
 bool mstch_base::has_option(const std::string& option) const {
   return cache_->parsed_options_.find(option) != cache_->parsed_options_.end();
 }
@@ -508,12 +504,10 @@ mstch::node mstch_struct::fields() {
   return generate_fields(strct_->get_members());
 }
 
-mstch::node mstch_struct::any_type() {
-  if (cache_->parsed_options_.count("any")) {
-    auto itr = strct_->annotations_.find(kAnyTypeNameAnnotation);
-    if (itr != strct_->annotations_.end()) {
-      return itr->second;
-    }
+mstch::node mstch_struct::thrift_uri() {
+  auto itr = strct_->annotations_.find("thrift.uri");
+  if (itr != strct_->annotations_.end()) {
+    return itr->second;
   }
   return std::string();
 }
@@ -595,13 +589,10 @@ mstch::node mstch_const::program() {
       cnst_->get_program(), generators_, cache_, pos_);
 }
 
-mstch::node mstch_program::has_any_types() {
-  if (cache_->parsed_options_.count("any")) {
-    for (const auto& strct : program_->get_structs()) {
-      if (strct->annotations_.find(kAnyTypeNameAnnotation) !=
-          strct->annotations_.end()) {
-        return true;
-      }
+mstch::node mstch_program::has_thrift_uris() {
+  for (const auto& strct : program_->get_structs()) {
+    if (strct->annotations_.find("thrift.uri") != strct->annotations_.end()) {
+      return true;
     }
   }
   return false;

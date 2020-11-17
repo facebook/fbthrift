@@ -13,9 +13,9 @@
 #include "thrift/compiler/test/fixtures/any/gen-cpp2/module_data.h"
 
 namespace {
-apache::thrift::conformance::ThriftTypeInfo typeFor(std::string name) {
+apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
     apache::thrift::conformance::ThriftTypeInfo type;
-    type.set_name(std::move(name));
+    type.set_name(std::move(uri));
     return type;
 }
 } // namespace

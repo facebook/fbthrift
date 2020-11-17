@@ -27,6 +27,7 @@
 
 <% > common/namespace_cpp2_begin%>
 
+<%#program:thrift_uris?%>
 // Explicitly reference the static init varaibles.
 //
 // If this file is always linked (e.g. link_whole), it will force
@@ -34,4 +35,5 @@
 extern FOLLY_EXPORT bool __fbthrift_static_init_<%program:name%>;
 FOLLY_EXPORT auto __fbthrift_static_reg_<%program:name%> =
     &__fbthrift_static_init_<%program:name%>;
+<%/program:thrift_uris?%>
 <% > common/namespace_cpp2_end%>

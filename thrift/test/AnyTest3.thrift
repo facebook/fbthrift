@@ -18,4 +18,4 @@ namespace cpp2 apache.thrift.test
 
 struct AnyTestMissingAnyOption {
   1: i32 foo;
-} (any_type.name = "facebook.com/thrift/test/AnyTestMissingAnyOption")
+} (thrift.uri = "facebook.com/thrift/test/AnyTestMissingAnyOption")
