@@ -23,6 +23,7 @@ namespace java.swift org.apache.thrift.conformance
 namespace go thrift.conformance.any
 
 cpp_include "<folly/io/IOBuf.h>"
+cpp_include "<folly/FBString.h>"
 
 include "thrift/conformance/if/protocol.thrift"
 
