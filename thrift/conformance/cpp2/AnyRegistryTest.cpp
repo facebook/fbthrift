@@ -365,5 +365,19 @@ TEST(AnyRegistryTest, Generated) {
       std::out_of_range);
 }
 
+TEST(AnyRegistryTest, ForceRegister) {
+  AnyRegistry registry;
+  EXPECT_TRUE(registry.forceRegisterType(typeid(Value), "va"));
+  EXPECT_TRUE(registry.registerSerializer<Value>(
+      &getAnyStandardSerializer<Value, StandardProtocol::Compact>()));
+  Value expected;
+  expected.set_boolValue(true);
+  Any any = registry.store(
+      expected, getStandardProtocol<StandardProtocol::Compact>());
+  EXPECT_EQ(any.type_ref(), "va");
+  Value actual = registry.load<Value>(any);
+  EXPECT_EQ(actual, expected);
+}
+
 } // namespace
 } // namespace apache::thrift::conformance

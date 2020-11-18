@@ -153,6 +153,11 @@ class AnyRegistry {
   // Generates a summary of the contents of the registry.
   std::string debugString() const;
 
+  // Allows an invalid type name to be registered.
+  [[deprecated("Do not use. Will be removed.")]] bool forceRegisterType(
+      const std::type_info& typeInfo,
+      std::string type);
+
  private:
   struct TypeEntry {
     TypeEntry(const std::type_info& typeInfo, ThriftTypeInfo type);

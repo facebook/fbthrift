@@ -186,6 +186,28 @@ std::string AnyRegistry::debugString() const {
   return result;
 }
 
+bool AnyRegistry::forceRegisterType(
+    const std::type_info& typeInfo,
+    std::string type) {
+  if (getTypeEntryByUri(type) != nullptr) {
+    return false;
+  }
+
+  ThriftTypeInfo info;
+  info.set_uri(std::move(type));
+  info.set_typeHashBytes(0);
+
+  auto result = registry_.emplace(
+      std::type_index(typeInfo), TypeEntry(typeInfo, std::move(info)));
+  if (!result.second) {
+    return false;
+  }
+
+  TypeEntry* entry = &result.first->second;
+  indexUri(*entry->type.uri_ref(), entry);
+  return true;
+}
+
 auto AnyRegistry::registerTypeImpl(
     const std::type_info& typeInfo,
     ThriftTypeInfo type) -> TypeEntry* {
