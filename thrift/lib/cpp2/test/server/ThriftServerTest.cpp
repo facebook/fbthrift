@@ -1965,3 +1965,26 @@ TEST(ThriftServer, RocketOverSSLNoALPN) {
   client.sync_sendResponse(response, 64);
   EXPECT_EQ(response, "test64");
 }
+
+TEST(ThriftServer, SocketQueueTimeout) {
+  TestThriftServerFactory<TestServiceSvIf> factory;
+  auto baseServer = factory.create();
+
+  constexpr auto kSocketQueueTimeout = std::chrono::milliseconds(10);
+  baseServer->setSocketQueueTimeout(kSocketQueueTimeout);
+
+  ScopedServerThread st(baseServer);
+
+  auto server = std::dynamic_pointer_cast<ThriftServer>(baseServer);
+  ASSERT_NE(server, nullptr);
+  const auto sockets = server->getSockets();
+  ASSERT_GT(sockets.size(), 0);
+
+  for (auto& socket : sockets) {
+    // Reliably inducing the socket queue timeout is non-trivial through the
+    // public API of ThriftServer. Instead, we just need to ensure that each
+    // socket has the correct queue timeout after the ThriftServer is set up.
+    // The underyling timeout behavior is covered by AsyncServerSocket tests.
+    EXPECT_EQ(socket->getQueueTimeout(), kSocketQueueTimeout);
+  }
+}

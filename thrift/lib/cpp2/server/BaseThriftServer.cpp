@@ -52,6 +52,9 @@ const std::chrono::milliseconds BaseThriftServer::DEFAULT_STREAM_EXPIRE_TIME =
 const std::chrono::milliseconds BaseThriftServer::DEFAULT_QUEUE_TIMEOUT =
     std::chrono::milliseconds(0);
 
+const std::chrono::milliseconds BaseThriftServer::DEFAULT_SOCKET_QUEUE_TIMEOUT =
+    std::chrono::milliseconds(0);
+
 const std::chrono::milliseconds BaseThriftServer::DEFAULT_TIMEOUT =
     std::chrono::milliseconds(60000);
 

@@ -136,6 +136,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   static const std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT;
 
+  static const std::chrono::milliseconds DEFAULT_SOCKET_QUEUE_TIMEOUT;
+
   /// Listen backlog
   static const int DEFAULT_LISTEN_BACKLOG = 1024;
 
@@ -179,6 +181,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttribute<std::chrono::milliseconds> queueTimeout_{
       DEFAULT_QUEUE_TIMEOUT};
+
+  /**
+   * The time we'll allow a new connection socket to wait on the queue before
+   * closing the connection. See `folly::AsyncServerSocket::setQueueTimeout`.
+   */
+  ServerAttribute<std::chrono::milliseconds> socketQueueTimeout_{
+      DEFAULT_SOCKET_QUEUE_TIMEOUT};
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
@@ -830,6 +839,21 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   std::chrono::milliseconds getQueueTimeout() const {
     return queueTimeout_.get();
+  }
+
+  /**
+   * Sets the duration before which new connections waiting on a socket's queue
+   * are closed. A value of 0 represents an infinite duration.
+   * See `folly::AsyncServerSocket::setQueueTimeout`.
+   */
+  void setSocketQueueTimeout(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    socketQueueTimeout_.set(timeout, source);
+  }
+
+  std::chrono::milliseconds getSocketQueueTimeout() const {
+    return socketQueueTimeout_.get();
   }
 
   /**

@@ -359,6 +359,7 @@ void ThriftServer::setup() {
           socket->setShutdownSocketSet(wShutdownSocketSet_);
           socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
           socket->setZeroCopy(useZeroCopy);
+          socket->setQueueTimeout(getSocketQueueTimeout());
 
           try {
             socket->setTosReflect(tosReflect_);
