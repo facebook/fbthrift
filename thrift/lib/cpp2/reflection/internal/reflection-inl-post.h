@@ -142,6 +142,25 @@ struct reflect_type_class_impl {
                                   T>::type>>>>>>>;
 };
 
+template <typename T>
+struct reflect_type_class_of_thrift_class_impl {
+  using type = fatal::conditional<
+      is_reflectable_struct<T>::value,
+      type_class::structure,
+      fatal::conditional<
+          is_reflectable_union<T>::value,
+          type_class::variant,
+          type_class::unknown>>;
+};
+
+template <typename T>
+struct reflect_type_class_of_thrift_class_enum_impl {
+  using type = fatal::conditional<
+      is_reflectable_enum<T>::value,
+      type_class::enumeration,
+      reflect_type_class_of_thrift_class<T>>;
+};
+
 template <typename T, bool IsTry>
 struct reflect_module_tag_selector<type_class::enumeration, T, IsTry> {
   using type = typename fatal::enum_traits<T>::metadata::module;

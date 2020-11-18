@@ -210,6 +210,106 @@ template <typename T>
 using reflect_type_class =
     typename apache::thrift::detail::reflect_type_class_impl<T>::type;
 
+/**
+ * Returns the type class of a thrift class, which is either a structure, a
+ * variant, or an exception.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  typedef list<string> MyList;
+ *
+ *  /////////////
+ *  // foo.cpp //
+ *  /////////////
+ *
+ *  // yields `type_class::structure`
+ *  using result1 = reflect_type_class_of_thrift_class<MyStruct>;
+ *
+ *  // yields `type_class::variant`
+ *  using result1 = reflect_type_class_of_thrift_class<MyUnion>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result2 = reflect_type_class_of_thrift_class<MyEnum>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result3 = reflect_type_class_of_thrift_class<MyList>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result4 = reflect_type_class_of_thrift_class<void>;
+ */
+template <typename T>
+using reflect_type_class_of_thrift_class =
+    typename detail::reflect_type_class_of_thrift_class_impl<T>::type;
+
+/**
+ * Returns the type class of a thrift class, which is either a structure, a
+ * variant, or an exception, or of a thrift enum.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  typedef list<string> MyList;
+ *
+ *  /////////////
+ *  // foo.cpp //
+ *  /////////////
+ *
+ *  // yields `type_class::structure`
+ *  using result1 = reflect_type_class_of_thrift_class_enum<MyStruct>;
+ *
+ *  // yields `type_class::variant`
+ *  using result1 = reflect_type_class_of_thrift_class_enum<MyUnion>;
+ *
+ *  // yields `type_class::enumeration`
+ *  using result2 = reflect_type_class_of_thrift_class_enum<MyEnum>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result3 = reflect_type_class_of_thrift_class_enum<MyList>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result4 = reflect_type_class_of_thrift_class_enum<void>;
+ */
+template <typename T>
+using reflect_type_class_of_thrift_class_enum =
+    typename detail::reflect_type_class_of_thrift_class_enum_impl<T>::type;
+
 /////////////////////////
 // SECTION: MODULE API //
 /////////////////////////
