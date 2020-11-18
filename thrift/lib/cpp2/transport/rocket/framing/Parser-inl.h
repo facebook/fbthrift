@@ -167,6 +167,42 @@ void Parser<T>::timeoutExpired() noexcept {
 }
 
 template <class T>
+void Parser<T>::readBufferAvailable(
+    std::unique_ptr<folly::IOBuf> buf) noexcept {
+  folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
+  try {
+    bufQueue_.append(std::move(buf));
+    while (!bufQueue_.empty()) {
+      if (bufQueue_.chainLength() <
+          Serializer::kBytesForFrameOrMetadataLength) {
+        return;
+      }
+      folly::io::Cursor cursor(bufQueue_.front());
+
+      if (!currFrameLength_) {
+        currFrameLength_ = Serializer::kBytesForFrameOrMetadataLength +
+            readFrameOrMetadataSize(cursor);
+      }
+
+      if (bufQueue_.chainLength() < currFrameLength_) {
+        return;
+      }
+
+      bufQueue_.trimStart(Serializer::kBytesForFrameOrMetadataLength);
+      auto frame = bufQueue_.split(
+          currFrameLength_ - Serializer::kBytesForFrameOrMetadataLength);
+      owner_.handleFrame(std::move(frame));
+      currFrameLength_ = 0;
+    }
+  } catch (...) {
+    auto exceptionStr =
+        folly::exceptionStr(std::current_exception()).toStdString();
+    LOG(ERROR) << "Bad frame received, closing connection: " << exceptionStr;
+    owner_.close(transport::TTransportException(exceptionStr));
+  }
+}
+
+template <class T>
 void Parser<T>::resizeBuffer() {
   if (bufferSize_ <= kMaxBufferSize || readBuffer_.length() >= kMaxBufferSize) {
     return;

@@ -22,6 +22,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/IOBufQueue.h>
 #include <folly/io/async/AsyncTransport.h>
 
 #include <thrift/lib/cpp2/Flags.h>
@@ -51,6 +52,12 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
   FOLLY_NOINLINE void readEOF() noexcept override;
   FOLLY_NOINLINE void readErr(
       const folly::AsyncSocketException&) noexcept override;
+  FOLLY_NOINLINE void readBufferAvailable(
+      std::unique_ptr<folly::IOBuf> /*readBuf*/) noexcept override;
+
+  bool isBufferMovable() noexcept override {
+    return true;
+  }
 
   void timeoutExpired() noexcept override;
 
@@ -88,6 +95,9 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
   const int64_t periodicResizeBufferTimeout_;
   bool enablePageAlignment_{false};
   bool aligning_{false};
+  // only used by readBufferAvailable API
+  folly::IOBufQueue bufQueue_{folly::IOBufQueue::cacheChainLength()};
+  size_t currFrameLength_{0};
 };
 
 } // namespace rocket

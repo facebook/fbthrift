@@ -108,9 +108,6 @@ RocketClient::Ptr RocketClient::create(
 void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   DestructorGuard dg(this);
 
-  // Entire payloads may be chained, but the parser ensures each fragment is
-  // coalesced.
-  DCHECK(!frame->isChained());
   folly::io::Cursor cursor(frame.get());
 
   const auto streamId = readStreamId(cursor);

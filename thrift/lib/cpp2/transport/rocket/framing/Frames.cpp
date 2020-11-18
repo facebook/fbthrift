@@ -44,6 +44,15 @@ namespace {
 // All frame sizes (header size + payload size) are encoded in 3 bytes
 constexpr size_t kMaxFragmentedPayloadSize = 0xffffff - 512;
 
+std::unique_ptr<folly::IOBuf> trimBuffer(
+    std::unique_ptr<folly::IOBuf> buffer,
+    size_t toTrim) {
+  folly::IOBufQueue bufQueue;
+  bufQueue.append(std::move(buffer));
+  bufQueue.trimStart(toTrim);
+  return bufQueue.move();
+}
+
 Payload readPayload(
     bool expectingMetadata,
     folly::io::Cursor& cursor,
@@ -52,8 +61,7 @@ Payload readPayload(
   if (expectingMetadata) {
     metadataSize = readFrameOrMetadataSize(cursor);
   }
-
-  buffer->trimStart(cursor.getCurrentPosition());
+  buffer = trimBuffer(std::move(buffer), cursor.getCurrentPosition());
   return Payload::makeCombined(std::move(buffer), metadataSize);
 }
 
@@ -661,11 +669,6 @@ FOLLY_NOINLINE void PayloadFrame::serializeInFragmentsSlow(
 }
 
 SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
-  // Trick to avoid the default-constructed IOBuf. See expanded comment in
-  // PayloadFrame constructor. Do this optimization in Setup frame for
-  // consistency, not performance.
-  DCHECK(!frame->isChained());
-
   folly::io::Cursor cursor(frame.get());
   const StreamId zero(readStreamId(cursor));
   if (zero != StreamId{0}) {
@@ -709,7 +712,6 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
 RequestResponseFrame::RequestResponseFrame(
     std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 
@@ -732,7 +734,6 @@ RequestResponseFrame::RequestResponseFrame(
 
 RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 
@@ -755,7 +756,6 @@ RequestFnfFrame::RequestFnfFrame(
 
 RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 
@@ -781,7 +781,6 @@ RequestStreamFrame::RequestStreamFrame(
 
 RequestChannelFrame::RequestChannelFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 
@@ -807,7 +806,6 @@ RequestChannelFrame::RequestChannelFrame(
 
 RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 
@@ -832,7 +830,6 @@ RequestNFrame::RequestNFrame(
 
 CancelFrame::CancelFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 
@@ -846,7 +843,6 @@ CancelFrame::CancelFrame(std::unique_ptr<folly::IOBuf> frame) {
 
 PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 
@@ -870,8 +866,7 @@ PayloadFrame::PayloadFrame(
 
 ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
-  DCHECK_GE(frame->length(), frameHeaderSize());
+  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
 
   streamId_ = readStreamId(cursor);
 
@@ -885,13 +880,12 @@ ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   errorCode_ = static_cast<ErrorCode>(cursor.readBE<uint32_t>());
 
   // Finally, adjust the data portion of frame.
-  frame->trimStart(frameHeaderSize());
+  frame = trimBuffer(std::move(frame), frameHeaderSize());
   payload_ = Payload::makeFromData(std::move(frame));
 }
 
 MetadataPushFrame::MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame) {
-  DCHECK(!frame->isChained());
-  DCHECK_GE(frame->length(), frameHeaderSize());
+  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
 
   folly::io::Cursor cursor(frame.get());
   const StreamId zero(readStreamId(cursor));
@@ -904,13 +898,12 @@ MetadataPushFrame::MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(frameType() == type);
   DCHECK(flags.metadata());
 
-  frame->trimStart(frameHeaderSize());
+  frame = trimBuffer(std::move(frame), frameHeaderSize());
   metadata_ = std::move(frame);
 }
 
 KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {
-  DCHECK(!frame->isChained());
-  DCHECK_GE(frame->length(), frameHeaderSize());
+  DCHECK_GE(frame->computeChainDataLength(), frameHeaderSize());
 
   folly::io::Cursor cursor(frame.get());
   const StreamId zero(readStreamId(cursor));
@@ -922,13 +915,12 @@ KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   cursor.skip(sizeof(uint64_t)); // Skip 'last received position'
 
-  frame->trimStart(cursor.getCurrentPosition());
+  frame = trimBuffer(std::move(frame), cursor.getCurrentPosition());
   data_ = std::move(frame);
 }
 
 ExtFrame::ExtFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
-  DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
 

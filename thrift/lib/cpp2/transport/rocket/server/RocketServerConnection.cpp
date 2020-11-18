@@ -170,11 +170,7 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     return;
   }
 
-  // Entire payloads may be chained, but the parser ensures each fragment is
-  // coalesced.
-  DCHECK(!frame->isChained());
   folly::io::Cursor cursor(frame.get());
-
   const auto streamId = readStreamId(cursor);
   FrameType frameType;
   Flags flags;
