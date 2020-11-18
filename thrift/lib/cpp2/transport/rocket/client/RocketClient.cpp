@@ -136,7 +136,6 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
     // constructing the METADATA_PUSH frame for validation
     MetadataPushFrame mdPushFrame(std::move(frame));
-    LOG(WARNING) << "Dropping METADATA_PUSH frame";
     return;
   }
 
