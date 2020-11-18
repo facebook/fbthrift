@@ -7,867 +7,651 @@ struct empty_struct {
 } (thrift.uri="facebook.com/thrift/test/testset/empty_struct")
 struct struct_bool {
   1: bool field_1;
-  2: bool field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_bool")
 struct struct_byte {
   1: byte field_1;
-  2: byte field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_byte")
 struct struct_i16 {
   1: i16 field_1;
-  2: i16 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_i16")
 struct struct_i32 {
   1: i32 field_1;
-  2: i32 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_i32")
 struct struct_i64 {
   1: i64 field_1;
-  2: i64 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_i64")
 struct struct_float {
   1: float field_1;
-  2: float field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_float")
 struct struct_double {
   1: double field_1;
-  2: double field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_double")
 struct struct_binary {
   1: binary field_1;
-  2: binary field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_binary")
 struct struct_string {
   1: string field_1;
-  2: string field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_string")
 struct struct_set_bool {
   1: set<bool> field_1;
-  2: set<bool> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_bool")
 struct struct_set_byte {
   1: set<byte> field_1;
-  2: set<byte> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_byte")
 struct struct_set_i16 {
   1: set<i16> field_1;
-  2: set<i16> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_i16")
 struct struct_set_i32 {
   1: set<i32> field_1;
-  2: set<i32> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_i32")
 struct struct_set_i64 {
   1: set<i64> field_1;
-  2: set<i64> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64")
 struct struct_set_float {
   1: set<float> field_1;
-  2: set<float> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_float")
 struct struct_set_double {
   1: set<double> field_1;
-  2: set<double> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_double")
 struct struct_set_binary {
   1: set<binary> field_1;
-  2: set<binary> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_binary")
 struct struct_set_string {
   1: set<string> field_1;
-  2: set<string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_string")
 struct struct_map_string_bool {
   1: map<string, bool> field_1;
-  2: map<string, bool> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_bool")
 struct struct_map_string_byte {
   1: map<string, byte> field_1;
-  2: map<string, byte> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_byte")
 struct struct_map_string_i16 {
   1: map<string, i16> field_1;
-  2: map<string, i16> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i16")
 struct struct_map_string_i32 {
   1: map<string, i32> field_1;
-  2: map<string, i32> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i32")
 struct struct_map_string_i64 {
   1: map<string, i64> field_1;
-  2: map<string, i64> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i64")
 struct struct_map_string_float {
   1: map<string, float> field_1;
-  2: map<string, float> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_float")
 struct struct_map_string_double {
   1: map<string, double> field_1;
-  2: map<string, double> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_double")
 struct struct_map_string_binary {
   1: map<string, binary> field_1;
-  2: map<string, binary> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_binary")
 struct struct_map_string_string {
   1: map<string, string> field_1;
-  2: map<string, string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_string")
 struct struct_map_string_set_bool {
   1: map<string, set<bool>> field_1;
-  2: map<string, set<bool>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_bool")
 struct struct_map_string_set_byte {
   1: map<string, set<byte>> field_1;
-  2: map<string, set<byte>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_byte")
 struct struct_map_string_set_i16 {
   1: map<string, set<i16>> field_1;
-  2: map<string, set<i16>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i16")
 struct struct_map_string_set_i32 {
   1: map<string, set<i32>> field_1;
-  2: map<string, set<i32>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i32")
 struct struct_map_string_set_i64 {
   1: map<string, set<i64>> field_1;
-  2: map<string, set<i64>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64")
 struct struct_map_string_set_float {
   1: map<string, set<float>> field_1;
-  2: map<string, set<float>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_float")
 struct struct_map_string_set_double {
   1: map<string, set<double>> field_1;
-  2: map<string, set<double>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_double")
 struct struct_map_string_set_binary {
   1: map<string, set<binary>> field_1;
-  2: map<string, set<binary>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_binary")
 struct struct_map_string_set_string {
   1: map<string, set<string>> field_1;
-  2: map<string, set<string>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_string")
 struct struct_bool_cpp_ref {
   1: bool (cpp.ref = 'true') field_1;
-  2: bool (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_bool_cpp_ref")
 struct struct_byte_cpp_ref {
   1: byte (cpp.ref = 'true') field_1;
-  2: byte (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_byte_cpp_ref")
 struct struct_i16_cpp_ref {
   1: i16 (cpp.ref = 'true') field_1;
-  2: i16 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_i16_cpp_ref")
 struct struct_i32_cpp_ref {
   1: i32 (cpp.ref = 'true') field_1;
-  2: i32 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_i32_cpp_ref")
 struct struct_i64_cpp_ref {
   1: i64 (cpp.ref = 'true') field_1;
-  2: i64 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_i64_cpp_ref")
 struct struct_float_cpp_ref {
   1: float (cpp.ref = 'true') field_1;
-  2: float (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_float_cpp_ref")
 struct struct_double_cpp_ref {
   1: double (cpp.ref = 'true') field_1;
-  2: double (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_double_cpp_ref")
 struct struct_binary_cpp_ref {
   1: binary (cpp.ref = 'true') field_1;
-  2: binary (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_binary_cpp_ref")
 struct struct_string_cpp_ref {
   1: string (cpp.ref = 'true') field_1;
-  2: string (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_string_cpp_ref")
 struct struct_set_bool_cpp_ref {
   1: set<bool> (cpp.ref = 'true') field_1;
-  2: set<bool> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_bool_cpp_ref")
 struct struct_set_byte_cpp_ref {
   1: set<byte> (cpp.ref = 'true') field_1;
-  2: set<byte> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_byte_cpp_ref")
 struct struct_set_i16_cpp_ref {
   1: set<i16> (cpp.ref = 'true') field_1;
-  2: set<i16> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_i16_cpp_ref")
 struct struct_set_i32_cpp_ref {
   1: set<i32> (cpp.ref = 'true') field_1;
-  2: set<i32> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_i32_cpp_ref")
 struct struct_set_i64_cpp_ref {
   1: set<i64> (cpp.ref = 'true') field_1;
-  2: set<i64> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64_cpp_ref")
 struct struct_set_float_cpp_ref {
   1: set<float> (cpp.ref = 'true') field_1;
-  2: set<float> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_float_cpp_ref")
 struct struct_set_double_cpp_ref {
   1: set<double> (cpp.ref = 'true') field_1;
-  2: set<double> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_double_cpp_ref")
 struct struct_set_binary_cpp_ref {
   1: set<binary> (cpp.ref = 'true') field_1;
-  2: set<binary> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_binary_cpp_ref")
 struct struct_set_string_cpp_ref {
   1: set<string> (cpp.ref = 'true') field_1;
-  2: set<string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_string_cpp_ref")
 struct struct_map_string_bool_cpp_ref {
   1: map<string, bool> (cpp.ref = 'true') field_1;
-  2: map<string, bool> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_bool_cpp_ref")
 struct struct_map_string_byte_cpp_ref {
   1: map<string, byte> (cpp.ref = 'true') field_1;
-  2: map<string, byte> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_byte_cpp_ref")
 struct struct_map_string_i16_cpp_ref {
   1: map<string, i16> (cpp.ref = 'true') field_1;
-  2: map<string, i16> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i16_cpp_ref")
 struct struct_map_string_i32_cpp_ref {
   1: map<string, i32> (cpp.ref = 'true') field_1;
-  2: map<string, i32> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i32_cpp_ref")
 struct struct_map_string_i64_cpp_ref {
   1: map<string, i64> (cpp.ref = 'true') field_1;
-  2: map<string, i64> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_i64_cpp_ref")
 struct struct_map_string_float_cpp_ref {
   1: map<string, float> (cpp.ref = 'true') field_1;
-  2: map<string, float> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_float_cpp_ref")
 struct struct_map_string_double_cpp_ref {
   1: map<string, double> (cpp.ref = 'true') field_1;
-  2: map<string, double> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_double_cpp_ref")
 struct struct_map_string_binary_cpp_ref {
   1: map<string, binary> (cpp.ref = 'true') field_1;
-  2: map<string, binary> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_binary_cpp_ref")
 struct struct_map_string_string_cpp_ref {
   1: map<string, string> (cpp.ref = 'true') field_1;
-  2: map<string, string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_string_cpp_ref")
 struct struct_map_string_set_bool_cpp_ref {
   1: map<string, set<bool>> (cpp.ref = 'true') field_1;
-  2: map<string, set<bool>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_bool_cpp_ref")
 struct struct_map_string_set_byte_cpp_ref {
   1: map<string, set<byte>> (cpp.ref = 'true') field_1;
-  2: map<string, set<byte>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_byte_cpp_ref")
 struct struct_map_string_set_i16_cpp_ref {
   1: map<string, set<i16>> (cpp.ref = 'true') field_1;
-  2: map<string, set<i16>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i16_cpp_ref")
 struct struct_map_string_set_i32_cpp_ref {
   1: map<string, set<i32>> (cpp.ref = 'true') field_1;
-  2: map<string, set<i32>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i32_cpp_ref")
 struct struct_map_string_set_i64_cpp_ref {
   1: map<string, set<i64>> (cpp.ref = 'true') field_1;
-  2: map<string, set<i64>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64_cpp_ref")
 struct struct_map_string_set_float_cpp_ref {
   1: map<string, set<float>> (cpp.ref = 'true') field_1;
-  2: map<string, set<float>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_float_cpp_ref")
 struct struct_map_string_set_double_cpp_ref {
   1: map<string, set<double>> (cpp.ref = 'true') field_1;
-  2: map<string, set<double>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_double_cpp_ref")
 struct struct_map_string_set_binary_cpp_ref {
   1: map<string, set<binary>> (cpp.ref = 'true') field_1;
-  2: map<string, set<binary>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_binary_cpp_ref")
 struct struct_map_string_set_string_cpp_ref {
   1: map<string, set<string>> (cpp.ref = 'true') field_1;
-  2: map<string, set<string>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_string_cpp_ref")
 struct struct_optional_bool {
   1: optional bool field_1;
-  2: optional bool field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_bool")
 struct struct_optional_byte {
   1: optional byte field_1;
-  2: optional byte field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_byte")
 struct struct_optional_i16 {
   1: optional i16 field_1;
-  2: optional i16 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i16")
 struct struct_optional_i32 {
   1: optional i32 field_1;
-  2: optional i32 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i32")
 struct struct_optional_i64 {
   1: optional i64 field_1;
-  2: optional i64 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i64")
 struct struct_optional_float {
   1: optional float field_1;
-  2: optional float field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_float")
 struct struct_optional_double {
   1: optional double field_1;
-  2: optional double field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_double")
 struct struct_optional_binary {
   1: optional binary field_1;
-  2: optional binary field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_binary")
 struct struct_optional_string {
   1: optional string field_1;
-  2: optional string field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_string")
 struct struct_optional_set_bool {
   1: optional set<bool> field_1;
-  2: optional set<bool> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_bool")
 struct struct_optional_set_byte {
   1: optional set<byte> field_1;
-  2: optional set<byte> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_byte")
 struct struct_optional_set_i16 {
   1: optional set<i16> field_1;
-  2: optional set<i16> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i16")
 struct struct_optional_set_i32 {
   1: optional set<i32> field_1;
-  2: optional set<i32> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i32")
 struct struct_optional_set_i64 {
   1: optional set<i64> field_1;
-  2: optional set<i64> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64")
 struct struct_optional_set_float {
   1: optional set<float> field_1;
-  2: optional set<float> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_float")
 struct struct_optional_set_double {
   1: optional set<double> field_1;
-  2: optional set<double> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_double")
 struct struct_optional_set_binary {
   1: optional set<binary> field_1;
-  2: optional set<binary> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_binary")
 struct struct_optional_set_string {
   1: optional set<string> field_1;
-  2: optional set<string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_string")
 struct struct_optional_map_string_bool {
   1: optional map<string, bool> field_1;
-  2: optional map<string, bool> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_bool")
 struct struct_optional_map_string_byte {
   1: optional map<string, byte> field_1;
-  2: optional map<string, byte> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_byte")
 struct struct_optional_map_string_i16 {
   1: optional map<string, i16> field_1;
-  2: optional map<string, i16> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i16")
 struct struct_optional_map_string_i32 {
   1: optional map<string, i32> field_1;
-  2: optional map<string, i32> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i32")
 struct struct_optional_map_string_i64 {
   1: optional map<string, i64> field_1;
-  2: optional map<string, i64> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i64")
 struct struct_optional_map_string_float {
   1: optional map<string, float> field_1;
-  2: optional map<string, float> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_float")
 struct struct_optional_map_string_double {
   1: optional map<string, double> field_1;
-  2: optional map<string, double> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_double")
 struct struct_optional_map_string_binary {
   1: optional map<string, binary> field_1;
-  2: optional map<string, binary> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_binary")
 struct struct_optional_map_string_string {
   1: optional map<string, string> field_1;
-  2: optional map<string, string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_string")
 struct struct_optional_map_string_set_bool {
   1: optional map<string, set<bool>> field_1;
-  2: optional map<string, set<bool>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_bool")
 struct struct_optional_map_string_set_byte {
   1: optional map<string, set<byte>> field_1;
-  2: optional map<string, set<byte>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_byte")
 struct struct_optional_map_string_set_i16 {
   1: optional map<string, set<i16>> field_1;
-  2: optional map<string, set<i16>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i16")
 struct struct_optional_map_string_set_i32 {
   1: optional map<string, set<i32>> field_1;
-  2: optional map<string, set<i32>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i32")
 struct struct_optional_map_string_set_i64 {
   1: optional map<string, set<i64>> field_1;
-  2: optional map<string, set<i64>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64")
 struct struct_optional_map_string_set_float {
   1: optional map<string, set<float>> field_1;
-  2: optional map<string, set<float>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_float")
 struct struct_optional_map_string_set_double {
   1: optional map<string, set<double>> field_1;
-  2: optional map<string, set<double>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_double")
 struct struct_optional_map_string_set_binary {
   1: optional map<string, set<binary>> field_1;
-  2: optional map<string, set<binary>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_binary")
 struct struct_optional_map_string_set_string {
   1: optional map<string, set<string>> field_1;
-  2: optional map<string, set<string>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_string")
 struct struct_optional_bool_cpp_ref {
   1: optional bool (cpp.ref = 'true') field_1;
-  2: optional bool (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_bool_cpp_ref")
 struct struct_optional_byte_cpp_ref {
   1: optional byte (cpp.ref = 'true') field_1;
-  2: optional byte (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_byte_cpp_ref")
 struct struct_optional_i16_cpp_ref {
   1: optional i16 (cpp.ref = 'true') field_1;
-  2: optional i16 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i16_cpp_ref")
 struct struct_optional_i32_cpp_ref {
   1: optional i32 (cpp.ref = 'true') field_1;
-  2: optional i32 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i32_cpp_ref")
 struct struct_optional_i64_cpp_ref {
   1: optional i64 (cpp.ref = 'true') field_1;
-  2: optional i64 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_i64_cpp_ref")
 struct struct_optional_float_cpp_ref {
   1: optional float (cpp.ref = 'true') field_1;
-  2: optional float (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_float_cpp_ref")
 struct struct_optional_double_cpp_ref {
   1: optional double (cpp.ref = 'true') field_1;
-  2: optional double (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_double_cpp_ref")
 struct struct_optional_binary_cpp_ref {
   1: optional binary (cpp.ref = 'true') field_1;
-  2: optional binary (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_binary_cpp_ref")
 struct struct_optional_string_cpp_ref {
   1: optional string (cpp.ref = 'true') field_1;
-  2: optional string (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_string_cpp_ref")
 struct struct_optional_set_bool_cpp_ref {
   1: optional set<bool> (cpp.ref = 'true') field_1;
-  2: optional set<bool> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_bool_cpp_ref")
 struct struct_optional_set_byte_cpp_ref {
   1: optional set<byte> (cpp.ref = 'true') field_1;
-  2: optional set<byte> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_byte_cpp_ref")
 struct struct_optional_set_i16_cpp_ref {
   1: optional set<i16> (cpp.ref = 'true') field_1;
-  2: optional set<i16> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i16_cpp_ref")
 struct struct_optional_set_i32_cpp_ref {
   1: optional set<i32> (cpp.ref = 'true') field_1;
-  2: optional set<i32> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i32_cpp_ref")
 struct struct_optional_set_i64_cpp_ref {
   1: optional set<i64> (cpp.ref = 'true') field_1;
-  2: optional set<i64> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64_cpp_ref")
 struct struct_optional_set_float_cpp_ref {
   1: optional set<float> (cpp.ref = 'true') field_1;
-  2: optional set<float> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_float_cpp_ref")
 struct struct_optional_set_double_cpp_ref {
   1: optional set<double> (cpp.ref = 'true') field_1;
-  2: optional set<double> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_double_cpp_ref")
 struct struct_optional_set_binary_cpp_ref {
   1: optional set<binary> (cpp.ref = 'true') field_1;
-  2: optional set<binary> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_binary_cpp_ref")
 struct struct_optional_set_string_cpp_ref {
   1: optional set<string> (cpp.ref = 'true') field_1;
-  2: optional set<string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_string_cpp_ref")
 struct struct_optional_map_string_bool_cpp_ref {
   1: optional map<string, bool> (cpp.ref = 'true') field_1;
-  2: optional map<string, bool> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_bool_cpp_ref")
 struct struct_optional_map_string_byte_cpp_ref {
   1: optional map<string, byte> (cpp.ref = 'true') field_1;
-  2: optional map<string, byte> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_byte_cpp_ref")
 struct struct_optional_map_string_i16_cpp_ref {
   1: optional map<string, i16> (cpp.ref = 'true') field_1;
-  2: optional map<string, i16> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i16_cpp_ref")
 struct struct_optional_map_string_i32_cpp_ref {
   1: optional map<string, i32> (cpp.ref = 'true') field_1;
-  2: optional map<string, i32> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i32_cpp_ref")
 struct struct_optional_map_string_i64_cpp_ref {
   1: optional map<string, i64> (cpp.ref = 'true') field_1;
-  2: optional map<string, i64> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_i64_cpp_ref")
 struct struct_optional_map_string_float_cpp_ref {
   1: optional map<string, float> (cpp.ref = 'true') field_1;
-  2: optional map<string, float> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_float_cpp_ref")
 struct struct_optional_map_string_double_cpp_ref {
   1: optional map<string, double> (cpp.ref = 'true') field_1;
-  2: optional map<string, double> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_double_cpp_ref")
 struct struct_optional_map_string_binary_cpp_ref {
   1: optional map<string, binary> (cpp.ref = 'true') field_1;
-  2: optional map<string, binary> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_binary_cpp_ref")
 struct struct_optional_map_string_string_cpp_ref {
   1: optional map<string, string> (cpp.ref = 'true') field_1;
-  2: optional map<string, string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_string_cpp_ref")
 struct struct_optional_map_string_set_bool_cpp_ref {
   1: optional map<string, set<bool>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<bool>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_bool_cpp_ref")
 struct struct_optional_map_string_set_byte_cpp_ref {
   1: optional map<string, set<byte>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<byte>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_byte_cpp_ref")
 struct struct_optional_map_string_set_i16_cpp_ref {
   1: optional map<string, set<i16>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<i16>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i16_cpp_ref")
 struct struct_optional_map_string_set_i32_cpp_ref {
   1: optional map<string, set<i32>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<i32>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i32_cpp_ref")
 struct struct_optional_map_string_set_i64_cpp_ref {
   1: optional map<string, set<i64>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<i64>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64_cpp_ref")
 struct struct_optional_map_string_set_float_cpp_ref {
   1: optional map<string, set<float>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<float>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_float_cpp_ref")
 struct struct_optional_map_string_set_double_cpp_ref {
   1: optional map<string, set<double>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<double>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_double_cpp_ref")
 struct struct_optional_map_string_set_binary_cpp_ref {
   1: optional map<string, set<binary>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<binary>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_binary_cpp_ref")
 struct struct_optional_map_string_set_string_cpp_ref {
   1: optional map<string, set<string>> (cpp.ref = 'true') field_1;
-  2: optional map<string, set<string>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_string_cpp_ref")
 struct struct_required_bool {
   1: required bool field_1;
-  2: required bool field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_bool")
 struct struct_required_byte {
   1: required byte field_1;
-  2: required byte field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_byte")
 struct struct_required_i16 {
   1: required i16 field_1;
-  2: required i16 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_i16")
 struct struct_required_i32 {
   1: required i32 field_1;
-  2: required i32 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_i32")
 struct struct_required_i64 {
   1: required i64 field_1;
-  2: required i64 field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_i64")
 struct struct_required_float {
   1: required float field_1;
-  2: required float field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_float")
 struct struct_required_double {
   1: required double field_1;
-  2: required double field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_double")
 struct struct_required_binary {
   1: required binary field_1;
-  2: required binary field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_binary")
 struct struct_required_string {
   1: required string field_1;
-  2: required string field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_string")
 struct struct_required_set_bool {
   1: required set<bool> field_1;
-  2: required set<bool> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_bool")
 struct struct_required_set_byte {
   1: required set<byte> field_1;
-  2: required set<byte> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_byte")
 struct struct_required_set_i16 {
   1: required set<i16> field_1;
-  2: required set<i16> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i16")
 struct struct_required_set_i32 {
   1: required set<i32> field_1;
-  2: required set<i32> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i32")
 struct struct_required_set_i64 {
   1: required set<i64> field_1;
-  2: required set<i64> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i64")
 struct struct_required_set_float {
   1: required set<float> field_1;
-  2: required set<float> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_float")
 struct struct_required_set_double {
   1: required set<double> field_1;
-  2: required set<double> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_double")
 struct struct_required_set_binary {
   1: required set<binary> field_1;
-  2: required set<binary> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_binary")
 struct struct_required_set_string {
   1: required set<string> field_1;
-  2: required set<string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_string")
 struct struct_required_map_string_bool {
   1: required map<string, bool> field_1;
-  2: required map<string, bool> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_bool")
 struct struct_required_map_string_byte {
   1: required map<string, byte> field_1;
-  2: required map<string, byte> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_byte")
 struct struct_required_map_string_i16 {
   1: required map<string, i16> field_1;
-  2: required map<string, i16> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i16")
 struct struct_required_map_string_i32 {
   1: required map<string, i32> field_1;
-  2: required map<string, i32> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i32")
 struct struct_required_map_string_i64 {
   1: required map<string, i64> field_1;
-  2: required map<string, i64> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i64")
 struct struct_required_map_string_float {
   1: required map<string, float> field_1;
-  2: required map<string, float> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_float")
 struct struct_required_map_string_double {
   1: required map<string, double> field_1;
-  2: required map<string, double> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_double")
 struct struct_required_map_string_binary {
   1: required map<string, binary> field_1;
-  2: required map<string, binary> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_binary")
 struct struct_required_map_string_string {
   1: required map<string, string> field_1;
-  2: required map<string, string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_string")
 struct struct_required_map_string_set_bool {
   1: required map<string, set<bool>> field_1;
-  2: required map<string, set<bool>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_bool")
 struct struct_required_map_string_set_byte {
   1: required map<string, set<byte>> field_1;
-  2: required map<string, set<byte>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_byte")
 struct struct_required_map_string_set_i16 {
   1: required map<string, set<i16>> field_1;
-  2: required map<string, set<i16>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i16")
 struct struct_required_map_string_set_i32 {
   1: required map<string, set<i32>> field_1;
-  2: required map<string, set<i32>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i32")
 struct struct_required_map_string_set_i64 {
   1: required map<string, set<i64>> field_1;
-  2: required map<string, set<i64>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i64")
 struct struct_required_map_string_set_float {
   1: required map<string, set<float>> field_1;
-  2: required map<string, set<float>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_float")
 struct struct_required_map_string_set_double {
   1: required map<string, set<double>> field_1;
-  2: required map<string, set<double>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_double")
 struct struct_required_map_string_set_binary {
   1: required map<string, set<binary>> field_1;
-  2: required map<string, set<binary>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_binary")
 struct struct_required_map_string_set_string {
   1: required map<string, set<string>> field_1;
-  2: required map<string, set<string>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_string")
 struct struct_required_bool_cpp_ref {
   1: required bool (cpp.ref = 'true') field_1;
-  2: required bool (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_bool_cpp_ref")
 struct struct_required_byte_cpp_ref {
   1: required byte (cpp.ref = 'true') field_1;
-  2: required byte (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_byte_cpp_ref")
 struct struct_required_i16_cpp_ref {
   1: required i16 (cpp.ref = 'true') field_1;
-  2: required i16 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_i16_cpp_ref")
 struct struct_required_i32_cpp_ref {
   1: required i32 (cpp.ref = 'true') field_1;
-  2: required i32 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_i32_cpp_ref")
 struct struct_required_i64_cpp_ref {
   1: required i64 (cpp.ref = 'true') field_1;
-  2: required i64 (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_i64_cpp_ref")
 struct struct_required_float_cpp_ref {
   1: required float (cpp.ref = 'true') field_1;
-  2: required float (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_float_cpp_ref")
 struct struct_required_double_cpp_ref {
   1: required double (cpp.ref = 'true') field_1;
-  2: required double (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_double_cpp_ref")
 struct struct_required_binary_cpp_ref {
   1: required binary (cpp.ref = 'true') field_1;
-  2: required binary (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_binary_cpp_ref")
 struct struct_required_string_cpp_ref {
   1: required string (cpp.ref = 'true') field_1;
-  2: required string (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_string_cpp_ref")
 struct struct_required_set_bool_cpp_ref {
   1: required set<bool> (cpp.ref = 'true') field_1;
-  2: required set<bool> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_bool_cpp_ref")
 struct struct_required_set_byte_cpp_ref {
   1: required set<byte> (cpp.ref = 'true') field_1;
-  2: required set<byte> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_byte_cpp_ref")
 struct struct_required_set_i16_cpp_ref {
   1: required set<i16> (cpp.ref = 'true') field_1;
-  2: required set<i16> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i16_cpp_ref")
 struct struct_required_set_i32_cpp_ref {
   1: required set<i32> (cpp.ref = 'true') field_1;
-  2: required set<i32> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i32_cpp_ref")
 struct struct_required_set_i64_cpp_ref {
   1: required set<i64> (cpp.ref = 'true') field_1;
-  2: required set<i64> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i64_cpp_ref")
 struct struct_required_set_float_cpp_ref {
   1: required set<float> (cpp.ref = 'true') field_1;
-  2: required set<float> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_float_cpp_ref")
 struct struct_required_set_double_cpp_ref {
   1: required set<double> (cpp.ref = 'true') field_1;
-  2: required set<double> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_double_cpp_ref")
 struct struct_required_set_binary_cpp_ref {
   1: required set<binary> (cpp.ref = 'true') field_1;
-  2: required set<binary> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_binary_cpp_ref")
 struct struct_required_set_string_cpp_ref {
   1: required set<string> (cpp.ref = 'true') field_1;
-  2: required set<string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_string_cpp_ref")
 struct struct_required_map_string_bool_cpp_ref {
   1: required map<string, bool> (cpp.ref = 'true') field_1;
-  2: required map<string, bool> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_bool_cpp_ref")
 struct struct_required_map_string_byte_cpp_ref {
   1: required map<string, byte> (cpp.ref = 'true') field_1;
-  2: required map<string, byte> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_byte_cpp_ref")
 struct struct_required_map_string_i16_cpp_ref {
   1: required map<string, i16> (cpp.ref = 'true') field_1;
-  2: required map<string, i16> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i16_cpp_ref")
 struct struct_required_map_string_i32_cpp_ref {
   1: required map<string, i32> (cpp.ref = 'true') field_1;
-  2: required map<string, i32> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i32_cpp_ref")
 struct struct_required_map_string_i64_cpp_ref {
   1: required map<string, i64> (cpp.ref = 'true') field_1;
-  2: required map<string, i64> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_i64_cpp_ref")
 struct struct_required_map_string_float_cpp_ref {
   1: required map<string, float> (cpp.ref = 'true') field_1;
-  2: required map<string, float> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_float_cpp_ref")
 struct struct_required_map_string_double_cpp_ref {
   1: required map<string, double> (cpp.ref = 'true') field_1;
-  2: required map<string, double> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_double_cpp_ref")
 struct struct_required_map_string_binary_cpp_ref {
   1: required map<string, binary> (cpp.ref = 'true') field_1;
-  2: required map<string, binary> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_binary_cpp_ref")
 struct struct_required_map_string_string_cpp_ref {
   1: required map<string, string> (cpp.ref = 'true') field_1;
-  2: required map<string, string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_string_cpp_ref")
 struct struct_required_map_string_set_bool_cpp_ref {
   1: required map<string, set<bool>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<bool>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_bool_cpp_ref")
 struct struct_required_map_string_set_byte_cpp_ref {
   1: required map<string, set<byte>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<byte>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_byte_cpp_ref")
 struct struct_required_map_string_set_i16_cpp_ref {
   1: required map<string, set<i16>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<i16>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i16_cpp_ref")
 struct struct_required_map_string_set_i32_cpp_ref {
   1: required map<string, set<i32>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<i32>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i32_cpp_ref")
 struct struct_required_map_string_set_i64_cpp_ref {
   1: required map<string, set<i64>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<i64>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i64_cpp_ref")
 struct struct_required_map_string_set_float_cpp_ref {
   1: required map<string, set<float>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<float>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_float_cpp_ref")
 struct struct_required_map_string_set_double_cpp_ref {
   1: required map<string, set<double>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<double>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_double_cpp_ref")
 struct struct_required_map_string_set_binary_cpp_ref {
   1: required map<string, set<binary>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<binary>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_binary_cpp_ref")
 struct struct_required_map_string_set_string_cpp_ref {
   1: required map<string, set<string>> (cpp.ref = 'true') field_1;
-  2: required map<string, set<string>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_string_cpp_ref")
 struct struct_all {
   1: empty_struct field_1;

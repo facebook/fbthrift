@@ -30,7 +30,7 @@ template <class Struct>
 void add_benchmark() {
   if constexpr (!is_thrift_union_v<Struct>) {
     static_assert(
-        fatal::size<typename reflect_struct<Struct>::members>::value == 2);
+        fatal::size<typename reflect_struct<Struct>::members>::value == 1);
   } else {
     static_assert(
         fatal::size<
@@ -68,8 +68,6 @@ void add_benchmark() {
     folly::addBenchmark(__FILE__, name + "_value_baseline", [] {
       s.field_1_ref() = "a";
       folly::doNotOptimizeAway(s);
-      s.field_2_ref() = "a";
-      folly::doNotOptimizeAway(s);
       return 1;
     });
   }
@@ -106,9 +104,6 @@ void add_benchmark() {
   folly::addBenchmark(__FILE__, name + "_name_baseline", [] {
     int k = 0;
     for (char c : "field_1") {
-      k += c;
-    }
-    for (char c : "field_2") {
       k += c;
     }
     folly::doNotOptimizeAway(k);
