@@ -479,12 +479,12 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     $this->f = $f ?? varray[];
   }
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -532,6 +532,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx, __ProvenanceSkipFrame>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];
@@ -597,12 +598,12 @@ class Bar_baz_result implements \IThriftStruct {
   public function __construct(?varray<Foo> $success = null  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __ProvenanceSkipFrame>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),

@@ -691,6 +691,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     return $me;
@@ -816,6 +817,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     return $me;

@@ -1589,6 +1589,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Map($shape['foo']))->map(
@@ -1731,6 +1732,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Map($shape['foo']))->map(
@@ -1873,6 +1875,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
@@ -2011,6 +2014,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
@@ -2172,6 +2176,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(

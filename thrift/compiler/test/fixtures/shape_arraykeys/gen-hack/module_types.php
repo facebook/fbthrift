@@ -92,6 +92,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return $new_map;
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];
@@ -908,6 +909,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return $new_map;
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'just_an_A') !== null) {

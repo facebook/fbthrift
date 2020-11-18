@@ -103,6 +103,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'a') !== null) {
@@ -539,6 +540,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'map_of_string_to_string') !== null) {
@@ -1092,6 +1094,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'map_of_string_to_string') !== null) {

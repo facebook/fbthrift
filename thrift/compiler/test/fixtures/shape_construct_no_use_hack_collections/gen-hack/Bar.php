@@ -518,6 +518,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];

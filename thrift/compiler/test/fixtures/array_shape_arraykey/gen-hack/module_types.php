@@ -110,6 +110,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return $new_map;
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'just_an_enum') !== null) {
@@ -711,6 +712,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return $new_map;
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->map_of_string_to_string = self::__stringifyMapKeys($shape['map_of_string_to_string']);
@@ -1523,6 +1525,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     return $new_map;
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'just_an_A') !== null) {

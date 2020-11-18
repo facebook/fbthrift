@@ -351,6 +351,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->_type = TestUnionEnum::_EMPTY_;
@@ -559,6 +560,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->a = $shape['a'];
@@ -767,6 +769,7 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     if (Shapes::idx($shape, 'foo_struct') !== null) {

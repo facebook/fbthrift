@@ -278,6 +278,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     ];
   }
 
+  <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
     $me->just_int = $shape['just_int'];

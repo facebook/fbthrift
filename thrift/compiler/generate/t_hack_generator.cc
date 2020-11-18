@@ -184,6 +184,7 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       t_struct* tstruct,
       bool asFunction);
+  void generate_php_struct_construction_attributes(std::ofstream& out);
 
   /**
    * Service-level generation functions
@@ -2052,6 +2053,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
     out << "\n";
   }
 
+  generate_php_struct_construction_attributes(out);
   indent(out)
       << "public static function __fromShape(self::TShape $shape): this {\n";
   indent_up();
@@ -2350,6 +2352,15 @@ void t_hack_generator::generate_php_structural_id(
   }
 }
 
+void t_hack_generator::generate_php_struct_construction_attributes(
+    std::ofstream& out) {
+  out << indent() << "<<__Rx";
+  if (arrprov_skip_frames_) {
+    out << ", __ProvenanceSkipFrame";
+  }
+  out << ">>\n";
+}
+
 void t_hack_generator::generate_php_struct_definition(
     ofstream& out,
     t_struct* tstruct,
@@ -2633,11 +2644,7 @@ void t_hack_generator::_generate_php_struct_definition(
 
   out << "\n";
 
-  out << indent() << "<<__Rx";
-  if (arrprov_skip_frames_) {
-    out << ", __ProvenanceSkipFrame";
-  }
-  out << ">>\n";
+  generate_php_struct_construction_attributes(out);
   out << indent() << "public function __construct(";
   if (map_construct_ && !from_map_construct_) {
     if (strict_types_) {
@@ -2793,7 +2800,7 @@ void t_hack_generator::_generate_php_struct_definition(
   scope_down(out);
   out << "\n";
 
-  indent(out) << "<<__Rx>>\n";
+  generate_php_struct_construction_attributes(out);
   indent(out) << "public static function withDefaultValues(): this {\n";
   indent_up();
   indent(out) << "return new static();\n";
@@ -2891,7 +2898,7 @@ void t_hack_generator::_generate_php_struct_definition(
 void t_hack_generator::generate_php_struct_from_shape(
     ofstream& out,
     t_struct* tstruct) {
-  indent(out) << "<<__Rx>>\n";
+  generate_php_struct_construction_attributes(out);
   out << indent() << "public static function fromShape"
       << "(self::TConstructorShape $shape): this {\n";
   indent_up();
