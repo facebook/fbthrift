@@ -25,6 +25,7 @@
 
 module Thrift.Transport.Handle
     ( module Thrift.Transport
+    , Port
     , HandleSource(..)
     ) where
 
@@ -34,7 +35,12 @@ import Data.ByteString.Internal (c2w)
 import Data.Functor
 #endif
 
+#if MIN_VERSION_network(2,7,0)
+import Data.Maybe
+import Network.Socket
+#else
 import Network
+#endif
 
 import System.IO
 import System.IO.Error ( isEOFError )
@@ -63,9 +69,20 @@ class HandleSource s where
 instance HandleSource FilePath where
     hOpen s = openFile s ReadWriteMode
 
-instance HandleSource (HostName, PortID) where
-    hOpen = uncurry connectTo
+type Port = String
 
+instance HandleSource (HostName, Port) where
+#if MIN_VERSION_network(2,7,0)
+    hOpen (h,p) = do
+        let hints = defaultHints{addrFamily = AF_INET}
+        addr <- fromMaybe (error "getAddrInfo") . listToMaybe <$>
+            getAddrInfo (Just hints) (Just h) (Just p)
+        s <- socket (addrFamily addr) (addrSocketType addr) (addrProtocol addr)
+        connect s $ addrAddress addr
+        socketToHandle s ReadWriteMode
+#else
+    hOpen (h,p) = connectTo h (PortNumber $ read p)
+#endif
 
 handleEOF :: a -> IOError -> IO a
 handleEOF a e = if isEOFError e

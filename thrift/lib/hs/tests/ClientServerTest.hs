@@ -17,13 +17,13 @@
 -- under the License.
 --
 
-{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
+{-# LANGUAGE CPP, OverloadedStrings, ScopedTypeVariables #-}
 
 module ClientServerTest where
 
 import Control.Concurrent
 import Control.Exception
-import Network as N
+import Data.Maybe
 import Network.Socket as NS
 import System.IO
 import Test.HUnit
@@ -35,7 +35,6 @@ import ThriftTest_Types
 import qualified ThriftTest_Client as Client
 
 import Thrift.Transport
-import Thrift.Transport.Handle
 import Thrift.Protocol
 import Thrift.Protocol.Binary
 import Thrift.Protocol.Compact
@@ -144,21 +143,25 @@ main = do
                , failures = total failures cs
                }
   where
-    runTest :: Protocol p => (Handle -> p Handle) -> IO Counts
-    runTest prot = do
-      port <- getFreePort
-      let conn :: (String, PortID) = ("localhost", port) in
-        bracket (listenOn port) N.sClose $ \socket ->
-        bracket (forkIO $ runServer prot socket) killThread $ const $
-        bracket (hOpen conn) tClose (runTestTT . runClient . prot)
     total a = sum . map a
 
-    getFreePort :: IO PortID
-    getFreePort =
-      -- Attach to any socket then free it. The port should hopefully be open
-      -- afterward, but it's possible that it's (1) not cleaned up fast enough
-      -- or (2) another process grabs it immediately after it's released but
-      -- before we grab it again.
-      bracket (socket AF_INET Stream defaultProtocol) NS.close $ \s -> do
-        bind s (SockAddrInet aNY_PORT iNADDR_ANY)
-        N.socketPort s
+    runTest :: Protocol p => (Handle -> p Handle) -> IO Counts
+    runTest prot = do
+      withSocketPair $ \serverS clientH -> do
+        bracket (forkIO $ runServer prot serverS) killThread $ const $ do
+          runTestTT $ runClient $ prot clientH
+
+withSocketPair :: (Socket -> Handle -> IO res) -> IO res
+withSocketPair k = do
+  let hints = defaultHints{addrFamily = AF_INET}
+  addr <- maybe (error "getAddrInfo") addrAddress . listToMaybe <$>
+    getAddrInfo (Just hints) (Just "localhost") Nothing
+  bracket (socket AF_INET Stream defaultProtocol) NS.close $ \serverS -> do
+    setSocketOption serverS ReuseAddr 1
+    bind serverS addr
+    listen serverS maxListenQueue
+    serverA <- getSocketName serverS
+    clientS <- socket AF_INET Stream defaultProtocol
+    connect clientS serverA
+    bracket (socketToHandle clientS ReadWriteMode) hClose $ \clientH -> do
+      k serverS clientH

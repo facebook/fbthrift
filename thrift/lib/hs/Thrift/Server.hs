@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 --
 -- Licensed to the Apache Software Foundation (ASF) under one
@@ -19,21 +20,17 @@
 --
 
 module Thrift.Server
-    ( runBasicServer
-    , runThreadedServer
+    ( runThreadedServer
     ) where
 
 import Control.Concurrent ( forkIO )
 import Control.Exception
 import Control.Monad ( forever, when )
 
-import Network
-
-import System.IO
+import Network.Socket (Socket)
 
 import Thrift
 import Thrift.Transport.Handle()
-import Thrift.Protocol.Binary
 
 
 -- | A threaded sever that is capable of using any Transport or Protocol
@@ -46,19 +43,6 @@ runThreadedServer :: (Transport t, Protocol i, Protocol o)
                   -> IO a
 runThreadedServer accepter hand proc_ socket =
   acceptLoop (accepter socket) (proc_ hand)
-
-
--- | A basic threaded binary protocol socket server.
-runBasicServer :: h
-               -> (h -> (BinaryProtocol Handle, BinaryProtocol Handle) -> IO Bool)
-               -> PortNumber
-               -> IO a
-runBasicServer hand proc_ port = do
-  socket <- listenOn (PortNumber port)
-  runThreadedServer binaryAccept hand proc_ socket
-  where binaryAccept s = do
-            (h, _, _) <- accept s
-            return (BinaryProtocol h, BinaryProtocol h)
 
 acceptLoop :: IO t -> (t -> IO Bool) -> IO a
 acceptLoop accepter proc_ = forever $

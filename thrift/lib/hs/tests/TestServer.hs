@@ -17,13 +17,13 @@
 -- under the License.
 --
 
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP, OverloadedStrings #-}
 module TestServer
        ( runServer
        ) where
 
 import Control.Exception
-import Network
+import Network.Socket
 import System.IO
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as Text
@@ -95,5 +95,6 @@ runServer :: Protocol p => (Handle -> p Handle) -> Socket -> IO ()
 runServer p = runThreadedServer (accepter p) TestHandler ThriftTest.process
   where
     accepter p s = do
-      (h, _, _) <- accept s
+      (s', _) <- accept s
+      h <- socketToHandle s' ReadWriteMode
       return (p h, p h)

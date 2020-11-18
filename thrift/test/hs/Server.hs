@@ -18,12 +18,14 @@
 --
 
 {-# OPTIONS_GHC -fno-warn-unused-matches -fno-warn-incomplete-patterns #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP, OverloadedStrings #-}
 
 module Server where
 
 import Control.Exception
 import Data.HashMap.Strict as Map
+import Network.Socket
+import System.IO
 
 import Thrift
 import Thrift.Server
@@ -57,5 +59,10 @@ instance ThriftTest_Iface TestHandler where
 
 
 main :: IO ()
-main = catch (runBasicServer TestHandler process 9090)
+main = catch (runThreadedServer (accepter p) TestHandler process 9090)
              (\(TransportExn s t) -> print s)
+  where
+    accepter p s = do
+      (s', _) <- accept s
+      h <- socketToHandle s' ReadWriteMode
+      return (p h, p h)

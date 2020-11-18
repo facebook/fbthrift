@@ -1,11 +1,10 @@
-{-# LANGUAGE ScopedTypeVariables, DeriveDataTypeable #-}
+{-# LANGUAGE CPP, ScopedTypeVariables, DeriveDataTypeable #-}
 module Thrift.FuzzerSupport
 where
 
 import Control.Exception (catches, Handler(..), throw, IOException, Exception)
 import Data.Maybe (isNothing)
 import Data.Typeable (Typeable)
-import Network (PortNumber, PortID(PortNumber))
 import System.Console.GetOpt (getOpt, usageInfo, ArgOrder(..), OptDescr(..), ArgDescr(..))
 import System.IO (Handle, hFlush, stdout)
 import System.Random (split)
@@ -15,13 +14,13 @@ import Test.QuickCheck.Random (newQCGen)
 import Thrift (AppExn)
 import Thrift.Protocol.Binary (BinaryProtocol(..))
 import Thrift.Transport (Transport, TransportExn, tClose)
-import Thrift.Transport.Handle (hOpen)
+import Thrift.Transport.Handle (Port, hOpen)
 import Thrift.Transport.Framed (openFramedTransport, FramedTransport)
 
 -- Configuration via command-line parsing
 data Options = Options {
     opt_host :: String,
-    opt_port :: PortNumber,
+    opt_port :: Port,
     opt_service :: String,
     opt_timeout :: Int,
     opt_framed :: Bool,
@@ -31,7 +30,7 @@ data Options = Options {
 defaultOptions :: Options
 defaultOptions = Options {
      opt_host = "localhost"
-   , opt_port = 9090
+   , opt_port = "9090"
    , opt_service = "ERROR"
    , opt_timeout = 1
    , opt_framed = False
@@ -47,7 +46,7 @@ optionsDescriptions = [
     ]
 getHost, getPort, getTimeout :: String -> Options -> Options
 getHost newHost oldOpts = oldOpts { opt_host = newHost }
-getPort newPort oldOpts = oldOpts { opt_port = fromIntegral $ (read newPort :: Integer) }
+getPort newPort oldOpts = oldOpts { opt_port = newPort }
 getTimeout newTimeout oldOpts = oldOpts { opt_timeout = fromIntegral $ (read newTimeout :: Int) }
 
 getFramed, getVerbose :: Options -> Options
@@ -82,7 +81,7 @@ withHandle opts action = do
     return result
   where
       getHandle (Options host port _service _timeout _framed _verbose) =
-          hOpen (host, PortNumber port)
+          hOpen (host, port)
 
 withFramedTransport :: Options -> (FramedTransport Handle -> IO a) -> IO a
 withFramedTransport opts action = withHandle opts $ \h -> do
