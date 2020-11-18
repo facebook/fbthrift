@@ -128,7 +128,10 @@ INST_TEST_BATCH(structs, 0);
 INST_TEST_BATCH(structs, 1);
 INST_TEST_BATCH(structs, 2);
 INST_TEST_BATCH(structs, 3);
-INST_TEST_LAST(structs, 4);
+INST_TEST_BATCH(structs, 5);
+INST_TEST_BATCH(structs, 6);
+INST_TEST_BATCH(structs, 7);
+INST_TEST_LAST(structs, 8);
 
 INST_TEST_BATCH(unions, 0);
 INST_TEST_LAST(unions, 1);

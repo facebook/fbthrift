@@ -48,6 +48,21 @@ PRIMATIVE_TRANSFORM: Dict[Target, str] = {
     Target.THRIFT: "{}",
 }
 
+STRUCT_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "struct_{}",
+    Target.THRIFT: "struct {}",
+}
+
+UNION_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "union_{}",
+    Target.THRIFT: "union {}",
+}
+
+EXCEPTION_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "exception_{}",
+    Target.THRIFT: "exception {}",
+}
+
 LIST_TRANSFORM: Dict[Target, str] = {
     Target.NAME: "list_{}",
     Target.THRIFT: "list<{}>",
@@ -130,8 +145,8 @@ def gen_cpp_ref(target: Target, values: Dict[str, str]) -> Dict[str, str]:
     return _gen_unary_tramsform(CPP_REF_TRANSFORM, target, values)
 
 
-def generate_union_names_to_types(target: Target) -> Dict[str, str]:
-    """ Generate display name to thrift type mapping in union. Display name will be used in file name, rule name, etc """
+def gen_union_fields(target: Target) -> Dict[str, str]:
+    """Generates field name -> type that are appropriate for use in unions."""
     ret = gen_primatives(target, PRIMITIVE_TYPES)
     ret.update(gen_sets(target, ret))
     ret.update(gen_maps(target, gen_primatives(target, ["string"]), ret))
@@ -139,57 +154,71 @@ def generate_union_names_to_types(target: Target) -> Dict[str, str]:
     return ret
 
 
-def generate_struct_names_to_types(target: Target) -> Dict[str, str]:
-    """ Similar to thrift types in union. Difference is that unions cannot contain qualified fields. """
-    ret = generate_union_names_to_types(target)
+def gen_struct_fields(target: Target) -> Dict[str, str]:
+    """Generates field name -> type that are appropriate for use in structs."""
+    ret = gen_union_fields(target)
     ret.update(**gen_optional(target, ret), **gen_required(target, ret))
     return ret
 
 
-def generate_class(class_type: str, name: str, types: List[str]) -> str:
+def gen_thrift_def(
+    transform: Dict[Target, str], name: str, field_types: List[str]
+) -> str:
     """Generate thrift struct from types
-    >>> print(generate_class("struct", "Foo", ["i64", "optional string", "set<i32> (cpp.ref = 'true')"]))
+    >>> print(gen_thrift_def(STRUCT_TRANSFORM, "Foo", ["i64", "optional string", "set<i32> (cpp.ref = 'true')"]))
     struct Foo {
       1: i64 field_1;
       2: optional string field_2;
       3: set<i32> (cpp.ref = 'true') field_3;
     } (thrift.uri="facebook.com/thrift/test/testset/Foo")
     """
-    lines = [f"{class_type} {name} {{"]
-    for i, t in enumerate(types):
-        lines.append("  {0}: {1} field_{0};".format(i + 1, t))
+    decl = transform[Target.THRIFT].format(name)
+    lines = [f"{decl} {{"]
+    for idx, field_type in enumerate(field_types):
+        lines.append("  {0}: {1} field_{0};".format(idx + 1, field_type))
     lines.append(f'}} (thrift.uri="facebook.com/thrift/test/testset/{name}")')
     return "\n".join(lines)
 
 
-def print_thrift_class(
-    class_type: str,
-    names_to_types: Dict[str, str],
+def print_thrift_defs(
+    transform: Dict[Target, str],
+    fields: Dict[str, str],
     count: int = 1,
     *,
     file: TextIO = sys.stdout,
-) -> None:
-    name = "empty_" + class_type
-    print(generate_class(class_type, name, []), file=file)
-    classes = [name]
-    for display_name, type in names_to_types.items():
-        class_name = class_type + "_" + display_name
+) -> List[str]:
+    """Prints one thrift class def per field in fields and returns the names of all the classes."""
+    empty_name = transform[Target.NAME].format("empty")
+    print(gen_thrift_def(transform, empty_name, []), file=file)
+    classes = [empty_name]
+    for name, value_t in fields.items():
+        class_name = transform[Target.NAME].format(name)
         classes.append(class_name)
-        print(generate_class(class_type, class_name, [type] * count), file=file)
-
-    # Thrift class that contains all other generated classes with same-type
-    print(generate_class(class_type, class_type + "_all", classes), file=file)
+        print(gen_thrift_def(transform, class_name, [value_t] * count), file=file)
+    return classes
 
 
 def gen_thrift(path: str) -> None:
     with open(path, "w") as file:
         print(THRIFT_HEADER, file=file)
-        print_thrift_class(
-            "struct", generate_struct_names_to_types(Target.THRIFT), file=file
+        classes = []
+
+        # Generate all structs
+        struct_fields = gen_struct_fields(Target.THRIFT)
+        classes.extend(print_thrift_defs(STRUCT_TRANSFORM, struct_fields, file=file))
+
+        # Generate all exceptions, with the struct fields.
+        print_thrift_defs(EXCEPTION_TRANSFORM, struct_fields, file=file)
+
+        # Generate all unions.
+        union_fields = gen_union_fields(Target.THRIFT)
+        classes.extend(
+            print_thrift_defs(UNION_TRANSFORM, union_fields, count=2, file=file)
         )
-        print_thrift_class(
-            "union", generate_union_names_to_types(Target.THRIFT), 2, file=file
-        )
+
+        # Generate a union of all defined structs and unions.
+        all_name = UNION_TRANSFORM[Target.NAME].format("all")
+        print(gen_thrift_def(UNION_TRANSFORM, all_name, classes), file=file)
 
 
 def generate(dir: str) -> None:
