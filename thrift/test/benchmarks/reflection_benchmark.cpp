@@ -20,8 +20,8 @@
 #include <folly/init/Init.h>
 #include <folly/lang/Pretty.h>
 #include <glog/logging.h>
-#include <thrift/test/testset/gen-cpp2/gen_struct_all_fatal_all.h>
-#include <thrift/test/testset/gen-cpp2/gen_struct_all_for_each_field.h>
+#include <thrift/test/testset/gen-cpp2/testset_fatal_all.h>
+#include <thrift/test/testset/gen-cpp2/testset_for_each_field.h>
 
 namespace apache::thrift::test {
 namespace {

@@ -21,7 +21,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/reflection/populator.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
-#include <thrift/test/testset/gen-cpp2/gen_struct_all_fatal_types.h>
+#include <thrift/test/testset/gen-cpp2/testset_fatal_types.h>
 
 namespace apache::thrift::test {
 
@@ -98,7 +98,7 @@ REGISTER_TYPED_TEST_CASE_P(
     Binary_Any,
     SimpleJson_Any);
 
-using testset_info = reflect_module<testset::gen_struct_all_tags::module>;
+using testset_info = reflect_module<testset::testset_tags::module>;
 
 template <typename Ts>
 struct to_gtest_types;
