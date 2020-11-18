@@ -52,8 +52,8 @@ struct FrozenSerializer {
 // more like a benchmark artifact, so avoid doing optimizationon iteration
 // usecase in this benchmark (e.g. move string definition out of while loop)
 
-template <typename Serializer, typename Struct>
-void writeBench(size_t iters) {
+template <typename Serializer, typename Struct, typename Counter>
+void writeBench(size_t iters, Counter&&) {
   BenchmarkSuspender susp;
   auto strct = create<Struct>();
   susp.dismiss();
@@ -65,8 +65,8 @@ void writeBench(size_t iters) {
   susp.rehire();
 }
 
-template <typename Serializer, typename Struct>
-void readBench(size_t iters) {
+template <typename Serializer, typename Struct, typename Counter>
+void readBench(size_t iters, Counter&& counter) {
   BenchmarkSuspender susp;
   auto strct = create<Struct>();
   IOBufQueue q;
@@ -81,11 +81,12 @@ void readBench(size_t iters) {
     Serializer::deserialize(buf.get(), data);
   }
   susp.rehire();
+  counter["serialized_size"] = buf->computeChainDataLength();
 }
 
-#define X1(proto, rdwr, bench)                         \
-  BENCHMARK(proto##Protocol_##rdwr##_##bench, iters) { \
-    rdwr##Bench<proto##Serializer, bench>(iters);      \
+#define X1(proto, rdwr, bench)                                           \
+  BENCHMARK_COUNTERS(proto##Protocol_##rdwr##_##bench, counter, iters) { \
+    rdwr##Bench<proto##Serializer, bench>(iters, counter);               \
   }
 
 #define X2(proto, bench)  \
