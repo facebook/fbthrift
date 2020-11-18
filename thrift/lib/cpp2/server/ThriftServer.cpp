@@ -460,6 +460,12 @@ void ThriftServer::serve() {
 void ThriftServer::cleanUp() {
   DCHECK(!serverChannel_);
 
+  // tlsCredProcessor_ uses a background thread that needs to be joined prior
+  // to any further writes to ThriftServer members.
+  if (tlsCredProcessor_) {
+    tlsCredProcessor_.reset();
+  }
+
   // It is users duty to make sure that setup() call
   // should have returned before doing this cleanup
   idleServer_.reset();
@@ -480,9 +486,6 @@ void ThriftServer::cleanUp() {
 
   // Now clear all the handlers
   routingHandlers_.clear();
-
-  // Force the cred processor to stop polling if it's set up
-  tlsCredProcessor_.reset();
 }
 
 uint64_t ThriftServer::getNumDroppedConnections() const {
