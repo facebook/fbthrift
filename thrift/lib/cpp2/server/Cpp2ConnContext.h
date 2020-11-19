@@ -389,8 +389,16 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     ctx_->reset();
   }
 
-  PriorityThreadManager::PRIORITY getCallPriority() {
+  concurrency::PRIORITY getCallPriority() const {
     return header_->getCallPriority();
+  }
+
+  concurrency::PRIORITY getRequestPriority() const {
+    return priority_;
+  }
+
+  void setRequestPriority(concurrency::PRIORITY pri) {
+    priority_ = pri;
   }
 
   virtual std::vector<uint16_t>& getTransforms() {
@@ -500,6 +508,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   int64_t interactionId_{0};
   folly::Optional<InteractionCreate> interactionCreate_;
   Tile* tile_{nullptr};
+  concurrency::PRIORITY priority_{concurrency::PRIORITY::NORMAL};
 };
 
 } // namespace thrift

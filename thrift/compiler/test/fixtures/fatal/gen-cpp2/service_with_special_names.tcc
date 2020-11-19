@@ -73,6 +73,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_get(apache::thrif
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_get<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -127,6 +128,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_getter(apache::th
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_getter<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -181,6 +183,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_lists(apache::thr
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_lists<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -235,6 +238,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_maps(apache::thri
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_maps<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -289,6 +293,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_name(apache::thri
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_name<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -343,6 +348,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value(apa
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_name_to_value<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -397,6 +403,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_names(apache::thr
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_names<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -451,6 +458,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree(apach
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_prefix_tree<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -505,6 +513,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_sets(apache::thri
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_sets<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -559,6 +568,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_setter(apache::th
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_setter<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -613,6 +623,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_str(apache::thrif
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_str<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -667,6 +678,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_strings(apache::t
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_strings<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -721,6 +733,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_type(apache::thri
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_type<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -775,6 +788,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_value(apache::thr
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_value<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -829,6 +843,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name(apa
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_value_to_name<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -883,6 +898,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_values(apache::th
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_values<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -937,6 +953,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_id(apache::thrift
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_id<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -991,6 +1008,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_ids(apache::thrif
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_ids<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1045,6 +1063,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor(apache
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_descriptor<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1099,6 +1118,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors(apach
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_descriptors<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1153,6 +1173,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_key(apache::thrif
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_key<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1207,6 +1228,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_keys(apache::thri
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_keys<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1261,6 +1283,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_annotation(apache
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_annotation<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1315,6 +1338,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_annotations(apach
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_annotations<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1369,6 +1393,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_member(apache::th
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_member<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1423,6 +1448,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_members(apache::t
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_members<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1477,6 +1503,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_field(apache::thr
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_field<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -1531,6 +1558,7 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_fields(apache::th
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service_with_special_namesAsyncProcessor::process_fields<ProtocolIn_, ProtocolOut_>, this);
 }
 

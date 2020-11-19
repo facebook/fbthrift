@@ -30,6 +30,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_simple_function(apache::thrift:
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_simple_function<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -149,6 +150,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_throws_function2(apache::thrift
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::HIGH);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_throws_function2<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -222,6 +224,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_throws_function3(apache::thrift
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ExtraServiceAsyncProcessor::process_throws_function3<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -297,6 +300,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret(apache::thrift:
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -325,6 +329,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_i32_i32_i32_i32
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -394,6 +399,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_struct_param(ap
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -424,6 +430,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_listunion_param
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param<ProtocolIn_, ProtocolOut_>, this);
 }
 

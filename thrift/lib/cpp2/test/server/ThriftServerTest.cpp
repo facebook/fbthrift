@@ -673,15 +673,43 @@ class OverloadTest : public HeaderOrRocketTest,
   }
 };
 
-class CancellationTest : public HeaderOrRocketTest,
-                         public ::testing::WithParamInterface<TransportType> {
+class HeaderOrRocket : public HeaderOrRocketTest,
+                       public ::testing::WithParamInterface<TransportType> {
  public:
   void SetUp() override {
     transport = GetParam();
   }
 };
 
-TEST_P(CancellationTest, Test) {
+TEST_P(HeaderOrRocket, Priority) {
+  int callCount{0};
+  class TestInterface : public TestServiceSvIf {
+    int& callCount_;
+
+   public:
+    TestInterface(int& callCount) : callCount_(callCount) {}
+    using PRIORITY = concurrency::PRIORITY;
+    void priorityHigh() override {
+      callCount_++;
+      EXPECT_EQ(getConnectionContext()->getRequestPriority(), PRIORITY::HIGH);
+    }
+    void priorityBestEffort() override {
+      callCount_++;
+      EXPECT_EQ(
+          getConnectionContext()->getRequestPriority(), PRIORITY::BEST_EFFORT);
+    }
+  };
+
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestInterface>(callCount));
+  folly::EventBase base;
+  auto client = makeClient(runner, &base);
+  client->sync_priorityHigh();
+  client->sync_priorityBestEffort();
+  EXPECT_EQ(callCount, 2);
+}
+
+TEST_P(HeaderOrRocket, CancellationTest) {
   class NotCalledBackHandler {
    public:
     explicit NotCalledBackHandler(
@@ -791,8 +819,8 @@ TEST_P(CancellationTest, Test) {
 }
 
 INSTANTIATE_TEST_CASE_P(
-    CancellationTestFixture,
-    CancellationTest,
+    HeaderOrRocket,
+    HeaderOrRocket,
     testing::Values(TransportType::Header, TransportType::Rocket));
 
 TEST_P(OverloadTest, Test) {

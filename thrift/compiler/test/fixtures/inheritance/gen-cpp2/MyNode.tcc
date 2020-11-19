@@ -19,6 +19,7 @@ void MyNodeAsyncProcessor::setUpAndProcess_do_mid(apache::thrift::ResponseChanne
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyNodeAsyncProcessor::process_do_mid<ProtocolIn_, ProtocolOut_>, this);
 }
 

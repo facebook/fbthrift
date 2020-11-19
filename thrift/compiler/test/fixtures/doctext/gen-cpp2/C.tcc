@@ -19,6 +19,7 @@ void CAsyncProcessor::setUpAndProcess_f(apache::thrift::ResponseChannelRequest::
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &CAsyncProcessor::process_f<ProtocolIn_, ProtocolOut_>, this);
 }
 

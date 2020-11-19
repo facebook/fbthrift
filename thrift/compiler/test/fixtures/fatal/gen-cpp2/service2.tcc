@@ -29,6 +29,7 @@ void service2AsyncProcessor::setUpAndProcess_methodA(apache::thrift::ResponseCha
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodA<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -81,6 +82,7 @@ void service2AsyncProcessor::setUpAndProcess_methodB(apache::thrift::ResponseCha
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodB<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -139,6 +141,7 @@ void service2AsyncProcessor::setUpAndProcess_methodC(apache::thrift::ResponseCha
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodC<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -193,6 +196,7 @@ void service2AsyncProcessor::setUpAndProcess_methodD(apache::thrift::ResponseCha
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodD<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -253,6 +257,7 @@ void service2AsyncProcessor::setUpAndProcess_methodE(apache::thrift::ResponseCha
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodE<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -307,6 +312,7 @@ void service2AsyncProcessor::setUpAndProcess_methodF(apache::thrift::ResponseCha
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodF<ProtocolIn_, ProtocolOut_>, this);
 }
 

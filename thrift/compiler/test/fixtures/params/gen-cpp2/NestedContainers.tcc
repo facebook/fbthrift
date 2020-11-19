@@ -27,6 +27,7 @@ void NestedContainersAsyncProcessor::setUpAndProcess_mapList(apache::thrift::Res
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_mapList<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -81,6 +82,7 @@ void NestedContainersAsyncProcessor::setUpAndProcess_mapSet(apache::thrift::Resp
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_mapSet<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -135,6 +137,7 @@ void NestedContainersAsyncProcessor::setUpAndProcess_listMap(apache::thrift::Res
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_listMap<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -189,6 +192,7 @@ void NestedContainersAsyncProcessor::setUpAndProcess_listSet(apache::thrift::Res
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_listSet<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -243,6 +247,7 @@ void NestedContainersAsyncProcessor::setUpAndProcess_turtles(apache::thrift::Res
     return;
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &NestedContainersAsyncProcessor::process_turtles<ProtocolIn_, ProtocolOut_>, this);
 }
 

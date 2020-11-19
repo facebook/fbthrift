@@ -22,6 +22,7 @@ void <%service:parent_service_name%>AsyncProcessor::setUpAndProcess_<%#service:i
   }
 <%^function:eb%>
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::<%function:priority%>);
+  ctx->setRequestPriority(pri);
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, <% > types/function_kind%>, &<%service:parent_service_name%>AsyncProcessor::process_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
 <%/function:eb%><%#function:eb%>
   process_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
