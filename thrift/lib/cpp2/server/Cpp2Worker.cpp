@@ -118,8 +118,12 @@ void Cpp2Worker::onNewConnection(
           }
         }
       }
-      new TransportPeekingManager(
-          shared_from_this(), *addr, tinfo, server_, std::move(sock));
+      if (!getServer()->isDuplex()) {
+        new TransportPeekingManager(
+            shared_from_this(), *addr, tinfo, server_, std::move(sock));
+      } else {
+        handleHeader(std::move(sock), addr);
+      }
       break;
     case wangle::SecureTransportType::ZERO:
       LOG(ERROR) << "Unsupported Secure Transport Type: ZERO";
