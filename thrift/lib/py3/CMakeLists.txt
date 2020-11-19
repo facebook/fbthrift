@@ -89,7 +89,11 @@ foreach(_mod ${cpp_tgts})
     DEPENDS thrift-symlinks
   )
 
-  python_add_module(${_module_name} "${_cxx}")
+  if(${_f} STREQUAL "types")
+    python_add_module(${_module_name} "${_cxx}" "enums.cpp")
+  else()
+    python_add_module(${_module_name} "${_cxx}")
+  endif()
   target_link_libraries(${_module_name} thriftcpp2)
   set_target_properties(${_module_name}
     PROPERTIES

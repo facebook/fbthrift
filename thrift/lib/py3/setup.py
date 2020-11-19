@@ -45,6 +45,7 @@ extensions = [
     Extension("thrift.py3.client", sources=["thrift/py3/client.so"]),
     Extension("thrift.py3.server", sources=["thrift/py3/server.so"]),
     Extension("thrift.py3.ssl", sources=["thrift/py3/ssl.so"]),
+    Extension("thrift.py3.reflection", sources=["thrift/py3/reflection.so"]),
 ]
 setup(
     name="thrift",
