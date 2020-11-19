@@ -169,8 +169,13 @@ MyServiceAsyncClient::sync_complete_hasDataById(
   } else {
     tryResponse.emplace();
     tryResponse->responseContext.rpcSizeStats = returnState.getRpcSizeStats();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    if (auto* header = returnState.header()) {
+      if (!header->getHeaders().empty()) {
+  	    tryResponse->responseContext.headers = header->releaseHeaders();
+      }
+      if (auto load = header->getServerLoad()) {
+        tryResponse->responseContext.serverLoad = *load;
+      }
     }
     tryResponse->response = folly::makeTryWith([&] {
       return folly::fibers::runInMainContext([&] {
@@ -377,8 +382,13 @@ MyServiceAsyncClient::sync_complete_getDataById(
   } else {
     tryResponse.emplace();
     tryResponse->responseContext.rpcSizeStats = returnState.getRpcSizeStats();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    if (auto* header = returnState.header()) {
+      if (!header->getHeaders().empty()) {
+  	    tryResponse->responseContext.headers = header->releaseHeaders();
+      }
+      if (auto load = header->getServerLoad()) {
+        tryResponse->responseContext.serverLoad = *load;
+      }
     }
     tryResponse->response = folly::makeTryWith([&] {
       return folly::fibers::runInMainContext([&] {
@@ -585,8 +595,13 @@ MyServiceAsyncClient::sync_complete_putDataById(
   } else {
     tryResponse.emplace();
     tryResponse->responseContext.rpcSizeStats = returnState.getRpcSizeStats();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    if (auto* header = returnState.header()) {
+      if (!header->getHeaders().empty()) {
+  	    tryResponse->responseContext.headers = header->releaseHeaders();
+      }
+      if (auto load = header->getServerLoad()) {
+        tryResponse->responseContext.serverLoad = *load;
+      }
     }
     tryResponse->response = folly::makeTryWith([&] {
       return folly::fibers::runInMainContext([&] {

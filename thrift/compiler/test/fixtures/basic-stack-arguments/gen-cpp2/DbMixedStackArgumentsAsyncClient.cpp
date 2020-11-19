@@ -142,8 +142,13 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey0(
   } else {
     tryResponse.emplace();
     tryResponse->responseContext.rpcSizeStats = returnState.getRpcSizeStats();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    if (auto* header = returnState.header()) {
+      if (!header->getHeaders().empty()) {
+  	    tryResponse->responseContext.headers = header->releaseHeaders();
+      }
+      if (auto load = header->getServerLoad()) {
+        tryResponse->responseContext.serverLoad = *load;
+      }
     }
     tryResponse->response = folly::makeTryWith([&] {
       return folly::fibers::runInMainContext([&] {
@@ -350,8 +355,13 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey1(
   } else {
     tryResponse.emplace();
     tryResponse->responseContext.rpcSizeStats = returnState.getRpcSizeStats();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    if (auto* header = returnState.header()) {
+      if (!header->getHeaders().empty()) {
+  	    tryResponse->responseContext.headers = header->releaseHeaders();
+      }
+      if (auto load = header->getServerLoad()) {
+        tryResponse->responseContext.serverLoad = *load;
+      }
     }
     tryResponse->response = folly::makeTryWith([&] {
       return folly::fibers::runInMainContext([&] {

@@ -18,6 +18,7 @@
 
 #include <chrono>
 #include <map>
+#include <optional>
 #include <string>
 
 #include <folly/Try.h>
@@ -624,6 +625,7 @@ class RpcOptions {
 struct RpcResponseContext {
   std::map<std::string, std::string> headers;
   RpcSizeStats rpcSizeStats;
+  std::optional<int64_t> serverLoad;
 };
 
 template <class T>
