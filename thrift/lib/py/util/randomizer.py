@@ -519,7 +519,7 @@ class BinaryRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
     def _randomize(self):
         val = ScalarTypeRandomizer._randomize(self)
         if val is not None:
-            return val
+            return self.type_spec.construct_instance(val)
 
         length = self._get_length()
         bs = []
@@ -527,13 +527,13 @@ class BinaryRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
         for _ in sm.xrange(length):
             bs.append(six.int2byte(random.randint(*self.byte_range)))
 
-        return six.ensure_binary('').join(bs)
+        return self.type_spec.construct_instance(six.ensure_binary('').join(bs))
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
-            return six.ensure_binary(seed)
+            return self.type_spec.construct_instance(six.ensure_binary(seed))
         elif isinstance(seed, six.binary_type):
-            return seed
+            return self.type_spec.construct_instance(seed)
         else:
             raise TypeError("Invalid binary seed: %s" % seed)
 
