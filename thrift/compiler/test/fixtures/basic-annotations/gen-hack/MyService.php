@@ -243,8 +243,7 @@ trait MyServiceClientBase {
 
   protected function sendImpl_ping(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_ping_args::fromShape(shape(
-));
+    $args = MyService_ping_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -307,7 +306,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_ping_result::fromShape(shape());
+        $result = MyService_ping_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -337,8 +336,7 @@ trait MyServiceClientBase {
 
   protected function sendImpl_getRandomData(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_getRandomData_args::fromShape(shape(
-));
+    $args = MyService_getRandomData_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('getRandomData', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -401,7 +399,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_getRandomData_result::fromShape(shape());
+        $result = MyService_getRandomData_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -439,7 +437,7 @@ trait MyServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_hasDataById_args::fromShape(shape(
       'id' => $id,
-));
+    ));
     try {
       $this->eventHandler_->preSend('hasDataById', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -502,7 +500,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_hasDataById_result::fromShape(shape());
+        $result = MyService_hasDataById_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -540,7 +538,7 @@ trait MyServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_getDataById_args::fromShape(shape(
       'id' => $id,
-));
+    ));
     try {
       $this->eventHandler_->preSend('getDataById', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -603,7 +601,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_getDataById_result::fromShape(shape());
+        $result = MyService_getDataById_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -642,7 +640,7 @@ trait MyServiceClientBase {
     $args = MyService_putDataById_args::fromShape(shape(
       'id' => $id,
       'data' => $data,
-));
+    ));
     try {
       $this->eventHandler_->preSend('putDataById', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -705,7 +703,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_putDataById_result::fromShape(shape());
+        $result = MyService_putDataById_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -738,7 +736,7 @@ trait MyServiceClientBase {
     $args = MyService_lobDataById_args::fromShape(shape(
       'id' => $id,
       'data' => $data,
-));
+    ));
     try {
       $this->eventHandler_->preSend('lobDataById', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -777,8 +775,7 @@ trait MyServiceClientBase {
 
   protected function sendImpl_doNothing(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_doNothing_args::fromShape(shape(
-));
+    $args = MyService_doNothing_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('doNothing', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -841,7 +838,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_doNothing_result::fromShape(shape());
+        $result = MyService_doNothing_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -1410,12 +1407,12 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_ping_args');
     } else {
-      $args = MyService_ping_args::fromShape(shape());
+      $args = MyService_ping_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
-    $result = MyService_ping_result::fromShape(shape());
+    $result = MyService_ping_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
       await $this->handler->ping();
@@ -1454,12 +1451,12 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_getRandomData_args');
     } else {
-      $args = MyService_getRandomData_args::fromShape(shape());
+      $args = MyService_getRandomData_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getRandomData', $args);
-    $result = MyService_getRandomData_result::fromShape(shape());
+    $result = MyService_getRandomData_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getRandomData', $args);
       $result->success = await $this->handler->getRandomData();
@@ -1498,12 +1495,12 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_hasDataById_args');
     } else {
-      $args = MyService_hasDataById_args::fromShape(shape());
+      $args = MyService_hasDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'hasDataById', $args);
-    $result = MyService_hasDataById_result::fromShape(shape());
+    $result = MyService_hasDataById_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'hasDataById', $args);
       $result->success = await $this->handler->hasDataById($args->id);
@@ -1542,12 +1539,12 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_getDataById_args');
     } else {
-      $args = MyService_getDataById_args::fromShape(shape());
+      $args = MyService_getDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataById', $args);
-    $result = MyService_getDataById_result::fromShape(shape());
+    $result = MyService_getDataById_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getDataById', $args);
       $result->success = await $this->handler->getDataById($args->id);
@@ -1586,12 +1583,12 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_putDataById_args');
     } else {
-      $args = MyService_putDataById_args::fromShape(shape());
+      $args = MyService_putDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
-    $result = MyService_putDataById_result::fromShape(shape());
+    $result = MyService_putDataById_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'putDataById', $args);
       await $this->handler->putDataById($args->id, $args->data);
@@ -1630,7 +1627,7 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_lobDataById_args');
     } else {
-      $args = MyService_lobDataById_args::fromShape(shape());
+      $args = MyService_lobDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
@@ -1656,12 +1653,12 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_doNothing_args');
     } else {
-      $args = MyService_doNothing_args::fromShape(shape());
+      $args = MyService_doNothing_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'doNothing', $args);
-    $result = MyService_doNothing_result::fromShape(shape());
+    $result = MyService_doNothing_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'doNothing', $args);
       await $this->handler->doNothing();
@@ -1707,12 +1704,12 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_ping_args');
     } else {
-      $args = MyService_ping_args::fromShape(shape());
+      $args = MyService_ping_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
-    $result = MyService_ping_result::fromShape(shape());
+    $result = MyService_ping_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
       $this->handler->ping();
@@ -1751,12 +1748,12 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_getRandomData_args');
     } else {
-      $args = MyService_getRandomData_args::fromShape(shape());
+      $args = MyService_getRandomData_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getRandomData', $args);
-    $result = MyService_getRandomData_result::fromShape(shape());
+    $result = MyService_getRandomData_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getRandomData', $args);
       $result->success = $this->handler->getRandomData();
@@ -1795,12 +1792,12 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_hasDataById_args');
     } else {
-      $args = MyService_hasDataById_args::fromShape(shape());
+      $args = MyService_hasDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'hasDataById', $args);
-    $result = MyService_hasDataById_result::fromShape(shape());
+    $result = MyService_hasDataById_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'hasDataById', $args);
       $result->success = $this->handler->hasDataById($args->id);
@@ -1839,12 +1836,12 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_getDataById_args');
     } else {
-      $args = MyService_getDataById_args::fromShape(shape());
+      $args = MyService_getDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataById', $args);
-    $result = MyService_getDataById_result::fromShape(shape());
+    $result = MyService_getDataById_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'getDataById', $args);
       $result->success = $this->handler->getDataById($args->id);
@@ -1883,12 +1880,12 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_putDataById_args');
     } else {
-      $args = MyService_putDataById_args::fromShape(shape());
+      $args = MyService_putDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
-    $result = MyService_putDataById_result::fromShape(shape());
+    $result = MyService_putDataById_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'putDataById', $args);
       $this->handler->putDataById($args->id, $args->data);
@@ -1927,7 +1924,7 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_lobDataById_args');
     } else {
-      $args = MyService_lobDataById_args::fromShape(shape());
+      $args = MyService_lobDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
@@ -1953,12 +1950,12 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyService_doNothing_args');
     } else {
-      $args = MyService_doNothing_args::fromShape(shape());
+      $args = MyService_doNothing_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'doNothing', $args);
-    $result = MyService_doNothing_result::fromShape(shape());
+    $result = MyService_doNothing_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'doNothing', $args);
       $this->handler->doNothing();

@@ -67,8 +67,7 @@ trait MyServiceClientBase {
 
   protected function sendImpl_foo(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_foo_args::fromShape(shape(
-));
+    $args = MyService_foo_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('foo', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -131,7 +130,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_foo_result::fromShape(shape());
+        $result = MyService_foo_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {

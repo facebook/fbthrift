@@ -76,7 +76,7 @@ trait BarClientBase {
       'b' => Vec\map($b, 
         $_val0 ==> dict($_val0)
       ),
-));
+    ));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -139,7 +139,7 @@ trait BarClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Bar_baz_result::fromShape(shape());
+        $result = Bar_baz_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {

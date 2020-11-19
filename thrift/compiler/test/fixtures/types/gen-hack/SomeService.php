@@ -97,7 +97,7 @@ trait SomeServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = SomeService_bounce_map_args::fromShape(shape(
       'm' => $m,
-));
+    ));
     try {
       $this->eventHandler_->preSend('bounce_map', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -160,7 +160,7 @@ trait SomeServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = SomeService_bounce_map_result::fromShape(shape());
+        $result = SomeService_bounce_map_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -198,7 +198,7 @@ trait SomeServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = SomeService_binary_keyed_map_args::fromShape(shape(
       'r' => new Vector($r),
-));
+    ));
     try {
       $this->eventHandler_->preSend('binary_keyed_map', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -261,7 +261,7 @@ trait SomeServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = SomeService_binary_keyed_map_result::fromShape(shape());
+        $result = SomeService_binary_keyed_map_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {

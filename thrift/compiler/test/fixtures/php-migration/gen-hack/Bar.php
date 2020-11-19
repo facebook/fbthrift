@@ -91,7 +91,7 @@ trait BarClientBase {
       'c' => $c === null ? null : $c,
       'd' => $d === null ? null : $d,
       'e' => $e === null ? null : $e,
-));
+    ));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -154,7 +154,7 @@ trait BarClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Bar_baz_result::fromShape(shape());
+        $result = Bar_baz_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -387,12 +387,12 @@ abstract class BarAsyncProcessorBase extends \ThriftAsyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
-      $args = Bar_baz_args::fromShape(shape());
+      $args = Bar_baz_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
-    $result = Bar_baz_result::fromShape(shape());
+    $result = Bar_baz_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = await $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
@@ -438,12 +438,12 @@ abstract class BarSyncProcessorBase extends \ThriftSyncProcessor {
     } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
-      $args = Bar_baz_args::fromShape(shape());
+      $args = Bar_baz_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
-    $result = Bar_baz_result::fromShape(shape());
+    $result = Bar_baz_result::withDefaultValues();
     try {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);

@@ -71,7 +71,7 @@ trait TestServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = \hack_ns2\TestService_ping_args::fromShape(shape(
       'str_arg' => $str_arg,
-));
+    ));
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -134,7 +134,7 @@ trait TestServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = \hack_ns2\TestService_ping_result::fromShape(shape());
+        $result = \hack_ns2\TestService_ping_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {

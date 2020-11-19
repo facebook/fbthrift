@@ -1382,9 +1382,7 @@ string t_hack_generator::render_default_value(t_type* type) {
   } else if (type->is_struct() || type->is_xception()) {
     t_struct* tstruct = (t_struct*)type;
     if (no_nullables_) {
-      // TODO (partisan): replace with withDefaultValues() once that's globally
-      // available.
-      dval = hack_name(tstruct) + "::fromShape(shape())";
+      dval = hack_name(tstruct) + "::withDefaultValues()";
     } else {
       dval = "null";
     }
@@ -3214,11 +3212,8 @@ void t_hack_generator::generate_process_function(
              << "  $args = \\thrift_protocol_read_compact_struct($input, '"
              << argsname << "');\n"
              << indent() << "} else {\n"
-             << indent() << "  $args = "
-             << argsname
-             // TODO (partisan): replace with withDefaultValues() once that's
-             // globally available.
-             << "::fromShape(shape());\n"
+             << indent() << "  $args = " << argsname
+             << "::withDefaultValues();\n"
              << indent() << "  $args->read($input);\n"
              << indent() << "}\n";
   f_service_ << indent() << "$input->readMessageEnd();\n";
@@ -3231,11 +3226,8 @@ void t_hack_generator::generate_process_function(
 
   // Declare result for non oneway function
   if (!tfunction->is_oneway()) {
-    f_service_ << indent() << "$result = "
-               << resultname
-               // TODO (partisan): replace with withDefaultValues() once that's
-               // globally available.
-               << "::fromShape(shape());\n";
+    f_service_ << indent() << "$result = " << resultname
+               << "::withDefaultValues();\n";
   }
 
   // Try block for a function with exceptions
@@ -3932,27 +3924,29 @@ void t_hack_generator::_generate_service_client(
     std::string argsname =
         hack_name(tservice) + "_" + (*f_iter)->get_name() + "_args";
 
-    out << indent()
-        << "$currentseqid = $this->getNextSequenceID();\n"
-        // TODO (partisan): replace with withDefaultValues() if there are no
-        // fields once that's globally available.
-        << indent() << "$args = " << argsname << "::fromShape(shape(\n";
-    indent_up();
-    // Loop through the fields and assign to the args struct
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      indent(out);
-      string name = "$" + (*fld_iter)->get_name();
-      out << "'" << (*fld_iter)->get_name() << "' => ";
-      if (nullable_everything_) {
-        // just passthrough null
-        out << name << " === null ? null : ";
+    out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
+        << indent() << "$args = " << argsname;
+    if (!fields.empty()) {
+      out << "::fromShape(shape(\n";
+      indent_up();
+      // Loop through the fields and assign to the args struct
+      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+        indent(out);
+        string name = "$" + (*fld_iter)->get_name();
+        out << "'" << (*fld_iter)->get_name() << "' => ";
+        if (nullable_everything_) {
+          // just passthrough null
+          out << name << " === null ? null : ";
+        }
+        t_name_generator namer;
+        this->_generate_sendImpl_arg(out, namer, name, (*fld_iter)->get_type());
+        out << ",\n";
       }
-      t_name_generator namer;
-      this->_generate_sendImpl_arg(out, namer, name, (*fld_iter)->get_type());
-      out << ",\n";
+      indent_down();
+      indent(out) << "));\n";
+    } else {
+      out << "::withDefaultValues();\n";
     }
-    indent_down();
-    out << "));\n";
     out << indent() << "try {\n";
     indent_up();
     out << indent() << "$this->eventHandler_->preSend('"
@@ -4123,9 +4117,7 @@ void t_hack_generator::_generate_recvImpl(
       << indent() << "  throw $x;\n"
       << indent() << "}\n";
 
-  // TODO (partisan): replace with withDefaultValues() once that's globally
-  // available.
-  out << indent() << "$result = " << resultname << "::fromShape(shape());\n"
+  out << indent() << "$result = " << resultname << "::withDefaultValues();\n"
       << indent() << "$result->read($this->input_);\n";
 
   out << indent() << "$this->input_->readMessageEnd();\n";
@@ -4587,11 +4579,8 @@ void t_hack_generator::generate_deserialize_struct(
     ofstream& out,
     t_struct* tstruct,
     string prefix) {
-  out << indent() << "$" << prefix << " = "
-      << hack_name(tstruct)
-      // TODO (partisan): replace with withDefaultValues() once that's globally
-      // available.
-      << "::fromShape(shape());\n"
+  out << indent() << "$" << prefix << " = " << hack_name(tstruct)
+      << "::withDefaultValues();\n"
       << indent() << "$xfer += $" << prefix << "->read($input);\n";
 }
 
@@ -5029,9 +5018,7 @@ string t_hack_generator::declare_field(
       }
     } else if (type->is_struct() || type->is_xception()) {
       if (obj) {
-        // TODO (partisan): replace with withDefaultValues() once that's
-        // globally available.
-        result += " = " + hack_name(type) + "::fromShape(shape())";
+        result += " = " + hack_name(type) + "::withDefaultValues()";
       } else {
         result += " = null";
       }

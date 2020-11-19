@@ -95,8 +95,7 @@ trait MyServiceClientBase {
 
   protected function sendImpl_first(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_first_args::fromShape(shape(
-));
+    $args = MyService_first_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('first', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -159,7 +158,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_first_result::fromShape(shape());
+        $result = MyService_first_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -197,7 +196,7 @@ trait MyServiceClientBase {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_second_args::fromShape(shape(
       'count' => $count,
-));
+    ));
     try {
       $this->eventHandler_->preSend('second', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -260,7 +259,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_second_result::fromShape(shape());
+        $result = MyService_second_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {

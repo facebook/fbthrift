@@ -175,8 +175,7 @@ trait RaiserClientBase {
 
   protected function sendImpl_doBland(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_doBland_args::fromShape(shape(
-));
+    $args = Raiser_doBland_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('doBland', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -239,7 +238,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_doBland_result::fromShape(shape());
+        $result = Raiser_doBland_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -269,8 +268,7 @@ trait RaiserClientBase {
 
   protected function sendImpl_doRaise(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_doRaise_args::fromShape(shape(
-));
+    $args = Raiser_doRaise_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('doRaise', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -333,7 +331,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_doRaise_result::fromShape(shape());
+        $result = Raiser_doRaise_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -378,8 +376,7 @@ trait RaiserClientBase {
 
   protected function sendImpl_get200(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_get200_args::fromShape(shape(
-));
+    $args = Raiser_get200_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('get200', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -442,7 +439,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_get200_result::fromShape(shape());
+        $result = Raiser_get200_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
@@ -478,8 +475,7 @@ trait RaiserClientBase {
 
   protected function sendImpl_get500(): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_get500_args::fromShape(shape(
-));
+    $args = Raiser_get500_args::withDefaultValues();
     try {
       $this->eventHandler_->preSend('get500', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
@@ -542,7 +538,7 @@ trait RaiserClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = Raiser_get500_result::fromShape(shape());
+        $result = Raiser_get500_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {

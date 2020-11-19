@@ -179,7 +179,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'MyDataField') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['MyDataField']);
-      $_tmp1 = MyDataItem::fromShape(shape());
+      $_tmp1 = MyDataItem::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->MyDataField = $_tmp1;
     }    
@@ -502,14 +502,14 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     }    
     if (idx($parsed, 'myStruct') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myStruct']);
-      $_tmp1 = MyStruct::fromShape(shape());
+      $_tmp1 = MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->myStruct = $_tmp1;
       $this->_type = MyUnionEnum::myStruct;
     }    
     if (idx($parsed, 'myDataItem') !== null) {
       $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['myDataItem']);
-      $_tmp3 = MyDataItem::fromShape(shape());
+      $_tmp3 = MyDataItem::withDefaultValues();
       $_tmp3->readFromJson($_tmp2);
       $this->myDataItem = $_tmp3;
       $this->_type = MyUnionEnum::myDataItem;
