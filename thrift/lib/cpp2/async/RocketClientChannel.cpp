@@ -584,7 +584,7 @@ class RocketClientChannel::SingleRequestNoResponseCallback final
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
-  meta.maxVersion_ref() = 4;
+  meta.maxVersion_ref() = 5;
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
@@ -608,6 +608,34 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
       rocket::Payload::makeFromMetadataAndData(queue.move(), {}));
 }
 
+void RocketClientChannel::handleMetadataPush(
+    rocket::MetadataPushFrame&& frame) {
+  if (!frame.metadata()) {
+    return;
+  }
+
+  try {
+    CompactProtocolReader reader;
+    reader.setInput(frame.metadata());
+    ServerPushMetadata metadata;
+    metadata.read(&reader);
+    switch (metadata.getType()) {
+      case ServerPushMetadata::setupResponse: {
+        if (auto version = metadata.setupResponse_ref()->version_ref()) {
+          serverVersion_ = *version;
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  } catch (...) {
+    FB_LOG_EVERY_MS(WARNING, 60 * 1000)
+        << "fail to deserialize metadata push frame"
+        << folly::exceptionStr(std::current_exception());
+  }
+}
+
 RocketClientChannel::RocketClientChannel(
     folly::AsyncTransport::UniquePtr socket,
     RequestSetupMetadata meta)
@@ -615,11 +643,16 @@ RocketClientChannel::RocketClientChannel(
       rclient_(rocket::RocketClient::create(
           *evb_,
           std::move(socket),
-          std::make_unique<rocket::SetupFrame>(
-              makeSetupFrame(std::move(meta))))) {}
+          std::make_unique<rocket::SetupFrame>(makeSetupFrame(std::move(meta))),
+          [this](rocket::MetadataPushFrame&& frame) {
+            handleMetadataPush(std::move(frame));
+          })) {}
 
 RocketClientChannel::~RocketClientChannel() {
   unsetOnDetachable();
+  if (rclient_) {
+    rclient_->setOnMetadataPush(nullptr);
+  }
   closeNow();
 }
 

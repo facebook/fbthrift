@@ -89,12 +89,17 @@ class RocketTestClient {
     return evb_;
   }
 
+  void wait() {
+    b_.wait();
+  }
+
  private:
   folly::ScopedEventBaseThread evbThread_;
   folly::EventBase& evb_;
   folly::fibers::FiberManager& fm_;
   std::unique_ptr<RocketClient, folly::DelayedDestruction::Destructor> client_;
   const folly::SocketAddress serverAddr_;
+  folly::fibers::Baton b_;
 };
 
 class RocketTestServer {

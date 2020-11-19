@@ -313,6 +313,15 @@ struct RequestSetupMetadata {
   6: optional i32 markToReflect;
 }
 
+struct SetupResponse {
+  // the version that server picked
+  1: optional i32 version;
+}
+
+union ServerPushMetadata {
+  1: SetupResponse setupResponse
+}
+
 struct HeadersPayloadContent {
   // A string to string map that can be populated by the server
   // handler and further populated by plugins on the server side

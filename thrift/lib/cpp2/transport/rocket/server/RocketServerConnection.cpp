@@ -691,6 +691,10 @@ void RocketServerConnection::sendExt(
     ExtFrameType extFrameType) {
   send(ExtFrame(streamId, std::move(payload), flags, extFrameType).serialize());
 }
+void RocketServerConnection::sendMetadataPush(
+    std::unique_ptr<folly::IOBuf> metadata) {
+  send(MetadataPushFrame::makeFromMetadata(std::move(metadata)).serialize());
+}
 
 void RocketServerConnection::freeStream(
     StreamId streamId,

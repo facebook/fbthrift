@@ -74,7 +74,8 @@ class RocketClient : public folly::DelayedDestruction,
   static Ptr create(
       folly::EventBase& evb,
       folly::AsyncTransport::UniquePtr socket,
-      std::unique_ptr<SetupFrame> setupFrame);
+      std::unique_ptr<SetupFrame> setupFrame,
+      folly::Function<void(MetadataPushFrame&&)> onMetadataPush);
 
   using WriteSuccessCallback = RequestContext::WriteSuccessCallback;
   class RequestResponseCallback : public WriteSuccessCallback {
@@ -188,6 +189,11 @@ class RocketClient : public folly::DelayedDestruction,
 
   void setOnDetachable(folly::Function<void()> onDetachable) {
     onDetachable_ = std::move(onDetachable);
+  }
+
+  void setOnMetadataPush(
+      folly::Function<void(MetadataPushFrame&&)> onMetadataPush) {
+    onMetadataPush_ = std::move(onMetadataPush);
   }
 
   void notifyIfDetachable() {
@@ -442,11 +448,13 @@ class RocketClient : public folly::DelayedDestruction,
   };
   OnEventBaseDestructionCallback eventBaseDestructionCallback_;
   folly::Function<void()> closeCallback_;
+  folly::Function<void(MetadataPushFrame&&)> onMetadataPush_;
 
   RocketClient(
       folly::EventBase& evb,
       folly::AsyncTransport::UniquePtr socket,
-      std::unique_ptr<SetupFrame> setupFrame);
+      std::unique_ptr<SetupFrame> setupFrame,
+      folly::Function<void(MetadataPushFrame&&)> onMetadataPush);
 
   template <typename Frame, typename OnError>
   FOLLY_NODISCARD bool sendFrame(Frame&& frame, OnError&& onError);

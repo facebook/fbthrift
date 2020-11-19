@@ -72,7 +72,8 @@ transport::TTransportException toTransportException(
 RocketClient::RocketClient(
     folly::EventBase& evb,
     folly::AsyncTransport::UniquePtr socket,
-    std::unique_ptr<SetupFrame> setupFrame)
+    std::unique_ptr<SetupFrame> setupFrame,
+    folly::Function<void(MetadataPushFrame&&)> onMetadataPush)
     : evb_(&evb),
       socket_(std::move(socket)),
       setupFrame_(std::move(setupFrame)),
@@ -80,7 +81,8 @@ RocketClient::RocketClient(
       writeLoopCallback_(*this),
       detachableLoopCallback_(*this),
       closeLoopCallback_(*this),
-      eventBaseDestructionCallback_(*this) {
+      eventBaseDestructionCallback_(*this),
+      onMetadataPush_(std::move(onMetadataPush)) {
   DCHECK(socket_ != nullptr);
   socket_->setReadCB(&parser_);
   if (auto socket = dynamic_cast<folly::AsyncSocket*>(socket_.get())) {
@@ -101,8 +103,13 @@ RocketClient::~RocketClient() {
 RocketClient::Ptr RocketClient::create(
     folly::EventBase& evb,
     folly::AsyncTransport::UniquePtr socket,
-    std::unique_ptr<SetupFrame> setupFrame) {
-  return Ptr(new RocketClient(evb, std::move(socket), std::move(setupFrame)));
+    std::unique_ptr<SetupFrame> setupFrame,
+    folly::Function<void(MetadataPushFrame&&)> onMetadataPush) {
+  return Ptr(new RocketClient(
+      evb,
+      std::move(socket),
+      std::move(setupFrame),
+      std::move(onMetadataPush)));
 }
 
 void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -136,6 +143,9 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
     // constructing the METADATA_PUSH frame for validation
     MetadataPushFrame mdPushFrame(std::move(frame));
+    if (onMetadataPush_) {
+      onMetadataPush_(std::move(mdPushFrame));
+    }
     return;
   }
 
