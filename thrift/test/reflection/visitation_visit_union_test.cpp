@@ -15,7 +15,9 @@
  */
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/thrift/gen-cpp2/metadata_visit_union.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
+#include <any>
 using namespace std;
 
 namespace apache {
@@ -66,6 +68,21 @@ TEST(UnionFieldTest, basic) {
     } else {
       FAIL();
     }
+  });
+}
+
+TEST(UnionFieldTest, Metadata) {
+  Basic a;
+  a.int64_ref() = 42;
+  visit_union(a, [](auto&& m, auto&&) {
+    // ThriftType itself is union, we can visit it like ordinary thrift union
+    visit_union(*m.type_ref(), [](auto&& meta, any value) {
+      EXPECT_EQ(*meta.name_ref(), "t_primitive");
+      EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_enum);
+      EXPECT_EQ(
+          any_cast<metadata::ThriftPrimitiveType>(value),
+          metadata::ThriftPrimitiveType::THRIFT_I64_TYPE);
+    });
   });
 }
 } // namespace test
