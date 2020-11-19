@@ -390,12 +390,13 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteraction::semifuture_p
 }
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteraction::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
   auto callback = std::move(callbackAndFuture.first);
   ping(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 
@@ -768,12 +769,13 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteractionFast::semifutu
 }
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteractionFast::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
   auto callback = std::move(callbackAndFuture.first);
   ping(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 

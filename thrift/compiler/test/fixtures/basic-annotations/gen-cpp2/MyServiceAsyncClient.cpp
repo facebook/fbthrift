@@ -994,16 +994,20 @@ void MyServiceAsyncClient::sync_lobDataById(int64_t id, const ::std::string& dat
 void MyServiceAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<true> callback(&_returnState);
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
+      protocolId,
       rpcOptions.releaseWriteHeaders(),
       this->handlers_,
       this->getServiceName(),
       "MyService.lobDataById");
-  lobDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::RequestClientCallback::Ptr(&callback), id, data);
+  auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
+  lobDataByIdImpl(rpcOptions, ctx, std::move(wrappedCallback), id, data);
   callback.waitUntilDone(evb);
 }
+
+
 folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(int64_t id, const ::std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_lobDataById(rpcOptions, id, data);
@@ -1028,6 +1032,8 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_lobDataById(apac
   lobDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
+
+
 void MyServiceAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data) {
   lobDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }

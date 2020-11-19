@@ -38,7 +38,7 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(<% > types/type%>& 
 void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
   apache::thrift::ClientReceiveState _returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&_returnState);
+  apache::thrift::ClientSyncCallback<<%#function:oneway?%>true<%/function:oneway?%><%^function:oneway?%>false<%/function:oneway?%>> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
@@ -56,6 +56,7 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
 <%/function:returns_stream?%>
   <%function:cpp_name%>Impl(rpcOptions, ctx, std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
   callback.waitUntilDone(evb);
+<%^function:oneway?%>
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
   SCOPE_EXIT {
@@ -80,9 +81,10 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
       recv_<%function:cpp_name%>(_return, _returnState);
     <%/type:resolves_to_complex_return?%>
   });
+<%/function:oneway?%>
 }
 
-<%#type:sync_methods_return_try?%>
+<%#type:sync_methods_return_try?%><%^function:oneway?%>
 <%^function:returns_sink?%>
 folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
 <%service:name%>AsyncClient::sync_complete_<%function:cpp_name%>(
@@ -136,4 +138,4 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
   return tryResponse;
 }
 <%/function:returns_sink?%>
-<%/type:sync_methods_return_try?%>
+<%/function:oneway?%><%/type:sync_methods_return_try?%>

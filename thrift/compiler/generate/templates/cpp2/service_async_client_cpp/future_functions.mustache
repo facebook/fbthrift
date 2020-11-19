@@ -34,7 +34,12 @@ folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_cla
 folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   folly::Promise<<% > types/service_type_semi%>> _promise;
   auto _future = _promise.getFuture();
+<%#function:oneway?%>
+  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
+<%/function:oneway?%>
+<%^function:oneway?%>
   auto callback = std::make_unique<apache::thrift::FutureCallback<<% > types/service_type_semi%>>>(std::move(_promise), recv_wrapped_<%function:cpp_name%>, channel_);
+<%/function:oneway?%>
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return _future;
 }
@@ -42,13 +47,18 @@ folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_n
 <%/service:reduced_client?%>
 
 folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+<%#function:oneway?%>
+  auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
+<%/function:oneway?%>
+<%^function:oneway?%>
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_<%function:cpp_name%>, channel_);
+<%/function:oneway?%>
   auto callback = std::move(callbackAndFuture.first);
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return std::move(callbackAndFuture.second);
 }
 
-<%^service:reduced_client?%>
+<%^function:oneway?%><%^service:reduced_client?%>
 <%^type:streamresponse?%>
 folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> <% > service_common/client_class_name%>::header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   folly::Promise<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
@@ -65,4 +75,4 @@ folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apac
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return std::move(callbackAndFuture.second);
 }
-<%/service:reduced_client?%>
+<%/service:reduced_client?%><%/function:oneway?%>
