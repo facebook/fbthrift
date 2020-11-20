@@ -287,6 +287,9 @@ class THeader {
 
   // these work with read headers
   void setReadHeaders(StringToStringMap&&);
+  void setReadHeader(const std::string& key, std::string&& value) {
+    readHeaders_[key] = std::move(value);
+  }
   void eraseReadHeader(const std::string& key);
   const StringToStringMap& getHeaders() const {
     return readHeaders_;
@@ -398,12 +401,17 @@ class THeader {
 
   std::chrono::milliseconds getClientQueueTimeout() const;
 
+  folly::Optional<std::string> releaseClientId();
+  folly::Optional<std::string> releaseServiceTraceMeta();
+
   void setHttpClientParser(
       std::shared_ptr<apache::thrift::util::THttpClientParser>);
 
   void setClientTimeout(std::chrono::milliseconds timeout);
   void setClientQueueTimeout(std::chrono::milliseconds timeout);
   void setCallPriority(apache::thrift::concurrency::PRIORITY priority);
+  void setClientId(const std::string& clientId);
+  void setServiceTraceMeta(const std::string& serviceTraceMeta);
 
   // Utility method for converting TRANSFORMS enum to string
   static const folly::StringPiece getStringTransform(
@@ -426,6 +434,8 @@ class THeader {
   static const std::string& CLIENT_TIMEOUT_HEADER;
   static const std::string QUEUE_TIMEOUT_HEADER;
   static const std::string QUERY_LOAD_HEADER;
+  static const std::string kClientId;
+  static const std::string kServiceTraceMeta;
 
  protected:
   bool isFramed(CLIENT_TYPE clientType);
@@ -482,6 +492,8 @@ class THeader {
   folly::Optional<std::chrono::milliseconds> clientTimeout_;
   folly::Optional<std::chrono::milliseconds> queueTimeout_;
   folly::Optional<apache::thrift::concurrency::PRIORITY> priority_;
+  folly::Optional<std::string> clientId_;
+  folly::Optional<std::string> serviceTraceMeta_;
 
   static const std::string IDENTITY_HEADER;
   static const std::string ID_VERSION_HEADER;

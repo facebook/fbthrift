@@ -613,6 +613,8 @@ class RpcOptions {
 
   std::string routingKey_;
   std::string shardId_;
+  folly::Optional<std::string> clientId_;
+  folly::Optional<std::string> serviceTraceMeta_;
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;

@@ -35,7 +35,8 @@ RequestRpcMetadata makeRequestRpcMetadata(
     folly::StringPiece methodName,
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
-    const transport::THeader::StringToStringMap& persistentWriteHeaders);
+    const transport::THeader::StringToStringMap& persistentWriteHeaders,
+    const folly::Optional<int32_t>& version);
 
 void fillTHeaderFromResponseRpcMetadata(
     ResponseRpcMetadata& responseMetadata,

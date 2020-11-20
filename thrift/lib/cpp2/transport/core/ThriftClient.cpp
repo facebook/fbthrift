@@ -135,6 +135,16 @@ ThriftClient::createRequestMetadata(
   }
   auto otherMetadata = metadata.otherMetadata_ref();
   otherMetadata = header->releaseWriteHeaders();
+  auto clientId = header->releaseClientId();
+  auto serviceTraceMeta = header->releaseServiceTraceMeta();
+  if (clientId.has_value()) {
+    (*otherMetadata)[transport::THeader::kClientId] = std::move(*clientId);
+  }
+  if (serviceTraceMeta.has_value()) {
+    (*otherMetadata)[transport::THeader::kServiceTraceMeta] =
+        std::move(*serviceTraceMeta);
+  }
+
   auto* eh = header->getExtraWriteHeaders();
   if (eh) {
     // Extra write headers always take precedence over write headers (see

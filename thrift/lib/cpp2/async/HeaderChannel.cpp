@@ -48,6 +48,14 @@ void HeaderChannel::addRpcOptionHeaders(
           transport::THeader::QUEUE_TIMEOUT_HEADER,
           folly::to<std::string>(rpcOptions.getQueueTimeout().count()));
     }
+
+    if (auto clientId = header->releaseClientId()) {
+      header->setHeader(transport::THeader::kClientId, std::move(*clientId));
+    }
+    if (auto serviceTraceMeta = header->releaseServiceTraceMeta()) {
+      header->setHeader(
+          transport::THeader::kServiceTraceMeta, std::move(*serviceTraceMeta));
+    }
   }
 }
 } // namespace thrift

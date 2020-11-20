@@ -61,6 +61,8 @@ const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string& THeader::CLIENT_TIMEOUT_HEADER = *(new string("client_timeout"));
 const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
 const string THeader::QUERY_LOAD_HEADER = "load";
+const string THeader::kClientId = "client_id";
+const string THeader::kServiceTraceMeta = "service_trace_meta";
 
 std::string getReadableChars(Cursor c, size_t limit) {
   size_t size = 0;
@@ -958,6 +960,13 @@ std::chrono::milliseconds THeader::getClientQueueTimeout() const {
   }
 }
 
+folly::Optional<std::string> THeader::releaseClientId() {
+  return std::move(clientId_);
+}
+folly::Optional<std::string> THeader::releaseServiceTraceMeta() {
+  return std::move(serviceTraceMeta_);
+}
+
 void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {
   CHECK(clientType_ == THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = parser;
@@ -973,6 +982,13 @@ void THeader::setClientQueueTimeout(std::chrono::milliseconds timeout) {
 
 void THeader::setCallPriority(apache::thrift::concurrency::PRIORITY priority) {
   priority_ = priority;
+}
+
+void THeader::setClientId(const std::string& clientId) {
+  clientId_ = clientId;
+}
+void THeader::setServiceTraceMeta(const std::string& serviceTraceMeta) {
+  serviceTraceMeta_ = serviceTraceMeta;
 }
 
 static constexpr folly::StringPiece TRANSFORMS_STRING_LIST[] = {

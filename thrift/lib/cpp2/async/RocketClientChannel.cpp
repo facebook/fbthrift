@@ -584,7 +584,7 @@ class RocketClientChannel::SingleRequestNoResponseCallback final
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
-  meta.maxVersion_ref() = 5;
+  meta.maxVersion_ref() = 6;
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
@@ -727,7 +727,8 @@ void RocketClientChannel::sendRequestStream(
       methodName,
       timeout_,
       *header,
-      getPersistentWriteHeaders());
+      getPersistentWriteHeaders(),
+      serverVersion_);
 
   std::chrono::milliseconds firstResponseTimeout;
   if (!preSendValidation(
@@ -762,7 +763,8 @@ void RocketClientChannel::sendRequestSink(
       methodName,
       timeout_,
       *header,
-      getPersistentWriteHeaders());
+      getPersistentWriteHeaders(),
+      serverVersion_);
 
   std::chrono::milliseconds firstResponseTimeout;
   if (!preSendValidation(
@@ -798,7 +800,8 @@ void RocketClientChannel::sendThriftRequest(
       methodName,
       timeout_,
       *header,
-      getPersistentWriteHeaders());
+      getPersistentWriteHeaders(),
+      serverVersion_);
 
   std::chrono::milliseconds timeout;
   if (!preSendValidation(metadata, rpcOptions, cb, timeout)) {

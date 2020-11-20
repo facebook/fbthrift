@@ -93,6 +93,14 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (auto otherMetadata = metadata.otherMetadata_ref()) {
       header_.setReadHeaders(std::move(*otherMetadata));
     }
+    if (auto clientId = metadata.clientId_ref()) {
+      header_.setReadHeader(
+          transport::THeader::kClientId, std::move(*clientId));
+    }
+    if (auto serviceTraceMeta = metadata.serviceTraceMeta_ref()) {
+      header_.setReadHeader(
+          transport::THeader::kServiceTraceMeta, std::move(*serviceTraceMeta));
+    }
 
     // Store client's compression configs (if client explicitly requested
     // compression codec and size limit, use these settings to compress

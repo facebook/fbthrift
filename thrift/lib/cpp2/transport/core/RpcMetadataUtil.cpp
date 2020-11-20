@@ -38,7 +38,8 @@ RequestRpcMetadata makeRequestRpcMetadata(
     folly::StringPiece methodName,
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
-    const transport::THeader::StringToStringMap& persistentWriteHeaders) {
+    const transport::THeader::StringToStringMap& persistentWriteHeaders,
+    const folly::Optional<int32_t>& version) {
   RequestRpcMetadata metadata;
   uint64_t flags = 0;
   metadata.protocol_ref() = protocolId;
@@ -75,6 +76,25 @@ RequestRpcMetadata makeRequestRpcMetadata(
   }
   writeHeaders.insert(
       persistentWriteHeaders.begin(), persistentWriteHeaders.end());
+
+  auto clientId = header.releaseClientId();
+  auto serviceTraceMeta = header.releaseServiceTraceMeta();
+  if (!version.has_value() || version.value() < 6) {
+    if (clientId.has_value()) {
+      writeHeaders[transport::THeader::kClientId] = std::move(*clientId);
+    }
+    if (serviceTraceMeta.has_value()) {
+      writeHeaders[transport::THeader::kServiceTraceMeta] =
+          std::move(*serviceTraceMeta);
+    }
+  } else {
+    if (clientId.has_value()) {
+      metadata.clientId_ref() = std::move(*clientId);
+    }
+    if (serviceTraceMeta.has_value()) {
+      metadata.serviceTraceMeta_ref() = std::move(*serviceTraceMeta);
+    }
+  }
 
   // If server load was requested via THeader, use QUERY_SERVER_LOAD flag
   // instead.

@@ -156,6 +156,8 @@ struct RequestRpcMetadata {
   16: optional i64 interactionId;
   // Id must be unique per connection
   17: optional InteractionCreate interactionCreate;
+  18: optional string clientId;
+  19: optional string serviceTraceMeta;
 }
 
 struct PayloadResponseMetadata {
