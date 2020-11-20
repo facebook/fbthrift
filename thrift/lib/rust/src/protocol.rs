@@ -110,56 +110,62 @@ fn skip_inner<P: ProtocolReader + ?Sized>(
         }
         TType::Map => {
             let (key_type, value_type, len) = p.read_map_begin()?;
-            let mut idx = 0;
-            loop {
-                let more = p.read_map_key_begin()?;
-                if !more {
-                    break;
-                }
-                skip_inner(p, key_type, max_depth - 1)?;
-                p.read_map_value_begin()?;
-                skip_inner(p, value_type, max_depth)?;
-                p.read_map_value_end()?;
+            if len != Some(0) {
+                let mut idx = 0;
+                loop {
+                    let more = p.read_map_key_begin()?;
+                    if !more {
+                        break;
+                    }
+                    skip_inner(p, key_type, max_depth - 1)?;
+                    p.read_map_value_begin()?;
+                    skip_inner(p, value_type, max_depth)?;
+                    p.read_map_value_end()?;
 
-                idx += 1;
-                if should_break(len, more, idx) {
-                    break;
+                    idx += 1;
+                    if should_break(len, more, idx) {
+                        break;
+                    }
                 }
             }
             p.read_map_end()?;
         }
         TType::Set => {
             let (elem_type, len) = p.read_set_begin()?;
-            let mut idx = 0;
-            loop {
-                let more = p.read_set_value_begin()?;
-                if !more {
-                    break;
-                }
-                skip_inner(p, elem_type, max_depth - 1)?;
-                p.read_set_value_end()?;
+            if len != Some(0) {
+                let mut idx = 0;
+                loop {
+                    let more = p.read_set_value_begin()?;
+                    if !more {
+                        break;
+                    }
+                    skip_inner(p, elem_type, max_depth - 1)?;
+                    p.read_set_value_end()?;
 
-                idx += 1;
-                if should_break(len, more, idx) {
-                    break;
+                    idx += 1;
+                    if should_break(len, more, idx) {
+                        break;
+                    }
                 }
             }
             p.read_set_end()?;
         }
         TType::List => {
             let (elem_type, len) = p.read_list_begin()?;
-            let mut idx = 0;
-            loop {
-                let more = p.read_list_value_begin()?;
-                if !more {
-                    break;
-                }
-                skip_inner(p, elem_type, max_depth - 1)?;
-                p.read_list_value_end()?;
+            if len != Some(0) {
+                let mut idx = 0;
+                loop {
+                    let more = p.read_list_value_begin()?;
+                    if !more {
+                        break;
+                    }
+                    skip_inner(p, elem_type, max_depth - 1)?;
+                    p.read_list_value_end()?;
 
-                idx += 1;
-                if should_break(len, more, idx) {
-                    break;
+                    idx += 1;
+                    if should_break(len, more, idx) {
+                        break;
+                    }
                 }
             }
             p.read_list_end()?;

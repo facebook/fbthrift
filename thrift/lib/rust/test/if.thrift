@@ -38,3 +38,12 @@ enum TestEnum {
 
 enum TestEnumEmpty {
 }
+
+struct TestSkipV1 {
+}
+
+struct TestSkipV2 {
+  1: list<string> l;
+  2: set<string> s;
+  3: map<string, string> m;
+}

@@ -16,7 +16,7 @@
 
 use fbthrift::{serialize, CompactProtocol, Deserialize, Protocol, Serialize, ThriftEnum};
 use indexmap::{IndexMap, IndexSet};
-use interface::{NonstandardCollectionTypes, TestEnum, TestEnumEmpty};
+use interface::{NonstandardCollectionTypes, TestEnum, TestEnumEmpty, TestSkipV1, TestSkipV2};
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::fmt::Debug;
 use std::io::Cursor;
@@ -115,4 +115,13 @@ fn test_enumerate_fn_enum() {
     assert_eq!(TestEnum::enumerate(), expected);
     let expected_empty: &'static [(TestEnumEmpty, &str)] = &[];
     assert_eq!(TestEnumEmpty::enumerate(), expected_empty);
+}
+
+#[test]
+fn test_deserialize_skip_seq() {
+    let v2 = TestSkipV2::default();
+    let bytes = serialize!(CompactProtocol, |w| Serialize::write(&v2, w));
+    let mut deserializer = <CompactProtocol>::deserializer(Cursor::new(bytes));
+    let v1: TestSkipV1 = Deserialize::read(&mut deserializer).unwrap();
+    assert_eq!(v1, TestSkipV1::default());
 }
