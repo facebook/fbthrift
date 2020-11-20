@@ -106,6 +106,9 @@ func (p *HeaderProtocol) ReadMessageBegin() (name string, typeId MessageType, se
 	}
 
 	name, typeId, seqid, err = p.Protocol.ReadMessageBegin()
+	if p.trans.clientType != HeaderClientType {
+		return
+	}
 	hseqid := p.trans.SeqID()
 	if uint32(seqid) != hseqid {
 		return name, EXCEPTION, seqid, NewTransportException(
