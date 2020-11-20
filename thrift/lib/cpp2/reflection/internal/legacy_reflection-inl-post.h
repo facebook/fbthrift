@@ -84,7 +84,7 @@ using deref_inner_t = deref_t<folly::remove_cvref_t<T>>;
 // helper for all the assertions. This permits explicit template instantiations
 // of legacy_reflection to reduce the overall template recursion depth.
 
-template <typename T, typename TC, typename = void>
+template <typename T, typename TC>
 struct helper;
 
 //  get_helper
@@ -344,7 +344,7 @@ struct impl<T, type_class::list<ValueTypeClass>> {
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
       dt.valueType_ref() = value_helper::id();
-      legacy_reflection<value_type>::register_into(schema);
+      value_helper::register_into(schema);
     });
   }
 };
@@ -361,7 +361,7 @@ struct impl<T, type_class::set<ValueTypeClass>> {
   static void go(schema_t& schema) {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
       dt.valueType_ref() = value_helper::id();
-      legacy_reflection<value_type>::register_into(schema);
+      value_helper::register_into(schema);
     });
   }
 };
@@ -382,34 +382,16 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
     registering_datatype(schema, rname, rid(), [&](datatype_t& dt) {
       dt.mapKeyType_ref() = key_helper::id();
       dt.valueType_ref() = mapped_helper::id();
-      legacy_reflection<key_type>::register_into(schema);
-      legacy_reflection<mapped_type>::register_into(schema);
+      key_helper::register_into(schema);
+      mapped_helper::register_into(schema);
     });
   }
 };
 
-template <typename T, typename TC>
-using is_unknown = folly::bool_constant<
-    std::is_same<TC, type_class::unknown>::value ||
-    (std::is_same<reflect_type_class<T>, type_class::unknown>::value &&
-     (std::is_same<TC, type_class::enumeration>::value ||
-      std::is_same<TC, type_class::structure>::value ||
-      std::is_same<TC, type_class::variant>::value))>;
-
-template <typename T, typename TC>
-using is_known = folly::bool_constant<!is_unknown<T, TC>::value>;
-
-template <typename T, typename TC>
-using is_complete = fatal::is_complete<impl<T, TC>>;
-
 // helper
 
 template <typename T, typename TC>
-struct helper<
-    T,
-    TC,
-    typename std::enable_if<
-        is_known<T, TC>::value && is_complete<T, TC>::value>::type> {
+struct helper {
   using type_impl = impl<T, TC>;
   static void register_into(schema_t& schema) {
     type_impl::go(schema);
@@ -422,19 +404,7 @@ struct helper<
   }
 };
 
-template <typename T, typename TC>
-struct helper<
-    T,
-    TC,
-    typename std::enable_if<!(
-        is_known<T, TC>::value && is_complete<T, TC>::value)>::type> {
-  static_assert(
-      is_known<T, TC>::value,
-      "legacy_reflection: missing reflection metadata");
-  static_assert(
-      !is_known<T, TC>::value || is_complete<T, TC>::value,
-      "legacy_reflection: incomplete handler");
-
+struct helper_noop {
   static void register_into(schema_t&) {}
   static constexpr auto name() {
     return ""_fs;
@@ -444,13 +414,16 @@ struct helper<
   }
 };
 
+template <typename T>
+struct helper<T, type_class::unknown> : helper_noop {};
+
 } // namespace legacy_reflection_detail
 
 // legacy_reflection
 
 template <typename T>
 void legacy_reflection<T>::register_into(legacy_reflection_schema_t& schema) {
-  using TC = reflect_type_class<T>;
+  using TC = reflect_type_class_of_thrift_class<T>;
   legacy_reflection_detail::helper<T, TC>::register_into(schema);
 }
 
@@ -463,13 +436,13 @@ legacy_reflection_schema_t legacy_reflection<T>::schema() {
 
 template <typename T>
 constexpr auto legacy_reflection<T>::name() {
-  using TC = reflect_type_class<T>;
+  using TC = reflect_type_class_of_thrift_class<T>;
   return legacy_reflection_detail::helper<T, TC>::name();
 }
 
 template <typename T>
 legacy_reflection_id_t legacy_reflection<T>::id() {
-  using TC = reflect_type_class<T>;
+  using TC = reflect_type_class_of_thrift_class<T>;
   return legacy_reflection_detail::helper<T, TC>::id();
 }
 
