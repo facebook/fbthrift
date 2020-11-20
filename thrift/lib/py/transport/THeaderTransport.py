@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -20,6 +22,7 @@ from __future__ import unicode_literals
 import sys
 if sys.version_info[0] >= 3:
     from http import server
+    # pyre-fixme[11]: Annotation `server` is not defined as a type.
     BaseHTTPServer = server
     xrange = range
     from io import BytesIO as StringIO
@@ -56,7 +59,7 @@ except ImportError:
         def decompress(self, buf):
             raise TTransportException(TTransportException.INVALID_TRANSFORM,
                                       'snappy module not available')
-    snappy = DummySnappy()  # type: ignore
+    snappy = DummySnappy()
 
 # Import the zstd module if it is available
 try:
@@ -73,7 +76,7 @@ except ImportError:
         def ZstdDecompressor(self):
             raise TTransportException(TTransportException.INVALID_TRANSFORM,
                                       'zstd module not available')
-    zstd = DummyZstd()  # type: ignore
+    zstd = DummyZstd()
 
 
 # Definitions from THeader.h

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -28,8 +30,10 @@ if sys.version_info[0] >= 3:
     from io import BytesIO as StringIO
     from urllib import parse
     from http import client
+    # pyre-fixme[11]: Annotation `parse` is not defined as a type.
     urlparse = parse
     urllib = parse
+    # pyre-fixme[11]: Annotation `client` is not defined as a type.
     httplib = client
 else:
     from cStringIO import StringIO

@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 from typing import Any, Type, TypeVar
 
 from thrift.py3.types import Enum, Struct
@@ -28,6 +30,7 @@ def to_py_struct(cls: Type[T], obj: Struct) -> T:
 
 
 def _to_py_struct(cls: Type[T], obj: Struct) -> T:
+    # pyre-fixme[16]: `T` has no attribute `isUnion`.
     if cls.isUnion():
         return cls(
             **{
@@ -35,6 +38,7 @@ def _to_py_struct(cls: Type[T], obj: Struct) -> T:
                     field.type, field.type_args, getattr(obj, field.name)
                 )
                 for field in parse_struct_spec(cls)
+                # pyre-fixme[16]: `Struct` has no attribute `type`.
                 if field.name == obj.type.name
             }
         )

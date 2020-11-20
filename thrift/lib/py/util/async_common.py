@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 """
 Common base for asyncio and Trollius (the Python 2 asyncio backport).
 Ideally this would be all that's necessary but we can't use the async/await
@@ -50,6 +52,7 @@ from thrift.Thrift import (
 if six.PY3:
     import asyncio
 else:
+    # pyre-fixme[21]: Could not find module `trollius`.
     import trollius as asyncio
 
 # We support the deprecated FRAMED transport for old fb303
@@ -221,6 +224,7 @@ class WrappedTransport(TWriteOnlyBuffer):
             )
 
 
+# pyre-fixme[11]: Annotation `Protocol` is not defined as a type.
 class FramedProtocol(asyncio.Protocol):
     """Unpacks Thrift frames and reads them asynchronously."""
 

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -32,7 +34,7 @@ try:
     import fcntl
 except ImportError:
     # Windows doesn't have this module
-    fcntl = None  # type: ignore
+    fcntl = None
 
 class ConnectionEpoll:
     """ epoll is preferred over select due to its efficiency and ability to

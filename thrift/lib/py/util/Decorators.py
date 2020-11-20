@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -71,6 +73,7 @@ def process_main(asyncio=False):
     if asyncio and six.PY3:
         from asyncio import Future
     elif asyncio:
+        # pyre-fixme[21]: Could not find module `trollius`.
         from trollius import Future
 
     def _decorator(func):

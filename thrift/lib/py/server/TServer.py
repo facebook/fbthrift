@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -23,6 +25,7 @@ import os
 import threading
 if sys.version_info[0] >= 3:
     import queue
+    # pyre-fixme[11]: Annotation `queue` is not defined as a type.
     Queue = queue
 else:
     import Queue

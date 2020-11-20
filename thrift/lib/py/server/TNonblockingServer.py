@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 """Implementation of non-blocking server.
 
 The main idea of the server is receiving and sending requests
@@ -36,6 +38,7 @@ import errno
 
 if sys.version_info[0] >= 3:
     import queue
+    # pyre-fixme[11]: Annotation `queue` is not defined as a type.
     Queue = queue
     xrange = range
 else:

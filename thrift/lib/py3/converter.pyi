@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 from typing import Any, Type, TypeVar
 
 from thrift.py3.types import Struct

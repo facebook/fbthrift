@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pyre-unsafe
+
 """
 Fuzz Testing for Thrift Services
 """
@@ -36,6 +38,7 @@ import six.moves as sm
 from six.moves.urllib.parse import urlparse
 
 try:
+    # pyre-fixme[21]: Could not find module `ServiceRouter`.
     from ServiceRouter import ConnConfigs, ServiceOptions, ServiceRouter  # @manual
     SR_AVAILABLE = True
 except ImportError:
