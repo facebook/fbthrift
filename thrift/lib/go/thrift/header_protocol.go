@@ -105,11 +105,14 @@ func (p *HeaderProtocol) ReadMessageBegin() (name string, typeId MessageType, se
 		return name, EXCEPTION, seqid, err
 	}
 
-	// see https://github.com/apache/thrift/blob/master/doc/specs/SequenceNumbers.md
-	// TODO:  This is a bug. if we are speaking header protocol, we should be using
-	// seq id from the header. However, doing it here creates a non-backwards
-	// compatible code between client and server, since they both use this code.
-	return p.Protocol.ReadMessageBegin()
+	name, typeId, seqid, err = p.Protocol.ReadMessageBegin()
+	hseqid := p.trans.SeqID()
+	if uint32(seqid) != hseqid {
+		return name, EXCEPTION, seqid, NewTransportException(
+			INVALID_DATA, fmt.Sprintf("seqid(%d) in header mismatch with seqid(%d) in payload", hseqid, seqid),
+		)
+	}
+	return name, typeId, seqid, err
 }
 
 func (p *HeaderProtocol) Flush() (err error) {
