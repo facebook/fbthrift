@@ -90,7 +90,6 @@ ThriftServer::ThriftServer()
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
   ServerInstrumentation::registerServer(*this);
-  THRIFT_SERVER_EVENT(serve).log(*this);
 }
 
 ThriftServer::ThriftServer(
@@ -452,6 +451,7 @@ void ThriftServer::serve() {
     // since it reuses the client's EB
     return;
   }
+  THRIFT_SERVER_EVENT(serve).log(*this);
   SCOPE_EXIT {
     this->cleanUp();
   };

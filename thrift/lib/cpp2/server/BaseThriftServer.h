@@ -120,6 +120,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   struct Metadata {
     std::string configPath;
+    std::string serviceFramework;
   };
 
  private:
