@@ -236,6 +236,7 @@ class TCppServer(CppServerWrapper, TServer):
         self.setAdapter(_ProcessorAdapter(self.processor))
         self._setup_done = False
         self.serverEventHandler = None
+        self.setWrapperName("TCppServer-py")
 
     def setAdapter(self, adapter):
         self.processorAdapter = adapter

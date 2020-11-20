@@ -78,6 +78,9 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
     cSSLPolicy SSLPolicy__PERMITTED "apache::thrift::SSLPolicy::PERMITTED"
     cSSLPolicy SSLPolicy__REQUIRED "apache::thrift::SSLPolicy::REQUIRED"
 
+    cdef cppclass cBaseThriftServerMetadata "apache::thrift::BaseThriftServer::Metadata":
+        string wrapper
+
     cdef cppclass cThriftServer "apache::thrift::ThriftServer":
         ThriftServer() nogil except +
         void setPort(uint16_t port) nogil
@@ -113,6 +116,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         milliseconds getQueueTimeout()
         void setIsOverloaded(cIsOverloadedFunc isOverloaded)
         void useExistingSocket(int socket) except +
+        cBaseThriftServerMetadata& metadata()
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs

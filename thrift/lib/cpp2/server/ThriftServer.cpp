@@ -89,6 +89,7 @@ ThriftServer::ThriftServer()
   } else if (FLAGS_thrift_ssl_policy == "permitted") {
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
+  metadata().wrapper = "ThriftServer-cpp";
   ServerInstrumentation::registerServer(*this);
 }
 

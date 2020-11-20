@@ -496,6 +496,10 @@ class PythonAsyncProcessorFactory : public AsyncProcessorFactory {
 
 class CppServerWrapper : public ThriftServer {
  public:
+  CppServerWrapper() {
+    BaseThriftServer::metadata().wrapper = "CppServerWrapper-py";
+  }
+
   void setAdapter(object adapter) {
     // We use a shared_ptr to manage the adapter so the processor
     // factory handing won't ever try to manipulate python reference
@@ -734,6 +738,11 @@ class CppServerWrapper : public ThriftServer {
   void setEnableCodel(bool enableCodel) {
     BaseThriftServer::setEnableCodel(enableCodel, AttributeSource::OVERRIDE);
   }
+
+  void setWrapperName(object wrapperName) {
+    BaseThriftServer::metadata().wrapper =
+        extract<std::string>(str(wrapperName));
+  }
 };
 
 BOOST_PYTHON_MODULE(CppServerWrapper) {
@@ -807,7 +816,8 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
 
       .def("getLoad", &CppServerWrapper::getLoad)
       .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
-      .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper);
+      .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper)
+      .def("setWrapperName", &CppServerWrapper::setWrapperName);
 
   class_<ThreadManager, boost::shared_ptr<ThreadManager>, boost::noncopyable>(
       "ThreadManager", no_init)
