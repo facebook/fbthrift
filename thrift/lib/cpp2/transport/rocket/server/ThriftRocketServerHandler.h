@@ -117,6 +117,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
   int32_t version_{6};
 
+  folly::once_flag setupLoggingFlag_;
+
   template <class F>
   void handleRequestCommon(Payload&& payload, F&& makeRequest);
 

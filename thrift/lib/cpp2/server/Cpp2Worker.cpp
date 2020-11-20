@@ -95,8 +95,6 @@ void Cpp2Worker::onNewConnection(
   switch (secureTransportType) {
     // If no security, peek into the socket to determine type
     case wangle::SecureTransportType::NONE: {
-      THRIFT_CONNECTION_EVENT(non_tls).log(*this, *sock.get());
-
       new TransportPeekingManager(
           shared_from_this(), *addr, tinfo, server_, std::move(sock));
       break;

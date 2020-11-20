@@ -257,6 +257,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     MessageChannel::SendCallback* chainedCallback_;
   };
 
+  folly::once_flag setupLoggingFlag_;
+
   std::unordered_set<Cpp2Request*> activeRequests_;
 
   void removeRequest(Cpp2Request* req);

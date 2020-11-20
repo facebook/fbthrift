@@ -19,6 +19,7 @@
 #include <folly/Portability.h>
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
+#include <folly/io/async/AsyncSSLSocket.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
 
 namespace apache {
@@ -72,6 +73,29 @@ void useMockLoggingEventRegistry() {
 
 const LoggingEventRegistry& getLoggingEventRegistry() {
   return registryStorage.get().getRegistry();
+}
+
+void logSetupConnectionEventsOnce(
+    folly::once_flag& flag,
+    std::string_view methodName,
+    const Cpp2Worker& worker,
+    const folly::AsyncTransport& transport) {
+  static_cast<void>(folly::try_call_once(flag, [&]() noexcept {
+    if (methodName == "getCounters" || methodName == "getStatus" ||
+        methodName == "getRegexCounters") {
+      return false;
+    }
+    try {
+      if (!transport.getUnderlyingTransport<folly::AsyncSSLSocket>()) {
+        THRIFT_CONNECTION_EVENT(non_tls).log(worker, transport);
+      }
+    } catch (...) {
+      LOG(ERROR)
+          << "Exception thrown during Thrift server connection events logging: "
+          << folly::exceptionStr(std::current_exception());
+    }
+    return true;
+  }));
 }
 
 } // namespace thrift

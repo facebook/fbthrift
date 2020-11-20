@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
@@ -496,6 +497,13 @@ void Cpp2Connection::requestReceived(
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
       std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
+
+  logSetupConnectionEventsOnce(
+      setupLoggingFlag_,
+      t2r->getContext()->getMethodName(),
+      *worker_.get(),
+      *transport_.get());
+
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
   }

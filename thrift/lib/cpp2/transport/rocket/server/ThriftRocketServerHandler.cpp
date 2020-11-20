@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
@@ -399,6 +400,13 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
+
+  logSetupConnectionEventsOnce(
+      setupLoggingFlag_,
+      request->getMethodName(),
+      *worker_.get(),
+      *connContext_.getTransport());
+
   auto* cpp2ReqCtx = request->getRequestContext();
   auto& timestamps = cpp2ReqCtx->getTimestamps();
   timestamps.setStatus(samplingStatus);
