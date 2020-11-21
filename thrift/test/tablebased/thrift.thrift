@@ -42,6 +42,11 @@ struct StructWithRef {
   4: optional i32 fieldD (cpp2.ref_type = "unique");
 }
 
+struct StructWithCppType {
+  1: optional map<string, StructA>
+    (cpp.type = "std::unordered_map<std::string, StructA>") fieldA;
+}
+
 struct StructB {
   1: string fieldA;
   2: optional i64 fieldB;

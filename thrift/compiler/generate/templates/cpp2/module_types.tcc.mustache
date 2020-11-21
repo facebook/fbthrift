@@ -30,9 +30,7 @@
 %><% > common/namespace_cpp2_begin%>
 
 <%#program:tablebased?%>
-namespace __fbthrift_struct_info {
-extern const ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> <%struct:name%>;
-} // namespace __fbthrift_struct_info
+extern const ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthrift_struct_info_<%struct:name%>;
 <%/program:tablebased?%>
 
 <%^struct:union?%>

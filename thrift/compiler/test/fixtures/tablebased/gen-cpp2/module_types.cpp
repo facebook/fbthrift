@@ -263,8 +263,7 @@ template uint32_t TrivialTypesStruct::write<>(apache::thrift::SimpleJSONProtocol
 template uint32_t TrivialTypesStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t TrivialTypesStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-namespace __fbthrift_struct_info {
-constexpr ::apache::thrift::detail::StructInfoN<5> TrivialTypesStruct = {
+constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_TrivialTypesStruct = {
   /* .numFields */ 5,
   /* .name */ "TrivialTypesStruct",
   /* .unionExt */ nullptr,
@@ -310,7 +309,6 @@ constexpr ::apache::thrift::detail::StructInfoN<5> TrivialTypesStruct = {
     /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::enumeration,  ::test::fixtures::tablebased::ExampleEnum>::typeInfo,
   }}
 };
-} // namespace __fbthrift_struct_info
 
 
 }}} // test::fixtures::tablebased
@@ -482,8 +480,7 @@ template uint32_t ContainerStruct::write<>(apache::thrift::SimpleJSONProtocolWri
 template uint32_t ContainerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-namespace __fbthrift_struct_info {
-constexpr ::apache::thrift::detail::StructInfoN<8> ContainerStruct = {
+constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_ContainerStruct = {
   /* .numFields */ 8,
   /* .name */ "ContainerStruct",
   /* .unionExt */ nullptr,
@@ -553,7 +550,6 @@ constexpr ::apache::thrift::detail::StructInfoN<8> ContainerStruct = {
     /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::typeInfo,
   }}
 };
-} // namespace __fbthrift_struct_info
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ContainerStruct,
@@ -641,7 +637,6 @@ template uint32_t ExampleUnion::write<>(apache::thrift::SimpleJSONProtocolWriter
 template uint32_t ExampleUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ExampleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
-namespace __fbthrift_struct_info {
 constexpr ::apache::thrift::detail::UnionExtN<2> ExampleUnion_unionExt = {
   /* .clear */ ::apache::thrift::detail::clearUnion<::test::fixtures::tablebased::ExampleUnion>,
   /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<::test::fixtures::tablebased::ExampleUnion>(),
@@ -649,7 +644,7 @@ constexpr ::apache::thrift::detail::UnionExtN<2> ExampleUnion_unionExt = {
   ::apache::thrift::detail::placementNewUnionValue< ::test::fixtures::tablebased::ContainerStruct>,
 ::apache::thrift::detail::placementNewUnionValue< ::test::fixtures::tablebased::TrivialTypesStruct>},
 };
-constexpr ::apache::thrift::detail::StructInfoN<2> ExampleUnion = {
+constexpr ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_ExampleUnion = {
   /* .numFields */ 2,
   /* .name */ "ExampleUnion",
   /* .unionExt */ &ExampleUnion_unionExt,
@@ -671,7 +666,6 @@ constexpr ::apache::thrift::detail::StructInfoN<2> ExampleUnion = {
     /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::TrivialTypesStruct>::typeInfo,
   }}
 };
-} // namespace __fbthrift_struct_info
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ExampleUnion,
@@ -716,7 +710,7 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
   /* .set */ nullptr,
   /* .get */ nullptr,
-  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info::TrivialTypesStruct,
+  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info_TrivialTypesStruct,
 };
 const ::apache::thrift::detail::TypeInfo TypeToInfo<
   ::apache::thrift::type_class::structure,
@@ -724,7 +718,7 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
   /* .set */ nullptr,
   /* .get */ nullptr,
-  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info::ContainerStruct,
+  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info_ContainerStruct,
 };
 const ::apache::thrift::detail::TypeInfo TypeToInfo<
   ::apache::thrift::type_class::variant,
@@ -732,6 +726,6 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
   /* .set */ nullptr,
   /* .get */ nullptr,
-  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info::ExampleUnion,
+  /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info_ExampleUnion,
 };
 }}} // namespace apache::thrift::detail

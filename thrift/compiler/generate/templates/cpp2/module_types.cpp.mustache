@@ -178,7 +178,6 @@ template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::NimbleProt
 <%/program:nimble?%>
 
 <%#program:tablebased?%>
-namespace __fbthrift_struct_info {
 <%#struct:union?%>
 constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:name%>_unionExt = {
   /* .clear */ ::apache::thrift::detail::clearUnion<<% > common/namespace_cpp2 %><%struct:name%>>,
@@ -188,7 +187,7 @@ constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:n
 %><%/field:type%><%/struct:fields_in_key_order%>},
 };
 <%/struct:union?%>
-constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> <%struct:name%> = {
+constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthrift_struct_info_<%struct:name%> = {
   /* .numFields */ <%struct:fields_size%>,
   /* .name */ "<%struct:name%>",<%!
   %><%#struct:union?%>
@@ -217,7 +216,6 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> <%struct
   }<% > common/comma_newline %><%!
   %><%/struct:fields_in_key_order%>}
 };
-} // namespace __fbthrift_struct_info
 <%/program:tablebased?%>
 <%! enforce that if this thrift file is generated with extern template instances
     for simple-json protocol then all its dependencies are too %>
@@ -274,7 +272,7 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
   /* .set */ nullptr,
   /* .get */ nullptr,
-  /* .typeExt */ &<% > common/namespace_cpp2 %>__fbthrift_struct_info::<%struct:name%>,
+  /* .typeExt */ &<% > common/namespace_cpp2 %>__fbthrift_struct_info_<%struct:name%>,
 };
 <%/program:structs%>
 }}} // namespace apache::thrift::detail

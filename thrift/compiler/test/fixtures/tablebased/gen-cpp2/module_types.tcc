@@ -19,16 +19,14 @@ namespace std {
 
 
 namespace test { namespace fixtures { namespace tablebased {
-namespace __fbthrift_struct_info {
-extern const ::apache::thrift::detail::StructInfoN<5> TrivialTypesStruct;
-} // namespace __fbthrift_struct_info
+extern const ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_TrivialTypesStruct;
 
 template <class Protocol_>
 void TrivialTypesStruct::readNoXfer(Protocol_* iprot) {
   ::apache::thrift::detail::read(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::test::fixtures::tablebased::__fbthrift_struct_info::TrivialTypesStruct
+      ::test::fixtures::tablebased::__fbthrift_struct_info_TrivialTypesStruct
     ),
     this);
 }
@@ -90,7 +88,7 @@ uint32_t TrivialTypesStruct::write(Protocol_* iprot) const {
   return ::apache::thrift::detail::write(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::test::fixtures::tablebased::__fbthrift_struct_info::TrivialTypesStruct
+      ::test::fixtures::tablebased::__fbthrift_struct_info_TrivialTypesStruct
     ),
     this);
 }
@@ -110,16 +108,14 @@ extern template uint32_t TrivialTypesStruct::serializedSizeZC<>(apache::thrift::
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
-namespace __fbthrift_struct_info {
-extern const ::apache::thrift::detail::StructInfoN<8> ContainerStruct;
-} // namespace __fbthrift_struct_info
+extern const ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_ContainerStruct;
 
 template <class Protocol_>
 void ContainerStruct::readNoXfer(Protocol_* iprot) {
   ::apache::thrift::detail::read(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::test::fixtures::tablebased::__fbthrift_struct_info::ContainerStruct
+      ::test::fixtures::tablebased::__fbthrift_struct_info_ContainerStruct
     ),
     this);
 }
@@ -177,7 +173,7 @@ uint32_t ContainerStruct::write(Protocol_* iprot) const {
   return ::apache::thrift::detail::write(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::test::fixtures::tablebased::__fbthrift_struct_info::ContainerStruct
+      ::test::fixtures::tablebased::__fbthrift_struct_info_ContainerStruct
     ),
     this);
 }
@@ -197,9 +193,7 @@ extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::Sim
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
-namespace __fbthrift_struct_info {
-extern const ::apache::thrift::detail::StructInfoN<2> ExampleUnion;
-} // namespace __fbthrift_struct_info
+extern const ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_ExampleUnion;
 
 
 template <class Protocol_>
@@ -207,7 +201,7 @@ void ExampleUnion::readNoXfer(Protocol_* iprot) {
   ::apache::thrift::detail::read(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::test::fixtures::tablebased::__fbthrift_struct_info::ExampleUnion
+      ::test::fixtures::tablebased::__fbthrift_struct_info_ExampleUnion
     ),
     this);
 }
@@ -262,7 +256,7 @@ uint32_t ExampleUnion::write(Protocol_* iprot) const {
   return ::apache::thrift::detail::write(
     iprot,
     ::apache::thrift::detail::toStructInfo(
-      ::test::fixtures::tablebased::__fbthrift_struct_info::ExampleUnion
+      ::test::fixtures::tablebased::__fbthrift_struct_info_ExampleUnion
     ),
     this);
 }
