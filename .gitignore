@@ -8,6 +8,9 @@ Makefile.in
 /thrift/config.guess
 /thrift/config.hin
 /thrift/configure
+/build/Makefile
+/build/bin
+/build/thrift
 
 # Configure artifacts
 # Can't include all Makefiles, since some are non-autoconf

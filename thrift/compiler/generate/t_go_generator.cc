@@ -2004,7 +2004,7 @@ void t_go_generator::generate_service_client_method(
   // Open function
   generate_go_docstring(f_service_, (*f_iter));
   f_service_ << indent() << "func (p *" << clientTypeName << ") "
-             << function_signature_if(*f_iter, "", false) << " {" << endl;
+             << function_signature_if(*f_iter, "", gen_use_context_) << " {" << endl;
   indent_up();
   /*
   f_service_ <<
@@ -2026,7 +2026,12 @@ void t_go_generator::generate_service_client_method(
   f_service_ << indent() << "if err != nil { return }" << endl;
 
   if (!(*f_iter)->is_oneway()) {
-    f_service_ << indent() << "return p.recv" << funname << "()" << endl;
+    f_service_ << indent() << "return p.recv" << funname;
+    if (gen_use_context_) {
+      f_service_ << "(ctx)" << endl;
+    } else {
+      f_service_ << "()" << endl;
+    }
   } else {
     f_service_ << indent() << "return" << endl;
   }
@@ -2063,8 +2068,12 @@ void t_go_generator::generate_service_client_send_msg_call(
     f_service_ << indent() << "}" << endl;
   }
 
-  f_service_ << indent() << "err = p.CC.SendMsg(\"" << methodName
-             << "\", &args, " << messageType << ")" << endl;
+  f_service_ << indent() << "err = p.CC.SendMsg(";
+  if (gen_use_context_) {
+    f_service_ << "ctx, ";
+  }
+  f_service_ << "\"" << methodName
+                   << "\", &args, " << messageType << ")" << endl;
 }
 
 void t_go_generator::generate_service_client_recv_method(
@@ -2080,7 +2089,12 @@ void t_go_generator::generate_service_client_recv_method(
   // Open function
   f_service_ << endl
              << indent() << "func (p *" << clientTypeName << ") recv"
-             << publicize((*f_iter)->get_name()) << "() (";
+             << publicize((*f_iter)->get_name());
+  if (gen_use_context_) {
+    f_service_ << "(ctx context.Context) (";
+  } else {
+    f_service_ << "() (";
+  }
 
   if (!returnsVoid) {
     f_service_ << "value " << type_to_go_type((*f_iter)->get_returntype())
@@ -2092,11 +2106,21 @@ void t_go_generator::generate_service_client_recv_method(
   f_service_ << indent() << "var result " << result_type_name << endl;
 
   if (returnsVoid && !raisesExceptions) {
-    f_service_ << indent() << "return p.CC.RecvMsg(\"" << methodName
-               << "\", &result)" << endl;
+    if (gen_use_context_) {
+      f_service_ << indent() << "return p.CC.RecvMsg(ctx, \"" << methodName
+                     << "\", &result)" << endl;
+    } else {
+      f_service_ << indent() << "return p.CC.RecvMsg(ctx, \"" << methodName
+                     << "\", &result)" << endl;
+    }
   } else {
-    f_service_ << indent() << "err = p.CC.RecvMsg(\"" << methodName
-               << "\", &result)" << endl;
+    if (gen_use_context_) {
+      f_service_ << indent() << "err = p.CC.RecvMsg(ctx, \"" << methodName
+                     << "\", &result)" << endl;
+     } else {
+      f_service_ << indent() << "err = p.CC.RecvMsg(\"" << methodName
+                     << "\", &result)" << endl;
+    }
     f_service_ << indent() << "if err != nil { return }" << endl;
 
     // If there are no exceptions, no code is generated. So we can always call
@@ -2171,7 +2195,7 @@ void t_go_generator::generate_service_client_interface(t_service* tservice) {
 
   for (auto* function : tservice->get_functions()) {
     generate_go_docstring(f_service_, function);
-    f_service_ << indent() << function_signature_if(function, "", false)
+    f_service_ << indent() << function_signature_if(function, "", gen_use_context_)
                << endl;
   }
 
@@ -2224,7 +2248,11 @@ void t_go_generator::generate_service_client(
   if (!extends_client.empty()) {
     f_service_ << indent() << "*" << extends_client << endl;
   } else {
-    f_service_ << indent() << "CC thrift.ClientConn" << endl;
+    if (gen_use_context_) {
+      f_service_ << indent() << "CC thrift.ClientConnContext" << endl;
+    } else {
+      f_service_ << indent() << "CC thrift.ClientConn" << endl;
+    }
     if (isThreadsafe) {
       f_service_ << indent() << "Mu sync.Mutex" << endl;
     }
@@ -2247,7 +2275,11 @@ void t_go_generator::generate_service_client(
     f_service_ << "{" << extends_field << ": " << extends_client_new
                << "Factory(t, f)}" << endl;
   } else {
-    f_service_ << "{ CC: thrift.NewClientConn(t, f) }" << endl;
+    if (gen_use_context_) {
+      f_service_ << "{ CC: thrift.NewClientConnContext(t, f) }" << endl;
+    } else {
+      f_service_ << "{ CC: thrift.NewClientConn(t, f) }" << endl;
+    }
   }
 
   indent_down();
@@ -2265,8 +2297,13 @@ void t_go_generator::generate_service_client(
     f_service_ << "{" << extends_field << ": " << extends_client_new
                << "(t, iprot, oprot)}" << endl;
   } else {
-    f_service_ << "{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }"
-               << endl;
+    if (gen_use_context_) {
+      f_service_ << "{ CC: thrift.NewClientConnContextWithProtocols(t, iprot, oprot) }"
+                     << endl;
+    } else {
+      f_service_ << "{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }"
+                     << endl;
+    }
   }
 
   indent_down();
