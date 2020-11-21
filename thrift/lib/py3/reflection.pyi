@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 from collections.abc import Mapping, Sequence, Set
 from enum import Enum
 from typing import Any, NamedTuple, Optional, Tuple, Type, Union, overload
@@ -29,11 +27,14 @@ def inspect(
     cls: Union[ServiceInterface, Type[ServiceInterface], Client, Type[Client]]
 ) -> InterfaceSpec: ...
 @overload
+# pyre-ignore[2]: it can be anything in the Sequence
 def inspect(cls: Union[Sequence[Any], Type[Sequence[Any]]]) -> ListSpec: ...
 @overload
 def inspect(cls: Union[Set[Any], Type[Set[Any]]]) -> SetSpec: ...
 @overload
 def inspect(cls: Union[Mapping[Any, Any], Type[Mapping[Any, Any]]]) -> MapSpec: ...
+
+# pyre-ignore[2]: it can be anything
 def inspectable(cls: Any) -> bool: ...
 
 class NumberType(Enum):
@@ -68,47 +69,59 @@ class StructSpec:
         fields: Sequence[FieldSpec],
         kind: StructType,
         annotations: Mapping[str, str] = {},
-    ): ...
+    ) -> None: ...
 
 class FieldSpec:
     name: str
+    # pyre-ignore[4]: it can be any type
     type: Type[Any]
     kind: NumberType
     qualifier: Qualifier
-    default: Optional[Any]
+    # pyre-ignore[4]: it can be anything
+    default: Any
     annotations: Mapping[str, str] = {}
     def __init__(
         self,
         name: str,
+        # pyre-ignore[2]: it can be any type
         type: Type[Any],
         kind: NumberType,
         qualifier: Qualifier,
-        default: Optional[Any],
+        # pyre-ignore[2]: it can be anything
+        default: Any,
         annotations: Mapping[str, str] = {},
-    ): ...
+    ) -> None: ...
 
 class ListSpec:
+    # pyre-ignore[4]: it can be any type
     value: Type[Any]
     kind: NumberType
-    def __init__(self, value: Type[Any], kind: NumberType): ...
+    # pyre-ignore[2]: it can be any type
+    def __init__(self, value: Type[Any], kind: NumberType) -> None: ...
 
 class SetSpec:
+    # pyre-ignore[4]: it can be any type
     value: Type[Any]
     kind: NumberType
-    def __init__(self, value: Type[Any], kind: NumberType): ...
+    # pyre-ignore[2]: it can be any type
+    def __init__(self, value: Type[Any], kind: NumberType) -> None: ...
 
 class MapSpec:
+    # pyre-ignore[4]: it can be any type
     key: Type[Any]
     key_kind: NumberType
+    # pyre-ignore[4]: it can be any type
     value: Type[Any]
     value_kind: NumberType
     def __init__(
         self,
+        # pyre-ignore[2]: it can be any type
         key: Type[Any],
         key_kind: NumberType,
+        # pyre-ignore[2]: it can be any type
         value: Type[Any],
         value_kind: NumberType,
-    ): ...
+    ) -> None: ...
 
 class InterfaceSpec:
     name: str
@@ -119,34 +132,40 @@ class InterfaceSpec:
         name: str,
         methods: Sequence[MethodSpec],
         annotations: Mapping[str, str] = {},
-    ): ...
+    ) -> None: ...
 
 class MethodSpec:
     name: str
     arguments: Sequence[ArgumentSpec]
+    # pyre-ignore[4]: it can be any type
     result: Optional[Type[Any]]
     result_kind: NumberType
+    # pyre-ignore[4]: it can be any type
     exceptions: Sequence[Type[Any]] = []
     annotations: Mapping[str, str] = {}
     def __init__(
         self,
         name: str,
         arguments: Sequence[ArgumentSpec],
+        # pyre-ignore[2]: it can be any type
         result: Optional[Type[Any]],
         result_kind: NumberType,
+        # pyre-ignore[2]: it can be any type
         exceptions: Sequence[Type[Any]] = [],
         annotations: Mapping[str, str] = {},
-    ): ...
+    ) -> None: ...
 
 class ArgumentSpec:
     name: str
+    # pyre-ignore[4]: it can be any type
     type: Type[Any]
     kind: NumberType
     annotations: Mapping[str, str] = {}
     def __init__(
         self,
         name: str,
+        # pyre-ignore[2]: it can be any type
         type: Type[Any],
         kind: NumberType,
         annotations: Mapping[str, str] = {},
-    ): ...
+    ) -> None: ...

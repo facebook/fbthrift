@@ -13,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import copy
 import unittest
-from typing import AbstractSet, Any, Sequence, Tuple
+from typing import AbstractSet, Sequence, Tuple
 
 from testing.types import SetI32, SetI32Lists, SetSetI32Lists
 from thrift.py3.types import Container
@@ -70,22 +68,22 @@ class SetTests(unittest.TestCase):
         x2 = copy.copy(x)
         y2 = {1, 2, 3}
 
-        def eq(t: AbstractSet[Any], s: AbstractSet[Any]) -> Tuple[bool, ...]:
+        def eq(t: AbstractSet[int], s: AbstractSet[int]) -> Tuple[bool, ...]:
             return (t == s, set(t) == s, t == set(s), set(t) == set(s))
 
-        def neq(t: AbstractSet[Any], s: AbstractSet[Any]) -> Tuple[bool, ...]:
+        def neq(t: AbstractSet[int], s: AbstractSet[int]) -> Tuple[bool, ...]:
             return (t != s, set(t) != s, t != set(s), set(t) != set(s))
 
-        def lt(t: AbstractSet[Any], s: AbstractSet[Any]) -> Tuple[bool, ...]:
+        def lt(t: AbstractSet[int], s: AbstractSet[int]) -> Tuple[bool, ...]:
             return (t < s, set(t) < s, t < set(s), set(t) < set(s))
 
-        def gt(t: AbstractSet[Any], s: AbstractSet[Any]) -> Tuple[bool, ...]:
+        def gt(t: AbstractSet[int], s: AbstractSet[int]) -> Tuple[bool, ...]:
             return (t > s, set(t) > s, t > set(s), set(t) > set(s))
 
-        def le(t: AbstractSet[Any], s: AbstractSet[Any]) -> Tuple[bool, ...]:
+        def le(t: AbstractSet[int], s: AbstractSet[int]) -> Tuple[bool, ...]:
             return (t <= s, set(t) <= s, t <= set(s), set(t) <= set(s))
 
-        def ge(t: AbstractSet[Any], s: AbstractSet[Any]) -> Tuple[bool, ...]:
+        def ge(t: AbstractSet[int], s: AbstractSet[int]) -> Tuple[bool, ...]:
             return (t >= s, set(t) >= s, t >= set(s), set(t) >= set(s))
 
         # = and != testing

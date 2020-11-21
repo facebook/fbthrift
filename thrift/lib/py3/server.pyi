@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import ipaddress
 import os
 import pathlib
@@ -35,7 +33,8 @@ from typing import (
 
 from thrift.py3.common import Headers, Priority
 
-mT = TypeVar("mT", bound=Callable)
+# pyre-ignore[33]: the callable can be any function
+mT = TypeVar("mT", bound=Callable[..., Any])
 T = TypeVar("T")
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 Path = Union[str, bytes, os.PathLike]
@@ -62,6 +61,7 @@ class AsyncProcessorFactory:
 
 class ServiceInterface(AsyncProcessorFactory):
     annotations: ClassVar[Mapping[str, str]] = ...
+    # pyre-ignore[3]: it can return anything
     async def __aenter__(self) -> Any: ...
     async def __aexit__(
         self,

@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import ipaddress
 import os
 from enum import Enum
@@ -75,8 +73,11 @@ def get_client(
     ssl_timeout: float = ...,
 ) -> cT: ...
 def install_proxy_factory(
+    # pyre-ignore[2] : it may return anything
     factory: Optional[Callable[[Type[Client]], Callable[[cT], Any]]],
 ) -> None: ...
+
+# pyre-ignore[3] : it may return anything
 def get_proxy_factory() -> Optional[
     Callable[[Type[Client]], Callable[[Client], Any]]
 ]: ...

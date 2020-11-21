@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 from typing import Any, Generic, Iterator, Tuple, Type, TypeVar
 
 from thrift.py3.types import Struct
@@ -22,4 +20,5 @@ T = TypeVar("T", bound=Struct)
 
 class StructBuilder(Generic[T]):
     def __call__(self) -> T: ...
+    # pyre-ignore[3] : it may return anything
     def __iter__(self) -> Iterator[Tuple[str, Any]]: ...

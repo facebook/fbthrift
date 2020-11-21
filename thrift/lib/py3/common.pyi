@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 from enum import Enum
 from typing import Iterator, Mapping
 
@@ -63,7 +61,7 @@ class RpcOptions:
     @property
     def chunk_buffer_size(self) -> int: ...
     @chunk_buffer_size.setter
-    def chunk_buffer_size(self, buffer_size: int): ...
+    def chunk_buffer_size(self, buffer_size: int) -> int: ...
     def set_header(self, key: str, value: str) -> None: ...
     @property
     def read_headers(self) -> ReadHeaders: ...
