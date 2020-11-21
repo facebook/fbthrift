@@ -208,6 +208,7 @@ template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -287,6 +288,7 @@ template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -375,6 +377,7 @@ template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -511,6 +514,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -629,6 +633,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -727,6 +732,7 @@ template uint32_t struct4::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -836,6 +842,7 @@ template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

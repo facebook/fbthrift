@@ -122,6 +122,7 @@ template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -224,6 +225,7 @@ template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

@@ -90,6 +90,7 @@ template uint32_t Mixin1::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -198,6 +199,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -276,6 +278,7 @@ template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

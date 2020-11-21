@@ -75,6 +75,7 @@ template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

@@ -75,6 +75,7 @@ template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -145,6 +146,7 @@ template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -223,6 +225,7 @@ template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -311,6 +314,7 @@ template uint32_t ComplexFieldNames::serializedSizeZC<>(apache::thrift::CompactP
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

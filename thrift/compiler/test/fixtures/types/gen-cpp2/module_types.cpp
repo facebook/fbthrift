@@ -222,6 +222,7 @@ template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactPr
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -410,6 +411,7 @@ template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactPro
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -496,6 +498,7 @@ template uint32_t CppTypeStruct::serializedSizeZC<>(apache::thrift::CompactProto
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -574,6 +577,7 @@ template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::CompactProto
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -662,6 +666,7 @@ template uint32_t MyStructWithForwardRefEnum::serializedSizeZC<>(apache::thrift:
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -750,6 +755,7 @@ template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::CompactProt
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -858,6 +864,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -954,6 +961,7 @@ template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::CompactProto
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1062,6 +1070,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1168,6 +1177,7 @@ template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1219,6 +1229,7 @@ template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocol
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1310,6 +1321,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1388,6 +1400,7 @@ template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1471,6 +1484,7 @@ template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::CompactProt
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1569,6 +1583,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1712,6 +1727,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1810,6 +1826,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1873,6 +1890,7 @@ template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::CompactP
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1951,6 +1969,7 @@ template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::C
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -2158,6 +2177,7 @@ template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -2267,6 +2287,7 @@ template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactP
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -2417,6 +2438,7 @@ template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::CompactProt
 
 
 }}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {

@@ -140,6 +140,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // module2
+
 namespace apache {
 namespace thrift {
 namespace detail {

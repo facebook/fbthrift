@@ -211,6 +211,7 @@ template uint32_t Empty::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWr
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -283,6 +284,7 @@ template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::SimpleJSONPr
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -365,6 +367,7 @@ template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::Simp
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -577,6 +580,7 @@ template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtoco
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -690,6 +694,7 @@ template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProt
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1108,6 +1113,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1468,6 +1474,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -1569,6 +1576,7 @@ template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::SimpleJSO
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -2501,6 +2509,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -2692,6 +2701,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -3484,6 +3494,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -3592,6 +3603,7 @@ template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::Sim
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -3684,6 +3696,7 @@ template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProt
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -3797,6 +3810,7 @@ template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProto
 
 
 }}} // some::valid::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {

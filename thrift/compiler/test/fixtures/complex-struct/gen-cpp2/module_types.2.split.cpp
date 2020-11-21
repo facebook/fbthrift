@@ -545,6 +545,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -752,6 +753,7 @@ template uint32_t MyStructTypeDef::serializedSizeZC<>(apache::thrift::CompactPro
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -899,6 +901,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -962,6 +965,7 @@ template uint32_t emptyXcep::serializedSizeZC<>(apache::thrift::CompactProtocolW
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

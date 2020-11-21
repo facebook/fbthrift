@@ -19,6 +19,8 @@
 #include <folly/json.h>
 #include <folly/portability/GTest.h>
 #include <folly/test/JsonTestUtil.h>
+#include <thrift/test/tablebased/gen-cpp2/frozen_tablebased_types.h>
+#include <thrift/test/tablebased/gen-cpp2/frozen_types.h>
 #include <thrift/test/tablebased/gen-cpp2/thrift_tablebased_types.h>
 #include <thrift/test/tablebased/gen-cpp2/thrift_types.h>
 
@@ -75,6 +77,20 @@ Type makeStructWithIncludeLike() {
   Type object;
   object.fieldA_ref().emplace();
   return object;
+}
+
+template <typename Type>
+Type makeFrozenStructBLike() {
+  Type structBLike;
+  structBLike.fieldA_ref() = 2000;
+  return structBLike;
+}
+
+template <typename Type>
+Type makeFrozenStructALike() {
+  Type structALike;
+  structALike.fieldA_ref() = 2000;
+  return structALike;
 }
 
 template <typename Type>
@@ -136,6 +152,30 @@ using Protocols =
 template <typename Serializer>
 class MultiProtocolTest : public ::testing::Test {};
 TYPED_TEST_CASE(MultiProtocolTest, Protocols);
+
+TYPED_TEST(MultiProtocolTest, EmptyFrozenStructA) {
+  EXPECT_COMPATIBLE_PROTOCOL(
+      FrozenStructA(), tablebased::FrozenStructA(), TypeParam);
+}
+
+TYPED_TEST(MultiProtocolTest, FrozenStructA) {
+  FrozenStructA oldObject = makeFrozenStructALike<FrozenStructA>();
+  tablebased::FrozenStructA newObject =
+      makeFrozenStructALike<tablebased::FrozenStructA>();
+  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+}
+
+TYPED_TEST(MultiProtocolTest, EmptyFrozenStructB) {
+  EXPECT_COMPATIBLE_PROTOCOL(
+      FrozenStructB(), tablebased::FrozenStructA(), TypeParam);
+}
+
+TYPED_TEST(MultiProtocolTest, FrozenStructB) {
+  FrozenStructB oldObject = makeFrozenStructBLike<FrozenStructB>();
+  tablebased::FrozenStructB newObject =
+      makeFrozenStructBLike<tablebased::FrozenStructB>();
+  EXPECT_COMPATIBLE_PROTOCOL(oldObject, newObject, TypeParam);
+}
 
 TYPED_TEST(MultiProtocolTest, EmptyStructA) {
   EXPECT_COMPATIBLE_PROTOCOL(StructA(), tablebased::StructA(), TypeParam);

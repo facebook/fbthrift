@@ -237,6 +237,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }} // some::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {

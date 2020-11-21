@@ -133,6 +133,7 @@ template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::CompactProtoco
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

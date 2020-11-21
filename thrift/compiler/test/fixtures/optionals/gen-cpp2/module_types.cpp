@@ -153,6 +153,7 @@ template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -299,6 +300,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

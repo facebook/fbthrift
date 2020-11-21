@@ -149,6 +149,7 @@ template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -258,6 +259,7 @@ template uint32_t ListUnion::serializedSizeZC<>(apache::thrift::CompactProtocolW
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -370,6 +372,7 @@ template uint32_t DataUnion::serializedSizeZC<>(apache::thrift::CompactProtocolW
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -476,6 +479,7 @@ template uint32_t Val::serializedSizeZC<>(apache::thrift::CompactProtocolWriter 
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -609,6 +613,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -718,6 +723,7 @@ template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::Compac
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -796,6 +802,7 @@ template uint32_t NonCopyableStruct::serializedSizeZC<>(apache::thrift::CompactP
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

@@ -127,6 +127,7 @@ template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocol
 
 
 }}} // a::different::ns
+
 namespace apache {
 namespace thrift {
 namespace detail {

@@ -90,6 +90,7 @@ template uint32_t InitialResponse::serializedSizeZC<>(apache::thrift::CompactPro
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -168,6 +169,7 @@ template uint32_t FinalResponse::serializedSizeZC<>(apache::thrift::CompactProto
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -246,6 +248,7 @@ template uint32_t SinkPayload::serializedSizeZC<>(apache::thrift::CompactProtoco
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -324,6 +327,7 @@ template uint32_t CompatibleWithKeywordSink::serializedSizeZC<>(apache::thrift::
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -402,6 +406,7 @@ template uint32_t InitialException::serializedSizeZC<>(apache::thrift::CompactPr
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -480,6 +485,7 @@ template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::CompactProt
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

@@ -312,6 +312,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
 
 
 }}} // test::fixtures::tablebased
+
 namespace test { namespace fixtures { namespace tablebased {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -565,6 +566,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // test::fixtures::tablebased
+
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::test::fixtures::tablebased::ExampleUnion::Type>::size;
@@ -693,6 +695,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // test::fixtures::tablebased
+
 namespace apache {
 namespace thrift {
 namespace detail {

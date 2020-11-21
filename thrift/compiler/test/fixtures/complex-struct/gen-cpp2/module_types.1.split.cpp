@@ -108,6 +108,7 @@ template uint32_t MyStructMapFloatThrowExp::serializedSizeZC<>(apache::thrift::C
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -578,6 +579,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -751,6 +753,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -875,6 +878,7 @@ template uint32_t TypeRemapped::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {

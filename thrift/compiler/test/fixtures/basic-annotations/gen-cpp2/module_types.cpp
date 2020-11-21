@@ -123,6 +123,7 @@ template uint32_t MyStructNestedAnnotation::serializedSizeZC<>(apache::thrift::C
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -251,6 +252,7 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -387,6 +389,7 @@ template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 
 
 } // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
