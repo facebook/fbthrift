@@ -313,7 +313,9 @@ uint32_t DebugProtocolWriter::writeBinary(folly::ByteRange v) {
 
 uint32_t DebugProtocolWriter::writeBinary(
     const std::unique_ptr<folly::IOBuf>& str) {
-  writeByteRange(folly::ByteRange(str->clone()->coalesce()));
+  if (str) {
+    writeByteRange(folly::ByteRange(str->clone()->coalesce()));
+  }
   return 0;
 }
 
