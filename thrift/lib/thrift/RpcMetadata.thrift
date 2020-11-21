@@ -294,6 +294,7 @@ struct StreamPayloadMetadata {
 enum InterfaceKind {
   USER = 0,
   DEBUGGING = 1,
+  MONITORING = 2,
 }
 
 // The key is 32-bit, using a 64-bit constant here to make it work with signed

@@ -43,12 +43,22 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer&) {
   return {};
 }
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
+    createRocketMonitoringSetupFrameHandler,
+    apache::thrift::ThriftServer&) {
+  return nullptr;
+}
 } // namespace
 
 RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
   if (auto debugSetupFrameHandler =
           THRIFT_PLUGGABLE_FUNC(createRocketDebugSetupFrameHandler)(server)) {
     setupFrameHandlers_.push_back(std::move(debugSetupFrameHandler));
+  }
+  if (auto monitoringSetupFrameHandler = THRIFT_PLUGGABLE_FUNC(
+          createRocketMonitoringSetupFrameHandler)(server)) {
+    setupFrameHandlers_.push_back(std::move(monitoringSetupFrameHandler));
   }
 }
 
