@@ -42,6 +42,27 @@ namespace apache {
 namespace thrift {
 namespace concurrency {
 
+namespace {
+/* Translates from wangle priorities (normal at 0, higher is higher)
+   to thrift priorities */
+PRIORITY translatePriority(int8_t priority) {
+  if (priority >= 3) {
+    return PRIORITY::HIGH_IMPORTANT;
+  } else if (priority == 2) {
+    return PRIORITY::HIGH;
+  } else if (priority == 1) {
+    return PRIORITY::IMPORTANT;
+  } else if (priority == 0) {
+    return PRIORITY::NORMAL;
+  } else if (priority <= -1) {
+    return PRIORITY::BEST_EFFORT;
+  }
+  folly::assume_unreachable();
+}
+
+constexpr size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
+} // namespace
+
 /**
  * ThreadManager class
  *
@@ -806,6 +827,113 @@ class PriorityThreadManager::PriorityImpl
   Mutex mutex_;
   bool keepAliveJoined_{false};
 };
+
+namespace {
+
+class PriorityQueueThreadManager : public ThreadManager::Impl {
+ public:
+  typedef apache::thrift::concurrency::PRIORITY PRIORITY;
+  explicit PriorityQueueThreadManager(
+      size_t numThreads,
+      bool enableTaskStats = false)
+      : ThreadManager::Impl(enableTaskStats, N_PRIORITIES),
+        numThreads_(numThreads) {}
+
+  class PriorityFunctionRunner
+      : public virtual apache::thrift::concurrency::PriorityRunnable,
+        public virtual FunctionRunner {
+   public:
+    PriorityFunctionRunner(
+        apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
+        folly::Func&& f)
+        : FunctionRunner(std::move(f)), priority_(priority) {}
+
+    apache::thrift::concurrency::PRIORITY getPriority() const override {
+      return priority_;
+    }
+
+   private:
+    apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority_;
+  };
+
+  using ThreadManager::add;
+  using ThreadManager::Impl::add;
+
+  void add(
+      std::shared_ptr<Runnable> task,
+      int64_t timeout,
+      int64_t expiration,
+      apache::thrift::concurrency::ThreadManager::Source
+          source) noexcept override {
+    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
+    PRIORITY prio = p ? p->getPriority() : NORMAL;
+    ThreadManager::Impl::add(
+        prio, std::move(task), timeout, expiration, source);
+  }
+
+  /**
+   * Implements folly::Executor::add()
+   */
+  void add(folly::Func f) override {
+    // We default adds of this kind to highest priority; as ThriftServer
+    // doesn't use this itself, this is typically used by the application,
+    // and we want to prioritize inflight requests over admitting new request.
+    // arguably, we may even want a priority above the max we ever allow for
+    // initial queueing
+    ThreadManager::Impl::add(
+        HIGH_IMPORTANT,
+        std::make_shared<PriorityFunctionRunner>(HIGH_IMPORTANT, std::move(f)),
+        0,
+        0,
+        apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  }
+
+  /**
+   * Implements folly::Executor::addWithPriority()
+   */
+  void addWithPriority(folly::Func f, int8_t priority) override {
+    auto prio = translatePriority(priority);
+    ThreadManager::Impl::add(
+        prio,
+        std::make_shared<PriorityFunctionRunner>(prio, std::move(f)),
+        0,
+        0,
+        apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  }
+
+  uint8_t getNumPriorities() const override {
+    return N_PRIORITIES;
+  }
+
+  void start() override {
+    ThreadManager::Impl::start();
+    ThreadManager::Impl::addWorker(numThreads_);
+  }
+
+  void setNamePrefix(const std::string& name) override {
+    // This isn't thread safe, but neither is PriorityThreadManager's version
+    // This should only be called at initialization
+    ThreadManager::Impl::setNamePrefix(name);
+    for (int i = 0; i < N_PRIORITIES; i++) {
+      statContexts_[i] = folly::to<std::string>(name, "-pri", i);
+    }
+  }
+
+  using Task = typename ThreadManager::Impl::Task;
+
+  std::string statContext(const Task& task) override {
+    PriorityRunnable* p =
+        dynamic_cast<PriorityRunnable*>(task.getRunnable().get());
+    PRIORITY prio = p ? p->getPriority() : NORMAL;
+    return statContexts_[prio];
+  }
+
+ private:
+  size_t numThreads_;
+  std::string statContexts_[N_PRIORITIES];
+};
+
+} // namespace
 
 void ThreadManager::setObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
