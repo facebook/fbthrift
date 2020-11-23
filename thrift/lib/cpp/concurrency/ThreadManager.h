@@ -33,7 +33,9 @@
 #include <folly/portability/Unistd.h>
 #include <folly/synchronization/LifoSem.h>
 
+#include <folly/DefaultKeepAliveExecutor.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
@@ -462,6 +464,65 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   std::shared_ptr<folly::Executor> exe_;
   folly::Executor::KeepAlive<> ka_;
 };
+
+class SimpleThreadManager : public ThreadManager,
+                            public folly::DefaultKeepAliveExecutor {
+ public:
+  explicit SimpleThreadManager(
+      size_t workerCount = 4,
+      bool enableTaskStats = false);
+  ~SimpleThreadManager() override;
+
+  void start() override;
+  void stop() override;
+  void join() override;
+  STATE state() const override;
+  std::shared_ptr<ThreadFactory> threadFactory() const override;
+  void threadFactory(std::shared_ptr<ThreadFactory> value) override;
+  std::string getNamePrefix() const override;
+  void setNamePrefix(const std::string& name) override;
+  void addWorker(size_t value = 1) override;
+  void removeWorker(size_t value = 1) override;
+  size_t idleWorkerCount() const override;
+  size_t workerCount() const override;
+  size_t pendingTaskCount() const override;
+  size_t pendingUpstreamTaskCount() const override;
+  size_t totalTaskCount() const override;
+  size_t expiredTaskCount() override;
+  void add(
+      std::shared_ptr<Runnable> task,
+      int64_t timeout,
+      int64_t expiration,
+      Source source) noexcept override;
+  void add(folly::Func f) override;
+  void remove(std::shared_ptr<Runnable> task) override;
+  std::shared_ptr<Runnable> removeNextPending() override;
+  void clearPending() override;
+  void enableCodel(bool) override;
+  folly::Codel* getCodel() override;
+  void setExpireCallback(ExpireCallback expireCallback) override;
+  void setCodelCallback(ExpireCallback expireCallback) override;
+  void setThreadInitCallback(InitCallback initCallback) override;
+  void getStats(
+      std::chrono::microseconds& waitTime,
+      std::chrono::microseconds& runTime,
+      int64_t /*maxItems*/) override;
+
+ private:
+  void joinKeepAliveOnce() {
+    if (!std::exchange(keepAliveJoined_, true)) {
+      joinKeepAlive();
+    }
+  }
+
+  std::unique_ptr<Impl> impl_;
+  bool keepAliveJoined_{false};
+};
+
+inline std::shared_ptr<ThreadFactory> Factory(
+    PosixThreadFactory::PRIORITY prio) {
+  return std::make_shared<PosixThreadFactory>(PosixThreadFactory::OTHER, prio);
+}
 
 } // namespace concurrency
 } // namespace thrift
