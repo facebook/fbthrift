@@ -527,5 +527,3 @@ inline std::shared_ptr<ThreadFactory> Factory(
 } // namespace concurrency
 } // namespace thrift
 } // namespace apache
-
-#include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>

@@ -28,10 +28,17 @@
 
 #include <folly/Conv.h>
 #include <folly/CppAttributes.h>
+#include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/ExceptionString.h>
 #include <folly/GLog.h>
+#include <folly/ThreadLocal.h>
+#include <folly/concurrency/PriorityUnboundedQueueSet.h>
+#include <folly/concurrency/QueueObserver.h>
 #include <folly/executors/Codel.h>
+#include <folly/io/async/Request.h>
 #include <folly/portability/GFlags.h>
+#include <folly/synchronization/LifoSem.h>
+#include <folly/synchronization/SmallLocks.h>
 #include <folly/tracing/StaticTracepoint.h>
 
 DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
