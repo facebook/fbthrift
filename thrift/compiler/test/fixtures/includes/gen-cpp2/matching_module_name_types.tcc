@@ -48,7 +48,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_OtherStructField:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::matching_module_name::OtherStruct>::read(*iprot, this->OtherStructField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::matching_module_name::OtherStruct>::readWithContext(*iprot, this->OtherStructField, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.OtherStructField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

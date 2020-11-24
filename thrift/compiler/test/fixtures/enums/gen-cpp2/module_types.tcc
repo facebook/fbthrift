@@ -102,7 +102,7 @@ _readField_tags:
     _readState.beforeSubobject(iprot);
     
     this->tags = ::std::set<int32_t>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->tags);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::readWithContext(*iprot, this->tags, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.tags = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -63,7 +63,7 @@ _readField_MyIntField:
 _readField_MyTransitiveField:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Foo>::read(*iprot, this->MyTransitiveField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Foo>::readWithContext(*iprot, this->MyTransitiveField, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.MyTransitiveField = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

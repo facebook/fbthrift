@@ -269,7 +269,7 @@ void Vehicle::readNoXfer(Protocol_* iprot) {
 _readField_color:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::read(*iprot, this->color);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::readWithContext(*iprot, this->color, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.color = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -286,7 +286,7 @@ _readField_color:
 _readField_licensePlate:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->licensePlate);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->licensePlate, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.licensePlate = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -302,7 +302,7 @@ _readField_licensePlate:
 _readField_description:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->description);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->description, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.description = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -318,7 +318,7 @@ _readField_description:
 _readField_name:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->name);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -543,7 +543,7 @@ _readField_id:
 _readField_name:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->name);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -574,7 +574,7 @@ _readField_age:
 _readField_address:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->address);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->address, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.address = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -590,7 +590,7 @@ _readField_address:
 _readField_favoriteColor:
   {
     _readState.beforeSubobject(iprot);
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::read(*iprot, this->favoriteColor);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Color>::readWithContext(*iprot, this->favoriteColor, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.favoriteColor = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -609,7 +609,7 @@ _readField_friends:
     _readState.beforeSubobject(iprot);
     
     this->friends = ::std::set< ::cpp2::PersonID>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::PersonID>>::read(*iprot, this->friends);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::PersonID>>::readWithContext(*iprot, this->friends, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.friends = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -643,7 +643,7 @@ _readField_petNames:
     _readState.beforeSubobject(iprot);
     
     this->petNames = ::std::map< ::cpp2::Animal, ::std::string>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::cpp2::Animal, ::std::string>>::read(*iprot, this->petNames);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::cpp2::Animal, ::std::string>>::readWithContext(*iprot, this->petNames, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.petNames = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -677,7 +677,7 @@ _readField_vehicles:
     _readState.beforeSubobject(iprot);
     
     this->vehicles = ::std::vector< ::cpp2::Vehicle>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::Vehicle>>::read(*iprot, this->vehicles);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::Vehicle>>::readWithContext(*iprot, this->vehicles, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.vehicles = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

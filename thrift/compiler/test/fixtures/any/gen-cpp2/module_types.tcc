@@ -62,7 +62,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 _readField_myString:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->myString);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->myString, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.myString = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -278,7 +278,7 @@ void MyException::readNoXfer(Protocol_* iprot) {
 _readField_myString:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->myString);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->myString, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.myString = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END

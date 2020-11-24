@@ -90,7 +90,7 @@ void InitialResponse::readNoXfer(Protocol_* iprot) {
 _readField_content:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->content);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->content, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -201,7 +201,7 @@ void FinalResponse::readNoXfer(Protocol_* iprot) {
 _readField_content:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->content);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->content, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -312,7 +312,7 @@ void SinkPayload::readNoXfer(Protocol_* iprot) {
 _readField_content:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->content);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->content, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.content = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -423,7 +423,7 @@ void CompatibleWithKeywordSink::readNoXfer(Protocol_* iprot) {
 _readField_sink:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->sink);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->sink, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.sink = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -534,7 +534,7 @@ void InitialException::readNoXfer(Protocol_* iprot) {
 _readField_reason:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->reason);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->reason, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reason = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -645,7 +645,7 @@ void SinkException1::readNoXfer(Protocol_* iprot) {
 _readField_reason:
   {
     
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::read(*iprot, this->reason);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->reason, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.reason = true;
     THRIFT_IGNORE_ISSET_USE_WARNING_END
