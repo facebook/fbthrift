@@ -72,6 +72,65 @@ constexpr size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
  * @version $Id:$
  */
 
+class ThreadManager::Task {
+ public:
+  Task(
+      std::shared_ptr<Runnable> runnable,
+      const std::chrono::milliseconds& expiration,
+      size_t qpriority)
+      : runnable_(std::move(runnable)),
+        queueBeginTime_(std::chrono::steady_clock::now()),
+        expireTime_(
+            expiration > std::chrono::milliseconds::zero()
+                ? queueBeginTime_ + expiration
+                : std::chrono::steady_clock::time_point()),
+        context_(folly::RequestContext::saveContext()),
+        qpriority_(qpriority) {}
+
+  ~Task() {}
+
+  void run() {
+    folly::RequestContextScopeGuard rctx(context_);
+    runnable_->run();
+  }
+
+  const std::shared_ptr<Runnable>& getRunnable() const {
+    return runnable_;
+  }
+
+  std::chrono::steady_clock::time_point getExpireTime() const {
+    return expireTime_;
+  }
+
+  std::chrono::steady_clock::time_point getQueueBeginTime() const {
+    return queueBeginTime_;
+  }
+
+  bool canExpire() const {
+    return expireTime_ != std::chrono::steady_clock::time_point();
+  }
+
+  const std::shared_ptr<folly::RequestContext>& getContext() const {
+    return context_;
+  }
+
+  intptr_t& queueObserverPayload() {
+    return queueObserverPayload_;
+  }
+
+  size_t queuePriority() const {
+    return qpriority_;
+  }
+
+ private:
+  std::shared_ptr<Runnable> runnable_;
+  std::chrono::steady_clock::time_point queueBeginTime_;
+  std::chrono::steady_clock::time_point expireTime_;
+  std::shared_ptr<folly::RequestContext> context_;
+  size_t qpriority_;
+  intptr_t queueObserverPayload_;
+};
+
 class ThreadManager::Impl : public ThreadManager,
                             public folly::DefaultKeepAliveExecutor {
   class Worker;
