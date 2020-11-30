@@ -1716,6 +1716,7 @@ class FizzStopTLSConnector
         nullptr,
         folly::none,
         folly::none,
+        folly::Optional<std::vector<fizz::ech::ECHConfig>>(folly::none),
         std::chrono::milliseconds(100));
     return promise_.getFuture().getVia(eb_);
   }
