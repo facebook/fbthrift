@@ -58,7 +58,6 @@ class Qualifier(Enum):
     OPTIONAL: Qualifier = ...
 
 class StructSpec:
-    id: int
     name: str
     fields: Sequence[FieldSpec]
     kind: StructType
@@ -72,6 +71,7 @@ class StructSpec:
     ) -> None: ...
 
 class FieldSpec:
+    id: int
     name: str
     # pyre-ignore[4]: it can be any type
     type: Type[Any]

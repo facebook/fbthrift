@@ -58,6 +58,7 @@ class ReflectionTests(unittest.TestCase):
 
         self.assertEqual(len(r.fields), 4)
 
+        self.assertEqual(r.fields[0].id, 1)
         self.assertEqual(r.fields[0].name, "opt_field")
         self.assertEqual(r.fields[0].type, str)
         self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
@@ -67,6 +68,7 @@ class ReflectionTests(unittest.TestCase):
             r.fields[0].annotations, {"some": "annotation", "a.b.c": "d.e.f"}
         )
 
+        self.assertEqual(r.fields[1].id, 2)
         self.assertEqual(r.fields[1].name, "req_field")
         self.assertEqual(r.fields[1].type, str)
         self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
@@ -74,6 +76,7 @@ class ReflectionTests(unittest.TestCase):
         self.assertEqual(r.fields[1].default, None)
         self.assertEqual(r.fields[1].annotations, {})
 
+        self.assertEqual(r.fields[2].id, 3)
         self.assertEqual(r.fields[2].name, "unq_field")
         self.assertEqual(r.fields[2].type, str)
         self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
@@ -81,6 +84,7 @@ class ReflectionTests(unittest.TestCase):
         self.assertEqual(r.fields[2].default, "xyzzy")
         self.assertEqual(r.fields[2].annotations, {})
 
+        self.assertEqual(r.fields[3].id, 4)
         self.assertEqual(r.fields[3].name, "struct_field")
         self.assertEqual(r.fields[3].type, Runtime)
         self.assertEqual(r.fields[0].kind, NumberType.NOT_A_NUMBER)
