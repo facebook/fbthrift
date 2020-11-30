@@ -585,6 +585,9 @@ class RocketClientChannel::SingleRequestNoResponseCallback final
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
     RequestSetupMetadata meta) {
   meta.maxVersion_ref() = 6;
+  if (const auto& hostId = ClientChannel::getHostId(); hostId) {
+    meta.clientHostId_ref() = *hostId;
+  }
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);

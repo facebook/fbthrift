@@ -314,6 +314,8 @@ struct RequestSetupMetadata {
   // the connection
   5: optional i32 dscpToReflect;
   6: optional i32 markToReflect;
+  7: optional string clientAgent;
+  8: optional string clientHostId;
 }
 
 struct SetupResponse {
