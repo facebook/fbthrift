@@ -101,7 +101,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_send_failure) {
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   auto client = newClient(runner.getAddress());
   RpcOptions opts;
-  opts.setTimeout(milliseconds(1));
+  opts.setTimeout(milliseconds(20));
   auto done = make_shared<Baton<>>();
   SCOPE_EXIT {
     done->post();
@@ -122,7 +122,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_success) {
   auto client = newClient(runner.getAddress());
   RpcOptions opts;
-  opts.setTimeout(milliseconds(1));
+  opts.setTimeout(milliseconds(20));
   EXPECT_CALL(*handler, voidResponse());
   client->voidResponse(opts, newCallback());
   eb->loop();

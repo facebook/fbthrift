@@ -91,7 +91,7 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
 
 TEST(ThriftServer, IdleTimeoutAfterTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
-  factory.idleTimeoutMs(10);
+  factory.idleTimeoutMs(20);
   ScopedServerThread sst(factory.create());
 
   folly::EventBase base;

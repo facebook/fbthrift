@@ -799,6 +799,10 @@ TEST_P(HeaderOrRocket, CancellationTest) {
     if (ex.getType() != TApplicationException::TIMEOUT) {
       throw;
     }
+  } catch (const TTransportException& ex) {
+    if (ex.getType() != TTransportException::TIMED_OUT) {
+      throw;
+    }
   }
 
   // Wait for the server to register the call
@@ -1891,8 +1895,8 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
     for (bool shouldTimeOut : {true, false}) {
       std::string response;
       RpcOptions rpcOpts;
-      rpcOpts.setTimeout(std::chrono::milliseconds(20));
-      rpcOpts.setQueueTimeout(std::chrono::milliseconds(20));
+      rpcOpts.setTimeout(std::chrono::milliseconds(30));
+      rpcOpts.setQueueTimeout(std::chrono::milliseconds(30));
       rpcOpts.setClientOnlyTimeouts(clientOnly);
       try {
         client.sync_sendResponse(rpcOpts, response, shouldTimeOut ? 50 : 0);
@@ -1900,7 +1904,7 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
         if (clientOnly) {
           EXPECT_EQ(response, "0:0");
         } else {
-          EXPECT_EQ(response, "20:20");
+          EXPECT_EQ(response, "30:30");
         }
       } catch (...) {
         EXPECT_TRUE(shouldTimeOut);

@@ -676,11 +676,11 @@ static void flushInfoHeaders(
   }
 }
 
-void THeader::setHeader(const string& key, const string& value) {
+void THeader::setHeader(const std::string& key, const std::string& value) {
   writeHeaders_[key] = value;
 }
 
-void THeader::setHeader(const string& key, string&& value) {
+void THeader::setHeader(const std::string& key, std::string&& value) {
   writeHeaders_[key] = std::move(value);
 }
 

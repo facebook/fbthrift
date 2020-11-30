@@ -19,6 +19,7 @@
 
 #include <functional>
 #include <map>
+#include <string_view>
 #include <vector>
 
 #include <folly/Optional.h>
@@ -251,6 +252,12 @@ class THeader {
   std::vector<uint16_t>& getWriteTransforms() {
     return writeTrans_;
   }
+  void setClientAgent(std::string&& value) {
+    writeHeaders_[std::string{CLIENT_AGENT_HEADER}] = std::move(value);
+  }
+  void setClientHostId(const std::string& value) {
+    writeHeaders_[std::string{CLIENT_HOST_ID_HEADER}] = value;
+  }
 
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value);
@@ -436,6 +443,8 @@ class THeader {
   static const std::string QUERY_LOAD_HEADER;
   static const std::string kClientId;
   static const std::string kServiceTraceMeta;
+  static constexpr std::string_view CLIENT_AGENT_HEADER = "client_agent";
+  static constexpr std::string_view CLIENT_HOST_ID_HEADER = "client_host_id";
 
  protected:
   bool isFramed(CLIENT_TYPE clientType);

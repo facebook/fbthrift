@@ -205,11 +205,14 @@ class HeaderClientChannel : public ClientChannel,
   // Remove a callback from the recvCallbacks_ map.
   void eraseCallback(uint32_t seqId, TwowayCallback<HeaderClientChannel>* cb);
 
+  void setConnectionAgentName(std::string_view name);
+
  protected:
   bool clientSupportHeader() override;
 
  private:
   void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
+  void attachConnectionMetadataOnce(apache::thrift::transport::THeader* header);
 
   std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 
@@ -230,6 +233,9 @@ class HeaderClientChannel : public ClientChannel,
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
   uint16_t protocolId_;
+
+  std::string connectionAgentName_;
+  bool firstRequest_{true};
 };
 
 } // namespace thrift

@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 
@@ -83,6 +85,8 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
     }
     onDetachable_();
   }
+
+  static const std::optional<std::string>& getHostId();
 
  private:
   folly::Function<void()> onDetachable_;
