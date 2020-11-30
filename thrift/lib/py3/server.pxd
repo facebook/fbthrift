@@ -80,6 +80,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
 
     cdef cppclass cBaseThriftServerMetadata "apache::thrift::BaseThriftServer::Metadata":
         string wrapper
+        string languageFramework
 
     cdef cppclass cThriftServer "apache::thrift::ThriftServer":
         ThriftServer() nogil except +

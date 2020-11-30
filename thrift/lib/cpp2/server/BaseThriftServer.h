@@ -122,6 +122,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     std::string configPath;
     std::string serviceFramework;
     std::string wrapper;
+    std::string languageFramework;
   };
 
  private:

@@ -252,6 +252,9 @@ cdef class ThriftServer:
     cdef void set_is_overloaded(self, cIsOverloadedFunc is_overloaded):
         self.server.get().setIsOverloaded(cmove(is_overloaded))
 
+    def set_language_framework_name(self, name):
+        self.server.get().metadata().languageFramework = name.encode()
+
     def stop(self):
         self.server.get().stop()
 

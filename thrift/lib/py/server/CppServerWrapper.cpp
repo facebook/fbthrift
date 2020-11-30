@@ -743,6 +743,11 @@ class CppServerWrapper : public ThriftServer {
     BaseThriftServer::metadata().wrapper =
         extract<std::string>(str(wrapperName));
   }
+
+  void setLanguageFrameworkName(object languageFrameworkName) {
+    BaseThriftServer::metadata().languageFramework =
+        extract<std::string>(str(languageFrameworkName));
+  }
 };
 
 BOOST_PYTHON_MODULE(CppServerWrapper) {
@@ -817,7 +822,10 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("getLoad", &CppServerWrapper::getLoad)
       .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
       .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper)
-      .def("setWrapperName", &CppServerWrapper::setWrapperName);
+      .def("setWrapperName", &CppServerWrapper::setWrapperName)
+      .def(
+          "setLanguageFrameworkName",
+          &CppServerWrapper::setLanguageFrameworkName);
 
   class_<ThreadManager, boost::shared_ptr<ThreadManager>, boost::noncopyable>(
       "ThreadManager", no_init)
