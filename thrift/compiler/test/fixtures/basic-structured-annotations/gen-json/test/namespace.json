@@ -1,0 +1,20 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "test.namespace",
+  "structs" : {
+    "structured_annotation_with_namespace" : {
+      "lineno" : 20,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : "abacaba"
+        }
+      },
+      "annotation_last_lineno" : -1
+    }
+  }
+}

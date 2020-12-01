@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+include "included.thrift"
+include "namespaced.thrift"
+
 struct structured_annotation_inline {
   1: i64 count,
   2: string name = 'abacaba'
@@ -54,6 +57,8 @@ typedef i64 annotated_inline_i64
   name='nesty2',
   nest=structured_annotation_with_default{name='dcdbdcdadcdbdcd'},
 }
+@included.structured_annotation_included{name='aba'}
+@namespaced.structured_annotation_with_namespace{name='bac'}
 struct MyStruct {
   @structured_annotation_inline{
     count=1,
@@ -98,7 +103,10 @@ service MyService {
   annotated_inline_string first()
 
   @structured_annotation_inline{count=2}
-  bool second(1: i64 count)
+  bool second(
+    @structured_annotation_inline{count=4}
+    1: i64 count
+  )
 }
 
 @structured_annotation_inline{count=4}

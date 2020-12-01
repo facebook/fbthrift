@@ -1,0 +1,273 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "module",
+  "constants" : {
+    "MyConst" : {
+      "lineno" : 122,
+      "value" : { "ENUMERATOR" : "enum", "CONST" : "const" },
+      "type_enum" : "MAP",
+      "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
+      "structured_annotations" : {
+        "structured_annotation_inline" : { "name" : "MyHackEnum" }
+      }
+    }
+  },
+  "enumerations" : {
+    "MyEnum" : {
+      "lineno" : 113,
+      "structured_annotations" : {
+        "structured_annotation_inline" : { "count" : 4 }
+      },
+      "constants" : {
+        "UNKNOWN" : 0,
+        "ONE" : 1
+      }
+    }
+  },
+  "typedefs" : {
+    "annotated_with_default_string" : {
+      "lineno" : 45,
+      "type_enum" : "STRING",
+      "spec_args" : null,
+      "structured_annotations" : {
+        "structured_annotation_with_default" : {  }
+      }
+    },
+    "annotated_inline_string" : {
+      "lineno" : 49,
+      "type_enum" : "STRING",
+      "spec_args" : null,
+      "structured_annotations" : {
+        "structured_annotation_inline" : { "count" : 1 },
+        "structured_annotation_with_default" : { "name" : "abc" }
+      }
+    },
+    "annotated_inline_i64" : {
+      "lineno" : 52,
+      "type_enum" : "I64",
+      "spec_args" : null,
+      "structured_annotations" : {
+        "structured_annotation_inline" : { "count" : 2 }
+      }
+    }
+  },
+  "structs" : {
+    "structured_annotation_inline" : {
+      "lineno" : 20,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "count" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true
+        },
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : "abacaba"
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "structured_annotation_with_default" : {
+      "lineno" : 25,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : "abacabadabacaba"
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "structured_annotation_recursive" : {
+      "lineno" : 29,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        },
+        "recurse" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "structured_annotation_recursive",
+          "required" : true
+        },
+        "forward" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "structured_annotation_forward",
+          "required" : true
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "structured_annotation_forward" : {
+      "lineno" : 35,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "count" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "structured_annotation_nested" : {
+      "lineno" : 39,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        },
+        "nest" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "structured_annotation_with_default",
+          "required" : true
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "MyStruct" : {
+      "lineno" : 62,
+      "is_exception" : false,
+      "is_union" : false,
+      "structured_annotations" : {
+        "structured_annotation_inline" : { "count" : 2 },
+        "structured_annotation_with_default" : {  },
+        "structured_annotation_nested" : { "name" : "nesty2", "nest" : { "name" : "dcdbdcdadcdbdcd" } },
+        "included.structured_annotation_included" : { "name" : "aba" },
+        "test.namespace.structured_annotation_with_namespace" : { "name" : "bac" }
+      },
+      "fields" : {
+        "annotated_field" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true,
+          "structured_annotations" : {
+            "structured_annotation_inline" : { "count" : 1, "name" : "counter" }
+          }
+        },
+        "annotated_type" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "annotated_inline_string",
+          "required" : true
+        },
+        "annotated_recursive" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "structured_annotations" : {
+            "structured_annotation_recursive" : { "name" : "abc", "recurse" : { "name" : "cba" }, "forward" : { "count" : 3 } }
+          }
+        },
+        "annotated_nested" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true,
+          "structured_annotations" : {
+            "structured_annotation_nested" : { "name" : "nesty" }
+          }
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "MyException" : {
+      "lineno" : 83,
+      "is_exception" : true,
+      "is_union" : false,
+      "structured_annotations" : {
+        "structured_annotation_nested" : { "name" : "nesty" }
+      },
+      "fields" : {
+        "context" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "structured_annotations" : {
+            "structured_annotation_with_default" : {  }
+          }
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "MyUnion" : {
+      "lineno" : 92,
+      "is_exception" : false,
+      "is_union" : true,
+      "structured_annotations" : {
+        "structured_annotation_nested" : { "name" : "nesty", "nest" : {  } }
+      },
+      "fields" : {
+        "first" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "annotated_inline_string",
+          "required" : true,
+          "structured_annotations" : {
+            "structured_annotation_with_default" : {  }
+          }
+        },
+        "second" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "annotated_inline_i64",
+          "required" : true,
+          "structured_annotations" : {
+            "structured_annotation_with_default" : { "name" : "aba" }
+          }
+        }
+      },
+      "annotation_last_lineno" : -1
+    }
+  },
+  "services" : {
+    "MyService" : {
+      "lineno" : 101,
+      "structured_annotations" : {
+        "structured_annotation_inline" : { "count" : 3 }
+      },
+      "functions" : {
+        "MyService.first" : {
+          "return_type" : {
+            "type_enum" : "TYPEDEF",
+            "spec_args" : "annotated_inline_string"
+          },
+          "args" : [],
+          "throws" : [],
+          "structured_annotations" : {
+            "structured_annotation_with_default" : {  }
+          }
+        },
+        "MyService.second" : {
+          "return_type" : {
+            "type_enum" : "BOOL",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null,
+              "structured_annotations" : {
+                "structured_annotation_inline" : { "count" : 4 }
+              }
+            }
+          ],
+          "throws" : [],
+          "structured_annotations" : {
+            "structured_annotation_inline" : { "count" : 2 }
+          }
+        }
+      }
+    }
+  }
+}

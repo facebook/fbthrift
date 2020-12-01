@@ -626,7 +626,13 @@ class MyService_second_args implements \IThriftStruct {
       'struct' => dict[],
       'fields' => dict[
         'count' => shape(
-          'field' => dict[],
+          'field' => dict[
+            'structured_annotation_inline' => structured_annotation_inline::fromShape(
+              shape(
+                "count" => 4,
+              )
+            ),
+          ],
           'type' => dict[],
         ),
       ],

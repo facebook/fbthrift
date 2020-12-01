@@ -68,15 +68,23 @@ class t_json_generator : public t_concat_generator {
   void print_const_value(const t_const_value* tvalue);
   void print_const_key(t_const_value* tvalue);
   void print_lineno(int lineno);
-  void print_annotations(const std::map<std::string, std::string>& annotations);
   string type_to_string(t_type* type);
   string type_to_spec_args(t_type* ttype);
+  string type_name(t_type* ttype);
 
   bool should_resolve_to_true_type(const t_type* ttype);
 
   std::ofstream f_out_;
 
  private:
+  void print_annotations(const std::map<std::string, std::string>& annotations);
+  void print_structured_annotations(
+      const std::vector<std::shared_ptr<t_const>>& annotations);
+  void print_node_annotations(
+      const t_annotated& node,
+      bool add_heading_comma,
+      bool add_trailing_comma);
+
   /**
    * True if we should generate annotations in json representation.
    */
@@ -304,6 +312,20 @@ string t_json_generator::type_to_spec_args(t_type* ttype) {
 }
 
 /**
+ * Return the type name, based on the namespace and the module (when
+ * applicable).
+ */
+string t_json_generator::type_name(t_type* ttype) {
+  const t_program* program = ttype->get_program();
+  if (program != nullptr && program != program_) {
+    const string& json_namespace = program->get_namespace("json");
+    return (!json_namespace.empty() ? json_namespace : program->get_name()) +
+        "." + ttype->get_name();
+  }
+  return ttype->get_name();
+}
+
+/**
  * Prints out the provided type spec
  */
 void t_json_generator::print_type(t_type* ttype) {
@@ -418,6 +440,50 @@ void t_json_generator::print_annotations(
   indent(f_out_) << "}";
 }
 
+void t_json_generator::print_structured_annotations(
+    const std::vector<std::shared_ptr<t_const>>& annotations) {
+  indent(f_out_) << "\"structured_annotations\" : {";
+  indent_up();
+  bool first = true;
+  std::map<std::string, std::string>::const_iterator iter;
+  for (const auto& annotation : annotations) {
+    if (!std::exchange(first, false)) {
+      f_out_ << ",";
+    }
+    f_out_ << endl;
+    indent(f_out_) << "\"" << type_name(annotation->get_type()) << "\" : ";
+    print_const_value(annotation->get_value());
+  }
+  f_out_ << endl;
+  indent_down();
+  indent(f_out_) << "}";
+}
+
+void t_json_generator::print_node_annotations(
+    const t_annotated& node,
+    bool add_heading_comma,
+    bool add_trailing_comma) {
+  if (annotate_) {
+    if (add_heading_comma &&
+        (!node.annotations_.empty() || !node.structured_annotations_.empty())) {
+      f_out_ << "," << endl;
+    }
+    if (!node.annotations_.empty()) {
+      print_annotations(node.annotations_);
+    }
+    if (!node.structured_annotations_.empty()) {
+      if (!node.annotations_.empty()) {
+        f_out_ << "," << endl;
+      }
+      print_structured_annotations(node.structured_annotations_);
+    }
+    if (add_trailing_comma &&
+        (!node.annotations_.empty() || !node.structured_annotations_.empty())) {
+      f_out_ << "," << endl;
+    }
+  }
+}
+
 /**
  * Generates a typedef.
  *
@@ -428,6 +494,8 @@ void t_json_generator::generate_typedef(t_typedef* ttypedef) {
   indent_up();
   print_lineno(ttypedef->get_lineno());
   print_type(ttypedef->get_type());
+  print_node_annotations(
+      *ttypedef, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
   f_out_ << endl;
   indent_down();
   indent(f_out_) << "}";
@@ -442,6 +510,8 @@ void t_json_generator::generate_enum(t_enum* tenum) {
   indent(f_out_) << "\"" << tenum->get_name() << "\" : {" << endl;
   indent_up();
   print_lineno(tenum->get_lineno());
+  print_node_annotations(
+      *tenum, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
   indent(f_out_) << "\"constants\" : {" << endl;
   indent_up();
   vector<t_enum_value*> values = tenum->get_enum_values();
@@ -450,6 +520,11 @@ void t_json_generator::generate_enum(t_enum* tenum) {
     if (val_iter != values.begin()) {
       f_out_ << "," << endl;
     }
+    // TODO (partisan): Find a good way to expose enumerator annotations.
+    // Modifying a value from a scalar to the JSON would fit the general
+    // approach of compartmentalization, but may be backwards-incompatible.
+    // Adding annotations as a separate top-level enum list/map would go
+    // against this general approach.
     indent(f_out_) << "\"" << (*val_iter)->get_name() << "\""
                    << " : " << (*val_iter)->get_value();
   }
@@ -485,6 +560,8 @@ void t_json_generator::generate_const(t_const* tconst) {
   print_const_value(tconst->get_value());
   f_out_ << "," << endl;
   print_type(tconst->get_type());
+  print_node_annotations(
+      *tconst, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
   f_out_ << endl;
   indent_down();
   indent(f_out_) << "}";
@@ -504,7 +581,8 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
                  << (tstruct->is_xception() ? "true" : "false") << "," << endl;
   indent(f_out_) << "\"is_union\" : "
                  << (tstruct->is_union() ? "true" : "false") << "," << endl;
-
+  print_node_annotations(
+      *tstruct, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
   vector<t_field*> members = tstruct->get_members();
   vector<t_field*>::iterator mem_iter = members.begin();
   indent(f_out_) << "\"fields\" : {" << endl;
@@ -525,10 +603,8 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
       f_out_ << "," << endl << indent() << "\"default_value\" : ";
       print_const_value(default_val);
     }
-    if (annotate_) {
-      f_out_ << "," << endl;
-      print_annotations((*mem_iter)->annotations_);
-    }
+    print_node_annotations(
+        **mem_iter, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
     f_out_ << endl;
     indent_down();
     indent(f_out_) << "}";
@@ -571,12 +647,14 @@ void t_json_generator::generate_service(t_service* tservice) {
     indent(f_out_) << "}";
     first = false;
   }
-  vector<t_function*> functions = tservice->get_functions();
-  vector<t_function*>::iterator fn_iter = functions.begin();
   if (!first) {
     f_out_ << "," << endl;
   }
   print_lineno(tservice->get_lineno());
+  print_node_annotations(
+      *tservice, /*add_heading_comma=*/false, /*add_trailing_comma=*/true);
+  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*>::iterator fn_iter = functions.begin();
   f_out_ << indent() << "\"functions\" : {" << endl;
   indent_up();
   for (; fn_iter != functions.end(); fn_iter++) {
@@ -611,6 +689,10 @@ void t_json_generator::generate_service(t_service* tservice) {
           f_out_ << "," << endl << indent() << "\"value\" : ";
           print_const_value((*arg_iter)->get_value());
         }
+        print_node_annotations(
+            **arg_iter,
+            /*add_heading_comma=*/true,
+            /*add_trailing_comma=*/false);
         f_out_ << endl;
         indent_down();
         indent(f_out_) << "}";
@@ -637,7 +719,10 @@ void t_json_generator::generate_service(t_service* tservice) {
       indent_down();
       indent(f_out_);
     }
-    f_out_ << "]" << endl;
+    f_out_ << "]";
+    print_node_annotations(
+        **fn_iter, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
+    f_out_ << endl;
     indent_down();
     indent(f_out_) << "}";
   }

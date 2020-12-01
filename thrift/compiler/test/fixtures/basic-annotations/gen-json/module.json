@@ -20,9 +20,7 @@
         "name" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true,
-          "annotations" : {
-          }
+          "required" : true
         }
       },
       "annotation_last_lineno" : -1
@@ -35,30 +33,22 @@
         "count" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true,
-          "annotations" : {
-          }
+          "required" : true
         },
         "name" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true,
-          "annotations" : {
-          }
+          "required" : true
         },
         "extra" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : false,
-          "annotations" : {
-          }
+          "required" : false
         },
         "nest" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStructNestedAnnotation",
-          "required" : true,
-          "annotations" : {
-          }
+          "required" : true
         }
       },
       "annotation_last_lineno" : -1
@@ -67,6 +57,9 @@
       "lineno" : 37,
       "is_exception" : false,
       "is_union" : false,
+      "annotations" : {
+        "android.generate_builder" : "1"
+      },
       "fields" : {
         "major" : {
           "type_enum" : "I64",
@@ -111,9 +104,7 @@
         "empty_annotations" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true,
-          "annotations" : {
-          }
+          "required" : true
         }
       },
       "annotation_last_lineno" : 56
@@ -126,9 +117,7 @@
         "id" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true,
-          "annotations" : {
-          }
+          "required" : true
         },
         "password" : {
           "type_enum" : "STRING",
@@ -228,12 +217,18 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "annotations" : {
+            "cpp.name" : "cppDoNothing"
+          }
         }
       }
     },
     "MyServicePrioParent" : {
       "lineno" : 68,
+      "annotations" : {
+        "priority" : "HIGH"
+      },
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -241,7 +236,10 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "annotations" : {
+            "priority" : "IMPORTANT"
+          }
         },
         "MyServicePrioParent.pong" : {
           "return_type" : {
@@ -249,7 +247,10 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "annotations" : {
+            "priority" : "HIGH_IMPORTANT"
+          }
         }
       }
     },
@@ -266,7 +267,10 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "annotations" : {
+            "priority" : "BEST_EFFORT"
+          }
         }
       }
     }

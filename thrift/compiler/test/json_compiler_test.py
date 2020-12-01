@@ -265,6 +265,11 @@ class JsonCompilerTest(unittest.TestCase):
             "foo.thrift",
             textwrap.dedent(
                 """\
+            struct Annotation {
+              1: string name;
+            }
+
+            @Annotation{name="aba"}
             struct DataHolder {
               1: string data (foo="bar", ignore)
             } (my_annotation_key = "my_annotation_value")
@@ -278,6 +283,19 @@ class JsonCompilerTest(unittest.TestCase):
                 "__fbthrift": {"@" + "generated": 0},
                 "thrift_module": "foo",
                 "structs": {
+                    "Annotation": {
+                        "annotation_last_lineno": -1,
+                        "fields": {
+                            "name": {
+                                "required": True,
+                                "spec_args": None,
+                                "type_enum": "STRING",
+                            },
+                        },
+                        "is_exception": False,
+                        "is_union": False,
+                        "lineno": 1,
+                    },
                     "DataHolder": {
                         "fields": {
                             "data": {
@@ -292,8 +310,16 @@ class JsonCompilerTest(unittest.TestCase):
                         },
                         "is_exception": False,
                         "is_union": False,
-                        "lineno": 1,
-                        "annotation_last_lineno": 3,
+                        "lineno": 6,
+                        "annotation_last_lineno": 8,
+                        "annotations": {
+                            "my_annotation_key": "my_annotation_value",
+                        },
+                        "structured_annotations": {
+                            "Annotation": {
+                                "name": "aba",
+                            },
+                        },
                     },
                 },
             },

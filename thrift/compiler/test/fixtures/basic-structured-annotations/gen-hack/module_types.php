@@ -536,6 +536,16 @@ class MyStruct implements \IThriftStruct {
             ),
           )
         ),
+        'structured_annotation_included' => structured_annotation_included::fromShape(
+          shape(
+            "name" => "aba",
+          )
+        ),
+        '\test\namespace\structured_annotation_with_namespace' => \test\namespace\structured_annotation_with_namespace::fromShape(
+          shape(
+            "name" => "bac",
+          )
+        ),
       ],
       'fields' => dict[
         'annotated_field' => shape(

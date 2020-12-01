@@ -1,1 +1,2 @@
 hack src/module.thrift
+json:annotate src/module.thrift
