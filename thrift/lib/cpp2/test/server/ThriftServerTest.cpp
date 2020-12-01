@@ -785,6 +785,7 @@ TEST_P(HeaderOrRocket, CancellationTest) {
 
   auto interface = std::dynamic_pointer_cast<NotCalledBackInterface>(
       runner.getThriftServer().getProcessorFactory());
+  runner.getThriftServer().setTaskExpireTime(0s);
   ASSERT_TRUE(interface);
   EXPECT_EQ(0, interface->getNotCalledBackHandlers(0s).size());
 
@@ -795,8 +796,8 @@ TEST_P(HeaderOrRocket, CancellationTest) {
     rpcOptions.setTimeout(std::chrono::milliseconds(10));
     client->sync_notCalledBack(rpcOptions);
     EXPECT_FALSE(true) << "request should have never returned";
-  } catch (const TApplicationException& ex) {
-    if (ex.getType() != TApplicationException::TIMEOUT) {
+  } catch (const TTransportException& tte) {
+    if (tte.getType() != TTransportException::TIMED_OUT) {
       throw;
     }
   } catch (const TTransportException& ex) {
