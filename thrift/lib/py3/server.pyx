@@ -140,7 +140,7 @@ cdef class ThriftServer:
                 object_partial(handleAddressCallback, <PyObject*> self.address_future)
             )
         )
-        self.server.get().metadata().wrapper = "ThriftServer-py3".encode()
+        self.server.get().metadata().wrapper = b"ThriftServer-py3"
 
     async def serve(self):
         def _serve():
