@@ -35,8 +35,8 @@
 #include <thrift/conformance/cpp2/AnyRef.h>
 #include <thrift/conformance/cpp2/AnySerializer.h>
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
+#include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 #include <thrift/conformance/if/gen-cpp2/any_types.h>
-#include <thrift/conformance/if/gen-cpp2/thrift_type_info_types.h>
 
 namespace apache::thrift::conformance {
 
@@ -259,7 +259,8 @@ bool AnyRegistry::registerType(
 namespace detail {
 
 template <typename Struct, StandardProtocol... Ps>
-void registerGeneratedStruct(const ThriftTypeInfo& type) {
+void registerGeneratedStruct() {
+  const ThriftTypeInfo& type = getGeneratedThriftTypeInfo<Struct>();
   if (!getGeneratedAnyRegistry().registerType<Struct, Ps...>(type)) {
     folly::throw_exception<std::runtime_error>(
         "Could not register: " + type.get_uri());

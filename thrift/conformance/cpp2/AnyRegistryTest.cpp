@@ -353,9 +353,7 @@ TEST(AnyRegistryTest, StdProtocol) {
 
 TEST(AnyRegistryTest, Generated) {
   // Double regeister fails with a runtime error.
-  EXPECT_THROW(
-      detail::registerGeneratedStruct<Value>(testThriftType("Value")),
-      std::runtime_error);
+  EXPECT_THROW(detail::registerGeneratedStruct<Value>(), std::runtime_error);
 
   auto value = asValueStruct<type::i32_t>(1);
   auto any = AnyRegistry::generated().store<StandardProtocol::Compact>(value);

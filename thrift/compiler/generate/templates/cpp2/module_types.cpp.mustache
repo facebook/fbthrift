@@ -20,23 +20,12 @@
 
 #include <thrift/lib/cpp2/gen/module_types_cpp.h>
 <%#program:any?%>
-<%#program:thrift_uris?%>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
-<%/program:thrift_uris?%>
 <%/program:any?%>
 
 #include "<%program:include_prefix%><%program:name%>_data.h"
 
 <%#program:any?%>
-<%#program:thrift_uris?%>
-namespace {
-apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
-    apache::thrift::conformance::ThriftTypeInfo type;
-    type.set_uri(std::move(uri));
-    return type;
-}
-} // namespace
-
 <% > common/namespace_cpp2_begin%>
 
 // Static-init time registration for dynamically-linked libraries.
@@ -45,19 +34,19 @@ apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
 // `<%program:name%>_sinit.cpp`.
 FOLLY_EXPORT bool __fbthrift_static_init_<%program:name%> = (
 <%#program:structs%>
+<%#struct:thrift_uri%>
     apache::thrift::conformance::detail::registerGeneratedStruct<
         <%struct:name%>,
 <%#program:json?%>
         apache::thrift::conformance::StandardProtocol::SimpleJson,
 <%/program:json?%>
         apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary>(
-        typeFor("<%struct:thrift_uri%>")),
+        apache::thrift::conformance::StandardProtocol::Binary>(),
+<%/struct:thrift_uri%>
 <%/program:structs%>
     true);
 <% > common/namespace_cpp2_end%>
 
-<%/program:thrift_uris?%>
 <%/program:any?%>
 <% > module_types_cpp/declare_enums%>
 <%#program:tablebased?%>
@@ -112,6 +101,12 @@ FOLLY_POP_WARNING
 <% > common/namespace_cpp2_begin%>
 
 
+<%#struct:thrift_uri%>
+const char* <%struct:name%>::__fbthrift_cpp2_gen_thrift_uri() {
+  return "<%struct:thrift_uri%>";
+}
+
+<%/struct:thrift_uri%>
 <%^struct:union?%>
 <%^struct:cpp_noncopyable%>
 <%#struct:fields_contain_cpp_ref_unique_either?%>

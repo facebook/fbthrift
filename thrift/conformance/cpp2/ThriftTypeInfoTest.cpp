@@ -64,5 +64,12 @@ TEST(ThriftTypeInfoTest, ValidateThriftTypeInfo) {
   }
 }
 
+TEST(ThriftTypeInfoTest, GetGeneratedThriftTypeInfo) {
+  // You can get type info about ThriftTypeInfo.
+  EXPECT_EQ(
+      getGeneratedThriftTypeInfo<ThriftTypeInfo>().uri_ref(),
+      "facebook.com/thrift/ThriftTypeInfo");
+}
+
 } // namespace
 } // namespace apache::thrift::conformance

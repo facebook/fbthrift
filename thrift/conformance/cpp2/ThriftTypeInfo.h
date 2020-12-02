@@ -20,6 +20,7 @@
 
 #include <thrift/conformance/cpp2/UniversalType.h>
 #include <thrift/conformance/if/gen-cpp2/thrift_type_info_types.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache::thrift::conformance {
 
@@ -64,6 +65,17 @@ ThriftTypeInfo createThriftTypeInfo(C&& uris, type_hash_size_t typeHashBytes) {
     }
   }
   return type;
+}
+
+template <typename T>
+const ThriftTypeInfo& getGeneratedThriftTypeInfo() {
+  using ::apache::thrift::detail::st::struct_private_access;
+  static_assert(
+      struct_private_access::__fbthrift_cpp2_gen_has_thrift_uri<T>,
+      "missing the `thrift.uri` annotation");
+  static const ThriftTypeInfo kInfo = createThriftTypeInfo(
+      {struct_private_access::__fbthrift_cpp2_gen_thrift_uri<T>()});
+  return kInfo;
 }
 
 } // namespace apache::thrift::conformance

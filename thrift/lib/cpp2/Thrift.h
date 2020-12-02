@@ -56,6 +56,13 @@ struct struct_private_access {
   template <typename T>
   static folly::bool_constant<T::__fbthrift_cpp2_gen_nimble> //
   __fbthrift_cpp2_gen_nimble();
+  template <typename T>
+  static folly::bool_constant<T::__fbthrift_cpp2_gen_has_thrift_uri> //
+  __fbthrift_cpp2_gen_has_thrift_uri();
+  template <typename T>
+  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+    return T::__fbthrift_cpp2_gen_thrift_uri();
+  }
 };
 
 template <typename T, typename = void>

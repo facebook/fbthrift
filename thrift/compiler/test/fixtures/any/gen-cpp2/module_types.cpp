@@ -12,14 +12,6 @@
 
 #include "thrift/compiler/test/fixtures/any/gen-cpp2/module_data.h"
 
-namespace {
-apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
-    apache::thrift::conformance::ThriftTypeInfo type;
-    type.set_uri(std::move(uri));
-    return type;
-}
-} // namespace
-
 namespace cpp2 {
 // Static-init time registration for dynamically-linked libraries.
 //
@@ -29,18 +21,15 @@ FOLLY_EXPORT bool __fbthrift_static_init_module = (
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyStruct,
         apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary>(
-        typeFor("facebook.com/thrift/compiler/test/fixtures/any/MyStruct")),
+        apache::thrift::conformance::StandardProtocol::Binary>(),
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyUnion,
         apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary>(
-        typeFor("facebook.com/thrift/compiler/test/fixtures/any/MyUnion")),
+        apache::thrift::conformance::StandardProtocol::Binary>(),
     apache::thrift::conformance::detail::registerGeneratedStruct<
         MyException,
         apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary>(
-        typeFor("facebook.com/thrift/compiler/test/fixtures/any/MyException")),
+        apache::thrift::conformance::StandardProtocol::Binary>(),
     true);
 } // cpp2
 
@@ -66,6 +55,10 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+  return "facebook.com/thrift/compiler/test/fixtures/any/MyStruct";
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__arg) :
@@ -168,6 +161,10 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
+const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
+  return "facebook.com/thrift/compiler/test/fixtures/any/MyUnion";
+}
+
 void MyUnion::__clear() {
   // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
@@ -248,6 +245,10 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 } // namespace apache
 
 namespace cpp2 {
+
+const char* MyException::__fbthrift_cpp2_gen_thrift_uri() {
+  return "facebook.com/thrift/compiler/test/fixtures/any/MyException";
+}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string myString__arg) :

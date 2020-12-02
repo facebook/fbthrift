@@ -61,4 +61,4 @@ struct ThriftTypeInfo {
   // 0 indicates a type hash should never be used.
   // Unset indicates that the implementation should decide.
   3: optional byte typeHashBytes;
-}
+} (thrift.uri = "facebook.com/thrift/ThriftTypeInfo")

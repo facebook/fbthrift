@@ -24,7 +24,6 @@
 #include <folly/String.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
-#include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 #include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {

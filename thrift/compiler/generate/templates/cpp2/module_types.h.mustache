@@ -74,6 +74,13 @@ class <%struct:name%> <%!
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = <%program:json?%>;
   static constexpr bool __fbthrift_cpp2_gen_nimble = <%program:nimble?%>;
+  <%^struct:thrift_uri%>
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  <%/struct:thrift_uri%>
+  <%#struct:thrift_uri%>
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  <%/struct:thrift_uri%>
 
  public:
   using __fbthrift_cpp2_type = <%struct:name%>;
