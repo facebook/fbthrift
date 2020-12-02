@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -66,6 +67,5 @@ public class PubSubStreamingServiceAsyncClientImpl extends AbstractThriftClient 
     public void close() {
         super.close();
     }
-
 
 }

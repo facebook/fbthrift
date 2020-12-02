@@ -10,6 +10,7 @@ package test.fixtures.inheritance;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
@@ -23,9 +24,29 @@ public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyR
 
         @ThriftMethod(value = "do_mid")
         ListenableFuture<Void> doMid();
+
+        default ListenableFuture<Void> doMid(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> doMidWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
     }
     @java.lang.Override void close();
 
     @ThriftMethod(value = "do_mid")
     void doMid() throws org.apache.thrift.TException;
+
+    default void doMid(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> doMidWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 }

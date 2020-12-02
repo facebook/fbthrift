@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -75,18 +76,20 @@ public class MyLeafAsyncClientImpl extends test.fixtures.inheritance.MyNodeAsync
 
     @java.lang.Override
     public ListenableFuture<Void> doLeaf() {
-        try {
-          return (ListenableFuture<Void>) execute(doLeafMethodHandler, doLeafExceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return doLeaf(RpcOptions.EMPTY);
     }
 
-
+    @java.lang.Override
     public ListenableFuture<Void> doLeaf(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(doLeafWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> doLeafWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(doLeafMethodHandler, doLeafExceptions, rpcOptions);
+          return executeWrapperWithOptions(doLeafMethodHandler, doLeafExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

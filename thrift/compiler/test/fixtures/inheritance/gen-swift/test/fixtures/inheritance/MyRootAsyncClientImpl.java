@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -75,18 +76,20 @@ public class MyRootAsyncClientImpl extends AbstractThriftClient implements MyRoo
 
     @java.lang.Override
     public ListenableFuture<Void> doRoot() {
-        try {
-          return (ListenableFuture<Void>) execute(doRootMethodHandler, doRootExceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return doRoot(RpcOptions.EMPTY);
     }
 
-
+    @java.lang.Override
     public ListenableFuture<Void> doRoot(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(doRootWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> doRootWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(doRootMethodHandler, doRootExceptions, rpcOptions);
+          return executeWrapperWithOptions(doRootMethodHandler, doRootExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

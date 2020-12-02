@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -75,21 +76,20 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
     @java.lang.Override
     public void foo() throws org.apache.thrift.TException {
-      try {
-        execute(fooMethodHandler, fooExceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      fooWrapper(RpcOptions.EMPTY).getData();
     }
 
-
+    @java.lang.Override
     public void foo(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      fooWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> fooWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(fooMethodHandler, fooExceptions, rpcOptions);
+        return FutureUtil.get(executeWrapperWithOptions(fooMethodHandler, fooExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

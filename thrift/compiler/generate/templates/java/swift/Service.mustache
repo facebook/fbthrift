@@ -22,6 +22,7 @@ package {{service:javaPackage}};
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
@@ -41,6 +42,18 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
                       }{{/last?}}{{/function:exceptions}})
         ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
             @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
+
+        default ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+            @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}
+            @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
         {{^last?}}
 
         {{/last?}}
@@ -58,5 +71,21 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
+
+    default {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
+        @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        RpcOptions rpcOptions){{!
+          Exceptions
+        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}Wrapper({{#function:args}}
+        @ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        RpcOptions rpcOptions){{!
+          Exceptions
+        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
     {{/service:supportedFunctions}}
 }

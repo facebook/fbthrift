@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -75,21 +76,20 @@ public class MyLeafClientImpl extends test.fixtures.inheritance.MyNodeClientImpl
 
     @java.lang.Override
     public void doLeaf() throws org.apache.thrift.TException {
-      try {
-        execute(doLeafMethodHandler, doLeafExceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      doLeafWrapper(RpcOptions.EMPTY).getData();
     }
 
-
+    @java.lang.Override
     public void doLeaf(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      doLeafWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> doLeafWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(doLeafMethodHandler, doLeafExceptions, rpcOptions);
+        return FutureUtil.get(executeWrapperWithOptions(doLeafMethodHandler, doLeafExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

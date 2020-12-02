@@ -10,6 +10,7 @@ package test.fixtures.basic_swift_bean;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
@@ -25,6 +26,20 @@ public interface LegacyService extends java.io.Closeable {
         ListenableFuture<Map<String, List<Integer>>> getPoints(
             @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
             @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff);
+
+        default ListenableFuture<Map<String, List<Integer>>> getPoints(
+            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+            @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(
+            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+            @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
     }
     @java.lang.Override void close();
 
@@ -32,4 +47,18 @@ public interface LegacyService extends java.io.Closeable {
     Map<String, List<Integer>> getPoints(
         @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
         @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff) throws org.apache.thrift.TException;
+
+    default Map<String, List<Integer>> getPoints(
+        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+        @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Map<String, List<Integer>>> getPointsWrapper(
+        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+        @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -10,6 +10,7 @@ package test.fixtures.basicannotations;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
@@ -23,9 +24,29 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
 
         @ThriftMethod(value = "pang")
         ListenableFuture<Void> pang();
+
+        default ListenableFuture<Void> pang(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> pangWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
     }
     @java.lang.Override void close();
 
     @ThriftMethod(value = "pang")
     void pang() throws org.apache.thrift.TException;
+
+    default void pang(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> pangWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 }

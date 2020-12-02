@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -75,18 +76,20 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
     @java.lang.Override
     public ListenableFuture<Void> foo() {
-        try {
-          return (ListenableFuture<Void>) execute(fooMethodHandler, fooExceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return foo(RpcOptions.EMPTY);
     }
 
-
+    @java.lang.Override
     public ListenableFuture<Void> foo(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(fooWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> fooWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(fooMethodHandler, fooExceptions, rpcOptions);
+          return executeWrapperWithOptions(fooMethodHandler, fooExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -82,8 +83,24 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
     public void query(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) throws org.apache.thrift.TException {
+      queryWrapper(s, i, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void query(
+        test.fixtures.includes.MyStruct s,
+        test.fixtures.includes.includes.Included i,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      queryWrapper(s, i, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> queryWrapper(
+        test.fixtures.includes.MyStruct s,
+        test.fixtures.includes.includes.Included i,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(queryMethodHandler, queryExceptions, s, i);
+        return FutureUtil.get(executeWrapperWithOptions(queryMethodHandler, queryExceptions, rpcOptions, s, i));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -96,37 +113,24 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
     public void hasArgDocs(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i) throws org.apache.thrift.TException {
-      try {
-        execute(hasArgDocsMethodHandler, hasArgDocsExceptions, s, i);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      hasArgDocsWrapper(s, i, RpcOptions.EMPTY).getData();
     }
 
-
-    public void query(
-        test.fixtures.includes.MyStruct s,
-        test.fixtures.includes.includes.Included i,
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(queryMethodHandler, queryExceptions, rpcOptions, s, i);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
+    @java.lang.Override
     public void hasArgDocs(
         test.fixtures.includes.MyStruct s,
         test.fixtures.includes.includes.Included i,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      hasArgDocsWrapper(s, i, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> hasArgDocsWrapper(
+        test.fixtures.includes.MyStruct s,
+        test.fixtures.includes.includes.Included i,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(hasArgDocsMethodHandler, hasArgDocsExceptions, rpcOptions, s, i);
+        return FutureUtil.get(executeWrapperWithOptions(hasArgDocsMethodHandler, hasArgDocsExceptions, rpcOptions, s, i));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

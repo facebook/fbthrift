@@ -10,6 +10,7 @@ package test.fixtures.basicannotations;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
@@ -24,21 +25,79 @@ public interface MyService extends java.io.Closeable {
         @ThriftMethod(value = "ping")
         ListenableFuture<Void> ping();
 
+        default ListenableFuture<Void> ping(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> pingWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         @ThriftMethod(value = "getRandomData")
         ListenableFuture<String> getRandomData();
+
+        default ListenableFuture<String> getRandomData(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<String>> getRandomDataWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
 
         @ThriftMethod(value = "hasDataById")
         ListenableFuture<Boolean> hasDataById(
             @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id);
 
+        default ListenableFuture<Boolean> hasDataById(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Boolean>> hasDataByIdWrapper(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         @ThriftMethod(value = "getDataById")
         ListenableFuture<String> getDataById(
             @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id);
+
+        default ListenableFuture<String> getDataById(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<String>> getDataByIdWrapper(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
 
         @ThriftMethod(value = "putDataById")
         ListenableFuture<Void> putDataById(
             @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
             @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
+
+        default ListenableFuture<Void> putDataById(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> putDataByIdWrapper(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
 
         @ThriftMethod(value = "lobDataById",
                       oneway = true)
@@ -46,29 +105,111 @@ public interface MyService extends java.io.Closeable {
             @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
             @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
 
+        default ListenableFuture<Void> lobDataById(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> lobDataByIdWrapper(
+            @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         @ThriftMethod(value = "doNothing")
         ListenableFuture<Void> doNothing();
+
+        default ListenableFuture<Void> doNothing(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> doNothingWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
     }
     @java.lang.Override void close();
 
     @ThriftMethod(value = "ping")
     void ping() throws org.apache.thrift.TException;
 
+    default void ping(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> pingWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
     @ThriftMethod(value = "getRandomData")
     String getRandomData() throws org.apache.thrift.TException;
+
+    default String getRandomData(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<String> getRandomDataWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 
     @ThriftMethod(value = "hasDataById")
     boolean hasDataById(
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id) throws org.apache.thrift.TException;
 
+    default boolean hasDataById(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Boolean> hasDataByIdWrapper(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
     @ThriftMethod(value = "getDataById")
     String getDataById(
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id) throws org.apache.thrift.TException;
+
+    default String getDataById(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<String> getDataByIdWrapper(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 
     @ThriftMethod(value = "putDataById")
     void putDataById(
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
         @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data) throws org.apache.thrift.TException;
+
+    default void putDataById(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> putDataByIdWrapper(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 
     @ThriftMethod(value = "lobDataById",
                   oneway = true)
@@ -76,6 +217,30 @@ public interface MyService extends java.io.Closeable {
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
         @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data) throws org.apache.thrift.TException;
 
+    default void lobDataById(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> lobDataByIdWrapper(
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
     @ThriftMethod(value = "doNothing")
     void doNothing() throws org.apache.thrift.TException;
+
+    default void doNothing(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> doNothingWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 }

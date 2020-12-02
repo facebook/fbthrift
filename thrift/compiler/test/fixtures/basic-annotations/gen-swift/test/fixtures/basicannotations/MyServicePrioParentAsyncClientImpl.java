@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -80,8 +81,20 @@ public class MyServicePrioParentAsyncClientImpl extends AbstractThriftClient imp
 
     @java.lang.Override
     public ListenableFuture<Void> ping() {
+        return ping(RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> ping(
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(pingWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> pingWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(pingMethodHandler, pingExceptions);
+          return executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -89,27 +102,20 @@ public class MyServicePrioParentAsyncClientImpl extends AbstractThriftClient imp
 
     @java.lang.Override
     public ListenableFuture<Void> pong() {
-        try {
-          return (ListenableFuture<Void>) execute(pongMethodHandler, pongExceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return pong(RpcOptions.EMPTY);
     }
 
-
-    public ListenableFuture<Void> ping(
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(pingMethodHandler, pingExceptions, rpcOptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
+    @java.lang.Override
     public ListenableFuture<Void> pong(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(pongWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> pongWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(pongMethodHandler, pongExceptions, rpcOptions);
+          return executeWrapperWithOptions(pongMethodHandler, pongExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

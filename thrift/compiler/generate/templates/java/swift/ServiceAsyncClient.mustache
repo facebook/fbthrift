@@ -24,6 +24,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -97,21 +98,22 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     @java.lang.Override
     public ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-        try {
-          return (ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>) execute({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions{{#function:args}}, {{field:javaName}}{{/function:args}});
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return {{function:javaName}}({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY);
     }
-    {{/service:supportedFunctions}}
 
-    {{#service:supportedFunctions}}
-
+    @java.lang.Override
     public ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions) {
+        return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>> {{function:javaName}}Wrapper({{#function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>) executeWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
+          return executeWrapperWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -96,8 +97,22 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
     @java.lang.Override
     public ListenableFuture<Void> mapList(
         Map<Integer, List<Integer>> foo) {
+        return mapList(foo, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> mapList(
+        Map<Integer, List<Integer>> foo,
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(mapListWrapper(foo, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> mapListWrapper(
+        Map<Integer, List<Integer>> foo,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(mapListMethodHandler, mapListExceptions, foo);
+          return executeWrapperWithOptions(mapListMethodHandler, mapListExceptions, rpcOptions, foo);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -106,8 +121,22 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
     @java.lang.Override
     public ListenableFuture<Void> mapSet(
         Map<Integer, Set<Integer>> foo) {
+        return mapSet(foo, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> mapSet(
+        Map<Integer, Set<Integer>> foo,
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(mapSetWrapper(foo, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> mapSetWrapper(
+        Map<Integer, Set<Integer>> foo,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(mapSetMethodHandler, mapSetExceptions, foo);
+          return executeWrapperWithOptions(mapSetMethodHandler, mapSetExceptions, rpcOptions, foo);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -116,8 +145,22 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
     @java.lang.Override
     public ListenableFuture<Void> listMap(
         List<Map<Integer, Integer>> foo) {
+        return listMap(foo, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> listMap(
+        List<Map<Integer, Integer>> foo,
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(listMapWrapper(foo, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> listMapWrapper(
+        List<Map<Integer, Integer>> foo,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(listMapMethodHandler, listMapExceptions, foo);
+          return executeWrapperWithOptions(listMapMethodHandler, listMapExceptions, rpcOptions, foo);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -126,8 +169,22 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
     @java.lang.Override
     public ListenableFuture<Void> listSet(
         List<Set<Integer>> foo) {
+        return listSet(foo, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> listSet(
+        List<Set<Integer>> foo,
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(listSetWrapper(foo, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> listSetWrapper(
+        List<Set<Integer>> foo,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(listSetMethodHandler, listSetExceptions, foo);
+          return executeWrapperWithOptions(listSetMethodHandler, listSetExceptions, rpcOptions, foo);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -136,59 +193,22 @@ public class NestedContainersAsyncClientImpl extends AbstractThriftClient implem
     @java.lang.Override
     public ListenableFuture<Void> turtles(
         List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) {
-        try {
-          return (ListenableFuture<Void>) execute(turtlesMethodHandler, turtlesExceptions, foo);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return turtles(foo, RpcOptions.EMPTY);
     }
 
-
-    public ListenableFuture<Void> mapList(
-        Map<Integer, List<Integer>> foo,
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(mapListMethodHandler, mapListExceptions, rpcOptions, foo);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    public ListenableFuture<Void> mapSet(
-        Map<Integer, Set<Integer>> foo,
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(mapSetMethodHandler, mapSetExceptions, rpcOptions, foo);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    public ListenableFuture<Void> listMap(
-        List<Map<Integer, Integer>> foo,
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(listMapMethodHandler, listMapExceptions, rpcOptions, foo);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    public ListenableFuture<Void> listSet(
-        List<Set<Integer>> foo,
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(listSetMethodHandler, listSetExceptions, rpcOptions, foo);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
+    @java.lang.Override
     public ListenableFuture<Void> turtles(
         List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(turtlesWrapper(foo, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> turtlesWrapper(
+        List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(turtlesMethodHandler, turtlesExceptions, rpcOptions, foo);
+          return executeWrapperWithOptions(turtlesMethodHandler, turtlesExceptions, rpcOptions, foo);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

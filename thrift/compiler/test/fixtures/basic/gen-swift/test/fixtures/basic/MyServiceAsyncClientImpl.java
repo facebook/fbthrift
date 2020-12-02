@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -100,8 +101,20 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
     @java.lang.Override
     public ListenableFuture<Void> ping() {
+        return ping(RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> ping(
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(pingWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> pingWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(pingMethodHandler, pingExceptions);
+          return executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -109,111 +122,122 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
 
     @java.lang.Override
     public ListenableFuture<String> getRandomData() {
-        try {
-          return (ListenableFuture<String>) execute(getRandomDataMethodHandler, getRandomDataExceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return getRandomData(RpcOptions.EMPTY);
     }
 
     @java.lang.Override
-    public ListenableFuture<Boolean> hasDataById(
-        long id) {
-        try {
-          return (ListenableFuture<Boolean>) execute(hasDataByIdMethodHandler, hasDataByIdExceptions, id);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    @java.lang.Override
-    public ListenableFuture<String> getDataById(
-        long id) {
-        try {
-          return (ListenableFuture<String>) execute(getDataByIdMethodHandler, getDataByIdExceptions, id);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    @java.lang.Override
-    public ListenableFuture<Void> putDataById(
-        long id,
-        String data) {
-        try {
-          return (ListenableFuture<Void>) execute(putDataByIdMethodHandler, putDataByIdExceptions, id, data);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    @java.lang.Override
-    public ListenableFuture<Void> lobDataById(
-        long id,
-        String data) {
-        try {
-          return (ListenableFuture<Void>) execute(lobDataByIdMethodHandler, lobDataByIdExceptions, id, data);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-
-    public ListenableFuture<Void> ping(
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(pingMethodHandler, pingExceptions, rpcOptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
     public ListenableFuture<String> getRandomData(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(getRandomDataWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<String>> getRandomDataWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<String>) executeWithOptions(getRandomDataMethodHandler, getRandomDataExceptions, rpcOptions);
+          return executeWrapperWithOptions(getRandomDataMethodHandler, getRandomDataExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
     }
 
+    @java.lang.Override
+    public ListenableFuture<Boolean> hasDataById(
+        long id) {
+        return hasDataById(id, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
     public ListenableFuture<Boolean> hasDataById(
         long id,
         RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Boolean>) executeWithOptions(hasDataByIdMethodHandler, hasDataByIdExceptions, rpcOptions, id);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return FutureUtil.transform(hasDataByIdWrapper(id, rpcOptions));
     }
 
-    public ListenableFuture<String> getDataById(
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Boolean>> hasDataByIdWrapper(
         long id,
         RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<String>) executeWithOptions(getDataByIdMethodHandler, getDataByIdExceptions, rpcOptions, id);
+          return executeWrapperWithOptions(hasDataByIdMethodHandler, hasDataByIdExceptions, rpcOptions, id);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
     }
 
+    @java.lang.Override
+    public ListenableFuture<String> getDataById(
+        long id) {
+        return getDataById(id, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<String> getDataById(
+        long id,
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(getDataByIdWrapper(id, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<String>> getDataByIdWrapper(
+        long id,
+        RpcOptions rpcOptions) {
+        try {
+          return executeWrapperWithOptions(getDataByIdMethodHandler, getDataByIdExceptions, rpcOptions, id);
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> putDataById(
+        long id,
+        String data) {
+        return putDataById(id, data, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
     public ListenableFuture<Void> putDataById(
         long id,
         String data,
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(putDataByIdWrapper(id, data, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> putDataByIdWrapper(
+        long id,
+        String data,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(putDataByIdMethodHandler, putDataByIdExceptions, rpcOptions, id, data);
+          return executeWrapperWithOptions(putDataByIdMethodHandler, putDataByIdExceptions, rpcOptions, id, data);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
     }
 
+    @java.lang.Override
+    public ListenableFuture<Void> lobDataById(
+        long id,
+        String data) {
+        return lobDataById(id, data, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
     public ListenableFuture<Void> lobDataById(
         long id,
         String data,
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(lobDataByIdWrapper(id, data, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> lobDataByIdWrapper(
+        long id,
+        String data,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(lobDataByIdMethodHandler, lobDataByIdExceptions, rpcOptions, id, data);
+          return executeWrapperWithOptions(lobDataByIdMethodHandler, lobDataByIdExceptions, rpcOptions, id, data);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

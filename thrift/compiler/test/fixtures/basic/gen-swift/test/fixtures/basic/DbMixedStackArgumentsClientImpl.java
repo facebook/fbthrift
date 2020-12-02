@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -81,8 +82,22 @@ public class DbMixedStackArgumentsClientImpl extends AbstractThriftClient implem
     @java.lang.Override
     public byte[] getDataByKey0(
         String key) throws org.apache.thrift.TException {
+      return getDataByKey0Wrapper(key, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public byte[] getDataByKey0(
+        String key,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return getDataByKey0Wrapper(key, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<byte[]> getDataByKey0Wrapper(
+        String key,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        return (byte[]) execute(getDataByKey0MethodHandler, getDataByKey0Exceptions, key);
+        return FutureUtil.get(executeWrapperWithOptions(getDataByKey0MethodHandler, getDataByKey0Exceptions, rpcOptions, key));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -94,35 +109,22 @@ public class DbMixedStackArgumentsClientImpl extends AbstractThriftClient implem
     @java.lang.Override
     public byte[] getDataByKey1(
         String key) throws org.apache.thrift.TException {
-      try {
-        return (byte[]) execute(getDataByKey1MethodHandler, getDataByKey1Exceptions, key);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      return getDataByKey1Wrapper(key, RpcOptions.EMPTY).getData();
     }
 
-
-    public byte[] getDataByKey0(
-        String key,
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        return (byte[]) executeWithOptions(getDataByKey0MethodHandler, getDataByKey0Exceptions, rpcOptions, key);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
+    @java.lang.Override
     public byte[] getDataByKey1(
         String key,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return getDataByKey1Wrapper(key, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<byte[]> getDataByKey1Wrapper(
+        String key,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        return (byte[]) executeWithOptions(getDataByKey1MethodHandler, getDataByKey1Exceptions, rpcOptions, key);
+        return FutureUtil.get(executeWrapperWithOptions(getDataByKey1MethodHandler, getDataByKey1Exceptions, rpcOptions, key));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

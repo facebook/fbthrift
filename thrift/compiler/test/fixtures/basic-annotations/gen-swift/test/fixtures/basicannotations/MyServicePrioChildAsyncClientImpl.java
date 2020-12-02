@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -75,18 +76,20 @@ public class MyServicePrioChildAsyncClientImpl extends test.fixtures.basicannota
 
     @java.lang.Override
     public ListenableFuture<Void> pang() {
-        try {
-          return (ListenableFuture<Void>) execute(pangMethodHandler, pangExceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return pang(RpcOptions.EMPTY);
     }
 
-
+    @java.lang.Override
     public ListenableFuture<Void> pang(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(pangWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> pangWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(pangMethodHandler, pangExceptions, rpcOptions);
+          return executeWrapperWithOptions(pangMethodHandler, pangExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

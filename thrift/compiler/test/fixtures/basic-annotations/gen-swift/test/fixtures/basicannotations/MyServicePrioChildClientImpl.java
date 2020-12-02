@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -75,21 +76,20 @@ public class MyServicePrioChildClientImpl extends test.fixtures.basicannotations
 
     @java.lang.Override
     public void pang() throws org.apache.thrift.TException {
-      try {
-        execute(pangMethodHandler, pangExceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      pangWrapper(RpcOptions.EMPTY).getData();
     }
 
-
+    @java.lang.Override
     public void pang(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      pangWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> pangWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(pangMethodHandler, pangExceptions, rpcOptions);
+        return FutureUtil.get(executeWrapperWithOptions(pangMethodHandler, pangExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

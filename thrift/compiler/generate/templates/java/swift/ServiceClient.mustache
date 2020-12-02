@@ -24,6 +24,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -99,31 +100,26 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-      try {
-        {{#function:returnType}}{{^type:void?}}return ({{> Type}}) {{/type:void?}}{{/function:returnType}}execute({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions{{#function:args}}, {{field:javaName}}{{/function:args}});
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        {{#function:exceptions}}
-        if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
-          throw ({{#field:type}}{{> BoxedType}}{{/field:type}}) t;
-        }
-        {{/function:exceptions}}
-        throw new org.apache.thrift.TException(t);
-      }
+      {{#function:returnType}}{{^type:void?}}return {{/type:void?}}{{/function:returnType}}{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY).getData();
     }
-    {{/service:supportedFunctions}}
 
-    {{#service:supportedFunctions}}
-
+    @java.lang.Override
     public {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions){{!
           Exceptions
         }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+      {{#function:returnType}}{{^type:void?}}return {{/type:void?}}{{/function:returnType}}{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}Wrapper({{#function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        RpcOptions rpcOptions){{!
+          Exceptions
+        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
       try {
-        {{#function:returnType}}{{^type:void?}}return ({{> Type}}) {{/type:void?}}{{/function:returnType}}executeWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
+        return FutureUtil.get(executeWrapperWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}}));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

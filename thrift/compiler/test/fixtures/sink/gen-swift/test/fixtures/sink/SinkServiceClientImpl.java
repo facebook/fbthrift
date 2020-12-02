@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -66,6 +67,5 @@ public class SinkServiceClientImpl extends AbstractThriftClient implements SinkS
     public void close() {
         super.close();
     }
-
 
 }

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -90,8 +91,20 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
 
     @java.lang.Override
     public void doBland() throws org.apache.thrift.TException {
+      doBlandWrapper(RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void doBland(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      doBlandWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> doBlandWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(doBlandMethodHandler, doBlandExceptions);
+        return FutureUtil.get(executeWrapperWithOptions(doBlandMethodHandler, doBlandExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -102,8 +115,20 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
 
     @java.lang.Override
     public void doRaise() throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
+      doRaiseWrapper(RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void doRaise(
+        RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
+      doRaiseWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> doRaiseWrapper(
+        RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       try {
-        execute(doRaiseMethodHandler, doRaiseExceptions);
+        return FutureUtil.get(executeWrapperWithOptions(doRaiseMethodHandler, doRaiseExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -123,8 +148,20 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
 
     @java.lang.Override
     public String get200() throws org.apache.thrift.TException {
+      return get200Wrapper(RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public String get200(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return get200Wrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<String> get200Wrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        return (String) execute(get200MethodHandler, get200Exceptions);
+        return FutureUtil.get(executeWrapperWithOptions(get200MethodHandler, get200Exceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -135,75 +172,20 @@ public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
 
     @java.lang.Override
     public String get500() throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      try {
-        return (String) execute(get500MethodHandler, get500Exceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        if (t instanceof test.fixtures.exceptions.Fiery) {
-          throw (test.fixtures.exceptions.Fiery) t;
-        }
-        if (t instanceof test.fixtures.exceptions.Banal) {
-          throw (test.fixtures.exceptions.Banal) t;
-        }
-        if (t instanceof test.fixtures.exceptions.Serious) {
-          throw (test.fixtures.exceptions.Serious) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      return get500Wrapper(RpcOptions.EMPTY).getData();
     }
 
-
-    public void doBland(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(doBlandMethodHandler, doBlandExceptions, rpcOptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    public void doRaise(
-        RpcOptions rpcOptions) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
-      try {
-        executeWithOptions(doRaiseMethodHandler, doRaiseExceptions, rpcOptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        if (t instanceof test.fixtures.exceptions.Banal) {
-          throw (test.fixtures.exceptions.Banal) t;
-        }
-        if (t instanceof test.fixtures.exceptions.Fiery) {
-          throw (test.fixtures.exceptions.Fiery) t;
-        }
-        if (t instanceof test.fixtures.exceptions.Serious) {
-          throw (test.fixtures.exceptions.Serious) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    public String get200(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        return (String) executeWithOptions(get200MethodHandler, get200Exceptions, rpcOptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
+    @java.lang.Override
     public String get500(
         RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
+      return get500Wrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<String> get500Wrapper(
+        RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
       try {
-        return (String) executeWithOptions(get500MethodHandler, get500Exceptions, rpcOptions);
+        return FutureUtil.get(executeWrapperWithOptions(get500MethodHandler, get500Exceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

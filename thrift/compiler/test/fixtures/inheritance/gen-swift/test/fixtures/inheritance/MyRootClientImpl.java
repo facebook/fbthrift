@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -75,21 +76,20 @@ public class MyRootClientImpl extends AbstractThriftClient implements MyRoot {
 
     @java.lang.Override
     public void doRoot() throws org.apache.thrift.TException {
-      try {
-        execute(doRootMethodHandler, doRootExceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      doRootWrapper(RpcOptions.EMPTY).getData();
     }
 
-
+    @java.lang.Override
     public void doRoot(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      doRootWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> doRootWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(doRootMethodHandler, doRootExceptions, rpcOptions);
+        return FutureUtil.get(executeWrapperWithOptions(doRootMethodHandler, doRootExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

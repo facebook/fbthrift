@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -77,20 +78,24 @@ public class LegacyServiceAsyncClientImpl extends AbstractThriftClient implement
     public ListenableFuture<Map<String, List<Integer>>> getPoints(
         Set<String> key,
         long legacyStuff) {
-        try {
-          return (ListenableFuture<Map<String, List<Integer>>>) execute(getPointsMethodHandler, getPointsExceptions, key, legacyStuff);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return getPoints(key, legacyStuff, RpcOptions.EMPTY);
     }
 
-
+    @java.lang.Override
     public ListenableFuture<Map<String, List<Integer>>> getPoints(
         Set<String> key,
         long legacyStuff,
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(getPointsWrapper(key, legacyStuff, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(
+        Set<String> key,
+        long legacyStuff,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Map<String, List<Integer>>>) executeWithOptions(getPointsMethodHandler, getPointsExceptions, rpcOptions, key, legacyStuff);
+          return executeWrapperWithOptions(getPointsMethodHandler, getPointsExceptions, rpcOptions, key, legacyStuff);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

@@ -12,6 +12,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.swift.transport.client.*;
+import com.facebook.swift.transport.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -90,8 +91,20 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
 
     @java.lang.Override
     public ListenableFuture<Void> doBland() {
+        return doBland(RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> doBland(
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(doBlandWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> doBlandWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(doBlandMethodHandler, doBlandExceptions);
+          return executeWrapperWithOptions(doBlandMethodHandler, doBlandExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -99,8 +112,20 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
 
     @java.lang.Override
     public ListenableFuture<Void> doRaise() {
+        return doRaise(RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<Void> doRaise(
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(doRaiseWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> doRaiseWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) execute(doRaiseMethodHandler, doRaiseExceptions);
+          return executeWrapperWithOptions(doRaiseMethodHandler, doRaiseExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -108,8 +133,20 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
 
     @java.lang.Override
     public ListenableFuture<String> get200() {
+        return get200(RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<String> get200(
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(get200Wrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<String>> get200Wrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<String>) execute(get200MethodHandler, get200Exceptions);
+          return executeWrapperWithOptions(get200MethodHandler, get200Exceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -117,45 +154,20 @@ public class RaiserAsyncClientImpl extends AbstractThriftClient implements Raise
 
     @java.lang.Override
     public ListenableFuture<String> get500() {
-        try {
-          return (ListenableFuture<String>) execute(get500MethodHandler, get500Exceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return get500(RpcOptions.EMPTY);
     }
 
-
-    public ListenableFuture<Void> doBland(
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(doBlandMethodHandler, doBlandExceptions, rpcOptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    public ListenableFuture<Void> doRaise(
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<Void>) executeWithOptions(doRaiseMethodHandler, doRaiseExceptions, rpcOptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
-    public ListenableFuture<String> get200(
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<String>) executeWithOptions(get200MethodHandler, get200Exceptions, rpcOptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
+    @java.lang.Override
     public ListenableFuture<String> get500(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(get500Wrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<String>> get500Wrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<String>) executeWithOptions(get500MethodHandler, get500Exceptions, rpcOptions);
+          return executeWrapperWithOptions(get500MethodHandler, get500Exceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

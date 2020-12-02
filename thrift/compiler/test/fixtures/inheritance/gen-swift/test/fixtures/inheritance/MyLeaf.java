@@ -10,6 +10,7 @@ package test.fixtures.inheritance;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.service.*;
+import com.facebook.swift.transport.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
@@ -23,9 +24,29 @@ public interface MyLeaf extends java.io.Closeable, test.fixtures.inheritance.MyN
 
         @ThriftMethod(value = "do_leaf")
         ListenableFuture<Void> doLeaf();
+
+        default ListenableFuture<Void> doLeaf(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> doLeafWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
     }
     @java.lang.Override void close();
 
     @ThriftMethod(value = "do_leaf")
     void doLeaf() throws org.apache.thrift.TException;
+
+    default void doLeaf(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> doLeafWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
 }
