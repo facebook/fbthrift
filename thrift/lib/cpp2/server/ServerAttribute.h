@@ -22,6 +22,7 @@
 
 #include <folly/Optional.h>
 #include <folly/SharedMutex.h>
+#include <folly/experimental/observer/SimpleObservable.h>
 
 namespace apache {
 namespace thrift {
@@ -46,12 +47,26 @@ class ServerAttributeBase {
     folly::SharedMutex::WriteHolder h(&lock_);
     this->choose(source) = value;
     static_cast<D*>(this)->mergeImpl();
+    if (observable_) {
+      observable_->setValue(static_cast<D*>(this)->get());
+    }
   }
 
   void unset(AttributeSource source) {
     folly::SharedMutex::WriteHolder h(&lock_);
     this->choose(source).reset();
     static_cast<D*>(this)->mergeImpl();
+    if (observable_) {
+      observable_->setValue(static_cast<D*>(this)->get());
+    }
+  }
+
+  folly::observer::Observer<T> getObserver() {
+    folly::SharedMutex::WriteHolder h(&lock_);
+    if (!observable_) {
+      observable_.emplace(static_cast<D*>(this)->get());
+    }
+    return observable_->getObserver();
   }
 
  protected:
@@ -72,6 +87,7 @@ class ServerAttributeBase {
   folly::Optional<T> fromOverride_;
   T default_;
   folly::SharedMutex lock_;
+  folly::Optional<folly::observer::SimpleObservable<T>> observable_;
 };
 
 } // namespace detail
