@@ -88,11 +88,6 @@ struct NegotiationParameters {
   2: optional bool useStopTLS;
 }
 
-enum RequestRpcMetadataFlags {
-  UNKNOWN = 0x0,
-  QUERY_SERVER_LOAD = 0x1,
-}
-
 struct InteractionCreate {
   // Must be > 0
   1: i64 interactionId;
@@ -145,7 +140,7 @@ struct RequestRpcMetadata {
   // 10: Deprecated
   // The CRC32C of the RPC message.
   11: optional i32 (cpp.type = "std::uint32_t") crc32c;
-  12: optional i64 (cpp.type = "std::uint64_t") flags;
+  // 12: Deprecated
   13: optional string loadMetric;
   // The CompressionAlgorithm used to compress requests (if any)
   14: optional CompressionAlgorithm compression;
@@ -220,8 +215,7 @@ struct ResponseRpcMetadata {
   // Any frequently used key-value pair in this map should be replaced
   // by a field in this struct.
   3: optional map<string, string> otherMetadata;
-  // Server load. Returned to client if QUERY_SERVER_LOAD was set in request's
-  // flags.
+  // Server load. Returned to client if loadMetric was set in RequestRpcMetadata
   4: optional i64 load;
   // The CRC32C of the RPC response.
   5: optional i32 (cpp.type = "std::uint32_t") crc32c;
@@ -273,8 +267,7 @@ struct ResponseRpcError {
   2: optional string what_utf8;
   3: optional ResponseRpcErrorCategory category;
   4: optional ResponseRpcErrorCode code;
-  // Server load. Returned to client if QUERY_SERVER_LOAD was set in request's
-  // flags.
+  // Server load. Returned to client if loadMetric was set in RequestRpcMetadata
   5: optional i64 load;
 }
 

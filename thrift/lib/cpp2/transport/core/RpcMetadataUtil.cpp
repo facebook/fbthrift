@@ -41,7 +41,6 @@ RequestRpcMetadata makeRequestRpcMetadata(
     const transport::THeader::StringToStringMap& persistentWriteHeaders,
     const folly::Optional<int32_t>& version) {
   RequestRpcMetadata metadata;
-  uint64_t flags = 0;
   metadata.protocol_ref() = protocolId;
   metadata.kind_ref() = kind;
   metadata.name_ref() = methodName.str();
@@ -96,21 +95,14 @@ RequestRpcMetadata makeRequestRpcMetadata(
     }
   }
 
-  // If server load was requested via THeader, use QUERY_SERVER_LOAD flag
-  // instead.
   auto loadIt = writeHeaders.find(transport::THeader::QUERY_LOAD_HEADER);
   if (loadIt != writeHeaders.end()) {
-    flags |= static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD);
     metadata.loadMetric_ref() = std::move(loadIt->second);
     writeHeaders.erase(loadIt);
   }
 
   if (!writeHeaders.empty()) {
     metadata.otherMetadata_ref() = std::move(writeHeaders);
-  }
-
-  if (flags) {
-    metadata.flags_ref() = flags;
   }
 
   return metadata;

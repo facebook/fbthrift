@@ -66,7 +66,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
         active_(true),
         checksumRequested_(metadata.crc32c_ref().has_value()),
-        requestFlags_(metadata.flags_ref().value_or(0)),
         loadMetric_(
             metadata.loadMetric_ref()
                 ? folly::make_optional(std::move(*metadata.loadMetric_ref()))
@@ -383,11 +382,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
       transport::THeader::StringToStringMap&& writeHeaders) {
     ResponseRpcMetadata metadata;
 
-    if ((requestFlags_ &
-         static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) ||
-        loadMetric_) {
-      metadata.load_ref() = serverConfigs_.getLoad(
-          loadMetric_.value_or(transport::THeader::QUERY_LOAD_HEADER));
+    if (loadMetric_) {
+      metadata.load_ref() = serverConfigs_.getLoad(*loadMetric_);
     }
 
     if (!writeHeaders.empty()) {
@@ -496,7 +492,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
   std::atomic<bool> active_;
   bool checksumRequested_{false};
   transport::THeader header_;
-  const uint64_t requestFlags_{0};
   folly::Optional<std::string> loadMetric_;
   Cpp2RequestContext reqContext_;
   folly::Optional<CompressionConfig> compressionConfig_;
