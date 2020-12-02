@@ -18,6 +18,7 @@
 
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Collect.h>
+#include <folly/experimental/coro/Sleep.h>
 #include <folly/experimental/coro/Task.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
@@ -676,6 +677,36 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
   EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
   handler->baton.reset();
 
+#endif
+}
+
+TEST(InteractionCodegenTest, ShutdownDuringStreamTeardown) {
+#if FOLLY_HAS_COROUTINES
+  struct StreamingHandler : StreamerSvIf {
+    struct StreamTile : StreamerSvIf::StreamingIf {
+      folly::coro::Task<ServerStream<int>> co_generatorStream() override {
+        co_return
+        folly::coro::co_invoke([&]() -> folly::coro::AsyncGenerator<int&&> {
+          while (true) {
+            co_yield 0;
+            co_await folly::coro::sleep(std::chrono::milliseconds(100));
+          }
+        });
+      }
+    };
+
+    std::unique_ptr<StreamingIf> createStreaming() override {
+      return std::make_unique<StreamTile>();
+    }
+  };
+
+  auto handler = std::make_shared<StreamingHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client = runner.newClient<StreamerAsyncClient>(nullptr, [](auto socket) {
+    return RocketClientChannel::newChannel(std::move(socket));
+  });
+
+  folly::coro::blockingWait(client->createStreaming().co_generatorStream());
 #endif
 }
 

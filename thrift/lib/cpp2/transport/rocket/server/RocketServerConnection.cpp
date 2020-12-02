@@ -125,6 +125,7 @@ void RocketServerConnection::closeIfNeeded() {
         StreamId{0}, RocketException(ErrorCode::CONNECTION_DRAIN_COMPLETE));
 
     state_ = ConnectionState::CLOSING;
+    frameHandler_->connectionClosing();
     closeIfNeeded();
   }
 
