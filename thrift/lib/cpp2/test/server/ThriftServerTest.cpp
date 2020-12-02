@@ -800,10 +800,6 @@ TEST_P(HeaderOrRocket, CancellationTest) {
     if (tte.getType() != TTransportException::TIMED_OUT) {
       throw;
     }
-  } catch (const TTransportException& ex) {
-    if (ex.getType() != TTransportException::TIMED_OUT) {
-      throw;
-    }
   }
 
   // Wait for the server to register the call
