@@ -629,7 +629,6 @@ void Val::readNoXfer(Protocol_* iprot) {
   }
 _readField_strVal:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->strVal, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.strVal = true;
@@ -661,7 +660,6 @@ _readField_intVal:
 _readField_typedefValue:
   {
     _readState.beforeSubobject(iprot);
-    
     this->typedefValue =  ::cpp2::containerTypedef();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::cpp2::containerTypedef>::readWithContext(*iprot, this->typedefValue, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN

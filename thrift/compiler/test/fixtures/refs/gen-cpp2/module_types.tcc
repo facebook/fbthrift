@@ -874,7 +874,6 @@ void RecursiveStruct::readNoXfer(Protocol_* iprot) {
 _readField_mes:
   {
     _readState.beforeSubobject(iprot);
-    
     this->mes = ::std::vector< ::cpp2::RecursiveStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::readWithContext(*iprot, this->mes, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1058,7 +1057,6 @@ _readField_list_ref_unique:
 _readField_set_ref_shared:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared<::std::set<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->set_ref_shared = std::move(ptr);
@@ -1075,7 +1073,6 @@ _readField_set_ref_shared:
 _readField_list_ref_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared<::std::vector<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::readWithContext(*iprot, *ptr, _readState);
     this->list_ref_shared_const = std::move(ptr);
@@ -1370,7 +1367,6 @@ void StructWithSharedConst::readNoXfer(Protocol_* iprot) {
 _readField_opt_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::MyField>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->opt_shared_const = std::move(ptr);
@@ -1387,7 +1383,6 @@ _readField_opt_shared_const:
 _readField_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::MyField>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->shared_const = std::move(ptr);
@@ -1404,7 +1399,6 @@ _readField_shared_const:
 _readField_req_shared_const:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::MyField>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyField>::readWithContext(*iprot, *ptr, _readState);
     this->req_shared_const = std::move(ptr);
@@ -2160,7 +2154,6 @@ void StructWithRefTypeShared::readNoXfer(Protocol_* iprot) {
 _readField_def_field:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::Empty>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->def_field = std::move(ptr);
@@ -2177,7 +2170,6 @@ _readField_def_field:
 _readField_opt_field:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::Empty>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->opt_field = std::move(ptr);
@@ -2194,7 +2186,6 @@ _readField_opt_field:
 _readField_req_field:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::Empty>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->req_field = std::move(ptr);
@@ -2399,7 +2390,6 @@ void StructWithRefTypeSharedConst::readNoXfer(Protocol_* iprot) {
 _readField_def_field:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::Empty>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->def_field = std::move(ptr);
@@ -2416,7 +2406,6 @@ _readField_def_field:
 _readField_opt_field:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::Empty>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->opt_field = std::move(ptr);
@@ -2433,7 +2422,6 @@ _readField_opt_field:
 _readField_req_field:
   {
     _readState.beforeSubobject(iprot);
-    
     auto ptr = std::make_shared< ::cpp2::Empty>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::Empty>::readWithContext(*iprot, *ptr, _readState);
     this->req_field = std::move(ptr);

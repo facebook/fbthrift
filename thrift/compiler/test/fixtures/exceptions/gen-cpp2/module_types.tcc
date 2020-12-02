@@ -154,7 +154,6 @@ void Fiery::readNoXfer(Protocol_* iprot) {
   }
 _readField_message:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->message, _readState);
   }
 
@@ -262,7 +261,6 @@ void Serious::readNoXfer(Protocol_* iprot) {
   }
 _readField_sonnet:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->sonnet, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.sonnet = true;
@@ -379,7 +377,6 @@ void ComplexFieldNames::readNoXfer(Protocol_* iprot) {
   }
 _readField_error_message:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->error_message, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.error_message = true;
@@ -395,7 +392,6 @@ _readField_error_message:
   }
 _readField_internal_error_message:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->internal_error_message, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.internal_error_message = true;
@@ -521,7 +517,6 @@ void CustomFieldNames::readNoXfer(Protocol_* iprot) {
   }
 _readField_error_message:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->error_message, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.error_message = true;
@@ -537,7 +532,6 @@ _readField_error_message:
   }
 _readField_internal_error_message:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->internal_error_message, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.internal_error_message = true;

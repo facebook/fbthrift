@@ -18,12 +18,13 @@
 %><%#type:resolves_to_container_or_struct?%><%!
 %>_readState.beforeSubobject(iprot);
 <%/type:resolves_to_container_or_struct?%><%!
+
 %><%#field:cpp_ref?%>
-<%^field:cpp_ref_shared_or_shared_const?%>
-auto ptr = std::make_unique<<% > types/type%>>();<%!
+<%^field:cpp_ref_shared_or_shared_const?%><%!
+%>auto ptr = std::make_unique<<% > types/type%>>();<%!
 %><%/field:cpp_ref_shared_or_shared_const?%><%!
-%><%#field:cpp_ref_shared_or_shared_const?%>
-auto ptr = std::make_shared<<% > types/type%>>();<%!
+%><%#field:cpp_ref_shared_or_shared_const?%><%!
+%>auto ptr = std::make_shared<<% > types/type%>>();<%!
 %><%/field:cpp_ref_shared_or_shared_const?%><%!
 %><%#type:resolves_to_fixed_size?%><%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, *ptr, _readState);<%!
@@ -44,17 +45,17 @@ this-><%field:cpp_name%> = std::move(ptr);<%!
 %><%#type:resolves_to_fixed_size?%><%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
 %><%/type:resolves_to_fixed_size?%><%!
-%><%#type:string_or_binary?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
+%><%#type:string_or_binary?%><%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
 %><%/type:string_or_binary?%><%!
-%><%#type:resolves_to_container?%>
-<%#type:cpp_use_allocator?%>
-this-><%field:cpp_name%> = <% > types/type%>(this->get_allocator());
-<%/type:cpp_use_allocator?%>
-<%^type:cpp_use_allocator?%>
-this-><%field:cpp_name%> = <% > types/type%>();
-<%/type:cpp_use_allocator?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
+%><%#type:resolves_to_container?%><%!
+%><%#type:cpp_use_allocator?%><%!
+%>this-><%field:cpp_name%> = <% > types/type%>(this->get_allocator());
+<%/type:cpp_use_allocator?%><%!
+%><%^type:cpp_use_allocator?%><%!
+%>this-><%field:cpp_name%> = <% > types/type%>();
+<%/type:cpp_use_allocator?%><%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
 %><%/type:resolves_to_container?%><%!
 %><%#type:struct?%><%!
 %>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!

@@ -68,7 +68,6 @@ void Mixin1::readNoXfer(Protocol_* iprot) {
   }
 _readField_field1:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field1, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field1 = true;
@@ -196,7 +195,6 @@ _readField_m1:
   }
 _readField_field2:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field2, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field2 = true;
@@ -328,7 +326,6 @@ void Mixin3Base::readNoXfer(Protocol_* iprot) {
   }
 _readField_field3:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field3, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field3 = true;
@@ -439,7 +436,6 @@ void Foo::readNoXfer(Protocol_* iprot) {
   }
 _readField_field4:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->field4, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.field4 = true;

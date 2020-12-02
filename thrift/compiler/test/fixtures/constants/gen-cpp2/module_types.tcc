@@ -129,7 +129,6 @@ _readField_weeks:
   }
 _readField_title:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->title, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.title = true;
@@ -440,7 +439,6 @@ _readField_a:
   }
 _readField_b:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->b, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
@@ -581,7 +579,6 @@ _readField_a:
   }
 _readField_b:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->b, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.b = true;
@@ -615,7 +612,6 @@ _readField_c:
 _readField_d:
   {
     _readState.beforeSubobject(iprot);
-    
     this->d = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::readWithContext(*iprot, this->d, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -773,7 +769,6 @@ void struct3::readNoXfer(Protocol_* iprot) {
   }
 _readField_a:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->a, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.a = true;

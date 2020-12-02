@@ -75,7 +75,6 @@ void MyStructNestedAnnotation::readNoXfer(Protocol_* iprot) {
   }
 _readField_name:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
@@ -201,7 +200,6 @@ _readField_count:
   }
 _readField_name:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.name = true;
@@ -217,7 +215,6 @@ _readField_name:
   }
 _readField_extra:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->extra, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.extra = true;
@@ -411,7 +408,6 @@ _readField_majorVer:
   }
 _readField_package:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->package, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.package = true;
@@ -427,7 +423,6 @@ _readField_package:
   }
 _readField_annotation_with_quote:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotation_with_quote, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotation_with_quote = true;
@@ -443,7 +438,6 @@ _readField_annotation_with_quote:
   }
 _readField_class_:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->class_, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.class_ = true;
@@ -459,7 +453,6 @@ _readField_class_:
   }
 _readField_annotation_with_trailing_comma:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotation_with_trailing_comma, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.annotation_with_trailing_comma = true;
@@ -475,7 +468,6 @@ _readField_annotation_with_trailing_comma:
   }
 _readField_empty_annotations:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->empty_annotations, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.empty_annotations = true;
@@ -676,7 +668,6 @@ _readField_id:
   }
 _readField_password:
   {
-    
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->password, _readState);
     THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     this->__isset.password = true;
