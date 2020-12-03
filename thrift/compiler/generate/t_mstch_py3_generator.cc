@@ -1485,10 +1485,18 @@ void t_mstch_py3_generator::generate_types() {
       "builders.pxd",
       "builders.pyx",
       "builders.pyi",
+      "metadata.pxd",
+      "metadata.pyi",
+      "metadata.pyx",
   };
 
   std::vector<std::string> cppFilesWithTypeContext{
       "types.h",
+  };
+
+  std::vector<std::string> cppFilesWithNoTypeContext{
+      "metadata.h",
+      "metadata.cpp",
   };
 
   setTypeContext(true);
@@ -1501,6 +1509,9 @@ void t_mstch_py3_generator::generate_types() {
   setTypeContext(false);
   for (const auto& file : cythonFilesNoTypeContext) {
     generate_file(file, generateRootPath_);
+  }
+  for (const auto& file : cppFilesWithNoTypeContext) {
+    generate_file(file);
   }
 }
 
