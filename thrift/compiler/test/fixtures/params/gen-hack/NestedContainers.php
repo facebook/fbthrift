@@ -1541,7 +1541,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Map<int, Vector<int>>,
+    ?'foo' => ?Map<int, Vector<int>>,
   );
 
   const type TShape = shape(
@@ -1684,7 +1684,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Map<int, Set<int>>,
+    ?'foo' => ?Map<int, Set<int>>,
   );
 
   const type TShape = shape(
@@ -1827,7 +1827,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Vector<Map<int, int>>,
+    ?'foo' => ?Vector<Map<int, int>>,
   );
 
   const type TShape = shape(
@@ -1966,7 +1966,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Vector<Set<int>>,
+    ?'foo' => ?Vector<Set<int>>,
   );
 
   const type TShape = shape(
@@ -2128,7 +2128,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Vector<Vector<Map<int, Map<int, Set<int>>>>>,
+    ?'foo' => ?Vector<Vector<Map<int, Map<int, Set<int>>>>>,
   );
 
   const type TShape = shape(

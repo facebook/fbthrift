@@ -49,10 +49,10 @@ class Color implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'red' => float,
-    ?'green' => float,
-    ?'blue' => float,
-    ?'alpha' => float,
+    ?'red' => ?float,
+    ?'green' => ?float,
+    ?'blue' => ?float,
+    ?'alpha' => ?float,
   );
 
   const int STRUCTURAL_ID = 5495510740722957663;
@@ -178,7 +178,7 @@ class Vehicle implements \IThriftStruct {
     ?'licensePlate' => ?string,
     ?'description' => ?string,
     ?'name' => ?string,
-    ?'hasAC' => bool,
+    ?'hasAC' => ?bool,
   );
 
   const int STRUCTURAL_ID = 2222890000100114781;
@@ -358,8 +358,8 @@ class Person implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
-    ?'name' => string,
+    ?'id' => ?int,
+    ?'name' => ?string,
     ?'age' => ?int,
     ?'address' => ?string,
     ?'favoriteColor' => ?Color,

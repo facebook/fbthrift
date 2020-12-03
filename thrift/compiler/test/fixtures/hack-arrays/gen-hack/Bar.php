@@ -314,8 +314,8 @@ class Bar_baz_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => keyset<int>,
-    ?'b' => vec<dict<int, keyset<string>>>,
+    ?'a' => ?keyset<int>,
+    ?'b' => ?vec<dict<int, keyset<string>>>,
   );
 
   const int STRUCTURAL_ID = 5283012534631553068;
@@ -382,7 +382,7 @@ class Bar_baz_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;

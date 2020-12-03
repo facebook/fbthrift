@@ -39,7 +39,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
   const type TConstructorShape = shape(
     ?'just_an_enum' => ?Enum,
-    ?'a' => string,
+    ?'a' => ?string,
   );
 
   const type TShape = shape(
@@ -432,24 +432,24 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'map_of_string_to_string' => dict<string, string>,
-    ?'map_of_string_to_i32' => dict<string, int>,
-    ?'map_of_string_to_A' => dict<string, A>,
-    ?'map_of_string_to_self' => dict<string, B>,
-    ?'map_of_string_to_list_of_A' => dict<string, vec<A>>,
-    ?'map_of_string_to_map_of_string_to_i32' => dict<string, dict<string, int>>,
-    ?'map_of_string_to_map_of_string_to_A' => dict<string, dict<string, A>>,
-    ?'map_of_string_to_list_of_i32' => dict<string, vec<int>>,
-    ?'map_of_string_to_set_of_i32' => dict<string, keyset<int>>,
-    ?'list_of_string' => vec<string>,
-    ?'list_of_i32' => vec<int>,
-    ?'list_of_self' => vec<B>,
-    ?'list_of_list_of_self' => vec<vec<B>>,
-    ?'list_of_set_of_i32' => vec<keyset<int>>,
-    ?'list_of_map_of_string_to_list_of_A' => vec<dict<string, vec<A>>>,
-    ?'list_of_map_of_string_to_A' => vec<dict<string, A>>,
-    ?'set_of_i32' => keyset<int>,
-    ?'set_of_string' => keyset<string>,
+    ?'map_of_string_to_string' => ?dict<string, string>,
+    ?'map_of_string_to_i32' => ?dict<string, int>,
+    ?'map_of_string_to_A' => ?dict<string, A>,
+    ?'map_of_string_to_self' => ?dict<string, B>,
+    ?'map_of_string_to_list_of_A' => ?dict<string, vec<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?dict<string, dict<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?dict<string, dict<string, A>>,
+    ?'map_of_string_to_list_of_i32' => ?dict<string, vec<int>>,
+    ?'map_of_string_to_set_of_i32' => ?dict<string, keyset<int>>,
+    ?'list_of_string' => ?vec<string>,
+    ?'list_of_i32' => ?vec<int>,
+    ?'list_of_self' => ?vec<B>,
+    ?'list_of_list_of_self' => ?vec<vec<B>>,
+    ?'list_of_set_of_i32' => ?vec<keyset<int>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?vec<dict<string, vec<A>>>,
+    ?'list_of_map_of_string_to_A' => ?vec<dict<string, A>>,
+    ?'set_of_i32' => ?keyset<int>,
+    ?'set_of_string' => ?keyset<string>,
   );
 
   const type TShape = shape(

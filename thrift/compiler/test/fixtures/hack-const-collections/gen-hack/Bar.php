@@ -458,11 +458,11 @@ class Bar_baz_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ConstSet<int>,
-    ?'b' => ConstVector<ConstMap<int, ConstSet<string>>>,
-    ?'c' => int,
+    ?'a' => ?ConstSet<int>,
+    ?'b' => ?ConstVector<ConstMap<int, ConstSet<string>>>,
+    ?'c' => ?int,
     ?'d' => ?Foo,
-    ?'e' => int,
+    ?'e' => ?int,
   );
 
   const int STRUCTURAL_ID = 7865027497865509792;
@@ -550,7 +550,7 @@ class Bar_baz_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;

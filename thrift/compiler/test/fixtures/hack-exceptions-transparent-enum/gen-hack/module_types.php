@@ -39,7 +39,7 @@ class MyException extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 

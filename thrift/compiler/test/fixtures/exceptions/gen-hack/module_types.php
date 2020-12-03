@@ -76,7 +76,7 @@ class Fiery extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
   );
 
   const int STRUCTURAL_ID = 1438368398389181198;
@@ -226,8 +226,8 @@ class ComplexFieldNames extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'error_message' => string,
-    ?'internal_error_message' => string,
+    ?'error_message' => ?string,
+    ?'internal_error_message' => ?string,
   );
 
   const int STRUCTURAL_ID = 4419960994551853385;
@@ -318,8 +318,8 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'error_message' => string,
-    ?'internal_error_message' => string,
+    ?'error_message' => ?string,
+    ?'internal_error_message' => ?string,
   );
 
   const int STRUCTURAL_ID = 4419960994551853385;

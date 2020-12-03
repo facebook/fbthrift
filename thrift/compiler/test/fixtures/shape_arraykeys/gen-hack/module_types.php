@@ -32,7 +32,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => string,
+    ?'a' => ?string,
   );
 
   const type TShape = shape(
@@ -512,21 +512,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   const type TConstructorShape = shape(
     ?'just_an_A' => ?A,
-    ?'set_of_i32' => Set<int>,
-    ?'list_of_i32' => Vector<int>,
-    ?'list_of_string' => Vector<string>,
-    ?'map_of_string_to_i32' => Map<string, int>,
-    ?'map_of_string_to_A' => Map<string, A>,
-    ?'map_of_string_to_list_of_i32' => Map<string, Vector<int>>,
-    ?'map_of_string_to_list_of_A' => Map<string, Vector<A>>,
-    ?'map_of_string_to_set_of_i32' => Map<string, Set<int>>,
-    ?'map_of_string_to_map_of_string_to_i32' => Map<string, Map<string, int>>,
-    ?'map_of_string_to_map_of_string_to_A' => Map<string, Map<string, A>>,
-    ?'list_of_set_of_i32' => Vector<Set<int>>,
-    ?'list_of_map_of_string_to_list_of_A' => Vector<Map<string, Vector<A>>>,
-    ?'list_of_map_of_string_to_A' => Vector<Map<string, A>>,
-    ?'list_of_self' => Vector<B>,
-    ?'map_of_string_to_self' => Map<string, B>,
+    ?'set_of_i32' => ?Set<int>,
+    ?'list_of_i32' => ?Vector<int>,
+    ?'list_of_string' => ?Vector<string>,
+    ?'map_of_string_to_i32' => ?Map<string, int>,
+    ?'map_of_string_to_A' => ?Map<string, A>,
+    ?'map_of_string_to_list_of_i32' => ?Map<string, Vector<int>>,
+    ?'map_of_string_to_list_of_A' => ?Map<string, Vector<A>>,
+    ?'map_of_string_to_set_of_i32' => ?Map<string, Set<int>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?Map<string, Map<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?Map<string, Map<string, A>>,
+    ?'list_of_set_of_i32' => ?Vector<Set<int>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?Vector<Map<string, Vector<A>>>,
+    ?'list_of_map_of_string_to_A' => ?Vector<Map<string, A>>,
+    ?'list_of_self' => ?Vector<B>,
+    ?'map_of_string_to_self' => ?Map<string, B>,
     ?'just_an_enum' => ?Enum,
     ?'optional_just_an_A' => ?A,
     ?'optional_set_of_i32' => ?Set<int>,

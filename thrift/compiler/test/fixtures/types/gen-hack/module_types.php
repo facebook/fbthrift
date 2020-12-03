@@ -64,7 +64,7 @@ class decorated_struct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'field' => string,
+    ?'field' => ?string,
   );
 
   const int STRUCTURAL_ID = 6158382972310209096;
@@ -229,14 +229,14 @@ class ContainerStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'fieldA' => Vector<int>,
-    ?'fieldB' => Vector<int>,
-    ?'fieldC' => Vector<int>,
-    ?'fieldD' => Vector<int>,
-    ?'fieldE' => Vector<int>,
-    ?'fieldF' => Set<int>,
-    ?'fieldG' => Map<int, string>,
-    ?'fieldH' => Map<int, string>,
+    ?'fieldA' => ?Vector<int>,
+    ?'fieldB' => ?Vector<int>,
+    ?'fieldC' => ?Vector<int>,
+    ?'fieldD' => ?Vector<int>,
+    ?'fieldE' => ?Vector<int>,
+    ?'fieldF' => ?Set<int>,
+    ?'fieldG' => ?Map<int, string>,
+    ?'fieldH' => ?Map<int, string>,
   );
 
   const int STRUCTURAL_ID = 2901459969892394021;
@@ -505,7 +505,7 @@ class CppTypeStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'fieldA' => Vector<int>,
+    ?'fieldA' => ?Vector<int>,
   );
 
   const int STRUCTURAL_ID = 9369458949141941;
@@ -597,7 +597,7 @@ class VirtualStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'MyIntField' => int,
+    ?'MyIntField' => ?int,
   );
 
   const int STRUCTURAL_ID = 7014352813131039231;
@@ -783,8 +783,8 @@ class TrivialNumeric implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => int,
-    ?'b' => bool,
+    ?'a' => ?int,
+    ?'b' => ?bool,
   );
 
   const int STRUCTURAL_ID = 3920068475021763685;
@@ -889,7 +889,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'z' => int,
+    ?'z' => ?int,
     ?'n' => ?TrivialNumeric,
   );
 
@@ -1006,8 +1006,8 @@ class ComplexString implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => string,
-    ?'b' => Map<string, int>,
+    ?'a' => ?string,
+    ?'b' => ?Map<string, int>,
   );
 
   const int STRUCTURAL_ID = 5460740530481786095;
@@ -1119,7 +1119,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'z' => string,
+    ?'z' => ?string,
     ?'n' => ?ComplexString,
   );
 
@@ -1237,11 +1237,11 @@ class MinPadding implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'small' => int,
-    ?'big' => int,
-    ?'medium' => int,
-    ?'biggish' => int,
-    ?'tiny' => int,
+    ?'small' => ?int,
+    ?'big' => ?int,
+    ?'medium' => ?int,
+    ?'biggish' => ?int,
+    ?'tiny' => ?int,
   );
 
   const int STRUCTURAL_ID = 723753448680843528;
@@ -1424,9 +1424,9 @@ class MyStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'MyIntField' => int,
-    ?'MyStringField' => string,
-    ?'majorVer' => int,
+    ?'MyIntField' => ?int,
+    ?'MyStringField' => ?string,
+    ?'majorVer' => ?int,
     ?'data' => ?MyDataItem,
   );
 
@@ -1614,7 +1614,7 @@ class Renaming implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => int,
+    ?'foo' => ?int,
   );
 
   const int STRUCTURAL_ID = 2811793053530639830;
@@ -1713,8 +1713,8 @@ class AnnotatedTypes implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'binary_field' => string,
-    ?'list_field' => Vector<Map<int, string>>,
+    ?'binary_field' => ?string,
+    ?'list_field' => ?Vector<Map<int, string>>,
   );
 
   const int STRUCTURAL_ID = 7799859984459418183;
@@ -2159,7 +2159,7 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'boolField' => int,
+    ?'boolField' => ?int,
   );
 
   const int STRUCTURAL_ID = 7058232826271171943;
@@ -2295,15 +2295,15 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'MyBoolField' => bool,
-    ?'MyIntField' => int,
-    ?'MyStringField' => string,
-    ?'MyStringField2' => string,
-    ?'MyBinaryField' => string,
+    ?'MyBoolField' => ?bool,
+    ?'MyIntField' => ?int,
+    ?'MyStringField' => ?string,
+    ?'MyStringField2' => ?string,
+    ?'MyBinaryField' => ?string,
     ?'MyBinaryField2' => ?string,
-    ?'MyBinaryField3' => string,
-    ?'MyBinaryListField4' => Vector<string>,
-    ?'MyMapEnumAndInt' => Map<MyEnumA, string>,
+    ?'MyBinaryField3' => ?string,
+    ?'MyBinaryListField4' => ?Vector<string>,
+    ?'MyMapEnumAndInt' => ?Map<MyEnumA, string>,
   );
 
   const int STRUCTURAL_ID = 8958221528844030164;
@@ -2729,11 +2729,11 @@ class AllocatorAware implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'aa_list' => Vector<int>,
-    ?'aa_set' => Set<int>,
-    ?'aa_map' => Map<int, int>,
-    ?'aa_string' => string,
-    ?'not_a_container' => int,
+    ?'aa_list' => ?Vector<int>,
+    ?'aa_set' => ?Set<int>,
+    ?'aa_map' => ?Map<int, int>,
+    ?'aa_string' => ?string,
+    ?'not_a_container' => ?int,
   );
 
   const int STRUCTURAL_ID = 5875128050373741032;
@@ -2911,7 +2911,7 @@ class AllocatorAware2 implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'not_a_container' => int,
+    ?'not_a_container' => ?int,
   );
 
   const int STRUCTURAL_ID = 3476753821834683211;

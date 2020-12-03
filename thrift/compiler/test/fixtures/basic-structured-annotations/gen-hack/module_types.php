@@ -38,8 +38,8 @@ class structured_annotation_inline implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'count' => int,
-    ?'name' => string,
+    ?'count' => ?int,
+    ?'name' => ?string,
   );
 
   const int STRUCTURAL_ID = 4972386806027895704;
@@ -118,7 +118,7 @@ class structured_annotation_with_default implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
   );
 
   const int STRUCTURAL_ID = 2593878277785201336;
@@ -198,7 +198,7 @@ class structured_annotation_recursive implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
     ?'recurse' => ?structured_annotation_recursive,
     ?'forward' => ?structured_annotation_forward,
   );
@@ -290,7 +290,7 @@ class structured_annotation_forward implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'count' => int,
+    ?'count' => ?int,
   );
 
   const int STRUCTURAL_ID = 6887469671700782815;
@@ -364,7 +364,7 @@ class structured_annotation_nested implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
     ?'nest' => ?structured_annotation_with_default,
   );
 
@@ -459,10 +459,10 @@ class MyStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'annotated_field' => int,
-    ?'annotated_type' => string,
-    ?'annotated_recursive' => string,
-    ?'annotated_nested' => int,
+    ?'annotated_field' => ?int,
+    ?'annotated_type' => ?string,
+    ?'annotated_recursive' => ?string,
+    ?'annotated_nested' => ?int,
   );
 
   const int STRUCTURAL_ID = 3348150936040517721;
@@ -633,7 +633,7 @@ class MyException extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'context' => string,
+    ?'context' => ?string,
   );
 
   const int STRUCTURAL_ID = 4527164319056566576;

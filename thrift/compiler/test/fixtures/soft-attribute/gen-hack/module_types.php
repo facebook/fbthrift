@@ -29,8 +29,8 @@ class Foo implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => int,
-    ?'b' => string,
+    ?'a' => ?int,
+    ?'b' => ?string,
   );
 
   const int STRUCTURAL_ID = 5526046231048010857;

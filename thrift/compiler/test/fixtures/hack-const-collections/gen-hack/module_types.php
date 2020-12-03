@@ -63,10 +63,10 @@ class Foo implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ConstVector<string>,
+    ?'a' => ?ConstVector<string>,
     ?'b' => ?ConstMap<string, ConstVector<ConstSet<int>>>,
-    ?'c' => int,
-    ?'d' => bool,
+    ?'c' => ?int,
+    ?'d' => ?bool,
   );
 
   const int STRUCTURAL_ID = 3946809642153193229;
@@ -167,7 +167,7 @@ class Baz extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
   );
 
   const int STRUCTURAL_ID = 2427562471238739676;

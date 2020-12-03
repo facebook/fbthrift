@@ -48,9 +48,9 @@ class MyThriftStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => string,
-    ?'bar' => string,
-    ?'baz' => string,
+    ?'foo' => ?string,
+    ?'bar' => ?string,
+    ?'baz' => ?string,
   );
 
   const int STRUCTURAL_ID = 6671455975178405100;
@@ -156,7 +156,7 @@ class MySecondThriftStruct implements \IThriftStruct {
   const type TConstructorShape = shape(
     ?'foo' => ?\test\fixtures\jsenum\MyThriftEnum,
     ?'bar' => ?\test\fixtures\jsenum\MyThriftStruct,
-    ?'baz' => int,
+    ?'baz' => ?int,
   );
 
   const int STRUCTURAL_ID = 2800971917864580212;

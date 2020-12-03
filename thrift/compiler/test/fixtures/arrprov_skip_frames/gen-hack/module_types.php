@@ -63,9 +63,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => varray<string>,
+    ?'a' => ?varray<string>,
     ?'b' => ?darray<string, varray<darray<int, bool>>>,
-    ?'c' => int,
+    ?'c' => ?int,
     ?'d' => ?bool,
   );
 
@@ -217,10 +217,10 @@ class Baz extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'some_field' => ?Foo,
-    ?'some_container' => darray<string, bool>,
-    ?'code' => int,
+    ?'some_container' => ?darray<string, bool>,
+    ?'code' => ?int,
   );
 
   const int STRUCTURAL_ID = 1663976252517274137;

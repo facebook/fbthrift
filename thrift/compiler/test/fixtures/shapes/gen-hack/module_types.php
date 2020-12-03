@@ -212,7 +212,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => string,
+    ?'a' => ?string,
   );
 
   const type TShape = shape(
@@ -776,21 +776,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   const type TConstructorShape = shape(
     ?'just_an_A' => ?\test\fixtures\A,
-    ?'set_of_i32' => Set<int>,
-    ?'list_of_i32' => Vector<int>,
-    ?'list_of_string' => Vector<string>,
-    ?'map_of_string_to_i32' => Map<string, int>,
-    ?'map_of_string_to_A' => Map<string, \test\fixtures\A>,
-    ?'map_of_string_to_list_of_i32' => Map<string, Vector<int>>,
-    ?'map_of_string_to_list_of_A' => Map<string, Vector<\test\fixtures\A>>,
-    ?'map_of_string_to_set_of_i32' => Map<string, Set<int>>,
-    ?'map_of_string_to_map_of_string_to_i32' => Map<string, Map<string, int>>,
-    ?'map_of_string_to_map_of_string_to_A' => Map<string, Map<string, \test\fixtures\A>>,
-    ?'list_of_set_of_i32' => Vector<Set<int>>,
-    ?'list_of_map_of_string_to_list_of_A' => Vector<Map<string, Vector<\test\fixtures\A>>>,
-    ?'list_of_map_of_string_to_A' => Vector<Map<string, \test\fixtures\A>>,
-    ?'list_of_self' => Vector<\test\fixtures\B>,
-    ?'map_of_string_to_self' => Map<string, \test\fixtures\B>,
+    ?'set_of_i32' => ?Set<int>,
+    ?'list_of_i32' => ?Vector<int>,
+    ?'list_of_string' => ?Vector<string>,
+    ?'map_of_string_to_i32' => ?Map<string, int>,
+    ?'map_of_string_to_A' => ?Map<string, \test\fixtures\A>,
+    ?'map_of_string_to_list_of_i32' => ?Map<string, Vector<int>>,
+    ?'map_of_string_to_list_of_A' => ?Map<string, Vector<\test\fixtures\A>>,
+    ?'map_of_string_to_set_of_i32' => ?Map<string, Set<int>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?Map<string, Map<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?Map<string, Map<string, \test\fixtures\A>>,
+    ?'list_of_set_of_i32' => ?Vector<Set<int>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?Vector<Map<string, Vector<\test\fixtures\A>>>,
+    ?'list_of_map_of_string_to_A' => ?Vector<Map<string, \test\fixtures\A>>,
+    ?'list_of_self' => ?Vector<\test\fixtures\B>,
+    ?'map_of_string_to_self' => ?Map<string, \test\fixtures\B>,
     ?'just_an_enum' => ?\test\fixtures\Enum,
     ?'just_a_union' => ?\test\fixtures\Union,
     ?'optional_just_an_A' => ?\test\fixtures\A,
@@ -803,16 +803,16 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     ?'optional_map_of_string_to_list_of_A' => ?Map<string, Vector<\test\fixtures\A>>,
     ?'optional_map_of_string_to_set_of_i32' => ?Map<string, Set<int>>,
     ?'optional_enum' => ?\test\fixtures\Enum,
-    ?'required_enum_with_default' => \test\fixtures\Enum,
-    ?'string_with_default_value' => string,
-    ?'i32_with_default_value' => int,
-    ?'double_with_default_value' => float,
+    ?'required_enum_with_default' => ?\test\fixtures\Enum,
+    ?'string_with_default_value' => ?string,
+    ?'i32_with_default_value' => ?int,
+    ?'double_with_default_value' => ?float,
     ?'enum_with_default_value' => ?\test\fixtures\Enum,
     ?'A_with_default_value' => ?\test\fixtures\A,
-    ?'set_of_i32_with_default_value' => Set<int>,
-    ?'map_of_i32_to_string_with_default_value' => Map<int, string>,
-    ?'list_of_string_with_default_value' => Vector<string>,
-    ?'map_of_string_to_list_of_i32_with_default_value' => Map<string, Vector<int>>,
+    ?'set_of_i32_with_default_value' => ?Set<int>,
+    ?'map_of_i32_to_string_with_default_value' => ?Map<int, string>,
+    ?'list_of_string_with_default_value' => ?Vector<string>,
+    ?'map_of_string_to_list_of_i32_with_default_value' => ?Map<string, Vector<int>>,
   );
 
   const type TShape = shape(

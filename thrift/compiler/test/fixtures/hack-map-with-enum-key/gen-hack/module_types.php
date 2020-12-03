@@ -55,8 +55,8 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'e' => Map<FooEnum, FooEnum>,
-    ?'s' => Set<FooEnum>,
+    ?'e' => ?Map<FooEnum, FooEnum>,
+    ?'s' => ?Set<FooEnum>,
   );
 
   const type TShape = shape(

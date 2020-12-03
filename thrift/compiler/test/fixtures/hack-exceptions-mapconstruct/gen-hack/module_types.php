@@ -39,7 +39,7 @@ class MyException1 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -143,7 +143,7 @@ class MyException2 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -247,7 +247,7 @@ class MyException3 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -351,7 +351,7 @@ class MyException4 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -454,7 +454,7 @@ class MyException5 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?int,
   );
 

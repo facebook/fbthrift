@@ -53,8 +53,8 @@ class Foo implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => vec<string>,
-    ?'b' => dict<string, vec<keyset<int>>>,
+    ?'a' => ?vec<string>,
+    ?'b' => ?dict<string, vec<keyset<int>>>,
   );
 
   const int STRUCTURAL_ID = 5283012534631553068;

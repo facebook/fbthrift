@@ -488,7 +488,7 @@ class SomeService_bounce_map_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'m' => Map<int, string>,
+    ?'m' => ?Map<int, string>,
   );
 
   const int STRUCTURAL_ID = 1590329293490505564;
@@ -576,7 +576,7 @@ class SomeService_bounce_map_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => Map<int, string>,
+    ?'success' => ?Map<int, string>,
   );
 
   const int STRUCTURAL_ID = 390979496709511735;
@@ -659,7 +659,7 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'r' => Vector<int>,
+    ?'r' => ?Vector<int>,
   );
 
   const int STRUCTURAL_ID = 4817436577562933873;
@@ -747,7 +747,7 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => Map<string, int>,
+    ?'success' => ?Map<string, int>,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;

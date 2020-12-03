@@ -32,7 +32,7 @@ class foo_php_ns_TestStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'str_value' => string,
+    ?'str_value' => ?string,
   );
 
   const int STRUCTURAL_ID = 7258556236863001185;

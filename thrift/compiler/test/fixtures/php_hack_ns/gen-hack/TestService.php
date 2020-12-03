@@ -277,7 +277,7 @@ class TestService_ping_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'str_arg' => string,
+    ?'str_arg' => ?string,
   );
 
   const int STRUCTURAL_ID = 5542358918184482101;
@@ -337,7 +337,7 @@ class TestService_ping_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => int,
+    ?'success' => ?int,
   );
 
   const int STRUCTURAL_ID = 3865318819874171525;

@@ -24,7 +24,7 @@ class structured_annotation_included implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
   );
 
   const int STRUCTURAL_ID = 2593878277785201336;

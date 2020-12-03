@@ -794,9 +794,9 @@ class Val implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'strVal' => string,
-    ?'intVal' => int,
-    ?'typedefValue' => Map<int, string>,
+    ?'strVal' => ?string,
+    ?'intVal' => ?int,
+    ?'typedefValue' => ?Map<int, string>,
   );
 
   const int STRUCTURAL_ID = 7250696402099336501;
@@ -1263,7 +1263,7 @@ class NonCopyableStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'num' => int,
+    ?'num' => ?int,
   );
 
   const int STRUCTURAL_ID = 7064950569513307469;

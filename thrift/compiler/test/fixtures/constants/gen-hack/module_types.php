@@ -64,8 +64,8 @@ class Internship implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'weeks' => int,
-    ?'title' => string,
+    ?'weeks' => ?int,
+    ?'title' => ?string,
     ?'employer' => ?Company,
   );
 
@@ -161,8 +161,8 @@ class Range implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'min' => int,
-    ?'max' => int,
+    ?'min' => ?int,
+    ?'max' => ?int,
   );
 
   const int STRUCTURAL_ID = 6850388386457434767;
@@ -246,8 +246,8 @@ class struct1 implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => int,
-    ?'b' => string,
+    ?'a' => ?int,
+    ?'b' => ?string,
   );
 
   const int STRUCTURAL_ID = 7783381726179123112;
@@ -347,10 +347,10 @@ class struct2 implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => int,
-    ?'b' => string,
+    ?'a' => ?int,
+    ?'b' => ?string,
     ?'c' => ?struct1,
-    ?'d' => Vector<int>,
+    ?'d' => ?Vector<int>,
   );
 
   const int STRUCTURAL_ID = 6352184485829261382;
@@ -462,8 +462,8 @@ class struct3 implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => string,
-    ?'b' => int,
+    ?'a' => ?string,
+    ?'b' => ?int,
     ?'c' => ?struct2,
   );
 
@@ -564,7 +564,7 @@ class struct4 implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => int,
+    ?'a' => ?int,
     ?'b' => ?float,
     ?'c' => ?int,
   );

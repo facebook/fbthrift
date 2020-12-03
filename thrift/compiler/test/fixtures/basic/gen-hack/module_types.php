@@ -50,8 +50,8 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'MyIntField' => int,
-    ?'MyStringField' => string,
+    ?'MyIntField' => ?int,
+    ?'MyStringField' => ?string,
     ?'MyDataField' => ?MyDataItem,
     ?'myEnum' => ?MyEnum,
   );

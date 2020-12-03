@@ -1594,7 +1594,7 @@ void t_hack_generator::generate_php_struct_shape_spec(
 
     string namePrefix = nullable || is_constructor_shape ? "?" : "";
 
-    string typehint = nullable ? "?" : "";
+    string typehint = nullable || is_constructor_shape ? "?" : "";
 
     typehint += type_to_typehint(t, false, !is_constructor_shape);
 

@@ -46,7 +46,7 @@ class FBStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'str_value' => string,
+    ?'str_value' => ?string,
     ?'enum_value' => ?\foo_php_ns_Status,
     ?'struct_value' => ?\foo_php_ns_TestStruct,
   );

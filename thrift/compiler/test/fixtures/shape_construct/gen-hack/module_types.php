@@ -407,11 +407,11 @@ class Foo implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => Vector<string>,
+    ?'a' => ?Vector<string>,
     ?'b' => ?Map<string, Vector<Set<int>>>,
-    ?'c' => int,
-    ?'d' => bool,
-    ?'str_value' => string,
+    ?'c' => ?int,
+    ?'d' => ?bool,
+    ?'str_value' => ?string,
   );
 
   const int STRUCTURAL_ID = 5952652426480946901;
@@ -576,9 +576,9 @@ class TestStruct implements \IThriftStruct {
     ?'foo_struct' => ?Foo,
     ?'union_value' => ?TestUnion,
     ?'struct_of_self' => ?TestStruct,
-    ?'list_of_struct_foo' => Vector<Foo>,
-    ?'map_of_string_to_struct_foo' => Map<string, Foo>,
-    ?'list_of_struct_self' => Vector<TestStruct>,
+    ?'list_of_struct_foo' => ?Vector<Foo>,
+    ?'map_of_string_to_struct_foo' => ?Map<string, Foo>,
+    ?'list_of_struct_self' => ?Vector<TestStruct>,
   );
 
   const int STRUCTURAL_ID = 6681594433718475023;
@@ -722,10 +722,10 @@ class Baz extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'some_field' => ?Foo,
-    ?'some_container' => Set<string>,
-    ?'code' => int,
+    ?'some_container' => ?Set<string>,
+    ?'code' => ?int,
   );
 
   const int STRUCTURAL_ID = 1663976252517274137;

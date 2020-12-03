@@ -34,7 +34,7 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
   );
 
   const type TShape = shape(
@@ -147,8 +147,8 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'count' => int,
-    ?'name' => string,
+    ?'count' => ?int,
+    ?'name' => ?string,
     ?'extra' => ?string,
     ?'nest' => ?MyStructNestedAnnotation,
   );
@@ -330,12 +330,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'major' => int,
-    ?'package' => string,
-    ?'annotation_with_quote' => string,
-    ?'class_' => string,
-    ?'annotation_with_trailing_comma' => string,
-    ?'empty_annotations' => string,
+    ?'major' => ?int,
+    ?'package' => ?string,
+    ?'annotation_with_quote' => ?string,
+    ?'class_' => ?string,
+    ?'annotation_with_trailing_comma' => ?string,
+    ?'empty_annotations' => ?string,
   );
 
   const type TShape = shape(
@@ -534,8 +534,8 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
-    ?'password' => string,
+    ?'id' => ?int,
+    ?'password' => ?string,
   );
 
   const type TShape = shape(

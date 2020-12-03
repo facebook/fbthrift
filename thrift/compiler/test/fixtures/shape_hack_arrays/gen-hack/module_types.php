@@ -38,8 +38,8 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => string,
-    ?'map_of_string_to_string' => dict<string, string>,
+    ?'a' => ?string,
+    ?'map_of_string_to_string' => ?dict<string, string>,
   );
 
   const type TShape = shape(
@@ -340,18 +340,18 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'map_of_string_to_string' => dict<string, string>,
-    ?'map_of_string_to_i32' => dict<string, int>,
-    ?'map_of_string_to_A' => dict<string, A>,
-    ?'map_of_string_to_self' => dict<string, B>,
-    ?'map_of_string_to_list_of_A' => dict<string, vec<A>>,
-    ?'map_of_string_to_map_of_string_to_i32' => dict<string, dict<string, int>>,
-    ?'map_of_string_to_map_of_string_to_A' => dict<string, dict<string, A>>,
-    ?'list_of_string' => vec<string>,
-    ?'list_of_map_of_string_to_A' => vec<dict<string, A>>,
-    ?'list_of_self' => vec<B>,
-    ?'list_of_list_of_self' => vec<vec<B>>,
-    ?'list_of_map_of_string_to_list_of_A' => vec<dict<string, vec<A>>>,
+    ?'map_of_string_to_string' => ?dict<string, string>,
+    ?'map_of_string_to_i32' => ?dict<string, int>,
+    ?'map_of_string_to_A' => ?dict<string, A>,
+    ?'map_of_string_to_self' => ?dict<string, B>,
+    ?'map_of_string_to_list_of_A' => ?dict<string, vec<A>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?dict<string, dict<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?dict<string, dict<string, A>>,
+    ?'list_of_string' => ?vec<string>,
+    ?'list_of_map_of_string_to_A' => ?vec<dict<string, A>>,
+    ?'list_of_self' => ?vec<B>,
+    ?'list_of_list_of_self' => ?vec<vec<B>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?vec<dict<string, vec<A>>>,
   );
 
   const type TShape = shape(

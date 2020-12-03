@@ -457,11 +457,11 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => varray<string>,
+    ?'a' => ?varray<string>,
     ?'b' => ?darray<string, varray<dict<int, bool>>>,
-    ?'c' => int,
-    ?'d' => bool,
-    ?'str_value' => string,
+    ?'c' => ?int,
+    ?'d' => ?bool,
+    ?'str_value' => ?string,
   );
 
   const type TShape = shape(
@@ -656,9 +656,9 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'foo_struct' => ?Foo,
     ?'union_value' => ?TestUnion,
     ?'struct_of_self' => ?TestStruct,
-    ?'list_of_struct_foo' => varray<Foo>,
-    ?'map_of_string_to_struct_foo' => darray<string, Foo>,
-    ?'list_of_struct_self' => varray<TestStruct>,
+    ?'list_of_struct_foo' => ?varray<Foo>,
+    ?'map_of_string_to_struct_foo' => ?darray<string, Foo>,
+    ?'list_of_struct_self' => ?varray<TestStruct>,
   );
 
   const type TShape = shape(
@@ -872,10 +872,10 @@ class Baz extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'some_field' => ?Foo,
-    ?'some_container' => dict<string, bool>,
-    ?'code' => int,
+    ?'some_container' => ?dict<string, bool>,
+    ?'code' => ?int,
   );
 
   const int STRUCTURAL_ID = 1663976252517274137;

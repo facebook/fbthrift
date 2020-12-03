@@ -449,11 +449,11 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => darray<int, bool>,
-    ?'b' => varray<darray<int, darray<string, bool>>>,
+    ?'a' => ?darray<int, bool>,
+    ?'b' => ?varray<darray<int, darray<string, bool>>>,
     ?'d' => ?Foo,
-    ?'e' => int,
-    ?'f' => varray<Foo>,
+    ?'e' => ?int,
+    ?'f' => ?varray<Foo>,
   );
 
   const type TShape = shape(
@@ -588,7 +588,7 @@ class Bar_baz_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => varray<Foo>,
+    ?'success' => ?varray<Foo>,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;

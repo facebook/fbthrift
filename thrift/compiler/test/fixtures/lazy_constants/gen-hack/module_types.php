@@ -59,8 +59,8 @@ class Internship implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'weeks' => int,
-    ?'title' => string,
+    ?'weeks' => ?int,
+    ?'title' => ?string,
     ?'employer' => ?\test\fixtures\lazy_constants\Company,
   );
 
@@ -156,8 +156,8 @@ class Range implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'min' => int,
-    ?'max' => int,
+    ?'min' => ?int,
+    ?'max' => ?int,
   );
 
   const int STRUCTURAL_ID = 6850388386457434767;

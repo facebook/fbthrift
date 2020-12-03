@@ -1213,7 +1213,7 @@ class Raiser_get200_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
@@ -1337,7 +1337,7 @@ class Raiser_get500_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
     ?'f' => ?Fiery,
     ?'b' => ?Banal,
     ?'s' => ?Serious,

@@ -1918,7 +1918,7 @@ class MyService_getRandomData_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
@@ -1989,7 +1989,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
+    ?'id' => ?int,
   );
 
   const type TShape = shape(
@@ -2078,7 +2078,7 @@ class MyService_hasDataById_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => bool,
+    ?'success' => ?bool,
   );
 
   const int STRUCTURAL_ID = 8594383818423018844;
@@ -2149,7 +2149,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
+    ?'id' => ?int,
   );
 
   const type TShape = shape(
@@ -2238,7 +2238,7 @@ class MyService_getDataById_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
@@ -2314,8 +2314,8 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
-    ?'data' => string,
+    ?'id' => ?int,
+    ?'data' => ?string,
   );
 
   const type TShape = shape(
@@ -2478,8 +2478,8 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
-    ?'data' => string,
+    ?'id' => ?int,
+    ?'data' => ?string,
   );
 
   const type TShape = shape(

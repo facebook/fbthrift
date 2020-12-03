@@ -524,7 +524,7 @@ class MyService_first_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 8648204672360810467;
@@ -594,7 +594,7 @@ class MyService_second_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'count' => int,
+    ?'count' => ?int,
   );
 
   const int STRUCTURAL_ID = 6887469671700782815;
@@ -660,7 +660,7 @@ class MyService_second_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => bool,
+    ?'success' => ?bool,
   );
 
   const int STRUCTURAL_ID = 8594383818423018844;

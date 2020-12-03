@@ -24,7 +24,7 @@ class InitialResponse implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'content' => string,
+    ?'content' => ?string,
   );
 
   const int STRUCTURAL_ID = 921480878768501242;
@@ -92,7 +92,7 @@ class FinalResponse implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'content' => string,
+    ?'content' => ?string,
   );
 
   const int STRUCTURAL_ID = 921480878768501242;
@@ -160,7 +160,7 @@ class SinkPayload implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'content' => string,
+    ?'content' => ?string,
   );
 
   const int STRUCTURAL_ID = 921480878768501242;
@@ -228,7 +228,7 @@ class CompatibleWithKeywordSink implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'sink' => string,
+    ?'sink' => ?string,
   );
 
   const int STRUCTURAL_ID = 3905273354198769243;
@@ -296,7 +296,7 @@ class InitialException extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'reason' => string,
+    ?'reason' => ?string,
   );
 
   const int STRUCTURAL_ID = 3707764047816594739;
@@ -365,7 +365,7 @@ class SinkException1 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'reason' => string,
+    ?'reason' => ?string,
   );
 
   const int STRUCTURAL_ID = 3707764047816594739;
@@ -434,7 +434,7 @@ class SinkException2 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'reason' => int,
+    ?'reason' => ?int,
   );
 
   const int STRUCTURAL_ID = 989028245140918602;

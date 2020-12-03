@@ -671,7 +671,7 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
   ];
 
   const type TConstructorShape = shape(
-    ?'key' => string,
+    ?'key' => ?string,
   );
 
   const type TShape = shape(
@@ -760,7 +760,7 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
@@ -831,7 +831,7 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
   ];
 
   const type TConstructorShape = shape(
-    ?'key' => string,
+    ?'key' => ?string,
   );
 
   const type TShape = shape(
@@ -920,7 +920,7 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => string,
+    ?'success' => ?string,
   );
 
   const int STRUCTURAL_ID = 1365128170602685579;
