@@ -31,6 +31,7 @@ namespace {
 
 using apache::thrift::ApplicationEventHandler;
 using apache::thrift::ConnectionEventHandler;
+using apache::thrift::ConnectionLoggingContext;
 using apache::thrift::LoggingEventRegistry;
 using apache::thrift::ServerEventHandler;
 using apache::thrift::ThriftServer;
@@ -45,9 +46,7 @@ class TestServerEventHandler : public ServerEventHandler {
 
 class TestConnectionEventHandler : public ConnectionEventHandler {
  public:
-  MOCK_METHOD2(
-      log,
-      void(const apache::thrift::Cpp2Worker&, const folly::AsyncTransport&));
+  MOCK_METHOD1(log, void(const ConnectionLoggingContext&));
 };
 
 class TestEventRegistry : public LoggingEventRegistry {
@@ -138,7 +137,7 @@ class ConnectionEventLogTest
   void expectConnectionEventCall(std::string_view key, size_t times) {
     auto& handler =
         fetchHandler(&LoggingEventRegistry::getConnectionEventHandler, key);
-    EXPECT_CALL(handler, log(testing::_, testing::_)).Times(times);
+    EXPECT_CALL(handler, log(testing::_)).Times(times);
   }
 };
 

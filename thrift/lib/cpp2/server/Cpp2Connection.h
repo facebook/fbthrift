@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -258,6 +259,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   };
 
   folly::once_flag setupLoggingFlag_;
+  folly::once_flag clientInfoFlag_;
+  ConnectionLoggingContext loggingContext_;
 
   std::unordered_set<Cpp2Request*> activeRequests_;
 

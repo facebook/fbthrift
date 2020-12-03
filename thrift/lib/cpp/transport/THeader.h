@@ -19,6 +19,7 @@
 
 #include <functional>
 #include <map>
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -257,6 +258,12 @@ class THeader {
   }
   void setClientHostId(const std::string& value) {
     writeHeaders_[std::string{CLIENT_HOST_ID_HEADER}] = value;
+  }
+  std::optional<std::string> extractClientAgent() {
+    return extractHeader(CLIENT_AGENT_HEADER);
+  }
+  std::optional<std::string> extractClientHostId() {
+    return extractHeader(CLIENT_HOST_ID_HEADER);
   }
 
   // these work with write headers
@@ -536,6 +543,9 @@ class THeader {
   // CRC32C of message payload for checksum.
   folly::Optional<uint32_t> crc32c_;
   folly::Optional<int64_t> serverLoad_;
+
+ private:
+  std::optional<std::string> extractHeader(std::string_view key);
 };
 
 } // namespace transport

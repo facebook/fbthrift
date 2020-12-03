@@ -1010,6 +1010,13 @@ const folly::StringPiece THeader::getStringTransform(
   return TRANSFORMS_STRING_LIST[transform];
 }
 
+std::optional<std::string> THeader::extractHeader(std::string_view key) {
+  std::optional<std::string> res;
+  if (auto node = readHeaders_.extract(std::string{key})) {
+    res = std::move(node.mapped());
+  }
+  return res;
+}
 } // namespace transport
 } // namespace thrift
 } // namespace apache

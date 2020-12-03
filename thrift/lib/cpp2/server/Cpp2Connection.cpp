@@ -140,7 +140,11 @@ Cpp2Connection::Cpp2Connection(
           nullptr,
           worker_->getServer()->getClientIdentityHook()),
       transport_(transport),
-      threadManager_(worker_->getServer()->getThreadManager()) {
+      threadManager_(worker_->getServer()->getThreadManager()),
+      loggingContext_(
+          ConnectionLoggingContext::TransportType::HEADER,
+          *worker_.get(),
+          *transport_.get()) {
   channel_->setQueueSends(worker_->getServer()->getQueueSends());
 
   if (auto* observer = worker_->getServer()->getObserver()) {
@@ -494,15 +498,21 @@ void Cpp2Connection::requestReceived(
       hreq->getHeader()->getClientTimeout();
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
       clientQueueTimeout, clientTimeout, queueTimeout, taskTimeout);
+  folly::call_once(clientInfoFlag_, [&] {
+    if (auto clientAgent = hreq->getHeader()->extractClientAgent()) {
+      loggingContext_.setClientAgent(*clientAgent);
+    }
+    if (auto clientHostId = hreq->getHeader()->extractClientHostId()) {
+      loggingContext_.setClientHostId(*clientHostId);
+    }
+    loggingContext_.setInterfaceKind(apache::thrift::InterfaceKind::USER);
+  });
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
       std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
 
   logSetupConnectionEventsOnce(
-      setupLoggingFlag_,
-      t2r->getContext()->getMethodName(),
-      *worker_.get(),
-      *transport_.get());
+      setupLoggingFlag_, t2r->getContext()->getMethodName(), loggingContext_);
 
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));

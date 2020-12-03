@@ -75,7 +75,11 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           nullptr, /* duplexChannel */
           nullptr, /* x509PeerCert */
           worker_->getServer()->getClientIdentityHook()),
-      setupFrameHandlers_(handlers) {
+      setupFrameHandlers_(handlers),
+      loggingContext_(
+          ConnectionLoggingContext::TransportType::ROCKET,
+          *worker_.get(),
+          *transport) {
   if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
     handler->newConnection(&connContext_);
   }
@@ -148,6 +152,14 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
     version_ = std::min(version_, maxVersion);
+    if (meta.clientAgent_ref()) {
+      loggingContext_.setClientAgent(std::move(*meta.clientAgent_ref()));
+    }
+    if (meta.clientHostId_ref()) {
+      loggingContext_.setClientHostId(std::move(*meta.clientHostId_ref()));
+    }
+    loggingContext_.setInterfaceKind(
+        meta.interfaceKind_ref().value_or(apache::thrift::InterfaceKind::USER));
 
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
@@ -402,10 +414,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
 
   logSetupConnectionEventsOnce(
-      setupLoggingFlag_,
-      request->getMethodName(),
-      *worker_.get(),
-      *connContext_.getTransport());
+      setupLoggingFlag_, request->getMethodName(), loggingContext_);
 
   auto* cpp2ReqCtx = request->getRequestContext();
   auto& timestamps = cpp2ReqCtx->getTimestamps();

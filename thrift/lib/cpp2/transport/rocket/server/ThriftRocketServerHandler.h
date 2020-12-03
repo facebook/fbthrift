@@ -23,6 +23,7 @@
 #include <folly/SocketAddress.h>
 
 #include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
@@ -118,6 +119,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   int32_t version_{6};
 
   folly::once_flag setupLoggingFlag_;
+
+  ConnectionLoggingContext loggingContext_;
 
   template <class F>
   void handleRequestCommon(Payload&& payload, F&& makeRequest);

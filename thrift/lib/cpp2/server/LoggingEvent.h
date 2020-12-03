@@ -22,6 +22,7 @@
 #include <utility>
 
 #include <folly/io/async/AsyncTransport.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -56,9 +57,61 @@ class ServerEventHandler : public LoggingEventHandler {
   virtual ~ServerEventHandler() {}
 };
 
+class ConnectionLoggingContext {
+ public:
+  enum class TransportType {
+    HEADER,
+    ROCKET,
+  };
+
+  explicit ConnectionLoggingContext(
+      TransportType transportType,
+      const Cpp2Worker& worker,
+      const folly::AsyncTransport& transport)
+      : transportType_(transportType), worker_(worker), transport_(transport) {}
+
+  const Cpp2Worker& getWorker() const {
+    return worker_;
+  }
+  const folly::AsyncTransport& getTransport() const {
+    return transport_;
+  }
+  void setClientAgent(std::string clientAgent) {
+    clientAgent_ = clientAgent;
+  }
+  void setClientHostId(std::string clientHostId) {
+    clientHostId_ = clientHostId;
+  }
+  void setInterfaceKind(apache::thrift::InterfaceKind kind) {
+    interfaceKind_ = kind;
+  }
+  const std::string& getClientAgent() const {
+    return clientAgent_;
+  }
+  const std::string& getClientHostId() const {
+    return clientHostId_;
+  }
+  TransportType getTransportType() const {
+    return transportType_;
+  }
+  InterfaceKind getInterfaceKind() const {
+    return interfaceKind_;
+  }
+
+ private:
+  TransportType transportType_;
+  const Cpp2Worker& worker_;
+  const folly::AsyncTransport& transport_;
+
+  std::string clientAgent_;
+  std::string clientHostId_;
+  apache::thrift::InterfaceKind interfaceKind_;
+};
+
 class ConnectionEventHandler : public LoggingEventHandler {
  public:
-  virtual void log(const Cpp2Worker&, const folly::AsyncTransport&) {}
+  virtual void log(const ConnectionLoggingContext&) {}
+
   virtual ~ConnectionEventHandler() {}
 };
 
@@ -86,8 +139,7 @@ void useMockLoggingEventRegistry();
 void logSetupConnectionEventsOnce(
     folly::once_flag& flag,
     std::string_view methodName,
-    const Cpp2Worker& worker,
-    const folly::AsyncTransport& transport);
+    const ConnectionLoggingContext& context);
 
 } // namespace thrift
 } // namespace apache

@@ -78,16 +78,16 @@ const LoggingEventRegistry& getLoggingEventRegistry() {
 void logSetupConnectionEventsOnce(
     folly::once_flag& flag,
     std::string_view methodName,
-    const Cpp2Worker& worker,
-    const folly::AsyncTransport& transport) {
+    const ConnectionLoggingContext& context) {
   static_cast<void>(folly::try_call_once(flag, [&]() noexcept {
     if (methodName == "getCounters" || methodName == "getStatus" ||
         methodName == "getRegexCounters") {
       return false;
     }
     try {
-      if (!transport.getUnderlyingTransport<folly::AsyncSSLSocket>()) {
-        THRIFT_CONNECTION_EVENT(non_tls).log(worker, transport);
+      if (!context.getTransport()
+               .getUnderlyingTransport<folly::AsyncSSLSocket>()) {
+        THRIFT_CONNECTION_EVENT(non_tls).log(context);
       }
     } catch (...) {
       LOG(ERROR)
