@@ -106,6 +106,11 @@ template <typename... Ts>
 struct to_gtest_types<fatal::list<Ts...>> {
   using type = testing::Types<fatal::first<Ts>...>;
 };
+template <typename T, T A, T E>
+struct StaticEquals;
+template <typename T, T V>
+struct StaticEquals<T, V, V> : std::true_type {};
+
 // Unfortuantely, the version of testing::Types we are using only supports up to
 // 50 types, so we have to batch.
 constexpr size_t kBatchSize = 50;
@@ -119,6 +124,12 @@ using to_gtest_types_t = typename to_gtest_types<Ts>::type;
   INSTANTIATE_TYPED_TEST_CASE_P(                               \
       Type##Batch, SerializtionRoundTripTest, testset_##Type##Batch)
 #define INST_TEST_LAST(Type, Batch)                                          \
+  static_assert(                                                             \
+      StaticEquals<                                                          \
+          size_t,                                                            \
+          fatal::size<testset_info::Type>::value / kBatchSize,               \
+          Batch>(),                                                          \
+      "bad # of batches");                                                   \
   using testset_##Type##Batch =                                              \
       to_gtest_types_t<fatal::tail<testset_info::Type, Batch * kBatchSize>>; \
   INSTANTIATE_TYPED_TEST_CASE_P(                                             \
@@ -131,7 +142,9 @@ INST_TEST_BATCH(structs, 3);
 INST_TEST_BATCH(structs, 5);
 INST_TEST_BATCH(structs, 6);
 INST_TEST_BATCH(structs, 7);
-INST_TEST_LAST(structs, 8);
+INST_TEST_BATCH(structs, 8);
+INST_TEST_BATCH(structs, 9);
+INST_TEST_LAST(structs, 10);
 
 INST_TEST_BATCH(unions, 0);
 INST_TEST_LAST(unions, 1);

@@ -69,7 +69,7 @@ TEST(TestsetTest, ExceptionWith) {
 }
 
 TEST(TestsetTest, UnionWith) {
-  SameType<union_set_binary, union_with<set<binary_t>>>();
+  SameType<union_set_string, union_with<set<string_t>>>();
   SameType<
       union_map_string_binary_cpp_ref,
       union_with<map<string_t, binary_t>, FieldModifier::Reference>>();

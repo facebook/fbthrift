@@ -92,6 +92,11 @@ PRIMITIVE_TYPES = (
     "string",
 )
 
+KEY_TYPES = (
+    "string",
+    "i64",
+)
+
 CPP2_TYPE_NS = "conformance::type"
 
 PRIMATIVE_TRANSFORM: Dict[Target, str] = {
@@ -208,9 +213,16 @@ def gen_cpp_ref(target: Target, values: Dict[str, str]) -> Dict[str, str]:
 
 def gen_union_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in unions."""
-    ret = gen_primatives(target, PRIMITIVE_TYPES)
-    ret.update(gen_sets(target, ret))
-    ret.update(gen_maps(target, gen_primatives(target, ["string"]), ret))
+    prims = gen_primatives(target, PRIMITIVE_TYPES)
+    keys = gen_primatives(target, KEY_TYPES)
+
+    lists = gen_lists(target, prims)
+    sets = gen_sets(target, keys)
+    maps = gen_maps(target, keys, prims)
+
+    maps_to_sets = gen_maps(target, keys, sets)
+
+    ret = {**prims, **lists, **sets, **maps, **maps_to_sets}
     ret.update(gen_cpp_ref(target, ret))
     return ret
 
@@ -277,9 +289,9 @@ def gen_thrift(path: str) -> None:
             print_thrift_defs(UNION_TRANSFORM, union_fields, count=2, file=file)
         )
 
-        # Generate a union of all defined structs and unions.
-        all_name = UNION_TRANSFORM[Target.NAME].format("all")
-        print(gen_thrift_def(UNION_TRANSFORM, all_name, classes), file=file)
+        # Generate a struct of all defined structs and unions.
+        all_struct_name = STRUCT_TRANSFORM[Target.NAME].format("all")
+        print(gen_thrift_def(STRUCT_TRANSFORM, all_struct_name, classes), file=file)
 
 
 CPP2_SPECIALIZE_TEMPLATE = """template <>

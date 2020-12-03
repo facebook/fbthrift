@@ -32,33 +32,39 @@ struct struct_binary {
 struct struct_string {
   1: string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_string")
-struct struct_set_bool {
-  1: set<bool> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_bool")
-struct struct_set_byte {
-  1: set<byte> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_byte")
-struct struct_set_i16 {
-  1: set<i16> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i16")
-struct struct_set_i32 {
-  1: set<i32> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i32")
-struct struct_set_i64 {
-  1: set<i64> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64")
-struct struct_set_float {
-  1: set<float> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_float")
-struct struct_set_double {
-  1: set<double> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_double")
-struct struct_set_binary {
-  1: set<binary> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_binary")
+struct struct_list_bool {
+  1: list<bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_bool")
+struct struct_list_byte {
+  1: list<byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_byte")
+struct struct_list_i16 {
+  1: list<i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i16")
+struct struct_list_i32 {
+  1: list<i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i32")
+struct struct_list_i64 {
+  1: list<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i64")
+struct struct_list_float {
+  1: list<float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_float")
+struct struct_list_double {
+  1: list<double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_double")
+struct struct_list_binary {
+  1: list<binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_binary")
+struct struct_list_string {
+  1: list<string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_string")
 struct struct_set_string {
   1: set<string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_string")
+struct struct_set_i64 {
+  1: set<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64")
 struct struct_map_string_bool {
   1: map<string, bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_bool")
@@ -86,33 +92,45 @@ struct struct_map_string_binary {
 struct struct_map_string_string {
   1: map<string, string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_string")
-struct struct_map_string_set_bool {
-  1: map<string, set<bool>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_bool")
-struct struct_map_string_set_byte {
-  1: map<string, set<byte>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_byte")
-struct struct_map_string_set_i16 {
-  1: map<string, set<i16>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i16")
-struct struct_map_string_set_i32 {
-  1: map<string, set<i32>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i32")
-struct struct_map_string_set_i64 {
-  1: map<string, set<i64>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64")
-struct struct_map_string_set_float {
-  1: map<string, set<float>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_float")
-struct struct_map_string_set_double {
-  1: map<string, set<double>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_double")
-struct struct_map_string_set_binary {
-  1: map<string, set<binary>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_binary")
+struct struct_map_i64_bool {
+  1: map<i64, bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_bool")
+struct struct_map_i64_byte {
+  1: map<i64, byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_byte")
+struct struct_map_i64_i16 {
+  1: map<i64, i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i16")
+struct struct_map_i64_i32 {
+  1: map<i64, i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i32")
+struct struct_map_i64_i64 {
+  1: map<i64, i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i64")
+struct struct_map_i64_float {
+  1: map<i64, float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_float")
+struct struct_map_i64_double {
+  1: map<i64, double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_double")
+struct struct_map_i64_binary {
+  1: map<i64, binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_binary")
+struct struct_map_i64_string {
+  1: map<i64, string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_string")
 struct struct_map_string_set_string {
   1: map<string, set<string>> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_string")
+struct struct_map_string_set_i64 {
+  1: map<string, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64")
+struct struct_map_i64_set_string {
+  1: map<i64, set<string>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_string")
+struct struct_map_i64_set_i64 {
+  1: map<i64, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_i64")
 struct struct_bool_cpp_ref {
   1: bool (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_bool_cpp_ref")
@@ -140,33 +158,39 @@ struct struct_binary_cpp_ref {
 struct struct_string_cpp_ref {
   1: string (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_string_cpp_ref")
-struct struct_set_bool_cpp_ref {
-  1: set<bool> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_bool_cpp_ref")
-struct struct_set_byte_cpp_ref {
-  1: set<byte> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_byte_cpp_ref")
-struct struct_set_i16_cpp_ref {
-  1: set<i16> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i16_cpp_ref")
-struct struct_set_i32_cpp_ref {
-  1: set<i32> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i32_cpp_ref")
-struct struct_set_i64_cpp_ref {
-  1: set<i64> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64_cpp_ref")
-struct struct_set_float_cpp_ref {
-  1: set<float> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_float_cpp_ref")
-struct struct_set_double_cpp_ref {
-  1: set<double> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_double_cpp_ref")
-struct struct_set_binary_cpp_ref {
-  1: set<binary> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_set_binary_cpp_ref")
+struct struct_list_bool_cpp_ref {
+  1: list<bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_bool_cpp_ref")
+struct struct_list_byte_cpp_ref {
+  1: list<byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_byte_cpp_ref")
+struct struct_list_i16_cpp_ref {
+  1: list<i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i16_cpp_ref")
+struct struct_list_i32_cpp_ref {
+  1: list<i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i32_cpp_ref")
+struct struct_list_i64_cpp_ref {
+  1: list<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_i64_cpp_ref")
+struct struct_list_float_cpp_ref {
+  1: list<float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_float_cpp_ref")
+struct struct_list_double_cpp_ref {
+  1: list<double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_double_cpp_ref")
+struct struct_list_binary_cpp_ref {
+  1: list<binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_binary_cpp_ref")
+struct struct_list_string_cpp_ref {
+  1: list<string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_list_string_cpp_ref")
 struct struct_set_string_cpp_ref {
   1: set<string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_set_string_cpp_ref")
+struct struct_set_i64_cpp_ref {
+  1: set<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_set_i64_cpp_ref")
 struct struct_map_string_bool_cpp_ref {
   1: map<string, bool> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_bool_cpp_ref")
@@ -194,33 +218,45 @@ struct struct_map_string_binary_cpp_ref {
 struct struct_map_string_string_cpp_ref {
   1: map<string, string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_string_cpp_ref")
-struct struct_map_string_set_bool_cpp_ref {
-  1: map<string, set<bool>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_bool_cpp_ref")
-struct struct_map_string_set_byte_cpp_ref {
-  1: map<string, set<byte>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_byte_cpp_ref")
-struct struct_map_string_set_i16_cpp_ref {
-  1: map<string, set<i16>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i16_cpp_ref")
-struct struct_map_string_set_i32_cpp_ref {
-  1: map<string, set<i32>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i32_cpp_ref")
-struct struct_map_string_set_i64_cpp_ref {
-  1: map<string, set<i64>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64_cpp_ref")
-struct struct_map_string_set_float_cpp_ref {
-  1: map<string, set<float>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_float_cpp_ref")
-struct struct_map_string_set_double_cpp_ref {
-  1: map<string, set<double>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_double_cpp_ref")
-struct struct_map_string_set_binary_cpp_ref {
-  1: map<string, set<binary>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_binary_cpp_ref")
+struct struct_map_i64_bool_cpp_ref {
+  1: map<i64, bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_bool_cpp_ref")
+struct struct_map_i64_byte_cpp_ref {
+  1: map<i64, byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_byte_cpp_ref")
+struct struct_map_i64_i16_cpp_ref {
+  1: map<i64, i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i16_cpp_ref")
+struct struct_map_i64_i32_cpp_ref {
+  1: map<i64, i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i32_cpp_ref")
+struct struct_map_i64_i64_cpp_ref {
+  1: map<i64, i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_i64_cpp_ref")
+struct struct_map_i64_float_cpp_ref {
+  1: map<i64, float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_float_cpp_ref")
+struct struct_map_i64_double_cpp_ref {
+  1: map<i64, double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_double_cpp_ref")
+struct struct_map_i64_binary_cpp_ref {
+  1: map<i64, binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_binary_cpp_ref")
+struct struct_map_i64_string_cpp_ref {
+  1: map<i64, string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_string_cpp_ref")
 struct struct_map_string_set_string_cpp_ref {
   1: map<string, set<string>> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_string_cpp_ref")
+struct struct_map_string_set_i64_cpp_ref {
+  1: map<string, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_string_set_i64_cpp_ref")
+struct struct_map_i64_set_string_cpp_ref {
+  1: map<i64, set<string>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_string_cpp_ref")
+struct struct_map_i64_set_i64_cpp_ref {
+  1: map<i64, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_map_i64_set_i64_cpp_ref")
 struct struct_optional_bool {
   1: optional bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_bool")
@@ -248,33 +284,39 @@ struct struct_optional_binary {
 struct struct_optional_string {
   1: optional string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_string")
-struct struct_optional_set_bool {
-  1: optional set<bool> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_bool")
-struct struct_optional_set_byte {
-  1: optional set<byte> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_byte")
-struct struct_optional_set_i16 {
-  1: optional set<i16> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i16")
-struct struct_optional_set_i32 {
-  1: optional set<i32> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i32")
-struct struct_optional_set_i64 {
-  1: optional set<i64> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64")
-struct struct_optional_set_float {
-  1: optional set<float> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_float")
-struct struct_optional_set_double {
-  1: optional set<double> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_double")
-struct struct_optional_set_binary {
-  1: optional set<binary> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_binary")
+struct struct_optional_list_bool {
+  1: optional list<bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_bool")
+struct struct_optional_list_byte {
+  1: optional list<byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_byte")
+struct struct_optional_list_i16 {
+  1: optional list<i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i16")
+struct struct_optional_list_i32 {
+  1: optional list<i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i32")
+struct struct_optional_list_i64 {
+  1: optional list<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i64")
+struct struct_optional_list_float {
+  1: optional list<float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_float")
+struct struct_optional_list_double {
+  1: optional list<double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_double")
+struct struct_optional_list_binary {
+  1: optional list<binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_binary")
+struct struct_optional_list_string {
+  1: optional list<string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_string")
 struct struct_optional_set_string {
   1: optional set<string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_string")
+struct struct_optional_set_i64 {
+  1: optional set<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64")
 struct struct_optional_map_string_bool {
   1: optional map<string, bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_bool")
@@ -302,33 +344,45 @@ struct struct_optional_map_string_binary {
 struct struct_optional_map_string_string {
   1: optional map<string, string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_string")
-struct struct_optional_map_string_set_bool {
-  1: optional map<string, set<bool>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_bool")
-struct struct_optional_map_string_set_byte {
-  1: optional map<string, set<byte>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_byte")
-struct struct_optional_map_string_set_i16 {
-  1: optional map<string, set<i16>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i16")
-struct struct_optional_map_string_set_i32 {
-  1: optional map<string, set<i32>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i32")
-struct struct_optional_map_string_set_i64 {
-  1: optional map<string, set<i64>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64")
-struct struct_optional_map_string_set_float {
-  1: optional map<string, set<float>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_float")
-struct struct_optional_map_string_set_double {
-  1: optional map<string, set<double>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_double")
-struct struct_optional_map_string_set_binary {
-  1: optional map<string, set<binary>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_binary")
+struct struct_optional_map_i64_bool {
+  1: optional map<i64, bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_bool")
+struct struct_optional_map_i64_byte {
+  1: optional map<i64, byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_byte")
+struct struct_optional_map_i64_i16 {
+  1: optional map<i64, i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i16")
+struct struct_optional_map_i64_i32 {
+  1: optional map<i64, i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i32")
+struct struct_optional_map_i64_i64 {
+  1: optional map<i64, i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i64")
+struct struct_optional_map_i64_float {
+  1: optional map<i64, float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_float")
+struct struct_optional_map_i64_double {
+  1: optional map<i64, double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_double")
+struct struct_optional_map_i64_binary {
+  1: optional map<i64, binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_binary")
+struct struct_optional_map_i64_string {
+  1: optional map<i64, string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_string")
 struct struct_optional_map_string_set_string {
   1: optional map<string, set<string>> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_string")
+struct struct_optional_map_string_set_i64 {
+  1: optional map<string, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64")
+struct struct_optional_map_i64_set_string {
+  1: optional map<i64, set<string>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_string")
+struct struct_optional_map_i64_set_i64 {
+  1: optional map<i64, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_i64")
 struct struct_optional_bool_cpp_ref {
   1: optional bool (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_bool_cpp_ref")
@@ -356,33 +410,39 @@ struct struct_optional_binary_cpp_ref {
 struct struct_optional_string_cpp_ref {
   1: optional string (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_string_cpp_ref")
-struct struct_optional_set_bool_cpp_ref {
-  1: optional set<bool> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_bool_cpp_ref")
-struct struct_optional_set_byte_cpp_ref {
-  1: optional set<byte> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_byte_cpp_ref")
-struct struct_optional_set_i16_cpp_ref {
-  1: optional set<i16> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i16_cpp_ref")
-struct struct_optional_set_i32_cpp_ref {
-  1: optional set<i32> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i32_cpp_ref")
-struct struct_optional_set_i64_cpp_ref {
-  1: optional set<i64> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64_cpp_ref")
-struct struct_optional_set_float_cpp_ref {
-  1: optional set<float> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_float_cpp_ref")
-struct struct_optional_set_double_cpp_ref {
-  1: optional set<double> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_double_cpp_ref")
-struct struct_optional_set_binary_cpp_ref {
-  1: optional set<binary> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_binary_cpp_ref")
+struct struct_optional_list_bool_cpp_ref {
+  1: optional list<bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_bool_cpp_ref")
+struct struct_optional_list_byte_cpp_ref {
+  1: optional list<byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_byte_cpp_ref")
+struct struct_optional_list_i16_cpp_ref {
+  1: optional list<i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i16_cpp_ref")
+struct struct_optional_list_i32_cpp_ref {
+  1: optional list<i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i32_cpp_ref")
+struct struct_optional_list_i64_cpp_ref {
+  1: optional list<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_i64_cpp_ref")
+struct struct_optional_list_float_cpp_ref {
+  1: optional list<float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_float_cpp_ref")
+struct struct_optional_list_double_cpp_ref {
+  1: optional list<double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_double_cpp_ref")
+struct struct_optional_list_binary_cpp_ref {
+  1: optional list<binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_binary_cpp_ref")
+struct struct_optional_list_string_cpp_ref {
+  1: optional list<string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_list_string_cpp_ref")
 struct struct_optional_set_string_cpp_ref {
   1: optional set<string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_string_cpp_ref")
+struct struct_optional_set_i64_cpp_ref {
+  1: optional set<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_set_i64_cpp_ref")
 struct struct_optional_map_string_bool_cpp_ref {
   1: optional map<string, bool> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_bool_cpp_ref")
@@ -410,33 +470,45 @@ struct struct_optional_map_string_binary_cpp_ref {
 struct struct_optional_map_string_string_cpp_ref {
   1: optional map<string, string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_string_cpp_ref")
-struct struct_optional_map_string_set_bool_cpp_ref {
-  1: optional map<string, set<bool>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_bool_cpp_ref")
-struct struct_optional_map_string_set_byte_cpp_ref {
-  1: optional map<string, set<byte>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_byte_cpp_ref")
-struct struct_optional_map_string_set_i16_cpp_ref {
-  1: optional map<string, set<i16>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i16_cpp_ref")
-struct struct_optional_map_string_set_i32_cpp_ref {
-  1: optional map<string, set<i32>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i32_cpp_ref")
-struct struct_optional_map_string_set_i64_cpp_ref {
-  1: optional map<string, set<i64>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64_cpp_ref")
-struct struct_optional_map_string_set_float_cpp_ref {
-  1: optional map<string, set<float>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_float_cpp_ref")
-struct struct_optional_map_string_set_double_cpp_ref {
-  1: optional map<string, set<double>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_double_cpp_ref")
-struct struct_optional_map_string_set_binary_cpp_ref {
-  1: optional map<string, set<binary>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_binary_cpp_ref")
+struct struct_optional_map_i64_bool_cpp_ref {
+  1: optional map<i64, bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_bool_cpp_ref")
+struct struct_optional_map_i64_byte_cpp_ref {
+  1: optional map<i64, byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_byte_cpp_ref")
+struct struct_optional_map_i64_i16_cpp_ref {
+  1: optional map<i64, i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i16_cpp_ref")
+struct struct_optional_map_i64_i32_cpp_ref {
+  1: optional map<i64, i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i32_cpp_ref")
+struct struct_optional_map_i64_i64_cpp_ref {
+  1: optional map<i64, i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_i64_cpp_ref")
+struct struct_optional_map_i64_float_cpp_ref {
+  1: optional map<i64, float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_float_cpp_ref")
+struct struct_optional_map_i64_double_cpp_ref {
+  1: optional map<i64, double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_double_cpp_ref")
+struct struct_optional_map_i64_binary_cpp_ref {
+  1: optional map<i64, binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_binary_cpp_ref")
+struct struct_optional_map_i64_string_cpp_ref {
+  1: optional map<i64, string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_string_cpp_ref")
 struct struct_optional_map_string_set_string_cpp_ref {
   1: optional map<string, set<string>> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_string_cpp_ref")
+struct struct_optional_map_string_set_i64_cpp_ref {
+  1: optional map<string, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_string_set_i64_cpp_ref")
+struct struct_optional_map_i64_set_string_cpp_ref {
+  1: optional map<i64, set<string>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_string_cpp_ref")
+struct struct_optional_map_i64_set_i64_cpp_ref {
+  1: optional map<i64, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_optional_map_i64_set_i64_cpp_ref")
 struct struct_required_bool {
   1: required bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_bool")
@@ -464,33 +536,39 @@ struct struct_required_binary {
 struct struct_required_string {
   1: required string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_string")
-struct struct_required_set_bool {
-  1: required set<bool> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_bool")
-struct struct_required_set_byte {
-  1: required set<byte> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_byte")
-struct struct_required_set_i16 {
-  1: required set<i16> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i16")
-struct struct_required_set_i32 {
-  1: required set<i32> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i32")
-struct struct_required_set_i64 {
-  1: required set<i64> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i64")
-struct struct_required_set_float {
-  1: required set<float> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_float")
-struct struct_required_set_double {
-  1: required set<double> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_double")
-struct struct_required_set_binary {
-  1: required set<binary> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_binary")
+struct struct_required_list_bool {
+  1: required list<bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_bool")
+struct struct_required_list_byte {
+  1: required list<byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_byte")
+struct struct_required_list_i16 {
+  1: required list<i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i16")
+struct struct_required_list_i32 {
+  1: required list<i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i32")
+struct struct_required_list_i64 {
+  1: required list<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i64")
+struct struct_required_list_float {
+  1: required list<float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_float")
+struct struct_required_list_double {
+  1: required list<double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_double")
+struct struct_required_list_binary {
+  1: required list<binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_binary")
+struct struct_required_list_string {
+  1: required list<string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_string")
 struct struct_required_set_string {
   1: required set<string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_string")
+struct struct_required_set_i64 {
+  1: required set<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i64")
 struct struct_required_map_string_bool {
   1: required map<string, bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_bool")
@@ -518,33 +596,45 @@ struct struct_required_map_string_binary {
 struct struct_required_map_string_string {
   1: required map<string, string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_string")
-struct struct_required_map_string_set_bool {
-  1: required map<string, set<bool>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_bool")
-struct struct_required_map_string_set_byte {
-  1: required map<string, set<byte>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_byte")
-struct struct_required_map_string_set_i16 {
-  1: required map<string, set<i16>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i16")
-struct struct_required_map_string_set_i32 {
-  1: required map<string, set<i32>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i32")
-struct struct_required_map_string_set_i64 {
-  1: required map<string, set<i64>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i64")
-struct struct_required_map_string_set_float {
-  1: required map<string, set<float>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_float")
-struct struct_required_map_string_set_double {
-  1: required map<string, set<double>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_double")
-struct struct_required_map_string_set_binary {
-  1: required map<string, set<binary>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_binary")
+struct struct_required_map_i64_bool {
+  1: required map<i64, bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_bool")
+struct struct_required_map_i64_byte {
+  1: required map<i64, byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_byte")
+struct struct_required_map_i64_i16 {
+  1: required map<i64, i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i16")
+struct struct_required_map_i64_i32 {
+  1: required map<i64, i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i32")
+struct struct_required_map_i64_i64 {
+  1: required map<i64, i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i64")
+struct struct_required_map_i64_float {
+  1: required map<i64, float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_float")
+struct struct_required_map_i64_double {
+  1: required map<i64, double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_double")
+struct struct_required_map_i64_binary {
+  1: required map<i64, binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_binary")
+struct struct_required_map_i64_string {
+  1: required map<i64, string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_string")
 struct struct_required_map_string_set_string {
   1: required map<string, set<string>> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_string")
+struct struct_required_map_string_set_i64 {
+  1: required map<string, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i64")
+struct struct_required_map_i64_set_string {
+  1: required map<i64, set<string>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_set_string")
+struct struct_required_map_i64_set_i64 {
+  1: required map<i64, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_set_i64")
 struct struct_required_bool_cpp_ref {
   1: required bool (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_bool_cpp_ref")
@@ -572,33 +662,39 @@ struct struct_required_binary_cpp_ref {
 struct struct_required_string_cpp_ref {
   1: required string (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_string_cpp_ref")
-struct struct_required_set_bool_cpp_ref {
-  1: required set<bool> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_bool_cpp_ref")
-struct struct_required_set_byte_cpp_ref {
-  1: required set<byte> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_byte_cpp_ref")
-struct struct_required_set_i16_cpp_ref {
-  1: required set<i16> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i16_cpp_ref")
-struct struct_required_set_i32_cpp_ref {
-  1: required set<i32> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i32_cpp_ref")
-struct struct_required_set_i64_cpp_ref {
-  1: required set<i64> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i64_cpp_ref")
-struct struct_required_set_float_cpp_ref {
-  1: required set<float> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_float_cpp_ref")
-struct struct_required_set_double_cpp_ref {
-  1: required set<double> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_double_cpp_ref")
-struct struct_required_set_binary_cpp_ref {
-  1: required set<binary> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_binary_cpp_ref")
+struct struct_required_list_bool_cpp_ref {
+  1: required list<bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_bool_cpp_ref")
+struct struct_required_list_byte_cpp_ref {
+  1: required list<byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_byte_cpp_ref")
+struct struct_required_list_i16_cpp_ref {
+  1: required list<i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i16_cpp_ref")
+struct struct_required_list_i32_cpp_ref {
+  1: required list<i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i32_cpp_ref")
+struct struct_required_list_i64_cpp_ref {
+  1: required list<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_i64_cpp_ref")
+struct struct_required_list_float_cpp_ref {
+  1: required list<float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_float_cpp_ref")
+struct struct_required_list_double_cpp_ref {
+  1: required list<double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_double_cpp_ref")
+struct struct_required_list_binary_cpp_ref {
+  1: required list<binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_binary_cpp_ref")
+struct struct_required_list_string_cpp_ref {
+  1: required list<string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_list_string_cpp_ref")
 struct struct_required_set_string_cpp_ref {
   1: required set<string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_string_cpp_ref")
+struct struct_required_set_i64_cpp_ref {
+  1: required set<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_set_i64_cpp_ref")
 struct struct_required_map_string_bool_cpp_ref {
   1: required map<string, bool> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_bool_cpp_ref")
@@ -626,33 +722,45 @@ struct struct_required_map_string_binary_cpp_ref {
 struct struct_required_map_string_string_cpp_ref {
   1: required map<string, string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_string_cpp_ref")
-struct struct_required_map_string_set_bool_cpp_ref {
-  1: required map<string, set<bool>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_bool_cpp_ref")
-struct struct_required_map_string_set_byte_cpp_ref {
-  1: required map<string, set<byte>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_byte_cpp_ref")
-struct struct_required_map_string_set_i16_cpp_ref {
-  1: required map<string, set<i16>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i16_cpp_ref")
-struct struct_required_map_string_set_i32_cpp_ref {
-  1: required map<string, set<i32>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i32_cpp_ref")
-struct struct_required_map_string_set_i64_cpp_ref {
-  1: required map<string, set<i64>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i64_cpp_ref")
-struct struct_required_map_string_set_float_cpp_ref {
-  1: required map<string, set<float>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_float_cpp_ref")
-struct struct_required_map_string_set_double_cpp_ref {
-  1: required map<string, set<double>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_double_cpp_ref")
-struct struct_required_map_string_set_binary_cpp_ref {
-  1: required map<string, set<binary>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_binary_cpp_ref")
+struct struct_required_map_i64_bool_cpp_ref {
+  1: required map<i64, bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_bool_cpp_ref")
+struct struct_required_map_i64_byte_cpp_ref {
+  1: required map<i64, byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_byte_cpp_ref")
+struct struct_required_map_i64_i16_cpp_ref {
+  1: required map<i64, i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i16_cpp_ref")
+struct struct_required_map_i64_i32_cpp_ref {
+  1: required map<i64, i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i32_cpp_ref")
+struct struct_required_map_i64_i64_cpp_ref {
+  1: required map<i64, i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_i64_cpp_ref")
+struct struct_required_map_i64_float_cpp_ref {
+  1: required map<i64, float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_float_cpp_ref")
+struct struct_required_map_i64_double_cpp_ref {
+  1: required map<i64, double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_double_cpp_ref")
+struct struct_required_map_i64_binary_cpp_ref {
+  1: required map<i64, binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_binary_cpp_ref")
+struct struct_required_map_i64_string_cpp_ref {
+  1: required map<i64, string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_string_cpp_ref")
 struct struct_required_map_string_set_string_cpp_ref {
   1: required map<string, set<string>> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_string_cpp_ref")
+struct struct_required_map_string_set_i64_cpp_ref {
+  1: required map<string, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_string_set_i64_cpp_ref")
+struct struct_required_map_i64_set_string_cpp_ref {
+  1: required map<i64, set<string>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_set_string_cpp_ref")
+struct struct_required_map_i64_set_i64_cpp_ref {
+  1: required map<i64, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_required_map_i64_set_i64_cpp_ref")
 exception exception_empty {
 } (thrift.uri="facebook.com/thrift/test/testset/exception_empty")
 exception exception_bool {
@@ -682,33 +790,39 @@ exception exception_binary {
 exception exception_string {
   1: string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_string")
-exception exception_set_bool {
-  1: set<bool> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_bool")
-exception exception_set_byte {
-  1: set<byte> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_byte")
-exception exception_set_i16 {
-  1: set<i16> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i16")
-exception exception_set_i32 {
-  1: set<i32> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i32")
-exception exception_set_i64 {
-  1: set<i64> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i64")
-exception exception_set_float {
-  1: set<float> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_float")
-exception exception_set_double {
-  1: set<double> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_double")
-exception exception_set_binary {
-  1: set<binary> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_binary")
+exception exception_list_bool {
+  1: list<bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_bool")
+exception exception_list_byte {
+  1: list<byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_byte")
+exception exception_list_i16 {
+  1: list<i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i16")
+exception exception_list_i32 {
+  1: list<i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i32")
+exception exception_list_i64 {
+  1: list<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i64")
+exception exception_list_float {
+  1: list<float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_float")
+exception exception_list_double {
+  1: list<double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_double")
+exception exception_list_binary {
+  1: list<binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_binary")
+exception exception_list_string {
+  1: list<string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_string")
 exception exception_set_string {
   1: set<string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_set_string")
+exception exception_set_i64 {
+  1: set<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i64")
 exception exception_map_string_bool {
   1: map<string, bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_bool")
@@ -736,33 +850,45 @@ exception exception_map_string_binary {
 exception exception_map_string_string {
   1: map<string, string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_string")
-exception exception_map_string_set_bool {
-  1: map<string, set<bool>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_bool")
-exception exception_map_string_set_byte {
-  1: map<string, set<byte>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_byte")
-exception exception_map_string_set_i16 {
-  1: map<string, set<i16>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i16")
-exception exception_map_string_set_i32 {
-  1: map<string, set<i32>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i32")
-exception exception_map_string_set_i64 {
-  1: map<string, set<i64>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i64")
-exception exception_map_string_set_float {
-  1: map<string, set<float>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_float")
-exception exception_map_string_set_double {
-  1: map<string, set<double>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_double")
-exception exception_map_string_set_binary {
-  1: map<string, set<binary>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_binary")
+exception exception_map_i64_bool {
+  1: map<i64, bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_bool")
+exception exception_map_i64_byte {
+  1: map<i64, byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_byte")
+exception exception_map_i64_i16 {
+  1: map<i64, i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i16")
+exception exception_map_i64_i32 {
+  1: map<i64, i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i32")
+exception exception_map_i64_i64 {
+  1: map<i64, i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i64")
+exception exception_map_i64_float {
+  1: map<i64, float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_float")
+exception exception_map_i64_double {
+  1: map<i64, double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_double")
+exception exception_map_i64_binary {
+  1: map<i64, binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_binary")
+exception exception_map_i64_string {
+  1: map<i64, string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_string")
 exception exception_map_string_set_string {
   1: map<string, set<string>> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_string")
+exception exception_map_string_set_i64 {
+  1: map<string, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i64")
+exception exception_map_i64_set_string {
+  1: map<i64, set<string>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_string")
+exception exception_map_i64_set_i64 {
+  1: map<i64, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_i64")
 exception exception_bool_cpp_ref {
   1: bool (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_bool_cpp_ref")
@@ -790,33 +916,39 @@ exception exception_binary_cpp_ref {
 exception exception_string_cpp_ref {
   1: string (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_string_cpp_ref")
-exception exception_set_bool_cpp_ref {
-  1: set<bool> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_bool_cpp_ref")
-exception exception_set_byte_cpp_ref {
-  1: set<byte> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_byte_cpp_ref")
-exception exception_set_i16_cpp_ref {
-  1: set<i16> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i16_cpp_ref")
-exception exception_set_i32_cpp_ref {
-  1: set<i32> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i32_cpp_ref")
-exception exception_set_i64_cpp_ref {
-  1: set<i64> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i64_cpp_ref")
-exception exception_set_float_cpp_ref {
-  1: set<float> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_float_cpp_ref")
-exception exception_set_double_cpp_ref {
-  1: set<double> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_double_cpp_ref")
-exception exception_set_binary_cpp_ref {
-  1: set<binary> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_set_binary_cpp_ref")
+exception exception_list_bool_cpp_ref {
+  1: list<bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_bool_cpp_ref")
+exception exception_list_byte_cpp_ref {
+  1: list<byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_byte_cpp_ref")
+exception exception_list_i16_cpp_ref {
+  1: list<i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i16_cpp_ref")
+exception exception_list_i32_cpp_ref {
+  1: list<i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i32_cpp_ref")
+exception exception_list_i64_cpp_ref {
+  1: list<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_i64_cpp_ref")
+exception exception_list_float_cpp_ref {
+  1: list<float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_float_cpp_ref")
+exception exception_list_double_cpp_ref {
+  1: list<double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_double_cpp_ref")
+exception exception_list_binary_cpp_ref {
+  1: list<binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_binary_cpp_ref")
+exception exception_list_string_cpp_ref {
+  1: list<string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_list_string_cpp_ref")
 exception exception_set_string_cpp_ref {
   1: set<string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_set_string_cpp_ref")
+exception exception_set_i64_cpp_ref {
+  1: set<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_set_i64_cpp_ref")
 exception exception_map_string_bool_cpp_ref {
   1: map<string, bool> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_bool_cpp_ref")
@@ -844,33 +976,45 @@ exception exception_map_string_binary_cpp_ref {
 exception exception_map_string_string_cpp_ref {
   1: map<string, string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_string_cpp_ref")
-exception exception_map_string_set_bool_cpp_ref {
-  1: map<string, set<bool>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_bool_cpp_ref")
-exception exception_map_string_set_byte_cpp_ref {
-  1: map<string, set<byte>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_byte_cpp_ref")
-exception exception_map_string_set_i16_cpp_ref {
-  1: map<string, set<i16>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i16_cpp_ref")
-exception exception_map_string_set_i32_cpp_ref {
-  1: map<string, set<i32>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i32_cpp_ref")
-exception exception_map_string_set_i64_cpp_ref {
-  1: map<string, set<i64>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i64_cpp_ref")
-exception exception_map_string_set_float_cpp_ref {
-  1: map<string, set<float>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_float_cpp_ref")
-exception exception_map_string_set_double_cpp_ref {
-  1: map<string, set<double>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_double_cpp_ref")
-exception exception_map_string_set_binary_cpp_ref {
-  1: map<string, set<binary>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_binary_cpp_ref")
+exception exception_map_i64_bool_cpp_ref {
+  1: map<i64, bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_bool_cpp_ref")
+exception exception_map_i64_byte_cpp_ref {
+  1: map<i64, byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_byte_cpp_ref")
+exception exception_map_i64_i16_cpp_ref {
+  1: map<i64, i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i16_cpp_ref")
+exception exception_map_i64_i32_cpp_ref {
+  1: map<i64, i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i32_cpp_ref")
+exception exception_map_i64_i64_cpp_ref {
+  1: map<i64, i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_i64_cpp_ref")
+exception exception_map_i64_float_cpp_ref {
+  1: map<i64, float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_float_cpp_ref")
+exception exception_map_i64_double_cpp_ref {
+  1: map<i64, double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_double_cpp_ref")
+exception exception_map_i64_binary_cpp_ref {
+  1: map<i64, binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_binary_cpp_ref")
+exception exception_map_i64_string_cpp_ref {
+  1: map<i64, string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_string_cpp_ref")
 exception exception_map_string_set_string_cpp_ref {
   1: map<string, set<string>> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_string_cpp_ref")
+exception exception_map_string_set_i64_cpp_ref {
+  1: map<string, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_string_set_i64_cpp_ref")
+exception exception_map_i64_set_string_cpp_ref {
+  1: map<i64, set<string>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_string_cpp_ref")
+exception exception_map_i64_set_i64_cpp_ref {
+  1: map<i64, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_map_i64_set_i64_cpp_ref")
 exception exception_optional_bool {
   1: optional bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_bool")
@@ -898,33 +1042,39 @@ exception exception_optional_binary {
 exception exception_optional_string {
   1: optional string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_string")
-exception exception_optional_set_bool {
-  1: optional set<bool> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_bool")
-exception exception_optional_set_byte {
-  1: optional set<byte> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_byte")
-exception exception_optional_set_i16 {
-  1: optional set<i16> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i16")
-exception exception_optional_set_i32 {
-  1: optional set<i32> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i32")
-exception exception_optional_set_i64 {
-  1: optional set<i64> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i64")
-exception exception_optional_set_float {
-  1: optional set<float> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_float")
-exception exception_optional_set_double {
-  1: optional set<double> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_double")
-exception exception_optional_set_binary {
-  1: optional set<binary> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_binary")
+exception exception_optional_list_bool {
+  1: optional list<bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_bool")
+exception exception_optional_list_byte {
+  1: optional list<byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_byte")
+exception exception_optional_list_i16 {
+  1: optional list<i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i16")
+exception exception_optional_list_i32 {
+  1: optional list<i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i32")
+exception exception_optional_list_i64 {
+  1: optional list<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i64")
+exception exception_optional_list_float {
+  1: optional list<float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_float")
+exception exception_optional_list_double {
+  1: optional list<double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_double")
+exception exception_optional_list_binary {
+  1: optional list<binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_binary")
+exception exception_optional_list_string {
+  1: optional list<string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_string")
 exception exception_optional_set_string {
   1: optional set<string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_string")
+exception exception_optional_set_i64 {
+  1: optional set<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i64")
 exception exception_optional_map_string_bool {
   1: optional map<string, bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_bool")
@@ -952,33 +1102,45 @@ exception exception_optional_map_string_binary {
 exception exception_optional_map_string_string {
   1: optional map<string, string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_string")
-exception exception_optional_map_string_set_bool {
-  1: optional map<string, set<bool>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_bool")
-exception exception_optional_map_string_set_byte {
-  1: optional map<string, set<byte>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_byte")
-exception exception_optional_map_string_set_i16 {
-  1: optional map<string, set<i16>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i16")
-exception exception_optional_map_string_set_i32 {
-  1: optional map<string, set<i32>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i32")
-exception exception_optional_map_string_set_i64 {
-  1: optional map<string, set<i64>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i64")
-exception exception_optional_map_string_set_float {
-  1: optional map<string, set<float>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_float")
-exception exception_optional_map_string_set_double {
-  1: optional map<string, set<double>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_double")
-exception exception_optional_map_string_set_binary {
-  1: optional map<string, set<binary>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_binary")
+exception exception_optional_map_i64_bool {
+  1: optional map<i64, bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_bool")
+exception exception_optional_map_i64_byte {
+  1: optional map<i64, byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_byte")
+exception exception_optional_map_i64_i16 {
+  1: optional map<i64, i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i16")
+exception exception_optional_map_i64_i32 {
+  1: optional map<i64, i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i32")
+exception exception_optional_map_i64_i64 {
+  1: optional map<i64, i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i64")
+exception exception_optional_map_i64_float {
+  1: optional map<i64, float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_float")
+exception exception_optional_map_i64_double {
+  1: optional map<i64, double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_double")
+exception exception_optional_map_i64_binary {
+  1: optional map<i64, binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_binary")
+exception exception_optional_map_i64_string {
+  1: optional map<i64, string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_string")
 exception exception_optional_map_string_set_string {
   1: optional map<string, set<string>> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_string")
+exception exception_optional_map_string_set_i64 {
+  1: optional map<string, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i64")
+exception exception_optional_map_i64_set_string {
+  1: optional map<i64, set<string>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_string")
+exception exception_optional_map_i64_set_i64 {
+  1: optional map<i64, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_i64")
 exception exception_optional_bool_cpp_ref {
   1: optional bool (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_bool_cpp_ref")
@@ -1006,33 +1168,39 @@ exception exception_optional_binary_cpp_ref {
 exception exception_optional_string_cpp_ref {
   1: optional string (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_string_cpp_ref")
-exception exception_optional_set_bool_cpp_ref {
-  1: optional set<bool> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_bool_cpp_ref")
-exception exception_optional_set_byte_cpp_ref {
-  1: optional set<byte> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_byte_cpp_ref")
-exception exception_optional_set_i16_cpp_ref {
-  1: optional set<i16> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i16_cpp_ref")
-exception exception_optional_set_i32_cpp_ref {
-  1: optional set<i32> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i32_cpp_ref")
-exception exception_optional_set_i64_cpp_ref {
-  1: optional set<i64> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i64_cpp_ref")
-exception exception_optional_set_float_cpp_ref {
-  1: optional set<float> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_float_cpp_ref")
-exception exception_optional_set_double_cpp_ref {
-  1: optional set<double> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_double_cpp_ref")
-exception exception_optional_set_binary_cpp_ref {
-  1: optional set<binary> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_binary_cpp_ref")
+exception exception_optional_list_bool_cpp_ref {
+  1: optional list<bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_bool_cpp_ref")
+exception exception_optional_list_byte_cpp_ref {
+  1: optional list<byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_byte_cpp_ref")
+exception exception_optional_list_i16_cpp_ref {
+  1: optional list<i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i16_cpp_ref")
+exception exception_optional_list_i32_cpp_ref {
+  1: optional list<i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i32_cpp_ref")
+exception exception_optional_list_i64_cpp_ref {
+  1: optional list<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_i64_cpp_ref")
+exception exception_optional_list_float_cpp_ref {
+  1: optional list<float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_float_cpp_ref")
+exception exception_optional_list_double_cpp_ref {
+  1: optional list<double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_double_cpp_ref")
+exception exception_optional_list_binary_cpp_ref {
+  1: optional list<binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_binary_cpp_ref")
+exception exception_optional_list_string_cpp_ref {
+  1: optional list<string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_list_string_cpp_ref")
 exception exception_optional_set_string_cpp_ref {
   1: optional set<string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_string_cpp_ref")
+exception exception_optional_set_i64_cpp_ref {
+  1: optional set<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_set_i64_cpp_ref")
 exception exception_optional_map_string_bool_cpp_ref {
   1: optional map<string, bool> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_bool_cpp_ref")
@@ -1060,33 +1228,45 @@ exception exception_optional_map_string_binary_cpp_ref {
 exception exception_optional_map_string_string_cpp_ref {
   1: optional map<string, string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_string_cpp_ref")
-exception exception_optional_map_string_set_bool_cpp_ref {
-  1: optional map<string, set<bool>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_bool_cpp_ref")
-exception exception_optional_map_string_set_byte_cpp_ref {
-  1: optional map<string, set<byte>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_byte_cpp_ref")
-exception exception_optional_map_string_set_i16_cpp_ref {
-  1: optional map<string, set<i16>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i16_cpp_ref")
-exception exception_optional_map_string_set_i32_cpp_ref {
-  1: optional map<string, set<i32>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i32_cpp_ref")
-exception exception_optional_map_string_set_i64_cpp_ref {
-  1: optional map<string, set<i64>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i64_cpp_ref")
-exception exception_optional_map_string_set_float_cpp_ref {
-  1: optional map<string, set<float>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_float_cpp_ref")
-exception exception_optional_map_string_set_double_cpp_ref {
-  1: optional map<string, set<double>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_double_cpp_ref")
-exception exception_optional_map_string_set_binary_cpp_ref {
-  1: optional map<string, set<binary>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_binary_cpp_ref")
+exception exception_optional_map_i64_bool_cpp_ref {
+  1: optional map<i64, bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_bool_cpp_ref")
+exception exception_optional_map_i64_byte_cpp_ref {
+  1: optional map<i64, byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_byte_cpp_ref")
+exception exception_optional_map_i64_i16_cpp_ref {
+  1: optional map<i64, i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i16_cpp_ref")
+exception exception_optional_map_i64_i32_cpp_ref {
+  1: optional map<i64, i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i32_cpp_ref")
+exception exception_optional_map_i64_i64_cpp_ref {
+  1: optional map<i64, i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_i64_cpp_ref")
+exception exception_optional_map_i64_float_cpp_ref {
+  1: optional map<i64, float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_float_cpp_ref")
+exception exception_optional_map_i64_double_cpp_ref {
+  1: optional map<i64, double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_double_cpp_ref")
+exception exception_optional_map_i64_binary_cpp_ref {
+  1: optional map<i64, binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_binary_cpp_ref")
+exception exception_optional_map_i64_string_cpp_ref {
+  1: optional map<i64, string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_string_cpp_ref")
 exception exception_optional_map_string_set_string_cpp_ref {
   1: optional map<string, set<string>> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_string_cpp_ref")
+exception exception_optional_map_string_set_i64_cpp_ref {
+  1: optional map<string, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_string_set_i64_cpp_ref")
+exception exception_optional_map_i64_set_string_cpp_ref {
+  1: optional map<i64, set<string>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_string_cpp_ref")
+exception exception_optional_map_i64_set_i64_cpp_ref {
+  1: optional map<i64, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_optional_map_i64_set_i64_cpp_ref")
 exception exception_required_bool {
   1: required bool field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_bool")
@@ -1114,33 +1294,39 @@ exception exception_required_binary {
 exception exception_required_string {
   1: required string field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_string")
-exception exception_required_set_bool {
-  1: required set<bool> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_bool")
-exception exception_required_set_byte {
-  1: required set<byte> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_byte")
-exception exception_required_set_i16 {
-  1: required set<i16> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i16")
-exception exception_required_set_i32 {
-  1: required set<i32> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i32")
-exception exception_required_set_i64 {
-  1: required set<i64> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i64")
-exception exception_required_set_float {
-  1: required set<float> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_float")
-exception exception_required_set_double {
-  1: required set<double> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_double")
-exception exception_required_set_binary {
-  1: required set<binary> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_binary")
+exception exception_required_list_bool {
+  1: required list<bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_bool")
+exception exception_required_list_byte {
+  1: required list<byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_byte")
+exception exception_required_list_i16 {
+  1: required list<i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i16")
+exception exception_required_list_i32 {
+  1: required list<i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i32")
+exception exception_required_list_i64 {
+  1: required list<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i64")
+exception exception_required_list_float {
+  1: required list<float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_float")
+exception exception_required_list_double {
+  1: required list<double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_double")
+exception exception_required_list_binary {
+  1: required list<binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_binary")
+exception exception_required_list_string {
+  1: required list<string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_string")
 exception exception_required_set_string {
   1: required set<string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_string")
+exception exception_required_set_i64 {
+  1: required set<i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i64")
 exception exception_required_map_string_bool {
   1: required map<string, bool> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_bool")
@@ -1168,33 +1354,45 @@ exception exception_required_map_string_binary {
 exception exception_required_map_string_string {
   1: required map<string, string> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_string")
-exception exception_required_map_string_set_bool {
-  1: required map<string, set<bool>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_bool")
-exception exception_required_map_string_set_byte {
-  1: required map<string, set<byte>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_byte")
-exception exception_required_map_string_set_i16 {
-  1: required map<string, set<i16>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i16")
-exception exception_required_map_string_set_i32 {
-  1: required map<string, set<i32>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i32")
-exception exception_required_map_string_set_i64 {
-  1: required map<string, set<i64>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i64")
-exception exception_required_map_string_set_float {
-  1: required map<string, set<float>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_float")
-exception exception_required_map_string_set_double {
-  1: required map<string, set<double>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_double")
-exception exception_required_map_string_set_binary {
-  1: required map<string, set<binary>> field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_binary")
+exception exception_required_map_i64_bool {
+  1: required map<i64, bool> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_bool")
+exception exception_required_map_i64_byte {
+  1: required map<i64, byte> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_byte")
+exception exception_required_map_i64_i16 {
+  1: required map<i64, i16> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i16")
+exception exception_required_map_i64_i32 {
+  1: required map<i64, i32> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i32")
+exception exception_required_map_i64_i64 {
+  1: required map<i64, i64> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i64")
+exception exception_required_map_i64_float {
+  1: required map<i64, float> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_float")
+exception exception_required_map_i64_double {
+  1: required map<i64, double> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_double")
+exception exception_required_map_i64_binary {
+  1: required map<i64, binary> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_binary")
+exception exception_required_map_i64_string {
+  1: required map<i64, string> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_string")
 exception exception_required_map_string_set_string {
   1: required map<string, set<string>> field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_string")
+exception exception_required_map_string_set_i64 {
+  1: required map<string, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i64")
+exception exception_required_map_i64_set_string {
+  1: required map<i64, set<string>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_set_string")
+exception exception_required_map_i64_set_i64 {
+  1: required map<i64, set<i64>> field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_set_i64")
 exception exception_required_bool_cpp_ref {
   1: required bool (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_bool_cpp_ref")
@@ -1222,33 +1420,39 @@ exception exception_required_binary_cpp_ref {
 exception exception_required_string_cpp_ref {
   1: required string (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_string_cpp_ref")
-exception exception_required_set_bool_cpp_ref {
-  1: required set<bool> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_bool_cpp_ref")
-exception exception_required_set_byte_cpp_ref {
-  1: required set<byte> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_byte_cpp_ref")
-exception exception_required_set_i16_cpp_ref {
-  1: required set<i16> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i16_cpp_ref")
-exception exception_required_set_i32_cpp_ref {
-  1: required set<i32> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i32_cpp_ref")
-exception exception_required_set_i64_cpp_ref {
-  1: required set<i64> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i64_cpp_ref")
-exception exception_required_set_float_cpp_ref {
-  1: required set<float> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_float_cpp_ref")
-exception exception_required_set_double_cpp_ref {
-  1: required set<double> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_double_cpp_ref")
-exception exception_required_set_binary_cpp_ref {
-  1: required set<binary> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_binary_cpp_ref")
+exception exception_required_list_bool_cpp_ref {
+  1: required list<bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_bool_cpp_ref")
+exception exception_required_list_byte_cpp_ref {
+  1: required list<byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_byte_cpp_ref")
+exception exception_required_list_i16_cpp_ref {
+  1: required list<i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i16_cpp_ref")
+exception exception_required_list_i32_cpp_ref {
+  1: required list<i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i32_cpp_ref")
+exception exception_required_list_i64_cpp_ref {
+  1: required list<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_i64_cpp_ref")
+exception exception_required_list_float_cpp_ref {
+  1: required list<float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_float_cpp_ref")
+exception exception_required_list_double_cpp_ref {
+  1: required list<double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_double_cpp_ref")
+exception exception_required_list_binary_cpp_ref {
+  1: required list<binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_binary_cpp_ref")
+exception exception_required_list_string_cpp_ref {
+  1: required list<string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_list_string_cpp_ref")
 exception exception_required_set_string_cpp_ref {
   1: required set<string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_string_cpp_ref")
+exception exception_required_set_i64_cpp_ref {
+  1: required set<i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_set_i64_cpp_ref")
 exception exception_required_map_string_bool_cpp_ref {
   1: required map<string, bool> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_bool_cpp_ref")
@@ -1276,33 +1480,45 @@ exception exception_required_map_string_binary_cpp_ref {
 exception exception_required_map_string_string_cpp_ref {
   1: required map<string, string> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_string_cpp_ref")
-exception exception_required_map_string_set_bool_cpp_ref {
-  1: required map<string, set<bool>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_bool_cpp_ref")
-exception exception_required_map_string_set_byte_cpp_ref {
-  1: required map<string, set<byte>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_byte_cpp_ref")
-exception exception_required_map_string_set_i16_cpp_ref {
-  1: required map<string, set<i16>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i16_cpp_ref")
-exception exception_required_map_string_set_i32_cpp_ref {
-  1: required map<string, set<i32>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i32_cpp_ref")
-exception exception_required_map_string_set_i64_cpp_ref {
-  1: required map<string, set<i64>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i64_cpp_ref")
-exception exception_required_map_string_set_float_cpp_ref {
-  1: required map<string, set<float>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_float_cpp_ref")
-exception exception_required_map_string_set_double_cpp_ref {
-  1: required map<string, set<double>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_double_cpp_ref")
-exception exception_required_map_string_set_binary_cpp_ref {
-  1: required map<string, set<binary>> (cpp.ref = 'true') field_1;
-} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_binary_cpp_ref")
+exception exception_required_map_i64_bool_cpp_ref {
+  1: required map<i64, bool> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_bool_cpp_ref")
+exception exception_required_map_i64_byte_cpp_ref {
+  1: required map<i64, byte> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_byte_cpp_ref")
+exception exception_required_map_i64_i16_cpp_ref {
+  1: required map<i64, i16> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i16_cpp_ref")
+exception exception_required_map_i64_i32_cpp_ref {
+  1: required map<i64, i32> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i32_cpp_ref")
+exception exception_required_map_i64_i64_cpp_ref {
+  1: required map<i64, i64> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_i64_cpp_ref")
+exception exception_required_map_i64_float_cpp_ref {
+  1: required map<i64, float> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_float_cpp_ref")
+exception exception_required_map_i64_double_cpp_ref {
+  1: required map<i64, double> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_double_cpp_ref")
+exception exception_required_map_i64_binary_cpp_ref {
+  1: required map<i64, binary> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_binary_cpp_ref")
+exception exception_required_map_i64_string_cpp_ref {
+  1: required map<i64, string> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_string_cpp_ref")
 exception exception_required_map_string_set_string_cpp_ref {
   1: required map<string, set<string>> (cpp.ref = 'true') field_1;
 } (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_string_cpp_ref")
+exception exception_required_map_string_set_i64_cpp_ref {
+  1: required map<string, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_string_set_i64_cpp_ref")
+exception exception_required_map_i64_set_string_cpp_ref {
+  1: required map<i64, set<string>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_set_string_cpp_ref")
+exception exception_required_map_i64_set_i64_cpp_ref {
+  1: required map<i64, set<i64>> (cpp.ref = 'true') field_1;
+} (thrift.uri="facebook.com/thrift/test/testset/exception_required_map_i64_set_i64_cpp_ref")
 union union_empty {
 } (thrift.uri="facebook.com/thrift/test/testset/union_empty")
 union union_bool {
@@ -1341,42 +1557,50 @@ union union_string {
   1: string field_1;
   2: string field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_string")
-union union_set_bool {
-  1: set<bool> field_1;
-  2: set<bool> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_bool")
-union union_set_byte {
-  1: set<byte> field_1;
-  2: set<byte> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_byte")
-union union_set_i16 {
-  1: set<i16> field_1;
-  2: set<i16> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_i16")
-union union_set_i32 {
-  1: set<i32> field_1;
-  2: set<i32> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_i32")
-union union_set_i64 {
-  1: set<i64> field_1;
-  2: set<i64> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_i64")
-union union_set_float {
-  1: set<float> field_1;
-  2: set<float> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_float")
-union union_set_double {
-  1: set<double> field_1;
-  2: set<double> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_double")
-union union_set_binary {
-  1: set<binary> field_1;
-  2: set<binary> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_binary")
+union union_list_bool {
+  1: list<bool> field_1;
+  2: list<bool> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_bool")
+union union_list_byte {
+  1: list<byte> field_1;
+  2: list<byte> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_byte")
+union union_list_i16 {
+  1: list<i16> field_1;
+  2: list<i16> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i16")
+union union_list_i32 {
+  1: list<i32> field_1;
+  2: list<i32> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i32")
+union union_list_i64 {
+  1: list<i64> field_1;
+  2: list<i64> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i64")
+union union_list_float {
+  1: list<float> field_1;
+  2: list<float> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_float")
+union union_list_double {
+  1: list<double> field_1;
+  2: list<double> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_double")
+union union_list_binary {
+  1: list<binary> field_1;
+  2: list<binary> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_binary")
+union union_list_string {
+  1: list<string> field_1;
+  2: list<string> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_string")
 union union_set_string {
   1: set<string> field_1;
   2: set<string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_set_string")
+union union_set_i64 {
+  1: set<i64> field_1;
+  2: set<i64> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_set_i64")
 union union_map_string_bool {
   1: map<string, bool> field_1;
   2: map<string, bool> field_2;
@@ -1413,42 +1637,58 @@ union union_map_string_string {
   1: map<string, string> field_1;
   2: map<string, string> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_map_string_string")
-union union_map_string_set_bool {
-  1: map<string, set<bool>> field_1;
-  2: map<string, set<bool>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_bool")
-union union_map_string_set_byte {
-  1: map<string, set<byte>> field_1;
-  2: map<string, set<byte>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_byte")
-union union_map_string_set_i16 {
-  1: map<string, set<i16>> field_1;
-  2: map<string, set<i16>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i16")
-union union_map_string_set_i32 {
-  1: map<string, set<i32>> field_1;
-  2: map<string, set<i32>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i32")
-union union_map_string_set_i64 {
-  1: map<string, set<i64>> field_1;
-  2: map<string, set<i64>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i64")
-union union_map_string_set_float {
-  1: map<string, set<float>> field_1;
-  2: map<string, set<float>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_float")
-union union_map_string_set_double {
-  1: map<string, set<double>> field_1;
-  2: map<string, set<double>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_double")
-union union_map_string_set_binary {
-  1: map<string, set<binary>> field_1;
-  2: map<string, set<binary>> field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_binary")
+union union_map_i64_bool {
+  1: map<i64, bool> field_1;
+  2: map<i64, bool> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_bool")
+union union_map_i64_byte {
+  1: map<i64, byte> field_1;
+  2: map<i64, byte> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_byte")
+union union_map_i64_i16 {
+  1: map<i64, i16> field_1;
+  2: map<i64, i16> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i16")
+union union_map_i64_i32 {
+  1: map<i64, i32> field_1;
+  2: map<i64, i32> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i32")
+union union_map_i64_i64 {
+  1: map<i64, i64> field_1;
+  2: map<i64, i64> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i64")
+union union_map_i64_float {
+  1: map<i64, float> field_1;
+  2: map<i64, float> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_float")
+union union_map_i64_double {
+  1: map<i64, double> field_1;
+  2: map<i64, double> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_double")
+union union_map_i64_binary {
+  1: map<i64, binary> field_1;
+  2: map<i64, binary> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_binary")
+union union_map_i64_string {
+  1: map<i64, string> field_1;
+  2: map<i64, string> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_string")
 union union_map_string_set_string {
   1: map<string, set<string>> field_1;
   2: map<string, set<string>> field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_string")
+union union_map_string_set_i64 {
+  1: map<string, set<i64>> field_1;
+  2: map<string, set<i64>> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i64")
+union union_map_i64_set_string {
+  1: map<i64, set<string>> field_1;
+  2: map<i64, set<string>> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_set_string")
+union union_map_i64_set_i64 {
+  1: map<i64, set<i64>> field_1;
+  2: map<i64, set<i64>> field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_set_i64")
 union union_bool_cpp_ref {
   1: bool (cpp.ref = 'true') field_1;
   2: bool (cpp.ref = 'true') field_2;
@@ -1485,42 +1725,50 @@ union union_string_cpp_ref {
   1: string (cpp.ref = 'true') field_1;
   2: string (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_string_cpp_ref")
-union union_set_bool_cpp_ref {
-  1: set<bool> (cpp.ref = 'true') field_1;
-  2: set<bool> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_bool_cpp_ref")
-union union_set_byte_cpp_ref {
-  1: set<byte> (cpp.ref = 'true') field_1;
-  2: set<byte> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_byte_cpp_ref")
-union union_set_i16_cpp_ref {
-  1: set<i16> (cpp.ref = 'true') field_1;
-  2: set<i16> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_i16_cpp_ref")
-union union_set_i32_cpp_ref {
-  1: set<i32> (cpp.ref = 'true') field_1;
-  2: set<i32> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_i32_cpp_ref")
-union union_set_i64_cpp_ref {
-  1: set<i64> (cpp.ref = 'true') field_1;
-  2: set<i64> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_i64_cpp_ref")
-union union_set_float_cpp_ref {
-  1: set<float> (cpp.ref = 'true') field_1;
-  2: set<float> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_float_cpp_ref")
-union union_set_double_cpp_ref {
-  1: set<double> (cpp.ref = 'true') field_1;
-  2: set<double> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_double_cpp_ref")
-union union_set_binary_cpp_ref {
-  1: set<binary> (cpp.ref = 'true') field_1;
-  2: set<binary> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_set_binary_cpp_ref")
+union union_list_bool_cpp_ref {
+  1: list<bool> (cpp.ref = 'true') field_1;
+  2: list<bool> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_bool_cpp_ref")
+union union_list_byte_cpp_ref {
+  1: list<byte> (cpp.ref = 'true') field_1;
+  2: list<byte> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_byte_cpp_ref")
+union union_list_i16_cpp_ref {
+  1: list<i16> (cpp.ref = 'true') field_1;
+  2: list<i16> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i16_cpp_ref")
+union union_list_i32_cpp_ref {
+  1: list<i32> (cpp.ref = 'true') field_1;
+  2: list<i32> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i32_cpp_ref")
+union union_list_i64_cpp_ref {
+  1: list<i64> (cpp.ref = 'true') field_1;
+  2: list<i64> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_i64_cpp_ref")
+union union_list_float_cpp_ref {
+  1: list<float> (cpp.ref = 'true') field_1;
+  2: list<float> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_float_cpp_ref")
+union union_list_double_cpp_ref {
+  1: list<double> (cpp.ref = 'true') field_1;
+  2: list<double> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_double_cpp_ref")
+union union_list_binary_cpp_ref {
+  1: list<binary> (cpp.ref = 'true') field_1;
+  2: list<binary> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_binary_cpp_ref")
+union union_list_string_cpp_ref {
+  1: list<string> (cpp.ref = 'true') field_1;
+  2: list<string> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_list_string_cpp_ref")
 union union_set_string_cpp_ref {
   1: set<string> (cpp.ref = 'true') field_1;
   2: set<string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_set_string_cpp_ref")
+union union_set_i64_cpp_ref {
+  1: set<i64> (cpp.ref = 'true') field_1;
+  2: set<i64> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_set_i64_cpp_ref")
 union union_map_string_bool_cpp_ref {
   1: map<string, bool> (cpp.ref = 'true') field_1;
   2: map<string, bool> (cpp.ref = 'true') field_2;
@@ -1557,43 +1805,59 @@ union union_map_string_string_cpp_ref {
   1: map<string, string> (cpp.ref = 'true') field_1;
   2: map<string, string> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_map_string_string_cpp_ref")
-union union_map_string_set_bool_cpp_ref {
-  1: map<string, set<bool>> (cpp.ref = 'true') field_1;
-  2: map<string, set<bool>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_bool_cpp_ref")
-union union_map_string_set_byte_cpp_ref {
-  1: map<string, set<byte>> (cpp.ref = 'true') field_1;
-  2: map<string, set<byte>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_byte_cpp_ref")
-union union_map_string_set_i16_cpp_ref {
-  1: map<string, set<i16>> (cpp.ref = 'true') field_1;
-  2: map<string, set<i16>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i16_cpp_ref")
-union union_map_string_set_i32_cpp_ref {
-  1: map<string, set<i32>> (cpp.ref = 'true') field_1;
-  2: map<string, set<i32>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i32_cpp_ref")
-union union_map_string_set_i64_cpp_ref {
-  1: map<string, set<i64>> (cpp.ref = 'true') field_1;
-  2: map<string, set<i64>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i64_cpp_ref")
-union union_map_string_set_float_cpp_ref {
-  1: map<string, set<float>> (cpp.ref = 'true') field_1;
-  2: map<string, set<float>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_float_cpp_ref")
-union union_map_string_set_double_cpp_ref {
-  1: map<string, set<double>> (cpp.ref = 'true') field_1;
-  2: map<string, set<double>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_double_cpp_ref")
-union union_map_string_set_binary_cpp_ref {
-  1: map<string, set<binary>> (cpp.ref = 'true') field_1;
-  2: map<string, set<binary>> (cpp.ref = 'true') field_2;
-} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_binary_cpp_ref")
+union union_map_i64_bool_cpp_ref {
+  1: map<i64, bool> (cpp.ref = 'true') field_1;
+  2: map<i64, bool> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_bool_cpp_ref")
+union union_map_i64_byte_cpp_ref {
+  1: map<i64, byte> (cpp.ref = 'true') field_1;
+  2: map<i64, byte> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_byte_cpp_ref")
+union union_map_i64_i16_cpp_ref {
+  1: map<i64, i16> (cpp.ref = 'true') field_1;
+  2: map<i64, i16> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i16_cpp_ref")
+union union_map_i64_i32_cpp_ref {
+  1: map<i64, i32> (cpp.ref = 'true') field_1;
+  2: map<i64, i32> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i32_cpp_ref")
+union union_map_i64_i64_cpp_ref {
+  1: map<i64, i64> (cpp.ref = 'true') field_1;
+  2: map<i64, i64> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_i64_cpp_ref")
+union union_map_i64_float_cpp_ref {
+  1: map<i64, float> (cpp.ref = 'true') field_1;
+  2: map<i64, float> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_float_cpp_ref")
+union union_map_i64_double_cpp_ref {
+  1: map<i64, double> (cpp.ref = 'true') field_1;
+  2: map<i64, double> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_double_cpp_ref")
+union union_map_i64_binary_cpp_ref {
+  1: map<i64, binary> (cpp.ref = 'true') field_1;
+  2: map<i64, binary> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_binary_cpp_ref")
+union union_map_i64_string_cpp_ref {
+  1: map<i64, string> (cpp.ref = 'true') field_1;
+  2: map<i64, string> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_string_cpp_ref")
 union union_map_string_set_string_cpp_ref {
   1: map<string, set<string>> (cpp.ref = 'true') field_1;
   2: map<string, set<string>> (cpp.ref = 'true') field_2;
 } (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_string_cpp_ref")
-union union_all {
+union union_map_string_set_i64_cpp_ref {
+  1: map<string, set<i64>> (cpp.ref = 'true') field_1;
+  2: map<string, set<i64>> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_string_set_i64_cpp_ref")
+union union_map_i64_set_string_cpp_ref {
+  1: map<i64, set<string>> (cpp.ref = 'true') field_1;
+  2: map<i64, set<string>> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_set_string_cpp_ref")
+union union_map_i64_set_i64_cpp_ref {
+  1: map<i64, set<i64>> (cpp.ref = 'true') field_1;
+  2: map<i64, set<i64>> (cpp.ref = 'true') field_2;
+} (thrift.uri="facebook.com/thrift/test/testset/union_map_i64_set_i64_cpp_ref")
+struct struct_all {
   1: struct_empty field_1;
   2: struct_bool field_2;
   3: struct_byte field_3;
@@ -1604,284 +1868,332 @@ union union_all {
   8: struct_double field_8;
   9: struct_binary field_9;
   10: struct_string field_10;
-  11: struct_set_bool field_11;
-  12: struct_set_byte field_12;
-  13: struct_set_i16 field_13;
-  14: struct_set_i32 field_14;
-  15: struct_set_i64 field_15;
-  16: struct_set_float field_16;
-  17: struct_set_double field_17;
-  18: struct_set_binary field_18;
-  19: struct_set_string field_19;
-  20: struct_map_string_bool field_20;
-  21: struct_map_string_byte field_21;
-  22: struct_map_string_i16 field_22;
-  23: struct_map_string_i32 field_23;
-  24: struct_map_string_i64 field_24;
-  25: struct_map_string_float field_25;
-  26: struct_map_string_double field_26;
-  27: struct_map_string_binary field_27;
-  28: struct_map_string_string field_28;
-  29: struct_map_string_set_bool field_29;
-  30: struct_map_string_set_byte field_30;
-  31: struct_map_string_set_i16 field_31;
-  32: struct_map_string_set_i32 field_32;
-  33: struct_map_string_set_i64 field_33;
-  34: struct_map_string_set_float field_34;
-  35: struct_map_string_set_double field_35;
-  36: struct_map_string_set_binary field_36;
-  37: struct_map_string_set_string field_37;
-  38: struct_bool_cpp_ref field_38;
-  39: struct_byte_cpp_ref field_39;
-  40: struct_i16_cpp_ref field_40;
-  41: struct_i32_cpp_ref field_41;
-  42: struct_i64_cpp_ref field_42;
-  43: struct_float_cpp_ref field_43;
-  44: struct_double_cpp_ref field_44;
-  45: struct_binary_cpp_ref field_45;
-  46: struct_string_cpp_ref field_46;
-  47: struct_set_bool_cpp_ref field_47;
-  48: struct_set_byte_cpp_ref field_48;
-  49: struct_set_i16_cpp_ref field_49;
-  50: struct_set_i32_cpp_ref field_50;
-  51: struct_set_i64_cpp_ref field_51;
-  52: struct_set_float_cpp_ref field_52;
-  53: struct_set_double_cpp_ref field_53;
-  54: struct_set_binary_cpp_ref field_54;
-  55: struct_set_string_cpp_ref field_55;
-  56: struct_map_string_bool_cpp_ref field_56;
-  57: struct_map_string_byte_cpp_ref field_57;
-  58: struct_map_string_i16_cpp_ref field_58;
-  59: struct_map_string_i32_cpp_ref field_59;
-  60: struct_map_string_i64_cpp_ref field_60;
-  61: struct_map_string_float_cpp_ref field_61;
-  62: struct_map_string_double_cpp_ref field_62;
-  63: struct_map_string_binary_cpp_ref field_63;
-  64: struct_map_string_string_cpp_ref field_64;
-  65: struct_map_string_set_bool_cpp_ref field_65;
-  66: struct_map_string_set_byte_cpp_ref field_66;
-  67: struct_map_string_set_i16_cpp_ref field_67;
-  68: struct_map_string_set_i32_cpp_ref field_68;
-  69: struct_map_string_set_i64_cpp_ref field_69;
-  70: struct_map_string_set_float_cpp_ref field_70;
-  71: struct_map_string_set_double_cpp_ref field_71;
-  72: struct_map_string_set_binary_cpp_ref field_72;
-  73: struct_map_string_set_string_cpp_ref field_73;
-  74: struct_optional_bool field_74;
-  75: struct_optional_byte field_75;
-  76: struct_optional_i16 field_76;
-  77: struct_optional_i32 field_77;
-  78: struct_optional_i64 field_78;
-  79: struct_optional_float field_79;
-  80: struct_optional_double field_80;
-  81: struct_optional_binary field_81;
-  82: struct_optional_string field_82;
-  83: struct_optional_set_bool field_83;
-  84: struct_optional_set_byte field_84;
-  85: struct_optional_set_i16 field_85;
-  86: struct_optional_set_i32 field_86;
-  87: struct_optional_set_i64 field_87;
-  88: struct_optional_set_float field_88;
-  89: struct_optional_set_double field_89;
-  90: struct_optional_set_binary field_90;
-  91: struct_optional_set_string field_91;
-  92: struct_optional_map_string_bool field_92;
-  93: struct_optional_map_string_byte field_93;
-  94: struct_optional_map_string_i16 field_94;
-  95: struct_optional_map_string_i32 field_95;
-  96: struct_optional_map_string_i64 field_96;
-  97: struct_optional_map_string_float field_97;
-  98: struct_optional_map_string_double field_98;
-  99: struct_optional_map_string_binary field_99;
-  100: struct_optional_map_string_string field_100;
-  101: struct_optional_map_string_set_bool field_101;
-  102: struct_optional_map_string_set_byte field_102;
-  103: struct_optional_map_string_set_i16 field_103;
-  104: struct_optional_map_string_set_i32 field_104;
-  105: struct_optional_map_string_set_i64 field_105;
-  106: struct_optional_map_string_set_float field_106;
-  107: struct_optional_map_string_set_double field_107;
-  108: struct_optional_map_string_set_binary field_108;
-  109: struct_optional_map_string_set_string field_109;
-  110: struct_optional_bool_cpp_ref field_110;
-  111: struct_optional_byte_cpp_ref field_111;
-  112: struct_optional_i16_cpp_ref field_112;
-  113: struct_optional_i32_cpp_ref field_113;
-  114: struct_optional_i64_cpp_ref field_114;
-  115: struct_optional_float_cpp_ref field_115;
-  116: struct_optional_double_cpp_ref field_116;
-  117: struct_optional_binary_cpp_ref field_117;
-  118: struct_optional_string_cpp_ref field_118;
-  119: struct_optional_set_bool_cpp_ref field_119;
-  120: struct_optional_set_byte_cpp_ref field_120;
-  121: struct_optional_set_i16_cpp_ref field_121;
-  122: struct_optional_set_i32_cpp_ref field_122;
-  123: struct_optional_set_i64_cpp_ref field_123;
-  124: struct_optional_set_float_cpp_ref field_124;
-  125: struct_optional_set_double_cpp_ref field_125;
-  126: struct_optional_set_binary_cpp_ref field_126;
-  127: struct_optional_set_string_cpp_ref field_127;
-  128: struct_optional_map_string_bool_cpp_ref field_128;
-  129: struct_optional_map_string_byte_cpp_ref field_129;
-  130: struct_optional_map_string_i16_cpp_ref field_130;
-  131: struct_optional_map_string_i32_cpp_ref field_131;
-  132: struct_optional_map_string_i64_cpp_ref field_132;
-  133: struct_optional_map_string_float_cpp_ref field_133;
-  134: struct_optional_map_string_double_cpp_ref field_134;
-  135: struct_optional_map_string_binary_cpp_ref field_135;
-  136: struct_optional_map_string_string_cpp_ref field_136;
-  137: struct_optional_map_string_set_bool_cpp_ref field_137;
-  138: struct_optional_map_string_set_byte_cpp_ref field_138;
-  139: struct_optional_map_string_set_i16_cpp_ref field_139;
-  140: struct_optional_map_string_set_i32_cpp_ref field_140;
-  141: struct_optional_map_string_set_i64_cpp_ref field_141;
-  142: struct_optional_map_string_set_float_cpp_ref field_142;
-  143: struct_optional_map_string_set_double_cpp_ref field_143;
-  144: struct_optional_map_string_set_binary_cpp_ref field_144;
-  145: struct_optional_map_string_set_string_cpp_ref field_145;
-  146: struct_required_bool field_146;
-  147: struct_required_byte field_147;
-  148: struct_required_i16 field_148;
-  149: struct_required_i32 field_149;
-  150: struct_required_i64 field_150;
-  151: struct_required_float field_151;
-  152: struct_required_double field_152;
-  153: struct_required_binary field_153;
-  154: struct_required_string field_154;
-  155: struct_required_set_bool field_155;
-  156: struct_required_set_byte field_156;
-  157: struct_required_set_i16 field_157;
-  158: struct_required_set_i32 field_158;
-  159: struct_required_set_i64 field_159;
-  160: struct_required_set_float field_160;
-  161: struct_required_set_double field_161;
-  162: struct_required_set_binary field_162;
-  163: struct_required_set_string field_163;
-  164: struct_required_map_string_bool field_164;
-  165: struct_required_map_string_byte field_165;
-  166: struct_required_map_string_i16 field_166;
-  167: struct_required_map_string_i32 field_167;
-  168: struct_required_map_string_i64 field_168;
-  169: struct_required_map_string_float field_169;
-  170: struct_required_map_string_double field_170;
-  171: struct_required_map_string_binary field_171;
-  172: struct_required_map_string_string field_172;
-  173: struct_required_map_string_set_bool field_173;
-  174: struct_required_map_string_set_byte field_174;
-  175: struct_required_map_string_set_i16 field_175;
-  176: struct_required_map_string_set_i32 field_176;
-  177: struct_required_map_string_set_i64 field_177;
-  178: struct_required_map_string_set_float field_178;
-  179: struct_required_map_string_set_double field_179;
-  180: struct_required_map_string_set_binary field_180;
-  181: struct_required_map_string_set_string field_181;
-  182: struct_required_bool_cpp_ref field_182;
-  183: struct_required_byte_cpp_ref field_183;
-  184: struct_required_i16_cpp_ref field_184;
-  185: struct_required_i32_cpp_ref field_185;
-  186: struct_required_i64_cpp_ref field_186;
-  187: struct_required_float_cpp_ref field_187;
-  188: struct_required_double_cpp_ref field_188;
-  189: struct_required_binary_cpp_ref field_189;
-  190: struct_required_string_cpp_ref field_190;
-  191: struct_required_set_bool_cpp_ref field_191;
-  192: struct_required_set_byte_cpp_ref field_192;
-  193: struct_required_set_i16_cpp_ref field_193;
-  194: struct_required_set_i32_cpp_ref field_194;
-  195: struct_required_set_i64_cpp_ref field_195;
-  196: struct_required_set_float_cpp_ref field_196;
-  197: struct_required_set_double_cpp_ref field_197;
-  198: struct_required_set_binary_cpp_ref field_198;
-  199: struct_required_set_string_cpp_ref field_199;
-  200: struct_required_map_string_bool_cpp_ref field_200;
-  201: struct_required_map_string_byte_cpp_ref field_201;
-  202: struct_required_map_string_i16_cpp_ref field_202;
-  203: struct_required_map_string_i32_cpp_ref field_203;
-  204: struct_required_map_string_i64_cpp_ref field_204;
-  205: struct_required_map_string_float_cpp_ref field_205;
-  206: struct_required_map_string_double_cpp_ref field_206;
-  207: struct_required_map_string_binary_cpp_ref field_207;
-  208: struct_required_map_string_string_cpp_ref field_208;
-  209: struct_required_map_string_set_bool_cpp_ref field_209;
-  210: struct_required_map_string_set_byte_cpp_ref field_210;
-  211: struct_required_map_string_set_i16_cpp_ref field_211;
-  212: struct_required_map_string_set_i32_cpp_ref field_212;
-  213: struct_required_map_string_set_i64_cpp_ref field_213;
-  214: struct_required_map_string_set_float_cpp_ref field_214;
-  215: struct_required_map_string_set_double_cpp_ref field_215;
-  216: struct_required_map_string_set_binary_cpp_ref field_216;
-  217: struct_required_map_string_set_string_cpp_ref field_217;
-  218: union_empty field_218;
-  219: union_bool field_219;
-  220: union_byte field_220;
-  221: union_i16 field_221;
-  222: union_i32 field_222;
-  223: union_i64 field_223;
-  224: union_float field_224;
-  225: union_double field_225;
-  226: union_binary field_226;
-  227: union_string field_227;
-  228: union_set_bool field_228;
-  229: union_set_byte field_229;
-  230: union_set_i16 field_230;
-  231: union_set_i32 field_231;
-  232: union_set_i64 field_232;
-  233: union_set_float field_233;
-  234: union_set_double field_234;
-  235: union_set_binary field_235;
-  236: union_set_string field_236;
-  237: union_map_string_bool field_237;
-  238: union_map_string_byte field_238;
-  239: union_map_string_i16 field_239;
-  240: union_map_string_i32 field_240;
-  241: union_map_string_i64 field_241;
-  242: union_map_string_float field_242;
-  243: union_map_string_double field_243;
-  244: union_map_string_binary field_244;
-  245: union_map_string_string field_245;
-  246: union_map_string_set_bool field_246;
-  247: union_map_string_set_byte field_247;
-  248: union_map_string_set_i16 field_248;
-  249: union_map_string_set_i32 field_249;
-  250: union_map_string_set_i64 field_250;
-  251: union_map_string_set_float field_251;
-  252: union_map_string_set_double field_252;
-  253: union_map_string_set_binary field_253;
-  254: union_map_string_set_string field_254;
-  255: union_bool_cpp_ref field_255;
-  256: union_byte_cpp_ref field_256;
-  257: union_i16_cpp_ref field_257;
-  258: union_i32_cpp_ref field_258;
-  259: union_i64_cpp_ref field_259;
-  260: union_float_cpp_ref field_260;
-  261: union_double_cpp_ref field_261;
-  262: union_binary_cpp_ref field_262;
-  263: union_string_cpp_ref field_263;
-  264: union_set_bool_cpp_ref field_264;
-  265: union_set_byte_cpp_ref field_265;
-  266: union_set_i16_cpp_ref field_266;
-  267: union_set_i32_cpp_ref field_267;
-  268: union_set_i64_cpp_ref field_268;
-  269: union_set_float_cpp_ref field_269;
-  270: union_set_double_cpp_ref field_270;
-  271: union_set_binary_cpp_ref field_271;
-  272: union_set_string_cpp_ref field_272;
-  273: union_map_string_bool_cpp_ref field_273;
-  274: union_map_string_byte_cpp_ref field_274;
-  275: union_map_string_i16_cpp_ref field_275;
-  276: union_map_string_i32_cpp_ref field_276;
-  277: union_map_string_i64_cpp_ref field_277;
-  278: union_map_string_float_cpp_ref field_278;
-  279: union_map_string_double_cpp_ref field_279;
-  280: union_map_string_binary_cpp_ref field_280;
-  281: union_map_string_string_cpp_ref field_281;
-  282: union_map_string_set_bool_cpp_ref field_282;
-  283: union_map_string_set_byte_cpp_ref field_283;
-  284: union_map_string_set_i16_cpp_ref field_284;
-  285: union_map_string_set_i32_cpp_ref field_285;
-  286: union_map_string_set_i64_cpp_ref field_286;
-  287: union_map_string_set_float_cpp_ref field_287;
-  288: union_map_string_set_double_cpp_ref field_288;
-  289: union_map_string_set_binary_cpp_ref field_289;
-  290: union_map_string_set_string_cpp_ref field_290;
-} (thrift.uri="facebook.com/thrift/test/testset/union_all")
+  11: struct_list_bool field_11;
+  12: struct_list_byte field_12;
+  13: struct_list_i16 field_13;
+  14: struct_list_i32 field_14;
+  15: struct_list_i64 field_15;
+  16: struct_list_float field_16;
+  17: struct_list_double field_17;
+  18: struct_list_binary field_18;
+  19: struct_list_string field_19;
+  20: struct_set_string field_20;
+  21: struct_set_i64 field_21;
+  22: struct_map_string_bool field_22;
+  23: struct_map_string_byte field_23;
+  24: struct_map_string_i16 field_24;
+  25: struct_map_string_i32 field_25;
+  26: struct_map_string_i64 field_26;
+  27: struct_map_string_float field_27;
+  28: struct_map_string_double field_28;
+  29: struct_map_string_binary field_29;
+  30: struct_map_string_string field_30;
+  31: struct_map_i64_bool field_31;
+  32: struct_map_i64_byte field_32;
+  33: struct_map_i64_i16 field_33;
+  34: struct_map_i64_i32 field_34;
+  35: struct_map_i64_i64 field_35;
+  36: struct_map_i64_float field_36;
+  37: struct_map_i64_double field_37;
+  38: struct_map_i64_binary field_38;
+  39: struct_map_i64_string field_39;
+  40: struct_map_string_set_string field_40;
+  41: struct_map_string_set_i64 field_41;
+  42: struct_map_i64_set_string field_42;
+  43: struct_map_i64_set_i64 field_43;
+  44: struct_bool_cpp_ref field_44;
+  45: struct_byte_cpp_ref field_45;
+  46: struct_i16_cpp_ref field_46;
+  47: struct_i32_cpp_ref field_47;
+  48: struct_i64_cpp_ref field_48;
+  49: struct_float_cpp_ref field_49;
+  50: struct_double_cpp_ref field_50;
+  51: struct_binary_cpp_ref field_51;
+  52: struct_string_cpp_ref field_52;
+  53: struct_list_bool_cpp_ref field_53;
+  54: struct_list_byte_cpp_ref field_54;
+  55: struct_list_i16_cpp_ref field_55;
+  56: struct_list_i32_cpp_ref field_56;
+  57: struct_list_i64_cpp_ref field_57;
+  58: struct_list_float_cpp_ref field_58;
+  59: struct_list_double_cpp_ref field_59;
+  60: struct_list_binary_cpp_ref field_60;
+  61: struct_list_string_cpp_ref field_61;
+  62: struct_set_string_cpp_ref field_62;
+  63: struct_set_i64_cpp_ref field_63;
+  64: struct_map_string_bool_cpp_ref field_64;
+  65: struct_map_string_byte_cpp_ref field_65;
+  66: struct_map_string_i16_cpp_ref field_66;
+  67: struct_map_string_i32_cpp_ref field_67;
+  68: struct_map_string_i64_cpp_ref field_68;
+  69: struct_map_string_float_cpp_ref field_69;
+  70: struct_map_string_double_cpp_ref field_70;
+  71: struct_map_string_binary_cpp_ref field_71;
+  72: struct_map_string_string_cpp_ref field_72;
+  73: struct_map_i64_bool_cpp_ref field_73;
+  74: struct_map_i64_byte_cpp_ref field_74;
+  75: struct_map_i64_i16_cpp_ref field_75;
+  76: struct_map_i64_i32_cpp_ref field_76;
+  77: struct_map_i64_i64_cpp_ref field_77;
+  78: struct_map_i64_float_cpp_ref field_78;
+  79: struct_map_i64_double_cpp_ref field_79;
+  80: struct_map_i64_binary_cpp_ref field_80;
+  81: struct_map_i64_string_cpp_ref field_81;
+  82: struct_map_string_set_string_cpp_ref field_82;
+  83: struct_map_string_set_i64_cpp_ref field_83;
+  84: struct_map_i64_set_string_cpp_ref field_84;
+  85: struct_map_i64_set_i64_cpp_ref field_85;
+  86: struct_optional_bool field_86;
+  87: struct_optional_byte field_87;
+  88: struct_optional_i16 field_88;
+  89: struct_optional_i32 field_89;
+  90: struct_optional_i64 field_90;
+  91: struct_optional_float field_91;
+  92: struct_optional_double field_92;
+  93: struct_optional_binary field_93;
+  94: struct_optional_string field_94;
+  95: struct_optional_list_bool field_95;
+  96: struct_optional_list_byte field_96;
+  97: struct_optional_list_i16 field_97;
+  98: struct_optional_list_i32 field_98;
+  99: struct_optional_list_i64 field_99;
+  100: struct_optional_list_float field_100;
+  101: struct_optional_list_double field_101;
+  102: struct_optional_list_binary field_102;
+  103: struct_optional_list_string field_103;
+  104: struct_optional_set_string field_104;
+  105: struct_optional_set_i64 field_105;
+  106: struct_optional_map_string_bool field_106;
+  107: struct_optional_map_string_byte field_107;
+  108: struct_optional_map_string_i16 field_108;
+  109: struct_optional_map_string_i32 field_109;
+  110: struct_optional_map_string_i64 field_110;
+  111: struct_optional_map_string_float field_111;
+  112: struct_optional_map_string_double field_112;
+  113: struct_optional_map_string_binary field_113;
+  114: struct_optional_map_string_string field_114;
+  115: struct_optional_map_i64_bool field_115;
+  116: struct_optional_map_i64_byte field_116;
+  117: struct_optional_map_i64_i16 field_117;
+  118: struct_optional_map_i64_i32 field_118;
+  119: struct_optional_map_i64_i64 field_119;
+  120: struct_optional_map_i64_float field_120;
+  121: struct_optional_map_i64_double field_121;
+  122: struct_optional_map_i64_binary field_122;
+  123: struct_optional_map_i64_string field_123;
+  124: struct_optional_map_string_set_string field_124;
+  125: struct_optional_map_string_set_i64 field_125;
+  126: struct_optional_map_i64_set_string field_126;
+  127: struct_optional_map_i64_set_i64 field_127;
+  128: struct_optional_bool_cpp_ref field_128;
+  129: struct_optional_byte_cpp_ref field_129;
+  130: struct_optional_i16_cpp_ref field_130;
+  131: struct_optional_i32_cpp_ref field_131;
+  132: struct_optional_i64_cpp_ref field_132;
+  133: struct_optional_float_cpp_ref field_133;
+  134: struct_optional_double_cpp_ref field_134;
+  135: struct_optional_binary_cpp_ref field_135;
+  136: struct_optional_string_cpp_ref field_136;
+  137: struct_optional_list_bool_cpp_ref field_137;
+  138: struct_optional_list_byte_cpp_ref field_138;
+  139: struct_optional_list_i16_cpp_ref field_139;
+  140: struct_optional_list_i32_cpp_ref field_140;
+  141: struct_optional_list_i64_cpp_ref field_141;
+  142: struct_optional_list_float_cpp_ref field_142;
+  143: struct_optional_list_double_cpp_ref field_143;
+  144: struct_optional_list_binary_cpp_ref field_144;
+  145: struct_optional_list_string_cpp_ref field_145;
+  146: struct_optional_set_string_cpp_ref field_146;
+  147: struct_optional_set_i64_cpp_ref field_147;
+  148: struct_optional_map_string_bool_cpp_ref field_148;
+  149: struct_optional_map_string_byte_cpp_ref field_149;
+  150: struct_optional_map_string_i16_cpp_ref field_150;
+  151: struct_optional_map_string_i32_cpp_ref field_151;
+  152: struct_optional_map_string_i64_cpp_ref field_152;
+  153: struct_optional_map_string_float_cpp_ref field_153;
+  154: struct_optional_map_string_double_cpp_ref field_154;
+  155: struct_optional_map_string_binary_cpp_ref field_155;
+  156: struct_optional_map_string_string_cpp_ref field_156;
+  157: struct_optional_map_i64_bool_cpp_ref field_157;
+  158: struct_optional_map_i64_byte_cpp_ref field_158;
+  159: struct_optional_map_i64_i16_cpp_ref field_159;
+  160: struct_optional_map_i64_i32_cpp_ref field_160;
+  161: struct_optional_map_i64_i64_cpp_ref field_161;
+  162: struct_optional_map_i64_float_cpp_ref field_162;
+  163: struct_optional_map_i64_double_cpp_ref field_163;
+  164: struct_optional_map_i64_binary_cpp_ref field_164;
+  165: struct_optional_map_i64_string_cpp_ref field_165;
+  166: struct_optional_map_string_set_string_cpp_ref field_166;
+  167: struct_optional_map_string_set_i64_cpp_ref field_167;
+  168: struct_optional_map_i64_set_string_cpp_ref field_168;
+  169: struct_optional_map_i64_set_i64_cpp_ref field_169;
+  170: struct_required_bool field_170;
+  171: struct_required_byte field_171;
+  172: struct_required_i16 field_172;
+  173: struct_required_i32 field_173;
+  174: struct_required_i64 field_174;
+  175: struct_required_float field_175;
+  176: struct_required_double field_176;
+  177: struct_required_binary field_177;
+  178: struct_required_string field_178;
+  179: struct_required_list_bool field_179;
+  180: struct_required_list_byte field_180;
+  181: struct_required_list_i16 field_181;
+  182: struct_required_list_i32 field_182;
+  183: struct_required_list_i64 field_183;
+  184: struct_required_list_float field_184;
+  185: struct_required_list_double field_185;
+  186: struct_required_list_binary field_186;
+  187: struct_required_list_string field_187;
+  188: struct_required_set_string field_188;
+  189: struct_required_set_i64 field_189;
+  190: struct_required_map_string_bool field_190;
+  191: struct_required_map_string_byte field_191;
+  192: struct_required_map_string_i16 field_192;
+  193: struct_required_map_string_i32 field_193;
+  194: struct_required_map_string_i64 field_194;
+  195: struct_required_map_string_float field_195;
+  196: struct_required_map_string_double field_196;
+  197: struct_required_map_string_binary field_197;
+  198: struct_required_map_string_string field_198;
+  199: struct_required_map_i64_bool field_199;
+  200: struct_required_map_i64_byte field_200;
+  201: struct_required_map_i64_i16 field_201;
+  202: struct_required_map_i64_i32 field_202;
+  203: struct_required_map_i64_i64 field_203;
+  204: struct_required_map_i64_float field_204;
+  205: struct_required_map_i64_double field_205;
+  206: struct_required_map_i64_binary field_206;
+  207: struct_required_map_i64_string field_207;
+  208: struct_required_map_string_set_string field_208;
+  209: struct_required_map_string_set_i64 field_209;
+  210: struct_required_map_i64_set_string field_210;
+  211: struct_required_map_i64_set_i64 field_211;
+  212: struct_required_bool_cpp_ref field_212;
+  213: struct_required_byte_cpp_ref field_213;
+  214: struct_required_i16_cpp_ref field_214;
+  215: struct_required_i32_cpp_ref field_215;
+  216: struct_required_i64_cpp_ref field_216;
+  217: struct_required_float_cpp_ref field_217;
+  218: struct_required_double_cpp_ref field_218;
+  219: struct_required_binary_cpp_ref field_219;
+  220: struct_required_string_cpp_ref field_220;
+  221: struct_required_list_bool_cpp_ref field_221;
+  222: struct_required_list_byte_cpp_ref field_222;
+  223: struct_required_list_i16_cpp_ref field_223;
+  224: struct_required_list_i32_cpp_ref field_224;
+  225: struct_required_list_i64_cpp_ref field_225;
+  226: struct_required_list_float_cpp_ref field_226;
+  227: struct_required_list_double_cpp_ref field_227;
+  228: struct_required_list_binary_cpp_ref field_228;
+  229: struct_required_list_string_cpp_ref field_229;
+  230: struct_required_set_string_cpp_ref field_230;
+  231: struct_required_set_i64_cpp_ref field_231;
+  232: struct_required_map_string_bool_cpp_ref field_232;
+  233: struct_required_map_string_byte_cpp_ref field_233;
+  234: struct_required_map_string_i16_cpp_ref field_234;
+  235: struct_required_map_string_i32_cpp_ref field_235;
+  236: struct_required_map_string_i64_cpp_ref field_236;
+  237: struct_required_map_string_float_cpp_ref field_237;
+  238: struct_required_map_string_double_cpp_ref field_238;
+  239: struct_required_map_string_binary_cpp_ref field_239;
+  240: struct_required_map_string_string_cpp_ref field_240;
+  241: struct_required_map_i64_bool_cpp_ref field_241;
+  242: struct_required_map_i64_byte_cpp_ref field_242;
+  243: struct_required_map_i64_i16_cpp_ref field_243;
+  244: struct_required_map_i64_i32_cpp_ref field_244;
+  245: struct_required_map_i64_i64_cpp_ref field_245;
+  246: struct_required_map_i64_float_cpp_ref field_246;
+  247: struct_required_map_i64_double_cpp_ref field_247;
+  248: struct_required_map_i64_binary_cpp_ref field_248;
+  249: struct_required_map_i64_string_cpp_ref field_249;
+  250: struct_required_map_string_set_string_cpp_ref field_250;
+  251: struct_required_map_string_set_i64_cpp_ref field_251;
+  252: struct_required_map_i64_set_string_cpp_ref field_252;
+  253: struct_required_map_i64_set_i64_cpp_ref field_253;
+  254: union_empty field_254;
+  255: union_bool field_255;
+  256: union_byte field_256;
+  257: union_i16 field_257;
+  258: union_i32 field_258;
+  259: union_i64 field_259;
+  260: union_float field_260;
+  261: union_double field_261;
+  262: union_binary field_262;
+  263: union_string field_263;
+  264: union_list_bool field_264;
+  265: union_list_byte field_265;
+  266: union_list_i16 field_266;
+  267: union_list_i32 field_267;
+  268: union_list_i64 field_268;
+  269: union_list_float field_269;
+  270: union_list_double field_270;
+  271: union_list_binary field_271;
+  272: union_list_string field_272;
+  273: union_set_string field_273;
+  274: union_set_i64 field_274;
+  275: union_map_string_bool field_275;
+  276: union_map_string_byte field_276;
+  277: union_map_string_i16 field_277;
+  278: union_map_string_i32 field_278;
+  279: union_map_string_i64 field_279;
+  280: union_map_string_float field_280;
+  281: union_map_string_double field_281;
+  282: union_map_string_binary field_282;
+  283: union_map_string_string field_283;
+  284: union_map_i64_bool field_284;
+  285: union_map_i64_byte field_285;
+  286: union_map_i64_i16 field_286;
+  287: union_map_i64_i32 field_287;
+  288: union_map_i64_i64 field_288;
+  289: union_map_i64_float field_289;
+  290: union_map_i64_double field_290;
+  291: union_map_i64_binary field_291;
+  292: union_map_i64_string field_292;
+  293: union_map_string_set_string field_293;
+  294: union_map_string_set_i64 field_294;
+  295: union_map_i64_set_string field_295;
+  296: union_map_i64_set_i64 field_296;
+  297: union_bool_cpp_ref field_297;
+  298: union_byte_cpp_ref field_298;
+  299: union_i16_cpp_ref field_299;
+  300: union_i32_cpp_ref field_300;
+  301: union_i64_cpp_ref field_301;
+  302: union_float_cpp_ref field_302;
+  303: union_double_cpp_ref field_303;
+  304: union_binary_cpp_ref field_304;
+  305: union_string_cpp_ref field_305;
+  306: union_list_bool_cpp_ref field_306;
+  307: union_list_byte_cpp_ref field_307;
+  308: union_list_i16_cpp_ref field_308;
+  309: union_list_i32_cpp_ref field_309;
+  310: union_list_i64_cpp_ref field_310;
+  311: union_list_float_cpp_ref field_311;
+  312: union_list_double_cpp_ref field_312;
+  313: union_list_binary_cpp_ref field_313;
+  314: union_list_string_cpp_ref field_314;
+  315: union_set_string_cpp_ref field_315;
+  316: union_set_i64_cpp_ref field_316;
+  317: union_map_string_bool_cpp_ref field_317;
+  318: union_map_string_byte_cpp_ref field_318;
+  319: union_map_string_i16_cpp_ref field_319;
+  320: union_map_string_i32_cpp_ref field_320;
+  321: union_map_string_i64_cpp_ref field_321;
+  322: union_map_string_float_cpp_ref field_322;
+  323: union_map_string_double_cpp_ref field_323;
+  324: union_map_string_binary_cpp_ref field_324;
+  325: union_map_string_string_cpp_ref field_325;
+  326: union_map_i64_bool_cpp_ref field_326;
+  327: union_map_i64_byte_cpp_ref field_327;
+  328: union_map_i64_i16_cpp_ref field_328;
+  329: union_map_i64_i32_cpp_ref field_329;
+  330: union_map_i64_i64_cpp_ref field_330;
+  331: union_map_i64_float_cpp_ref field_331;
+  332: union_map_i64_double_cpp_ref field_332;
+  333: union_map_i64_binary_cpp_ref field_333;
+  334: union_map_i64_string_cpp_ref field_334;
+  335: union_map_string_set_string_cpp_ref field_335;
+  336: union_map_string_set_i64_cpp_ref field_336;
+  337: union_map_i64_set_string_cpp_ref field_337;
+  338: union_map_i64_set_i64_cpp_ref field_338;
+} (thrift.uri="facebook.com/thrift/test/testset/struct_all")

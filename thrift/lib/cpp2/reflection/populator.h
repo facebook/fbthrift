@@ -99,11 +99,24 @@ struct populator_methods;
 template <typename Int>
 struct populator_methods<type_class::integral, Int> {
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const&, Int& out) {
+  static Int next_value(Rng& rng) {
     using limits = std::numeric_limits<Int>;
-    out = detail::rand_in_range(
+    Int out = detail::rand_in_range(
         rng, populator_opts::range<Int>(limits::min(), limits::max()));
     DVLOG(4) << "generated int: " << out;
+    return out;
+  }
+
+  // Special overload to work with lists of booleans.
+  template <typename Rng>
+  static void
+  populate(Rng& rng, populator_opts const&, std::vector<bool>::reference out) {
+    out = next_value(rng);
+  }
+
+  template <typename Rng>
+  static void populate(Rng& rng, populator_opts const&, Int& out) {
+    out = next_value(rng);
   }
 };
 
