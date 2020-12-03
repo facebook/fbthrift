@@ -24,7 +24,7 @@ namespace protocol {
 
 /**
  * Enumerated definition of the types that the Thrift protocol supports.
- * Take special note of the T_END type which is used specifically to mark
+ * Take special note of the T_STOP type which is used specifically to mark
  * the end of a sequence of fields.
  */
 enum TType : uint8_t {
