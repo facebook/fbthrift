@@ -684,10 +684,9 @@ TLSCredProcessor& ThriftServer::getCredProcessor() {
 }
 
 PreprocessResult ThriftServer::preprocess(
-    const transport::THeader::StringToStringMap* readHeaders,
-    const std::string* method) const {
+    const PreprocessParams& params) const {
   if (preprocess_) {
-    return preprocess_(readHeaders, method);
+    return preprocess_(params);
   }
   return {};
 }

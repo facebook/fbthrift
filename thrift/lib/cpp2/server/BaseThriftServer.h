@@ -66,9 +66,8 @@ using IsOverloadedFunc = folly::Function<bool(
     const transport::THeader::StringToStringMap*,
     const std::string*) const>;
 
-using PreprocessFunc = folly::Function<PreprocessResult(
-    const transport::THeader::StringToStringMap*,
-    const std::string*) const>;
+using PreprocessFunc =
+    folly::Function<PreprocessResult(const server::PreprocessParams&) const>;
 
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {

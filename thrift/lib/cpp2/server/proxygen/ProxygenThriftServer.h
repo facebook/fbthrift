@@ -268,9 +268,7 @@ class ProxygenThriftServer : public BaseThriftServer,
     return {};
   }
 
-  PreprocessResult preprocess(
-      const transport::THeader::StringToStringMap*,
-      const std::string*) const override {
+  PreprocessResult preprocess(const server::PreprocessParams&) const override {
     return {};
   }
 

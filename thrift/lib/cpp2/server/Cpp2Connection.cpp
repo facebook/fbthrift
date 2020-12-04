@@ -402,8 +402,8 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  if (auto preprocessResult =
-          server->preprocess(&hreq->getHeader()->getHeaders(), &methodName)) {
+  if (auto preprocessResult = server->preprocess(
+          {hreq->getHeader()->getHeaders(), methodName, context_})) {
     preprocessResult.value().apply_visitor(
         apache::thrift::detail::VisitorHelper() //
             .with([&](AppClientException& ace) {

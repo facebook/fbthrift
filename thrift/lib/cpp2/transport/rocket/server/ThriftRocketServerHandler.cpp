@@ -371,9 +371,13 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
   // check if server is overloaded
-  auto errorCode = serverConfigs_->checkOverload(
-      metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref() : nullptr,
-      &*metadata.name_ref());
+  static folly::Indestructible<transport::THeader::StringToStringMap>
+      emptyHeaders;
+  const auto& headers = metadata.otherMetadata_ref()
+      ? *metadata.otherMetadata_ref()
+      : *emptyHeaders;
+  const auto& name = *metadata.name_ref();
+  auto errorCode = serverConfigs_->checkOverload(&headers, &name);
   if (UNLIKELY(errorCode.has_value())) {
     handleRequestOverloadedServer(
         makeRequest(
@@ -381,9 +385,8 @@ void ThriftRocketServerHandler::handleRequestCommon(
         errorCode.value());
     return;
   }
-  auto preprocessResult = serverConfigs_->preprocess(
-      metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref() : nullptr,
-      &*metadata.name_ref());
+  auto preprocessResult =
+      serverConfigs_->preprocess({headers, name, connContext_});
   if (UNLIKELY(preprocessResult.has_value())) {
     auto req = makeRequest(
         std::move(metadata), std::move(debugPayload), std::move(reqCtx));

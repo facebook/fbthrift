@@ -33,7 +33,20 @@ namespace thrift {
 using PreprocessResult =
     folly::Optional<boost::variant<AppClientException, AppServerException>>;
 
+class Cpp2ConnContext;
+
 namespace server {
+
+struct PreprocessParams {
+  PreprocessParams(
+      const transport::THeader::StringToStringMap& headersIn,
+      const std::string& methodIn,
+      const Cpp2ConnContext& connContextIn)
+      : headers(headersIn), method(methodIn), connContext(connContextIn) {}
+  const transport::THeader::StringToStringMap& headers;
+  const std::string& method;
+  const Cpp2ConnContext& connContext;
+};
 
 /**
  * This class provides a set of abstract functions that the ThriftProcessor can
@@ -78,10 +91,8 @@ class ServerConfigs {
       const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
 
-  // @see ThriftServer::checkOverload function.
-  virtual PreprocessResult preprocess(
-      const transport::THeader::StringToStringMap* readHeaders,
-      const std::string* method) const = 0;
+  // @see ThriftServer::preprocess function.
+  virtual PreprocessResult preprocess(const PreprocessParams& params) const = 0;
 
   // @see ThriftServer::getTosReflect function.
   virtual bool getTosReflect() const = 0;

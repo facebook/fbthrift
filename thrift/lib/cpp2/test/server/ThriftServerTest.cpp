@@ -852,7 +852,7 @@ TEST_P(OverloadTest, Test) {
         return false;
       });
 
-  runner.getThriftServer().setPreprocess([&](auto, auto) -> PreprocessResult {
+  runner.getThriftServer().setPreprocess([&](auto&) -> PreprocessResult {
     if (errorType == ErrorType::Client) {
       return {AppClientException("name", "message")};
     } else if (errorType == ErrorType::Server) {
