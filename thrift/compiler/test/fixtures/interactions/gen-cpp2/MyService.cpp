@@ -20,6 +20,9 @@ std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceSvIf::createMyInteracti
 std::unique_ptr<MyServiceSvIf::MyInteractionFastIf> MyServiceSvIf::createMyInteractionFast() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteractionFast");
 }
+std::unique_ptr<MyServiceSvIf::SerialInteractionIf> MyServiceSvIf::createSerialInteraction() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("createSerialInteraction");
+}
 
 void MyServiceSvIf::foo() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("foo");
@@ -220,6 +223,45 @@ void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache:
   callback->exception(apache::thrift::TApplicationException("Function encode is unimplemented"));
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> MyServiceSvIf::SerialInteractionIf::co_frobnicate() {
+  return folly::coro::toTask(semifuture_frobnicate());
+}
+
+folly::coro::Task<void> MyServiceSvIf::SerialInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
+  return co_frobnicate();
+}
+#endif // FOLLY_HAS_COROUTINES
+folly::SemiFuture<folly::Unit> MyServiceSvIf::SerialInteractionIf::semifuture_frobnicate() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("semifuture_frobnicate");
+}
+void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+#if FOLLY_HAS_COROUTINES
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we have to
+  // set them up now. This is just a short-term shim; in the long run, we
+  // shouldn't generate the future, semifuture, and synchronous member functions
+  // for entry points that explicitly ask for coroutines.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  apache::thrift::RequestParams params{callback->getConnectionContext(),
+    callback->getThreadManager(), callback->getEventBase()};
+  try {
+    apache::thrift::detail::si::async_tm_coro_start(
+      co_frobnicate(params),
+      params.getThreadManager(),
+      std::move(callback));
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+#else // FOLLY_HAS_COROUTINES
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return apache::thrift::detail::si::future(
+      semifuture_frobnicate(), getThreadManager());
+  });
+#endif // FOLLY_HAS_COROUTINES
+}
+
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";
 }
@@ -250,6 +292,7 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::binaryProcess
   {"MyInteractionFast.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"MyInteractionFast.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_truthify<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"MyInteractionFast.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_encode<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"SerialInteraction.frobnicate", &MyServiceAsyncProcessor::setUpAndProcess_SerialInteraction_frobnicate<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -266,6 +309,7 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProces
   {"MyInteractionFast.ping", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"MyInteractionFast.truthify", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_truthify<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"MyInteractionFast.encode", &MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_encode<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"SerialInteraction.frobnicate", &MyServiceAsyncProcessor::setUpAndProcess_SerialInteraction_frobnicate<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::InteractionConstructorMap& MyServiceAsyncProcessor::getInteractionConstructorMap() {
@@ -275,6 +319,7 @@ const MyServiceAsyncProcessor::InteractionConstructorMap& MyServiceAsyncProcesso
 const MyServiceAsyncProcessor::InteractionConstructorMap MyServiceAsyncProcessor::interactionConstructorMap_ {
   {"MyInteraction", &MyServiceAsyncProcessor::createMyInteraction},
   {"MyInteractionFast", &MyServiceAsyncProcessor::createMyInteractionFast},
+  {"SerialInteraction", &MyServiceAsyncProcessor::createSerialInteraction},
 };
 
 std::unique_ptr<apache::thrift::Tile> MyServiceAsyncProcessor::createInteractionImpl(const std::string& name) {

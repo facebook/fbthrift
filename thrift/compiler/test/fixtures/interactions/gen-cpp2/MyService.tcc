@@ -508,4 +508,60 @@ void MyServiceAsyncProcessor::throw_wrapped_MyInteractionFast_encode(apache::thr
   }
 }
 
+typedef apache::thrift::ThriftPresult<false> MyService_SerialInteraction_frobnicate_pargs;
+typedef apache::thrift::ThriftPresult<true> MyService_SerialInteraction_frobnicate_presult;
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceAsyncProcessor::setUpAndProcess_SerialInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_, "SerialInteraction")) {
+    return;
+  }
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestPriority(pri);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_SerialInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, this);
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void MyServiceAsyncProcessor::process_SerialInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  MyService_SerialInteraction_frobnicate_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.SerialInteraction.frobnicate", ctx));
+  auto tile = ctx->getTile();
+  try {
+    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), serializedRequest, ctxStack.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "SerialInteraction.frobnicate");
+    return;
+  }
+  req->setStartedProcessing();
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_SerialInteraction_frobnicate<ProtocolIn_,ProtocolOut_>, throw_wrapped_SerialInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, tile);
+  if (!callback->isRequestActive()) {
+    return;
+  }
+  static_cast<MyServiceSvIf::SerialInteractionIf*>(tile)->async_tm_frobnicate(std::move(callback));
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+folly::IOBufQueue MyServiceAsyncProcessor::return_SerialInteraction_frobnicate(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+  ProtocolOut_ prot;
+  MyService_SerialInteraction_frobnicate_presult result;
+  return serializeResponse("SerialInteraction.frobnicate", &prot, protoSeqId, ctx, result);
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void MyServiceAsyncProcessor::throw_wrapped_SerialInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  {
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "SerialInteraction.frobnicate");
+    return;
+  }
+}
+
 } // cpp2

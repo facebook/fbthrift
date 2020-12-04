@@ -31,6 +31,9 @@ MyServiceAsyncClient::MyInteraction MyServiceAsyncClient::createMyInteraction() 
 MyServiceAsyncClient::MyInteractionFast MyServiceAsyncClient::createMyInteractionFast() {
   return MyInteractionFast(channel_, "MyInteractionFast");
 }
+MyServiceAsyncClient::SerialInteraction MyServiceAsyncClient::createSerialInteraction() {
+  return SerialInteraction(channel_, "SerialInteraction");
+}
 void MyServiceAsyncClient::foo(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   foo(rpcOptions, std::move(callback));
@@ -956,6 +959,109 @@ apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::s
     ew.throw_exception();
   }
   return _return;
+}
+
+
+typedef apache::thrift::ThriftPresult<false> MyService_SerialInteraction_frobnicate_pargs;
+typedef apache::thrift::ThriftPresult<true> MyService_SerialInteraction_frobnicate_presult;
+
+template <typename Protocol_>
+void MyServiceAsyncClient::SerialInteraction::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
+  MyService_SerialInteraction_frobnicate_pargs args;
+  auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
+  auto writer = [&](Protocol_* p) { args.write(p); };
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "SerialInteraction.frobnicate", writer, sizer);
+  ctx->reqContext.setRequestHeader(nullptr);
+}
+
+
+
+void MyServiceAsyncClient::SerialInteraction::frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  setInteraction(rpcOptions);
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "MyService.SerialInteraction.frobnicate");
+  apache::thrift::RequestCallback::Context callbackContext;
+  callbackContext.protocolId =
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
+  auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
+  frobnicateImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
+}
+
+void MyServiceAsyncClient::SerialInteraction::frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      frobnicateT(&writer, rpcOptions, std::move(ctx), std::move(callback));
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      frobnicateT(&writer, rpcOptions, std::move(ctx), std::move(callback));
+      break;
+    }
+    default:
+    {
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
+    }
+  }
+}
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::SerialInteraction::semifuture_frobnicate() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return semifuture_frobnicate(rpcOptions);
+}
+
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::SerialInteraction::semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_frobnicate, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  frobnicate(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
+
+
+#if FOLLY_HAS_COROUTINES
+#endif // FOLLY_HAS_COROUTINES
+folly::exception_wrapper MyServiceAsyncClient::SerialInteraction::recv_wrapped_frobnicate(::apache::thrift::ClientReceiveState& state) {
+  if (state.isException()) {
+    return std::move(state.exception());
+  }
+  if (!state.buf()) {
+    return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
+  }
+
+  using result = MyService_SerialInteraction_frobnicate_presult;
+  constexpr auto const fname = "SerialInteraction.frobnicate";
+  switch (state.protocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolReader reader;
+      return apache::thrift::detail::ac::recv_wrapped<result>(
+          fname, &reader, state);
+    }
+    default:
+    {
+    }
+  }
+  return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
+}
+void MyServiceAsyncClient::SerialInteraction::recv_frobnicate(::apache::thrift::ClientReceiveState& state) {
+  auto ew = recv_wrapped_frobnicate(state);
+  if (ew) {
+    ew.throw_exception();
+  }
 }
 
 } // cpp2

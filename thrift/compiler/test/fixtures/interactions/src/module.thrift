@@ -33,8 +33,13 @@ interaction MyInteractionFast {
   set<float>, sink<string, binary> encode();
 } (process_in_event_base)
 
+interaction SerialInteraction {
+  void frobnicate();
+}
+
 service MyService {
   performs MyInteraction;
   performs MyInteractionFast;
+  performs SerialInteraction;
   void foo();
 }
