@@ -293,11 +293,6 @@ class MyService_foo_args implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 class MyService_foo_result implements \IThriftStruct {
@@ -338,11 +333,6 @@ class MyService_foo_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

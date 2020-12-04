@@ -316,11 +316,6 @@ class TestService_ping_args implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 class TestService_ping_result implements \IThriftStruct {
@@ -373,11 +368,6 @@ class TestService_ping_result implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

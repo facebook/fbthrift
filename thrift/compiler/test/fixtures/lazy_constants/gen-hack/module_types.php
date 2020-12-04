@@ -126,11 +126,6 @@ class Internship implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 /**
@@ -209,11 +204,6 @@ class Range implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

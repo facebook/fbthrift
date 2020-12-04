@@ -527,11 +527,6 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx, __ProvenanceSkipFrame>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -624,11 +619,6 @@ class Bar_baz_result implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

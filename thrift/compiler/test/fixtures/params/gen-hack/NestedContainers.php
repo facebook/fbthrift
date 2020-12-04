@@ -1584,11 +1584,6 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -1647,11 +1642,6 @@ class NestedContainers_mapList_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -1727,11 +1717,6 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -1790,11 +1775,6 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -1870,11 +1850,6 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -1933,11 +1908,6 @@ class NestedContainers_listMap_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -2009,11 +1979,6 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -2072,11 +2037,6 @@ class NestedContainers_listSet_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -2171,11 +2131,6 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -2249,11 +2204,6 @@ class NestedContainers_turtles_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

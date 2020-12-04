@@ -400,11 +400,6 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -465,11 +460,6 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   public function readFromJson(string $jsonText): void {

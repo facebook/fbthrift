@@ -115,11 +115,6 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();

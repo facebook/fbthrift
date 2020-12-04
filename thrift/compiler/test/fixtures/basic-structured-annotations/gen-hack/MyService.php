@@ -503,11 +503,6 @@ class MyService_first_args implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 class MyService_first_result implements \IThriftStruct {
@@ -573,11 +568,6 @@ class MyService_first_result implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 class MyService_second_args implements \IThriftStruct {
@@ -639,11 +629,6 @@ class MyService_second_args implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 class MyService_second_result implements \IThriftStruct {
@@ -696,11 +681,6 @@ class MyService_second_result implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

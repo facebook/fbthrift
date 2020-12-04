@@ -165,11 +165,6 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -257,11 +252,6 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   <<__Rx>>
@@ -1322,11 +1312,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   <<__Rx>>

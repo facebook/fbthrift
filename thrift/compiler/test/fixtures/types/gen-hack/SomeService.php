@@ -527,11 +527,6 @@ class SomeService_bounce_map_args implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -614,11 +609,6 @@ class SomeService_bounce_map_result implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -696,11 +686,6 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   public function readFromJson(string $jsonText): void {
@@ -783,11 +768,6 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   public function readFromJson(string $jsonText): void {

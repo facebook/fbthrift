@@ -116,12 +116,6 @@ class MyThriftStruct implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'hack.attributes' => "ClassAttribute",
-    ];
-  }
-
 }
 
 /**
@@ -219,11 +213,6 @@ class MySecondThriftStruct implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -371,12 +360,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'hack.union_enum_attributes' => "EnumAttributes",
-    ];
   }
 
 }

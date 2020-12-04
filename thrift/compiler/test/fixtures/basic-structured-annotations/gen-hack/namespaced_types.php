@@ -69,10 +69,5 @@ class structured_annotation_with_namespace implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 

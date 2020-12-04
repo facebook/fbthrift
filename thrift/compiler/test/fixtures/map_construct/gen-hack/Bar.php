@@ -539,11 +539,6 @@ class Bar_baz_args implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 class Bar_baz_result implements \IThriftStruct {
@@ -603,11 +598,6 @@ class Bar_baz_result implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

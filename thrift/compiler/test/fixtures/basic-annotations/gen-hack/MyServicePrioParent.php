@@ -684,11 +684,6 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -751,11 +746,6 @@ class MyServicePrioParent_ping_result implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -808,11 +798,6 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   <<__Rx>>
@@ -875,11 +860,6 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   public function readFromJson(string $jsonText): void {

@@ -2865,26 +2865,6 @@ void t_hack_generator::_generate_php_struct_definition(
   indent_down();
   indent(out) << "}\n\n";
 
-  // Regular annotations
-  out << indent()
-      << "public static function getAnnotations(): darray<string, mixed> {\n";
-  indent_up();
-  out << indent() << "return darray[\n";
-  indent_up();
-  for (auto& it : tstruct->annotations_) {
-    out << indent() << "'" << it.first << "' => " << render_string(it.second)
-        << ",\n";
-  }
-  for (auto& it : tstruct->annotation_objects_) {
-    out << indent() << "'" << it.first << "' => ";
-    out << render_const_value(it.second->get_type(), it.second->get_value());
-    out << ",\n";
-  }
-  indent_down();
-  out << indent() << "];\n";
-  indent_down();
-  out << indent() << "}\n\n";
-
   if (gen_shapes) {
     generate_php_struct_shape_methods(out, tstruct);
   }

@@ -714,11 +714,6 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
     $me = new static();
@@ -798,11 +793,6 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
   public function readFromJson(string $jsonText): void {
     $parsed = json_decode($jsonText, true);
 
@@ -872,11 +862,6 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   <<__Rx>>
@@ -956,11 +941,6 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   public function readFromJson(string $jsonText): void {
