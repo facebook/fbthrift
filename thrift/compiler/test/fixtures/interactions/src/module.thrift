@@ -35,7 +35,7 @@ interaction MyInteractionFast {
 
 interaction SerialInteraction {
   void frobnicate();
-}
+} (serial)
 
 service MyService {
   performs MyInteraction;

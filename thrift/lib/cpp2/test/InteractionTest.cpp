@@ -573,6 +573,80 @@ TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
   EXPECT_TRUE(std::move(fut3).getTry().hasException());
 }
 
+TEST(InteractionCodegenTest, SerialInteraction) {
+#if FOLLY_HAS_COROUTINES
+  struct SerialCalculatorHandler : CalculatorHandler {
+    struct SerialAdditionHandler : CalculatorSvIf::SerialAdditionIf {
+      int acc_{0};
+      folly::coro::Baton &baton2_, &baton3_;
+      SerialAdditionHandler(
+          folly::coro::Baton& baton2,
+          folly::coro::Baton& baton3)
+          : baton2_(baton2), baton3_(baton3) {}
+
+      folly::coro::Task<void> co_accumulatePrimitive(int a) override {
+        co_await baton2_;
+        acc_ += a;
+      }
+      folly::coro::Task<int32_t> co_getPrimitive() override {
+        co_await baton3_;
+        co_return acc_;
+      }
+    };
+
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      folly::coro::blockingWait(baton1);
+      return std::make_unique<SerialAdditionHandler>(baton2, baton3);
+    }
+
+    folly::coro::Baton baton1, baton2, baton3;
+  };
+  auto handler = std::make_shared<SerialCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client =
+      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
+        return RocketClientChannel::newChannel(std::move(socket));
+      });
+
+  auto adder = client->createSerialAddition();
+  folly::EventBase eb;
+  auto accSemi = adder.co_accumulatePrimitive(1).scheduleOn(&eb).start();
+  auto getSemi = adder.co_getPrimitive().scheduleOn(&eb).start();
+
+  // blocked on baton1 in constructor, blocks TM worker
+  auto semi = client->semifuture_addPrimitive(0, 0);
+  EXPECT_FALSE(accSemi.isReady());
+  EXPECT_FALSE(getSemi.isReady());
+  handler->baton1.post();
+  std::move(semi).via(&eb).getVia(&eb);
+  // blocked on baton2 in first serial method, sole TM worker is free
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  EXPECT_FALSE(accSemi.isReady());
+  EXPECT_FALSE(getSemi.isReady());
+
+  // blocked on baton3 in second method, first method completes
+  handler->baton2.post();
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  EXPECT_TRUE(accSemi.isReady());
+  EXPECT_FALSE(getSemi.isReady());
+
+  // third method is blocked on second method completing
+  accSemi = adder.co_accumulatePrimitive(1).scheduleOn(&eb).start();
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  EXPECT_FALSE(accSemi.isReady());
+  EXPECT_FALSE(getSemi.isReady());
+
+  // both methods complete
+  handler->baton3.post();
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  EXPECT_TRUE(accSemi.isReady());
+  EXPECT_TRUE(getSemi.isReady());
+
+  // second accumulate happens after get
+  EXPECT_EQ(getSemi.value(), 1);
+#endif
+}
+
 TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
 #if FOLLY_HAS_COROUTINES
   struct StreamingHandler : StreamerSvIf {

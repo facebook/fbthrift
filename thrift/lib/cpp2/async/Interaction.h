@@ -69,25 +69,33 @@ class Tile {
   virtual bool __fbthrift_isPromise() const {
     return false;
   }
+  virtual bool __fbthrift_isSerial() const {
+    return false;
+  }
 
   void __fbthrift_acquireRef(folly::EventBase& eb) {
     eb.dcheckIsInEventBaseThread();
     ++refCount_;
   }
-  void __fbthrift_releaseRef(folly::EventBase& eb) {
-    eb.dcheckIsInEventBaseThread();
-    DCHECK_GT(refCount_, 0u);
-
-    if (--refCount_ == 0 && terminationRequested_) {
-      std::move(destructionExecutor_).add([this](auto) { delete this; });
-    }
-  }
+  void __fbthrift_releaseRef(folly::EventBase& eb);
 
  private:
   bool terminationRequested_{false};
   size_t refCount_{0};
   folly::Executor::KeepAlive<> destructionExecutor_;
   friend class GeneratedAsyncProcessor;
+  friend class TilePromise;
+};
+
+class SerialInteractionTile : public Tile {
+  bool __fbthrift_isSerial() const final {
+    return true;
+  }
+
+ private:
+  std::queue<std::shared_ptr<concurrency::Runnable>> taskQueue_;
+  friend class GeneratedAsyncProcessor;
+  friend class Tile;
   friend class TilePromise;
 };
 
@@ -101,16 +109,23 @@ class TilePromise final : public Tile {
   void
   fulfill(Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
     DCHECK(!continuations_.empty());
+
+    bool isSerial = __fbthrift_isSerial(), first = true;
     continuations_.reverse();
     for (auto& task : continuations_) {
-      tile.__fbthrift_acquireRef(eb);
-      dynamic_cast<InteractionEventTask&>(*task).setTile(tile);
-      --refCount_;
-      tm.add(
-          std::move(task),
-          0, // timeout
-          0, // expiration
-          concurrency::ThreadManager::Source::EXISTING_INTERACTION);
+      if (!isSerial || std::exchange(first, false)) {
+        tile.__fbthrift_acquireRef(eb);
+        dynamic_cast<InteractionEventTask&>(*task).setTile(tile);
+        --refCount_;
+        tm.add(
+            std::move(task),
+            0, // timeout
+            0, // expiration
+            concurrency::ThreadManager::Source::EXISTING_INTERACTION);
+      } else {
+        static_cast<SerialInteractionTile&>(tile).taskQueue_.push(
+            std::move(task));
+      }
     }
     continuations_.clear();
     DCHECK_EQ(refCount_, 0u);

@@ -83,7 +83,7 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   virtual void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback);
   virtual void async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<bool>>> callback);
   virtual void async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer<::std::set<float>,::std::string,::std::string>>> callback);
-};class SerialInteractionIf : public apache::thrift::Tile, public apache::thrift::ServerInterface {
+};class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public apache::thrift::ServerInterface {
  public:
   typedef MyServiceAsyncProcessor ProcessorType;
   virtual ~SerialInteractionIf() = default;

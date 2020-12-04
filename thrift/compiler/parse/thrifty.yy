@@ -1064,10 +1064,19 @@ Interaction:
       }
 
       if ($9) {
+        bool eb_or_serial = false;
         for (const auto& it : $9->annotations_) {
           if (it.first == "process_in_event_base") {
             for (auto* func : $$->get_functions()) {
               func->annotations_["thread"] = "eb";
+            }
+            if (std::exchange(eb_or_serial, true)) {
+              driver.failure("EB interactions are already serial");
+            }
+          } else if (it.first == "serial") {
+            $$->set_is_serial_interaction();
+            if (std::exchange(eb_or_serial, true)) {
+              driver.failure("EB interactions are already serial");
             }
           } else {
             driver.failure("Unknown interaction annotation '%s'", it.first.c_str());

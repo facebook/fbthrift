@@ -1107,6 +1107,7 @@ class mstch_service : public mstch_base {
             {"service:interaction?", &mstch_service::is_interaction},
             {"service:interactions", &mstch_service::interactions},
             {"service:interactions?", &mstch_service::has_interactions},
+            {"interaction:serial?", &mstch_service::is_serial_interaction},
         });
   }
 
@@ -1161,6 +1162,9 @@ class mstch_service : public mstch_base {
   }
   mstch::node is_interaction() {
     return service_->is_interaction();
+  }
+  mstch::node is_serial_interaction() {
+    return service_->is_serial_interaction();
   }
 
  protected:

@@ -761,6 +761,9 @@ void GeneratedAsyncProcessor::processInThread(
   if (tile && tile->__fbthrift_isPromise()) {
     static_cast<TilePromise*>(tile)->addContinuation(std::move(task));
     return;
+  } else if (tile && tile->refCount_ > 1 && tile->__fbthrift_isSerial()) {
+    static_cast<SerialInteractionTile&>(*tile).taskQueue_.push(std::move(task));
+    return;
   }
 
   tm->add(

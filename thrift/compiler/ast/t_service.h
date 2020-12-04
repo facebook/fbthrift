@@ -77,6 +77,14 @@ class t_service : public t_type {
     is_interaction_ = true;
   }
 
+  bool is_serial_interaction() const {
+    return is_serial_interaction_;
+  }
+
+  void set_is_serial_interaction() {
+    is_serial_interaction_ = true;
+  }
+
  private:
   std::vector<std::unique_ptr<t_function>> functions_;
 
@@ -85,6 +93,7 @@ class t_service : public t_type {
   t_service* extends_;
 
   bool is_interaction_{false};
+  bool is_serial_interaction_{false};
 };
 
 } // namespace compiler

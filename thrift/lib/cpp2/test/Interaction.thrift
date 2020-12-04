@@ -37,9 +37,15 @@ interaction AdditionFast {
     oneway void noop();
 } (process_in_event_base)
 
+interaction SerialAddition {
+    void accumulatePrimitive(1: i32 a);
+    i32 getPrimitive();
+} (serial)
+
 service Calculator {
     performs Addition;
     performs AdditionFast;
+    performs SerialAddition;
     i32 addPrimitive(1: i32 a, 2: i32 b);
 }
 

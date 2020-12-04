@@ -15,7 +15,7 @@
   limitations under the License.
 
 %>class <%^service:interaction?%><%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%#service:extends%>virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%><%^service:extends%>public apache::thrift::ServerInterface<%/service:extends%><%/service:interaction?%><%!
-%><%#service:interaction?%><%service:name%>If : public apache::thrift::Tile, public apache::thrift::ServerInterface<%/service:interaction?%> {
+%><%#service:interaction?%><%service:name%>If : public apache::thrift::<%#interaction:serial?%>SerialInteraction<%/interaction:serial?%>Tile, public apache::thrift::ServerInterface<%/service:interaction?%> {
  public:
   typedef <%service:parent_service_name%>AsyncProcessor ProcessorType;
 <%^service:interaction?%>
