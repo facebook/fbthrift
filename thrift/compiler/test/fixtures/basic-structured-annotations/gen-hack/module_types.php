@@ -15,6 +15,36 @@ enum MyEnum: int {
   ONE = 1;
 }
 
+class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[
+        'structured_annotation_inline' => structured_annotation_inline::fromShape(
+          shape(
+            "count" => 4,
+          )
+        ),
+      ],
+      'constants' => dict[
+        'UNKNOWN' => dict[
+          'structured_annotation_with_default' => structured_annotation_with_default::fromShape(
+            shape(
+              "name" => "unknown",
+            )
+          ),
+        ],
+        'ONE' => dict[
+          'structured_annotation_with_default' => structured_annotation_with_default::fromShape(
+            shape(
+              "name" => "one",
+            )
+          ),
+        ],
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * structured_annotation_inline

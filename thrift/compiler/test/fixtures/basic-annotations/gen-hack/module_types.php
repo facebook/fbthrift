@@ -16,6 +16,16 @@ enum MyEnum: int {
   DOMAIN = 2;
 }
 
+class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * MyStructNestedAnnotation

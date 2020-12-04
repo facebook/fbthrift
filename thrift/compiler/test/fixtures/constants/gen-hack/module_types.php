@@ -13,6 +13,16 @@
 enum EmptyEnum: int {
 }
 
+class EmptyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift enum:-
  * City
@@ -24,6 +34,16 @@ enum City: int {
   LON = 3;
 }
 
+class City_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift enum:-
  * Company
@@ -33,6 +53,16 @@ enum Company: int {
   WHATSAPP = 1;
   OCULUS = 2;
   INSTAGRAM = 3;
+}
+
+class Company_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
 }
 
 /**

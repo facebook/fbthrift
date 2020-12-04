@@ -32,8 +32,17 @@ type TServiceAnnotations = shape(
   'functions' => dict<string, dict<string, \IThriftStruct>>,
 );
 
+type TEnumAnnotations = shape(
+  'enum' => dict<string, \IThriftStruct>,
+  'constants' => dict<string, dict<string, \IThriftStruct>>,
+);
+
 interface IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations(): \TServiceAnnotations;
+}
+
+interface IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations;
 }
 
 interface IThriftConstants {

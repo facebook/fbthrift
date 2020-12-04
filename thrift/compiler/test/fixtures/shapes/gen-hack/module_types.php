@@ -16,6 +16,16 @@ enum Enum: int {
   ENUM = 1;
 }
 
+class Enum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 enum UnionEnum: int {
   _EMPTY_ = 0;
   intValue = 1;

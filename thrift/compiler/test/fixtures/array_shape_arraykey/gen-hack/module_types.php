@@ -14,6 +14,16 @@ enum Enum: int {
   ENUM = 1;
 }
 
+class Enum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * A

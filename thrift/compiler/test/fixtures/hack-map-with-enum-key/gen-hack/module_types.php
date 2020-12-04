@@ -15,6 +15,16 @@ enum FooEnum: int {
   BAZ = 1;
 }
 
+class FooEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * BarStruct

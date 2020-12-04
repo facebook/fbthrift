@@ -18,6 +18,16 @@ enum has_bitwise_ops: int {
   three = 8;
 }
 
+class has_bitwise_ops_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift enum:-
  * is_unscoped
@@ -25,6 +35,16 @@ enum has_bitwise_ops: int {
 enum is_unscoped: int {
   hello = 0;
   world = 1;
+}
+
+class is_unscoped_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
 }
 
 /**
@@ -36,6 +56,16 @@ enum MyForwardRefEnum: int {
   NONZERO = 12;
 }
 
+class MyForwardRefEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift enum:-
  * MyEnumA
@@ -44,6 +74,16 @@ enum MyEnumA: int {
   fieldA = 1;
   fieldB = 2;
   fieldC = 4;
+}
+
+class MyEnumA_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
 }
 
 /**

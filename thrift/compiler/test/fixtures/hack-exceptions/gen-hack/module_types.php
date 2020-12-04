@@ -15,6 +15,16 @@ enum MyEnum: int {
   MyValue2 = 1;
 }
 
+class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift exception:-
  * MyException1

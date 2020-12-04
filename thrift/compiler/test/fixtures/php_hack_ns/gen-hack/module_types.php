@@ -14,6 +14,16 @@ enum foo_php_ns_Status: int {
   Unknown = 0;
 }
 
+class foo_php_ns_Status_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * TestStruct

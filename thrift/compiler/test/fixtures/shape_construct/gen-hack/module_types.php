@@ -15,6 +15,16 @@ enum TestEnum: int {
   NEW_VALUE = 1;
 }
 
+class TestEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getAllStructuredAnnotations(): \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 enum TestUnionEnum: int {
   _EMPTY_ = 0;
   int_value = 1;

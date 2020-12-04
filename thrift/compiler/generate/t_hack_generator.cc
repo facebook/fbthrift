@@ -1105,6 +1105,38 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     f_types_ << "type " << typehint << "Type = " << typehint << ";\n";
   }
   f_types_ << "\n";
+
+  f_types_ << indent() << "class " << hack_name(tenum, true)
+           << "_TEnumStaticMetadata implements \\IThriftEnumStaticMetadata {\n";
+  indent_up();
+  // Structured annotations
+  f_types_ << indent()
+           << "public static function getAllStructuredAnnotations(): "
+              "\\TEnumAnnotations {\n";
+  indent_up();
+  f_types_ << indent() << "return shape(\n";
+  indent_up();
+  f_types_ << indent() << "'enum' => "
+           << render_structured_annotations(tenum->structured_annotations_)
+           << ",\n";
+  f_types_ << indent() << "'constants' => dict[\n";
+  indent_up();
+  for (const auto& constant : constants) {
+    if (constant->structured_annotations_.empty()) {
+      continue;
+    }
+    f_types_ << indent() << "'" << constant->get_name() << "' => "
+             << render_structured_annotations(constant->structured_annotations_)
+             << ",\n";
+  }
+  indent_down();
+  f_types_ << indent() << "],\n";
+  indent_down();
+  f_types_ << indent() << ");\n";
+  indent_down();
+  f_types_ << indent() << "}\n";
+  indent_down();
+  f_types_ << indent() << "}\n\n";
 }
 
 /**
