@@ -94,14 +94,6 @@ class MyException1 extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -187,14 +179,6 @@ class MyException2 extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -280,14 +264,6 @@ class MyException3 extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -373,14 +349,6 @@ class MyException4 extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -454,14 +422,6 @@ class MyException5 extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

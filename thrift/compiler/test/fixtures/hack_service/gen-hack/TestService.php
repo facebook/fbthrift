@@ -308,10 +308,6 @@ class TestService_ping_args implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'str_arg' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -362,10 +358,6 @@ class TestService_ping_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -377,7 +369,6 @@ class TestServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'ping' => dict[],
       ],
     );
   }

@@ -305,30 +305,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'intValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'intListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'typedefValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringRef' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -532,14 +508,6 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'intListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -710,14 +678,6 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'binaryData' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringData' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -830,18 +790,6 @@ class Val implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'strVal' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'intVal' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'typedefValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1012,14 +960,6 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'v1' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'v2' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1182,14 +1122,6 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'thingOne' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'thingTwo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1267,10 +1199,6 @@ class NonCopyableStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'num' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1385,10 +1313,6 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        's' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

@@ -100,18 +100,6 @@ class MyThriftStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'bar' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'baz' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -199,18 +187,6 @@ class MySecondThriftStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'bar' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'baz' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -350,14 +326,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'bar' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

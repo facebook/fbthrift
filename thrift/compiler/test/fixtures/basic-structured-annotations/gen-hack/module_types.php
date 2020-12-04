@@ -81,14 +81,6 @@ class structured_annotation_inline implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'count' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -148,10 +140,6 @@ class structured_annotation_with_default implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -239,18 +227,6 @@ class structured_annotation_recursive implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'recurse' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'forward' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -310,10 +286,6 @@ class structured_annotation_forward implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'count' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -387,14 +359,6 @@ class structured_annotation_nested implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'nest' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

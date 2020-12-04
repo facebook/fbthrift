@@ -67,10 +67,6 @@ class foo_php_ns_TestStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'str_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

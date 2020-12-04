@@ -519,10 +519,6 @@ class SomeService_bounce_map_args implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'm' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -601,10 +597,6 @@ class SomeService_bounce_map_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -680,10 +672,6 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'r' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -762,10 +750,6 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -796,8 +780,6 @@ class SomeServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'bounce_map' => dict[],
-        'binary_keyed_map' => dict[],
       ],
     );
   }

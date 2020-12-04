@@ -59,10 +59,6 @@ class structured_annotation_included implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

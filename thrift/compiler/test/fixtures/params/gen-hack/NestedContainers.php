@@ -1576,10 +1576,6 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1709,10 +1705,6 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1842,10 +1834,6 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1971,10 +1959,6 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2123,10 +2107,6 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2213,11 +2193,6 @@ class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'mapList' => dict[],
-        'mapSet' => dict[],
-        'listMap' => dict[],
-        'listSet' => dict[],
-        'turtles' => dict[],
       ],
     );
   }

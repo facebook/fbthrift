@@ -675,10 +675,6 @@ class MyService_second_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

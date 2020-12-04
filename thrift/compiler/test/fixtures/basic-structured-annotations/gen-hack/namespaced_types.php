@@ -61,10 +61,6 @@ class structured_annotation_with_namespace implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

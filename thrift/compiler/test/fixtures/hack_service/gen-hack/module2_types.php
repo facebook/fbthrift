@@ -69,10 +69,6 @@ class FBStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'str_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

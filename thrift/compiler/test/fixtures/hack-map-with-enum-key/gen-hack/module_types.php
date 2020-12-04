@@ -103,14 +103,6 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'e' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        's' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

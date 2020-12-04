@@ -107,10 +107,6 @@ class Fiery extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -176,10 +172,6 @@ class Serious extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'sonnet' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -258,14 +250,6 @@ class ComplexFieldNames extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'internal_error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -344,14 +328,6 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'internal_error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

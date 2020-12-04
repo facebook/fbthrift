@@ -318,30 +318,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'int_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'str_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'double_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_strings' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_ints' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'struct_foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -526,26 +502,6 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'c' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'd' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'str_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -726,30 +682,6 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo_struct' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'union_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'struct_of_self' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_struct_foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_struct_foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_struct_self' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -917,22 +849,6 @@ class Baz extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'some_field' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'some_container' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -993,10 +909,6 @@ class OptBaz extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

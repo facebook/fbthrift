@@ -1033,6 +1033,9 @@ void t_hack_generator::close_generator() {
     f_consts_ << indent() << "return dict[\n";
     indent_up();
     for (const auto& tconst : program_->get_consts()) {
+      if (tconst->structured_annotations_.empty()) {
+        continue;
+      }
       f_consts_ << indent() << "'" << tconst->get_name() << "' => "
                 << render_structured_annotations(
                        tconst->structured_annotations_)
@@ -2846,6 +2849,10 @@ void t_hack_generator::_generate_php_struct_definition(
   indent(out) << "'fields' => dict[\n";
   indent_up();
   for (const auto& field : tstruct->get_members()) {
+    if (field->structured_annotations_.empty() &&
+        field->get_type()->structured_annotations_.empty()) {
+      continue;
+    }
     indent(out) << "'" << field->get_name() << "' => shape(\n";
     indent_up();
     indent(out) << "'field' => "
@@ -3354,6 +3361,9 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << indent() << "'functions' => dict[\n";
   indent_up();
   for (const auto& function : functions) {
+    if (function->structured_annotations_.empty()) {
+      continue;
+    }
     f_service_ << indent() << "'" << function->get_name() << "' => "
                << render_structured_annotations(
                       function->structured_annotations_)

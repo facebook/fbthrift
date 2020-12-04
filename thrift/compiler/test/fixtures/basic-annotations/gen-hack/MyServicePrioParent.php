@@ -878,8 +878,6 @@ class MyServicePrioParentStaticMetadata implements \IThriftServiceStaticMetadata
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'ping' => dict[],
-        'pong' => dict[],
       ],
     );
   }

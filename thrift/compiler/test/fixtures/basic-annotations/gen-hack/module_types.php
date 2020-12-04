@@ -73,10 +73,6 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -208,22 +204,6 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'count' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'extra' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'nest' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -404,30 +384,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'major' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'package' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'annotation_with_quote' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'class_' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'annotation_with_trailing_comma' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'empty_annotations' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -555,14 +511,6 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'id' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'password' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

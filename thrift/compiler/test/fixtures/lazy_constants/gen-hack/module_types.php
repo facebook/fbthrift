@@ -110,18 +110,6 @@ class Internship implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'weeks' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'title' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'employer' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -194,14 +182,6 @@ class Range implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'min' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'max' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

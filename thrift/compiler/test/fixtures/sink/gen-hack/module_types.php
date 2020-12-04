@@ -59,10 +59,6 @@ class InitialResponse implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'content' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -122,10 +118,6 @@ class FinalResponse implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'content' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -185,10 +177,6 @@ class SinkPayload implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'content' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -248,10 +236,6 @@ class CompatibleWithKeywordSink implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'sink' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -312,10 +296,6 @@ class InitialException extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'reason' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -376,10 +356,6 @@ class SinkException1 extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'reason' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -440,10 +416,6 @@ class SinkException2 extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'reason' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

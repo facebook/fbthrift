@@ -115,18 +115,6 @@ class Internship implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'weeks' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'title' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'employer' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -199,14 +187,6 @@ class Range implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'min' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'max' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -279,14 +259,6 @@ class struct1 implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -391,22 +363,6 @@ class struct2 implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'c' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'd' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -493,18 +449,6 @@ class struct3 implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'c' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -590,18 +534,6 @@ class struct4 implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'c' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -740,14 +672,6 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'i' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'd' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -962,22 +886,6 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'i' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'd' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        's' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'u' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

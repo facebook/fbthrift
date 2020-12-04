@@ -152,14 +152,6 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'intValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -244,10 +236,6 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1155,158 +1143,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'just_an_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_string' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_list_of_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_map_of_string_to_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_map_of_string_to_list_of_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_self' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_self' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'just_an_enum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'just_a_union' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_just_an_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_list_of_string' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_list_of_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_enum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'required_enum_with_default' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'string_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'i32_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'double_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'enum_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'A_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'set_of_i32_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_i32_to_string_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_string_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_list_of_i32_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

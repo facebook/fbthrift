@@ -1114,18 +1114,6 @@ class Raiser_doRaise_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'f' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        's' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1218,10 +1206,6 @@ class Raiser_get200_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1341,22 +1325,6 @@ class Raiser_get500_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'f' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        's' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1368,10 +1336,6 @@ class RaiserStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'doBland' => dict[],
-        'doRaise' => dict[],
-        'get200' => dict[],
-        'get500' => dict[],
       ],
     );
   }

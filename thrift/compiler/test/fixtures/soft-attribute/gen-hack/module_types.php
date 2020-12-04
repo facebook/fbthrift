@@ -79,14 +79,6 @@ class Foo implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

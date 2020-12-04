@@ -478,7 +478,6 @@ class MyServicePrioChildStaticMetadata implements \IThriftServiceStaticMetadata 
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'pang' => dict[],
       ],
     );
   }

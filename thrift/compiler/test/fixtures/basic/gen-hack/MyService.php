@@ -1933,10 +1933,6 @@ class MyService_getRandomData_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2004,10 +2000,6 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'id' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2083,10 +2075,6 @@ class MyService_hasDataById_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2154,10 +2142,6 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'id' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2233,10 +2217,6 @@ class MyService_getDataById_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2314,14 +2294,6 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'id' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'data' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2468,14 +2440,6 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'id' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'data' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2517,12 +2481,6 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'ping' => dict[],
-        'getRandomData' => dict[],
-        'hasDataById' => dict[],
-        'getDataById' => dict[],
-        'putDataById' => dict[],
-        'lobDataById' => dict[],
       ],
     );
   }

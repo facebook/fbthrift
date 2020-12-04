@@ -401,26 +401,6 @@ class Bar_baz_args implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'c' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'd' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'e' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -471,10 +451,6 @@ class Bar_baz_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -486,7 +462,6 @@ class BarStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'baz' => dict[],
       ],
     );
   }

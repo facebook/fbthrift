@@ -92,14 +92,6 @@ class MyException extends \TException implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

@@ -116,22 +116,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'MyIntField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyStringField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyDataField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'myEnum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -431,18 +415,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'myEnum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'myStruct' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'myDataItem' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

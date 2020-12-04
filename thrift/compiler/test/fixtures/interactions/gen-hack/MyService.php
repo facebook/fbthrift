@@ -342,7 +342,6 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'foo' => dict[],
       ],
     );
   }

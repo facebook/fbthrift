@@ -99,10 +99,6 @@ class decorated_struct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'field' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -313,38 +309,6 @@ class ContainerStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'fieldA' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'fieldB' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'fieldC' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'fieldD' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'fieldE' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'fieldF' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'fieldG' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'fieldH' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -528,10 +492,6 @@ class CppTypeStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'fieldA' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -615,10 +575,6 @@ class VirtualStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'MyIntField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -705,14 +661,6 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -798,14 +746,6 @@ class TrivialNumeric implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -899,14 +839,6 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'z' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'n' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1011,14 +943,6 @@ class ComplexString implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1119,14 +1043,6 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'z' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'n' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1256,26 +1172,6 @@ class MinPadding implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'small' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'big' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'medium' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'biggish' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'tiny' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1429,22 +1325,6 @@ class MyStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'MyIntField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyStringField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'majorVer' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'data' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1583,10 +1463,6 @@ class Renaming implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1685,14 +1561,6 @@ class AnnotatedTypes implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'binary_field' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_field' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1796,14 +1664,6 @@ class ForwardUsageRoot implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'ForwardUsageStruct' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'ForwardUsageByRef' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1885,10 +1745,6 @@ class ForwardUsageStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -1964,10 +1820,6 @@ class ForwardUsageByRef implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2097,10 +1949,6 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'boolField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2294,42 +2142,6 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'MyBoolField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyIntField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyStringField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyStringField2' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyBinaryField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyBinaryField2' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyBinaryField3' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyBinaryListField4' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyMapEnumAndInt' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2520,14 +2332,6 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'string_field' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'i32_field' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2681,26 +2485,6 @@ class AllocatorAware implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'aa_list' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'aa_set' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'aa_map' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'aa_string' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'not_a_container' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -2825,10 +2609,6 @@ class AllocatorAware2 implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'not_a_container' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }

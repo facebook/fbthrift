@@ -177,23 +177,6 @@ class module_CONSTANTS implements \IThriftConstants {
 
   public static function getAllStructuredAnnotations(): dict<string, dict<string, \IThriftStruct>> {
     return dict[
-      'myInt' => dict[],
-      'name' => dict[],
-      'states' => dict[],
-      'cities' => dict[],
-      'x' => dict[],
-      'y' => dict[],
-      'z' => dict[],
-      'const_enum_map' => dict[],
-      'instagram' => dict[],
-      'kRanges' => dict[],
-      'internList' => dict[],
-      'apostrophe' => dict[],
-      'tripleApostrophe' => dict[],
-      'quotationMark' => dict[],
-      'backslash' => dict[],
-      'escaped_a' => dict[],
-      'char2ascii' => dict[],
     ];
   }
 }

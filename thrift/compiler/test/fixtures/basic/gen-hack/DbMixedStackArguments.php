@@ -706,10 +706,6 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'key' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -785,10 +781,6 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -856,10 +848,6 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'key' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -935,10 +923,6 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -962,8 +946,6 @@ class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetada
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'getDataByKey0' => dict[],
-        'getDataByKey1' => dict[],
       ],
     );
   }
