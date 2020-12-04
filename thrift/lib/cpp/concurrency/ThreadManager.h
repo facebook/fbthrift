@@ -24,6 +24,7 @@
 #include <memory>
 #include <string>
 
+#include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/Executor.h>
 #include <folly/SharedMutex.h>
 #include <folly/concurrency/QueueObserver.h>
@@ -33,7 +34,6 @@
 #include <folly/portability/Unistd.h>
 #include <folly/synchronization/LifoSem.h>
 
-#include <folly/DefaultKeepAliveExecutor.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
@@ -71,6 +71,8 @@ class ThreadManager : public virtual folly::Executor {
   ThreadManager() {}
 
  public:
+  using PRIORITY = apache::thrift::concurrency::PRIORITY;
+
   static const size_t DEFAULT_MAX_QUEUE_SIZE = 1 << 16; // should be power of 2
 
   class Task;
@@ -157,7 +159,9 @@ class ThreadManager : public virtual folly::Executor {
     INTERNAL = 0,
     EXISTING_INTERACTION = 1,
     UPSTREAM = 2,
+    LAST = UPSTREAM,
   };
+  static constexpr int N_SOURCES = static_cast<int>(Source::LAST) + 1;
 
   /**
    * Adds a task to be executed at some time in the future by a worker thread.
@@ -287,6 +291,9 @@ class ThreadManager : public virtual folly::Executor {
 
   virtual folly::Codel* getCodel() = 0;
 
+  [[nodiscard]] virtual KeepAlive<> getKeepAlive(PRIORITY pri, Source level)
+      const = 0;
+
   class Impl;
 
  protected:
@@ -309,8 +316,6 @@ class ThreadManager : public virtual folly::Executor {
  */
 class PriorityThreadManager : public ThreadManager {
  public:
-  typedef apache::thrift::concurrency::PRIORITY PRIORITY;
-
   using ThreadManager::addWorker;
   virtual void addWorker(PRIORITY priority, size_t value) = 0;
 
@@ -460,6 +465,12 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
     return nullptr;
   }
 
+  [[nodiscard]] folly::Executor::KeepAlive<> getKeepAlive(
+      PRIORITY /*pri*/,
+      Source /*source*/) const override {
+    return ka_;
+  }
+
  private:
   std::shared_ptr<folly::Executor> exe_;
   folly::Executor::KeepAlive<> ka_;
@@ -507,6 +518,8 @@ class SimpleThreadManager : public ThreadManager,
       std::chrono::microseconds& waitTime,
       std::chrono::microseconds& runTime,
       int64_t /*maxItems*/) override;
+  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY pri, Source source)
+      const override;
 
  private:
   void joinKeepAliveOnce() {

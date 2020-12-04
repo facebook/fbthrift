@@ -66,6 +66,41 @@ PRIORITY translatePriority(int8_t priority) {
 }
 
 constexpr size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
+
+template <typename ExecutorT>
+class ExecutorWithSourceAndPriority : public folly::Executor {
+ public:
+  using Source = ThreadManager::Source;
+  static std::unique_ptr<folly::Executor>
+  create(PRIORITY priority, Source source, ExecutorT* executor) {
+    auto x = new ExecutorWithSourceAndPriority<ExecutorT>(
+        priority, source, executor);
+    return std::unique_ptr<folly::Executor>(x);
+  }
+
+  void add(folly::Func f) override {
+    executor_->addWithPriorityAndSource(std::move(f), priority_, source_);
+  }
+
+  bool keepAliveAcquire() noexcept override {
+    return Executor::keepAliveAcquire(executor_);
+  }
+
+  void keepAliveRelease() noexcept override {
+    Executor::keepAliveRelease(executor_);
+  }
+
+ private:
+  ExecutorWithSourceAndPriority(
+      PRIORITY priority,
+      Source source,
+      ExecutorT* executor)
+      : priority_(priority), source_(source), executor_(executor) {}
+
+  PRIORITY priority_;
+  Source source_;
+  ExecutorT* executor_;
+};
 } // namespace
 
 /**
@@ -284,6 +319,11 @@ class ThreadManager::Impl : public ThreadManager,
 
   folly::Codel codel_;
 
+  KeepAlive<> getKeepAlive(PRIORITY, Source) const override {
+    LOG(FATAL)
+        << "getKeepAlive() should be implemented in derived/wrapper class";
+  }
+
  protected:
   void add(
       size_t priority,
@@ -363,7 +403,11 @@ class SimpleThreadManagerImpl : public ThreadManager::Impl {
   explicit SimpleThreadManagerImpl(
       size_t workerCount = 4,
       bool enableTaskStats = false)
-      : ThreadManager::Impl(enableTaskStats), workerCount_(workerCount) {}
+      : ThreadManager::Impl(enableTaskStats), workerCount_(workerCount) {
+    for (int j = 0; j < N_SOURCES; j++) {
+      executors_.emplace_back(makeExecutor(static_cast<Source>(j)));
+    }
+  }
 
   void start() override {
     if (state() == STARTED) {
@@ -373,8 +417,24 @@ class SimpleThreadManagerImpl : public ThreadManager::Impl {
     addWorker(workerCount_);
   }
 
+  KeepAlive<> getKeepAlive(PRIORITY /* pri */, Source source) const override {
+    DCHECK(static_cast<uint8_t>(source) < executors_.size());
+    return getKeepAliveToken(*executors_[static_cast<uint8_t>(source)]);
+  }
+
+  void addWithPriorityAndSource(folly::Func f, PRIORITY pri, Source source) {
+    DCHECK(pri == PRIORITY::NORMAL);
+    add(FunctionRunner::create(std::move(f)), 0, 0, source);
+  }
+
  private:
+  std::unique_ptr<Executor> makeExecutor(Source source) {
+    return ExecutorWithSourceAndPriority<SimpleThreadManagerImpl>::create(
+        PRIORITY::NORMAL, source, this);
+  }
+
   const size_t workerCount_;
+  std::vector<std::unique_ptr<Executor>> executors_;
 };
 
 } // namespace
@@ -394,6 +454,7 @@ void SimpleThreadManager::start() {
   return impl_->start();
 }
 void SimpleThreadManager::stop() {
+  joinKeepAliveOnce();
   return impl_->stop();
 }
 void SimpleThreadManager::join() {
@@ -478,6 +539,12 @@ void SimpleThreadManager::getStats(
     std::chrono::microseconds& runTime,
     int64_t maxItems) {
   return impl_->getStats(waitTime, runTime, maxItems);
+}
+
+folly::Executor::KeepAlive<> SimpleThreadManager::getKeepAlive(
+    PRIORITY pri,
+    Source source) const {
+  return impl_->getKeepAlive(pri, source);
 }
 
 class ThreadManager::Impl::Worker : public Runnable {
@@ -986,8 +1053,11 @@ class PriorityThreadManager::PriorityImpl
           N_PRIORITIES>& factories,
       bool enableTaskStats = false) {
     for (int i = 0; i < N_PRIORITIES; i++) {
-      std::unique_ptr<ThreadManager> m(
-          new ThreadManager::Impl(enableTaskStats));
+      auto m = std::make_unique<ThreadManager::Impl>(enableTaskStats);
+      for (int j = 0; j < N_SOURCES; j++) {
+        executors_.emplace_back(
+            makeExecutor(static_cast<PRIORITY>(i), static_cast<Source>(j)));
+      }
       m->threadFactory(factories[i].first);
       managers_[i] = std::move(m);
       counts_[i] = factories[i].second;
@@ -995,9 +1065,7 @@ class PriorityThreadManager::PriorityImpl
   }
 
   ~PriorityImpl() override {
-    if (!std::exchange(keepAliveJoined_, true)) {
-      joinKeepAlive();
-    }
+    joinKeepAliveOnce();
   }
 
   void start() override {
@@ -1114,6 +1182,16 @@ class PriorityThreadManager::PriorityImpl
     managers_[priority]->add(std::move(task), timeout, expiration, source);
   }
 
+  void addWithPriorityAndSource(folly::Func f, PRIORITY pri, Source source) {
+    managers_[pri]->add(FunctionRunner::create(std::move(f)), 0, 0, source);
+  }
+
+  KeepAlive<> getKeepAlive(PRIORITY pri, Source source) const override {
+    size_t idx = pri * N_SOURCES + static_cast<uint8_t>(source);
+    DCHECK(idx < executors_.size());
+    return getKeepAliveToken(*executors_[idx]);
+  }
+
   /**
    * Implements folly::Executor::add()
    */
@@ -1228,9 +1306,15 @@ class PriorityThreadManager::PriorityImpl
     }
   }
 
+  std::unique_ptr<Executor> makeExecutor(PRIORITY pri, Source source) {
+    return ExecutorWithSourceAndPriority<PriorityImpl>::create(
+        pri, source, this);
+  }
+
   std::unique_ptr<ThreadManager> managers_[N_PRIORITIES];
   size_t counts_[N_PRIORITIES];
   Mutex mutex_;
+  std::vector<std::unique_ptr<Executor>> executors_;
   bool keepAliveJoined_{false};
 };
 
@@ -1243,7 +1327,18 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
       size_t numThreads,
       bool enableTaskStats = false)
       : ThreadManager::Impl(enableTaskStats, N_PRIORITIES),
-        numThreads_(numThreads) {}
+        numThreads_(numThreads) {
+    for (int i = 0; i < N_PRIORITIES; i++) {
+      for (int j = 0; j < N_SOURCES; j++) {
+        executors_.emplace_back(
+            makeExecutor(static_cast<PRIORITY>(i), static_cast<Source>(j)));
+      }
+    }
+  }
+
+  void join() override {
+    ThreadManager::Impl::join();
+  }
 
   class PriorityFunctionRunner
       : public virtual apache::thrift::concurrency::PriorityRunnable,
@@ -1316,6 +1411,16 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
     ThreadManager::Impl::addWorker(numThreads_);
   }
 
+  void addWithPriorityAndSource(folly::Func f, PRIORITY pri, Source source) {
+    add(pri, std::make_shared<FunctionRunner>(std::move(f)), 0, 0, source);
+  }
+
+  KeepAlive<> getKeepAlive(PRIORITY pri, Source source) const override {
+    size_t idx = pri * N_SOURCES + static_cast<uint8_t>(source);
+    DCHECK(idx < executors_.size());
+    return getKeepAliveToken(*executors_[idx]);
+  }
+
   void setNamePrefix(const std::string& name) override {
     // This isn't thread safe, but neither is PriorityThreadManager's version
     // This should only be called at initialization
@@ -1335,8 +1440,14 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
   }
 
  private:
+  std::unique_ptr<Executor> makeExecutor(PRIORITY pri, Source source) {
+    return ExecutorWithSourceAndPriority<PriorityQueueThreadManager>::create(
+        pri, source, this);
+  }
+
   size_t numThreads_;
   std::string statContexts_[N_PRIORITIES];
+  std::vector<std::unique_ptr<Executor>> executors_;
 };
 
 } // namespace
@@ -1352,7 +1463,7 @@ void ThreadManager::setObserver(
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
     size_t count,
     bool enableTaskStats) {
-  return std::make_shared<SimpleThreadManager>(count, enableTaskStats);
+  return std::make_shared<SimpleThreadManagerImpl>(count, enableTaskStats);
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
@@ -1360,7 +1471,7 @@ std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
     size_t count,
     bool enableTaskStats) {
   auto simpleThreadManager =
-      std::make_shared<SimpleThreadManager>(count, enableTaskStats);
+      std::make_shared<SimpleThreadManagerImpl>(count, enableTaskStats);
   simpleThreadManager->setNamePrefix(name);
   return simpleThreadManager;
 }

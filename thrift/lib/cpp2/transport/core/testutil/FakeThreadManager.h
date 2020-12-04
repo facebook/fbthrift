@@ -151,6 +151,10 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
     return nullptr;
   }
 
+  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY, Source) const override {
+    LOG(FATAL) << "Method not implemented in this fake object";
+  }
+
  private:
   apache::thrift::concurrency::PosixThreadFactory factory_;
 };
