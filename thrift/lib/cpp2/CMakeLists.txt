@@ -134,6 +134,7 @@ add_library(
   async/HeaderChannelTrait.cpp
   async/HeaderClientChannel.cpp
   async/HeaderServerChannel.cpp
+  async/Interaction.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
   async/RocketClientChannel.cpp
