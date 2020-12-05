@@ -156,7 +156,9 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_stringRef();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *this->mutable_stringRef(), _readState);
+          std::unique_ptr<::std::string> ptr = std::make_unique<::std::string>();
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, *ptr, _readState);
+          this->mutable_stringRef() = std::move(ptr);
         } else {
           _readState.skip(iprot);
         }
