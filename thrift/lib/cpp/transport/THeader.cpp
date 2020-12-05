@@ -960,11 +960,11 @@ std::chrono::milliseconds THeader::getClientQueueTimeout() const {
   }
 }
 
-folly::Optional<std::string> THeader::releaseClientId() {
-  return std::move(clientId_);
+folly::Optional<std::string> THeader::clientId() const {
+  return clientId_;
 }
-folly::Optional<std::string> THeader::releaseServiceTraceMeta() {
-  return std::move(serviceTraceMeta_);
+folly::Optional<std::string> THeader::serviceTraceMeta() const {
+  return serviceTraceMeta_;
 }
 
 void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {

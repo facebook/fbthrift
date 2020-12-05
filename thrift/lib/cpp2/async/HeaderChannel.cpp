@@ -49,10 +49,10 @@ void HeaderChannel::addRpcOptionHeaders(
           folly::to<std::string>(rpcOptions.getQueueTimeout().count()));
     }
 
-    if (auto clientId = header->releaseClientId()) {
+    if (auto clientId = header->clientId()) {
       header->setHeader(transport::THeader::kClientId, std::move(*clientId));
     }
-    if (auto serviceTraceMeta = header->releaseServiceTraceMeta()) {
+    if (auto serviceTraceMeta = header->serviceTraceMeta()) {
       header->setHeader(
           transport::THeader::kServiceTraceMeta, std::move(*serviceTraceMeta));
     }

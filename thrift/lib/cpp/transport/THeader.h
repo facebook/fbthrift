@@ -415,8 +415,8 @@ class THeader {
 
   std::chrono::milliseconds getClientQueueTimeout() const;
 
-  folly::Optional<std::string> releaseClientId();
-  folly::Optional<std::string> releaseServiceTraceMeta();
+  folly::Optional<std::string> clientId() const;
+  folly::Optional<std::string> serviceTraceMeta() const;
 
   void setHttpClientParser(
       std::shared_ptr<apache::thrift::util::THttpClientParser>);

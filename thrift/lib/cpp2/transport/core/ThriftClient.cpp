@@ -135,8 +135,8 @@ ThriftClient::createRequestMetadata(
   }
   auto otherMetadata = metadata.otherMetadata_ref();
   otherMetadata = header->releaseWriteHeaders();
-  auto clientId = header->releaseClientId();
-  auto serviceTraceMeta = header->releaseServiceTraceMeta();
+  auto clientId = header->clientId();
+  auto serviceTraceMeta = header->serviceTraceMeta();
   if (clientId.has_value()) {
     (*otherMetadata)[transport::THeader::kClientId] = std::move(*clientId);
   }

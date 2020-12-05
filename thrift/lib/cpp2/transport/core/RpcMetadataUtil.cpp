@@ -76,8 +76,8 @@ RequestRpcMetadata makeRequestRpcMetadata(
   writeHeaders.insert(
       persistentWriteHeaders.begin(), persistentWriteHeaders.end());
 
-  auto clientId = header.releaseClientId();
-  auto serviceTraceMeta = header.releaseServiceTraceMeta();
+  auto clientId = header.clientId();
+  auto serviceTraceMeta = header.serviceTraceMeta();
   if (!version.has_value() || version.value() < 6) {
     if (clientId.has_value()) {
       writeHeaders[transport::THeader::kClientId] = std::move(*clientId);
