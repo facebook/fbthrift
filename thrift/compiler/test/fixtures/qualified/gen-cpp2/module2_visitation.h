@@ -5,5 +5,7 @@
  *  @generated
  */
 #pragma once
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module0_visitation.h"
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module1_visitation.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_for_each_field.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_visit_union.h"

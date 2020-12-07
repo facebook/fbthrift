@@ -5,5 +5,6 @@
  *  @generated
  */
 #pragma once
+#include "other/gen-cpp2/matching_module_name_visitation.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_for_each_field.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_visit_union.h"
