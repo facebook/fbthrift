@@ -4335,22 +4335,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field0)};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->field0};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->field0)};
   }
 
@@ -4398,22 +4398,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
-  FOLLY_ERASE auto field3_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field3_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field3};
   }
 
   template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
-  FOLLY_ERASE auto field3_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field3_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field3)};
   }
 
   template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
-  FOLLY_ERASE auto field3_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field3_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->field3};
   }
 
   template <typename..., typename T =  ::test_cpp2::cpp_reflection::enum2>
-  FOLLY_ERASE auto field3_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field3_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->field3)};
   }
 
@@ -5718,22 +5718,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field0)};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->field0};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->field0)};
   }
 
@@ -5932,22 +5932,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> field0_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->field0};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> field0_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->field0)};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> field0_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->field0};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto field0_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> field0_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->field0)};
   }
 

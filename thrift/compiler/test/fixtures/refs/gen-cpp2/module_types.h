@@ -661,22 +661,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto req_value_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_value_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_value};
   }
 
   template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto req_value_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_value_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_value)};
   }
 
   template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto req_value_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_value_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_value};
   }
 
   template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto req_value_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_value_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_value)};
   }
 

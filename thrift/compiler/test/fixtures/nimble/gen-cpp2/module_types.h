@@ -125,22 +125,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto first_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> first_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->first};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto first_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> first_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->first)};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto first_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> first_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->first};
   }
 
   template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto first_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> first_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->first)};
   }
 

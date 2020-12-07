@@ -211,22 +211,22 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 #endif
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto message_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> message_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->message};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto message_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> message_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->message)};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto message_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> message_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->message};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto message_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> message_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->message)};
   }
 
