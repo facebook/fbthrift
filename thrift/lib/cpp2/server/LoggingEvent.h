@@ -85,10 +85,10 @@ class ConnectionLoggingContext {
   void setInterfaceKind(apache::thrift::InterfaceKind kind) {
     interfaceKind_ = kind;
   }
-  const std::string& getClientAgent() const {
+  const std::optional<std::string>& getClientAgent() const {
     return clientAgent_;
   }
-  const std::string& getClientHostId() const {
+  const std::optional<std::string>& getClientHostId() const {
     return clientHostId_;
   }
   TransportType getTransportType() const {
@@ -103,8 +103,8 @@ class ConnectionLoggingContext {
   const Cpp2Worker& worker_;
   const folly::AsyncTransport& transport_;
 
-  std::string clientAgent_;
-  std::string clientHostId_;
+  std::optional<std::string> clientAgent_;
+  std::optional<std::string> clientHostId_;
   apache::thrift::InterfaceKind interfaceKind_;
 };
 

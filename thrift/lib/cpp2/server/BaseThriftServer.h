@@ -119,9 +119,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   struct Metadata {
     std::string configPath;
-    std::string serviceFramework;
-    std::string wrapper;
-    std::string languageFramework;
+    std::optional<std::string> serviceFramework;
+    std::optional<std::string> wrapper;
+    std::optional<std::string> languageFramework;
   };
 
  private:
