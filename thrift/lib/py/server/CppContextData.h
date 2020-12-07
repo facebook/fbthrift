@@ -35,6 +35,8 @@ boost::python::object makePythonAddress(const folly::SocketAddress& sa) {
     return boost::python::make_tuple(sa.getAddressStr(), sa.getPort());
   } else if (sa.getFamily() == AF_INET6) {
     return boost::python::make_tuple(sa.getAddressStr(), sa.getPort(), 0, 0);
+  } else if (sa.getFamily() == AF_UNIX) {
+    return boost::python::str(sa.getPath());
   } else {
     LOG(FATAL) << "CppServerWrapper can't create a non-inet thrift endpoint";
     abort();

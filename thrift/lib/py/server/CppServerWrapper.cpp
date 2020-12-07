@@ -22,6 +22,7 @@
 
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <folly/SocketAddress.h>
 #include <folly/Utility.h>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -748,6 +749,10 @@ class CppServerWrapper : public ThriftServer {
     BaseThriftServer::metadata().languageFramework =
         extract<std::string>(str(languageFrameworkName));
   }
+
+  void setUnixSocketPath(const char* path) {
+    setAddress(folly::SocketAddress::makeFromPath(path));
+  }
 };
 
 BOOST_PYTHON_MODULE(CppServerWrapper) {
@@ -770,6 +775,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
           "setAddress",
           static_cast<void (CppServerWrapper::*)(std::string const&, uint16_t)>(
               &CppServerWrapper::setAddress))
+      .def("setUnixSocketPath", &CppServerWrapper::setUnixSocketPath)
       .def("setObserver", &CppServerWrapper::setObserverFromPython)
       .def("setIdleTimeout", &CppServerWrapper::setIdleTimeout)
       .def("setTaskExpireTime", &CppServerWrapper::setTaskExpireTime)
