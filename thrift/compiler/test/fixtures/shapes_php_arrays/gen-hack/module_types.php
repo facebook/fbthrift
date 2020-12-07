@@ -247,23 +247,23 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->just_int = $shape['just_int'];
-    $me->list_of_strings = (new Vector($shape['list_of_strings']));
-    $me->set_of_ints = $shape['set_of_ints'];
-    $me->map_of_list_of_strings = (new Map($shape['map_of_list_of_strings']))->map(
-      $val0 ==> (new Vector($val0)),
+    return new static(
+      Map {
+        'just_int' => $shape['just_int'],
+        'list_of_strings' => (new Vector($shape['list_of_strings'])),
+        'set_of_ints' => $shape['set_of_ints'],
+        'map_of_list_of_strings' => (new Map($shape['map_of_list_of_strings']))->map(
+          $val0 ==> (new Vector($val0)),
+        ),
+        'map_of_set_of_strings' => (new Map($shape['map_of_set_of_strings'])),
+        'map_of_strings_to_map_of_string_ints' => (new Map($shape['map_of_strings_to_map_of_string_ints']))->map(
+          $val1 ==> (new Map($val1)),
+        ),
+        'optional_map_of_map_of_sets' => Shapes::idx($shape, 'optional_map_of_map_of_sets') === null ? null : ((new Map($shape['optional_map_of_map_of_sets']))->map(
+          $val2 ==> (new Map($val2)),
+        )),
+      }
     );
-    $me->map_of_set_of_strings = (new Map($shape['map_of_set_of_strings']));
-    $me->map_of_strings_to_map_of_string_ints = (new Map($shape['map_of_strings_to_map_of_string_ints']))->map(
-      $val1 ==> (new Map($val1)),
-    );
-    if (Shapes::idx($shape, 'optional_map_of_map_of_sets') !== null) {
-      $me->optional_map_of_map_of_sets = (new Map($shape['optional_map_of_map_of_sets']))->map(
-        $val2 ==> (new Map($val2)),
-      );
-    }
-    return $me;
   }
 
   <<__Rx>>

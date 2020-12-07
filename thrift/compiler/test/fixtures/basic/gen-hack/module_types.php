@@ -132,16 +132,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->MyIntField = $shape['MyIntField'];
-    $me->MyStringField = $shape['MyStringField'];
-    if (Shapes::idx($shape, 'MyDataField') !== null) {
-      $me->MyDataField = MyDataItem::__fromShape($shape['MyDataField']);
-    }
-    if (Shapes::idx($shape, 'myEnum') !== null) {
-      $me->myEnum = $shape['myEnum'];
-    }
-    return $me;
+    return new static(
+      $shape['MyIntField'],
+      $shape['MyStringField'],
+      Shapes::idx($shape, 'MyDataField') === null ? null : (MyDataItem::__fromShape($shape['MyDataField'])),
+      Shapes::idx($shape, 'myEnum') === null ? null : ($shape['myEnum']),
+    );
   }
 
   <<__Rx>>
@@ -227,8 +223,8 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    return $me;
+    return new static(
+    );
   }
 
   <<__Rx>>
@@ -431,21 +427,11 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->_type = MyUnionEnum::_EMPTY_;
-    if (Shapes::idx($shape, 'myEnum') !== null) {
-      $me->myEnum = $shape['myEnum'];
-      $me->_type = MyUnionEnum::myEnum;
-    }
-    if (Shapes::idx($shape, 'myStruct') !== null) {
-      $me->myStruct = MyStruct::__fromShape($shape['myStruct']);
-      $me->_type = MyUnionEnum::myStruct;
-    }
-    if (Shapes::idx($shape, 'myDataItem') !== null) {
-      $me->myDataItem = MyDataItem::__fromShape($shape['myDataItem']);
-      $me->_type = MyUnionEnum::myDataItem;
-    }
-    return $me;
+    return new static(
+      Shapes::idx($shape, 'myEnum') === null ? null : ($shape['myEnum']),
+      Shapes::idx($shape, 'myStruct') === null ? null : (MyStruct::__fromShape($shape['myStruct'])),
+      Shapes::idx($shape, 'myDataItem') === null ? null : (MyDataItem::__fromShape($shape['myDataItem'])),
+    );
   }
 
   <<__Rx>>

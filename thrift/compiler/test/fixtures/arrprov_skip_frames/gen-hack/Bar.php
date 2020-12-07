@@ -509,20 +509,18 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx, __ProvenanceSkipFrame>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->a = $shape['a'];
-    $me->b = $shape['b'];
-    if (Shapes::idx($shape, 'd') !== null) {
-      $me->d = Foo::__fromShape($shape['d']);
-    }
-    $me->e = $shape['e'];
-    $me->f = $shape['f']
-      |> Vec\map(
-        $$,
-        $_val0 ==> $_val0
-          |> Foo::__fromShape($$),
-      ) |> varray($$);
-    return $me;
+    return new static(
+      $shape['a'],
+      $shape['b'],
+      Shapes::idx($shape, 'd') === null ? null : (Foo::__fromShape($shape['d'])),
+      $shape['e'],
+      $shape['f']
+        |> Vec\map(
+          $$,
+          $_val0 ==> $_val0
+            |> Foo::__fromShape($$),
+        ) |> varray($$),
+    );
   }
 
   <<__Rx, __ProvenanceSkipFrame>>

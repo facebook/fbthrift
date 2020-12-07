@@ -712,9 +712,9 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->key = $shape['key'];
-    return $me;
+    return new static(
+      $shape['key'],
+    );
   }
 
   <<__Rx>>
@@ -854,9 +854,9 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->key = $shape['key'];
-    return $me;
+    return new static(
+      $shape['key'],
+    );
   }
 
   <<__Rx>>

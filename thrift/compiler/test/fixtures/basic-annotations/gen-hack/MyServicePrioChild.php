@@ -402,8 +402,8 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    return $me;
+    return new static(
+    );
   }
 
   <<__Rx>>

@@ -1753,8 +1753,8 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    return $me;
+    return new static(
+    );
   }
 
   <<__Rx>>
@@ -1869,8 +1869,8 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    return $me;
+    return new static(
+    );
   }
 
   <<__Rx>>
@@ -2006,9 +2006,9 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->id = $shape['id'];
-    return $me;
+    return new static(
+      $shape['id'],
+    );
   }
 
   <<__Rx>>
@@ -2148,9 +2148,9 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->id = $shape['id'];
-    return $me;
+    return new static(
+      $shape['id'],
+    );
   }
 
   <<__Rx>>
@@ -2300,10 +2300,10 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->id = $shape['id'];
-    $me->data = $shape['data'];
-    return $me;
+    return new static(
+      $shape['id'],
+      $shape['data'],
+    );
   }
 
   <<__Rx>>
@@ -2446,10 +2446,10 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->id = $shape['id'];
-    $me->data = $shape['data'];
-    return $me;
+    return new static(
+      $shape['id'],
+      $shape['data'],
+    );
   }
 
   <<__Rx>>

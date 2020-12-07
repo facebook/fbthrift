@@ -119,10 +119,10 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->e = (new Map($shape['e']));
-    $me->s = new Set(Keyset\keys($shape['s']));
-    return $me;
+    return new static(
+      (new Map($shape['e'])),
+      new Set(Keyset\keys($shape['s'])),
+    );
   }
 
   <<__Rx>>

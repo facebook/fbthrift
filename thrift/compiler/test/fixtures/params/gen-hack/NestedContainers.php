@@ -1582,11 +1582,11 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Map($shape['foo']))->map(
-      $val0 ==> (new Vector($val0)),
+    return new static(
+      (new Map($shape['foo']))->map(
+        $val0 ==> (new Vector($val0)),
+      ),
     );
-    return $me;
   }
 
   <<__Rx>>
@@ -1711,11 +1711,11 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Map($shape['foo']))->map(
-      $val0 ==> new Set(Keyset\keys($val0)),
+    return new static(
+      (new Map($shape['foo']))->map(
+        $val0 ==> new Set(Keyset\keys($val0)),
+      ),
     );
-    return $me;
   }
 
   <<__Rx>>
@@ -1840,11 +1840,11 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Vector($shape['foo']))->map(
-      $val0 ==> (new Map($val0)),
+    return new static(
+      (new Vector($shape['foo']))->map(
+        $val0 ==> (new Map($val0)),
+      ),
     );
-    return $me;
   }
 
   <<__Rx>>
@@ -1965,11 +1965,11 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Vector($shape['foo']))->map(
-      $val0 ==> new Set(Keyset\keys($val0)),
+    return new static(
+      (new Vector($shape['foo']))->map(
+        $val0 ==> new Set(Keyset\keys($val0)),
+      ),
     );
-    return $me;
   }
 
   <<__Rx>>
@@ -2113,17 +2113,17 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Vector($shape['foo']))->map(
-      $val0 ==> (new Vector($val0))->map(
-        $val1 ==> (new Map($val1))->map(
-          $val2 ==> (new Map($val2))->map(
-            $val3 ==> new Set(Keyset\keys($val3)),
+    return new static(
+      (new Vector($shape['foo']))->map(
+        $val0 ==> (new Vector($val0))->map(
+          $val1 ==> (new Map($val1))->map(
+            $val2 ==> (new Map($val2))->map(
+              $val3 ==> new Set(Keyset\keys($val3)),
+            ),
           ),
         ),
       ),
     );
-    return $me;
   }
 
   <<__Rx>>

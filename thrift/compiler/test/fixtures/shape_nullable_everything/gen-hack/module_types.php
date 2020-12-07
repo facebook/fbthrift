@@ -92,14 +92,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    if (Shapes::idx($shape, 'a') !== null) {
-      $me->a = $shape['a'];
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_string') !== null) {
-      $me->map_of_string_to_string = (new Map($shape['map_of_string_to_string']));
-    }
-    return $me;
+    return new static(
+      Shapes::idx($shape, 'a') === null ? null : ($shape['a']),
+      Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
+    );
   }
 
   <<__Rx>>
@@ -476,74 +472,50 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    if (Shapes::idx($shape, 'map_of_string_to_string') !== null) {
-      $me->map_of_string_to_string = (new Map($shape['map_of_string_to_string']));
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_i32') !== null) {
-      $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_A') !== null) {
-      $me->map_of_string_to_A = (new Map($shape['map_of_string_to_A']))->map(
+    return new static(
+      Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
+      Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : ((new Map($shape['map_of_string_to_i32']))),
+      Shapes::idx($shape, 'map_of_string_to_A') === null ? null : ((new Map($shape['map_of_string_to_A']))->map(
         $val0 ==> A::__fromShape($val0),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_self') !== null) {
-      $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_self') === null ? null : ((new Map($shape['map_of_string_to_self']))->map(
         $val1 ==> B::__fromShape($val1),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_list_of_A') !== null) {
-      $me->map_of_string_to_list_of_A = (new Map($shape['map_of_string_to_list_of_A']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A') === null ? null : ((new Map($shape['map_of_string_to_list_of_A']))->map(
         $val2 ==> (new Vector($val2))->map(
           $val3 ==> A::__fromShape($val3),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32') !== null) {
-      $me->map_of_string_to_map_of_string_to_i32 = (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32') === null ? null : ((new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
         $val4 ==> (new Map($val4)),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A') !== null) {
-      $me->map_of_string_to_map_of_string_to_A = (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A') === null ? null : ((new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
         $val5 ==> (new Map($val5))->map(
           $val6 ==> A::__fromShape($val6),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_string') !== null) {
-      $me->list_of_string = (new Vector($shape['list_of_string']));
-    }
-    if (Shapes::idx($shape, 'list_of_map_of_string_to_A') !== null) {
-      $me->list_of_map_of_string_to_A = (new Vector($shape['list_of_map_of_string_to_A']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_string') === null ? null : ((new Vector($shape['list_of_string']))),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A') === null ? null : ((new Vector($shape['list_of_map_of_string_to_A']))->map(
         $val7 ==> (new Map($val7))->map(
           $val8 ==> A::__fromShape($val8),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_self') !== null) {
-      $me->list_of_self = (new Vector($shape['list_of_self']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_self') === null ? null : ((new Vector($shape['list_of_self']))->map(
         $val9 ==> B::__fromShape($val9),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_list_of_self') !== null) {
-      $me->list_of_list_of_self = (new Vector($shape['list_of_list_of_self']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_list_of_self') === null ? null : ((new Vector($shape['list_of_list_of_self']))->map(
         $val10 ==> (new Vector($val10))->map(
           $val11 ==> B::__fromShape($val11),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A') !== null) {
-      $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A') === null ? null : ((new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
         $val12 ==> (new Map($val12))->map(
           $val13 ==> (new Vector($val13))->map(
             $val14 ==> A::__fromShape($val14),
           ),
         ),
-      );
-    }
-    return $me;
+      )),
+    );
   }
 
   <<__Rx>>
@@ -977,74 +949,50 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    if (Shapes::idx($shape, 'map_of_string_to_string') !== null) {
-      $me->map_of_string_to_string = (new Map($shape['map_of_string_to_string']));
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_i32') !== null) {
-      $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_A') !== null) {
-      $me->map_of_string_to_A = (new Map($shape['map_of_string_to_A']))->map(
+    return new static(
+      Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
+      Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : ((new Map($shape['map_of_string_to_i32']))),
+      Shapes::idx($shape, 'map_of_string_to_A') === null ? null : ((new Map($shape['map_of_string_to_A']))->map(
         $val0 ==> A::__fromShape($val0),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_self') !== null) {
-      $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_self') === null ? null : ((new Map($shape['map_of_string_to_self']))->map(
         $val1 ==> B::__fromShape($val1),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_list_of_A') !== null) {
-      $me->map_of_string_to_list_of_A = (new Map($shape['map_of_string_to_list_of_A']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_list_of_A') === null ? null : ((new Map($shape['map_of_string_to_list_of_A']))->map(
         $val2 ==> (new Vector($val2))->map(
           $val3 ==> A::__fromShape($val3),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32') !== null) {
-      $me->map_of_string_to_map_of_string_to_i32 = (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32') === null ? null : ((new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
         $val4 ==> (new Map($val4)),
-      );
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A') !== null) {
-      $me->map_of_string_to_map_of_string_to_A = (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
+      )),
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A') === null ? null : ((new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
         $val5 ==> (new Map($val5))->map(
           $val6 ==> A::__fromShape($val6),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_string') !== null) {
-      $me->list_of_string = (new Vector($shape['list_of_string']));
-    }
-    if (Shapes::idx($shape, 'list_of_map_of_string_to_A') !== null) {
-      $me->list_of_map_of_string_to_A = (new Vector($shape['list_of_map_of_string_to_A']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_string') === null ? null : ((new Vector($shape['list_of_string']))),
+      Shapes::idx($shape, 'list_of_map_of_string_to_A') === null ? null : ((new Vector($shape['list_of_map_of_string_to_A']))->map(
         $val7 ==> (new Map($val7))->map(
           $val8 ==> A::__fromShape($val8),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_self') !== null) {
-      $me->list_of_self = (new Vector($shape['list_of_self']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_self') === null ? null : ((new Vector($shape['list_of_self']))->map(
         $val9 ==> B::__fromShape($val9),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_list_of_self') !== null) {
-      $me->list_of_list_of_self = (new Vector($shape['list_of_list_of_self']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_list_of_self') === null ? null : ((new Vector($shape['list_of_list_of_self']))->map(
         $val10 ==> (new Vector($val10))->map(
           $val11 ==> B::__fromShape($val11),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A') !== null) {
-      $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
+      )),
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A') === null ? null : ((new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
         $val12 ==> (new Map($val12))->map(
           $val13 ==> (new Vector($val13))->map(
             $val14 ==> A::__fromShape($val14),
           ),
         ),
-      );
-    }
-    return $me;
+      )),
+    );
   }
 
   <<__Rx>>

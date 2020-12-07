@@ -2072,64 +2072,75 @@ void t_hack_generator::generate_php_struct_shape_methods(
     } else {
       arg_return_type = "Map";
     }
+    indent(out) << "<<__Rx>>\n";
     indent(out) << "public static function __stringifyMapKeys<T>("
                 << arg_return_type << "<arraykey, T> $m): " << arg_return_type
                 << "<string, T> {\n";
-    indent(out) << "  $new_map = " << arg_return_type
-                << ((arrays_ || no_use_hack_collections_) ? "[]" : " {}")
-                << ";\n";
-    indent(out) << "  foreach ($m as $k => $v) {\n";
-    indent(out) << "    $new_map[(string)$k] = $v;\n";
-    indent(out) << "  }\n";
-    indent(out) << "  return $new_map;\n";
-    indent(out) << "}\n";
-    out << "\n";
+    indent_up();
+    if (arrays_) {
+      indent(out) << "return Dict\\map_keys($m, $key ==> (string)$key);\n";
+    } else if (no_use_hack_collections_) {
+      // There doesn't seem to be an eqivalent for map_keys.
+      indent(out)
+          << "return darray(Dict\\map_keys($m, $key ==> (string)$key));\n";
+    } else {
+      indent(out) << "return Map::fromItems(\n";
+      indent_up();
+      indent(out)
+          << "$m->items()->map($item ==> Pair {(string)$item[0], $item[1]}),\n";
+      indent_down();
+      indent(out) << ");\n";
+    }
+    indent_down();
+    indent(out) << "}\n\n";
   }
 
   generate_php_struct_construction_attributes(out);
   indent(out)
       << "public static function __fromShape(self::TShape $shape): this {\n";
   indent_up();
-  indent(out) << "$me = new static();\n";
-  if (tstruct->is_union()) {
-    indent(out) << "$me->_type = " << union_field_to_enum(tstruct, nullptr)
-                << ";\n";
+  indent(out) << "return new static(\n";
+  indent_up();
+  if (map_construct_ && !from_map_construct_) {
+    indent(out) << "Map {\n";
+    indent_up();
   }
 
   const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
   t_name_generator namer;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+  for (const auto& member : members) {
+    t_type* t = member->get_type()->get_true_type();
 
     string dval = "";
-    if ((*m_iter)->get_value() != nullptr &&
+    if (member->get_value() != nullptr &&
         !(t->is_struct() || t->is_xception())) {
-      dval = render_const_value(t, (*m_iter)->get_value());
+      dval = render_const_value(t, member->get_value());
     } else {
       dval = render_default_value(t);
     }
 
     bool nullable =
-        field_is_nullable(tstruct, *m_iter, dval) || nullable_everything_;
+        field_is_nullable(tstruct, member, dval) || nullable_everything_;
 
     stringstream source;
-    source << "$shape['" << (*m_iter)->get_name() << "']";
+    source << "$shape['" << member->get_name() << "']";
 
     stringstream val;
-
-    if (tstruct->is_union() || nullable) {
-      indent(val) << "if (Shapes::idx($shape, '" << (*m_iter)->get_name()
-                  << "') !== null) {\n";
-      indent_up();
+    indent(val);
+    if (map_construct_ && !from_map_construct_) {
+      val << "'" << member->get_name() << "' => ";
     }
 
-    indent(val) << "$me->" << (*m_iter)->get_name() << " = ";
+    if (tstruct->is_union() || nullable) {
+      val << "Shapes::idx($shape, '" << member->get_name()
+          << "') === null ? null : (";
+    }
+
     if (t->is_set()) {
       if (arraysets_ || arrays_ || no_use_hack_collections_) {
-        val << source.str() << ";\n";
+        val << source.str();
       } else {
-        val << "new Set(Keyset\\keys(" << source.str() << "));\n";
+        val << "new Set(Keyset\\keys(" << source.str() << "))";
       }
     } else if (t->is_map() || t->is_list()) {
       bool stringify_map_keys = false;
@@ -2156,7 +2167,6 @@ void t_hack_generator::generate_php_struct_shape_methods(
         if (stringify_map_keys) {
           val << ")";
         }
-        val << ";\n";
       } else {
         val << (stringify_map_keys ? "" : "(");
         if (t->is_map()) {
@@ -2232,28 +2242,25 @@ void t_hack_generator::generate_php_struct_shape_methods(
             val << ",\n";
           }
         }
-        val << ";\n";
       }
     } else if (t->is_struct()) {
       string type = hack_name(t);
-      val << type << "::__fromShape(" << source.str() << ");\n";
+      val << type << "::__fromShape(" << source.str() << ")";
     } else {
-      val << source.str() << ";\n";
+      val << source.str();
     }
-
-    if (tstruct->is_union()) {
-      indent(val) << "$me->_type = " << union_field_to_enum(tstruct, *m_iter)
-                  << ";\n";
-    }
-
     if (tstruct->is_union() || nullable) {
-      indent_down();
-      indent(val) << "}\n";
+      val << ")";
     }
-
+    val << ",\n";
     out << val.str();
   }
-  indent(out) << "return $me;\n";
+  indent_down();
+  if (map_construct_ && !from_map_construct_) {
+    indent(out) << "}\n";
+    indent_down();
+  }
+  indent(out) << ");\n";
   indent_down();
   indent(out) << "}\n";
   out << "\n";
@@ -2267,22 +2274,22 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent_up();
   indent(out) << "return shape(\n";
   indent_up();
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+  for (const auto& member : members) {
+    t_type* t = member->get_type()->get_true_type();
     t_name_generator ngen;
 
-    indent(out) << "'" << (*m_iter)->get_name() << "' => ";
+    indent(out) << "'" << member->get_name() << "' => ";
 
     stringstream val;
 
     bool nullable =
-        field_is_nullable(tstruct, *m_iter, render_default_value(t)) ||
+        field_is_nullable(tstruct, member, render_default_value(t)) ||
         nullable_everything_;
 
     if (t->is_container()) {
       if (t->is_map() || t->is_list()) {
         if (arrays_ || no_use_hack_collections_) {
-          val << "$this->" << (*m_iter)->get_name();
+          val << "$this->" << member->get_name();
           if (type_has_nested_struct(t)) {
             val << "\n";
             indent_up();
@@ -2311,7 +2318,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
           val_type = val_type->get_true_type();
 
           if (val_type->is_container() || val_type->is_struct() || nullable) {
-            val << "$this->" << (*m_iter)->get_name();
+            val << "$this->" << member->get_name();
             if (val_type->is_container() || val_type->is_struct()) {
               val << (nullable ? "?" : "") << "->map(\n";
               indent_up();
@@ -2327,14 +2334,14 @@ void t_hack_generator::generate_php_struct_shape_methods(
             indent_down();
           } else {
             val << generate_to_array_method(t) << "($this->"
-                << (*m_iter)->get_name() << "),\n";
+                << member->get_name() << "),\n";
           }
         }
       } else if (arraysets_ || arrays_ || no_use_hack_collections_) {
-        val << "$this->" << (*m_iter)->get_name() << ",\n";
+        val << "$this->" << member->get_name() << ",\n";
       } else {
         if (nullable) {
-          val << "$this->" << (*m_iter)->get_name() << "\n";
+          val << "$this->" << member->get_name() << "\n";
           indent_up();
           indent(val) << "|> $$ === null ? null : ";
         }
@@ -2342,7 +2349,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
         if (nullable) {
           val << "$$";
         } else {
-          val << "$this->" << (*m_iter)->get_name();
+          val << "$this->" << member->get_name();
         }
         val << "->toValuesArray(), true)),\n";
         if (nullable) {
@@ -2350,10 +2357,10 @@ void t_hack_generator::generate_php_struct_shape_methods(
         }
       }
     } else if (t->is_struct()) {
-      val << "$this->" << (*m_iter)->get_name();
+      val << "$this->" << member->get_name();
       val << (nullable ? "?" : "") << "->__toShape(),\n";
     } else {
-      val << "$this->" << (*m_iter)->get_name() << ",\n";
+      val << "$this->" << member->get_name() << ",\n";
     }
 
     out << val.str();

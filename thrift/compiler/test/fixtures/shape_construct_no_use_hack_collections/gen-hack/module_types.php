@@ -334,33 +334,14 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->_type = TestUnionEnum::_EMPTY_;
-    if (Shapes::idx($shape, 'int_value') !== null) {
-      $me->int_value = $shape['int_value'];
-      $me->_type = TestUnionEnum::int_value;
-    }
-    if (Shapes::idx($shape, 'str_value') !== null) {
-      $me->str_value = $shape['str_value'];
-      $me->_type = TestUnionEnum::str_value;
-    }
-    if (Shapes::idx($shape, 'double_value') !== null) {
-      $me->double_value = $shape['double_value'];
-      $me->_type = TestUnionEnum::double_value;
-    }
-    if (Shapes::idx($shape, 'list_of_strings') !== null) {
-      $me->list_of_strings = $shape['list_of_strings'];
-      $me->_type = TestUnionEnum::list_of_strings;
-    }
-    if (Shapes::idx($shape, 'map_of_string_to_ints') !== null) {
-      $me->map_of_string_to_ints = $shape['map_of_string_to_ints'];
-      $me->_type = TestUnionEnum::map_of_string_to_ints;
-    }
-    if (Shapes::idx($shape, 'struct_foo') !== null) {
-      $me->struct_foo = Foo::__fromShape($shape['struct_foo']);
-      $me->_type = TestUnionEnum::struct_foo;
-    }
-    return $me;
+    return new static(
+      Shapes::idx($shape, 'int_value') === null ? null : ($shape['int_value']),
+      Shapes::idx($shape, 'str_value') === null ? null : ($shape['str_value']),
+      Shapes::idx($shape, 'double_value') === null ? null : ($shape['double_value']),
+      Shapes::idx($shape, 'list_of_strings') === null ? null : ($shape['list_of_strings']),
+      Shapes::idx($shape, 'map_of_string_to_ints') === null ? null : ($shape['map_of_string_to_ints']),
+      Shapes::idx($shape, 'struct_foo') === null ? null : (Foo::__fromShape($shape['struct_foo'])),
+    );
   }
 
   <<__Rx>>
@@ -518,15 +499,13 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->a = $shape['a'];
-    if (Shapes::idx($shape, 'b') !== null) {
-      $me->b = $shape['b'];
-    }
-    $me->c = $shape['c'];
-    $me->d = $shape['d'];
-    $me->str_value = $shape['str_value'];
-    return $me;
+    return new static(
+      $shape['a'],
+      Shapes::idx($shape, 'b') === null ? null : ($shape['b']),
+      $shape['c'],
+      $shape['d'],
+      $shape['str_value'],
+    );
   }
 
   <<__Rx>>
@@ -698,35 +677,29 @@ class TestStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    if (Shapes::idx($shape, 'foo_struct') !== null) {
-      $me->foo_struct = Foo::__fromShape($shape['foo_struct']);
-    }
-    if (Shapes::idx($shape, 'union_value') !== null) {
-      $me->union_value = TestUnion::__fromShape($shape['union_value']);
-    }
-    if (Shapes::idx($shape, 'struct_of_self') !== null) {
-      $me->struct_of_self = TestStruct::__fromShape($shape['struct_of_self']);
-    }
-    $me->list_of_struct_foo = $shape['list_of_struct_foo']
-      |> Vec\map(
-        $$,
-        $_val0 ==> $_val0
-          |> Foo::__fromShape($$),
-      ) |> varray($$);
-    $me->map_of_string_to_struct_foo = $shape['map_of_string_to_struct_foo']
-      |> Dict\map(
-        $$,
-        $_val1 ==> $_val1
-          |> Foo::__fromShape($$),
-      ) |> darray($$);
-    $me->list_of_struct_self = $shape['list_of_struct_self']
-      |> Vec\map(
-        $$,
-        $_val2 ==> $_val2
-          |> TestStruct::__fromShape($$),
-      ) |> varray($$);
-    return $me;
+    return new static(
+      Shapes::idx($shape, 'foo_struct') === null ? null : (Foo::__fromShape($shape['foo_struct'])),
+      Shapes::idx($shape, 'union_value') === null ? null : (TestUnion::__fromShape($shape['union_value'])),
+      Shapes::idx($shape, 'struct_of_self') === null ? null : (TestStruct::__fromShape($shape['struct_of_self'])),
+      $shape['list_of_struct_foo']
+        |> Vec\map(
+          $$,
+          $_val0 ==> $_val0
+            |> Foo::__fromShape($$),
+        ) |> varray($$),
+      $shape['map_of_string_to_struct_foo']
+        |> Dict\map(
+          $$,
+          $_val1 ==> $_val1
+            |> Foo::__fromShape($$),
+        ) |> darray($$),
+      $shape['list_of_struct_self']
+        |> Vec\map(
+          $$,
+          $_val2 ==> $_val2
+            |> TestStruct::__fromShape($$),
+        ) |> varray($$),
+    );
   }
 
   <<__Rx>>

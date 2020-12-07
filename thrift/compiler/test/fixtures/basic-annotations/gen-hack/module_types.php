@@ -89,9 +89,9 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->name = $shape['name'];
-    return $me;
+    return new static(
+      $shape['name'],
+    );
   }
 
   <<__Rx>>
@@ -220,16 +220,12 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->count = $shape['count'];
-    $me->name = $shape['name'];
-    if (Shapes::idx($shape, 'extra') !== null) {
-      $me->extra = $shape['extra'];
-    }
-    if (Shapes::idx($shape, 'nest') !== null) {
-      $me->nest = MyStructNestedAnnotation::__fromShape($shape['nest']);
-    }
-    return $me;
+    return new static(
+      $shape['count'],
+      $shape['name'],
+      Shapes::idx($shape, 'extra') === null ? null : ($shape['extra']),
+      Shapes::idx($shape, 'nest') === null ? null : (MyStructNestedAnnotation::__fromShape($shape['nest'])),
+    );
   }
 
   <<__Rx>>
@@ -400,14 +396,14 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->major = $shape['major'];
-    $me->package = $shape['package'];
-    $me->annotation_with_quote = $shape['annotation_with_quote'];
-    $me->class_ = $shape['class_'];
-    $me->annotation_with_trailing_comma = $shape['annotation_with_trailing_comma'];
-    $me->empty_annotations = $shape['empty_annotations'];
-    return $me;
+    return new static(
+      $shape['major'],
+      $shape['package'],
+      $shape['annotation_with_quote'],
+      $shape['class_'],
+      $shape['annotation_with_trailing_comma'],
+      $shape['empty_annotations'],
+    );
   }
 
   <<__Rx>>
@@ -527,10 +523,10 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->id = $shape['id'];
-    $me->password = $shape['password'];
-    return $me;
+    return new static(
+      $shape['id'],
+      $shape['password'],
+    );
   }
 
   <<__Rx>>

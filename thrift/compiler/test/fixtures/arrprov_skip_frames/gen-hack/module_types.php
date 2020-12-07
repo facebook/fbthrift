@@ -134,16 +134,12 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx, __ProvenanceSkipFrame>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->a = $shape['a'];
-    if (Shapes::idx($shape, 'b') !== null) {
-      $me->b = $shape['b'];
-    }
-    $me->c = $shape['c'];
-    if (Shapes::idx($shape, 'd') !== null) {
-      $me->d = $shape['d'];
-    }
-    return $me;
+    return new static(
+      $shape['a'],
+      Shapes::idx($shape, 'b') === null ? null : ($shape['b']),
+      $shape['c'],
+      Shapes::idx($shape, 'd') === null ? null : ($shape['d']),
+    );
   }
 
   <<__Rx, __ProvenanceSkipFrame>>

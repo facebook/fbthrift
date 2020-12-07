@@ -495,15 +495,13 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
 
   <<__Rx>>
   public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->a = $shape['a'];
-    $me->b = $shape['b'];
-    $me->c = $shape['c'];
-    if (Shapes::idx($shape, 'd') !== null) {
-      $me->d = Foo::__fromShape($shape['d']);
-    }
-    $me->e = $shape['e'];
-    return $me;
+    return new static(
+      $shape['a'],
+      $shape['b'],
+      $shape['c'],
+      Shapes::idx($shape, 'd') === null ? null : (Foo::__fromShape($shape['d'])),
+      $shape['e'],
+    );
   }
 
   <<__Rx>>
