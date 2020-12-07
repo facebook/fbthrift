@@ -446,13 +446,13 @@ void ThriftServer::stopDuplex(std::shared_ptr<ThriftServer> thisServer) {
  * Loop and accept incoming connections.
  */
 void ThriftServer::serve() {
+  THRIFT_SERVER_EVENT(serve).log(*this);
   setup();
   if (serverChannel_ != nullptr) {
     // A duplex server (the one running on a client) doesn't uses its own EB
     // since it reuses the client's EB
     return;
   }
-  THRIFT_SERVER_EVENT(serve).log(*this);
   SCOPE_EXIT {
     this->cleanUp();
   };
