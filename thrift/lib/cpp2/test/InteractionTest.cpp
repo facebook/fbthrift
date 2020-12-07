@@ -627,7 +627,7 @@ TEST(InteractionCodegenTest, SerialInteraction) {
   // blocked on baton3 in second method, first method completes
   handler->baton2.post();
   client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
-  EXPECT_TRUE(accSemi.isReady());
+  std::move(accSemi).via(&eb).getVia(&eb);
   EXPECT_FALSE(getSemi.isReady());
 
   // third method is blocked on second method completing
@@ -639,11 +639,10 @@ TEST(InteractionCodegenTest, SerialInteraction) {
   // both methods complete
   handler->baton3.post();
   client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
-  EXPECT_TRUE(accSemi.isReady());
-  EXPECT_TRUE(getSemi.isReady());
+  std::move(accSemi).via(&eb).getVia(&eb);
 
   // second accumulate happens after get
-  EXPECT_EQ(getSemi.value(), 1);
+  EXPECT_EQ(std::move(getSemi).via(&eb).getVia(&eb), 1);
 #endif
 }
 
