@@ -94,6 +94,16 @@ uint32_t JSONProtocolWriterCommon::writeJSONDoubleInternal(double dbl) {
   return appender.size();
 }
 
+uint32_t JSONProtocolWriterCommon::writeJSONDoubleInternal(float flt) {
+  WrappedIOBufQueueAppender appender(out_);
+  folly::toAppend(
+      flt,
+      &appender,
+      double_conversion::DoubleToStringConverter::SHORTEST_SINGLE,
+      0);
+  return appender.size();
+}
+
 uint32_t JSONProtocolWriterCommon::writeJSONIntInternal(int64_t num) {
   WrappedIOBufQueueAppender appender(out_);
   if (!context.empty() && context.back().type == ContextType::MAP &&

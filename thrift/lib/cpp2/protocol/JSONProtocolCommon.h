@@ -162,6 +162,7 @@ class JSONProtocolWriterCommon {
 
  private:
   uint32_t writeJSONDoubleInternal(double dbl);
+  uint32_t writeJSONDoubleInternal(float flt);
   uint32_t writeJSONIntInternal(int64_t num);
 };
 
@@ -255,8 +256,9 @@ class JSONProtocolReaderCommon {
   inline void readJSONVal(int16_t& val);
   inline void readJSONVal(int32_t& val);
   inline void readJSONVal(int64_t& val);
-  inline void readJSONVal(double& val);
-  inline void readJSONVal(float& val);
+  template <typename Floating>
+  inline typename std::enable_if<std::is_floating_point<Floating>::value>::type
+  readJSONVal(Floating& val);
   template <typename Str>
   inline typename std::enable_if<
       apache::thrift::detail::is_string<Str>::value>::type

@@ -653,19 +653,25 @@ void JSONProtocolReaderCommon::readJSONVal(int64_t& val) {
   readJSONIntegral<int64_t>(val);
 }
 
-void JSONProtocolReaderCommon::readJSONVal(double& val) {
+template <typename Floating>
+typename std::enable_if<std::is_floating_point<Floating>::value>::type
+JSONProtocolReaderCommon::readJSONVal(Floating& val) {
+  static_assert(
+      std::numeric_limits<Floating>::is_iec559,
+      "Parameter type must fulfill IEEE 754 floating-point standard");
+
   readWhitespace();
   if (peekCharSafe() == apache::thrift::detail::json::kJSONStringDelimiter) {
     std::string str;
     readJSONString(str);
     if (str == apache::thrift::detail::json::kThriftNan) {
-      val = HUGE_VAL / HUGE_VAL; // generates NaN
+      val = std::numeric_limits<Floating>::quiet_NaN();
     } else if (str == apache::thrift::detail::json::kThriftNegativeNan) {
-      val = -NAN;
+      val = -std::numeric_limits<Floating>::quiet_NaN();
     } else if (str == apache::thrift::detail::json::kThriftInfinity) {
-      val = HUGE_VAL;
+      val = std::numeric_limits<Floating>::infinity();
     } else if (str == apache::thrift::detail::json::kThriftNegativeInfinity) {
-      val = -HUGE_VAL;
+      val = -std::numeric_limits<Floating>::infinity();
     } else {
       throwUnrecognizableAsFloatingPoint(str);
     }
@@ -674,16 +680,10 @@ void JSONProtocolReaderCommon::readJSONVal(double& val) {
   std::string s;
   readNumericalChars(s);
   try {
-    val = folly::to<double>(s);
+    val = folly::to<Floating>(s);
   } catch (const std::exception&) {
     throwUnrecognizableAsFloatingPoint(s);
   }
-}
-
-void JSONProtocolReaderCommon::readJSONVal(float& val) {
-  double d;
-  readJSONVal(d);
-  val = float(d);
 }
 
 template <typename Str>
