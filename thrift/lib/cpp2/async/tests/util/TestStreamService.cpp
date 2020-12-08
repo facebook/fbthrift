@@ -22,36 +22,27 @@ namespace testservice {
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::range(
     int32_t from,
     int32_t to) {
-  return folly::coro::
-      co_invoke([=]() -> folly::coro::AsyncGenerator<int32_t&&> {
-        for (int i = from; i <= to; i++) {
-          co_yield std::move(i);
-        }
-      });
+  for (int i = from; i <= to; i++) {
+    co_yield std::move(i);
+  }
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrow(
     int32_t from,
     int32_t to) {
-  return folly::coro::
-      co_invoke([=]() -> folly::coro::AsyncGenerator<int32_t&&> {
-        for (int i = from; i <= to; i++) {
-          co_yield std::move(i);
-        }
-        throw std::runtime_error("I am a search bar");
-      });
+  for (int i = from; i <= to; i++) {
+    co_yield std::move(i);
+  }
+  throw std::runtime_error("I am a search bar");
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrowUDE(
     int32_t from,
     int32_t to) {
-  return folly::coro::
-      co_invoke([=]() -> folly::coro::AsyncGenerator<int32_t&&> {
-        for (int i = from; i <= to; i++) {
-          co_yield std::move(i);
-        }
-        throw UserDefinedException();
-      });
+  for (int i = from; i <= to; i++) {
+    co_yield std::move(i);
+  }
+  throw UserDefinedException();
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamPublisherService::range(

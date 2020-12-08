@@ -43,6 +43,8 @@ class ServerStream {
   /* implicit */ ServerStream(folly::coro::AsyncGenerator<T&&>&& gen)
       : fn_(apache::thrift::detail::ServerGeneratorStream::fromAsyncGenerator(
             std::move(gen))) {}
+
+  using promise_type = folly::coro::detail::AsyncGeneratorPromise<T&&, T>;
 #endif
 
   // Completion callback is optional
