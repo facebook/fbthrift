@@ -146,10 +146,8 @@ class ThriftFizzAcceptorHandshakeHelper
   void endOfTLS(
       fizz::AsyncFizzBase* transport,
       std::unique_ptr<folly::IOBuf> endOfData) override {
-    auto sock = transport->getUnderlyingTransport<folly::AsyncSocket>();
     auto appProto = transport->getApplicationProtocol();
-    DCHECK(sock);
-    auto plaintextTransport = moveToPlaintext(sock);
+    auto plaintextTransport = moveToPlaintext(transport);
     // The server initiates the close, which means the client will be the first
     // to successfully terminate tls and return the socket back to the caller.
     // What this means for us is we clearly don't know if our fizz transport

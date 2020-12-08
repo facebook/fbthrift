@@ -19,8 +19,35 @@
 
 namespace apache {
 namespace thrift {
+// private class meant to encapsulate all the information that needs to be
+// preserved across sockets for the tls downgrade scenario
+namespace {
+class StopTLSSocket : public folly::AsyncSocket {
+ public:
+  using AsyncSocket::AsyncSocket;
 
-folly::AsyncSocket::UniquePtr moveToPlaintext(folly::AsyncSocket* sock) {
+  std::string getSecurityProtocol() const override {
+    return "stopTLS";
+  }
+
+  std::string getApplicationProtocol() const noexcept override {
+    return alpn_;
+  }
+
+  void setApplicationProtocol(std::string alpn) noexcept {
+    alpn_ = alpn;
+  }
+
+ private:
+  // alpn of original socket, must save
+  std::string alpn_;
+};
+} // namespace
+
+folly::AsyncSocket::UniquePtr moveToPlaintext(
+    folly::AsyncTransportWrapper* transport) {
+  auto sock = transport->getUnderlyingTransport<folly::AsyncSocket>();
+  DCHECK(sock);
   // Grab certs + fd from sock
   auto selfCert =
       folly::ssl::BasicTransportCertificate::create(sock->getSelfCertificate());
@@ -30,9 +57,11 @@ folly::AsyncSocket::UniquePtr moveToPlaintext(folly::AsyncSocket* sock) {
   auto fd = sock->detachNetworkSocket();
   auto zcId = sock->getZeroCopyBufId();
 
-  // create new socket
-  auto plaintextTransport =
-      folly::AsyncSocket::UniquePtr(new folly::AsyncSocket(eb, fd, zcId));
+  // create new socket make sure not to throw until
+  auto stopTLSSocket = new StopTLSSocket(eb, fd, zcId);
+  stopTLSSocket->setApplicationProtocol(transport->getApplicationProtocol());
+  auto plaintextTransport = folly::AsyncSocket::UniquePtr(stopTLSSocket);
+
   plaintextTransport->setSelfCertificate(std::move(selfCert));
   plaintextTransport->setPeerCertificate(std::move(peerCert));
   return plaintextTransport;
