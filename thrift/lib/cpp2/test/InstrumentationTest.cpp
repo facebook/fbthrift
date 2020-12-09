@@ -526,10 +526,10 @@ TEST_F(RequestInstrumentationTest, requestPayloadTest) {
 class ServerInstrumentationTest : public testing::Test {};
 
 TEST_F(ServerInstrumentationTest, simpleServerTest) {
-  ThriftServer server0;
+  ThriftServer serverNotServing;
+  ScopedServerInterfaceThread server0(std::make_shared<TestInterface>());
   {
-    auto handler = std::make_shared<TestInterface>();
-    apache::thrift::ScopedServerInterfaceThread server1(handler);
+    ScopedServerInterfaceThread server1(std::make_shared<TestInterface>());
     EXPECT_EQ(ServerInstrumentation::getServerCount(), 2);
   }
   EXPECT_EQ(ServerInstrumentation::getServerCount(), 1);

@@ -90,7 +90,6 @@ ThriftServer::ThriftServer()
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
   metadata().wrapper = "ThriftServer-cpp";
-  ServerInstrumentation::registerServer(*this);
 }
 
 ThriftServer::ThriftServer(
@@ -456,6 +455,7 @@ void ThriftServer::serve() {
   SCOPE_EXIT {
     this->cleanUp();
   };
+  ServerInstrumentation::registerServer(*this);
   eventBaseManager_->getEventBase()->loopForever();
 }
 
