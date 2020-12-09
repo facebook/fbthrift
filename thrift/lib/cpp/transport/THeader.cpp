@@ -1012,8 +1012,10 @@ const folly::StringPiece THeader::getStringTransform(
 
 std::optional<std::string> THeader::extractHeader(std::string_view key) {
   std::optional<std::string> res;
-  if (auto node = readHeaders_.extract(std::string{key})) {
-    res = std::move(node.mapped());
+  auto itr = readHeaders_.find(std::string{key});
+  if (itr != readHeaders_.end()) {
+    res = std::move(itr->second);
+    readHeaders_.erase(itr);
   }
   return res;
 }
