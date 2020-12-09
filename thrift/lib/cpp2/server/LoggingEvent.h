@@ -67,13 +67,13 @@ class ConnectionLoggingContext {
   explicit ConnectionLoggingContext(
       TransportType transportType,
       const Cpp2Worker& worker,
-      const folly::AsyncTransport& transport)
+      const folly::AsyncTransport* transport)
       : transportType_(transportType), worker_(worker), transport_(transport) {}
 
   const Cpp2Worker& getWorker() const {
     return worker_;
   }
-  const folly::AsyncTransport& getTransport() const {
+  const folly::AsyncTransport* getTransport() const {
     return transport_;
   }
   void setClientAgent(std::string clientAgent) {
@@ -101,7 +101,7 @@ class ConnectionLoggingContext {
  private:
   TransportType transportType_;
   const Cpp2Worker& worker_;
-  const folly::AsyncTransport& transport_;
+  const folly::AsyncTransport* transport_;
 
   std::optional<std::string> clientAgent_;
   std::optional<std::string> clientHostId_;

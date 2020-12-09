@@ -144,7 +144,7 @@ Cpp2Connection::Cpp2Connection(
       loggingContext_(
           ConnectionLoggingContext::TransportType::HEADER,
           *worker_.get(),
-          *transport_.get()) {
+          transport_.get()) {
   channel_->setQueueSends(worker_->getServer()->getQueueSends());
 
   if (auto* observer = worker_->getServer()->getObserver()) {

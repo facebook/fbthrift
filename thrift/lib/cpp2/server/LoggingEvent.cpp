@@ -85,8 +85,9 @@ void logSetupConnectionEventsOnce(
       return false;
     }
     try {
-      if (!context.getTransport()
-               .getUnderlyingTransport<folly::AsyncSSLSocket>()) {
+      if (context.getTransport() &&
+          !context.getTransport()
+               ->getUnderlyingTransport<folly::AsyncSSLSocket>()) {
         THRIFT_CONNECTION_EVENT(non_tls).log(context);
       }
     } catch (...) {
