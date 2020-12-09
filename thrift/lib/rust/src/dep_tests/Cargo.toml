@@ -13,4 +13,4 @@ path = "lib.rs"
 fbthrift = { path = "../.." }
 fbthrift_test_if = { path = "cargo_thrift" }
 anyhow = "1.0"
-serde_json = "1.0"
+serde_json = { version = "1.0", features = ["float_roundtrip"] }
