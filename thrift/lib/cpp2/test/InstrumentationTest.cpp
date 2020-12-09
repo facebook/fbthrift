@@ -94,15 +94,14 @@ class InstrumentationTestProcessor
   }
 };
 
-class DebugInterface : public virtual DebugTestServiceSvIf {
+class DebugInterface : public DebugTestServiceSvIf {
  public:
   void echo(std::string& r, std::unique_ptr<::std::string> s) override {
     r = folly::format("{}:{}", *s, folly::getCurrentThreadName().value()).str();
   }
 };
 
-class TestInterface : public virtual InstrumentationTestServiceSvIf,
-                      public DebugInterface {
+class TestInterface : public InstrumentationTestServiceSvIf {
  public:
   auto requestGuard() {
     reqCount_++;
@@ -299,16 +298,6 @@ class RequestInstrumentationTest : public testing::Test {
         });
   }
 
-  auto makeMonitoringClient() {
-    return server().newClient<InstrumentationTestServiceAsyncClient>(
-        nullptr, [](auto socket) {
-          RequestSetupMetadata meta;
-          meta.interfaceKind_ref() = InterfaceKind::MONITORING;
-          return RocketClientChannel::newChannel(
-              std::move(socket), std::move(meta));
-        });
-  }
-
   struct Impl {
     Impl(ScopedServerInterfaceThread::ServerConfigCb&& serverCfgCob = {})
         : handler_(std::make_shared<TestInterface>()),
@@ -446,27 +435,6 @@ TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
   EXPECT_TRUE(folly::StringPiece(echoed).startsWith("echome:DebugInterface-"));
 
   for (auto& reqSnapshot : getRequestSnapshots(2 * reqNum)) {
-    auto methodName = reqSnapshot.getMethodName();
-    EXPECT_TRUE(
-        methodName == "sendRequest" || methodName == "sendStreamingRequest");
-  }
-}
-
-TEST_F(RequestInstrumentationTest, MonitoringInterfaceTest) {
-  constexpr auto kNumRequests = 5;
-
-  auto client = makeRocketClient();
-  auto monitoringClient = makeMonitoringClient();
-
-  for (auto i = 0; i < kNumRequests; ++i) {
-    client->semifuture_sendStreamingRequest();
-    client->semifuture_sendRequest();
-  }
-
-  auto echoed = monitoringClient->semifuture_echo("echome").get();
-  EXPECT_THAT(echoed, StartsWith("echome:ThriftMonitor"));
-
-  for (auto& reqSnapshot : getRequestSnapshots(2 * kNumRequests)) {
     auto methodName = reqSnapshot.getMethodName();
     EXPECT_TRUE(
         methodName == "sendRequest" || methodName == "sendStreamingRequest");
