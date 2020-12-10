@@ -30,7 +30,7 @@ executing.
 {{#function:returnType}}
 
 @cython.auto_pickle(False)
-cdef class Promise_{{> types/CythonCppTypeIdent}}:
+cdef class {{> services/PromiseName}}:
     cdef cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise
@@ -39,9 +39,8 @@ cdef class Promise_{{> types/CythonCppTypeIdent}}:
     cdef create(cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise):
-        inst = <Promise_{{> types/CythonCppTypeIdent}}>{{!
-        }}Promise_{{> types/CythonCppTypeIdent}}.__new__({{!
-        }}Promise_{{> types/CythonCppTypeIdent}})
+        inst = <{{> services/PromiseName}}>{{> services/PromiseName}}.__new__({{!
+        }}{{> services/PromiseName}})
         inst.cPromise = cmove(cPromise)
         return inst
 {{/function:returnType}}

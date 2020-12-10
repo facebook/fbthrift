@@ -386,6 +386,9 @@ class StackHandler(StackServiceInterface):
     async def get_simple(self) -> simple:
         return simple(val=66)
 
+    async def get_simple_no_sa(self) -> simple:
+        return simple(val=88)
+
     async def take_simple(self, smpl: simple) -> None:
         if smpl.val != 10:
             raise Exception("WRONG")
@@ -423,6 +426,7 @@ class ClientStackServerTests(unittest.TestCase):
                         (3, 4, 5, 6), await client.add_to(lst=(1, 2, 3, 4), value=2)
                     )
                     self.assertEqual(66, (await client.get_simple()).val)
+                    self.assertEqual((await client.get_simple_no_sa()).val, 88)
                     await client.take_simple(simple(val=10))
                     self.assertEqual(b"abc", bytes(await client.get_iobuf()))
                     await client.take_iobuf(IOBuf(b"cba"))

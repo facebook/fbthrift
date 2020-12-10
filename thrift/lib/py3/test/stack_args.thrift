@@ -26,6 +26,7 @@ struct simple {
 service StackService {
     list<i32> add_to(1: list<i32> lst, 2: i32 value)
     simple get_simple()
+    simple get_simple_no_sa() (cpp.stack_arguments = "0")
     void take_simple(1: simple smpl)
     IOBuf get_iobuf()
     void take_iobuf(1: IOBuf val)
