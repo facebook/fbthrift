@@ -29,7 +29,7 @@ namespace async {
 // Converts exceptions to thrift's TTransportException type.
 class TAsyncSSLSocket : public folly::AsyncSSLSocket {
  public:
-  typedef std::unique_ptr<TAsyncSSLSocket, Destructor> UniquePtr;
+  typedef std::unique_ptr<TAsyncSSLSocket, ReleasableDestructor> UniquePtr;
 
   explicit TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
@@ -53,7 +53,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb) {
     return std::shared_ptr<TAsyncSSLSocket>(
-        new TAsyncSSLSocket(ctx, evb), Destructor());
+        TAsyncSSLSocket::UniquePtr(new TAsyncSSLSocket(ctx, evb)));
   }
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
@@ -62,7 +62,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
       folly::NetworkSocket fd,
       bool server = true) {
     return std::shared_ptr<TAsyncSSLSocket>(
-        new TAsyncSSLSocket(ctx, evb, fd, server), Destructor());
+        TAsyncSSLSocket::UniquePtr(new TAsyncSSLSocket(ctx, evb, fd, server)));
   }
 
 #if OPENSSL_VERSION_NUMBER >= 0x1000105fL && !defined(OPENSSL_NO_TLSEXT)
@@ -84,7 +84,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
       folly::EventBase* evb,
       const std::string& serverName) {
     return std::shared_ptr<TAsyncSSLSocket>(
-        new TAsyncSSLSocket(ctx, evb, serverName), Destructor());
+        TAsyncSSLSocket::UniquePtr(new TAsyncSSLSocket(ctx, evb, serverName)));
   }
 #endif
 };

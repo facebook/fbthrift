@@ -1991,8 +1991,7 @@ TEST(ThriftServer, RocketOverSSLNoALPN) {
 
   auto ctx = makeClientSslContext();
   folly::AsyncSSLSocket::UniquePtr sslSock(
-      new folly::AsyncSSLSocket(ctx, &base),
-      folly::AsyncSSLSocket::Destructor());
+      new folly::AsyncSSLSocket(ctx, &base));
   sslSock->connect(nullptr /* connect callback */, loopback);
 
   TestServiceAsyncClient client(
