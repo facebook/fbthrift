@@ -45,7 +45,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
         }}{{/field:type}} {{field:py_name}}{{/function:args}}
 ):{{! Gets called from a python Executor }}
     {{#function:returnType}}
-    __promise = {{> services/PromiseName}}.create(cmove(cPromise))
+    cdef {{> services/PromiseName}} __promise = {{> services/PromiseName}}.create(cmove(cPromise))
     {{/function:returnType}}
     {{#function:args}}
     arg_{{field:py_name}} = {{#field:type}}{{!

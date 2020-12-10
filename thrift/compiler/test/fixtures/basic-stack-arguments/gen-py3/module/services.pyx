@@ -69,7 +69,7 @@ cdef class Promise_binary:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
+        cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -79,7 +79,7 @@ cdef class Promise__sa_binary:
 
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
-        inst = <Promise__sa_binary>Promise__sa_binary.__new__(Promise__sa_binary)
+        cdef Promise__sa_binary inst = Promise__sa_binary.__new__(Promise__sa_binary)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -89,7 +89,7 @@ cdef class Promise__sa_cbool:
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise__sa_cbool>Promise__sa_cbool.__new__(Promise__sa_cbool)
+        cdef Promise__sa_cbool inst = Promise__sa_cbool.__new__(Promise__sa_cbool)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -99,7 +99,7 @@ cdef class Promise__sa_string:
 
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
-        inst = <Promise__sa_string>Promise__sa_string.__new__(Promise__sa_string)
+        cdef Promise__sa_string inst = Promise__sa_string.__new__(Promise__sa_string)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -109,7 +109,7 @@ cdef class Promise__sa_cFollyUnit:
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise__sa_cFollyUnit>Promise__sa_cFollyUnit.__new__(Promise__sa_cFollyUnit)
+        cdef Promise__sa_cFollyUnit inst = Promise__sa_cFollyUnit.__new__(Promise__sa_cFollyUnit)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -275,7 +275,7 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise__sa_cbool.create(cmove(cPromise))
+    cdef Promise__sa_cbool __promise = Promise__sa_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -327,7 +327,7 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    __promise = Promise__sa_string.create(cmove(cPromise))
+    cdef Promise__sa_string __promise = Promise__sa_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -380,7 +380,7 @@ cdef api void call_cy_MyService_putDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -438,7 +438,7 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -495,7 +495,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise__sa_cbool.create(cmove(cPromise))
+    cdef Promise__sa_cbool __promise = Promise__sa_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -547,7 +547,7 @@ cdef api void call_cy_MyServiceFast_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    __promise = Promise__sa_string.create(cmove(cPromise))
+    cdef Promise__sa_string __promise = Promise__sa_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -600,7 +600,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -658,7 +658,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -715,7 +715,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    __promise = Promise_binary.create(cmove(cPromise))
+    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -767,7 +767,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     cFollyPromise[string] cPromise,
     string key
 ):
-    __promise = Promise__sa_binary.create(cmove(cPromise))
+    cdef Promise__sa_binary __promise = Promise__sa_binary.create(cmove(cPromise))
     arg_key = key.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

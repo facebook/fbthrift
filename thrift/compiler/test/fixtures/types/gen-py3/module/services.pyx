@@ -69,7 +69,7 @@ cdef class Promise_cmap__binary_cint64_t:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
-        inst = <Promise_cmap__binary_cint64_t>Promise_cmap__binary_cint64_t.__new__(Promise_cmap__binary_cint64_t)
+        cdef Promise_cmap__binary_cint64_t inst = Promise_cmap__binary_cint64_t.__new__(Promise_cmap__binary_cint64_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -79,7 +79,7 @@ cdef class Promise__module_types_std_unordered_map__cint32_t_string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise):
-        inst = <Promise__module_types_std_unordered_map__cint32_t_string>Promise__module_types_std_unordered_map__cint32_t_string.__new__(Promise__module_types_std_unordered_map__cint32_t_string)
+        cdef Promise__module_types_std_unordered_map__cint32_t_string inst = Promise__module_types_std_unordered_map__cint32_t_string.__new__(Promise__module_types_std_unordered_map__cint32_t_string)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -129,7 +129,7 @@ cdef api void call_cy_SomeService_bounce_map(
     cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise,
     unique_ptr[_module_types.std_unordered_map[cint32_t,string]] m
 ):
-    __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(cmove(cPromise))
+    cdef Promise__module_types_std_unordered_map__cint32_t_string __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(cmove(cPromise))
     arg_m = _module_types.std_unordered_map__Map__i32_string.create(__to_shared_ptr(cmove(m)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -182,7 +182,7 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     unique_ptr[vector[cint64_t]] r
 ):
-    __promise = Promise_cmap__binary_cint64_t.create(cmove(cPromise))
+    cdef Promise_cmap__binary_cint64_t __promise = Promise_cmap__binary_cint64_t.create(cmove(cPromise))
     arg_r = _module_types.List__i64.create(__to_shared_ptr(cmove(r)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

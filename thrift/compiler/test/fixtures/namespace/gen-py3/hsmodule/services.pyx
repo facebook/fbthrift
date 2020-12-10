@@ -67,7 +67,7 @@ cdef class Promise_cint64_t:
 
     @staticmethod
     cdef create(cFollyPromise[cint64_t] cPromise):
-        inst = <Promise_cint64_t>Promise_cint64_t.__new__(Promise_cint64_t)
+        cdef Promise_cint64_t inst = Promise_cint64_t.__new__(Promise_cint64_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -108,7 +108,7 @@ cdef api void call_cy_HsTestService_init(
     cFollyPromise[cint64_t] cPromise,
     cint64_t int1
 ):
-    __promise = Promise_cint64_t.create(cmove(cPromise))
+    cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
     arg_int1 = int1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

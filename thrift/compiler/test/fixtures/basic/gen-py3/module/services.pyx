@@ -68,7 +68,7 @@ cdef class Promise_binary:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
+        cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -78,7 +78,7 @@ cdef class Promise_cbool:
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -88,7 +88,7 @@ cdef class Promise_string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_string>Promise_string.__new__(Promise_string)
+        cdef Promise_string inst = Promise_string.__new__(Promise_string)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -98,7 +98,7 @@ cdef class Promise_cFollyUnit:
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -221,7 +221,7 @@ cdef api void call_cy_MyService_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -267,7 +267,7 @@ cdef api void call_cy_MyService_getRandomData(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -314,7 +314,7 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise_cbool.create(cmove(cPromise))
+    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -366,7 +366,7 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[unique_ptr[string]] cPromise,
     cint64_t id
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -419,7 +419,7 @@ cdef api void call_cy_MyService_putDataById(
     cint64_t id,
     unique_ptr[string] data
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -477,7 +477,7 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     unique_ptr[string] data
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -534,7 +534,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    __promise = Promise_binary.create(cmove(cPromise))
+    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -586,7 +586,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    __promise = Promise_binary.create(cmove(cPromise))
+    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

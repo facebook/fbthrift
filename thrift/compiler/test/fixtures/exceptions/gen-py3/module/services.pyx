@@ -67,7 +67,7 @@ cdef class Promise_string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_string>Promise_string.__new__(Promise_string)
+        cdef Promise_string inst = Promise_string.__new__(Promise_string)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -77,7 +77,7 @@ cdef class Promise_cFollyUnit:
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -140,7 +140,7 @@ cdef api void call_cy_Raiser_doBland(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -186,7 +186,7 @@ cdef api void call_cy_Raiser_doRaise(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -238,7 +238,7 @@ cdef api void call_cy_Raiser_get200(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -284,7 +284,7 @@ cdef api void call_cy_Raiser_get500(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

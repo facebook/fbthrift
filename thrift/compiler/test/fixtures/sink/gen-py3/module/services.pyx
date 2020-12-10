@@ -67,7 +67,7 @@ cdef class Promise_:
 
     @staticmethod
     cdef create(cFollyPromise[] cPromise):
-        inst = <Promise_>Promise_.__new__(Promise_)
+        cdef Promise_ inst = Promise_.__new__(Promise_)
         inst.cPromise = cmove(cPromise)
         return inst
 

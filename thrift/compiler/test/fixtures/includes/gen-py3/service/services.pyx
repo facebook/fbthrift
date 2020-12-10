@@ -73,7 +73,7 @@ cdef class Promise_cFollyUnit:
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -126,7 +126,7 @@ cdef api void call_cy_MyService_query(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = RequestContext.create(ctx)
@@ -184,7 +184,7 @@ cdef api void call_cy_MyService_has_arg_docs(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = RequestContext.create(ctx)

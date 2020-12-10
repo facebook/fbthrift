@@ -68,7 +68,7 @@ cdef class Promise_cResponseAndServerStream__cint32_t_cint32_t:
 
     @staticmethod
     cdef create(cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise):
-        inst = <Promise_cResponseAndServerStream__cint32_t_cint32_t>Promise_cResponseAndServerStream__cint32_t_cint32_t.__new__(Promise_cResponseAndServerStream__cint32_t_cint32_t)
+        cdef Promise_cResponseAndServerStream__cint32_t_cint32_t inst = Promise_cResponseAndServerStream__cint32_t_cint32_t.__new__(Promise_cResponseAndServerStream__cint32_t_cint32_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -78,7 +78,7 @@ cdef class Promise_cServerStream__cint32_t:
 
     @staticmethod
     cdef create(cFollyPromise[cServerStream[cint32_t]] cPromise):
-        inst = <Promise_cServerStream__cint32_t>Promise_cServerStream__cint32_t.__new__(Promise_cServerStream__cint32_t)
+        cdef Promise_cServerStream__cint32_t inst = Promise_cServerStream__cint32_t.__new__(Promise_cServerStream__cint32_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -158,7 +158,7 @@ cdef api void call_cy_PubSubStreamingService_returnstream(
     cint32_t i32_from,
     cint32_t i32_to
 ):
-    __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
     arg_i32_from = i32_from
     arg_i32_to = i32_to
     __context = RequestContext.create(ctx)
@@ -216,7 +216,7 @@ cdef api void call_cy_PubSubStreamingService_streamthrows(
     cFollyPromise[cServerStream[cint32_t]] cPromise,
     cint32_t foo
 ):
-    __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
     arg_foo = foo
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -269,7 +269,7 @@ cdef api void call_cy_PubSubStreamingService_boththrows(
     cFollyPromise[cServerStream[cint32_t]] cPromise,
     cint32_t foo
 ):
-    __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
     arg_foo = foo
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -324,7 +324,7 @@ cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
     cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise,
     cint32_t foo
 ):
-    __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t.create(cmove(cPromise))
+    cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t.create(cmove(cPromise))
     arg_foo = foo
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -380,7 +380,7 @@ cdef api void call_cy_PubSubStreamingService_returnstreamFast(
     cint32_t i32_from,
     cint32_t i32_to
 ):
-    __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
+    cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
     arg_i32_from = i32_from
     arg_i32_to = i32_to
     __context = RequestContext.create(ctx)

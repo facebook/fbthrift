@@ -39,7 +39,7 @@ cdef class {{> services/PromiseName}}:
     cdef create(cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise):
-        inst = <{{> services/PromiseName}}>{{> services/PromiseName}}.__new__({{!
+        cdef {{> services/PromiseName}} inst = {{> services/PromiseName}}.__new__({{!
         }}{{> services/PromiseName}})
         inst.cPromise = cmove(cPromise)
         return inst

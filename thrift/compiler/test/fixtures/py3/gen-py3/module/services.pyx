@@ -69,7 +69,7 @@ cdef class Promise__module_types_cAnEnum:
 
     @staticmethod
     cdef create(cFollyPromise[_module_types.cAnEnum] cPromise):
-        inst = <Promise__module_types_cAnEnum>Promise__module_types_cAnEnum.__new__(Promise__module_types_cAnEnum)
+        cdef Promise__module_types_cAnEnum inst = Promise__module_types_cAnEnum.__new__(Promise__module_types_cAnEnum)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -79,7 +79,7 @@ cdef class Promise__module_types_cBinaryUnionStruct:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise):
-        inst = <Promise__module_types_cBinaryUnionStruct>Promise__module_types_cBinaryUnionStruct.__new__(Promise__module_types_cBinaryUnionStruct)
+        cdef Promise__module_types_cBinaryUnionStruct inst = Promise__module_types_cBinaryUnionStruct.__new__(Promise__module_types_cBinaryUnionStruct)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -89,7 +89,7 @@ cdef class Promise_vector___module_types_cAnEnum:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise):
-        inst = <Promise_vector___module_types_cAnEnum>Promise_vector___module_types_cAnEnum.__new__(Promise_vector___module_types_cAnEnum)
+        cdef Promise_vector___module_types_cAnEnum inst = Promise_vector___module_types_cAnEnum.__new__(Promise_vector___module_types_cAnEnum)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -99,7 +99,7 @@ cdef class Promise_vector__vector__cint32_t:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[vector[cint32_t]]]] cPromise):
-        inst = <Promise_vector__vector__cint32_t>Promise_vector__vector__cint32_t.__new__(Promise_vector__vector__cint32_t)
+        cdef Promise_vector__vector__cint32_t inst = Promise_vector__vector__cint32_t.__new__(Promise_vector__vector__cint32_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -109,7 +109,7 @@ cdef class Promise_vector__cset__string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise):
-        inst = <Promise_vector__cset__string>Promise_vector__cset__string.__new__(Promise_vector__cset__string)
+        cdef Promise_vector__cset__string inst = Promise_vector__cset__string.__new__(Promise_vector__cset__string)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -119,7 +119,7 @@ cdef class Promise_vector__cint32_t:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise):
-        inst = <Promise_vector__cint32_t>Promise_vector__cint32_t.__new__(Promise_vector__cint32_t)
+        cdef Promise_vector__cint32_t inst = Promise_vector__cint32_t.__new__(Promise_vector__cint32_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -129,7 +129,7 @@ cdef class Promise_cmap__string_cmap__string_cint32_t:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,cmap[string,cint32_t]]]] cPromise):
-        inst = <Promise_cmap__string_cmap__string_cint32_t>Promise_cmap__string_cmap__string_cint32_t.__new__(Promise_cmap__string_cmap__string_cint32_t)
+        cdef Promise_cmap__string_cmap__string_cint32_t inst = Promise_cmap__string_cmap__string_cint32_t.__new__(Promise_cmap__string_cmap__string_cint32_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -139,7 +139,7 @@ cdef class Promise_cmap__string_cint16_t:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,cint16_t]]] cPromise):
-        inst = <Promise_cmap__string_cint16_t>Promise_cmap__string_cint16_t.__new__(Promise_cmap__string_cint16_t)
+        cdef Promise_cmap__string_cint16_t inst = Promise_cmap__string_cint16_t.__new__(Promise_cmap__string_cint16_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -149,7 +149,7 @@ cdef class Promise_cset__binary:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
-        inst = <Promise_cset__binary>Promise_cset__binary.__new__(Promise_cset__binary)
+        cdef Promise_cset__binary inst = Promise_cset__binary.__new__(Promise_cset__binary)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -159,7 +159,7 @@ cdef class Promise_cset__cint32_t:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[cint32_t]]] cPromise):
-        inst = <Promise_cset__cint32_t>Promise_cset__cint32_t.__new__(Promise_cset__cint32_t)
+        cdef Promise_cset__cint32_t inst = Promise_cset__cint32_t.__new__(Promise_cset__cint32_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -169,7 +169,7 @@ cdef class Promise_cset__string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
-        inst = <Promise_cset__string>Promise_cset__string.__new__(Promise_cset__string)
+        cdef Promise_cset__string inst = Promise_cset__string.__new__(Promise_cset__string)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -179,7 +179,7 @@ cdef class Promise__module_types_cSimpleStruct:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise):
-        inst = <Promise__module_types_cSimpleStruct>Promise__module_types_cSimpleStruct.__new__(Promise__module_types_cSimpleStruct)
+        cdef Promise__module_types_cSimpleStruct inst = Promise__module_types_cSimpleStruct.__new__(Promise__module_types_cSimpleStruct)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -189,7 +189,7 @@ cdef class Promise_binary:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
+        cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -199,7 +199,7 @@ cdef class Promise_cbool:
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -209,7 +209,7 @@ cdef class Promise_cint8_t:
 
     @staticmethod
     cdef create(cFollyPromise[cint8_t] cPromise):
-        inst = <Promise_cint8_t>Promise_cint8_t.__new__(Promise_cint8_t)
+        cdef Promise_cint8_t inst = Promise_cint8_t.__new__(Promise_cint8_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -219,7 +219,7 @@ cdef class Promise_double:
 
     @staticmethod
     cdef create(cFollyPromise[double] cPromise):
-        inst = <Promise_double>Promise_double.__new__(Promise_double)
+        cdef Promise_double inst = Promise_double.__new__(Promise_double)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -229,7 +229,7 @@ cdef class Promise_cint16_t:
 
     @staticmethod
     cdef create(cFollyPromise[cint16_t] cPromise):
-        inst = <Promise_cint16_t>Promise_cint16_t.__new__(Promise_cint16_t)
+        cdef Promise_cint16_t inst = Promise_cint16_t.__new__(Promise_cint16_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -239,7 +239,7 @@ cdef class Promise_cint32_t:
 
     @staticmethod
     cdef create(cFollyPromise[cint32_t] cPromise):
-        inst = <Promise_cint32_t>Promise_cint32_t.__new__(Promise_cint32_t)
+        cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -249,7 +249,7 @@ cdef class Promise_cint64_t:
 
     @staticmethod
     cdef create(cFollyPromise[cint64_t] cPromise):
-        inst = <Promise_cint64_t>Promise_cint64_t.__new__(Promise_cint64_t)
+        cdef Promise_cint64_t inst = Promise_cint64_t.__new__(Promise_cint64_t)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -259,7 +259,7 @@ cdef class Promise_string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_string>Promise_string.__new__(Promise_string)
+        cdef Promise_string inst = Promise_string.__new__(Promise_string)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -269,7 +269,7 @@ cdef class Promise_cFollyUnit:
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -725,7 +725,7 @@ cdef api void call_cy_SimpleService_get_five(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -772,7 +772,7 @@ cdef api void call_cy_SimpleService_add_five(
     cFollyPromise[cint32_t] cPromise,
     cint32_t num
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_num = num
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -823,7 +823,7 @@ cdef api void call_cy_SimpleService_do_nothing(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -871,7 +871,7 @@ cdef api void call_cy_SimpleService_concat(
     unique_ptr[string] first,
     unique_ptr[string] second
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_first = (deref(first)).data().decode('UTF-8')
     arg_second = (deref(second)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -928,7 +928,7 @@ cdef api void call_cy_SimpleService_get_value(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[_module_types.cSimpleStruct] simple_struct
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_simple_struct = _module_types.SimpleStruct.create(shared_ptr[_module_types.cSimpleStruct](simple_struct.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -980,7 +980,7 @@ cdef api void call_cy_SimpleService_negate(
     cFollyPromise[cbool] cPromise,
     cbool input
 ):
-    __promise = Promise_cbool.create(cmove(cPromise))
+    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1032,7 +1032,7 @@ cdef api void call_cy_SimpleService_tiny(
     cFollyPromise[cint8_t] cPromise,
     cint8_t input
 ):
-    __promise = Promise_cint8_t.create(cmove(cPromise))
+    cdef Promise_cint8_t __promise = Promise_cint8_t.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1084,7 +1084,7 @@ cdef api void call_cy_SimpleService_small(
     cFollyPromise[cint16_t] cPromise,
     cint16_t input
 ):
-    __promise = Promise_cint16_t.create(cmove(cPromise))
+    cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1136,7 +1136,7 @@ cdef api void call_cy_SimpleService_big(
     cFollyPromise[cint64_t] cPromise,
     cint64_t input
 ):
-    __promise = Promise_cint64_t.create(cmove(cPromise))
+    cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1188,7 +1188,7 @@ cdef api void call_cy_SimpleService_two(
     cFollyPromise[double] cPromise,
     double input
 ):
-    __promise = Promise_double.create(cmove(cPromise))
+    cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1239,7 +1239,7 @@ cdef api void call_cy_SimpleService_expected_exception(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1287,7 +1287,7 @@ cdef api void call_cy_SimpleService_unexpected_exception(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1334,7 +1334,7 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[vector[cint16_t]] numbers
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.List__i16.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1386,7 +1386,7 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[vector[cint32_t]] numbers
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.List__i32.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1438,7 +1438,7 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[vector[cint64_t]] numbers
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.List__i64.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1490,7 +1490,7 @@ cdef api void call_cy_SimpleService_concat_many(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[string]] words
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1542,7 +1542,7 @@ cdef api void call_cy_SimpleService_count_structs(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[vector[_module_types.cSimpleStruct]] items
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_items = _module_types.List__SimpleStruct.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1594,7 +1594,7 @@ cdef api void call_cy_SimpleService_sum_set(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[cset[cint32_t]] numbers
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.Set__i32.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1647,7 +1647,7 @@ cdef api void call_cy_SimpleService_contains_word(
     unique_ptr[cset[string]] words,
     unique_ptr[string] word
 ):
-    __promise = Promise_cbool.create(cmove(cPromise))
+    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_words = _module_types.Set__string.create(__to_shared_ptr(cmove(words)))
     arg_word = (deref(word)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -1705,7 +1705,7 @@ cdef api void call_cy_SimpleService_get_map_value(
     unique_ptr[cmap[string,string]] words,
     unique_ptr[string] key
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_words = _module_types.Map__string_string.create(__to_shared_ptr(cmove(words)))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -1762,7 +1762,7 @@ cdef api void call_cy_SimpleService_map_length(
     cFollyPromise[cint16_t] cPromise,
     unique_ptr[cmap[string,_module_types.cSimpleStruct]] items
 ):
-    __promise = Promise_cint16_t.create(cmove(cPromise))
+    cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
     arg_items = _module_types.Map__string_SimpleStruct.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1814,7 +1814,7 @@ cdef api void call_cy_SimpleService_sum_map_values(
     cFollyPromise[cint16_t] cPromise,
     unique_ptr[cmap[string,cint16_t]] items
 ):
-    __promise = Promise_cint16_t.create(cmove(cPromise))
+    cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
     arg_items = _module_types.Map__string_i16.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1866,7 +1866,7 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[_module_types.cComplexStruct] counter
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1918,7 +1918,7 @@ cdef api void call_cy_SimpleService_repeat_name(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[_module_types.cComplexStruct] counter
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1969,7 +1969,7 @@ cdef api void call_cy_SimpleService_get_struct(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise
 ):
-    __promise = Promise__module_types_cSimpleStruct.create(cmove(cPromise))
+    cdef Promise__module_types_cSimpleStruct __promise = Promise__module_types_cSimpleStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2016,7 +2016,7 @@ cdef api void call_cy_SimpleService_fib(
     cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise,
     cint16_t n
 ):
-    __promise = Promise_vector__cint32_t.create(cmove(cPromise))
+    cdef Promise_vector__cint32_t __promise = Promise_vector__cint32_t.create(cmove(cPromise))
     arg_n = n
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2069,7 +2069,7 @@ cdef api void call_cy_SimpleService_unique_words(
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] words
 ):
-    __promise = Promise_cset__string.create(cmove(cPromise))
+    cdef Promise_cset__string __promise = Promise_cset__string.create(cmove(cPromise))
     arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2122,7 +2122,7 @@ cdef api void call_cy_SimpleService_words_count(
     cFollyPromise[unique_ptr[cmap[string,cint16_t]]] cPromise,
     unique_ptr[vector[string]] words
 ):
-    __promise = Promise_cmap__string_cint16_t.create(cmove(cPromise))
+    cdef Promise_cmap__string_cint16_t __promise = Promise_cmap__string_cint16_t.create(cmove(cPromise))
     arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2175,7 +2175,7 @@ cdef api void call_cy_SimpleService_set_enum(
     cFollyPromise[_module_types.cAnEnum] cPromise,
     _module_types.cAnEnum in_enum
 ):
-    __promise = Promise__module_types_cAnEnum.create(cmove(cPromise))
+    cdef Promise__module_types_cAnEnum __promise = Promise__module_types_cAnEnum.create(cmove(cPromise))
     arg_in_enum = _module_types.AnEnum(<int> in_enum)
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2228,7 +2228,7 @@ cdef api void call_cy_SimpleService_list_of_lists(
     cint16_t num_lists,
     cint16_t num_items
 ):
-    __promise = Promise_vector__vector__cint32_t.create(cmove(cPromise))
+    cdef Promise_vector__vector__cint32_t __promise = Promise_vector__vector__cint32_t.create(cmove(cPromise))
     arg_num_lists = num_lists
     arg_num_items = num_items
     __context = RequestContext.create(ctx)
@@ -2286,7 +2286,7 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     cFollyPromise[unique_ptr[cmap[string,cmap[string,cint32_t]]]] cPromise,
     unique_ptr[string] sentence
 ):
-    __promise = Promise_cmap__string_cmap__string_cint32_t.create(cmove(cPromise))
+    cdef Promise_cmap__string_cmap__string_cint32_t __promise = Promise_cmap__string_cmap__string_cint32_t.create(cmove(cPromise))
     arg_sentence = (deref(sentence)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2339,7 +2339,7 @@ cdef api void call_cy_SimpleService_list_of_sets(
     cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
     unique_ptr[string] some_words
 ):
-    __promise = Promise_vector__cset__string.create(cmove(cPromise))
+    cdef Promise_vector__cset__string __promise = Promise_vector__cset__string.create(cmove(cPromise))
     arg_some_words = (deref(some_words)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2392,7 +2392,7 @@ cdef api void call_cy_SimpleService_nested_map_argument(
     cFollyPromise[cint32_t] cPromise,
     unique_ptr[cmap[string,vector[_module_types.cSimpleStruct]]] struct_map
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(__to_shared_ptr(cmove(struct_map)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2444,7 +2444,7 @@ cdef api void call_cy_SimpleService_make_sentence(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[vector[string]]] word_chars
 ):
-    __promise = Promise_string.create(cmove(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_word_chars = _module_types.List__List__string.create(__to_shared_ptr(cmove(word_chars)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2496,7 +2496,7 @@ cdef api void call_cy_SimpleService_get_union(
     cFollyPromise[unique_ptr[cset[cint32_t]]] cPromise,
     unique_ptr[vector[cset[cint32_t]]] sets
 ):
-    __promise = Promise_cset__cint32_t.create(cmove(cPromise))
+    cdef Promise_cset__cint32_t __promise = Promise_cset__cint32_t.create(cmove(cPromise))
     arg_sets = _module_types.List__Set__i32.create(__to_shared_ptr(cmove(sets)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2549,7 +2549,7 @@ cdef api void call_cy_SimpleService_get_keys(
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[cmap[string,string]]] string_map
 ):
-    __promise = Promise_cset__string.create(cmove(cPromise))
+    cdef Promise_cset__string __promise = Promise_cset__string.create(cmove(cPromise))
     arg_string_map = _module_types.List__Map__string_string.create(__to_shared_ptr(cmove(string_map)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2602,7 +2602,7 @@ cdef api void call_cy_SimpleService_lookup_double(
     cFollyPromise[double] cPromise,
     cint32_t key
 ):
-    __promise = Promise_double.create(cmove(cPromise))
+    cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
     arg_key = key
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2654,7 +2654,7 @@ cdef api void call_cy_SimpleService_retrieve_binary(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] something
 ):
-    __promise = Promise_binary.create(cmove(cPromise))
+    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_something = (deref(something))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2706,7 +2706,7 @@ cdef api void call_cy_SimpleService_contain_binary(
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] binaries
 ):
-    __promise = Promise_cset__binary.create(cmove(cPromise))
+    cdef Promise_cset__binary __promise = Promise_cset__binary.create(cmove(cPromise))
     arg_binaries = _module_types.List__binary.create(__to_shared_ptr(cmove(binaries)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2759,7 +2759,7 @@ cdef api void call_cy_SimpleService_contain_enum(
     cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise,
     unique_ptr[vector[_module_types.cAnEnum]] the_enum
 ):
-    __promise = Promise_vector___module_types_cAnEnum.create(cmove(cPromise))
+    cdef Promise_vector___module_types_cAnEnum __promise = Promise_vector___module_types_cAnEnum.create(cmove(cPromise))
     arg_the_enum = _module_types.List__AnEnum.create(__to_shared_ptr(cmove(the_enum)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2812,7 +2812,7 @@ cdef api void call_cy_SimpleService_get_binary_union_struct(
     cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise,
     unique_ptr[_module_types.cBinaryUnion] u
 ):
-    __promise = Promise__module_types_cBinaryUnionStruct.create(cmove(cPromise))
+    cdef Promise__module_types_cBinaryUnionStruct __promise = Promise__module_types_cBinaryUnionStruct.create(cmove(cPromise))
     arg_u = _module_types.BinaryUnion.create(shared_ptr[_module_types.cBinaryUnion](u.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2863,7 +2863,7 @@ cdef api void call_cy_DerivedService_get_six(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -2909,7 +2909,7 @@ cdef api void call_cy_RederivedService_get_seven(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    __promise = Promise_cint32_t.create(cmove(cPromise))
+    cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

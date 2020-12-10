@@ -71,7 +71,7 @@ cdef class Promise_cbool:
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
         inst.cPromise = cmove(cPromise)
         return inst
 
@@ -112,7 +112,7 @@ cdef api void call_cy_ExtendTestService_check(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_hsmodule_types.cHsFoo] struct1
 ):
-    __promise = Promise_cbool.create(cmove(cPromise))
+    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
