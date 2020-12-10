@@ -582,7 +582,8 @@ struct unset_unsafe_fn {
 
 struct alias_isset_fn {
   template <typename T, typename F>
-  auto operator()(optional_field_ref<T> ref, F functor) const noexcept {
+  auto operator()(optional_field_ref<T> ref, F functor) const
+      noexcept(noexcept(functor(ref.value_))) {
     auto&& result = functor(ref.value_);
     return optional_field_ref<decltype(result)>(
         static_cast<decltype(result)>(result), ref.is_set_);
