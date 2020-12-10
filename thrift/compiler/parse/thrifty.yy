@@ -54,6 +54,8 @@
 YY_DECL;
 #define yylex fbthrift_compiler_parse_lex
 
+namespace {
+
 /**
  * This global variable is used for automatic numbering of field indices etc.
  * when parsing the members of a struct. Field values are automatically
@@ -106,6 +108,8 @@ class LinenoStack {
   std::stack<std::pair<LineType, int>> stack_;
 };
 LinenoStack lineno_stack;
+
+} // namespace
 
 namespace apache {
 namespace thrift {
