@@ -25,12 +25,14 @@
 #include <thrift/conformance/cpp2/internal/ThriftTypes.h>
 
 #include <cstddef>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 
 #include <fatal/type/cat.h>
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp/protocol/TType.h>
 
 namespace apache::thrift::conformance {
 
@@ -167,5 +169,84 @@ using if_composite = detail::if_contains<composite_types, T, R>;
 // Only defined if T has the BaseType B.
 template <typename T, BaseType B, typename R = void>
 using if_base_type = std::enable_if_t<B == T::kBaseType, R>;
+
+constexpr inline TType toTType(BaseType type) {
+  switch (type) {
+    case BaseType::Void:
+      return TType::T_VOID;
+    case BaseType::Bool:
+      return TType::T_BOOL;
+    case BaseType::Byte:
+      return TType::T_BYTE;
+    case BaseType::I16:
+      return TType::T_I16;
+    case BaseType::Enum:
+    case BaseType::I32:
+      return TType::T_I32;
+    case BaseType::I64:
+      return TType::T_I64;
+    case BaseType::Double:
+      return TType::T_DOUBLE;
+    case BaseType::Float:
+      return TType::T_FLOAT;
+    case BaseType::String:
+      return TType::T_UTF8;
+    case BaseType::Binary:
+      return TType::T_STRING;
+
+    case BaseType::List:
+      return TType::T_LIST;
+    case BaseType::Set:
+      return TType::T_SET;
+    case BaseType::Map:
+      return TType::T_MAP;
+
+    case BaseType::Struct:
+      return TType::T_STRUCT;
+    case BaseType::Union:
+      return TType::T_STRUCT;
+    case BaseType::Exception:
+      return TType::T_STRUCT;
+    default:
+      folly::throw_exception<std::invalid_argument>(
+          "Unsupported conversion from: " + std::to_string((int)type));
+  }
+}
+
+constexpr inline BaseType toThriftBaseType(TType type) {
+  switch (type) {
+    case TType::T_BOOL:
+      return BaseType::Bool;
+    case TType::T_BYTE:
+      return BaseType::Byte;
+    case TType::T_I16:
+      return BaseType::I16;
+    case TType::T_I32:
+      return BaseType::I32;
+    case TType::T_I64:
+      return BaseType::I64;
+    case TType::T_DOUBLE:
+      return BaseType::Double;
+    case TType::T_FLOAT:
+      return BaseType::Float;
+    case TType::T_LIST:
+      return BaseType::List;
+    case TType::T_MAP:
+      return BaseType::Map;
+    case TType::T_SET:
+      return BaseType::Set;
+    case TType::T_STRING:
+      return BaseType::Binary;
+    case TType::T_STRUCT:
+      return BaseType::Struct;
+    case TType::T_UTF8:
+      return BaseType::String;
+    case TType::T_VOID:
+      return BaseType::Void;
+    default:
+      folly::throw_exception<std::invalid_argument>(
+          "Unsupported conversion from: " + std::to_string(type));
+  }
+}
 
 } // namespace apache::thrift::conformance
