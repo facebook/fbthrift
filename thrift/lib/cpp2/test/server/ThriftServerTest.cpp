@@ -2015,6 +2015,6 @@ TEST(ThriftServer, SocketQueueTimeout) {
     // public API of ThriftServer. Instead, we just need to ensure that each
     // socket has the correct queue timeout after the ThriftServer is set up.
     // The underyling timeout behavior is covered by AsyncServerSocket tests.
-    EXPECT_EQ(socket->getQueueTimeout(), kSocketQueueTimeout);
+    EXPECT_EQ(*socket->getQueueTimeout(), kSocketQueueTimeout);
   }
 }
