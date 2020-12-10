@@ -41,9 +41,11 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%#field:cpp_ref?%>
           std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();
 <%/field:cpp_ref?%>
+<%^field:cpp_ref?%>
 <%#type:resolves_to_container?%>
           this->mutable_<%field:cpp_name%>() = <% > types/type%>();
 <%/type:resolves_to_container?%>
+<%/field:cpp_ref?%>
           ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>, _readState);
 <%#field:cpp_ref?%>
           this->mutable_<%field:cpp_name%>() = std::move(ptr);
