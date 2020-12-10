@@ -60,9 +60,6 @@ import types as _py_types
 from test.fixtures.interactions.module.services_wrapper cimport cMyServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise_cFollyUnit:
@@ -71,7 +68,7 @@ cdef class Promise_cFollyUnit:
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
@@ -109,7 +106,7 @@ cdef api void call_cy_MyService_foo(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)

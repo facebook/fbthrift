@@ -66,9 +66,6 @@ import types as _py_types
 from service.services_wrapper cimport cMyServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise_cFollyUnit:
@@ -77,7 +74,7 @@ cdef class Promise_cFollyUnit:
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
@@ -129,7 +126,7 @@ cdef api void call_cy_MyService_query(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = RequestContext.create(ctx)
@@ -187,7 +184,7 @@ cdef api void call_cy_MyService_has_arg_docs(
     unique_ptr[_module_types.cMyStruct] s,
     unique_ptr[_includes_types.cIncluded] i
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = RequestContext.create(ctx)

@@ -26,20 +26,6 @@ executing.
 
 }}
 
-cdef extern from "<utility>" namespace "std":
-{{#program:unique_functions_by_return_type}}
-{{#function:returnType}}
-    cdef cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
-        }}] move_promise_{{> types/CythonCppTypeIdent}} "std::move"(
-        cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
-        }}])
-{{/function:returnType}}
-{{/program:unique_functions_by_return_type}}
-{{^program:unique_functions_by_return_type}}
-    pass
-{{/program:unique_functions_by_return_type}}
 {{#program:unique_functions_by_return_type}}
 {{#function:returnType}}
 
@@ -56,7 +42,7 @@ cdef class Promise_{{> types/CythonCppTypeIdent}}:
         inst = <Promise_{{> types/CythonCppTypeIdent}}>{{!
         }}Promise_{{> types/CythonCppTypeIdent}}.__new__({{!
         }}Promise_{{> types/CythonCppTypeIdent}})
-        inst.cPromise = move_promise_{{> types/CythonCppTypeIdent}}(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 {{/function:returnType}}
 {{/program:unique_functions_by_return_type}}

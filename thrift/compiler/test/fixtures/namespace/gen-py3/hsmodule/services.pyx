@@ -60,9 +60,6 @@ import types as _py_types
 from hsmodule.services_wrapper cimport cHsTestServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cint64_t] move_promise_cint64_t "std::move"(
-        cFollyPromise[cint64_t])
 
 @cython.auto_pickle(False)
 cdef class Promise_cint64_t:
@@ -71,7 +68,7 @@ cdef class Promise_cint64_t:
     @staticmethod
     cdef create(cFollyPromise[cint64_t] cPromise):
         inst = <Promise_cint64_t>Promise_cint64_t.__new__(Promise_cint64_t)
-        inst.cPromise = move_promise_cint64_t(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _HsTestService_annotations = _py_types.MappingProxyType({
@@ -111,7 +108,7 @@ cdef api void call_cy_HsTestService_init(
     cFollyPromise[cint64_t] cPromise,
     cint64_t int1
 ):
-    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
+    __promise = Promise_cint64_t.create(cmove(cPromise))
     arg_int1 = int1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

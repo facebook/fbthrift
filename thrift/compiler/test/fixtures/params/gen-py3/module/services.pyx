@@ -60,9 +60,6 @@ import types as _py_types
 from module.services_wrapper cimport cNestedContainersInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise_cFollyUnit:
@@ -71,7 +68,7 @@ cdef class Promise_cFollyUnit:
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _NestedContainers_annotations = _py_types.MappingProxyType({
@@ -147,7 +144,7 @@ cdef api void call_cy_NestedContainers_mapList(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[cint32_t,vector[cint32_t]]] foo
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.Map__i32_List__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -199,7 +196,7 @@ cdef api void call_cy_NestedContainers_mapSet(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[cint32_t,cset[cint32_t]]] foo
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.Map__i32_Set__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -251,7 +248,7 @@ cdef api void call_cy_NestedContainers_listMap(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cmap[cint32_t,cint32_t]]] foo
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.List__Map__i32_i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -303,7 +300,7 @@ cdef api void call_cy_NestedContainers_listSet(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cset[cint32_t]]] foo
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.List__Set__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -355,7 +352,7 @@ cdef api void call_cy_NestedContainers_turtles(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]]] foo
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

@@ -60,9 +60,6 @@ import types as _py_types
 from module.services_wrapper cimport cSinkServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[] move_promise_ "std::move"(
-        cFollyPromise[])
 
 @cython.auto_pickle(False)
 cdef class Promise_:
@@ -71,7 +68,7 @@ cdef class Promise_:
     @staticmethod
     cdef create(cFollyPromise[] cPromise):
         inst = <Promise_>Promise_.__new__(Promise_)
-        inst.cPromise = move_promise_(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _SinkService_annotations = _py_types.MappingProxyType({

@@ -44,7 +44,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
             }}{{#function:stack_arguments?}}{{> types/CythonCppType}}{{/function:stack_arguments?}}{{!
         }}{{/field:type}} {{field:py_name}}{{/function:args}}
 ):{{! Gets called from a python Executor }}
-    __promise = Promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}.create(move_promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}(cPromise))
+    __promise = Promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}.create(cmove(cPromise))
     {{#function:args}}
     arg_{{field:py_name}} = {{#field:type}}{{!
             }}{{^function:stack_arguments?}}{{> CythonCppToPython}}{{/function:stack_arguments?}}{{!

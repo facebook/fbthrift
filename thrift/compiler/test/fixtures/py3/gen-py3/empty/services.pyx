@@ -60,8 +60,6 @@ import types as _py_types
 from empty.services_wrapper cimport cNullServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    pass
 
 cdef object _NullService_annotations = _py_types.MappingProxyType({
 })

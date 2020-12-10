@@ -62,17 +62,6 @@ from module.services_wrapper cimport cMyServiceFastInterface
 from module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
-        cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[string] move_promise_binary "std::move"(
-        cFollyPromise[string])
-    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
-        cFollyPromise[cbool])
-    cdef cFollyPromise[string] move_promise_string "std::move"(
-        cFollyPromise[string])
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise_binary:
@@ -81,7 +70,7 @@ cdef class Promise_binary:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move_promise_binary(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -91,7 +80,7 @@ cdef class Promise_binary:
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
         inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move_promise_binary(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -101,7 +90,7 @@ cdef class Promise_cbool:
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
         inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
-        inst.cPromise = move_promise_cbool(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -111,7 +100,7 @@ cdef class Promise_string:
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move_promise_string(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -121,7 +110,7 @@ cdef class Promise_cFollyUnit:
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
@@ -286,7 +275,7 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    __promise = Promise_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -338,7 +327,7 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    __promise = Promise_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -391,7 +380,7 @@ cdef api void call_cy_MyService_putDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -449,7 +438,7 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -506,7 +495,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    __promise = Promise_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -558,7 +547,7 @@ cdef api void call_cy_MyServiceFast_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    __promise = Promise_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -611,7 +600,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -669,7 +658,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -726,7 +715,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    __promise = Promise_binary.create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -778,7 +767,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     cFollyPromise[string] cPromise,
     string key
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    __promise = Promise_binary.create(cmove(cPromise))
     arg_key = key.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

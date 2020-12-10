@@ -64,9 +64,6 @@ import types as _py_types
 from my.namespacing.extend.test.extend.services_wrapper cimport cExtendTestServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
-        cFollyPromise[cbool])
 
 @cython.auto_pickle(False)
 cdef class Promise_cbool:
@@ -75,7 +72,7 @@ cdef class Promise_cbool:
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
         inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
-        inst.cPromise = move_promise_cbool(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
@@ -115,7 +112,7 @@ cdef api void call_cy_ExtendTestService_check(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_hsmodule_types.cHsFoo] struct1
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    __promise = Promise_cbool.create(cmove(cPromise))
     arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

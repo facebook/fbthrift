@@ -64,53 +64,6 @@ from module.services_wrapper cimport cReturnServiceInterface
 from module.services_wrapper cimport cParamServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[_module_types.cComplexUnion]] move_promise__module_types_cComplexUnion "std::move"(
-        cFollyPromise[unique_ptr[_module_types.cComplexUnion]])
-    cdef cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] move_promise_vector___module_types_cComplexUnion "std::move"(
-        cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]])
-    cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] move_promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct "std::move"(
-        cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]])
-    cdef cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] move_promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct "std::move"(
-        cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]])
-    cdef cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] move_promise_vector___module_types_cMyEnumA "std::move"(
-        cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]])
-    cdef cFollyPromise[unique_ptr[vector[cbool]]] move_promise_vector__cbool "std::move"(
-        cFollyPromise[unique_ptr[vector[cbool]]])
-    cdef cFollyPromise[unique_ptr[vector[cint32_t]]] move_promise_vector__cint32_t "std::move"(
-        cFollyPromise[unique_ptr[vector[cint32_t]]])
-    cdef cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string "std::move"(
-        cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,cint64_t]]] move_promise_cmap__string_cint64_t "std::move"(
-        cFollyPromise[unique_ptr[cmap[string,cint64_t]]])
-    cdef cFollyPromise[_module_types.cMyEnumA] move_promise__module_types_cMyEnumA "std::move"(
-        cFollyPromise[_module_types.cMyEnumA])
-    cdef cFollyPromise[unique_ptr[_module_types.cMyStruct]] move_promise__module_types_cMyStruct "std::move"(
-        cFollyPromise[unique_ptr[_module_types.cMyStruct]])
-    cdef cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] move_promise_cset___module_types_cMyStruct "std::move"(
-        cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]])
-    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
-        cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
-        cFollyPromise[cbool])
-    cdef cFollyPromise[double] move_promise_double "std::move"(
-        cFollyPromise[double])
-    cdef cFollyPromise[float] move_promise_float "std::move"(
-        cFollyPromise[float])
-    cdef cFollyPromise[unique_ptr[__iobuf.cIOBuf]] move_promise___iobuf_cIOBuf "std::move"(
-        cFollyPromise[unique_ptr[__iobuf.cIOBuf]])
-    cdef cFollyPromise[cint16_t] move_promise_cint16_t "std::move"(
-        cFollyPromise[cint16_t])
-    cdef cFollyPromise[cint32_t] move_promise_cint32_t "std::move"(
-        cFollyPromise[cint32_t])
-    cdef cFollyPromise[cint64_t] move_promise_cint64_t "std::move"(
-        cFollyPromise[cint64_t])
-    cdef cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] move_promise_unique_ptr__iobuf_cIOBuf "std::move"(
-        cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]])
-    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
-        cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise__module_types_cComplexUnion:
@@ -119,7 +72,7 @@ cdef class Promise__module_types_cComplexUnion:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise):
         inst = <Promise__module_types_cComplexUnion>Promise__module_types_cComplexUnion.__new__(Promise__module_types_cComplexUnion)
-        inst.cPromise = move_promise__module_types_cComplexUnion(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -129,7 +82,7 @@ cdef class Promise_vector___module_types_cComplexUnion:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise):
         inst = <Promise_vector___module_types_cComplexUnion>Promise_vector___module_types_cComplexUnion.__new__(Promise_vector___module_types_cComplexUnion)
-        inst.cPromise = move_promise_vector___module_types_cComplexUnion(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -139,7 +92,7 @@ cdef class Promise_vector__vector__vector__cmap___module_types_cEmpty__module_ty
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise):
         inst = <Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct>Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.__new__(Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct)
-        inst.cPromise = move_promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -149,7 +102,7 @@ cdef class Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise):
         inst = <Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct>Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.__new__(Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct)
-        inst.cPromise = move_promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -159,7 +112,7 @@ cdef class Promise_vector___module_types_cMyEnumA:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise):
         inst = <Promise_vector___module_types_cMyEnumA>Promise_vector___module_types_cMyEnumA.__new__(Promise_vector___module_types_cMyEnumA)
-        inst.cPromise = move_promise_vector___module_types_cMyEnumA(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -169,7 +122,7 @@ cdef class Promise_vector__cbool:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cbool]]] cPromise):
         inst = <Promise_vector__cbool>Promise_vector__cbool.__new__(Promise_vector__cbool)
-        inst.cPromise = move_promise_vector__cbool(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -179,7 +132,7 @@ cdef class Promise_vector__cint32_t:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise):
         inst = <Promise_vector__cint32_t>Promise_vector__cint32_t.__new__(Promise_vector__cint32_t)
-        inst.cPromise = move_promise_vector__cint32_t(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -189,7 +142,7 @@ cdef class Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_strin
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise):
         inst = <Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string>Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.__new__(Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string)
-        inst.cPromise = move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -199,7 +152,7 @@ cdef class Promise_cmap__string_cint64_t:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
         inst = <Promise_cmap__string_cint64_t>Promise_cmap__string_cint64_t.__new__(Promise_cmap__string_cint64_t)
-        inst.cPromise = move_promise_cmap__string_cint64_t(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -209,7 +162,7 @@ cdef class Promise__module_types_cMyEnumA:
     @staticmethod
     cdef create(cFollyPromise[_module_types.cMyEnumA] cPromise):
         inst = <Promise__module_types_cMyEnumA>Promise__module_types_cMyEnumA.__new__(Promise__module_types_cMyEnumA)
-        inst.cPromise = move_promise__module_types_cMyEnumA(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -219,7 +172,7 @@ cdef class Promise__module_types_cMyStruct:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise):
         inst = <Promise__module_types_cMyStruct>Promise__module_types_cMyStruct.__new__(Promise__module_types_cMyStruct)
-        inst.cPromise = move_promise__module_types_cMyStruct(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -229,7 +182,7 @@ cdef class Promise_cset___module_types_cMyStruct:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise):
         inst = <Promise_cset___module_types_cMyStruct>Promise_cset___module_types_cMyStruct.__new__(Promise_cset___module_types_cMyStruct)
-        inst.cPromise = move_promise_cset___module_types_cMyStruct(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -239,7 +192,7 @@ cdef class Promise_binary:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move_promise_binary(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -249,7 +202,7 @@ cdef class Promise_cbool:
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
         inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
-        inst.cPromise = move_promise_cbool(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -259,7 +212,7 @@ cdef class Promise_double:
     @staticmethod
     cdef create(cFollyPromise[double] cPromise):
         inst = <Promise_double>Promise_double.__new__(Promise_double)
-        inst.cPromise = move_promise_double(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -269,7 +222,7 @@ cdef class Promise_float:
     @staticmethod
     cdef create(cFollyPromise[float] cPromise):
         inst = <Promise_float>Promise_float.__new__(Promise_float)
-        inst.cPromise = move_promise_float(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -279,7 +232,7 @@ cdef class Promise___iobuf_cIOBuf:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise):
         inst = <Promise___iobuf_cIOBuf>Promise___iobuf_cIOBuf.__new__(Promise___iobuf_cIOBuf)
-        inst.cPromise = move_promise___iobuf_cIOBuf(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -289,7 +242,7 @@ cdef class Promise_cint16_t:
     @staticmethod
     cdef create(cFollyPromise[cint16_t] cPromise):
         inst = <Promise_cint16_t>Promise_cint16_t.__new__(Promise_cint16_t)
-        inst.cPromise = move_promise_cint16_t(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -299,7 +252,7 @@ cdef class Promise_cint32_t:
     @staticmethod
     cdef create(cFollyPromise[cint32_t] cPromise):
         inst = <Promise_cint32_t>Promise_cint32_t.__new__(Promise_cint32_t)
-        inst.cPromise = move_promise_cint32_t(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -309,7 +262,7 @@ cdef class Promise_cint64_t:
     @staticmethod
     cdef create(cFollyPromise[cint64_t] cPromise):
         inst = <Promise_cint64_t>Promise_cint64_t.__new__(Promise_cint64_t)
-        inst.cPromise = move_promise_cint64_t(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -319,7 +272,7 @@ cdef class Promise_unique_ptr__iobuf_cIOBuf:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise):
         inst = <Promise_unique_ptr__iobuf_cIOBuf>Promise_unique_ptr__iobuf_cIOBuf.__new__(Promise_unique_ptr__iobuf_cIOBuf)
-        inst.cPromise = move_promise_unique_ptr__iobuf_cIOBuf(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -329,7 +282,7 @@ cdef class Promise_string:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move_promise_string(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -339,7 +292,7 @@ cdef class Promise_cFollyUnit:
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _EmptyService_annotations = _py_types.MappingProxyType({
@@ -852,7 +805,7 @@ cdef api void call_cy_ReturnService_noReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -898,7 +851,7 @@ cdef api void call_cy_ReturnService_boolReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    __promise = Promise_cbool.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -944,7 +897,7 @@ cdef api void call_cy_ReturnService_i16Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint16_t] cPromise
 ):
-    __promise = Promise_cint16_t.create(move_promise_cint16_t(cPromise))
+    __promise = Promise_cint16_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -990,7 +943,7 @@ cdef api void call_cy_ReturnService_i32Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
+    __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1036,7 +989,7 @@ cdef api void call_cy_ReturnService_i64Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint64_t] cPromise
 ):
-    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
+    __promise = Promise_cint64_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1082,7 +1035,7 @@ cdef api void call_cy_ReturnService_floatReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[float] cPromise
 ):
-    __promise = Promise_float.create(move_promise_float(cPromise))
+    __promise = Promise_float.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1128,7 +1081,7 @@ cdef api void call_cy_ReturnService_doubleReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[double] cPromise
 ):
-    __promise = Promise_double.create(move_promise_double(cPromise))
+    __promise = Promise_double.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1174,7 +1127,7 @@ cdef api void call_cy_ReturnService_stringReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1220,7 +1173,7 @@ cdef api void call_cy_ReturnService_binaryReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    __promise = Promise_binary.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1266,7 +1219,7 @@ cdef api void call_cy_ReturnService_mapReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise
 ):
-    __promise = Promise_cmap__string_cint64_t.create(move_promise_cmap__string_cint64_t(cPromise))
+    __promise = Promise_cmap__string_cint64_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1313,7 +1266,7 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cint32_t] cPromise
 ):
-    __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
+    __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1359,7 +1312,7 @@ cdef api void call_cy_ReturnService_complexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise
 ):
-    __promise = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(move_promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise))
+    __promise = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1406,7 +1359,7 @@ cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise
 ):
-    __promise = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(move_promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise))
+    __promise = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1453,7 +1406,7 @@ cdef api void call_cy_ReturnService_enumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[_module_types.cMyEnumA] cPromise
 ):
-    __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
+    __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1499,7 +1452,7 @@ cdef api void call_cy_ReturnService_list_EnumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise
 ):
-    __promise = Promise_vector___module_types_cMyEnumA.create(move_promise_vector___module_types_cMyEnumA(cPromise))
+    __promise = Promise_vector___module_types_cMyEnumA.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1546,7 +1499,7 @@ cdef api void call_cy_ReturnService_structReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise
 ):
-    __promise = Promise__module_types_cMyStruct.create(move_promise__module_types_cMyStruct(cPromise))
+    __promise = Promise__module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1592,7 +1545,7 @@ cdef api void call_cy_ReturnService_set_StructReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise
 ):
-    __promise = Promise_cset___module_types_cMyStruct.create(move_promise_cset___module_types_cMyStruct(cPromise))
+    __promise = Promise_cset___module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1639,7 +1592,7 @@ cdef api void call_cy_ReturnService_unionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise
 ):
-    __promise = Promise__module_types_cComplexUnion.create(move_promise__module_types_cComplexUnion(cPromise))
+    __promise = Promise__module_types_cComplexUnion.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1685,7 +1638,7 @@ cdef api void call_cy_ReturnService_list_UnionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise
 ):
-    __promise = Promise_vector___module_types_cComplexUnion.create(move_promise_vector___module_types_cComplexUnion(cPromise))
+    __promise = Promise_vector___module_types_cComplexUnion.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -1733,7 +1686,7 @@ cdef api void call_cy_ReturnService_readDataEb(
     cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise,
     cint64_t size
 ):
-    __promise = Promise___iobuf_cIOBuf.create(move_promise___iobuf_cIOBuf(cPromise))
+    __promise = Promise___iobuf_cIOBuf.create(cmove(cPromise))
     arg_size = size
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1785,7 +1738,7 @@ cdef api void call_cy_ReturnService_readData(
     cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise,
     cint64_t size
 ):
-    __promise = Promise_unique_ptr__iobuf_cIOBuf.create(move_promise_unique_ptr__iobuf_cIOBuf(cPromise))
+    __promise = Promise_unique_ptr__iobuf_cIOBuf.create(cmove(cPromise))
     arg_size = size
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1837,7 +1790,7 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
     cFollyPromise[cFollyUnit] cPromise,
     cint16_t param1
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -1890,7 +1843,7 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
     cint8_t param1,
     cint16_t param2
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
@@ -1947,7 +1900,7 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2000,7 +1953,7 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     unique_ptr[cmap[string,cint64_t]] param1,
     unique_ptr[cset[vector[string]]] param2
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     arg_param2 = _module_types.Set__List__string.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
@@ -2057,7 +2010,7 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
     cFollyPromise[cFollyUnit] cPromise,
     cint32_t param1
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2109,7 +2062,7 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
     cFollyPromise[cFollyUnit] cPromise,
     _module_types.cMyEnumA param1
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.MyEnumA(<int> param1)
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2161,7 +2114,7 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[_module_types.cMyStruct] param1
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](param1.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2213,7 +2166,7 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[_module_types.cComplexUnion]] param1
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.List__ComplexUnion.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2266,7 +2219,7 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
     cint32_t param1,
     cint64_t param2
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    __promise = Promise_cbool.create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
@@ -2323,7 +2276,7 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    __promise = Promise_cbool.create(cmove(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2375,7 +2328,7 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_module_types.cComplexUnion] param1
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    __promise = Promise_cbool.create(cmove(cPromise))
     arg_param1 = _module_types.ComplexUnion.create(shared_ptr[_module_types.cComplexUnion](param1.release()))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2428,7 +2381,7 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
     float param1,
     double param2
 ):
-    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
+    __promise = Promise_cint64_t.create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
@@ -2486,7 +2439,7 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     unique_ptr[string] param1,
     unique_ptr[cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]] param2
 ):
-    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
+    __promise = Promise_cint64_t.create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
@@ -2547,7 +2500,7 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     cint32_t param4,
     cint32_t param5
 ):
-    __promise = Promise_cint64_t.create(move_promise_cint64_t(cPromise))
+    __promise = Promise_cint64_t.create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     arg_param3 = param3
@@ -2619,7 +2572,7 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
     cFollyPromise[double] cPromise,
     unique_ptr[cset[_module_types.cMyStruct]] param1
 ):
-    __promise = Promise_double.create(move_promise_double(cPromise))
+    __promise = Promise_double.create(cmove(cPromise))
     arg_param1 = _module_types.Set__MyStruct.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2671,7 +2624,7 @@ cdef api void call_cy_ParamService_string_ret_string_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    __promise = Promise_string.create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2723,7 +2676,7 @@ cdef api void call_cy_ParamService_binary_ret_binary_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    __promise = Promise_binary.create(cmove(cPromise))
     arg_param1 = (deref(param1))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2775,7 +2728,7 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     cbool param1
 ):
-    __promise = Promise_cmap__string_cint64_t.create(move_promise_cmap__string_cint64_t(cPromise))
+    __promise = Promise_cmap__string_cint64_t.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2829,7 +2782,7 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     unique_ptr[cmap[cint32_t,vector[string]]] param1,
     unique_ptr[vector[string]] param2
 ):
-    __promise = Promise_vector__cbool.create(move_promise_vector__cbool(cPromise))
+    __promise = Promise_vector__cbool.create(cmove(cPromise))
     arg_param1 = _module_types.Map__i32_List__string.create(__to_shared_ptr(cmove(param1)))
     arg_param2 = _module_types.List__string.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
@@ -2887,7 +2840,7 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
     cFollyPromise[unique_ptr[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]]] cPromise,
     unique_ptr[vector[vector[vector[vector[cint32_t]]]]] param1
 ):
-    __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.create(move_promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string(cPromise))
+    __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.create(cmove(cPromise))
     arg_param1 = _module_types.List__List__List__List__i32.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2940,7 +2893,7 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
     cFollyPromise[cint32_t] cPromise,
     cint32_t param1
 ):
-    __promise = Promise_cint32_t.create(move_promise_cint32_t(cPromise))
+    __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -2992,7 +2945,7 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     cFollyPromise[unique_ptr[vector[cint32_t]]] cPromise,
     unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] param1
 ):
-    __promise = Promise_vector__cint32_t.create(move_promise_vector__cint32_t(cPromise))
+    __promise = Promise_vector__cint32_t.create(cmove(cPromise))
     arg_param1 = _module_types.List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -3045,7 +2998,7 @@ cdef api void call_cy_ParamService_enum_ret_double_param(
     cFollyPromise[_module_types.cMyEnumA] cPromise,
     double param1
 ):
-    __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
+    __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -3098,7 +3051,7 @@ cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     double param1,
     _module_types.cMyEnumA param2
 ):
-    __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
+    __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = _module_types.MyEnumA(<int> param2)
     __context = RequestContext.create(ctx)
@@ -3155,7 +3108,7 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise,
     unique_ptr[cmap[string,cint64_t]] param1
 ):
-    __promise = Promise_vector___module_types_cMyEnumA.create(move_promise_vector___module_types_cMyEnumA(cPromise))
+    __promise = Promise_vector___module_types_cMyEnumA.create(cmove(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -3208,7 +3161,7 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise,
     cint16_t param1
 ):
-    __promise = Promise__module_types_cMyStruct.create(move_promise__module_types_cMyStruct(cPromise))
+    __promise = Promise__module_types_cMyStruct.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -3260,7 +3213,7 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise,
     unique_ptr[cset[string]] param1
 ):
-    __promise = Promise_cset___module_types_cMyStruct.create(move_promise_cset___module_types_cMyStruct(cPromise))
+    __promise = Promise_cset___module_types_cMyStruct.create(cmove(cPromise))
     arg_param1 = _module_types.Set__string.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -3314,7 +3267,7 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     cint32_t param1,
     cint32_t param2
 ):
-    __promise = Promise__module_types_cComplexUnion.create(move_promise__module_types_cComplexUnion(cPromise))
+    __promise = Promise__module_types_cComplexUnion.create(cmove(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
@@ -3371,7 +3324,7 @@ cdef api void call_cy_ParamService_listunion_string_param(
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise,
     unique_ptr[string] param1
 ):
-    __promise = Promise_vector___module_types_cComplexUnion.create(move_promise_vector___module_types_cComplexUnion(cPromise))
+    __promise = Promise_vector___module_types_cComplexUnion.create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
