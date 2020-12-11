@@ -241,6 +241,12 @@ class TransportPeekingManager : public PeekingManagerBase,
     folly::DelayedDestruction::DestructorGuard dg(this);
     dropConnection();
 
+    // This is possible when acceptor is stopped between taking a new
+    // connection and calling back to this function.
+    if (acceptor_->isStopping()) {
+      return;
+    }
+
     auto transport = PreReceivedDataAsyncTransportWrapper::create(
         std::move(socket_), peekBytes);
 
