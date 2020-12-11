@@ -36,46 +36,50 @@ namespace thrift {
 namespace detail {
 
 struct debug_equals_missing {
-  template <typename Iter, typename Callback>
+  template <typename TC, typename Iter, typename Callback>
   void operator()(
+      TC tc,
       Callback&& callback,
       Iter iterLhs,
       folly::StringPiece path,
       folly::StringPiece message) {
     using value_type = std::remove_reference_t<decltype(*iterLhs)>;
-    callback(&*iterLhs, static_cast<value_type*>(nullptr), path, message);
+    callback(tc, &*iterLhs, static_cast<value_type*>(nullptr), path, message);
   }
 
-  template <typename Callback>
+  template <typename TC, typename Callback>
   void operator()(
+      TC tc,
       Callback&& callback,
       std::vector<bool>::const_iterator iterLhs,
       folly::StringPiece path,
       folly::StringPiece message) {
     bool const value = *iterLhs;
-    callback(&value, static_cast<bool*>(nullptr), path, message);
+    callback(tc, &value, static_cast<bool*>(nullptr), path, message);
   }
 };
 
 struct debug_equals_extra {
-  template <typename Iter, typename Callback>
+  template <typename TC, typename Iter, typename Callback>
   void operator()(
+      TC tc,
       Callback&& callback,
       Iter iterRhs,
       folly::StringPiece path,
       folly::StringPiece message) {
     using value_type = std::remove_reference_t<decltype(*iterRhs)>;
-    callback(static_cast<value_type*>(nullptr), &*iterRhs, path, message);
+    callback(tc, static_cast<value_type*>(nullptr), &*iterRhs, path, message);
   }
 
-  template <typename Callback>
+  template <typename TC, typename Callback>
   void operator()(
+      TC tc,
       Callback&& callback,
       std::vector<bool>::const_iterator iterRhs,
       folly::StringPiece path,
       folly::StringPiece message) {
     bool const value = *iterRhs;
-    callback(static_cast<bool const*>(nullptr), &value, path, message);
+    callback(tc, static_cast<bool const*>(nullptr), &value, path, message);
   }
 };
 
@@ -97,18 +101,13 @@ T const* debug_equals_get_pointer(std::unique_ptr<T> const& what) {
 template <typename>
 struct debug_equals_impl;
 
-template <typename T, typename Callback>
+template <typename TC, typename T, typename Callback>
 bool debug_equals(
     std::string& path,
     T const& lhs,
     T const& rhs,
     Callback&& callback) {
-  using impl = apache::thrift::detail::debug_equals_impl<
-      reflect_type_class<std::remove_reference_t<T>>>;
-
-  static_assert(
-      fatal::is_complete<impl>::value, "debug_equals: unsupported type");
-
+  using impl = apache::thrift::detail::debug_equals_impl<TC>;
   return impl::equals(path, lhs, rhs, callback);
 }
 
@@ -150,7 +149,7 @@ struct debug_equals_impl<type_class::enumeration> {
     if (lhs != rhs) {
       auto l = fatal::enum_to_string(lhs, "<unknown>");
       auto r = fatal::enum_to_string(rhs, "<unknown>");
-      callback(&l, &r, path, "value mismatch");
+      callback(type_class::unknown{}, &l, &r, path, "value mismatch");
       return false;
     }
     return true;
@@ -176,29 +175,31 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
     for (std::size_t index = minSize; index < lhs.size(); ++index) {
       auto const lIter = lhs.begin() + index;
       auto guard = scoped_path::index(path, index);
-      debug_equals_missing()(callback, lIter, path, "missing list entry");
+      debug_equals_missing()(
+          ValueTypeClass{}, callback, lIter, path, "missing list entry");
       result = false;
     }
 
     for (std::size_t index = minSize; index < rhs.size(); ++index) {
       auto const rIter = rhs.begin() + index;
       auto guard = scoped_path::index(path, index);
-      debug_equals_extra()(callback, rIter, path, "extra list entry");
+      debug_equals_extra()(
+          ValueTypeClass{}, callback, rIter, path, "extra list entry");
       result = false;
     }
     return result;
   }
 };
 
-template <typename Type, typename>
+template <typename TypeClass, typename Type>
 struct debug_equals_impl_pretty {
   static std::string go(Type const& v) {
-    return pretty_string(v);
+    return pretty_string<TypeClass>(v);
   }
 };
 
 template <typename Type>
-struct debug_equals_impl_pretty<Type, type_class::binary> {
+struct debug_equals_impl_pretty<type_class::binary, Type> {
   static std::string go(Type const& v) {
     std::string out;
     out.reserve(4 + v.size() * 2);
@@ -225,7 +226,7 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
     using key_type = typename T::key_type;
     using mapped_impl = debug_equals_impl<MappedTypeClass>;
-    using pretty_key = debug_equals_impl_pretty<key_type, KeyTypeClass>;
+    using pretty_key = debug_equals_impl_pretty<KeyTypeClass, key_type>;
 
     bool result = true;
 
@@ -233,7 +234,8 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
       auto const& key = l.first;
       auto guard = scoped_path::key(path, pretty_key::go(key));
       if (rhs.find(key) == rhs.end()) {
-        debug_equals_missing()(callback, &l.second, path, "missing map entry");
+        debug_equals_missing()(
+            MappedTypeClass{}, callback, &l.second, path, "missing map entry");
         result = false;
       }
     }
@@ -242,7 +244,8 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
       auto const& key = r.first;
       auto guard = scoped_path::key(path, pretty_key::go(key));
       if (lhs.find(key) == lhs.end()) {
-        debug_equals_extra()(callback, &r.second, path, "extra map entry");
+        debug_equals_extra()(
+            MappedTypeClass{}, callback, &r.second, path, "extra map entry");
         result = false;
       }
     }
@@ -268,14 +271,15 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
   static bool
   equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
     using value_type = typename T::value_type;
-    using pretty_value = debug_equals_impl_pretty<value_type, ValueTypeClass>;
+    using pretty_value = debug_equals_impl_pretty<ValueTypeClass, value_type>;
 
     bool result = true;
 
     for (auto const& l : lhs) {
       auto guard = scoped_path::key(path, pretty_value::go(l));
       if (rhs.find(l) == rhs.end()) {
-        debug_equals_missing()(callback, &l, path, "missing set entry");
+        debug_equals_missing()(
+            ValueTypeClass{}, callback, &l, path, "missing set entry");
         result = false;
       }
     }
@@ -283,7 +287,8 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
     for (auto const& r : rhs) {
       auto guard = scoped_path::key(path, pretty_value::go(r));
       if (lhs.find(r) == lhs.end()) {
-        debug_equals_extra()(callback, &r, path, "extra set entry");
+        debug_equals_extra()(
+            ValueTypeClass{}, callback, &r, path, "extra set entry");
         result = false;
       }
     }
@@ -317,11 +322,11 @@ struct debug_equals_with_pointers {
       return true;
     }
     if (!rMember) {
-      debug_equals_missing()(callback, lMember, path, "missing");
+      debug_equals_missing()(TypeClass{}, callback, lMember, path, "missing");
       return false;
     }
     if (!lMember) {
-      debug_equals_extra()(callback, rMember, path, "extra");
+      debug_equals_extra()(TypeClass{}, callback, rMember, path, "extra");
       return false;
     }
     return recurse_into<TypeClass>(
@@ -389,26 +394,26 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
   }
 
  private:
-  template <typename Change, typename T, typename Callback>
+  template <typename Change, typename TC, typename T, typename Callback>
   static void
   visit_changed_field(std::string& path, T const& field, Callback&& callback) {
-    Change()(callback, &field, path, "union type changed");
+    Change()(TC{}, callback, &field, path, "union type changed");
   }
 
-  template <typename Change, typename T, typename Callback>
+  template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
       std::string& path,
       std::unique_ptr<T> const& field,
       Callback&& callback) {
-    Change()(callback, field.get(), path, "union type changed");
+    Change()(TC{}, callback, field.get(), path, "union type changed");
   }
 
-  template <typename Change, typename T, typename Callback>
+  template <typename Change, typename TC, typename T, typename Callback>
   static void visit_changed_field(
       std::string& path,
       std::shared_ptr<T> const& field,
       Callback&& callback) {
-    Change()(callback, field.get(), path, "union type changed");
+    Change()(TC{}, callback, field.get(), path, "union type changed");
   }
 
   template <typename Change, typename T, typename Callback>
@@ -423,10 +428,12 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
           assert(descriptor::id::value == traits::get_id(variant));
 
           using name = typename descriptor::metadata::name;
+          using type_class = typename descriptor::metadata::type_class;
           auto guard = scoped_path::member(path, fatal::z_data<name>());
 
           typename descriptor::getter getter;
-          visit_changed_field<Change>(path, getter(variant), callback);
+          visit_changed_field<Change, type_class>(
+              path, getter(variant), callback);
         });
   }
 };
@@ -441,6 +448,7 @@ struct debug_equals_impl<type_class::structure> : debug_equals_with_pointers {
     fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
       using member = decltype(fatal::tag_type(indexed));
       using getter = typename member::getter;
+      typename member::type_class klass;
 
       if (member::optional::value == optionality::optional &&
           !member::is_set(lhs) && !member::is_set(rhs)) {
@@ -453,14 +461,14 @@ struct debug_equals_impl<type_class::structure> : debug_equals_with_pointers {
       if (member::optional::value == optionality::optional) {
         if (!member::is_set(rhs)) {
           auto const& lPtr = debug_equals_get_pointer(getter{}(lhs));
-          debug_equals_missing()(callback, lPtr, path, "missing");
+          debug_equals_missing()(klass, callback, lPtr, path, "missing");
           result = false;
           return;
         }
 
         if (!member::is_set(lhs)) {
           auto const& rPtr = debug_equals_get_pointer(getter{}(rhs));
-          debug_equals_extra()(callback, rPtr, path, "extra");
+          debug_equals_extra()(klass, callback, rPtr, path, "extra");
           result = false;
           return;
         }
@@ -481,7 +489,7 @@ struct debug_equals_impl<type_class::string> {
   static bool
   equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
     if (lhs != rhs) {
-      callback(&lhs, &rhs, path, "string mismatch");
+      callback(type_class::string{}, &lhs, &rhs, path, "string mismatch");
       return false;
     }
     return true;
@@ -494,7 +502,7 @@ struct debug_equals_impl<type_class::binary> {
   static bool
   equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
     if (lhs != rhs) {
-      callback(&lhs, &rhs, path, "binary mismatch");
+      callback(type_class::binary{}, &lhs, &rhs, path, "binary mismatch");
       return false;
     }
     return true;
@@ -507,7 +515,12 @@ struct debug_equals_impl<type_class::floating_point> {
   static bool
   equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
     if (lhs != rhs) {
-      callback(&lhs, &rhs, path, "floating point value mismatch");
+      callback(
+          type_class::floating_point{},
+          &lhs,
+          &rhs,
+          path,
+          "floating point value mismatch");
       return false;
     }
     return true;
@@ -520,7 +533,8 @@ struct debug_equals_impl<type_class::integral> {
   static bool
   equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
     if (lhs != rhs) {
-      callback(&lhs, &rhs, path, "integral value mismatch");
+      callback(
+          type_class::integral{}, &lhs, &rhs, path, "integral value mismatch");
       return false;
     }
     return true;

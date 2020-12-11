@@ -99,8 +99,9 @@ struct3 test_data() {
 struct test_callback {
   explicit test_callback(std::vector<std::string>& out) : out_(out) {}
 
-  template <typename T>
+  template <typename T, typename TC>
   void operator()(
+      TC,
       T const*,
       T const*,
       folly::StringPiece path,

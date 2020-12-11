@@ -67,13 +67,22 @@ namespace thrift {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
+template <typename TC, typename T, typename Callback>
+bool debug_equals(
+    T const& lhs,
+    T const& rhs,
+    Callback&& callback,
+    std::string path = "$") {
+  return apache::thrift::detail::debug_equals<TC>(path, lhs, rhs, callback);
+}
 template <typename T, typename Callback>
 bool debug_equals(
     T const& lhs,
     T const& rhs,
     Callback&& callback,
     std::string path = "$") {
-  return apache::thrift::detail::debug_equals(path, lhs, rhs, callback);
+  using TC = type_class_of_thrift_class_enum_t<T>;
+  return apache::thrift::detail::debug_equals<TC>(path, lhs, rhs, callback);
 }
 
 /**
@@ -92,8 +101,9 @@ struct debug_output_callback {
       folly::StringPiece rhs)
       : out_(out), lhs_(lhs), rhs_(rhs) {}
 
-  template <typename T>
+  template <typename TC, typename T>
   void operator()(
+      TC,
       T const* lhs,
       T const* rhs,
       folly::StringPiece path,
@@ -102,12 +112,12 @@ struct debug_output_callback {
     if (lhs) {
       out_ << "\n"
            << "  " << lhs_ << ":\n";
-      pretty_print(out_, *lhs, "  ", "    ");
+      pretty_print<TC>(out_, *lhs, "  ", "    ");
     }
     if (rhs) {
       out_ << "\n"
            << "  " << rhs_ << ":\n";
-      pretty_print(out_, *rhs, "  ", "    ");
+      pretty_print<TC>(out_, *rhs, "  ", "    ");
     }
     out_ << "\n";
   }

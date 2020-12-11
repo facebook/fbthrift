@@ -108,8 +108,19 @@ using type_class_of_thrift_class_or_t = //
             type_class::structure,
             Fallback>>;
 
+template <typename T, typename Fallback>
+using type_class_of_thrift_class_enum_or_t = //
+    folly::conditional_t<
+        std::is_enum<T>::value,
+        type_class::enumeration,
+        type_class_of_thrift_class_or_t<T, Fallback>>;
+
 template <typename T>
 using type_class_of_thrift_class_t = type_class_of_thrift_class_or_t<T, void>;
+
+template <typename T>
+using type_class_of_thrift_class_enum_t =
+    type_class_of_thrift_class_enum_or_t<T, void>;
 
 namespace detail {
 

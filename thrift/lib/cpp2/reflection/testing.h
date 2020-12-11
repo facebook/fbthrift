@@ -33,6 +33,24 @@ thriftEqualHelper(const char* left, const char* right, const T& a, const T& b) {
   }
 }
 
+template <class TC, class T>
+::testing::AssertionResult thriftEqualHelperTC(
+    const char*,
+    const char* left,
+    const char* right,
+    const TC&,
+    const T& a,
+    const T& b) {
+  ::testing::AssertionResult result(false);
+  std::string path = "$";
+  if (detail::debug_equals<TC>(
+          path, a, b, make_debug_output_callback(result, left, right))) {
+    return ::testing::AssertionResult(true);
+  } else {
+    return result;
+  }
+}
+
 } // namespace thrift
 } // namespace apache
 
@@ -41,3 +59,9 @@ thriftEqualHelper(const char* left, const char* right, const T& a, const T& b) {
 
 #define ASSERT_THRIFT_EQ(a, b) \
   ASSERT_PRED_FORMAT2(::apache::thrift::thriftEqualHelper, a, b)
+
+#define EXPECT_THRIFT_TC_EQ(tc, a, b) \
+  EXPECT_PRED_FORMAT3(::apache::thrift::thriftEqualHelperTC, tc, a, b)
+
+#define ASSERT_THRIFT_TC_EQ(tc, a, b) \
+  ASSERT_PRED_FORMAT3(::apache::thrift::thriftEqualHelperTC, tc, a, b)

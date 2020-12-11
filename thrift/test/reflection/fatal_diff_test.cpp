@@ -423,9 +423,9 @@ TEST(fatal_diff, fieldS) {
   *pod.fieldS_ref() = {{"123", "456"}, {"abc", "ABC"}, {"ghi", "GHI"}};
   TEST_IMPL(pod, test_data(), R"(
     $.fieldS["0x676869"]:
-    - "GHI"
+    - GHI
     $.fieldS["0x646566"]:
-    + "DEF"
+    + DEF
   )");
 }
 
@@ -437,8 +437,8 @@ TEST(fatal_diff, struct_binary) {
 
   TEST_IMPL(lhs, rhs, R"(
     $.bi:
-    - "hello"
-    + "world"
+    - hello
+    + world
   )");
 }
 

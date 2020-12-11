@@ -21,7 +21,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <typename T, typename Callback>
+template <typename TC, typename T, typename Callback>
 bool debug_equals(std::string&, T const&, T const&, Callback&&);
 
 } // namespace detail
