@@ -128,25 +128,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
 
-  static constexpr uint32_t T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER = 4096;
+  static const uint32_t T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER = 4096;
 
-  static constexpr std::chrono::milliseconds DEFAULT_TIMEOUT =
-      std::chrono::milliseconds(60000);
+  static const std::chrono::milliseconds DEFAULT_TIMEOUT;
 
-  static constexpr std::chrono::milliseconds DEFAULT_TASK_EXPIRE_TIME =
-      std::chrono::milliseconds(5000);
+  static const std::chrono::milliseconds DEFAULT_TASK_EXPIRE_TIME;
 
-  static constexpr std::chrono::milliseconds DEFAULT_STREAM_EXPIRE_TIME =
-      std::chrono::milliseconds(60000);
+  static const std::chrono::milliseconds DEFAULT_STREAM_EXPIRE_TIME;
 
-  static constexpr std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT =
-      std::chrono::milliseconds(0);
+  static const std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT;
 
-  static constexpr std::chrono::milliseconds DEFAULT_SOCKET_QUEUE_TIMEOUT =
-      std::chrono::milliseconds(0);
+  static const std::chrono::milliseconds DEFAULT_SOCKET_QUEUE_TIMEOUT;
 
   /// Listen backlog
-  static constexpr int DEFAULT_LISTEN_BACKLOG = 1024;
+  static const int DEFAULT_LISTEN_BACKLOG = 1024;
 
   //! Prefix for pool thread names
   ServerAttribute<std::string> poolThreadName_{""};
@@ -265,7 +260,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttribute<size_t> writeBatchingSize_{0};
 
-  ServerAttributeThreadLocal<folly::sorted_vector_set<std::string>>
+  ServerAttributeUnsafe<folly::sorted_vector_set<std::string>>
       methodsBypassMaxRequestsLimit_{{}};
 
   Metadata metadata_;

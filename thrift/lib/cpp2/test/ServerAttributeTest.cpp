@@ -19,28 +19,18 @@
 
 using namespace apache::thrift;
 
-namespace {
-void waitForObservers() {
-  folly::observer_detail::ObserverManager::waitForAllUpdates();
-}
-} // namespace
-
 TEST(ServerAttributeTest, baselineFirst) {
   ServerAttribute<int> a{0};
   EXPECT_EQ(a.get(), 0);
 
   a.set(1, AttributeSource::BASELINE);
-  waitForObservers();
   EXPECT_EQ(a.get(), 1);
   a.set(2, AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), 2);
 
   a.unset(AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), 1);
   a.unset(AttributeSource::BASELINE);
-  waitForObservers();
   EXPECT_EQ(a.get(), 0);
 }
 
@@ -49,19 +39,15 @@ TEST(ServerAttributeTest, overrideFirst) {
   EXPECT_EQ(a.get(), 0);
 
   a.set(2, AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), 2);
   a.set(1, AttributeSource::BASELINE);
-  waitForObservers();
   // still return overrided value
   EXPECT_EQ(a.get(), 2);
 
   a.unset(AttributeSource::BASELINE);
-  waitForObservers();
   // still return overrided value
   EXPECT_EQ(a.get(), 2);
   a.unset(AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), 0);
 }
 
@@ -70,17 +56,13 @@ TEST(ServerAttributeTest, stringBaselineFirst) {
   EXPECT_EQ(a.get(), "a");
 
   a.set("b", AttributeSource::BASELINE);
-  waitForObservers();
   EXPECT_EQ(a.get(), "b");
   a.set("c", AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), "c");
 
   a.unset(AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), "b");
   a.unset(AttributeSource::BASELINE);
-  waitForObservers();
   EXPECT_EQ(a.get(), "a");
 }
 
@@ -89,89 +71,14 @@ TEST(ServerAttributeTest, stringOverrideFirst) {
   EXPECT_EQ(a.get(), "a");
 
   a.set("c", AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), "c");
   a.set("b", AttributeSource::BASELINE);
-  waitForObservers();
   // still return overrided value
   EXPECT_EQ(a.get(), "c");
 
   a.unset(AttributeSource::BASELINE);
-  waitForObservers();
   // still return overrided value
   EXPECT_EQ(a.get(), "c");
   a.unset(AttributeSource::OVERRIDE);
-  waitForObservers();
   EXPECT_EQ(a.get(), "a");
-}
-
-TEST(ServerAttribute, Observable) {
-  folly::observer::SimpleObservable<std::string> defaultObservable{"default"};
-  folly::observer::SimpleObservable<std::string> baselineObservable{"baseline"};
-  folly::observer::SimpleObservable<std::string> overrideObservable{"override"};
-  detail::ServerAttributeObservable<std::string> attr{
-      defaultObservable.getObserver()};
-  auto observer = attr.getObserver();
-
-  attr.set(baselineObservable.getObserver(), AttributeSource::BASELINE);
-  waitForObservers();
-  EXPECT_EQ(**observer, "baseline");
-
-  attr.set(overrideObservable.getObserver(), AttributeSource::OVERRIDE);
-  waitForObservers();
-  EXPECT_EQ(**observer, "override");
-
-  overrideObservable.setValue("override 2");
-  waitForObservers();
-  EXPECT_EQ(**observer, "override 2");
-
-  baselineObservable.setValue("baseline 2");
-  attr.unset(AttributeSource::OVERRIDE);
-  waitForObservers();
-  EXPECT_EQ(**observer, "baseline 2");
-
-  attr.set("baseline 3", AttributeSource::BASELINE);
-  waitForObservers();
-  EXPECT_EQ(**observer, "baseline 3");
-
-  defaultObservable.setValue("default 2");
-  attr.unset(AttributeSource::BASELINE);
-  waitForObservers();
-  EXPECT_EQ(**observer, "default 2");
-}
-
-TEST(ServerAttribute, AtomicObserver) {
-  ServerAttributeAtomic<int> attr{42};
-  auto observer = attr.getAtomicObserver();
-  EXPECT_EQ(*observer, 42);
-
-  attr.set(24, AttributeSource::BASELINE);
-  waitForObservers();
-  EXPECT_EQ(*observer, 24);
-
-  attr.set(12, AttributeSource::OVERRIDE);
-  waitForObservers();
-  EXPECT_EQ(*observer, 12);
-
-  attr.unset(AttributeSource::OVERRIDE);
-  waitForObservers();
-  EXPECT_EQ(*observer, 24);
-}
-
-TEST(ServerAttribute, ThreadLocal) {
-  ServerAttributeThreadLocal<int> attr{42};
-  auto observer = attr.getTLObserver();
-  EXPECT_EQ(**observer, 42);
-
-  attr.set(24, AttributeSource::BASELINE);
-  waitForObservers();
-  EXPECT_EQ(**observer, 24);
-
-  attr.set(12, AttributeSource::OVERRIDE);
-  waitForObservers();
-  EXPECT_EQ(**observer, 12);
-
-  attr.unset(AttributeSource::OVERRIDE);
-  waitForObservers();
-  EXPECT_EQ(**observer, 24);
 }
