@@ -15,9 +15,9 @@
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 namespace test_cpp2 { namespace cpp_reflection {
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
-struct test_cpp2_cpp_reflection_module__unique_strings_list {
+struct __fbthrift_strings_module {
   using Type = ::fatal::sequence<char, 'T', 'y', 'p', 'e'>;
   using _now_with_an_underscore = ::fatal::sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
   using a = ::fatal::sequence<char, 'a'>;
@@ -224,137 +224,132 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using z = ::fatal::sequence<char, 'z'>;
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
+
 class module_tags {
-  struct test_cpp2_cpp_reflection_module__unique_languages_list {
-    using cpp = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp;
-    using cpp2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp2;
-    using d = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d;
-    using java = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java;
-    using java_swift = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java_swift;
-    using php = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::php;
-    using py3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::py3;
+  using __fbthrift_strings = __fbthrift_refl::__fbthrift_strings_module;
+  struct __fbthrift_languages {
+    using cpp = __fbthrift_strings::cpp;
+    using cpp2 = __fbthrift_strings::cpp2;
+    using d = __fbthrift_strings::d;
+    using java = __fbthrift_strings::java;
+    using java_swift = __fbthrift_strings::java_swift;
+    using php = __fbthrift_strings::php;
+    using py3 = __fbthrift_strings::py3;
   };
-
-  struct test_cpp2_cpp_reflection_module__unique_enums_list {
-    using enum1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
-    using enum2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
-    using enum3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
-    using enum_with_special_names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names;
+  struct __fbthrift_enums {
+    using enum1 = __fbthrift_strings::enum1;
+    using enum2 = __fbthrift_strings::enum2;
+    using enum3 = __fbthrift_strings::enum3;
+    using enum_with_special_names = __fbthrift_strings::enum_with_special_names;
   };
-
-  struct test_cpp2_cpp_reflection_module__unique_unions_list {
-    using union1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
-    using union2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
-    using union3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
-    using unionA = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA;
-    using union_with_special_names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union_with_special_names;
+  struct __fbthrift_unions {
+    using union1 = __fbthrift_strings::union1;
+    using union2 = __fbthrift_strings::union2;
+    using union3 = __fbthrift_strings::union3;
+    using unionA = __fbthrift_strings::unionA;
+    using union_with_special_names = __fbthrift_strings::union_with_special_names;
   };
-
-  struct test_cpp2_cpp_reflection_module__unique_structs_list {
-    using structA = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA;
-    using structB = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB;
-    using structC = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC;
-    using struct1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1;
-    using struct2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2;
-    using struct3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3;
-    using struct4 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct4;
-    using struct5 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct5;
-    using struct_binary = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_binary;
-    using dep_A_struct = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_A_struct;
-    using dep_B_struct = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_B_struct;
-    using annotated = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotated;
-    using struct_with_special_names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names;
-    using struct_with_indirections = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_indirections;
-    using my_structA = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::my_structA;
+  struct __fbthrift_structs {
+    using structA = __fbthrift_strings::structA;
+    using structB = __fbthrift_strings::structB;
+    using structC = __fbthrift_strings::structC;
+    using struct1 = __fbthrift_strings::struct1;
+    using struct2 = __fbthrift_strings::struct2;
+    using struct3 = __fbthrift_strings::struct3;
+    using struct4 = __fbthrift_strings::struct4;
+    using struct5 = __fbthrift_strings::struct5;
+    using struct_binary = __fbthrift_strings::struct_binary;
+    using dep_A_struct = __fbthrift_strings::dep_A_struct;
+    using dep_B_struct = __fbthrift_strings::dep_B_struct;
+    using annotated = __fbthrift_strings::annotated;
+    using struct_with_special_names = __fbthrift_strings::struct_with_special_names;
+    using struct_with_indirections = __fbthrift_strings::struct_with_indirections;
+    using my_structA = __fbthrift_strings::my_structA;
   };
-
-  struct test_cpp2_cpp_reflection_module__unique_constants_list {
-    using constant1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant1;
-    using constant2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant2;
-    using constant3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant3;
-    using constant_with_special_name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant_with_special_name;
+  struct __fbthrift_constants {
+    using constant1 = __fbthrift_strings::constant1;
+    using constant2 = __fbthrift_strings::constant2;
+    using constant3 = __fbthrift_strings::constant3;
+    using constant_with_special_name = __fbthrift_strings::constant_with_special_name;
   };
-
-  struct test_cpp2_cpp_reflection_module__unique_services_list {
-    using service1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service1;
-    using service2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service2;
-    using service3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service3;
-    using service_with_special_names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service_with_special_names;
+  struct __fbthrift_services {
+    using service1 = __fbthrift_strings::service1;
+    using service2 = __fbthrift_strings::service2;
+    using service3 = __fbthrift_strings::service3;
+    using service_with_special_names = __fbthrift_strings::service_with_special_names;
   };
-
-public:
+ public:
   struct module {};
 
-  using languages = test_cpp2_cpp_reflection_module__unique_languages_list;
-  using enums = test_cpp2_cpp_reflection_module__unique_enums_list;
-  using unions = test_cpp2_cpp_reflection_module__unique_unions_list;
-  using structs = test_cpp2_cpp_reflection_module__unique_structs_list;
-  using constants = test_cpp2_cpp_reflection_module__unique_constants_list;
-  using services = test_cpp2_cpp_reflection_module__unique_services_list;
-
-  using strings = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list;
+  using strings = __fbthrift_strings;
+  using languages = __fbthrift_languages;
+  using enums = __fbthrift_enums;
+  using unions = __fbthrift_unions;
+  using structs = __fbthrift_structs;
+  using constants = __fbthrift_constants;
+  using services = __fbthrift_services;
 };
 
 THRIFT_REGISTER_REFLECTION_METADATA(
   module_tags::module,
-  thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::module,
+  __fbthrift_refl::__fbthrift_strings_module::module,
   // languages
   ::fatal::list<
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp1__cpp_reflection>,
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp2__cpp_reflection>,
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_d_cpp_reflection>,
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_java_cpp_reflection>,
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java_swift, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_swift_cpp_reflection>,
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::php, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_php_cpp_reflection>,
-    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::py3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_py_cpp_reflection>
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::cpp, __fbthrift_refl::__fbthrift_strings_module::test_cpp1__cpp_reflection>,
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::cpp2, __fbthrift_refl::__fbthrift_strings_module::test_cpp2__cpp_reflection>,
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::d, __fbthrift_refl::__fbthrift_strings_module::test_d_cpp_reflection>,
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::java, __fbthrift_refl::__fbthrift_strings_module::test_java_cpp_reflection>,
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::java_swift, __fbthrift_refl::__fbthrift_strings_module::test_swift_cpp_reflection>,
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::php, __fbthrift_refl::__fbthrift_strings_module::test_php_cpp_reflection>,
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::py3, __fbthrift_refl::__fbthrift_strings_module::test_py_cpp_reflection>
   >,
   // enums
   ::fatal::list<
-    ::fatal::pair<enum1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1>,
-    ::fatal::pair<enum2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2>,
-    ::fatal::pair<enum3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3>,
-    ::fatal::pair<enum_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names>
+    ::fatal::pair<enum1, __fbthrift_refl::__fbthrift_strings_module::enum1>,
+    ::fatal::pair<enum2, __fbthrift_refl::__fbthrift_strings_module::enum2>,
+    ::fatal::pair<enum3, __fbthrift_refl::__fbthrift_strings_module::enum3>,
+    ::fatal::pair<enum_with_special_names, __fbthrift_refl::__fbthrift_strings_module::enum_with_special_names>
   >,
   // unions
   ::fatal::list<
-    ::fatal::pair<union1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1>,
-    ::fatal::pair<union2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2>,
-    ::fatal::pair<union3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3>,
-    ::fatal::pair<unionA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA>,
-    ::fatal::pair<union_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union_with_special_names>
+    ::fatal::pair<union1, __fbthrift_refl::__fbthrift_strings_module::union1>,
+    ::fatal::pair<union2, __fbthrift_refl::__fbthrift_strings_module::union2>,
+    ::fatal::pair<union3, __fbthrift_refl::__fbthrift_strings_module::union3>,
+    ::fatal::pair<unionA, __fbthrift_refl::__fbthrift_strings_module::unionA>,
+    ::fatal::pair<union_with_special_names, __fbthrift_refl::__fbthrift_strings_module::union_with_special_names>
   >,
   // structs
   ::fatal::list<
-    ::fatal::pair<structA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA>,
-    ::fatal::pair<structB, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB>,
-    ::fatal::pair<structC, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC>,
-    ::fatal::pair<struct1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1>,
-    ::fatal::pair<struct2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2>,
-    ::fatal::pair<struct3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3>,
-    ::fatal::pair<struct4, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct4>,
-    ::fatal::pair<struct5, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct5>,
-    ::fatal::pair<struct_binary, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_binary>,
-    ::fatal::pair<dep_A_struct, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_A_struct>,
-    ::fatal::pair<dep_B_struct, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_B_struct>,
-    ::fatal::pair<annotated, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotated>,
-    ::fatal::pair<struct_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names>,
-    ::fatal::pair<struct_with_indirections, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_indirections>,
-    ::fatal::pair<my_structA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::my_structA>
+    ::fatal::pair<structA, __fbthrift_refl::__fbthrift_strings_module::structA>,
+    ::fatal::pair<structB, __fbthrift_refl::__fbthrift_strings_module::structB>,
+    ::fatal::pair<structC, __fbthrift_refl::__fbthrift_strings_module::structC>,
+    ::fatal::pair<struct1, __fbthrift_refl::__fbthrift_strings_module::struct1>,
+    ::fatal::pair<struct2, __fbthrift_refl::__fbthrift_strings_module::struct2>,
+    ::fatal::pair<struct3, __fbthrift_refl::__fbthrift_strings_module::struct3>,
+    ::fatal::pair<struct4, __fbthrift_refl::__fbthrift_strings_module::struct4>,
+    ::fatal::pair<struct5, __fbthrift_refl::__fbthrift_strings_module::struct5>,
+    ::fatal::pair<struct_binary, __fbthrift_refl::__fbthrift_strings_module::struct_binary>,
+    ::fatal::pair<dep_A_struct, __fbthrift_refl::__fbthrift_strings_module::dep_A_struct>,
+    ::fatal::pair<dep_B_struct, __fbthrift_refl::__fbthrift_strings_module::dep_B_struct>,
+    ::fatal::pair<annotated, __fbthrift_refl::__fbthrift_strings_module::annotated>,
+    ::fatal::pair<struct_with_special_names, __fbthrift_refl::__fbthrift_strings_module::struct_with_special_names>,
+    ::fatal::pair<struct_with_indirections, __fbthrift_refl::__fbthrift_strings_module::struct_with_indirections>,
+    ::fatal::pair<my_structA, __fbthrift_refl::__fbthrift_strings_module::my_structA>
   >,
   // constants
   ::fatal::list<
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant1,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant2,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant3,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant_with_special_name
+    __fbthrift_refl::__fbthrift_strings_module::constant1,
+    __fbthrift_refl::__fbthrift_strings_module::constant2,
+    __fbthrift_refl::__fbthrift_strings_module::constant3,
+    __fbthrift_refl::__fbthrift_strings_module::constant_with_special_name
   >,
   // services
   ::fatal::list<
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service1,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service2,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service3,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service_with_special_names
+    __fbthrift_refl::__fbthrift_strings_module::service1,
+    __fbthrift_refl::__fbthrift_strings_module::service2,
+    __fbthrift_refl::__fbthrift_strings_module::service3,
+    __fbthrift_refl::__fbthrift_strings_module::service_with_special_names
   >
 );
 

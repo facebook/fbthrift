@@ -33,65 +33,64 @@
 
 
 <%#program:structs%><%#struct:union?%>
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
-struct <%struct:name%>_Type_enum_traits {
+class <%struct:name%>_tenum_traits {
+ public:
   using type = <% > common/namespace_cpp2%><%struct:name%>::Type;
-  using name = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::Type;
 
-  struct Type__struct_unique_strings_list {
+ private:
+  struct __fbthrift_strings {
     <%#struct:fields%>
-    using <%field:cpp_name%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%field:cpp_name%>;
+    using <%field:cpp_name%> = __fbthrift_strings_<%program:name%>::<%field:cpp_name%>;
     <%/struct:fields%>
   };
 
   <%#struct:fields%>
-  struct Type__struct_enum_members_<%field:cpp_name%> {
-    using name = Type__struct_unique_strings_list::<%field:cpp_name%>;
+  struct __fbthrift_value_<%field:cpp_name%> {
+    using name = __fbthrift_strings::<%field:cpp_name%>;
     using value = std::integral_constant<type, type::<%field:cpp_name%>>;
 
     <%#field:fatal_annotations?%>
     class annotations {
-      struct annotations__unique_annotations_keys {
+      struct __fbthrift_keys {
         <%#field:fatal_annotations%>
-        using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+        using <%annotation:safe_key%> = __fbthrift_strings_<%program:name%>::<%annotation:safe_key%>;
         <%/field:fatal_annotations%>
       };
 
-      struct annotations__unique_annotations_values {
+      struct __fbthrift_values {
         <%#field:fatal_annotations%>
         using <%annotation:safe_key%> = <%annotation:fatal_string%>;
         <%/field:fatal_annotations%>
       };
 
-      public:
-      using keys = annotations__unique_annotations_keys;
-      using values = annotations__unique_annotations_values;
+     public:
+      using keys = __fbthrift_keys;
+      using values = __fbthrift_values;
       using map = ::fatal::list<
         <%#field:fatal_annotations%>
-        ::apache::thrift::annotation<
-          keys::<%annotation:safe_key%>,
-          values::<%annotation:safe_key%>
-        ><%^last?%>,<%/last?%>
+        ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
         <%/field:fatal_annotations%>
       >;
     };
     <%/field:fatal_annotations?%>
     <%^field:fatal_annotations?%>
     <% > fatal/fatal_empty_annotation%>
-    <%/field:fatal_annotations?%>
 
+    <%/field:fatal_annotations?%>
   };
 
   <%/struct:fields%>
-  struct Type__struct_enum_members {
+  struct __fbthrift_member {
     <%#struct:fields%>
-    using <%field:cpp_name%> = Type__struct_enum_members_<%field:cpp_name%>;
+    using <%field:cpp_name%> = __fbthrift_value_<%field:cpp_name%>;
     <%/struct:fields%>
   };
 
-  using member = Type__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_<%program:name%>::Type;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       <%#struct:fields%>
       member::<%field:cpp_name%><%^last?%>,<%/last?%>
@@ -111,111 +110,99 @@ struct <%struct:name%>_Type_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
 
 FATAL_REGISTER_ENUM_TRAITS(
-  <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%struct:name%>_Type_enum_traits,
+  __fbthrift_refl::<%struct:name%>_tenum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     <%program:name%>_tags::module,
-    ::apache::thrift::reflected_annotations<<% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%struct:name%>_Type_enum_traits::annotations>,
+    ::apache::thrift::reflected_annotations<__fbthrift_refl::<%struct:name%>_tenum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
 class <%struct:name%>_variant_traits {
-  struct <%struct:name%>__struct_unique_identifiers_list {
+ private:
+  struct __fbthrift_ids {
     <%#struct:fields%>
     using <%field:cpp_name%> = std::integral_constant<<% > common/namespace_cpp2%><%struct:name%>::Type, <% > common/namespace_cpp2%><%struct:name%>::Type::<%field:cpp_name%>>;
     <%/struct:fields%>
   };
 
-  struct <%struct:name%>__struct_unique_getters_list {
+  struct __fbthrift_getters {
     <%#struct:fields%>
     struct <%field:cpp_name%> {
-      decltype(auto) operator ()(<%struct:name%> const &variant) const {
+      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> const &variant) const {
         return variant.get_<%field:cpp_name%>();
       }
-      decltype(auto) operator ()(<%struct:name%> &variant) const {
+      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> &variant) const {
         return variant.mutable_<%field:cpp_name%>();
       }
-      decltype(auto) operator ()(<%struct:name%> &&variant) const {
+      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> &&variant) const {
         return std::move(variant).move_<%field:cpp_name%>();
       }
     };
-    <%^last?%>
-
-    <%/last?%>
     <%/struct:fields%>
   };
 
-  struct <%struct:name%>__struct_unique_setters_list {
+  struct __fbthrift_setters {
     <%#struct:fields%>
     struct <%field:cpp_name%> {
       template <typename... Args>
-      decltype(auto) operator ()(<%struct:name%> &variant, Args &&...args) const {
+      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> &variant, Args &&...args) const {
         return variant.set_<%field:cpp_name%>(std::forward<Args>(args)...);
       }
     };
-    <%^last?%>
-
-    <%/last?%>
     <%/struct:fields%>
   };
 
-  public:
+ public:
   using type = <% > common/namespace_cpp2%><%struct:name%>;
-  using name = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%struct:name%>;
+  using name = __fbthrift_strings_<%program:name%>::<%struct:name%>;
   using id = type::Type;
-  using ids = <%struct:name%>__struct_unique_identifiers_list;
+  using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
     <%#struct:fields%>
     ::fatal::variant_member_descriptor<
       <%#field:type%><% > types/type%><%/field:type%>,
-      <%struct:name%>__struct_unique_identifiers_list::<%field:cpp_name%>,
-      <%struct:name%>__struct_unique_getters_list::<%field:cpp_name%>,
-      <%struct:name%>__struct_unique_setters_list::<%field:cpp_name%>,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%field:cpp_name%>,
-        <%field:key%>,
-        <%#field:type%><%type:fatal_type_class%><%/field:type%>
-      >
+      __fbthrift_ids::<%field:cpp_name%>,
+      __fbthrift_getters::<%field:cpp_name%>,
+      __fbthrift_setters::<%field:cpp_name%>,
+      ::apache::thrift::reflected_variant_member_metadata<__fbthrift_strings_<%program:name%>::<%field:cpp_name%>, <%field:key%>, <%#field:type%><%type:fatal_type_class%><%/field:type%>>
     ><%^last?%>,<%/last?%>
     <%/struct:fields%>
   >;
 
   <%#struct:fatal_annotations?%>
   class annotations {
-    struct annotations__unique_annotations_keys {
+    struct __fbthrift_keys {
       <%#struct:fatal_annotations%>
-      using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+      using <%annotation:safe_key%> = __fbthrift_strings_<%program:name%>::<%annotation:safe_key%>;
       <%/struct:fatal_annotations%>
     };
 
-    struct annotations__unique_annotations_values {
+    struct __fbthrift_values {
       <%#struct:fatal_annotations%>
       using <%annotation:safe_key%> = <%annotation:fatal_string%>;
       <%/struct:fatal_annotations%>
     };
 
-    public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+   public:
+    using keys = __fbthrift_keys;
+    using values = __fbthrift_values;
     using map = ::fatal::list<
       <%#struct:fatal_annotations%>
-      ::apache::thrift::annotation<
-        keys::<%annotation:safe_key%>,
-        values::<%annotation:safe_key%>
-      ><%^last?%>,<%/last?%>
+      ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
       <%/struct:fatal_annotations%>
     >;
   };
   <%/struct:fatal_annotations?%>
   <%^struct:fatal_annotations?%>
   <% > fatal/fatal_empty_annotation%>
-  <%/struct:fatal_annotations?%>
 
+  <%/struct:fatal_annotations?%>
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -230,14 +217,14 @@ class <%struct:name%>_variant_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
 <%/struct:union?%><%/program:structs%>
 <%#program:structs%><%#struct:union?%>
 FATAL_REGISTER_VARIANT_TRAITS(
-  <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%struct:name%>_variant_traits,
+  __fbthrift_refl::<%struct:name%>_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     <%program:name%>_tags::module,
-    ::apache::thrift::reflected_annotations<<% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%struct:name%>_variant_traits::annotations>,
+    ::apache::thrift::reflected_annotations<__fbthrift_refl::<%struct:name%>_variant_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(<%struct:legacy_type_id%>ull)
   >
 );

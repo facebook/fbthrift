@@ -16,67 +16,59 @@
 
 namespace cpp2 {
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
-class ReflectionStruct_cpp2_reflection__struct_unique_annotations {
-  class ReflectionStruct_cpp2_reflection__struct_unique_annotations_members {
-    class ReflectionStruct_cpp2_reflection__struct_unique_annotations_members_fieldA {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
+class ReflectionStruct_struct_traits {
+ private:
+  class __fbthrift_annotations {
+    class __fbthrift_members {
+      class __fbthrift_field_fieldA {
+       public:
+        using keys = void;
+        using values = void;
+        using map = ::fatal::list<>;
+      };
+
+     public:
+      using fieldA = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldA>;
     };
 
-    public:
-    using fieldA = ::apache::thrift::reflected_annotations<ReflectionStruct_cpp2_reflection__struct_unique_annotations_members_fieldA>;
-  };
-
-  class annotations {
-    public:
+   public:
     using keys = void;
     using values = void;
-    using map = ::fatal::list<
+    using map = ::fatal::list<>;
+    using members = __fbthrift_members;
+  };
+
+  struct __fbthrift_members {
+    using fieldA = ::apache::thrift::reflected_struct_data_member<
+      __fbthrift_strings_reflection::fieldA,
+      int32_t, 1, ::apache::thrift::optionality::required_of_writer,
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<::apache::thrift::tag::fieldA>,
+      ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::fieldA>,
+      ::apache::thrift::type_class::integral,
+      ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::fieldA>,
+      ReflectionStruct
     >;
   };
-  public:
-  using keys = annotations::keys;
-  using values = annotations::values;
-  using map = annotations::map;
-  using members = ReflectionStruct_cpp2_reflection__struct_unique_annotations_members;
+ public:
+  using annotations = __fbthrift_annotations;
+  using members = __fbthrift_members;
 };
 
-struct ReflectionStruct_cpp2_reflection__struct_unique_member_info_list {
-  using fieldA = ::apache::thrift::reflected_struct_data_member<
-    thrift_fatal_impl_detail::cpp2_reflection__unique_strings_list::fieldA,
-    int32_t,
-    1,
-    ::apache::thrift::optionality::required_of_writer,
-    ::apache::thrift::detail::reflection_impl::data_member_accessor<
-      ::apache::thrift::tag::fieldA
-    >,
-    ::apache::thrift::detail::invoke_reffer<
-      ::apache::thrift::tag::fieldA
-    >,
-    ::apache::thrift::type_class::integral,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_annotations::members::fieldA>,
-    ReflectionStruct
-  >;
-};
+} // __fbthrift_refl
 
-
-} // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   ReflectionStruct,
-  thrift_fatal_impl_detail::cpp2_reflection__unique_strings_list::ReflectionStruct,
-  thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_member_info_list,
+  __fbthrift_refl::__fbthrift_strings_reflection::ReflectionStruct,
+  __fbthrift_refl::ReflectionStruct_struct_traits::members,
   ::fatal::list<
-      thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_member_info_list::fieldA
+      __fbthrift_refl::ReflectionStruct_struct_traits::members::fieldA
   >,
-  thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_annotations::members,
+  __fbthrift_refl::ReflectionStruct_struct_traits::annotations::members,
   ::apache::thrift::detail::type_common_metadata_impl<
     reflection_tags::module,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_annotations>,
+    ::apache::thrift::reflected_annotations<__fbthrift_refl::ReflectionStruct_struct_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(4987617794584644204ull)
   >
 );

@@ -15,9 +15,9 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.h"
 namespace facebook { namespace ns { namespace qwerty {
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
-struct facebook_ns_qwerty_enums__unique_strings_list {
+struct __fbthrift_strings_enums {
   using AnEnumA = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'A'>;
   using AnEnumB = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'B'>;
   using AnEnumC = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'C'>;
@@ -38,78 +38,73 @@ struct facebook_ns_qwerty_enums__unique_strings_list {
   using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
+
 class enums_tags {
-  struct facebook_ns_qwerty_enums__unique_languages_list {
-    using cpp2 = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::cpp2;
+  using __fbthrift_strings = __fbthrift_refl::__fbthrift_strings_enums;
+  struct __fbthrift_languages {
+    using cpp2 = __fbthrift_strings::cpp2;
   };
-
-  struct facebook_ns_qwerty_enums__unique_enums_list {
-    using AnEnumA = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumA;
-    using AnEnumB = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumB;
-    using AnEnumC = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumC;
-    using AnEnumD = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumD;
-    using AnEnumE = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumE;
+  struct __fbthrift_enums {
+    using AnEnumA = __fbthrift_strings::AnEnumA;
+    using AnEnumB = __fbthrift_strings::AnEnumB;
+    using AnEnumC = __fbthrift_strings::AnEnumC;
+    using AnEnumD = __fbthrift_strings::AnEnumD;
+    using AnEnumE = __fbthrift_strings::AnEnumE;
   };
-
-  struct facebook_ns_qwerty_enums__unique_unions_list {
+  struct __fbthrift_unions {
   };
-
-  struct facebook_ns_qwerty_enums__unique_structs_list {
-    using SomeStruct = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::SomeStruct;
+  struct __fbthrift_structs {
+    using SomeStruct = __fbthrift_strings::SomeStruct;
   };
-
-  struct facebook_ns_qwerty_enums__unique_constants_list {
-    using MapStringEnum = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapStringEnum;
-    using MapEnumString = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapEnumString;
-    using ConstantMap1 = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap1;
-    using ConstantMap2 = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap2;
+  struct __fbthrift_constants {
+    using MapStringEnum = __fbthrift_strings::MapStringEnum;
+    using MapEnumString = __fbthrift_strings::MapEnumString;
+    using ConstantMap1 = __fbthrift_strings::ConstantMap1;
+    using ConstantMap2 = __fbthrift_strings::ConstantMap2;
   };
-
-  struct facebook_ns_qwerty_enums__unique_services_list {
+  struct __fbthrift_services {
   };
-
-public:
+ public:
   struct module {};
 
-  using languages = facebook_ns_qwerty_enums__unique_languages_list;
-  using enums = facebook_ns_qwerty_enums__unique_enums_list;
-  using unions = facebook_ns_qwerty_enums__unique_unions_list;
-  using structs = facebook_ns_qwerty_enums__unique_structs_list;
-  using constants = facebook_ns_qwerty_enums__unique_constants_list;
-  using services = facebook_ns_qwerty_enums__unique_services_list;
-
-  using strings = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list;
+  using strings = __fbthrift_strings;
+  using languages = __fbthrift_languages;
+  using enums = __fbthrift_enums;
+  using unions = __fbthrift_unions;
+  using structs = __fbthrift_structs;
+  using constants = __fbthrift_constants;
+  using services = __fbthrift_services;
 };
 
 THRIFT_REGISTER_REFLECTION_METADATA(
   enums_tags::module,
-  thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::enums,
+  __fbthrift_refl::__fbthrift_strings_enums::enums,
   // languages
   ::fatal::list<
-    ::fatal::pair<thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::cpp2, thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::facebook__ns__qwerty>
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_enums::cpp2, __fbthrift_refl::__fbthrift_strings_enums::facebook__ns__qwerty>
   >,
   // enums
   ::fatal::list<
-    ::fatal::pair<AnEnumA, thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumA>,
-    ::fatal::pair<AnEnumB, thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumB>,
-    ::fatal::pair<AnEnumC, thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumC>,
-    ::fatal::pair<AnEnumD, thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumD>,
-    ::fatal::pair<AnEnumE, thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumE>
+    ::fatal::pair<AnEnumA, __fbthrift_refl::__fbthrift_strings_enums::AnEnumA>,
+    ::fatal::pair<AnEnumB, __fbthrift_refl::__fbthrift_strings_enums::AnEnumB>,
+    ::fatal::pair<AnEnumC, __fbthrift_refl::__fbthrift_strings_enums::AnEnumC>,
+    ::fatal::pair<AnEnumD, __fbthrift_refl::__fbthrift_strings_enums::AnEnumD>,
+    ::fatal::pair<AnEnumE, __fbthrift_refl::__fbthrift_strings_enums::AnEnumE>
   >,
   // unions
   ::fatal::list<
   >,
   // structs
   ::fatal::list<
-    ::fatal::pair<SomeStruct, thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::SomeStruct>
+    ::fatal::pair<SomeStruct, __fbthrift_refl::__fbthrift_strings_enums::SomeStruct>
   >,
   // constants
   ::fatal::list<
-    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapStringEnum,
-    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::MapEnumString,
-    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap1,
-    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::ConstantMap2
+    __fbthrift_refl::__fbthrift_strings_enums::MapStringEnum,
+    __fbthrift_refl::__fbthrift_strings_enums::MapEnumString,
+    __fbthrift_refl::__fbthrift_strings_enums::ConstantMap1,
+    __fbthrift_refl::__fbthrift_strings_enums::ConstantMap2
   >,
   // services
   ::fatal::list<

@@ -15,9 +15,9 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_types.h"
 namespace extra { namespace svc {
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
-struct extra_svc_extra_services__unique_strings_list {
+struct __fbthrift_strings_extra_services {
   using ExtraService = ::fatal::sequence<char, 'E', 'x', 't', 'r', 'a', 'S', 'e', 'r', 'v', 'i', 'c', 'e'>;
   using containerStruct2 = ::fatal::sequence<char, 'c', 'o', 'n', 't', 'a', 'i', 'n', 'e', 'r', 'S', 't', 'r', 'u', 'c', 't', '2'>;
   using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
@@ -52,48 +52,43 @@ struct extra_svc_extra_services__unique_strings_list {
   using throws_function3 = ::fatal::sequence<char, 't', 'h', 'r', 'o', 'w', 's', '_', 'f', 'u', 'n', 'c', 't', 'i', 'o', 'n', '3'>;
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
+
 class extra_services_tags {
-  struct extra_svc_extra_services__unique_languages_list {
-    using cpp2 = thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::cpp2;
+  using __fbthrift_strings = __fbthrift_refl::__fbthrift_strings_extra_services;
+  struct __fbthrift_languages {
+    using cpp2 = __fbthrift_strings::cpp2;
   };
-
-  struct extra_svc_extra_services__unique_enums_list {
+  struct __fbthrift_enums {
   };
-
-  struct extra_svc_extra_services__unique_unions_list {
+  struct __fbthrift_unions {
   };
-
-  struct extra_svc_extra_services__unique_structs_list {
-    using containerStruct2 = thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::containerStruct2;
+  struct __fbthrift_structs {
+    using containerStruct2 = __fbthrift_strings::containerStruct2;
   };
-
-  struct extra_svc_extra_services__unique_constants_list {
+  struct __fbthrift_constants {
   };
-
-  struct extra_svc_extra_services__unique_services_list {
-    using ExtraService = thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::ExtraService;
+  struct __fbthrift_services {
+    using ExtraService = __fbthrift_strings::ExtraService;
   };
-
-public:
+ public:
   struct module {};
 
-  using languages = extra_svc_extra_services__unique_languages_list;
-  using enums = extra_svc_extra_services__unique_enums_list;
-  using unions = extra_svc_extra_services__unique_unions_list;
-  using structs = extra_svc_extra_services__unique_structs_list;
-  using constants = extra_svc_extra_services__unique_constants_list;
-  using services = extra_svc_extra_services__unique_services_list;
-
-  using strings = thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list;
+  using strings = __fbthrift_strings;
+  using languages = __fbthrift_languages;
+  using enums = __fbthrift_enums;
+  using unions = __fbthrift_unions;
+  using structs = __fbthrift_structs;
+  using constants = __fbthrift_constants;
+  using services = __fbthrift_services;
 };
 
 THRIFT_REGISTER_REFLECTION_METADATA(
   extra_services_tags::module,
-  thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::extra_services,
+  __fbthrift_refl::__fbthrift_strings_extra_services::extra_services,
   // languages
   ::fatal::list<
-    ::fatal::pair<thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::cpp2, thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::extra__svc>
+    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_extra_services::cpp2, __fbthrift_refl::__fbthrift_strings_extra_services::extra__svc>
   >,
   // enums
   ::fatal::list<
@@ -103,14 +98,14 @@ THRIFT_REGISTER_REFLECTION_METADATA(
   >,
   // structs
   ::fatal::list<
-    ::fatal::pair<containerStruct2, thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::containerStruct2>
+    ::fatal::pair<containerStruct2, __fbthrift_refl::__fbthrift_strings_extra_services::containerStruct2>
   >,
   // constants
   ::fatal::list<
   >,
   // services
   ::fatal::list<
-    thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::ExtraService
+    __fbthrift_refl::__fbthrift_strings_extra_services::ExtraService
   >
 );
 

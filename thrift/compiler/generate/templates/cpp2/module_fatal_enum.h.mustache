@@ -28,65 +28,63 @@
 
 
 <%#program:enums%>
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
-struct <%enum:name%>_enum_traits {
+class <%enum:name%>_enum_traits {
+ public:
   using type = <% > common/namespace_cpp2%><%enum:name%>;
-  using name = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%enum:name%>;
 
-  struct <%enum:name%>__struct_unique_strings_list {
+ private:
+  struct __fbthrift_strings {
     <%#enum:values%>
-    using <%enumValue:cpp_name%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%enumValue:cpp_name%>;
+    using <%enumValue:cpp_name%> = __fbthrift_strings_<%program:name%>::<%enumValue:cpp_name%>;
     <%/enum:values%>
   };
 
   <%#enum:values%>
-  struct <%enum:name%>__struct_enum_members_<%enumValue:cpp_name%> {
-    using name = <%enum:name%>__struct_unique_strings_list::<%enumValue:cpp_name%>;
+  struct __fbthrift_value_<%enumValue:cpp_name%> {
+    using name = __fbthrift_strings::<%enumValue:cpp_name%>;
     using value = std::integral_constant<type, type::<%enumValue:cpp_name%>>;
 
     <%#enumValue:fatal_annotations?%>
     class annotations {
-      struct annotations__unique_annotations_keys {
+      struct __fbthrift_keys {
         <%#enumValue:fatal_annotations%>
-        using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+        using <%annotation:safe_key%> = __fbthrift_strings_<%program:name%>::<%annotation:safe_key%>;
         <%/enumValue:fatal_annotations%>
       };
 
-      struct annotations__unique_annotations_values {
+      struct __fbthrift_values {
         <%#enumValue:fatal_annotations%>
         using <%annotation:safe_key%> = <%annotation:fatal_string%>;
         <%/enumValue:fatal_annotations%>
       };
-
-      public:
-      using keys = annotations__unique_annotations_keys;
-      using values = annotations__unique_annotations_values;
+     public:
+      using keys = __fbthrift_keys;
+      using values = __fbthrift_values;
       using map = ::fatal::list<
         <%#enumValue:fatal_annotations%>
-        ::apache::thrift::annotation<
-          keys::<%annotation:safe_key%>,
-          values::<%annotation:safe_key%>
-        ><%^last?%>,<%/last?%>
+        ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
         <%/enumValue:fatal_annotations%>
       >;
     };
     <%/enumValue:fatal_annotations?%>
     <%^enumValue:fatal_annotations?%>
     <% > fatal/fatal_empty_annotation%>
-    <%/enumValue:fatal_annotations?%>
 
+    <%/enumValue:fatal_annotations?%>
   };
 
   <%/enum:values%>
-  struct <%enum:name%>__struct_enum_members {
+  struct __fbthrift_member {
     <%#enum:values%>
-    using <%enumValue:cpp_name%> = <%enum:name%>__struct_enum_members_<%enumValue:cpp_name%>;
+    using <%enumValue:cpp_name%> = __fbthrift_value_<%enumValue:cpp_name%>;
     <%/enum:values%>
   };
 
-  using member = <%enum:name%>__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_<%program:name%>::<%enum:name%>;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       <%#enum:values%>
       member::<%enumValue:cpp_name%><%^last?%>,<%/last?%>
@@ -95,27 +93,25 @@ struct <%enum:name%>_enum_traits {
 
   <%#enum:fatal_annotations?%>
   class annotations {
-    struct annotations__unique_annotations_keys {
+    struct __fbthrift_keys {
       <%#enum:fatal_annotations%>
-      using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+      using <%annotation:safe_key%> = __fbthrift_strings_<%program:name%>::<%annotation:safe_key%>;
       <%/enum:fatal_annotations%>
     };
 
-    struct annotations__unique_annotations_values {
+    <%! Declared with __fbthrift_ prefix, so C++ name will not conflict with IDL names. %>
+    struct __fbthrift_values {
       <%#enum:fatal_annotations%>
       using <%annotation:safe_key%> = <%annotation:fatal_string%>;
       <%/enum:fatal_annotations%>
     };
 
-    public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+   public:
+    using keys = __fbthrift_keys;
+    using values = __fbthrift_values;
     using map = ::fatal::list<
       <%#enum:fatal_annotations%>
-      ::apache::thrift::annotation<
-        keys::<%annotation:safe_key%>,
-        values::<%annotation:safe_key%>
-      ><%^last?%>,<%/last?%>
+      ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
       <%/enum:fatal_annotations%>
     >;
   };
@@ -123,7 +119,6 @@ struct <%enum:name%>_enum_traits {
   <%^enum:fatal_annotations?%>
   <% > fatal/fatal_empty_annotation%>
   <%/enum:fatal_annotations?%>
-
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -135,13 +130,13 @@ struct <%enum:name%>_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
 
 FATAL_REGISTER_ENUM_TRAITS(
-  <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%enum:name%>_enum_traits,
+  __fbthrift_refl::<%enum:name%>_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
     <%program:name%>_tags::module,
-    ::apache::thrift::reflected_annotations<<% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%enum:name%>_enum_traits::annotations>,
+    ::apache::thrift::reflected_annotations<__fbthrift_refl::<%enum:name%>_enum_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(<%enum:legacy_type_id%>ull)
   >
 );

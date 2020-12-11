@@ -15,51 +15,46 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_types.h"
 namespace cpp2 {
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
 
-struct cpp2_reflection__unique_strings_list {
+struct __fbthrift_strings_reflection {
   using ReflectionStruct = ::fatal::sequence<char, 'R', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n', 'S', 't', 'r', 'u', 'c', 't'>;
   using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
   using reflection = ::fatal::sequence<char, 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
+
 class reflection_tags {
-  struct cpp2_reflection__unique_languages_list {
+  using __fbthrift_strings = __fbthrift_refl::__fbthrift_strings_reflection;
+  struct __fbthrift_languages {
   };
-
-  struct cpp2_reflection__unique_enums_list {
+  struct __fbthrift_enums {
   };
-
-  struct cpp2_reflection__unique_unions_list {
+  struct __fbthrift_unions {
   };
-
-  struct cpp2_reflection__unique_structs_list {
-    using ReflectionStruct = thrift_fatal_impl_detail::cpp2_reflection__unique_strings_list::ReflectionStruct;
+  struct __fbthrift_structs {
+    using ReflectionStruct = __fbthrift_strings::ReflectionStruct;
   };
-
-  struct cpp2_reflection__unique_constants_list {
+  struct __fbthrift_constants {
   };
-
-  struct cpp2_reflection__unique_services_list {
+  struct __fbthrift_services {
   };
-
-public:
+ public:
   struct module {};
 
-  using languages = cpp2_reflection__unique_languages_list;
-  using enums = cpp2_reflection__unique_enums_list;
-  using unions = cpp2_reflection__unique_unions_list;
-  using structs = cpp2_reflection__unique_structs_list;
-  using constants = cpp2_reflection__unique_constants_list;
-  using services = cpp2_reflection__unique_services_list;
-
-  using strings = thrift_fatal_impl_detail::cpp2_reflection__unique_strings_list;
+  using strings = __fbthrift_strings;
+  using languages = __fbthrift_languages;
+  using enums = __fbthrift_enums;
+  using unions = __fbthrift_unions;
+  using structs = __fbthrift_structs;
+  using constants = __fbthrift_constants;
+  using services = __fbthrift_services;
 };
 
 THRIFT_REGISTER_REFLECTION_METADATA(
   reflection_tags::module,
-  thrift_fatal_impl_detail::cpp2_reflection__unique_strings_list::reflection,
+  __fbthrift_refl::__fbthrift_strings_reflection::reflection,
   // languages
   ::fatal::list<
   >,
@@ -71,7 +66,7 @@ THRIFT_REGISTER_REFLECTION_METADATA(
   >,
   // structs
   ::fatal::list<
-    ::fatal::pair<ReflectionStruct, thrift_fatal_impl_detail::cpp2_reflection__unique_strings_list::ReflectionStruct>
+    ::fatal::pair<ReflectionStruct, __fbthrift_refl::__fbthrift_strings_reflection::ReflectionStruct>
   >,
   // constants
   ::fatal::list<
