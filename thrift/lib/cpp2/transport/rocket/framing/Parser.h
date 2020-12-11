@@ -46,6 +46,12 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
         periodicResizeBufferTimeout_(
             THRIFT_FLAG(rocket_parser_resize_period_seconds)) {}
 
+  ~Parser() override {
+    if (currentFrameLength_) {
+      owner_.decMemoryUsage(currentFrameLength_);
+    }
+  }
+
   // AsyncTransport::ReadCallback implementation
   FOLLY_NOINLINE void getReadBuffer(void** bufout, size_t* lenout) override;
   FOLLY_NOINLINE void readDataAvailable(size_t nbytes) noexcept override;
@@ -95,9 +101,9 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
   const int64_t periodicResizeBufferTimeout_;
   bool enablePageAlignment_{false};
   bool aligning_{false};
+  size_t currentFrameLength_{0};
   // only used by readBufferAvailable API
   folly::IOBufQueue bufQueue_{folly::IOBufQueue::cacheChainLength()};
-  size_t currFrameLength_{0};
 };
 
 } // namespace rocket

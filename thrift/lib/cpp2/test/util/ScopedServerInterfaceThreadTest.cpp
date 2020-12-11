@@ -65,6 +65,8 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
     requestSem_.wait();
   }
 
+  void largeRequest(std::unique_ptr<std::unique_ptr<folly::IOBuf>>) override {}
+
  private:
   folly::LifoSem requestSem_;
 };
@@ -191,6 +193,36 @@ TEST(ScopedServerInterfaceThread, joinRequestsSinkSlowFinalResponse) {
                            })));
     EXPECT_TRUE(result);
   }());
+}
+
+TEST(ScopedServerInterfaceThread, TransportMemLimit) {
+  auto ts = make_shared<ThriftServer>();
+  auto serviceImpl = std::make_shared<SimpleServiceImpl>();
+  ts->setProcessorFactory(serviceImpl);
+  ts->setAddress({"::1", 0});
+  auto request = folly::IOBuf::create(5 * 1024 * 1024);
+  request->append(2 * 1024 * 1024);
+
+  ScopedServerInterfaceThread ssit(ts);
+
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>(nullptr, [](auto socket) {
+    auto channel = RocketClientChannel::newChannel(std::move(socket));
+    return channel;
+  });
+  EXPECT_NO_THROW(cli->sync_largeRequest(request->clone()));
+
+  // upper bound can be changed after server started
+  ts->setIngressMemoryLimit(1024 * 1024);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+  try {
+    cli->sync_largeRequest(std::move(request));
+    ADD_FAILURE();
+  } catch (apache::thrift::transport::TTransportException& ex) {
+    EXPECT_EQ(
+        apache::thrift::transport::TTransportException::
+            TTransportExceptionType::EXCEEDED_INGRESS_MEM_LIMIT,
+        ex.getType());
+  }
 }
 
 template <typename ChannelT, typename ServiceT>

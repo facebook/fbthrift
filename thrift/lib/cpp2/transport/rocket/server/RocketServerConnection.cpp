@@ -60,13 +60,15 @@ RocketServerConnection::RocketServerConnection(
     std::unique_ptr<RocketServerHandler> frameHandler,
     std::chrono::milliseconds streamStarvationTimeout,
     std::chrono::milliseconds writeBatchingInterval,
-    size_t writeBatchingSize)
+    size_t writeBatchingSize,
+    folly::Optional<IngressMemoryLimitStateRef> ingressMemoryLimitStateRef)
     : evb_(*socket->getEventBase()),
       socket_(std::move(socket)),
       frameHandler_(std::move(frameHandler)),
       streamStarvationTimeout_(streamStarvationTimeout),
       writeBatcher_(*this, writeBatchingInterval, writeBatchingSize),
-      socketDrainer_(*this) {
+      socketDrainer_(*this),
+      ingressMemoryLimitStateRef_(std::move(ingressMemoryLimitStateRef)) {
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);
@@ -121,8 +123,7 @@ void RocketServerConnection::closeIfNeeded() {
     // Immediately stop processing new requests
     socket_->setReadCB(nullptr);
 
-    sendError(
-        StreamId{0}, RocketException(ErrorCode::CONNECTION_DRAIN_COMPLETE));
+    sendError(StreamId{0}, RocketException(drainingErrorCode_));
 
     state_ = ConnectionState::CLOSING;
     frameHandler_->connectionClosing();
@@ -555,6 +556,7 @@ void RocketServerConnection::notifyPendingShutdown() {
   }
 
   state_ = ConnectionState::DRAINING;
+  drainingErrorCode_ = ErrorCode::CONNECTION_DRAIN_COMPLETE;
   closeIfNeeded();
 }
 

@@ -63,6 +63,8 @@ enum class ErrorCode : uint32_t {
   // that if it hasn't responded to a request before sending this frame, then
   // it didn't process that request.
   CONNECTION_DRAIN_COMPLETE = 0xFB000000,
+  // The connection is closed because of exceeding ingress memory limit.
+  EXCEEDED_INGRESS_MEM_LIMIT = 0xFB000001,
   // Reserved for extension use.
   RESERVED_EXT = 0xFFFFFFFF,
 };

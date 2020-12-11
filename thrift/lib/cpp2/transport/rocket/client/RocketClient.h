@@ -249,6 +249,12 @@ class RocketClient : public folly::DelayedDestruction,
   // Request connection close and fail all the requests.
   void close(apache::thrift::transport::TTransportException ex) noexcept;
 
+  bool incMemoryUsage(uint32_t) {
+    return true;
+  }
+
+  void decMemoryUsage(uint32_t) {}
+
  private:
   folly::EventBase* evb_;
   folly::AsyncTransport::UniquePtr socket_;

@@ -24,4 +24,6 @@ service SimpleService {
   stream<i64> emptyStreamSlow(1: i64 sleepMs) (cpp.coroutine);
 
   sink<i64, bool> slowReturnSink(1: i64 sleepMs);
+
+  void largeRequest(1: binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") request);
 }

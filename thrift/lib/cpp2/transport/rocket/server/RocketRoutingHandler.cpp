@@ -51,7 +51,14 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 }
 } // namespace
 
-RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
+RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server)
+    : ingressMemoryLimitObserver_(
+          folly::observer::makeObserver([&server]() -> int64_t {
+            return **server.getIngressMemoryLimitObserver() /
+                server.getNumIOWorkerThreads();
+          })),
+      minPayloadSizeToEnforceIngressMemoryLimitObserver_(
+          server.getMinPayloadSizeToEnforceIngressMemoryLimitObserver()) {
   if (auto debugSetupFrameHandler =
           THRIFT_PLUGGABLE_FUNC(createRocketDebugSetupFrameHandler)(server)) {
     setupFrameHandlers_.push_back(std::move(debugSetupFrameHandler));
@@ -119,13 +126,19 @@ void RocketRoutingHandler::handleConnection(
 
   auto* const sockPtr = sock.get();
   auto* const server = worker->getServer();
+  auto memLimitParams =
+      rocket::RocketServerConnection::IngressMemoryLimitStateRef(
+          worker->getIngressMemoryUsageRef(),
+          ingressMemoryLimitObserver_,
+          minPayloadSizeToEnforceIngressMemoryLimitObserver_);
   auto* const connection = new rocket::RocketServerConnection(
       std::move(sock),
       std::make_unique<rocket::ThriftRocketServerHandler>(
           worker, *address, sockPtr, setupFrameHandlers_),
       server->getStreamExpireTime(),
       server->getWriteBatchingInterval(),
-      server->getWriteBatchingSize());
+      server->getWriteBatchingSize(),
+      std::move(memLimitParams));
   onConnection(*connection);
   // set negotiated compression algorithm on this connection
   auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())

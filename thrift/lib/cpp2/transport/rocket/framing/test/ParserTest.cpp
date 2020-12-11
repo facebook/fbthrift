@@ -31,6 +31,10 @@ class FakeOwner : public folly::DelayedDestruction {
   void scheduleTimeout(
       folly::HHWheelTimer::Callback*,
       const std::chrono::milliseconds&) {}
+  bool incMemoryUsage(uint32_t) {
+    return true;
+  }
+  void decMemoryUsage(uint32_t) {}
 };
 
 TEST(ParserTest, resizeBufferTest) {

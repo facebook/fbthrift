@@ -80,6 +80,13 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
       const size_t totalFrameSize = Serializer::kBytesForFrameOrMetadataLength +
           readFrameOrMetadataSize(cursor);
 
+      if (!currentFrameLength_) {
+        if (!owner_.incMemoryUsage(totalFrameSize)) {
+          return;
+        }
+        currentFrameLength_ = totalFrameSize;
+      }
+
       readStreamId(cursor);
       uint8_t frameType;
       std::tie(frameType, std::ignore) = readFrameTypeAndFlagsUnsafe(cursor);
@@ -123,6 +130,8 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
       readFrameOrMetadataSize(cursor);
       std::unique_ptr<folly::IOBuf> frame;
       cursor.clone(frame, bytesToClone);
+      owner_.decMemoryUsage(currentFrameLength_);
+      currentFrameLength_ = 0;
       readBuffer_.trimStart(totalFrameSize);
       aligning_ = false;
       owner_.handleFrame(std::move(frame));
@@ -179,20 +188,24 @@ void Parser<T>::readBufferAvailable(
       }
       folly::io::Cursor cursor(bufQueue_.front());
 
-      if (!currFrameLength_) {
-        currFrameLength_ = Serializer::kBytesForFrameOrMetadataLength +
+      if (!currentFrameLength_) {
+        currentFrameLength_ = Serializer::kBytesForFrameOrMetadataLength +
             readFrameOrMetadataSize(cursor);
+        if (!owner_.incMemoryUsage(currentFrameLength_)) {
+          return;
+        }
       }
 
-      if (bufQueue_.chainLength() < currFrameLength_) {
+      if (bufQueue_.chainLength() < currentFrameLength_) {
         return;
       }
 
       bufQueue_.trimStart(Serializer::kBytesForFrameOrMetadataLength);
       auto frame = bufQueue_.split(
-          currFrameLength_ - Serializer::kBytesForFrameOrMetadataLength);
+          currentFrameLength_ - Serializer::kBytesForFrameOrMetadataLength);
       owner_.handleFrame(std::move(frame));
-      currFrameLength_ = 0;
+      owner_.decMemoryUsage(currentFrameLength_);
+      currentFrameLength_ = 0;
     }
   } catch (...) {
     auto exceptionStr =

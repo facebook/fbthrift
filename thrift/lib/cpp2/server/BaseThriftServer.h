@@ -270,6 +270,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   Metadata metadata_;
 
+  ServerAttribute<int64_t> ingressMemoryLimit_{0};
+  ServerAttribute<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{512 *
+                                                                     1024};
+
  protected:
   //! The server's listening addresses
   std::vector<folly::SocketAddress> addresses_;
@@ -1104,6 +1108,45 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   Metadata& metadata() {
     return metadata_;
+  }
+
+  /**
+   * Ingress memory is the total memory used for receiving inflight requests.
+   * If the memory limit is hit, the connection along with the violating request
+   * will be closed
+   */
+  void setIngressMemoryLimit(
+      int64_t ingressMemoryLimit,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    ingressMemoryLimit_.set(ingressMemoryLimit, source);
+  }
+
+  int64_t getIngressMemoryLimit() const {
+    return ingressMemoryLimit_.get();
+  }
+
+  folly::observer::Observer<int64_t> getIngressMemoryLimitObserver() {
+    return ingressMemoryLimit_.getObserver();
+  }
+
+  /**
+   * Connection close will only be enforced and triggered on those requests with
+   * size greater or equal than this attribute
+   */
+  void setMinPayloadSizeToEnforceIngressMemoryLimit(
+      size_t minPayloadSizeToEnforceIngressMemoryLimit,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    minPayloadSizeToEnforceIngressMemoryLimit_.set(
+        minPayloadSizeToEnforceIngressMemoryLimit, source);
+  }
+
+  size_t getMinPayloadSizeToEnforceIngressMemoryLimit() const {
+    return minPayloadSizeToEnforceIngressMemoryLimit_.get();
+  }
+
+  folly::observer::Observer<size_t>
+  getMinPayloadSizeToEnforceIngressMemoryLimitObserver() {
+    return minPayloadSizeToEnforceIngressMemoryLimit_.getObserver();
   }
 };
 } // namespace thrift

@@ -58,13 +58,52 @@ class RocketServerConnection final
   using UniquePtr = std::
       unique_ptr<RocketServerConnection, folly::DelayedDestruction::Destructor>;
 
+  class IngressMemoryLimitStateRef {
+   public:
+    IngressMemoryLimitStateRef(
+        int64_t& ingressMemoryUsage,
+        folly::observer::AtomicObserver<int64_t>& ingressMemoryLimitObserver,
+        folly::observer::AtomicObserver<size_t>&
+            minPayloadSizeToEnforceIngressMemoryLimitObserver)
+        : memoryUsage_(ingressMemoryUsage),
+          memoryLimitObserver_(ingressMemoryLimitObserver),
+          minPayloadSizeObserver_(
+              minPayloadSizeToEnforceIngressMemoryLimitObserver) {}
+
+    bool incMemoryUsage(uint32_t memSize) {
+      uint64_t ingressMemoryLimit = *memoryLimitObserver_;
+      size_t minPayloadSizeToEnforceIngressMemoryLimit =
+          *minPayloadSizeObserver_;
+      uint64_t newSize = memoryUsage_ + memSize;
+      if (ingressMemoryLimit && newSize >= ingressMemoryLimit &&
+          memSize >= minPayloadSizeToEnforceIngressMemoryLimit) {
+        return false;
+      } else {
+        memoryUsage_ = newSize;
+        return true;
+      }
+    }
+
+    void decMemoryUsage(uint32_t memSize) {
+      DCHECK_GE(memoryUsage_, memSize) << memoryUsage_ << " < " << memSize;
+      memoryUsage_ -= memSize;
+    }
+
+   private:
+    int64_t& memoryUsage_;
+    folly::observer::AtomicObserver<int64_t>& memoryLimitObserver_;
+    folly::observer::AtomicObserver<size_t>& minPayloadSizeObserver_;
+  };
+
   RocketServerConnection(
       folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<RocketServerHandler> frameHandler,
       std::chrono::milliseconds streamStarvationTimeout,
       std::chrono::milliseconds writeBatchingInterval =
           std::chrono::milliseconds::zero(),
-      size_t writeBatchingSize = 0);
+      size_t writeBatchingSize = 0,
+      folly::Optional<IngressMemoryLimitStateRef> ingressMemoryLimitStateRef =
+          folly::none);
 
   void send(
       std::unique_ptr<folly::IOBuf> data,
@@ -188,6 +227,25 @@ class RocketServerConnection final
     onWriteQuiescence_ = std::move(cb);
   }
 
+  bool incMemoryUsage(uint32_t memSize) {
+    if (ingressMemoryLimitStateRef_ &&
+        !ingressMemoryLimitStateRef_->incMemoryUsage(memSize)) {
+      state_ = ConnectionState::DRAINING;
+      drainingErrorCode_ = ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT;
+      socket_->setReadCB(nullptr);
+      closeIfNeeded();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  void decMemoryUsage(uint32_t memSize) {
+    if (ingressMemoryLimitStateRef_) {
+      ingressMemoryLimitStateRef_->decMemoryUsage(memSize);
+    }
+  }
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
@@ -237,6 +295,7 @@ class RocketServerConnection final
     CLOSED,
   };
   ConnectionState state_{ConnectionState::ALIVE};
+  ErrorCode drainingErrorCode_;
 
   using ClientCallbackUniquePtr = boost::variant<
       std::unique_ptr<RocketStreamClientCallback>,
@@ -378,6 +437,8 @@ class RocketServerConnection final
   SocketDrainer socketDrainer_;
   size_t activePausedHandlers_{0};
   folly::Function<void(ReadPausableHandle)> onWriteQuiescence_;
+
+  folly::Optional<IngressMemoryLimitStateRef> ingressMemoryLimitStateRef_;
 
   ~RocketServerConnection();
 

@@ -127,11 +127,22 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
       case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
         auto drainEx = transport::TTransportException(
             apache::thrift::transport::TTransportException::NOT_OPEN,
-            "Server shutdown.");
+            "Server shutdown");
         if (state_ == ConnectionState::ERROR) {
           error_ = std::move(drainEx);
         } else {
           close(drainEx);
+        }
+      } break;
+      case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
+        auto ex = transport::TTransportException(
+            apache::thrift::transport::TTransportException::
+                EXCEEDED_INGRESS_MEM_LIMIT,
+            "Exceeded ingress memory limit");
+        if (state_ == ConnectionState::ERROR) {
+          error_ = std::move(ex);
+        } else {
+          close(ex);
         }
       } break;
       default:

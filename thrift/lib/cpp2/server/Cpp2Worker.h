@@ -213,6 +213,10 @@ class Cpp2Worker : public wangle::Acceptor,
     return &fizzPeeker_;
   }
 
+  int64_t& getIngressMemoryUsageRef() {
+    return ingressMemoryUsage_;
+  }
+
  private:
   /// The mother ship.
   ThriftServer* server_;
@@ -254,6 +258,7 @@ class Cpp2Worker : public wangle::Acceptor,
   RequestsRegistry* requestsRegistry_;
   bool stopping_{false};
   folly::Baton<> stopBaton_;
+  int64_t ingressMemoryUsage_{0};
 
   void initRequestsRegistry();
 
