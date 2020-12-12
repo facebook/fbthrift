@@ -39,12 +39,12 @@ class structured_annotation_included implements \IThriftStruct {
     $this->name = $name ?? "cacbcac";
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'name'),

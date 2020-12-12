@@ -484,12 +484,12 @@ class Bar_baz_args implements \IThriftStruct {
     $this->e = (int)(idx($vals, 'e') ?? 4);
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -545,12 +545,12 @@ class Bar_baz_result implements \IThriftStruct {
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {

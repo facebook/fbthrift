@@ -92,12 +92,12 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     }
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'intValue'),
@@ -167,7 +167,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       Shapes::idx($shape, 'intValue') === null ? null : ($shape['intValue']),
@@ -221,12 +221,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     $this->a = $a ?? '';
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -245,7 +245,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['a'],
@@ -1092,12 +1092,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     };
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'just_an_A'),
@@ -1153,7 +1153,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       Shapes::idx($shape, 'just_an_A') === null ? null : (\test\fixtures\A::__fromShape($shape['just_an_A'])),

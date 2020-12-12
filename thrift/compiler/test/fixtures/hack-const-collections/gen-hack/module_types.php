@@ -99,12 +99,12 @@ class Foo implements \IThriftStruct {
     $this->d = $d ?? false;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -162,12 +162,12 @@ class Baz extends \TException implements \IThriftStruct {
     $this->message = $message ?? '';
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'message'),

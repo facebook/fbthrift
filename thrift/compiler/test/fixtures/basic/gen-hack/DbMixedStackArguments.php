@@ -686,12 +686,12 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
     $this->key = $key ?? '';
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'key'),
@@ -710,7 +710,7 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['key'],
@@ -761,12 +761,12 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
   public function __construct(?string $success = null  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -828,12 +828,12 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
     $this->key = $key ?? '';
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'key'),
@@ -852,7 +852,7 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['key'],
@@ -903,12 +903,12 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
   public function __construct(?string $success = null  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),

@@ -1556,12 +1556,12 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     $this->foo = $foo ?? Map {};
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1580,7 +1580,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       (new Map($shape['foo']))->map(
@@ -1617,12 +1617,12 @@ class NestedContainers_mapList_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -1685,12 +1685,12 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     $this->foo = $foo ?? Map {};
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1709,7 +1709,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       (new Map($shape['foo']))->map(
@@ -1746,12 +1746,12 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -1814,12 +1814,12 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     $this->foo = $foo ?? Vector {};
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1838,7 +1838,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       (new Vector($shape['foo']))->map(
@@ -1875,12 +1875,12 @@ class NestedContainers_listMap_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -1939,12 +1939,12 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     $this->foo = $foo ?? Vector {};
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1963,7 +1963,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       (new Vector($shape['foo']))->map(
@@ -2000,12 +2000,12 @@ class NestedContainers_listSet_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -2087,12 +2087,12 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     $this->foo = $foo ?? Vector {};
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -2111,7 +2111,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       (new Vector($shape['foo']))->map(
@@ -2163,12 +2163,12 @@ class NestedContainers_turtles_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );

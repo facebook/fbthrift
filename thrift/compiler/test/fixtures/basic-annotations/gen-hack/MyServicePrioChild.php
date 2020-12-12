@@ -377,12 +377,12 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -400,7 +400,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
     );
@@ -439,12 +439,12 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );

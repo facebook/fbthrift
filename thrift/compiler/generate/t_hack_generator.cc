@@ -184,7 +184,9 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       t_struct* tstruct,
       bool asFunction);
-  void generate_php_struct_construction_attributes(std::ofstream& out);
+  void generate_php_struct_construction_attributes(
+      std::ofstream& out,
+      bool is_constructor = false);
 
   /**
    * Service-level generation functions
@@ -2393,8 +2395,15 @@ void t_hack_generator::generate_php_structural_id(
 }
 
 void t_hack_generator::generate_php_struct_construction_attributes(
-    std::ofstream& out) {
+    std::ofstream& out,
+    bool is_constructor) {
   out << indent() << "<<__Rx";
+  if (!is_constructor) {
+    // Constructor-like methods can also give the ownership of the
+    // struct to the caller. Constructor has an implicit __MutableReturn.
+    // See https://fburl.com/wiki/iaru43mo for more details.
+    out << ", __MutableReturn";
+  }
   if (arrprov_skip_frames_) {
     out << ", __ProvenanceSkipFrame";
   }
@@ -2684,7 +2693,7 @@ void t_hack_generator::_generate_php_struct_definition(
 
   out << "\n";
 
-  generate_php_struct_construction_attributes(out);
+  generate_php_struct_construction_attributes(out, /*is_constructor=*/true);
   out << indent() << "public function __construct(";
   if (map_construct_ && !from_map_construct_) {
     if (strict_types_) {

@@ -82,12 +82,12 @@ class MyException1 extends \TException implements \IThriftStruct {
     $this->code = idx($vals, 'code') ?? MyEnum::MyValue1;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -173,12 +173,12 @@ class MyException2 extends \TException implements \IThriftStruct {
     $this->code = idx($vals, 'code') ?? MyEnum::MyValue1;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -264,12 +264,12 @@ class MyException3 extends \TException implements \IThriftStruct {
     $this->code = idx($vals, 'code') ?? MyEnum::MyValue1;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -355,12 +355,12 @@ class MyException4 extends \TException implements \IThriftStruct {
     $this->code = idx($vals, 'code') ?? MyEnum::MyValue2;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -435,12 +435,12 @@ class MyException5 extends \TException implements \IThriftStruct {
     $this->code = (int)(idx($vals, 'code') ?? 0);
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {

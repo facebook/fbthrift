@@ -661,12 +661,12 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -684,7 +684,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
     );
@@ -723,12 +723,12 @@ class MyServicePrioParent_ping_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -777,12 +777,12 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -800,7 +800,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
     );
@@ -839,12 +839,12 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );

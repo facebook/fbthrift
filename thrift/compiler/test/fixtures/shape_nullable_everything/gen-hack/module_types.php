@@ -65,12 +65,12 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     $this->map_of_string_to_string = $map_of_string_to_string;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -90,7 +90,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       Shapes::idx($shape, 'a') === null ? null : ($shape['a']),
@@ -435,12 +435,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
@@ -470,7 +470,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
@@ -912,12 +912,12 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $this->list_of_map_of_string_to_list_of_A = $list_of_map_of_string_to_list_of_A;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
@@ -947,7 +947,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),

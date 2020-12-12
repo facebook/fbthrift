@@ -123,12 +123,12 @@ class Foo implements \IThriftStruct {
     $this->d = (bool)(idx($vals, 'd') ?? false);
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -258,12 +258,12 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
     }
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -460,12 +460,12 @@ class Baz extends \TException implements \IThriftStruct {
     $this->code = (int)(idx($vals, 'code') ?? 0);
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -530,12 +530,12 @@ class OptBaz extends \TException implements \IThriftStruct {
     $this->message = (string)(idx($vals, 'message') ?? '');
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {

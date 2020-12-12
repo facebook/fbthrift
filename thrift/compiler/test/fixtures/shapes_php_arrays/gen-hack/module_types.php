@@ -208,12 +208,12 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     }
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Map {
@@ -245,7 +245,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       Map {

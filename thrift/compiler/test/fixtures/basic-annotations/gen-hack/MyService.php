@@ -2012,12 +2012,12 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -2035,7 +2035,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
     );
@@ -2074,12 +2074,12 @@ class MyService_ping_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -2128,12 +2128,12 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -2151,7 +2151,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
     );
@@ -2197,12 +2197,12 @@ class MyService_getRandomData_result implements \IThriftStruct {
   public function __construct(?string $success = null  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -2264,12 +2264,12 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     $this->id = $id ?? 0;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'id'),
@@ -2288,7 +2288,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['id'],
@@ -2339,12 +2339,12 @@ class MyService_hasDataById_result implements \IThriftStruct {
   public function __construct(?bool $success = null  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -2406,12 +2406,12 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     $this->id = $id ?? 0;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'id'),
@@ -2430,7 +2430,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['id'],
@@ -2481,12 +2481,12 @@ class MyService_getDataById_result implements \IThriftStruct {
   public function __construct(?string $success = null  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -2557,12 +2557,12 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     $this->data = $data ?? '';
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'id'),
@@ -2582,7 +2582,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['id'],
@@ -2631,12 +2631,12 @@ class MyService_putDataById_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -2703,12 +2703,12 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     $this->data = $data ?? '';
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'id'),
@@ -2728,7 +2728,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['id'],
@@ -2780,12 +2780,12 @@ class MyService_doNothing_args implements \IThriftStruct, \IThriftShapishStruct 
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -2803,7 +2803,7 @@ class MyService_doNothing_args implements \IThriftStruct, \IThriftShapishStruct 
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
     );
@@ -2842,12 +2842,12 @@ class MyService_doNothing_result implements \IThriftStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );

@@ -103,12 +103,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $this->myEnum = $myEnum;
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
@@ -130,7 +130,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['MyIntField'],
@@ -198,12 +198,12 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   public function __construct(  ) {
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
     );
@@ -221,7 +221,7 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
     );
@@ -330,12 +330,12 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     }
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function withDefaultValues(): this {
     return new static();
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'myEnum'),
@@ -425,7 +425,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     );
   }
 
-  <<__Rx>>
+  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       Shapes::idx($shape, 'myEnum') === null ? null : ($shape['myEnum']),
