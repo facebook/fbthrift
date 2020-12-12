@@ -816,12 +816,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           peerAddress_(*stub.getPeerAddress()),
           rootRequestContextId_(stub.getRootRequestContextId()),
           reqId_(RequestsRegistry::getRequestId(rootRequestContextId_)),
-          reqDebugLog_(collectRequestDebugLog(stub)) {
-      auto req = &stub.getRequest();
-      DCHECK(
-          req != nullptr || finishedTimestamp_.time_since_epoch().count() != 0);
-      startedProcessing_ = req == nullptr ? true : req->getStartedProcessing();
-    }
+          reqDebugLog_(collectRequestDebugLog(stub)) {}
 
     const std::string& getMethodName() const {
       return methodName_;
@@ -841,10 +836,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
     const std::string& getRequestId() const {
       return reqId_;
-    }
-
-    bool getStartedProcessing() const {
-      return startedProcessing_;
     }
 
     /**
@@ -876,7 +867,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     intptr_t rootRequestContextId_;
     const std::string reqId_;
     const std::vector<std::string> reqDebugLog_;
-    bool startedProcessing_;
   };
   folly::SemiFuture<std::vector<RequestSnapshot>> snapshotActiveRequests();
 };
