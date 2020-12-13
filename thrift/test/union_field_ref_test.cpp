@@ -248,6 +248,21 @@ TEST(UnionFieldTest, field_ref_api) {
   EXPECT_EQ(*move(a).str_ref(), "foo");
   EXPECT_EQ(*move(as_const(a)).str_ref(), "foo");
 }
+
+TEST(UnionFieldTest, TreeNode) {
+  TreeNode root;
+  root.nodes_ref().emplace(2);
+  (*root.nodes_ref())[0].data_ref() = 10;
+  (*root.nodes_ref())[1].data_ref() = 20;
+
+  EXPECT_EQ(root.nodes_ref()->size(), 2);
+  EXPECT_EQ((*root.nodes_ref())[0].data_ref(), 10);
+  EXPECT_EQ((*root.nodes_ref())[1].data_ref(), 20);
+
+  EXPECT_THROW(*root.data_ref(), bad_field_access);
+  EXPECT_THROW(*(*root.nodes_ref())[0].nodes_ref(), bad_field_access);
+  EXPECT_THROW(*(*root.nodes_ref())[1].nodes_ref(), bad_field_access);
+}
 } // namespace test
 } // namespace thrift
 } // namespace apache

@@ -27,3 +27,8 @@ union DuplicateType {
   2: list<i32> list_i32
   3: string str2
 }
+
+union TreeNode {
+  1: list<TreeNode> nodes
+  2: i32 data
+}
