@@ -30,10 +30,10 @@ using std::chrono::duration_cast;
 using std::chrono::microseconds;
 using std::chrono::milliseconds;
 
-static constexpr milliseconds kTimeoutMs{10};
+static constexpr milliseconds kTimeoutMs{100};
 static constexpr int kMaxReaders = 10;
 // user operation time on the lock in milliseconds
-static constexpr milliseconds kOpTimeInMs{200};
+static constexpr milliseconds kOpTimeInMs{2000};
 
 TEST(RWMutexTest, Max_Readers) {
   ReadWriteMutex l;
