@@ -97,8 +97,8 @@ class MyException1 extends \TException implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 
@@ -188,8 +188,8 @@ class MyException2 extends \TException implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 
@@ -279,8 +279,8 @@ class MyException3 extends \TException implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 
@@ -370,8 +370,8 @@ class MyException4 extends \TException implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 
@@ -450,8 +450,8 @@ class MyException5 extends \TException implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 

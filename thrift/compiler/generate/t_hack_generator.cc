@@ -90,10 +90,6 @@ class t_hack_generator : public t_oop_generator {
           "Don't use no_use_hack_collections with arrays. Just use arrays");
     } else if (mangled_services_ && has_hack_namespace) {
       throw std::runtime_error("Don't use mangledsvcs with hack namespaces");
-    } else if (from_map_construct_ && !map_construct_) {
-      throw std::runtime_error(
-          "frommap_construct is meant to be used only "
-          "with map_construct for migration, don't use it.");
     }
 
     out_dir_base_ = "gen-hack";
@@ -618,9 +614,8 @@ class t_hack_generator : public t_oop_generator {
   bool map_construct_;
 
   /**
-   * True if structs should generate a positional constructor if mapconstruct
-   * is specified assuming callsites already use fromMap_DEPRECATED.
-   * Note: This parameter was repurposed.
+   * True if struct should generate fromMap_DEPRECATED method with a semantic
+   * of a legacy map constructor.
    */
   bool from_map_construct_;
 
@@ -2103,7 +2098,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent_up();
   indent(out) << "return new static(\n";
   indent_up();
-  if (map_construct_ && !from_map_construct_) {
+  if (map_construct_) {
     indent(out) << "Map {\n";
     indent_up();
   }
@@ -2129,7 +2124,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
 
     stringstream val;
     indent(val);
-    if (map_construct_ && !from_map_construct_) {
+    if (map_construct_) {
       val << "'" << member->get_name() << "' => ";
     }
 
@@ -2258,7 +2253,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
     out << val.str();
   }
   indent_down();
-  if (map_construct_ && !from_map_construct_) {
+  if (map_construct_) {
     indent(out) << "}\n";
     indent_down();
   }
@@ -2695,7 +2690,7 @@ void t_hack_generator::_generate_php_struct_definition(
 
   generate_php_struct_construction_attributes(out, /*is_constructor=*/true);
   out << indent() << "public function __construct(";
-  if (map_construct_ && !from_map_construct_) {
+  if (map_construct_) {
     if (strict_types_) {
       // Generate constructor from Map
       out << (const_collections_ ? "Const" : "")
@@ -2757,7 +2752,7 @@ void t_hack_generator::_generate_php_struct_definition(
       dval = render_default_value(t);
     }
 
-    if (map_construct_ && !from_map_construct_) {
+    if (map_construct_) {
       string cast;
       if (nullable_everything_ &&
           !(is_exception && is_base_exception_property(*m_iter))) {
@@ -2859,7 +2854,8 @@ void t_hack_generator::_generate_php_struct_definition(
   generate_php_struct_from_shape(out, tstruct);
   out << "\n";
 
-  if (map_construct_) {
+  // TODO (partisan): Remove map_construct_ when the migration is completed.
+  if (from_map_construct_ || map_construct_) {
     generate_php_struct_from_map(out, tstruct, is_exception);
     out << "\n";
   }
@@ -2937,7 +2933,7 @@ void t_hack_generator::generate_php_struct_from_shape(
   indent_up();
   out << indent() << "return new static(\n";
   indent_up();
-  if (map_construct_ && !from_map_construct_) {
+  if (map_construct_) {
     out << indent() << "Map {\n";
     indent_up();
   }
@@ -2945,11 +2941,10 @@ void t_hack_generator::generate_php_struct_from_shape(
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string name = (*m_iter)->get_name();
-    out << indent()
-        << (map_construct_ && !from_map_construct_ ? "'" + name + "' => " : "")
+    out << indent() << (map_construct_ ? "'" + name + "' => " : "")
         << "Shapes::idx($shape, '" << name << "'),\n";
   }
-  if (map_construct_ && !from_map_construct_) {
+  if (map_construct_) {
     indent_down();
     out << indent() << "},\n";
   }
@@ -2963,36 +2958,34 @@ void t_hack_generator::generate_php_struct_from_map(
     ofstream& out,
     t_struct* tstruct,
     bool is_exception) {
-  out << indent() << "<<__Rx>>\n";
+  generate_php_struct_construction_attributes(out);
   out << indent() << "public static function fromMap_DEPRECATED(";
   if (strict_types_) {
     // Generate constructor from Map
-    out << (const_collections_ ? "Const" : "")
-        << "Map<string, mixed> $map = Map {}";
+    out << (const_collections_ ? "Const" : "") << "Map<string, mixed> $map";
   } else {
     // Generate constructor from KeyedContainer
     out << (soft_attribute_ ? "<<__Soft>> " : "@")
-        << "KeyedContainer<string, mixed> $map = " << array_keyword_ << "[]";
+        << "KeyedContainer<string, mixed> $map";
   }
   out << "): this {\n";
   indent_up();
-  if (from_map_construct_) {
+  if (map_construct_) {
+    out << indent() << "return new static($map);\n";
+  } else {
     out << indent() << "return new static(\n";
     indent_up();
-    const vector<t_field*>& members = tstruct->get_members();
-    vector<t_field*>::const_iterator m_iter;
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = (*m_iter)->get_type()->get_true_type();
-      string name = (*m_iter)->get_name();
+    for (const auto& tfield : tstruct->get_members()) {
+      t_type* t = tfield->get_type()->get_true_type();
+      string name = tfield->get_name();
       string cast;
       string dval = "";
-      if ((*m_iter)->get_value() != nullptr &&
+      if (tfield->get_value() != nullptr &&
           !(t->is_struct() || t->is_xception())) {
-        dval = render_const_value(t, (*m_iter)->get_value());
+        dval = render_const_value(t, tfield->get_value());
       } else if (
           is_exception &&
-          ((*m_iter)->get_name() == "code" ||
-           (*m_iter)->get_name() == "line")) {
+          (tfield->get_name() == "code" || tfield->get_name() == "line")) {
         if (t->is_any_int()) {
           dval = "0";
         } else {
@@ -3003,8 +2996,7 @@ void t_hack_generator::generate_php_struct_from_map(
         }
       } else if (
           is_exception &&
-          ((*m_iter)->get_name() == "message" ||
-           (*m_iter)->get_name() == "file")) {
+          (tfield->get_name() == "message" || tfield->get_name() == "file")) {
         dval = "''";
       } else if (tstruct->is_union() || nullable_everything_) {
         dval = "null";
@@ -3013,7 +3005,7 @@ void t_hack_generator::generate_php_struct_from_map(
       }
 
       if ((tstruct->is_union() || nullable_everything_) &&
-          !(is_exception && is_base_exception_property(*m_iter))) {
+          !(is_exception && is_base_exception_property(tfield))) {
         cast = "";
       } else {
         cast = type_to_cast(t);
@@ -3041,14 +3033,6 @@ void t_hack_generator::generate_php_struct_from_map(
     }
     indent_down();
     out << indent() << ");\n";
-  } else {
-    // It's good to have this by default even with an old map constructor.
-    // Codemods can then switch to either fromShape or fromMap_DEPRECATED
-    // in one sweep, allowing to deprecate mapconstruct afterwards even
-    // if not all fromMap_DEPRECATED are migrated. A case for fromMAP_DEPRECATED
-    // is when the argument is a variable rather than inline literal,
-    // e.g. https://fburl.com/diffusion/7un25tts
-    out << indent() << "return new static($map);\n";
   }
   indent_down();
   out << indent() << "}\n";

@@ -502,8 +502,8 @@ class Bar_baz_args implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 
@@ -559,8 +559,8 @@ class Bar_baz_result implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 

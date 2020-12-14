@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
+  public function baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): string;
 }
 
 /**
@@ -54,7 +54,7 @@ interface BarClientIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -71,7 +71,7 @@ interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(\RpcOptions $rpc_options, ?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(\RpcOptions $rpc_options, Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -81,16 +81,16 @@ interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
+  protected function sendImpl_baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): int {
     $currentseqid = $this->getNextSequenceID();
     $args = Bar_baz_args::fromShape(shape(
-      'a' => $a === null ? null : $a,
-      'b' => $b === null ? null : varray(Vec\map($b, 
-        $_val0 ==> darray($_val0)
-      )),
-      'c' => $c === null ? null : $c,
-      'd' => $d === null ? null : $d,
-      'e' => $e === null ? null : $e,
+      'a' => $a,
+      'b' => (new Vector($b))->map(
+        $_val0 ==> new Map($_val0)
+      ),
+      'c' => $c,
+      'd' => $d,
+      'e' => $e,
     ));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
@@ -202,7 +202,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     $channel = $this->channel_;
@@ -218,33 +218,6 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
       await $this->asyncHandler_->genWait($currentseqid);
     }
     return $this->recvImpl_baz($currentseqid);
-  }
-
-  /**
-   * Original thrift definition:-
-   * string
-   *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b,
-   *       3: i64 c,
-   *       4: Foo d,
-   *       5: i64 e);
-   */
-  public async function baz__LEGACY_ARRAYS(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
-    await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
   }
 
 }
@@ -261,7 +234,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     $channel = $this->channel_;
@@ -279,35 +252,8 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     return $this->recvImpl_baz($currentseqid);
   }
 
-  /**
-   * Original thrift definition:-
-   * string
-   *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b,
-   *       3: i64 c,
-   *       4: Foo d,
-   *       5: i64 e);
-   */
-  public async function baz__LEGACY_ARRAYS(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
-    await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
-  }
-
   /* send and recv functions */
-  public function send_baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
+  public function send_baz(Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): int {
     return $this->sendImpl_baz($a, $b, $c, $d, $e);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
@@ -327,7 +273,7 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(\RpcOptions $rpc_options, ?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(\RpcOptions $rpc_options, Set<int> $a, KeyedContainer<int, KeyedContainer<int, Set<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     $channel = $this->channel_;
@@ -345,33 +291,6 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
     return $this->recvImpl_baz($currentseqid);
   }
 
-  /**
-   * Original thrift definition:-
-   * string
-   *   baz(1: set<i32> a,
-   *       2: list<map<i32, set<string>>> b,
-   *       3: i64 c,
-   *       4: Foo d,
-   *       5: i64 e);
-   */
-  public async function baz__LEGACY_ARRAYS(\RpcOptions $rpc_options, ?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
-    await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    return $this->recvImpl_baz($currentseqid, shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS));
-  }
-
 }
 
 abstract class BarAsyncProcessorBase extends \ThriftAsyncProcessor {
@@ -380,7 +299,7 @@ abstract class BarAsyncProcessorBase extends \ThriftAsyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('baz');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'baz', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
       $args = \thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
@@ -431,7 +350,7 @@ abstract class BarSyncProcessorBase extends \ThriftSyncProcessor {
     $handler_ctx = $this->eventHandler_->getHandlerContext('baz');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
+    $this->eventHandler_->preRead($handler_ctx, 'baz', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
       $args = \thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
@@ -491,7 +410,7 @@ class Bar_baz_args implements \IThriftStruct {
       'elem' => shape(
         'type' => \TType::I32,
       ),
-      'format' => 'array',
+      'format' => 'collection',
     ),
     2 => shape(
       'var' => 'b',
@@ -510,11 +429,11 @@ class Bar_baz_args implements \IThriftStruct {
           'elem' => shape(
             'type' => \TType::STRING,
           ),
-          'format' => 'array',
+          'format' => 'collection',
         ),
-        'format' => 'array',
+        'format' => 'collection',
       ),
-      'format' => 'array',
+      'format' => 'collection',
     ),
     3 => shape(
       'var' => 'c',
@@ -539,32 +458,27 @@ class Bar_baz_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ?darray<int, bool>,
-    ?'b' => ?varray<darray<int, darray<string, bool>>>,
+    ?'a' => ?Set<int>,
+    ?'b' => ?Vector<Map<int, Set<string>>>,
     ?'c' => ?int,
     ?'d' => ?Foo,
     ?'e' => ?int,
   );
 
   const int STRUCTURAL_ID = 7865027497865509792;
-  public ?darray<int, bool> $a;
-  public ?varray<darray<int, darray<string, bool>>> $b;
-  public ?int $c;
+  public Set<int> $a;
+  public Vector<Map<int, Set<string>>> $b;
+  public int $c;
   public ?Foo $d;
-  public ?int $e;
+  public int $e;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->a = idx($vals, 'a');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->b = idx($vals, 'b');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->c = idx($vals, 'c');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->d = idx($vals, 'd');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->e = idx($vals, 'e') ?? 4;
+  public function __construct(?Set<int> $a = null, ?Vector<Map<int, Set<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
+    $this->a = $a ?? Set {};
+    $this->b = $b ?? Vector {};
+    $this->c = $c ?? 0;
+    $this->d = $d;
+    $this->e = $e ?? 4;
   }
 
   <<__Rx, __MutableReturn>>
@@ -575,19 +489,26 @@ class Bar_baz_args implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'a' => Shapes::idx($shape, 'a'),
-        'b' => Shapes::idx($shape, 'b'),
-        'c' => Shapes::idx($shape, 'c'),
-        'd' => Shapes::idx($shape, 'd'),
-        'e' => Shapes::idx($shape, 'e'),
-      },
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
+      Shapes::idx($shape, 'e'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'a'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'b'),
+      (int)idx($map, 'c', 0),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'd'),
+      (int)idx($map, 'e', 4),
+    );
   }
 
   public function getName(): string {
@@ -625,7 +546,7 @@ class Bar_baz_result implements \IThriftStruct {
   public ?string $success;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(?string $success = null  ) {
   }
 
   <<__Rx, __MutableReturn>>
@@ -636,15 +557,15 @@ class Bar_baz_result implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'success' => Shapes::idx($shape, 'success'),
-      },
+      Shapes::idx($shape, 'success'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      (string)idx($map, 'success', ''),
+    );
   }
 
   public function getName(): string {

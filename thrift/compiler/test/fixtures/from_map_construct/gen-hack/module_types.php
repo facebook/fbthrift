@@ -112,15 +112,11 @@ class Foo implements \IThriftStruct {
   public bool $d;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->a = idx($vals, 'a') ?? Vector {};
-    if (idx($vals, 'b') !== null) {
-      /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->b = idx($vals, 'b');
-    }
-    $this->c = (int)(idx($vals, 'c') ?? 7);
-    $this->d = (bool)(idx($vals, 'd') ?? false);
+  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null  ) {
+    $this->a = $a ?? Vector {};
+    $this->b = $b;
+    $this->c = $c ?? 7;
+    $this->d = $d ?? false;
   }
 
   <<__Rx, __MutableReturn>>
@@ -131,18 +127,23 @@ class Foo implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'a' => Shapes::idx($shape, 'a'),
-        'b' => Shapes::idx($shape, 'b'),
-        'c' => Shapes::idx($shape, 'c'),
-        'd' => Shapes::idx($shape, 'd'),
-      },
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'a'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'b'),
+      (int)idx($map, 'c', 7),
+      (bool)idx($map, 'd', false),
+    );
   }
 
   public function getName(): string {
@@ -236,24 +237,22 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   protected TestUnionEnum $_type = TestUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
+  public function __construct(?string $string_field = null, ?int $int_field = null, ?TestEnum $enum_field = null, ?Foo $foo_struct = null  ) {
     $this->_type = TestUnionEnum::_EMPTY_;
-    if (idx($vals, 'string_field') !== null) {
-      $this->string_field = (string)$vals['string_field'];
+    if ($string_field !== null) {
+      $this->string_field = $string_field;
       $this->_type = TestUnionEnum::string_field;
     }
-    if (idx($vals, 'int_field') !== null) {
-      $this->int_field = (int)$vals['int_field'];
+    if ($int_field !== null) {
+      $this->int_field = $int_field;
       $this->_type = TestUnionEnum::int_field;
     }
-    if (idx($vals, 'enum_field') !== null) {
-      /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->enum_field = $vals['enum_field'];
+    if ($enum_field !== null) {
+      $this->enum_field = $enum_field;
       $this->_type = TestUnionEnum::enum_field;
     }
-    if (idx($vals, 'foo_struct') !== null) {
-      /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->foo_struct = $vals['foo_struct'];
+    if ($foo_struct !== null) {
+      $this->foo_struct = $foo_struct;
       $this->_type = TestUnionEnum::foo_struct;
     }
   }
@@ -266,18 +265,25 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'string_field' => Shapes::idx($shape, 'string_field'),
-        'int_field' => Shapes::idx($shape, 'int_field'),
-        'enum_field' => Shapes::idx($shape, 'enum_field'),
-        'foo_struct' => Shapes::idx($shape, 'foo_struct'),
-      },
+      Shapes::idx($shape, 'string_field'),
+      Shapes::idx($shape, 'int_field'),
+      Shapes::idx($shape, 'enum_field'),
+      Shapes::idx($shape, 'foo_struct'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'string_field'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'int_field'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'enum_field'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'foo_struct'),
+    );
   }
 
   public function getName(): string {
@@ -450,14 +456,12 @@ class Baz extends \TException implements \IThriftStruct {
   public int $code;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?Set<string> $some_container = null, ?int $code = null  ) {
     parent::__construct();
-    $this->message = (string)(idx($vals, 'message') ?? '');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->some_field = idx($vals, 'some_field');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->some_container = idx($vals, 'some_container') ?? Set {};
-    $this->code = (int)(idx($vals, 'code') ?? 0);
+    $this->message = $message ?? '';
+    $this->some_field = $some_field;
+    $this->some_container = $some_container ?? Set {};
+    $this->code = $code ?? 0;
   }
 
   <<__Rx, __MutableReturn>>
@@ -468,18 +472,23 @@ class Baz extends \TException implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'message' => Shapes::idx($shape, 'message'),
-        'some_field' => Shapes::idx($shape, 'some_field'),
-        'some_container' => Shapes::idx($shape, 'some_container'),
-        'code' => Shapes::idx($shape, 'code'),
-      },
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'some_field'),
+      Shapes::idx($shape, 'some_container'),
+      Shapes::idx($shape, 'code'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      (string)idx($map, 'message', ''),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'some_field'),
+      /* HH_FIXME[4110] previously hidden by unsafe */
+      idx($map, 'some_container'),
+      (int)idx($map, 'code', 0),
+    );
   }
 
   public function getName(): string {
@@ -525,9 +534,9 @@ class OptBaz extends \TException implements \IThriftStruct {
   public string $message;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
+  public function __construct(?string $message = null  ) {
     parent::__construct();
-    $this->message = (string)(idx($vals, 'message') ?? '');
+    $this->message = $message ?? '';
   }
 
   <<__Rx, __MutableReturn>>
@@ -538,15 +547,15 @@ class OptBaz extends \TException implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'message' => Shapes::idx($shape, 'message'),
-      },
+      Shapes::idx($shape, 'message'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      (string)idx($map, 'message', ''),
+    );
   }
 
   public function getName(): string {

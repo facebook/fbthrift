@@ -66,8 +66,8 @@ class Foo implements \IThriftStruct {
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(<<__Soft>> KeyedContainer<string, mixed> $map = dict[]): this {
+  <<__Rx, __MutableReturn>>
+  public static function fromMap_DEPRECATED(<<__Soft>> KeyedContainer<string, mixed> $map): this {
     return new static($map);
   }
 
