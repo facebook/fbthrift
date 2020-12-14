@@ -111,7 +111,6 @@ RequestRpcMetadata makeRequestRpcMetadata(
 void fillTHeaderFromResponseRpcMetadata(
     ResponseRpcMetadata& responseMetadata,
     transport::THeader& header) {
-  std::map<std::string, std::string> otherMetadata;
   if (responseMetadata.otherMetadata_ref()) {
     header.setReadHeaders(std::move(*responseMetadata.otherMetadata_ref()));
   }
