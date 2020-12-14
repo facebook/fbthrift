@@ -160,7 +160,6 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase&) noexcept;
   virtual void destroyAllInteractions(
       Cpp2ConnContext& conn,
-      concurrency::ThreadManager& tm,
       folly::EventBase&) noexcept;
 };
 
@@ -265,7 +264,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       folly::EventBase&) noexcept final;
   void destroyAllInteractions(
       Cpp2ConnContext& conn,
-      concurrency::ThreadManager& tm,
       folly::EventBase&) noexcept final;
 };
 
@@ -762,7 +760,7 @@ void GeneratedAsyncProcessor::processInThread(
     promise->addContinuation(std::move(task));
     return;
   } else if (auto serial = dynamic_cast<SerialInteractionTile*>(tile);
-             serial && serial->refCount_ > 1) {
+             serial && serial->refCount_ > 2) {
     serial->taskQueue_.push(std::move(task));
     return;
   }

@@ -37,7 +37,7 @@ void Tile::__fbthrift_releaseRef(folly::EventBase& eb) {
     }
   }
 
-  if (--refCount_ == 0 && terminationRequested_) {
+  if (--refCount_ == 0) {
     std::move(destructionExecutor_).add([this](auto) { delete this; });
   }
 }

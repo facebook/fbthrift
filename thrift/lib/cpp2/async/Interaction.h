@@ -73,8 +73,7 @@ class Tile {
   void __fbthrift_releaseRef(folly::EventBase& eb);
 
  private:
-  bool terminationRequested_{false};
-  size_t refCount_{0};
+  size_t refCount_{1};
   folly::Executor::KeepAlive<> destructionExecutor_;
   friend class GeneratedAsyncProcessor;
   friend class TilePromise;
@@ -90,7 +89,7 @@ class SerialInteractionTile : public Tile {
 class TilePromise final : public Tile {
  public:
   void addContinuation(std::shared_ptr<concurrency::Runnable> task) {
-    continuations_.push_front(std::move(task));
+    continuations_.push_back(std::move(task));
   }
 
   template <typename InteractionEventTask>
@@ -99,7 +98,6 @@ class TilePromise final : public Tile {
     DCHECK(!continuations_.empty());
 
     bool isSerial = dynamic_cast<SerialInteractionTile*>(this), first = true;
-    continuations_.reverse();
     for (auto& task : continuations_) {
       if (!isSerial || std::exchange(first, false)) {
         tile.__fbthrift_acquireRef(eb);
@@ -116,12 +114,10 @@ class TilePromise final : public Tile {
       }
     }
     continuations_.clear();
-    DCHECK_EQ(refCount_, 0u);
   }
 
   template <typename EventTask>
   void failWith(folly::exception_wrapper ew, const std::string& exCode) {
-    continuations_.reverse();
     for (auto& task : continuations_) {
       dynamic_cast<EventTask&>(*task).failWith(ew, exCode);
     }
@@ -129,9 +125,7 @@ class TilePromise final : public Tile {
   }
 
  private:
-  std::forward_list<std::shared_ptr<concurrency::Runnable>> continuations_;
-  bool destructionRequested_{false}; // set when connection is closed to prevent
-                                     // continuations from running
+  std::deque<std::shared_ptr<concurrency::Runnable>> continuations_;
   friend class GeneratedAsyncProcessor;
 };
 

@@ -321,8 +321,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
 void ThriftRocketServerHandler::connectionClosing() {
   connContext_.connectionClosed();
   if (cpp2Processor_) {
-    cpp2Processor_->destroyAllInteractions(
-        connContext_, *threadManager_, *eventBase_);
+    cpp2Processor_->destroyAllInteractions(connContext_, *eventBase_);
   }
 }
 

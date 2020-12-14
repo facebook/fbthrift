@@ -498,7 +498,7 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
   handler->baton.post();
   fut.waitVia(&eb);
   folly::coro::blockingWait(handler->destroyed);
-  EXPECT_FALSE(handler->executed);
+  EXPECT_TRUE(handler->executed);
 #endif
 }
 

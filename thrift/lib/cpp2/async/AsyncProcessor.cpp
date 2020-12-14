@@ -75,7 +75,6 @@ void AsyncProcessor::terminateInteraction(
 
 void AsyncProcessor::destroyAllInteractions(
     Cpp2ConnContext&,
-    concurrency::ThreadManager&,
     folly::EventBase&) noexcept {}
 
 bool GeneratedAsyncProcessor::createInteraction(
@@ -139,37 +138,21 @@ bool GeneratedAsyncProcessor::createInteraction(
           tile->destructionExecutor_ = tm;
         }
 
-        if (promise->destructionRequested_) {
-          // promise not in tile map, not running continuations
-          if (tile) {
-            auto ex = std::move(tile->destructionExecutor_);
-            std::move(ex).add([tile = std::move(tile)](auto) {});
-          }
-        } else if (promise->terminationRequested_) {
-          // promise not in tile map, continuations will free tile
-          if (tile) {
-            tile->terminationRequested_ = true;
-            promise->fulfill<InteractionEventTask>(*tile.release(), *tm, eb);
-          } else {
-            promise->failWith<EventTask>(
-                folly::make_exception_wrapper<TApplicationException>(
-                    "Interaction constructor failed with " +
-                    t.exception().what().toStdString()),
-                kInteractionConstructorErrorErrorCode);
-          }
+        if (!tile) {
+          promise->failWith<EventTask>(
+              folly::make_exception_wrapper<TApplicationException>(
+                  "Interaction constructor failed with " +
+                  t.exception().what().toStdString()),
+              kInteractionConstructorErrorErrorCode);
+          conn.removeTile(id).release(); // aliases promise
+        } else if (promise->refCount_ == promise->continuations_.size() + 1) {
+          // promise and tile managed by pointer in tile map
+          promise->fulfill<InteractionEventTask>(*tile, *tm, eb);
+          conn.resetTile(id, std::move(tile)).release(); // aliases promise
         } else {
-          if (tile) {
-            // promise and tile managed by pointer in tile map
-            promise->fulfill<InteractionEventTask>(*tile, *tm, eb);
-            conn.resetTile(id, std::move(tile)).release(); // aliases promise
-          } else {
-            promise->failWith<EventTask>(
-                folly::make_exception_wrapper<TApplicationException>(
-                    "Interaction constructor failed with " +
-                    t.exception().what().toStdString()),
-                kInteractionConstructorErrorErrorCode);
-            conn.removeTile(id).release(); // aliases promise
-          }
+          // promise not in tile map, continuations will free tile
+          --tile->refCount_;
+          promise->fulfill<InteractionEventTask>(*tile.release(), *tm, eb);
         }
       });
   return true;
@@ -189,8 +172,8 @@ void GeneratedAsyncProcessor::terminateInteraction(
   auto tile = conn.removeTile(id);
   if (!tile) {
     return;
-  } else if (tile->refCount_ || dynamic_cast<TilePromise*>(tile.get())) {
-    tile->terminationRequested_ = true;
+  } else if (tile->refCount_ > 1 || dynamic_cast<TilePromise*>(tile.get())) {
+    --tile->refCount_;
     tile.release(); // freed by last decref
   } else {
     auto ex = std::move(tile->destructionExecutor_);
@@ -200,7 +183,6 @@ void GeneratedAsyncProcessor::terminateInteraction(
 
 void GeneratedAsyncProcessor::destroyAllInteractions(
     Cpp2ConnContext& conn,
-    concurrency::ThreadManager& tm,
     folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
@@ -208,19 +190,14 @@ void GeneratedAsyncProcessor::destroyAllInteractions(
     return;
   }
 
-  auto tiles = std::move(conn.tiles_);
-  for (auto& [id, tile] : tiles) {
-    if (tile->refCount_) {
-      if (auto promise = dynamic_cast<TilePromise*>(tile.get())) {
-        promise->destructionRequested_ = true;
-      } else {
-        tile->terminationRequested_ = true;
-      }
-      tile.release();
-    }
+  std::vector<int64_t> ids;
+  ids.reserve(conn.tiles_.size());
+  for (auto& [id, tile] : conn.tiles_) {
+    ids.push_back(id);
   }
-
-  tm.add([tiles = std::move(tiles)] {});
+  for (auto id : ids) {
+    terminateInteraction(id, conn, eb);
+  }
 }
 
 bool GeneratedAsyncProcessor::validateRpcKind(
