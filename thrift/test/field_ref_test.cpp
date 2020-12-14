@@ -151,9 +151,9 @@ TEST(field_ref_test, access_default_value) {
 
 TEST(field_ref_test, has_value) {
   auto s = TestStruct();
-  EXPECT_FALSE(s.name().has_value());
+  EXPECT_FALSE(s.name().is_set());
   s.name() = "foo";
-  EXPECT_TRUE(s.name().has_value());
+  EXPECT_TRUE(s.name().is_set());
 }
 
 TEST(field_ref_test, assign) {
@@ -263,9 +263,9 @@ TEST(field_ref_test, mutable_accessors) {
 TEST(field_ref_test, ensure) {
   TestStruct s;
   s.name().value() = "foo";
-  EXPECT_FALSE(s.name().has_value());
+  EXPECT_FALSE(s.name().is_set());
   s.name().ensure();
-  EXPECT_TRUE(s.name().has_value());
+  EXPECT_TRUE(s.name().is_set());
   EXPECT_EQ(s.name(), "foo");
 }
 

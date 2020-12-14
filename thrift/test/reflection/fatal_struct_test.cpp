@@ -610,7 +610,7 @@ TEST(fatal_struct, field_ref_getter) {
       "");
 
   def_field::field_ref_getter def;
-  EXPECT_FALSE(def(a).has_value());
+  EXPECT_FALSE(def(a).is_set());
   def(a) = enum1::field1;
   EXPECT_EQ(a.field2_ref(), enum1::field1);
   a.field2_ref() = enum1::field2;

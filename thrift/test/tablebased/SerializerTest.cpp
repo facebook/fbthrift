@@ -340,7 +340,7 @@ TYPED_TEST(MultiProtocolTest, ReadingUnqualifiedFieldShouldSetIsset) {
   tablebased::StructA deserialized =
       TypeParam::template deserialize<tablebased::StructA>(
           TypeParam::template serialize<std::string>(obj));
-  EXPECT_TRUE(deserialized.fieldF_ref().has_value());
+  EXPECT_TRUE(deserialized.fieldF_ref().is_set());
   EXPECT_EQ(deserialized.fieldF_ref().value(), UNQUALIFIED);
 }
 

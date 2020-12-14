@@ -455,11 +455,11 @@ TEST(OptionalsTest, Comparison) {
 
 TEST(OptionalsTest, UnsetUnsafe) {
   cpp2::HasOptionals obj;
-  EXPECT_FALSE(obj.int64Def_ref().has_value());
+  EXPECT_FALSE(obj.int64Def_ref().is_set());
   obj.int64Def_ref() = 1;
-  EXPECT_TRUE(obj.int64Def_ref().has_value());
+  EXPECT_TRUE(obj.int64Def_ref().is_set());
   detail::unset_unsafe(obj.int64Def_ref());
-  EXPECT_FALSE(obj.int64Def_ref().has_value());
+  EXPECT_FALSE(obj.int64Def_ref().is_set());
 }
 
 TEST(OptionalsTest, RefForUnqualifiedField) {

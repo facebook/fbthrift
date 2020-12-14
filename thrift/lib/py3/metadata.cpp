@@ -22,7 +22,7 @@ namespace py3 {
 void extractMetadataFromServiceContext(
     apache::thrift::metadata::ThriftMetadata& metadata,
     const apache::thrift::metadata::ThriftServiceContext& serviceContext) {
-  if (!serviceContext.service_info_ref().has_value()) {
+  if (!serviceContext.service_info_ref().is_set()) {
     return;
   }
 
