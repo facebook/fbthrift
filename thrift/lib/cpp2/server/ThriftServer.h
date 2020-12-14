@@ -68,7 +68,7 @@ typedef wangle::Pipeline<folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>>
 
 class ThriftTlsConfig : public wangle::CustomConfig {
  public:
-  bool enableThriftParamsNegotiation{false};
+  bool enableThriftParamsNegotiation{true};
   bool enableStopTLS{false};
 };
 
