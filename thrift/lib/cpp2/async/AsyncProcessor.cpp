@@ -189,7 +189,7 @@ void GeneratedAsyncProcessor::terminateInteraction(
   auto tile = conn.removeTile(id);
   if (!tile) {
     return;
-  } else if (tile->refCount_ || tile->__fbthrift_isPromise()) {
+  } else if (tile->refCount_ || dynamic_cast<TilePromise*>(tile.get())) {
     tile->terminationRequested_ = true;
     tile.release(); // freed by last decref
   } else {
@@ -211,8 +211,8 @@ void GeneratedAsyncProcessor::destroyAllInteractions(
   auto tiles = std::move(conn.tiles_);
   for (auto& [id, tile] : tiles) {
     if (tile->refCount_) {
-      if (tile->__fbthrift_isPromise()) {
-        static_cast<TilePromise&>(*tile).destructionRequested_ = true;
+      if (auto promise = dynamic_cast<TilePromise*>(tile.get())) {
+        promise->destructionRequested_ = true;
       } else {
         tile->terminationRequested_ = true;
       }

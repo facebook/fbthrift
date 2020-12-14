@@ -23,8 +23,8 @@ void Tile::__fbthrift_releaseRef(folly::EventBase& eb) {
   eb.dcheckIsInEventBaseThread();
   DCHECK_GT(refCount_, 0u);
 
-  if (__fbthrift_isSerial()) {
-    auto& queue = static_cast<SerialInteractionTile*>(this)->taskQueue_;
+  if (auto serial = dynamic_cast<SerialInteractionTile*>(this)) {
+    auto& queue = serial->taskQueue_;
     if (!queue.empty()) {
       DCHECK_GT(refCount_, queue.size());
       dynamic_cast<concurrency::ThreadManager&>(*destructionExecutor_)

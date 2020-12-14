@@ -66,13 +66,6 @@ class Tile {
  public:
   virtual ~Tile() = default;
 
-  virtual bool __fbthrift_isPromise() const {
-    return false;
-  }
-  virtual bool __fbthrift_isSerial() const {
-    return false;
-  }
-
   void __fbthrift_acquireRef(folly::EventBase& eb) {
     eb.dcheckIsInEventBaseThread();
     ++refCount_;
@@ -88,11 +81,6 @@ class Tile {
 };
 
 class SerialInteractionTile : public Tile {
-  bool __fbthrift_isSerial() const final {
-    return true;
-  }
-
- private:
   std::queue<std::shared_ptr<concurrency::Runnable>> taskQueue_;
   friend class GeneratedAsyncProcessor;
   friend class Tile;
@@ -110,7 +98,7 @@ class TilePromise final : public Tile {
   fulfill(Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
     DCHECK(!continuations_.empty());
 
-    bool isSerial = __fbthrift_isSerial(), first = true;
+    bool isSerial = dynamic_cast<SerialInteractionTile*>(this), first = true;
     continuations_.reverse();
     for (auto& task : continuations_) {
       if (!isSerial || std::exchange(first, false)) {
@@ -138,10 +126,6 @@ class TilePromise final : public Tile {
       dynamic_cast<EventTask&>(*task).failWith(ew, exCode);
     }
     continuations_.clear();
-  }
-
-  bool __fbthrift_isPromise() const override {
-    return true;
   }
 
  private:

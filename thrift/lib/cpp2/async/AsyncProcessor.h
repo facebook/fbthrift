@@ -112,7 +112,7 @@ class InteractionEventTask : public PriorityEventTask {
             priority,
             [=](ResponseChannelRequest::UniquePtr request) {
               DCHECK(tile_);
-              DCHECK(!tile_->__fbthrift_isPromise());
+              DCHECK(!dynamic_cast<TilePromise*>(tile_));
               taskFunc_(std::move(request), *std::exchange(tile_, nullptr));
             },
             std::move(req),
@@ -758,11 +758,12 @@ void GeneratedAsyncProcessor::processInThread(
       childClass,
       tile);
 
-  if (tile && tile->__fbthrift_isPromise()) {
-    static_cast<TilePromise*>(tile)->addContinuation(std::move(task));
+  if (auto promise = dynamic_cast<TilePromise*>(tile)) {
+    promise->addContinuation(std::move(task));
     return;
-  } else if (tile && tile->refCount_ > 1 && tile->__fbthrift_isSerial()) {
-    static_cast<SerialInteractionTile&>(*tile).taskQueue_.push(std::move(task));
+  } else if (auto serial = dynamic_cast<SerialInteractionTile*>(tile);
+             serial && serial->refCount_ > 1) {
+    serial->taskQueue_.push(std::move(task));
     return;
   }
 
