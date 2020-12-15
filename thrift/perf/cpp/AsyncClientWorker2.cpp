@@ -162,14 +162,14 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
   if (config->useSSL()) {
     auto sslSocket = TAsyncSSLSocket::newSocket(sslContext_, &eb_);
     if (session_) {
-      sslSocket->setSSLSessionV2(session_);
+      sslSocket->setSSLSession(session_);
     }
     sslSocket->connect(nullptr, *config->getAddress(), kTimeout);
     // Loop until connection is established and TLS handshake completes.
     // Unlike a regular AsyncSocket which is usable even before TCP handshke
     // completes, an SSL socket reports !good() until TLS handshake completes.
     eb_.loop();
-    auto session = sslSocket->getSSLSessionV2();
+    auto session = sslSocket->getSSLSession();
     if (config->useTickets() && session) {
       session_ = session;
     }
