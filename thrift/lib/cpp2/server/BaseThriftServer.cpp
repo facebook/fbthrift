@@ -43,21 +43,6 @@ using std::shared_ptr;
 const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
     std::thread::hardware_concurrency();
 
-const std::chrono::milliseconds BaseThriftServer::DEFAULT_TASK_EXPIRE_TIME =
-    std::chrono::milliseconds(5000);
-
-const std::chrono::milliseconds BaseThriftServer::DEFAULT_STREAM_EXPIRE_TIME =
-    std::chrono::milliseconds(60000);
-
-const std::chrono::milliseconds BaseThriftServer::DEFAULT_QUEUE_TIMEOUT =
-    std::chrono::milliseconds(0);
-
-const std::chrono::milliseconds BaseThriftServer::DEFAULT_SOCKET_QUEUE_TIMEOUT =
-    std::chrono::milliseconds(0);
-
-const std::chrono::milliseconds BaseThriftServer::DEFAULT_TIMEOUT =
-    std::chrono::milliseconds(60000);
-
 BaseThriftServer::BaseThriftServer()
     : admissionStrategy_(std::make_shared<AcceptAllAdmissionStrategy>()),
       addresses_(1) {}

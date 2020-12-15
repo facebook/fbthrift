@@ -82,3 +82,65 @@ TEST(ServerAttributeTest, stringOverrideFirst) {
   a.unset(AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), "a");
 }
+
+TEST(ServerAttribute, Observable) {
+  folly::observer::SimpleObservable<std::string> defaultObservable{"default"};
+  folly::observer::SimpleObservable<std::string> baselineObservable{"baseline"};
+  folly::observer::SimpleObservable<std::string> overrideObservable{"override"};
+  detail::ServerAttributeObservable<std::string> attr{
+      defaultObservable.getObserver()};
+  auto observer = attr.getObserver();
+
+  attr.set(baselineObservable.getObserver(), AttributeSource::BASELINE);
+  EXPECT_EQ(**observer, "baseline");
+
+  attr.set(overrideObservable.getObserver(), AttributeSource::OVERRIDE);
+  EXPECT_EQ(**observer, "override");
+
+  overrideObservable.setValue("override 2");
+  folly::observer::waitForAllUpdates();
+  EXPECT_EQ(**observer, "override 2");
+
+  baselineObservable.setValue("baseline 2");
+  folly::observer::waitForAllUpdates();
+  attr.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(**observer, "baseline 2");
+
+  attr.set("baseline 3", AttributeSource::BASELINE);
+  EXPECT_EQ(**observer, "baseline 3");
+
+  defaultObservable.setValue("default 2");
+  folly::observer::waitForAllUpdates();
+  attr.unset(AttributeSource::BASELINE);
+  EXPECT_EQ(**observer, "default 2");
+}
+
+TEST(ServerAttribute, Atomic) {
+  ServerAttributeAtomic<int> attr{42};
+  auto observer = attr.getAtomicObserver();
+  EXPECT_EQ(*observer, 42);
+
+  attr.set(24, AttributeSource::BASELINE);
+  EXPECT_EQ(*observer, 24);
+
+  attr.set(12, AttributeSource::OVERRIDE);
+  EXPECT_EQ(*observer, 12);
+
+  attr.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(*observer, 24);
+}
+
+TEST(ServerAttribute, ThreadLocal) {
+  ServerAttributeThreadLocal<int> attr{42};
+  auto observer = attr.getTLObserver();
+  EXPECT_EQ(**observer, 42);
+
+  attr.set(24, AttributeSource::BASELINE);
+  EXPECT_EQ(**observer, 24);
+
+  attr.set(12, AttributeSource::OVERRIDE);
+  EXPECT_EQ(**observer, 12);
+
+  attr.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(**observer, 24);
+}
