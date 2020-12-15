@@ -50,6 +50,11 @@ class ClientBufferedStream {
   void subscribeInline(OnNextTry&& onNextTry) && {
     auto streamBridge = std::move(streamBridge_);
 
+    if (bufferSize_ == 0) {
+      streamBridge->requestN(1);
+      ++bufferSize_;
+    }
+
     int32_t outstanding = bufferSize_;
     int32_t payloadDataSize = 0;
 
@@ -74,11 +79,6 @@ class ClientBufferedStream {
 
     while (true) {
       if (queue.empty()) {
-        if (outstanding == 0) {
-          streamBridge->requestN(1);
-          ++outstanding;
-        }
-
         ReadyCallback callback;
         if (streamBridge->wait(&callback)) {
           callback.wait();
@@ -110,10 +110,7 @@ class ClientBufferedStream {
         }
       }
 
-      outstanding--;
-      // we request credits only if bufferSize_ > 0.
-      // For bufferSize_ = 0, the loop requests 1 credit at a time.
-      if ((outstanding <= bufferSize_ / 2) ||
+      if ((--outstanding <= bufferSize_ / 2) ||
           (payloadDataSize >= kRequestCreditPayloadSize)) {
         streamBridge->requestN(bufferSize_ - outstanding);
         outstanding = bufferSize_;
@@ -141,6 +138,11 @@ class ClientBufferedStream {
 
   template <typename Callback>
   auto subscribeExTry(folly::Executor::KeepAlive<> e, Callback&& onNextTry) && {
+    if (bufferSize_ == 0) {
+      streamBridge_->requestN(1);
+      ++bufferSize_;
+    }
+
     auto c = new Continuation<std::decay_t<Callback>>(
         e,
         std::forward<Callback>(onNextTry),
@@ -161,6 +163,11 @@ class ClientBufferedStream {
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       int32_t bufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&)) {
+    if (bufferSize == 0) {
+      streamBridge->requestN(1);
+      ++bufferSize;
+    }
+
     int32_t outstanding = bufferSize;
     int32_t payloadDataSize = 0;
 
@@ -184,11 +191,6 @@ class ClientBufferedStream {
         co_yield folly::coro::co_error(folly::OperationCancelled());
       }
       if (queue.empty()) {
-        if (outstanding == 0) {
-          streamBridge->requestN(1);
-          ++outstanding;
-        }
-
         ReadyCallback callback;
         if (streamBridge->wait(&callback)) {
           folly::CancellationCallback cb{
@@ -246,10 +248,7 @@ class ClientBufferedStream {
           co_yield folly::coro::co_result(std::move(value));
         }
 
-        outstanding--;
-        // we request credits only if bufferSize_ > 0.
-        // For bufferSize_ = 0, the loop requests 1 credit at a time.
-        if ((outstanding <= bufferSize / 2) ||
+        if ((--outstanding <= bufferSize / 2) ||
             (payloadDataSize >= kRequestCreditPayloadSize)) {
           streamBridge->requestN(bufferSize - outstanding);
           outstanding = bufferSize;
@@ -358,11 +357,6 @@ class ClientBufferedStream {
 
       while (!state_->streamBridge->isCanceled()) {
         if (queue.empty()) {
-          if (outstanding_ == 0) {
-            state_->streamBridge->requestN(1);
-            ++outstanding_;
-          }
-
           if (Continuation::wait(cb)) {
             // The filler will schedule us back on the executor once the queue
             // is refilled so we return here
@@ -400,10 +394,7 @@ class ClientBufferedStream {
           }
         }
 
-        outstanding_--;
-        // we request credits only if bufferSize_ > 0.
-        // For bufferSize_ = 0, the loop requests 1 credit at a time.
-        if ((outstanding_ <= bufferSize_ / 2) ||
+        if ((--outstanding_ <= bufferSize_ / 2) ||
             (payloadDataSize_ >= kRequestCreditPayloadSize)) {
           state_->streamBridge->requestN(bufferSize_ - outstanding_);
           outstanding_ = bufferSize_;
