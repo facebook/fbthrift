@@ -15,20 +15,51 @@
  */
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/thrift/gen-cpp2/metadata_for_each_field.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_visit_union.h>
+#include <thrift/test/gen-cpp2/UnionFieldRef_for_each_field.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
 #include <any>
 
 namespace apache {
 namespace thrift {
 namespace test {
-TEST(UnionFieldTest, basic) {
+namespace {
+
+struct VisitUnionAdapter {
+  template <class... Args>
+  void operator()(Args&&... args) const {
+    apache::thrift::visit_union(std::forward<Args>(args)...);
+  }
+};
+
+struct ForEachFieldAdapter {
+  template <class T, class F>
+  void operator()(T&& t, F f) const {
+    apache::thrift::for_each_field(
+        std::forward<T>(t), [&](auto&& meta, auto&& ref) {
+          if (t.getType() == meta.id_ref()) {
+            f(meta, *ref);
+          }
+        });
+  }
+};
+
+template <class Adapter>
+struct VisitUnionTest : ::testing::Test {
+  static constexpr Adapter adapter;
+};
+
+using Adapters = ::testing::Types<VisitUnionAdapter, ForEachFieldAdapter>;
+TYPED_TEST_CASE(VisitUnionTest, Adapters);
+
+TYPED_TEST(VisitUnionTest, basic) {
   Basic a;
-  visit_union(a, [&](auto&&, auto&&) { FAIL(); });
+  TestFixture::adapter(a, [&](auto&&, auto&&) { FAIL(); });
 
   static const std::string str = "foo";
   a.str_ref() = str;
-  visit_union(a, [](auto&& meta, auto&& v) {
+  TestFixture::adapter(a, [](auto&& meta, auto&& v) {
     EXPECT_EQ(*meta.name_ref(), "str");
     EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_primitive);
     EXPECT_EQ(*meta.id_ref(), 2);
@@ -42,7 +73,7 @@ TEST(UnionFieldTest, basic) {
 
   static const int64_t int64 = 42LL << 42;
   a.int64_ref() = int64;
-  visit_union(a, [](auto&& meta, auto&& v) {
+  TestFixture::adapter(a, [](auto&& meta, auto&& v) {
     EXPECT_EQ(*meta.name_ref(), "int64");
     EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_primitive);
     EXPECT_EQ(*meta.id_ref(), 1);
@@ -57,7 +88,7 @@ TEST(UnionFieldTest, basic) {
 
   static const std::vector<int32_t> list_i32 = {3, 1, 2};
   a.list_i32_ref() = list_i32;
-  visit_union(a, [](auto&& meta, auto&& v) {
+  TestFixture::adapter(a, [](auto&& meta, auto&& v) {
     EXPECT_EQ(*meta.name_ref(), "list_i32");
     EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_list);
     EXPECT_EQ(*meta.id_ref(), 4);
@@ -70,12 +101,12 @@ TEST(UnionFieldTest, basic) {
   });
 }
 
-TEST(UnionFieldTest, Metadata) {
+TYPED_TEST(VisitUnionTest, Metadata) {
   Basic a;
   a.int64_ref() = 42;
-  visit_union(a, [](auto&& m, auto&&) {
+  TestFixture::adapter(a, [](auto&& m, auto&&) {
     // ThriftType itself is union, we can visit it like ordinary thrift union
-    visit_union(*m.type_ref(), [](auto&& meta, std::any value) {
+    TestFixture::adapter(*m.type_ref(), [](auto&& meta, std::any value) {
       EXPECT_EQ(*meta.name_ref(), "t_primitive");
       EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_enum);
       EXPECT_EQ(
@@ -93,15 +124,17 @@ struct TestPassCallableByValue {
   }
 };
 
-TEST(UnionFieldTest, PassCallableByValue) {
+TYPED_TEST(VisitUnionTest, PassCallableByReference) {
   TestPassCallableByValue f;
   Basic a;
   a.int64_ref() = 42;
-  visit_union(a, f);
+  TestFixture::adapter(a, f);
   EXPECT_EQ(f.i, 0);
-  visit_union(a, std::ref(f));
+  TestFixture::adapter(a, std::ref(f));
   EXPECT_EQ(f.i, 1);
 }
+
+} // namespace
 } // namespace test
 } // namespace thrift
 } // namespace apache
