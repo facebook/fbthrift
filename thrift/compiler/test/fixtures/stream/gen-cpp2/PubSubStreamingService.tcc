@@ -48,9 +48,9 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstream(apache::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   PubSubStreamingService_returnstream_pargs args;
   int32_t uarg_i32_from{0};
   args.get<0>().value = &uarg_i32_from;
@@ -110,9 +110,9 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows(apache::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   PubSubStreamingService_streamthrows_pargs args;
   int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
@@ -180,9 +180,9 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   PubSubStreamingService_boththrows_pargs args;
   int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
@@ -261,9 +261,9 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamthro
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   PubSubStreamingService_responseandstreamthrows_pargs args;
   int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
@@ -342,9 +342,9 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   PubSubStreamingService_returnstreamFast_pargs args;
   int32_t uarg_i32_from{0};
   args.get<0>().value = &uarg_i32_from;

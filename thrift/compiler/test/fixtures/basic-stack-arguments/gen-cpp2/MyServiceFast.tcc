@@ -28,9 +28,9 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   MyServiceFast_hasDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
@@ -80,9 +80,9 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_getDataById(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   MyServiceFast_getDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
@@ -132,9 +132,9 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_putDataById(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   MyServiceFast_putDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
@@ -184,9 +184,9 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   MyServiceFast_lobDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;

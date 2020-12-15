@@ -615,6 +615,7 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
   folly::ScopedEventBaseThread ebt;
   auto tm = ThreadManager::newSimpleThreadManager(1, true);
 
+  apache::thrift::Cpp2RequestContext cpp2reqCtx(nullptr);
   auto cb = std::make_unique<
       apache::thrift::HandlerCallback<std::unique_ptr<SumResponse>>>(
       nullptr,
@@ -624,7 +625,7 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
       0,
       ebt.getEventBase(),
       tm.get(),
-      nullptr);
+      &cpp2reqCtx);
   handler.async_tm_computeSumThrows(std::move(cb), nullptr);
 
   auto cb2 = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(
@@ -635,11 +636,11 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
       0,
       ebt.getEventBase(),
       tm.get(),
-      nullptr);
+      &cpp2reqCtx);
   handler.async_tm_computeSumThrowsPrimitive(std::move(cb2), 0, 0);
 
   auto cb3 = std::make_unique<apache::thrift::HandlerCallbackBase>(
-      nullptr, nullptr, nullptr, ebt.getEventBase(), tm.get(), nullptr);
+      nullptr, nullptr, nullptr, ebt.getEventBase(), tm.get(), &cpp2reqCtx);
   handler.async_tm_onewayRequest(std::move(cb3), 0);
 }
 

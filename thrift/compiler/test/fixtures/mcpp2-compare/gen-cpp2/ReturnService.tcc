@@ -63,9 +63,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_noReturn(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_noReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_noReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.noReturn", ctx));
   try {
@@ -113,9 +113,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_boolReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_boolReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.boolReturn", ctx));
   try {
@@ -168,9 +168,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i16Return(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_i16Return(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_i16Return_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i16Return", ctx));
   try {
@@ -223,9 +223,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i32Return(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_i32Return(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_i32Return_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i32Return", ctx));
   try {
@@ -278,9 +278,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i64Return(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_i64Return(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_i64Return_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i64Return", ctx));
   try {
@@ -333,9 +333,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_floatReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_floatReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.floatReturn", ctx));
   try {
@@ -388,9 +388,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_doubleReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_doubleReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.doubleReturn", ctx));
   try {
@@ -441,9 +441,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_stringReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_stringReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.stringReturn", ctx));
   try {
@@ -493,9 +493,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_binaryReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_binaryReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.binaryReturn", ctx));
   try {
@@ -548,9 +548,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_mapReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_mapReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.mapReturn", ctx));
   try {
@@ -603,9 +603,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_simpleTypedefReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.simpleTypedefReturn", ctx));
   try {
@@ -658,9 +658,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_complexTypedefReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_complexTypedefReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.complexTypedefReturn", ctx));
   try {
@@ -713,9 +713,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn(
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_list_mostComplexTypedefReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_mostComplexTypedefReturn", ctx));
   try {
@@ -766,9 +766,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_enumReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_enumReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.enumReturn", ctx));
   try {
@@ -816,9 +816,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn(apache::thrift
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_list_EnumReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_list_EnumReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_EnumReturn", ctx));
   try {
@@ -868,9 +868,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_structReturn(apache::thrift::R
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_structReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_structReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.structReturn", ctx));
   try {
@@ -923,9 +923,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn(apache::thrif
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_set_StructReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_set_StructReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.set_StructReturn", ctx));
   try {
@@ -976,9 +976,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn(apache::thrift::Re
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_unionReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_unionReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.unionReturn", ctx));
   try {
@@ -1028,9 +1028,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn(apache::thrif
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_list_UnionReturn(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_list_UnionReturn_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_UnionReturn", ctx));
   try {
@@ -1081,9 +1081,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_readDataEb(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_readDataEb_pargs args;
   int64_t uarg_size{0};
   args.get<0>().value = &uarg_size;
@@ -1135,9 +1135,9 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_readData(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ReturnServiceAsyncProcessor::process_readData(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ReturnService_readData_pargs args;
   int64_t uarg_size{0};
   args.get<0>().value = &uarg_size;

@@ -26,7 +26,10 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapList(std::uni
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
-  return apache::thrift::detail::si::future(semifuture_mapList(std::move(foo)), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_mapList(std::move(foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
@@ -46,7 +49,10 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapSet(std::uniq
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
-  return apache::thrift::detail::si::future(semifuture_mapSet(std::move(foo)), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_mapSet(std::move(foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
@@ -66,7 +72,10 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listMap(std::uni
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
-  return apache::thrift::detail::si::future(semifuture_listMap(std::move(foo)), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_listMap(std::move(foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
@@ -86,7 +95,10 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listSet(std::uni
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
-  return apache::thrift::detail::si::future(semifuture_listSet(std::move(foo)), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_listSet(std::move(foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
@@ -106,7 +118,10 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_turtles(std::uni
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {
-  return apache::thrift::detail::si::future(semifuture_turtles(std::move(foo)), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_turtles(std::move(foo)), std::move(ka));
 }
 
 void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {

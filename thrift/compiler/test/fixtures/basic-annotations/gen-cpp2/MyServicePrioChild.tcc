@@ -25,9 +25,9 @@ void MyServicePrioChildAsyncProcessor::setUpAndProcess_pang(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServicePrioChildAsyncProcessor::process_pang(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   MyServicePrioChild_pang_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioChild.pang", ctx));
   try {

@@ -26,7 +26,10 @@ folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_ping() {
 }
 
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_ping() {
-  return apache::thrift::detail::si::future(semifuture_ping(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_ping(), std::move(ka));
 }
 
 void MyServicePrioParentSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
@@ -46,7 +49,10 @@ folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_pong() {
 }
 
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_pong() {
-  return apache::thrift::detail::si::future(semifuture_pong(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_pong(), std::move(ka));
 }
 
 void MyServicePrioParentSvIf::async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

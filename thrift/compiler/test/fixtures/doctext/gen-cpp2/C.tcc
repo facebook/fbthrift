@@ -25,9 +25,9 @@ void CAsyncProcessor::setUpAndProcess_f(apache::thrift::ResponseChannelRequest::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void CAsyncProcessor::process_f(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   C_f_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.f", ctx));
   try {

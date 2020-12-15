@@ -35,9 +35,9 @@ void service1AsyncProcessor::setUpAndProcess_method1(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service1AsyncProcessor::process_method1(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service1_method1_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service1.method1", ctx));
   try {
@@ -88,9 +88,9 @@ void service1AsyncProcessor::setUpAndProcess_method2(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service1AsyncProcessor::process_method2(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service1_method2_pargs args;
   int32_t uarg_x{0};
   args.get<0>().value = &uarg_x;
@@ -147,9 +147,9 @@ void service1AsyncProcessor::setUpAndProcess_method3(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service1AsyncProcessor::process_method3(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service1_method3_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service1.method3", ctx));
   try {
@@ -202,9 +202,9 @@ void service1AsyncProcessor::setUpAndProcess_method4(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service1AsyncProcessor::process_method4(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service1_method4_pargs args;
   int32_t uarg_i{0};
   args.get<0>().value = &uarg_i;
@@ -263,9 +263,9 @@ void service1AsyncProcessor::setUpAndProcess_method5(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service1AsyncProcessor::process_method5(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service1_method5_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service1.method5", ctx));
   try {
@@ -318,9 +318,9 @@ void service1AsyncProcessor::setUpAndProcess_method6(apache::thrift::ResponseCha
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service1AsyncProcessor::process_method6(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service1_method6_pargs args;
   int32_t uarg_l{0};
   args.get<0>().value = &uarg_l;

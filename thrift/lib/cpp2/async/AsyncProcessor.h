@@ -311,11 +311,21 @@ class RequestParams {
 
 class ServerInterface : public AsyncProcessorFactory {
  public:
-  Cpp2RequestContext* getConnectionContext() const {
+  [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
+  getConnectionContext() const {
     return requestParams_.requestContext_;
   }
 
-  void setConnectionContext(Cpp2RequestContext* c) {
+  Cpp2RequestContext* getRequestContext() const {
+    return requestParams_.requestContext_;
+  }
+
+  [[deprecated("Replaced by setRequestContext")]] void setConnectionContext(
+      Cpp2RequestContext* c) {
+    requestParams_.requestContext_ = c;
+  }
+
+  void setRequestContext(Cpp2RequestContext* c) {
     requestParams_.requestContext_ = c;
   }
 
@@ -460,7 +470,12 @@ class HandlerCallbackBase {
 
   concurrency::ThreadManager* getThreadManager();
 
-  Cpp2RequestContext* getConnectionContext() {
+  [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
+  getConnectionContext() {
+    return reqCtx_;
+  }
+
+  Cpp2RequestContext* getRequestContext() {
     return reqCtx_;
   }
 
@@ -765,13 +780,11 @@ void GeneratedAsyncProcessor::processInThread(
     return;
   }
 
-  tm->add(
-      std::move(task),
-      0, // timeout
-      0, // expiration
-      tile && !ctx->getInteractionCreate()
-          ? concurrency::ThreadManager::Source::EXISTING_INTERACTION
-          : concurrency::ThreadManager::Source::UPSTREAM);
+  using Source = concurrency::ThreadManager::Source;
+  auto source = tile && !ctx->getInteractionCreate()
+      ? Source::EXISTING_INTERACTION
+      : Source::UPSTREAM;
+  tm->getKeepAlive(pri, source)->add([task = std::move(task)] { task->run(); });
 }
 
 template <class F>

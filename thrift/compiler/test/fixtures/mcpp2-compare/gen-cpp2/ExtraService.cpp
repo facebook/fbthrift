@@ -26,7 +26,10 @@ folly::SemiFuture<bool> ExtraServiceSvIf::semifuture_simple_function() {
 }
 
 folly::Future<bool> ExtraServiceSvIf::future_simple_function() {
-  return apache::thrift::detail::si::future(semifuture_simple_function(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_simple_function(), std::move(ka));
 }
 
 void ExtraServiceSvIf::async_tm_simple_function(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
@@ -50,7 +53,10 @@ folly::SemiFuture<bool> ExtraServiceSvIf::semifuture_throws_function2(bool param
 }
 
 folly::Future<bool> ExtraServiceSvIf::future_throws_function2(bool param1) {
-  return apache::thrift::detail::si::future(semifuture_throws_function2(param1), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_throws_function2(param1), std::move(ka));
 }
 
 void ExtraServiceSvIf::async_tm_throws_function2(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool param1) {
@@ -68,7 +74,10 @@ folly::SemiFuture<::std::map<int32_t, ::std::string>> ExtraServiceSvIf::semifutu
 }
 
 folly::Future<::std::map<int32_t, ::std::string>> ExtraServiceSvIf::future_throws_function3(bool param1, const ::std::string& param2) {
-  return apache::thrift::detail::si::future(semifuture_throws_function3(param1, param2), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_throws_function3(param1, param2), std::move(ka));
 }
 
 void ExtraServiceSvIf::async_tm_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<::std::map<int32_t, ::std::string>>> callback, bool param1, const ::std::string& param2) {
@@ -88,7 +97,10 @@ folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret() {
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret() {
-  return apache::thrift::detail::si::future(semifuture_oneway_void_ret(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret(), std::move(ka));
 }
 
 void ExtraServiceSvIf::async_tm_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) {
@@ -108,7 +120,10 @@ folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_i32_
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
-  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5), std::move(ka));
 }
 
 void ExtraServiceSvIf::async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
@@ -132,7 +147,10 @@ folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_stru
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1) {
-  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_struct_param(param1), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_struct_param(param1), std::move(ka));
 }
 
 void ExtraServiceSvIf::async_tm_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const  ::some::valid::ns::MyStruct& param1) {
@@ -152,7 +170,10 @@ folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_list
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
-  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_listunion_param(param1), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_listunion_param(param1), std::move(ka));
 }
 
 void ExtraServiceSvIf::async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {

@@ -31,19 +31,23 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
 
   void join() override {}
 
-  void add(
-      std::shared_ptr<apache::thrift::concurrency::Runnable> task,
-      int64_t /*timeout*/,
-      int64_t /*expiration*/,
-      apache::thrift::concurrency::ThreadManager::Source
-      /*source*/) noexcept {
-    auto thread = factory_.newThread(task);
+  void add(folly::Func f) noexcept override {
+    auto thread =
+        factory_.newThread(concurrency::FunctionRunner::create(std::move(f)));
     thread->start();
   }
 
-  // Following methods are not required for this fake object.
+  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY, Source) const override {
+    return getKeepAliveToken(const_cast<FakeThreadManager*>(this));
+  }
 
-  void add(folly::Func /*f*/) noexcept override {
+  // Following methods are not required for this fake object.
+  void add(
+      std::shared_ptr<apache::thrift::concurrency::Runnable> /*task*/,
+      int64_t /*timeout*/,
+      int64_t /*expiration*/,
+      apache::thrift::concurrency::ThreadManager::Source
+      /*source*/) noexcept override {
     LOG(FATAL) << "Method not implemented in this fake object";
   }
 
@@ -149,10 +153,6 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
   folly::Codel* getCodel() override {
     LOG(FATAL) << "Method not implemented in this fake object";
     return nullptr;
-  }
-
-  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY, Source) const override {
-    LOG(FATAL) << "Method not implemented in this fake object";
   }
 
  private:

@@ -27,9 +27,9 @@ void SomeServiceAsyncProcessor::setUpAndProcess_bounce_map(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SomeService_bounce_map_pargs args;
   auto uarg_m = std::make_unique< ::apache::thrift::fixtures::types::SomeMap>();
   args.get<0>().value = uarg_m.get();
@@ -84,9 +84,9 @@ void SomeServiceAsyncProcessor::setUpAndProcess_binary_keyed_map(apache::thrift:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SomeServiceAsyncProcessor::process_binary_keyed_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SomeService_binary_keyed_map_pargs args;
   auto uarg_r = std::make_unique<::std::vector<int64_t>>();
   args.get<0>().value = uarg_r.get();

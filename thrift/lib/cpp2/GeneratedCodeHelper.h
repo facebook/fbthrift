@@ -1187,11 +1187,11 @@ using arg = typename action_traits<F>::arg_type;
 template <typename T>
 folly::Future<T> future(
     folly::SemiFuture<T>&& future,
-    folly::Executor* executor) {
+    folly::Executor::KeepAlive<> keepAlive) {
   if (future.isReady()) {
     return std::move(future).toUnsafeFuture();
   }
-  return std::move(future).via(executor);
+  return std::move(future).via(keepAlive);
 }
 
 template <class F>
@@ -1233,24 +1233,28 @@ using CallbackPtr = std::unique_ptr<Callback<R>>;
 inline void async_tm_prep(ServerInterface* si, CallbackBase* callback) {
   si->setEventBase(callback->getEventBase());
   si->setThreadManager(callback->getThreadManager());
-  si->setConnectionContext(callback->getConnectionContext());
+  si->setRequestContext(callback->getRequestContext());
 }
 
 template <class F>
-auto makeFutureWithAndMaybeReschedule(concurrency::ThreadManager* tm, F&& f) {
+auto makeFutureWithAndMaybeReschedule(CallbackBase& callback, F&& f) {
   auto fut = folly::makeFutureWith(std::forward<F>(f));
   if (fut.isReady()) {
     return fut;
   }
-  return std::move(fut).via(tm);
+  auto tm = callback.getThreadManager();
+  auto ka = tm->getKeepAlive(
+      callback.getRequestContext()->getRequestPriority(),
+      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+  return std::move(fut).via(std::move(ka));
 }
 
 template <class F>
 void async_tm_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
   async_tm_prep(si, callback.get());
   if (THRIFT_FLAG(reschedule_handler_future_on_tm)) {
-    auto tm = callback->getThreadManager();
-    makeFutureWithAndMaybeReschedule(tm, std::forward<F>(f))
+    auto callbackRaw = callback.get();
+    makeFutureWithAndMaybeReschedule(*callbackRaw, std::forward<F>(f))
         .thenValueInline([cb = std::move(callback)](auto&&) {});
   } else {
     folly::makeFutureWith(std::forward<F>(f))
@@ -1262,8 +1266,8 @@ template <class F>
 void async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   async_tm_prep(si, callback.get());
   if (THRIFT_FLAG(reschedule_handler_future_on_tm)) {
-    auto tm = callback->getThreadManager();
-    makeFutureWithAndMaybeReschedule(tm, std::forward<F>(f))
+    auto callbackRaw = callback.get();
+    makeFutureWithAndMaybeReschedule(*callbackRaw, std::forward<F>(f))
         .thenTryInline(
             [cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
               cb->complete(std::move(_ret));

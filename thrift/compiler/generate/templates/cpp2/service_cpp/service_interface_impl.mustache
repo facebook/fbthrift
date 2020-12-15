@@ -33,7 +33,10 @@ folly::SemiFuture<<% > service_common/async_return_type %>> <%service:name%>SvIf
 }
 
 folly::Future<<% > service_common/async_return_type %>> <%service:name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
-  return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), std::move(ka));
 }
 
 <%#function:coroutine?%>
@@ -81,12 +84,14 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
   // shouldn't generate the future, semifuture, and synchronous member functions
   // for entry points that explicitly ask for coroutines.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  apache::thrift::RequestParams params{callback->getConnectionContext(),
+  apache::thrift::RequestParams params{callback->getRequestContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
+    using Source = apache::thrift::concurrency::ThreadManager::Source;
+    auto pri = params.getRequestContext()->getRequestPriority();
     apache::thrift::detail::si::async_tm_oneway_coro_start(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
-      params.getThreadManager(),
+      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
@@ -132,12 +137,14 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
   // shouldn't generate the future, semifuture, and synchronous member functions
   // for entry points that explicitly ask for coroutines.
   apache::thrift::detail::si::async_tm_prep(this, callback.get());
-  apache::thrift::RequestParams params{callback->getConnectionContext(),
+  apache::thrift::RequestParams params{callback->getRequestContext(),
     callback->getThreadManager(), callback->getEventBase()};
   try {
+    using Source = apache::thrift::concurrency::ThreadManager::Source;
+    auto pri = params.getRequestContext()->getRequestPriority();
     apache::thrift::detail::si::async_tm_coro_start(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
-      params.getThreadManager(),
+      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());

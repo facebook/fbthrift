@@ -24,7 +24,10 @@ folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> 
 }
 
 folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> SomeServiceSvIf::future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) {
-  return apache::thrift::detail::si::future(semifuture_bounce_map(std::move(m)), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_bounce_map(std::move(m)), std::move(ka));
 }
 
 void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) {
@@ -42,7 +45,10 @@ folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types:
 }
 
 folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> SomeServiceSvIf::future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> r) {
-  return apache::thrift::detail::si::future(semifuture_binary_keyed_map(std::move(r)), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_binary_keyed_map(std::move(r)), std::move(ka));
 }
 
 void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> r) {

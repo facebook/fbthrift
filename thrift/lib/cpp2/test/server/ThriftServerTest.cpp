@@ -38,6 +38,7 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/TestSSLServer.h>
+#include <folly/system/ThreadName.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 
 #include <folly/io/async/AsyncSocket.h>
@@ -707,6 +708,48 @@ TEST_P(HeaderOrRocket, Priority) {
   client->sync_priorityHigh();
   client->sync_priorityBestEffort();
   EXPECT_EQ(callCount, 2);
+}
+
+TEST_P(HeaderOrRocket, StickyToThreadPool) {
+  int callCount{0};
+  class TestInterface : public TestServiceSvIf {
+    int& callCount_;
+
+    static auto startsWith(folly::StringPiece s, folly::StringPiece p) {
+      return s.startsWith(p);
+    }
+
+   public:
+    explicit TestInterface(int& callCount) : callCount_(callCount) {}
+    folly::SemiFuture<folly::Unit> semifuture_priorityHigh() override {
+      EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri1"));
+      return folly::makeSemiFuture().defer([=](auto&&) {
+        callCount_++;
+        EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri1"));
+      });
+    }
+    folly::coro::Task<void> co_priorityBestEffort() override {
+      callCount_++;
+      EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri4"));
+      co_await folly::coro::co_reschedule_on_current_executor;
+      callCount_++;
+      EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri4"));
+      co_return;
+    }
+  };
+
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestInterface>(callCount), "::1", 0, [](auto& ts) {
+        auto tm = PriorityThreadManager::newPriorityThreadManager(1);
+        tm->setNamePrefix("foo");
+        tm->start();
+        ts.setThreadManager(tm);
+      });
+  folly::EventBase base;
+  auto client = makeClient(runner, &base);
+  client->sync_priorityHigh();
+  client->sync_priorityBestEffort();
+  EXPECT_EQ(callCount, 3);
 }
 
 TEST_P(HeaderOrRocket, CancellationTest) {

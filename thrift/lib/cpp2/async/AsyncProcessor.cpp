@@ -99,7 +99,7 @@ bool GeneratedAsyncProcessor::createInteraction(
   // In the eb model we create the interaction inline.
   if (!tm) {
     si->setEventBase(&eb);
-    si->setConnectionContext(&ctx);
+    si->setRequestContext(&ctx);
     auto tile = folly::makeTryWith(
         [&] { return nullthrows(createInteractionImpl(name)); });
     if (tile.hasException()) {
@@ -126,7 +126,7 @@ bool GeneratedAsyncProcessor::createInteraction(
       [=, eb = &eb, ctx = &ctx] {
         si->setEventBase(eb);
         si->setThreadManager(tm);
-        si->setConnectionContext(ctx);
+        si->setRequestContext(ctx);
         return nullthrows(createInteractionImpl(name));
       })
       .via(&eb)

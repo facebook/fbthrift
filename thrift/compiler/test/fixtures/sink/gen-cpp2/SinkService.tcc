@@ -65,9 +65,9 @@ void SinkServiceAsyncProcessor::setUpAndProcess_method(apache::thrift::ResponseC
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_method(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SinkService_method_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.method", ctx));
   try {
@@ -132,9 +132,9 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodAndReponse(apache::thrift:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodAndReponse(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SinkService_methodAndReponse_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.methodAndReponse", ctx));
   try {
@@ -201,9 +201,9 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodThrow(apache::thrift::Resp
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodThrow(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SinkService_methodThrow_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.methodThrow", ctx));
   try {
@@ -279,9 +279,9 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodSinkThrow(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SinkService_methodSinkThrow_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.methodSinkThrow", ctx));
   try {
@@ -346,9 +346,9 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow(apache::thrift:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodFinalThrow(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SinkService_methodFinalThrow_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.methodFinalThrow", ctx));
   try {
@@ -423,9 +423,9 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow(apache::thrift::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodBothThrow(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SinkService_methodBothThrow_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.methodBothThrow", ctx));
   try {
@@ -498,9 +498,9 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFast(apache::thrift::Respo
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::process_methodFast(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   SinkService_methodFast_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.methodFast", ctx));
   try {

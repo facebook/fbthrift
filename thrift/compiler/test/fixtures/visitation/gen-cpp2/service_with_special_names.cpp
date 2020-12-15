@@ -26,7 +26,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_get() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_get() {
-  return apache::thrift::detail::si::future(semifuture_get(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_get(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_get(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -46,7 +49,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_getter() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_getter() {
-  return apache::thrift::detail::si::future(semifuture_getter(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_getter(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_getter(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -66,7 +72,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_lists() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_lists() {
-  return apache::thrift::detail::si::future(semifuture_lists(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_lists(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_lists(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -86,7 +95,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_maps() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_maps() {
-  return apache::thrift::detail::si::future(semifuture_maps(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_maps(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_maps(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -106,7 +118,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_name() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_name() {
-  return apache::thrift::detail::si::future(semifuture_name(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_name(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_name(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -126,7 +141,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_name_to_va
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_name_to_value() {
-  return apache::thrift::detail::si::future(semifuture_name_to_value(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_name_to_value(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_name_to_value(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -146,7 +164,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_names() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_names() {
-  return apache::thrift::detail::si::future(semifuture_names(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_names(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_names(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -166,7 +187,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_prefix_tre
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_prefix_tree() {
-  return apache::thrift::detail::si::future(semifuture_prefix_tree(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_prefix_tree(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_prefix_tree(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -186,7 +210,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_sets() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_sets() {
-  return apache::thrift::detail::si::future(semifuture_sets(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_sets(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_sets(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -206,7 +233,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_setter() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_setter() {
-  return apache::thrift::detail::si::future(semifuture_setter(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_setter(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_setter(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -226,7 +256,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_str() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_str() {
-  return apache::thrift::detail::si::future(semifuture_str(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_str(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_str(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -246,7 +279,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_strings() 
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_strings() {
-  return apache::thrift::detail::si::future(semifuture_strings(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_strings(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_strings(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -266,7 +302,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_type() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_type() {
-  return apache::thrift::detail::si::future(semifuture_type(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_type(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_type(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -286,7 +325,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_value() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_value() {
-  return apache::thrift::detail::si::future(semifuture_value(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_value(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_value(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -306,7 +348,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_value_to_n
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_value_to_name() {
-  return apache::thrift::detail::si::future(semifuture_value_to_name(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_value_to_name(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_value_to_name(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -326,7 +371,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_values() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_values() {
-  return apache::thrift::detail::si::future(semifuture_values(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_values(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_values(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -346,7 +394,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_id() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_id() {
-  return apache::thrift::detail::si::future(semifuture_id(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_id(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_id(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -366,7 +417,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_ids() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_ids() {
-  return apache::thrift::detail::si::future(semifuture_ids(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_ids(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_ids(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -386,7 +440,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_descriptor
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_descriptor() {
-  return apache::thrift::detail::si::future(semifuture_descriptor(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_descriptor(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_descriptor(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -406,7 +463,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_descriptor
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_descriptors() {
-  return apache::thrift::detail::si::future(semifuture_descriptors(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_descriptors(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_descriptors(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -426,7 +486,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_key() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_key() {
-  return apache::thrift::detail::si::future(semifuture_key(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_key(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_key(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -446,7 +509,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_keys() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_keys() {
-  return apache::thrift::detail::si::future(semifuture_keys(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_keys(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_keys(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -466,7 +532,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_annotation
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_annotation() {
-  return apache::thrift::detail::si::future(semifuture_annotation(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_annotation(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_annotation(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -486,7 +555,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_annotation
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_annotations() {
-  return apache::thrift::detail::si::future(semifuture_annotations(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_annotations(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_annotations(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -506,7 +578,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_member() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_member() {
-  return apache::thrift::detail::si::future(semifuture_member(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_member(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_member(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -526,7 +601,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_members() 
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_members() {
-  return apache::thrift::detail::si::future(semifuture_members(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_members(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -546,7 +624,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_field() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_field() {
-  return apache::thrift::detail::si::future(semifuture_field(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_field(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
@@ -566,7 +647,10 @@ folly::SemiFuture<int32_t> service_with_special_namesSvIf::semifuture_fields() {
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_fields() {
-  return apache::thrift::detail::si::future(semifuture_fields(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_fields(), std::move(ka));
 }
 
 void service_with_special_namesSvIf::async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {

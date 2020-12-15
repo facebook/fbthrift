@@ -27,9 +27,9 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0(apache::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   DbMixedStackArguments_getDataByKey0_pargs args;
   auto uarg_key = std::make_unique<::std::string>();
   args.get<0>().value = uarg_key.get();
@@ -84,9 +84,9 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1(apache::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   DbMixedStackArguments_getDataByKey1_pargs args;
   ::std::string uarg_key;
   args.get<0>().value = &uarg_key;

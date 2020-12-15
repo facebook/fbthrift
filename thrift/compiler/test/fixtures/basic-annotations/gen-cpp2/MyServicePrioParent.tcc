@@ -27,9 +27,9 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_ping(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServicePrioParentAsyncProcessor::process_ping(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   MyServicePrioParent_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.ping", ctx));
   try {
@@ -80,9 +80,9 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_pong(apache::thrift::Res
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServicePrioParentAsyncProcessor::process_pong(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   MyServicePrioParent_pong_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.pong", ctx));
   try {

@@ -26,7 +26,10 @@ folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t id) {
 }
 
 folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
-  return apache::thrift::detail::si::future(semifuture_hasDataById(id), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_hasDataById(id), std::move(ka));
 }
 
 void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
@@ -44,7 +47,10 @@ folly::SemiFuture<::std::string> MyServiceSvIf::semifuture_getDataById(int64_t i
 }
 
 folly::Future<::std::string> MyServiceSvIf::future_getDataById(int64_t id) {
-  return apache::thrift::detail::si::future(semifuture_getDataById(id), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_getDataById(id), std::move(ka));
 }
 
 void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, int64_t id) {
@@ -64,7 +70,10 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id,
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, const ::std::string& data) {
-  return apache::thrift::detail::si::future(semifuture_putDataById(id, data), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_putDataById(id, data), std::move(ka));
 }
 
 void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const ::std::string& data) {
@@ -84,7 +93,10 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_lobDataById(int64_t id,
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t id, const ::std::string& data) {
-  return apache::thrift::detail::si::future(semifuture_lobDataById(id, data), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_lobDataById(id, data), std::move(ka));
 }
 
 void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const ::std::string& data) {

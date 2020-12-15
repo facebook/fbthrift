@@ -79,9 +79,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_i16_param_pargs args;
   int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -131,9 +131,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_byte_i16_param(apache:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_byte_i16_param_pargs args;
   int8_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -188,9 +188,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_param(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_map_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
@@ -243,9 +243,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_setlist_param(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_map_setlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
@@ -300,9 +300,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_map_typedef_param(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_map_typedef_param_pargs args;
    ::some::valid::ns::simpleTypeDef uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -355,9 +355,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_enum_param(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_enum_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_enum_param_pargs args;
    ::some::valid::ns::MyEnumA uarg_param1{static_cast< ::some::valid::ns::MyEnumA>(0)};
   args.get<0>().value = &uarg_param1;
@@ -410,9 +410,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_struct_param(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_struct_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_struct_param_pargs args;
   auto uarg_param1 = std::make_unique< ::some::valid::ns::MyStruct>();
   args.get<0>().value = uarg_param1.get();
@@ -465,9 +465,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_listunion_param(apache
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_listunion_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_void_ret_listunion_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::vector< ::some::valid::ns::ComplexUnion>>();
   args.get<0>().value = uarg_param1.get();
@@ -520,9 +520,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_i32_i64_param(apache::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_bool_ret_i32_i64_param_pargs args;
   int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -579,9 +579,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_map_param(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_bool_ret_map_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_bool_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
@@ -636,9 +636,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_bool_ret_union_param(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_bool_ret_union_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_bool_ret_union_param_pargs args;
   auto uarg_param1 = std::make_unique< ::some::valid::ns::ComplexUnion>();
   args.get<0>().value = uarg_param1.get();
@@ -693,9 +693,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_float_double_param(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_i64_ret_float_double_param_pargs args;
   float uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -752,9 +752,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_string_typedef_param(ap
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_i64_ret_string_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
@@ -809,9 +809,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_par
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs args;
   int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -871,9 +871,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_double_ret_setstruct_param(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_double_ret_setstruct_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::set< ::some::valid::ns::MyStruct>>();
   args.get<0>().value = uarg_param1.get();
@@ -928,9 +928,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_string_ret_string_param(apache:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_string_ret_string_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_string_ret_string_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
@@ -985,9 +985,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_binary_ret_binary_param(apache:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_binary_ret_binary_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_binary_ret_binary_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
@@ -1042,9 +1042,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_map_ret_bool_param(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_map_ret_bool_param_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -1099,9 +1099,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_list_ret_map_setlist_param(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_list_ret_map_setlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<int32_t, ::std::vector<::std::string>>>();
   args.get<0>().value = uarg_param1.get();
@@ -1158,9 +1158,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_mapsetlistmapliststring_ret_lis
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>();
   args.get<0>().value = uarg_param1.get();
@@ -1215,9 +1215,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_typedef_ret_i32_param(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_typedef_ret_i32_param_pargs args;
   int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -1270,9 +1270,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param(a
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_listtypedef_ret_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique< ::some::valid::ns::complexStructTypeDef>();
   args.get<0>().value = uarg_param1.get();
@@ -1324,9 +1324,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_param(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_enum_ret_double_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -1381,9 +1381,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_enum_ret_double_enum_param(apac
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_enum_ret_double_enum_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -1440,9 +1440,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_listenum_ret_map_param(apache::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_listenum_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
@@ -1495,9 +1495,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_struct_ret_i16_param_pargs args;
   int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -1549,9 +1549,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_setstruct_ret_set_param(apache:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_setstruct_ret_set_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::set<::std::string>>();
   args.get<0>().value = uarg_param1.get();
@@ -1606,9 +1606,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_union_ret_i32_i32_param(apache:
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_union_ret_i32_i32_param_pargs args;
   int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
@@ -1665,9 +1665,9 @@ void ParamServiceAsyncProcessor::setUpAndProcess_listunion_string_param(apache::
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   ParamService_listunion_string_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();

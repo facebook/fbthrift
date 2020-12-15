@@ -26,7 +26,10 @@ folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
 }
 
 folly::Future<folly::Unit> CSvIf::future_f() {
-  return apache::thrift::detail::si::future(semifuture_f(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_f(), std::move(ka));
 }
 
 void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

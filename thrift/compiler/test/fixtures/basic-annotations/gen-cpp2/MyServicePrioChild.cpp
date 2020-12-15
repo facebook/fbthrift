@@ -26,7 +26,10 @@ folly::SemiFuture<folly::Unit> MyServicePrioChildSvIf::semifuture_pang() {
 }
 
 folly::Future<folly::Unit> MyServicePrioChildSvIf::future_pang() {
-  return apache::thrift::detail::si::future(semifuture_pang(), getThreadManager());
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_pang(), std::move(ka));
 }
 
 void MyServicePrioChildSvIf::async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

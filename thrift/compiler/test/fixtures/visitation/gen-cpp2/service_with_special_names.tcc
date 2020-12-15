@@ -79,9 +79,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_get(apache::thrif
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_get(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_get_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.get", ctx));
   try {
@@ -134,9 +134,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_getter(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_getter_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.getter", ctx));
   try {
@@ -189,9 +189,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_lists(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_lists_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.lists", ctx));
   try {
@@ -244,9 +244,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_maps(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_maps_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.maps", ctx));
   try {
@@ -299,9 +299,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_name(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_name_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name", ctx));
   try {
@@ -354,9 +354,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_name_to_value(apa
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_name_to_value_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name_to_value", ctx));
   try {
@@ -409,9 +409,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_names(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_names(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_names_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.names", ctx));
   try {
@@ -464,9 +464,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_prefix_tree(apach
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_prefix_tree_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.prefix_tree", ctx));
   try {
@@ -519,9 +519,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_sets(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_sets_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.sets", ctx));
   try {
@@ -574,9 +574,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_setter(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_setter_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.setter", ctx));
   try {
@@ -629,9 +629,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_str(apache::thrif
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_str(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_str_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.str", ctx));
   try {
@@ -684,9 +684,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_strings(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_strings_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.strings", ctx));
   try {
@@ -739,9 +739,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_type(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_type(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_type_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.type", ctx));
   try {
@@ -794,9 +794,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_value(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_value(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_value_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value", ctx));
   try {
@@ -849,9 +849,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_value_to_name(apa
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_value_to_name_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value_to_name", ctx));
   try {
@@ -904,9 +904,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_values(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_values(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_values_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.values", ctx));
   try {
@@ -959,9 +959,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_id(apache::thrift
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_id(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_id_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.id", ctx));
   try {
@@ -1014,9 +1014,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_ids(apache::thrif
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_ids_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.ids", ctx));
   try {
@@ -1069,9 +1069,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptor(apache
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_descriptor_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptor", ctx));
   try {
@@ -1124,9 +1124,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_descriptors(apach
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_descriptors_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptors", ctx));
   try {
@@ -1179,9 +1179,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_key(apache::thrif
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_key(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_key_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.key", ctx));
   try {
@@ -1234,9 +1234,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_keys(apache::thri
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_keys_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.keys", ctx));
   try {
@@ -1289,9 +1289,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_annotation(apache
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_annotation_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotation", ctx));
   try {
@@ -1344,9 +1344,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_annotations(apach
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_annotations(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_annotations_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotations", ctx));
   try {
@@ -1399,9 +1399,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_member(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_member(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_member_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.member", ctx));
   try {
@@ -1454,9 +1454,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_members(apache::t
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_members(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_members_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.members", ctx));
   try {
@@ -1509,9 +1509,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_field(apache::thr
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_field(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_field_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.field", ctx));
   try {
@@ -1564,9 +1564,9 @@ void service_with_special_namesAsyncProcessor::setUpAndProcess_fields(apache::th
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  // make sure getConnectionContext is null
+  // make sure getRequestContext is null
   // so async calls don't accidentally use it
-  iface_->setConnectionContext(nullptr);
+  iface_->setRequestContext(nullptr);
   service_with_special_names_fields_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.fields", ctx));
   try {
