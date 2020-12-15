@@ -127,12 +127,12 @@ class RequestsRegistry {
       }
     }
 
-    const ResponseChannelRequest& getRequest() const {
-      return *req_;
+    const ResponseChannelRequest* getRequest() const {
+      return req_;
     }
 
-    const Cpp2RequestContext& getCpp2RequestContext() const {
-      return *reqContext_;
+    const Cpp2RequestContext* getCpp2RequestContext() const {
+      return reqContext_;
     }
 
     std::chrono::steady_clock::time_point getTimestamp() const {

@@ -124,15 +124,14 @@ void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
 }
 
 const std::string& RequestsRegistry::DebugStub::getMethodName() const {
-  return methodNameIfFinished_.empty() ? getCpp2RequestContext().getMethodName()
-                                       : methodNameIfFinished_;
+  return getCpp2RequestContext() ? getCpp2RequestContext()->getMethodName()
+                                 : methodNameIfFinished_;
 }
 
 const folly::SocketAddress* RequestsRegistry::DebugStub::getPeerAddress()
     const {
-  return methodNameIfFinished_.empty()
-      ? getCpp2RequestContext().getPeerAddress()
-      : &peerAddressIfFinished_;
+  return getCpp2RequestContext() ? getCpp2RequestContext()->getPeerAddress()
+                                 : &peerAddressIfFinished_;
 }
 
 void RequestsRegistry::DebugStub::prepareAsFinished() {
