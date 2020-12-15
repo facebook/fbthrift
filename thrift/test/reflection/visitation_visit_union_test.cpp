@@ -84,6 +84,24 @@ TEST(UnionFieldTest, Metadata) {
     });
   });
 }
+
+struct TestPassCallableByValue {
+  int i = 0;
+  template <class... Args>
+  void operator()(Args&&...) {
+    ++i;
+  }
+};
+
+TEST(UnionFieldTest, PassCallableByValue) {
+  TestPassCallableByValue f;
+  Basic a;
+  a.int64_ref() = 42;
+  visit_union(a, f);
+  EXPECT_EQ(f.i, 0);
+  visit_union(a, std::ref(f));
+  EXPECT_EQ(f.i, 1);
+}
 } // namespace test
 } // namespace thrift
 } // namespace apache

@@ -46,8 +46,7 @@ struct VisitUnion {
 template <typename T, typename F>
 void visit_union(T&& t, F f) {
   return apache::thrift::detail::VisitUnion<folly::remove_cvref_t<T>>()(
-      detail::MetadataForwarder<T, F&&>{static_cast<F&&>(f)},
-      static_cast<T&&>(t));
+      detail::MetadataForwarder<T, F>{std::move(f)}, static_cast<T&&>(t));
 }
 } // namespace thrift
 } // namespace apache

@@ -307,5 +307,25 @@ TEST(struct1, test_two_structs_assignment) {
   EXPECT_EQ(t.field1_ref(), "44");
 }
 
+struct TestPassCallableByValue {
+  int i = 0;
+  template <class... Args>
+  void operator()(Args&&...) {
+    ++i;
+  }
+};
+
+TEST(struct1, PassCallableByValue) {
+  TestPassCallableByValue f;
+  for_each_field(struct1{}, f);
+  EXPECT_EQ(f.i, 0);
+  for_each_field(struct1{}, struct1{}, f);
+  EXPECT_EQ(f.i, 0);
+  for_each_field(struct1{}, std::ref(f));
+  EXPECT_EQ(f.i, 6);
+  for_each_field(struct1{}, struct1{}, std::ref(f));
+  EXPECT_EQ(f.i, 12);
+}
+
 } // namespace cpp_reflection
 } // namespace test_cpp2
