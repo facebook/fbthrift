@@ -19,9 +19,10 @@ namespace thrift {
 namespace detail {
 
 #if FOLLY_HAS_COROUTINES
-template <typename T>
+template <bool WithHeader, typename T>
 ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
-    folly::coro::AsyncGenerator<T&&>&& gen) {
+    folly::coro::AsyncGenerator<
+        std::conditional_t<WithHeader, PayloadAndHeader<T>, T>&&>&& gen) {
   return [gen = std::move(gen)](
              folly::Executor::KeepAlive<> serverExecutor,
              folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
@@ -84,21 +85,33 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                 }
               }
 
-              try {
-                auto&& next = co_await folly::coro::co_withCancellation(
-                    stream->cancelSource_.getToken(), gen.next());
-                if (next) {
+              auto&& next = co_await folly::coro::co_awaitTry(
+                  folly::coro::co_withCancellation(
+                      stream->cancelSource_.getToken(), gen.next()));
+              if (next.hasValue()) {
+                if constexpr (WithHeader) {
+                  if (!next->payload) {
+                    StreamPayloadMetadata md;
+                    md.otherMetadata_ref() = std::move(next->metadata);
+                    stream->publish(folly::Try<StreamPayload>(
+                        folly::in_place, nullptr, std::move(md)));
+                  } else {
+                    StreamPayload sp =
+                        *encode(folly::Try<T>(*std::move(next->payload)));
+                    sp.metadata.otherMetadata_ref() = std::move(next->metadata);
+                    stream->publish(folly::Try<StreamPayload>(std::move(sp)));
+                    --credits;
+                  }
+                } else {
                   stream->publish(encode(folly::Try<T>(std::move(*next))));
                   --credits;
-                  continue;
                 }
+                continue;
+              } else if (next.hasException()) {
+                stream->publish(
+                    encode(folly::Try<T>(std::move(next.exception()))));
+              } else {
                 stream->publish({});
-              } catch (const std::exception& e) {
-                stream->publish(encode(folly::Try<T>(
-                    folly::exception_wrapper(std::current_exception(), e))));
-              } catch (...) {
-                stream->publish(encode(folly::Try<T>(
-                    folly::exception_wrapper(std::current_exception()))));
               }
               co_return;
             }

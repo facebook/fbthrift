@@ -80,8 +80,10 @@ void ServerGeneratorStream::processPayloads() {
       DCHECK(!isClientClosed());
       auto& payload = messages.front();
       if (payload.hasValue()) {
-        auto alive =
-            streamClientCallback_->onStreamNext(std::move(payload.value()));
+        auto alive = payload->payload
+            ? streamClientCallback_->onStreamNext(std::move(payload.value()))
+            : streamClientCallback_->onStreamHeaders(
+                  HeadersPayload(std::move(payload->metadata)));
         if (!alive) {
           break;
         }

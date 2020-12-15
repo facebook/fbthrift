@@ -98,6 +98,8 @@ class ClientStreamBridge : public TwoWayBridge<
 
   void onStreamComplete() override;
 
+  bool onStreamHeaders(HeadersPayload&& payload) override;
+
   void resetServerCallback(StreamServerCallback& serverCallback) override;
 
   void processCredits();

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/GLog.h>
 #include <folly/Portability.h>
 #include <folly/futures/Future.h>
 #include <folly/synchronization/Baton.h>
@@ -92,6 +93,12 @@ class ClientBufferedStream {
           break;
         }
         if (payload.hasValue()) {
+          if (!payload->payload) {
+            FB_LOG_EVERY_MS(WARNING, 1000)
+                << "Dropping unhandled stream header frame";
+            queue.pop();
+            continue;
+          }
           payloadDataSize += payload->payload->computeChainDataLength();
         }
         auto value = decode_(std::move(payload));
@@ -117,7 +124,18 @@ class ClientBufferedStream {
 
 #if FOLLY_HAS_COROUTINES
   folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
-    return toAsyncGeneratorImpl(std::move(streamBridge_), bufferSize_, decode_);
+    return toAsyncGeneratorImpl<false>(
+        std::move(streamBridge_), bufferSize_, decode_);
+  }
+
+  struct PayloadAndHeader {
+    std::optional<T> payload; // empty for header packet
+    StreamPayloadMetadata metadata;
+  };
+  folly::coro::AsyncGenerator<PayloadAndHeader&&>
+  toAsyncGeneratorWithHeader() && {
+    return toAsyncGeneratorImpl<true>(
+        std::move(streamBridge_), bufferSize_, decode_);
   }
 #endif // FOLLY_HAS_COROUTINES
 
@@ -136,7 +154,10 @@ class ClientBufferedStream {
 
  private:
 #if FOLLY_HAS_COROUTINES
-  static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorImpl(
+  template <bool WithHeader>
+  static folly::coro::AsyncGenerator<
+      std::conditional_t<WithHeader, PayloadAndHeader, T>&&>
+  toAsyncGeneratorImpl(
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       int32_t bufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&)) {
@@ -160,7 +181,7 @@ class ClientBufferedStream {
     while (true) {
       if ((co_await folly::coro::co_current_cancellation_token)
               .isCancellationRequested()) {
-        throw folly::OperationCancelled();
+        co_yield folly::coro::co_error(folly::OperationCancelled());
       }
       if (queue.empty()) {
         if (outstanding == 0) {
@@ -180,7 +201,7 @@ class ClientBufferedStream {
           // we've been cancelled
           apache::thrift::detail::ClientStreamBridge::Ptr(
               streamBridge.release());
-          throw folly::OperationCancelled();
+          co_yield folly::coro::co_error(folly::OperationCancelled());
         }
       }
 
@@ -190,22 +211,50 @@ class ClientBufferedStream {
           break;
         }
         if (payload.hasValue()) {
-          payloadDataSize += payload->payload->computeChainDataLength();
+          if (!payload->payload) {
+            if constexpr (!WithHeader) {
+              FB_LOG_EVERY_MS(WARNING, 1000)
+                  << "Dropping unhandled stream header frame";
+              queue.pop();
+              continue;
+            }
+          } else {
+            payloadDataSize += payload->payload->computeChainDataLength();
+          }
         }
-        auto value = decode(std::move(payload));
-        queue.pop();
-        // yield value or rethrow exception
-        co_yield std::move(value).value();
-      }
+        if constexpr (WithHeader) {
+          if (payload.hasValue()) {
+            PayloadAndHeader ret;
+            bool usedCredit = false;
+            ret.metadata = std::move(payload->metadata);
+            if (payload->payload) {
+              ret.payload = *decode(std::move(payload));
+              usedCredit = true;
+            }
+            queue.pop();
+            co_yield std::move(ret);
+            if (!usedCredit) {
+              continue;
+            }
+          } else {
+            co_yield folly::coro::co_error(
+                decode(std::move(payload)).exception());
+          }
+        } else {
+          auto value = decode(std::move(payload));
+          queue.pop();
+          co_yield folly::coro::co_result(std::move(value));
+        }
 
-      outstanding--;
-      // we request credits only if bufferSize_ > 0.
-      // For bufferSize_ = 0, the loop requests 1 credit at a time.
-      if ((outstanding <= bufferSize / 2) ||
-          (payloadDataSize >= kRequestCreditPayloadSize)) {
-        streamBridge->requestN(bufferSize - outstanding);
-        outstanding = bufferSize;
-        payloadDataSize = 0;
+        outstanding--;
+        // we request credits only if bufferSize_ > 0.
+        // For bufferSize_ = 0, the loop requests 1 credit at a time.
+        if ((outstanding <= bufferSize / 2) ||
+            (payloadDataSize >= kRequestCreditPayloadSize)) {
+          streamBridge->requestN(bufferSize - outstanding);
+          outstanding = bufferSize;
+          payloadDataSize = 0;
+        }
       }
     }
   }
@@ -334,6 +383,12 @@ class ClientBufferedStream {
             return;
           }
           if (payload.hasValue()) {
+            if (!payload->payload) {
+              FB_LOG_EVERY_MS(WARNING, 1000)
+                  << "Dropping unhandled stream header frame";
+              queue.pop();
+              continue;
+            }
             payloadDataSize_ += payload->payload->computeChainDataLength();
           }
           auto value = decode_(std::move(payload));
@@ -374,7 +429,7 @@ class ClientBufferedStream {
   static constexpr int32_t kRequestCreditPayloadSize = 16384;
 
   friend class yarpl::flowable::ThriftStreamShim;
-}; // namespace thrift
+};
 
 template <typename Response, typename StreamElement>
 struct ResponseAndClientBufferedStream {

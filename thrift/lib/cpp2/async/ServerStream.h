@@ -41,8 +41,15 @@ class ServerStream {
  public:
 #if FOLLY_HAS_COROUTINES
   /* implicit */ ServerStream(folly::coro::AsyncGenerator<T&&>&& gen)
-      : fn_(apache::thrift::detail::ServerGeneratorStream::fromAsyncGenerator(
-            std::move(gen))) {}
+      : fn_(apache::thrift::detail::ServerGeneratorStream::
+                fromAsyncGenerator<false, T>(std::move(gen))) {}
+
+  using PayloadAndHeader =
+      apache::thrift::detail::ServerGeneratorStream::PayloadAndHeader<T>;
+  /* implicit */ ServerStream(
+      folly::coro::AsyncGenerator<PayloadAndHeader&&>&& gen)
+      : fn_(apache::thrift::detail::ServerGeneratorStream::
+                fromAsyncGenerator<true, T>(std::move(gen))) {}
 
   using promise_type = folly::coro::detail::AsyncGeneratorPromise<T&&, T>;
 #endif

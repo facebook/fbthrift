@@ -107,6 +107,11 @@ void ClientStreamBridge::onStreamComplete() {
   serverClose();
 }
 
+bool ClientStreamBridge::onStreamHeaders(HeadersPayload&& payload) {
+  serverPush(folly::Try<StreamPayload>(StreamPayload(std::move(payload))));
+  return true;
+}
+
 void ClientStreamBridge::resetServerCallback(
     StreamServerCallback& serverCallback) {
   streamServerCallback_ = &serverCallback;
