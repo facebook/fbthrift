@@ -35,6 +35,41 @@ struct __fbthrift_strings_<%program:name%> {
   <%/program:fatal_identifiers%>
 };
 
+struct <%program:name%>_module_traits {
+  using strings = __fbthrift_strings_<%program:name%>;
+  using name = strings::<%program:name%>;
+  using namespaces = ::fatal::list<
+      <%#program:fatal_languages%><%#fatal_languages:items%>
+      ::fatal::pair<strings::<%language:safe_name%>, strings::<%language:safe_namespace%>><%^last?%>,<%/last?%>
+      <%/fatal_languages:items%><%/program:fatal_languages%>
+  >;
+  using enums = ::fatal::list<
+      <%#program:fatal_enums%><%#fatal_strings:items%>
+      ::fatal::pair<<% > common/namespace_cpp2%><%fatal_string:name%>, strings::<%fatal_string:name%>><%^last?%>,<%/last?%>
+      <%/fatal_strings:items%><%/program:fatal_enums%>
+  >;
+  using unions = ::fatal::list<
+      <%#program:fatal_unions%><%#fatal_strings:items%>
+      ::fatal::pair<<% > common/namespace_cpp2%><%fatal_string:name%>, strings::<%fatal_string:name%>><%^last?%>,<%/last?%>
+      <%/fatal_strings:items%><%/program:fatal_unions%>
+  >;
+  using structs = ::fatal::list<
+      <%#program:fatal_structs%><%#fatal_strings:items%>
+      ::fatal::pair<<% > common/namespace_cpp2%><%fatal_string:name%>, strings::<%fatal_string:name%>><%^last?%>,<%/last?%>
+      <%/fatal_strings:items%><%/program:fatal_structs%>
+  >;
+  using constants = ::fatal::list<
+      <%#program:fatal_constants%><%#fatal_strings:items%>
+      strings::<%fatal_string:name%><%^last?%>,<%/last?%>
+      <%/fatal_strings:items%><%/program:fatal_constants%>
+  >;
+  using services = ::fatal::list<
+      <%#program:fatal_services%><%#fatal_strings:items%>
+      strings::<%fatal_string:name%><%^last?%>,<%/last?%>
+      <%/fatal_strings:items%><%/program:fatal_services%>
+  >;
+};
+
 } // __fbthrift_refl
 
 class <%program:name%>_tags {
@@ -71,46 +106,7 @@ class <%program:name%>_tags {
   using services = __fbthrift_services;
 };
 
-THRIFT_REGISTER_REFLECTION_METADATA(
-  <%program:name%>_tags::module,
-  __fbthrift_refl::__fbthrift_strings_<%program:name%>::<%program:name%>,
-  // languages
-  ::fatal::list<
-    <%#program:fatal_languages%><%#fatal_languages:items%>
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_<%program:name%>::<%language:safe_name%>, __fbthrift_refl::__fbthrift_strings_<%program:name%>::<%language:safe_namespace%>><%^last?%>,<%/last?%>
-    <%/fatal_languages:items%><%/program:fatal_languages%>
-  >,
-  // enums
-  ::fatal::list<
-    <%#program:fatal_enums%><%#fatal_strings:items%>
-    ::fatal::pair<<%fatal_string:name%>, __fbthrift_refl::__fbthrift_strings_<%program:name%>::<%fatal_string:name%>><%^last?%>,<%/last?%>
-    <%/fatal_strings:items%><%/program:fatal_enums%>
-  >,
-  // unions
-  ::fatal::list<
-    <%#program:fatal_unions%><%#fatal_strings:items%>
-    ::fatal::pair<<%fatal_string:name%>, __fbthrift_refl::__fbthrift_strings_<%program:name%>::<%fatal_string:name%>><%^last?%>,<%/last?%>
-    <%/fatal_strings:items%><%/program:fatal_unions%>
-  >,
-  // structs
-  ::fatal::list<
-    <%#program:fatal_structs%><%#fatal_strings:items%>
-    ::fatal::pair<<%fatal_string:name%>, __fbthrift_refl::__fbthrift_strings_<%program:name%>::<%fatal_string:name%>><%^last?%>,<%/last?%>
-    <%/fatal_strings:items%><%/program:fatal_structs%>
-  >,
-  // constants
-  ::fatal::list<
-    <%#program:fatal_constants%><%#fatal_strings:items%>
-    __fbthrift_refl::__fbthrift_strings_<%program:name%>::<%fatal_string:name%><%^last?%>,<%/last?%>
-    <%/fatal_strings:items%><%/program:fatal_constants%>
-  >,
-  // services
-  ::fatal::list<
-    <%#program:fatal_services%><%#fatal_strings:items%>
-    __fbthrift_refl::__fbthrift_strings_<%program:name%>::<%fatal_string:name%><%^last?%>,<%/last?%>
-    <%/fatal_strings:items%><%/program:fatal_services%>
-  >
-);
+THRIFT_REGISTER_REFLECTION_METADATA(<%program:name%>_tags::module, __fbthrift_refl::<%program:name%>_module_traits);
 
 <% > common/namespace_cpp2_end%>
 

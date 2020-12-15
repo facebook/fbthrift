@@ -224,6 +224,62 @@ struct __fbthrift_strings_module {
   using z = ::fatal::sequence<char, 'z'>;
 };
 
+struct module_module_traits {
+  using strings = __fbthrift_strings_module;
+  using name = strings::module;
+  using namespaces = ::fatal::list<
+      ::fatal::pair<strings::cpp, strings::test_cpp1__cpp_reflection>,
+      ::fatal::pair<strings::cpp2, strings::test_cpp2__cpp_reflection>,
+      ::fatal::pair<strings::d, strings::test_d_cpp_reflection>,
+      ::fatal::pair<strings::java, strings::test_java_cpp_reflection>,
+      ::fatal::pair<strings::java_swift, strings::test_swift_cpp_reflection>,
+      ::fatal::pair<strings::php, strings::test_php_cpp_reflection>,
+      ::fatal::pair<strings::py3, strings::test_py_cpp_reflection>
+  >;
+  using enums = ::fatal::list<
+      ::fatal::pair<::test_cpp2::cpp_reflection::enum1, strings::enum1>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::enum2, strings::enum2>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::enum3, strings::enum3>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::enum_with_special_names, strings::enum_with_special_names>
+  >;
+  using unions = ::fatal::list<
+      ::fatal::pair<::test_cpp2::cpp_reflection::union1, strings::union1>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::union2, strings::union2>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::union3, strings::union3>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::unionA, strings::unionA>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::union_with_special_names, strings::union_with_special_names>
+  >;
+  using structs = ::fatal::list<
+      ::fatal::pair<::test_cpp2::cpp_reflection::structA, strings::structA>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::structB, strings::structB>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::structC, strings::structC>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct1, strings::struct1>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct2, strings::struct2>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct3, strings::struct3>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct4, strings::struct4>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct5, strings::struct5>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct_binary, strings::struct_binary>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::dep_A_struct, strings::dep_A_struct>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::dep_B_struct, strings::dep_B_struct>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::annotated, strings::annotated>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct_with_special_names, strings::struct_with_special_names>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::struct_with_indirections, strings::struct_with_indirections>,
+      ::fatal::pair<::test_cpp2::cpp_reflection::my_structA, strings::my_structA>
+  >;
+  using constants = ::fatal::list<
+      strings::constant1,
+      strings::constant2,
+      strings::constant3,
+      strings::constant_with_special_name
+  >;
+  using services = ::fatal::list<
+      strings::service1,
+      strings::service2,
+      strings::service3,
+      strings::service_with_special_names
+  >;
+};
+
 } // __fbthrift_refl
 
 class module_tags {
@@ -291,67 +347,7 @@ class module_tags {
   using services = __fbthrift_services;
 };
 
-THRIFT_REGISTER_REFLECTION_METADATA(
-  module_tags::module,
-  __fbthrift_refl::__fbthrift_strings_module::module,
-  // languages
-  ::fatal::list<
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::cpp, __fbthrift_refl::__fbthrift_strings_module::test_cpp1__cpp_reflection>,
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::cpp2, __fbthrift_refl::__fbthrift_strings_module::test_cpp2__cpp_reflection>,
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::d, __fbthrift_refl::__fbthrift_strings_module::test_d_cpp_reflection>,
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::java, __fbthrift_refl::__fbthrift_strings_module::test_java_cpp_reflection>,
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::java_swift, __fbthrift_refl::__fbthrift_strings_module::test_swift_cpp_reflection>,
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::php, __fbthrift_refl::__fbthrift_strings_module::test_php_cpp_reflection>,
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::py3, __fbthrift_refl::__fbthrift_strings_module::test_py_cpp_reflection>
-  >,
-  // enums
-  ::fatal::list<
-    ::fatal::pair<enum1, __fbthrift_refl::__fbthrift_strings_module::enum1>,
-    ::fatal::pair<enum2, __fbthrift_refl::__fbthrift_strings_module::enum2>,
-    ::fatal::pair<enum3, __fbthrift_refl::__fbthrift_strings_module::enum3>,
-    ::fatal::pair<enum_with_special_names, __fbthrift_refl::__fbthrift_strings_module::enum_with_special_names>
-  >,
-  // unions
-  ::fatal::list<
-    ::fatal::pair<union1, __fbthrift_refl::__fbthrift_strings_module::union1>,
-    ::fatal::pair<union2, __fbthrift_refl::__fbthrift_strings_module::union2>,
-    ::fatal::pair<union3, __fbthrift_refl::__fbthrift_strings_module::union3>,
-    ::fatal::pair<unionA, __fbthrift_refl::__fbthrift_strings_module::unionA>,
-    ::fatal::pair<union_with_special_names, __fbthrift_refl::__fbthrift_strings_module::union_with_special_names>
-  >,
-  // structs
-  ::fatal::list<
-    ::fatal::pair<structA, __fbthrift_refl::__fbthrift_strings_module::structA>,
-    ::fatal::pair<structB, __fbthrift_refl::__fbthrift_strings_module::structB>,
-    ::fatal::pair<structC, __fbthrift_refl::__fbthrift_strings_module::structC>,
-    ::fatal::pair<struct1, __fbthrift_refl::__fbthrift_strings_module::struct1>,
-    ::fatal::pair<struct2, __fbthrift_refl::__fbthrift_strings_module::struct2>,
-    ::fatal::pair<struct3, __fbthrift_refl::__fbthrift_strings_module::struct3>,
-    ::fatal::pair<struct4, __fbthrift_refl::__fbthrift_strings_module::struct4>,
-    ::fatal::pair<struct5, __fbthrift_refl::__fbthrift_strings_module::struct5>,
-    ::fatal::pair<struct_binary, __fbthrift_refl::__fbthrift_strings_module::struct_binary>,
-    ::fatal::pair<dep_A_struct, __fbthrift_refl::__fbthrift_strings_module::dep_A_struct>,
-    ::fatal::pair<dep_B_struct, __fbthrift_refl::__fbthrift_strings_module::dep_B_struct>,
-    ::fatal::pair<annotated, __fbthrift_refl::__fbthrift_strings_module::annotated>,
-    ::fatal::pair<struct_with_special_names, __fbthrift_refl::__fbthrift_strings_module::struct_with_special_names>,
-    ::fatal::pair<struct_with_indirections, __fbthrift_refl::__fbthrift_strings_module::struct_with_indirections>,
-    ::fatal::pair<my_structA, __fbthrift_refl::__fbthrift_strings_module::my_structA>
-  >,
-  // constants
-  ::fatal::list<
-    __fbthrift_refl::__fbthrift_strings_module::constant1,
-    __fbthrift_refl::__fbthrift_strings_module::constant2,
-    __fbthrift_refl::__fbthrift_strings_module::constant3,
-    __fbthrift_refl::__fbthrift_strings_module::constant_with_special_name
-  >,
-  // services
-  ::fatal::list<
-    __fbthrift_refl::__fbthrift_strings_module::service1,
-    __fbthrift_refl::__fbthrift_strings_module::service2,
-    __fbthrift_refl::__fbthrift_strings_module::service3,
-    __fbthrift_refl::__fbthrift_strings_module::service_with_special_names
-  >
-);
+THRIFT_REGISTER_REFLECTION_METADATA(module_tags::module, __fbthrift_refl::module_module_traits);
 
 }} // test_cpp2::cpp_reflection
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_fatal_types.h"

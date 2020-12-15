@@ -323,14 +323,7 @@ using reflect_type_class_of_thrift_class_enum =
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <
-    typename Name,
-    typename Namespaces,
-    typename Enums,
-    typename Unions,
-    typename Structs,
-    typename Constants,
-    typename Services>
+template <typename Traits>
 struct reflected_module {
   /**
    * The name.
@@ -353,7 +346,7 @@ struct reflected_module {
    *  //   char, 'M', 'y', 'M', 'o', 'd', 'u', 'l', 'e',
    *  // >`
    */
-  using name = Name;
+  using name = typename Traits::name;
 
   /**
    * The map from language to namespace.
@@ -403,7 +396,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using namespaces = Namespaces;
+  using namespaces = typename Traits::namespaces;
 
   /**
    * The list of enumerations with reflection metadata available.
@@ -417,7 +410,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using enums = Enums;
+  using enums = typename Traits::enums;
 
   /**
    * The list of unions with reflection metadata available.
@@ -431,7 +424,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using unions = Unions;
+  using unions = typename Traits::unions;
 
   /**
    * The list of structs with reflection metadata available.
@@ -442,7 +435,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using structs = Structs;
+  using structs = typename Traits::structs;
 
   /**
    * The list of services with reflection metadata available.
@@ -452,7 +445,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using services = Services;
+  using services = typename Traits::services;
 };
 
 /**

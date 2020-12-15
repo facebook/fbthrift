@@ -38,6 +38,34 @@ struct __fbthrift_strings_enums {
   using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
 };
 
+struct enums_module_traits {
+  using strings = __fbthrift_strings_enums;
+  using name = strings::enums;
+  using namespaces = ::fatal::list<
+      ::fatal::pair<strings::cpp2, strings::facebook__ns__qwerty>
+  >;
+  using enums = ::fatal::list<
+      ::fatal::pair<::facebook::ns::qwerty::AnEnumA, strings::AnEnumA>,
+      ::fatal::pair<::facebook::ns::qwerty::AnEnumB, strings::AnEnumB>,
+      ::fatal::pair<::facebook::ns::qwerty::AnEnumC, strings::AnEnumC>,
+      ::fatal::pair<::facebook::ns::qwerty::AnEnumD, strings::AnEnumD>,
+      ::fatal::pair<::facebook::ns::qwerty::AnEnumE, strings::AnEnumE>
+  >;
+  using unions = ::fatal::list<
+  >;
+  using structs = ::fatal::list<
+      ::fatal::pair<::facebook::ns::qwerty::SomeStruct, strings::SomeStruct>
+  >;
+  using constants = ::fatal::list<
+      strings::MapStringEnum,
+      strings::MapEnumString,
+      strings::ConstantMap1,
+      strings::ConstantMap2
+  >;
+  using services = ::fatal::list<
+  >;
+};
+
 } // __fbthrift_refl
 
 class enums_tags {
@@ -77,39 +105,7 @@ class enums_tags {
   using services = __fbthrift_services;
 };
 
-THRIFT_REGISTER_REFLECTION_METADATA(
-  enums_tags::module,
-  __fbthrift_refl::__fbthrift_strings_enums::enums,
-  // languages
-  ::fatal::list<
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_enums::cpp2, __fbthrift_refl::__fbthrift_strings_enums::facebook__ns__qwerty>
-  >,
-  // enums
-  ::fatal::list<
-    ::fatal::pair<AnEnumA, __fbthrift_refl::__fbthrift_strings_enums::AnEnumA>,
-    ::fatal::pair<AnEnumB, __fbthrift_refl::__fbthrift_strings_enums::AnEnumB>,
-    ::fatal::pair<AnEnumC, __fbthrift_refl::__fbthrift_strings_enums::AnEnumC>,
-    ::fatal::pair<AnEnumD, __fbthrift_refl::__fbthrift_strings_enums::AnEnumD>,
-    ::fatal::pair<AnEnumE, __fbthrift_refl::__fbthrift_strings_enums::AnEnumE>
-  >,
-  // unions
-  ::fatal::list<
-  >,
-  // structs
-  ::fatal::list<
-    ::fatal::pair<SomeStruct, __fbthrift_refl::__fbthrift_strings_enums::SomeStruct>
-  >,
-  // constants
-  ::fatal::list<
-    __fbthrift_refl::__fbthrift_strings_enums::MapStringEnum,
-    __fbthrift_refl::__fbthrift_strings_enums::MapEnumString,
-    __fbthrift_refl::__fbthrift_strings_enums::ConstantMap1,
-    __fbthrift_refl::__fbthrift_strings_enums::ConstantMap2
-  >,
-  // services
-  ::fatal::list<
-  >
-);
+THRIFT_REGISTER_REFLECTION_METADATA(enums_tags::module, __fbthrift_refl::enums_module_traits);
 
 }}} // facebook::ns::qwerty
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_fatal_types.h"

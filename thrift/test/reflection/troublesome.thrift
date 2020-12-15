@@ -22,13 +22,12 @@ enum EnumAndValue {
   EnumAndValue = 1,
 }
 
-// TODO(afuller): Make this work.
-// enum EnumAndUnion_Type {
-//   foo = 0,
-// }
-// union EnumAndUnion {
-//   1: i32 foo;
-// }
+enum EnumAndUnion_Type {
+  foo = 0,
+}
+union EnumAndUnion {
+  1: i32 foo;
+}
 
 // Names used in fatal reflection code gen.
 enum enums {
@@ -73,6 +72,5 @@ exception exceptions {
 service services {
 }
 const i32 constants = 1;
-// TODO(afuller): Make this work.
-// const i32 apache_thrift_test_troublesome__unique_strings_list = 2;
 const i32 troublesome__unique_strings_list = 2;
+const i32 apache_thrift_test_troublesome__unique_strings_list = 2;

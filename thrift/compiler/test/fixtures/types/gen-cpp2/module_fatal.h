@@ -116,6 +116,53 @@ struct __fbthrift_strings_module {
   using zero = ::fatal::sequence<char, 'z', 'e', 'r', 'o'>;
 };
 
+struct module_module_traits {
+  using strings = __fbthrift_strings_module;
+  using name = strings::module;
+  using namespaces = ::fatal::list<
+      ::fatal::pair<strings::cpp, strings::apache__thrift__fixtures__types>,
+      ::fatal::pair<strings::cpp2, strings::apache__thrift__fixtures__types>
+  >;
+  using enums = ::fatal::list<
+      ::fatal::pair<::apache::thrift::fixtures::types::has_bitwise_ops, strings::has_bitwise_ops>,
+      ::fatal::pair<::apache::thrift::fixtures::types::is_unscoped, strings::is_unscoped>,
+      ::fatal::pair<::apache::thrift::fixtures::types::MyForwardRefEnum, strings::MyForwardRefEnum>,
+      ::fatal::pair<::apache::thrift::fixtures::types::MyEnumA, strings::MyEnumA>
+  >;
+  using unions = ::fatal::list<
+      ::fatal::pair<::apache::thrift::fixtures::types::NoExceptMoveUnion, strings::NoExceptMoveUnion>
+  >;
+  using structs = ::fatal::list<
+      ::fatal::pair<::apache::thrift::fixtures::types::decorated_struct, strings::decorated_struct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::ContainerStruct, strings::ContainerStruct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::CppTypeStruct, strings::CppTypeStruct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::VirtualStruct, strings::VirtualStruct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum, strings::MyStructWithForwardRefEnum>,
+      ::fatal::pair<::apache::thrift::fixtures::types::TrivialNumeric, strings::TrivialNumeric>,
+      ::fatal::pair<::apache::thrift::fixtures::types::TrivialNestedWithDefault, strings::TrivialNestedWithDefault>,
+      ::fatal::pair<::apache::thrift::fixtures::types::ComplexString, strings::ComplexString>,
+      ::fatal::pair<::apache::thrift::fixtures::types::ComplexNestedWithDefault, strings::ComplexNestedWithDefault>,
+      ::fatal::pair<::apache::thrift::fixtures::types::MinPadding, strings::MinPadding>,
+      ::fatal::pair<::apache::thrift::fixtures::types::MyStruct, strings::MyStruct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::MyDataItem, strings::MyDataItem>,
+      ::fatal::pair<::apache::thrift::fixtures::types::Renaming, strings::Renaming>,
+      ::fatal::pair<::apache::thrift::fixtures::types::AnnotatedTypes, strings::AnnotatedTypes>,
+      ::fatal::pair<::apache::thrift::fixtures::types::ForwardUsageRoot, strings::ForwardUsageRoot>,
+      ::fatal::pair<::apache::thrift::fixtures::types::ForwardUsageStruct, strings::ForwardUsageStruct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::ForwardUsageByRef, strings::ForwardUsageByRef>,
+      ::fatal::pair<::apache::thrift::fixtures::types::NoexceptMoveEmpty, strings::NoexceptMoveEmpty>,
+      ::fatal::pair<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct, strings::NoexceptMoveSimpleStruct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct, strings::NoexceptMoveComplexStruct>,
+      ::fatal::pair<::apache::thrift::fixtures::types::AllocatorAware, strings::AllocatorAware>,
+      ::fatal::pair<::apache::thrift::fixtures::types::AllocatorAware2, strings::AllocatorAware2>
+  >;
+  using constants = ::fatal::list<
+  >;
+  using services = ::fatal::list<
+      strings::SomeService
+  >;
+};
+
 } // __fbthrift_refl
 
 class module_tags {
@@ -174,58 +221,7 @@ class module_tags {
   using services = __fbthrift_services;
 };
 
-THRIFT_REGISTER_REFLECTION_METADATA(
-  module_tags::module,
-  __fbthrift_refl::__fbthrift_strings_module::module,
-  // languages
-  ::fatal::list<
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::cpp, __fbthrift_refl::__fbthrift_strings_module::apache__thrift__fixtures__types>,
-    ::fatal::pair<__fbthrift_refl::__fbthrift_strings_module::cpp2, __fbthrift_refl::__fbthrift_strings_module::apache__thrift__fixtures__types>
-  >,
-  // enums
-  ::fatal::list<
-    ::fatal::pair<has_bitwise_ops, __fbthrift_refl::__fbthrift_strings_module::has_bitwise_ops>,
-    ::fatal::pair<is_unscoped, __fbthrift_refl::__fbthrift_strings_module::is_unscoped>,
-    ::fatal::pair<MyForwardRefEnum, __fbthrift_refl::__fbthrift_strings_module::MyForwardRefEnum>,
-    ::fatal::pair<MyEnumA, __fbthrift_refl::__fbthrift_strings_module::MyEnumA>
-  >,
-  // unions
-  ::fatal::list<
-    ::fatal::pair<NoExceptMoveUnion, __fbthrift_refl::__fbthrift_strings_module::NoExceptMoveUnion>
-  >,
-  // structs
-  ::fatal::list<
-    ::fatal::pair<decorated_struct, __fbthrift_refl::__fbthrift_strings_module::decorated_struct>,
-    ::fatal::pair<ContainerStruct, __fbthrift_refl::__fbthrift_strings_module::ContainerStruct>,
-    ::fatal::pair<CppTypeStruct, __fbthrift_refl::__fbthrift_strings_module::CppTypeStruct>,
-    ::fatal::pair<VirtualStruct, __fbthrift_refl::__fbthrift_strings_module::VirtualStruct>,
-    ::fatal::pair<MyStructWithForwardRefEnum, __fbthrift_refl::__fbthrift_strings_module::MyStructWithForwardRefEnum>,
-    ::fatal::pair<TrivialNumeric, __fbthrift_refl::__fbthrift_strings_module::TrivialNumeric>,
-    ::fatal::pair<TrivialNestedWithDefault, __fbthrift_refl::__fbthrift_strings_module::TrivialNestedWithDefault>,
-    ::fatal::pair<ComplexString, __fbthrift_refl::__fbthrift_strings_module::ComplexString>,
-    ::fatal::pair<ComplexNestedWithDefault, __fbthrift_refl::__fbthrift_strings_module::ComplexNestedWithDefault>,
-    ::fatal::pair<MinPadding, __fbthrift_refl::__fbthrift_strings_module::MinPadding>,
-    ::fatal::pair<MyStruct, __fbthrift_refl::__fbthrift_strings_module::MyStruct>,
-    ::fatal::pair<MyDataItem, __fbthrift_refl::__fbthrift_strings_module::MyDataItem>,
-    ::fatal::pair<Renaming, __fbthrift_refl::__fbthrift_strings_module::Renaming>,
-    ::fatal::pair<AnnotatedTypes, __fbthrift_refl::__fbthrift_strings_module::AnnotatedTypes>,
-    ::fatal::pair<ForwardUsageRoot, __fbthrift_refl::__fbthrift_strings_module::ForwardUsageRoot>,
-    ::fatal::pair<ForwardUsageStruct, __fbthrift_refl::__fbthrift_strings_module::ForwardUsageStruct>,
-    ::fatal::pair<ForwardUsageByRef, __fbthrift_refl::__fbthrift_strings_module::ForwardUsageByRef>,
-    ::fatal::pair<NoexceptMoveEmpty, __fbthrift_refl::__fbthrift_strings_module::NoexceptMoveEmpty>,
-    ::fatal::pair<NoexceptMoveSimpleStruct, __fbthrift_refl::__fbthrift_strings_module::NoexceptMoveSimpleStruct>,
-    ::fatal::pair<NoexceptMoveComplexStruct, __fbthrift_refl::__fbthrift_strings_module::NoexceptMoveComplexStruct>,
-    ::fatal::pair<AllocatorAware, __fbthrift_refl::__fbthrift_strings_module::AllocatorAware>,
-    ::fatal::pair<AllocatorAware2, __fbthrift_refl::__fbthrift_strings_module::AllocatorAware2>
-  >,
-  // constants
-  ::fatal::list<
-  >,
-  // services
-  ::fatal::list<
-    __fbthrift_refl::__fbthrift_strings_module::SomeService
-  >
-);
+THRIFT_REGISTER_REFLECTION_METADATA(module_tags::module, __fbthrift_refl::module_module_traits);
 
 }}}} // apache::thrift::fixtures::types
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_fatal_types.h"

@@ -23,6 +23,24 @@ struct __fbthrift_strings_reflection {
   using reflection = ::fatal::sequence<char, 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
 };
 
+struct reflection_module_traits {
+  using strings = __fbthrift_strings_reflection;
+  using name = strings::reflection;
+  using namespaces = ::fatal::list<
+  >;
+  using enums = ::fatal::list<
+  >;
+  using unions = ::fatal::list<
+  >;
+  using structs = ::fatal::list<
+      ::fatal::pair<::cpp2::ReflectionStruct, strings::ReflectionStruct>
+  >;
+  using constants = ::fatal::list<
+  >;
+  using services = ::fatal::list<
+  >;
+};
+
 } // __fbthrift_refl
 
 class reflection_tags {
@@ -52,29 +70,7 @@ class reflection_tags {
   using services = __fbthrift_services;
 };
 
-THRIFT_REGISTER_REFLECTION_METADATA(
-  reflection_tags::module,
-  __fbthrift_refl::__fbthrift_strings_reflection::reflection,
-  // languages
-  ::fatal::list<
-  >,
-  // enums
-  ::fatal::list<
-  >,
-  // unions
-  ::fatal::list<
-  >,
-  // structs
-  ::fatal::list<
-    ::fatal::pair<ReflectionStruct, __fbthrift_refl::__fbthrift_strings_reflection::ReflectionStruct>
-  >,
-  // constants
-  ::fatal::list<
-  >,
-  // services
-  ::fatal::list<
-  >
-);
+THRIFT_REGISTER_REFLECTION_METADATA(reflection_tags::module, __fbthrift_refl::reflection_module_traits);
 
 } // cpp2
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_fatal_types.h"

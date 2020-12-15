@@ -102,11 +102,11 @@ using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;
 } // namespace reflection_impl
 } // namespace detail
 
-#define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...)    \
+#define THRIFT_REGISTER_REFLECTION_METADATA(Tag, Traits) \
   FATAL_REGISTER_TYPE(                                   \
       ::apache::thrift::detail::reflection_metadata_tag, \
       Tag,                                               \
-      ::apache::thrift::reflected_module<__VA_ARGS__>)
+      ::apache::thrift::reflected_module<Traits>)
 
 #define THRIFT_REGISTER_STRUCT_TRAITS(Struct, ...)          \
   FATAL_REGISTER_TYPE(                                      \
