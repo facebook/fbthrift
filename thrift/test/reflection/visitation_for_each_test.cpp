@@ -21,8 +21,15 @@
 
 #include <typeindex>
 
-using namespace std;
-using namespace apache::thrift;
+using apache::thrift::field_ref;
+using apache::thrift::for_each_field;
+using apache::thrift::optional_field_ref;
+using apache::thrift::required_field_ref;
+using std::deque;
+using std::is_same_v;
+using std::string;
+using std::type_index;
+using std::vector;
 
 namespace test_cpp2 {
 namespace cpp_reflection {
@@ -31,7 +38,7 @@ TEST(struct1, test_metadata) {
   struct1 s;
   for_each_field(s, [i = 0](auto& meta, auto&& ref) mutable {
     EXPECT_EQ(*meta.id_ref(), 1 << i);
-    EXPECT_EQ(*meta.name_ref(), "field" + to_string(i));
+    EXPECT_EQ(*meta.name_ref(), "field" + std::to_string(i));
     EXPECT_EQ(
         meta.type_ref()->getType(),
         (vector{
@@ -172,7 +179,7 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
-  for_each_field(move(s), [](auto& meta, auto&& ref) {
+  for_each_field(std::move(s), [](auto& meta, auto&& ref) {
     switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), int32_t&&>));
@@ -221,7 +228,7 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
-  for_each_field(move(t), [](auto& meta, auto&& ref) {
+  for_each_field(std::move(t), [](auto& meta, auto&& ref) {
     switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), const int32_t&&>));

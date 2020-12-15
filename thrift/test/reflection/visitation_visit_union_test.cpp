@@ -18,7 +18,6 @@
 #include <thrift/lib/thrift/gen-cpp2/metadata_visit_union.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
 #include <any>
-using namespace std;
 
 namespace apache {
 namespace thrift {
@@ -27,14 +26,14 @@ TEST(UnionFieldTest, basic) {
   Basic a;
   visit_union(a, [&](auto&&, auto&&) { FAIL(); });
 
-  static const string str = "foo";
+  static const std::string str = "foo";
   a.str_ref() = str;
   visit_union(a, [](auto&& meta, auto&& v) {
     EXPECT_EQ(*meta.name_ref(), "str");
     EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_primitive);
     EXPECT_EQ(*meta.id_ref(), 2);
     EXPECT_EQ(*meta.is_optional_ref(), false);
-    if constexpr (std::is_same_v<decltype(v), string&>) {
+    if constexpr (std::is_same_v<decltype(v), std::string&>) {
       EXPECT_EQ(v, str);
     } else {
       FAIL();
@@ -56,14 +55,14 @@ TEST(UnionFieldTest, basic) {
     }
   });
 
-  static const vector<int32_t> list_i32 = {3, 1, 2};
+  static const std::vector<int32_t> list_i32 = {3, 1, 2};
   a.list_i32_ref() = list_i32;
   visit_union(a, [](auto&& meta, auto&& v) {
     EXPECT_EQ(*meta.name_ref(), "list_i32");
     EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_list);
     EXPECT_EQ(*meta.id_ref(), 4);
     EXPECT_EQ(*meta.is_optional_ref(), false);
-    if constexpr (std::is_same_v<decltype(v), vector<int32_t>&>) {
+    if constexpr (std::is_same_v<decltype(v), std::vector<int32_t>&>) {
       EXPECT_EQ(v, list_i32);
     } else {
       FAIL();
@@ -76,11 +75,11 @@ TEST(UnionFieldTest, Metadata) {
   a.int64_ref() = 42;
   visit_union(a, [](auto&& m, auto&&) {
     // ThriftType itself is union, we can visit it like ordinary thrift union
-    visit_union(*m.type_ref(), [](auto&& meta, any value) {
+    visit_union(*m.type_ref(), [](auto&& meta, std::any value) {
       EXPECT_EQ(*meta.name_ref(), "t_primitive");
       EXPECT_EQ(meta.type_ref()->getType(), meta.type_ref()->t_enum);
       EXPECT_EQ(
-          any_cast<metadata::ThriftPrimitiveType>(value),
+          std::any_cast<metadata::ThriftPrimitiveType>(value),
           metadata::ThriftPrimitiveType::THRIFT_I64_TYPE);
     });
   });
