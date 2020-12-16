@@ -29,14 +29,7 @@ class AnEnumA_enum_traits {
   struct __fbthrift_value_FIELDA {
     using name = __fbthrift_strings::FIELDA;
     using value = std::integral_constant<type, type::FIELDA>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -50,13 +43,8 @@ class AnEnumA_enum_traits {
       member::FIELDA
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::FIELDA: return "FIELDA";
@@ -90,27 +78,13 @@ class AnEnumB_enum_traits {
   struct __fbthrift_value_FIELDA {
     using name = __fbthrift_strings::FIELDA;
     using value = std::integral_constant<type, type::FIELDA>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_FIELDB {
     using name = __fbthrift_strings::FIELDB;
     using value = std::integral_constant<type, type::FIELDB>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -126,13 +100,8 @@ class AnEnumB_enum_traits {
       member::FIELDB
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::FIELDA: return "FIELDA";
@@ -166,14 +135,7 @@ class AnEnumC_enum_traits {
   struct __fbthrift_value_FIELDC {
     using name = __fbthrift_strings::FIELDC;
     using value = std::integral_constant<type, type::FIELDC>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -187,13 +149,8 @@ class AnEnumC_enum_traits {
       member::FIELDC
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::FIELDC: return "FIELDC";
@@ -226,14 +183,7 @@ class AnEnumD_enum_traits {
   struct __fbthrift_value_FIELDD {
     using name = __fbthrift_strings::FIELDD;
     using value = std::integral_constant<type, type::FIELDD>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -247,13 +197,8 @@ class AnEnumD_enum_traits {
       member::FIELDD
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::FIELDD: return "FIELDD";
@@ -286,14 +231,7 @@ class AnEnumE_enum_traits {
   struct __fbthrift_value_FIELDA {
     using name = __fbthrift_strings::FIELDA;
     using value = std::integral_constant<type, type::FIELDA>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -307,13 +245,8 @@ class AnEnumE_enum_traits {
       member::FIELDA
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::FIELDA: return "FIELDA";

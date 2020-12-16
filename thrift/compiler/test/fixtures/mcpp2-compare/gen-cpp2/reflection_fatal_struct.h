@@ -19,23 +19,13 @@ namespace cpp2 {
 namespace __fbthrift_refl {
 
 class ReflectionStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_fieldA {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using fieldA = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldA>;
+      using fieldA = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 

@@ -76,8 +76,7 @@ class <%struct:name%>_tenum_traits {
     };
     <%/field:fatal_annotations?%>
     <%^field:fatal_annotations?%>
-    <% > fatal/fatal_empty_annotation%>
-
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
     <%/field:fatal_annotations?%>
   };
 
@@ -97,7 +96,7 @@ class <%struct:name%>_tenum_traits {
       <%/struct:fields%>
   >;
 
-  <% > fatal/fatal_empty_annotation%>
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
 
 
   static char const *to_string(type e, char const *fallback) {
@@ -184,8 +183,7 @@ class <%struct:name%>_variant_traits {
   };
   <%/struct:fatal_annotations?%>
   <%^struct:fatal_annotations?%>
-  <% > fatal/fatal_empty_annotation%>
-
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   <%/struct:fatal_annotations?%>
 
   static id get_id(type const &variant) {

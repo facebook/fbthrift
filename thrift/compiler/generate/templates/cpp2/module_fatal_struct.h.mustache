@@ -36,11 +36,11 @@ namespace __fbthrift_refl {
 
 <%#program:structs%><%^struct:union?%>
 class <%struct:name%>_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations<%^field:fatal_annotations?%> : public ::apache::thrift::detail::reflection_impl::no_annotations<%/field:fatal_annotations?%> {
     class __fbthrift_members {
       <%#struct:fields%>
+      <%#field:fatal_annotations?%>
       class __fbthrift_field_<%field:cpp_name%> {
-        <%#field:fatal_annotations?%>
         struct __fbthrift_keys {
           <%#field:fatal_annotations%>
           using <%annotation:safe_key%> = __fbthrift_strings_<%program:name%>::<%annotation:safe_key%>;
@@ -61,19 +61,18 @@ class <%struct:name%>_struct_traits {
             ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
             <%/field:fatal_annotations%>
         >;
-        <%/field:fatal_annotations?%>
-        <%^field:fatal_annotations?%>
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-        <%/field:fatal_annotations?%>
       };
 
+      <%/field:fatal_annotations?%>
       <%/struct:fields%>
      public:
       <%#struct:fields%>
+      <%#field:fatal_annotations?%>
       using <%field:cpp_name%> = ::apache::thrift::reflected_annotations<__fbthrift_field_<%field:cpp_name%>>;
+      <%/field:fatal_annotations?%>
+      <%^field:fatal_annotations?%>
+      using <%field:cpp_name%> = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      <%/field:fatal_annotations?%>
       <%/struct:fields%>
     };
 
@@ -100,11 +99,6 @@ class <%struct:name%>_struct_traits {
         ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
         <%/struct:fatal_annotations%>
     >;
-    <%/struct:fatal_annotations?%>
-    <%^struct:fatal_annotations?%>
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     <%/struct:fatal_annotations?%>
     using members = __fbthrift_members;
   };

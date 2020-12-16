@@ -31,6 +31,14 @@ namespace thrift {
 namespace detail {
 namespace reflection_impl {
 
+struct no_annotations {
+  using keys = void;
+  using values = void;
+  using map = ::fatal::list<>;
+};
+
+using reflected_no_annotations = reflected_annotations<no_annotations>;
+
 template <typename, typename T, typename Getter>
 struct has_isset_field_ : std::false_type {};
 template <typename T, typename Getter>

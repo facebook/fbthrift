@@ -20,17 +20,10 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 namespace __fbthrift_refl {
 
 class decorated_struct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_field {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using field = ::apache::thrift::reflected_annotations<__fbthrift_field_field>;
+      using field = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -84,79 +77,20 @@ class decorated_struct_struct_traits {
 };
 
 class ContainerStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_fieldA {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_fieldB {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_fieldC {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_fieldD {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_fieldE {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_fieldF {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_fieldG {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_fieldH {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using fieldA = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldA>;
-      using fieldB = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldB>;
-      using fieldC = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldC>;
-      using fieldD = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldD>;
-      using fieldE = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldE>;
-      using fieldF = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldF>;
-      using fieldG = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldG>;
-      using fieldH = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldH>;
+      using fieldA = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldB = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldC = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldD = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldE = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldF = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldG = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldH = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -282,23 +216,13 @@ class ContainerStruct_struct_traits {
 };
 
 class CppTypeStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_fieldA {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using fieldA = ::apache::thrift::reflected_annotations<__fbthrift_field_fieldA>;
+      using fieldA = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -333,17 +257,10 @@ class CppTypeStruct_struct_traits {
 };
 
 class VirtualStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_MyIntField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using MyIntField = ::apache::thrift::reflected_annotations<__fbthrift_field_MyIntField>;
+      using MyIntField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -394,31 +311,14 @@ class VirtualStruct_struct_traits {
 };
 
 class MyStructWithForwardRefEnum_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_a {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_b {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using a = ::apache::thrift::reflected_annotations<__fbthrift_field_a>;
-      using b = ::apache::thrift::reflected_annotations<__fbthrift_field_b>;
+      using a = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using b = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -466,31 +366,14 @@ class MyStructWithForwardRefEnum_struct_traits {
 };
 
 class TrivialNumeric_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_a {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_b {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using a = ::apache::thrift::reflected_annotations<__fbthrift_field_a>;
-      using b = ::apache::thrift::reflected_annotations<__fbthrift_field_b>;
+      using a = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using b = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -538,31 +421,14 @@ class TrivialNumeric_struct_traits {
 };
 
 class TrivialNestedWithDefault_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_z {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_n {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using z = ::apache::thrift::reflected_annotations<__fbthrift_field_z>;
-      using n = ::apache::thrift::reflected_annotations<__fbthrift_field_n>;
+      using z = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using n = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -610,31 +476,14 @@ class TrivialNestedWithDefault_struct_traits {
 };
 
 class ComplexString_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_a {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_b {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using a = ::apache::thrift::reflected_annotations<__fbthrift_field_a>;
-      using b = ::apache::thrift::reflected_annotations<__fbthrift_field_b>;
+      using a = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using b = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -682,31 +531,14 @@ class ComplexString_struct_traits {
 };
 
 class ComplexNestedWithDefault_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_z {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_n {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using z = ::apache::thrift::reflected_annotations<__fbthrift_field_z>;
-      using n = ::apache::thrift::reflected_annotations<__fbthrift_field_n>;
+      using z = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using n = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -754,49 +586,14 @@ class ComplexNestedWithDefault_struct_traits {
 };
 
 class MinPadding_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_small {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_big {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_medium {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_biggish {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_tiny {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using small = ::apache::thrift::reflected_annotations<__fbthrift_field_small>;
-      using big = ::apache::thrift::reflected_annotations<__fbthrift_field_big>;
-      using medium = ::apache::thrift::reflected_annotations<__fbthrift_field_medium>;
-      using biggish = ::apache::thrift::reflected_annotations<__fbthrift_field_biggish>;
-      using tiny = ::apache::thrift::reflected_annotations<__fbthrift_field_tiny>;
+      using small = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using big = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using medium = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using biggish = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using tiny = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -899,7 +696,7 @@ class MinPadding_struct_traits {
 };
 
 class MyDataItem_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
      public:
     };
@@ -939,41 +736,13 @@ class MyDataItem_struct_traits {
 };
 
 class MyStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_MyIntField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyStringField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_majorVer {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_data {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using MyIntField = ::apache::thrift::reflected_annotations<__fbthrift_field_MyIntField>;
-      using MyStringField = ::apache::thrift::reflected_annotations<__fbthrift_field_MyStringField>;
-      using majorVer = ::apache::thrift::reflected_annotations<__fbthrift_field_majorVer>;
-      using data = ::apache::thrift::reflected_annotations<__fbthrift_field_data>;
+      using MyIntField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyStringField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using majorVer = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using data = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -1063,23 +832,13 @@ class MyStruct_struct_traits {
 };
 
 class Renaming_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_bar {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using bar = ::apache::thrift::reflected_annotations<__fbthrift_field_bar>;
+      using bar = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -1114,31 +873,14 @@ class Renaming_struct_traits {
 };
 
 class AnnotatedTypes_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_binary_field {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_list_field {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using binary_field = ::apache::thrift::reflected_annotations<__fbthrift_field_binary_field>;
-      using list_field = ::apache::thrift::reflected_annotations<__fbthrift_field_list_field>;
+      using binary_field = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using list_field = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -1186,23 +928,13 @@ class AnnotatedTypes_struct_traits {
 };
 
 class ForwardUsageStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_foo {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using foo = ::apache::thrift::reflected_annotations<__fbthrift_field_foo>;
+      using foo = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -1237,31 +969,14 @@ class ForwardUsageStruct_struct_traits {
 };
 
 class ForwardUsageRoot_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_ForwardUsageStruct {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_ForwardUsageByRef {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using ForwardUsageStruct = ::apache::thrift::reflected_annotations<__fbthrift_field_ForwardUsageStruct>;
-      using ForwardUsageByRef = ::apache::thrift::reflected_annotations<__fbthrift_field_ForwardUsageByRef>;
+      using ForwardUsageStruct = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using ForwardUsageByRef = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -1309,23 +1024,13 @@ class ForwardUsageRoot_struct_traits {
 };
 
 class ForwardUsageByRef_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_foo {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using foo = ::apache::thrift::reflected_annotations<__fbthrift_field_foo>;
+      using foo = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<>;
     using members = __fbthrift_members;
   };
 
@@ -1360,7 +1065,7 @@ class ForwardUsageByRef_struct_traits {
 };
 
 class NoexceptMoveEmpty_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
      public:
     };
@@ -1400,17 +1105,10 @@ class NoexceptMoveEmpty_struct_traits {
 };
 
 class NoexceptMoveSimpleStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_boolField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using boolField = ::apache::thrift::reflected_annotations<__fbthrift_field_boolField>;
+      using boolField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -1461,81 +1159,18 @@ class NoexceptMoveSimpleStruct_struct_traits {
 };
 
 class NoexceptMoveComplexStruct_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_MyBoolField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyIntField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyStringField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyStringField2 {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyBinaryField {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyBinaryField2 {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyBinaryField3 {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyBinaryListField4 {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_MyMapEnumAndInt {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using MyBoolField = ::apache::thrift::reflected_annotations<__fbthrift_field_MyBoolField>;
-      using MyIntField = ::apache::thrift::reflected_annotations<__fbthrift_field_MyIntField>;
-      using MyStringField = ::apache::thrift::reflected_annotations<__fbthrift_field_MyStringField>;
-      using MyStringField2 = ::apache::thrift::reflected_annotations<__fbthrift_field_MyStringField2>;
-      using MyBinaryField = ::apache::thrift::reflected_annotations<__fbthrift_field_MyBinaryField>;
-      using MyBinaryField2 = ::apache::thrift::reflected_annotations<__fbthrift_field_MyBinaryField2>;
-      using MyBinaryField3 = ::apache::thrift::reflected_annotations<__fbthrift_field_MyBinaryField3>;
-      using MyBinaryListField4 = ::apache::thrift::reflected_annotations<__fbthrift_field_MyBinaryListField4>;
-      using MyMapEnumAndInt = ::apache::thrift::reflected_annotations<__fbthrift_field_MyMapEnumAndInt>;
+      using MyBoolField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyIntField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyStringField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyStringField2 = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyBinaryField = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyBinaryField2 = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyBinaryField3 = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyBinaryListField4 = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using MyMapEnumAndInt = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -1690,49 +1325,14 @@ class NoexceptMoveComplexStruct_struct_traits {
 };
 
 class AllocatorAware_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_aa_list {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_aa_set {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_aa_map {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_aa_string {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
-      class __fbthrift_field_not_a_container {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using aa_list = ::apache::thrift::reflected_annotations<__fbthrift_field_aa_list>;
-      using aa_set = ::apache::thrift::reflected_annotations<__fbthrift_field_aa_set>;
-      using aa_map = ::apache::thrift::reflected_annotations<__fbthrift_field_aa_map>;
-      using aa_string = ::apache::thrift::reflected_annotations<__fbthrift_field_aa_string>;
-      using not_a_container = ::apache::thrift::reflected_annotations<__fbthrift_field_not_a_container>;
+      using aa_list = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using aa_set = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using aa_map = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using aa_string = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using not_a_container = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {
@@ -1835,17 +1435,10 @@ class AllocatorAware_struct_traits {
 };
 
 class AllocatorAware2_struct_traits {
-  class __fbthrift_annotations {
+  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
     class __fbthrift_members {
-      class __fbthrift_field_not_a_container {
-       public:
-        using keys = void;
-        using values = void;
-        using map = ::fatal::list<>;
-      };
-
      public:
-      using not_a_container = ::apache::thrift::reflected_annotations<__fbthrift_field_not_a_container>;
+      using not_a_container = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
     };
 
     struct __fbthrift_keys {

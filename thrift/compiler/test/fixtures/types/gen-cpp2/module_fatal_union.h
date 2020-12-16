@@ -34,26 +34,14 @@ class NoExceptMoveUnion_tenum_traits {
     using name = __fbthrift_strings::string_field;
     using value = std::integral_constant<type, type::string_field>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_i32_field {
     using name = __fbthrift_strings::i32_field;
     using value = std::integral_constant<type, type::i32_field>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -69,13 +57,8 @@ class NoExceptMoveUnion_tenum_traits {
       member::i32_field
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {

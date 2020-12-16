@@ -33,66 +33,31 @@ class has_bitwise_ops_enum_traits {
   struct __fbthrift_value_none {
     using name = __fbthrift_strings::none;
     using value = std::integral_constant<type, type::none>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_zero {
     using name = __fbthrift_strings::zero;
     using value = std::integral_constant<type, type::zero>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_one {
     using name = __fbthrift_strings::one;
     using value = std::integral_constant<type, type::one>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_two {
     using name = __fbthrift_strings::two;
     using value = std::integral_constant<type, type::two>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_three {
     using name = __fbthrift_strings::three;
     using value = std::integral_constant<type, type::three>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -168,27 +133,13 @@ class is_unscoped_enum_traits {
   struct __fbthrift_value_hello {
     using name = __fbthrift_strings::hello;
     using value = std::integral_constant<type, type::hello>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_world {
     using name = __fbthrift_strings::world;
     using value = std::integral_constant<type, type::world>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -255,27 +206,13 @@ class MyForwardRefEnum_enum_traits {
   struct __fbthrift_value_ZERO {
     using name = __fbthrift_strings::ZERO;
     using value = std::integral_constant<type, type::ZERO>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_NONZERO {
     using name = __fbthrift_strings::NONZERO;
     using value = std::integral_constant<type, type::NONZERO>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -291,13 +228,8 @@ class MyForwardRefEnum_enum_traits {
       member::NONZERO
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::ZERO: return "ZERO";
@@ -333,40 +265,19 @@ class MyEnumA_enum_traits {
   struct __fbthrift_value_fieldA {
     using name = __fbthrift_strings::fieldA;
     using value = std::integral_constant<type, type::fieldA>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldB {
     using name = __fbthrift_strings::fieldB;
     using value = std::integral_constant<type, type::fieldB>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldC {
     using name = __fbthrift_strings::fieldC;
     using value = std::integral_constant<type, type::fieldC>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -384,13 +295,8 @@ class MyEnumA_enum_traits {
       member::fieldC
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::fieldA: return "fieldA";

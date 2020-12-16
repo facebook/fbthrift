@@ -37,52 +37,28 @@ class union1_tenum_traits {
     using name = __fbthrift_strings::ui;
     using value = std::integral_constant<type, type::ui>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_ud {
     using name = __fbthrift_strings::ud;
     using value = std::integral_constant<type, type::ud>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_us {
     using name = __fbthrift_strings::us;
     using value = std::integral_constant<type, type::us>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_ue {
     using name = __fbthrift_strings::ue;
     using value = std::integral_constant<type, type::ue>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -102,13 +78,8 @@ class union1_tenum_traits {
       member::ue
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -251,13 +222,7 @@ class union1_variant_traits {
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ue>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -291,52 +256,28 @@ class union2_tenum_traits {
     using name = __fbthrift_strings::ui_2;
     using value = std::integral_constant<type, type::ui_2>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_ud_2 {
     using name = __fbthrift_strings::ud_2;
     using value = std::integral_constant<type, type::ud_2>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_us_2 {
     using name = __fbthrift_strings::us_2;
     using value = std::integral_constant<type, type::us_2>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_ue_2 {
     using name = __fbthrift_strings::ue_2;
     using value = std::integral_constant<type, type::ue_2>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -356,13 +297,8 @@ class union2_tenum_traits {
       member::ue_2
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -505,13 +441,7 @@ class union2_variant_traits {
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ue_2>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -545,52 +475,28 @@ class union3_tenum_traits {
     using name = __fbthrift_strings::ui_3;
     using value = std::integral_constant<type, type::ui_3>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_ud_3 {
     using name = __fbthrift_strings::ud_3;
     using value = std::integral_constant<type, type::ud_3>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_us_3 {
     using name = __fbthrift_strings::us_3;
     using value = std::integral_constant<type, type::us_3>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_ue_3 {
     using name = __fbthrift_strings::ue_3;
     using value = std::integral_constant<type, type::ue_3>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -610,13 +516,8 @@ class union3_tenum_traits {
       member::ue_3
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -759,13 +660,7 @@ class union3_variant_traits {
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ue_3>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -800,65 +695,35 @@ class unionA_tenum_traits {
     using name = __fbthrift_strings::i;
     using value = std::integral_constant<type, type::i>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_d {
     using name = __fbthrift_strings::d;
     using value = std::integral_constant<type, type::d>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_s {
     using name = __fbthrift_strings::s;
     using value = std::integral_constant<type, type::s>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_e {
     using name = __fbthrift_strings::e;
     using value = std::integral_constant<type, type::e>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_a {
     using name = __fbthrift_strings::a;
     using value = std::integral_constant<type, type::a>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -880,13 +745,8 @@ class unionA_tenum_traits {
       member::a
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -1135,364 +995,196 @@ class union_with_special_names_tenum_traits {
     using name = __fbthrift_strings::get;
     using value = std::integral_constant<type, type::get>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_getter {
     using name = __fbthrift_strings::getter;
     using value = std::integral_constant<type, type::getter>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_lists {
     using name = __fbthrift_strings::lists;
     using value = std::integral_constant<type, type::lists>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_maps {
     using name = __fbthrift_strings::maps;
     using value = std::integral_constant<type, type::maps>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_name {
     using name = __fbthrift_strings::name;
     using value = std::integral_constant<type, type::name>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_name_to_value {
     using name = __fbthrift_strings::name_to_value;
     using value = std::integral_constant<type, type::name_to_value>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_names {
     using name = __fbthrift_strings::names;
     using value = std::integral_constant<type, type::names>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_prefix_tree {
     using name = __fbthrift_strings::prefix_tree;
     using value = std::integral_constant<type, type::prefix_tree>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_sets {
     using name = __fbthrift_strings::sets;
     using value = std::integral_constant<type, type::sets>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_setter {
     using name = __fbthrift_strings::setter;
     using value = std::integral_constant<type, type::setter>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_str {
     using name = __fbthrift_strings::str;
     using value = std::integral_constant<type, type::str>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_strings {
     using name = __fbthrift_strings::strings;
     using value = std::integral_constant<type, type::strings>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_type {
     using name = __fbthrift_strings::type;
     using value = std::integral_constant<type, type::type>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_value {
     using name = __fbthrift_strings::value;
     using value = std::integral_constant<type, type::value>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_value_to_name {
     using name = __fbthrift_strings::value_to_name;
     using value = std::integral_constant<type, type::value_to_name>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_values {
     using name = __fbthrift_strings::values;
     using value = std::integral_constant<type, type::values>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_id {
     using name = __fbthrift_strings::id;
     using value = std::integral_constant<type, type::id>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_ids {
     using name = __fbthrift_strings::ids;
     using value = std::integral_constant<type, type::ids>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_descriptor {
     using name = __fbthrift_strings::descriptor;
     using value = std::integral_constant<type, type::descriptor>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_descriptors {
     using name = __fbthrift_strings::descriptors;
     using value = std::integral_constant<type, type::descriptors>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_key {
     using name = __fbthrift_strings::key;
     using value = std::integral_constant<type, type::key>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_keys {
     using name = __fbthrift_strings::keys;
     using value = std::integral_constant<type, type::keys>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_annotation {
     using name = __fbthrift_strings::annotation;
     using value = std::integral_constant<type, type::annotation>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_annotations {
     using name = __fbthrift_strings::annotations;
     using value = std::integral_constant<type, type::annotations>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_member {
     using name = __fbthrift_strings::member;
     using value = std::integral_constant<type, type::member>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_members {
     using name = __fbthrift_strings::members;
     using value = std::integral_constant<type, type::members>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_field {
     using name = __fbthrift_strings::field;
     using value = std::integral_constant<type, type::field>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_fields {
     using name = __fbthrift_strings::fields;
     using value = std::integral_constant<type, type::fields>;
 
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -1560,13 +1252,8 @@ class union_with_special_names_tenum_traits {
       member::fields
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -2429,13 +2116,7 @@ class union_with_special_names_variant_traits {
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_fields>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();

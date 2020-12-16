@@ -45,7 +45,6 @@ class <%enum:name%>_enum_traits {
   struct __fbthrift_value_<%enumValue:cpp_name%> {
     using name = __fbthrift_strings::<%enumValue:cpp_name%>;
     using value = std::integral_constant<type, type::<%enumValue:cpp_name%>>;
-
     <%#enumValue:fatal_annotations?%>
     class annotations {
       struct __fbthrift_keys {
@@ -53,7 +52,6 @@ class <%enum:name%>_enum_traits {
         using <%annotation:safe_key%> = __fbthrift_strings_<%program:name%>::<%annotation:safe_key%>;
         <%/enumValue:fatal_annotations%>
       };
-
       struct __fbthrift_values {
         <%#enumValue:fatal_annotations%>
         using <%annotation:safe_key%> = <%annotation:fatal_string%>;
@@ -70,8 +68,7 @@ class <%enum:name%>_enum_traits {
     };
     <%/enumValue:fatal_annotations?%>
     <%^enumValue:fatal_annotations?%>
-    <% > fatal/fatal_empty_annotation%>
-
+    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
     <%/enumValue:fatal_annotations?%>
   };
 
@@ -117,7 +114,7 @@ class <%enum:name%>_enum_traits {
   };
   <%/enum:fatal_annotations?%>
   <%^enum:fatal_annotations?%>
-  <% > fatal/fatal_empty_annotation%>
+  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   <%/enum:fatal_annotations?%>
 
   static char const *to_string(type e, char const *fallback) {
