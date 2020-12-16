@@ -1004,7 +1004,7 @@ TEST_F(StreamingTest, CloseClientWithMultipleActiveStreams) {
 }
 
 TEST_F(StreamingTest, SetMaxRequests) {
-  server_->setMaxRequests(2);
+  server_->setMaxRequests(3);
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     apache::thrift::RpcOptions rpcOptions;
     rpcOptions.setChunkBufferSize(0);
@@ -1022,7 +1022,7 @@ TEST_F(StreamingTest, SetMaxRequests) {
 }
 
 TEST_F(StreamingTest, SetMaxRequestsStreamCancel) {
-  server_->setMaxRequests(2);
+  server_->setMaxRequests(3);
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     apache::thrift::RpcOptions rpcOptions;
     rpcOptions.setChunkBufferSize(0);

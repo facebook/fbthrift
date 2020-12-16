@@ -687,7 +687,7 @@ class MaxRequestsTest : public RequestInstrumentationTest,
   void SetUp() override {
     rocket = GetParam();
     impl_ = std::make_unique<Impl>([&](auto& ts) {
-      ts.setMaxRequests(1);
+      ts.setMaxRequests(rocket ? 2 : 1);
       ts.setMethodsBypassMaxRequestsLimit({"runCallback2"});
     });
   }

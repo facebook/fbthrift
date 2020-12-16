@@ -148,6 +148,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
     return &reqContext_;
   }
 
+  const transport::THeader& getTHeader() const {
+    return header_;
+  }
+
   const std::string& getMethodName() const {
     return reqContext_.getMethodName();
   }

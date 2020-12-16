@@ -369,38 +369,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
         std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
     return;
   }
-  // check if server is overloaded
-  static folly::Indestructible<transport::THeader::StringToStringMap>
-      emptyHeaders;
-  const auto& headers = metadata.otherMetadata_ref()
-      ? *metadata.otherMetadata_ref()
-      : *emptyHeaders;
-  const auto& name = *metadata.name_ref();
-  auto errorCode = serverConfigs_->checkOverload(&headers, &name);
-  if (UNLIKELY(errorCode.has_value())) {
-    handleRequestOverloadedServer(
-        makeRequest(
-            std::move(metadata), std::move(debugPayload), std::move(reqCtx)),
-        errorCode.value());
-    return;
-  }
-  auto preprocessResult =
-      serverConfigs_->preprocess({headers, name, connContext_});
-  if (UNLIKELY(preprocessResult.has_value())) {
-    auto req = makeRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx));
-    preprocessResult->apply_visitor(
-        apache::thrift::detail::VisitorHelper()
-            .with([&](AppClientException& ace) {
-              handleAppError(
-                  std::move(req), ace.name(), ace.getMessage(), true);
-            })
-            .with([&](const AppServerException& ase) {
-              handleAppError(
-                  std::move(req), ase.name(), ase.getMessage(), false);
-            }));
-    return;
-  }
 
   // check the checksum
   const bool badChecksum = metadata.crc32c_ref() &&
@@ -414,6 +382,30 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
+
+  // check if server is overloaded
+  const auto& headers = request->getTHeader().getHeaders();
+  const auto& name = request->getMethodName();
+  auto errorCode = serverConfigs_->checkOverload(&headers, &name);
+  if (UNLIKELY(errorCode.has_value())) {
+    handleRequestOverloadedServer(std::move(request), errorCode.value());
+    return;
+  }
+  auto preprocessResult =
+      serverConfigs_->preprocess({headers, name, connContext_});
+  if (UNLIKELY(preprocessResult.has_value())) {
+    preprocessResult->apply_visitor(
+        apache::thrift::detail::VisitorHelper()
+            .with([&](AppClientException& ace) {
+              handleAppError(
+                  std::move(request), ace.name(), ace.getMessage(), true);
+            })
+            .with([&](const AppServerException& ase) {
+              handleAppError(
+                  std::move(request), ase.name(), ase.getMessage(), false);
+            }));
+    return;
+  }
 
   logSetupConnectionEventsOnce(
       setupLoggingFlag_, request->getMethodName(), loggingContext_);
