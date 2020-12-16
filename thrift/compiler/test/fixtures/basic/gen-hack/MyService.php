@@ -1218,7 +1218,7 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
     $result = MyService_ping_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'ping', $args);
       await $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (\Exception $ex) {
@@ -1262,7 +1262,7 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'getRandomData', $args);
     $result = MyService_getRandomData_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getRandomData', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'getRandomData', $args);
       $result->success = await $this->handler->getRandomData();
       $this->eventHandler_->postExec($handler_ctx, 'getRandomData', $result);
     } catch (\Exception $ex) {
@@ -1306,7 +1306,7 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'hasDataById', $args);
     $result = MyService_hasDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'hasDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'hasDataById', $args);
       $result->success = await $this->handler->hasDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'hasDataById', $result);
     } catch (\Exception $ex) {
@@ -1350,7 +1350,7 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'getDataById', $args);
     $result = MyService_getDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'getDataById', $args);
       $result->success = await $this->handler->getDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'getDataById', $result);
     } catch (\Exception $ex) {
@@ -1394,7 +1394,7 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
     $result = MyService_putDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'putDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'putDataById', $args);
       await $this->handler->putDataById($args->id, $args->data);
       $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
     } catch (\Exception $ex) {
@@ -1437,7 +1437,7 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'lobDataById', $args);
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'lobDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'lobDataById', $args);
       await $this->handler->lobDataById($args->id, $args->data);
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
@@ -1471,7 +1471,7 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
     $result = MyService_ping_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'ping', $args);
       $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (\Exception $ex) {
@@ -1515,7 +1515,7 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'getRandomData', $args);
     $result = MyService_getRandomData_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getRandomData', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'getRandomData', $args);
       $result->success = $this->handler->getRandomData();
       $this->eventHandler_->postExec($handler_ctx, 'getRandomData', $result);
     } catch (\Exception $ex) {
@@ -1559,7 +1559,7 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'hasDataById', $args);
     $result = MyService_hasDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'hasDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'hasDataById', $args);
       $result->success = $this->handler->hasDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'hasDataById', $result);
     } catch (\Exception $ex) {
@@ -1603,7 +1603,7 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'getDataById', $args);
     $result = MyService_getDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'getDataById', $args);
       $result->success = $this->handler->getDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'getDataById', $result);
     } catch (\Exception $ex) {
@@ -1647,7 +1647,7 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
     $result = MyService_putDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'putDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'putDataById', $args);
       $this->handler->putDataById($args->id, $args->data);
       $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
     } catch (\Exception $ex) {
@@ -1690,7 +1690,7 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'lobDataById', $args);
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'lobDataById', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'lobDataById', $args);
       $this->handler->lobDataById($args->id, $args->data);
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;

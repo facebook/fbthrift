@@ -483,7 +483,7 @@ abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProce
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey0', $args);
     $result = DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getDataByKey0', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey0', $args);
       $result->success = await $this->handler->getDataByKey0($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey0', $result);
     } catch (\Exception $ex) {
@@ -527,7 +527,7 @@ abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProce
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey1', $args);
     $result = DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getDataByKey1', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey1', $args);
       $result->success = await $this->handler->getDataByKey1($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey1', $result);
     } catch (\Exception $ex) {
@@ -578,7 +578,7 @@ abstract class DbMixedStackArgumentsSyncProcessorBase extends \ThriftSyncProcess
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey0', $args);
     $result = DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getDataByKey0', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey0', $args);
       $result->success = $this->handler->getDataByKey0($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey0', $result);
     } catch (\Exception $ex) {
@@ -622,7 +622,7 @@ abstract class DbMixedStackArgumentsSyncProcessorBase extends \ThriftSyncProcess
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey1', $args);
     $result = DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'getDataByKey1', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey1', $args);
       $result->success = $this->handler->getDataByKey1($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey1', $result);
     } catch (\Exception $ex) {

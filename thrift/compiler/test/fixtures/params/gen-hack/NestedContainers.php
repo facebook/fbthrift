@@ -1075,7 +1075,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
     $result = NestedContainers_mapList_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapList', $args);
       await $this->handler->mapList($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapList', $result);
     } catch (\Exception $ex) {
@@ -1119,7 +1119,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
     $result = NestedContainers_mapSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapSet', $args);
       await $this->handler->mapSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapSet', $result);
     } catch (\Exception $ex) {
@@ -1163,7 +1163,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
     $result = NestedContainers_listMap_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listMap', $args);
       await $this->handler->listMap($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listMap', $result);
     } catch (\Exception $ex) {
@@ -1207,7 +1207,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
     $result = NestedContainers_listSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listSet', $args);
       await $this->handler->listSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listSet', $result);
     } catch (\Exception $ex) {
@@ -1251,7 +1251,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
     $result = NestedContainers_turtles_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'turtles', $args);
       await $this->handler->turtles($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'turtles', $result);
     } catch (\Exception $ex) {
@@ -1302,7 +1302,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
     $result = NestedContainers_mapList_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapList', $args);
       $this->handler->mapList($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapList', $result);
     } catch (\Exception $ex) {
@@ -1346,7 +1346,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
     $result = NestedContainers_mapSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapSet', $args);
       $this->handler->mapSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapSet', $result);
     } catch (\Exception $ex) {
@@ -1390,7 +1390,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
     $result = NestedContainers_listMap_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listMap', $args);
       $this->handler->listMap($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listMap', $result);
     } catch (\Exception $ex) {
@@ -1434,7 +1434,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
     $result = NestedContainers_listSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listSet', $args);
       $this->handler->listSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listSet', $result);
     } catch (\Exception $ex) {
@@ -1478,7 +1478,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
     $result = NestedContainers_turtles_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'turtles', $args);
       $this->handler->turtles($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'turtles', $result);
     } catch (\Exception $ex) {

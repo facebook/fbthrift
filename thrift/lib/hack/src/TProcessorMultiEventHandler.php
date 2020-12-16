@@ -80,12 +80,18 @@ final class TProcessorMultiEventHandler extends TProcessorEventHandler {
   // Exceptions thrown here are caught by handlerException and handlerError.
   public function preExec(
     mixed $handler_context,
+    string $service_name,
     string $fn_name,
     mixed $args,
   ): void {
     invariant($handler_context instanceof Map, 'Context is not a Map');
     foreach ($this->handlers as $key => $handler) {
-      $handler->preExec($handler_context->at($key), $fn_name, $args);
+      $handler->preExec(
+        $handler_context->at($key),
+        $service_name,
+        $fn_name,
+        $args
+      );
     }
   }
 

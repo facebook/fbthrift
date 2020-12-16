@@ -467,7 +467,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcess
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
     $result = MyServicePrioParent_ping_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'ping', $args);
       await $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (\Exception $ex) {
@@ -511,7 +511,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcess
     $this->eventHandler_->postRead($handler_ctx, 'pong', $args);
     $result = MyServicePrioParent_pong_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'pong', $args);
       await $this->handler->pong();
       $this->eventHandler_->postExec($handler_ctx, 'pong', $result);
     } catch (\Exception $ex) {
@@ -562,7 +562,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
     $result = MyServicePrioParent_ping_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'ping', $args);
       $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (\Exception $ex) {
@@ -606,7 +606,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor
     $this->eventHandler_->postRead($handler_ctx, 'pong', $args);
     $result = MyServicePrioParent_pong_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'pong', $args);
       $this->handler->pong();
       $this->eventHandler_->postExec($handler_ctx, 'pong', $result);
     } catch (\Exception $ex) {

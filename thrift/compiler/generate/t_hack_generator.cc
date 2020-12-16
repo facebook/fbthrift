@@ -3259,7 +3259,7 @@ void t_hack_generator::generate_process_function(
   vector<t_field*>::const_iterator f_iter;
 
   indent(f_service_) << "$this->eventHandler_->preExec($handler_ctx, '"
-                     << fn_name << "', $args);\n";
+                     << service_name << "', '" << fn_name << "', $args);\n";
 
   f_service_ << indent();
   if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {

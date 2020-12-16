@@ -271,7 +271,7 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
     $this->eventHandler_->postRead($handler_ctx, 'pang', $args);
     $result = MyServicePrioChild_pang_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioChild', 'pang', $args);
       await $this->handler->pang();
       $this->eventHandler_->postExec($handler_ctx, 'pang', $result);
     } catch (\Exception $ex) {
@@ -322,7 +322,7 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
     $this->eventHandler_->postRead($handler_ctx, 'pang', $args);
     $result = MyServicePrioChild_pang_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioChild', 'pang', $args);
       $this->handler->pang();
       $this->eventHandler_->postExec($handler_ctx, 'pang', $result);
     } catch (\Exception $ex) {

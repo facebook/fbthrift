@@ -394,7 +394,7 @@ abstract class BarAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
     $result = Bar_baz_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'Bar', 'baz', $args);
       $result->success = await $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
       $this->eventHandler_->postExec($handler_ctx, 'baz', $result);
     } catch (\Exception $ex) {
@@ -445,7 +445,7 @@ abstract class BarSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'baz', $args);
     $result = Bar_baz_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'Bar', 'baz', $args);
       $result->success = $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
       $this->eventHandler_->postExec($handler_ctx, 'baz', $result);
     } catch (\Exception $ex) {
