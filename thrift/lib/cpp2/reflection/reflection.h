@@ -1810,7 +1810,7 @@ using reflect_variant = reflected_variant<T>;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename Name, field_id_t Id, typename TypeClass>
+template <typename Traits>
 struct reflected_variant_member_metadata {
   /**
    * A compile-time string representing the name of this member.
@@ -1824,7 +1824,7 @@ struct reflected_variant_member_metadata {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using name = Name;
+  using name = typename Traits::name;
 
   /**
    * A `std::integral_constant` of type `field_id_t` representing the Thrift
@@ -1839,7 +1839,7 @@ struct reflected_variant_member_metadata {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using id = std::integral_constant<field_id_t, Id>;
+  using id = std::integral_constant<field_id_t, Traits::id>;
 
   /**
    * The type class for this member.
@@ -1853,7 +1853,7 @@ struct reflected_variant_member_metadata {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using type_class = TypeClass;
+  using type_class = typename Traits::type_class;
 };
 
 /**

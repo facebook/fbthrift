@@ -86,19 +86,6 @@ class NoExceptMoveUnion_tenum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::NoExceptMoveUnion_tenum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::NoExceptMoveUnion_tenum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
-  >
-);
-
-namespace __fbthrift_refl {
-
 class NoExceptMoveUnion_variant_traits {
  private:
   struct __fbthrift_ids {
@@ -106,8 +93,17 @@ class NoExceptMoveUnion_variant_traits {
     using i32_field = std::integral_constant<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type, ::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::i32_field>;
   };
 
-  struct __fbthrift_getters {
-    struct string_field {
+  struct __fbthrift_member_string_field {
+    using name = __fbthrift_strings_module::string_field;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    using type_class = ::apache::thrift::type_class::string;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::apache::thrift::fixtures::types::NoExceptMoveUnion &variant, Args &&...args) const {
+        return variant.set_string_field(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
       decltype(auto) operator ()(::apache::thrift::fixtures::types::NoExceptMoveUnion const &variant) const {
         return variant.get_string_field();
       }
@@ -118,7 +114,18 @@ class NoExceptMoveUnion_variant_traits {
         return std::move(variant).move_string_field();
       }
     };
-    struct i32_field {
+  };
+  struct __fbthrift_member_i32_field {
+    using name = __fbthrift_strings_module::i32_field;
+    static constexpr ::apache::thrift::field_id_t id = 2;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::apache::thrift::fixtures::types::NoExceptMoveUnion &variant, Args &&...args) const {
+        return variant.set_i32_field(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
       decltype(auto) operator ()(::apache::thrift::fixtures::types::NoExceptMoveUnion const &variant) const {
         return variant.get_i32_field();
       }
@@ -131,41 +138,24 @@ class NoExceptMoveUnion_variant_traits {
     };
   };
 
-  struct __fbthrift_setters {
-    struct string_field {
-      template <typename... Args>
-      decltype(auto) operator ()(::apache::thrift::fixtures::types::NoExceptMoveUnion &variant, Args &&...args) const {
-        return variant.set_string_field(std::forward<Args>(args)...);
-      }
-    };
-    struct i32_field {
-      template <typename... Args>
-      decltype(auto) operator ()(::apache::thrift::fixtures::types::NoExceptMoveUnion &variant, Args &&...args) const {
-        return variant.set_i32_field(std::forward<Args>(args)...);
-      }
-    };
-  };
-
  public:
   using type = ::apache::thrift::fixtures::types::NoExceptMoveUnion;
   using name = __fbthrift_strings_module::NoExceptMoveUnion;
   using id = type::Type;
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
-    ::fatal::variant_member_descriptor<
-      ::std::string,
-      __fbthrift_ids::string_field,
-      __fbthrift_getters::string_field,
-      __fbthrift_setters::string_field,
-      ::apache::thrift::reflected_variant_member_metadata<__fbthrift_strings_module::string_field, 1, ::apache::thrift::type_class::string>
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      __fbthrift_ids::i32_field,
-      __fbthrift_getters::i32_field,
-      __fbthrift_setters::i32_field,
-      ::apache::thrift::reflected_variant_member_metadata<__fbthrift_strings_module::i32_field, 2, ::apache::thrift::type_class::integral>
-    >
+      ::fatal::variant_member_descriptor<
+          ::std::string,
+           __fbthrift_ids::string_field,
+          __fbthrift_member_string_field::getter,
+          __fbthrift_member_string_field::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_string_field>>,
+      ::fatal::variant_member_descriptor<
+          int32_t,
+           __fbthrift_ids::i32_field,
+          __fbthrift_member_i32_field::getter,
+          __fbthrift_member_i32_field::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_i32_field>>
   >;
 
   class annotations {
@@ -181,7 +171,7 @@ class NoExceptMoveUnion_variant_traits {
     using keys = __fbthrift_keys;
     using values = __fbthrift_values;
     using map = ::fatal::list<
-      ::apache::thrift::annotation<keys::cpp_noexcept_move, values::cpp_noexcept_move>
+        ::apache::thrift::annotation<keys::cpp_noexcept_move, values::cpp_noexcept_move>
     >;
   };
 
@@ -199,12 +189,20 @@ class NoExceptMoveUnion_variant_traits {
 };
 
 } // __fbthrift_refl
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::NoExceptMoveUnion_tenum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::NoExceptMoveUnion_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
+  >
+);
 FATAL_REGISTER_VARIANT_TRAITS(
   __fbthrift_refl::NoExceptMoveUnion_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::NoExceptMoveUnion_variant_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(2244191815193815340ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::NoExceptMoveUnion_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(2244191815193815340ull)
   >
 );
 }}}} // apache::thrift::fixtures::types

@@ -69,9 +69,9 @@ class <%struct:name%>_tenum_traits {
       using keys = __fbthrift_keys;
       using values = __fbthrift_values;
       using map = ::fatal::list<
-        <%#field:fatal_annotations%>
-        ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
-        <%/field:fatal_annotations%>
+          <%#field:fatal_annotations%>
+          ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
+          <%/field:fatal_annotations%>
       >;
     };
     <%/field:fatal_annotations?%>
@@ -110,19 +110,6 @@ class <%struct:name%>_tenum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::<%struct:name%>_tenum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    <%program:name%>_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::<%struct:name%>_tenum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
-  >
-);
-
-namespace __fbthrift_refl {
-
 class <%struct:name%>_variant_traits {
  private:
   struct __fbthrift_ids {
@@ -131,9 +118,18 @@ class <%struct:name%>_variant_traits {
     <%/struct:fields%>
   };
 
-  struct __fbthrift_getters {
-    <%#struct:fields%>
-    struct <%field:cpp_name%> {
+  <%#struct:fields%>
+  struct __fbthrift_member_<%field:cpp_name%> {
+    using name = __fbthrift_strings_<%program:name%>::<%field:cpp_name%>;
+    static constexpr ::apache::thrift::field_id_t id = <%field:key%>;
+    using type_class = <%#field:type%><%type:fatal_type_class%><%/field:type%>;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> &variant, Args &&...args) const {
+        return variant.set_<%field:cpp_name%>(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
       decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> const &variant) const {
         return variant.get_<%field:cpp_name%>();
       }
@@ -144,19 +140,8 @@ class <%struct:name%>_variant_traits {
         return std::move(variant).move_<%field:cpp_name%>();
       }
     };
-    <%/struct:fields%>
   };
-
-  struct __fbthrift_setters {
-    <%#struct:fields%>
-    struct <%field:cpp_name%> {
-      template <typename... Args>
-      decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> &variant, Args &&...args) const {
-        return variant.set_<%field:cpp_name%>(std::forward<Args>(args)...);
-      }
-    };
-    <%/struct:fields%>
-  };
+  <%/struct:fields%>
 
  public:
   using type = <% > common/namespace_cpp2%><%struct:name%>;
@@ -164,14 +149,13 @@ class <%struct:name%>_variant_traits {
   using id = type::Type;
   using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
-    <%#struct:fields%>
-    ::fatal::variant_member_descriptor<
-      <%#field:type%><% > types/type%><%/field:type%>,
-      __fbthrift_ids::<%field:cpp_name%>,
-      __fbthrift_getters::<%field:cpp_name%>,
-      __fbthrift_setters::<%field:cpp_name%>,
-      ::apache::thrift::reflected_variant_member_metadata<__fbthrift_strings_<%program:name%>::<%field:cpp_name%>, <%field:key%>, <%#field:type%><%type:fatal_type_class%><%/field:type%>>
-    ><%^last?%>,<%/last?%>
+      <%#struct:fields%>
+      ::fatal::variant_member_descriptor<
+          <%#field:type%><% > types/type%><%/field:type%>,
+           __fbthrift_ids::<%field:cpp_name%>,
+          __fbthrift_member_<%field:cpp_name%>::getter,
+          __fbthrift_member_<%field:cpp_name%>::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_<%field:cpp_name%>>><%^last?%>,<%/last?%>
     <%/struct:fields%>
   >;
 
@@ -193,9 +177,9 @@ class <%struct:name%>_variant_traits {
     using keys = __fbthrift_keys;
     using values = __fbthrift_values;
     using map = ::fatal::list<
-      <%#struct:fatal_annotations%>
-      ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
-      <%/struct:fatal_annotations%>
+        <%#struct:fatal_annotations%>
+        ::apache::thrift::annotation<keys::<%annotation:safe_key%>, values::<%annotation:safe_key%>><%^last?%>,<%/last?%>
+        <%/struct:fatal_annotations%>
     >;
   };
   <%/struct:fatal_annotations?%>
@@ -220,12 +204,20 @@ class <%struct:name%>_variant_traits {
 } // __fbthrift_refl
 <%/struct:union?%><%/program:structs%>
 <%#program:structs%><%#struct:union?%>
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::<%struct:name%>_tenum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      <%program:name%>_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::<%struct:name%>_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
+  >
+);
 FATAL_REGISTER_VARIANT_TRAITS(
   __fbthrift_refl::<%struct:name%>_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    <%program:name%>_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::<%struct:name%>_variant_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(<%struct:legacy_type_id%>ull)
+      <%program:name%>_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::<%struct:name%>_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(<%struct:legacy_type_id%>ull)
   >
 );
 <%/struct:union?%><%/program:structs%>
