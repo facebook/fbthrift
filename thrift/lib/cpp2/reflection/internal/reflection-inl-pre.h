@@ -108,11 +108,11 @@ using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;
       Tag,                                               \
       ::apache::thrift::reflected_module<Traits>)
 
-#define THRIFT_REGISTER_STRUCT_TRAITS(Struct, ...)          \
+#define THRIFT_REGISTER_STRUCT_TRAITS(Struct, Traits)       \
   FATAL_REGISTER_TYPE(                                      \
       ::apache::thrift::detail::struct_traits_metadata_tag, \
       Struct,                                               \
-      ::apache::thrift::reflected_struct<Struct, __VA_ARGS__>)
+      ::apache::thrift::reflected_struct<Traits>)
 
 template <typename = void>
 struct reflected_annotations;
