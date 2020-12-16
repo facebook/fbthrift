@@ -200,8 +200,8 @@ TEST(ScopedServerInterfaceThread, TransportMemLimit) {
   auto serviceImpl = std::make_shared<SimpleServiceImpl>();
   ts->setProcessorFactory(serviceImpl);
   ts->setAddress({"::1", 0});
-  auto request = folly::IOBuf::create(5 * 1024 * 1024);
-  request->append(2 * 1024 * 1024);
+  auto request = folly::IOBuf::create(257 * 1024);
+  request->append(257 * 1024);
 
   ScopedServerInterfaceThread ssit(ts);
 
@@ -212,7 +212,8 @@ TEST(ScopedServerInterfaceThread, TransportMemLimit) {
   EXPECT_NO_THROW(cli->sync_largeRequest(request->clone()));
 
   // upper bound can be changed after server started
-  ts->setIngressMemoryLimit(1024 * 1024);
+  ts->setIngressMemoryLimit(256 * 1024);
+  ts->setMinPayloadSizeToEnforceIngressMemoryLimit(256 * 1024);
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   try {
     cli->sync_largeRequest(std::move(request));
