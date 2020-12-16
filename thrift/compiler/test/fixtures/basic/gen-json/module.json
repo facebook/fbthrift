@@ -40,7 +40,7 @@
       "annotation_last_lineno" : -1
     },
     "MyDataItem" : {
-      "lineno" : 34,
+      "lineno" : 35,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -49,7 +49,7 @@
       "annotation_last_lineno" : -1
     },
     "MyUnion" : {
-      "lineno" : 37,
+      "lineno" : 38,
       "is_exception" : false,
       "is_union" : true,
       "fields" : {
@@ -74,7 +74,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 43,
+      "lineno" : 44,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -155,7 +155,7 @@
       }
     },
     "DbMixedStackArguments" : {
-      "lineno" : 52,
+      "lineno" : 53,
       "functions" : {
         "DbMixedStackArguments.getDataByKey0" : {
           "return_type" : {

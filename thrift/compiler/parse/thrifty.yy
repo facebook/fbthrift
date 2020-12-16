@@ -260,6 +260,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_type*>          SetType
 %type<t_type*>          ListType
 
+%type<std::string>      Identifier
 %type<t_doc*>           Definition
 %type<t_type*>          TypeDefinition
 
@@ -350,6 +351,20 @@ Program:
       driver.clear_doctext();
     }
 
+Identifier:
+  tok_identifier
+    {
+      $$ = $1;
+    }
+| tok_sink /* Allow the keyword 'sink' in identifiers. */
+    {
+      $$ = "sink";
+    }
+| tok_oneway  /* Allow the keyword 'oneway' in identifiers. */
+    {
+      $$ = "oneway";
+    }
+
 CaptureDocText:
     {
       if (driver.mode == parsing_mode::PROGRAM) {
@@ -385,16 +400,16 @@ Header:
     {
       driver.debug("Header -> Include");
     }
-| tok_namespace tok_identifier tok_identifier
+| tok_namespace Identifier Identifier
     {
-      driver.debug("Header -> tok_namespace tok_identifier tok_identifier");
+      driver.debug("Header -> tok_namespace Identifier Identifier");
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->set_namespace($2, $3);
       }
     }
-| tok_namespace tok_identifier tok_literal
+| tok_namespace Identifier tok_literal
     {
-      driver.debug("Header -> tok_namespace tok_identifier tok_literal");
+      driver.debug("Header -> tok_namespace Identifier tok_literal");
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->set_namespace($2, $3);
       }
@@ -534,10 +549,10 @@ Typedef:
     {
       lineno_stack.push(LineType::kTypedef, driver.scanner->get_lineno());
     }
-  FieldType tok_identifier TypeAnnotations
+  FieldType Identifier TypeAnnotations
     {
       driver.debug("TypeDef => StructuredAnnotations tok_typedef FieldType "
-        "tok_identifier TypeAnnotations");
+        "Identifier TypeAnnotations");
       t_typedef *td = new t_typedef(driver.program, $4, $5, driver.scope_cache);
       $$ = td;
       $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
@@ -573,14 +588,14 @@ Enum:
     {
       lineno_stack.push(LineType::kEnum, driver.scanner->get_lineno());
     }
-  tok_identifier
+  Identifier
     {
       assert(!y_enum_name);
       y_enum_name = $4.c_str();
     }
   "{" EnumDefList "}" TypeAnnotations
     {
-      driver.debug("Enum => StructuredAnnotations tok_enum tok_identifier { EnumDefList } TypeAnnotations");
+      driver.debug("Enum => StructuredAnnotations tok_enum Identifier { EnumDefList } TypeAnnotations");
       $$ = $7;
       $$->set_name($4);
       $$->set_lineno(lineno_stack.pop(LineType::kEnum));
@@ -652,9 +667,9 @@ EnumDef:
     }
 
 EnumValue:
-  tok_identifier "=" tok_int_constant
+  Identifier "=" tok_int_constant
     {
-      driver.debug("EnumValue -> tok_identifier = tok_int_constant");
+      driver.debug("EnumValue -> Identifier = tok_int_constant");
       if ($3 < 0 && !driver.params.allow_neg_enum_vals) {
         driver.warning(1, "Negative value supplied for enum %s.", $1.c_str());
       }
@@ -671,9 +686,9 @@ EnumValue:
       $$->set_lineno(driver.scanner->get_lineno());
     }
 |
-  tok_identifier
+  Identifier
     {
-      driver.debug("EnumValue -> tok_identifier");
+      driver.debug("EnumValue -> Identifier");
       if (y_enum_val == INT32_MAX) {
         driver.failure("enum value overflow at enum %s", $1.c_str());
       }
@@ -689,9 +704,9 @@ Const:
     {
       lineno_stack.push(LineType::kConst, driver.scanner->get_lineno());
     }
-  FieldType tok_identifier "=" ConstValue TypeAnnotations CommaOrSemicolonOptional
+  FieldType Identifier "=" ConstValue TypeAnnotations CommaOrSemicolonOptional
     {
-      driver.debug("StructuredAnnotations Const => tok_const FieldType tok_identifier = ConstValue");
+      driver.debug("StructuredAnnotations Const => tok_const FieldType Identifier = ConstValue");
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = new t_const(driver.program, $4, $5, std::unique_ptr<t_const_value>($7));
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
@@ -743,9 +758,9 @@ ConstValue:
       driver.debug("ConstValue => tok_literal");
       $$ = new t_const_value($1);
     }
-| tok_identifier
+| Identifier
     {
-      driver.debug("ConstValue => tok_identifier");
+      driver.debug("ConstValue => Identifier");
       t_const* constant = driver.scope_cache->get_constant($1);
       driver.validate_not_ambiguous_enum($1);
       if (!constant) {
@@ -866,9 +881,9 @@ ConstStruct:
     }
 
 ConstStructType:
-  tok_identifier
+  Identifier
     {
-      driver.debug("ConstStructType -> tok_identifier");
+      driver.debug("ConstStructType -> Identifier");
       if (driver.mode == parsing_mode::INCLUDES) {
         // Ignore identifiers in include mode
         $$ = nullptr;
@@ -886,15 +901,15 @@ ConstStructType:
     }
 
 ConstStructContents:
-  ConstStructContents CommaOrSemicolon tok_identifier "=" ConstValue
+  ConstStructContents CommaOrSemicolon Identifier "=" ConstValue
     {
-      driver.debug("ConstStructContents => ConstStructContents CommaOrSemicolon tok_identifier = ConstValue");
+      driver.debug("ConstStructContents => ConstStructContents CommaOrSemicolon Identifier = ConstValue");
       $$ = $1;
       $$->add_map(std::make_unique<t_const_value>($3), std::unique_ptr<t_const_value>($5));
     }
-| tok_identifier "=" ConstValue
+| Identifier "=" ConstValue
     {
-      driver.debug("ConstStructContents => tok_identifier = ConstValue");
+      driver.debug("ConstStructContents => Identifier = ConstValue");
       $$ = new t_const_value();
       $$->set_map();
       $$->add_map(std::make_unique<t_const_value>($1), std::unique_ptr<t_const_value>($3));
@@ -915,9 +930,9 @@ Struct:
     {
       lineno_stack.push(LineType::kStruct, driver.scanner->get_lineno());
     }
-  tok_identifier "{" FieldList "}" TypeAnnotations
+  Identifier "{" FieldList "}" TypeAnnotations
     {
-      driver.debug("Struct => StructuredAnnotations StructHead tok_identifier "
+      driver.debug("Struct => StructuredAnnotations StructHead Identifier "
         "{ FieldList } TypeAnnotations");
       $$ = $6;
       $$->set_union($2 == struct_is_union);
@@ -941,10 +956,10 @@ Xception:
     {
       lineno_stack.push(LineType::kXception, driver.scanner->get_lineno());
     }
-  tok_identifier "{" FieldList "}" TypeAnnotations
+  Identifier "{" FieldList "}" TypeAnnotations
     {
       driver.debug("Xception => StructuredAnnotations tok_xception "
-        "tok_identifier { FieldList } TypeAnnotations");
+        "Identifier { FieldList } TypeAnnotations");
       $$ = $6;
       $$->set_name($4);
       $$->set_xception(true);
@@ -997,10 +1012,10 @@ Service:
     {
       lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
     }
-  tok_identifier Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
+  Identifier Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
     {
       driver.debug("Service => StructuredAnnotations tok_service "
-        "tok_identifier Extends { FlagArgs FunctionList UnflagArgs } "
+        "Identifier Extends { FlagArgs FunctionList UnflagArgs } "
         "FunctionAnnotations");
       $$ = $8;
       $$->set_name($4);
@@ -1028,9 +1043,9 @@ UnflagArgs:
     }
 
 Extends:
-  tok_extends tok_identifier
+  tok_extends Identifier
     {
-      driver.debug("Extends -> tok_extends tok_identifier");
+      driver.debug("Extends -> tok_extends Identifier");
       $$ = nullptr;
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = driver.scope_cache->get_service($2);
@@ -1052,9 +1067,9 @@ Interaction:
     {
       lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
     }
-  tok_identifier "{" FlagArgs FunctionList UnflagArgs "}" TypeAnnotations
+  Identifier "{" FlagArgs FunctionList UnflagArgs "}" TypeAnnotations
     {
-      driver.debug("Interaction -> tok_interaction tok_identifier { FunctionList }");
+      driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = $6;
       $$->set_name($3);
       $$->set_is_interaction();
@@ -1103,10 +1118,10 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText StructuredAnnotations Oneway FunctionType tok_identifier "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
+  CaptureDocText StructuredAnnotations Oneway FunctionType Identifier "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
     {
       driver.debug("Function => CaptureDocText StructuredAnnotations Oneway "
-        "FunctionType tok_identifier ( ParamList ) MaybeThrows "
+        "FunctionType Identifier ( ParamList ) MaybeThrows "
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
       auto* rettype = $4;
@@ -1231,10 +1246,10 @@ FieldList:
     }
 
 Field:
-  CaptureDocText StructuredAnnotations FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
+  CaptureDocText StructuredAnnotations FieldIdentifier FieldRequiredness FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
       driver.debug("Field => CaptureDocText FieldIdentifier FieldRequiredness "
-        "FieldType tok_identifier FieldValue TypeAnnotations "
+        "FieldType Identifier FieldValue TypeAnnotations "
         "StructuredAnnotations CommaOrSemicolonOptional");
       if ($3.auto_assigned) {
         driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts "
@@ -1426,7 +1441,8 @@ ResponseAndSinkReturnType:
     {
       driver.debug("ResponseAndSinkReturnType -> FieldType, SinkReturnType");
       $3->set_first_response($1);
-      $$ = $3;    }
+      $$ = $3;
+    }
 | SinkReturnType
     {
       driver.debug("ResponseAndSinkReturnType -> SinkReturnType");
@@ -1455,9 +1471,9 @@ SinkFieldType:
     }
 
 FieldType:
-  tok_identifier TypeAnnotations
+  Identifier TypeAnnotations
     {
-      driver.debug("FieldType => tok_identifier TypeAnnotations");
+      driver.debug("FieldType => Identifier TypeAnnotations");
       if (driver.mode == parsing_mode::INCLUDES) {
         // Ignore identifiers in include mode
         $$ = nullptr;
@@ -1632,7 +1648,7 @@ ListType:
     }
 
 TypeAnnotations:
-  "(" TypeAnnotationList CommaOrSemicolonOptional 
+  "(" TypeAnnotationList CommaOrSemicolonOptional
     {
       lineno_stack.push(LineType::kAnnotationLastLineno, driver.scanner->get_lineno());
     }
@@ -1679,7 +1695,7 @@ TypeAnnotationList:
     }
 
 TypeAnnotation:
-  tok_identifier "=" FieldType ConstMap
+  Identifier "=" FieldType ConstMap
     {
       driver.debug("TypeAnnotation TypeAnnotationValueObject");
       $$ = new t_annotation;
@@ -1694,7 +1710,7 @@ TypeAnnotation:
         driver.validate_const_type($$->object_val.get());
       }
     }
-| tok_identifier TypeAnnotationValue
+| Identifier TypeAnnotationValue
     {
       driver.debug("TypeAnnotation TypeAnnotationValue");
       $$ = new t_annotation;

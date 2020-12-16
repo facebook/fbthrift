@@ -55,16 +55,6 @@ static void unexpected_token(parsing_driver& driver, char* text) {
   driver.failure("Unexpected token in input: \"%s\"\n", text);
 }
 
-/**
- * Current level of '{}' blocks. Some keywords (e.g. 'sink') are considered as
- * reserved only if appears at some certain scope and might be used for other
- * purposes like field names.
- * Interactions count as services for this purpose.
- */
-int g_scope_level = 0;
-bool service_encountered = false;
-bool service_scope = false;
-
 %}
 
 /**
@@ -87,7 +77,6 @@ dliteral      ("\""[^"]*"\"")
 sliteral      ("'"[^']*"'")
 st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 
-
 %%
 
 {whitespace}         { /* do nothing */                 }
@@ -97,20 +86,12 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 {unixcomment}        { /* do nothing */                 }
 
 "{"                  {
-  if (g_scope_level == 0 && service_encountered) {
-    service_scope = true;
-  }
-  ++g_scope_level;
   return apache::thrift::compiler::yy::parser::make_tok_char_bracket_curly_l();
 }
 "}"                  {
-  --g_scope_level;
-  if (g_scope_level == 0 && service_encountered) {
-    service_encountered = false;
-    service_scope = false;
-  }
   return apache::thrift::compiler::yy::parser::make_tok_char_bracket_curly_r();
 }
+
 {symbol}             {
   switch (yytext[0]) {
   case ',':
@@ -164,18 +145,9 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "map"                { return apache::thrift::compiler::yy::parser::make_tok_map();                  }
 "list"               { return apache::thrift::compiler::yy::parser::make_tok_list();                 }
 "set"                { return apache::thrift::compiler::yy::parser::make_tok_set();                  }
-"sink"               {
-  if (service_scope) {
-    return apache::thrift::compiler::yy::parser::make_tok_sink();
-  } else {
-    return apache::thrift::compiler::yy::parser::make_tok_identifier(std::string{yytext});
-  }
-}
+"sink"               { return apache::thrift::compiler::yy::parser::make_tok_sink();                 }
 "stream"             { return apache::thrift::compiler::yy::parser::make_tok_stream();               }
-"interaction"        {
-  service_encountered = true; // treat sink as keyword inside interactions
-  return apache::thrift::compiler::yy::parser::make_tok_interaction();
-}
+"interaction"        { return apache::thrift::compiler::yy::parser::make_tok_interaction();          }
 "performs"           { return apache::thrift::compiler::yy::parser::make_tok_performs();             }
 "oneway"             { return apache::thrift::compiler::yy::parser::make_tok_oneway();               }
 "typedef"            { return apache::thrift::compiler::yy::parser::make_tok_typedef();              }
@@ -184,10 +156,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "exception"          { return apache::thrift::compiler::yy::parser::make_tok_xception();             }
 "extends"            { return apache::thrift::compiler::yy::parser::make_tok_extends();              }
 "throws"             { return apache::thrift::compiler::yy::parser::make_tok_throws();               }
-"service"            {
-  service_encountered = true;
-  return apache::thrift::compiler::yy::parser::make_tok_service();
-}
+"service"            { return apache::thrift::compiler::yy::parser::make_tok_service();              }
 "enum"               { return apache::thrift::compiler::yy::parser::make_tok_enum();                 }
 "const"              { return apache::thrift::compiler::yy::parser::make_tok_const();                }
 "required"           { return apache::thrift::compiler::yy::parser::make_tok_required();             }

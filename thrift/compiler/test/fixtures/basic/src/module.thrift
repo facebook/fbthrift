@@ -29,6 +29,7 @@ struct MyStruct {
   # use the type before it is defined. Thrift should be able to handle this
   3: MyDataItem MyDataField;
   4: MyEnum myEnum;
+# TODO(afuller): Add a field name 'oneway' once linter allows it.
 }
 
 struct MyDataItem {
