@@ -25,20 +25,15 @@ class NoExceptMoveUnion_tenum_traits {
   using type = ::apache::thrift::fixtures::types::NoExceptMoveUnion::Type;
 
  private:
-  struct __fbthrift_strings {
-    using string_field = __fbthrift_strings_module::string_field;
-    using i32_field = __fbthrift_strings_module::i32_field;
-  };
-
   struct __fbthrift_value_string_field {
-    using name = __fbthrift_strings::string_field;
+    using name = __fbthrift_strings_module::string_field;
     using value = std::integral_constant<type, type::string_field>;
 
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_i32_field {
-    using name = __fbthrift_strings::i32_field;
+    using name = __fbthrift_strings_module::i32_field;
     using value = std::integral_constant<type, type::i32_field>;
 
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;

@@ -35,15 +35,9 @@ class <%enum:name%>_enum_traits {
   using type = <% > common/namespace_cpp2%><%enum:name%>;
 
  private:
-  struct __fbthrift_strings {
-    <%#enum:values%>
-    using <%enumValue:cpp_name%> = __fbthrift_strings_<%program:name%>::<%enumValue:cpp_name%>;
-    <%/enum:values%>
-  };
-
   <%#enum:values%>
   struct __fbthrift_value_<%enumValue:cpp_name%> {
-    using name = __fbthrift_strings::<%enumValue:cpp_name%>;
+    using name = __fbthrift_strings_<%program:name%>::<%enumValue:cpp_name%>;
     using value = std::integral_constant<type, type::<%enumValue:cpp_name%>>;
     <%#enumValue:fatal_annotations?%>
     class annotations {

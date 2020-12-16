@@ -22,40 +22,32 @@ class has_bitwise_ops_enum_traits {
   using type = ::apache::thrift::fixtures::types::has_bitwise_ops;
 
  private:
-  struct __fbthrift_strings {
-    using none = __fbthrift_strings_module::none;
-    using zero = __fbthrift_strings_module::zero;
-    using one = __fbthrift_strings_module::one;
-    using two = __fbthrift_strings_module::two;
-    using three = __fbthrift_strings_module::three;
-  };
-
   struct __fbthrift_value_none {
-    using name = __fbthrift_strings::none;
+    using name = __fbthrift_strings_module::none;
     using value = std::integral_constant<type, type::none>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_zero {
-    using name = __fbthrift_strings::zero;
+    using name = __fbthrift_strings_module::zero;
     using value = std::integral_constant<type, type::zero>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_one {
-    using name = __fbthrift_strings::one;
+    using name = __fbthrift_strings_module::one;
     using value = std::integral_constant<type, type::one>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_two {
-    using name = __fbthrift_strings::two;
+    using name = __fbthrift_strings_module::two;
     using value = std::integral_constant<type, type::two>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_three {
-    using name = __fbthrift_strings::three;
+    using name = __fbthrift_strings_module::three;
     using value = std::integral_constant<type, type::three>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
@@ -125,19 +117,14 @@ class is_unscoped_enum_traits {
   using type = ::apache::thrift::fixtures::types::is_unscoped;
 
  private:
-  struct __fbthrift_strings {
-    using hello = __fbthrift_strings_module::hello;
-    using world = __fbthrift_strings_module::world;
-  };
-
   struct __fbthrift_value_hello {
-    using name = __fbthrift_strings::hello;
+    using name = __fbthrift_strings_module::hello;
     using value = std::integral_constant<type, type::hello>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_world {
-    using name = __fbthrift_strings::world;
+    using name = __fbthrift_strings_module::world;
     using value = std::integral_constant<type, type::world>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
@@ -198,19 +185,14 @@ class MyForwardRefEnum_enum_traits {
   using type = ::apache::thrift::fixtures::types::MyForwardRefEnum;
 
  private:
-  struct __fbthrift_strings {
-    using ZERO = __fbthrift_strings_module::ZERO;
-    using NONZERO = __fbthrift_strings_module::NONZERO;
-  };
-
   struct __fbthrift_value_ZERO {
-    using name = __fbthrift_strings::ZERO;
+    using name = __fbthrift_strings_module::ZERO;
     using value = std::integral_constant<type, type::ZERO>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_NONZERO {
-    using name = __fbthrift_strings::NONZERO;
+    using name = __fbthrift_strings_module::NONZERO;
     using value = std::integral_constant<type, type::NONZERO>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
@@ -256,26 +238,20 @@ class MyEnumA_enum_traits {
   using type = ::apache::thrift::fixtures::types::MyEnumA;
 
  private:
-  struct __fbthrift_strings {
-    using fieldA = __fbthrift_strings_module::fieldA;
-    using fieldB = __fbthrift_strings_module::fieldB;
-    using fieldC = __fbthrift_strings_module::fieldC;
-  };
-
   struct __fbthrift_value_fieldA {
-    using name = __fbthrift_strings::fieldA;
+    using name = __fbthrift_strings_module::fieldA;
     using value = std::integral_constant<type, type::fieldA>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldB {
-    using name = __fbthrift_strings::fieldB;
+    using name = __fbthrift_strings_module::fieldB;
     using value = std::integral_constant<type, type::fieldB>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldC {
-    using name = __fbthrift_strings::fieldC;
+    using name = __fbthrift_strings_module::fieldC;
     using value = std::integral_constant<type, type::fieldC>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };

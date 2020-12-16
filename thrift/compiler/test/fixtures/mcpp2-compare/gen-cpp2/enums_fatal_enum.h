@@ -22,12 +22,8 @@ class AnEnumA_enum_traits {
   using type = ::facebook::ns::qwerty::AnEnumA;
 
  private:
-  struct __fbthrift_strings {
-    using FIELDA = __fbthrift_strings_enums::FIELDA;
-  };
-
   struct __fbthrift_value_FIELDA {
-    using name = __fbthrift_strings::FIELDA;
+    using name = __fbthrift_strings_enums::FIELDA;
     using value = std::integral_constant<type, type::FIELDA>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
@@ -70,19 +66,14 @@ class AnEnumB_enum_traits {
   using type = ::facebook::ns::qwerty::AnEnumB;
 
  private:
-  struct __fbthrift_strings {
-    using FIELDA = __fbthrift_strings_enums::FIELDA;
-    using FIELDB = __fbthrift_strings_enums::FIELDB;
-  };
-
   struct __fbthrift_value_FIELDA {
-    using name = __fbthrift_strings::FIELDA;
+    using name = __fbthrift_strings_enums::FIELDA;
     using value = std::integral_constant<type, type::FIELDA>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
 
   struct __fbthrift_value_FIELDB {
-    using name = __fbthrift_strings::FIELDB;
+    using name = __fbthrift_strings_enums::FIELDB;
     using value = std::integral_constant<type, type::FIELDB>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
@@ -128,12 +119,8 @@ class AnEnumC_enum_traits {
   using type = ::facebook::ns::qwerty::AnEnumC;
 
  private:
-  struct __fbthrift_strings {
-    using FIELDC = __fbthrift_strings_enums::FIELDC;
-  };
-
   struct __fbthrift_value_FIELDC {
-    using name = __fbthrift_strings::FIELDC;
+    using name = __fbthrift_strings_enums::FIELDC;
     using value = std::integral_constant<type, type::FIELDC>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
@@ -176,12 +163,8 @@ class AnEnumD_enum_traits {
   using type = ::facebook::ns::qwerty::AnEnumD;
 
  private:
-  struct __fbthrift_strings {
-    using FIELDD = __fbthrift_strings_enums::FIELDD;
-  };
-
   struct __fbthrift_value_FIELDD {
-    using name = __fbthrift_strings::FIELDD;
+    using name = __fbthrift_strings_enums::FIELDD;
     using value = std::integral_constant<type, type::FIELDD>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
@@ -224,12 +207,8 @@ class AnEnumE_enum_traits {
   using type = ::facebook::ns::qwerty::AnEnumE;
 
  private:
-  struct __fbthrift_strings {
-    using FIELDA = __fbthrift_strings_enums::FIELDA;
-  };
-
   struct __fbthrift_value_FIELDA {
-    using name = __fbthrift_strings::FIELDA;
+    using name = __fbthrift_strings_enums::FIELDA;
     using value = std::integral_constant<type, type::FIELDA>;
     using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
   };
