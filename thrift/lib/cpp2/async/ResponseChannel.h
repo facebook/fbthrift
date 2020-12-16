@@ -166,7 +166,7 @@ class ResponseChannelRequest {
     }
   }
 
-  virtual bool getStartedProcessing() {
+  virtual bool getStartedProcessing() const {
     return startedProcessing_;
   }
 

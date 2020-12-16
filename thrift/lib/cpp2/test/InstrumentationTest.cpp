@@ -491,6 +491,71 @@ TEST_F(RequestInstrumentationTest, requestPayloadTest) {
   }
 }
 
+class RequestInstrumentationTestWithFinishedDebugPayload
+    : public RequestInstrumentationTest {
+ protected:
+  void SetUp() override {
+    impl_ = std::make_unique<Impl>(
+        [&](auto& ts) { ts.setMaxFinishedDebugPayloadsPerWorker(1); });
+  }
+};
+
+TEST_F(
+    RequestInstrumentationTestWithFinishedDebugPayload,
+    snapshotStartedProcessingTest) {
+  auto client = makeRocketClient();
+
+  folly::Baton baton1;
+  folly::Baton baton2;
+  folly::Baton baton3;
+
+  // "finished" request
+  handler()->setCallback([&](TestInterface*) { baton1.post(); });
+  auto req1 = client->semifuture_runCallback();
+  baton1.wait();
+
+  // "started processing" request
+  handler()->setCallback([&](TestInterface*) {
+    baton2.post();
+    baton3.wait();
+  });
+  auto req2 = client->semifuture_runCallback();
+  baton2.wait();
+
+  // "not started processing" request
+  handler()->setCallback([](TestInterface*) {});
+  auto req3 = client->semifuture_runCallback();
+  while (thriftServer()->getActiveRequests() < 2) {
+    std::this_thread::yield();
+  }
+
+  // record and sort snapshots
+  auto reqSnapshots = thriftServer()->snapshotActiveRequests().get();
+  baton3.post();
+  std::vector<int> idxs;
+  idxs.resize(reqSnapshots.size());
+  std::iota(idxs.begin(), idxs.end(), 0);
+  std::sort(idxs.begin(), idxs.end(), [&](auto i, auto j) {
+    const auto& s1 = reqSnapshots[i];
+    const auto& s2 = reqSnapshots[j];
+    return s1.getCreationTimestamp() < s2.getCreationTimestamp();
+  });
+
+  // test
+  ASSERT_EQ(reqSnapshots.size(), 3);
+  EXPECT_NE(
+      reqSnapshots[idxs[0]].getFinishedTimestamp().time_since_epoch().count(),
+      0);
+  EXPECT_TRUE(reqSnapshots[idxs[0]].getStartedProcessing());
+  EXPECT_TRUE(reqSnapshots[idxs[1]].getStartedProcessing());
+  EXPECT_FALSE(reqSnapshots[idxs[2]].getStartedProcessing());
+
+  // cleanup
+  std::move(req1).get();
+  std::move(req2).get();
+  std::move(req3).get();
+}
+
 class ServerInstrumentationTest : public testing::Test {};
 
 TEST_F(ServerInstrumentationTest, simpleServerTest) {
