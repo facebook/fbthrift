@@ -17,12 +17,13 @@
 namespace cpp2 {
 
 namespace __fbthrift_refl {
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
 
 class ReflectionStruct_struct_traits {
-  class __fbthrift_annotations : public ::apache::thrift::detail::reflection_impl::no_annotations {
+  class __fbthrift_annotations : public __fbthrift_refl_impl::no_annotations {
     class __fbthrift_members {
      public:
-      using fieldA = ::apache::thrift::detail::reflection_impl::reflected_no_annotations;
+      using fieldA = __fbthrift_refl_impl::reflected_no_annotations;
     };
 
    public:
@@ -35,7 +36,7 @@ class ReflectionStruct_struct_traits {
     using type = int32_t;
     static constexpr ::apache::thrift::field_id_t id = 1;
     static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;
-    using getter = ::apache::thrift::detail::reflection_impl::data_member_accessor<::apache::thrift::tag::fieldA>;
+    using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::fieldA>;
     using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::fieldA>;
     using type_class = ::apache::thrift::type_class::integral;
     using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::fieldA>;
@@ -62,5 +63,4 @@ class ReflectionStruct_struct_traits {
 } // __fbthrift_refl
 
 THRIFT_REGISTER_STRUCT_TRAITS(ReflectionStruct, __fbthrift_refl::ReflectionStruct_struct_traits);
-
 } // cpp2

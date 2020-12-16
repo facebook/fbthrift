@@ -16,6 +16,7 @@
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 namespace __fbthrift_refl {
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
 
 class has_bitwise_ops_enum_traits {
  public:
@@ -25,31 +26,31 @@ class has_bitwise_ops_enum_traits {
   struct __fbthrift_value_none {
     using name = __fbthrift_strings_module::none;
     using value = std::integral_constant<type, type::none>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_zero {
     using name = __fbthrift_strings_module::zero;
     using value = std::integral_constant<type, type::zero>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_one {
     using name = __fbthrift_strings_module::one;
     using value = std::integral_constant<type, type::one>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_two {
     using name = __fbthrift_strings_module::two;
     using value = std::integral_constant<type, type::two>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_three {
     using name = __fbthrift_strings_module::three;
     using value = std::integral_constant<type, type::three>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -100,18 +101,6 @@ class has_bitwise_ops_enum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::has_bitwise_ops_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::has_bitwise_ops_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(1216557680140306888ull)
-  >
-);
-namespace __fbthrift_refl {
-
 class is_unscoped_enum_traits {
  public:
   using type = ::apache::thrift::fixtures::types::is_unscoped;
@@ -120,13 +109,13 @@ class is_unscoped_enum_traits {
   struct __fbthrift_value_hello {
     using name = __fbthrift_strings_module::hello;
     using value = std::integral_constant<type, type::hello>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_world {
     using name = __fbthrift_strings_module::world;
     using value = std::integral_constant<type, type::world>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -168,18 +157,6 @@ class is_unscoped_enum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::is_unscoped_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::is_unscoped_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(2509072249807621768ull)
-  >
-);
-namespace __fbthrift_refl {
-
 class MyForwardRefEnum_enum_traits {
  public:
   using type = ::apache::thrift::fixtures::types::MyForwardRefEnum;
@@ -188,13 +165,13 @@ class MyForwardRefEnum_enum_traits {
   struct __fbthrift_value_ZERO {
     using name = __fbthrift_strings_module::ZERO;
     using value = std::integral_constant<type, type::ZERO>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_NONZERO {
     using name = __fbthrift_strings_module::NONZERO;
     using value = std::integral_constant<type, type::NONZERO>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -210,7 +187,7 @@ class MyForwardRefEnum_enum_traits {
       member::NONZERO
   >;
 
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -221,18 +198,6 @@ class MyForwardRefEnum_enum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::MyForwardRefEnum_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::MyForwardRefEnum_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(11057525912578401640ull)
-  >
-);
-namespace __fbthrift_refl {
-
 class MyEnumA_enum_traits {
  public:
   using type = ::apache::thrift::fixtures::types::MyEnumA;
@@ -241,19 +206,19 @@ class MyEnumA_enum_traits {
   struct __fbthrift_value_fieldA {
     using name = __fbthrift_strings_module::fieldA;
     using value = std::integral_constant<type, type::fieldA>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldB {
     using name = __fbthrift_strings_module::fieldB;
     using value = std::integral_constant<type, type::fieldB>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldC {
     using name = __fbthrift_strings_module::fieldC;
     using value = std::integral_constant<type, type::fieldC>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -271,7 +236,7 @@ class MyEnumA_enum_traits {
       member::fieldC
   >;
 
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -286,11 +251,35 @@ class MyEnumA_enum_traits {
 } // __fbthrift_refl
 
 FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::has_bitwise_ops_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::has_bitwise_ops_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(1216557680140306888ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::is_unscoped_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::is_unscoped_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(2509072249807621768ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::MyForwardRefEnum_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::MyForwardRefEnum_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(11057525912578401640ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
   __fbthrift_refl::MyEnumA_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::MyEnumA_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(12764631319602759848ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::MyEnumA_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(12764631319602759848ull)
   >
 );
 }}}} // apache::thrift::fixtures::types

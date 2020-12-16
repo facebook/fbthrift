@@ -19,7 +19,7 @@
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 namespace __fbthrift_refl {
-
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
 class NoExceptMoveUnion_tenum_traits {
  public:
   using type = ::apache::thrift::fixtures::types::NoExceptMoveUnion::Type;
@@ -28,15 +28,13 @@ class NoExceptMoveUnion_tenum_traits {
   struct __fbthrift_value_string_field {
     using name = __fbthrift_strings_module::string_field;
     using value = std::integral_constant<type, type::string_field>;
-
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_i32_field {
     using name = __fbthrift_strings_module::i32_field;
     using value = std::integral_constant<type, type::i32_field>;
-
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -52,8 +50,7 @@ class NoExceptMoveUnion_tenum_traits {
       member::i32_field
   >;
 
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
-
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -165,8 +162,8 @@ class NoExceptMoveUnion_variant_traits {
     return variant.__clear();
   }
 };
-
 } // __fbthrift_refl
+
 FATAL_REGISTER_ENUM_TRAITS(
   __fbthrift_refl::NoExceptMoveUnion_tenum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<

@@ -16,6 +16,7 @@
 namespace test_cpp2 { namespace cpp_reflection {
 
 namespace __fbthrift_refl {
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
 
 class enum1_enum_traits {
  public:
@@ -25,19 +26,19 @@ class enum1_enum_traits {
   struct __fbthrift_value_field0 {
     using name = __fbthrift_strings_module::field0;
     using value = std::integral_constant<type, type::field0>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_field1 {
     using name = __fbthrift_strings_module::field1;
     using value = std::integral_constant<type, type::field1>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_field2 {
     using name = __fbthrift_strings_module::field2;
     using value = std::integral_constant<type, type::field2>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -55,7 +56,7 @@ class enum1_enum_traits {
       member::field2
   >;
 
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -67,18 +68,6 @@ class enum1_enum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::enum1_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::enum1_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(4992076682252594856ull)
-  >
-);
-namespace __fbthrift_refl {
-
 class enum2_enum_traits {
  public:
   using type = ::test_cpp2::cpp_reflection::enum2;
@@ -87,19 +76,19 @@ class enum2_enum_traits {
   struct __fbthrift_value_field0_2 {
     using name = __fbthrift_strings_module::field0_2;
     using value = std::integral_constant<type, type::field0_2>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_field1_2 {
     using name = __fbthrift_strings_module::field1_2;
     using value = std::integral_constant<type, type::field1_2>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_field2_2 {
     using name = __fbthrift_strings_module::field2_2;
     using value = std::integral_constant<type, type::field2_2>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -117,7 +106,7 @@ class enum2_enum_traits {
       member::field2_2
   >;
 
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -129,18 +118,6 @@ class enum2_enum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::enum2_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::enum2_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(6888467747342894920ull)
-  >
-);
-namespace __fbthrift_refl {
-
 class enum3_enum_traits {
  public:
   using type = ::test_cpp2::cpp_reflection::enum3;
@@ -149,7 +126,7 @@ class enum3_enum_traits {
   struct __fbthrift_value_field0_3 {
     using name = __fbthrift_strings_module::field0_3;
     using value = std::integral_constant<type, type::field0_3>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_field1_3 {
@@ -225,18 +202,6 @@ class enum3_enum_traits {
   }
 };
 
-} // __fbthrift_refl
-
-FATAL_REGISTER_ENUM_TRAITS(
-  __fbthrift_refl::enum3_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::enum3_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
-  >
-);
-namespace __fbthrift_refl {
-
 class enum_with_special_names_enum_traits {
  public:
   using type = ::test_cpp2::cpp_reflection::enum_with_special_names;
@@ -245,169 +210,169 @@ class enum_with_special_names_enum_traits {
   struct __fbthrift_value_get {
     using name = __fbthrift_strings_module::get;
     using value = std::integral_constant<type, type::get>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_getter {
     using name = __fbthrift_strings_module::getter;
     using value = std::integral_constant<type, type::getter>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_lists {
     using name = __fbthrift_strings_module::lists;
     using value = std::integral_constant<type, type::lists>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_maps {
     using name = __fbthrift_strings_module::maps;
     using value = std::integral_constant<type, type::maps>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_name {
     using name = __fbthrift_strings_module::name;
     using value = std::integral_constant<type, type::name>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_name_to_value {
     using name = __fbthrift_strings_module::name_to_value;
     using value = std::integral_constant<type, type::name_to_value>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_names {
     using name = __fbthrift_strings_module::names;
     using value = std::integral_constant<type, type::names>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_prefix_tree {
     using name = __fbthrift_strings_module::prefix_tree;
     using value = std::integral_constant<type, type::prefix_tree>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_sets {
     using name = __fbthrift_strings_module::sets;
     using value = std::integral_constant<type, type::sets>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_setter {
     using name = __fbthrift_strings_module::setter;
     using value = std::integral_constant<type, type::setter>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_str {
     using name = __fbthrift_strings_module::str;
     using value = std::integral_constant<type, type::str>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_strings {
     using name = __fbthrift_strings_module::strings;
     using value = std::integral_constant<type, type::strings>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_type {
     using name = __fbthrift_strings_module::type;
     using value = std::integral_constant<type, type::type>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_value {
     using name = __fbthrift_strings_module::value;
     using value = std::integral_constant<type, type::value>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_value_to_name {
     using name = __fbthrift_strings_module::value_to_name;
     using value = std::integral_constant<type, type::value_to_name>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_values {
     using name = __fbthrift_strings_module::values;
     using value = std::integral_constant<type, type::values>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_id {
     using name = __fbthrift_strings_module::id;
     using value = std::integral_constant<type, type::id>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ids {
     using name = __fbthrift_strings_module::ids;
     using value = std::integral_constant<type, type::ids>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_descriptor {
     using name = __fbthrift_strings_module::descriptor;
     using value = std::integral_constant<type, type::descriptor>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_descriptors {
     using name = __fbthrift_strings_module::descriptors;
     using value = std::integral_constant<type, type::descriptors>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_key {
     using name = __fbthrift_strings_module::key;
     using value = std::integral_constant<type, type::key>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_keys {
     using name = __fbthrift_strings_module::keys;
     using value = std::integral_constant<type, type::keys>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_annotation {
     using name = __fbthrift_strings_module::annotation;
     using value = std::integral_constant<type, type::annotation>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_annotations {
     using name = __fbthrift_strings_module::annotations;
     using value = std::integral_constant<type, type::annotations>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_member {
     using name = __fbthrift_strings_module::member;
     using value = std::integral_constant<type, type::member>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_members {
     using name = __fbthrift_strings_module::members;
     using value = std::integral_constant<type, type::members>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_field {
     using name = __fbthrift_strings_module::field;
     using value = std::integral_constant<type, type::field>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_fields {
     using name = __fbthrift_strings_module::fields;
     using value = std::integral_constant<type, type::fields>;
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_member {
@@ -475,7 +440,7 @@ class enum_with_special_names_enum_traits {
       member::fields
   >;
 
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -515,11 +480,35 @@ class enum_with_special_names_enum_traits {
 } // __fbthrift_refl
 
 FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::enum1_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum1_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(4992076682252594856ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::enum2_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum2_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(6888467747342894920ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::enum3_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum3_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
   __fbthrift_refl::enum_with_special_names_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<__fbthrift_refl::enum_with_special_names_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(958943865626138984ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum_with_special_names_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(958943865626138984ull)
   >
 );
 }} // test_cpp2::cpp_reflection

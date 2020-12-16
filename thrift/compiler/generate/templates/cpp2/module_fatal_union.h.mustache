@@ -32,9 +32,9 @@
 <% > common/namespace_cpp2_begin%>
 
 
-<%#program:structs%><%#struct:union?%>
 namespace __fbthrift_refl {
-
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
+<%#program:structs%><%#struct:union?%>
 class <%struct:name%>_tenum_traits {
  public:
   using type = <% > common/namespace_cpp2%><%struct:name%>::Type;
@@ -44,7 +44,6 @@ class <%struct:name%>_tenum_traits {
   struct __fbthrift_value_<%field:cpp_name%> {
     using name = __fbthrift_strings_<%program:name%>::<%field:cpp_name%>;
     using value = std::integral_constant<type, type::<%field:cpp_name%>>;
-
     <%#field:fatal_annotations?%>
     class annotations {
       struct __fbthrift_keys {
@@ -70,7 +69,7 @@ class <%struct:name%>_tenum_traits {
     };
     <%/field:fatal_annotations?%>
     <%^field:fatal_annotations?%>
-    using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+    using annotations = __fbthrift_refl_impl::no_annotations;
     <%/field:fatal_annotations?%>
   };
 
@@ -90,8 +89,7 @@ class <%struct:name%>_tenum_traits {
       <%/struct:fields%>
   >;
 
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
-
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -177,7 +175,7 @@ class <%struct:name%>_variant_traits {
   };
   <%/struct:fatal_annotations?%>
   <%^struct:fatal_annotations?%>
-  using annotations = ::apache::thrift::detail::reflection_impl::no_annotations;
+  using annotations = __fbthrift_refl_impl::no_annotations;
   <%/struct:fatal_annotations?%>
 
   static id get_id(type const &variant) {
@@ -192,9 +190,9 @@ class <%struct:name%>_variant_traits {
     return variant.__clear();
   }
 };
-
-} // __fbthrift_refl
 <%/struct:union?%><%/program:structs%>
+} // __fbthrift_refl
+
 <%#program:structs%><%#struct:union?%>
 FATAL_REGISTER_ENUM_TRAITS(
   __fbthrift_refl::<%struct:name%>_tenum_traits,
