@@ -80,6 +80,6 @@ union NoExceptMoveUnion {
 } (cpp.noexcept_move)
 
 union CppRefContainers {
-  1: list<CppRefContainers> values (cpp.ref = 'true')
+  1: list<CppRefContainers> values (cpp.ref)
   2: string data
 }
