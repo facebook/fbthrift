@@ -80,13 +80,13 @@ struct ServerAttributeRawValues {
       : baseline_(std::forward<U>(baseline)),
         override_(std::forward<V>(override)) {}
 
-  FOLLY_ALWAYS_INLINE T& choose(AttributeSource source) {
+  T& choose(AttributeSource source) {
     return source == AttributeSource::OVERRIDE ? override_ : baseline_;
   }
 };
 
 template <typename T>
-FOLLY_ALWAYS_INLINE T& mergeServerAttributeRawValues(
+T& mergeServerAttributeRawValues(
     folly::Optional<T>& override,
     folly::Optional<T>& baseline,
     T& defaultValue) {
