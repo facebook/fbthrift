@@ -20,6 +20,7 @@ namespace py thrift.conformance.any
 namespace py.asyncio thrift_asyncio.conformance.any
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
+namespace java org.apache.thrift.conformance
 namespace go thrift.conformance.any
 
 cpp_include "<folly/io/IOBuf.h>"
