@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyMapping", builder=MyMapping.Builder.class)
 public final class MyMapping {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyMapping(
@@ -43,7 +42,6 @@ public final class MyMapping {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private com.foo.FastLongStringMap lsMap = null;
         private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap = null;
@@ -76,7 +74,6 @@ public final class MyMapping {
                 this.lsMap,
                 this.ioMap
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -99,22 +96,10 @@ public final class MyMapping {
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public com.foo.FastLongStringMap getLsMap() { return lsMap; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLsMap() {
-        return this.lsMap != null;
-    }
     
     
     @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetIoMap() {
-        return this.ioMap != null;
-    }
     
     @java.lang.Override
     public String toString() {

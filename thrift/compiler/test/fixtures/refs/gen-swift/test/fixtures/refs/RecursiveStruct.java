@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="RecursiveStruct", builder=RecursiveStruct.Builder.class)
 public final class RecursiveStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public RecursiveStruct(
@@ -40,7 +39,6 @@ public final class RecursiveStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private List<test.fixtures.refs.RecursiveStruct> mes = null;
     
@@ -62,7 +60,6 @@ public final class RecursiveStruct {
             RecursiveStruct result = new RecursiveStruct (
                 this.mes
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -80,12 +77,6 @@ public final class RecursiveStruct {
     
     @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
     public List<test.fixtures.refs.RecursiveStruct> getMes() { return mes; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMes() {
-        return this.mes != null;
-    }
     
     @java.lang.Override
     public String toString() {

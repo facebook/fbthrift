@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct("LegacyStruct")
 public final class LegacyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public LegacyStruct() {
@@ -34,7 +33,6 @@ public final class LegacyStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int normal = 0;
         private int bad = 0;
@@ -66,7 +64,6 @@ public final class LegacyStruct {
             LegacyStruct result = new LegacyStruct();
             result.normal = this.normal;
             result.bad = this.bad;
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -95,17 +92,7 @@ static {
         this.normal = normal;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetNormal() {
-        return __isset_bit_vector.get(_NORMAL);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetNormal() {
-        __isset_bit_vector.clear(_NORMAL);
-    }
+    
     
     @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
@@ -115,17 +102,7 @@ static {
         this.bad = bad;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetBad() {
-        return __isset_bit_vector.get(_BAD);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetBad() {
-        __isset_bit_vector.clear(_BAD);
-    }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);

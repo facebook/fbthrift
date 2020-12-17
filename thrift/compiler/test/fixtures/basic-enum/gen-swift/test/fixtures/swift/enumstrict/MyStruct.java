@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyStruct(
@@ -43,7 +42,6 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.swift.enumstrict.MyEnum myEnum = null;
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
@@ -76,7 +74,6 @@ public final class MyStruct {
                 this.myEnum,
                 this.myBigEnum
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -99,22 +96,10 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyEnum() {
-        return this.myEnum != null;
-    }
     
     
     @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyBigEnum getMyBigEnum() { return myBigEnum; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyBigEnum() {
-        return this.myBigEnum != null;
-    }
     
     @java.lang.Override
     public String toString() {

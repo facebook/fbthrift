@@ -254,6 +254,7 @@ class mstch_swift_struct : public mstch_struct {
             {"struct:exceptionMessage", &mstch_swift_struct::exception_message},
             {"struct:needsExceptionMessage?",
              &mstch_swift_struct::needs_exception_message},
+            {"struct:enableIsSet?", &mstch_swift_struct::enable_is_set},
         });
     register_has_option(
         "struct:extendRuntimeException?", "legacy_extend_runtime_exception");
@@ -328,6 +329,10 @@ class mstch_swift_struct : public mstch_struct {
             strct_->get_members().end(),
             [](auto const& m) { return m->get_name() == "message"; }) ==
         strct_->get_members().end();
+  }
+  mstch::node enable_is_set() {
+    return strct_->annotations_.find("java.swift.enable_is_set") !=
+        strct_->annotations_.end();
   }
 };
 

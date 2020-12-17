@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct("MyDataItem")
 public final class MyDataItem {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyDataItem() {
@@ -34,7 +33,6 @@ public final class MyDataItem {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int field1 = 0;
         private int field2 = 0;
@@ -66,7 +64,6 @@ public final class MyDataItem {
             MyDataItem result = new MyDataItem();
             result.field1 = this.field1;
             result.field2 = this.field2;
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -95,17 +92,7 @@ static {
         this.field1 = field1;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetField1() {
-        return __isset_bit_vector.get(_FIELD1);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetField1() {
-        __isset_bit_vector.clear(_FIELD1);
-    }
+    
     
     @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
@@ -115,17 +102,7 @@ static {
         this.field2 = field2;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetField2() {
-        return __isset_bit_vector.get(_FIELD2);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetField2() {
-        __isset_bit_vector.clear(_FIELD2);
-    }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);

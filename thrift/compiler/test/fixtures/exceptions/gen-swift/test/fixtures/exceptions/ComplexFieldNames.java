@@ -25,7 +25,6 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class ComplexFieldNames extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -54,7 +53,6 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String errorMessage = null;
         private String internalErrorMessage = null;
@@ -87,7 +85,6 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
                 this.errorMessage,
                 this.internalErrorMessage
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }

@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="StructWithContainers", builder=StructWithContainers.Builder.class)
 public final class StructWithContainers {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public StructWithContainers(
@@ -55,7 +54,6 @@ public final class StructWithContainers {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private List<Integer> listRef = null;
         private Set<Integer> setRef = null;
@@ -132,7 +130,6 @@ public final class StructWithContainers {
                 this.setRefShared,
                 this.listRefSharedConst
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -175,62 +172,26 @@ public final class StructWithContainers {
     
     @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE)
     public List<Integer> getListRef() { return listRef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetListRef() {
-        return this.listRef != null;
-    }
     
     
     @ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRef() { return setRef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSetRef() {
-        return this.setRef != null;
-    }
     
     
     @ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)
     public Map<Integer, Integer> getMapRef() { return mapRef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMapRef() {
-        return this.mapRef != null;
-    }
     
     
     @ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)
     public List<Integer> getListRefUnique() { return listRefUnique; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetListRefUnique() {
-        return this.listRefUnique != null;
-    }
     
     
     @ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRefShared() { return setRefShared; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSetRefShared() {
-        return this.setRefShared != null;
-    }
     
     
     @ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)
     public List<Integer> getListRefSharedConst() { return listRefSharedConst; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetListRefSharedConst() {
-        return this.listRefSharedConst != null;
-    }
     
     @java.lang.Override
     public String toString() {

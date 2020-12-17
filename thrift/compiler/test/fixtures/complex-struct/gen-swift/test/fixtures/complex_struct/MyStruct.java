@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyStruct(
@@ -121,7 +120,6 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myIntField = 0L;
         private String myStringField = null;
@@ -440,7 +438,6 @@ public final class MyStruct {
                 this.sByte,
                 this.mListList
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -593,282 +590,114 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField() {
-        return __isset_bit_vector.get(_MYINTFIELD);
-    }
     
     
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyStringField() {
-        return this.myStringField != null;
-    }
     
     
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyDataItem getMyDataField() { return myDataField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDataField() {
-        return this.myDataField != null;
-    }
     
     
     @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getMyEnum() { return myEnum; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyEnum() {
-        return this.myEnum != null;
-    }
     
     
     @ThriftField(value=5, name="MyBoolField", requiredness=Requiredness.NONE)
     public boolean isMyBoolField() { return myBoolField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyBoolField() {
-        return __isset_bit_vector.get(_MYBOOLFIELD);
-    }
     
     
     @ThriftField(value=6, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyByteField() {
-        return __isset_bit_vector.get(_MYBYTEFIELD);
-    }
     
     
     @ThriftField(value=7, name="MyShortField", requiredness=Requiredness.NONE)
     public short getMyShortField() { return myShortField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyShortField() {
-        return __isset_bit_vector.get(_MYSHORTFIELD);
-    }
     
     
     @ThriftField(value=8, name="MyLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyLongField() {
-        return __isset_bit_vector.get(_MYLONGFIELD);
-    }
     
     
     @ThriftField(value=9, name="MyDoubleField", requiredness=Requiredness.NONE)
     public double getMyDoubleField() { return myDoubleField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD);
-    }
     
     
     @ThriftField(value=10, name="lDouble", requiredness=Requiredness.NONE)
     public List<Double> getLDouble() { return lDouble; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLDouble() {
-        return this.lDouble != null;
-    }
     
     
     @ThriftField(value=11, name="lShort", requiredness=Requiredness.NONE)
     public List<Short> getLShort() { return lShort; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLShort() {
-        return this.lShort != null;
-    }
     
     
     @ThriftField(value=12, name="lInteger", requiredness=Requiredness.NONE)
     public List<Integer> getLInteger() { return lInteger; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLInteger() {
-        return this.lInteger != null;
-    }
     
     
     @ThriftField(value=13, name="lLong", requiredness=Requiredness.NONE)
     public List<Long> getLLong() { return lLong; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLLong() {
-        return this.lLong != null;
-    }
     
     
     @ThriftField(value=14, name="lString", requiredness=Requiredness.NONE)
     public List<String> getLString() { return lString; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLString() {
-        return this.lString != null;
-    }
     
     
     @ThriftField(value=15, name="lBool", requiredness=Requiredness.NONE)
     public List<Boolean> getLBool() { return lBool; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLBool() {
-        return this.lBool != null;
-    }
     
     
     @ThriftField(value=16, name="lByte", requiredness=Requiredness.NONE)
     public List<Byte> getLByte() { return lByte; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetLByte() {
-        return this.lByte != null;
-    }
     
     
     @ThriftField(value=17, name="mShortString", requiredness=Requiredness.NONE)
     public Map<Short, String> getMShortString() { return mShortString; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMShortString() {
-        return this.mShortString != null;
-    }
     
     
     @ThriftField(value=18, name="mIntegerString", requiredness=Requiredness.NONE)
     public Map<Integer, String> getMIntegerString() { return mIntegerString; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMIntegerString() {
-        return this.mIntegerString != null;
-    }
     
     
     @ThriftField(value=19, name="mStringMyStruct", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.complex_struct.MyStruct> getMStringMyStruct() { return mStringMyStruct; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMStringMyStruct() {
-        return this.mStringMyStruct != null;
-    }
     
     
     @ThriftField(value=20, name="mStringBool", requiredness=Requiredness.NONE)
     public Map<String, Boolean> getMStringBool() { return mStringBool; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMStringBool() {
-        return this.mStringBool != null;
-    }
     
     
     @ThriftField(value=21, name="mIntegerInteger", requiredness=Requiredness.NONE)
     public Map<Integer, Integer> getMIntegerInteger() { return mIntegerInteger; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMIntegerInteger() {
-        return this.mIntegerInteger != null;
-    }
     
     
     @ThriftField(value=22, name="mIntegerBool", requiredness=Requiredness.NONE)
     public Map<Integer, Boolean> getMIntegerBool() { return mIntegerBool; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMIntegerBool() {
-        return this.mIntegerBool != null;
-    }
     
     
     @ThriftField(value=23, name="sShort", requiredness=Requiredness.NONE)
     public Set<Short> getSShort() { return sShort; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSShort() {
-        return this.sShort != null;
-    }
     
     
     @ThriftField(value=24, name="sMyStruct", requiredness=Requiredness.NONE)
     public Set<test.fixtures.complex_struct.MyStruct> getSMyStruct() { return sMyStruct; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSMyStruct() {
-        return this.sMyStruct != null;
-    }
     
     
     @ThriftField(value=25, name="sLong", requiredness=Requiredness.NONE)
     public Set<Long> getSLong() { return sLong; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSLong() {
-        return this.sLong != null;
-    }
     
     
     @ThriftField(value=26, name="sString", requiredness=Requiredness.NONE)
     public Set<String> getSString() { return sString; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSString() {
-        return this.sString != null;
-    }
     
     
     @ThriftField(value=27, name="sByte", requiredness=Requiredness.NONE)
     public Set<Byte> getSByte() { return sByte; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSByte() {
-        return this.sByte != null;
-    }
     
     
     @ThriftField(value=28, name="mListList", requiredness=Requiredness.NONE)
     public Map<List<Integer>, List<Integer>> getMListList() { return mListList; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMListList() {
-        return this.mListList != null;
-    }
     
     @java.lang.Override
     public String toString() {

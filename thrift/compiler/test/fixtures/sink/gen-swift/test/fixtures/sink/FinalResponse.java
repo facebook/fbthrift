@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="FinalResponse", builder=FinalResponse.Builder.class)
 public final class FinalResponse {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public FinalResponse(
@@ -40,7 +39,6 @@ public final class FinalResponse {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String content = null;
     
@@ -62,7 +60,6 @@ public final class FinalResponse {
             FinalResponse result = new FinalResponse (
                 this.content
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -80,12 +77,6 @@ public final class FinalResponse {
     
     @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
     public String getContent() { return content; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetContent() {
-        return this.content != null;
-    }
     
     @java.lang.Override
     public String toString() {

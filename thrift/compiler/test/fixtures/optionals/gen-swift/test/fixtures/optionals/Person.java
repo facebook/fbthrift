@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Person", builder=Person.Builder.class)
 public final class Person {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public Person(
@@ -67,7 +66,6 @@ public final class Person {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long id = 0L;
         private String name = null;
@@ -188,7 +186,6 @@ public final class Person {
                 this.afraidOfAnimal,
                 this.vehicles
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -251,102 +248,42 @@ public final class Person {
     
     @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetId() {
-        return __isset_bit_vector.get(_ID);
-    }
     
     
     @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetName() {
-        return this.name != null;
-    }
     
     
     @ThriftField(value=3, name="age", requiredness=Requiredness.OPTIONAL)
     public Short getAge() { return age; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetAge() {
-        return this.age != null;
-    }
     
     
     @ThriftField(value=4, name="address", requiredness=Requiredness.OPTIONAL)
     public String getAddress() { return address; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetAddress() {
-        return this.address != null;
-    }
     
     
     @ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.optionals.Color getFavoriteColor() { return favoriteColor; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetFavoriteColor() {
-        return this.favoriteColor != null;
-    }
     
     
     @ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL)
     public Set<Long> getFriends() { return friends; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetFriends() {
-        return this.friends != null;
-    }
     
     
     @ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)
     public Long getBestFriend() { return bestFriend; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetBestFriend() {
-        return this.bestFriend != null;
-    }
     
     
     @ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)
     public Map<test.fixtures.optionals.Animal, String> getPetNames() { return petNames; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetPetNames() {
-        return this.petNames != null;
-    }
     
     
     @ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.optionals.Animal getAfraidOfAnimal() { return afraidOfAnimal; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetAfraidOfAnimal() {
-        return this.afraidOfAnimal != null;
-    }
     
     
     @ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL)
     public List<test.fixtures.optionals.Vehicle> getVehicles() { return vehicles; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetVehicles() {
-        return this.vehicles != null;
-    }
     
     @java.lang.Override
     public String toString() {

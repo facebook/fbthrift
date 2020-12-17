@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="CompatibleWithKeywordSink", builder=CompatibleWithKeywordSink.Builder.class)
 public final class CompatibleWithKeywordSink {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public CompatibleWithKeywordSink(
@@ -40,7 +39,6 @@ public final class CompatibleWithKeywordSink {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String sink = null;
     
@@ -62,7 +60,6 @@ public final class CompatibleWithKeywordSink {
             CompatibleWithKeywordSink result = new CompatibleWithKeywordSink (
                 this.sink
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -80,12 +77,6 @@ public final class CompatibleWithKeywordSink {
     
     @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
     public String getSink() { return sink; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSink() {
-        return this.sink != null;
-    }
     
     @java.lang.Override
     public String toString() {

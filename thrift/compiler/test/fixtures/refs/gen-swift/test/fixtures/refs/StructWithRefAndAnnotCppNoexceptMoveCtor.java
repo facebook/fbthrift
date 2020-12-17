@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
 public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public StructWithRefAndAnnotCppNoexceptMoveCtor(
@@ -40,7 +39,6 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.Empty defField = null;
     
@@ -62,7 +60,6 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
             StructWithRefAndAnnotCppNoexceptMoveCtor result = new StructWithRefAndAnnotCppNoexceptMoveCtor (
                 this.defField
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -80,12 +77,6 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     
     @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetDefField() {
-        return this.defField != null;
-    }
     
     @java.lang.Override
     public String toString() {

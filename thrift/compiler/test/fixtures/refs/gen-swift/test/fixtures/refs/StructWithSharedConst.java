@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="StructWithSharedConst", builder=StructWithSharedConst.Builder.class)
 public final class StructWithSharedConst {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public StructWithSharedConst(
@@ -46,7 +45,6 @@ public final class StructWithSharedConst {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.MyField optSharedConst = null;
         private test.fixtures.refs.MyField sharedConst = null;
@@ -90,7 +88,6 @@ public final class StructWithSharedConst {
                 this.sharedConst,
                 this.reqSharedConst
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class StructWithSharedConst {
     
     @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetOptSharedConst() {
-        return this.optSharedConst != null;
-    }
     
     
     @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSharedConst() {
-        return this.sharedConst != null;
-    }
     
     
     @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetReqSharedConst() {
-        return this.reqSharedConst != null;
-    }
     
     @java.lang.Override
     public String toString() {

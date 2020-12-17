@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Internship", builder=Internship.Builder.class)
 public final class Internship {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public Internship(
@@ -46,7 +45,6 @@ public final class Internship {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int weeks = 0;
         private String title = null;
@@ -90,7 +88,6 @@ public final class Internship {
                 this.title,
                 this.employer
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class Internship {
     
     @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetWeeks() {
-        return __isset_bit_vector.get(_WEEKS);
-    }
     
     
     @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetTitle() {
-        return this.title != null;
-    }
     
     
     @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.lazy_constants.Company getEmployer() { return employer; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetEmployer() {
-        return this.employer != null;
-    }
     
     @java.lang.Override
     public String toString() {

@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="SimpleStruct", builder=SimpleStruct.Builder.class)
 public final class SimpleStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public SimpleStruct(
@@ -43,7 +42,6 @@ public final class SimpleStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long age = 60L;
         private String name = "Batman";
@@ -76,7 +74,6 @@ public final class SimpleStruct {
                 this.age,
                 this.name
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -99,22 +96,10 @@ public final class SimpleStruct {
     
     @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetAge() {
-        return __isset_bit_vector.get(_AGE);
-    }
     
     
     @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetName() {
-        return this.name != null;
-    }
     
     @java.lang.Override
     public String toString() {

@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStructAnnotation", builder=MyStructAnnotation.Builder.class)
 public final class MyStructAnnotation {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyStructAnnotation(
@@ -49,7 +48,6 @@ public final class MyStructAnnotation {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long count = 0L;
         private String name = null;
@@ -104,7 +102,6 @@ public final class MyStructAnnotation {
                 this.extra,
                 this.nest
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -137,42 +134,18 @@ public final class MyStructAnnotation {
     
     @ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
     public long getCount() { return count; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetCount() {
-        return __isset_bit_vector.get(_COUNT);
-    }
     
     
     @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetName() {
-        return this.name != null;
-    }
     
     
     @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
     public String getExtra() { return extra; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetExtra() {
-        return this.extra != null;
-    }
     
     
     @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyStructNestedAnnotation getNest() { return nest; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetNest() {
-        return this.nest != null;
-    }
     
     @java.lang.Override
     public String toString() {

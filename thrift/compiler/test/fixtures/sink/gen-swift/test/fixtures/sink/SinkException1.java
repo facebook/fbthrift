@@ -25,7 +25,6 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class SinkException1 extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -48,7 +47,6 @@ public final class SinkException1 extends java.lang.Exception {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String reason = null;
     
@@ -70,7 +68,6 @@ public final class SinkException1 extends java.lang.Exception {
             SinkException1 result = new SinkException1 (
                 this.reason
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }

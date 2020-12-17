@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="StructWithRefTypeUnique", builder=StructWithRefTypeUnique.Builder.class)
 public final class StructWithRefTypeUnique {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public StructWithRefTypeUnique(
@@ -46,7 +45,6 @@ public final class StructWithRefTypeUnique {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.Empty defField = null;
         private test.fixtures.refs.Empty optField = null;
@@ -90,7 +88,6 @@ public final class StructWithRefTypeUnique {
                 this.optField,
                 this.reqField
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class StructWithRefTypeUnique {
     
     @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetDefField() {
-        return this.defField != null;
-    }
     
     
     @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.Empty getOptField() { return optField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetOptField() {
-        return this.optField != null;
-    }
     
     
     @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.Empty getReqField() { return reqField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetReqField() {
-        return this.reqField != null;
-    }
     
     @java.lang.Override
     public String toString() {

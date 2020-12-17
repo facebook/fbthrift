@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct("MyMutableBigStruct")
 public final class MyMutableBigStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyMutableBigStruct() {
@@ -289,7 +288,6 @@ public final class MyMutableBigStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String msg1 = null;
         private String msg2 = null;
@@ -3126,7 +3124,6 @@ public final class MyMutableBigStruct {
             oMyMutableBigStruct.msg255 = this.msg255;
             oMyMutableBigStruct.msg256 = this.msg256;
             oMyMutableBigStruct.msg257 = this.msg257;
-            oMyMutableBigStruct.__isset_bit_vector.or(__optional_isset);
             return oMyMutableBigStruct;
         }
     }
@@ -4430,17 +4427,7 @@ static {
         this.msg1 = msg1;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg1() {
-        return this.msg1 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg1() {
-        this.msg1 = null;
-    }
+    
     
     @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
     public String getMsg2() { return msg2; }
@@ -4450,17 +4437,7 @@ static {
         this.msg2 = msg2;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg2() {
-        return this.msg2 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg2() {
-        this.msg2 = null;
-    }
+    
     
     @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
     public String getMsg3() { return msg3; }
@@ -4470,17 +4447,7 @@ static {
         this.msg3 = msg3;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg3() {
-        return this.msg3 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg3() {
-        this.msg3 = null;
-    }
+    
     
     @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
     public String getMsg4() { return msg4; }
@@ -4490,17 +4457,7 @@ static {
         this.msg4 = msg4;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg4() {
-        return this.msg4 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg4() {
-        this.msg4 = null;
-    }
+    
     
     @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
     public String getMsg5() { return msg5; }
@@ -4510,17 +4467,7 @@ static {
         this.msg5 = msg5;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg5() {
-        return this.msg5 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg5() {
-        this.msg5 = null;
-    }
+    
     
     @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
     public String getMsg6() { return msg6; }
@@ -4530,17 +4477,7 @@ static {
         this.msg6 = msg6;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg6() {
-        return this.msg6 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg6() {
-        this.msg6 = null;
-    }
+    
     
     @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
     public String getMsg7() { return msg7; }
@@ -4550,17 +4487,7 @@ static {
         this.msg7 = msg7;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg7() {
-        return this.msg7 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg7() {
-        this.msg7 = null;
-    }
+    
     
     @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
     public String getMsg8() { return msg8; }
@@ -4570,17 +4497,7 @@ static {
         this.msg8 = msg8;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg8() {
-        return this.msg8 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg8() {
-        this.msg8 = null;
-    }
+    
     
     @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
     public String getMsg9() { return msg9; }
@@ -4590,17 +4507,7 @@ static {
         this.msg9 = msg9;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg9() {
-        return this.msg9 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg9() {
-        this.msg9 = null;
-    }
+    
     
     @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
     public int getMyIntField10() { return myIntField10; }
@@ -4610,17 +4517,7 @@ static {
         this.myIntField10 = myIntField10;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField10() {
-        return __isset_bit_vector.get(_MYINTFIELD10);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField10() {
-        __isset_bit_vector.clear(_MYINTFIELD10);
-    }
+    
     
     @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
     public int getMyIntField11() { return myIntField11; }
@@ -4630,17 +4527,7 @@ static {
         this.myIntField11 = myIntField11;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField11() {
-        return __isset_bit_vector.get(_MYINTFIELD11);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField11() {
-        __isset_bit_vector.clear(_MYINTFIELD11);
-    }
+    
     
     @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
     public int getMyIntField12() { return myIntField12; }
@@ -4650,17 +4537,7 @@ static {
         this.myIntField12 = myIntField12;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField12() {
-        return __isset_bit_vector.get(_MYINTFIELD12);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField12() {
-        __isset_bit_vector.clear(_MYINTFIELD12);
-    }
+    
     
     @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
     public int getMyIntField13() { return myIntField13; }
@@ -4670,17 +4547,7 @@ static {
         this.myIntField13 = myIntField13;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField13() {
-        return __isset_bit_vector.get(_MYINTFIELD13);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField13() {
-        __isset_bit_vector.clear(_MYINTFIELD13);
-    }
+    
     
     @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
     public int getMyIntField14() { return myIntField14; }
@@ -4690,17 +4557,7 @@ static {
         this.myIntField14 = myIntField14;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField14() {
-        return __isset_bit_vector.get(_MYINTFIELD14);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField14() {
-        __isset_bit_vector.clear(_MYINTFIELD14);
-    }
+    
     
     @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
     public int getMyIntField15() { return myIntField15; }
@@ -4710,17 +4567,7 @@ static {
         this.myIntField15 = myIntField15;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField15() {
-        return __isset_bit_vector.get(_MYINTFIELD15);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField15() {
-        __isset_bit_vector.clear(_MYINTFIELD15);
-    }
+    
     
     @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
     public int getMyIntField16() { return myIntField16; }
@@ -4730,17 +4577,7 @@ static {
         this.myIntField16 = myIntField16;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField16() {
-        return __isset_bit_vector.get(_MYINTFIELD16);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField16() {
-        __isset_bit_vector.clear(_MYINTFIELD16);
-    }
+    
     
     @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
     public int getMyIntField17() { return myIntField17; }
@@ -4750,17 +4587,7 @@ static {
         this.myIntField17 = myIntField17;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField17() {
-        return __isset_bit_vector.get(_MYINTFIELD17);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField17() {
-        __isset_bit_vector.clear(_MYINTFIELD17);
-    }
+    
     
     @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
     public int getMyIntField18() { return myIntField18; }
@@ -4770,17 +4597,7 @@ static {
         this.myIntField18 = myIntField18;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField18() {
-        return __isset_bit_vector.get(_MYINTFIELD18);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField18() {
-        __isset_bit_vector.clear(_MYINTFIELD18);
-    }
+    
     
     @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
     public int getMyIntField19() { return myIntField19; }
@@ -4790,17 +4607,7 @@ static {
         this.myIntField19 = myIntField19;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField19() {
-        return __isset_bit_vector.get(_MYINTFIELD19);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField19() {
-        __isset_bit_vector.clear(_MYINTFIELD19);
-    }
+    
     
     @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
     public int getMyIntField20() { return myIntField20; }
@@ -4810,17 +4617,7 @@ static {
         this.myIntField20 = myIntField20;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField20() {
-        return __isset_bit_vector.get(_MYINTFIELD20);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyIntField20() {
-        __isset_bit_vector.clear(_MYINTFIELD20);
-    }
+    
     
     @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
     public double getMyDoubleField21() { return myDoubleField21; }
@@ -4830,17 +4627,7 @@ static {
         this.myDoubleField21 = myDoubleField21;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField21() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD21);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField21() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD21);
-    }
+    
     
     @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
     public double getMyDoubleField22() { return myDoubleField22; }
@@ -4850,17 +4637,7 @@ static {
         this.myDoubleField22 = myDoubleField22;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField22() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD22);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField22() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD22);
-    }
+    
     
     @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
     public double getMyDoubleField23() { return myDoubleField23; }
@@ -4870,17 +4647,7 @@ static {
         this.myDoubleField23 = myDoubleField23;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField23() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD23);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField23() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD23);
-    }
+    
     
     @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
     public double getMyDoubleField24() { return myDoubleField24; }
@@ -4890,17 +4657,7 @@ static {
         this.myDoubleField24 = myDoubleField24;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField24() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD24);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField24() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD24);
-    }
+    
     
     @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
     public double getMyDoubleField25() { return myDoubleField25; }
@@ -4910,17 +4667,7 @@ static {
         this.myDoubleField25 = myDoubleField25;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField25() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD25);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField25() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD25);
-    }
+    
     
     @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
     public double getMyDoubleField26() { return myDoubleField26; }
@@ -4930,17 +4677,7 @@ static {
         this.myDoubleField26 = myDoubleField26;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField26() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD26);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField26() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD26);
-    }
+    
     
     @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
     public double getMyDoubleField27() { return myDoubleField27; }
@@ -4950,17 +4687,7 @@ static {
         this.myDoubleField27 = myDoubleField27;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField27() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD27);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField27() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD27);
-    }
+    
     
     @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
     public double getMyDoubleField28() { return myDoubleField28; }
@@ -4970,17 +4697,7 @@ static {
         this.myDoubleField28 = myDoubleField28;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField28() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD28);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField28() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD28);
-    }
+    
     
     @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
     public double getMyDoubleField29() { return myDoubleField29; }
@@ -4990,17 +4707,7 @@ static {
         this.myDoubleField29 = myDoubleField29;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField29() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD29);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField29() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD29);
-    }
+    
     
     @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
     public double getMyDoubleField30() { return myDoubleField30; }
@@ -5010,17 +4717,7 @@ static {
         this.myDoubleField30 = myDoubleField30;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField30() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD30);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDoubleField30() {
-        __isset_bit_vector.clear(_MYDOUBLEFIELD30);
-    }
+    
     
     @ThriftField(value=31, name="msg31", requiredness=Requiredness.NONE)
     public String getMsg31() { return msg31; }
@@ -5030,17 +4727,7 @@ static {
         this.msg31 = msg31;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg31() {
-        return this.msg31 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg31() {
-        this.msg31 = null;
-    }
+    
     
     @ThriftField(value=32, name="msg32", requiredness=Requiredness.NONE)
     public String getMsg32() { return msg32; }
@@ -5050,17 +4737,7 @@ static {
         this.msg32 = msg32;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg32() {
-        return this.msg32 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg32() {
-        this.msg32 = null;
-    }
+    
     
     @ThriftField(value=33, name="msg33", requiredness=Requiredness.NONE)
     public String getMsg33() { return msg33; }
@@ -5070,17 +4747,7 @@ static {
         this.msg33 = msg33;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg33() {
-        return this.msg33 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg33() {
-        this.msg33 = null;
-    }
+    
     
     @ThriftField(value=34, name="msg34", requiredness=Requiredness.NONE)
     public String getMsg34() { return msg34; }
@@ -5090,17 +4757,7 @@ static {
         this.msg34 = msg34;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg34() {
-        return this.msg34 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg34() {
-        this.msg34 = null;
-    }
+    
     
     @ThriftField(value=35, name="msg35", requiredness=Requiredness.NONE)
     public String getMsg35() { return msg35; }
@@ -5110,17 +4767,7 @@ static {
         this.msg35 = msg35;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg35() {
-        return this.msg35 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg35() {
-        this.msg35 = null;
-    }
+    
     
     @ThriftField(value=36, name="msg36", requiredness=Requiredness.NONE)
     public String getMsg36() { return msg36; }
@@ -5130,17 +4777,7 @@ static {
         this.msg36 = msg36;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg36() {
-        return this.msg36 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg36() {
-        this.msg36 = null;
-    }
+    
     
     @ThriftField(value=37, name="msg37", requiredness=Requiredness.NONE)
     public String getMsg37() { return msg37; }
@@ -5150,17 +4787,7 @@ static {
         this.msg37 = msg37;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg37() {
-        return this.msg37 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg37() {
-        this.msg37 = null;
-    }
+    
     
     @ThriftField(value=38, name="msg38", requiredness=Requiredness.NONE)
     public String getMsg38() { return msg38; }
@@ -5170,17 +4797,7 @@ static {
         this.msg38 = msg38;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg38() {
-        return this.msg38 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg38() {
-        this.msg38 = null;
-    }
+    
     
     @ThriftField(value=39, name="msg39", requiredness=Requiredness.NONE)
     public String getMsg39() { return msg39; }
@@ -5190,17 +4807,7 @@ static {
         this.msg39 = msg39;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg39() {
-        return this.msg39 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg39() {
-        this.msg39 = null;
-    }
+    
     
     @ThriftField(value=40, name="msg40", requiredness=Requiredness.NONE)
     public String getMsg40() { return msg40; }
@@ -5210,17 +4817,7 @@ static {
         this.msg40 = msg40;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg40() {
-        return this.msg40 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg40() {
-        this.msg40 = null;
-    }
+    
     
     @ThriftField(value=41, name="msg41", requiredness=Requiredness.NONE)
     public String getMsg41() { return msg41; }
@@ -5230,17 +4827,7 @@ static {
         this.msg41 = msg41;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg41() {
-        return this.msg41 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg41() {
-        this.msg41 = null;
-    }
+    
     
     @ThriftField(value=42, name="msg42", requiredness=Requiredness.NONE)
     public String getMsg42() { return msg42; }
@@ -5250,17 +4837,7 @@ static {
         this.msg42 = msg42;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg42() {
-        return this.msg42 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg42() {
-        this.msg42 = null;
-    }
+    
     
     @ThriftField(value=43, name="msg43", requiredness=Requiredness.NONE)
     public String getMsg43() { return msg43; }
@@ -5270,17 +4847,7 @@ static {
         this.msg43 = msg43;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg43() {
-        return this.msg43 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg43() {
-        this.msg43 = null;
-    }
+    
     
     @ThriftField(value=44, name="msg44", requiredness=Requiredness.NONE)
     public String getMsg44() { return msg44; }
@@ -5290,17 +4857,7 @@ static {
         this.msg44 = msg44;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg44() {
-        return this.msg44 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg44() {
-        this.msg44 = null;
-    }
+    
     
     @ThriftField(value=45, name="msg45", requiredness=Requiredness.NONE)
     public String getMsg45() { return msg45; }
@@ -5310,17 +4867,7 @@ static {
         this.msg45 = msg45;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg45() {
-        return this.msg45 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg45() {
-        this.msg45 = null;
-    }
+    
     
     @ThriftField(value=46, name="msg46", requiredness=Requiredness.NONE)
     public String getMsg46() { return msg46; }
@@ -5330,17 +4877,7 @@ static {
         this.msg46 = msg46;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg46() {
-        return this.msg46 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg46() {
-        this.msg46 = null;
-    }
+    
     
     @ThriftField(value=47, name="msg47", requiredness=Requiredness.NONE)
     public String getMsg47() { return msg47; }
@@ -5350,17 +4887,7 @@ static {
         this.msg47 = msg47;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg47() {
-        return this.msg47 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg47() {
-        this.msg47 = null;
-    }
+    
     
     @ThriftField(value=48, name="msg48", requiredness=Requiredness.NONE)
     public String getMsg48() { return msg48; }
@@ -5370,17 +4897,7 @@ static {
         this.msg48 = msg48;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg48() {
-        return this.msg48 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg48() {
-        this.msg48 = null;
-    }
+    
     
     @ThriftField(value=49, name="msg49", requiredness=Requiredness.NONE)
     public String getMsg49() { return msg49; }
@@ -5390,17 +4907,7 @@ static {
         this.msg49 = msg49;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg49() {
-        return this.msg49 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg49() {
-        this.msg49 = null;
-    }
+    
     
     @ThriftField(value=50, name="msg50", requiredness=Requiredness.NONE)
     public String getMsg50() { return msg50; }
@@ -5410,17 +4917,7 @@ static {
         this.msg50 = msg50;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg50() {
-        return this.msg50 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg50() {
-        this.msg50 = null;
-    }
+    
     
     @ThriftField(value=51, name="msg51", requiredness=Requiredness.NONE)
     public String getMsg51() { return msg51; }
@@ -5430,17 +4927,7 @@ static {
         this.msg51 = msg51;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg51() {
-        return this.msg51 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg51() {
-        this.msg51 = null;
-    }
+    
     
     @ThriftField(value=52, name="msg52", requiredness=Requiredness.NONE)
     public String getMsg52() { return msg52; }
@@ -5450,17 +4937,7 @@ static {
         this.msg52 = msg52;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg52() {
-        return this.msg52 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg52() {
-        this.msg52 = null;
-    }
+    
     
     @ThriftField(value=53, name="msg53", requiredness=Requiredness.NONE)
     public String getMsg53() { return msg53; }
@@ -5470,17 +4947,7 @@ static {
         this.msg53 = msg53;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg53() {
-        return this.msg53 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg53() {
-        this.msg53 = null;
-    }
+    
     
     @ThriftField(value=54, name="msg54", requiredness=Requiredness.NONE)
     public String getMsg54() { return msg54; }
@@ -5490,17 +4957,7 @@ static {
         this.msg54 = msg54;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg54() {
-        return this.msg54 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg54() {
-        this.msg54 = null;
-    }
+    
     
     @ThriftField(value=55, name="msg55", requiredness=Requiredness.NONE)
     public String getMsg55() { return msg55; }
@@ -5510,17 +4967,7 @@ static {
         this.msg55 = msg55;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg55() {
-        return this.msg55 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg55() {
-        this.msg55 = null;
-    }
+    
     
     @ThriftField(value=56, name="msg56", requiredness=Requiredness.NONE)
     public String getMsg56() { return msg56; }
@@ -5530,17 +4977,7 @@ static {
         this.msg56 = msg56;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg56() {
-        return this.msg56 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg56() {
-        this.msg56 = null;
-    }
+    
     
     @ThriftField(value=57, name="msg57", requiredness=Requiredness.NONE)
     public String getMsg57() { return msg57; }
@@ -5550,17 +4987,7 @@ static {
         this.msg57 = msg57;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg57() {
-        return this.msg57 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg57() {
-        this.msg57 = null;
-    }
+    
     
     @ThriftField(value=58, name="msg58", requiredness=Requiredness.NONE)
     public String getMsg58() { return msg58; }
@@ -5570,17 +4997,7 @@ static {
         this.msg58 = msg58;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg58() {
-        return this.msg58 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg58() {
-        this.msg58 = null;
-    }
+    
     
     @ThriftField(value=59, name="msg59", requiredness=Requiredness.NONE)
     public String getMsg59() { return msg59; }
@@ -5590,17 +5007,7 @@ static {
         this.msg59 = msg59;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg59() {
-        return this.msg59 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg59() {
-        this.msg59 = null;
-    }
+    
     
     @ThriftField(value=60, name="msg60", requiredness=Requiredness.NONE)
     public String getMsg60() { return msg60; }
@@ -5610,17 +5017,7 @@ static {
         this.msg60 = msg60;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg60() {
-        return this.msg60 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg60() {
-        this.msg60 = null;
-    }
+    
     
     @ThriftField(value=61, name="msg61", requiredness=Requiredness.NONE)
     public String getMsg61() { return msg61; }
@@ -5630,17 +5027,7 @@ static {
         this.msg61 = msg61;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg61() {
-        return this.msg61 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg61() {
-        this.msg61 = null;
-    }
+    
     
     @ThriftField(value=62, name="msg62", requiredness=Requiredness.NONE)
     public String getMsg62() { return msg62; }
@@ -5650,17 +5037,7 @@ static {
         this.msg62 = msg62;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg62() {
-        return this.msg62 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg62() {
-        this.msg62 = null;
-    }
+    
     
     @ThriftField(value=63, name="msg63", requiredness=Requiredness.NONE)
     public String getMsg63() { return msg63; }
@@ -5670,17 +5047,7 @@ static {
         this.msg63 = msg63;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg63() {
-        return this.msg63 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg63() {
-        this.msg63 = null;
-    }
+    
     
     @ThriftField(value=64, name="msg64", requiredness=Requiredness.NONE)
     public String getMsg64() { return msg64; }
@@ -5690,17 +5057,7 @@ static {
         this.msg64 = msg64;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg64() {
-        return this.msg64 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg64() {
-        this.msg64 = null;
-    }
+    
     
     @ThriftField(value=65, name="msg65", requiredness=Requiredness.NONE)
     public String getMsg65() { return msg65; }
@@ -5710,17 +5067,7 @@ static {
         this.msg65 = msg65;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg65() {
-        return this.msg65 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg65() {
-        this.msg65 = null;
-    }
+    
     
     @ThriftField(value=66, name="msg66", requiredness=Requiredness.NONE)
     public String getMsg66() { return msg66; }
@@ -5730,17 +5077,7 @@ static {
         this.msg66 = msg66;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg66() {
-        return this.msg66 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg66() {
-        this.msg66 = null;
-    }
+    
     
     @ThriftField(value=67, name="msg67", requiredness=Requiredness.NONE)
     public String getMsg67() { return msg67; }
@@ -5750,17 +5087,7 @@ static {
         this.msg67 = msg67;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg67() {
-        return this.msg67 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg67() {
-        this.msg67 = null;
-    }
+    
     
     @ThriftField(value=68, name="msg68", requiredness=Requiredness.NONE)
     public String getMsg68() { return msg68; }
@@ -5770,17 +5097,7 @@ static {
         this.msg68 = msg68;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg68() {
-        return this.msg68 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg68() {
-        this.msg68 = null;
-    }
+    
     
     @ThriftField(value=69, name="msg69", requiredness=Requiredness.NONE)
     public String getMsg69() { return msg69; }
@@ -5790,17 +5107,7 @@ static {
         this.msg69 = msg69;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg69() {
-        return this.msg69 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg69() {
-        this.msg69 = null;
-    }
+    
     
     @ThriftField(value=70, name="msg70", requiredness=Requiredness.NONE)
     public String getMsg70() { return msg70; }
@@ -5810,17 +5117,7 @@ static {
         this.msg70 = msg70;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg70() {
-        return this.msg70 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg70() {
-        this.msg70 = null;
-    }
+    
     
     @ThriftField(value=71, name="msg71", requiredness=Requiredness.NONE)
     public String getMsg71() { return msg71; }
@@ -5830,17 +5127,7 @@ static {
         this.msg71 = msg71;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg71() {
-        return this.msg71 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg71() {
-        this.msg71 = null;
-    }
+    
     
     @ThriftField(value=72, name="msg72", requiredness=Requiredness.NONE)
     public String getMsg72() { return msg72; }
@@ -5850,17 +5137,7 @@ static {
         this.msg72 = msg72;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg72() {
-        return this.msg72 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg72() {
-        this.msg72 = null;
-    }
+    
     
     @ThriftField(value=73, name="msg73", requiredness=Requiredness.NONE)
     public String getMsg73() { return msg73; }
@@ -5870,17 +5147,7 @@ static {
         this.msg73 = msg73;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg73() {
-        return this.msg73 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg73() {
-        this.msg73 = null;
-    }
+    
     
     @ThriftField(value=74, name="msg74", requiredness=Requiredness.NONE)
     public String getMsg74() { return msg74; }
@@ -5890,17 +5157,7 @@ static {
         this.msg74 = msg74;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg74() {
-        return this.msg74 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg74() {
-        this.msg74 = null;
-    }
+    
     
     @ThriftField(value=75, name="msg75", requiredness=Requiredness.NONE)
     public String getMsg75() { return msg75; }
@@ -5910,17 +5167,7 @@ static {
         this.msg75 = msg75;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg75() {
-        return this.msg75 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg75() {
-        this.msg75 = null;
-    }
+    
     
     @ThriftField(value=76, name="msg76", requiredness=Requiredness.NONE)
     public String getMsg76() { return msg76; }
@@ -5930,17 +5177,7 @@ static {
         this.msg76 = msg76;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg76() {
-        return this.msg76 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg76() {
-        this.msg76 = null;
-    }
+    
     
     @ThriftField(value=77, name="msg77", requiredness=Requiredness.NONE)
     public String getMsg77() { return msg77; }
@@ -5950,17 +5187,7 @@ static {
         this.msg77 = msg77;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg77() {
-        return this.msg77 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg77() {
-        this.msg77 = null;
-    }
+    
     
     @ThriftField(value=78, name="msg78", requiredness=Requiredness.NONE)
     public String getMsg78() { return msg78; }
@@ -5970,17 +5197,7 @@ static {
         this.msg78 = msg78;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg78() {
-        return this.msg78 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg78() {
-        this.msg78 = null;
-    }
+    
     
     @ThriftField(value=79, name="msg79", requiredness=Requiredness.NONE)
     public String getMsg79() { return msg79; }
@@ -5990,17 +5207,7 @@ static {
         this.msg79 = msg79;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg79() {
-        return this.msg79 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg79() {
-        this.msg79 = null;
-    }
+    
     
     @ThriftField(value=80, name="msg80", requiredness=Requiredness.NONE)
     public String getMsg80() { return msg80; }
@@ -6010,17 +5217,7 @@ static {
         this.msg80 = msg80;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg80() {
-        return this.msg80 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg80() {
-        this.msg80 = null;
-    }
+    
     
     @ThriftField(value=81, name="msg81", requiredness=Requiredness.NONE)
     public String getMsg81() { return msg81; }
@@ -6030,17 +5227,7 @@ static {
         this.msg81 = msg81;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg81() {
-        return this.msg81 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg81() {
-        this.msg81 = null;
-    }
+    
     
     @ThriftField(value=82, name="msg82", requiredness=Requiredness.NONE)
     public String getMsg82() { return msg82; }
@@ -6050,17 +5237,7 @@ static {
         this.msg82 = msg82;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg82() {
-        return this.msg82 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg82() {
-        this.msg82 = null;
-    }
+    
     
     @ThriftField(value=83, name="msg83", requiredness=Requiredness.NONE)
     public String getMsg83() { return msg83; }
@@ -6070,17 +5247,7 @@ static {
         this.msg83 = msg83;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg83() {
-        return this.msg83 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg83() {
-        this.msg83 = null;
-    }
+    
     
     @ThriftField(value=84, name="msg84", requiredness=Requiredness.NONE)
     public String getMsg84() { return msg84; }
@@ -6090,17 +5257,7 @@ static {
         this.msg84 = msg84;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg84() {
-        return this.msg84 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg84() {
-        this.msg84 = null;
-    }
+    
     
     @ThriftField(value=85, name="msg85", requiredness=Requiredness.NONE)
     public String getMsg85() { return msg85; }
@@ -6110,17 +5267,7 @@ static {
         this.msg85 = msg85;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg85() {
-        return this.msg85 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg85() {
-        this.msg85 = null;
-    }
+    
     
     @ThriftField(value=86, name="msg86", requiredness=Requiredness.NONE)
     public String getMsg86() { return msg86; }
@@ -6130,17 +5277,7 @@ static {
         this.msg86 = msg86;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg86() {
-        return this.msg86 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg86() {
-        this.msg86 = null;
-    }
+    
     
     @ThriftField(value=87, name="msg87", requiredness=Requiredness.NONE)
     public String getMsg87() { return msg87; }
@@ -6150,17 +5287,7 @@ static {
         this.msg87 = msg87;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg87() {
-        return this.msg87 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg87() {
-        this.msg87 = null;
-    }
+    
     
     @ThriftField(value=88, name="msg88", requiredness=Requiredness.NONE)
     public String getMsg88() { return msg88; }
@@ -6170,17 +5297,7 @@ static {
         this.msg88 = msg88;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg88() {
-        return this.msg88 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg88() {
-        this.msg88 = null;
-    }
+    
     
     @ThriftField(value=89, name="msg89", requiredness=Requiredness.NONE)
     public String getMsg89() { return msg89; }
@@ -6190,17 +5307,7 @@ static {
         this.msg89 = msg89;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg89() {
-        return this.msg89 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg89() {
-        this.msg89 = null;
-    }
+    
     
     @ThriftField(value=90, name="msg90", requiredness=Requiredness.NONE)
     public String getMsg90() { return msg90; }
@@ -6210,17 +5317,7 @@ static {
         this.msg90 = msg90;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg90() {
-        return this.msg90 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg90() {
-        this.msg90 = null;
-    }
+    
     
     @ThriftField(value=91, name="msg91", requiredness=Requiredness.NONE)
     public String getMsg91() { return msg91; }
@@ -6230,17 +5327,7 @@ static {
         this.msg91 = msg91;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg91() {
-        return this.msg91 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg91() {
-        this.msg91 = null;
-    }
+    
     
     @ThriftField(value=92, name="msg92", requiredness=Requiredness.NONE)
     public String getMsg92() { return msg92; }
@@ -6250,17 +5337,7 @@ static {
         this.msg92 = msg92;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg92() {
-        return this.msg92 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg92() {
-        this.msg92 = null;
-    }
+    
     
     @ThriftField(value=93, name="msg93", requiredness=Requiredness.NONE)
     public String getMsg93() { return msg93; }
@@ -6270,17 +5347,7 @@ static {
         this.msg93 = msg93;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg93() {
-        return this.msg93 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg93() {
-        this.msg93 = null;
-    }
+    
     
     @ThriftField(value=94, name="msg94", requiredness=Requiredness.NONE)
     public String getMsg94() { return msg94; }
@@ -6290,17 +5357,7 @@ static {
         this.msg94 = msg94;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg94() {
-        return this.msg94 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg94() {
-        this.msg94 = null;
-    }
+    
     
     @ThriftField(value=95, name="msg95", requiredness=Requiredness.NONE)
     public String getMsg95() { return msg95; }
@@ -6310,17 +5367,7 @@ static {
         this.msg95 = msg95;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg95() {
-        return this.msg95 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg95() {
-        this.msg95 = null;
-    }
+    
     
     @ThriftField(value=96, name="msg96", requiredness=Requiredness.NONE)
     public String getMsg96() { return msg96; }
@@ -6330,17 +5377,7 @@ static {
         this.msg96 = msg96;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg96() {
-        return this.msg96 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg96() {
-        this.msg96 = null;
-    }
+    
     
     @ThriftField(value=97, name="msg97", requiredness=Requiredness.NONE)
     public String getMsg97() { return msg97; }
@@ -6350,17 +5387,7 @@ static {
         this.msg97 = msg97;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg97() {
-        return this.msg97 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg97() {
-        this.msg97 = null;
-    }
+    
     
     @ThriftField(value=98, name="msg98", requiredness=Requiredness.NONE)
     public String getMsg98() { return msg98; }
@@ -6370,17 +5397,7 @@ static {
         this.msg98 = msg98;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg98() {
-        return this.msg98 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg98() {
-        this.msg98 = null;
-    }
+    
     
     @ThriftField(value=99, name="msg99", requiredness=Requiredness.NONE)
     public String getMsg99() { return msg99; }
@@ -6390,17 +5407,7 @@ static {
         this.msg99 = msg99;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg99() {
-        return this.msg99 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg99() {
-        this.msg99 = null;
-    }
+    
     
     @ThriftField(value=100, name="msg100", requiredness=Requiredness.NONE)
     public String getMsg100() { return msg100; }
@@ -6410,17 +5417,7 @@ static {
         this.msg100 = msg100;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg100() {
-        return this.msg100 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg100() {
-        this.msg100 = null;
-    }
+    
     
     @ThriftField(value=101, name="msg101", requiredness=Requiredness.NONE)
     public String getMsg101() { return msg101; }
@@ -6430,17 +5427,7 @@ static {
         this.msg101 = msg101;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg101() {
-        return this.msg101 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg101() {
-        this.msg101 = null;
-    }
+    
     
     @ThriftField(value=102, name="msg102", requiredness=Requiredness.NONE)
     public String getMsg102() { return msg102; }
@@ -6450,17 +5437,7 @@ static {
         this.msg102 = msg102;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg102() {
-        return this.msg102 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg102() {
-        this.msg102 = null;
-    }
+    
     
     @ThriftField(value=103, name="msg103", requiredness=Requiredness.NONE)
     public String getMsg103() { return msg103; }
@@ -6470,17 +5447,7 @@ static {
         this.msg103 = msg103;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg103() {
-        return this.msg103 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg103() {
-        this.msg103 = null;
-    }
+    
     
     @ThriftField(value=104, name="msg104", requiredness=Requiredness.NONE)
     public String getMsg104() { return msg104; }
@@ -6490,17 +5457,7 @@ static {
         this.msg104 = msg104;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg104() {
-        return this.msg104 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg104() {
-        this.msg104 = null;
-    }
+    
     
     @ThriftField(value=105, name="msg105", requiredness=Requiredness.NONE)
     public String getMsg105() { return msg105; }
@@ -6510,17 +5467,7 @@ static {
         this.msg105 = msg105;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg105() {
-        return this.msg105 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg105() {
-        this.msg105 = null;
-    }
+    
     
     @ThriftField(value=106, name="msg106", requiredness=Requiredness.NONE)
     public String getMsg106() { return msg106; }
@@ -6530,17 +5477,7 @@ static {
         this.msg106 = msg106;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg106() {
-        return this.msg106 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg106() {
-        this.msg106 = null;
-    }
+    
     
     @ThriftField(value=107, name="msg107", requiredness=Requiredness.NONE)
     public String getMsg107() { return msg107; }
@@ -6550,17 +5487,7 @@ static {
         this.msg107 = msg107;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg107() {
-        return this.msg107 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg107() {
-        this.msg107 = null;
-    }
+    
     
     @ThriftField(value=108, name="msg108", requiredness=Requiredness.NONE)
     public String getMsg108() { return msg108; }
@@ -6570,17 +5497,7 @@ static {
         this.msg108 = msg108;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg108() {
-        return this.msg108 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg108() {
-        this.msg108 = null;
-    }
+    
     
     @ThriftField(value=109, name="msg109", requiredness=Requiredness.NONE)
     public String getMsg109() { return msg109; }
@@ -6590,17 +5507,7 @@ static {
         this.msg109 = msg109;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg109() {
-        return this.msg109 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg109() {
-        this.msg109 = null;
-    }
+    
     
     @ThriftField(value=110, name="msg110", requiredness=Requiredness.NONE)
     public String getMsg110() { return msg110; }
@@ -6610,17 +5517,7 @@ static {
         this.msg110 = msg110;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg110() {
-        return this.msg110 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg110() {
-        this.msg110 = null;
-    }
+    
     
     @ThriftField(value=111, name="msg111", requiredness=Requiredness.NONE)
     public String getMsg111() { return msg111; }
@@ -6630,17 +5527,7 @@ static {
         this.msg111 = msg111;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg111() {
-        return this.msg111 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg111() {
-        this.msg111 = null;
-    }
+    
     
     @ThriftField(value=112, name="msg112", requiredness=Requiredness.NONE)
     public String getMsg112() { return msg112; }
@@ -6650,17 +5537,7 @@ static {
         this.msg112 = msg112;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg112() {
-        return this.msg112 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg112() {
-        this.msg112 = null;
-    }
+    
     
     @ThriftField(value=113, name="msg113", requiredness=Requiredness.NONE)
     public String getMsg113() { return msg113; }
@@ -6670,17 +5547,7 @@ static {
         this.msg113 = msg113;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg113() {
-        return this.msg113 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg113() {
-        this.msg113 = null;
-    }
+    
     
     @ThriftField(value=114, name="msg114", requiredness=Requiredness.NONE)
     public String getMsg114() { return msg114; }
@@ -6690,17 +5557,7 @@ static {
         this.msg114 = msg114;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg114() {
-        return this.msg114 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg114() {
-        this.msg114 = null;
-    }
+    
     
     @ThriftField(value=115, name="msg115", requiredness=Requiredness.NONE)
     public String getMsg115() { return msg115; }
@@ -6710,17 +5567,7 @@ static {
         this.msg115 = msg115;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg115() {
-        return this.msg115 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg115() {
-        this.msg115 = null;
-    }
+    
     
     @ThriftField(value=116, name="msg116", requiredness=Requiredness.NONE)
     public String getMsg116() { return msg116; }
@@ -6730,17 +5577,7 @@ static {
         this.msg116 = msg116;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg116() {
-        return this.msg116 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg116() {
-        this.msg116 = null;
-    }
+    
     
     @ThriftField(value=117, name="msg117", requiredness=Requiredness.NONE)
     public String getMsg117() { return msg117; }
@@ -6750,17 +5587,7 @@ static {
         this.msg117 = msg117;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg117() {
-        return this.msg117 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg117() {
-        this.msg117 = null;
-    }
+    
     
     @ThriftField(value=118, name="msg118", requiredness=Requiredness.NONE)
     public String getMsg118() { return msg118; }
@@ -6770,17 +5597,7 @@ static {
         this.msg118 = msg118;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg118() {
-        return this.msg118 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg118() {
-        this.msg118 = null;
-    }
+    
     
     @ThriftField(value=119, name="msg119", requiredness=Requiredness.NONE)
     public String getMsg119() { return msg119; }
@@ -6790,17 +5607,7 @@ static {
         this.msg119 = msg119;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg119() {
-        return this.msg119 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg119() {
-        this.msg119 = null;
-    }
+    
     
     @ThriftField(value=120, name="msg120", requiredness=Requiredness.NONE)
     public String getMsg120() { return msg120; }
@@ -6810,17 +5617,7 @@ static {
         this.msg120 = msg120;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg120() {
-        return this.msg120 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg120() {
-        this.msg120 = null;
-    }
+    
     
     @ThriftField(value=121, name="msg121", requiredness=Requiredness.NONE)
     public String getMsg121() { return msg121; }
@@ -6830,17 +5627,7 @@ static {
         this.msg121 = msg121;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg121() {
-        return this.msg121 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg121() {
-        this.msg121 = null;
-    }
+    
     
     @ThriftField(value=122, name="msg122", requiredness=Requiredness.NONE)
     public String getMsg122() { return msg122; }
@@ -6850,17 +5637,7 @@ static {
         this.msg122 = msg122;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg122() {
-        return this.msg122 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg122() {
-        this.msg122 = null;
-    }
+    
     
     @ThriftField(value=123, name="msg123", requiredness=Requiredness.NONE)
     public String getMsg123() { return msg123; }
@@ -6870,17 +5647,7 @@ static {
         this.msg123 = msg123;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg123() {
-        return this.msg123 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg123() {
-        this.msg123 = null;
-    }
+    
     
     @ThriftField(value=124, name="msg124", requiredness=Requiredness.NONE)
     public String getMsg124() { return msg124; }
@@ -6890,17 +5657,7 @@ static {
         this.msg124 = msg124;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg124() {
-        return this.msg124 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg124() {
-        this.msg124 = null;
-    }
+    
     
     @ThriftField(value=125, name="msg125", requiredness=Requiredness.NONE)
     public String getMsg125() { return msg125; }
@@ -6910,17 +5667,7 @@ static {
         this.msg125 = msg125;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg125() {
-        return this.msg125 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg125() {
-        this.msg125 = null;
-    }
+    
     
     @ThriftField(value=126, name="msg126", requiredness=Requiredness.NONE)
     public String getMsg126() { return msg126; }
@@ -6930,17 +5677,7 @@ static {
         this.msg126 = msg126;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg126() {
-        return this.msg126 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg126() {
-        this.msg126 = null;
-    }
+    
     
     @ThriftField(value=127, name="msg127", requiredness=Requiredness.NONE)
     public String getMsg127() { return msg127; }
@@ -6950,17 +5687,7 @@ static {
         this.msg127 = msg127;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg127() {
-        return this.msg127 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg127() {
-        this.msg127 = null;
-    }
+    
     
     @ThriftField(value=128, name="msg128", requiredness=Requiredness.NONE)
     public String getMsg128() { return msg128; }
@@ -6970,17 +5697,7 @@ static {
         this.msg128 = msg128;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg128() {
-        return this.msg128 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg128() {
-        this.msg128 = null;
-    }
+    
     
     @ThriftField(value=129, name="msg129", requiredness=Requiredness.NONE)
     public String getMsg129() { return msg129; }
@@ -6990,17 +5707,7 @@ static {
         this.msg129 = msg129;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg129() {
-        return this.msg129 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg129() {
-        this.msg129 = null;
-    }
+    
     
     @ThriftField(value=130, name="msg130", requiredness=Requiredness.NONE)
     public String getMsg130() { return msg130; }
@@ -7010,17 +5717,7 @@ static {
         this.msg130 = msg130;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg130() {
-        return this.msg130 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg130() {
-        this.msg130 = null;
-    }
+    
     
     @ThriftField(value=131, name="msg131", requiredness=Requiredness.NONE)
     public String getMsg131() { return msg131; }
@@ -7030,17 +5727,7 @@ static {
         this.msg131 = msg131;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg131() {
-        return this.msg131 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg131() {
-        this.msg131 = null;
-    }
+    
     
     @ThriftField(value=132, name="msg132", requiredness=Requiredness.NONE)
     public String getMsg132() { return msg132; }
@@ -7050,17 +5737,7 @@ static {
         this.msg132 = msg132;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg132() {
-        return this.msg132 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg132() {
-        this.msg132 = null;
-    }
+    
     
     @ThriftField(value=133, name="msg133", requiredness=Requiredness.NONE)
     public String getMsg133() { return msg133; }
@@ -7070,17 +5747,7 @@ static {
         this.msg133 = msg133;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg133() {
-        return this.msg133 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg133() {
-        this.msg133 = null;
-    }
+    
     
     @ThriftField(value=134, name="msg134", requiredness=Requiredness.NONE)
     public String getMsg134() { return msg134; }
@@ -7090,17 +5757,7 @@ static {
         this.msg134 = msg134;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg134() {
-        return this.msg134 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg134() {
-        this.msg134 = null;
-    }
+    
     
     @ThriftField(value=135, name="msg135", requiredness=Requiredness.NONE)
     public String getMsg135() { return msg135; }
@@ -7110,17 +5767,7 @@ static {
         this.msg135 = msg135;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg135() {
-        return this.msg135 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg135() {
-        this.msg135 = null;
-    }
+    
     
     @ThriftField(value=136, name="msg136", requiredness=Requiredness.NONE)
     public String getMsg136() { return msg136; }
@@ -7130,17 +5777,7 @@ static {
         this.msg136 = msg136;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg136() {
-        return this.msg136 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg136() {
-        this.msg136 = null;
-    }
+    
     
     @ThriftField(value=137, name="msg137", requiredness=Requiredness.NONE)
     public String getMsg137() { return msg137; }
@@ -7150,17 +5787,7 @@ static {
         this.msg137 = msg137;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg137() {
-        return this.msg137 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg137() {
-        this.msg137 = null;
-    }
+    
     
     @ThriftField(value=138, name="msg138", requiredness=Requiredness.NONE)
     public String getMsg138() { return msg138; }
@@ -7170,17 +5797,7 @@ static {
         this.msg138 = msg138;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg138() {
-        return this.msg138 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg138() {
-        this.msg138 = null;
-    }
+    
     
     @ThriftField(value=139, name="msg139", requiredness=Requiredness.NONE)
     public String getMsg139() { return msg139; }
@@ -7190,17 +5807,7 @@ static {
         this.msg139 = msg139;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg139() {
-        return this.msg139 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg139() {
-        this.msg139 = null;
-    }
+    
     
     @ThriftField(value=140, name="msg140", requiredness=Requiredness.NONE)
     public String getMsg140() { return msg140; }
@@ -7210,17 +5817,7 @@ static {
         this.msg140 = msg140;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg140() {
-        return this.msg140 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg140() {
-        this.msg140 = null;
-    }
+    
     
     @ThriftField(value=141, name="msg141", requiredness=Requiredness.NONE)
     public String getMsg141() { return msg141; }
@@ -7230,17 +5827,7 @@ static {
         this.msg141 = msg141;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg141() {
-        return this.msg141 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg141() {
-        this.msg141 = null;
-    }
+    
     
     @ThriftField(value=142, name="msg142", requiredness=Requiredness.NONE)
     public String getMsg142() { return msg142; }
@@ -7250,17 +5837,7 @@ static {
         this.msg142 = msg142;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg142() {
-        return this.msg142 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg142() {
-        this.msg142 = null;
-    }
+    
     
     @ThriftField(value=143, name="msg143", requiredness=Requiredness.NONE)
     public String getMsg143() { return msg143; }
@@ -7270,17 +5847,7 @@ static {
         this.msg143 = msg143;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg143() {
-        return this.msg143 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg143() {
-        this.msg143 = null;
-    }
+    
     
     @ThriftField(value=144, name="msg144", requiredness=Requiredness.NONE)
     public String getMsg144() { return msg144; }
@@ -7290,17 +5857,7 @@ static {
         this.msg144 = msg144;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg144() {
-        return this.msg144 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg144() {
-        this.msg144 = null;
-    }
+    
     
     @ThriftField(value=145, name="msg145", requiredness=Requiredness.NONE)
     public String getMsg145() { return msg145; }
@@ -7310,17 +5867,7 @@ static {
         this.msg145 = msg145;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg145() {
-        return this.msg145 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg145() {
-        this.msg145 = null;
-    }
+    
     
     @ThriftField(value=146, name="msg146", requiredness=Requiredness.NONE)
     public String getMsg146() { return msg146; }
@@ -7330,17 +5877,7 @@ static {
         this.msg146 = msg146;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg146() {
-        return this.msg146 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg146() {
-        this.msg146 = null;
-    }
+    
     
     @ThriftField(value=147, name="msg147", requiredness=Requiredness.NONE)
     public String getMsg147() { return msg147; }
@@ -7350,17 +5887,7 @@ static {
         this.msg147 = msg147;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg147() {
-        return this.msg147 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg147() {
-        this.msg147 = null;
-    }
+    
     
     @ThriftField(value=148, name="msg148", requiredness=Requiredness.NONE)
     public String getMsg148() { return msg148; }
@@ -7370,17 +5897,7 @@ static {
         this.msg148 = msg148;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg148() {
-        return this.msg148 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg148() {
-        this.msg148 = null;
-    }
+    
     
     @ThriftField(value=149, name="msg149", requiredness=Requiredness.NONE)
     public String getMsg149() { return msg149; }
@@ -7390,17 +5907,7 @@ static {
         this.msg149 = msg149;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg149() {
-        return this.msg149 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg149() {
-        this.msg149 = null;
-    }
+    
     
     @ThriftField(value=150, name="msg150", requiredness=Requiredness.NONE)
     public String getMsg150() { return msg150; }
@@ -7410,17 +5917,7 @@ static {
         this.msg150 = msg150;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg150() {
-        return this.msg150 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg150() {
-        this.msg150 = null;
-    }
+    
     
     @ThriftField(value=151, name="msg151", requiredness=Requiredness.NONE)
     public String getMsg151() { return msg151; }
@@ -7430,17 +5927,7 @@ static {
         this.msg151 = msg151;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg151() {
-        return this.msg151 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg151() {
-        this.msg151 = null;
-    }
+    
     
     @ThriftField(value=152, name="msg152", requiredness=Requiredness.NONE)
     public String getMsg152() { return msg152; }
@@ -7450,17 +5937,7 @@ static {
         this.msg152 = msg152;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg152() {
-        return this.msg152 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg152() {
-        this.msg152 = null;
-    }
+    
     
     @ThriftField(value=153, name="msg153", requiredness=Requiredness.NONE)
     public String getMsg153() { return msg153; }
@@ -7470,17 +5947,7 @@ static {
         this.msg153 = msg153;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg153() {
-        return this.msg153 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg153() {
-        this.msg153 = null;
-    }
+    
     
     @ThriftField(value=154, name="msg154", requiredness=Requiredness.NONE)
     public String getMsg154() { return msg154; }
@@ -7490,17 +5957,7 @@ static {
         this.msg154 = msg154;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg154() {
-        return this.msg154 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg154() {
-        this.msg154 = null;
-    }
+    
     
     @ThriftField(value=155, name="msg155", requiredness=Requiredness.NONE)
     public String getMsg155() { return msg155; }
@@ -7510,17 +5967,7 @@ static {
         this.msg155 = msg155;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg155() {
-        return this.msg155 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg155() {
-        this.msg155 = null;
-    }
+    
     
     @ThriftField(value=156, name="msg156", requiredness=Requiredness.NONE)
     public String getMsg156() { return msg156; }
@@ -7530,17 +5977,7 @@ static {
         this.msg156 = msg156;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg156() {
-        return this.msg156 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg156() {
-        this.msg156 = null;
-    }
+    
     
     @ThriftField(value=157, name="msg157", requiredness=Requiredness.NONE)
     public String getMsg157() { return msg157; }
@@ -7550,17 +5987,7 @@ static {
         this.msg157 = msg157;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg157() {
-        return this.msg157 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg157() {
-        this.msg157 = null;
-    }
+    
     
     @ThriftField(value=158, name="msg158", requiredness=Requiredness.NONE)
     public String getMsg158() { return msg158; }
@@ -7570,17 +5997,7 @@ static {
         this.msg158 = msg158;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg158() {
-        return this.msg158 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg158() {
-        this.msg158 = null;
-    }
+    
     
     @ThriftField(value=159, name="msg159", requiredness=Requiredness.NONE)
     public String getMsg159() { return msg159; }
@@ -7590,17 +6007,7 @@ static {
         this.msg159 = msg159;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg159() {
-        return this.msg159 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg159() {
-        this.msg159 = null;
-    }
+    
     
     @ThriftField(value=160, name="msg160", requiredness=Requiredness.NONE)
     public String getMsg160() { return msg160; }
@@ -7610,17 +6017,7 @@ static {
         this.msg160 = msg160;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg160() {
-        return this.msg160 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg160() {
-        this.msg160 = null;
-    }
+    
     
     @ThriftField(value=161, name="msg161", requiredness=Requiredness.NONE)
     public String getMsg161() { return msg161; }
@@ -7630,17 +6027,7 @@ static {
         this.msg161 = msg161;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg161() {
-        return this.msg161 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg161() {
-        this.msg161 = null;
-    }
+    
     
     @ThriftField(value=162, name="msg162", requiredness=Requiredness.NONE)
     public String getMsg162() { return msg162; }
@@ -7650,17 +6037,7 @@ static {
         this.msg162 = msg162;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg162() {
-        return this.msg162 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg162() {
-        this.msg162 = null;
-    }
+    
     
     @ThriftField(value=163, name="msg163", requiredness=Requiredness.NONE)
     public String getMsg163() { return msg163; }
@@ -7670,17 +6047,7 @@ static {
         this.msg163 = msg163;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg163() {
-        return this.msg163 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg163() {
-        this.msg163 = null;
-    }
+    
     
     @ThriftField(value=164, name="msg164", requiredness=Requiredness.NONE)
     public String getMsg164() { return msg164; }
@@ -7690,17 +6057,7 @@ static {
         this.msg164 = msg164;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg164() {
-        return this.msg164 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg164() {
-        this.msg164 = null;
-    }
+    
     
     @ThriftField(value=165, name="msg165", requiredness=Requiredness.NONE)
     public String getMsg165() { return msg165; }
@@ -7710,17 +6067,7 @@ static {
         this.msg165 = msg165;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg165() {
-        return this.msg165 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg165() {
-        this.msg165 = null;
-    }
+    
     
     @ThriftField(value=166, name="msg166", requiredness=Requiredness.NONE)
     public String getMsg166() { return msg166; }
@@ -7730,17 +6077,7 @@ static {
         this.msg166 = msg166;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg166() {
-        return this.msg166 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg166() {
-        this.msg166 = null;
-    }
+    
     
     @ThriftField(value=167, name="msg167", requiredness=Requiredness.NONE)
     public String getMsg167() { return msg167; }
@@ -7750,17 +6087,7 @@ static {
         this.msg167 = msg167;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg167() {
-        return this.msg167 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg167() {
-        this.msg167 = null;
-    }
+    
     
     @ThriftField(value=168, name="msg168", requiredness=Requiredness.NONE)
     public String getMsg168() { return msg168; }
@@ -7770,17 +6097,7 @@ static {
         this.msg168 = msg168;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg168() {
-        return this.msg168 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg168() {
-        this.msg168 = null;
-    }
+    
     
     @ThriftField(value=169, name="msg169", requiredness=Requiredness.NONE)
     public String getMsg169() { return msg169; }
@@ -7790,17 +6107,7 @@ static {
         this.msg169 = msg169;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg169() {
-        return this.msg169 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg169() {
-        this.msg169 = null;
-    }
+    
     
     @ThriftField(value=170, name="msg170", requiredness=Requiredness.NONE)
     public String getMsg170() { return msg170; }
@@ -7810,17 +6117,7 @@ static {
         this.msg170 = msg170;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg170() {
-        return this.msg170 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg170() {
-        this.msg170 = null;
-    }
+    
     
     @ThriftField(value=171, name="msg171", requiredness=Requiredness.NONE)
     public String getMsg171() { return msg171; }
@@ -7830,17 +6127,7 @@ static {
         this.msg171 = msg171;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg171() {
-        return this.msg171 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg171() {
-        this.msg171 = null;
-    }
+    
     
     @ThriftField(value=172, name="msg172", requiredness=Requiredness.NONE)
     public String getMsg172() { return msg172; }
@@ -7850,17 +6137,7 @@ static {
         this.msg172 = msg172;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg172() {
-        return this.msg172 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg172() {
-        this.msg172 = null;
-    }
+    
     
     @ThriftField(value=173, name="msg173", requiredness=Requiredness.NONE)
     public String getMsg173() { return msg173; }
@@ -7870,17 +6147,7 @@ static {
         this.msg173 = msg173;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg173() {
-        return this.msg173 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg173() {
-        this.msg173 = null;
-    }
+    
     
     @ThriftField(value=174, name="msg174", requiredness=Requiredness.NONE)
     public String getMsg174() { return msg174; }
@@ -7890,17 +6157,7 @@ static {
         this.msg174 = msg174;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg174() {
-        return this.msg174 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg174() {
-        this.msg174 = null;
-    }
+    
     
     @ThriftField(value=175, name="msg175", requiredness=Requiredness.NONE)
     public String getMsg175() { return msg175; }
@@ -7910,17 +6167,7 @@ static {
         this.msg175 = msg175;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg175() {
-        return this.msg175 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg175() {
-        this.msg175 = null;
-    }
+    
     
     @ThriftField(value=176, name="msg176", requiredness=Requiredness.NONE)
     public String getMsg176() { return msg176; }
@@ -7930,17 +6177,7 @@ static {
         this.msg176 = msg176;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg176() {
-        return this.msg176 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg176() {
-        this.msg176 = null;
-    }
+    
     
     @ThriftField(value=177, name="msg177", requiredness=Requiredness.NONE)
     public String getMsg177() { return msg177; }
@@ -7950,17 +6187,7 @@ static {
         this.msg177 = msg177;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg177() {
-        return this.msg177 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg177() {
-        this.msg177 = null;
-    }
+    
     
     @ThriftField(value=178, name="msg178", requiredness=Requiredness.NONE)
     public String getMsg178() { return msg178; }
@@ -7970,17 +6197,7 @@ static {
         this.msg178 = msg178;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg178() {
-        return this.msg178 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg178() {
-        this.msg178 = null;
-    }
+    
     
     @ThriftField(value=179, name="msg179", requiredness=Requiredness.NONE)
     public String getMsg179() { return msg179; }
@@ -7990,17 +6207,7 @@ static {
         this.msg179 = msg179;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg179() {
-        return this.msg179 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg179() {
-        this.msg179 = null;
-    }
+    
     
     @ThriftField(value=180, name="msg180", requiredness=Requiredness.NONE)
     public String getMsg180() { return msg180; }
@@ -8010,17 +6217,7 @@ static {
         this.msg180 = msg180;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg180() {
-        return this.msg180 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg180() {
-        this.msg180 = null;
-    }
+    
     
     @ThriftField(value=181, name="msg181", requiredness=Requiredness.NONE)
     public String getMsg181() { return msg181; }
@@ -8030,17 +6227,7 @@ static {
         this.msg181 = msg181;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg181() {
-        return this.msg181 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg181() {
-        this.msg181 = null;
-    }
+    
     
     @ThriftField(value=182, name="msg182", requiredness=Requiredness.NONE)
     public String getMsg182() { return msg182; }
@@ -8050,17 +6237,7 @@ static {
         this.msg182 = msg182;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg182() {
-        return this.msg182 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg182() {
-        this.msg182 = null;
-    }
+    
     
     @ThriftField(value=183, name="msg183", requiredness=Requiredness.NONE)
     public String getMsg183() { return msg183; }
@@ -8070,17 +6247,7 @@ static {
         this.msg183 = msg183;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg183() {
-        return this.msg183 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg183() {
-        this.msg183 = null;
-    }
+    
     
     @ThriftField(value=184, name="msg184", requiredness=Requiredness.NONE)
     public String getMsg184() { return msg184; }
@@ -8090,17 +6257,7 @@ static {
         this.msg184 = msg184;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg184() {
-        return this.msg184 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg184() {
-        this.msg184 = null;
-    }
+    
     
     @ThriftField(value=185, name="msg185", requiredness=Requiredness.NONE)
     public String getMsg185() { return msg185; }
@@ -8110,17 +6267,7 @@ static {
         this.msg185 = msg185;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg185() {
-        return this.msg185 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg185() {
-        this.msg185 = null;
-    }
+    
     
     @ThriftField(value=186, name="msg186", requiredness=Requiredness.NONE)
     public String getMsg186() { return msg186; }
@@ -8130,17 +6277,7 @@ static {
         this.msg186 = msg186;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg186() {
-        return this.msg186 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg186() {
-        this.msg186 = null;
-    }
+    
     
     @ThriftField(value=187, name="msg187", requiredness=Requiredness.NONE)
     public String getMsg187() { return msg187; }
@@ -8150,17 +6287,7 @@ static {
         this.msg187 = msg187;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg187() {
-        return this.msg187 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg187() {
-        this.msg187 = null;
-    }
+    
     
     @ThriftField(value=188, name="msg188", requiredness=Requiredness.NONE)
     public String getMsg188() { return msg188; }
@@ -8170,17 +6297,7 @@ static {
         this.msg188 = msg188;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg188() {
-        return this.msg188 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg188() {
-        this.msg188 = null;
-    }
+    
     
     @ThriftField(value=189, name="msg189", requiredness=Requiredness.NONE)
     public String getMsg189() { return msg189; }
@@ -8190,17 +6307,7 @@ static {
         this.msg189 = msg189;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg189() {
-        return this.msg189 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg189() {
-        this.msg189 = null;
-    }
+    
     
     @ThriftField(value=190, name="msg190", requiredness=Requiredness.NONE)
     public String getMsg190() { return msg190; }
@@ -8210,17 +6317,7 @@ static {
         this.msg190 = msg190;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg190() {
-        return this.msg190 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg190() {
-        this.msg190 = null;
-    }
+    
     
     @ThriftField(value=191, name="msg191", requiredness=Requiredness.NONE)
     public String getMsg191() { return msg191; }
@@ -8230,17 +6327,7 @@ static {
         this.msg191 = msg191;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg191() {
-        return this.msg191 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg191() {
-        this.msg191 = null;
-    }
+    
     
     @ThriftField(value=192, name="msg192", requiredness=Requiredness.NONE)
     public String getMsg192() { return msg192; }
@@ -8250,17 +6337,7 @@ static {
         this.msg192 = msg192;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg192() {
-        return this.msg192 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg192() {
-        this.msg192 = null;
-    }
+    
     
     @ThriftField(value=193, name="msg193", requiredness=Requiredness.NONE)
     public String getMsg193() { return msg193; }
@@ -8270,17 +6347,7 @@ static {
         this.msg193 = msg193;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg193() {
-        return this.msg193 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg193() {
-        this.msg193 = null;
-    }
+    
     
     @ThriftField(value=194, name="msg194", requiredness=Requiredness.NONE)
     public String getMsg194() { return msg194; }
@@ -8290,17 +6357,7 @@ static {
         this.msg194 = msg194;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg194() {
-        return this.msg194 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg194() {
-        this.msg194 = null;
-    }
+    
     
     @ThriftField(value=195, name="msg195", requiredness=Requiredness.NONE)
     public String getMsg195() { return msg195; }
@@ -8310,17 +6367,7 @@ static {
         this.msg195 = msg195;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg195() {
-        return this.msg195 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg195() {
-        this.msg195 = null;
-    }
+    
     
     @ThriftField(value=196, name="msg196", requiredness=Requiredness.NONE)
     public String getMsg196() { return msg196; }
@@ -8330,17 +6377,7 @@ static {
         this.msg196 = msg196;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg196() {
-        return this.msg196 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg196() {
-        this.msg196 = null;
-    }
+    
     
     @ThriftField(value=197, name="msg197", requiredness=Requiredness.NONE)
     public String getMsg197() { return msg197; }
@@ -8350,17 +6387,7 @@ static {
         this.msg197 = msg197;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg197() {
-        return this.msg197 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg197() {
-        this.msg197 = null;
-    }
+    
     
     @ThriftField(value=198, name="msg198", requiredness=Requiredness.NONE)
     public String getMsg198() { return msg198; }
@@ -8370,17 +6397,7 @@ static {
         this.msg198 = msg198;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg198() {
-        return this.msg198 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg198() {
-        this.msg198 = null;
-    }
+    
     
     @ThriftField(value=199, name="msg199", requiredness=Requiredness.NONE)
     public String getMsg199() { return msg199; }
@@ -8390,17 +6407,7 @@ static {
         this.msg199 = msg199;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg199() {
-        return this.msg199 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg199() {
-        this.msg199 = null;
-    }
+    
     
     @ThriftField(value=200, name="msg200", requiredness=Requiredness.NONE)
     public String getMsg200() { return msg200; }
@@ -8410,17 +6417,7 @@ static {
         this.msg200 = msg200;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg200() {
-        return this.msg200 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg200() {
-        this.msg200 = null;
-    }
+    
     
     @ThriftField(value=201, name="msg201", requiredness=Requiredness.NONE)
     public String getMsg201() { return msg201; }
@@ -8430,17 +6427,7 @@ static {
         this.msg201 = msg201;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg201() {
-        return this.msg201 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg201() {
-        this.msg201 = null;
-    }
+    
     
     @ThriftField(value=202, name="msg202", requiredness=Requiredness.NONE)
     public String getMsg202() { return msg202; }
@@ -8450,17 +6437,7 @@ static {
         this.msg202 = msg202;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg202() {
-        return this.msg202 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg202() {
-        this.msg202 = null;
-    }
+    
     
     @ThriftField(value=203, name="msg203", requiredness=Requiredness.NONE)
     public String getMsg203() { return msg203; }
@@ -8470,17 +6447,7 @@ static {
         this.msg203 = msg203;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg203() {
-        return this.msg203 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg203() {
-        this.msg203 = null;
-    }
+    
     
     @ThriftField(value=204, name="msg204", requiredness=Requiredness.NONE)
     public String getMsg204() { return msg204; }
@@ -8490,17 +6457,7 @@ static {
         this.msg204 = msg204;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg204() {
-        return this.msg204 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg204() {
-        this.msg204 = null;
-    }
+    
     
     @ThriftField(value=205, name="msg205", requiredness=Requiredness.NONE)
     public String getMsg205() { return msg205; }
@@ -8510,17 +6467,7 @@ static {
         this.msg205 = msg205;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg205() {
-        return this.msg205 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg205() {
-        this.msg205 = null;
-    }
+    
     
     @ThriftField(value=206, name="msg206", requiredness=Requiredness.NONE)
     public String getMsg206() { return msg206; }
@@ -8530,17 +6477,7 @@ static {
         this.msg206 = msg206;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg206() {
-        return this.msg206 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg206() {
-        this.msg206 = null;
-    }
+    
     
     @ThriftField(value=207, name="msg207", requiredness=Requiredness.NONE)
     public String getMsg207() { return msg207; }
@@ -8550,17 +6487,7 @@ static {
         this.msg207 = msg207;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg207() {
-        return this.msg207 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg207() {
-        this.msg207 = null;
-    }
+    
     
     @ThriftField(value=208, name="msg208", requiredness=Requiredness.NONE)
     public String getMsg208() { return msg208; }
@@ -8570,17 +6497,7 @@ static {
         this.msg208 = msg208;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg208() {
-        return this.msg208 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg208() {
-        this.msg208 = null;
-    }
+    
     
     @ThriftField(value=209, name="msg209", requiredness=Requiredness.NONE)
     public String getMsg209() { return msg209; }
@@ -8590,17 +6507,7 @@ static {
         this.msg209 = msg209;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg209() {
-        return this.msg209 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg209() {
-        this.msg209 = null;
-    }
+    
     
     @ThriftField(value=210, name="msg210", requiredness=Requiredness.NONE)
     public String getMsg210() { return msg210; }
@@ -8610,17 +6517,7 @@ static {
         this.msg210 = msg210;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg210() {
-        return this.msg210 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg210() {
-        this.msg210 = null;
-    }
+    
     
     @ThriftField(value=211, name="msg211", requiredness=Requiredness.NONE)
     public String getMsg211() { return msg211; }
@@ -8630,17 +6527,7 @@ static {
         this.msg211 = msg211;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg211() {
-        return this.msg211 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg211() {
-        this.msg211 = null;
-    }
+    
     
     @ThriftField(value=212, name="msg212", requiredness=Requiredness.NONE)
     public String getMsg212() { return msg212; }
@@ -8650,17 +6537,7 @@ static {
         this.msg212 = msg212;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg212() {
-        return this.msg212 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg212() {
-        this.msg212 = null;
-    }
+    
     
     @ThriftField(value=213, name="msg213", requiredness=Requiredness.NONE)
     public String getMsg213() { return msg213; }
@@ -8670,17 +6547,7 @@ static {
         this.msg213 = msg213;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg213() {
-        return this.msg213 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg213() {
-        this.msg213 = null;
-    }
+    
     
     @ThriftField(value=214, name="msg214", requiredness=Requiredness.NONE)
     public String getMsg214() { return msg214; }
@@ -8690,17 +6557,7 @@ static {
         this.msg214 = msg214;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg214() {
-        return this.msg214 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg214() {
-        this.msg214 = null;
-    }
+    
     
     @ThriftField(value=215, name="msg215", requiredness=Requiredness.NONE)
     public String getMsg215() { return msg215; }
@@ -8710,17 +6567,7 @@ static {
         this.msg215 = msg215;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg215() {
-        return this.msg215 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg215() {
-        this.msg215 = null;
-    }
+    
     
     @ThriftField(value=216, name="msg216", requiredness=Requiredness.NONE)
     public String getMsg216() { return msg216; }
@@ -8730,17 +6577,7 @@ static {
         this.msg216 = msg216;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg216() {
-        return this.msg216 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg216() {
-        this.msg216 = null;
-    }
+    
     
     @ThriftField(value=217, name="msg217", requiredness=Requiredness.NONE)
     public String getMsg217() { return msg217; }
@@ -8750,17 +6587,7 @@ static {
         this.msg217 = msg217;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg217() {
-        return this.msg217 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg217() {
-        this.msg217 = null;
-    }
+    
     
     @ThriftField(value=218, name="msg218", requiredness=Requiredness.NONE)
     public String getMsg218() { return msg218; }
@@ -8770,17 +6597,7 @@ static {
         this.msg218 = msg218;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg218() {
-        return this.msg218 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg218() {
-        this.msg218 = null;
-    }
+    
     
     @ThriftField(value=219, name="msg219", requiredness=Requiredness.NONE)
     public String getMsg219() { return msg219; }
@@ -8790,17 +6607,7 @@ static {
         this.msg219 = msg219;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg219() {
-        return this.msg219 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg219() {
-        this.msg219 = null;
-    }
+    
     
     @ThriftField(value=220, name="msg220", requiredness=Requiredness.NONE)
     public String getMsg220() { return msg220; }
@@ -8810,17 +6617,7 @@ static {
         this.msg220 = msg220;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg220() {
-        return this.msg220 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg220() {
-        this.msg220 = null;
-    }
+    
     
     @ThriftField(value=221, name="msg221", requiredness=Requiredness.NONE)
     public String getMsg221() { return msg221; }
@@ -8830,17 +6627,7 @@ static {
         this.msg221 = msg221;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg221() {
-        return this.msg221 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg221() {
-        this.msg221 = null;
-    }
+    
     
     @ThriftField(value=222, name="msg222", requiredness=Requiredness.NONE)
     public String getMsg222() { return msg222; }
@@ -8850,17 +6637,7 @@ static {
         this.msg222 = msg222;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg222() {
-        return this.msg222 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg222() {
-        this.msg222 = null;
-    }
+    
     
     @ThriftField(value=223, name="msg223", requiredness=Requiredness.NONE)
     public String getMsg223() { return msg223; }
@@ -8870,17 +6647,7 @@ static {
         this.msg223 = msg223;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg223() {
-        return this.msg223 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg223() {
-        this.msg223 = null;
-    }
+    
     
     @ThriftField(value=224, name="msg224", requiredness=Requiredness.NONE)
     public String getMsg224() { return msg224; }
@@ -8890,17 +6657,7 @@ static {
         this.msg224 = msg224;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg224() {
-        return this.msg224 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg224() {
-        this.msg224 = null;
-    }
+    
     
     @ThriftField(value=225, name="msg225", requiredness=Requiredness.NONE)
     public String getMsg225() { return msg225; }
@@ -8910,17 +6667,7 @@ static {
         this.msg225 = msg225;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg225() {
-        return this.msg225 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg225() {
-        this.msg225 = null;
-    }
+    
     
     @ThriftField(value=226, name="msg226", requiredness=Requiredness.NONE)
     public String getMsg226() { return msg226; }
@@ -8930,17 +6677,7 @@ static {
         this.msg226 = msg226;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg226() {
-        return this.msg226 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg226() {
-        this.msg226 = null;
-    }
+    
     
     @ThriftField(value=227, name="msg227", requiredness=Requiredness.NONE)
     public String getMsg227() { return msg227; }
@@ -8950,17 +6687,7 @@ static {
         this.msg227 = msg227;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg227() {
-        return this.msg227 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg227() {
-        this.msg227 = null;
-    }
+    
     
     @ThriftField(value=228, name="msg228", requiredness=Requiredness.NONE)
     public String getMsg228() { return msg228; }
@@ -8970,17 +6697,7 @@ static {
         this.msg228 = msg228;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg228() {
-        return this.msg228 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg228() {
-        this.msg228 = null;
-    }
+    
     
     @ThriftField(value=229, name="msg229", requiredness=Requiredness.NONE)
     public String getMsg229() { return msg229; }
@@ -8990,17 +6707,7 @@ static {
         this.msg229 = msg229;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg229() {
-        return this.msg229 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg229() {
-        this.msg229 = null;
-    }
+    
     
     @ThriftField(value=230, name="msg230", requiredness=Requiredness.NONE)
     public String getMsg230() { return msg230; }
@@ -9010,17 +6717,7 @@ static {
         this.msg230 = msg230;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg230() {
-        return this.msg230 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg230() {
-        this.msg230 = null;
-    }
+    
     
     @ThriftField(value=231, name="msg231", requiredness=Requiredness.NONE)
     public String getMsg231() { return msg231; }
@@ -9030,17 +6727,7 @@ static {
         this.msg231 = msg231;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg231() {
-        return this.msg231 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg231() {
-        this.msg231 = null;
-    }
+    
     
     @ThriftField(value=232, name="msg232", requiredness=Requiredness.NONE)
     public String getMsg232() { return msg232; }
@@ -9050,17 +6737,7 @@ static {
         this.msg232 = msg232;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg232() {
-        return this.msg232 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg232() {
-        this.msg232 = null;
-    }
+    
     
     @ThriftField(value=233, name="msg233", requiredness=Requiredness.NONE)
     public String getMsg233() { return msg233; }
@@ -9070,17 +6747,7 @@ static {
         this.msg233 = msg233;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg233() {
-        return this.msg233 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg233() {
-        this.msg233 = null;
-    }
+    
     
     @ThriftField(value=234, name="msg234", requiredness=Requiredness.NONE)
     public String getMsg234() { return msg234; }
@@ -9090,17 +6757,7 @@ static {
         this.msg234 = msg234;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg234() {
-        return this.msg234 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg234() {
-        this.msg234 = null;
-    }
+    
     
     @ThriftField(value=235, name="msg235", requiredness=Requiredness.NONE)
     public String getMsg235() { return msg235; }
@@ -9110,17 +6767,7 @@ static {
         this.msg235 = msg235;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg235() {
-        return this.msg235 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg235() {
-        this.msg235 = null;
-    }
+    
     
     @ThriftField(value=236, name="msg236", requiredness=Requiredness.NONE)
     public String getMsg236() { return msg236; }
@@ -9130,17 +6777,7 @@ static {
         this.msg236 = msg236;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg236() {
-        return this.msg236 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg236() {
-        this.msg236 = null;
-    }
+    
     
     @ThriftField(value=237, name="msg237", requiredness=Requiredness.NONE)
     public String getMsg237() { return msg237; }
@@ -9150,17 +6787,7 @@ static {
         this.msg237 = msg237;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg237() {
-        return this.msg237 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg237() {
-        this.msg237 = null;
-    }
+    
     
     @ThriftField(value=238, name="msg238", requiredness=Requiredness.NONE)
     public String getMsg238() { return msg238; }
@@ -9170,17 +6797,7 @@ static {
         this.msg238 = msg238;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg238() {
-        return this.msg238 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg238() {
-        this.msg238 = null;
-    }
+    
     
     @ThriftField(value=239, name="msg239", requiredness=Requiredness.NONE)
     public String getMsg239() { return msg239; }
@@ -9190,17 +6807,7 @@ static {
         this.msg239 = msg239;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg239() {
-        return this.msg239 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg239() {
-        this.msg239 = null;
-    }
+    
     
     @ThriftField(value=240, name="msg240", requiredness=Requiredness.NONE)
     public String getMsg240() { return msg240; }
@@ -9210,17 +6817,7 @@ static {
         this.msg240 = msg240;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg240() {
-        return this.msg240 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg240() {
-        this.msg240 = null;
-    }
+    
     
     @ThriftField(value=241, name="msg241", requiredness=Requiredness.NONE)
     public String getMsg241() { return msg241; }
@@ -9230,17 +6827,7 @@ static {
         this.msg241 = msg241;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg241() {
-        return this.msg241 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg241() {
-        this.msg241 = null;
-    }
+    
     
     @ThriftField(value=242, name="msg242", requiredness=Requiredness.NONE)
     public String getMsg242() { return msg242; }
@@ -9250,17 +6837,7 @@ static {
         this.msg242 = msg242;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg242() {
-        return this.msg242 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg242() {
-        this.msg242 = null;
-    }
+    
     
     @ThriftField(value=243, name="msg243", requiredness=Requiredness.NONE)
     public String getMsg243() { return msg243; }
@@ -9270,17 +6847,7 @@ static {
         this.msg243 = msg243;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg243() {
-        return this.msg243 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg243() {
-        this.msg243 = null;
-    }
+    
     
     @ThriftField(value=244, name="msg244", requiredness=Requiredness.NONE)
     public String getMsg244() { return msg244; }
@@ -9290,17 +6857,7 @@ static {
         this.msg244 = msg244;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg244() {
-        return this.msg244 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg244() {
-        this.msg244 = null;
-    }
+    
     
     @ThriftField(value=245, name="msg245", requiredness=Requiredness.NONE)
     public String getMsg245() { return msg245; }
@@ -9310,17 +6867,7 @@ static {
         this.msg245 = msg245;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg245() {
-        return this.msg245 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg245() {
-        this.msg245 = null;
-    }
+    
     
     @ThriftField(value=246, name="msg246", requiredness=Requiredness.NONE)
     public String getMsg246() { return msg246; }
@@ -9330,17 +6877,7 @@ static {
         this.msg246 = msg246;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg246() {
-        return this.msg246 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg246() {
-        this.msg246 = null;
-    }
+    
     
     @ThriftField(value=247, name="msg247", requiredness=Requiredness.NONE)
     public String getMsg247() { return msg247; }
@@ -9350,17 +6887,7 @@ static {
         this.msg247 = msg247;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg247() {
-        return this.msg247 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg247() {
-        this.msg247 = null;
-    }
+    
     
     @ThriftField(value=248, name="msg248", requiredness=Requiredness.NONE)
     public String getMsg248() { return msg248; }
@@ -9370,17 +6897,7 @@ static {
         this.msg248 = msg248;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg248() {
-        return this.msg248 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg248() {
-        this.msg248 = null;
-    }
+    
     
     @ThriftField(value=249, name="msg249", requiredness=Requiredness.NONE)
     public String getMsg249() { return msg249; }
@@ -9390,17 +6907,7 @@ static {
         this.msg249 = msg249;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg249() {
-        return this.msg249 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg249() {
-        this.msg249 = null;
-    }
+    
     
     @ThriftField(value=250, name="msg250", requiredness=Requiredness.NONE)
     public String getMsg250() { return msg250; }
@@ -9410,17 +6917,7 @@ static {
         this.msg250 = msg250;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg250() {
-        return this.msg250 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg250() {
-        this.msg250 = null;
-    }
+    
     
     @ThriftField(value=251, name="msg251", requiredness=Requiredness.NONE)
     public String getMsg251() { return msg251; }
@@ -9430,17 +6927,7 @@ static {
         this.msg251 = msg251;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg251() {
-        return this.msg251 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg251() {
-        this.msg251 = null;
-    }
+    
     
     @ThriftField(value=252, name="msg252", requiredness=Requiredness.NONE)
     public String getMsg252() { return msg252; }
@@ -9450,17 +6937,7 @@ static {
         this.msg252 = msg252;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg252() {
-        return this.msg252 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg252() {
-        this.msg252 = null;
-    }
+    
     
     @ThriftField(value=253, name="msg253", requiredness=Requiredness.NONE)
     public String getMsg253() { return msg253; }
@@ -9470,17 +6947,7 @@ static {
         this.msg253 = msg253;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg253() {
-        return this.msg253 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg253() {
-        this.msg253 = null;
-    }
+    
     
     @ThriftField(value=254, name="msg254", requiredness=Requiredness.NONE)
     public String getMsg254() { return msg254; }
@@ -9490,17 +6957,7 @@ static {
         this.msg254 = msg254;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg254() {
-        return this.msg254 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg254() {
-        this.msg254 = null;
-    }
+    
     
     @ThriftField(value=255, name="msg255", requiredness=Requiredness.NONE)
     public String getMsg255() { return msg255; }
@@ -9510,17 +6967,7 @@ static {
         this.msg255 = msg255;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg255() {
-        return this.msg255 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg255() {
-        this.msg255 = null;
-    }
+    
     
     @ThriftField(value=256, name="msg256", requiredness=Requiredness.NONE)
     public String getMsg256() { return msg256; }
@@ -9530,17 +6977,7 @@ static {
         this.msg256 = msg256;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg256() {
-        return this.msg256 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg256() {
-        this.msg256 = null;
-    }
+    
     
     @ThriftField(value=257, name="msg257", requiredness=Requiredness.NONE)
     public String getMsg257() { return msg257; }
@@ -9550,17 +6987,7 @@ static {
         this.msg257 = msg257;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg257() {
-        return this.msg257 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMsg257() {
-        this.msg257 = null;
-    }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);

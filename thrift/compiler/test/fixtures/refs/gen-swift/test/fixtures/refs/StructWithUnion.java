@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
 public final class StructWithUnion {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public StructWithUnion(
@@ -46,7 +45,6 @@ public final class StructWithUnion {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.MyUnion u = null;
         private double aDouble = 0.;
@@ -90,7 +88,6 @@ public final class StructWithUnion {
                 this.aDouble,
                 this.f
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class StructWithUnion {
     
     @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyUnion getU() { return u; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetU() {
-        return this.u != null;
-    }
     
     
     @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
     public double getADouble() { return aDouble; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetADouble() {
-        return __isset_bit_vector.get(_ADOUBLE);
-    }
     
     
     @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getF() { return f; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetF() {
-        return this.f != null;
-    }
     
     @java.lang.Override
     public String toString() {

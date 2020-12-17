@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Included", builder=Included.Builder.class)
 public final class Included {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public Included(
@@ -43,7 +42,6 @@ public final class Included {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myIntField = 0L;
         private test.fixtures.includes.transitive.Foo myTransitiveField = new test.fixtures.includes.transitive.Foo.Builder().setA(2L).build();
@@ -76,7 +74,6 @@ public final class Included {
                 this.myIntField,
                 this.myTransitiveField
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -99,22 +96,10 @@ public final class Included {
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField() {
-        return __isset_bit_vector.get(_MYINTFIELD);
-    }
     
     
     @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyTransitiveField() {
-        return this.myTransitiveField != null;
-    }
     
     @java.lang.Override
     public String toString() {

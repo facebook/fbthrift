@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyStruct(
@@ -46,7 +45,6 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.includes.includes.Included myIncludedField = new test.fixtures.includes.includes.Included.Builder().setMyIntField(2L).setMyTransitiveField(test.fixtures.includes.transitive.Constants.EXAMPLE_FOO).build();
         private test.fixtures.includes.includes.Included myOtherIncludedField = null;
@@ -90,7 +88,6 @@ public final class MyStruct {
                 this.myOtherIncludedField,
                 this.myIncludedInt
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIncludedField() {
-        return this.myIncludedField != null;
-    }
     
     
     @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyOtherIncludedField() {
-        return this.myOtherIncludedField != null;
-    }
     
     
     @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
     public long getMyIncludedInt() { return myIncludedInt; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIncludedInt() {
-        return __isset_bit_vector.get(_MYINCLUDEDINT);
-    }
     
     @java.lang.Override
     public String toString() {

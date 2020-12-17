@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyDataItem", builder=MyDataItem.Builder.class)
 public final class MyDataItem {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyDataItem(
@@ -35,7 +34,6 @@ public final class MyDataItem {
     
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
     
     public Builder() { }
@@ -46,7 +44,6 @@ public final class MyDataItem {
         public MyDataItem build() {
             MyDataItem result = new MyDataItem (
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }

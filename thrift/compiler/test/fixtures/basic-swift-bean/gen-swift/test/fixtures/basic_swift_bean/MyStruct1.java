@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct1", builder=MyStruct1.Builder.class)
 public final class MyStruct1 {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyStruct1(
@@ -49,7 +48,6 @@ public final class MyStruct1 {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myIntField = 0L;
         private String myStringField = null;
@@ -104,7 +102,6 @@ public final class MyStruct1 {
                 this.myDataField,
                 this.major
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -137,42 +134,18 @@ public final class MyStruct1 {
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField() {
-        return __isset_bit_vector.get(_MYINTFIELD);
-    }
     
     
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyStringField() {
-        return this.myStringField != null;
-    }
     
     
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDataField() {
-        return this.myDataField != null;
-    }
     
     
     @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMajor() {
-        return __isset_bit_vector.get(_MAJOR);
-    }
     
     @java.lang.Override
     public String toString() {

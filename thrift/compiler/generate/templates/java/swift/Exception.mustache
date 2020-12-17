@@ -37,7 +37,9 @@ import org.apache.thrift.meta_data.FieldValueMetaData;
 public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeException?}}java.lang.RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}java.lang.Exception{{/struct:extendRuntimeException?}} {
     private static final long serialVersionUID = 1L;
 
+    {{#struct:enableIsSet?}}
     private BitSet __isset_bit_vector = new BitSet();
+    {{/struct:enableIsSet?}}
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();

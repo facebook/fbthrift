@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyField", builder=MyField.Builder.class)
 public final class MyField {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyField(
@@ -46,7 +45,6 @@ public final class MyField {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private Long optValue = null;
         private long value = 0L;
@@ -90,7 +88,6 @@ public final class MyField {
                 this.value,
                 this.reqValue
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class MyField {
     
     @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
     public Long getOptValue() { return optValue; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetOptValue() {
-        return this.optValue != null;
-    }
     
     
     @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
     public long getValue() { return value; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetValue() {
-        return __isset_bit_vector.get(_VALUE);
-    }
     
     
     @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
     public long getReqValue() { return reqValue; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetReqValue() {
-        return __isset_bit_vector.get(_REQ_VALUE);
-    }
     
     @java.lang.Override
     public String toString() {

@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Val", builder=Val.Builder.class)
 public final class Val {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public Val(
@@ -46,7 +45,6 @@ public final class Val {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String strVal = null;
         private int intVal = 0;
@@ -90,7 +88,6 @@ public final class Val {
                 this.intVal,
                 this.typedefValue
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class Val {
     
     @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
     public String getStrVal() { return strVal; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetStrVal() {
-        return this.strVal != null;
-    }
     
     
     @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
     public int getIntVal() { return intVal; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetIntVal() {
-        return __isset_bit_vector.get(_INTVAL);
-    }
     
     
     @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
     public Map<Short, String> getTypedefValue() { return typedefValue; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetTypedefValue() {
-        return this.typedefValue != null;
-    }
     
     @java.lang.Override
     public String toString() {

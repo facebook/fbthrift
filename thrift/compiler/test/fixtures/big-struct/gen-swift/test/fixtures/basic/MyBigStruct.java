@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyBigStruct", builder=MyBigStruct.Builder.class)
 public final class MyBigStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     protected MyBigStruct() {
@@ -289,7 +288,6 @@ public final class MyBigStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String msg1 = null;
         private String msg2 = null;
@@ -3126,7 +3124,6 @@ public final class MyBigStruct {
             oMyBigStruct.msg255 = this.msg255;
             oMyBigStruct.msg256 = this.msg256;
             oMyBigStruct.msg257 = this.msg257;
-            oMyBigStruct.__isset_bit_vector.or(__optional_isset);
             return oMyBigStruct;
         }
     }
@@ -4424,2572 +4421,1030 @@ public final class MyBigStruct {
     
     @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
     public String getMsg1() { return msg1; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg1() {
-        return this.msg1 != null;
-    }
     
     
     @ThriftField(value=2, name="msg2", requiredness=Requiredness.NONE)
     public String getMsg2() { return msg2; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg2() {
-        return this.msg2 != null;
-    }
     
     
     @ThriftField(value=3, name="msg3", requiredness=Requiredness.NONE)
     public String getMsg3() { return msg3; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg3() {
-        return this.msg3 != null;
-    }
     
     
     @ThriftField(value=4, name="msg4", requiredness=Requiredness.NONE)
     public String getMsg4() { return msg4; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg4() {
-        return this.msg4 != null;
-    }
     
     
     @ThriftField(value=5, name="msg5", requiredness=Requiredness.NONE)
     public String getMsg5() { return msg5; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg5() {
-        return this.msg5 != null;
-    }
     
     
     @ThriftField(value=6, name="msg6", requiredness=Requiredness.NONE)
     public String getMsg6() { return msg6; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg6() {
-        return this.msg6 != null;
-    }
     
     
     @ThriftField(value=7, name="msg7", requiredness=Requiredness.NONE)
     public String getMsg7() { return msg7; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg7() {
-        return this.msg7 != null;
-    }
     
     
     @ThriftField(value=8, name="msg8", requiredness=Requiredness.NONE)
     public String getMsg8() { return msg8; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg8() {
-        return this.msg8 != null;
-    }
     
     
     @ThriftField(value=9, name="msg9", requiredness=Requiredness.NONE)
     public String getMsg9() { return msg9; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg9() {
-        return this.msg9 != null;
-    }
     
     
     @ThriftField(value=10, name="myIntField10", requiredness=Requiredness.NONE)
     public int getMyIntField10() { return myIntField10; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField10() {
-        return __isset_bit_vector.get(_MYINTFIELD10);
-    }
     
     
     @ThriftField(value=11, name="myIntField11", requiredness=Requiredness.NONE)
     public int getMyIntField11() { return myIntField11; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField11() {
-        return __isset_bit_vector.get(_MYINTFIELD11);
-    }
     
     
     @ThriftField(value=12, name="myIntField12", requiredness=Requiredness.NONE)
     public int getMyIntField12() { return myIntField12; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField12() {
-        return __isset_bit_vector.get(_MYINTFIELD12);
-    }
     
     
     @ThriftField(value=13, name="myIntField13", requiredness=Requiredness.NONE)
     public int getMyIntField13() { return myIntField13; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField13() {
-        return __isset_bit_vector.get(_MYINTFIELD13);
-    }
     
     
     @ThriftField(value=14, name="myIntField14", requiredness=Requiredness.NONE)
     public int getMyIntField14() { return myIntField14; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField14() {
-        return __isset_bit_vector.get(_MYINTFIELD14);
-    }
     
     
     @ThriftField(value=15, name="myIntField15", requiredness=Requiredness.NONE)
     public int getMyIntField15() { return myIntField15; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField15() {
-        return __isset_bit_vector.get(_MYINTFIELD15);
-    }
     
     
     @ThriftField(value=16, name="myIntField16", requiredness=Requiredness.NONE)
     public int getMyIntField16() { return myIntField16; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField16() {
-        return __isset_bit_vector.get(_MYINTFIELD16);
-    }
     
     
     @ThriftField(value=17, name="myIntField17", requiredness=Requiredness.NONE)
     public int getMyIntField17() { return myIntField17; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField17() {
-        return __isset_bit_vector.get(_MYINTFIELD17);
-    }
     
     
     @ThriftField(value=18, name="myIntField18", requiredness=Requiredness.NONE)
     public int getMyIntField18() { return myIntField18; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField18() {
-        return __isset_bit_vector.get(_MYINTFIELD18);
-    }
     
     
     @ThriftField(value=19, name="myIntField19", requiredness=Requiredness.NONE)
     public int getMyIntField19() { return myIntField19; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField19() {
-        return __isset_bit_vector.get(_MYINTFIELD19);
-    }
     
     
     @ThriftField(value=20, name="myIntField20", requiredness=Requiredness.NONE)
     public int getMyIntField20() { return myIntField20; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField20() {
-        return __isset_bit_vector.get(_MYINTFIELD20);
-    }
     
     
     @ThriftField(value=21, name="myDoubleField21", requiredness=Requiredness.NONE)
     public double getMyDoubleField21() { return myDoubleField21; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField21() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD21);
-    }
     
     
     @ThriftField(value=22, name="myDoubleField22", requiredness=Requiredness.NONE)
     public double getMyDoubleField22() { return myDoubleField22; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField22() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD22);
-    }
     
     
     @ThriftField(value=23, name="myDoubleField23", requiredness=Requiredness.NONE)
     public double getMyDoubleField23() { return myDoubleField23; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField23() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD23);
-    }
     
     
     @ThriftField(value=24, name="myDoubleField24", requiredness=Requiredness.NONE)
     public double getMyDoubleField24() { return myDoubleField24; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField24() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD24);
-    }
     
     
     @ThriftField(value=25, name="myDoubleField25", requiredness=Requiredness.NONE)
     public double getMyDoubleField25() { return myDoubleField25; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField25() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD25);
-    }
     
     
     @ThriftField(value=26, name="myDoubleField26", requiredness=Requiredness.NONE)
     public double getMyDoubleField26() { return myDoubleField26; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField26() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD26);
-    }
     
     
     @ThriftField(value=27, name="myDoubleField27", requiredness=Requiredness.NONE)
     public double getMyDoubleField27() { return myDoubleField27; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField27() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD27);
-    }
     
     
     @ThriftField(value=28, name="myDoubleField28", requiredness=Requiredness.NONE)
     public double getMyDoubleField28() { return myDoubleField28; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField28() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD28);
-    }
     
     
     @ThriftField(value=29, name="myDoubleField29", requiredness=Requiredness.NONE)
     public double getMyDoubleField29() { return myDoubleField29; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField29() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD29);
-    }
     
     
     @ThriftField(value=30, name="myDoubleField30", requiredness=Requiredness.NONE)
     public double getMyDoubleField30() { return myDoubleField30; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDoubleField30() {
-        return __isset_bit_vector.get(_MYDOUBLEFIELD30);
-    }
     
     
     @ThriftField(value=31, name="msg31", requiredness=Requiredness.NONE)
     public String getMsg31() { return msg31; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg31() {
-        return this.msg31 != null;
-    }
     
     
     @ThriftField(value=32, name="msg32", requiredness=Requiredness.NONE)
     public String getMsg32() { return msg32; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg32() {
-        return this.msg32 != null;
-    }
     
     
     @ThriftField(value=33, name="msg33", requiredness=Requiredness.NONE)
     public String getMsg33() { return msg33; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg33() {
-        return this.msg33 != null;
-    }
     
     
     @ThriftField(value=34, name="msg34", requiredness=Requiredness.NONE)
     public String getMsg34() { return msg34; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg34() {
-        return this.msg34 != null;
-    }
     
     
     @ThriftField(value=35, name="msg35", requiredness=Requiredness.NONE)
     public String getMsg35() { return msg35; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg35() {
-        return this.msg35 != null;
-    }
     
     
     @ThriftField(value=36, name="msg36", requiredness=Requiredness.NONE)
     public String getMsg36() { return msg36; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg36() {
-        return this.msg36 != null;
-    }
     
     
     @ThriftField(value=37, name="msg37", requiredness=Requiredness.NONE)
     public String getMsg37() { return msg37; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg37() {
-        return this.msg37 != null;
-    }
     
     
     @ThriftField(value=38, name="msg38", requiredness=Requiredness.NONE)
     public String getMsg38() { return msg38; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg38() {
-        return this.msg38 != null;
-    }
     
     
     @ThriftField(value=39, name="msg39", requiredness=Requiredness.NONE)
     public String getMsg39() { return msg39; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg39() {
-        return this.msg39 != null;
-    }
     
     
     @ThriftField(value=40, name="msg40", requiredness=Requiredness.NONE)
     public String getMsg40() { return msg40; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg40() {
-        return this.msg40 != null;
-    }
     
     
     @ThriftField(value=41, name="msg41", requiredness=Requiredness.NONE)
     public String getMsg41() { return msg41; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg41() {
-        return this.msg41 != null;
-    }
     
     
     @ThriftField(value=42, name="msg42", requiredness=Requiredness.NONE)
     public String getMsg42() { return msg42; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg42() {
-        return this.msg42 != null;
-    }
     
     
     @ThriftField(value=43, name="msg43", requiredness=Requiredness.NONE)
     public String getMsg43() { return msg43; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg43() {
-        return this.msg43 != null;
-    }
     
     
     @ThriftField(value=44, name="msg44", requiredness=Requiredness.NONE)
     public String getMsg44() { return msg44; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg44() {
-        return this.msg44 != null;
-    }
     
     
     @ThriftField(value=45, name="msg45", requiredness=Requiredness.NONE)
     public String getMsg45() { return msg45; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg45() {
-        return this.msg45 != null;
-    }
     
     
     @ThriftField(value=46, name="msg46", requiredness=Requiredness.NONE)
     public String getMsg46() { return msg46; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg46() {
-        return this.msg46 != null;
-    }
     
     
     @ThriftField(value=47, name="msg47", requiredness=Requiredness.NONE)
     public String getMsg47() { return msg47; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg47() {
-        return this.msg47 != null;
-    }
     
     
     @ThriftField(value=48, name="msg48", requiredness=Requiredness.NONE)
     public String getMsg48() { return msg48; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg48() {
-        return this.msg48 != null;
-    }
     
     
     @ThriftField(value=49, name="msg49", requiredness=Requiredness.NONE)
     public String getMsg49() { return msg49; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg49() {
-        return this.msg49 != null;
-    }
     
     
     @ThriftField(value=50, name="msg50", requiredness=Requiredness.NONE)
     public String getMsg50() { return msg50; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg50() {
-        return this.msg50 != null;
-    }
     
     
     @ThriftField(value=51, name="msg51", requiredness=Requiredness.NONE)
     public String getMsg51() { return msg51; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg51() {
-        return this.msg51 != null;
-    }
     
     
     @ThriftField(value=52, name="msg52", requiredness=Requiredness.NONE)
     public String getMsg52() { return msg52; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg52() {
-        return this.msg52 != null;
-    }
     
     
     @ThriftField(value=53, name="msg53", requiredness=Requiredness.NONE)
     public String getMsg53() { return msg53; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg53() {
-        return this.msg53 != null;
-    }
     
     
     @ThriftField(value=54, name="msg54", requiredness=Requiredness.NONE)
     public String getMsg54() { return msg54; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg54() {
-        return this.msg54 != null;
-    }
     
     
     @ThriftField(value=55, name="msg55", requiredness=Requiredness.NONE)
     public String getMsg55() { return msg55; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg55() {
-        return this.msg55 != null;
-    }
     
     
     @ThriftField(value=56, name="msg56", requiredness=Requiredness.NONE)
     public String getMsg56() { return msg56; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg56() {
-        return this.msg56 != null;
-    }
     
     
     @ThriftField(value=57, name="msg57", requiredness=Requiredness.NONE)
     public String getMsg57() { return msg57; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg57() {
-        return this.msg57 != null;
-    }
     
     
     @ThriftField(value=58, name="msg58", requiredness=Requiredness.NONE)
     public String getMsg58() { return msg58; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg58() {
-        return this.msg58 != null;
-    }
     
     
     @ThriftField(value=59, name="msg59", requiredness=Requiredness.NONE)
     public String getMsg59() { return msg59; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg59() {
-        return this.msg59 != null;
-    }
     
     
     @ThriftField(value=60, name="msg60", requiredness=Requiredness.NONE)
     public String getMsg60() { return msg60; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg60() {
-        return this.msg60 != null;
-    }
     
     
     @ThriftField(value=61, name="msg61", requiredness=Requiredness.NONE)
     public String getMsg61() { return msg61; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg61() {
-        return this.msg61 != null;
-    }
     
     
     @ThriftField(value=62, name="msg62", requiredness=Requiredness.NONE)
     public String getMsg62() { return msg62; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg62() {
-        return this.msg62 != null;
-    }
     
     
     @ThriftField(value=63, name="msg63", requiredness=Requiredness.NONE)
     public String getMsg63() { return msg63; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg63() {
-        return this.msg63 != null;
-    }
     
     
     @ThriftField(value=64, name="msg64", requiredness=Requiredness.NONE)
     public String getMsg64() { return msg64; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg64() {
-        return this.msg64 != null;
-    }
     
     
     @ThriftField(value=65, name="msg65", requiredness=Requiredness.NONE)
     public String getMsg65() { return msg65; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg65() {
-        return this.msg65 != null;
-    }
     
     
     @ThriftField(value=66, name="msg66", requiredness=Requiredness.NONE)
     public String getMsg66() { return msg66; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg66() {
-        return this.msg66 != null;
-    }
     
     
     @ThriftField(value=67, name="msg67", requiredness=Requiredness.NONE)
     public String getMsg67() { return msg67; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg67() {
-        return this.msg67 != null;
-    }
     
     
     @ThriftField(value=68, name="msg68", requiredness=Requiredness.NONE)
     public String getMsg68() { return msg68; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg68() {
-        return this.msg68 != null;
-    }
     
     
     @ThriftField(value=69, name="msg69", requiredness=Requiredness.NONE)
     public String getMsg69() { return msg69; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg69() {
-        return this.msg69 != null;
-    }
     
     
     @ThriftField(value=70, name="msg70", requiredness=Requiredness.NONE)
     public String getMsg70() { return msg70; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg70() {
-        return this.msg70 != null;
-    }
     
     
     @ThriftField(value=71, name="msg71", requiredness=Requiredness.NONE)
     public String getMsg71() { return msg71; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg71() {
-        return this.msg71 != null;
-    }
     
     
     @ThriftField(value=72, name="msg72", requiredness=Requiredness.NONE)
     public String getMsg72() { return msg72; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg72() {
-        return this.msg72 != null;
-    }
     
     
     @ThriftField(value=73, name="msg73", requiredness=Requiredness.NONE)
     public String getMsg73() { return msg73; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg73() {
-        return this.msg73 != null;
-    }
     
     
     @ThriftField(value=74, name="msg74", requiredness=Requiredness.NONE)
     public String getMsg74() { return msg74; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg74() {
-        return this.msg74 != null;
-    }
     
     
     @ThriftField(value=75, name="msg75", requiredness=Requiredness.NONE)
     public String getMsg75() { return msg75; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg75() {
-        return this.msg75 != null;
-    }
     
     
     @ThriftField(value=76, name="msg76", requiredness=Requiredness.NONE)
     public String getMsg76() { return msg76; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg76() {
-        return this.msg76 != null;
-    }
     
     
     @ThriftField(value=77, name="msg77", requiredness=Requiredness.NONE)
     public String getMsg77() { return msg77; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg77() {
-        return this.msg77 != null;
-    }
     
     
     @ThriftField(value=78, name="msg78", requiredness=Requiredness.NONE)
     public String getMsg78() { return msg78; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg78() {
-        return this.msg78 != null;
-    }
     
     
     @ThriftField(value=79, name="msg79", requiredness=Requiredness.NONE)
     public String getMsg79() { return msg79; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg79() {
-        return this.msg79 != null;
-    }
     
     
     @ThriftField(value=80, name="msg80", requiredness=Requiredness.NONE)
     public String getMsg80() { return msg80; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg80() {
-        return this.msg80 != null;
-    }
     
     
     @ThriftField(value=81, name="msg81", requiredness=Requiredness.NONE)
     public String getMsg81() { return msg81; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg81() {
-        return this.msg81 != null;
-    }
     
     
     @ThriftField(value=82, name="msg82", requiredness=Requiredness.NONE)
     public String getMsg82() { return msg82; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg82() {
-        return this.msg82 != null;
-    }
     
     
     @ThriftField(value=83, name="msg83", requiredness=Requiredness.NONE)
     public String getMsg83() { return msg83; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg83() {
-        return this.msg83 != null;
-    }
     
     
     @ThriftField(value=84, name="msg84", requiredness=Requiredness.NONE)
     public String getMsg84() { return msg84; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg84() {
-        return this.msg84 != null;
-    }
     
     
     @ThriftField(value=85, name="msg85", requiredness=Requiredness.NONE)
     public String getMsg85() { return msg85; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg85() {
-        return this.msg85 != null;
-    }
     
     
     @ThriftField(value=86, name="msg86", requiredness=Requiredness.NONE)
     public String getMsg86() { return msg86; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg86() {
-        return this.msg86 != null;
-    }
     
     
     @ThriftField(value=87, name="msg87", requiredness=Requiredness.NONE)
     public String getMsg87() { return msg87; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg87() {
-        return this.msg87 != null;
-    }
     
     
     @ThriftField(value=88, name="msg88", requiredness=Requiredness.NONE)
     public String getMsg88() { return msg88; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg88() {
-        return this.msg88 != null;
-    }
     
     
     @ThriftField(value=89, name="msg89", requiredness=Requiredness.NONE)
     public String getMsg89() { return msg89; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg89() {
-        return this.msg89 != null;
-    }
     
     
     @ThriftField(value=90, name="msg90", requiredness=Requiredness.NONE)
     public String getMsg90() { return msg90; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg90() {
-        return this.msg90 != null;
-    }
     
     
     @ThriftField(value=91, name="msg91", requiredness=Requiredness.NONE)
     public String getMsg91() { return msg91; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg91() {
-        return this.msg91 != null;
-    }
     
     
     @ThriftField(value=92, name="msg92", requiredness=Requiredness.NONE)
     public String getMsg92() { return msg92; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg92() {
-        return this.msg92 != null;
-    }
     
     
     @ThriftField(value=93, name="msg93", requiredness=Requiredness.NONE)
     public String getMsg93() { return msg93; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg93() {
-        return this.msg93 != null;
-    }
     
     
     @ThriftField(value=94, name="msg94", requiredness=Requiredness.NONE)
     public String getMsg94() { return msg94; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg94() {
-        return this.msg94 != null;
-    }
     
     
     @ThriftField(value=95, name="msg95", requiredness=Requiredness.NONE)
     public String getMsg95() { return msg95; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg95() {
-        return this.msg95 != null;
-    }
     
     
     @ThriftField(value=96, name="msg96", requiredness=Requiredness.NONE)
     public String getMsg96() { return msg96; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg96() {
-        return this.msg96 != null;
-    }
     
     
     @ThriftField(value=97, name="msg97", requiredness=Requiredness.NONE)
     public String getMsg97() { return msg97; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg97() {
-        return this.msg97 != null;
-    }
     
     
     @ThriftField(value=98, name="msg98", requiredness=Requiredness.NONE)
     public String getMsg98() { return msg98; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg98() {
-        return this.msg98 != null;
-    }
     
     
     @ThriftField(value=99, name="msg99", requiredness=Requiredness.NONE)
     public String getMsg99() { return msg99; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg99() {
-        return this.msg99 != null;
-    }
     
     
     @ThriftField(value=100, name="msg100", requiredness=Requiredness.NONE)
     public String getMsg100() { return msg100; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg100() {
-        return this.msg100 != null;
-    }
     
     
     @ThriftField(value=101, name="msg101", requiredness=Requiredness.NONE)
     public String getMsg101() { return msg101; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg101() {
-        return this.msg101 != null;
-    }
     
     
     @ThriftField(value=102, name="msg102", requiredness=Requiredness.NONE)
     public String getMsg102() { return msg102; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg102() {
-        return this.msg102 != null;
-    }
     
     
     @ThriftField(value=103, name="msg103", requiredness=Requiredness.NONE)
     public String getMsg103() { return msg103; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg103() {
-        return this.msg103 != null;
-    }
     
     
     @ThriftField(value=104, name="msg104", requiredness=Requiredness.NONE)
     public String getMsg104() { return msg104; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg104() {
-        return this.msg104 != null;
-    }
     
     
     @ThriftField(value=105, name="msg105", requiredness=Requiredness.NONE)
     public String getMsg105() { return msg105; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg105() {
-        return this.msg105 != null;
-    }
     
     
     @ThriftField(value=106, name="msg106", requiredness=Requiredness.NONE)
     public String getMsg106() { return msg106; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg106() {
-        return this.msg106 != null;
-    }
     
     
     @ThriftField(value=107, name="msg107", requiredness=Requiredness.NONE)
     public String getMsg107() { return msg107; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg107() {
-        return this.msg107 != null;
-    }
     
     
     @ThriftField(value=108, name="msg108", requiredness=Requiredness.NONE)
     public String getMsg108() { return msg108; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg108() {
-        return this.msg108 != null;
-    }
     
     
     @ThriftField(value=109, name="msg109", requiredness=Requiredness.NONE)
     public String getMsg109() { return msg109; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg109() {
-        return this.msg109 != null;
-    }
     
     
     @ThriftField(value=110, name="msg110", requiredness=Requiredness.NONE)
     public String getMsg110() { return msg110; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg110() {
-        return this.msg110 != null;
-    }
     
     
     @ThriftField(value=111, name="msg111", requiredness=Requiredness.NONE)
     public String getMsg111() { return msg111; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg111() {
-        return this.msg111 != null;
-    }
     
     
     @ThriftField(value=112, name="msg112", requiredness=Requiredness.NONE)
     public String getMsg112() { return msg112; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg112() {
-        return this.msg112 != null;
-    }
     
     
     @ThriftField(value=113, name="msg113", requiredness=Requiredness.NONE)
     public String getMsg113() { return msg113; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg113() {
-        return this.msg113 != null;
-    }
     
     
     @ThriftField(value=114, name="msg114", requiredness=Requiredness.NONE)
     public String getMsg114() { return msg114; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg114() {
-        return this.msg114 != null;
-    }
     
     
     @ThriftField(value=115, name="msg115", requiredness=Requiredness.NONE)
     public String getMsg115() { return msg115; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg115() {
-        return this.msg115 != null;
-    }
     
     
     @ThriftField(value=116, name="msg116", requiredness=Requiredness.NONE)
     public String getMsg116() { return msg116; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg116() {
-        return this.msg116 != null;
-    }
     
     
     @ThriftField(value=117, name="msg117", requiredness=Requiredness.NONE)
     public String getMsg117() { return msg117; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg117() {
-        return this.msg117 != null;
-    }
     
     
     @ThriftField(value=118, name="msg118", requiredness=Requiredness.NONE)
     public String getMsg118() { return msg118; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg118() {
-        return this.msg118 != null;
-    }
     
     
     @ThriftField(value=119, name="msg119", requiredness=Requiredness.NONE)
     public String getMsg119() { return msg119; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg119() {
-        return this.msg119 != null;
-    }
     
     
     @ThriftField(value=120, name="msg120", requiredness=Requiredness.NONE)
     public String getMsg120() { return msg120; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg120() {
-        return this.msg120 != null;
-    }
     
     
     @ThriftField(value=121, name="msg121", requiredness=Requiredness.NONE)
     public String getMsg121() { return msg121; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg121() {
-        return this.msg121 != null;
-    }
     
     
     @ThriftField(value=122, name="msg122", requiredness=Requiredness.NONE)
     public String getMsg122() { return msg122; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg122() {
-        return this.msg122 != null;
-    }
     
     
     @ThriftField(value=123, name="msg123", requiredness=Requiredness.NONE)
     public String getMsg123() { return msg123; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg123() {
-        return this.msg123 != null;
-    }
     
     
     @ThriftField(value=124, name="msg124", requiredness=Requiredness.NONE)
     public String getMsg124() { return msg124; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg124() {
-        return this.msg124 != null;
-    }
     
     
     @ThriftField(value=125, name="msg125", requiredness=Requiredness.NONE)
     public String getMsg125() { return msg125; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg125() {
-        return this.msg125 != null;
-    }
     
     
     @ThriftField(value=126, name="msg126", requiredness=Requiredness.NONE)
     public String getMsg126() { return msg126; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg126() {
-        return this.msg126 != null;
-    }
     
     
     @ThriftField(value=127, name="msg127", requiredness=Requiredness.NONE)
     public String getMsg127() { return msg127; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg127() {
-        return this.msg127 != null;
-    }
     
     
     @ThriftField(value=128, name="msg128", requiredness=Requiredness.NONE)
     public String getMsg128() { return msg128; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg128() {
-        return this.msg128 != null;
-    }
     
     
     @ThriftField(value=129, name="msg129", requiredness=Requiredness.NONE)
     public String getMsg129() { return msg129; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg129() {
-        return this.msg129 != null;
-    }
     
     
     @ThriftField(value=130, name="msg130", requiredness=Requiredness.NONE)
     public String getMsg130() { return msg130; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg130() {
-        return this.msg130 != null;
-    }
     
     
     @ThriftField(value=131, name="msg131", requiredness=Requiredness.NONE)
     public String getMsg131() { return msg131; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg131() {
-        return this.msg131 != null;
-    }
     
     
     @ThriftField(value=132, name="msg132", requiredness=Requiredness.NONE)
     public String getMsg132() { return msg132; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg132() {
-        return this.msg132 != null;
-    }
     
     
     @ThriftField(value=133, name="msg133", requiredness=Requiredness.NONE)
     public String getMsg133() { return msg133; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg133() {
-        return this.msg133 != null;
-    }
     
     
     @ThriftField(value=134, name="msg134", requiredness=Requiredness.NONE)
     public String getMsg134() { return msg134; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg134() {
-        return this.msg134 != null;
-    }
     
     
     @ThriftField(value=135, name="msg135", requiredness=Requiredness.NONE)
     public String getMsg135() { return msg135; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg135() {
-        return this.msg135 != null;
-    }
     
     
     @ThriftField(value=136, name="msg136", requiredness=Requiredness.NONE)
     public String getMsg136() { return msg136; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg136() {
-        return this.msg136 != null;
-    }
     
     
     @ThriftField(value=137, name="msg137", requiredness=Requiredness.NONE)
     public String getMsg137() { return msg137; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg137() {
-        return this.msg137 != null;
-    }
     
     
     @ThriftField(value=138, name="msg138", requiredness=Requiredness.NONE)
     public String getMsg138() { return msg138; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg138() {
-        return this.msg138 != null;
-    }
     
     
     @ThriftField(value=139, name="msg139", requiredness=Requiredness.NONE)
     public String getMsg139() { return msg139; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg139() {
-        return this.msg139 != null;
-    }
     
     
     @ThriftField(value=140, name="msg140", requiredness=Requiredness.NONE)
     public String getMsg140() { return msg140; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg140() {
-        return this.msg140 != null;
-    }
     
     
     @ThriftField(value=141, name="msg141", requiredness=Requiredness.NONE)
     public String getMsg141() { return msg141; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg141() {
-        return this.msg141 != null;
-    }
     
     
     @ThriftField(value=142, name="msg142", requiredness=Requiredness.NONE)
     public String getMsg142() { return msg142; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg142() {
-        return this.msg142 != null;
-    }
     
     
     @ThriftField(value=143, name="msg143", requiredness=Requiredness.NONE)
     public String getMsg143() { return msg143; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg143() {
-        return this.msg143 != null;
-    }
     
     
     @ThriftField(value=144, name="msg144", requiredness=Requiredness.NONE)
     public String getMsg144() { return msg144; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg144() {
-        return this.msg144 != null;
-    }
     
     
     @ThriftField(value=145, name="msg145", requiredness=Requiredness.NONE)
     public String getMsg145() { return msg145; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg145() {
-        return this.msg145 != null;
-    }
     
     
     @ThriftField(value=146, name="msg146", requiredness=Requiredness.NONE)
     public String getMsg146() { return msg146; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg146() {
-        return this.msg146 != null;
-    }
     
     
     @ThriftField(value=147, name="msg147", requiredness=Requiredness.NONE)
     public String getMsg147() { return msg147; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg147() {
-        return this.msg147 != null;
-    }
     
     
     @ThriftField(value=148, name="msg148", requiredness=Requiredness.NONE)
     public String getMsg148() { return msg148; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg148() {
-        return this.msg148 != null;
-    }
     
     
     @ThriftField(value=149, name="msg149", requiredness=Requiredness.NONE)
     public String getMsg149() { return msg149; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg149() {
-        return this.msg149 != null;
-    }
     
     
     @ThriftField(value=150, name="msg150", requiredness=Requiredness.NONE)
     public String getMsg150() { return msg150; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg150() {
-        return this.msg150 != null;
-    }
     
     
     @ThriftField(value=151, name="msg151", requiredness=Requiredness.NONE)
     public String getMsg151() { return msg151; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg151() {
-        return this.msg151 != null;
-    }
     
     
     @ThriftField(value=152, name="msg152", requiredness=Requiredness.NONE)
     public String getMsg152() { return msg152; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg152() {
-        return this.msg152 != null;
-    }
     
     
     @ThriftField(value=153, name="msg153", requiredness=Requiredness.NONE)
     public String getMsg153() { return msg153; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg153() {
-        return this.msg153 != null;
-    }
     
     
     @ThriftField(value=154, name="msg154", requiredness=Requiredness.NONE)
     public String getMsg154() { return msg154; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg154() {
-        return this.msg154 != null;
-    }
     
     
     @ThriftField(value=155, name="msg155", requiredness=Requiredness.NONE)
     public String getMsg155() { return msg155; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg155() {
-        return this.msg155 != null;
-    }
     
     
     @ThriftField(value=156, name="msg156", requiredness=Requiredness.NONE)
     public String getMsg156() { return msg156; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg156() {
-        return this.msg156 != null;
-    }
     
     
     @ThriftField(value=157, name="msg157", requiredness=Requiredness.NONE)
     public String getMsg157() { return msg157; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg157() {
-        return this.msg157 != null;
-    }
     
     
     @ThriftField(value=158, name="msg158", requiredness=Requiredness.NONE)
     public String getMsg158() { return msg158; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg158() {
-        return this.msg158 != null;
-    }
     
     
     @ThriftField(value=159, name="msg159", requiredness=Requiredness.NONE)
     public String getMsg159() { return msg159; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg159() {
-        return this.msg159 != null;
-    }
     
     
     @ThriftField(value=160, name="msg160", requiredness=Requiredness.NONE)
     public String getMsg160() { return msg160; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg160() {
-        return this.msg160 != null;
-    }
     
     
     @ThriftField(value=161, name="msg161", requiredness=Requiredness.NONE)
     public String getMsg161() { return msg161; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg161() {
-        return this.msg161 != null;
-    }
     
     
     @ThriftField(value=162, name="msg162", requiredness=Requiredness.NONE)
     public String getMsg162() { return msg162; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg162() {
-        return this.msg162 != null;
-    }
     
     
     @ThriftField(value=163, name="msg163", requiredness=Requiredness.NONE)
     public String getMsg163() { return msg163; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg163() {
-        return this.msg163 != null;
-    }
     
     
     @ThriftField(value=164, name="msg164", requiredness=Requiredness.NONE)
     public String getMsg164() { return msg164; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg164() {
-        return this.msg164 != null;
-    }
     
     
     @ThriftField(value=165, name="msg165", requiredness=Requiredness.NONE)
     public String getMsg165() { return msg165; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg165() {
-        return this.msg165 != null;
-    }
     
     
     @ThriftField(value=166, name="msg166", requiredness=Requiredness.NONE)
     public String getMsg166() { return msg166; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg166() {
-        return this.msg166 != null;
-    }
     
     
     @ThriftField(value=167, name="msg167", requiredness=Requiredness.NONE)
     public String getMsg167() { return msg167; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg167() {
-        return this.msg167 != null;
-    }
     
     
     @ThriftField(value=168, name="msg168", requiredness=Requiredness.NONE)
     public String getMsg168() { return msg168; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg168() {
-        return this.msg168 != null;
-    }
     
     
     @ThriftField(value=169, name="msg169", requiredness=Requiredness.NONE)
     public String getMsg169() { return msg169; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg169() {
-        return this.msg169 != null;
-    }
     
     
     @ThriftField(value=170, name="msg170", requiredness=Requiredness.NONE)
     public String getMsg170() { return msg170; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg170() {
-        return this.msg170 != null;
-    }
     
     
     @ThriftField(value=171, name="msg171", requiredness=Requiredness.NONE)
     public String getMsg171() { return msg171; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg171() {
-        return this.msg171 != null;
-    }
     
     
     @ThriftField(value=172, name="msg172", requiredness=Requiredness.NONE)
     public String getMsg172() { return msg172; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg172() {
-        return this.msg172 != null;
-    }
     
     
     @ThriftField(value=173, name="msg173", requiredness=Requiredness.NONE)
     public String getMsg173() { return msg173; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg173() {
-        return this.msg173 != null;
-    }
     
     
     @ThriftField(value=174, name="msg174", requiredness=Requiredness.NONE)
     public String getMsg174() { return msg174; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg174() {
-        return this.msg174 != null;
-    }
     
     
     @ThriftField(value=175, name="msg175", requiredness=Requiredness.NONE)
     public String getMsg175() { return msg175; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg175() {
-        return this.msg175 != null;
-    }
     
     
     @ThriftField(value=176, name="msg176", requiredness=Requiredness.NONE)
     public String getMsg176() { return msg176; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg176() {
-        return this.msg176 != null;
-    }
     
     
     @ThriftField(value=177, name="msg177", requiredness=Requiredness.NONE)
     public String getMsg177() { return msg177; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg177() {
-        return this.msg177 != null;
-    }
     
     
     @ThriftField(value=178, name="msg178", requiredness=Requiredness.NONE)
     public String getMsg178() { return msg178; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg178() {
-        return this.msg178 != null;
-    }
     
     
     @ThriftField(value=179, name="msg179", requiredness=Requiredness.NONE)
     public String getMsg179() { return msg179; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg179() {
-        return this.msg179 != null;
-    }
     
     
     @ThriftField(value=180, name="msg180", requiredness=Requiredness.NONE)
     public String getMsg180() { return msg180; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg180() {
-        return this.msg180 != null;
-    }
     
     
     @ThriftField(value=181, name="msg181", requiredness=Requiredness.NONE)
     public String getMsg181() { return msg181; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg181() {
-        return this.msg181 != null;
-    }
     
     
     @ThriftField(value=182, name="msg182", requiredness=Requiredness.NONE)
     public String getMsg182() { return msg182; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg182() {
-        return this.msg182 != null;
-    }
     
     
     @ThriftField(value=183, name="msg183", requiredness=Requiredness.NONE)
     public String getMsg183() { return msg183; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg183() {
-        return this.msg183 != null;
-    }
     
     
     @ThriftField(value=184, name="msg184", requiredness=Requiredness.NONE)
     public String getMsg184() { return msg184; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg184() {
-        return this.msg184 != null;
-    }
     
     
     @ThriftField(value=185, name="msg185", requiredness=Requiredness.NONE)
     public String getMsg185() { return msg185; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg185() {
-        return this.msg185 != null;
-    }
     
     
     @ThriftField(value=186, name="msg186", requiredness=Requiredness.NONE)
     public String getMsg186() { return msg186; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg186() {
-        return this.msg186 != null;
-    }
     
     
     @ThriftField(value=187, name="msg187", requiredness=Requiredness.NONE)
     public String getMsg187() { return msg187; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg187() {
-        return this.msg187 != null;
-    }
     
     
     @ThriftField(value=188, name="msg188", requiredness=Requiredness.NONE)
     public String getMsg188() { return msg188; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg188() {
-        return this.msg188 != null;
-    }
     
     
     @ThriftField(value=189, name="msg189", requiredness=Requiredness.NONE)
     public String getMsg189() { return msg189; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg189() {
-        return this.msg189 != null;
-    }
     
     
     @ThriftField(value=190, name="msg190", requiredness=Requiredness.NONE)
     public String getMsg190() { return msg190; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg190() {
-        return this.msg190 != null;
-    }
     
     
     @ThriftField(value=191, name="msg191", requiredness=Requiredness.NONE)
     public String getMsg191() { return msg191; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg191() {
-        return this.msg191 != null;
-    }
     
     
     @ThriftField(value=192, name="msg192", requiredness=Requiredness.NONE)
     public String getMsg192() { return msg192; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg192() {
-        return this.msg192 != null;
-    }
     
     
     @ThriftField(value=193, name="msg193", requiredness=Requiredness.NONE)
     public String getMsg193() { return msg193; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg193() {
-        return this.msg193 != null;
-    }
     
     
     @ThriftField(value=194, name="msg194", requiredness=Requiredness.NONE)
     public String getMsg194() { return msg194; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg194() {
-        return this.msg194 != null;
-    }
     
     
     @ThriftField(value=195, name="msg195", requiredness=Requiredness.NONE)
     public String getMsg195() { return msg195; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg195() {
-        return this.msg195 != null;
-    }
     
     
     @ThriftField(value=196, name="msg196", requiredness=Requiredness.NONE)
     public String getMsg196() { return msg196; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg196() {
-        return this.msg196 != null;
-    }
     
     
     @ThriftField(value=197, name="msg197", requiredness=Requiredness.NONE)
     public String getMsg197() { return msg197; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg197() {
-        return this.msg197 != null;
-    }
     
     
     @ThriftField(value=198, name="msg198", requiredness=Requiredness.NONE)
     public String getMsg198() { return msg198; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg198() {
-        return this.msg198 != null;
-    }
     
     
     @ThriftField(value=199, name="msg199", requiredness=Requiredness.NONE)
     public String getMsg199() { return msg199; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg199() {
-        return this.msg199 != null;
-    }
     
     
     @ThriftField(value=200, name="msg200", requiredness=Requiredness.NONE)
     public String getMsg200() { return msg200; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg200() {
-        return this.msg200 != null;
-    }
     
     
     @ThriftField(value=201, name="msg201", requiredness=Requiredness.NONE)
     public String getMsg201() { return msg201; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg201() {
-        return this.msg201 != null;
-    }
     
     
     @ThriftField(value=202, name="msg202", requiredness=Requiredness.NONE)
     public String getMsg202() { return msg202; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg202() {
-        return this.msg202 != null;
-    }
     
     
     @ThriftField(value=203, name="msg203", requiredness=Requiredness.NONE)
     public String getMsg203() { return msg203; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg203() {
-        return this.msg203 != null;
-    }
     
     
     @ThriftField(value=204, name="msg204", requiredness=Requiredness.NONE)
     public String getMsg204() { return msg204; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg204() {
-        return this.msg204 != null;
-    }
     
     
     @ThriftField(value=205, name="msg205", requiredness=Requiredness.NONE)
     public String getMsg205() { return msg205; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg205() {
-        return this.msg205 != null;
-    }
     
     
     @ThriftField(value=206, name="msg206", requiredness=Requiredness.NONE)
     public String getMsg206() { return msg206; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg206() {
-        return this.msg206 != null;
-    }
     
     
     @ThriftField(value=207, name="msg207", requiredness=Requiredness.NONE)
     public String getMsg207() { return msg207; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg207() {
-        return this.msg207 != null;
-    }
     
     
     @ThriftField(value=208, name="msg208", requiredness=Requiredness.NONE)
     public String getMsg208() { return msg208; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg208() {
-        return this.msg208 != null;
-    }
     
     
     @ThriftField(value=209, name="msg209", requiredness=Requiredness.NONE)
     public String getMsg209() { return msg209; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg209() {
-        return this.msg209 != null;
-    }
     
     
     @ThriftField(value=210, name="msg210", requiredness=Requiredness.NONE)
     public String getMsg210() { return msg210; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg210() {
-        return this.msg210 != null;
-    }
     
     
     @ThriftField(value=211, name="msg211", requiredness=Requiredness.NONE)
     public String getMsg211() { return msg211; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg211() {
-        return this.msg211 != null;
-    }
     
     
     @ThriftField(value=212, name="msg212", requiredness=Requiredness.NONE)
     public String getMsg212() { return msg212; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg212() {
-        return this.msg212 != null;
-    }
     
     
     @ThriftField(value=213, name="msg213", requiredness=Requiredness.NONE)
     public String getMsg213() { return msg213; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg213() {
-        return this.msg213 != null;
-    }
     
     
     @ThriftField(value=214, name="msg214", requiredness=Requiredness.NONE)
     public String getMsg214() { return msg214; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg214() {
-        return this.msg214 != null;
-    }
     
     
     @ThriftField(value=215, name="msg215", requiredness=Requiredness.NONE)
     public String getMsg215() { return msg215; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg215() {
-        return this.msg215 != null;
-    }
     
     
     @ThriftField(value=216, name="msg216", requiredness=Requiredness.NONE)
     public String getMsg216() { return msg216; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg216() {
-        return this.msg216 != null;
-    }
     
     
     @ThriftField(value=217, name="msg217", requiredness=Requiredness.NONE)
     public String getMsg217() { return msg217; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg217() {
-        return this.msg217 != null;
-    }
     
     
     @ThriftField(value=218, name="msg218", requiredness=Requiredness.NONE)
     public String getMsg218() { return msg218; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg218() {
-        return this.msg218 != null;
-    }
     
     
     @ThriftField(value=219, name="msg219", requiredness=Requiredness.NONE)
     public String getMsg219() { return msg219; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg219() {
-        return this.msg219 != null;
-    }
     
     
     @ThriftField(value=220, name="msg220", requiredness=Requiredness.NONE)
     public String getMsg220() { return msg220; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg220() {
-        return this.msg220 != null;
-    }
     
     
     @ThriftField(value=221, name="msg221", requiredness=Requiredness.NONE)
     public String getMsg221() { return msg221; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg221() {
-        return this.msg221 != null;
-    }
     
     
     @ThriftField(value=222, name="msg222", requiredness=Requiredness.NONE)
     public String getMsg222() { return msg222; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg222() {
-        return this.msg222 != null;
-    }
     
     
     @ThriftField(value=223, name="msg223", requiredness=Requiredness.NONE)
     public String getMsg223() { return msg223; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg223() {
-        return this.msg223 != null;
-    }
     
     
     @ThriftField(value=224, name="msg224", requiredness=Requiredness.NONE)
     public String getMsg224() { return msg224; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg224() {
-        return this.msg224 != null;
-    }
     
     
     @ThriftField(value=225, name="msg225", requiredness=Requiredness.NONE)
     public String getMsg225() { return msg225; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg225() {
-        return this.msg225 != null;
-    }
     
     
     @ThriftField(value=226, name="msg226", requiredness=Requiredness.NONE)
     public String getMsg226() { return msg226; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg226() {
-        return this.msg226 != null;
-    }
     
     
     @ThriftField(value=227, name="msg227", requiredness=Requiredness.NONE)
     public String getMsg227() { return msg227; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg227() {
-        return this.msg227 != null;
-    }
     
     
     @ThriftField(value=228, name="msg228", requiredness=Requiredness.NONE)
     public String getMsg228() { return msg228; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg228() {
-        return this.msg228 != null;
-    }
     
     
     @ThriftField(value=229, name="msg229", requiredness=Requiredness.NONE)
     public String getMsg229() { return msg229; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg229() {
-        return this.msg229 != null;
-    }
     
     
     @ThriftField(value=230, name="msg230", requiredness=Requiredness.NONE)
     public String getMsg230() { return msg230; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg230() {
-        return this.msg230 != null;
-    }
     
     
     @ThriftField(value=231, name="msg231", requiredness=Requiredness.NONE)
     public String getMsg231() { return msg231; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg231() {
-        return this.msg231 != null;
-    }
     
     
     @ThriftField(value=232, name="msg232", requiredness=Requiredness.NONE)
     public String getMsg232() { return msg232; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg232() {
-        return this.msg232 != null;
-    }
     
     
     @ThriftField(value=233, name="msg233", requiredness=Requiredness.NONE)
     public String getMsg233() { return msg233; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg233() {
-        return this.msg233 != null;
-    }
     
     
     @ThriftField(value=234, name="msg234", requiredness=Requiredness.NONE)
     public String getMsg234() { return msg234; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg234() {
-        return this.msg234 != null;
-    }
     
     
     @ThriftField(value=235, name="msg235", requiredness=Requiredness.NONE)
     public String getMsg235() { return msg235; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg235() {
-        return this.msg235 != null;
-    }
     
     
     @ThriftField(value=236, name="msg236", requiredness=Requiredness.NONE)
     public String getMsg236() { return msg236; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg236() {
-        return this.msg236 != null;
-    }
     
     
     @ThriftField(value=237, name="msg237", requiredness=Requiredness.NONE)
     public String getMsg237() { return msg237; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg237() {
-        return this.msg237 != null;
-    }
     
     
     @ThriftField(value=238, name="msg238", requiredness=Requiredness.NONE)
     public String getMsg238() { return msg238; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg238() {
-        return this.msg238 != null;
-    }
     
     
     @ThriftField(value=239, name="msg239", requiredness=Requiredness.NONE)
     public String getMsg239() { return msg239; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg239() {
-        return this.msg239 != null;
-    }
     
     
     @ThriftField(value=240, name="msg240", requiredness=Requiredness.NONE)
     public String getMsg240() { return msg240; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg240() {
-        return this.msg240 != null;
-    }
     
     
     @ThriftField(value=241, name="msg241", requiredness=Requiredness.NONE)
     public String getMsg241() { return msg241; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg241() {
-        return this.msg241 != null;
-    }
     
     
     @ThriftField(value=242, name="msg242", requiredness=Requiredness.NONE)
     public String getMsg242() { return msg242; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg242() {
-        return this.msg242 != null;
-    }
     
     
     @ThriftField(value=243, name="msg243", requiredness=Requiredness.NONE)
     public String getMsg243() { return msg243; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg243() {
-        return this.msg243 != null;
-    }
     
     
     @ThriftField(value=244, name="msg244", requiredness=Requiredness.NONE)
     public String getMsg244() { return msg244; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg244() {
-        return this.msg244 != null;
-    }
     
     
     @ThriftField(value=245, name="msg245", requiredness=Requiredness.NONE)
     public String getMsg245() { return msg245; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg245() {
-        return this.msg245 != null;
-    }
     
     
     @ThriftField(value=246, name="msg246", requiredness=Requiredness.NONE)
     public String getMsg246() { return msg246; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg246() {
-        return this.msg246 != null;
-    }
     
     
     @ThriftField(value=247, name="msg247", requiredness=Requiredness.NONE)
     public String getMsg247() { return msg247; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg247() {
-        return this.msg247 != null;
-    }
     
     
     @ThriftField(value=248, name="msg248", requiredness=Requiredness.NONE)
     public String getMsg248() { return msg248; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg248() {
-        return this.msg248 != null;
-    }
     
     
     @ThriftField(value=249, name="msg249", requiredness=Requiredness.NONE)
     public String getMsg249() { return msg249; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg249() {
-        return this.msg249 != null;
-    }
     
     
     @ThriftField(value=250, name="msg250", requiredness=Requiredness.NONE)
     public String getMsg250() { return msg250; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg250() {
-        return this.msg250 != null;
-    }
     
     
     @ThriftField(value=251, name="msg251", requiredness=Requiredness.NONE)
     public String getMsg251() { return msg251; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg251() {
-        return this.msg251 != null;
-    }
     
     
     @ThriftField(value=252, name="msg252", requiredness=Requiredness.NONE)
     public String getMsg252() { return msg252; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg252() {
-        return this.msg252 != null;
-    }
     
     
     @ThriftField(value=253, name="msg253", requiredness=Requiredness.NONE)
     public String getMsg253() { return msg253; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg253() {
-        return this.msg253 != null;
-    }
     
     
     @ThriftField(value=254, name="msg254", requiredness=Requiredness.NONE)
     public String getMsg254() { return msg254; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg254() {
-        return this.msg254 != null;
-    }
     
     
     @ThriftField(value=255, name="msg255", requiredness=Requiredness.NONE)
     public String getMsg255() { return msg255; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg255() {
-        return this.msg255 != null;
-    }
     
     
     @ThriftField(value=256, name="msg256", requiredness=Requiredness.NONE)
     public String getMsg256() { return msg256; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg256() {
-        return this.msg256 != null;
-    }
     
     
     @ThriftField(value=257, name="msg257", requiredness=Requiredness.NONE)
     public String getMsg257() { return msg257; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMsg257() {
-        return this.msg257 != null;
-    }
     
     @java.lang.Override
     public String toString() {

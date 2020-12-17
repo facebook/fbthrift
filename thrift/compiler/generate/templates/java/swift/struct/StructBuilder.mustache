@@ -16,7 +16,9 @@
 
 }}
 public static class Builder {
+    {{#struct:enableIsSet?}}
     private final BitSet __optional_isset = new BitSet();
+    {{/struct:enableIsSet?}}
 
     {{#struct:fields}}
     {{^field:value}}
@@ -53,14 +55,18 @@ public static class Builder {
             this.{{field:javaName}}{{^last?}},{{/last?}}
             {{/struct:fields}}
         );
+        {{#struct:enableIsSet?}}
         result.__isset_bit_vector.or(__optional_isset);
+        {{/struct:enableIsSet?}}
         return result;
         {{/struct:asBean?}}{{#struct:asBean?}}
         {{struct:javaCapitalName}} result = new {{struct:javaCapitalName}}();
         {{#struct:fields}}
         result.{{field:javaName}} = this.{{field:javaName}};
         {{/struct:fields}}
+        {{#struct:enableIsSet?}}
         result.__isset_bit_vector.or(__optional_isset);
+        {{/struct:enableIsSet?}}
         return result;
         {{/struct:asBean?}}{{/struct:isBigStruct?}}{{!
         }}{{#struct:isBigStruct?}}
@@ -68,7 +74,9 @@ public static class Builder {
         {{#struct:fields}}
         o{{struct:javaCapitalName}}.{{field:javaName}} = this.{{field:javaName}};
         {{/struct:fields}}
+        {{#struct:enableIsSet?}}
         o{{struct:javaCapitalName}}.__isset_bit_vector.or(__optional_isset);
+        {{/struct:enableIsSet?}}
         return o{{struct:javaCapitalName}};
         {{/struct:isBigStruct?}}{{!
         }}

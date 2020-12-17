@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="struct4", builder=Struct4.Builder.class)
 public final class Struct4 {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public Struct4(
@@ -46,7 +45,6 @@ public final class Struct4 {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int a = 0;
         private Double b = null;
@@ -90,7 +88,6 @@ public final class Struct4 {
                 this.b,
                 this.c
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -118,32 +115,14 @@ public final class Struct4 {
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetA() {
-        return __isset_bit_vector.get(_A);
-    }
     
     
     @ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
     public Double getB() { return b; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetB() {
-        return this.b != null;
-    }
     
     
     @ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
     public Byte getC() { return c; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetC() {
-        return this.c != null;
-    }
     
     @java.lang.Override
     public String toString() {

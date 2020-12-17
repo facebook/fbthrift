@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="SecretStruct", builder=SecretStruct.Builder.class)
 public final class SecretStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public SecretStruct(
@@ -43,7 +42,6 @@ public final class SecretStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long id = 0L;
         private String password = null;
@@ -76,7 +74,6 @@ public final class SecretStruct {
                 this.id,
                 this.password
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -99,22 +96,10 @@ public final class SecretStruct {
     
     @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetId() {
-        return __isset_bit_vector.get(_ID);
-    }
     
     
     @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetPassword() {
-        return this.password != null;
-    }
     
     @java.lang.Override
     public String toString() {

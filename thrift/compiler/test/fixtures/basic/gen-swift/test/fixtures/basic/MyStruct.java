@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public MyStruct(
@@ -49,7 +48,6 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myIntField = 0L;
         private String myStringField = null;
@@ -104,7 +102,6 @@ public final class MyStruct {
                 this.myDataField,
                 this.myEnum
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -137,42 +134,18 @@ public final class MyStruct {
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField() {
-        return __isset_bit_vector.get(_MYINTFIELD);
-    }
     
     
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyStringField() {
-        return this.myStringField != null;
-    }
     
     
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDataField() {
-        return this.myDataField != null;
-    }
     
     
     @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyEnum() {
-        return this.myEnum != null;
-    }
     
     @java.lang.Override
     public String toString() {

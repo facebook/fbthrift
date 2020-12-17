@@ -25,7 +25,6 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 @SwiftGenerated
 @ThriftStruct(value="Color", builder=Color.Builder.class)
 public final class Color {
-    private BitSet __isset_bit_vector = new BitSet();
 
     @ThriftConstructor
     public Color(
@@ -49,7 +48,6 @@ public final class Color {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private double red = 0.;
         private double green = 0.;
@@ -104,7 +102,6 @@ public final class Color {
                 this.blue,
                 this.alpha
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -137,42 +134,18 @@ public final class Color {
     
     @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
     public double getRed() { return red; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetRed() {
-        return __isset_bit_vector.get(_RED);
-    }
     
     
     @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
     public double getGreen() { return green; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetGreen() {
-        return __isset_bit_vector.get(_GREEN);
-    }
     
     
     @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
     public double getBlue() { return blue; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetBlue() {
-        return __isset_bit_vector.get(_BLUE);
-    }
     
     
     @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
     public double getAlpha() { return alpha; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetAlpha() {
-        return __isset_bit_vector.get(_ALPHA);
-    }
     
     @java.lang.Override
     public String toString() {
