@@ -45,6 +45,7 @@ namespace thrift {
 
 class ThriftServer;
 class Cpp2Worker;
+class Cpp2ConnContext;
 
 class LoggingEventHandler {
  public:
@@ -67,14 +68,16 @@ class ConnectionLoggingContext {
   explicit ConnectionLoggingContext(
       TransportType transportType,
       const Cpp2Worker& worker,
-      const folly::AsyncTransport* transport)
-      : transportType_(transportType), worker_(worker), transport_(transport) {}
+      const Cpp2ConnContext& connContext)
+      : transportType_(transportType),
+        worker_(worker),
+        connContext_(connContext) {}
 
   const Cpp2Worker& getWorker() const {
     return worker_;
   }
-  const folly::AsyncTransport* getTransport() const {
-    return transport_;
+  const Cpp2ConnContext& getConnContext() const {
+    return connContext_;
   }
   void setClientAgent(std::string clientAgent) {
     clientAgent_ = clientAgent;
@@ -101,7 +104,7 @@ class ConnectionLoggingContext {
  private:
   TransportType transportType_;
   const Cpp2Worker& worker_;
-  const folly::AsyncTransport* transport_;
+  const Cpp2ConnContext& connContext_;
 
   std::optional<std::string> clientAgent_;
   std::optional<std::string> clientHostId_;

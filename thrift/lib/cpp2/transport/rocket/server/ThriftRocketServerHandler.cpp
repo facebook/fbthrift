@@ -79,7 +79,7 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
       loggingContext_(
           ConnectionLoggingContext::TransportType::ROCKET,
           *worker_.get(),
-          transport) {
+          connContext_) {
   if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
     handler->newConnection(&connContext_);
   }

@@ -21,6 +21,7 @@
 #include <folly/Synchronized.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache {
 namespace thrift {
@@ -85,10 +86,14 @@ void logSetupConnectionEventsOnce(
       return false;
     }
     try {
-      if (context.getTransport() &&
-          !context.getTransport()
-               ->getUnderlyingTransport<folly::AsyncSSLSocket>()) {
-        THRIFT_CONNECTION_EVENT(non_tls).log(context);
+      if (auto transport = context.getConnContext().getTransport()) {
+        if (!context.getConnContext().getSecurityProtocol().empty()) {
+          if (!transport->getPeerCertificate()) {
+            THRIFT_CONNECTION_EVENT(tls.no_peer_cert).log(context);
+          }
+        } else {
+          THRIFT_CONNECTION_EVENT(non_tls).log(context);
+        }
       }
     } catch (...) {
       LOG(ERROR)
