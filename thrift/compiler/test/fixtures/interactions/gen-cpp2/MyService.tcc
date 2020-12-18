@@ -202,7 +202,7 @@ void MyServiceAsyncProcessor::process_MyInteraction_truthify(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteraction_truthify(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<bool> _return) {
+apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteraction_truthify(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<bool>&& _return) {
   ProtocolOut_ prot;
   MyService_MyInteraction_truthify_presult::FieldsType result;
   using StreamPResultType = MyService_MyInteraction_truthify_presult::StreamPResultType;
@@ -419,7 +419,7 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_truthify(apache::thrift:
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteractionFast_truthify(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<bool> _return) {
+apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteractionFast_truthify(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, apache::thrift::ServerStream<bool>&& _return) {
   ProtocolOut_ prot;
   MyService_MyInteractionFast_truthify_presult::FieldsType result;
   using StreamPResultType = MyService_MyInteractionFast_truthify_presult::StreamPResultType;

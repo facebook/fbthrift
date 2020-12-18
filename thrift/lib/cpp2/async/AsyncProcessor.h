@@ -902,13 +902,13 @@ struct HandlerCallbackHelper {
       ContextStack* ctx,
       folly::Executor::KeepAlive<>,
       InputType input) {
-    return cob(protoSeqId, ctx, std::move(input));
+    return cob(protoSeqId, ctx, input);
   }
 };
 
 template <typename StreamInputType>
 struct HandlerCallbackHelperServerStream {
-  using InputType = StreamInputType;
+  using InputType = StreamInputType&&;
   using CobPtr = ResponseAndServerStreamFactory (*)(
       int32_t protoSeqId,
       ContextStack*,
@@ -935,10 +935,10 @@ struct HandlerCallbackHelper<ServerStream<StreamItem>>
 
 template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
-  using InputType = SinkInputType;
+  using InputType = SinkInputType&&;
   using CobPtr = std::pair<folly::IOBufQueue, SinkConsumerImpl> (*)(
       ContextStack*,
-      InputType&&,
+      InputType,
       folly::Executor::KeepAlive<>);
   static std::pair<folly::IOBufQueue, SinkConsumerImpl> call(
       CobPtr cob,

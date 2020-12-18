@@ -29,7 +29,7 @@
   static folly::IOBufQueue return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
   <%/type:sink?%><%/type:streamresponse?%>
   <%#type:streamresponse?%>
-  static apache::thrift::ResponseAndServerStreamFactory return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <% > types/type%> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <% > types/type%>&& _return);
   <%/type:streamresponse?%>
   <%#type:sink?%>
   static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<> executor);
