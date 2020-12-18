@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 
@@ -153,6 +154,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
+
+  // Explicitly set monitoring service interface handler
+  std::shared_ptr<MonitoringServerInterface> monitoringServiceHandler_;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   ServerAttribute<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
@@ -790,6 +794,19 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> getProcessorFactory()
       const {
     return cpp2Pfac_;
+  }
+
+  /**
+   * Sets the interface that will be used for monitoring connections only.
+   */
+  void setMonitoringInterface(
+      std::shared_ptr<MonitoringServerInterface> iface) {
+    monitoringServiceHandler_ = std::move(iface);
+  }
+
+  std::shared_ptr<apache::thrift::AsyncProcessorFactory>
+  getMonitoringProcessorFactory() {
+    return monitoringServiceHandler_;
   }
 
   /**

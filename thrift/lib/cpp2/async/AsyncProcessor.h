@@ -309,7 +309,7 @@ class RequestParams {
   folly::EventBase* eventBase_;
 };
 
-class ServerInterface : public AsyncProcessorFactory {
+class ServerInterface : public virtual AsyncProcessorFactory {
  public:
   [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
   getConnectionContext() const {
