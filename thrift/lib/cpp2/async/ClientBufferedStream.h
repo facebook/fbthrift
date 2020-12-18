@@ -46,6 +46,7 @@ class ClientBufferedStream {
         decode_(decode),
         bufferSize_(bufferSize) {}
 
+  // onNextTry may return bool or void; false cancels the subscription.
   template <typename OnNextTry>
   void subscribeInline(OnNextTry&& onNextTry) && {
     auto streamBridge = std::move(streamBridge_);
@@ -88,10 +89,6 @@ class ClientBufferedStream {
 
       {
         auto& payload = queue.front();
-        if (!payload.hasValue() && !payload.hasException()) {
-          onNextTry(folly::Try<T>());
-          break;
-        }
         if (payload.hasValue()) {
           if (!payload->payload) {
             FB_LOG_EVERY_MS(WARNING, 1000)
@@ -103,9 +100,16 @@ class ClientBufferedStream {
         }
         auto value = decode_(std::move(payload));
         queue.pop();
-        const auto hasException = value.hasException();
-        onNextTry(std::move(value));
-        if (hasException) {
+        bool done = !value.hasValue();
+        using Res = std::invoke_result_t<OnNextTry, folly::Try<T>>;
+        if constexpr (std::is_same_v<Res, bool>) {
+          done |= !onNextTry(std::move(value));
+        } else {
+          static_assert(
+              std::is_void_v<Res>, "onNextTry must return bool or void");
+          onNextTry(std::move(value));
+        }
+        if (done) {
           break;
         }
       }

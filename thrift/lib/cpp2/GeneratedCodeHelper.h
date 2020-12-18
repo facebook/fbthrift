@@ -1068,14 +1068,14 @@ ServerStreamFactory encode_server_stream(
 template <typename Protocol, typename PResult, typename T>
 folly::Try<T> decode_stream_element(
     folly::Try<apache::thrift::StreamPayload>&& payload) {
-  DCHECK(payload.hasValue() || payload.hasException());
-
   if (payload.hasValue()) {
     return folly::Try<T>(
         decode_stream_payload<Protocol, PResult, T>(*payload->payload));
-  } else {
+  } else if (payload.hasException()) {
     return folly::Try<T>(decode_stream_exception<Protocol, PResult, T>(
         std::move(payload).exception()));
+  } else {
+    return folly::Try<T>();
   }
 }
 
