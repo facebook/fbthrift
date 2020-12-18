@@ -500,14 +500,16 @@ class Bar_baz_args implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static(
-      /* HH_FIXME[4110] previously hidden by unsafe */
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'a'),
-      /* HH_FIXME[4110] previously hidden by unsafe */
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'b'),
-      (int)idx($map, 'c', 0),
-      /* HH_FIXME[4110] previously hidden by unsafe */
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'c'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'd'),
-      (int)idx($map, 'e', 4),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'e'),
     );
   }
 
@@ -564,7 +566,8 @@ class Bar_baz_result implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
     return new static(
-      (string)idx($map, 'success', ''),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'success'),
     );
   }
 

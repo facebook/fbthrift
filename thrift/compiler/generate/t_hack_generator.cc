@@ -159,10 +159,7 @@ class t_hack_generator : public t_oop_generator {
       t_name_generator& namer,
       t_type* t);
   void generate_php_struct_from_shape(std::ofstream& out, t_struct* tstruct);
-  void generate_php_struct_from_map(
-      std::ofstream& out,
-      t_struct* tstruct,
-      bool is_exception = false);
+  void generate_php_struct_from_map(std::ofstream& out, t_struct* tstruct);
   bool type_has_nested_struct(t_type* t);
   bool field_is_nullable(t_struct* tstruct, const t_field* field, string dval);
   void generate_php_struct_shape_json_conversion(
@@ -2856,7 +2853,7 @@ void t_hack_generator::_generate_php_struct_definition(
 
   // TODO (partisan): Remove map_construct_ when the migration is completed.
   if (from_map_construct_ || map_construct_) {
-    generate_php_struct_from_map(out, tstruct, is_exception);
+    generate_php_struct_from_map(out, tstruct);
     out << "\n";
   }
 
@@ -2956,8 +2953,7 @@ void t_hack_generator::generate_php_struct_from_shape(
 
 void t_hack_generator::generate_php_struct_from_map(
     ofstream& out,
-    t_struct* tstruct,
-    bool is_exception) {
+    t_struct* tstruct) {
   generate_php_struct_construction_attributes(out);
   out << indent() << "public static function fromMap_DEPRECATED(";
   if (strict_types_) {
@@ -2976,60 +2972,9 @@ void t_hack_generator::generate_php_struct_from_map(
     out << indent() << "return new static(\n";
     indent_up();
     for (const auto& tfield : tstruct->get_members()) {
-      t_type* t = tfield->get_type()->get_true_type();
-      string name = tfield->get_name();
-      string cast;
-      string dval = "";
-      if (tfield->get_value() != nullptr &&
-          !(t->is_struct() || t->is_xception())) {
-        dval = render_const_value(t, tfield->get_value());
-      } else if (
-          is_exception &&
-          (tfield->get_name() == "code" || tfield->get_name() == "line")) {
-        if (t->is_any_int()) {
-          dval = "0";
-        } else {
-          // just use the lowest value
-          t_enum* tenum = (t_enum*)t;
-          dval = hack_name(tenum) +
-              "::" + (*(tenum->get_enum_values().begin()))->get_name();
-        }
-      } else if (
-          is_exception &&
-          (tfield->get_name() == "message" || tfield->get_name() == "file")) {
-        dval = "''";
-      } else if (tstruct->is_union() || nullable_everything_) {
-        dval = "null";
-      } else {
-        dval = render_default_value(t);
-      }
-
-      if ((tstruct->is_union() || nullable_everything_) &&
-          !(is_exception && is_base_exception_property(tfield))) {
-        cast = "";
-      } else {
-        cast = type_to_cast(t);
-      }
-
-      if (strict_types_) {
-        if (t->is_container() || t->is_enum()) {
-          out << indent()
-              << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
-        }
-        out << indent() << cast << (cast != "" ? "(" : "") << "$map->get('"
-            << name << "')" << (cast != "" ? " ?: " + dval + ")" : "") << ",\n";
-      } else {
-        if (is_exception && name == "code" && t->is_enum()) {
-          out << indent()
-              << "/* HH_FIXME[4110] exposed by decl fixme scope refinement */\n";
-        } else if (cast == "") {
-          out << indent()
-              << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
-        }
-        out << indent() << cast << "idx($map, '" << name << "'"
-            << (dval != "null" && cast != "" ? ", " + dval : "") << ")"
-            << ",\n";
-      }
+      out << indent()
+          << "/* HH_FIXME[4110] For backwards compatibility with map's mixed values. */\n";
+      out << indent() << "idx($map, '" << tfield->get_name() << "'),\n";
     }
     indent_down();
     out << indent() << ");\n";
