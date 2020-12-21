@@ -140,7 +140,7 @@ struct ServerAttributeObservable {
    */
   void set(folly::observer::Observer<T> value, AttributeSource source) {
     setAsync(std::move(value), source);
-    folly::observer::waitForAllUpdates();
+    folly::observer_detail::ObserverManager::waitForAllUpdates();
   }
   void set(T value, AttributeSource source) {
     set(folly::observer::makeStaticObserver<T>(std::move(value)), source);
@@ -151,7 +151,7 @@ struct ServerAttributeObservable {
   }
   void unset(AttributeSource source) {
     unsetAsync(source);
-    folly::observer::waitForAllUpdates();
+    folly::observer_detail::ObserverManager::waitForAllUpdates();
   }
 
  protected:

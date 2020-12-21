@@ -98,11 +98,11 @@ TEST(ServerAttribute, Observable) {
   EXPECT_EQ(**observer, "override");
 
   overrideObservable.setValue("override 2");
-  folly::observer::waitForAllUpdates();
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(**observer, "override 2");
 
   baselineObservable.setValue("baseline 2");
-  folly::observer::waitForAllUpdates();
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   attr.unset(AttributeSource::OVERRIDE);
   EXPECT_EQ(**observer, "baseline 2");
 
@@ -110,7 +110,7 @@ TEST(ServerAttribute, Observable) {
   EXPECT_EQ(**observer, "baseline 3");
 
   defaultObservable.setValue("default 2");
-  folly::observer::waitForAllUpdates();
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   attr.unset(AttributeSource::BASELINE);
   EXPECT_EQ(**observer, "default 2");
 }
