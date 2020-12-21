@@ -180,10 +180,10 @@ TEST_F(RocketClientChannelTest, SyncThreadCheckTimeoutPropagated) {
   RpcOptions opts;
   std::string response;
   // Ensure that normally, the timeout value gets propagated.
-  opts.setTimeout(std::chrono::milliseconds(20));
+  opts.setTimeout(std::chrono::milliseconds(100));
   client.sync_sendResponse(opts, response, 123);
   EXPECT_EQ("123", response);
-  EXPECT_EQ(20, handler_->getLastTimeoutMsec());
+  EXPECT_EQ(100, handler_->getLastTimeoutMsec());
   // And when we set client-only, it's not propagated.
   opts.setClientOnlyTimeouts(true);
   client.sync_sendResponse(opts, response, 456);
@@ -191,7 +191,7 @@ TEST_F(RocketClientChannelTest, SyncThreadCheckTimeoutPropagated) {
   EXPECT_EQ(0, handler_->getLastTimeoutMsec());
 
   // Double-check that client enforces the timeouts in both cases.
-  handler_->setSleepDelayMs(50);
+  handler_->setSleepDelayMs(200);
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
   opts.setClientOnlyTimeouts(false);
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
