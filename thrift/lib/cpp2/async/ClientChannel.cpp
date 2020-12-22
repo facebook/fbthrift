@@ -16,13 +16,23 @@
 
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 
+#ifdef __linux__
+#include <sys/utsname.h>
+#endif
+
 #include <thrift/lib/cpp2/PluggableFunction.h>
 
 namespace apache {
 namespace thrift {
 namespace {
 THRIFT_PLUGGABLE_FUNC_REGISTER(std::optional<std::string>, getClientHostId) {
+#ifdef __linux__
+  struct utsname bufs;
+  ::uname(&bufs);
+  return bufs.nodename;
+#else
   return {};
+#endif
 }
 } // namespace
 
