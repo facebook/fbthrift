@@ -29,7 +29,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 
 #if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/Error.h>
+#include <folly/experimental/coro/Result.h>
 #endif
 
 namespace apache {
