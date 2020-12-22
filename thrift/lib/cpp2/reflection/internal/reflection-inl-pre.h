@@ -40,8 +40,6 @@ template <typename>
 struct reflect_module_tag_get;
 template <typename, typename>
 struct reflect_module_tag_try_get;
-template <typename>
-struct reflect_type_class_impl;
 template <typename T>
 struct reflect_type_class_of_thrift_class_impl;
 template <typename T>

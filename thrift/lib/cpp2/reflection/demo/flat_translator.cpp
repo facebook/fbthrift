@@ -73,12 +73,25 @@ void translate(flat_config const& from, legacy_config& to) {
   fatal::foreach<members>(flat_to_legacy_translator(), from, to);
 }
 
+template <typename T>
+struct get_type_class_;
+template <>
+struct get_type_class_<static_reflection::demo::flat_config> {
+  using type = type_class::structure;
+};
+template <>
+struct get_type_class_<static_reflection::demo::legacy_config> {
+  using type = type_class::map<type_class::string, type_class::string>;
+};
+template <typename T>
+using get_type_class = typename get_type_class_<T>::type;
+
 template <typename To, typename From>
 void test(From const& from) {
   To to;
   translate(from, to);
-  print(from);
-  print(to);
+  print_as(get_type_class<From>{}, from);
+  print_as(get_type_class<To>{}, to);
 }
 
 int main(int argc, char** argv) {

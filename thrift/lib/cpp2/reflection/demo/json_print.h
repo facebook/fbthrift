@@ -156,7 +156,12 @@ struct printer<apache::thrift::type_class::variant> {
   }
 };
 
+template <typename TC, typename T>
+void print_as(TC, T const& what) {
+  printer<TC>::print(what);
+}
+
 template <typename T>
 void print(T const& what) {
-  printer<apache::thrift::reflect_type_class<T>>::print(what);
+  print_as(apache::thrift::reflect_type_class_of_thrift_class<T>{}, what);
 }

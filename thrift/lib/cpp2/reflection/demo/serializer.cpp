@@ -333,12 +333,12 @@ struct serializer<type_class::variant> {
 
 template <typename T>
 void serialize(T const& what, data_writer& writer) {
-  serializer<reflect_type_class<T>>::serialize(what, writer);
+  serializer<reflect_type_class_of_thrift_class<T>>::serialize(what, writer);
 }
 
 template <typename T>
 void deserialize(T& out, data_reader& reader) {
-  serializer<reflect_type_class<T>>::deserialize(out, reader);
+  serializer<reflect_type_class_of_thrift_class<T>>::deserialize(out, reader);
 }
 
 template <typename T>

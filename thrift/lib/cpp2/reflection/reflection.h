@@ -159,58 +159,6 @@ enum class optionality {
 /////////////////////////////
 
 /**
- * Returns the type class of a type.
- *
- * The type classes are defined in `namespace apache::thrift::type_class` in the
- * header `thrift/lib/cpp2/Thrift.h`.
- *
- * To keep compilation times at bay, strings and containers are not detected by
- * default, therefore they will yield `unknown` as their type class. To enable
- * their detection you must include `container_traits.h`. There's also support
- * for containers defined in Folly at `container_traits_folly.h`.
- *
- * See `type_class` for the possible categories.
- *
- * Example:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  struct MyStruct {
- *    1: i32 a
- *    2: string b
- *    3: double c
- *  }
- *
- *  enum MyEnum { a, b, c }
- *
- *  typedef list<string> MyList;
- *
- *  /////////////
- *  // foo.cpp //
- *  /////////////
- *
- *  // yields `type_class::structure`
- *  using result1 = reflect_type_class<MyStruct>;
- *
- *  // yields `type_class::enumeration`
- *  using result2 = reflect_type_class<MyEnum>;
- *
- *  // yields `type_class::list<type_class::string>`
- *  using result3 = reflect_type_class<MyList>;
- *
- *  // yields `type_class::unknown`
- *  using result4 = reflect_type_class<void>;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-using reflect_type_class =
-    typename apache::thrift::detail::reflect_type_class_impl<T>::type;
-
-/**
  * Returns the type class of a thrift class, which is either a structure, a
  * variant, or an exception.
  *
@@ -259,6 +207,56 @@ using reflect_type_class =
 template <typename T>
 using reflect_type_class_of_thrift_class =
     typename detail::reflect_type_class_of_thrift_class_impl<T>::type;
+
+/**
+ * Returns the type class of a thrift class, which is either a structure, a
+ * variant, or an exception, or of a thrift enum.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  typedef list<string> MyList;
+ *
+ *  /////////////
+ *  // foo.cpp //
+ *  /////////////
+ *
+ *  // yields `type_class::structure`
+ *  using result1 = reflect_type_class_of_thrift_class_enum<MyStruct>;
+ *
+ *  // yields `type_class::variant`
+ *  using result1 = reflect_type_class_of_thrift_class_enum<MyUnion>;
+ *
+ *  // yields `type_class::enumeration`
+ *  using result2 = reflect_type_class_of_thrift_class_enum<MyEnum>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result3 = reflect_type_class_of_thrift_class_enum<MyList>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result4 = reflect_type_class_of_thrift_class_enum<void>;
+ */
+template <typename T>
+using reflect_type_class_of_thrift_class_enum =
+    typename detail::reflect_type_class_of_thrift_class_enum_impl<T>::type;
 
 /**
  * Returns the type class of a thrift class, which is either a structure, a
@@ -602,8 +600,11 @@ using is_reflectable_module = std::integral_constant<
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-using reflect_module_tag = typename apache::thrift::detail::
-    reflect_module_tag_selector<reflect_type_class<T>, T, false>::type;
+using reflect_module_tag =
+    typename apache::thrift::detail::reflect_module_tag_selector<
+        reflect_type_class_of_thrift_class_enum<T>,
+        T,
+        false>::type;
 
 /**
  * Tries to get the reflection metadata tag for the Thrift file where the type
@@ -637,8 +638,12 @@ e:
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename Default = void>
-using try_reflect_module_tag = typename apache::thrift::detail::
-    reflect_module_tag_selector<reflect_type_class<T>, T, true, Default>::type;
+using try_reflect_module_tag =
+    typename apache::thrift::detail::reflect_module_tag_selector<
+        reflect_type_class_of_thrift_class_enum<T>,
+        T,
+        true,
+        Default>::type;
 
 /**
  * Represents an annotation from `reflected_annotations::map`.
