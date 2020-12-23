@@ -43,7 +43,7 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstream(apache::
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_returnstream<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_returnstream<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -105,7 +105,7 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_streamthrows(apache::
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_streamthrows<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_streamthrows<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -175,7 +175,7 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_boththrows(apache::th
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_boththrows<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_boththrows<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -256,7 +256,7 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_responseandstreamthro
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

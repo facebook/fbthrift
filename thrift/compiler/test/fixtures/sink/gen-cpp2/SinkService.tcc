@@ -60,7 +60,7 @@ void SinkServiceAsyncProcessor::setUpAndProcess_method(apache::thrift::ResponseC
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_method<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_method<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -127,7 +127,7 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodAndReponse(apache::thrift:
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodAndReponse<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodAndReponse<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -196,7 +196,7 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodThrow(apache::thrift::Resp
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -274,7 +274,7 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow(apache::thrift::
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodSinkThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodSinkThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -341,7 +341,7 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow(apache::thrift:
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodFinalThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodFinalThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -418,7 +418,7 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow(apache::thrift::
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodBothThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodBothThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

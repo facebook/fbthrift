@@ -20,7 +20,7 @@ void MyServicePrioChildAsyncProcessor::setUpAndProcess_pang(apache::thrift::Resp
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::BEST_EFFORT);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioChildAsyncProcessor::process_pang<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioChildAsyncProcessor::process_pang<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

@@ -22,7 +22,7 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_ping(apache::thrift::Res
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::IMPORTANT);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioParentAsyncProcessor::process_ping<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioParentAsyncProcessor::process_ping<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -75,7 +75,7 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_pong(apache::thrift::Res
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::HIGH_IMPORTANT);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioParentAsyncProcessor::process_pong<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioParentAsyncProcessor::process_pong<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

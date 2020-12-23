@@ -77,39 +77,16 @@ class EventTask : public virtual concurrency::Runnable {
   bool oneway_;
 };
 
-class PriorityEventTask : public concurrency::PriorityRunnable,
-                          public EventTask {
- public:
-  PriorityEventTask(
-      concurrency::PriorityThreadManager::PRIORITY priority,
-      folly::Function<void(ResponseChannelRequest::UniquePtr)>&& taskFunc,
-      ResponseChannelRequest::UniquePtr req,
-      folly::EventBase* base,
-      bool oneway)
-      : EventTask(std::move(taskFunc), std::move(req), base, oneway),
-        priority_(priority) {}
-
-  concurrency::PriorityThreadManager::PRIORITY getPriority() const override {
-    return priority_;
-  }
-  using EventTask::run;
-
- private:
-  concurrency::PriorityThreadManager::PRIORITY priority_;
-};
-
-class InteractionEventTask : public PriorityEventTask {
+class InteractionEventTask : public EventTask {
  public:
   InteractionEventTask(
-      concurrency::PriorityThreadManager::PRIORITY priority,
       folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)>&&
           taskFunc,
       ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway,
       Tile* tile)
-      : PriorityEventTask(
-            priority,
+      : EventTask(
             [=](ResponseChannelRequest::UniquePtr request) {
               DCHECK(tile_);
               DCHECK(!dynamic_cast<TilePromise*>(tile_));
@@ -225,7 +202,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
-      concurrency::PRIORITY pri,
       RpcKind kind,
       ProcessFunc<ChildType> processFunc,
       ChildType* childClass);
@@ -238,7 +214,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
-      concurrency::PRIORITY pri,
       RpcKind kind,
       ProcessFunc<ChildType> processFunc,
       ChildType* childClass,
@@ -686,7 +661,6 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
-    concurrency::PRIORITY pri,
     RpcKind kind,
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass,
@@ -712,8 +686,7 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
   };
 
   if (!tile) {
-    return std::make_shared<PriorityEventTask>(
-        pri,
+    return std::make_shared<EventTask>(
         std::move(taskFn),
         std::move(req),
         eb,
@@ -721,7 +694,6 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
   }
 
   return std::make_shared<InteractionEventTask>(
-      pri,
       [=, taskFn = std::move(taskFn)](
           ResponseChannelRequest::UniquePtr rq, Tile& tileRef) mutable {
         ctx->setTile(tileRef);
@@ -740,7 +712,6 @@ void GeneratedAsyncProcessor::processInThread(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
-    concurrency::PRIORITY pri,
     RpcKind kind,
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass) {
@@ -759,13 +730,13 @@ void GeneratedAsyncProcessor::processInThread(
     tile->__fbthrift_acquireRef(*eb);
   }
 
+  auto pri = ctx->getRequestPriority();
   auto task = makeEventTaskForRequest(
       std::move(req),
       std::move(serializedRequest),
       ctx,
       eb,
       tm,
-      pri,
       kind,
       processFunc,
       childClass,

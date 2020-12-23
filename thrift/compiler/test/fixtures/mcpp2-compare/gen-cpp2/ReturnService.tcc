@@ -108,7 +108,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn(apache::thrift::Res
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_boolReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_boolReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -163,7 +163,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i16Return(apache::thrift::Resp
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_i16Return<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_i16Return<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -218,7 +218,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i32Return(apache::thrift::Resp
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_i32Return<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_i32Return<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -273,7 +273,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_i64Return(apache::thrift::Resp
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_i64Return<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_i64Return<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -328,7 +328,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn(apache::thrift::Re
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_floatReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_floatReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -383,7 +383,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn(apache::thrift::R
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_doubleReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_doubleReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -488,7 +488,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn(apache::thrift::R
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_binaryReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_binaryReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -543,7 +543,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn(apache::thrift::Resp
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_mapReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_mapReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -598,7 +598,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn(apache::th
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_simpleTypedefReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_simpleTypedefReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -653,7 +653,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn(apache::t
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_complexTypedefReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_complexTypedefReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -708,7 +708,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn(
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -863,7 +863,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_structReturn(apache::thrift::R
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_structReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_structReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -918,7 +918,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn(apache::thrif
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_set_StructReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_set_StructReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1023,7 +1023,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn(apache::thrif
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_list_UnionReturn<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_list_UnionReturn<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1130,7 +1130,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_readData(apache::thrift::Respo
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_readData<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ReturnServiceAsyncProcessor::process_readData<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

@@ -334,7 +334,7 @@ class ThreadManager::Impl : public ThreadManager,
 
   // returns a string to attach to namePrefix when recording
   // stats
-  virtual std::string statContext(const Task&) {
+  virtual std::string statContext(PRIORITY = PRIORITY::NORMAL) {
     return "";
   }
 
@@ -1016,7 +1016,7 @@ void ThreadManager::Impl::reportTaskStats(
       // Note: We are assuming the namePrefix_ does not change after the thread
       // is started.
       // TODO: enforce this.
-      auto seriesName = folly::to<std::string>(namePrefix_, statContext(task));
+      auto seriesName = folly::to<std::string>(namePrefix_, statContext());
       ThreadManager::Impl::observer_->postRun(
           task.getContext().get(),
           {seriesName, queueBegin, workBegin, workEnd});
@@ -1168,9 +1168,7 @@ class PriorityThreadManager::PriorityImpl
       int64_t timeout,
       int64_t expiration,
       ThreadManager::Source source) noexcept override {
-    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
-    PRIORITY prio = p ? p->getPriority() : NORMAL;
-    add(prio, std::move(task), timeout, expiration, source);
+    add(PRIORITY::NORMAL, std::move(task), timeout, expiration, source);
   }
 
   void add(
@@ -1340,23 +1338,6 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
     ThreadManager::Impl::join();
   }
 
-  class PriorityFunctionRunner
-      : public virtual apache::thrift::concurrency::PriorityRunnable,
-        public virtual FunctionRunner {
-   public:
-    PriorityFunctionRunner(
-        apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
-        folly::Func&& f)
-        : FunctionRunner(std::move(f)), priority_(priority) {}
-
-    apache::thrift::concurrency::PRIORITY getPriority() const override {
-      return priority_;
-    }
-
-   private:
-    apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority_;
-  };
-
   using ThreadManager::add;
   using ThreadManager::Impl::add;
 
@@ -1366,10 +1347,8 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
       int64_t expiration,
       apache::thrift::concurrency::ThreadManager::Source
           source) noexcept override {
-    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
-    PRIORITY prio = p ? p->getPriority() : NORMAL;
     ThreadManager::Impl::add(
-        prio, std::move(task), timeout, expiration, source);
+        PRIORITY::NORMAL, std::move(task), timeout, expiration, source);
   }
 
   /**
@@ -1382,8 +1361,8 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
     // arguably, we may even want a priority above the max we ever allow for
     // initial queueing
     ThreadManager::Impl::add(
-        HIGH_IMPORTANT,
-        std::make_shared<PriorityFunctionRunner>(HIGH_IMPORTANT, std::move(f)),
+        PRIORITY::HIGH_IMPORTANT,
+        std::make_shared<FunctionRunner>(std::move(f)),
         0,
         0,
         apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
@@ -1396,7 +1375,7 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
     auto prio = translatePriority(priority);
     ThreadManager::Impl::add(
         prio,
-        std::make_shared<PriorityFunctionRunner>(prio, std::move(f)),
+        std::make_shared<FunctionRunner>(std::move(f)),
         0,
         0,
         apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
@@ -1432,11 +1411,8 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
 
   using Task = typename ThreadManager::Impl::Task;
 
-  std::string statContext(const Task& task) override {
-    PriorityRunnable* p =
-        dynamic_cast<PriorityRunnable*>(task.getRunnable().get());
-    PRIORITY prio = p ? p->getPriority() : NORMAL;
-    return statContexts_[prio];
+  std::string statContext(PRIORITY p = PRIORITY::NORMAL) override {
+    return statContexts_[p];
   }
 
  private:

@@ -65,11 +65,6 @@ enum PRIORITY {
   N_PRIORITIES
 };
 
-class PriorityRunnable : public virtual Runnable {
- public:
-  virtual PRIORITY getPriority() const = 0;
-};
-
 /**
  * Minimal thread class. Returned by thread factory bound to a Runnable object
  * and ready to start execution.  More or less analogous to java.lang.Thread

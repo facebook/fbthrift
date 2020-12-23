@@ -30,7 +30,7 @@ void service3AsyncProcessor::setUpAndProcess_methodA(apache::thrift::ResponseCha
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodA<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodA<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -83,7 +83,7 @@ void service3AsyncProcessor::setUpAndProcess_methodB(apache::thrift::ResponseCha
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodB<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodB<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -142,7 +142,7 @@ void service3AsyncProcessor::setUpAndProcess_methodC(apache::thrift::ResponseCha
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodC<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodC<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -197,7 +197,7 @@ void service3AsyncProcessor::setUpAndProcess_methodD(apache::thrift::ResponseCha
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodD<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodD<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -258,7 +258,7 @@ void service3AsyncProcessor::setUpAndProcess_methodE(apache::thrift::ResponseCha
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodE<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodE<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -313,7 +313,7 @@ void service3AsyncProcessor::setUpAndProcess_methodF(apache::thrift::ResponseCha
   }
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestPriority(pri);
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodF<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service3AsyncProcessor::process_methodF<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

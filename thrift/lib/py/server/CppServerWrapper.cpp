@@ -283,15 +283,13 @@ class PythonAsyncProcessor : public AsyncProcessor {
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm) override {
     auto fname = context->getMethodName();
-    auto priority = getMethodPriority(fname, context);
     bool oneway = isOnewayMethod(fname);
 
     if (oneway && !req->isOneway()) {
       req->sendReply(std::unique_ptr<folly::IOBuf>());
     }
 
-    tm->add(std::make_shared<apache::thrift::PriorityEventTask>(
-        priority,
+    auto task = std::make_shared<apache::thrift::EventTask>(
         [=,
          buf = apache::thrift::LegacySerializedRequest(
                    protType,
@@ -421,7 +419,16 @@ class PythonAsyncProcessor : public AsyncProcessor {
         },
         std::move(req),
         eb,
-        oneway));
+        oneway);
+
+    using PriorityThreadManager =
+        apache::thrift::concurrency::PriorityThreadManager;
+    auto ptm = dynamic_cast<PriorityThreadManager*>(tm);
+    if (ptm != nullptr) {
+      ptm->add(getMethodPriority(fname, context), std::move(task));
+      return;
+    }
+    tm->add(std::move(task));
   }
 
   /**
