@@ -192,7 +192,7 @@ class ClientBufferedStream {
     while (true) {
       if ((co_await folly::coro::co_current_cancellation_token)
               .isCancellationRequested()) {
-        co_yield folly::coro::co_error(folly::OperationCancelled());
+        co_yield folly::coro::co_cancelled;
       }
       if (queue.empty()) {
         ReadyCallback callback;
@@ -207,7 +207,7 @@ class ClientBufferedStream {
           // we've been cancelled
           apache::thrift::detail::ClientStreamBridge::Ptr(
               streamBridge.release());
-          co_yield folly::coro::co_error(folly::OperationCancelled());
+          co_yield folly::coro::co_cancelled;
         }
       }
 
