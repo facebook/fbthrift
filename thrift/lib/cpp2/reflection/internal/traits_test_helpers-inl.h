@@ -150,7 +150,7 @@ void copy_iterators(T& s, Iterator ei, Iterator ee) {
 }
 
 struct test_data {
-  static constexpr std::array<int, 10> const primes{
+  static inline constexpr std::array<int, 10> const primes{
       {2, 3, 5, 7, 11, 13, 17, 19, 23, 29}};
 
 #define THRIFT_DATA_ENTRY_IMPL(X, Modifier) \
@@ -166,19 +166,15 @@ struct test_data {
       THRIFT_DATA_ENTRY_IMPL(23, Modifier),                                 \
       THRIFT_DATA_ENTRY_IMPL(29, Modifier)
 
-  static constexpr std::array<std::pair<const int, int>, 10> const primes_2x{
-      {THRIFT_ARRAY_DATA_IMPL(*2)}};
+  static inline constexpr std::array<std::pair<const int, int>, 10> const
+      primes_2x{{THRIFT_ARRAY_DATA_IMPL(*2)}};
 
-  static constexpr std::array<std::pair<const int, int>, 10> const primes_3x{
-      {THRIFT_ARRAY_DATA_IMPL(*3)}};
+  static inline constexpr std::array<std::pair<const int, int>, 10> const
+      primes_3x{{THRIFT_ARRAY_DATA_IMPL(*3)}};
 
 #undef THRIFT_ARRAY_DATA_IMPL
 #undef THRIFT_DATA_ENTRY_IMPL
 };
-
-constexpr std::array<int, 10> const test_data::primes;
-constexpr std::array<std::pair<const int, int>, 10> const test_data::primes_2x;
-constexpr std::array<std::pair<const int, int>, 10> const test_data::primes_3x;
 
 } // namespace detail
 
