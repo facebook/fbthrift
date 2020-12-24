@@ -453,6 +453,8 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
+            {"type:type_class_with_indirection",
+             &mstch_cpp2_type::type_class_with_indirection},
             {"type:program_name", &mstch_cpp2_type::program_name},
             {"type:cpp_use_allocator?", &mstch_cpp2_type::cpp_use_allocator},
         });
@@ -570,54 +572,10 @@ class mstch_cpp2_type : public mstch_type {
     return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
   }
   mstch::node fatal_type_class() {
-    return get_fatal_type_class(resolved_type_);
+    return cpp2::get_gen_type_class(*resolved_type_);
   }
-  std::string get_fatal_type_class(const t_type* ttype) {
-    if (ttype->is_typedef()) {
-      return get_fatal_type_class(
-          dynamic_cast<t_typedef const*>(ttype)->get_type());
-    }
-
-    if (ttype->is_void()) {
-      return "::apache::thrift::type_class::nothing";
-    } else if (ttype->is_binary()) {
-      return "::apache::thrift::type_class::binary";
-    } else if (ttype->is_string()) {
-      return "::apache::thrift::type_class::string";
-    } else if (ttype->is_floating_point()) {
-      return "::apache::thrift::type_class::floating_point";
-    } else if (ttype->is_base_type()) {
-      return "::apache::thrift::type_class::integral";
-    } else if (ttype->is_enum()) {
-      return "::apache::thrift::type_class::enumeration";
-    } else if (ttype->is_list()) {
-      return "::apache::thrift::type_class::list<" +
-          get_fatal_type_class(
-                 dynamic_cast<const t_list*>(ttype)->get_elem_type()) +
-          ">";
-    } else if (ttype->is_map()) {
-      return "::apache::thrift::type_class::map<" +
-          get_fatal_type_class(
-                 dynamic_cast<const t_map*>(ttype)->get_key_type()) +
-          ", " +
-          get_fatal_type_class(
-                 dynamic_cast<const t_map*>(ttype)->get_val_type()) +
-          ">";
-    } else if (ttype->is_set()) {
-      return "::apache::thrift::type_class::set<" +
-          get_fatal_type_class(
-                 dynamic_cast<const t_set*>(ttype)->get_elem_type()) +
-          ">";
-    } else if (ttype->is_struct()) {
-      if (dynamic_cast<const t_struct*>(ttype)->is_union()) {
-        return "::apache::thrift::type_class::variant";
-      } else {
-        return "::apache::thrift::type_class::structure";
-      }
-    } else {
-      // TODO: stream is not supported
-      return "::apache::thrift::type_class::unknown";
-    }
+  mstch::node type_class_with_indirection() {
+    return cpp2::get_gen_type_class_with_indirection(*resolved_type_);
   }
   mstch::node program_name() {
     std::string name;

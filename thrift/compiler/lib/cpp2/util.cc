@@ -224,6 +224,82 @@ std::vector<mixin_member> get_mixins_and_members(const t_struct& strct) {
   return ret;
 }
 
+namespace {
+
+struct get_gen_type_class_options {
+  bool gen_indirection = false;
+  bool gen_indirection_inner_ = false;
+};
+
+std::string get_gen_type_class_(
+    t_type const& type_,
+    get_gen_type_class_options opts) {
+  std::string const ns = "::apache::thrift::";
+  std::string const tc = ns + "type_class::";
+
+  auto const& type = *type_.get_true_type();
+
+  auto const ind = type.annotations_.count("cpp.indirection") > 0;
+  if (ind && opts.gen_indirection && !opts.gen_indirection_inner_) {
+    opts.gen_indirection_inner_ = true;
+    auto const inner = get_gen_type_class_(type_, opts);
+    auto const tag = ns + "detail::indirection_tag";
+    auto const fun = ns + "detail::apply_indirection_fn";
+    return tag + "<" + inner + ", " + fun + ">";
+  }
+  opts.gen_indirection_inner_ = false;
+
+  if (type.is_void()) {
+    return tc + "nothing";
+  } else if (type.is_bool() || type.is_byte() || type.is_any_int()) {
+    return tc + "integral";
+  } else if (type.is_floating_point()) {
+    return tc + "floating_point";
+  } else if (type.is_enum()) {
+    return tc + "enumeration";
+  } else if (type.is_string()) {
+    return tc + "string";
+  } else if (type.is_binary()) {
+    return tc + "binary";
+  } else if (type.is_list()) {
+    auto& list = dynamic_cast<t_list const&>(type);
+    auto& elem = *list.get_elem_type();
+    auto elem_tc = get_gen_type_class_(elem, opts);
+    return tc + "list<" + elem_tc + ">";
+  } else if (type.is_set()) {
+    auto& set = dynamic_cast<t_set const&>(type);
+    auto& elem = *set.get_elem_type();
+    auto elem_tc = get_gen_type_class_(elem, opts);
+    return tc + "set<" + elem_tc + ">";
+  } else if (type.is_map()) {
+    auto& map = dynamic_cast<t_map const&>(type);
+    auto& key = *map.get_key_type();
+    auto& val = *map.get_val_type();
+    auto key_tc = get_gen_type_class_(key, opts);
+    auto val_tc = get_gen_type_class_(val, opts);
+    return tc + "map<" + key_tc + ", " + val_tc + ">";
+  } else if (type.is_union()) {
+    return tc + "variant";
+  } else if (type.is_struct() || type.is_xception()) {
+    return tc + "structure";
+  } else {
+    return tc + "unknown";
+  }
+}
+
+} // namespace
+
+std::string get_gen_type_class(t_type const& type) {
+  get_gen_type_class_options opts;
+  return get_gen_type_class_(type, opts);
+}
+
+std::string get_gen_type_class_with_indirection(t_type const& type) {
+  get_gen_type_class_options opts;
+  opts.gen_indirection = true;
+  return get_gen_type_class_(type, opts);
+}
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

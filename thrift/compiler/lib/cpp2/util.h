@@ -92,6 +92,17 @@ struct mixin_member {
  */
 std::vector<mixin_member> get_mixins_and_members(const t_struct& strct);
 
+//  get_gen_type_class
+//  get_gen_type_class_with_indirection
+//
+//  Returns a string with the fully-qualified name of the C++ type class type
+//  representing the given type.
+//
+//  The _with_indirection variant intersperses indirection_tag wherever the
+//  annotation cpp.indirection appears in the corresponding definitions.
+std::string get_gen_type_class(t_type const& type);
+std::string get_gen_type_class_with_indirection(t_type const& type);
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

@@ -88,3 +88,10 @@ TEST_F(UtilTest, is_orderable_struct) {
   s.append(std::make_unique<t_field>(&t, "field_name", 1));
   EXPECT_TRUE(cpp2::is_orderable(s));
 }
+
+TEST_F(UtilTest, get_gen_type_class) {
+  // a single example as demo
+  t_base_type t("something", t_base_type::TYPE_STRING);
+  EXPECT_EQ(
+      "::apache::thrift::type_class::string", cpp2::get_gen_type_class(t));
+}
