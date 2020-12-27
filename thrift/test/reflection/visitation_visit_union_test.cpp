@@ -16,8 +16,10 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_for_each_field.h>
+#include <thrift/lib/thrift/gen-cpp2/metadata_visit_by_thrift_field_metadata.h> // @manual
 #include <thrift/lib/thrift/gen-cpp2/metadata_visit_union.h>
 #include <thrift/test/gen-cpp2/UnionFieldRef_for_each_field.h>
+#include <thrift/test/gen-cpp2/UnionFieldRef_visit_by_thrift_field_metadata.h> // @manual
 #include <thrift/test/gen-cpp2/UnionFieldRef_visit_union.h>
 #include <any>
 
@@ -42,6 +44,24 @@ struct ForEachFieldAdapter {
             f(meta, *ref);
           }
         });
+  }
+};
+
+struct VisitByThriftIdAdapter {
+  template <class T, class F>
+  void operator()(T&& t, F f) const {
+    if (t.getType() != T::Type::__EMPTY__) {
+      apache::thrift::metadata::ThriftField field;
+      apache::thrift::for_each_field(
+          std::forward<T>(t), [&](auto&& meta, auto&& ref) {
+            if (ref) {
+              field = meta;
+            }
+          });
+
+      apache::thrift::visit_by_thrift_field_metadata(
+          std::forward<T>(t), field, std::move(f));
+    }
   }
 };
 

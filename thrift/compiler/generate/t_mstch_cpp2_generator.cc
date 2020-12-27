@@ -1944,6 +1944,10 @@ void t_mstch_cpp2_generator::generate_visitation(const t_program* program) {
   render_to_file(prog, "module_visitation.h", name + "_visitation.h");
   render_to_file(prog, "module_for_each_field.h", name + "_for_each_field.h");
   render_to_file(prog, "module_visit_union.h", name + "_visit_union.h");
+  render_to_file(
+      prog,
+      "module_visit_by_thrift_field_metadata.h",
+      name + "_visit_by_thrift_field_metadata.h");
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {

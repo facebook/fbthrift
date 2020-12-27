@@ -15,6 +15,7 @@
  */
 
 #include <thrift/test/reflection/gen-cpp2/reflection_for_each_field.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_visit_by_thrift_field_metadata.h> // @manual
 
 #include <folly/Overload.h>
 #include <folly/portability/GTest.h>
@@ -41,12 +42,44 @@ struct ForEachFieldAdapter {
   }
 };
 
+struct VisitByThriftIdAdapter {
+  template <class T, class F>
+  void operator()(T&& t, F f) const {
+    for (auto&& meta :
+         *::apache::thrift::detail::get_struct_metadata<std::decay_t<T>>()
+              .fields_ref()) {
+      apache::thrift::visit_by_thrift_field_metadata(
+          std::forward<T>(t), meta, [&](auto&& ref) { f(meta, ref); });
+    }
+  }
+
+  template <class T, class F>
+  void operator()(T&& t1, T&& t2, F f) const {
+    using namespace apache::thrift;
+    for (auto&& meta :
+         *detail::get_struct_metadata<std::decay_t<T>>().fields_ref()) {
+      visit_by_thrift_field_metadata(
+          std::forward<T>(t1), meta, [&](auto&& ref1) {
+            visit_by_thrift_field_metadata(
+                std::forward<T>(t2), meta, [&](auto&& ref2) {
+                  if constexpr (std::
+                                    is_same_v<decltype(ref1), decltype(ref2)>) {
+                    f(meta, ref1, ref2);
+                  } else {
+                    ASSERT_TRUE(false);
+                  }
+                });
+          });
+    }
+  }
+};
+
 template <class Adapter>
 struct ForEachFieldTest : ::testing::Test {
   static constexpr Adapter adapter;
 };
 
-using Adapters = ::testing::Types<ForEachFieldAdapter>;
+using Adapters = ::testing::Types<ForEachFieldAdapter, VisitByThriftIdAdapter>;
 TYPED_TEST_CASE(ForEachFieldTest, Adapters);
 
 TYPED_TEST(ForEachFieldTest, test_metadata) {
