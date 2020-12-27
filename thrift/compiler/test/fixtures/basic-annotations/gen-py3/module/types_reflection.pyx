@@ -119,7 +119,7 @@ cdef __StructSpec get_reflection__MyStruct():
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """android.generate_builder""": """1""",        },
+            """android.generate_builder""": """1""",            """cpp.internal.deprecated._data.method""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(

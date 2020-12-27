@@ -104,6 +104,14 @@ class <%struct:name%> <%!
 <%/struct:cpp_allocator_via%>
 <%/struct:cpp_allocator%>
 
+<%#struct:cpp_data_method?%>
+ public:
+  <%struct:name%>& _data() & { return *this; }
+  <%struct:name%>&& _data() && { return std::move(*this); }
+  const <%struct:name%>& _data() const& { return *this; }
+  const <%struct:name%>&& _data() const&& { return std::move(*this); }
+
+<%/struct:cpp_data_method?%>
  public:
 <%#struct:union?%>
 <% > module_types_h/union_enum%>

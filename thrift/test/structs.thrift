@@ -71,3 +71,7 @@ struct NoexceptMoveStruct {
   1: string string_field,
   2: i32 i32_field,
 } (cpp.noexcept_move)
+
+struct CppDataMethod {
+  1: i32 foo,
+} (cpp.internal.deprecated._data.method)

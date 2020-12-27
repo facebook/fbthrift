@@ -52,7 +52,8 @@ struct MyStruct {
     'nest': {
       'name': "'nesty'",
     }
-  }
+  },
+  cpp.internal.deprecated._data.method,
 )
 
 service MyService {

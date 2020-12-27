@@ -58,7 +58,8 @@
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
-        "android.generate_builder" : "1"
+        "android.generate_builder" : "1",
+        "cpp.internal.deprecated._data.method" : "1"
       },
       "fields" : {
         "major" : {
@@ -107,10 +108,10 @@
           "required" : true
         }
       },
-      "annotation_last_lineno" : 56
+      "annotation_last_lineno" : 57
     },
     "SecretStruct" : {
-      "lineno" : 77,
+      "lineno" : 78,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -133,7 +134,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 58,
+      "lineno" : 59,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -225,7 +226,7 @@
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 68,
+      "lineno" : 69,
       "annotations" : {
         "priority" : "HIGH"
       },
@@ -259,7 +260,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 73,
+      "lineno" : 74,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {

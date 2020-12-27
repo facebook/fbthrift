@@ -85,6 +85,7 @@ bool is_annotation_blacklisted_in_fatal(const std::string& key) {
       "cpp2.ref_type",
       "cpp2.template",
       "cpp2.type",
+      "cpp.internal.deprecated._data.method",
   };
   return black_list.find(key) != black_list.end();
 }
@@ -782,6 +783,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::get_num_union_members},
             {"struct:cpp_allocator", &mstch_cpp2_struct::cpp_allocator},
             {"struct:cpp_allocator_via", &mstch_cpp2_struct::cpp_allocator_via},
+            {"struct:cpp_data_method?", &mstch_cpp2_struct::cpp_data_method},
         });
     register_has_option("struct:no_getters_setters?", "no_getters_setters");
   }
@@ -892,6 +894,10 @@ class mstch_cpp2_struct : public mstch_struct {
       return strct_->annotations_.at("cpp.allocator");
     }
     return std::string();
+  }
+  mstch::node cpp_data_method() {
+    return bool(
+        strct_->annotations_.count("cpp.internal.deprecated._data.method"));
   }
   mstch::node cpp_allocator_via() {
     if (strct_->annotations_.count("cpp.allocator_via")) {

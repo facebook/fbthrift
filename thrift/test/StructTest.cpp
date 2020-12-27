@@ -641,3 +641,13 @@ TEST_F(StructTest, BasicIndirection) {
       ser.deserialize<BasicIndirection>(ser.serialize<std::string>(obj));
   EXPECT_EQ(obj.raw, obj2.raw);
 }
+
+TEST_F(StructTest, CppDataMethod) {
+  CppDataMethod obj;
+  obj.foo_ref() = 10;
+  EXPECT_EQ(obj._data().foo_ref(), 10);
+  obj._data().foo_ref() = 20;
+  EXPECT_EQ(obj._data().foo_ref(), 20);
+  EXPECT_EQ(std::as_const(obj)._data().foo_ref(), 20);
+  EXPECT_EQ(std::move(obj)._data().foo_ref(), 20);
+}

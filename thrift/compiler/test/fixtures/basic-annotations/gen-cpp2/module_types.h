@@ -536,6 +536,12 @@ class MyStruct final  {
 
 
  public:
+  MyStruct& _data() & { return *this; }
+  MyStruct&& _data() && { return std::move(*this); }
+  const MyStruct& _data() const& { return *this; }
+  const MyStruct&& _data() const&& { return std::move(*this); }
+
+ public:
 
   MyStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
