@@ -165,7 +165,6 @@ uint32_t BinaryProtocolWriter::writeBinary(folly::ByteRange v) {
 
 uint32_t BinaryProtocolWriter::writeBinary(
     const std::unique_ptr<folly::IOBuf>& str) {
-  DCHECK(str);
   if (!str) {
     return writeI32(0);
   }
