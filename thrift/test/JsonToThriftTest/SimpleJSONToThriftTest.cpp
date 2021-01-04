@@ -193,19 +193,19 @@ TEST(SimpleJSONToThriftTest, SimpleStructMissingNonRequiredField) {
 
   deserializeJSON(thriftSimpleObj, jsonSimpleT);
 
-  EXPECT_TRUE(!thriftSimpleObj.__isset.a);
+  EXPECT_TRUE(!thriftSimpleObj.a_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.b_ref(), 8);
-  EXPECT_TRUE(thriftSimpleObj.__isset.b);
+  EXPECT_TRUE(thriftSimpleObj.b_ref().has_value());
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(thriftSimpleObj.c, 16);
   EXPECT_EQ(*thriftSimpleObj.d_ref(), 32);
-  EXPECT_TRUE(thriftSimpleObj.__isset.d);
+  EXPECT_TRUE(thriftSimpleObj.d_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.e_ref(), 64);
-  EXPECT_TRUE(thriftSimpleObj.__isset.e);
+  EXPECT_TRUE(thriftSimpleObj.e_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.f_ref(), 0.99);
-  EXPECT_TRUE(thriftSimpleObj.__isset.f);
+  EXPECT_TRUE(thriftSimpleObj.f_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.g_ref(), "Hello");
-  EXPECT_TRUE(thriftSimpleObj.__isset.g);
+  EXPECT_TRUE(thriftSimpleObj.g_ref().has_value());
 }
 
 TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
@@ -275,37 +275,37 @@ TEST(SimpleJSONToThriftTest, Whitespace) {
 
   deserializeJSON(thriftComplexObj, jsonComplexT);
 
-  EXPECT_TRUE(!thriftComplexObj.a_ref()->__isset.a);
+  EXPECT_TRUE(!thriftComplexObj.a_ref()->a_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.a_ref()->b_ref(), 8);
-  EXPECT_TRUE(thriftComplexObj.a_ref()->__isset.b);
+  EXPECT_TRUE(thriftComplexObj.a_ref()->b_ref().has_value());
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(thriftComplexObj.a_ref()->c, 16);
   EXPECT_EQ(*thriftComplexObj.a_ref()->d_ref(), 32);
-  EXPECT_TRUE(thriftComplexObj.a_ref()->__isset.d);
+  EXPECT_TRUE(thriftComplexObj.a_ref()->d_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.a_ref()->e_ref(), 64);
-  EXPECT_TRUE(thriftComplexObj.a_ref()->__isset.e);
+  EXPECT_TRUE(thriftComplexObj.a_ref()->e_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.a_ref()->f_ref(), 0.99);
-  EXPECT_TRUE(thriftComplexObj.a_ref()->__isset.f);
+  EXPECT_TRUE(thriftComplexObj.a_ref()->f_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.a_ref()->g_ref(), "Hello");
-  EXPECT_TRUE(thriftComplexObj.a_ref()->__isset.g);
+  EXPECT_TRUE(thriftComplexObj.a_ref()->g_ref().has_value());
 
   EXPECT_EQ(thriftComplexObj.b_ref()[0], 3);
   EXPECT_EQ(thriftComplexObj.b_ref()[1], 2);
   EXPECT_EQ(thriftComplexObj.b_ref()[2], 1);
 
-  EXPECT_TRUE(!thriftComplexObj.c_ref()["key1"].__isset.a);
+  EXPECT_TRUE(!thriftComplexObj.c_ref()["key1"].a_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].b_ref(), 8);
-  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.b);
+  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].b_ref().has_value());
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(thriftComplexObj.c_ref()["key1"].c, 16);
   EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].d_ref(), 32);
-  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.d);
+  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].d_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].e_ref(), 64);
-  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.e);
+  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].e_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].f_ref(), 0.99);
-  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.f);
+  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].f_ref().has_value());
   EXPECT_EQ(*thriftComplexObj.c_ref()["key1"].g_ref(), "Hello");
-  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].__isset.g);
+  EXPECT_TRUE(thriftComplexObj.c_ref()["key1"].g_ref().has_value());
 
   EXPECT_EQ(thriftComplexObj.c_ref()["key2"].c, 20);
   EXPECT_EQ(*thriftComplexObj.c_ref()["key2"].d_ref(), 320);
@@ -319,19 +319,19 @@ TEST(SimpleJSONToThriftTest, MissingField) {
   mySimpleStruct thriftSimpleObj;
   deserializeJSON(thriftSimpleObj, jsonSimpleT);
 
-  EXPECT_TRUE(!thriftSimpleObj.__isset.a);
+  EXPECT_TRUE(!thriftSimpleObj.a_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.b_ref(), 8);
-  EXPECT_TRUE(thriftSimpleObj.__isset.b);
+  EXPECT_TRUE(thriftSimpleObj.b_ref().has_value());
   // field c doesn't have __isset field, since it is required.
   EXPECT_EQ(thriftSimpleObj.c, 16);
   EXPECT_EQ(*thriftSimpleObj.d_ref(), 32);
-  EXPECT_TRUE(thriftSimpleObj.__isset.d);
+  EXPECT_TRUE(thriftSimpleObj.d_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.e_ref(), 64);
-  EXPECT_TRUE(thriftSimpleObj.__isset.e);
+  EXPECT_TRUE(thriftSimpleObj.e_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.f_ref(), 0.99);
-  EXPECT_TRUE(thriftSimpleObj.__isset.f);
+  EXPECT_TRUE(thriftSimpleObj.f_ref().has_value());
   EXPECT_EQ(*thriftSimpleObj.g_ref(), "Hello");
-  EXPECT_TRUE(thriftSimpleObj.__isset.g);
+  EXPECT_TRUE(thriftSimpleObj.g_ref().has_value());
 
   // checks that a map is skipped properly
   string jsonEmptyListT("{\"e\":[1, 0.13]}");
@@ -358,9 +358,9 @@ TEST(SimpleJSONToThriftTest, MissingField) {
       ",\"c\":-123}");
   myNestedEmptyStruct thriftNestedObj;
   deserializeJSON(thriftNestedObj, jsonNestedT);
-  EXPECT_TRUE(thriftNestedObj.__isset.a);
-  EXPECT_TRUE(thriftNestedObj.__isset.b);
-  EXPECT_TRUE(thriftNestedObj.__isset.c);
+  EXPECT_TRUE(thriftNestedObj.a_ref().has_value());
+  EXPECT_TRUE(thriftNestedObj.b_ref().has_value());
+  EXPECT_TRUE(thriftNestedObj.c_ref().has_value());
   EXPECT_EQ(*thriftNestedObj.c_ref(), -123);
 }
 
@@ -470,7 +470,7 @@ TEST(SimpleJSONToThriftTest, SetTypeTest) {
   string jsonT("{\"a\":[1,2,3]}");
   mySetStruct thriftSetObj;
   deserializeJSON(thriftSetObj, jsonT);
-  EXPECT_TRUE(thriftSetObj.__isset.a);
+  EXPECT_TRUE(thriftSetObj.a_ref().has_value());
   EXPECT_EQ(thriftSetObj.a_ref()->size(), 3);
   EXPECT_TRUE(thriftSetObj.a_ref()->find(2) != thriftSetObj.a_ref()->end());
   EXPECT_TRUE(thriftSetObj.a_ref()->find(5) == thriftSetObj.a_ref()->end());

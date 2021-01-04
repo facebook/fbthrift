@@ -116,7 +116,7 @@ TEST(Frozen, EndToEnd) {
   Layout<Person1> layout;
   LayoutRoot::layout(tom1, layout);
   auto ttom = view.thaw();
-  EXPECT_TRUE(ttom.__isset.name);
+  EXPECT_TRUE(ttom.name_ref().has_value());
   EXPECT_PRINTED_EQ(tom1, ttom);
 }
 
@@ -223,7 +223,7 @@ TEST(Frozen, EmbeddedSchema) {
     folly::ByteRange bytes(charRange);
     auto view = person2.view({bytes.begin(), 0});
     EXPECT_EQ(*tom1.name_ref(), view.name());
-    ASSERT_EQ(tom1.__isset.age, view.age().has_value());
+    ASSERT_EQ(tom1.age_ref().has_value(), view.age().has_value());
     if (auto age = tom1.age_ref()) {
       EXPECT_EQ(*age, view.age().value());
     }

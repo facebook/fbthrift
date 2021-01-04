@@ -126,7 +126,7 @@ void readStruct(CTestStruct* dest, TestStruct* source) {
     j++;
   }
   dest->o_i32 = *source->o_i32_ref();
-  dest->o_isset = source->__isset.o_i32;
+  dest->o_isset = source->o_i32_ref().has_value();
   dest->foo = &(*source->foo_ref());
 }
 

@@ -30,11 +30,11 @@ TEST(TNoExceptMoveCtorTest, simple) {
   Simple c2s1;
   *c2s1.d_ref() = "some text here";
   c2s1.d_ref()->resize(textSize);
-  c2s1.__isset.i = true;
+  apache::thrift::ensure_isset_unsafe(c2s1.i_ref());
   Simple c2s2{std::move(c2s1)};
   EXPECT_EQ(c2s1.d_ref()->size(), 0);
   EXPECT_EQ(c2s2.d_ref()->size(), textSize);
-  EXPECT_TRUE(c2s2.__isset.i);
+  EXPECT_TRUE(c2s2.i_ref().has_value());
 
   // Check thrift struct default move ctor not "noexcept" if a STL data
   // member is not "noexcept move ctor".
