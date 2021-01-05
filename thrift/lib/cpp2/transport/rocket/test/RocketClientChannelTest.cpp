@@ -105,10 +105,19 @@ class Handler : public test::TestServiceSvIf {
 
 class RocketClientChannelTest : public testing::Test {
  public:
-  test::TestServiceAsyncClient makeClient(folly::EventBase& evb) {
-    return test::TestServiceAsyncClient(
+  template <typename F>
+  test::TestServiceAsyncClient makeClient(
+      folly::EventBase& evb,
+      F&& configureChannel) {
+    auto channel =
         RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
-            new folly::AsyncSocket(&evb, runner_.getAddress()))));
+            new folly::AsyncSocket(&evb, runner_.getAddress())));
+    configureChannel(*channel);
+    return test::TestServiceAsyncClient(std::move(channel));
+  }
+
+  test::TestServiceAsyncClient makeClient(folly::EventBase& evb) {
+    return makeClient(evb, [](auto&) {});
   }
 
  protected:
@@ -195,6 +204,14 @@ TEST_F(RocketClientChannelTest, SyncThreadCheckTimeoutPropagated) {
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
   opts.setClientOnlyTimeouts(false);
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
+
+  // Ensure that a 0 timeout is actually infinite
+  auto infiniteTimeoutClient =
+      makeClient(evb, [](auto& channel) { channel.setTimeout(0); });
+  opts.setTimeout(std::chrono::milliseconds::zero());
+  handler_->setSleepDelayMs(300);
+  infiniteTimeoutClient.sync_sendResponse(opts, response, 456);
+  EXPECT_EQ("456", response);
 }
 
 TEST_F(RocketClientChannelTest, ThriftClientLifetime) {

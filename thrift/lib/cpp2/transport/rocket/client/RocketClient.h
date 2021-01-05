@@ -516,10 +516,13 @@ class RocketClient : public folly::DelayedDestruction,
 
   void writeScheduledRequestsToSocket() noexcept;
 
-  void scheduleFirstResponseTimeout(
+  void maybeScheduleFirstResponseTimeout(
       StreamId streamId,
       std::chrono::milliseconds timeout);
   folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
+
+  bool isFirstResponse(StreamId streamId) const;
+  void acknowledgeFirstResponse(StreamId);
 
   FOLLY_NODISCARD auto makeRequestCountGuard() {
     ++requests_;

@@ -265,8 +265,8 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
   const bool next = payloadFrame.hasNext();
   const bool complete = payloadFrame.hasComplete();
   if (auto fullPayload = bufferOrGetFullPayload(std::move(payloadFrame))) {
-    if (firstResponseTimeouts_.count(streamId)) {
-      firstResponseTimeouts_.erase(streamId);
+    if (isFirstResponse(streamId)) {
+      acknowledgeFirstResponse(streamId);
       if (!next) {
         serverCallback.onInitialError(
             folly::make_exception_wrapper<transport::TTransportException>(
@@ -322,8 +322,8 @@ StreamChannelStatus RocketClient::handleErrorFrame(
   const auto streamId = errorFrame.streamId();
   auto ew = folly::make_exception_wrapper<RocketException>(
       errorFrame.errorCode(), std::move(errorFrame.payload()).data());
-  if (firstResponseTimeouts_.count(streamId)) {
-    firstResponseTimeouts_.erase(streamId);
+  if (isFirstResponse(streamId)) {
+    acknowledgeFirstResponse(streamId);
     serverCallback.onInitialError(std::move(ew));
     return StreamChannelStatus::Complete;
   }
@@ -335,7 +335,7 @@ StreamChannelStatus RocketClient::handleRequestNFrame(
     CallbackType& serverCallback,
     std::unique_ptr<folly::IOBuf> frame) {
   RequestNFrame requestNFrame{std::move(frame)};
-  if (firstResponseTimeouts_.count(requestNFrame.streamId())) {
+  if (isFirstResponse(requestNFrame.streamId())) {
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
@@ -351,7 +351,7 @@ StreamChannelStatus RocketClient::handleCancelFrame(
     CallbackType& serverCallback,
     std::unique_ptr<folly::IOBuf> frame) {
   CancelFrame cancelFrame{std::move(frame)};
-  if (firstResponseTimeouts_.count(cancelFrame.streamId())) {
+  if (isFirstResponse(cancelFrame.streamId())) {
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
@@ -367,7 +367,7 @@ StreamChannelStatus RocketClient::handleExtFrame(
     CallbackType& serverCallback,
     std::unique_ptr<folly::IOBuf> frame) {
   ExtFrame extFrame{std::move(frame)};
-  if (firstResponseTimeouts_.count(extFrame.streamId())) {
+  if (isFirstResponse(extFrame.streamId())) {
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
@@ -665,7 +665,7 @@ void RocketClient::sendRequestStreamChannel(
         return self->serverCallback_.onInitialError(std::move(ew));
       }
 
-      self->client_.scheduleFirstResponseTimeout(
+      self->client_.maybeScheduleFirstResponseTimeout(
           self->streamId_, firstResponseTimeout);
       auto& ctx = self->ctx_;
       ctx.waitForWriteToCompleteSchedule(self.release());
@@ -681,8 +681,7 @@ void RocketClient::sendRequestStreamChannel(
       // If the write failed, check that the stream has not already received the
       // first response. The writeErr() callback for a batch of requests may
       // fire after the initial payload/error has already been processed.
-      if (writeCompleted.hasException() &&
-          client_.firstResponseTimeouts_.count(streamId_)) {
+      if (writeCompleted.hasException() && client_.isFirstResponse(streamId_)) {
         return serverCallback_.onInitialError(
             std::move(writeCompleted.exception()));
       }
@@ -1020,7 +1019,7 @@ void RocketClient::closeNowImpl() noexcept {
   auto streams = std::move(streams_);
   for (const auto& callback : streams) {
     callback.match([&](auto* serverCallback) {
-      if (firstResponseTimeouts_.count(serverCallback->streamId())) {
+      if (isFirstResponse(serverCallback->streamId())) {
         serverCallback->onInitialError(error_);
       } else {
         serverCallback->onStreamTransportError(error_);
@@ -1071,16 +1070,29 @@ folly::Optional<Payload> RocketClient::bufferOrGetFullPayload(
   return fullPayload;
 }
 
-void RocketClient::scheduleFirstResponseTimeout(
+void RocketClient::maybeScheduleFirstResponseTimeout(
     StreamId streamId,
     std::chrono::milliseconds timeout) {
   DCHECK(evb_);
   DCHECK(firstResponseTimeouts_.find(streamId) == firstResponseTimeouts_.end());
 
+  if (timeout == std::chrono::milliseconds::zero()) {
+    firstResponseTimeouts_.emplace(streamId, nullptr);
+    return;
+  }
+
   auto firstResponseTimeout =
       std::make_unique<FirstResponseTimeout>(*this, streamId);
   evb_->timer().scheduleTimeout(firstResponseTimeout.get(), timeout);
   firstResponseTimeouts_.emplace(streamId, std::move(firstResponseTimeout));
+}
+
+bool RocketClient::isFirstResponse(StreamId streamId) const {
+  return firstResponseTimeouts_.count(streamId) > 0;
+}
+
+void RocketClient::acknowledgeFirstResponse(StreamId streamId) {
+  firstResponseTimeouts_.erase(streamId);
 }
 
 void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
