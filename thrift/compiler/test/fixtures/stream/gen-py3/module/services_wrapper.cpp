@@ -23,7 +23,7 @@ void PubSubStreamingServiceWrapper::async_tm_returnstream(
     , int32_t i32_from
     , int32_t i32_to
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -47,7 +47,7 @@ void PubSubStreamingServiceWrapper::async_tm_streamthrows(
   std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
     , int32_t foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -69,7 +69,7 @@ void PubSubStreamingServiceWrapper::async_tm_boththrows(
   std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback
     , int32_t foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -91,7 +91,7 @@ void PubSubStreamingServiceWrapper::async_tm_responseandstreamthrows(
   std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback
     , int32_t foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -114,7 +114,7 @@ void PubSubStreamingServiceWrapper::async_eb_returnstreamFast(
     , int32_t i32_from
     , int32_t i32_to
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

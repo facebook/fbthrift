@@ -68,7 +68,7 @@ void {{service:name}}Wrapper::async_{{#function:eb}}eb{{/function:eb}}{{^functio
             }}{{#function:stack_arguments?}}{{> types/CppStackArgType}}{{/function:stack_arguments?}}{{!
         }}{{/field:type}} {{field:py_name}}{{#last?}}
 {{/last?}}{{/function:args}}) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

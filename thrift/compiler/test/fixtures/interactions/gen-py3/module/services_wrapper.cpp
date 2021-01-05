@@ -20,7 +20,7 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
 
 void MyServiceWrapper::async_tm_foo(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

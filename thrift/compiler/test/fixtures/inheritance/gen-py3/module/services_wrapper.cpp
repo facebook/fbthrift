@@ -20,7 +20,7 @@ MyRootWrapper::MyRootWrapper(PyObject *obj, folly::Executor* exc)
 
 void MyRootWrapper::async_tm_do_root(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -49,7 +49,7 @@ MyNodeWrapper::MyNodeWrapper(PyObject *obj, folly::Executor* exc)
 
 void MyNodeWrapper::async_tm_do_mid(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -78,7 +78,7 @@ MyLeafWrapper::MyLeafWrapper(PyObject *obj, folly::Executor* exc)
 
 void MyLeafWrapper::async_tm_do_leaf(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
