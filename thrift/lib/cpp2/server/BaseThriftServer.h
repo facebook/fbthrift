@@ -36,11 +36,14 @@
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
+
+THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
 
 namespace wangle {
 class ConnectionManager;
@@ -143,9 +146,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   static constexpr std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT =
       std::chrono::milliseconds(0);
 
-  static constexpr std::chrono::milliseconds DEFAULT_SOCKET_QUEUE_TIMEOUT =
-      std::chrono::milliseconds(0);
-
   /// Listen backlog
   static constexpr int DEFAULT_LISTEN_BACKLOG = 1024;
 
@@ -197,8 +197,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * The time we'll allow a new connection socket to wait on the queue before
    * closing the connection. See `folly::AsyncServerSocket::setQueueTimeout`.
    */
-  ServerAttribute<std::chrono::milliseconds> socketQueueTimeout_{
-      DEFAULT_SOCKET_QUEUE_TIMEOUT};
+  ServerAttribute<std::chrono::nanoseconds> socketQueueTimeout_{
+      folly::observer::makeObserver(
+          [timeoutMs =
+               THRIFT_FLAG_OBSERVE(server_default_socket_queue_timeout_ms)]()
+              -> std::chrono::nanoseconds {
+            return std::chrono::milliseconds(**timeoutMs);
+          })};
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
@@ -875,13 +880,33 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * See `folly::AsyncServerSocket::setQueueTimeout`.
    */
   void setSocketQueueTimeout(
-      std::chrono::milliseconds timeout,
+      folly::observer::Observer<std::chrono::nanoseconds> timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    socketQueueTimeout_.set(timeout, source);
+  }
+  void setSocketQueueTimeout(
+      folly::Optional<std::chrono::nanoseconds> timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    if (timeout) {
+      socketQueueTimeout_.set(*timeout, source);
+    } else {
+      socketQueueTimeout_.unset(source);
+    }
+  }
+  void setSocketQueueTimeout(
+      std::chrono::nanoseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE) {
     socketQueueTimeout_.set(timeout, source);
   }
 
-  std::chrono::milliseconds getSocketQueueTimeout() const {
-    return socketQueueTimeout_.get();
+  /**
+   * Gets an observer representing the socket queue timeout. If no value is
+   * set, this falls back to the thrift flag,
+   * server_default_socket_queue_timeout_ms.
+   */
+  const folly::observer::Observer<std::chrono::nanoseconds>&
+  getSocketQueueTimeout() const {
+    return socketQueueTimeout_.getObserver();
   }
 
   /**

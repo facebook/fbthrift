@@ -2042,21 +2042,58 @@ TEST(ThriftServer, SocketQueueTimeout) {
   TestThriftServerFactory<TestServiceSvIf> factory;
   auto baseServer = factory.create();
 
-  constexpr auto kSocketQueueTimeout = std::chrono::milliseconds(10);
-  baseServer->setSocketQueueTimeout(kSocketQueueTimeout);
+  auto checkSocketQueueTimeout = [&](std::chrono::nanoseconds expectedTimeout) {
+    auto server = std::dynamic_pointer_cast<ThriftServer>(baseServer);
+    ASSERT_NE(server, nullptr);
+    const auto sockets = server->getSockets();
+    EXPECT_GT(sockets.size(), 0);
+    for (auto& socket : sockets) {
+      // Reliably inducing the socket queue timeout is non-trivial through
+      // the public API of ThriftServer. Instead, we just need to ensure
+      // that each socket has the correct queue timeout after the
+      // ThriftServer is set up. The underlying timeout behavior is covered
+      // by AsyncServerSocket tests.
+      EXPECT_EQ(*socket->getQueueTimeout(), expectedTimeout);
+    }
+  };
+
+  constexpr auto kDefaultTimeout = 10ms;
+  constexpr auto kThriftFlagObserverTimeout = 20ms;
+  constexpr auto kBaselineTimeout = 30ms;
+  constexpr auto kOverrideTimeout = 40ms;
+  THRIFT_FLAG_SET_MOCK(
+      server_default_socket_queue_timeout_ms, kDefaultTimeout.count());
 
   ScopedServerThread st(baseServer);
 
-  auto server = std::dynamic_pointer_cast<ThriftServer>(baseServer);
-  ASSERT_NE(server, nullptr);
-  const auto sockets = server->getSockets();
-  ASSERT_GT(sockets.size(), 0);
+  // Should fall back to thrift flag by default
+  checkSocketQueueTimeout(kDefaultTimeout);
 
-  for (auto& socket : sockets) {
-    // Reliably inducing the socket queue timeout is non-trivial through the
-    // public API of ThriftServer. Instead, we just need to ensure that each
-    // socket has the correct queue timeout after the ThriftServer is set up.
-    // The underyling timeout behavior is covered by AsyncServerSocket tests.
-    EXPECT_EQ(*socket->getQueueTimeout(), kSocketQueueTimeout);
-  }
+  // Should trigger thrift flag observer
+  THRIFT_FLAG_SET_MOCK(
+      server_default_socket_queue_timeout_ms,
+      kThriftFlagObserverTimeout.count());
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+  checkSocketQueueTimeout(kThriftFlagObserverTimeout);
+
+  // Should use config instead of thrift flag
+  baseServer->setSocketQueueTimeout(
+      kBaselineTimeout, AttributeSource::BASELINE);
+  checkSocketQueueTimeout(kBaselineTimeout);
+
+  // Should use override instead of config
+  baseServer->setSocketQueueTimeout(kOverrideTimeout);
+  checkSocketQueueTimeout(kOverrideTimeout);
+
+  THRIFT_FLAG_SET_MOCK(
+      server_default_socket_queue_timeout_ms, kDefaultTimeout.count());
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+
+  // Should go back to config instead of override
+  baseServer->setSocketQueueTimeout(folly::none);
+  checkSocketQueueTimeout(kBaselineTimeout);
+
+  // Should go back to using thrift flag instead of flag
+  baseServer->setSocketQueueTimeout(folly::none, AttributeSource::BASELINE);
+  checkSocketQueueTimeout(kDefaultTimeout);
 }
