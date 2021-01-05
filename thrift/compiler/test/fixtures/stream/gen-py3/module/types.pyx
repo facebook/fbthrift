@@ -149,6 +149,8 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
     def __anext__(self):
         __loop = asyncio.get_event_loop()
         __future = __loop.create_future()
+        # to avoid "Future exception was never retrieved" error at SIGINT
+        __future.add_done_callback(lambda x: x.exception())
         __userdata = (self, __future, self._rpc_options)
         bridgeCoroTaskWith[__cOptional[cint32_t]](
             self._executor,
