@@ -44,7 +44,9 @@ class ScopedServerInterfaceThread {
  public:
   using ServerConfigCb = folly::Function<void(ThriftServer&)>;
   using MakeChannelFunc =
-      folly::Function<ClientChannel::Ptr(folly::AsyncSocket::UniquePtr)>;
+      folly::Function<RequestChannel::Ptr(folly::AsyncSocket::UniquePtr)>;
+  using FaultInjectionFunc =
+      folly::Function<folly::exception_wrapper(folly::StringPiece methodName)>;
 
   ScopedServerInterfaceThread(
       std::shared_ptr<AsyncProcessorFactory> apf,
@@ -73,11 +75,17 @@ class ScopedServerInterfaceThread {
       folly::Executor* callbackExecutor = nullptr,
       MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
 
+  template <class AsyncClientT>
+  std::unique_ptr<AsyncClientT> newClientWithFaultInjection(
+      FaultInjectionFunc injectFault,
+      folly::Executor* callbackExecutor = nullptr,
+      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
+
  private:
   std::shared_ptr<BaseThriftServer> ts_;
   util::ScopedServerThread sst_;
 
-  static ClientChannel::Ptr makeRocketOrHeaderChannel(
+  static RequestChannel::Ptr makeRocketOrHeaderChannel(
       folly::AsyncSocket::UniquePtr socket) {
     if (folly::Random::oneIn(2)) {
       return RocketClientChannel::newChannel(std::move(socket));

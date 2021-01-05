@@ -160,6 +160,9 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       folly::StringPiece name,
       int64_t id);
 
+  using Ptr =
+      std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>;
+
  protected:
   static InteractionId createInteractionId(int64_t id);
   static void releaseInteractionId(InteractionId&& id);

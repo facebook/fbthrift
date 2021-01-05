@@ -20,6 +20,100 @@
 
 namespace apache {
 namespace thrift {
+namespace detail {
+class FaultInjectionChannel : public RequestChannel {
+ public:
+  FaultInjectionChannel(
+      RequestChannel::Ptr client,
+      ScopedServerInterfaceThread::FaultInjectionFunc injectFault)
+      : client_(std::move(client)), injectFault_(std::move(injectFault)) {}
+
+  void sendRequestResponse(
+      const RpcOptions& rpcOptions,
+      folly::StringPiece methodName,
+      SerializedRequest&& req,
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr clientCallback) override {
+    if (auto ex = injectFault_(methodName)) {
+      clientCallback.release()->onResponseError(std::move(ex));
+      return;
+    }
+    client_->sendRequestResponse(
+        rpcOptions,
+        methodName,
+        std::move(req),
+        std::move(header),
+        std::move(clientCallback));
+  }
+  void sendRequestNoResponse(
+      const RpcOptions& rpcOptions,
+      folly::StringPiece methodName,
+      SerializedRequest&& req,
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr clientCallback) override {
+    if (auto ex = injectFault_(methodName)) {
+      clientCallback.release()->onResponseError(std::move(ex));
+      return;
+    }
+    client_->sendRequestNoResponse(
+        rpcOptions,
+        methodName,
+        std::move(req),
+        std::move(header),
+        std::move(clientCallback));
+  }
+  void sendRequestStream(
+      const RpcOptions& rpcOptions,
+      folly::StringPiece methodName,
+      SerializedRequest&& req,
+      std::shared_ptr<transport::THeader> header,
+      StreamClientCallback* clientCallback) override {
+    if (auto ex = injectFault_(methodName)) {
+      clientCallback->onFirstResponseError(std::move(ex));
+      return;
+    }
+    client_->sendRequestStream(
+        rpcOptions,
+        methodName,
+        std::move(req),
+        std::move(header),
+        clientCallback);
+  }
+  void sendRequestSink(
+      const RpcOptions& rpcOptions,
+      folly::StringPiece methodName,
+      SerializedRequest&& req,
+      std::shared_ptr<transport::THeader> header,
+      SinkClientCallback* clientCallback) override {
+    if (auto ex = injectFault_(methodName)) {
+      clientCallback->onFirstResponseError(std::move(ex));
+      return;
+    }
+    client_->sendRequestSink(
+        rpcOptions,
+        methodName,
+        std::move(req),
+        std::move(header),
+        clientCallback);
+  }
+
+  void setCloseCallback(CloseCallback* cb) override {
+    client_->setCloseCallback(cb);
+  }
+
+  folly::EventBase* getEventBase() const override {
+    return client_->getEventBase();
+  }
+
+  uint16_t getProtocolId() override {
+    return client_->getProtocolId();
+  }
+
+ private:
+  RequestChannel::Ptr client_;
+  ScopedServerInterfaceThread::FaultInjectionFunc injectFault_;
+};
+} // namespace detail
 
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newStickyClient(
@@ -30,8 +124,8 @@ std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newStickyClient(
   return std::make_unique<AsyncClientT>(PooledRequestChannel::newChannel(
       callbackExecutor,
       std::move(sp),
-      [makeChannel = std::move(makeChannel), address = getAddress()](
-          folly::EventBase& eb) mutable -> ClientChannel::Ptr {
+      [makeChannel = std::move(makeChannel),
+       address = getAddress()](folly::EventBase& eb) mutable {
         return makeChannel(folly::AsyncSocket::UniquePtr(
             new folly::AsyncSocket(&eb, address)));
       }));
@@ -49,6 +143,25 @@ std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
         return makeChannel(folly::AsyncSocket::UniquePtr(
             new folly::AsyncSocket(&eb, address)));
       }));
+}
+
+template <class AsyncClientT>
+std::unique_ptr<AsyncClientT>
+ScopedServerInterfaceThread::newClientWithFaultInjection(
+    ScopedServerInterfaceThread::FaultInjectionFunc injectFault,
+    folly::Executor* callbackExecutor,
+    ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
+  return std::make_unique<AsyncClientT>(
+      RequestChannel::Ptr(new detail::FaultInjectionChannel(
+          PooledRequestChannel::newChannel(
+              callbackExecutor,
+              folly::getIOExecutor(),
+              [makeChannel = std::move(makeChannel),
+               address = getAddress()](folly::EventBase& eb) mutable {
+                return makeChannel(folly::AsyncSocket::UniquePtr(
+                    new folly::AsyncSocket(&eb, address)));
+              }),
+          std::move(injectFault))));
 }
 
 } // namespace thrift

@@ -47,7 +47,8 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
     cb->result(a + b);
   }
 
-  apache::thrift::SinkConsumer<int64_t, bool> slowReturnSink(int64_t sleepMs) {
+  apache::thrift::SinkConsumer<int64_t, bool> slowReturnSink(
+      int64_t sleepMs) override {
     return apache::thrift::SinkConsumer<int64_t, bool>{
         [&, sleepMs](folly::coro::AsyncGenerator<int64_t&&> gen)
             -> folly::coro::Task<bool> {
@@ -59,6 +60,15 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
           co_return true;
         },
         10};
+  }
+
+  folly::SemiFuture<apache::thrift::ServerStream<int64_t>>
+  semifuture_emptyStreamSlow(int64_t sleepMs) override {
+    requestSem_.post();
+    return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
+        .deferValue([](auto&&) {
+          return apache::thrift::ServerStream<int64_t>::createEmpty();
+        });
   }
 
   void waitForSinkComplete() {
@@ -224,6 +234,38 @@ TEST(ScopedServerInterfaceThread, TransportMemLimit) {
             TTransportExceptionType::EXCEEDED_INGRESS_MEM_LIMIT,
         ex.getType());
   }
+}
+
+TEST(ScopedServerInterfaceThread, faultInjection) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto serviceImpl = std::make_shared<SimpleServiceImpl>();
+    folly::Optional<ScopedServerInterfaceThread> ssit(
+        folly::in_place, serviceImpl);
+
+    class CustomException : public std::exception {};
+
+    auto throwOdd = [n = 0](auto) mutable {
+      return ++n % 2 ? folly::make_exception_wrapper<CustomException>()
+                     : folly::exception_wrapper{};
+    };
+
+    auto client = ssit->newClientWithFaultInjection<SimpleServiceAsyncClient>(
+        throwOdd, nullptr, [](auto socket) {
+          return RocketClientChannel::newChannel(std::move(socket));
+        });
+
+    EXPECT_THROW(co_await client->co_add(1, 2), CustomException);
+    EXPECT_NO_THROW(co_await client->co_add(1, 2));
+
+    EXPECT_THROW(co_await client->co_lob(), CustomException);
+    EXPECT_NO_THROW(co_await client->co_lob());
+
+    EXPECT_THROW(co_await client->co_emptyStreamSlow(0), CustomException);
+    EXPECT_NO_THROW(co_await client->co_emptyStreamSlow(0));
+
+    EXPECT_THROW(co_await client->co_slowReturnSink(0), CustomException);
+    EXPECT_NO_THROW(co_await client->co_slowReturnSink(0));
+  }());
 }
 
 template <typename ChannelT, typename ServiceT>
