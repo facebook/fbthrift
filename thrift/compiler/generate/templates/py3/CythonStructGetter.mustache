@@ -59,21 +59,18 @@ return self.__field_{{field:py_name}}{{!
     }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
 }}{{/type:base?}}{{!
 }}{{^type:base?}}{{!
-}}{{#type:enum?}}{{!
-  }}return translate_cpp_enum_to_python({{!
-    }}{{> types/CythonPythonType}}, {{!
-    }}<int>({{!
-    }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
-    }})){{!
-}}{{/type:enum?}}{{!
-}}{{^type:enum?}}{{!  Structs and Containers
 }}if self.__field_{{field:py_name}} is None:
-    self.__field_{{field:py_name}} = {{> types/CythonPythonType}}.create(__reference_shared_ptr({{!
+    self.__field_{{field:py_name}} = {{!
+      }}{{#type:enum?}}translate_cpp_enum_to_python({{!
+        }}{{> types/CythonPythonType}}, {{!
+        }}<int>({{!
+        }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
+      }})){{/type:enum?}}{{!
+      }}{{^type:enum?}}{{> types/CythonPythonType}}.create(__reference_shared_ptr({{!
       }}deref(self._cpp_obj).{{> CythonFieldRef}}, {{!
       }}self._cpp_obj{{!
-      }}))
+      }})){{/type:enum?}}
 return self.__field_{{field:py_name}}{{!
-}}{{/type:enum?}}{{!
 }}{{/type:base?}}{{!
 }}{{/field:reference?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

@@ -807,6 +807,8 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructWithForwardRefEnum] _cpp_obj
     cdef __fbthrift_types_fields.__MyStructWithForwardRefEnum_FieldsSetter _fields_setter
+    cdef object __field_a
+    cdef object __field_b
 
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum])

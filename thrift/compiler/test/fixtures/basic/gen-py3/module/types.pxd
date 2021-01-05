@@ -121,6 +121,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
     cdef MyDataItem __field_MyDataField
+    cdef object __field_myEnum
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])

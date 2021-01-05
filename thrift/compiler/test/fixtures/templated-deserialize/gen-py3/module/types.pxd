@@ -178,6 +178,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef List__Foo__i64 __field_fieldN
     cdef List__Bar__double __field_fieldO
     cdef List__Baz__i32 __field_fieldP
+    cdef object __field_fieldQ
     cdef Map__string_bool __field_fieldR
     cdef SmallStruct __field_fieldS
     cdef SmallStruct __field_fieldT

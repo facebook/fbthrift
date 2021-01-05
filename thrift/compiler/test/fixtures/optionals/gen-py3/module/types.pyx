@@ -399,7 +399,9 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.afraidOfAnimal:
             return None
 
-        return translate_cpp_enum_to_python(Animal, <int>(deref(self._cpp_obj).afraidOfAnimal_ref().value_unchecked()))
+        if self.__field_afraidOfAnimal is None:
+            self.__field_afraidOfAnimal = translate_cpp_enum_to_python(Animal, <int>(deref(self._cpp_obj).afraidOfAnimal_ref().value_unchecked()))
+        return self.__field_afraidOfAnimal
 
     @property
     def vehicles(self):

@@ -266,7 +266,9 @@ cdef class Internship(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.employer:
             return None
 
-        return translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer_ref().value_unchecked()))
+        if self.__field_employer is None:
+            self.__field_employer = translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer_ref().value_unchecked()))
+        return self.__field_employer
 
 
     def __hash__(Internship self):

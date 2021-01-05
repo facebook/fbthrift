@@ -1492,7 +1492,9 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     @property
     def enum_field(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).enum_field_ref().value()))
+        if self.__field_enum_field is None:
+            self.__field_enum_field = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).enum_field_ref().value()))
+        return self.__field_enum_field
 
     @property
     def enum_container(self):
@@ -1864,27 +1866,37 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldQ(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ_ref().value()))
+        if self.__field_fieldQ is None:
+            self.__field_fieldQ = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ_ref().value()))
+        return self.__field_fieldQ
 
     @property
     def fieldR(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldR_ref().value()))
+        if self.__field_fieldR is None:
+            self.__field_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldR_ref().value()))
+        return self.__field_fieldR
 
     @property
     def req_fieldR(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).req_fieldR_ref().value()))
+        if self.__field_req_fieldR is None:
+            self.__field_req_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).req_fieldR_ref().value()))
+        return self.__field_req_fieldR
 
     @property
     def opt_fieldR(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).opt_fieldR_ref().value_unchecked()))
+        if self.__field_opt_fieldR is None:
+            self.__field_opt_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).opt_fieldR_ref().value_unchecked()))
+        return self.__field_opt_fieldR
 
     @property
     def fieldS(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldS_ref().value()))
+        if self.__field_fieldS is None:
+            self.__field_fieldS = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldS_ref().value()))
+        return self.__field_fieldS
 
     @property
     def fieldT(self):
@@ -1984,12 +1996,16 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldAC(self):
 
-        return translate_cpp_enum_to_python(MyEnumB, <int>(deref(self._cpp_obj).fieldAC_ref().value()))
+        if self.__field_fieldAC is None:
+            self.__field_fieldAC = translate_cpp_enum_to_python(MyEnumB, <int>(deref(self._cpp_obj).fieldAC_ref().value()))
+        return self.__field_fieldAC
 
     @property
     def fieldAD(self):
 
-        return translate_cpp_enum_to_python(_includes_types.AnEnum, <int>(deref(self._cpp_obj).fieldAD_ref().value()))
+        if self.__field_fieldAD is None:
+            self.__field_fieldAD = translate_cpp_enum_to_python(_includes_types.AnEnum, <int>(deref(self._cpp_obj).fieldAD_ref().value()))
+        return self.__field_fieldAD
 
     @property
     def fieldAE(self):

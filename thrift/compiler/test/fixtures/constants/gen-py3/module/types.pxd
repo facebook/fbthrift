@@ -247,6 +247,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class Internship(thrift.py3.types.Struct):
     cdef shared_ptr[cInternship] _cpp_obj
     cdef __fbthrift_types_fields.__Internship_FieldsSetter _fields_setter
+    cdef object __field_employer
 
     @staticmethod
     cdef create(shared_ptr[cInternship])

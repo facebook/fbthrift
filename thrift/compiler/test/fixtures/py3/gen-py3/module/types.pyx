@@ -478,7 +478,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     @property
     def an_enum(self):
 
-        return translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum_ref().value()))
+        if self.__field_an_enum is None:
+            self.__field_an_enum = translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum_ref().value()))
+        return self.__field_an_enum
 
     @property
     def some_bytes(self):

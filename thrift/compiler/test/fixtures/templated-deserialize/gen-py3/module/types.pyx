@@ -328,7 +328,9 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldQ(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ_ref().value()))
+        if self.__field_fieldQ is None:
+            self.__field_fieldQ = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ_ref().value()))
+        return self.__field_fieldQ
 
     @property
     def fieldR(self):

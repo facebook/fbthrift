@@ -627,12 +627,16 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).a_ref().value()))
+        if self.__field_a is None:
+            self.__field_a = translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).a_ref().value()))
+        return self.__field_a
 
     @property
     def b(self):
 
-        return translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).b_ref().value()))
+        if self.__field_b is None:
+            self.__field_b = translate_cpp_enum_to_python(MyForwardRefEnum, <int>(deref(self._cpp_obj).b_ref().value()))
+        return self.__field_b
 
 
     def __hash__(MyStructWithForwardRefEnum self):

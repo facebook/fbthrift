@@ -176,6 +176,7 @@ cdef class Person(thrift.py3.types.Struct):
     cdef Color __field_favoriteColor
     cdef Set__i64 __field_friends
     cdef Map__Animal_string __field_petNames
+    cdef object __field_afraidOfAnimal
     cdef List__Vehicle __field_vehicles
 
     @staticmethod

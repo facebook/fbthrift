@@ -1076,6 +1076,7 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef Set__i64 __field_exception_set
     cdef Map__string_i32 __field_exception_map
     cdef Map__string_i32 __field_req_exception_map
+    cdef object __field_enum_field
     cdef List__MyEnumA __field_enum_container
     cdef MyStruct __field_a_struct
     cdef Set__MyStruct __field_a_set_struct
@@ -1115,6 +1116,11 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef Map__Set__List__i32_Map__List__Set__string_string __field_fieldM
     cdef List__Map__Empty_MyStruct __field_fieldO
     cdef List__List__List__Map__Empty_MyStruct __field_fieldP
+    cdef object __field_fieldQ
+    cdef object __field_fieldR
+    cdef object __field_req_fieldR
+    cdef object __field_opt_fieldR
+    cdef object __field_fieldS
     cdef List__MyEnumA __field_fieldT
     cdef List__MyEnumA __field_fieldU
     cdef MyStruct __field_fieldV
@@ -1128,6 +1134,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef Set__SimpleUnion __field_fieldZ
     cdef List__Set__SimpleUnion __field_fieldAA
     cdef Map__Bar__double_Baz__i32 __field_fieldAB
+    cdef object __field_fieldAC
+    cdef object __field_fieldAD
     cdef Map__string_i32 __field_fieldAE
 
     @staticmethod

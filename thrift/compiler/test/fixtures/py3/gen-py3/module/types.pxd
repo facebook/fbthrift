@@ -224,6 +224,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     cdef __fbthrift_types_fields.__ComplexStruct_FieldsSetter _fields_setter
     cdef SimpleStruct __field_structOne
     cdef SimpleStruct __field_structTwo
+    cdef object __field_an_enum
 
     @staticmethod
     cdef create(shared_ptr[cComplexStruct])
