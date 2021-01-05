@@ -218,25 +218,6 @@ class TServer:
         pass
 
 
-class TSimpleServer(TServer):
-
-    """Simple single-threaded server that just pumps around one transport."""
-
-    def __init__(self, *args):
-        warnings.warn("TSimpleServer is deprecated. Please use one of "
-                      "Nonblocking, Twisted, or Gevent server instead.",
-                      DeprecationWarning)
-        TServer.__init__(self, *args)
-
-    def serve(self):
-        self.serverTransport.listen()
-        for name in self.serverTransport.getSocketNames():
-            self.serverEventHandler.preServe(name)
-        while True:
-            client = self.serverTransport.accept()
-            self.handle(client)
-
-
 class TThreadedServer(TServer):
 
     """Threaded server that spawns a new thread per each connection."""
