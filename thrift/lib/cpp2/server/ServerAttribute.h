@@ -124,34 +124,27 @@ struct ServerAttributeObservable {
     return *mergedObserver_;
   }
 
-  /**
-   * Asynchronously update the observed value. The observed value will be
-   * updated on a background thread.
-   */
-  void setAsync(folly::observer::Observer<T> value, AttributeSource source) {
-    rawValues_.choose(source).setValue(folly::Optional{std::move(value)});
-  }
-  void setAsync(T value, AttributeSource source) {
-    setAsync(folly::observer::makeStaticObserver<T>(std::move(value)), source);
-  }
-  /**
-   * Synchronously update the observed value. This function blocks until all
-   * observed values have been updated.
-   */
   void set(folly::observer::Observer<T> value, AttributeSource source) {
-    setAsync(std::move(value), source);
-    folly::observer_detail::ObserverManager::waitForAllUpdates();
+    rawValues_.choose(source).setValue(folly::Optional{std::move(value)});
+    if (source == AttributeSource::OVERRIDE) {
+      // For backward compatibility reasons, we need to block until the observer
+      // value is updated. This ensures that reads always produce the latest
+      // value after a write from the writer thread. We need to be careful and
+      // only block if the source is an OVERRIDE, which should only happen from
+      // the main thread before the server has started.
+      folly::observer_detail::ObserverManager::waitForAllUpdates();
+    }
   }
   void set(T value, AttributeSource source) {
     set(folly::observer::makeStaticObserver<T>(std::move(value)), source);
   }
 
-  void unsetAsync(AttributeSource source) {
-    rawValues_.choose(source).setValue(folly::none);
-  }
   void unset(AttributeSource source) {
-    unsetAsync(source);
-    folly::observer_detail::ObserverManager::waitForAllUpdates();
+    rawValues_.choose(source).setValue(folly::none);
+    if (source == AttributeSource::OVERRIDE) {
+      // See explanation in `.set()`
+      folly::observer_detail::ObserverManager::waitForAllUpdates();
+    }
   }
 
  protected:
@@ -171,9 +164,7 @@ struct ServerAttributeAtomic
   using apache::thrift::detail::ServerAttributeObservable<
       T>::ServerAttributeObservable;
   using apache::thrift::detail::ServerAttributeObservable<T>::set;
-  using apache::thrift::detail::ServerAttributeObservable<T>::setAsync;
   using apache::thrift::detail::ServerAttributeObservable<T>::unset;
-  using apache::thrift::detail::ServerAttributeObservable<T>::unsetAsync;
   using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
 
   T get() const {
@@ -197,9 +188,7 @@ struct ServerAttributeThreadLocal
   using apache::thrift::detail::ServerAttributeObservable<
       T>::ServerAttributeObservable;
   using apache::thrift::detail::ServerAttributeObservable<T>::set;
-  using apache::thrift::detail::ServerAttributeObservable<T>::setAsync;
   using apache::thrift::detail::ServerAttributeObservable<T>::unset;
-  using apache::thrift::detail::ServerAttributeObservable<T>::unsetAsync;
   using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
 
   const T& get() const {

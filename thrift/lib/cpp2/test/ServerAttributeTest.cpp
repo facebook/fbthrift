@@ -24,6 +24,7 @@ TEST(ServerAttributeTest, baselineFirst) {
   EXPECT_EQ(a.get(), 0);
 
   a.set(1, AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(a.get(), 1);
   a.set(2, AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), 2);
@@ -31,6 +32,7 @@ TEST(ServerAttributeTest, baselineFirst) {
   a.unset(AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), 1);
   a.unset(AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(a.get(), 0);
 }
 
@@ -41,10 +43,12 @@ TEST(ServerAttributeTest, overrideFirst) {
   a.set(2, AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), 2);
   a.set(1, AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   // still return overrided value
   EXPECT_EQ(a.get(), 2);
 
   a.unset(AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   // still return overrided value
   EXPECT_EQ(a.get(), 2);
   a.unset(AttributeSource::OVERRIDE);
@@ -56,6 +60,7 @@ TEST(ServerAttributeTest, stringBaselineFirst) {
   EXPECT_EQ(a.get(), "a");
 
   a.set("b", AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(a.get(), "b");
   a.set("c", AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), "c");
@@ -63,6 +68,7 @@ TEST(ServerAttributeTest, stringBaselineFirst) {
   a.unset(AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), "b");
   a.unset(AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(a.get(), "a");
 }
 
@@ -73,10 +79,12 @@ TEST(ServerAttributeTest, stringOverrideFirst) {
   a.set("c", AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), "c");
   a.set("b", AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   // still return overrided value
   EXPECT_EQ(a.get(), "c");
 
   a.unset(AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   // still return overrided value
   EXPECT_EQ(a.get(), "c");
   a.unset(AttributeSource::OVERRIDE);
@@ -92,6 +100,7 @@ TEST(ServerAttribute, Observable) {
   auto observer = attr.getObserver();
 
   attr.set(baselineObservable.getObserver(), AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(**observer, "baseline");
 
   attr.set(overrideObservable.getObserver(), AttributeSource::OVERRIDE);
@@ -107,11 +116,13 @@ TEST(ServerAttribute, Observable) {
   EXPECT_EQ(**observer, "baseline 2");
 
   attr.set("baseline 3", AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(**observer, "baseline 3");
 
   defaultObservable.setValue("default 2");
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   attr.unset(AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(**observer, "default 2");
 }
 
@@ -121,6 +132,7 @@ TEST(ServerAttribute, Atomic) {
   EXPECT_EQ(*observer, 42);
 
   attr.set(24, AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(*observer, 24);
 
   attr.set(12, AttributeSource::OVERRIDE);
@@ -136,6 +148,7 @@ TEST(ServerAttribute, ThreadLocal) {
   EXPECT_EQ(**observer, 42);
 
   attr.set(24, AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   EXPECT_EQ(**observer, 24);
 
   attr.set(12, AttributeSource::OVERRIDE);
