@@ -15,124 +15,148 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedefType}}{{type:setIsMapKey}}{{> WriteReturnType}}{{/type:typedefType}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedefType}}{{type:setIsMapValue}}{{> WriteReturnType}}{{/type:typedefType}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> WriteReturnType}}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapKey?}}{{#type:typedefType}}{{type:setIsMapKey}}{{> WriteResponseType}}{{/type:typedefType}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapValue?}}{{#type:typedefType}}{{type:setIsMapValue}}{{> WriteResponseType}}{{/type:typedefType}}{{/type:isMapValue?}}{{!
+    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> WriteResponseType}}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-}}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:setElemType}}{{> TType}}{{/type:setElemType}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for ({{#type:setElemType}}{{> Type}}{{/type:setElemType}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
-          {{field:setIsNested}}{{type:setIsNotMap}}{{!
+}}{{#type:set?}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.SET_FIELD);{{/function:isNested?}}
+      oprot.writeSetBegin(new TSet(TType.{{#type:setElemType}}{{> TType}}{{/type:setElemType}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+        for ({{#type:setElemType}}{{> Type}}{{/type:setElemType}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
+          {{function:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:setElemType}}{{!
           }}{{#type:isContainer?}}{{!
-          }}{{field:nestedDepth++}}{{> WriteReturnType}}{{field:nestedDepth--}}
+          }}{{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
           {{/type:isContainer?}}{{!
-          }}{{^type:isContainer?}}{{> WriteReturnType}}
+          }}{{^type:isContainer?}}{{> WriteResponseType}}
           {{/type:isContainer?}}{{/type:setElemType}}
         }
         oprot.writeSetEnd();{{!
 }}{{/type:set?}}{{!
 
 }}{{#type:list?}}{{!
-}}oprot.writeListBegin(new TList(TType.{{#type:listElemType}}{{> TType}}{{/type:listElemType}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for ({{#type:listElemType}}{{> Type}}{{/type:listElemType}} _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
-          {{field:setIsNested}}{{type:setIsNotMap}}{{!
+}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.LIST_FIELD);{{/function:isNested?}}
+oprot.writeListBegin(new TList(TType.{{#type:listElemType}}{{> TType}}{{/type:listElemType}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+        for ({{#type:listElemType}}{{> Type}}{{/type:listElemType}} _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}) {
+          {{function:setIsNested}}{{type:setIsNotMap}}{{!
           }}{{#type:listElemType}}{{!
           }}{{#type:isContainer?}}{{!
-          }}{{field:nestedDepth++}}{{> WriteReturnType}}{{field:nestedDepth--}}
+          }}{{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
           {{/type:isContainer?}}{{!
-          }}{{^type:isContainer?}}{{> WriteReturnType}}
+          }}{{^type:isContainer?}}{{> WriteResponseType}}
           {{/type:isContainer?}}{{/type:listElemType}}
         }
         oprot.writeListEnd();{{!
 }}{{/type:list?}}{{!
 
 }}{{#type:map?}}{{!
-}}oprot.writeMapBegin(new TMap(TType.{{#type:keyType}}{{> TType}}{{/type:keyType}}, TType.{{#type:valueType}}{{> TType}}{{/type:valueType}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
-        for (Map.Entry<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}> _iter{{field:nestedDepth}} : _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.entrySet()) {
-          {{field:setIsNested}}{{!
+}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.MAP_FIELD);{{/function:isNested?}}
+oprot.writeMapBegin(new TMap(TType.{{#type:keyType}}{{> TType}}{{/type:keyType}}, TType.{{#type:valueType}}{{> TType}}{{/type:valueType}}, _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));
+        for (Map.Entry<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}> _iter{{function:nestedDepth}} : _iter{{function:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.entrySet()) {
+          {{function:setIsNested}}{{!
 
           }}{{#type:keyType}}{{type:setIsMapKey}}{{!
           }}{{#type:isContainer?}}{{!
-          }}{{field:nestedDepth++}}{{> WriteReturnType}}{{field:nestedDepth--}}
+          }}{{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
           {{/type:isContainer?}}{{!
-          }}{{^type:isContainer?}}{{> WriteReturnType}}
+          }}{{^type:isContainer?}}{{> WriteResponseType}}
           {{/type:isContainer?}}{{/type:keyType}}{{!
 
           }}{{#type:valueType}}{{type:setIsMapValue}}{{!
           }}{{#type:isContainer?}}
-          {{field:nestedDepth++}}{{> WriteReturnType}}{{field:nestedDepth--}}
+          {{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
           {{/type:isContainer?}}{{!
-          }}{{^type:isContainer?}}{{> WriteReturnType}}{{!
+          }}{{^type:isContainer?}}{{> WriteResponseType}}{{!
           }}{{/type:isContainer?}}{{/type:valueType}}
         }
         oprot.writeMapEnd();{{!
 }}{{/type:map?}}{{!
 
 }}{{#type:struct?}}{{!
-}}{{#field:isNested?}}_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.write0(oprot);
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{^struct:isUnion?}}{{/struct:isUnion?}}_response.write0(oprot);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.write0(oprot);
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.STRUCT_FIELD);
+{{^struct:isUnion?}}{{/struct:isUnion?}}_iter0.write0(oprot);{{/function:isNested?}}{{!
 }}{{/type:struct?}}{{!
 
 }}{{#type:enum?}}{{!
-}}{{#field:isNested?}}oprot.writeI32(_iter{{field:nestedDepth}} == null ? 0 : _iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.getValue());
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_response == null ? 0 : {{^struct:isUnion?}}{{/struct:isUnion?}}_response.getValue());{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeI32(_iter{{function:nestedDepth}} == null ? 0 : _iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.getValue());
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I32_FIELD);
+oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0 == null ? 0 : {{^struct:isUnion?}}{{/struct:isUnion?}}_iter0.getValue());{{/function:isNested?}}{{!
 }}{{/type:enum?}}{{!
 
 }}{{#type:binary?}}{{!
-}}{{#field:isNested?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}));
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:isUnion?}}{{/struct:isUnion?}}_response));{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}));
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.STRING_FIELD);
+oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0));{{/function:isNested?}}{{!
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
-}}{{#field:isNested?}}oprot.writeString(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeString({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeString(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.STRING_FIELD);
+oprot.writeString({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
-}}{{#field:isNested?}}oprot.writeBool(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeBool({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeBool(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.BOOL_FIELD);
+oprot.writeBool({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:bool?}}{{!
 
 }}{{#type:byte?}}{{!
-}}{{#field:isNested?}}oprot.writeByte(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeByte({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeByte(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.BYTE_FIELD);
+oprot.writeByte({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:byte?}}{{!
 
 }}{{#type:i16?}}{{!
-}}{{#field:isNested?}}oprot.writeI16(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI16({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeI16(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I16_FIELD);
+oprot.writeI16({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i16?}}{{!
 
 }}{{#type:i32?}}{{!
-}}{{#field:isNested?}}oprot.writeI32(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeI32(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I32_FIELD);
+oprot.writeI32({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i32?}}{{!
 
 }}{{#type:i64?}}{{!
-}}{{#field:isNested?}}oprot.writeI64(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeI64({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeI64(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.I64_FIELD);
+oprot.writeI64({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:i64?}}{{!
 
 }}{{#type:float?}}{{!
-}}{{#field:isNested?}}oprot.writeFloat(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeFloat({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeFloat(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.FLOAT_FIELD);
+oprot.writeFloat({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:float?}}{{!
 
 }}{{#type:double?}}{{!
-}}{{#field:isNested?}}oprot.writeDouble(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
-{{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeDouble({{^struct:isUnion?}}{{/struct:isUnion?}}_response);{{/field:isNested?}}{{!
+}}{{#function:isNested?}}oprot.writeDouble(_iter{{function:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+{{/function:isNested?}}{{!
+}}{{^function:isNested?}}
+oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.DOUBLE_FIELD);
+oprot.writeDouble({{^struct:isUnion?}}{{/struct:isUnion?}}_iter0);{{/function:isNested?}}{{!
 }}{{/type:double?}}{{!
 
 }}{{/type:typedef?}}{{!
