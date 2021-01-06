@@ -30,7 +30,9 @@
 #include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
+#include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/GlobalExecutor.h>
+#include <folly/executors/MeteredExecutor.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -61,11 +63,14 @@
 
 #include <fizz/client/AsyncFizzClient.h>
 
+#include <common/logging/logging.h>
+
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
+using namespace apache::thrift::concurrency;
 using namespace std::literals;
 using std::string;
 
@@ -688,8 +693,7 @@ TEST_P(HeaderOrRocket, Priority) {
     int& callCount_;
 
    public:
-    TestInterface(int& callCount) : callCount_(callCount) {}
-    using PRIORITY = concurrency::PRIORITY;
+    explicit TestInterface(int& callCount) : callCount_(callCount) {}
     void priorityHigh() override {
       callCount_++;
       EXPECT_EQ(getConnectionContext()->getRequestPriority(), PRIORITY::HIGH);
@@ -710,30 +714,258 @@ TEST_P(HeaderOrRocket, Priority) {
   EXPECT_EQ(callCount, 2);
 }
 
+namespace {
+template <typename F, typename Duration = decltype(1s)>
+bool blockWhile(F&& f, Duration duration = 1s) {
+  auto now = std::chrono::steady_clock::now();
+  while (f()) {
+    if (std::chrono::steady_clock::now() > now + duration) {
+      return false;
+    }
+    std::this_thread::yield();
+  }
+  return true;
+}
+} // namespace
+
+TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
+  class TestInterface : public TestServiceSvIf {
+   public:
+    TestInterface() {}
+    void voidResponse() override {
+      callback_(getThreadManager());
+    }
+    folly::Function<void(folly::Executor*)> callback_;
+  };
+
+  auto handler = std::make_shared<TestInterface>();
+  ScopedServerInterfaceThread runner(handler, "::1", 0, [&](auto& ts) {
+    // empty executor will default to SimpleThreadManager
+    auto executor = std::shared_ptr<folly::Executor>();
+    auto tm = std::make_shared<ThreadManagerExecutorAdapter>(executor);
+    tm->setNamePrefix("tm");
+    auto tf =
+        std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
+    tm->threadFactory(tf);
+    // Our TM starts with 2 threads, reduce it to one thread for simplicity
+    tm->start();
+    tm->removeWorker(1);
+    ts.setThreadManager(tm);
+  });
+  std::make_shared<TestInterface>();
+  auto client = makeClient(runner, nullptr);
+
+  folly::Baton baton1;
+  folly::Baton baton2;
+  // First request blocks the CPU thread, then waits for more requests to be
+  // scheduled from upstream, then schedules internal task on the same thread.
+  // This internal task should execute before upstream tasks.
+  int testCounter = 0;
+  handler->callback_ = [&](auto executor) {
+    baton1.post();
+    baton2.wait();
+    EXPECT_EQ(0, testCounter++);
+    executor->add([&] { EXPECT_EQ(1, testCounter++); });
+  };
+  client->semifuture_voidResponse();
+  baton1.wait();
+
+  handler->callback_ = [&](auto) { EXPECT_EQ(2, testCounter++); };
+  auto tm = runner.getThriftServer().getThreadManager();
+  auto normalPriExecutor = dynamic_cast<ThreadManager*>(
+      tm->getKeepAlive(NORMAL, ThreadManager::Source::INTERNAL).get());
+  auto req2 = client->semifuture_voidResponse();
+  EXPECT_TRUE(blockWhile(
+      [&] { return normalPriExecutor->pendingUpstreamTaskCount() != 1; }));
+  baton2.post();
+
+  req2.wait();
+  EXPECT_EQ(3, testCounter);
+}
+
+TEST_P(
+    HeaderOrRocket,
+    ThreadManagerAdapterOverMeteredExecutorUpstreamPriorities) {
+  class TestInterface : public TestServiceSvIf {
+   public:
+    explicit TestInterface(int& testCounter) : testCounter_(testCounter) {}
+    void voidResponse() override {
+      callback_(getThreadManager());
+    }
+    int echoInt(int value) override {
+      EXPECT_EQ(value, testCounter_++);
+      return value;
+    }
+    folly::Function<void(folly::Executor*)> callback_;
+    int& testCounter_;
+  };
+
+  int testCounter = 0;
+  auto handler = std::make_shared<TestInterface>(testCounter);
+  ScopedServerInterfaceThread runner(handler, "::1", 0, [&](auto& ts) {
+    auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
+        1, std::make_shared<folly::NamedThreadFactory>("cpu"));
+    auto tm = std::make_shared<ThreadManagerExecutorAdapter>(executor);
+    tm->setNamePrefix("cpu");
+    tm->threadFactory(
+        std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED));
+    tm->start();
+    ts.setThreadManager(tm);
+  });
+  auto client = makeClient(runner, nullptr);
+
+  folly::Baton baton1;
+  folly::Baton baton2;
+  // First request blocks the CPU thread, then waits for more requests to be
+  // scheduled from upstream, then schedules internal tasks on the same thread.
+  // These internal tasks should execute before upstream tasks, except for the
+  // first upstream task (because this is how metered scheduling works).
+  handler->callback_ = [&](auto executor) {
+    baton1.post();
+    baton2.wait();
+    EXPECT_EQ(0, testCounter++);
+    executor->add([&] { EXPECT_EQ(2, testCounter++); });
+    executor->add([&] { EXPECT_EQ(3, testCounter++); });
+    executor->add([&] { EXPECT_EQ(4, testCounter++); });
+  };
+  client->semifuture_voidResponse();
+  baton1.wait();
+
+  // While first request is blocking the CPU thread, send more requests to
+  // the server, and make sure they are added to the upstream queue.
+  std::vector<folly::SemiFuture<int>> requests;
+  auto sendRequestAndWait = [&](int expectedValue) {
+    auto tm = runner.getThriftServer().getThreadManager();
+    auto upstreamQueue = dynamic_cast<folly::MeteredExecutor*>(
+        tm->getKeepAlive(NORMAL, ThreadManager::Source::UPSTREAM).get());
+    auto numPendingReqs = upstreamQueue->pendingTasks();
+    requests.emplace_back(client->semifuture_echoInt(expectedValue));
+    numPendingReqs++;
+    EXPECT_TRUE(blockWhile(
+        [&] { return upstreamQueue->pendingTasks() != numPendingReqs; }));
+  };
+  sendRequestAndWait(1);
+  sendRequestAndWait(5);
+  sendRequestAndWait(6);
+  sendRequestAndWait(7);
+
+  baton2.post();
+  for (auto& req : requests) {
+    req.wait();
+  }
+  EXPECT_EQ(8, testCounter);
+}
+
+TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
+  int callCount{0};
+  class TestInterface : public TestServiceSvIf {
+    int& callCount_;
+
+   public:
+    explicit TestInterface(int& callCount) : callCount_(callCount) {}
+    void priorityHigh() override {
+      callCount_++;
+      EXPECT_THAT(*folly::getCurrentThreadName(), testing::StartsWith("tm-1-"));
+    }
+    void priorityBestEffort() override {
+      callCount_++;
+      EXPECT_THAT(*folly::getCurrentThreadName(), testing::StartsWith("tm-4-"));
+    }
+    void voidResponse() override {
+      callCount_++;
+      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+    }
+  };
+
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestInterface>(callCount), "::1", 0, [](auto& ts) {
+        auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
+            new ThreadManagerExecutorAdapter(
+                {nullptr,
+                 nullptr,
+                 nullptr,
+                 std::make_shared<folly::CPUThreadPoolExecutor>(
+                     1, std::make_shared<folly::NamedThreadFactory>("cpu")),
+                 nullptr}));
+        tm->setNamePrefix("tm");
+        tm->threadFactory(
+            std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED));
+        tm->start();
+        ts.setThreadManager(tm);
+      });
+  folly::EventBase base;
+  auto client = makeClient(runner, &base);
+  client->sync_priorityHigh();
+  client->sync_priorityBestEffort();
+  client->sync_voidResponse();
+  EXPECT_EQ(callCount, 3);
+}
+
+TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
+  int callCount{0};
+  class TestInterface : public TestServiceSvIf {
+    int& callCount_;
+
+   public:
+    explicit TestInterface(int& callCount) : callCount_(callCount) {}
+    void priorityHigh() override {
+      callCount_++;
+      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+    }
+    void priorityBestEffort() override {
+      callCount_++;
+      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+    }
+    void voidResponse() override {
+      callCount_++;
+      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+    }
+  };
+
+  ScopedServerInterfaceThread runner(
+      std::make_shared<TestInterface>(callCount), "::1", 0, [](auto& ts) {
+        auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
+            new ThreadManagerExecutorAdapter(
+                std::make_shared<folly::CPUThreadPoolExecutor>(
+                    1, std::make_shared<folly::NamedThreadFactory>("cpu"))));
+        tm->setNamePrefix("tm");
+        tm->threadFactory(
+            std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED));
+        tm->start();
+        ts.setThreadManager(tm);
+      });
+  folly::EventBase base;
+  auto client = makeClient(runner, &base);
+  client->sync_priorityHigh();
+  client->sync_priorityBestEffort();
+  client->sync_voidResponse();
+  EXPECT_EQ(callCount, 3);
+}
+
 TEST_P(HeaderOrRocket, StickyToThreadPool) {
   int callCount{0};
   class TestInterface : public TestServiceSvIf {
     int& callCount_;
 
-    static auto startsWith(folly::StringPiece s, folly::StringPiece p) {
-      return s.startsWith(p);
-    }
-
    public:
     explicit TestInterface(int& callCount) : callCount_(callCount) {}
     folly::SemiFuture<folly::Unit> semifuture_priorityHigh() override {
-      EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri1"));
+      EXPECT_THAT(
+          *folly::getCurrentThreadName(), testing::StartsWith("foo-pri1"));
       return folly::makeSemiFuture().defer([=](auto&&) {
         callCount_++;
-        EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri1"));
+        EXPECT_THAT(
+            *folly::getCurrentThreadName(), testing::StartsWith("foo-pri1"));
       });
     }
     folly::coro::Task<void> co_priorityBestEffort() override {
       callCount_++;
-      EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri4"));
+      EXPECT_THAT(
+          *folly::getCurrentThreadName(), testing::StartsWith("foo-pri4"));
       co_await folly::coro::co_reschedule_on_current_executor;
       callCount_++;
-      EXPECT_TRUE(startsWith(*folly::getCurrentThreadName(), "foo-pri4"));
+      EXPECT_THAT(
+          *folly::getCurrentThreadName(), testing::StartsWith("foo-pri4"));
       co_return;
     }
   };

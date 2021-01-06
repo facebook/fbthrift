@@ -338,32 +338,6 @@ TEST_P(SharedServerTests, ThriftServerSizeLimits) {
 }
 
 namespace {
-class MyExecutor : public folly::Executor {
- public:
-  void add(folly::Func f) override {
-    calls++;
-    f();
-  }
-
-  std::atomic<int> calls{0};
-};
-} // namespace
-
-TEST_P(SharedServerTests, PoolExecutorTest) {
-  auto exe = std::make_shared<MyExecutor>();
-  serverFactory->useSimpleThreadManager(false).useThreadManager(
-      std::make_shared<
-          apache::thrift::concurrency::ThreadManagerExecutorAdapter>(exe));
-
-  init();
-
-  std::string response;
-
-  client->sync_echoRequest(response, "test");
-  EXPECT_EQ(1, exe->calls);
-}
-
-namespace {
 class FiberExecutor : public folly::Executor {
  public:
   void add(folly::Func f) override {

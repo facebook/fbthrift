@@ -399,27 +399,24 @@ class PriorityThreadManager : public ThreadManager {
 class ThreadManagerExecutorAdapter : public ThreadManager {
  public:
   /* implicit */
-  ThreadManagerExecutorAdapter(std::shared_ptr<folly::Executor> exe)
-      : exe_(std::move(exe)), ka_(folly::getKeepAliveToken(exe_.get())) {}
-  explicit ThreadManagerExecutorAdapter(folly::Executor::KeepAlive<> ka)
-      : ka_(std::move(ka)) {}
+  ThreadManagerExecutorAdapter(std::shared_ptr<folly::Executor> exe);
+  explicit ThreadManagerExecutorAdapter(folly::Executor::KeepAlive<> ka);
+  explicit ThreadManagerExecutorAdapter(
+      std::array<std::shared_ptr<Executor>, N_PRIORITIES>);
 
-  void join() override {}
-  void start() override {}
-  void stop() override {}
+  void join() override;
+  void start() override;
+  void stop() override;
   STATE state() const override {
     return STARTED;
   }
-  std::shared_ptr<ThreadFactory> threadFactory() const override {
-    return nullptr;
-  }
-  void threadFactory(std::shared_ptr<ThreadFactory> /*value*/) override {}
-  std::string getNamePrefix() const override {
-    return "";
-  }
-  void setNamePrefix(const std::string& /*name*/) override {}
-  void addWorker(size_t /*value*/ = 1) override {}
-  void removeWorker(size_t /*value*/ = 1) override {}
+
+  std::shared_ptr<ThreadFactory> threadFactory() const override;
+  void threadFactory(std::shared_ptr<ThreadFactory> value) override;
+  std::string getNamePrefix() const override;
+  void setNamePrefix(const std::string& name) override;
+  void addWorker(size_t value = 1) override;
+  void removeWorker(size_t value = 1) override;
 
   size_t idleWorkerCount() const override {
     return 0;
@@ -444,12 +441,8 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
       std::shared_ptr<Runnable> task,
       int64_t /*timeout*/,
       int64_t /*expiration*/,
-      ThreadManager::Source /*source*/) noexcept override {
-    ka_->add([=] { task->run(); });
-  }
-  void add(folly::Func f) override {
-    ka_->add(std::move(f));
-  }
+      ThreadManager::Source source) noexcept override;
+  void add(folly::Func f) override;
 
   void remove(std::shared_ptr<Runnable> /*task*/) override {}
   std::shared_ptr<Runnable> removeNextPending() override {
@@ -465,15 +458,15 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
     return nullptr;
   }
 
-  [[nodiscard]] folly::Executor::KeepAlive<> getKeepAlive(
-      PRIORITY /*pri*/,
-      Source /*source*/) const override {
-    return ka_;
-  }
+  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY pri, Source source)
+      const override;
 
  private:
-  std::shared_ptr<folly::Executor> exe_;
-  folly::Executor::KeepAlive<> ka_;
+  explicit ThreadManagerExecutorAdapter(
+      std::array<folly::Executor*, N_PRIORITIES * N_SOURCES>);
+
+  std::vector<std::shared_ptr<void>> owning_;
+  std::array<folly::Executor*, N_PRIORITIES * N_SOURCES> executors_;
 };
 
 class SimpleThreadManager : public ThreadManager,

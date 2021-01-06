@@ -32,9 +32,11 @@
 #include <folly/ExceptionString.h>
 #include <folly/GLog.h>
 #include <folly/ThreadLocal.h>
+#include <folly/VirtualExecutor.h>
 #include <folly/concurrency/PriorityUnboundedQueueSet.h>
 #include <folly/concurrency/QueueObserver.h>
 #include <folly/executors/Codel.h>
+#include <folly/executors/MeteredExecutor.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GFlags.h>
 #include <folly/synchronization/LifoSem.h>
@@ -101,6 +103,22 @@ class ExecutorWithSourceAndPriority : public folly::Executor {
   Source source_;
   ExecutorT* executor_;
 };
+
+class Deleter {
+ public:
+  void operator()(folly::Executor* executor) {
+    if (owning_) {
+      std::default_delete<folly::Executor>()(executor);
+    }
+  }
+  void unown() {
+    owning_ = false;
+  }
+
+ private:
+  bool owning_{true};
+};
+
 } // namespace
 
 /**
@@ -404,8 +422,12 @@ class SimpleThreadManagerImpl : public ThreadManager::Impl {
       size_t workerCount = 4,
       bool enableTaskStats = false)
       : ThreadManager::Impl(enableTaskStats), workerCount_(workerCount) {
-    for (int j = 0; j < N_SOURCES; j++) {
-      executors_.emplace_back(makeExecutor(static_cast<Source>(j)));
+    executors_.reserve(N_SOURCES);
+    // for INTERNAL source, this is just a straight pass through
+    executors_.emplace_back(this).get_deleter().unown();
+    for (int j = 1; j < N_SOURCES; j++) {
+      auto wrapper = makeExecutor(static_cast<Source>(j));
+      executors_.emplace_back(wrapper.release());
     }
   }
 
@@ -434,7 +456,8 @@ class SimpleThreadManagerImpl : public ThreadManager::Impl {
   }
 
   const size_t workerCount_;
-  std::vector<std::unique_ptr<Executor>> executors_;
+
+  std::vector<std::unique_ptr<Executor, Deleter>> executors_;
 };
 
 } // namespace
@@ -1052,11 +1075,15 @@ class PriorityThreadManager::PriorityImpl
           std::pair<std::shared_ptr<ThreadFactory>, size_t>,
           N_PRIORITIES>& factories,
       bool enableTaskStats = false) {
+    executors_.reserve(N_PRIORITIES * N_SOURCES);
     for (int i = 0; i < N_PRIORITIES; i++) {
       auto m = std::make_unique<ThreadManager::Impl>(enableTaskStats);
-      for (int j = 0; j < N_SOURCES; j++) {
-        executors_.emplace_back(
-            makeExecutor(static_cast<PRIORITY>(i), static_cast<Source>(j)));
+      // for INTERNAL source, this is just a straight pass through
+      executors_.emplace_back(m.get()).get_deleter().unown();
+      for (int j = 1; j < N_SOURCES; j++) {
+        auto wrapper =
+            makeExecutor(static_cast<PRIORITY>(i), static_cast<Source>(j));
+        executors_.emplace_back(wrapper.release());
       }
       m->threadFactory(factories[i].first);
       managers_[i] = std::move(m);
@@ -1312,7 +1339,7 @@ class PriorityThreadManager::PriorityImpl
   std::unique_ptr<ThreadManager> managers_[N_PRIORITIES];
   size_t counts_[N_PRIORITIES];
   Mutex mutex_;
-  std::vector<std::unique_ptr<Executor>> executors_;
+  std::vector<std::unique_ptr<Executor, Deleter>> executors_;
   bool keepAliveJoined_{false};
 };
 
@@ -1426,7 +1453,137 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
   std::vector<std::unique_ptr<Executor>> executors_;
 };
 
+template <size_t N, typename T>
+std::array<T, N> fillArrayWith(const T& t) {
+  std::array<T, N> result;
+  result.fill(t);
+  return result;
+}
+
+constexpr auto N_SOURCES = ThreadManager::N_SOURCES;
+int idxFromPriSrc(int pri, int source) {
+  DCHECK(pri < N_PRIORITIES);
+  return pri * N_SOURCES + source;
+}
+
+int idxFromPriSrc(PRIORITY pri, ThreadManager::Source source) {
+  return idxFromPriSrc(static_cast<int>(pri), static_cast<int>(source));
+}
+
+template <typename F>
+void forEachThreadManager(
+    const std::array<folly::Executor*, N_PRIORITIES * N_SOURCES>& executors,
+    F&& func) {
+  for (size_t i = 0; i < N_PRIORITIES; i++) {
+    if (auto tm = dynamic_cast<ThreadManager*>(executors[i * N_SOURCES])) {
+      func(tm, static_cast<PRIORITY>(i));
+    }
+  }
+}
+
 } // namespace
+
+ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
+    std::shared_ptr<folly::Executor> exe)
+    : ThreadManagerExecutorAdapter(fillArrayWith<N_PRIORITIES>(exe)) {}
+
+ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
+    folly::Executor::KeepAlive<> ka)
+    : ThreadManagerExecutorAdapter(
+          std::make_shared<folly::VirtualExecutor>(std::move(ka))) {}
+
+ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
+    std::array<std::shared_ptr<folly::Executor>, N_PRIORITIES> executors) {
+  for (size_t i = 0; i < executors.size(); i++) {
+    auto& executor = executors[i];
+    if (!executor) {
+      auto tm = ThreadManager::newSimpleThreadManager(2);
+      executor = tm;
+      for (int j = 0; j < N_SOURCES; j++) {
+        executors_[idxFromPriSrc(i, j)] =
+            tm->getKeepAlive(
+                  static_cast<PRIORITY>(0),
+                  static_cast<ThreadManager::Source>(j))
+                .get();
+      }
+    } else {
+      executors_[idxFromPriSrc(i, 0)] = executor.get();
+      std::unique_ptr<folly::MeteredExecutor> adapter;
+      for (int j = 1; j < N_SOURCES; j++) {
+        if (!adapter) {
+          adapter = std::make_unique<folly::MeteredExecutor>(executor.get());
+        } else {
+          adapter =
+              std::make_unique<folly::MeteredExecutor>(std::move(adapter));
+        }
+        executors_[idxFromPriSrc(i, j)] = adapter.get();
+      }
+      owning_.push_back(folly::to_shared_ptr(std::move(adapter)));
+    }
+    owning_.emplace_back(std::move(executor));
+  }
+}
+
+void ThreadManagerExecutorAdapter::join() {
+  forEachThreadManager(executors_, [](auto tm, auto) { tm->join(); });
+}
+
+void ThreadManagerExecutorAdapter::start() {
+  forEachThreadManager(executors_, [](auto tm, auto) { tm->start(); });
+}
+
+void ThreadManagerExecutorAdapter::stop() {
+  forEachThreadManager(executors_, [](auto tm, auto) { tm->stop(); });
+}
+
+void ThreadManagerExecutorAdapter::addWorker(size_t value) {
+  forEachThreadManager(
+      executors_, [value](auto tm, auto) { tm->addWorker(value); });
+}
+
+void ThreadManagerExecutorAdapter::removeWorker(size_t value) {
+  forEachThreadManager(
+      executors_, [value](auto tm, auto) { tm->removeWorker(value); });
+}
+
+std::shared_ptr<ThreadFactory> ThreadManagerExecutorAdapter::threadFactory()
+    const {
+  return nullptr;
+}
+
+void ThreadManagerExecutorAdapter::threadFactory(
+    std::shared_ptr<ThreadFactory> value) {
+  forEachThreadManager(
+      executors_, [=](auto tm, auto) { tm->threadFactory(value); });
+}
+
+std::string ThreadManagerExecutorAdapter::getNamePrefix() const {
+  return "";
+}
+
+void ThreadManagerExecutorAdapter::setNamePrefix(const std::string& name) {
+  forEachThreadManager(executors_, [&](auto tm, auto pri) {
+    tm->setNamePrefix(name + "-" + folly::to<std::string>(pri));
+  });
+}
+
+void ThreadManagerExecutorAdapter::add(
+    std::shared_ptr<Runnable> task,
+    int64_t /*timeout*/,
+    int64_t /*expiration*/,
+    ThreadManager::Source source) noexcept {
+  getKeepAlive(PRIORITY::NORMAL, source)->add([=] { task->run(); });
+}
+
+void ThreadManagerExecutorAdapter::add(folly::Func f) {
+  getKeepAlive(PRIORITY::NORMAL, Source::INTERNAL)->add(std::move(f));
+}
+
+folly::Executor::KeepAlive<> ThreadManagerExecutorAdapter::getKeepAlive(
+    PRIORITY pri,
+    Source source) const {
+  return getKeepAliveToken(executors_[idxFromPriSrc(pri, source)]);
+}
 
 void ThreadManager::setObserver(
     std::shared_ptr<ThreadManager::Observer> observer) {
