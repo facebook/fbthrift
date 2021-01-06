@@ -39,7 +39,7 @@ using std::shared_ptr;
 using std::weak_ptr;
 
 const PosixThreadFactory::POLICY PosixThreadFactory::kDefaultPolicy;
-const PosixThreadFactory::PRIORITY PosixThreadFactory::kDefaultPriority;
+const PosixThreadFactory::THREAD_PRIORITY PosixThreadFactory::kDefaultPriority;
 const int PosixThreadFactory::kDefaultStackSizeMB;
 
 // push our given name upstream into pthreads
@@ -216,7 +216,7 @@ int PosixThreadFactory::Impl::toPthreadPolicy(POLICY policy) {
 /* static */
 int PosixThreadFactory::Impl::toPthreadPriority(
     POLICY policy,
-    PRIORITY priority) {
+    THREAD_PRIORITY priority) {
   int pthread_policy = toPthreadPolicy(policy);
   int min_priority = 0;
   int max_priority = 0;
@@ -259,7 +259,7 @@ int PosixThreadFactory::Impl::toPthreadPriority(
 
 PosixThreadFactory::Impl::Impl(
     POLICY policy,
-    PRIORITY priority,
+    THREAD_PRIORITY priority,
     int stackSize,
     DetachState detached)
     : policy_(policy),
@@ -290,7 +290,8 @@ void PosixThreadFactory::Impl::setStackSize(int value) {
   stackSize_ = value;
 }
 
-PosixThreadFactory::PRIORITY PosixThreadFactory::Impl::getPriority() const {
+PosixThreadFactory::THREAD_PRIORITY PosixThreadFactory::Impl::getPriority()
+    const {
   return priority_;
 }
 
@@ -300,7 +301,7 @@ PosixThreadFactory::PRIORITY PosixThreadFactory::Impl::getPriority() const {
  *  XXX
  *  Need to handle incremental priorities properly.
  */
-void PosixThreadFactory::Impl::setPriority(PRIORITY value) {
+void PosixThreadFactory::Impl::setPriority(THREAD_PRIORITY value) {
   priority_ = value;
 }
 
@@ -319,7 +320,7 @@ Thread::id_t PosixThreadFactory::Impl::getCurrentThreadId() const {
 
 PosixThreadFactory::PosixThreadFactory(
     POLICY policy,
-    PRIORITY priority,
+    THREAD_PRIORITY priority,
     int stackSize,
     bool detached)
     : impl_(new PosixThreadFactory::Impl(
@@ -354,11 +355,12 @@ void PosixThreadFactory::setStackSize(int value) {
   impl_->setStackSize(value);
 }
 
-PosixThreadFactory::PRIORITY PosixThreadFactory::getPriority() const {
+PosixThreadFactory::THREAD_PRIORITY PosixThreadFactory::getPriority() const {
   return impl_->getPriority();
 }
 
-void PosixThreadFactory::setPriority(PosixThreadFactory::PRIORITY value) {
+void PosixThreadFactory::setPriority(
+    PosixThreadFactory::THREAD_PRIORITY value) {
   impl_->setPriority(value);
 }
 

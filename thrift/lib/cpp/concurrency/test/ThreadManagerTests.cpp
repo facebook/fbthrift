@@ -591,7 +591,7 @@ class FailThreadFactory : public PosixThreadFactory {
    public:
     FakeImpl(
         POLICY policy,
-        PosixThreadFactory::PRIORITY priority,
+        PosixThreadFactory::THREAD_PRIORITY priority,
         int stackSize,
         DetachState detached)
         : Impl(policy, priority, stackSize, detached) {}
@@ -613,7 +613,7 @@ class FailThreadFactory : public PosixThreadFactory {
 
   explicit FailThreadFactory(
       POLICY /*policy*/ = kDefaultPolicy,
-      PRIORITY /*priority*/ = kDefaultPriority,
+      THREAD_PRIORITY /*priority*/ = kDefaultPriority,
       int /*stackSize*/ = kDefaultStackSizeMB,
       bool detached = true) {
     impl_ = std::make_shared<FailThreadFactory::FakeImpl>(
@@ -699,7 +699,7 @@ TEST_F(ThreadManagerTest, ObserverAssignedAfterStart) {
 }
 
 TEST_F(ThreadManagerTest, PosixThreadFactoryPriority) {
-  auto getNiceValue = [](PosixThreadFactory::PRIORITY prio) -> int {
+  auto getNiceValue = [](PosixThreadFactory::THREAD_PRIORITY prio) -> int {
     PosixThreadFactory factory(PosixThreadFactory::OTHER, prio);
     factory.setDetached(false);
     int result = 0;

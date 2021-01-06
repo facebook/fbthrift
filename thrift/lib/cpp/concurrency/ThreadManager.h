@@ -526,7 +526,7 @@ class SimpleThreadManager : public ThreadManager,
 };
 
 inline std::shared_ptr<ThreadFactory> Factory(
-    PosixThreadFactory::PRIORITY prio) {
+    PosixThreadFactory::THREAD_PRIORITY prio) {
   return std::make_shared<PosixThreadFactory>(PosixThreadFactory::OTHER, prio);
 }
 
