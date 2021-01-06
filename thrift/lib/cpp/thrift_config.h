@@ -17,11 +17,6 @@
 #ifndef _LIB_CPP_THRIFT_CONFIG_H
 #define _LIB_CPP_THRIFT_CONFIG_H 1
 
-/* Possible value for SIGNED_RIGHT_SHIFT_IS */
-#ifndef THRIFT_ARITHMETIC_RIGHT_SHIFT
-#define THRIFT_ARITHMETIC_RIGHT_SHIFT 1
-#endif
-
 /* Define to 1 if you have the `clock_gettime' function. */
 #if defined(__linux__) || defined(__FreeBSD__)
 #ifndef THRIFT_HAVE_CLOCK_GETTIME
@@ -47,12 +42,6 @@
 /* Define to 1 if you have the `sched_get_priority_min' function. */
 #ifndef THRIFT_HAVE_SCHED_GET_PRIORITY_MIN
 #define THRIFT_HAVE_SCHED_GET_PRIORITY_MIN 1
-#endif
-
-/* Indicates the effect of the right shift operator on negative signed
-   integers */
-#ifndef THRIFT_SIGNED_RIGHT_SHIFT_IS
-#define THRIFT_SIGNED_RIGHT_SHIFT_IS 1
 #endif
 
 /* Version number of package */

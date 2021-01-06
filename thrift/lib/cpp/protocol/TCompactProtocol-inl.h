@@ -19,7 +19,6 @@
 
 #include <folly/Conv.h>
 #include <folly/Likely.h>
-#include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
 #include <limits>
 
@@ -30,14 +29,9 @@
  * If anyone encounters this error, we can try to figure out the best
  * way to implement an arithmetic right shift on their platform.
  */
-#if !defined(THRIFT_SIGNED_RIGHT_SHIFT_IS) || \
-    !defined(THRIFT_ARITHMETIC_RIGHT_SHIFT)
-#error "Unable to determine the behavior of a signed right shift"
-#endif
-#if THRIFT_SIGNED_RIGHT_SHIFT_IS != THRIFT_ARITHMETIC_RIGHT_SHIFT
-#error \
-    "TCompactProtocol currently only works if a signed right shift is arithmetic"
-#endif
+static_assert(
+    (-1 >> 1) == -1,
+    "TCompactProtocol requires arithmetic right shift");
 
 namespace apache {
 namespace thrift {
