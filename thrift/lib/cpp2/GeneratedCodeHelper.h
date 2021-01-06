@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp2/detail/meta.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+#include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 
 #if FOLLY_HAS_COROUTINES
@@ -250,10 +251,11 @@ struct IsSetHelper<true, count> {
 
 } // namespace detail
 
-template <int16_t Fid, protocol::TType Ttype, typename T>
+template <int16_t Fid, typename TC, typename T>
 struct FieldData {
   static const constexpr int16_t fid = Fid;
-  static const constexpr protocol::TType ttype = Ttype;
+  static const constexpr protocol::TType ttype = protocol_type_v<TC, T>;
+  typedef TC type_class;
   typedef T type;
   typedef typename std::remove_pointer<T>::type ref_type;
   T value;

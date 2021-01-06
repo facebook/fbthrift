@@ -13,11 +13,11 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> Raiser_doBland_pargs;
 typedef apache::thrift::ThriftPresult<true> Raiser_doBland_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_doRaise_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_doRaise_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::Banal>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure,  ::cpp2::Fiery>, apache::thrift::FieldData<3, ::apache::thrift::type_class::structure,  ::cpp2::Serious>> Raiser_doRaise_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get200_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>> Raiser_get200_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>> Raiser_get200_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get500_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_get500_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::Fiery>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure,  ::cpp2::Banal>, apache::thrift::FieldData<3, ::apache::thrift::type_class::structure,  ::cpp2::Serious>> Raiser_get500_presult;
 
 template <typename Protocol_>
 void RaiserAsyncClient::doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {

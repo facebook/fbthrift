@@ -205,18 +205,18 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_foo(::apach
 
 
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_frobnicate_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>> MyService_MyInteraction_frobnicate_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> MyService_MyInteraction_frobnicate_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_ping_pargs;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_truthify_pargs;
 typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>, 
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_BOOL, bool*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>>
     > MyService_MyInteraction_truthify_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_encode_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_SET, ::std::set<float>*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>>
     > MyService_MyInteraction_encode_presult;
 
 template <typename Protocol_>
@@ -584,18 +584,18 @@ apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::s
 
 
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_frobnicate_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>> MyService_MyInteractionFast_frobnicate_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, int32_t*>> MyService_MyInteractionFast_frobnicate_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_ping_pargs;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_truthify_pargs;
 typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<true>, 
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_BOOL, bool*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>>
     > MyService_MyInteractionFast_truthify_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteractionFast_encode_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_SET, ::std::set<float>*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::std::string*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>>
     > MyService_MyInteractionFast_encode_presult;
 
 template <typename Protocol_>

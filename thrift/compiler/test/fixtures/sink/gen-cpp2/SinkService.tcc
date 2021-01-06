@@ -14,44 +14,44 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> SinkService_method_pargs;
 typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::SinkPayload*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::FinalResponse*>>
     > SinkService_method_presult;
 typedef apache::thrift::ThriftPresult<false> SinkService_methodAndReponse_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::InitialResponse*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::InitialResponse*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::SinkPayload*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::FinalResponse*>>
     > SinkService_methodAndReponse_presult;
 typedef apache::thrift::ThriftPresult<false> SinkService_methodThrow_pargs;
 typedef apache::thrift::ThriftPResultSink<
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::InitialException>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::InitialException>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::SinkPayload*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::FinalResponse*>>
     > SinkService_methodThrow_presult;
 typedef apache::thrift::ThriftPresult<false> SinkService_methodSinkThrow_pargs;
 typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkException1>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::SinkPayload*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::SinkException1>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::FinalResponse*>>
     > SinkService_methodSinkThrow_presult;
 typedef apache::thrift::ThriftPresult<false> SinkService_methodFinalThrow_pargs;
 typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkException2>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::SinkPayload*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::FinalResponse*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::SinkException2>>
     > SinkService_methodFinalThrow_presult;
 typedef apache::thrift::ThriftPresult<false> SinkService_methodBothThrow_pargs;
 typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkException1>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkException2>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::SinkPayload*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::SinkException1>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::FinalResponse*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure,  ::cpp2::SinkException2>>
     > SinkService_methodBothThrow_presult;
 typedef apache::thrift::ThriftPresult<false> SinkService_methodFast_pargs;
 typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
-    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::SinkPayload*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure,  ::cpp2::FinalResponse*>>
     > SinkService_methodFast_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::setUpAndProcess_method(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
