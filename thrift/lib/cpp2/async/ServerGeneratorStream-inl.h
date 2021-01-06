@@ -103,7 +103,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                     --credits;
                   }
                 } else {
-                  stream->publish(encode(folly::Try<T>(std::move(*next))));
+                  stream->publish(encode(std::move(next)));
                   --credits;
                 }
                 continue;
