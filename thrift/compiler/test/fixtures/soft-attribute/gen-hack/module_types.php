@@ -46,9 +46,9 @@ class Foo implements \IThriftStruct {
   public string $b;
 
   <<__Rx>>
-  public function __construct(<<__Soft>> KeyedContainer<string, mixed> $vals = dict[]) {
-    $this->a = (int)(idx($vals, 'a') ?? 0);
-    $this->b = (string)(idx($vals, 'b') ?? '');
+  public function __construct(?int $a = null, ?string $b = null  ) {
+    $this->a = $a ?? 0;
+    $this->b = $b ?? '';
   }
 
   <<__Rx, __MutableReturn>>
@@ -59,16 +59,19 @@ class Foo implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'a' => Shapes::idx($shape, 'a'),
-        'b' => Shapes::idx($shape, 'b'),
-      },
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(<<__Soft>> KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'a'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'b'),
+    );
   }
 
   public function getName(): string {

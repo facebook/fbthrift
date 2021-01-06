@@ -92,17 +92,11 @@ class Foo implements \IThriftStruct {
   public ?bool $d;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->a = idx($vals, 'a');
-    if (idx($vals, 'b') !== null) {
-      /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->b = $vals['b'];
-    }
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->c = idx($vals, 'c') ?? 7;
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->d = idx($vals, 'd') ?? false;
+  public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  ) {
+    $this->a = $a;
+    $this->b = $b;
+    $this->c = $c ?? 7;
+    $this->d = $d ?? false;
   }
 
   <<__Rx, __MutableReturn>>
@@ -113,18 +107,25 @@ class Foo implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'a' => Shapes::idx($shape, 'a'),
-        'b' => Shapes::idx($shape, 'b'),
-        'c' => Shapes::idx($shape, 'c'),
-        'd' => Shapes::idx($shape, 'd'),
-      },
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
+      Shapes::idx($shape, 'c'),
+      Shapes::idx($shape, 'd'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'a'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'b'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'c'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'd'),
+    );
   }
 
   public function getName(): string {
@@ -209,14 +210,12 @@ class Baz extends \TException implements \IThriftStruct {
   public int $code;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null  ) {
     parent::__construct();
-    $this->message = (string)(idx($vals, 'message') ?? '');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->some_field = idx($vals, 'some_field');
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->some_container = idx($vals, 'some_container');
-    $this->code = (int)(idx($vals, 'code') ?? 0);
+    $this->message = $message ?? '';
+    $this->some_field = $some_field;
+    $this->some_container = $some_container;
+    $this->code = $code ?? 0;
   }
 
   <<__Rx, __MutableReturn>>
@@ -227,18 +226,25 @@ class Baz extends \TException implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'message' => Shapes::idx($shape, 'message'),
-        'some_field' => Shapes::idx($shape, 'some_field'),
-        'some_container' => Shapes::idx($shape, 'some_container'),
-        'code' => Shapes::idx($shape, 'code'),
-      },
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'some_field'),
+      Shapes::idx($shape, 'some_container'),
+      Shapes::idx($shape, 'code'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'message'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'some_field'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'some_container'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'code'),
+    );
   }
 
   public function getName(): string {
@@ -284,9 +290,9 @@ class OptBaz extends \TException implements \IThriftStruct {
   public string $message;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(?string $message = null  ) {
     parent::__construct();
-    $this->message = (string)(idx($vals, 'message') ?? '');
+    $this->message = $message ?? '';
   }
 
   <<__Rx, __MutableReturn>>
@@ -297,15 +303,16 @@ class OptBaz extends \TException implements \IThriftStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'message' => Shapes::idx($shape, 'message'),
-      },
+      Shapes::idx($shape, 'message'),
     );
   }
 
   <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'message'),
+    );
   }
 
   public function getName(): string {

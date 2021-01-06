@@ -190,22 +190,14 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets;
 
   <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
-    $this->just_int = (int)(idx($vals, 'just_int') ?? 0);
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->list_of_strings = idx($vals, 'list_of_strings') ?? Vector {};
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->set_of_ints = idx($vals, 'set_of_ints') ?? darray[];
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_list_of_strings = idx($vals, 'map_of_list_of_strings') ?? Map {};
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_set_of_strings = idx($vals, 'map_of_set_of_strings') ?? Map {};
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_strings_to_map_of_string_ints = idx($vals, 'map_of_strings_to_map_of_string_ints') ?? Map {};
-    if (idx($vals, 'optional_map_of_map_of_sets') !== null) {
-      /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->optional_map_of_map_of_sets = idx($vals, 'optional_map_of_map_of_sets');
-    }
+  public function __construct(?int $just_int = null, ?Vector<string> $list_of_strings = null, ?darray<int, bool> $set_of_ints = null, ?Map<string, Vector<string>> $map_of_list_of_strings = null, ?Map<string, darray<string, bool>> $map_of_set_of_strings = null, ?Map<string, Map<string, int>> $map_of_strings_to_map_of_string_ints = null, ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets = null  ) {
+    $this->just_int = $just_int ?? 0;
+    $this->list_of_strings = $list_of_strings ?? Vector {};
+    $this->set_of_ints = $set_of_ints ?? darray[];
+    $this->map_of_list_of_strings = $map_of_list_of_strings ?? Map {};
+    $this->map_of_set_of_strings = $map_of_set_of_strings ?? Map {};
+    $this->map_of_strings_to_map_of_string_ints = $map_of_strings_to_map_of_string_ints ?? Map {};
+    $this->optional_map_of_map_of_sets = $optional_map_of_map_of_sets;
   }
 
   <<__Rx, __MutableReturn>>
@@ -216,21 +208,14 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
-      Map {
-        'just_int' => Shapes::idx($shape, 'just_int'),
-        'list_of_strings' => Shapes::idx($shape, 'list_of_strings'),
-        'set_of_ints' => Shapes::idx($shape, 'set_of_ints'),
-        'map_of_list_of_strings' => Shapes::idx($shape, 'map_of_list_of_strings'),
-        'map_of_set_of_strings' => Shapes::idx($shape, 'map_of_set_of_strings'),
-        'map_of_strings_to_map_of_string_ints' => Shapes::idx($shape, 'map_of_strings_to_map_of_string_ints'),
-        'optional_map_of_map_of_sets' => Shapes::idx($shape, 'optional_map_of_map_of_sets'),
-      },
+      Shapes::idx($shape, 'just_int'),
+      Shapes::idx($shape, 'list_of_strings'),
+      Shapes::idx($shape, 'set_of_ints'),
+      Shapes::idx($shape, 'map_of_list_of_strings'),
+      Shapes::idx($shape, 'map_of_set_of_strings'),
+      Shapes::idx($shape, 'map_of_strings_to_map_of_string_ints'),
+      Shapes::idx($shape, 'optional_map_of_map_of_sets'),
     );
-  }
-
-  <<__Rx, __MutableReturn>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
-    return new static($map);
   }
 
   public function getName(): string {
@@ -248,21 +233,19 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape): this {
     return new static(
-      Map {
-        'just_int' => $shape['just_int'],
-        'list_of_strings' => (new Vector($shape['list_of_strings'])),
-        'set_of_ints' => $shape['set_of_ints'],
-        'map_of_list_of_strings' => (new Map($shape['map_of_list_of_strings']))->map(
-          $val0 ==> (new Vector($val0)),
-        ),
-        'map_of_set_of_strings' => (new Map($shape['map_of_set_of_strings'])),
-        'map_of_strings_to_map_of_string_ints' => (new Map($shape['map_of_strings_to_map_of_string_ints']))->map(
-          $val1 ==> (new Map($val1)),
-        ),
-        'optional_map_of_map_of_sets' => Shapes::idx($shape, 'optional_map_of_map_of_sets') === null ? null : ((new Map($shape['optional_map_of_map_of_sets']))->map(
-          $val2 ==> (new Map($val2)),
-        )),
-      }
+      $shape['just_int'],
+      (new Vector($shape['list_of_strings'])),
+      $shape['set_of_ints'],
+      (new Map($shape['map_of_list_of_strings']))->map(
+        $val0 ==> (new Vector($val0)),
+      ),
+      (new Map($shape['map_of_set_of_strings'])),
+      (new Map($shape['map_of_strings_to_map_of_string_ints']))->map(
+        $val1 ==> (new Map($val1)),
+      ),
+      Shapes::idx($shape, 'optional_map_of_map_of_sets') === null ? null : ((new Map($shape['optional_map_of_map_of_sets']))->map(
+        $val2 ==> (new Map($val2)),
+      )),
     );
   }
 

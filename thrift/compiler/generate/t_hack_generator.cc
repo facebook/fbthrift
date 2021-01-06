@@ -52,7 +52,6 @@ class t_hack_generator : public t_oop_generator {
     strict_types_ = option_is_specified(parsed_options, "stricttypes");
     arraysets_ = option_is_specified(parsed_options, "arraysets");
     no_nullables_ = option_is_specified(parsed_options, "nonullables");
-    map_construct_ = option_is_specified(parsed_options, "mapconstruct");
     from_map_construct_ =
         option_is_specified(parsed_options, "frommap_construct");
     struct_trait_ = option_is_specified(parsed_options, "structtrait");
@@ -518,12 +517,6 @@ class t_hack_generator : public t_oop_generator {
    * nullable typed
    */
   bool no_nullables_;
-
-  /**
-   * True if struct constructors should accept arrays/Maps rather than their
-   * fields
-   */
-  bool map_construct_;
 
   /**
    * True if struct should generate fromMap_DEPRECATED method with a semantic
@@ -1803,10 +1796,6 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent_up();
   indent(out) << "return new static(\n";
   indent_up();
-  if (map_construct_) {
-    indent(out) << "Map {\n";
-    indent_up();
-  }
 
   const vector<t_field*>& members = tstruct->get_members();
   t_name_generator namer;
@@ -1829,9 +1818,6 @@ void t_hack_generator::generate_php_struct_shape_methods(
 
     stringstream val;
     indent(val);
-    if (map_construct_) {
-      val << "'" << member->get_name() << "' => ";
-    }
 
     if (tstruct->is_union() || nullable) {
       val << "Shapes::idx($shape, '" << member->get_name()
@@ -1958,10 +1944,6 @@ void t_hack_generator::generate_php_struct_shape_methods(
     out << val.str();
   }
   indent_down();
-  if (map_construct_) {
-    indent(out) << "}\n";
-    indent_down();
-  }
   indent(out) << ");\n";
   indent_down();
   indent(out) << "}\n";
@@ -2395,30 +2377,17 @@ void t_hack_generator::_generate_php_struct_definition(
 
   generate_php_struct_construction_attributes(out, /*is_constructor=*/true);
   out << indent() << "public function __construct(";
-  if (map_construct_) {
-    if (strict_types_) {
-      // Generate constructor from Map
-      out << (const_collections_ ? "Const" : "")
-          << "Map<string, mixed> $vals = Map {}) {\n";
-    } else {
-      // Generate constructor from KeyedContainer
-      out << (soft_attribute_ ? "<<__Soft>> " : "@")
-          << "KeyedContainer<string, mixed> $vals = " << array_keyword_
-          << "[]) {\n";
+  bool first = true;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    if (!first) {
+      out << ", ";
     }
-  } else {
-    bool first = true;
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      if (!first) {
-        out << ", ";
-      }
-      t_type* t = (*m_iter)->get_type()->get_true_type();
-      out << "?" << type_to_typehint(t) << " $" << (*m_iter)->get_name()
-          << " = null";
-      first = false;
-    }
-    out << indent() << ") {\n";
+    t_type* t = (*m_iter)->get_type()->get_true_type();
+    out << "?" << type_to_typehint(t) << " $" << (*m_iter)->get_name()
+        << " = null";
+    first = false;
   }
+  out << indent() << ") {\n";
   indent_up();
 
   if (is_exception) {
@@ -2457,92 +2426,31 @@ void t_hack_generator::_generate_php_struct_definition(
       dval = render_default_value(t);
     }
 
-    if (map_construct_) {
-      string cast;
-      if (nullable_everything_ &&
-          !(is_exception && is_base_exception_property(*m_iter))) {
-        cast = "";
-      } else {
-        cast = type_to_cast(t);
-      }
-
-      if (strict_types_) {
-        if (t->is_container() || t->is_enum()) {
-          out << indent()
-              << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
-        }
-        out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
-            << (cast != "" && dval != "null" ? "(" : "") << "$vals->get('"
-            << (*m_iter)->get_name() << "')"
-            << (dval != "null" ? " ?? " + dval : "")
-            << (cast != "" && dval != "null" ? ")" : "") << ";\n";
-      } else {
-        // TODO (partisan): This can probably be simplified to optional field
-        // being directly assigned the idx with no existance check at all. It's
-        // important to check corner cases though.
-        bool needs_optional_check = tstruct->is_union() ||
-            ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
-             (*m_iter)->get_value() == nullptr &&
-             !(is_exception && is_base_exception_property(*m_iter)));
-
-        if (needs_optional_check) {
-          out << indent() << "if (idx($vals, '" << (*m_iter)->get_name()
-              << "') !== null) {\n";
-          indent_up();
-        }
-
-        if (is_exception && (*m_iter)->get_name() == "code" && t->is_enum()) {
-          out << indent()
-              << "/* HH_FIXME[4110] exposed by decl fixme scope refinement */\n";
-        } else if (cast == "") {
-          out << indent()
-              << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
-        }
-        out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
-            << (cast != "" && dval != "null" ? "(" : "")
-            << (needs_optional_check && dval == "null" ? "$vals['"
-                                                       : "idx($vals, '")
-            << (*m_iter)->get_name() << "'"
-            << (needs_optional_check && dval == "null" ? "]" : ")") +
-                (!needs_optional_check && dval != "null" ? " ?? " + dval : "")
-            << (cast != "" && dval != "null" ? ")" : "") << ";\n";
-        if (tstruct->is_union()) {
-          out << indent()
-              << "$this->_type = " << union_field_to_enum(tstruct, *m_iter)
-              << ";\n";
-        }
-        if (needs_optional_check) {
-          indent_down();
-          out << indent() << "}\n";
-        }
-      }
-    } else {
-      // result structs only contain fields: success and e.
-      // success is whatever type the method returns, but must be nullable
-      // regardless, since if there is an exception we expect it to be null
-      // TODO(ckwalsh) Extract this logic into a helper function
-      bool nullable = !(is_exception && is_base_exception_property(*m_iter)) &&
-          (dval == "null" || is_result ||
-           ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
-            (*m_iter)->get_value() == nullptr));
-      string name = (*m_iter)->get_name();
-      bool need_enum_code_fixme = is_exception && name == "code" &&
-          t->is_enum() && !enum_transparenttype_;
-      if (tstruct->is_union()) {
-        // Capture value from constructor and update _type field
-        out << indent() << "if ($" << name << " !== null) {\n";
-      }
-      if (need_enum_code_fixme) {
-        out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
-      }
-      out << indent() << (tstruct->is_union() ? "  " : "") << "$this->" << name
-          << " = $" << name << (!nullable ? " ?? " + dval : "") << ";\n";
-      if (tstruct->is_union()) {
-        out << indent()
-            << "  $this->_type = " << union_field_to_enum(tstruct, *m_iter)
-            << ";\n"
-            << indent() << "}\n";
-      }
+    // result structs only contain fields: success and e.
+    // success is whatever type the method returns, but must be nullable
+    // regardless, since if there is an exception we expect it to be null
+    // TODO(ckwalsh) Extract this logic into a helper function
+    bool nullable = !(is_exception && is_base_exception_property(*m_iter)) &&
+        (dval == "null" || is_result ||
+          ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
+          (*m_iter)->get_value() == nullptr));
+    string name = (*m_iter)->get_name();
+    bool need_enum_code_fixme = is_exception && name == "code" &&
+        t->is_enum() && !enum_transparenttype_;
+    if (tstruct->is_union()) {
+      // Capture value from constructor and update _type field
+      out << indent() << "if ($" << name << " !== null) {\n";
+    }
+    if (need_enum_code_fixme) {
+      out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+    }
+    out << indent() << (tstruct->is_union() ? "  " : "") << "$this->" << name
+        << " = $" << name << (!nullable ? " ?? " + dval : "") << ";\n";
+    if (tstruct->is_union()) {
+      out << indent()
+          << "  $this->_type = " << union_field_to_enum(tstruct, *m_iter)
+          << ";\n"
+          << indent() << "}\n";
     }
   }
 
@@ -2559,8 +2467,7 @@ void t_hack_generator::_generate_php_struct_definition(
   generate_php_struct_from_shape(out, tstruct);
   out << "\n";
 
-  // TODO (partisan): Remove map_construct_ when the migration is completed.
-  if (from_map_construct_ || map_construct_) {
+  if (from_map_construct_) {
     generate_php_struct_from_map(out, tstruct);
     out << "\n";
   }
@@ -2638,20 +2545,11 @@ void t_hack_generator::generate_php_struct_from_shape(
   indent_up();
   out << indent() << "return new static(\n";
   indent_up();
-  if (map_construct_) {
-    out << indent() << "Map {\n";
-    indent_up();
-  }
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string name = (*m_iter)->get_name();
-    out << indent() << (map_construct_ ? "'" + name + "' => " : "")
-        << "Shapes::idx($shape, '" << name << "'),\n";
-  }
-  if (map_construct_) {
-    indent_down();
-    out << indent() << "},\n";
+    out << indent() << "Shapes::idx($shape, '" << name << "'),\n";
   }
   indent_down();
   out << indent() << ");\n";
@@ -2674,19 +2572,15 @@ void t_hack_generator::generate_php_struct_from_map(
   }
   out << "): this {\n";
   indent_up();
-  if (map_construct_) {
-    out << indent() << "return new static($map);\n";
-  } else {
-    out << indent() << "return new static(\n";
-    indent_up();
-    for (const auto& tfield : tstruct->get_members()) {
-      out << indent()
-          << "/* HH_FIXME[4110] For backwards compatibility with map's mixed values. */\n";
-      out << indent() << "idx($map, '" << tfield->get_name() << "'),\n";
-    }
-    indent_down();
-    out << indent() << ");\n";
+  out << indent() << "return new static(\n";
+  indent_up();
+  for (const auto& tfield : tstruct->get_members()) {
+    out << indent()
+        << "/* HH_FIXME[4110] For backwards compatibility with map's mixed values. */\n";
+    out << indent() << "idx($map, '" << tfield->get_name() << "'),\n";
   }
+  indent_down();
+  out << indent() << ");\n";
   indent_down();
   out << indent() << "}\n";
 }
@@ -4392,14 +4286,13 @@ THRIFT_REGISTER_GENERATOR(
     "    strict           Generate strict hack header.\n"
     "    arraysets        Use legacy arrays for sets rather than objects.\n"
     "    nonullables      Instantiate struct fields within structs, rather than nullable\n"
-    "    mapconstruct     Struct constructors accept arrays/Maps rather than their fields\n"
     "    structtrait      Add 'use [StructName]Trait;' to generated classes\n"
     "    shapes           Generate Shape definitions for structs\n"
     "    protected_unions Generate protected members for thrift unions\n"
     "    shape_arraykeys  When generating Shape definition for structs:\n"
     "                        replace array<string, TValue> with array<arraykey, TValue>\n"
     "    shapes_allow_unknown_fields Allow unknown fields and implicit subtyping for shapes \n"
-    "    frommap_construct Generate fromMap_DEPRECATED method to migrate from mapconstruct.\n"
+    "    frommap_construct Generate fromMap_DEPRECATED method.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
     "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");
