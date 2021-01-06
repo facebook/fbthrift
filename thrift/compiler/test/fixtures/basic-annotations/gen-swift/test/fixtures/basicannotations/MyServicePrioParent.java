@@ -75,4 +75,10 @@ public interface MyServicePrioParent extends java.io.Closeable {
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
+
+    interface Reactive extends Closeable {
+        @java.lang.Override void close();
+        reactor.core.publisher.Mono<Void> ping();
+        reactor.core.publisher.Mono<Void> pong();
+    }
 }

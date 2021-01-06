@@ -49,4 +49,9 @@ public interface MyLeaf extends java.io.Closeable, test.fixtures.inheritance.MyN
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
+
+    interface Reactive extends Closeable, test.fixtures.inheritance.MyNode.Reactive {
+        @java.lang.Override void close();
+        reactor.core.publisher.Mono<Void> doLeaf();
+    }
 }

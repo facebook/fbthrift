@@ -183,4 +183,13 @@ public interface NestedContainers extends java.io.Closeable {
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
+
+    interface Reactive extends Closeable {
+        @java.lang.Override void close();
+        reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo);
+        reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo);
+        reactor.core.publisher.Mono<Void> listMap(final List<Map<Integer, Integer>> foo);
+        reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo);
+        reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
+    }
 }

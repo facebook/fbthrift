@@ -24,4 +24,8 @@ public interface PubSubStreamingService extends java.io.Closeable {
 
     }
     @java.lang.Override void close();
+
+    interface Reactive extends Closeable {
+        @java.lang.Override void close();
+    }
 }
