@@ -2432,7 +2432,7 @@ void t_hack_generator::_generate_php_struct_definition(
     // TODO(ckwalsh) Extract this logic into a helper function
     bool nullable = !(is_exception && is_base_exception_property(*m_iter)) &&
         (dval == "null" || is_result ||
-          ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
+         ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
           (*m_iter)->get_value() == nullptr));
     string name = (*m_iter)->get_name();
     bool need_enum_code_fixme = is_exception && name == "code" &&
