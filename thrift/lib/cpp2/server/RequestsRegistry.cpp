@@ -95,6 +95,10 @@ RequestsRegistry::~RequestsRegistry() {
   return fmt::format("{:016x}", static_cast<uintptr_t>(rootid));
 }
 
+bool RequestsRegistry::isThriftRootId(intptr_t rootid) noexcept {
+  return rootid & 0x1;
+}
+
 intptr_t RequestsRegistry::genRootId() {
   // Ensure rootid's LSB is always 1.
   // This is to prevent any collision with rootids on folly::RequestsContext() -

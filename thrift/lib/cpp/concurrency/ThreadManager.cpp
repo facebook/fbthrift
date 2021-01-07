@@ -857,7 +857,8 @@ void ThreadManager::Impl::add(
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration}, qpriority);
   if (queueObservers_) {
-    task->queueObserverPayload() = queueObservers_->at(qpriority)->onEnqueued();
+    task->queueObserverPayload() =
+        queueObservers_->at(qpriority)->onEnqueued(task->getContext().get());
   }
   tasks_.at_priority(qpriority).enqueue(std::move(task));
 

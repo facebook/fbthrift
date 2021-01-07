@@ -239,6 +239,7 @@ class RequestsRegistry {
   }
 
   intptr_t genRootId();
+  static bool isThriftRootId(intptr_t) noexcept;
   static std::string getRequestId(intptr_t rootid);
 
   using ActiveRequestDebugStubList =
