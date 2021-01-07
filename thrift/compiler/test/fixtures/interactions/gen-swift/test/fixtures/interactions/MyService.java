@@ -49,9 +49,4 @@ public interface MyService extends java.io.Closeable {
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
-
-    interface Reactive extends Closeable {
-        @java.lang.Override void close();
-        reactor.core.publisher.Mono<Void> foo();
-    }
 }
