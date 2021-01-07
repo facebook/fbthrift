@@ -19,7 +19,6 @@
 
 #include <folly/Conv.h>
 #include <folly/init/Init.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/demo/gen-cpp2/flat_config_constants.h>
 #include <thrift/lib/cpp2/reflection/demo/gen-cpp2/flat_config_fatal_types.h>
 #include <thrift/lib/cpp2/reflection/demo/gen-cpp2/legacy_config_constants.h>

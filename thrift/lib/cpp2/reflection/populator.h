@@ -30,7 +30,6 @@
 #include <folly/Traits.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp2/Thrift.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 #include <thrift/lib/cpp2/reflection/serializer.h>
 

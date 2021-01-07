@@ -21,7 +21,6 @@
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
 #include <folly/String.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 
 namespace apache {
 namespace thrift {

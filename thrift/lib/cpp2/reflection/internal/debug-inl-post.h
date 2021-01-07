@@ -29,7 +29,6 @@
 #include <fatal/type/variant_traits.h>
 #include <folly/Conv.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 
 namespace apache {
 namespace thrift {

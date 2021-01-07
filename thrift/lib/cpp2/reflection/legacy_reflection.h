@@ -18,7 +18,6 @@
 
 #include <folly/FixedString.h>
 #include <folly/Traits.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/internal/legacy_reflection_type_id.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 #include <thrift/lib/thrift/gen-cpp2/reflection_types.h>

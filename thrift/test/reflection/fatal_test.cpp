@@ -16,7 +16,6 @@
 
 #include <thrift/test/reflection/gen-cpp2/reflection_fatal.h>
 
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
 #include <folly/portability/GTest.h>
