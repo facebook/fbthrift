@@ -2311,6 +2311,7 @@ TEST(ThriftServer, SocketQueueTimeout) {
   // Should use config instead of thrift flag
   baseServer->setSocketQueueTimeout(
       kBaselineTimeout, AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kBaselineTimeout);
 
   // Should use override instead of config
@@ -2327,5 +2328,6 @@ TEST(ThriftServer, SocketQueueTimeout) {
 
   // Should go back to using thrift flag instead of flag
   baseServer->setSocketQueueTimeout(folly::none, AttributeSource::BASELINE);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kDefaultTimeout);
 }
