@@ -249,20 +249,6 @@ class t_mstch_swift_generator : public t_mstch_generator {
           c[reactive_client_wrapper_id],
           "ReactiveClient",
           package_dir / reactive_client_filename);
-
-      // Generate RpcServerHandler
-      auto rpc_server_handler_filename = service_name + "RpcServerHandler.java";
-      const auto& rpc_server_handler_id =
-          id + service->get_name() + "RpcServerHandler";
-      if (!c.count(rpc_server_handler_id)) {
-        c[rpc_server_handler_id] =
-            generator->generate(service, generators_, cache_);
-      }
-
-      render_to_file(
-          c[rpc_server_handler_id],
-          "RpcServerHandler",
-          package_dir / rpc_server_handler_filename);
     }
   }
 
@@ -485,8 +471,6 @@ class mstch_swift_function : public mstch_function {
              &mstch_swift_function::get_nested_container_flag},
             {"function:setIsNested",
              &mstch_swift_function::set_nested_container_flag},
-            {"function:unsetIsNested",
-             &mstch_swift_function::unset_nested_container_flag},
         });
   }
 
@@ -507,10 +491,6 @@ class mstch_swift_function : public mstch_function {
   }
   mstch::node set_nested_container_flag() {
     isNestedContainerFlag = true;
-    return mstch::node();
-  }
-  mstch::node unset_nested_container_flag() {
-    isNestedContainerFlag = false;
     return mstch::node();
   }
   mstch::node increment_nested_depth() {
