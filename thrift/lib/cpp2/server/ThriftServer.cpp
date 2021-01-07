@@ -455,6 +455,11 @@ void ThriftServer::serve() {
   SCOPE_EXIT {
     this->cleanUp();
   };
+
+  auto sslContextConfigCallbackHandle = sslContextObserver_
+      ? getSSLCallbackHandle()
+      : folly::observer::CallbackHandle{};
+
   ServerInstrumentation::registerServer(*this);
   eventBaseManager_->getEventBase()->loopForever();
 }
@@ -799,6 +804,30 @@ ThriftServer::defaultNextProtocols() {
 
 folly::observer::Observer<bool> ThriftServer::enableStopTLS() {
   return THRIFT_FLAG_OBSERVE(server_enable_stoptls);
+}
+
+folly::observer::CallbackHandle ThriftServer::getSSLCallbackHandle() {
+  return sslContextObserver_->addCallback([&](auto ssl) {
+    if (sharedSSLContextManager_) {
+      sharedSSLContextManager_->updateSSLConfigAndReloadContexts(*ssl);
+    } else {
+      // "this" needed due to
+      // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67274
+      this->forEachWorker([&](wangle::Acceptor* acceptor) {
+        auto evb = acceptor->getEventBase();
+        if (!evb) {
+          return;
+        }
+        evb->runInEventBaseThread([acceptor, ssl] {
+          for (auto& sslContext : acceptor->getConfig().sslContextConfigs) {
+            sslContext = *ssl;
+          }
+          acceptor->resetSSLContextConfigs();
+        });
+      });
+    }
+    this->updateCertsToWatch();
+  });
 }
 } // namespace thrift
 } // namespace apache

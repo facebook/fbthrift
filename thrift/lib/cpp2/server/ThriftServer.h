@@ -83,8 +83,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   //! SSL context
   folly::Optional<folly::observer::Observer<wangle::SSLContextConfig>>
       sslContextObserver_;
-  folly::observer::CallbackHandle sslCallbackHandle_;
   folly::Optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
+  folly::observer::CallbackHandle getSSLCallbackHandle();
 
   folly::Optional<bool> reusePort_;
   folly::Optional<bool> enableTFO_;
@@ -374,22 +374,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           context.isDefault = true;
           return context;
         });
-    sslCallbackHandle_.cancel();
-    sslCallbackHandle_ = sslContextObserver_->addCallback([&](auto ssl) {
-      if (sharedSSLContextManager_) {
-        sharedSSLContextManager_->updateSSLConfigAndReloadContexts(*ssl);
-      } else {
-        // "this" needed due to
-        // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67274
-        this->forEachWorker([&](wangle::Acceptor* acceptor) {
-          for (auto& sslContext : acceptor->getConfig().sslContextConfigs) {
-            sslContext = *ssl;
-          }
-          acceptor->resetSSLContextConfigs();
-        });
-      }
-      this->updateCertsToWatch();
-    });
   }
 
   void setFizzConfig(wangle::FizzConfig config) {
