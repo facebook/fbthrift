@@ -122,7 +122,7 @@ class <%struct:name%>_struct_traits {
     using getter = __fbthrift_refl_impl::data_member_accessor<::apache::thrift::tag::<%field:cpp_name%>>;
     using field_ref_getter = ::apache::thrift::detail::invoke_reffer<::apache::thrift::tag::<%field:cpp_name%>>;
     <%/type:cpp_indirection?%><%/field:type%>
-    using type_class = <%#field:type%><%type:fatal_type_class%><%/field:type%>;
+    using type_class = <%#field:type%><%type:type_class%><%/field:type%>;
     using annotations = ::apache::thrift::reflected_annotations<__fbthrift_annotations::members::<%field:cpp_name%>>;
   };
   <%/struct:fields%>

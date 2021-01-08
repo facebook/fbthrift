@@ -453,7 +453,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_declare_hash", &mstch_cpp2_type::cpp_declare_hash},
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
-            {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
+            {"type:type_class", &mstch_cpp2_type::type_class},
             {"type:type_class_with_indirection",
              &mstch_cpp2_type::type_class_with_indirection},
             {"type:program_name", &mstch_cpp2_type::program_name},
@@ -572,7 +572,7 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node namespace_cpp2() {
     return t_mstch_cpp2_generator::get_namespace_array(type_->get_program());
   }
-  mstch::node fatal_type_class() {
+  mstch::node type_class() {
     return cpp2::get_gen_type_class(*resolved_type_);
   }
   mstch::node type_class_with_indirection() {

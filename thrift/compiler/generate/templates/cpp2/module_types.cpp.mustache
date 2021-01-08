@@ -220,7 +220,7 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         <%struct:name%>,
-        <%type:fatal_type_class%>,
+        <%type:type_class%>,
         <% > types/type%>>,
     "inconsistent use of json option");
 <%/type:transitively_refers_to_struct?%>
@@ -235,7 +235,7 @@ static_assert(
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         <%struct:name%>,
-        <%type:fatal_type_class%>,
+        <%type:type_class%>,
         <% > types/type%>>,
     "inconsistent use of nimble option");
 <%/type:transitively_refers_to_struct?%>

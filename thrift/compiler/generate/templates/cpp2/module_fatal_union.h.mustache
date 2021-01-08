@@ -113,7 +113,7 @@ class <%struct:name%>_variant_traits {
   struct __fbthrift_member_<%field:cpp_name%> {
     using name = __fbthrift_strings_<%program:name%>::<%field:cpp_name%>;
     static constexpr ::apache::thrift::field_id_t id = <%field:key%>;
-    using type_class = <%#field:type%><%type:fatal_type_class%><%/field:type%>;
+    using type_class = <%#field:type%><%type:type_class%><%/field:type%>;
     struct setter {
       template <typename... Args>
       decltype(auto) operator ()(<% > common/namespace_cpp2%><%struct:name%> &variant, Args &&...args) const {
