@@ -34,16 +34,6 @@
 #define THRIFT_HAVE_LIBSNAPPY 1
 #endif
 
-/* Define to 1 if you have the `sched_get_priority_max' function. */
-#ifndef THRIFT_HAVE_SCHED_GET_PRIORITY_MAX
-#define THRIFT_HAVE_SCHED_GET_PRIORITY_MAX 1
-#endif
-
-/* Define to 1 if you have the `sched_get_priority_min' function. */
-#ifndef THRIFT_HAVE_SCHED_GET_PRIORITY_MIN
-#define THRIFT_HAVE_SCHED_GET_PRIORITY_MIN 1
-#endif
-
 /* Version number of package */
 #ifndef THRIFT_VERSION
 #define THRIFT_VERSION "1.0"
