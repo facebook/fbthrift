@@ -20,8 +20,10 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <set>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <thrift/compiler/ast/base_types.h>
@@ -162,6 +164,8 @@ class t_hack_generator : public t_oop_generator {
   bool type_has_nested_struct(t_type* t);
   bool field_is_nullable(t_struct* tstruct, const t_field* field, string dval);
   void generate_php_struct_shape_methods(std::ofstream& out, t_struct* tstruct);
+
+  void generate_adapter_type_checks(ofstream& out, t_struct* tstruct);
 
   void generate_php_type_spec(std::ofstream& out, t_type* t);
   void generate_php_struct_spec(std::ofstream& out, t_struct* tstruct);
@@ -317,7 +321,8 @@ class t_hack_generator : public t_oop_generator {
       t_type* ttype,
       bool nullable = false,
       bool shape = false,
-      bool immutable_collections = false);
+      bool immutable_collections = false,
+      bool ignore_adapter = false);
   std::string type_to_param_typehint(t_type* ttype, bool nullable = false);
 
   bool is_type_arraykey(t_type* type);
@@ -2249,6 +2254,48 @@ std::string t_hack_generator::render_structured_annotations(
   return out.str();
 }
 
+void t_hack_generator::generate_adapter_type_checks(
+    ofstream& out,
+    t_struct* tstruct) {
+  // Adapter name -> original type of the field that the adapter is for.
+  set<pair<string, string>> adapter_types_;
+
+  std::function<void(t_type*)> collect_adapters_recursively = [&](t_type* t) {
+    // Check the adapter before resolving typedefs.
+    if (const auto adapter = get_hack_adapter(t)) {
+      adapter_types_.emplace(
+          *adapter,
+          type_to_typehint(t, false, false, false, /* ignore_adapter */ true));
+    }
+
+    t = t->get_true_type();
+    if (t->is_map()) {
+      collect_adapters_recursively(((t_map*)t)->get_key_type());
+      collect_adapters_recursively(((t_map*)t)->get_val_type());
+    } else if (t->is_list()) {
+      collect_adapters_recursively(((t_list*)t)->get_elem_type());
+    } else if (t->is_set()) {
+      collect_adapters_recursively(((t_set*)t)->get_elem_type());
+    }
+  };
+
+  for (const auto& m : tstruct->get_members()) {
+    collect_adapters_recursively(m->get_type());
+  }
+
+  if (adapter_types_.empty()) {
+    return;
+  }
+
+  indent(out) << "private static function __hackAdapterTypeChecks(): void {\n";
+  indent_up();
+  for (const auto& [adapter, type] : adapter_types_) {
+    indent(out) << "\\ThriftUtil::requireSameType<" << adapter
+                << "::TThriftType, " << type << ">();\n";
+  }
+  indent_down();
+  indent(out) << "}\n\n";
+}
 /**
  * Generates a struct definition for a thrift data type. This is nothing in PHP
  * where the objects are all just associative arrays (unless of course we
@@ -2567,7 +2614,9 @@ void t_hack_generator::_generate_php_struct_definition(
     generate_php_struct_shape_methods(out, tstruct);
   }
   generate_json_reader(out, tstruct);
+  generate_adapter_type_checks(out, tstruct);
   indent_down();
+
   out << indent() << "}\n\n";
 }
 
@@ -3283,10 +3332,13 @@ string t_hack_generator::type_to_typehint(
     t_type* ttype,
     bool nullable,
     bool shape,
-    bool immutable_collections) {
-  // Check the adapter before resolving typedefs.
-  if (const auto adapter = get_hack_adapter(ttype)) {
-    return *adapter + "::THackType";
+    bool immutable_collections,
+    bool ignore_adapter) {
+  if (!ignore_adapter) {
+    // Check the adapter before resolving typedefs.
+    if (const auto adapter = get_hack_adapter(ttype)) {
+      return *adapter + "::THackType";
+    }
   }
   ttype = ttype->get_true_type();
   immutable_collections = immutable_collections || const_collections_;

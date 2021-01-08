@@ -176,6 +176,14 @@ class Foo implements \IThriftStruct {
     );
   }
 
+  private static function __hackAdapterTypeChecks(): void {
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Set<string>>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Vector<\Adapter1::THackType>>();
+    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, \Adapter2::THackType>>();
+  }
+
 }
 
 /**
@@ -290,6 +298,10 @@ class Bar implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  private static function __hackAdapterTypeChecks(): void {
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, Foo>();
   }
 
 }
