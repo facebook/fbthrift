@@ -24,7 +24,7 @@ namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 namespace go thrift.conformance.test_value
 
-include "thrift/conformance/if/object.thrift"
+include "thrift/conformance/if/type.thrift"
 
 // A value defined via calls to a protocol implemenation.
 struct EncodeValue {
@@ -70,22 +70,22 @@ struct WriteStructBegin {
 
 struct WriteFieldBegin {
   1: string name;
-  2: object.BaseType type;
+  2: type.BaseType type;
   3: i16 id;
 }
 
 struct WriteMapBegin {
-  1: object.BaseType keyType;
-  2: object.BaseType valueType;
+  1: type.BaseType keyType;
+  2: type.BaseType valueType;
   3: i32 size;
 }
 
 struct WriteListBegin {
-  1: object.BaseType elemType;
+  1: type.BaseType elemType;
   2: i32 size;
 }
 
 struct WriteSetBegin {
-  1: object.BaseType elemType;
+  1: type.BaseType elemType;
   2: i32 size;
 }

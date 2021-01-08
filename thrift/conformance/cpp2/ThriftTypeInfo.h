@@ -19,7 +19,7 @@
 #include <initializer_list>
 
 #include <thrift/conformance/cpp2/UniversalType.h>
-#include <thrift/conformance/if/gen-cpp2/thrift_type_info_types.h>
+#include <thrift/conformance/if/gen-cpp2/type_types.h>
 #include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache::thrift::conformance {

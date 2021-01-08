@@ -29,7 +29,8 @@
 #include <folly/CPortability.h>
 #include <folly/String.h>
 #include <folly/Traits.h>
-#include <thrift/conformance/if/gen-cpp2/object_types.h>
+#include <thrift/conformance/if/gen-cpp2/type_fatal.h>
+#include <thrift/conformance/if/gen-cpp2/type_types.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 
 namespace apache::thrift::conformance::detail {

@@ -159,7 +159,7 @@ TEST(ThriftTypesTest, Enum) {
 
   using tag_t = type::enum_t<BaseType>;
   EXPECT_EQ(tag_t::kBaseType, BaseType::Enum);
-  EXPECT_EQ(tag_t::getName(), "object.BaseType");
+  EXPECT_EQ(tag_t::getName(), "type.BaseType");
   EXPECT_TRUE(is_concrete_type_v<tag_t>);
   IsSameType<tag_t::native_type, BaseType>();
   IsSameType<tag_t::native_types, detail::types<BaseType>>();

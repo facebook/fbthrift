@@ -21,17 +21,17 @@
 #include <folly/FBString.h>
 #include <folly/Range.h>
 
-#include <thrift/conformance/if/gen-cpp2/thrift_type_info_constants.h>
-#include <thrift/conformance/if/gen-cpp2/thrift_type_info_types.h>
+#include <thrift/conformance/if/gen-cpp2/type_constants.h>
+#include <thrift/conformance/if/gen-cpp2/type_types.h>
 
 namespace apache::thrift::conformance {
 
 using type_hash_size_t = int8_t;
 inline constexpr type_hash_size_t kDisableTypeHash = 0;
 inline constexpr type_hash_size_t kMinTypeHashBytes =
-    thrift_type_info_constants::minTypeHashBytes();
+    type_constants::minTypeHashBytes();
 inline constexpr type_hash_size_t kDefaultTypeHashBytes =
-    thrift_type_info_constants::defaultTypeHashBytes();
+    type_constants::defaultTypeHashBytes();
 
 // Validates that uri is a valid universal type uri of the form:
 // {domain}/{path}. For example: facebook.com/thrift/Value.
