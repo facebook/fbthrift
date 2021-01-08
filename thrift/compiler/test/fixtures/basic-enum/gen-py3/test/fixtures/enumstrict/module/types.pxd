@@ -91,8 +91,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
-    cdef object __field_myEnum
-    cdef object __field_myBigEnum
+    cdef object __fbthrift_cached_myEnum
+    cdef object __fbthrift_cached_myBigEnum
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])

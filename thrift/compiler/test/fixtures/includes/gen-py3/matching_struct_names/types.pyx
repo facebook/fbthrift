@@ -176,30 +176,30 @@ cdef class Combo(thrift.py3.types.Struct):
     @property
     def listOfOurMyStructLists(self):
 
-        if self.__field_listOfOurMyStructLists is None:
-            self.__field_listOfOurMyStructLists = List__List__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).listOfOurMyStructLists_ref().ref(), self._cpp_obj))
-        return self.__field_listOfOurMyStructLists
+        if self.__fbthrift_cached_listOfOurMyStructLists is None:
+            self.__fbthrift_cached_listOfOurMyStructLists = List__List__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).listOfOurMyStructLists_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_listOfOurMyStructLists
 
     @property
     def theirMyStructList(self):
 
-        if self.__field_theirMyStructList is None:
-            self.__field_theirMyStructList = List__module_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).theirMyStructList_ref().ref(), self._cpp_obj))
-        return self.__field_theirMyStructList
+        if self.__fbthrift_cached_theirMyStructList is None:
+            self.__fbthrift_cached_theirMyStructList = List__module_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).theirMyStructList_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_theirMyStructList
 
     @property
     def ourMyStructList(self):
 
-        if self.__field_ourMyStructList is None:
-            self.__field_ourMyStructList = List__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).ourMyStructList_ref().ref(), self._cpp_obj))
-        return self.__field_ourMyStructList
+        if self.__fbthrift_cached_ourMyStructList is None:
+            self.__fbthrift_cached_ourMyStructList = List__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).ourMyStructList_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_ourMyStructList
 
     @property
     def listOfTheirMyStructList(self):
 
-        if self.__field_listOfTheirMyStructList is None:
-            self.__field_listOfTheirMyStructList = List__List__module_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).listOfTheirMyStructList_ref().ref(), self._cpp_obj))
-        return self.__field_listOfTheirMyStructList
+        if self.__fbthrift_cached_listOfTheirMyStructList is None:
+            self.__fbthrift_cached_listOfTheirMyStructList = List__List__module_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).listOfTheirMyStructList_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_listOfTheirMyStructList
 
 
     def __hash__(Combo self):

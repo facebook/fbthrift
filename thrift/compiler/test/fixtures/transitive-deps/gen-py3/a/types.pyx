@@ -98,16 +98,16 @@ cdef class A(thrift.py3.types.Struct):
     @property
     def b(self):
 
-        if self.__field_b is None:
-            self.__field_b = List__List__c_C.create(__reference_shared_ptr(deref(self._cpp_obj).b_ref().ref(), self._cpp_obj))
-        return self.__field_b
+        if self.__fbthrift_cached_b is None:
+            self.__fbthrift_cached_b = List__List__c_C.create(__reference_shared_ptr(deref(self._cpp_obj).b_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_b
 
     @property
     def other(self):
 
-        if self.__field_other is None:
-            self.__field_other = List__c_C.create(__reference_shared_ptr(deref(self._cpp_obj).other_ref().ref(), self._cpp_obj))
-        return self.__field_other
+        if self.__fbthrift_cached_other is None:
+            self.__fbthrift_cached_other = List__c_C.create(__reference_shared_ptr(deref(self._cpp_obj).other_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_other
 
 
     def __hash__(A self):

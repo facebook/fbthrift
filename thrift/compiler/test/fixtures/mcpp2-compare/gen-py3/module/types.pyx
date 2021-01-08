@@ -586,16 +586,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyBinaryListField4(self):
 
-        if self.__field_MyBinaryListField4 is None:
-            self.__field_MyBinaryListField4 = List__binary.create(__reference_shared_ptr(deref(self._cpp_obj).MyBinaryListField4_ref().ref(), self._cpp_obj))
-        return self.__field_MyBinaryListField4
+        if self.__fbthrift_cached_MyBinaryListField4 is None:
+            self.__fbthrift_cached_MyBinaryListField4 = List__binary.create(__reference_shared_ptr(deref(self._cpp_obj).MyBinaryListField4_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_MyBinaryListField4
 
     @property
     def MyMapEnumAndInt(self):
 
-        if self.__field_MyMapEnumAndInt is None:
-            self.__field_MyMapEnumAndInt = Map__MyEnumA_string.create(__reference_shared_ptr(deref(self._cpp_obj).MyMapEnumAndInt_ref().ref(), self._cpp_obj))
-        return self.__field_MyMapEnumAndInt
+        if self.__fbthrift_cached_MyMapEnumAndInt is None:
+            self.__fbthrift_cached_MyMapEnumAndInt = Map__MyEnumA_string.create(__reference_shared_ptr(deref(self._cpp_obj).MyMapEnumAndInt_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_MyMapEnumAndInt
 
 
     def __hash__(MyStruct self):
@@ -1464,79 +1464,79 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     @property
     def exception_list(self):
 
-        if self.__field_exception_list is None:
-            self.__field_exception_list = List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).exception_list_ref().ref(), self._cpp_obj))
-        return self.__field_exception_list
+        if self.__fbthrift_cached_exception_list is None:
+            self.__fbthrift_cached_exception_list = List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).exception_list_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_exception_list
 
     @property
     def exception_set(self):
 
-        if self.__field_exception_set is None:
-            self.__field_exception_set = Set__i64.create(__reference_shared_ptr(deref(self._cpp_obj).exception_set_ref().ref(), self._cpp_obj))
-        return self.__field_exception_set
+        if self.__fbthrift_cached_exception_set is None:
+            self.__fbthrift_cached_exception_set = Set__i64.create(__reference_shared_ptr(deref(self._cpp_obj).exception_set_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_exception_set
 
     @property
     def exception_map(self):
 
-        if self.__field_exception_map is None:
-            self.__field_exception_map = Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).exception_map_ref().ref(), self._cpp_obj))
-        return self.__field_exception_map
+        if self.__fbthrift_cached_exception_map is None:
+            self.__fbthrift_cached_exception_map = Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).exception_map_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_exception_map
 
     @property
     def req_exception_map(self):
 
-        if self.__field_req_exception_map is None:
-            self.__field_req_exception_map = Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).req_exception_map_ref().ref(), self._cpp_obj))
-        return self.__field_req_exception_map
+        if self.__fbthrift_cached_req_exception_map is None:
+            self.__fbthrift_cached_req_exception_map = Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).req_exception_map_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_req_exception_map
 
     @property
     def enum_field(self):
 
-        if self.__field_enum_field is None:
-            self.__field_enum_field = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).enum_field_ref().value()))
-        return self.__field_enum_field
+        if self.__fbthrift_cached_enum_field is None:
+            self.__fbthrift_cached_enum_field = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).enum_field_ref().value()))
+        return self.__fbthrift_cached_enum_field
 
     @property
     def enum_container(self):
 
-        if self.__field_enum_container is None:
-            self.__field_enum_container = List__MyEnumA.create(__reference_shared_ptr(deref(self._cpp_obj).enum_container_ref().ref(), self._cpp_obj))
-        return self.__field_enum_container
+        if self.__fbthrift_cached_enum_container is None:
+            self.__fbthrift_cached_enum_container = List__MyEnumA.create(__reference_shared_ptr(deref(self._cpp_obj).enum_container_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_enum_container
 
     @property
     def a_struct(self):
 
-        if self.__field_a_struct is None:
-            self.__field_a_struct = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).a_struct_ref().ref(), self._cpp_obj))
-        return self.__field_a_struct
+        if self.__fbthrift_cached_a_struct is None:
+            self.__fbthrift_cached_a_struct = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).a_struct_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_a_struct
 
     @property
     def a_set_struct(self):
 
-        if self.__field_a_set_struct is None:
-            self.__field_a_set_struct = Set__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).a_set_struct_ref().ref(), self._cpp_obj))
-        return self.__field_a_set_struct
+        if self.__fbthrift_cached_a_set_struct is None:
+            self.__fbthrift_cached_a_set_struct = Set__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).a_set_struct_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_a_set_struct
 
     @property
     def a_union_list(self):
 
-        if self.__field_a_union_list is None:
-            self.__field_a_union_list = List__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).a_union_list_ref().ref(), self._cpp_obj))
-        return self.__field_a_union_list
+        if self.__fbthrift_cached_a_union_list is None:
+            self.__fbthrift_cached_a_union_list = List__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).a_union_list_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_a_union_list
 
     @property
     def union_typedef(self):
 
-        if self.__field_union_typedef is None:
-            self.__field_union_typedef = Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).union_typedef_ref().ref(), self._cpp_obj))
-        return self.__field_union_typedef
+        if self.__fbthrift_cached_union_typedef is None:
+            self.__fbthrift_cached_union_typedef = Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).union_typedef_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_union_typedef
 
     @property
     def a_union_typedef_list(self):
 
-        if self.__field_a_union_typedef_list is None:
-            self.__field_a_union_typedef_list = List__Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).a_union_typedef_list_ref().ref(), self._cpp_obj))
-        return self.__field_a_union_typedef_list
+        if self.__fbthrift_cached_a_union_typedef_list is None:
+            self.__fbthrift_cached_a_union_typedef_list = List__Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).a_union_typedef_list_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_a_union_typedef_list
 
 
     def __hash__(AnException self):
@@ -1729,46 +1729,46 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldB(self):
 
-        if self.__field_fieldB is None:
-            self.__field_fieldB = Map__string_bool.create(__reference_shared_ptr(deref(self._cpp_obj).fieldB_ref().ref(), self._cpp_obj))
-        return self.__field_fieldB
+        if self.__fbthrift_cached_fieldB is None:
+            self.__fbthrift_cached_fieldB = Map__string_bool.create(__reference_shared_ptr(deref(self._cpp_obj).fieldB_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldB
 
     @property
     def req_fieldB(self):
 
-        if self.__field_req_fieldB is None:
-            self.__field_req_fieldB = Map__string_bool.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldB_ref().ref(), self._cpp_obj))
-        return self.__field_req_fieldB
+        if self.__fbthrift_cached_req_fieldB is None:
+            self.__fbthrift_cached_req_fieldB = Map__string_bool.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldB_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_req_fieldB
 
     @property
     def opt_fieldB(self):
         if not deref(self._cpp_obj).__isset.opt_fieldB:
             return None
 
-        if self.__field_opt_fieldB is None:
-            self.__field_opt_fieldB = Map__string_bool.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldB_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_opt_fieldB
+        if self.__fbthrift_cached_opt_fieldB is None:
+            self.__fbthrift_cached_opt_fieldB = Map__string_bool.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldB_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_opt_fieldB
 
     @property
     def fieldC(self):
 
-        if self.__field_fieldC is None:
-            self.__field_fieldC = Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldC_ref().ref(), self._cpp_obj))
-        return self.__field_fieldC
+        if self.__fbthrift_cached_fieldC is None:
+            self.__fbthrift_cached_fieldC = Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldC_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldC
 
     @property
     def req_fieldC(self):
 
-        if self.__field_req_fieldC is None:
-            self.__field_req_fieldC = Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldC_ref().ref(), self._cpp_obj))
-        return self.__field_req_fieldC
+        if self.__fbthrift_cached_req_fieldC is None:
+            self.__fbthrift_cached_req_fieldC = Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldC_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_req_fieldC
 
     @property
     def opt_fieldC(self):
 
-        if self.__field_opt_fieldC is None:
-            self.__field_opt_fieldC = Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldC_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_opt_fieldC
+        if self.__fbthrift_cached_opt_fieldC is None:
+            self.__fbthrift_cached_opt_fieldC = Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldC_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_opt_fieldC
 
     @property
     def fieldD(self):
@@ -1793,23 +1793,23 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldF(self):
 
-        if self.__field_fieldF is None:
-            self.__field_fieldF = List__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldF_ref().ref(), self._cpp_obj))
-        return self.__field_fieldF
+        if self.__fbthrift_cached_fieldF is None:
+            self.__fbthrift_cached_fieldF = List__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldF_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldF
 
     @property
     def fieldG(self):
 
-        if self.__field_fieldG is None:
-            self.__field_fieldG = Map__string_Map__string_Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldG_ref().ref(), self._cpp_obj))
-        return self.__field_fieldG
+        if self.__fbthrift_cached_fieldG is None:
+            self.__fbthrift_cached_fieldG = Map__string_Map__string_Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldG_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldG
 
     @property
     def fieldH(self):
 
-        if self.__field_fieldH is None:
-            self.__field_fieldH = List__Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldH_ref().ref(), self._cpp_obj))
-        return self.__field_fieldH
+        if self.__fbthrift_cached_fieldH is None:
+            self.__fbthrift_cached_fieldH = List__Set__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldH_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldH
 
     @property
     def fieldI(self):
@@ -1819,30 +1819,30 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldJ(self):
 
-        if self.__field_fieldJ is None:
-            self.__field_fieldJ = Map__string_List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldJ_ref().ref(), self._cpp_obj))
-        return self.__field_fieldJ
+        if self.__fbthrift_cached_fieldJ is None:
+            self.__fbthrift_cached_fieldJ = Map__string_List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldJ_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldJ
 
     @property
     def fieldK(self):
 
-        if self.__field_fieldK is None:
-            self.__field_fieldK = List__List__List__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldK_ref().ref(), self._cpp_obj))
-        return self.__field_fieldK
+        if self.__fbthrift_cached_fieldK is None:
+            self.__fbthrift_cached_fieldK = List__List__List__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldK_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldK
 
     @property
     def fieldL(self):
 
-        if self.__field_fieldL is None:
-            self.__field_fieldL = Set__Set__Set__bool.create(__reference_shared_ptr(deref(self._cpp_obj).fieldL_ref().ref(), self._cpp_obj))
-        return self.__field_fieldL
+        if self.__fbthrift_cached_fieldL is None:
+            self.__fbthrift_cached_fieldL = Set__Set__Set__bool.create(__reference_shared_ptr(deref(self._cpp_obj).fieldL_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldL
 
     @property
     def fieldM(self):
 
-        if self.__field_fieldM is None:
-            self.__field_fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(__reference_shared_ptr(deref(self._cpp_obj).fieldM_ref().ref(), self._cpp_obj))
-        return self.__field_fieldM
+        if self.__fbthrift_cached_fieldM is None:
+            self.__fbthrift_cached_fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(__reference_shared_ptr(deref(self._cpp_obj).fieldM_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldM
 
     @property
     def fieldN(self):
@@ -1852,167 +1852,167 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldO(self):
 
-        if self.__field_fieldO is None:
-            self.__field_fieldO = List__Map__Empty_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldO_ref().ref(), self._cpp_obj))
-        return self.__field_fieldO
+        if self.__fbthrift_cached_fieldO is None:
+            self.__fbthrift_cached_fieldO = List__Map__Empty_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldO_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldO
 
     @property
     def fieldP(self):
 
-        if self.__field_fieldP is None:
-            self.__field_fieldP = List__List__List__Map__Empty_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldP_ref().ref(), self._cpp_obj))
-        return self.__field_fieldP
+        if self.__fbthrift_cached_fieldP is None:
+            self.__fbthrift_cached_fieldP = List__List__List__Map__Empty_MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldP_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldP
 
     @property
     def fieldQ(self):
 
-        if self.__field_fieldQ is None:
-            self.__field_fieldQ = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ_ref().value()))
-        return self.__field_fieldQ
+        if self.__fbthrift_cached_fieldQ is None:
+            self.__fbthrift_cached_fieldQ = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldQ_ref().value()))
+        return self.__fbthrift_cached_fieldQ
 
     @property
     def fieldR(self):
 
-        if self.__field_fieldR is None:
-            self.__field_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldR_ref().value()))
-        return self.__field_fieldR
+        if self.__fbthrift_cached_fieldR is None:
+            self.__fbthrift_cached_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldR_ref().value()))
+        return self.__fbthrift_cached_fieldR
 
     @property
     def req_fieldR(self):
 
-        if self.__field_req_fieldR is None:
-            self.__field_req_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).req_fieldR_ref().value()))
-        return self.__field_req_fieldR
+        if self.__fbthrift_cached_req_fieldR is None:
+            self.__fbthrift_cached_req_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).req_fieldR_ref().value()))
+        return self.__fbthrift_cached_req_fieldR
 
     @property
     def opt_fieldR(self):
 
-        if self.__field_opt_fieldR is None:
-            self.__field_opt_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).opt_fieldR_ref().value_unchecked()))
-        return self.__field_opt_fieldR
+        if self.__fbthrift_cached_opt_fieldR is None:
+            self.__fbthrift_cached_opt_fieldR = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).opt_fieldR_ref().value_unchecked()))
+        return self.__fbthrift_cached_opt_fieldR
 
     @property
     def fieldS(self):
 
-        if self.__field_fieldS is None:
-            self.__field_fieldS = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldS_ref().value()))
-        return self.__field_fieldS
+        if self.__fbthrift_cached_fieldS is None:
+            self.__fbthrift_cached_fieldS = translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).fieldS_ref().value()))
+        return self.__fbthrift_cached_fieldS
 
     @property
     def fieldT(self):
 
-        if self.__field_fieldT is None:
-            self.__field_fieldT = List__MyEnumA.create(__reference_shared_ptr(deref(self._cpp_obj).fieldT_ref().ref(), self._cpp_obj))
-        return self.__field_fieldT
+        if self.__fbthrift_cached_fieldT is None:
+            self.__fbthrift_cached_fieldT = List__MyEnumA.create(__reference_shared_ptr(deref(self._cpp_obj).fieldT_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldT
 
     @property
     def fieldU(self):
 
-        if self.__field_fieldU is None:
-            self.__field_fieldU = List__MyEnumA.create(__reference_shared_ptr(deref(self._cpp_obj).fieldU_ref().ref(), self._cpp_obj))
-        return self.__field_fieldU
+        if self.__fbthrift_cached_fieldU is None:
+            self.__fbthrift_cached_fieldU = List__MyEnumA.create(__reference_shared_ptr(deref(self._cpp_obj).fieldU_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldU
 
     @property
     def fieldV(self):
 
-        if self.__field_fieldV is None:
-            self.__field_fieldV = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldV_ref().ref(), self._cpp_obj))
-        return self.__field_fieldV
+        if self.__fbthrift_cached_fieldV is None:
+            self.__fbthrift_cached_fieldV = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldV_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldV
 
     @property
     def req_fieldV(self):
 
-        if self.__field_req_fieldV is None:
-            self.__field_req_fieldV = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldV_ref().ref(), self._cpp_obj))
-        return self.__field_req_fieldV
+        if self.__fbthrift_cached_req_fieldV is None:
+            self.__fbthrift_cached_req_fieldV = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldV_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_req_fieldV
 
     @property
     def opt_fieldV(self):
         if not deref(self._cpp_obj).__isset.opt_fieldV:
             return None
 
-        if self.__field_opt_fieldV is None:
-            self.__field_opt_fieldV = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldV_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_opt_fieldV
+        if self.__fbthrift_cached_opt_fieldV is None:
+            self.__fbthrift_cached_opt_fieldV = MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldV_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_opt_fieldV
 
     @property
     def fieldW(self):
 
-        if self.__field_fieldW is None:
-            self.__field_fieldW = Set__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldW_ref().ref(), self._cpp_obj))
-        return self.__field_fieldW
+        if self.__fbthrift_cached_fieldW is None:
+            self.__fbthrift_cached_fieldW = Set__MyStruct.create(__reference_shared_ptr(deref(self._cpp_obj).fieldW_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldW
 
     @property
     def fieldX(self):
 
-        if self.__field_fieldX is None:
-            self.__field_fieldX = ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldX_ref().ref(), self._cpp_obj))
-        return self.__field_fieldX
+        if self.__fbthrift_cached_fieldX is None:
+            self.__fbthrift_cached_fieldX = ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldX_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldX
 
     @property
     def req_fieldX(self):
 
-        if self.__field_req_fieldX is None:
-            self.__field_req_fieldX = ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldX_ref().ref(), self._cpp_obj))
-        return self.__field_req_fieldX
+        if self.__fbthrift_cached_req_fieldX is None:
+            self.__fbthrift_cached_req_fieldX = ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).req_fieldX_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_req_fieldX
 
     @property
     def opt_fieldX(self):
         if not deref(self._cpp_obj).__isset.opt_fieldX:
             return None
 
-        if self.__field_opt_fieldX is None:
-            self.__field_opt_fieldX = ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldX_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_opt_fieldX
+        if self.__fbthrift_cached_opt_fieldX is None:
+            self.__fbthrift_cached_opt_fieldX = ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).opt_fieldX_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_opt_fieldX
 
     @property
     def fieldY(self):
 
-        if self.__field_fieldY is None:
-            self.__field_fieldY = List__ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldY_ref().ref(), self._cpp_obj))
-        return self.__field_fieldY
+        if self.__fbthrift_cached_fieldY is None:
+            self.__fbthrift_cached_fieldY = List__ComplexUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldY_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldY
 
     @property
     def fieldZ(self):
 
-        if self.__field_fieldZ is None:
-            self.__field_fieldZ = Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldZ_ref().ref(), self._cpp_obj))
-        return self.__field_fieldZ
+        if self.__fbthrift_cached_fieldZ is None:
+            self.__fbthrift_cached_fieldZ = Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldZ_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldZ
 
     @property
     def fieldAA(self):
 
-        if self.__field_fieldAA is None:
-            self.__field_fieldAA = List__Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldAA_ref().ref(), self._cpp_obj))
-        return self.__field_fieldAA
+        if self.__fbthrift_cached_fieldAA is None:
+            self.__fbthrift_cached_fieldAA = List__Set__SimpleUnion.create(__reference_shared_ptr(deref(self._cpp_obj).fieldAA_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldAA
 
     @property
     def fieldAB(self):
 
-        if self.__field_fieldAB is None:
-            self.__field_fieldAB = Map__Bar__double_Baz__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldAB_ref().ref(), self._cpp_obj))
-        return self.__field_fieldAB
+        if self.__fbthrift_cached_fieldAB is None:
+            self.__fbthrift_cached_fieldAB = Map__Bar__double_Baz__i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldAB_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldAB
 
     @property
     def fieldAC(self):
 
-        if self.__field_fieldAC is None:
-            self.__field_fieldAC = translate_cpp_enum_to_python(MyEnumB, <int>(deref(self._cpp_obj).fieldAC_ref().value()))
-        return self.__field_fieldAC
+        if self.__fbthrift_cached_fieldAC is None:
+            self.__fbthrift_cached_fieldAC = translate_cpp_enum_to_python(MyEnumB, <int>(deref(self._cpp_obj).fieldAC_ref().value()))
+        return self.__fbthrift_cached_fieldAC
 
     @property
     def fieldAD(self):
 
-        if self.__field_fieldAD is None:
-            self.__field_fieldAD = translate_cpp_enum_to_python(_includes_types.AnEnum, <int>(deref(self._cpp_obj).fieldAD_ref().value()))
-        return self.__field_fieldAD
+        if self.__fbthrift_cached_fieldAD is None:
+            self.__fbthrift_cached_fieldAD = translate_cpp_enum_to_python(_includes_types.AnEnum, <int>(deref(self._cpp_obj).fieldAD_ref().value()))
+        return self.__fbthrift_cached_fieldAD
 
     @property
     def fieldAE(self):
 
-        if self.__field_fieldAE is None:
-            self.__field_fieldAE = Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldAE_ref().ref(), self._cpp_obj))
-        return self.__field_fieldAE
+        if self.__fbthrift_cached_fieldAE is None:
+            self.__fbthrift_cached_fieldAE = Map__string_i32.create(__reference_shared_ptr(deref(self._cpp_obj).fieldAE_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_fieldAE
 
     @property
     def fieldSD(self):
@@ -2099,25 +2099,25 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     @property
     def MyIncludedStruct(self):
 
-        if self.__field_MyIncludedStruct is None:
-            self.__field_MyIncludedStruct = _includes_types.AStruct.create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedStruct_ref().ref(), self._cpp_obj))
-        return self.__field_MyIncludedStruct
+        if self.__fbthrift_cached_MyIncludedStruct is None:
+            self.__fbthrift_cached_MyIncludedStruct = _includes_types.AStruct.create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedStruct_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_MyIncludedStruct
 
     @property
     def ARefField(self):
 
-        if self.__field_ARefField is None:
+        if self.__fbthrift_cached_ARefField is None:
             if not deref(self._cpp_obj).ARefField:
                 return None
-            self.__field_ARefField = _includes_types.AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ARefField), self._cpp_obj))
-        return self.__field_ARefField
+            self.__fbthrift_cached_ARefField = _includes_types.AStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ARefField), self._cpp_obj))
+        return self.__fbthrift_cached_ARefField
 
     @property
     def ARequiredField(self):
 
-        if self.__field_ARequiredField is None:
-            self.__field_ARequiredField = _includes_types.AStruct.create(__reference_shared_ptr(deref(self._cpp_obj).ARequiredField_ref().ref(), self._cpp_obj))
-        return self.__field_ARequiredField
+        if self.__fbthrift_cached_ARequiredField is None:
+            self.__fbthrift_cached_ARequiredField = _includes_types.AStruct.create(__reference_shared_ptr(deref(self._cpp_obj).ARequiredField_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_ARequiredField
 
 
     def __hash__(MyIncludedStruct self):
@@ -2206,171 +2206,171 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def no_annotation(self):
 
-        if self.__field_no_annotation is None:
-            self.__field_no_annotation = containerStruct.create(__reference_shared_ptr(deref(self._cpp_obj).no_annotation_ref().ref(), self._cpp_obj))
-        return self.__field_no_annotation
+        if self.__fbthrift_cached_no_annotation is None:
+            self.__fbthrift_cached_no_annotation = containerStruct.create(__reference_shared_ptr(deref(self._cpp_obj).no_annotation_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_no_annotation
 
     @property
     def cpp_unique_ref(self):
 
-        if self.__field_cpp_unique_ref is None:
+        if self.__fbthrift_cached_cpp_unique_ref is None:
             if not deref(self._cpp_obj).cpp_unique_ref:
                 return None
-            self.__field_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp_unique_ref), self._cpp_obj))
-        return self.__field_cpp_unique_ref
+            self.__fbthrift_cached_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp_unique_ref), self._cpp_obj))
+        return self.__fbthrift_cached_cpp_unique_ref
 
     @property
     def cpp2_unique_ref(self):
 
-        if self.__field_cpp2_unique_ref is None:
+        if self.__fbthrift_cached_cpp2_unique_ref is None:
             if not deref(self._cpp_obj).cpp2_unique_ref:
                 return None
-            self.__field_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp2_unique_ref), self._cpp_obj))
-        return self.__field_cpp2_unique_ref
+            self.__fbthrift_cached_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).cpp2_unique_ref), self._cpp_obj))
+        return self.__fbthrift_cached_cpp2_unique_ref
 
     @property
     def container_with_ref(self):
 
-        if self.__field_container_with_ref is None:
+        if self.__fbthrift_cached_container_with_ref is None:
             if not deref(self._cpp_obj).container_with_ref:
                 return None
-            self.__field_container_with_ref = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).container_with_ref), self._cpp_obj))
-        return self.__field_container_with_ref
+            self.__fbthrift_cached_container_with_ref = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).container_with_ref), self._cpp_obj))
+        return self.__fbthrift_cached_container_with_ref
 
     @property
     def req_cpp_unique_ref(self):
 
-        if self.__field_req_cpp_unique_ref is None:
+        if self.__fbthrift_cached_req_cpp_unique_ref is None:
             if not deref(self._cpp_obj).req_cpp_unique_ref:
                 return None
-            self.__field_req_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp_unique_ref), self._cpp_obj))
-        return self.__field_req_cpp_unique_ref
+            self.__fbthrift_cached_req_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp_unique_ref), self._cpp_obj))
+        return self.__fbthrift_cached_req_cpp_unique_ref
 
     @property
     def req_cpp2_unique_ref(self):
 
-        if self.__field_req_cpp2_unique_ref is None:
+        if self.__fbthrift_cached_req_cpp2_unique_ref is None:
             if not deref(self._cpp_obj).req_cpp2_unique_ref:
                 return None
-            self.__field_req_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp2_unique_ref), self._cpp_obj))
-        return self.__field_req_cpp2_unique_ref
+            self.__fbthrift_cached_req_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_cpp2_unique_ref), self._cpp_obj))
+        return self.__fbthrift_cached_req_cpp2_unique_ref
 
     @property
     def req_container_with_ref(self):
 
-        if self.__field_req_container_with_ref is None:
+        if self.__fbthrift_cached_req_container_with_ref is None:
             if not deref(self._cpp_obj).req_container_with_ref:
                 return None
-            self.__field_req_container_with_ref = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_container_with_ref), self._cpp_obj))
-        return self.__field_req_container_with_ref
+            self.__fbthrift_cached_req_container_with_ref = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_container_with_ref), self._cpp_obj))
+        return self.__fbthrift_cached_req_container_with_ref
 
     @property
     def opt_cpp_unique_ref(self):
 
-        if self.__field_opt_cpp_unique_ref is None:
+        if self.__fbthrift_cached_opt_cpp_unique_ref is None:
             if not deref(self._cpp_obj).opt_cpp_unique_ref:
                 return None
-            self.__field_opt_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp_unique_ref), self._cpp_obj))
-        return self.__field_opt_cpp_unique_ref
+            self.__fbthrift_cached_opt_cpp_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp_unique_ref), self._cpp_obj))
+        return self.__fbthrift_cached_opt_cpp_unique_ref
 
     @property
     def opt_cpp2_unique_ref(self):
 
-        if self.__field_opt_cpp2_unique_ref is None:
+        if self.__fbthrift_cached_opt_cpp2_unique_ref is None:
             if not deref(self._cpp_obj).opt_cpp2_unique_ref:
                 return None
-            self.__field_opt_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp2_unique_ref), self._cpp_obj))
-        return self.__field_opt_cpp2_unique_ref
+            self.__fbthrift_cached_opt_cpp2_unique_ref = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_cpp2_unique_ref), self._cpp_obj))
+        return self.__fbthrift_cached_opt_cpp2_unique_ref
 
     @property
     def opt_container_with_ref(self):
 
-        if self.__field_opt_container_with_ref is None:
+        if self.__fbthrift_cached_opt_container_with_ref is None:
             if not deref(self._cpp_obj).opt_container_with_ref:
                 return None
-            self.__field_opt_container_with_ref = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_container_with_ref), self._cpp_obj))
-        return self.__field_opt_container_with_ref
+            self.__fbthrift_cached_opt_container_with_ref = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_container_with_ref), self._cpp_obj))
+        return self.__fbthrift_cached_opt_container_with_ref
 
     @property
     def ref_type_unique(self):
 
-        if self.__field_ref_type_unique is None:
+        if self.__fbthrift_cached_ref_type_unique is None:
             if not deref(self._cpp_obj).ref_type_unique:
                 return None
-            self.__field_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_unique), self._cpp_obj))
-        return self.__field_ref_type_unique
+            self.__fbthrift_cached_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_unique), self._cpp_obj))
+        return self.__fbthrift_cached_ref_type_unique
 
     @property
     def ref_type_shared(self):
 
-        if self.__field_ref_type_shared is None:
+        if self.__fbthrift_cached_ref_type_shared is None:
             if not deref(self._cpp_obj).ref_type_shared:
                 return None
-            self.__field_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_shared), self._cpp_obj))
-        return self.__field_ref_type_shared
+            self.__fbthrift_cached_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_shared), self._cpp_obj))
+        return self.__fbthrift_cached_ref_type_shared
 
     @property
     def ref_type_const(self):
 
-        if self.__field_ref_type_const is None:
+        if self.__fbthrift_cached_ref_type_const is None:
             if not deref(self._cpp_obj).ref_type_const:
                 return None
-            self.__field_ref_type_const = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_const), self._cpp_obj))
-        return self.__field_ref_type_const
+            self.__fbthrift_cached_ref_type_const = Map__i32_List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).ref_type_const), self._cpp_obj))
+        return self.__fbthrift_cached_ref_type_const
 
     @property
     def req_ref_type_shared(self):
 
-        if self.__field_req_ref_type_shared is None:
+        if self.__fbthrift_cached_req_ref_type_shared is None:
             if not deref(self._cpp_obj).req_ref_type_shared:
                 return None
-            self.__field_req_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_shared), self._cpp_obj))
-        return self.__field_req_ref_type_shared
+            self.__fbthrift_cached_req_ref_type_shared = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_shared), self._cpp_obj))
+        return self.__fbthrift_cached_req_ref_type_shared
 
     @property
     def req_ref_type_const(self):
 
-        if self.__field_req_ref_type_const is None:
+        if self.__fbthrift_cached_req_ref_type_const is None:
             if not deref(self._cpp_obj).req_ref_type_const:
                 return None
-            self.__field_req_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_const), self._cpp_obj))
-        return self.__field_req_ref_type_const
+            self.__fbthrift_cached_req_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_const), self._cpp_obj))
+        return self.__fbthrift_cached_req_ref_type_const
 
     @property
     def req_ref_type_unique(self):
 
-        if self.__field_req_ref_type_unique is None:
+        if self.__fbthrift_cached_req_ref_type_unique is None:
             if not deref(self._cpp_obj).req_ref_type_unique:
                 return None
-            self.__field_req_ref_type_unique = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_unique), self._cpp_obj))
-        return self.__field_req_ref_type_unique
+            self.__fbthrift_cached_req_ref_type_unique = List__string.create(__reference_shared_ptr(deref(deref(self._cpp_obj).req_ref_type_unique), self._cpp_obj))
+        return self.__fbthrift_cached_req_ref_type_unique
 
     @property
     def opt_ref_type_const(self):
 
-        if self.__field_opt_ref_type_const is None:
+        if self.__fbthrift_cached_opt_ref_type_const is None:
             if not deref(self._cpp_obj).opt_ref_type_const:
                 return None
-            self.__field_opt_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_const), self._cpp_obj))
-        return self.__field_opt_ref_type_const
+            self.__fbthrift_cached_opt_ref_type_const = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_const), self._cpp_obj))
+        return self.__fbthrift_cached_opt_ref_type_const
 
     @property
     def opt_ref_type_unique(self):
 
-        if self.__field_opt_ref_type_unique is None:
+        if self.__fbthrift_cached_opt_ref_type_unique is None:
             if not deref(self._cpp_obj).opt_ref_type_unique:
                 return None
-            self.__field_opt_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_unique), self._cpp_obj))
-        return self.__field_opt_ref_type_unique
+            self.__fbthrift_cached_opt_ref_type_unique = containerStruct.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_unique), self._cpp_obj))
+        return self.__fbthrift_cached_opt_ref_type_unique
 
     @property
     def opt_ref_type_shared(self):
 
-        if self.__field_opt_ref_type_shared is None:
+        if self.__fbthrift_cached_opt_ref_type_shared is None:
             if not deref(self._cpp_obj).opt_ref_type_shared:
                 return None
-            self.__field_opt_ref_type_shared = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_shared), self._cpp_obj))
-        return self.__field_opt_ref_type_shared
+            self.__fbthrift_cached_opt_ref_type_shared = Set__i32.create(__reference_shared_ptr(deref(deref(self._cpp_obj).opt_ref_type_shared), self._cpp_obj))
+        return self.__fbthrift_cached_opt_ref_type_shared
 
     @property
     def base_type(self):
@@ -2380,102 +2380,102 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def list_type(self):
 
-        if self.__field_list_type is None:
-            self.__field_list_type = folly_small_vector_int64_t_8__List__i64.create(__reference_shared_ptr(deref(self._cpp_obj).list_type_ref().ref(), self._cpp_obj))
-        return self.__field_list_type
+        if self.__fbthrift_cached_list_type is None:
+            self.__fbthrift_cached_list_type = folly_small_vector_int64_t_8__List__i64.create(__reference_shared_ptr(deref(self._cpp_obj).list_type_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_list_type
 
     @property
     def set_type(self):
 
-        if self.__field_set_type is None:
-            self.__field_set_type = folly_sorted_vector_set_std_string__Set__string.create(__reference_shared_ptr(deref(self._cpp_obj).set_type_ref().ref(), self._cpp_obj))
-        return self.__field_set_type
+        if self.__fbthrift_cached_set_type is None:
+            self.__fbthrift_cached_set_type = folly_sorted_vector_set_std_string__Set__string.create(__reference_shared_ptr(deref(self._cpp_obj).set_type_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_set_type
 
     @property
     def map_type(self):
 
-        if self.__field_map_type is None:
-            self.__field_map_type = FakeMap__Map__i64_double.create(__reference_shared_ptr(deref(self._cpp_obj).map_type_ref().ref(), self._cpp_obj))
-        return self.__field_map_type
+        if self.__fbthrift_cached_map_type is None:
+            self.__fbthrift_cached_map_type = FakeMap__Map__i64_double.create(__reference_shared_ptr(deref(self._cpp_obj).map_type_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_map_type
 
     @property
     def map_struct_type(self):
 
-        if self.__field_map_struct_type is None:
-            self.__field_map_struct_type = std_unordered_map_std_string_containerStruct__Map__string_containerStruct.create(__reference_shared_ptr(deref(self._cpp_obj).map_struct_type_ref().ref(), self._cpp_obj))
-        return self.__field_map_struct_type
+        if self.__fbthrift_cached_map_struct_type is None:
+            self.__fbthrift_cached_map_struct_type = std_unordered_map_std_string_containerStruct__Map__string_containerStruct.create(__reference_shared_ptr(deref(self._cpp_obj).map_struct_type_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_map_struct_type
 
     @property
     def iobuf_type(self):
 
-        if self.__field_iobuf_type is None:
-            self.__field_iobuf_type = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type_ref().ref()), self)
-        return self.__field_iobuf_type
+        if self.__fbthrift_cached_iobuf_type is None:
+            self.__fbthrift_cached_iobuf_type = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type_ref().ref()), self)
+        return self.__fbthrift_cached_iobuf_type
 
     @property
     def iobuf_ptr(self):
 
-        if self.__field_iobuf_ptr is None:
+        if self.__fbthrift_cached_iobuf_ptr is None:
             if not deref(self._cpp_obj).iobuf_ptr_ref().value():
                 return None
-            self.__field_iobuf_ptr = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_ref().value().get(), self)
-        return self.__field_iobuf_ptr
+            self.__fbthrift_cached_iobuf_ptr = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_ref().value().get(), self)
+        return self.__fbthrift_cached_iobuf_ptr
 
     @property
     def list_i32_template(self):
 
-        if self.__field_list_i32_template is None:
-            self.__field_list_i32_template = std_list__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).list_i32_template_ref().ref(), self._cpp_obj))
-        return self.__field_list_i32_template
+        if self.__fbthrift_cached_list_i32_template is None:
+            self.__fbthrift_cached_list_i32_template = std_list__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).list_i32_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_list_i32_template
 
     @property
     def list_string_template(self):
 
-        if self.__field_list_string_template is None:
-            self.__field_list_string_template = std_deque__List__string.create(__reference_shared_ptr(deref(self._cpp_obj).list_string_template_ref().ref(), self._cpp_obj))
-        return self.__field_list_string_template
+        if self.__fbthrift_cached_list_string_template is None:
+            self.__fbthrift_cached_list_string_template = std_deque__List__string.create(__reference_shared_ptr(deref(self._cpp_obj).list_string_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_list_string_template
 
     @property
     def set_template(self):
 
-        if self.__field_set_template is None:
-            self.__field_set_template = folly_sorted_vector_set__Set__string.create(__reference_shared_ptr(deref(self._cpp_obj).set_template_ref().ref(), self._cpp_obj))
-        return self.__field_set_template
+        if self.__fbthrift_cached_set_template is None:
+            self.__fbthrift_cached_set_template = folly_sorted_vector_set__Set__string.create(__reference_shared_ptr(deref(self._cpp_obj).set_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_set_template
 
     @property
     def map_template(self):
 
-        if self.__field_map_template is None:
-            self.__field_map_template = folly_sorted_vector_map__Map__i64_string.create(__reference_shared_ptr(deref(self._cpp_obj).map_template_ref().ref(), self._cpp_obj))
-        return self.__field_map_template
+        if self.__fbthrift_cached_map_template is None:
+            self.__fbthrift_cached_map_template = folly_sorted_vector_map__Map__i64_string.create(__reference_shared_ptr(deref(self._cpp_obj).map_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_map_template
 
     @property
     def typedef_list_template(self):
 
-        if self.__field_typedef_list_template is None:
-            self.__field_typedef_list_template = std_list__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_list_template_ref().ref(), self._cpp_obj))
-        return self.__field_typedef_list_template
+        if self.__fbthrift_cached_typedef_list_template is None:
+            self.__fbthrift_cached_typedef_list_template = std_list__List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_list_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_typedef_list_template
 
     @property
     def typedef_deque_template(self):
 
-        if self.__field_typedef_deque_template is None:
-            self.__field_typedef_deque_template = std_deque__List__string.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_deque_template_ref().ref(), self._cpp_obj))
-        return self.__field_typedef_deque_template
+        if self.__fbthrift_cached_typedef_deque_template is None:
+            self.__fbthrift_cached_typedef_deque_template = std_deque__List__string.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_deque_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_typedef_deque_template
 
     @property
     def typedef_set_template(self):
 
-        if self.__field_typedef_set_template is None:
-            self.__field_typedef_set_template = folly_sorted_vector_set__Set__string.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_set_template_ref().ref(), self._cpp_obj))
-        return self.__field_typedef_set_template
+        if self.__fbthrift_cached_typedef_set_template is None:
+            self.__fbthrift_cached_typedef_set_template = folly_sorted_vector_set__Set__string.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_set_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_typedef_set_template
 
     @property
     def typedef_map_template(self):
 
-        if self.__field_typedef_map_template is None:
-            self.__field_typedef_map_template = folly_sorted_vector_map__Map__i64_string.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_map_template_ref().ref(), self._cpp_obj))
-        return self.__field_typedef_map_template
+        if self.__fbthrift_cached_typedef_map_template is None:
+            self.__fbthrift_cached_typedef_map_template = folly_sorted_vector_map__Map__i64_string.create(__reference_shared_ptr(deref(self._cpp_obj).typedef_map_template_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_typedef_map_template
 
     @property
     def indirection_a(self):
@@ -2485,39 +2485,39 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def indirection_b(self):
 
-        if self.__field_indirection_b is None:
-            self.__field_indirection_b = List__Bar__double.create(__reference_shared_ptr(deref(self._cpp_obj).indirection_b_ref().ref(), self._cpp_obj))
-        return self.__field_indirection_b
+        if self.__fbthrift_cached_indirection_b is None:
+            self.__fbthrift_cached_indirection_b = List__Bar__double.create(__reference_shared_ptr(deref(self._cpp_obj).indirection_b_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_indirection_b
 
     @property
     def indirection_c(self):
 
-        if self.__field_indirection_c is None:
-            self.__field_indirection_c = Set__Baz__i32.create(__reference_shared_ptr(deref(self._cpp_obj).indirection_c_ref().ref(), self._cpp_obj))
-        return self.__field_indirection_c
+        if self.__fbthrift_cached_indirection_c is None:
+            self.__fbthrift_cached_indirection_c = Set__Baz__i32.create(__reference_shared_ptr(deref(self._cpp_obj).indirection_c_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_indirection_c
 
     @property
     def iobuf_type_val(self):
 
-        if self.__field_iobuf_type_val is None:
-            self.__field_iobuf_type_val = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type_val_ref().ref()), self)
-        return self.__field_iobuf_type_val
+        if self.__fbthrift_cached_iobuf_type_val is None:
+            self.__fbthrift_cached_iobuf_type_val = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type_val_ref().ref()), self)
+        return self.__fbthrift_cached_iobuf_type_val
 
     @property
     def iobuf_ptr_val(self):
 
-        if self.__field_iobuf_ptr_val is None:
+        if self.__fbthrift_cached_iobuf_ptr_val is None:
             if not deref(self._cpp_obj).iobuf_ptr_val_ref().value():
                 return None
-            self.__field_iobuf_ptr_val = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_val_ref().value().get(), self)
-        return self.__field_iobuf_ptr_val
+            self.__fbthrift_cached_iobuf_ptr_val = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_val_ref().value().get(), self)
+        return self.__fbthrift_cached_iobuf_ptr_val
 
     @property
     def struct_struct(self):
 
-        if self.__field_struct_struct is None:
-            self.__field_struct_struct = containerStruct.create(__reference_shared_ptr(deref(self._cpp_obj).struct_struct_ref().ref(), self._cpp_obj))
-        return self.__field_struct_struct
+        if self.__fbthrift_cached_struct_struct is None:
+            self.__fbthrift_cached_struct_struct = containerStruct.create(__reference_shared_ptr(deref(self._cpp_obj).struct_struct_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_struct_struct
 
 
     def __hash__(AnnotatedStruct self):
@@ -2595,16 +2595,16 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     @property
     def map_of_iobufs(self):
 
-        if self.__field_map_of_iobufs is None:
-            self.__field_map_of_iobufs = Map__string_folly_IOBuf__binary.create(__reference_shared_ptr(deref(self._cpp_obj).map_of_iobufs_ref().ref(), self._cpp_obj))
-        return self.__field_map_of_iobufs
+        if self.__fbthrift_cached_map_of_iobufs is None:
+            self.__fbthrift_cached_map_of_iobufs = Map__string_folly_IOBuf__binary.create(__reference_shared_ptr(deref(self._cpp_obj).map_of_iobufs_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_map_of_iobufs
 
     @property
     def map_of_iobuf_ptrs(self):
 
-        if self.__field_map_of_iobuf_ptrs is None:
-            self.__field_map_of_iobuf_ptrs = Map__string_std_unique_ptr_folly_IOBuf__binary.create(__reference_shared_ptr(deref(self._cpp_obj).map_of_iobuf_ptrs_ref().ref(), self._cpp_obj))
-        return self.__field_map_of_iobuf_ptrs
+        if self.__fbthrift_cached_map_of_iobuf_ptrs is None:
+            self.__fbthrift_cached_map_of_iobuf_ptrs = Map__string_std_unique_ptr_folly_IOBuf__binary.create(__reference_shared_ptr(deref(self._cpp_obj).map_of_iobuf_ptrs_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_map_of_iobuf_ptrs
 
 
     def __hash__(ComplexContainerStruct self):

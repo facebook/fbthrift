@@ -757,9 +757,9 @@ cdef class Val(thrift.py3.types.Struct):
     @property
     def typedefValue(self):
 
-        if self.__field_typedefValue is None:
-            self.__field_typedefValue = Map__i16_string.create(__reference_shared_ptr(deref(self._cpp_obj).typedefValue_ref().ref(), self._cpp_obj))
-        return self.__field_typedefValue
+        if self.__fbthrift_cached_typedefValue is None:
+            self.__fbthrift_cached_typedefValue = Map__i16_string.create(__reference_shared_ptr(deref(self._cpp_obj).typedefValue_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_typedefValue
 
 
     def __hash__(Val self):

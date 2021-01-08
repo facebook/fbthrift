@@ -224,9 +224,9 @@ cdef class Vehicle(thrift.py3.types.Struct):
     @property
     def color(self):
 
-        if self.__field_color is None:
-            self.__field_color = Color.create(__reference_shared_ptr(deref(self._cpp_obj).color_ref().ref(), self._cpp_obj))
-        return self.__field_color
+        if self.__fbthrift_cached_color is None:
+            self.__fbthrift_cached_color = Color.create(__reference_shared_ptr(deref(self._cpp_obj).color_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_color
 
     @property
     def licensePlate(self):
@@ -365,18 +365,18 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.favoriteColor:
             return None
 
-        if self.__field_favoriteColor is None:
-            self.__field_favoriteColor = Color.create(__reference_shared_ptr(deref(self._cpp_obj).favoriteColor_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_favoriteColor
+        if self.__fbthrift_cached_favoriteColor is None:
+            self.__fbthrift_cached_favoriteColor = Color.create(__reference_shared_ptr(deref(self._cpp_obj).favoriteColor_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_favoriteColor
 
     @property
     def friends(self):
         if not deref(self._cpp_obj).__isset.friends:
             return None
 
-        if self.__field_friends is None:
-            self.__field_friends = Set__i64.create(__reference_shared_ptr(deref(self._cpp_obj).friends_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_friends
+        if self.__fbthrift_cached_friends is None:
+            self.__fbthrift_cached_friends = Set__i64.create(__reference_shared_ptr(deref(self._cpp_obj).friends_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_friends
 
     @property
     def bestFriend(self):
@@ -390,27 +390,27 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.petNames:
             return None
 
-        if self.__field_petNames is None:
-            self.__field_petNames = Map__Animal_string.create(__reference_shared_ptr(deref(self._cpp_obj).petNames_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_petNames
+        if self.__fbthrift_cached_petNames is None:
+            self.__fbthrift_cached_petNames = Map__Animal_string.create(__reference_shared_ptr(deref(self._cpp_obj).petNames_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_petNames
 
     @property
     def afraidOfAnimal(self):
         if not deref(self._cpp_obj).__isset.afraidOfAnimal:
             return None
 
-        if self.__field_afraidOfAnimal is None:
-            self.__field_afraidOfAnimal = translate_cpp_enum_to_python(Animal, <int>(deref(self._cpp_obj).afraidOfAnimal_ref().value_unchecked()))
-        return self.__field_afraidOfAnimal
+        if self.__fbthrift_cached_afraidOfAnimal is None:
+            self.__fbthrift_cached_afraidOfAnimal = translate_cpp_enum_to_python(Animal, <int>(deref(self._cpp_obj).afraidOfAnimal_ref().value_unchecked()))
+        return self.__fbthrift_cached_afraidOfAnimal
 
     @property
     def vehicles(self):
         if not deref(self._cpp_obj).__isset.vehicles:
             return None
 
-        if self.__field_vehicles is None:
-            self.__field_vehicles = List__Vehicle.create(__reference_shared_ptr(deref(self._cpp_obj).vehicles_ref().ref_unchecked(), self._cpp_obj))
-        return self.__field_vehicles
+        if self.__fbthrift_cached_vehicles is None:
+            self.__fbthrift_cached_vehicles = List__Vehicle.create(__reference_shared_ptr(deref(self._cpp_obj).vehicles_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_vehicles
 
 
     def __hash__(Person self):

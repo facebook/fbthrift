@@ -158,7 +158,7 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 cdef class MyStructAnnotation(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructAnnotation] _cpp_obj
     cdef __fbthrift_types_fields.__MyStructAnnotation_FieldsSetter _fields_setter
-    cdef MyStructNestedAnnotation __field_nest
+    cdef MyStructNestedAnnotation __fbthrift_cached_nest
 
     @staticmethod
     cdef create(shared_ptr[cMyStructAnnotation])

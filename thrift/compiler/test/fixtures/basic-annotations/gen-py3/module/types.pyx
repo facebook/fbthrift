@@ -222,9 +222,9 @@ cdef class MyStructAnnotation(thrift.py3.types.Struct):
     @property
     def nest(self):
 
-        if self.__field_nest is None:
-            self.__field_nest = MyStructNestedAnnotation.create(__reference_shared_ptr(deref(self._cpp_obj).nest_ref().ref(), self._cpp_obj))
-        return self.__field_nest
+        if self.__fbthrift_cached_nest is None:
+            self.__fbthrift_cached_nest = MyStructNestedAnnotation.create(__reference_shared_ptr(deref(self._cpp_obj).nest_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_nest
 
 
     def __hash__(MyStructAnnotation self):

@@ -98,16 +98,16 @@ cdef class Struct(thrift.py3.types.Struct):
     @property
     def first(self):
 
-        if self.__field_first is None:
-            self.__field_first = _module0_types.Struct.create(__reference_shared_ptr(deref(self._cpp_obj).first_ref().ref(), self._cpp_obj))
-        return self.__field_first
+        if self.__fbthrift_cached_first is None:
+            self.__fbthrift_cached_first = _module0_types.Struct.create(__reference_shared_ptr(deref(self._cpp_obj).first_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_first
 
     @property
     def second(self):
 
-        if self.__field_second is None:
-            self.__field_second = _module1_types.Struct.create(__reference_shared_ptr(deref(self._cpp_obj).second_ref().ref(), self._cpp_obj))
-        return self.__field_second
+        if self.__fbthrift_cached_second is None:
+            self.__fbthrift_cached_second = _module1_types.Struct.create(__reference_shared_ptr(deref(self._cpp_obj).second_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_second
 
 
     def __hash__(Struct self):
@@ -186,9 +186,9 @@ cdef class BigStruct(thrift.py3.types.Struct):
     @property
     def s(self):
 
-        if self.__field_s is None:
-            self.__field_s = Struct.create(__reference_shared_ptr(deref(self._cpp_obj).s_ref().ref(), self._cpp_obj))
-        return self.__field_s
+        if self.__fbthrift_cached_s is None:
+            self.__fbthrift_cached_s = Struct.create(__reference_shared_ptr(deref(self._cpp_obj).s_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_s
 
     @property
     def id(self):

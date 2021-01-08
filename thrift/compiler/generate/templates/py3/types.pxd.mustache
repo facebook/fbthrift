@@ -179,15 +179,15 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
-    cdef {{> types/CythonPythonType}} __field_{{field:py_name}}
+    cdef {{> types/CythonPythonType}} __fbthrift_cached_{{field:py_name}}
     {{/type:struct}}{{#type:container?}}
-    cdef {{> types/CythonPythonType}} __field_{{field:py_name}}
+    cdef {{> types/CythonPythonType}} __fbthrift_cached_{{field:py_name}}
     {{/type:container?}}{{#type:enum?}}
-    cdef object __field_{{field:py_name}}
+    cdef object __fbthrift_cached_{{field:py_name}}
     {{/type:enum?}}{{#type:iobuf?}}
-    cdef __iobuf.IOBuf __field_{{field:py_name}}
+    cdef __iobuf.IOBuf __fbthrift_cached_{{field:py_name}}
     {{/type:iobuf?}}{{#type:iobufRef?}}
-    cdef __iobuf.IOBuf __field_{{field:py_name}}
+    cdef __iobuf.IOBuf __fbthrift_cached_{{field:py_name}}
     {{/type:iobufRef?}}{{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
     {{#struct:union?}}

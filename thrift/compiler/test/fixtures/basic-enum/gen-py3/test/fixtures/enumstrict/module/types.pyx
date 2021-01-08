@@ -187,16 +187,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def myEnum(self):
 
-        if self.__field_myEnum is None:
-            self.__field_myEnum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
-        return self.__field_myEnum
+        if self.__fbthrift_cached_myEnum is None:
+            self.__fbthrift_cached_myEnum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
+        return self.__fbthrift_cached_myEnum
 
     @property
     def myBigEnum(self):
 
-        if self.__field_myBigEnum is None:
-            self.__field_myBigEnum = translate_cpp_enum_to_python(MyBigEnum, <int>(deref(self._cpp_obj).myBigEnum_ref().value()))
-        return self.__field_myBigEnum
+        if self.__fbthrift_cached_myBigEnum is None:
+            self.__fbthrift_cached_myBigEnum = translate_cpp_enum_to_python(MyBigEnum, <int>(deref(self._cpp_obj).myBigEnum_ref().value()))
+        return self.__fbthrift_cached_myBigEnum
 
 
     def __hash__(MyStruct self):

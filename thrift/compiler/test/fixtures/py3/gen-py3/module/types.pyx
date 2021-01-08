@@ -250,11 +250,11 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.optional_blob:
             return None
 
-        if self.__field_optional_blob is None:
+        if self.__fbthrift_cached_optional_blob is None:
             if not deref(self._cpp_obj).optional_blob_ref().value_unchecked():
                 return None
-            self.__field_optional_blob = __iobuf.IOBuf.create(deref(self._cpp_obj).optional_blob_ref().value_unchecked().get(), self)
-        return self.__field_optional_blob
+            self.__fbthrift_cached_optional_blob = __iobuf.IOBuf.create(deref(self._cpp_obj).optional_blob_ref().value_unchecked().get(), self)
+        return self.__fbthrift_cached_optional_blob
 
 
     def __hash__(OptionalRefStruct self):
@@ -454,16 +454,16 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     @property
     def structOne(self):
 
-        if self.__field_structOne is None:
-            self.__field_structOne = SimpleStruct.create(__reference_shared_ptr(deref(self._cpp_obj).structOne_ref().ref(), self._cpp_obj))
-        return self.__field_structOne
+        if self.__fbthrift_cached_structOne is None:
+            self.__fbthrift_cached_structOne = SimpleStruct.create(__reference_shared_ptr(deref(self._cpp_obj).structOne_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_structOne
 
     @property
     def structTwo(self):
 
-        if self.__field_structTwo is None:
-            self.__field_structTwo = SimpleStruct.create(__reference_shared_ptr(deref(self._cpp_obj).structTwo_ref().ref(), self._cpp_obj))
-        return self.__field_structTwo
+        if self.__fbthrift_cached_structTwo is None:
+            self.__fbthrift_cached_structTwo = SimpleStruct.create(__reference_shared_ptr(deref(self._cpp_obj).structTwo_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_structTwo
 
     @property
     def an_integer(self):
@@ -478,9 +478,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     @property
     def an_enum(self):
 
-        if self.__field_an_enum is None:
-            self.__field_an_enum = translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum_ref().value()))
-        return self.__field_an_enum
+        if self.__fbthrift_cached_an_enum is None:
+            self.__fbthrift_cached_an_enum = translate_cpp_enum_to_python(AnEnum, <int>(deref(self._cpp_obj).an_enum_ref().value()))
+        return self.__fbthrift_cached_an_enum
 
     @property
     def some_bytes(self):
@@ -678,9 +678,9 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
     @property
     def u(self):
 
-        if self.__field_u is None:
-            self.__field_u = BinaryUnion.create(__reference_shared_ptr(deref(self._cpp_obj).u_ref().ref(), self._cpp_obj))
-        return self.__field_u
+        if self.__fbthrift_cached_u is None:
+            self.__fbthrift_cached_u = BinaryUnion.create(__reference_shared_ptr(deref(self._cpp_obj).u_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_u
 
 
     def __hash__(BinaryUnionStruct self):

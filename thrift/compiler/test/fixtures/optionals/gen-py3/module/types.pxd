@@ -163,7 +163,7 @@ cdef class Color(thrift.py3.types.Struct):
 cdef class Vehicle(thrift.py3.types.Struct):
     cdef shared_ptr[cVehicle] _cpp_obj
     cdef __fbthrift_types_fields.__Vehicle_FieldsSetter _fields_setter
-    cdef Color __field_color
+    cdef Color __fbthrift_cached_color
 
     @staticmethod
     cdef create(shared_ptr[cVehicle])
@@ -173,11 +173,11 @@ cdef class Vehicle(thrift.py3.types.Struct):
 cdef class Person(thrift.py3.types.Struct):
     cdef shared_ptr[cPerson] _cpp_obj
     cdef __fbthrift_types_fields.__Person_FieldsSetter _fields_setter
-    cdef Color __field_favoriteColor
-    cdef Set__i64 __field_friends
-    cdef Map__Animal_string __field_petNames
-    cdef object __field_afraidOfAnimal
-    cdef List__Vehicle __field_vehicles
+    cdef Color __fbthrift_cached_favoriteColor
+    cdef Set__i64 __fbthrift_cached_friends
+    cdef Map__Animal_string __fbthrift_cached_petNames
+    cdef object __fbthrift_cached_afraidOfAnimal
+    cdef List__Vehicle __fbthrift_cached_vehicles
 
     @staticmethod
     cdef create(shared_ptr[cPerson])

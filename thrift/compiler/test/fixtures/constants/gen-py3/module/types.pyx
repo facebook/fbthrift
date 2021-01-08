@@ -266,9 +266,9 @@ cdef class Internship(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.employer:
             return None
 
-        if self.__field_employer is None:
-            self.__field_employer = translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer_ref().value_unchecked()))
-        return self.__field_employer
+        if self.__fbthrift_cached_employer is None:
+            self.__fbthrift_cached_employer = translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer_ref().value_unchecked()))
+        return self.__fbthrift_cached_employer
 
 
     def __hash__(Internship self):
@@ -527,16 +527,16 @@ cdef class struct2(thrift.py3.types.Struct):
     @property
     def c(self):
 
-        if self.__field_c is None:
-            self.__field_c = struct1.create(__reference_shared_ptr(deref(self._cpp_obj).c_ref().ref(), self._cpp_obj))
-        return self.__field_c
+        if self.__fbthrift_cached_c is None:
+            self.__fbthrift_cached_c = struct1.create(__reference_shared_ptr(deref(self._cpp_obj).c_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_c
 
     @property
     def d(self):
 
-        if self.__field_d is None:
-            self.__field_d = List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).d_ref().ref(), self._cpp_obj))
-        return self.__field_d
+        if self.__fbthrift_cached_d is None:
+            self.__fbthrift_cached_d = List__i32.create(__reference_shared_ptr(deref(self._cpp_obj).d_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_d
 
 
     def __hash__(struct2 self):
@@ -626,9 +626,9 @@ cdef class struct3(thrift.py3.types.Struct):
     @property
     def c(self):
 
-        if self.__field_c is None:
-            self.__field_c = struct2.create(__reference_shared_ptr(deref(self._cpp_obj).c_ref().ref(), self._cpp_obj))
-        return self.__field_c
+        if self.__fbthrift_cached_c is None:
+            self.__fbthrift_cached_c = struct2.create(__reference_shared_ptr(deref(self._cpp_obj).c_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_c
 
 
     def __hash__(struct3 self):

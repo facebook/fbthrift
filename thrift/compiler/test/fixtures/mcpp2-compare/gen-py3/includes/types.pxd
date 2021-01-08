@@ -100,7 +100,7 @@ cdef class AStruct(thrift.py3.types.Struct):
 cdef class AStructB(thrift.py3.types.Struct):
     cdef shared_ptr[cAStructB] _cpp_obj
     cdef __fbthrift_types_fields.__AStructB_FieldsSetter _fields_setter
-    cdef AStruct __field_FieldA
+    cdef AStruct __fbthrift_cached_FieldA
 
     @staticmethod
     cdef create(shared_ptr[cAStructB])

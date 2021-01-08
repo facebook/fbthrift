@@ -97,16 +97,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyIncludedField(self):
 
-        if self.__field_MyIncludedField is None:
-            self.__field_MyIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedField_ref().ref(), self._cpp_obj))
-        return self.__field_MyIncludedField
+        if self.__fbthrift_cached_MyIncludedField is None:
+            self.__fbthrift_cached_MyIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyIncludedField_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_MyIncludedField
 
     @property
     def MyOtherIncludedField(self):
 
-        if self.__field_MyOtherIncludedField is None:
-            self.__field_MyOtherIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyOtherIncludedField_ref().ref(), self._cpp_obj))
-        return self.__field_MyOtherIncludedField
+        if self.__fbthrift_cached_MyOtherIncludedField is None:
+            self.__fbthrift_cached_MyOtherIncludedField = _includes_types.Included.create(__reference_shared_ptr(deref(self._cpp_obj).MyOtherIncludedField_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_MyOtherIncludedField
 
     @property
     def MyIncludedInt(self):

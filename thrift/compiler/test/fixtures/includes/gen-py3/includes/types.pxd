@@ -70,7 +70,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
 cdef class Included(thrift.py3.types.Struct):
     cdef shared_ptr[cIncluded] _cpp_obj
     cdef __fbthrift_types_fields.__Included_FieldsSetter _fields_setter
-    cdef _transitive_types.Foo __field_MyTransitiveField
+    cdef _transitive_types.Foo __fbthrift_cached_MyTransitiveField
 
     @staticmethod
     cdef create(shared_ptr[cIncluded])

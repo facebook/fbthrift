@@ -23,16 +23,16 @@ are special because we try to memoize their wrappers on the parent handler
 if they have been previously retrieved.
 
 }}{{#type:iobuf?}}{{!
-}}if self.__field_{{field:py_name}} is None:
-    self.__field_{{field:py_name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{> CythonFieldRef}}), self)
-return self.__field_{{field:py_name}}{{!
+}}if self.__fbthrift_cached_{{field:py_name}} is None:
+    self.__fbthrift_cached_{{field:py_name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{> CythonFieldRef}}), self)
+return self.__fbthrift_cached_{{field:py_name}}{{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-}}if self.__field_{{field:py_name}} is None:
+}}if self.__fbthrift_cached_{{field:py_name}} is None:
     if not deref(self._cpp_obj).{{> CythonFieldValueRef}}:
         return None
-    self.__field_{{field:py_name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{> CythonFieldValueRef}}.get(), self)
-return self.__field_{{field:py_name}}{{!
+    self.__fbthrift_cached_{{field:py_name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{> CythonFieldValueRef}}.get(), self)
+return self.__fbthrift_cached_{{field:py_name}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}return (<const char*>deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
@@ -41,14 +41,14 @@ return self.__field_{{field:py_name}}{{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
-}}if self.__field_{{field:py_name}} is None:
+}}if self.__fbthrift_cached_{{field:py_name}} is None:
     if not deref(self._cpp_obj).{{> CythonFieldValueRef}}:
         return None
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.__field_{{field:py_name}} = {{> types/CythonPythonType}}.create(__reference_shared_ptr({{!
+    self.__fbthrift_cached_{{field:py_name}} = {{> types/CythonPythonType}}.create(__reference_shared_ptr({{!
       }}deref(deref(self._cpp_obj).{{> CythonFieldValueRef}}), self._cpp_obj))
-return self.__field_{{field:py_name}}{{!
+return self.__fbthrift_cached_{{field:py_name}}{{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
@@ -59,8 +59,8 @@ return self.__field_{{field:py_name}}{{!
     }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
 }}{{/type:base?}}{{!
 }}{{^type:base?}}{{!
-}}if self.__field_{{field:py_name}} is None:
-    self.__field_{{field:py_name}} = {{!
+}}if self.__fbthrift_cached_{{field:py_name}} is None:
+    self.__fbthrift_cached_{{field:py_name}} = {{!
       }}{{#type:enum?}}translate_cpp_enum_to_python({{!
         }}{{> types/CythonPythonType}}, {{!
         }}<int>({{!
@@ -70,7 +70,7 @@ return self.__field_{{field:py_name}}{{!
       }}deref(self._cpp_obj).{{> CythonFieldRef}}, {{!
       }}self._cpp_obj{{!
       }})){{/type:enum?}}
-return self.__field_{{field:py_name}}{{!
+return self.__fbthrift_cached_{{field:py_name}}{{!
 }}{{/type:base?}}{{!
 }}{{/field:reference?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

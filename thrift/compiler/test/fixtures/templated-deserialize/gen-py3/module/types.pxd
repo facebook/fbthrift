@@ -166,24 +166,24 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
     cdef __fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
-    cdef Map__string_bool __field_fieldB
-    cdef Set__i32 __field_fieldC
-    cdef List__List__List__i32 __field_fieldF
-    cdef Map__string_Map__string_Map__string_i32 __field_fieldG
-    cdef List__Set__i32 __field_fieldH
-    cdef Map__string_List__i32 __field_fieldJ
-    cdef List__List__List__List__i32 __field_fieldK
-    cdef Set__Set__Set__bool __field_fieldL
-    cdef Map__Set__List__i32_Map__List__Set__string_string __field_fieldM
-    cdef List__Foo__i64 __field_fieldN
-    cdef List__Bar__double __field_fieldO
-    cdef List__Baz__i32 __field_fieldP
-    cdef object __field_fieldQ
-    cdef Map__string_bool __field_fieldR
-    cdef SmallStruct __field_fieldS
-    cdef SmallStruct __field_fieldT
-    cdef SmallStruct __field_fieldU
-    cdef SmallStruct __field_fieldX
+    cdef Map__string_bool __fbthrift_cached_fieldB
+    cdef Set__i32 __fbthrift_cached_fieldC
+    cdef List__List__List__i32 __fbthrift_cached_fieldF
+    cdef Map__string_Map__string_Map__string_i32 __fbthrift_cached_fieldG
+    cdef List__Set__i32 __fbthrift_cached_fieldH
+    cdef Map__string_List__i32 __fbthrift_cached_fieldJ
+    cdef List__List__List__List__i32 __fbthrift_cached_fieldK
+    cdef Set__Set__Set__bool __fbthrift_cached_fieldL
+    cdef Map__Set__List__i32_Map__List__Set__string_string __fbthrift_cached_fieldM
+    cdef List__Foo__i64 __fbthrift_cached_fieldN
+    cdef List__Bar__double __fbthrift_cached_fieldO
+    cdef List__Baz__i32 __fbthrift_cached_fieldP
+    cdef object __fbthrift_cached_fieldQ
+    cdef Map__string_bool __fbthrift_cached_fieldR
+    cdef SmallStruct __fbthrift_cached_fieldS
+    cdef SmallStruct __fbthrift_cached_fieldT
+    cdef SmallStruct __fbthrift_cached_fieldU
+    cdef SmallStruct __fbthrift_cached_fieldX
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct])

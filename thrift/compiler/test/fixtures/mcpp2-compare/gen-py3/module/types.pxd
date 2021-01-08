@@ -992,8 +992,8 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
-    cdef List__binary __field_MyBinaryListField4
-    cdef Map__MyEnumA_string __field_MyMapEnumAndInt
+    cdef List__binary __fbthrift_cached_MyBinaryListField4
+    cdef Map__MyEnumA_string __fbthrift_cached_MyMapEnumAndInt
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -1072,17 +1072,17 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cAnException] _cpp_obj
     cdef __fbthrift_types_fields.__AnException_FieldsSetter _fields_setter
-    cdef List__i32 __field_exception_list
-    cdef Set__i64 __field_exception_set
-    cdef Map__string_i32 __field_exception_map
-    cdef Map__string_i32 __field_req_exception_map
-    cdef object __field_enum_field
-    cdef List__MyEnumA __field_enum_container
-    cdef MyStruct __field_a_struct
-    cdef Set__MyStruct __field_a_set_struct
-    cdef List__SimpleUnion __field_a_union_list
-    cdef Set__SimpleUnion __field_union_typedef
-    cdef List__Set__SimpleUnion __field_a_union_typedef_list
+    cdef List__i32 __fbthrift_cached_exception_list
+    cdef Set__i64 __fbthrift_cached_exception_set
+    cdef Map__string_i32 __fbthrift_cached_exception_map
+    cdef Map__string_i32 __fbthrift_cached_req_exception_map
+    cdef object __fbthrift_cached_enum_field
+    cdef List__MyEnumA __fbthrift_cached_enum_container
+    cdef MyStruct __fbthrift_cached_a_struct
+    cdef Set__MyStruct __fbthrift_cached_a_set_struct
+    cdef List__SimpleUnion __fbthrift_cached_a_union_list
+    cdef Set__SimpleUnion __fbthrift_cached_union_typedef
+    cdef List__Set__SimpleUnion __fbthrift_cached_a_union_typedef_list
 
     @staticmethod
     cdef create(shared_ptr[cAnException])
@@ -1101,42 +1101,42 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
     cdef __fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
-    cdef Map__string_bool __field_fieldB
-    cdef Map__string_bool __field_req_fieldB
-    cdef Map__string_bool __field_opt_fieldB
-    cdef Set__i32 __field_fieldC
-    cdef Set__i32 __field_req_fieldC
-    cdef Set__i32 __field_opt_fieldC
-    cdef List__List__i32 __field_fieldF
-    cdef Map__string_Map__string_Map__string_i32 __field_fieldG
-    cdef List__Set__i32 __field_fieldH
-    cdef Map__string_List__i32 __field_fieldJ
-    cdef List__List__List__List__i32 __field_fieldK
-    cdef Set__Set__Set__bool __field_fieldL
-    cdef Map__Set__List__i32_Map__List__Set__string_string __field_fieldM
-    cdef List__Map__Empty_MyStruct __field_fieldO
-    cdef List__List__List__Map__Empty_MyStruct __field_fieldP
-    cdef object __field_fieldQ
-    cdef object __field_fieldR
-    cdef object __field_req_fieldR
-    cdef object __field_opt_fieldR
-    cdef object __field_fieldS
-    cdef List__MyEnumA __field_fieldT
-    cdef List__MyEnumA __field_fieldU
-    cdef MyStruct __field_fieldV
-    cdef MyStruct __field_req_fieldV
-    cdef MyStruct __field_opt_fieldV
-    cdef Set__MyStruct __field_fieldW
-    cdef ComplexUnion __field_fieldX
-    cdef ComplexUnion __field_req_fieldX
-    cdef ComplexUnion __field_opt_fieldX
-    cdef List__ComplexUnion __field_fieldY
-    cdef Set__SimpleUnion __field_fieldZ
-    cdef List__Set__SimpleUnion __field_fieldAA
-    cdef Map__Bar__double_Baz__i32 __field_fieldAB
-    cdef object __field_fieldAC
-    cdef object __field_fieldAD
-    cdef Map__string_i32 __field_fieldAE
+    cdef Map__string_bool __fbthrift_cached_fieldB
+    cdef Map__string_bool __fbthrift_cached_req_fieldB
+    cdef Map__string_bool __fbthrift_cached_opt_fieldB
+    cdef Set__i32 __fbthrift_cached_fieldC
+    cdef Set__i32 __fbthrift_cached_req_fieldC
+    cdef Set__i32 __fbthrift_cached_opt_fieldC
+    cdef List__List__i32 __fbthrift_cached_fieldF
+    cdef Map__string_Map__string_Map__string_i32 __fbthrift_cached_fieldG
+    cdef List__Set__i32 __fbthrift_cached_fieldH
+    cdef Map__string_List__i32 __fbthrift_cached_fieldJ
+    cdef List__List__List__List__i32 __fbthrift_cached_fieldK
+    cdef Set__Set__Set__bool __fbthrift_cached_fieldL
+    cdef Map__Set__List__i32_Map__List__Set__string_string __fbthrift_cached_fieldM
+    cdef List__Map__Empty_MyStruct __fbthrift_cached_fieldO
+    cdef List__List__List__Map__Empty_MyStruct __fbthrift_cached_fieldP
+    cdef object __fbthrift_cached_fieldQ
+    cdef object __fbthrift_cached_fieldR
+    cdef object __fbthrift_cached_req_fieldR
+    cdef object __fbthrift_cached_opt_fieldR
+    cdef object __fbthrift_cached_fieldS
+    cdef List__MyEnumA __fbthrift_cached_fieldT
+    cdef List__MyEnumA __fbthrift_cached_fieldU
+    cdef MyStruct __fbthrift_cached_fieldV
+    cdef MyStruct __fbthrift_cached_req_fieldV
+    cdef MyStruct __fbthrift_cached_opt_fieldV
+    cdef Set__MyStruct __fbthrift_cached_fieldW
+    cdef ComplexUnion __fbthrift_cached_fieldX
+    cdef ComplexUnion __fbthrift_cached_req_fieldX
+    cdef ComplexUnion __fbthrift_cached_opt_fieldX
+    cdef List__ComplexUnion __fbthrift_cached_fieldY
+    cdef Set__SimpleUnion __fbthrift_cached_fieldZ
+    cdef List__Set__SimpleUnion __fbthrift_cached_fieldAA
+    cdef Map__Bar__double_Baz__i32 __fbthrift_cached_fieldAB
+    cdef object __fbthrift_cached_fieldAC
+    cdef object __fbthrift_cached_fieldAD
+    cdef Map__string_i32 __fbthrift_cached_fieldAE
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct])
@@ -1146,9 +1146,9 @@ cdef class containerStruct(thrift.py3.types.Struct):
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyIncludedStruct] _cpp_obj
     cdef __fbthrift_types_fields.__MyIncludedStruct_FieldsSetter _fields_setter
-    cdef _includes_types.AStruct __field_MyIncludedStruct
-    cdef _includes_types.AStruct __field_ARefField
-    cdef _includes_types.AStruct __field_ARequiredField
+    cdef _includes_types.AStruct __fbthrift_cached_MyIncludedStruct
+    cdef _includes_types.AStruct __fbthrift_cached_ARefField
+    cdef _includes_types.AStruct __fbthrift_cached_ARequiredField
 
     @staticmethod
     cdef create(shared_ptr[cMyIncludedStruct])
@@ -1158,44 +1158,44 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAnnotatedStruct] _cpp_obj
     cdef __fbthrift_types_fields.__AnnotatedStruct_FieldsSetter _fields_setter
-    cdef containerStruct __field_no_annotation
-    cdef containerStruct __field_cpp_unique_ref
-    cdef containerStruct __field_cpp2_unique_ref
-    cdef Map__i32_List__string __field_container_with_ref
-    cdef containerStruct __field_req_cpp_unique_ref
-    cdef containerStruct __field_req_cpp2_unique_ref
-    cdef List__string __field_req_container_with_ref
-    cdef containerStruct __field_opt_cpp_unique_ref
-    cdef containerStruct __field_opt_cpp2_unique_ref
-    cdef Set__i32 __field_opt_container_with_ref
-    cdef containerStruct __field_ref_type_unique
-    cdef containerStruct __field_ref_type_shared
-    cdef Map__i32_List__string __field_ref_type_const
-    cdef containerStruct __field_req_ref_type_shared
-    cdef containerStruct __field_req_ref_type_const
-    cdef List__string __field_req_ref_type_unique
-    cdef containerStruct __field_opt_ref_type_const
-    cdef containerStruct __field_opt_ref_type_unique
-    cdef Set__i32 __field_opt_ref_type_shared
-    cdef folly_small_vector_int64_t_8__List__i64 __field_list_type
-    cdef folly_sorted_vector_set_std_string__Set__string __field_set_type
-    cdef FakeMap__Map__i64_double __field_map_type
-    cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __field_map_struct_type
-    cdef __iobuf.IOBuf __field_iobuf_type
-    cdef __iobuf.IOBuf __field_iobuf_ptr
-    cdef std_list__List__i32 __field_list_i32_template
-    cdef std_deque__List__string __field_list_string_template
-    cdef folly_sorted_vector_set__Set__string __field_set_template
-    cdef folly_sorted_vector_map__Map__i64_string __field_map_template
-    cdef std_list__List__i32 __field_typedef_list_template
-    cdef std_deque__List__string __field_typedef_deque_template
-    cdef folly_sorted_vector_set__Set__string __field_typedef_set_template
-    cdef folly_sorted_vector_map__Map__i64_string __field_typedef_map_template
-    cdef List__Bar__double __field_indirection_b
-    cdef Set__Baz__i32 __field_indirection_c
-    cdef __iobuf.IOBuf __field_iobuf_type_val
-    cdef __iobuf.IOBuf __field_iobuf_ptr_val
-    cdef containerStruct __field_struct_struct
+    cdef containerStruct __fbthrift_cached_no_annotation
+    cdef containerStruct __fbthrift_cached_cpp_unique_ref
+    cdef containerStruct __fbthrift_cached_cpp2_unique_ref
+    cdef Map__i32_List__string __fbthrift_cached_container_with_ref
+    cdef containerStruct __fbthrift_cached_req_cpp_unique_ref
+    cdef containerStruct __fbthrift_cached_req_cpp2_unique_ref
+    cdef List__string __fbthrift_cached_req_container_with_ref
+    cdef containerStruct __fbthrift_cached_opt_cpp_unique_ref
+    cdef containerStruct __fbthrift_cached_opt_cpp2_unique_ref
+    cdef Set__i32 __fbthrift_cached_opt_container_with_ref
+    cdef containerStruct __fbthrift_cached_ref_type_unique
+    cdef containerStruct __fbthrift_cached_ref_type_shared
+    cdef Map__i32_List__string __fbthrift_cached_ref_type_const
+    cdef containerStruct __fbthrift_cached_req_ref_type_shared
+    cdef containerStruct __fbthrift_cached_req_ref_type_const
+    cdef List__string __fbthrift_cached_req_ref_type_unique
+    cdef containerStruct __fbthrift_cached_opt_ref_type_const
+    cdef containerStruct __fbthrift_cached_opt_ref_type_unique
+    cdef Set__i32 __fbthrift_cached_opt_ref_type_shared
+    cdef folly_small_vector_int64_t_8__List__i64 __fbthrift_cached_list_type
+    cdef folly_sorted_vector_set_std_string__Set__string __fbthrift_cached_set_type
+    cdef FakeMap__Map__i64_double __fbthrift_cached_map_type
+    cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __fbthrift_cached_map_struct_type
+    cdef __iobuf.IOBuf __fbthrift_cached_iobuf_type
+    cdef __iobuf.IOBuf __fbthrift_cached_iobuf_ptr
+    cdef std_list__List__i32 __fbthrift_cached_list_i32_template
+    cdef std_deque__List__string __fbthrift_cached_list_string_template
+    cdef folly_sorted_vector_set__Set__string __fbthrift_cached_set_template
+    cdef folly_sorted_vector_map__Map__i64_string __fbthrift_cached_map_template
+    cdef std_list__List__i32 __fbthrift_cached_typedef_list_template
+    cdef std_deque__List__string __fbthrift_cached_typedef_deque_template
+    cdef folly_sorted_vector_set__Set__string __fbthrift_cached_typedef_set_template
+    cdef folly_sorted_vector_map__Map__i64_string __fbthrift_cached_typedef_map_template
+    cdef List__Bar__double __fbthrift_cached_indirection_b
+    cdef Set__Baz__i32 __fbthrift_cached_indirection_c
+    cdef __iobuf.IOBuf __fbthrift_cached_iobuf_type_val
+    cdef __iobuf.IOBuf __fbthrift_cached_iobuf_ptr_val
+    cdef containerStruct __fbthrift_cached_struct_struct
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct])
@@ -1205,8 +1205,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexContainerStruct] _cpp_obj
     cdef __fbthrift_types_fields.__ComplexContainerStruct_FieldsSetter _fields_setter
-    cdef Map__string_folly_IOBuf__binary __field_map_of_iobufs
-    cdef Map__string_std_unique_ptr_folly_IOBuf__binary __field_map_of_iobuf_ptrs
+    cdef Map__string_folly_IOBuf__binary __fbthrift_cached_map_of_iobufs
+    cdef Map__string_std_unique_ptr_folly_IOBuf__binary __fbthrift_cached_map_of_iobuf_ptrs
 
     @staticmethod
     cdef create(shared_ptr[cComplexContainerStruct])

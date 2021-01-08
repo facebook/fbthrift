@@ -101,10 +101,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
 cdef class Combo(thrift.py3.types.Struct):
     cdef shared_ptr[cCombo] _cpp_obj
     cdef __fbthrift_types_fields.__Combo_FieldsSetter _fields_setter
-    cdef List__List__MyStruct __field_listOfOurMyStructLists
-    cdef List__module_MyStruct __field_theirMyStructList
-    cdef List__MyStruct __field_ourMyStructList
-    cdef List__List__module_MyStruct __field_listOfTheirMyStructList
+    cdef List__List__MyStruct __fbthrift_cached_listOfOurMyStructLists
+    cdef List__module_MyStruct __fbthrift_cached_theirMyStructList
+    cdef List__MyStruct __fbthrift_cached_ourMyStructList
+    cdef List__List__module_MyStruct __fbthrift_cached_listOfTheirMyStructList
 
     @staticmethod
     cdef create(shared_ptr[cCombo])

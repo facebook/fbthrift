@@ -247,7 +247,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 cdef class Internship(thrift.py3.types.Struct):
     cdef shared_ptr[cInternship] _cpp_obj
     cdef __fbthrift_types_fields.__Internship_FieldsSetter _fields_setter
-    cdef object __field_employer
+    cdef object __fbthrift_cached_employer
 
     @staticmethod
     cdef create(shared_ptr[cInternship])
@@ -275,8 +275,8 @@ cdef class struct1(thrift.py3.types.Struct):
 cdef class struct2(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct2] _cpp_obj
     cdef __fbthrift_types_fields.__struct2_FieldsSetter _fields_setter
-    cdef struct1 __field_c
-    cdef List__i32 __field_d
+    cdef struct1 __fbthrift_cached_c
+    cdef List__i32 __fbthrift_cached_d
 
     @staticmethod
     cdef create(shared_ptr[cstruct2])
@@ -286,7 +286,7 @@ cdef class struct2(thrift.py3.types.Struct):
 cdef class struct3(thrift.py3.types.Struct):
     cdef shared_ptr[cstruct3] _cpp_obj
     cdef __fbthrift_types_fields.__struct3_FieldsSetter _fields_setter
-    cdef struct2 __field_c
+    cdef struct2 __fbthrift_cached_c
 
     @staticmethod
     cdef create(shared_ptr[cstruct3])

@@ -203,7 +203,7 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cOptionalRefStruct] _cpp_obj
     cdef __fbthrift_types_fields.__OptionalRefStruct_FieldsSetter _fields_setter
-    cdef __iobuf.IOBuf __field_optional_blob
+    cdef __iobuf.IOBuf __fbthrift_cached_optional_blob
 
     @staticmethod
     cdef create(shared_ptr[cOptionalRefStruct])
@@ -222,9 +222,9 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 cdef class ComplexStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexStruct] _cpp_obj
     cdef __fbthrift_types_fields.__ComplexStruct_FieldsSetter _fields_setter
-    cdef SimpleStruct __field_structOne
-    cdef SimpleStruct __field_structTwo
-    cdef object __field_an_enum
+    cdef SimpleStruct __fbthrift_cached_structOne
+    cdef SimpleStruct __fbthrift_cached_structTwo
+    cdef object __fbthrift_cached_an_enum
 
     @staticmethod
     cdef create(shared_ptr[cComplexStruct])
@@ -255,7 +255,7 @@ cdef class BinaryUnion(thrift.py3.types.Union):
 cdef class BinaryUnionStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cBinaryUnionStruct] _cpp_obj
     cdef __fbthrift_types_fields.__BinaryUnionStruct_FieldsSetter _fields_setter
-    cdef BinaryUnion __field_u
+    cdef BinaryUnion __fbthrift_cached_u
 
     @staticmethod
     cdef create(shared_ptr[cBinaryUnionStruct])

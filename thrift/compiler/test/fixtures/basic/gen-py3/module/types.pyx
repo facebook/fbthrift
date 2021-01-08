@@ -170,16 +170,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyDataField(self):
 
-        if self.__field_MyDataField is None:
-            self.__field_MyDataField = MyDataItem.create(__reference_shared_ptr(deref(self._cpp_obj).MyDataField_ref().ref(), self._cpp_obj))
-        return self.__field_MyDataField
+        if self.__fbthrift_cached_MyDataField is None:
+            self.__fbthrift_cached_MyDataField = MyDataItem.create(__reference_shared_ptr(deref(self._cpp_obj).MyDataField_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_MyDataField
 
     @property
     def myEnum(self):
 
-        if self.__field_myEnum is None:
-            self.__field_myEnum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
-        return self.__field_myEnum
+        if self.__fbthrift_cached_myEnum is None:
+            self.__fbthrift_cached_myEnum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
+        return self.__fbthrift_cached_myEnum
 
 
     def __hash__(MyStruct self):

@@ -285,7 +285,7 @@ cdef class DataUnion(thrift.py3.types.Union):
 cdef class Val(thrift.py3.types.Struct):
     cdef shared_ptr[cVal] _cpp_obj
     cdef __fbthrift_types_fields.__Val_FieldsSetter _fields_setter
-    cdef Map__i16_string __field_typedefValue
+    cdef Map__i16_string __fbthrift_cached_typedefValue
 
     @staticmethod
     cdef create(shared_ptr[cVal])
