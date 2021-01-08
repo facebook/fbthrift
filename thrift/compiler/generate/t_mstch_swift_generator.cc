@@ -175,6 +175,80 @@ class t_mstch_swift_generator : public t_mstch_generator {
           c[async_service_id],
           "ServiceAsyncClient",
           package_dir / async_filename);
+
+      // Generate Async to Reactive Wrapper
+      auto async_reactive_wrapper_filename =
+          service_name + "AsyncReactiveWrapper.java";
+      const auto& async_reactive_wrapper_id =
+          id + service->get_name() + "AsyncReactiveWrapper";
+      if (!c.count(async_reactive_wrapper_id)) {
+        c[async_reactive_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[async_reactive_wrapper_id],
+          "AsyncReactiveWrapper",
+          package_dir / async_reactive_wrapper_filename);
+
+      // Generate Blocking to Reactive Wrapper
+      auto blocking_reactive_wrapper_filename =
+          service_name + "BlockingReactiveWrapper.java";
+      const auto& blocking_reactive_wrapper_id =
+          id + service->get_name() + "BlockingReactiveWrapper";
+      if (!c.count(blocking_reactive_wrapper_id)) {
+        c[blocking_reactive_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[blocking_reactive_wrapper_id],
+          "BlockingReactiveWrapper",
+          package_dir / blocking_reactive_wrapper_filename);
+
+      // Generate Reactive to Async Wrapper
+      auto reactive_async_wrapper_filename =
+          service_name + "ReactiveAsyncWrapper.java";
+      const auto& reactive_async_wrapper_id =
+          id + service->get_name() + "ReactiveAsyncWrapper";
+      if (!c.count(reactive_async_wrapper_id)) {
+        c[reactive_async_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[reactive_async_wrapper_id],
+          "ReactiveAsyncWrapper",
+          package_dir / reactive_async_wrapper_filename);
+
+      // Generate Reactive to Blocking Wrapper
+      auto reactive_blocking_wrapper_filename =
+          service_name + "ReactiveBlockingWrapper.java";
+      const auto& reactive_blocking_wrapper_id =
+          id + service->get_name() + "ReactiveBlockingWrapper";
+      if (!c.count(reactive_blocking_wrapper_id)) {
+        c[reactive_blocking_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[reactive_blocking_wrapper_id],
+          "ReactiveBlockingWrapper",
+          package_dir / reactive_blocking_wrapper_filename);
+
+      // Generate Reactive Client
+      auto reactive_client_filename = service_name + "ReactiveClient.java";
+      const auto& reactive_client_wrapper_id =
+          id + service->get_name() + "ReactiveClient";
+      if (!c.count(reactive_client_wrapper_id)) {
+        c[reactive_client_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[reactive_client_wrapper_id],
+          "ReactiveClient",
+          package_dir / reactive_client_filename);
     }
   }
 
@@ -384,10 +458,56 @@ class mstch_swift_function : public mstch_function {
         this,
         {
             {"function:javaName", &mstch_swift_function::java_name},
+            {"function:voidType", &mstch_swift_function::is_void_type},
+            {"function:nestedDepth", &mstch_swift_function::get_nested_depth},
+            {"function:nestedDepth++",
+             &mstch_swift_function::increment_nested_depth},
+            {"function:nestedDepth--",
+             &mstch_swift_function::decrement_nested_depth},
+            {"function:isFirstDepth?", &mstch_swift_function::is_first_depth},
+            {"function:prevNestedDepth",
+             &mstch_swift_function::preceding_nested_depth},
+            {"function:isNested?",
+             &mstch_swift_function::get_nested_container_flag},
+            {"function:setIsNested",
+             &mstch_swift_function::set_nested_container_flag},
         });
   }
+
+  int32_t nestedDepth = 0;
+  bool isNestedContainerFlag = false;
+
+  mstch::node get_nested_depth() {
+    return nestedDepth;
+  }
+  mstch::node preceding_nested_depth() {
+    return (nestedDepth - 1);
+  }
+  mstch::node is_first_depth() {
+    return (nestedDepth == 1);
+  }
+  mstch::node get_nested_container_flag() {
+    return isNestedContainerFlag;
+  }
+  mstch::node set_nested_container_flag() {
+    isNestedContainerFlag = true;
+    return mstch::node();
+  }
+  mstch::node increment_nested_depth() {
+    nestedDepth++;
+    return mstch::node();
+  }
+  mstch::node decrement_nested_depth() {
+    nestedDepth--;
+    return mstch::node();
+  }
+
   mstch::node java_name() {
     return java::mangle_java_name(function_->get_name(), false);
+  }
+
+  mstch::node is_void_type() {
+    return function_->get_returntype()->is_void();
   }
 };
 
@@ -472,6 +592,7 @@ class mstch_swift_field : public mstch_field {
         type->is_i16() || type->is_i32() || type->is_i64() ||
         type->is_double() || type->is_float();
   }
+
   mstch::node is_nullable_or_optional_not_enum() {
     if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
       return true;

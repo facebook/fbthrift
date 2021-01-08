@@ -88,4 +88,11 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         throw new UnsupportedOperationException();
     }
     {{/service:supportedFunctions}}
+
+    interface Reactive extends Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Reactive{{/service:extends}} {
+        @java.lang.Override void close();
+        {{#service:supportedFunctions}}
+        reactor.core.publisher.Mono<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+        {{/service:supportedFunctions}}
+    }
 }

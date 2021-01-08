@@ -49,4 +49,9 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
+
+    interface Reactive extends Closeable, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
+        @java.lang.Override void close();
+        reactor.core.publisher.Mono<Void> pang();
+    }
 }

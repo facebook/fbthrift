@@ -87,4 +87,10 @@ public interface DbMixedStackArguments extends java.io.Closeable {
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
+
+    interface Reactive extends Closeable {
+        @java.lang.Override void close();
+        reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key);
+        reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key);
+    }
 }

@@ -147,4 +147,12 @@ public interface Raiser extends java.io.Closeable {
         RpcOptions rpcOptions) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
+
+    interface Reactive extends Closeable {
+        @java.lang.Override void close();
+        reactor.core.publisher.Mono<Void> doBland();
+        reactor.core.publisher.Mono<Void> doRaise();
+        reactor.core.publisher.Mono<String> get200();
+        reactor.core.publisher.Mono<String> get500();
+    }
 }
