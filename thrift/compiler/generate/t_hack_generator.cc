@@ -347,6 +347,19 @@ class t_hack_generator : public t_oop_generator {
     return it != annotated->annotations_.end() ? &it->second : nullptr;
   }
 
+  // Recursively traverse any typdefs and return the first found adapter name.
+  boost::optional<const string&> get_hack_adapter(t_type* type) {
+    while (true) {
+      if (auto adapter = get_hack_annotation(type, "adapter")) {
+        return *adapter;
+      }
+      if (!type->is_typedef()) {
+        return {};
+      }
+      type = static_cast<t_typedef*>(type)->get_type();
+    }
+  }
+
   std::string hack_namespace(const t_program* p) {
     std::string ns;
     ns = p->get_namespace("hack");
@@ -1378,6 +1391,10 @@ void t_hack_generator::generate_php_struct(
 }
 
 void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
+  // Check the adapter before resolving typedefs.
+  if (const auto adapter = get_hack_adapter(t)) {
+    indent(out) << "'adapter' => " << *adapter << "::class,\n";
+  }
   t = t->get_true_type();
   indent(out) << "'type' => " << type_to_enum(t) << ",\n";
 
@@ -1388,8 +1405,12 @@ void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
   } else if (t->is_struct() || t->is_xception()) {
     indent(out) << "'class' => " << hack_name(t) << "::class,\n";
   } else if (t->is_map()) {
-    t_type* ktype = ((t_map*)t)->get_key_type()->get_true_type();
-    t_type* vtype = ((t_map*)t)->get_val_type()->get_true_type();
+    t_type* ktype = ((t_map*)t)->get_key_type();
+    t_type* vtype = ((t_map*)t)->get_val_type();
+    if (get_hack_adapter(ktype)) {
+      throw std::runtime_error(
+          "using hack.adapter annotation with map keys is not supported yet");
+    }
     indent(out) << "'ktype' => " << type_to_enum(ktype) << ",\n";
     indent(out) << "'vtype' => " << type_to_enum(vtype) << ",\n";
     indent(out) << "'key' => shape(\n";
@@ -1410,7 +1431,7 @@ void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
       indent(out) << "'format' => 'collection',\n";
     }
   } else if (t->is_list()) {
-    t_type* etype = ((t_list*)t)->get_elem_type()->get_true_type();
+    t_type* etype = ((t_list*)t)->get_elem_type();
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
     indent(out) << "'elem' => shape(\n";
     indent_up();
@@ -1425,7 +1446,11 @@ void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
       indent(out) << "'format' => 'collection',\n";
     }
   } else if (t->is_set()) {
-    t_type* etype = ((t_set*)t)->get_elem_type()->get_true_type();
+    t_type* etype = ((t_set*)t)->get_elem_type();
+    if (get_hack_adapter(etype)) {
+      throw std::runtime_error(
+          "using hack.adapter annotation with set keys is not supported yet");
+    }
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
     indent(out) << "'elem' => shape(\n";
     indent_up();
@@ -1457,7 +1482,7 @@ void t_hack_generator::generate_php_struct_spec(
   indent(out) << "const dict<int, this::TFieldSpec> SPEC = dict[\n";
   indent_up();
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    t_type* t = (*m_iter)->get_type();
     indent(out) << (*m_iter)->get_key() << " => shape(\n";
     indent_up();
     out << indent() << "'var' => '" << (*m_iter)->get_name() << "',\n";
@@ -1516,8 +1541,12 @@ void t_hack_generator::generate_php_struct_shape_spec(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    t_type* t = (*m_iter)->get_type();
+    // Compute typehint before resolving typedefs to avoid missing any adapter
+    // annotations.
+    string typehint = type_to_typehint(t, false, !is_constructor_shape);
 
+    t = t->get_true_type();
     string dval = "";
     if ((*m_iter)->get_value() != nullptr &&
         !(t->is_struct() || t->is_xception())) {
@@ -1529,14 +1558,10 @@ void t_hack_generator::generate_php_struct_shape_spec(
     bool nullable =
         nullable_everything_ || field_is_nullable(tstruct, *m_iter, dval);
 
-    string namePrefix = nullable || is_constructor_shape ? "?" : "";
+    string prefix = nullable || is_constructor_shape ? "?" : "";
 
-    string typehint = nullable || is_constructor_shape ? "?" : "";
-
-    typehint += type_to_typehint(t, false, !is_constructor_shape);
-
-    indent(out) << "  " << namePrefix << "'" << (*m_iter)->get_name() << "' => "
-                << typehint << ",\n";
+    indent(out) << "  " << prefix << "'" << (*m_iter)->get_name() << "' => "
+                << prefix << typehint << ",\n";
   }
   if (!is_constructor_shape && shapes_allow_unknown_fields_) {
     indent(out) << "  ...\n";
@@ -2293,7 +2318,12 @@ void t_hack_generator::_generate_php_struct_definition(
   generate_php_structural_id(out, tstruct, generateAsTrait);
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    t_type* t = (*m_iter)->get_type();
+    // Compute typehint before resolving typedefs to avoid missing any adapter
+    // annotations.
+    string typehint = type_to_typehint(t);
+
+    t = t->get_true_type();
 
     if (t->is_enum() && is_bitmask_enum((t_enum*)t)) {
       throw "Enum " + (((t_enum*)t)->get_name()) +
@@ -2314,9 +2344,10 @@ void t_hack_generator::_generate_php_struct_definition(
     bool nullable = (is_result || field_is_nullable(tstruct, (*m_iter), dval) ||
                      nullable_everything_) &&
         !(is_exception && is_base_exception_property(*m_iter));
-    string typehint = nullable ? "?" : "";
+    if (nullable) {
+      typehint = "?" + typehint;
+    }
 
-    typehint += type_to_typehint(t);
     if (!is_result && !is_args) {
       generate_php_docstring(out, *m_iter);
     }
@@ -2382,9 +2413,8 @@ void t_hack_generator::_generate_php_struct_definition(
     if (!first) {
       out << ", ";
     }
-    t_type* t = (*m_iter)->get_type()->get_true_type();
-    out << "?" << type_to_typehint(t) << " $" << (*m_iter)->get_name()
-        << " = null";
+    out << "?" << type_to_typehint((*m_iter)->get_type()) << " $"
+        << (*m_iter)->get_name() << " = null";
     first = false;
   }
   out << indent() << ") {\n";
@@ -2424,6 +2454,11 @@ void t_hack_generator::_generate_php_struct_definition(
       dval = "null";
     } else {
       dval = render_default_value(t);
+    }
+    if (dval != "null") {
+      if (const auto adapter = get_hack_adapter((*m_iter)->get_type())) {
+        dval = *adapter + "::fromThrift(" + dval + ")";
+      }
     }
 
     // result structs only contain fields: success and e.
@@ -3249,6 +3284,11 @@ string t_hack_generator::type_to_typehint(
     bool nullable,
     bool shape,
     bool immutable_collections) {
+  // Check the adapter before resolving typedefs.
+  if (const auto adapter = get_hack_adapter(ttype)) {
+    return *adapter + "::THackType";
+  }
+  ttype = ttype->get_true_type();
   immutable_collections = immutable_collections || const_collections_;
   if (ttype->is_base_type()) {
     switch (((t_base_type*)ttype)->get_base()) {
@@ -3270,12 +3310,6 @@ string t_hack_generator::type_to_typehint(
       default:
         return "mixed";
     }
-  } else if (ttype->is_typedef()) {
-    return type_to_typehint(
-        ((t_typedef*)ttype)->get_type(),
-        nullable,
-        shape,
-        immutable_collections);
   } else if (ttype->is_enum()) {
     if (is_bitmask_enum((t_enum*)ttype)) {
       return "int";
