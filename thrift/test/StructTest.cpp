@@ -65,11 +65,11 @@ TEST_F(StructTest, equal_to) {
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
@@ -153,11 +153,11 @@ TEST_F(StructTest, equal_to_binary) {
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
@@ -325,11 +325,11 @@ TEST_F(StructTest, less) {
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
@@ -413,11 +413,11 @@ TEST_F(StructTest, less_binary) {
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
