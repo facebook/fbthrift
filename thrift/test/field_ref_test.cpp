@@ -589,6 +589,13 @@ TEST(optional_field_ref_test, ensure_isset_unsafe) {
   EXPECT_EQ(s.opt_name().value(), "foo");
 }
 
+TEST(optional_field_ref_test, ensure_isset_unsafe_deprecated) {
+  TestStruct s;
+  s.opt_name().value_unchecked() = "foo";
+  apache::thrift::ensure_isset_unsafe_deprecated(s.opt_name());
+  EXPECT_EQ(s.opt_name().value(), "foo");
+}
+
 TEST(optional_field_ref_test, alias) {
   TestStruct s;
   auto ref = s.opt_nested();

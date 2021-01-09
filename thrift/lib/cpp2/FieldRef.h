@@ -609,6 +609,9 @@ constexpr apache::thrift::detail::can_throw_fn can_throw;
 [[deprecated("Use `emplace` or `operator=` to set Thrift fields.")]] //
 constexpr apache::thrift::detail::ensure_isset_unsafe_fn ensure_isset_unsafe;
 
+constexpr apache::thrift::detail::ensure_isset_unsafe_fn
+    ensure_isset_unsafe_deprecated;
+
 [[deprecated]] //
 constexpr apache::thrift::detail::alias_isset_fn alias_isset;
 
