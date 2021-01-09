@@ -71,8 +71,8 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
         oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     };
   }
@@ -130,8 +130,8 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
           _result =  super.singleRequestSingleResponse(_payload);
         }
       }
-    } catch (Throwable t) {
-      _result = reactor.core.publisher.Mono.error(t);
+    } catch (Throwable _t) {
+      _result = reactor.core.publisher.Mono.error(_t);
     }
 
     return _result;

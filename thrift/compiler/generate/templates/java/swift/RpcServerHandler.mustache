@@ -74,8 +74,8 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
         return _r;
 
         {{/field:type}}
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     });
     {{/function:args}}
@@ -111,8 +111,8 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
         oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     };
   }
@@ -181,8 +181,8 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
           {{/service:extends}}
         }
       }
-    } catch (Throwable t) {
-      _result = reactor.core.publisher.Mono.error(t);
+    } catch (Throwable _t) {
+      _result = reactor.core.publisher.Mono.error(_t);
     }
 
     return _result;

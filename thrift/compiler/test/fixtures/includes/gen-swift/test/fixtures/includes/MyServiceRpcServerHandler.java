@@ -57,8 +57,8 @@ public class MyServiceRpcServerHandler
         test.fixtures.includes.MyStruct _r = test.fixtures.includes.MyStruct.read0(oprot);
         return _r;
 
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     });
     
@@ -67,8 +67,8 @@ public class MyServiceRpcServerHandler
         test.fixtures.includes.includes.Included _r = test.fixtures.includes.includes.Included.read0(oprot);
         return _r;
 
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     });
 
@@ -95,8 +95,8 @@ public class MyServiceRpcServerHandler
         oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     };
   }
@@ -150,8 +150,8 @@ public class MyServiceRpcServerHandler
         test.fixtures.includes.MyStruct _r = test.fixtures.includes.MyStruct.read0(oprot);
         return _r;
 
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     });
     
@@ -160,8 +160,8 @@ public class MyServiceRpcServerHandler
         test.fixtures.includes.includes.Included _r = test.fixtures.includes.includes.Included.read0(oprot);
         return _r;
 
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     });
 
@@ -188,8 +188,8 @@ public class MyServiceRpcServerHandler
         oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     };
   }
@@ -252,8 +252,8 @@ public class MyServiceRpcServerHandler
           _result = reactor.core.publisher.Mono.error(new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name));
         }
       }
-    } catch (Throwable t) {
-      _result = reactor.core.publisher.Mono.error(t);
+    } catch (Throwable _t) {
+      _result = reactor.core.publisher.Mono.error(_t);
     }
 
     return _result;

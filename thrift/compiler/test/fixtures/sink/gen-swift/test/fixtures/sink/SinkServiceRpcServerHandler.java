@@ -52,8 +52,8 @@ public class SinkServiceRpcServerHandler
           _result = reactor.core.publisher.Mono.error(new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name));
         }
       }
-    } catch (Throwable t) {
-      _result = reactor.core.publisher.Mono.error(t);
+    } catch (Throwable _t) {
+      _result = reactor.core.publisher.Mono.error(_t);
     }
 
     return _result;

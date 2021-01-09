@@ -57,8 +57,8 @@ public class DbMixedStackArgumentsRpcServerHandler
         String _r = oprot.readString();
         return _r;
 
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     });
 
@@ -87,8 +87,8 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     };
   }
@@ -141,8 +141,8 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         String _r = oprot.readString();
         return _r;
 
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     });
 
@@ -171,8 +171,8 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
         oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
-      } catch (Exception e) {
-        throw reactor.core.Exceptions.propagate(e);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
       }
     };
   }
@@ -234,8 +234,8 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
           _result = reactor.core.publisher.Mono.error(new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name));
         }
       }
-    } catch (Throwable t) {
-      _result = reactor.core.publisher.Mono.error(t);
+    } catch (Throwable _t) {
+      _result = reactor.core.publisher.Mono.error(_t);
     }
 
     return _result;
