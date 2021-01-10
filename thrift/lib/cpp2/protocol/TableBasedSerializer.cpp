@@ -111,10 +111,11 @@ THRIFT_DEFINE_STRING_TYPE_TO_INFO(
     StringFieldType::IOBufPtr);
 
 namespace {
-constexpr TypeInfo kStopType = {protocol::TType::T_STOP,
-                                nullptr,
-                                nullptr,
-                                nullptr};
+constexpr TypeInfo kStopType = {
+    protocol::TType::T_STOP,
+    nullptr,
+    nullptr,
+    nullptr};
 constexpr FieldInfo kStopMarker = {0, false, nullptr, 0, 0, &kStopType};
 
 template <class Protocol_>

@@ -45,10 +45,11 @@ TEST(PartialsTEST, Recursion) {
       "X<Y<>>",
       mstch::render(
           "{{>node}}",
-          mstch::map{{"content", std::string("X")},
-                     {"nodes",
-                      mstch::array{mstch::map{{"content", std::string("Y")},
-                                              {"nodes", mstch::array{}}}}}},
+          mstch::map{
+              {"content", std::string("X")},
+              {"nodes",
+               mstch::array{mstch::map{
+                   {"content", std::string("Y")}, {"nodes", mstch::array{}}}}}},
           {{"node", "{{content}}<{{#nodes}}{{>node}}{{/nodes}}>"}}));
 }
 // The greater-than operator should not alter surrounding whitespace.

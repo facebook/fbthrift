@@ -88,8 +88,8 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
   }
 
   ServerStream<Chunk2> streamDownload() override {
-    return folly::coro::
-        co_invoke([this]() -> folly::coro::AsyncGenerator<Chunk2&&> {
+    return folly::coro::co_invoke(
+        [this]() -> folly::coro::AsyncGenerator<Chunk2&&> {
           while (true) {
             co_yield folly::copy(chunk_);
             stats_->add(ks_Upload_);

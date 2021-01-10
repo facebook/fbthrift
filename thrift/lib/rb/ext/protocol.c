@@ -15,6 +15,7 @@
  */
 
 #include <protocol.h>
+
 #include <constants.h>
 #include <ruby.h>
 #include <stdbool.h>

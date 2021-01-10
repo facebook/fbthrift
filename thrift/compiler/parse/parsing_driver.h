@@ -403,11 +403,12 @@ class parsing_driver {
       message = std::string{dyn_buffer.data()};
     }
 
-    return diagnostic_message{level,
-                              program->get_path(),
-                              scanner->get_lineno(),
-                              scanner->get_text(),
-                              message};
+    return diagnostic_message{
+        level,
+        program->get_path(),
+        scanner->get_lineno(),
+        scanner->get_text(),
+        message};
   }
 };
 

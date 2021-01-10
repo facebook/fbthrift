@@ -142,8 +142,7 @@ TEST_F(RocketNetworkTest, FlushList) {
         }
 
         EXPECT_TRUE(onWriteSuccess.writeSuccess);
-      })
-        .wait();
+      }).wait();
 
     auto reply = std::move(sendFuture).get();
 

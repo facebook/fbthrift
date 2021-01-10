@@ -69,9 +69,10 @@ void template_type::tokenize(const std::string& tmp) {
     if (close_pos != npos && open_pos != npos) {
       process_text(beg + cur_pos, beg + open_pos);
       cur_pos = close_pos + m_close.size();
-      m_tokens.push_back({{beg + open_pos, beg + close_pos + m_close.size()},
-                          m_open.size(),
-                          m_close.size()});
+      m_tokens.push_back(
+          {{beg + open_pos, beg + close_pos + m_close.size()},
+           m_open.size(),
+           m_close.size()});
 
       if (cur_pos == tmp.size()) {
         m_tokens.push_back({{""}});

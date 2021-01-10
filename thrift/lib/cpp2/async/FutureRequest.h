@@ -259,20 +259,21 @@ makeSemiFutureCallback(
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.buf());
 
-            Result result;
-            auto ew = processor(result, state);
+        Result result;
+        auto ew = processor(result, state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
-            return result;
-          })};
+        if (ew) {
+          ew.throw_exception();
+        }
+        return result;
+      })};
 }
 
 inline std::
@@ -283,18 +284,19 @@ inline std::
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.buf());
 
-            auto ew = processor(state);
+        auto ew = processor(state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
-          })};
+        if (ew) {
+          ew.throw_exception();
+        }
+      })};
 }
 
 template <typename Result>
@@ -308,20 +310,21 @@ makeHeaderSemiFutureCallback(
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.buf());
 
-            Result result;
-            auto ew = processor(result, state);
+        Result result;
+        auto ew = processor(result, state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
-            return std::make_pair(std::move(result), state.extractHeader());
-          })};
+        if (ew) {
+          ew.throw_exception();
+        }
+        return std::make_pair(std::move(result), state.extractHeader());
+      })};
 }
 
 inline std::pair<
@@ -335,20 +338,21 @@ makeHeaderSemiFutureCallback(
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.buf());
 
-            auto ew = processor(state);
+        auto ew = processor(state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
+        if (ew) {
+          ew.throw_exception();
+        }
 
-            return std::make_pair(folly::unit, state.extractHeader());
-          })};
+        return std::make_pair(folly::unit, state.extractHeader());
+      })};
 }
 
 inline std::pair<
@@ -358,9 +362,10 @@ makeOneWaySemiFutureCallback(
     std::shared_ptr<apache::thrift::RequestChannel> channel) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getSemiFuture();
-  return {std::make_unique<OneWaySemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future)};
+  return {
+      std::make_unique<OneWaySemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future)};
 }
 } // namespace thrift
 } // namespace apache

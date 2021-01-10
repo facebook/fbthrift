@@ -28,8 +28,8 @@ namespace thrift {
 TEST(H2ClientConnectionTest, ServerCloseSocketImmediate) {
   folly::SocketAddress saddr;
   saddr.setFromLocalPort(static_cast<uint16_t>(0));
-  proxygen::HTTPServer::IPConfig cfg{saddr,
-                                     proxygen::HTTPServer::Protocol::HTTP2};
+  proxygen::HTTPServer::IPConfig cfg{
+      saddr, proxygen::HTTPServer::Protocol::HTTP2};
 
   auto server =
       proxygen::ScopedHTTPServer::start(cfg, proxygen::HTTPServerOptions{});

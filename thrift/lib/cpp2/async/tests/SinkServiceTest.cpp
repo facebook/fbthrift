@@ -171,7 +171,7 @@ TEST_F(SinkServiceTest, SinkChunkTimeout) {
         auto sink = co_await client.co_rangeChunkTimeout();
 
         EXPECT_THROW(
-            co_await[&]()->folly::coro::Task<void> {
+            co_await [&]() -> folly::coro::Task<void> {
               co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
                 for (int i = 0; i <= 100; i++) {
                   if (i == 20) {
@@ -213,11 +213,10 @@ TEST_F(SinkServiceTest, AlignedSink) {
           option.setEnablePageAlignment(true);
           std::string s = "abcdefghijk";
           auto sink = co_await client.co_alignment(option, s);
-          int32_t alignment =
-              co_await sink
-                  .sink([s]() -> folly::coro::AsyncGenerator<folly::IOBuf&&> {
-                    co_yield std::move(*folly::IOBuf::copyBuffer(s));
-                  }());
+          int32_t alignment = co_await sink.sink(
+              [s]() -> folly::coro::AsyncGenerator<folly::IOBuf&&> {
+                co_yield std::move(*folly::IOBuf::copyBuffer(s));
+              }());
           EXPECT_EQ(alignment, 0);
         }
       });

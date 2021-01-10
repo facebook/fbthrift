@@ -69,8 +69,9 @@ class OldServiceMock : public OldVersionSvIf {
     Message response;
     *response.message_ref() = "Message";
     response.message_ref().ensure();
-    return {std::move(response),
-            apache::thrift::ServerStream<Message>::createEmpty()};
+    return {
+        std::move(response),
+        apache::thrift::ServerStream<Message>::createEmpty()};
   }
 
   void RequestResponseToStream(Message& response) override {

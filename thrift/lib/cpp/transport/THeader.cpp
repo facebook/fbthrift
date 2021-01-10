@@ -99,7 +99,8 @@ bool THeader::compactFramed(uint32_t magic) {
 }
 
 template <
-    template <class BaseProt> class ProtocolClass,
+    template <class BaseProt>
+    class ProtocolClass,
     PROTOCOL_TYPES ProtocolID>
 unique_ptr<IOBuf> THeader::removeUnframed(IOBufQueue* queue, size_t& needed) {
   auto buf = queue->move();

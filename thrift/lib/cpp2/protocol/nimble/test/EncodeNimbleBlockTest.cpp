@@ -82,24 +82,25 @@ TYPED_TEST(NimbleBlockEncodeDataControlByteTest, ControlByteComputation) {
     std::uint32_t chunk;
     std::uint8_t bitPair;
   };
-  std::vector<TestCase> testData = {{0, 0},
-                                    {1, 1},
-                                    {2, 1},
-                                    {100, 1},
-                                    {255, 1},
-                                    {256, 2},
-                                    {257, 2},
-                                    {10000, 2},
-                                    {(1U << 16) - 1, 2},
-                                    {(1U << 16), 3},
-                                    {(1U << 16) + 1, 3},
-                                    {1000 * 1000, 3},
-                                    {(1U << 24) - 1, 3},
-                                    {(1U << 24), 3},
-                                    {(1U << 24) + 1, 3},
-                                    {1000 * 1000 * 1000, 3},
-                                    {0xFFFFFFFFU - 1, 3},
-                                    {0xFFFFFFFFU, 3}};
+  std::vector<TestCase> testData = {
+      {0, 0},
+      {1, 1},
+      {2, 1},
+      {100, 1},
+      {255, 1},
+      {256, 2},
+      {257, 2},
+      {10000, 2},
+      {(1U << 16) - 1, 2},
+      {(1U << 16), 3},
+      {(1U << 16) + 1, 3},
+      {1000 * 1000, 3},
+      {(1U << 24) - 1, 3},
+      {(1U << 24), 3},
+      {(1U << 24) + 1, 3},
+      {1000 * 1000 * 1000, 3},
+      {0xFFFFFFFFU - 1, 3},
+      {0xFFFFFFFFU, 3}};
   for (auto& p0 : testData) {
     for (auto& p1 : testData) {
       for (auto& p2 : testData) {

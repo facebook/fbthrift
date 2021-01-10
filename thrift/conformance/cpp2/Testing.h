@@ -204,7 +204,9 @@ inline constexpr bool is_trivial_compat_v = Type <= CtorType::Trivial;
 // combine.
 template <CtorType Ctor, CtorType Dtor>
 inline constexpr CtorType ctor_type_v =
-    Ctor == CtorType::Delete ? CtorType::Delete : Ctor > Dtor ? Ctor : Dtor;
+    Ctor == CtorType::Delete ? CtorType::Delete
+    : Ctor > Dtor            ? Ctor
+                             : Dtor;
 
 // An empty struct with the given traits.
 template <

@@ -496,10 +496,10 @@ class mstch_py3_program : public mstch_program {
   mstch::node includeNamespaces() {
     mstch::array a;
     for (auto& it : includeNamespaces_) {
-      a.push_back(
-          mstch::map{{"includeNamespace", createStringArray(it.second.ns)},
-                     {"hasServices?", it.second.hasServices},
-                     {"hasTypes?", it.second.hasTypes}});
+      a.push_back(mstch::map{
+          {"includeNamespace", createStringArray(it.second.ns)},
+          {"hasServices?", it.second.hasServices},
+          {"hasTypes?", it.second.hasTypes}});
     }
     return a;
   }

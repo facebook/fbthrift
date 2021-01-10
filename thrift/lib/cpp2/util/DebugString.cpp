@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/util/DebugString.h>
+
 #include <fmt/core.h>
 #include <folly/MapUtil.h>
 #include <folly/String.h>
@@ -82,20 +83,21 @@ TType parseSimpleTypeLabel(folly::StringPiece label) {
   // if type is "map<K, V>", shorten to "map" for the lookup.
   label = label.subpiece(0, label.find('<'));
   static const std::unordered_map<folly::StringPiece, TType, folly::Hash>
-      kTable = {{"stop", TType::T_STOP},
-                {"bool", TType::T_BOOL},
-                {"byte", TType::T_BYTE},
-                {"i16", TType::T_I16},
-                {"i32", TType::T_I32},
-                {"i64", TType::T_I64},
-                {"double", TType::T_DOUBLE},
-                {"float", TType::T_FLOAT},
-                {"string", TType::T_STRING},
-                {"utf8", TType::T_UTF8},
-                {"struct", TType::T_STRUCT},
-                {"list", TType::T_LIST},
-                {"set", TType::T_SET},
-                {"map", TType::T_MAP}};
+      kTable = {
+          {"stop", TType::T_STOP},
+          {"bool", TType::T_BOOL},
+          {"byte", TType::T_BYTE},
+          {"i16", TType::T_I16},
+          {"i32", TType::T_I32},
+          {"i64", TType::T_I64},
+          {"double", TType::T_DOUBLE},
+          {"float", TType::T_FLOAT},
+          {"string", TType::T_STRING},
+          {"utf8", TType::T_UTF8},
+          {"struct", TType::T_STRUCT},
+          {"list", TType::T_LIST},
+          {"set", TType::T_SET},
+          {"map", TType::T_MAP}};
   return folly::get_default(kTable, label, TType::T_STOP);
 }
 

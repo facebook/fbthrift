@@ -77,9 +77,8 @@ class ClientSink {
     auto finalResponse =
         co_await std::exchange(impl_, nullptr)
             ->sink(
-                [ this, &ew ](auto _generator)
-                    -> folly::coro::AsyncGenerator<
-                        folly::Try<StreamPayload>&&> {
+                [this, &ew](auto _generator) -> folly::coro::AsyncGenerator<
+                                                 folly::Try<StreamPayload>&&> {
                   try {
                     while (auto item = co_await _generator.next()) {
                       co_yield folly::Try<StreamPayload>(StreamPayload(

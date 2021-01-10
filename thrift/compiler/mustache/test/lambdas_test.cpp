@@ -36,10 +36,11 @@ TEST(LambdasTEST, InterpolationExpansion) {
       "Hello, world!",
       mstch::render(
           "Hello, {{lambda}}!",
-          mstch::map{{"planet", std::string("world")},
-                     {"lambda", mstch::lambda{[]() -> mstch::node {
-                        return std::string{"{{planet}}"};
-                      }}}}));
+          mstch::map{
+              {"planet", std::string("world")},
+              {"lambda", mstch::lambda{[]() -> mstch::node {
+                 return std::string{"{{planet}}"};
+               }}}}));
 }
 // A lambda's return value should parse with the default delimiters.
 TEST(LambdasTEST, InterpolationAlternateDelimiters) {
@@ -47,10 +48,11 @@ TEST(LambdasTEST, InterpolationAlternateDelimiters) {
       "Hello, (|planet| => world)!",
       mstch::render(
           "{{= | | =}}\nHello, (|lambda|)!",
-          mstch::map{{"planet", std::string("world")},
-                     {"lambda", mstch::lambda{[]() -> mstch::node {
-                        return std::string{"|planet| => {{planet}}"};
-                      }}}}));
+          mstch::map{
+              {"planet", std::string("world")},
+              {"lambda", mstch::lambda{[]() -> mstch::node {
+                 return std::string{"|planet| => {{planet}}"};
+               }}}}));
 }
 // Interpolated lambdas should not be cached.
 TEST(LambdasTEST, InterpolationMultipleCalls) {
@@ -69,12 +71,13 @@ TEST(LambdasTEST, Section) {
       "<yes>",
       mstch::render(
           "<{{#lambda}}{{x}}{{/lambda}}>",
-          mstch::map{{"x", std::string("Error!")},
-                     {"lambda",
-                      mstch::lambda{[](const std::string& text) -> mstch::node {
-                        return text == "{{x}}" ? std::string("yes")
-                                               : std::string("no");
-                      }}}}));
+          mstch::map{
+              {"x", std::string("Error!")},
+              {"lambda",
+               mstch::lambda{[](const std::string& text) -> mstch::node {
+                 return text == "{{x}}" ? std::string("yes")
+                                        : std::string("no");
+               }}}}));
 }
 // Lambdas used for sections should have their results parsed.
 TEST(LambdasTEST, SectionExpansion) {
@@ -82,11 +85,12 @@ TEST(LambdasTEST, SectionExpansion) {
       "<-Earth->",
       mstch::render(
           "<{{#lambda}}-{{/lambda}}>",
-          mstch::map{{"planet", std::string("Earth")},
-                     {"lambda",
-                      mstch::lambda{[](const std::string& text) -> mstch::node {
-                        return text + "{{planet}}" + text;
-                      }}}}));
+          mstch::map{
+              {"planet", std::string("Earth")},
+              {"lambda",
+               mstch::lambda{[](const std::string& text) -> mstch::node {
+                 return text + "{{planet}}" + text;
+               }}}}));
 }
 // Lambdas used for sections should parse with the current delimiters.
 TEST(LambdasTEST, SectionAlternateDelimiters) {
@@ -94,11 +98,12 @@ TEST(LambdasTEST, SectionAlternateDelimiters) {
       "<-{{planet}} => Earth->",
       mstch::render(
           "{{= | | =}}<|#lambda|-|/lambda|>",
-          mstch::map{{"planet", std::string("Earth")},
-                     {"lambda",
-                      mstch::lambda{[](const std::string& text) -> mstch::node {
-                        return text + "{{planet}} => |planet|" + text;
-                      }}}}));
+          mstch::map{
+              {"planet", std::string("Earth")},
+              {"lambda",
+               mstch::lambda{[](const std::string& text) -> mstch::node {
+                 return text + "{{planet}} => |planet|" + text;
+               }}}}));
 }
 // Lambdas used for sections should not be cached.
 TEST(LambdasTEST, SectionMultipleCalls) {
@@ -106,10 +111,11 @@ TEST(LambdasTEST, SectionMultipleCalls) {
       "__FILE__ != __LINE__",
       mstch::render(
           "{{#lambda}}FILE{{/lambda}} != {{#lambda}}LINE{{/lambda}}",
-          mstch::map{{"lambda",
-                      mstch::lambda{[](const std::string& text) -> mstch::node {
-                        return "__" + text + "__";
-                      }}}}));
+          mstch::map{
+              {"lambda",
+               mstch::lambda{[](const std::string& text) -> mstch::node {
+                 return "__" + text + "__";
+               }}}}));
 }
 // Lambdas used for inverted sections should be considered truthy.
 TEST(LambdasTEST, InvertedSection) {
@@ -117,6 +123,7 @@ TEST(LambdasTEST, InvertedSection) {
       "<>",
       mstch::render(
           "<{{^lambda}}{{static}}{{/lambda}}>",
-          mstch::map{{"lambda",
-                      mstch::lambda{[]() -> mstch::node { return false; }}}}));
+          mstch::map{{"lambda", mstch::lambda{[]() -> mstch::node {
+                        return false;
+                      }}}}));
 }

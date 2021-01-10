@@ -15,6 +15,7 @@
  */
 
 #include <thrift/conformance/GTestHarness.h>
+
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 

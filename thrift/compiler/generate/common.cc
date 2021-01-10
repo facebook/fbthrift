@@ -15,6 +15,7 @@
  */
 
 #include <thrift/compiler/generate/common.h>
+
 #include <boost/algorithm/string/replace.hpp>
 
 #include <regex>

@@ -298,15 +298,12 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
       folly::EventBase* evb,
       ScopedServerInterfaceThread& ssit) {
     return std::make_unique<AsyncClientT>(
-        folly::via(
-            evb,
-            [&] {
-              auto channel = Channel::newChannel(folly::AsyncSocket::UniquePtr(
-                  new folly::AsyncSocket(evb, ssit.getAddress())));
-              channel->setTimeout(0);
-              return channel;
-            })
-            .get());
+        folly::via(evb, [&] {
+          auto channel = Channel::newChannel(folly::AsyncSocket::UniquePtr(
+              new folly::AsyncSocket(evb, ssit.getAddress())));
+          channel->setTimeout(0);
+          return channel;
+        }).get());
   }
 
   static bool isHeaderTransport() {
@@ -742,14 +739,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, closeConnection) {
   serviceImpl->waitForRequest();
   serviceImpl.reset();
 
-  folly::via(
-      evbThread.getEventBase(),
-      [&] {
-        dynamic_cast<ClientChannel*>(cli->getChannel())
-            ->getTransport()
-            ->closeNow();
-      })
-      .get();
+  folly::via(evbThread.getEventBase(), [&] {
+    dynamic_cast<ClientChannel*>(cli->getChannel())->getTransport()->closeNow();
+  }).get();
 
   try {
     std::move(future).get();

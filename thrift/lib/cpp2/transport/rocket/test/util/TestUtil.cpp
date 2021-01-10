@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
+
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 

@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/async/ServerStream.h>
+
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/portability/GTest.h>
 #include <folly/synchronization/Baton.h>
@@ -312,8 +313,7 @@ TEST(ServerStreamTest, CancelPublisher) {
       publisher.next(i);
     }
     std::move(publisher).complete();
-  })
-      .join();
+  }).join();
   EXPECT_LT(clientCallback.i, 10);
   EXPECT_TRUE(closed);
 }

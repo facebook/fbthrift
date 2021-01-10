@@ -216,32 +216,33 @@ class ServerPublisherStream : private StreamServerCallback {
       Func onStreamCompleteOrCancel) {
     auto stream =
         new ServerPublisherStream<T>(std::move(onStreamCompleteOrCancel));
-    return {[stream = std::unique_ptr<ServerPublisherStream<T>, CancelDeleter>(
-                 stream)](
-                folly::Executor::KeepAlive<> serverExecutor,
-                folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
-              stream->serverExecutor_ = std::move(serverExecutor);
+    return {
+        [stream =
+             std::unique_ptr<ServerPublisherStream<T>, CancelDeleter>(stream)](
+            folly::Executor::KeepAlive<> serverExecutor,
+            folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
+          stream->serverExecutor_ = std::move(serverExecutor);
 
-              while (auto messages =
-                         stream->encodeOrQueue_.closeOrGetMessages(encode)) {
-                for (; !messages.empty(); messages.pop()) {
-                  stream->queue_.push(encode(std::move(messages.front())));
-                }
-              }
+          while (auto messages =
+                     stream->encodeOrQueue_.closeOrGetMessages(encode)) {
+            for (; !messages.empty(); messages.pop()) {
+              stream->queue_.push(encode(std::move(messages.front())));
+            }
+          }
 
-              return ServerStreamFactory([stream = std::move(stream)](
-                                             FirstResponsePayload&& payload,
-                                             StreamClientCallback* callback,
-                                             folly::EventBase* clientEb,
-                                             Tile* interaction) mutable {
-                stream->streamClientCallback_ = callback;
-                stream->clientEventBase_ = clientEb;
-                stream->interaction_ = interaction;
-                std::ignore = callback->onFirstResponse(
-                    std::move(payload), clientEb, stream.release());
-              });
-            },
-            ServerStreamPublisher<T>(stream->copy())};
+          return ServerStreamFactory([stream = std::move(stream)](
+                                         FirstResponsePayload&& payload,
+                                         StreamClientCallback* callback,
+                                         folly::EventBase* clientEb,
+                                         Tile* interaction) mutable {
+            stream->streamClientCallback_ = callback;
+            stream->clientEventBase_ = clientEb;
+            stream->interaction_ = interaction;
+            std::ignore = callback->onFirstResponse(
+                std::move(payload), clientEb, stream.release());
+          });
+        },
+        ServerStreamPublisher<T>(stream->copy())};
   }
 
   void publish(folly::Try<T>&& payload) {

@@ -72,10 +72,11 @@ TEST(InterpolationTEST, DottedNamesArbitraryDepth) {
                         {"c",
                          mstch::map{
                              {"d",
-                              mstch::map{{"e",
-                                          mstch::map{{"name",
-                                                      std::string(
-                                                          "Phil")}}}}}}}}}}}}));
+                              mstch::map{
+                                  {"e",
+                                   mstch::map{
+                                       {"name",
+                                        std::string("Phil")}}}}}}}}}}}}));
 }
 // Any falsey value prior to the last part of the name should yield ''.
 TEST(InterpolationTEST, DottedNamesBrokenChains) {
@@ -89,8 +90,9 @@ TEST(InterpolationTEST, DottedNamesBrokenChainResolution) {
       "\"\" == \"\"",
       mstch::render(
           "\"{{a.b.c.name}}\" == \"\"",
-          mstch::map{{"a", mstch::map{{"b", mstch::node()}}},
-                     {"c", mstch::map{{"name", std::string("Jim")}}}}));
+          mstch::map{
+              {"a", mstch::map{{"b", mstch::node()}}},
+              {"c", mstch::map{{"name", std::string("Jim")}}}}));
 }
 // The first part of a dotted name should resolve as any other name.
 TEST(InterpolationTEST, DottedNamesInitialResolution) {

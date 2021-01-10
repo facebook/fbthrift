@@ -117,8 +117,8 @@ inline const Protocol kNoProtocol = {};
 namespace std {
 template <>
 struct hash<apache::thrift::conformance::Protocol> {
-  size_t operator()(const apache::thrift::conformance::Protocol& protocol) const
-      noexcept {
+  size_t operator()(
+      const apache::thrift::conformance::Protocol& protocol) const noexcept {
     size_t h1 = std::hash<apache::thrift::conformance::StandardProtocol>{}(
         protocol.standard());
     size_t h2 = std::hash<std::string>{}(protocol.custom());

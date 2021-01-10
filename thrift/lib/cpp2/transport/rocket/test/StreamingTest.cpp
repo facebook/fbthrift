@@ -517,9 +517,10 @@ TEST_F(StreamingTest, ChecksummingRequest) {
         std::unique_ptr<folly::IOBuf> payload =
             folly::IOBuf::copyBuffer(asString);
 
-        for (CorruptionType testType : {CorruptionType::NONE,
-                                        CorruptionType::REQUESTS,
-                                        CorruptionType::RESPONSES}) {
+        for (CorruptionType testType :
+             {CorruptionType::NONE,
+              CorruptionType::REQUESTS,
+              CorruptionType::RESPONSES}) {
           setCorruption(testType);
           bool didThrow = false;
           try {

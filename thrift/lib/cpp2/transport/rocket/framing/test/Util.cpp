@@ -32,8 +32,8 @@ folly::StringPiece getRange(folly::IOBuf& iobuf) {
 
 folly::StringPiece getRange(const folly::IOBuf& iobuf) {
   EXPECT_FALSE(iobuf.isChained());
-  return folly::StringPiece{reinterpret_cast<const char*>(iobuf.data()),
-                            iobuf.length()};
+  return folly::StringPiece{
+      reinterpret_cast<const char*>(iobuf.data()), iobuf.length()};
 }
 
 std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>

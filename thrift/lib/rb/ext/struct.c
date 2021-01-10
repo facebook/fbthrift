@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/rb/ext/struct.h>
+
 #include <thrift/lib/rb/ext/constants.h>
 #include <thrift/lib/rb/ext/macros.h>
 

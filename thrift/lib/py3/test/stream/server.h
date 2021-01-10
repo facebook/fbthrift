@@ -32,7 +32,7 @@ class StreamTestService : public StreamTestServiceSvIf {
       int32_t i32_from,
       int32_t i32_to) override {
     return folly::coro::co_invoke(
-        [ i32_from, i32_to ]() -> folly::coro::AsyncGenerator<int32_t&&> {
+        [i32_from, i32_to]() -> folly::coro::AsyncGenerator<int32_t&&> {
           for (auto i = i32_from; i < i32_to; ++i) {
             co_yield folly::copy(i);
           }

@@ -222,7 +222,7 @@ uint32_t BinaryProtocolWriter::serializedFieldSize(
 }
 
 uint32_t BinaryProtocolWriter::serializedStructSize(const char* /*name*/
-                                                    ) const {
+) const {
   return 0;
 }
 
@@ -240,7 +240,7 @@ uint32_t BinaryProtocolWriter::serializedSizeMapEnd() const {
 uint32_t BinaryProtocolWriter::serializedSizeListBegin(
     TType /*elemType*/,
     uint32_t /*size*/
-    ) const {
+) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 

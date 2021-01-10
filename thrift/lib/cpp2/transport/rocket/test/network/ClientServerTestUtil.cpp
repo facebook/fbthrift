@@ -601,15 +601,12 @@ RocketTestServer::~RocketTestServer() {
 }
 
 void RocketTestServer::start() {
-  folly::via(
-      &evb_,
-      [this] {
-        acceptor_->init(listeningSocket_.get(), &evb_);
-        listeningSocket_->bind(0 /* bind to any port */);
-        listeningSocket_->listen(128 /* tcpBacklog */);
-        listeningSocket_->startAccepting();
-      })
-      .wait();
+  folly::via(&evb_, [this] {
+    acceptor_->init(listeningSocket_.get(), &evb_);
+    listeningSocket_->bind(0 /* bind to any port */);
+    listeningSocket_->listen(128 /* tcpBacklog */);
+    listeningSocket_->startAccepting();
+  }).wait();
 }
 
 void RocketTestServer::stop() {

@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/security/extensions/Types.h>
+
 #include <folly/Optional.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>

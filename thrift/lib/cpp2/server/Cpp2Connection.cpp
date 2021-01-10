@@ -127,10 +127,11 @@ Cpp2Connection::Cpp2Connection(
                                           : nullptr),
       channel_(
           serverChannel ? serverChannel : // used by client
-              duplexChannel_ ? duplexChannel_->getServerChannel() : // server
-                  std::shared_ptr<HeaderServerChannel>(
-                      new HeaderServerChannel(transport),
-                      folly::DelayedDestruction::Destructor())),
+              duplexChannel_ ? duplexChannel_->getServerChannel()
+                             : // server
+              std::shared_ptr<HeaderServerChannel>(
+                  new HeaderServerChannel(transport),
+                  folly::DelayedDestruction::Destructor())),
       worker_(std::move(worker)),
       context_(
           address,

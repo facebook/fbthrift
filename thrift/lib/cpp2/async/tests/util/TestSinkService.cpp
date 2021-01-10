@@ -95,7 +95,7 @@ TestSinkService::rangeEarlyResponse(int32_t from, int32_t, int32_t early) {
           }
         }
         // shouldn't reach here
-        co_return - 1;
+        co_return -1;
       },
       10 /* buffer size */
   };
@@ -149,7 +149,7 @@ TestSinkService::rangeChunkTimeout() {
       [](folly::coro::AsyncGenerator<int32_t&&> gen)
           -> folly::coro::Task<bool> {
         EXPECT_THROW(
-            co_await[&]()->folly::coro::Task<void> {
+            co_await [&]() -> folly::coro::Task<void> {
               int32_t i = 0;
               while (auto item = co_await gen.next()) {
                 EXPECT_EQ(i++, *item);

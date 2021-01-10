@@ -215,8 +215,8 @@ void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
   }
 }
 
-std::chrono::steady_clock::time_point ThriftServer::lastRequestTime() const
-    noexcept {
+std::chrono::steady_clock::time_point ThriftServer::lastRequestTime()
+    const noexcept {
   return std::chrono::steady_clock::time_point(
       std::chrono::steady_clock::duration(
           lastRequestTime_.load(std::memory_order_acquire)));

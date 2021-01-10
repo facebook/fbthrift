@@ -769,9 +769,10 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
       });
     };
 
-    for (CorruptionType testType : {CorruptionType::NONE,
-                                    CorruptionType::REQUESTS,
-                                    CorruptionType::RESPONSES}) {
+    for (CorruptionType testType :
+         {CorruptionType::NONE,
+          CorruptionType::REQUESTS,
+          CorruptionType::RESPONSES}) {
       static const int kSize = 32 << 10;
       std::string asString(kSize, 'a');
       std::unique_ptr<folly::IOBuf> payload =

@@ -62,8 +62,8 @@ token::token(const std::string& str, std::size_t left, std::size_t right)
         c = first_not_ws(c + 1, str.end() - right);
       }
       m_name = {c, first_not_ws(str.rbegin() + right, str.rend() - left) + 1};
-      m_delims = {{str.begin(), str.begin() + left},
-                  {str.end() - right, str.end()}};
+      m_delims = {
+          {str.begin(), str.begin() + left}, {str.end() - right, str.end()}};
     }
   } else {
     m_type = type::text;

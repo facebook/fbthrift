@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp/util/VarintUtils.h>
+
 #include <thrift/lib/cpp/TApplicationException.h>
 
 #include <stdint.h>

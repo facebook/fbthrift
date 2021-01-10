@@ -583,8 +583,8 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
   context_.unsetMarkRequestComplete();
   clientCallback_->setProtoId(getProtoId());
   stream(
-      apache::thrift::FirstResponsePayload{std::move(data),
-                                           std::move(metadata)},
+      apache::thrift::FirstResponsePayload{
+          std::move(data), std::move(metadata)},
       clientCallback_,
       &evb_);
 }

@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/FieldRef.h>
+
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 
 [[noreturn]] void apache::thrift::detail::throw_on_bad_field_access() {

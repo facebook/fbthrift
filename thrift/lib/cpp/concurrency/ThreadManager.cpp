@@ -295,8 +295,8 @@ class ThreadManager::Impl : public ThreadManager,
       std::shared_ptr<Runnable> value,
       int64_t timeout,
       int64_t expiration,
-      apache::thrift::concurrency::ThreadManager::Source
-          source) noexcept override;
+      apache::thrift::concurrency::ThreadManager::Source source) noexcept
+      override;
   using ThreadManager::add;
 
   /**
@@ -1373,8 +1373,8 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
       std::shared_ptr<Runnable> task,
       int64_t timeout,
       int64_t expiration,
-      apache::thrift::concurrency::ThreadManager::Source
-          source) noexcept override {
+      apache::thrift::concurrency::ThreadManager::Source source) noexcept
+      override {
     ThreadManager::Impl::add(
         PRIORITY::NORMAL, std::move(task), timeout, expiration, source);
   }

@@ -200,8 +200,8 @@ std::unique_ptr<proxygen::ScopedHTTPServer> startProxygenServer(
     HandlerType handler) {
   folly::SocketAddress saddr;
   saddr.setFromLocalPort(static_cast<uint16_t>(0));
-  proxygen::HTTPServer::IPConfig cfg{saddr,
-                                     proxygen::HTTPServer::Protocol::HTTP2};
+  proxygen::HTTPServer::IPConfig cfg{
+      saddr, proxygen::HTTPServer::Protocol::HTTP2};
   auto f =
       std::make_unique<proxygen::ScopedHandlerFactory<HandlerType>>(handler);
   proxygen::HTTPServerOptions options;

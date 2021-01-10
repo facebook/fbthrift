@@ -280,8 +280,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   Metadata metadata_;
 
   ServerAttribute<int64_t> ingressMemoryLimit_{0};
-  ServerAttribute<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{512 *
-                                                                     1024};
+  ServerAttribute<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
+      512 * 1024};
 
  protected:
   //! The server's listening addresses

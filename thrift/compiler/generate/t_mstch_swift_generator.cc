@@ -58,8 +58,9 @@ std::string get_constants_class_name(const t_program& prog) {
 
     if (java_class_name == "" ||
         java_class_name.find('.') != std::string::npos) {
-      throw std::runtime_error{"Java Constants Class Name `" + java_class_name +
-                               "` is not well formatted."};
+      throw std::runtime_error{
+          "Java Constants Class Name `" + java_class_name +
+          "` is not well formatted."};
     }
 
     return java_class_name;
@@ -402,9 +403,9 @@ class mstch_swift_struct : public mstch_struct {
       return get_java_swift_name(*field);
     }
 
-    throw std::runtime_error{"The exception message field '" +
-                             field_name_to_use + "' is not found in " +
-                             strct_->get_name() + "!"};
+    throw std::runtime_error{
+        "The exception message field '" + field_name_to_use +
+        "' is not found in " + strct_->get_name() + "!"};
   }
   // we can only override Throwable's getMessage() if:
   //  1 - there is provided 'message' annotation

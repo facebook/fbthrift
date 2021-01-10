@@ -272,9 +272,10 @@ FOLLY_EXPORT auto any_ref::details() -> const TypeDetails* {
   static_assert(
       std::is_trivially_destructible_v<TypeDetails>,
       "if this changes, switch to folly::Indestructible");
-  static const TypeDetails kValue{std::is_const_v<std::remove_reference_t<T>>,
-                                  std::is_rvalue_reference_v<T>,
-                                  typeid(T)};
+  static const TypeDetails kValue{
+      std::is_const_v<std::remove_reference_t<T>>,
+      std::is_rvalue_reference_v<T>,
+      typeid(T)};
   return &kValue;
 }
 

@@ -325,9 +325,8 @@ class ChunkSender : private AsyncTransport::WriteCallback,
     }
   }
 
-  void writeErr(
-      size_t /* bytesWritten */,
-      const AsyncSocketException&) noexcept override {
+  void writeErr(size_t /* bytesWritten */, const AsyncSocketException&) noexcept
+      override {
     error_ = true;
   }
 
@@ -459,9 +458,8 @@ class MultiMessageSenderReceiver : private AsyncTransport::WriteCallback,
     }
   }
 
-  void writeErr(
-      size_t /* bytesWritten */,
-      const AsyncSocketException&) noexcept override {
+  void writeErr(size_t /* bytesWritten */, const AsyncSocketException&) noexcept
+      override {
     writeError_ = true;
   }
 

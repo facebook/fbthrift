@@ -237,9 +237,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       int64_t id,
       Cpp2ConnContext& conn,
       folly::EventBase&) noexcept final;
-  void destroyAllInteractions(
-      Cpp2ConnContext& conn,
-      folly::EventBase&) noexcept final;
+  void destroyAllInteractions(Cpp2ConnContext& conn, folly::EventBase&) noexcept
+      final;
 };
 
 class AsyncProcessorFactory {

@@ -117,9 +117,10 @@ TEST_F(AdmissionControllerSelectorTest, priorityBasedAdmission) {
       kClientId);
 
   std::map<std::string, std::set<std::shared_ptr<AdmissionController>>>
-      mapping = {{"A", std::set<std::shared_ptr<AdmissionController>>()},
-                 {"B", std::set<std::shared_ptr<AdmissionController>>()},
-                 {"*", std::set<std::shared_ptr<AdmissionController>>()}};
+      mapping = {
+          {"A", std::set<std::shared_ptr<AdmissionController>>()},
+          {"B", std::set<std::shared_ptr<AdmissionController>>()},
+          {"*", std::set<std::shared_ptr<AdmissionController>>()}};
 
   for (auto& it : mapping) {
     auto& clientId = it.first;
@@ -147,8 +148,9 @@ TEST_F(AdmissionControllerSelectorTest, deniesZeroPriority) {
       kClientId);
 
   std::map<std::string, std::set<std::shared_ptr<AdmissionController>>>
-      mapping = {{"A", std::set<std::shared_ptr<AdmissionController>>()},
-                 {"B", std::set<std::shared_ptr<AdmissionController>>()}};
+      mapping = {
+          {"A", std::set<std::shared_ptr<AdmissionController>>()},
+          {"B", std::set<std::shared_ptr<AdmissionController>>()}};
 
   for (auto& it : mapping) {
     auto& clientId = it.first;
@@ -230,9 +232,10 @@ TEST_F(AdmissionControllerSelectorTest, priorityMetricsAggregated) {
       kClientId);
 
   std::map<std::string, std::set<std::shared_ptr<AdmissionController>>>
-      mapping = {{"A", std::set<std::shared_ptr<AdmissionController>>()},
-                 {"B", std::set<std::shared_ptr<AdmissionController>>()},
-                 {"*", std::set<std::shared_ptr<AdmissionController>>()}};
+      mapping = {
+          {"A", std::set<std::shared_ptr<AdmissionController>>()},
+          {"B", std::set<std::shared_ptr<AdmissionController>>()},
+          {"*", std::set<std::shared_ptr<AdmissionController>>()}};
 
   for (auto& it : priorities) {
     auto& clientId = it.first;

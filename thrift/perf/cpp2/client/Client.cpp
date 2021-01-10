@@ -79,13 +79,14 @@ int main(int argc, char** argv) {
       // be updated. Otherwise, it will never be chosen.
       auto ops = std::make_unique<Operation<StreamBenchmarkAsyncClient>>(
           std::move(client), &stats);
-      auto weights = std::vector<int32_t>{FLAGS_noop_weight,
-                                          FLAGS_noop_oneway_weight,
-                                          FLAGS_sum_weight,
-                                          FLAGS_timeout_weight,
-                                          FLAGS_download_weight,
-                                          FLAGS_upload_weight,
-                                          FLAGS_stream_weight};
+      auto weights = std::vector<int32_t>{
+          FLAGS_noop_weight,
+          FLAGS_noop_oneway_weight,
+          FLAGS_sum_weight,
+          FLAGS_timeout_weight,
+          FLAGS_download_weight,
+          FLAGS_upload_weight,
+          FLAGS_stream_weight};
       int32_t sum = std::accumulate(weights.begin(), weights.end(), 0);
       if (sum == 0) {
         weights[0] = 1;

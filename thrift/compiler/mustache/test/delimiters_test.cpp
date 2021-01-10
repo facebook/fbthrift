@@ -41,8 +41,9 @@ TEST(DelimitersTEST, Sections) {
       "[\n  I got interpolated.\n  |data|\n\n  {{data}}\n  I got interpolated.\n]\n",
       mstch::render(
           "[\n{{#section}}\n  {{data}}\n  |data|\n{{/section}}\n\n{{= | | =}}\n|#section|\n  {{data}}\n  |data|\n|/section|\n]\n",
-          mstch::map{{"section", true},
-                     {"data", std::string("I got interpolated.")}}));
+          mstch::map{
+              {"section", true},
+              {"data", std::string("I got interpolated.")}}));
 }
 // Delimiters set outside inverted sections should persist.
 TEST(DelimitersTEST, InvertedSections) {
@@ -50,8 +51,9 @@ TEST(DelimitersTEST, InvertedSections) {
       "[\n  I got interpolated.\n  |data|\n\n  {{data}}\n  I got interpolated.\n]\n",
       mstch::render(
           "[\n{{^section}}\n  {{data}}\n  |data|\n{{/section}}\n\n{{= | | =}}\n|^section|\n  {{data}}\n  |data|\n|/section|\n]\n",
-          mstch::map{{"section", false},
-                     {"data", std::string("I got interpolated.")}}));
+          mstch::map{
+              {"section", false},
+              {"data", std::string("I got interpolated.")}}));
 }
 // Delimiters set in a parent template should not affect a partial.
 TEST(DelimitersTEST, PartialInheritence) {

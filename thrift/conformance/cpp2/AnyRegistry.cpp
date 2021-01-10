@@ -78,8 +78,8 @@ bool AnyRegistry::registerSerializer(
       std::move(serializer), &registry_.at(std::type_index(type)));
 }
 
-std::string_view AnyRegistry::getTypeUri(const std::type_info& type) const
-    noexcept {
+std::string_view AnyRegistry::getTypeUri(
+    const std::type_info& type) const noexcept {
   const auto* entry = getTypeEntry(type);
   if (entry == nullptr) {
     return {};
@@ -312,8 +312,8 @@ auto AnyRegistry::getTypeEntry(const std::type_index& typeIndex) const noexcept
   return &itr->second;
 }
 
-auto AnyRegistry::getTypeEntryByHash(const folly::fbstring& typeHash) const
-    noexcept -> const TypeEntry* {
+auto AnyRegistry::getTypeEntryByHash(
+    const folly::fbstring& typeHash) const noexcept -> const TypeEntry* {
   if (typeHash.size() < kMinTypeHashBytes) {
     return nullptr;
   }

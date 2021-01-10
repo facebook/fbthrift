@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp/ContextStack.h>
+
 #include <folly/tracing/StaticTracepoint.h>
 
 namespace apache {

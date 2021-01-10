@@ -133,14 +133,13 @@ ResponseAndServerStream<int32_t, int32_t> TestStreamServiceMock::leakCheck(
     int32_t from,
     int32_t to) {
 #if FOLLY_HAS_COROUTINES
-  auto stream = folly::coro::co_invoke([
-    =,
-    detector = LeakDetector()
-  ]() -> folly::coro::AsyncGenerator<int32_t&&> {
-    for (int i = from; i < to; ++i) {
-      co_yield std::move(i);
-    }
-  });
+  auto stream = folly::coro::co_invoke(
+      [=,
+       detector = LeakDetector()]() -> folly::coro::AsyncGenerator<int32_t&&> {
+        for (int i = from; i < to; ++i) {
+          co_yield std::move(i);
+        }
+      });
 #else
   auto stream = ServerStream<int32_t>::createEmpty();
 #endif
@@ -172,8 +171,8 @@ apache::thrift::ResponseAndServerStream<int32_t, int32_t>
 TestStreamServiceMock::sleepWithResponse(int32_t timeMs) {
   /* sleep override */
   std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
-  return {1,
-          ([]() -> folly::coro::AsyncGenerator<int32_t&&> { co_yield 1; })()};
+  return {
+      1, ([]() -> folly::coro::AsyncGenerator<int32_t&&> { co_yield 1; })()};
 }
 
 apache::thrift::ServerStream<int32_t>
@@ -184,15 +183,14 @@ TestStreamServiceMock::sleepWithoutResponse(int32_t timeMs) {
 apache::thrift::ResponseAndServerStream<int32_t, int32_t>
 TestStreamServiceMock::streamServerSlow() {
 #if FOLLY_HAS_COROUTINES
-  auto stream = folly::coro::co_invoke([
-    =,
-    detector = LeakDetector()
-  ]() -> folly::coro::AsyncGenerator<int32_t&&> {
-    co_await folly::futures::sleep(std::chrono::milliseconds(1000));
-    while (true) {
-      co_yield 1;
-    }
-  });
+  auto stream = folly::coro::co_invoke(
+      [=,
+       detector = LeakDetector()]() -> folly::coro::AsyncGenerator<int32_t&&> {
+        co_await folly::futures::sleep(std::chrono::milliseconds(1000));
+        while (true) {
+          co_yield 1;
+        }
+      });
 #else
   auto stream = ServerStream<int32_t>::createEmpty();
 #endif

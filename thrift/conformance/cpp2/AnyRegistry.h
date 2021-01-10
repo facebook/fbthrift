@@ -196,15 +196,15 @@ class AnyRegistry {
 
   // Gets the TypeEntry for the given type, or null if the type has not been
   // registered.
-  const TypeEntry* getTypeEntry(const std::type_index& typeIndex) const
-      noexcept;
+  const TypeEntry* getTypeEntry(
+      const std::type_index& typeIndex) const noexcept;
   const TypeEntry* getTypeEntry(const std::type_info& typeInfo) const noexcept {
     return getTypeEntry(std::type_index(typeInfo));
   }
   // Look up TypeEntry by secondary index.
   const TypeEntry* getTypeEntryByUri(std::string_view uri) const noexcept;
-  const TypeEntry* getTypeEntryByHash(const folly::fbstring& typeHash) const
-      noexcept;
+  const TypeEntry* getTypeEntryByHash(
+      const folly::fbstring& typeHash) const noexcept;
 
   const AnySerializer* getSerializer(
       const TypeEntry* entry,

@@ -87,9 +87,9 @@ class RequestContextQueue {
   // Allows response payloads to be matched with requests. (Streams have a
   // different mechanism for doing this, since there are potentially many
   // response payloads per initiating REQUEST_STREAM context.)
-  RequestResponseSet requestResponseContexts_{
-      RequestResponseSet::bucket_traits{rrContextBuckets_.data(),
-                                        rrContextBuckets_.size()}};
+  RequestResponseSet requestResponseContexts_{RequestResponseSet::bucket_traits{
+      rrContextBuckets_.data(),
+      rrContextBuckets_.size()}};
 
   using State = RequestContext::State;
 

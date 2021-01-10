@@ -40,9 +40,10 @@ class PooledRequestChannel : public RequestChannel {
       newSyncChannel(
           std::weak_ptr<folly::IOExecutor> executor,
           ImplCreator implCreator) {
-    return {new PooledRequestChannel(
-                nullptr, std::move(executor), std::move(implCreator)),
-            {}};
+    return {
+        new PooledRequestChannel(
+            nullptr, std::move(executor), std::move(implCreator)),
+        {}};
   }
 
   static std::
@@ -51,9 +52,10 @@ class PooledRequestChannel : public RequestChannel {
           folly::Executor* callbackExecutor,
           std::weak_ptr<folly::IOExecutor> executor,
           ImplCreator implCreator) {
-    return {new PooledRequestChannel(
-                callbackExecutor, std::move(executor), std::move(implCreator)),
-            {}};
+    return {
+        new PooledRequestChannel(
+            callbackExecutor, std::move(executor), std::move(implCreator)),
+        {}};
   }
 
   void sendRequestResponse(

@@ -758,13 +758,13 @@ TEST(InteractionCodegenTest, ShutdownDuringStreamTeardown) {
   struct StreamingHandler : StreamerSvIf {
     struct StreamTile : StreamerSvIf::StreamingIf {
       folly::coro::Task<ServerStream<int>> co_generatorStream() override {
-        co_return
-        folly::coro::co_invoke([&]() -> folly::coro::AsyncGenerator<int&&> {
-          while (true) {
-            co_yield 0;
-            co_await folly::coro::sleep(std::chrono::milliseconds(100));
-          }
-        });
+        co_return folly::coro::co_invoke(
+            [&]() -> folly::coro::AsyncGenerator<int&&> {
+              while (true) {
+                co_yield 0;
+                co_await folly::coro::sleep(std::chrono::milliseconds(100));
+              }
+            });
       }
     };
 

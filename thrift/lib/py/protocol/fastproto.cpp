@@ -1052,11 +1052,12 @@ static PyObject* encode(PyObject* /*self*/, PyObject* args, PyObject* kws) {
   int utf8strings = 0;
   int protoid = 0;
 
-  static char* kwlist[] = {(char*)"enc",
-                           (char*)"spec",
-                           (char*)"utf8strings",
-                           (char*)"protoid",
-                           nullptr};
+  static char* kwlist[] = {
+      (char*)"enc",
+      (char*)"spec",
+      (char*)"utf8strings",
+      (char*)"protoid",
+      nullptr};
 
   if (!PyArg_ParseTupleAndKeywords(
           args,
@@ -1089,12 +1090,13 @@ static PyObject* decode(PyObject* /*self*/, PyObject* args, PyObject* kws) {
   StructTypeArgs parsedargs;
   DecodeBuffer input = {};
 
-  static char* kwlist[] = {(char*)"dec",
-                           (char*)"transport",
-                           (char*)"spec",
-                           (char*)"utf8strings",
-                           (char*)"protoid",
-                           nullptr};
+  static char* kwlist[] = {
+      (char*)"dec",
+      (char*)"transport",
+      (char*)"spec",
+      (char*)"utf8strings",
+      (char*)"protoid",
+      nullptr};
 
   if (!PyArg_ParseTupleAndKeywords(
           args,

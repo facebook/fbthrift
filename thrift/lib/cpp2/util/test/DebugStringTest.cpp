@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/util/DebugString.h>
+
 #include <folly/String.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -212,18 +213,19 @@ TEST(DebugString, Containers) {
 
   // Wrap-around with list.
   MixedStruct ms2;
-  ms2.myList_ref() = {"item1",
-                      "item2",
-                      "item3",
-                      "item4",
-                      "item5",
-                      "item6",
-                      "item7",
-                      "item8",
-                      "item9",
-                      "item10",
-                      "item11",
-                      "item12"};
+  ms2.myList_ref() = {
+      "item1",
+      "item2",
+      "item3",
+      "item4",
+      "item5",
+      "item6",
+      "item7",
+      "item8",
+      "item9",
+      "item10",
+      "item11",
+      "item12"};
   expected = folly::stripLeftMargin(R"(
       struct {
         11: list<string> = [

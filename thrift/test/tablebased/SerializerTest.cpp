@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+
 #include <folly/io/IOBuf.h>
 #include <folly/json.h>
 #include <folly/portability/GTest.h>

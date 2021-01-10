@@ -195,11 +195,12 @@ FOLLY_ERASE constexpr S make_constant(
   using _ = int[];
   S s;
   void(_{0, (void(assign_isset<A, S>{}(s, true)), 0)...});
-  void(_{0,
-         (void(assign_struct_field(
-              invoke_reffer_thru_or_access_field<A>{}(s),
-              static_cast<T>(arg.ref))),
-          0)...});
+  void(
+      _{0,
+        (void(assign_struct_field(
+             invoke_reffer_thru_or_access_field<A>{}(s),
+             static_cast<T>(arg.ref))),
+         0)...});
   return s;
 }
 

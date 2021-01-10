@@ -49,11 +49,12 @@ TEST(SectionsTEST, DeeplyNestedContexts) {
       "1\n121\n12321\n1234321\n123454321\n1234321\n12321\n121\n1\n",
       mstch::render(
           "{{#a}}\n{{one}}\n{{#b}}\n{{one}}{{two}}{{one}}\n{{#c}}\n{{one}}{{two}}{{three}}{{two}}{{one}}\n{{#d}}\n{{one}}{{two}}{{three}}{{four}}{{three}}{{two}}{{one}}\n{{#e}}\n{{one}}{{two}}{{three}}{{four}}{{five}}{{four}}{{three}}{{two}}{{one}}\n{{/e}}\n{{one}}{{two}}{{three}}{{four}}{{three}}{{two}}{{one}}\n{{/d}}\n{{one}}{{two}}{{three}}{{two}}{{one}}\n{{/c}}\n{{one}}{{two}}{{one}}\n{{/b}}\n{{one}}\n{{/a}}\n",
-          mstch::map{{"a", mstch::map{{"one", 1}}},
-                     {"b", mstch::map{{"two", 2}}},
-                     {"c", mstch::map{{"three", 3}}},
-                     {"d", mstch::map{{"four", 4}}},
-                     {"e", mstch::map{{"five", 5}}}}));
+          mstch::map{
+              {"a", mstch::map{{"one", 1}}},
+              {"b", mstch::map{{"two", 2}}},
+              {"c", mstch::map{{"three", 3}}},
+              {"d", mstch::map{{"four", 4}}},
+              {"e", mstch::map{{"five", 5}}}}));
 }
 // Lists should be iterated; list items should visit the context stack.
 TEST(SectionsTEST, List) {
@@ -61,10 +62,12 @@ TEST(SectionsTEST, List) {
       "\"123\"",
       mstch::render(
           "\"{{#list}}{{item}}{{/list}}\"",
-          mstch::map{{"list",
-                      mstch::array{mstch::map{{"item", 1}},
-                                   mstch::map{{"item", 2}},
-                                   mstch::map{{"item", 3}}}}}));
+          mstch::map{
+              {"list",
+               mstch::array{
+                   mstch::map{{"item", 1}},
+                   mstch::map{{"item", 2}},
+                   mstch::map{{"item", 3}}}}}));
 }
 // Empty lists should behave like falsey values.
 TEST(SectionsTEST, EmptyList) {
@@ -111,12 +114,14 @@ TEST(SectionsTEST, ImplicitIteratorString) {
       "\"(a)(b)(c)(d)(e)\"",
       mstch::render(
           "\"{{#list}}({{.}}){{/list}}\"",
-          mstch::map{{"list",
-                      mstch::array{std::string("a"),
-                                   std::string("b"),
-                                   std::string("c"),
-                                   std::string("d"),
-                                   std::string("e")}}}));
+          mstch::map{
+              {"list",
+               mstch::array{
+                   std::string("a"),
+                   std::string("b"),
+                   std::string("c"),
+                   std::string("d"),
+                   std::string("e")}}}));
 }
 // Implicit iterators should cast integers to strings and interpolate.
 TEST(SectionsTEST, ImplicitIteratorInteger) {

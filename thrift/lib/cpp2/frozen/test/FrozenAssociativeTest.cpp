@@ -57,8 +57,8 @@ TEST(FrozenMap, Basic) {
 }
 
 TEST(FrozenMap, NonSortValue) {
-  std::map<int, std::unordered_map<int, int>> mult{{1, {{1, 1}, {2, 2}}},
-                                                   {2, {{1, 2}, {2, 4}}}};
+  std::map<int, std::unordered_map<int, int>> mult{
+      {1, {{1, 1}, {2, 2}}}, {2, {{1, 2}, {2, 4}}}};
   auto fmap = freeze(mult);
   EXPECT_EQ(fmap.at(1).at(1), 1);
   EXPECT_EQ(fmap.find(2)->second().find(2)->second(), 4);
@@ -345,8 +345,8 @@ size_t distance(const std::pair<T, T>& pair) {
 }
 
 TEST(Frozen, SpillBug) {
-  std::vector<std::map<int, int>> maps{{{-4, -3}, {-2, -1}},
-                                       {{-1, -2}, {-3, -4}}};
+  std::vector<std::map<int, int>> maps{
+      {{-4, -3}, {-2, -1}}, {{-1, -2}, {-3, -4}}};
   auto fmaps = freeze(maps);
   EXPECT_EQ(distance(fmaps[0].equal_range(3)), 0);
   EXPECT_EQ(distance(fmaps[0].equal_range(-1)), 0);

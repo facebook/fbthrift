@@ -49,12 +49,14 @@ TEST(InvertedTEST, List) {
       "\"\"",
       mstch::render(
           "\"{{^list}}{{n}}{{/list}}\"",
-          mstch::map{{"list",
-                      mstch::array{mstch::map{{"n", 1}},
-                                   mstch::map{{"n", 2}},
-                                   mstch::map{{"n", 3}}
+          mstch::map{
+              {"list",
+               mstch::array{
+                   mstch::map{{"n", 1}},
+                   mstch::map{{"n", 2}},
+                   mstch::map{{"n", 3}}
 
-                      }}}));
+               }}}));
 }
 // Empty lists should behave like falsey values.
 TEST(InvertedTEST, EmptyList) {
