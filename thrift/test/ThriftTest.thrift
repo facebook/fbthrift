@@ -102,6 +102,11 @@ struct OneField {
   1: EmptyStruct field
 }
 
+union OneUnion {
+  1: string string_field,
+  2: list<Insanity> list_field,
+}
+
 service ThriftTest
 {
   void         testVoid(),
