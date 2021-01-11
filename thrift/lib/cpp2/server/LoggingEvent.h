@@ -21,6 +21,8 @@
 #include <string_view>
 #include <utility>
 
+#include <folly/Function.h>
+#include <folly/dynamic.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -49,12 +51,13 @@ class Cpp2ConnContext;
 
 class LoggingEventHandler {
  public:
+  using DynamicFieldsCallback = folly::FunctionRef<folly::dynamic()>;
   virtual ~LoggingEventHandler() {}
 };
 
 class ServerEventHandler : public LoggingEventHandler {
  public:
-  virtual void log(const ThriftServer&) {}
+  virtual void log(const ThriftServer&, DynamicFieldsCallback = {}) {}
   virtual ~ServerEventHandler() {}
 };
 
@@ -113,14 +116,16 @@ class ConnectionLoggingContext {
 
 class ConnectionEventHandler : public LoggingEventHandler {
  public:
-  virtual void log(const ConnectionLoggingContext&) {}
+  virtual void log(
+      const ConnectionLoggingContext&,
+      DynamicFieldsCallback = {}) {}
 
   virtual ~ConnectionEventHandler() {}
 };
 
 class ApplicationEventHandler : public LoggingEventHandler {
  public:
-  virtual void log() {}
+  virtual void log(DynamicFieldsCallback = {}) {}
   virtual ~ApplicationEventHandler() {}
 };
 

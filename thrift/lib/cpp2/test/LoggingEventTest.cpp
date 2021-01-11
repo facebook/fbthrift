@@ -41,12 +41,14 @@ constexpr std::string_view kNonTls = "non_tls";
 
 class TestServerEventHandler : public ServerEventHandler {
  public:
-  MOCK_METHOD1(log, void(const ThriftServer&));
+  MOCK_METHOD2(log, void(const ThriftServer&, DynamicFieldsCallback));
 };
 
 class TestConnectionEventHandler : public ConnectionEventHandler {
  public:
-  MOCK_METHOD1(log, void(const ConnectionLoggingContext&));
+  MOCK_METHOD2(
+      log,
+      void(const ConnectionLoggingContext&, DynamicFieldsCallback));
 };
 
 class TestEventRegistry : public LoggingEventRegistry {
@@ -127,7 +129,7 @@ class ServerEventLogTest : public LoggingEventTest<TestServerEventHandler> {
   void expectServerEventCall(std::string_view key, size_t times) {
     auto& handler =
         fetchHandler(&LoggingEventRegistry::getServerEventHandler, key);
-    EXPECT_CALL(handler, log(testing::_)).Times(times);
+    EXPECT_CALL(handler, log(testing::_, testing::_)).Times(times);
   }
 };
 
@@ -137,7 +139,7 @@ class ConnectionEventLogTest
   void expectConnectionEventCall(std::string_view key, size_t times) {
     auto& handler =
         fetchHandler(&LoggingEventRegistry::getConnectionEventHandler, key);
-    EXPECT_CALL(handler, log(testing::_)).Times(times);
+    EXPECT_CALL(handler, log(testing::_, testing::_)).Times(times);
   }
 };
 
