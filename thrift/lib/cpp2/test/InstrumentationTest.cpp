@@ -283,9 +283,7 @@ class RequestInstrumentationTest : public testing::Test {
   }
   auto makeRocketClient() {
     return server().newClient<InstrumentationTestServiceAsyncClient>(
-        nullptr, [&](auto socket) mutable {
-          return RocketClientChannel::newChannel(std::move(socket));
-        });
+        nullptr, apache::thrift::RocketClientChannel::newChannel);
   }
 
   auto makeDebugClient() {
@@ -293,7 +291,7 @@ class RequestInstrumentationTest : public testing::Test {
         nullptr, [](auto socket) mutable {
           RequestSetupMetadata meta;
           meta.interfaceKind_ref() = InterfaceKind::DEBUGGING;
-          return apache::thrift::RocketClientChannel::newChannel(
+          return apache::thrift::RocketClientChannel::newChannelWithMetadata(
               std::move(socket), std::move(meta));
         });
   }

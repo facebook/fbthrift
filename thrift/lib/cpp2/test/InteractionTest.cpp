@@ -115,10 +115,8 @@ TEST(InteractionTest, TerminateWithoutSetup) {
 
 TEST(InteractionTest, TerminateUsedPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   adder.semifuture_noop().get();
@@ -126,10 +124,8 @@ TEST(InteractionTest, TerminateUsedPRC) {
 
 TEST(InteractionTest, TerminateUnusedPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   client->sync_addPrimitive(0, 0); // sends setup frame
   auto adder = client->createAddition();
@@ -137,10 +133,8 @@ TEST(InteractionTest, TerminateUnusedPRC) {
 
 TEST(InteractionTest, TerminateWithoutSetupPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
 }
@@ -211,10 +205,8 @@ struct CalculatorHandler : CalculatorSvIf {
 
 TEST(InteractionCodegenTest, Basic) {
   ScopedServerInterfaceThread runner{std::make_shared<CalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
 #if FOLLY_HAS_COROUTINES
@@ -242,10 +234,8 @@ TEST(InteractionCodegenTest, Basic) {
 
 TEST(InteractionCodegenTest, BasicSemiFuture) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   adder.semifuture_accumulatePrimitive(1).get();
@@ -275,10 +265,8 @@ TEST(InteractionCodegenTest, Error) {
   };
   ScopedServerInterfaceThread runner{
       std::make_shared<BrokenCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   const char* kExpectedErr =
       "apache::thrift::TApplicationException:"
@@ -318,10 +306,8 @@ TEST(InteractionCodegenTest, MethodException) {
 
   ScopedServerInterfaceThread runner{
       std::make_shared<ExceptionCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   const char* kExpectedErr =
       "apache::thrift::TApplicationException: std::runtime_error: Not Implemented Yet";
@@ -346,10 +332,8 @@ TEST(InteractionCodegenTest, SlowConstructor) {
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   folly::EventBase eb;
@@ -394,10 +378,8 @@ TEST(InteractionCodegenTest, FastTermination) {
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = folly::copy_to_unique_ptr(client->createAddition());
   folly::EventBase eb;
@@ -552,10 +534,8 @@ TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   // only release constructor once interaction methods are queued
@@ -603,10 +583,8 @@ TEST(InteractionCodegenTest, SerialInteraction) {
   };
   auto handler = std::make_shared<SerialCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createSerialAddition();
   folly::EventBase eb;
@@ -805,10 +783,8 @@ TEST(InteractionCodegenTest, BasicEB) {
 
   ScopedServerInterfaceThread runner{
       std::make_shared<ExceptionCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAdditionFast();
 #if FOLLY_HAS_COROUTINES
@@ -830,10 +806,8 @@ TEST(InteractionCodegenTest, ErrorEB) {
 
   ScopedServerInterfaceThread runner{
       std::make_shared<ExceptionCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAdditionFast();
 #if FOLLY_HAS_COROUTINES

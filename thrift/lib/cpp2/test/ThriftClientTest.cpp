@@ -164,9 +164,8 @@ TEST_F(ThriftClientTest, SyncCallRequestResponse) {
   ScopedServerInterfaceThread runner(handler);
 
   EventBase eb;
-  auto client = runner.newClient<TestServiceAsyncClient>(&eb, [](auto socket) {
-    return RocketClientChannel::newChannel(std::move(socket));
-  });
+  auto client = runner.newClient<TestServiceAsyncClient>(
+      &eb, RocketClientChannel::newChannel);
 
   auto doSyncRPC = [&]() {
     RpcOptions options;

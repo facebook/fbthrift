@@ -864,9 +864,8 @@ TEST_F(StreamingTest, DetachAndAttachEventBase) {
   folly::EventBase mainEventBase;
   auto socket = folly::AsyncSocket::UniquePtr(
       new folly::AsyncSocket(&mainEventBase, "::1", port_));
-  auto channel = [&]() -> std::shared_ptr<ClientChannel> {
-    return RocketClientChannel::newChannel(std::move(socket));
-  }();
+  std::shared_ptr<ClientChannel> channel =
+      RocketClientChannel::newChannel(std::move(socket));
 
   folly::Promise<folly::Unit> detachablePromise;
   auto detachableFuture = detachablePromise.getSemiFuture();

@@ -321,9 +321,7 @@ void doLoadHeaderTest(bool isRocket) {
           });
     } else {
       return runner.template newClient<TestServiceAsyncClient>(
-          folly::getGlobalCPUExecutor().get(), [](auto socket) mutable {
-            return RocketClientChannel::newChannel(std::move(socket));
-          });
+          folly::getGlobalCPUExecutor().get(), RocketClientChannel::newChannel);
     }
   };
 
@@ -621,10 +619,7 @@ class HeaderOrRocketTest : public testing::Test {
           });
     } else {
       return runner.newClient<TestServiceAsyncClient>(
-          evb, [&](auto socket) mutable {
-            auto channel = RocketClientChannel::newChannel(std::move(socket));
-            return channel;
-          });
+          evb, RocketClientChannel::newChannel);
     }
   }
 };

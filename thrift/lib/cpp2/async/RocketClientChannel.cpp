@@ -679,6 +679,11 @@ void RocketClientChannel::setAutoCompressSizeLimit(int32_t size) {
 }
 
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
+    folly::AsyncTransport::UniquePtr socket) {
+  return RocketClientChannel::Ptr(
+      new RocketClientChannel(std::move(socket), RequestSetupMetadata()));
+}
+RocketClientChannel::Ptr RocketClientChannel::newChannelWithMetadata(
     folly::AsyncTransport::UniquePtr socket,
     RequestSetupMetadata meta) {
   return RocketClientChannel::Ptr(

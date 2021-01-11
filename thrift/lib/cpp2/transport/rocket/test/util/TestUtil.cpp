@@ -84,11 +84,8 @@ TestSetup::connectToServer(
           socketSetup(*static_cast<TAsyncSocketIntercepted*>(socket.get()));
         }
 
-        auto channel = [&]() -> std::unique_ptr<
-                                 ClientChannel,
-                                 folly::DelayedDestruction::Destructor> {
-          return RocketClientChannel::newChannel(std::move(socket));
-        }();
+        ClientChannel::Ptr channel =
+            RocketClientChannel::newChannel(std::move(socket));
 
         if (onDetachable) {
           channel->setOnDetachable(std::move(onDetachable));

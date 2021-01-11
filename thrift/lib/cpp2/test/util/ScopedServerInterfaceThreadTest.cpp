@@ -250,9 +250,7 @@ TEST(ScopedServerInterfaceThread, faultInjection) {
     };
 
     auto client = ssit->newClientWithFaultInjection<SimpleServiceAsyncClient>(
-        throwOdd, nullptr, [](auto socket) {
-          return RocketClientChannel::newChannel(std::move(socket));
-        });
+        throwOdd, nullptr, RocketClientChannel::newChannel);
 
     EXPECT_THROW(co_await client->co_add(1, 2), CustomException);
     EXPECT_NO_THROW(co_await client->co_add(1, 2));

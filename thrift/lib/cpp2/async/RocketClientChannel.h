@@ -57,9 +57,10 @@ class RocketClientChannel final : public ClientChannel {
   using Ptr = std::
       unique_ptr<RocketClientChannel, folly::DelayedDestruction::Destructor>;
 
-  static Ptr newChannel(
+  static Ptr newChannel(folly::AsyncTransport::UniquePtr socket);
+  static Ptr newChannelWithMetadata(
       folly::AsyncTransport::UniquePtr socket,
-      RequestSetupMetadata meta = RequestSetupMetadata());
+      RequestSetupMetadata meta);
 
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
