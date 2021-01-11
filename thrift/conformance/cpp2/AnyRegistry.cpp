@@ -87,6 +87,28 @@ std::string_view AnyRegistry::getTypeUri(
   return entry->type.get_uri();
 }
 
+std::string_view AnyRegistry::getTypeUri(const Any& value) const noexcept {
+  const auto* entry = getTypeEntryFor(value);
+  if (entry == nullptr) {
+    return {};
+  }
+  return entry->type.get_uri();
+}
+
+const std::type_info& AnyRegistry::getTypeId(const Any& value) const {
+  return getAndCheckTypeEntryFor(value).typeInfo;
+}
+
+// Same as above, except returns nullptr if the type has not been registered.
+const std::type_info* AnyRegistry::tryGetTypeId(const Any& value) const
+    noexcept {
+  const auto* entry = getTypeEntryFor(value);
+  if (entry == nullptr) {
+    return nullptr;
+  }
+  return &entry->typeInfo;
+}
+
 const AnySerializer* AnyRegistry::getSerializer(
     const std::type_info& type,
     const Protocol& protocol) const noexcept {
@@ -332,6 +354,18 @@ auto AnyRegistry::getTypeEntryByUri(std::string_view uri) const noexcept
     return nullptr;
   }
   return itr->second;
+}
+
+auto AnyRegistry::getTypeEntryFor(const Any& value) const noexcept
+    -> const TypeEntry* {
+  if (value.type_ref().has_value() && !value.type_ref()->empty()) {
+    return getTypeEntryByUri(value.type_ref().value_unchecked());
+  }
+  if (value.typeHashPrefixSha2_256_ref().has_value()) {
+    return getTypeEntryByHash(
+        value.typeHashPrefixSha2_256_ref().value_unchecked());
+  }
+  return nullptr;
 }
 
 auto AnyRegistry::getAndCheckTypeEntryFor(const Any& value) const

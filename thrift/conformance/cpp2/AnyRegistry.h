@@ -92,6 +92,14 @@ class AnyRegistry {
   // Returns the unique type uri for the given type, or "" if the type has not
   // been registered.
   std::string_view getTypeUri(const std::type_info& typeInfo) const noexcept;
+  std::string_view getTypeUri(const Any& value) const noexcept;
+
+  // Returns the std::type_info associated with the give value.
+  //
+  // Throws std::out_of_range error if the type has not been registered.
+  const std::type_info& getTypeId(const Any& value) const;
+  // Same as above, except returns nullptr if the type has not been registered.
+  const std::type_info* tryGetTypeId(const Any& value) const noexcept;
 
   // Returns the serializer for the given type and protocol, or nullptr if
   // no matching serializer is found.
@@ -201,15 +209,14 @@ class AnyRegistry {
   const TypeEntry* getTypeEntry(const std::type_info& typeInfo) const noexcept {
     return getTypeEntry(std::type_index(typeInfo));
   }
+  const TypeEntry* getTypeEntryFor(const Any& value) const noexcept;
   // Look up TypeEntry by secondary index.
   const TypeEntry* getTypeEntryByUri(std::string_view uri) const noexcept;
   const TypeEntry* getTypeEntryByHash(
       const folly::fbstring& typeHash) const noexcept;
 
-  const AnySerializer* getSerializer(
-      const TypeEntry* entry,
-      const Protocol& protocol) const noexcept;
-
+  // Same as the getTypeEntry* versions, except throws an exception that
+  // indicates why the type entry could not be found.
   const TypeEntry& getAndCheckTypeEntry(const std::type_info& typeInfo) const;
   const TypeEntry& getAndCheckTypeEntryByUri(std::string_view uri) const;
   const TypeEntry& getAndCheckTypeEntryByHash(
@@ -218,6 +225,10 @@ class AnyRegistry {
   const AnySerializer& getAndCheckSerializer(
       const TypeEntry& entry,
       const Protocol& protocol) const;
+
+  const AnySerializer* getSerializer(
+      const TypeEntry* entry,
+      const Protocol& protocol) const noexcept;
 };
 
 // Implementation details.
