@@ -515,7 +515,7 @@ TEST_F(CoroutineClientTest, SumUnimplementedCoroClient) {
       .via(&eventBase_)
       .then([&](folly::Try<SumResponse> response) {
         EXPECT_THROW(
-            response.throwIfFailed(), apache::thrift::TApplicationException);
+            response.throwUnlessValue(), apache::thrift::TApplicationException);
       })
       .getVia(&eventBase_);
 }
@@ -526,7 +526,7 @@ TEST_F(CoroutineClientTest, SumUnimplementedPrimitiveCoroClient) {
       .via(&eventBase_)
       .then([&](folly::Try<int32_t> response) {
         EXPECT_THROW(
-            response.throwIfFailed(), apache::thrift::TApplicationException);
+            response.throwUnlessValue(), apache::thrift::TApplicationException);
       })
       .getVia(&eventBase_);
 }
@@ -539,7 +539,7 @@ TEST_F(CoroutineClientTest, SumThrowsCoroClient) {
       .semi()
       .via(&eventBase_)
       .then([&](folly::Try<SumResponse> response) {
-        EXPECT_THROW(response.throwIfFailed(), std::exception);
+        EXPECT_THROW(response.throwUnlessValue(), std::exception);
       })
       .getVia(&eventBase_);
 }
@@ -549,7 +549,7 @@ TEST_F(CoroutineClientTest, SumThrowsPrimitiveCoroClient) {
       .semi()
       .via(&eventBase_)
       .then([&](folly::Try<int32_t> response) {
-        EXPECT_THROW(response.throwIfFailed(), std::exception);
+        EXPECT_THROW(response.throwUnlessValue(), std::exception);
       })
       .getVia(&eventBase_);
 }
