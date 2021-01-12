@@ -31,9 +31,9 @@ struct NonstandardCollectionTypes {
 }
 
 enum TestEnum {
-  FOO = 1
-  BAR = 2
-  BAZ = 3
+  FOO = 1,
+  BAR = 2,
+  BAZ = 3,
 }
 
 enum TestEnumEmpty {

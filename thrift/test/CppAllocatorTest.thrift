@@ -28,56 +28,72 @@ struct UsesAllocatorChild {
   7: set<i32> not_aa_set;
   8: map<i32, i32> not_aa_map;
   9: string not_aa_string;
-} (cpp.allocator="::ScopedMaybeThrowAlloc")
+} (cpp.allocator = "::ScopedMaybeThrowAlloc")
 
 struct UsesAllocatorParent {
   1: UsesAllocatorChild (cpp.use_allocator) child;
-} (cpp.allocator="::ScopedMaybeThrowAlloc")
+} (cpp.allocator = "::ScopedMaybeThrowAlloc")
 
 struct AAStruct {
   1: i32 foo;
-} (cpp.allocator="::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc")
 
 struct NoAllocatorVia {
   1: AAStruct (cpp.use_allocator) foo;
-} (cpp.allocator="::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc")
 
 struct YesAllocatorVia {
   1: AAStruct (cpp.use_allocator) foo;
-} (cpp.allocator="::ScopedStatefulAlloc", cpp.allocator_via="foo")
+} (cpp.allocator = "::ScopedStatefulAlloc", cpp.allocator_via = "foo")
 
 struct HasContainerFields {
-  1: list<i32>
-    (cpp.use_allocator, cpp.template = "::StatefulAllocVector") aa_list;
+  1: list<i32> (
+    cpp.use_allocator,
+    cpp.template = "::StatefulAllocVector",
+  ) aa_list;
   2: set<i32> (cpp.use_allocator, cpp.template = "::StatefulAllocSet") aa_set;
-  3: map<i32, i32>
-    (cpp.use_allocator, cpp.template = "::StatefulAllocMap") aa_map;
-} (cpp.allocator="::ScopedStatefulAlloc")
+  3: map<i32, i32> (
+    cpp.use_allocator,
+    cpp.template = "::StatefulAllocMap",
+  ) aa_map;
+} (cpp.allocator = "::ScopedStatefulAlloc")
 
-typedef map<i32, i32>
-  (cpp.use_allocator, cpp.template = "::StatefulAllocMap") StatefulAllocIntMap
+typedef map<i32, i32> (
+  cpp.use_allocator,
+  cpp.template = "::StatefulAllocMap",
+) StatefulAllocIntMap
 
-typedef map<i32, StatefulAllocIntMap>
-  (cpp.use_allocator, cpp.template = "::StatefulAllocMap") StatefulAllocMapMap
+typedef map<i32, StatefulAllocIntMap> (
+  cpp.use_allocator,
+  cpp.template = "::StatefulAllocMap",
+) StatefulAllocMapMap
 
-typedef set<i32>
-  (cpp.use_allocator, cpp.template = "::StatefulAllocSet") StatefulAllocIntSet
+typedef set<i32> (
+  cpp.use_allocator,
+  cpp.template = "::StatefulAllocSet",
+) StatefulAllocIntSet
 
-typedef map<i32, StatefulAllocIntSet>
-  (cpp.use_allocator, cpp.template = "::StatefulAllocMap") StatefulAllocMapSet
+typedef map<i32, StatefulAllocIntSet> (
+  cpp.use_allocator,
+  cpp.template = "::StatefulAllocMap",
+) StatefulAllocMapSet
 
 struct UsesTypedef {
   1: StatefulAllocIntMap aa_map;
-} (cpp.allocator="::ScopedStatefulAlloc", cpp.allocator_via="aa_map")
+} (cpp.allocator = "::ScopedStatefulAlloc", cpp.allocator_via = "aa_map")
 
 struct HasNestedContainerFields {
   1: StatefulAllocMapMap aa_map_of_map;
   2: StatefulAllocMapSet aa_map_of_set;
-} (cpp.allocator="::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc")
 
 struct HasSortedUniqueConstructibleFields {
-  1: set<i32>
-    (cpp.use_allocator, cpp.template = "::StatefulAllocSortedVectorSet") aa_set
-  2: map<i32, i32>
-    (cpp.use_allocator, cpp.template = "::StatefulAllocSortedVectorMap") aa_map
-} (cpp.allocator="::ScopedStatefulAlloc")
+  1: set<i32> (
+    cpp.use_allocator,
+    cpp.template = "::StatefulAllocSortedVectorSet",
+  ) aa_set;
+  2: map<i32, i32> (
+    cpp.use_allocator,
+    cpp.template = "::StatefulAllocSortedVectorMap",
+  ) aa_map;
+} (cpp.allocator = "::ScopedStatefulAlloc")

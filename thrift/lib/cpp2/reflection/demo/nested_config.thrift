@@ -40,18 +40,9 @@ struct nested_config {
 }
 
 const nested_config example = {
-  "address": {
-    "name": "localhost",
-    "port": 80,
-  },
+  "address": {"name": "localhost", "port": 80},
   "client_name": "my_client",
-  "timeout": {
-    "send": 100,
-    "receive": 120,
-  },
-  "transport": {
-    "frame_size": 1024,
-    "compress": 1,
-  },
+  "timeout": {"send": 100, "receive": 120},
+  "transport": {"frame_size": 1024, "compress": 1},
   "log_rate": .01,
 };

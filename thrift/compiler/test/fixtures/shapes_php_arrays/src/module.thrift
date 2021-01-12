@@ -15,11 +15,11 @@
  */
 
 struct Foo {
- 1: i32 just_int,
- 2: list<string> list_of_strings,
- 3: set<i32> set_of_ints,
- 4: map<string, list<string>> map_of_list_of_strings,
- 5: map<string, set<string>> map_of_set_of_strings,
- 6: map<string, map<string, i32>> map_of_strings_to_map_of_string_ints;
- 7: optional map<i32, map<i32, set<string>>> optional_map_of_map_of_sets;
+  1: i32 just_int;
+  2: list<string> list_of_strings;
+  3: set<i32> set_of_ints;
+  4: map<string, list<string>> map_of_list_of_strings;
+  5: map<string, set<string>> map_of_set_of_strings;
+  6: map<string, map<string, i32>> map_of_strings_to_map_of_string_ints;
+  7: optional map<i32, map<i32, set<string>>> optional_map_of_map_of_sets;
 }

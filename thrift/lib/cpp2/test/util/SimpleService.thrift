@@ -17,9 +17,9 @@
 namespace cpp apache.thrift.util
 
 service SimpleService {
-  i64 add(1: i64 a, 2: i64 b)
+  i64 add(1: i64 a, 2: i64 b);
 
-  string echoSlow(1: string message, 2: i64 sleepMs)
+  string echoSlow(1: string message, 2: i64 sleepMs);
 
   oneway void lob();
 
@@ -27,5 +27,7 @@ service SimpleService {
 
   sink<i64, bool> slowReturnSink(1: i64 sleepMs);
 
-  void largeRequest(1: binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") request);
+  void largeRequest(
+    1: binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") request,
+  );
 }

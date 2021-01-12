@@ -20,17 +20,17 @@ typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 
 exception Xception {
-  1: i32 errorCode,
-  2: string message
+  1: i32 errorCode;
+  2: string message;
 }
 
 service FutureService {
-  string sendResponse(1:i64 size)
-  oneway void noResponse(1:i64 size)
-  string echoRequest(1:string req)
-  string echoRequestSlow(1:string req, 2:i64 sleepMs)
-  i32 throwing() throws (1: Xception err1)
-  void voidThrowing() throws (1: Xception err1)
+  string sendResponse(1: i64 size);
+  oneway void noResponse(1: i64 size);
+  string echoRequest(1: string req);
+  string echoRequestSlow(1: string req, 2: i64 sleepMs);
+  i32 throwing() throws (1: Xception err1);
+  void voidThrowing() throws (1: Xception err1);
 
-  void buftest(1: IOBufPtr data)
+  void buftest(1: IOBufPtr data);
 }

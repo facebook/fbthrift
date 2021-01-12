@@ -23,5 +23,5 @@ service RocketUpgrade {
    * is requested. This method is only used for transport upgrade from
    * header to rocket for non-TLS services during connection establishment.
    */
-  void upgradeToRocket()
+  void upgradeToRocket();
 }

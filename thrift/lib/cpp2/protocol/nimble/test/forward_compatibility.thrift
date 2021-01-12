@@ -37,14 +37,14 @@ struct PrimitivesSimpleSkip {
   // Altered
   11: string f5;
   6: string f6;
-  // Missing
+// Missing
 }
 
 struct PrimitivesConsecutiveMissing {
   1: i32 f1;
   // Missing
   6: string f6;
-  // Missing
+// Missing
 }
 
 struct PrimitivesTypesChanged {

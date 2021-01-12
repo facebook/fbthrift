@@ -20,25 +20,25 @@ enum MyEnum {
 }
 
 struct MyStruct {
-  1: i64 MyIntField,
-  2: string MyStringField,
+  1: i64 MyIntField;
+  2: string MyStringField;
 }
 
 service MyService {
-  bool hasDataById(1: i64 id)
-  string getDataById(1: i64 id)
-  void putDataById(1: i64 id, 2: string data)
-  oneway void lobDataById(1: i64 id, 2: string data)
+  bool hasDataById(1: i64 id);
+  string getDataById(1: i64 id);
+  void putDataById(1: i64 id, 2: string data);
+  oneway void lobDataById(1: i64 id, 2: string data);
 }
 
 service MyServiceFast {
-  bool hasDataById(1: i64 id) (thread='eb')
-  string getDataById(1: i64 id) (thread='eb')
-  void putDataById(1: i64 id, 2: string data) (thread='eb')
-  oneway void lobDataById(1: i64 id, 2: string data) (thread='eb')
+  bool hasDataById(1: i64 id) (thread = 'eb');
+  string getDataById(1: i64 id) (thread = 'eb');
+  void putDataById(1: i64 id, 2: string data) (thread = 'eb');
+  oneway void lobDataById(1: i64 id, 2: string data) (thread = 'eb');
 }
 
 service DbMixedStackArguments {
-  binary getDataByKey0(1: string key) (cpp.stack_arguments = "0"),
-  binary getDataByKey1(1: string key),
+  binary getDataByKey0(1: string key) (cpp.stack_arguments = "0");
+  binary getDataByKey1(1: string key);
 }

@@ -24,19 +24,16 @@ include "module0.thrift"
 include "module1.thrift"
 
 struct Struct {
-  1: module0.Struct first,
-  2: module1.Struct second,
+  1: module0.Struct first;
+  2: module1.Struct second;
 }
 
 struct BigStruct {
-  1: Struct s,
-  2: i32 id,
+  1: Struct s;
+  2: i32 id;
 }
 
-const Struct c2 = {
-  "first": module0.c0,
-  "second": module1.c1,
-};
+const Struct c2 = {"first": module0.c0, "second": module1.c1};
 
 const Struct c3 = c2;
 const Struct c4 = c3;

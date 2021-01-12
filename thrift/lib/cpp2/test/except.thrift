@@ -22,18 +22,16 @@ namespace cpp apache.thrift.test
 
 struct Inner {
   1: required i32 i;
-} (
-  no_default_comparators = "true",
-)
+} (no_default_comparators = "true")
 
 struct MyArgs {
   1: required string s;
   2: required Inner i;
   3: required list<i32> l;
-  4: required map<string,i32> m;
+  4: required map<string, i32> m;
   5: required list<Inner> li;
-  6: required map<i32,Inner> mi;
-  7: required map<Inner,i32> complex_key;
+  6: required map<i32, Inner> mi;
+  7: required map<Inner, i32> complex_key;
 }
 
 service SampleService {
@@ -44,18 +42,16 @@ service SampleService {
 # See comment at the top of ProcessorExceptions.cpp for the reason
 struct Inner2 {
   1: optional i32 i;
-} (
-  no_default_comparators = "true",
-)
+} (no_default_comparators = "true")
 
 struct MyArgs2 {
   1: optional string s;
   2: optional Inner2 i;
   3: optional list<i32> l;
-  4: optional map<string,i32> m;
+  4: optional map<string, i32> m;
   5: optional list<Inner2> li;
-  6: optional map<i32,Inner2> mi;
-  7: optional map<Inner2,i32> complex_key;
+  6: optional map<i32, Inner2> mi;
+  7: optional map<Inner2, i32> complex_key;
 }
 
 service SampleService2 {

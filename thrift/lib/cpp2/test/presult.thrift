@@ -65,7 +65,10 @@ service PresultService {
   set<i32> methodSet(1: set<i32> x);
   unordered_set methodUnorderedSet(1: unordered_set x);
   Struct methodStruct(1: Struct x);
-  Struct methodException(1: i32 which) throws (1: Exception1 ex1, 2: Exception2 ex2);
+  Struct methodException(1: i32 which) throws (
+    1: Exception1 ex1,
+    2: Exception2 ex2,
+  );
 
   list<Noncopyable> methodNoncopyableList();
   set<Noncopyable> methodNoncopyableSet();

@@ -40,6 +40,4 @@ enum TooBigEnum {
   SEVENTEEN = 17,
   EIGHTEEN = 18,
   NINETEEN = 19,
-} (
-  java.swift.skip_enum_name_map = 1,
-)
+} (java.swift.skip_enum_name_map = 1)

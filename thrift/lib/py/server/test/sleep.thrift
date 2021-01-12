@@ -18,7 +18,7 @@ namespace py.asyncio thrift_asyncio.sleep
 
 struct OverflowResult {
   // A member that we can use to test data overflow
-  byte value
+  byte value;
 }
 
 service Sleep {

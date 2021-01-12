@@ -57,301 +57,301 @@
       "spec_args" : null
     },
     "my_company" : {
-      "lineno" : 53,
+      "lineno" : 54,
       "value" : 0,
       "type_enum" : "TYPEDEF",
       "spec_args" : "MyCompany"
     },
     "foo" : {
-      "lineno" : 65,
+      "lineno" : 66,
       "value" : "foo",
       "type_enum" : "TYPEDEF",
       "spec_args" : "MyStringIdentifier"
     },
     "bar" : {
-      "lineno" : 66,
+      "lineno" : 67,
       "value" : 42,
       "type_enum" : "TYPEDEF",
       "spec_args" : "MyIntIdentifier"
     },
     "mymap" : {
-      "lineno" : 67,
+      "lineno" : 68,
       "value" : { "keys" : "values" },
       "type_enum" : "TYPEDEF",
       "spec_args" : "MyMapIdentifier"
     },
     "instagram" : {
-      "lineno" : 71,
+      "lineno" : 70,
       "value" : { "weeks" : 12, "title" : "Software Engineer", "employer" : 3 },
       "type_enum" : "STRUCT",
       "spec_args" : "Internship"
     },
     "partial_const" : {
-      "lineno" : 77,
+      "lineno" : 76,
       "value" : { "weeks" : 8, "title" : "Some Job" },
       "type_enum" : "STRUCT",
       "spec_args" : "Internship"
     },
     "kRanges" : {
-      "lineno" : 87,
+      "lineno" : 83,
       "value" : [ { "min" : 1, "max" : 2 }, { "min" : 5, "max" : 6 } ],
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRUCT", "spec_args" : "Range"} 
     },
     "internList" : {
-      "lineno" : 98,
+      "lineno" : 85,
       "value" : [ { "weeks" : 12, "title" : "Software Engineer", "employer" : 3 }, { "weeks" : 10, "title" : "Sales Intern", "employer" : 0 } ],
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRUCT", "spec_args" : "Internship"} 
     },
     "pod_0" : {
-      "lineno" : 112,
+      "lineno" : 95,
       "value" : {  },
       "type_enum" : "STRUCT",
       "spec_args" : "struct1"
     },
     "pod_s_0" : {
-      "lineno" : 114,
+      "lineno" : 97,
       "value" : {  },
       "type_enum" : "STRUCT",
       "spec_args" : "struct1"
     },
     "pod_1" : {
-      "lineno" : 116,
+      "lineno" : 99,
       "value" : { "a" : 10, "b" : "foo" },
       "type_enum" : "STRUCT",
       "spec_args" : "struct1"
     },
     "pod_s_1" : {
-      "lineno" : 121,
+      "lineno" : 101,
       "value" : { "a" : 10, "b" : "foo" },
       "type_enum" : "STRUCT",
       "spec_args" : "struct1"
     },
     "pod_2" : {
-      "lineno" : 133,
+      "lineno" : 110,
       "value" : { "a" : 98, "b" : "gaz", "c" : { "a" : 12, "b" : "bar" }, "d" : [ 11, 22, 33 ] },
       "type_enum" : "STRUCT",
       "spec_args" : "struct2"
     },
     "pod_trailing_commas" : {
-      "lineno" : 143,
+      "lineno" : 117,
       "value" : { "a" : 98, "b" : "gaz", "c" : { "a" : 12, "b" : "bar" }, "d" : [ 11, 22, 33 ] },
       "type_enum" : "STRUCT",
       "spec_args" : "struct2"
     },
     "pod_s_2" : {
-      "lineno" : 153,
+      "lineno" : 124,
       "value" : { "a" : 98, "b" : "gaz", "c" : { "a" : 12, "b" : "bar" }, "d" : [ 11, 22, 33 ] },
       "type_enum" : "STRUCT",
       "spec_args" : "struct2"
     },
     "pod_3" : {
-      "lineno" : 169,
+      "lineno" : 137,
       "value" : { "a" : "abc", "b" : 456, "c" : { "a" : 888, "c" : { "b" : "gaz" }, "d" : [ 1, 2, 3 ] } },
       "type_enum" : "STRUCT",
       "spec_args" : "struct3"
     },
     "pod_s_3" : {
-      "lineno" : 181,
+      "lineno" : 143,
       "value" : { "a" : "abc", "b" : 456, "c" : { "a" : 888, "c" : { "b" : "gaz" }, "d" : [ 1, 2, 3 ] } },
       "type_enum" : "STRUCT",
       "spec_args" : "struct3"
     },
     "pod_4" : {
-      "lineno" : 199,
+      "lineno" : 155,
       "value" : { "a" : 1234, "b" : 0.333, "c" : 25 },
       "type_enum" : "STRUCT",
       "spec_args" : "struct4"
     },
     "u_1_1" : {
-      "lineno" : 210,
+      "lineno" : 162,
       "value" : { "i" : 97 },
       "type_enum" : "STRUCT",
       "spec_args" : "union1"
     },
     "u_1_2" : {
-      "lineno" : 214,
+      "lineno" : 164,
       "value" : { "d" : 5.6 },
       "type_enum" : "STRUCT",
       "spec_args" : "union1"
     },
     "u_1_3" : {
-      "lineno" : 218,
+      "lineno" : 166,
       "value" : {  },
       "type_enum" : "STRUCT",
       "spec_args" : "union1"
     },
     "u_2_1" : {
-      "lineno" : 227,
+      "lineno" : 175,
       "value" : { "i" : 51 },
       "type_enum" : "STRUCT",
       "spec_args" : "union2"
     },
     "u_2_2" : {
-      "lineno" : 231,
+      "lineno" : 177,
       "value" : { "d" : 6.7 },
       "type_enum" : "STRUCT",
       "spec_args" : "union2"
     },
     "u_2_3" : {
-      "lineno" : 235,
+      "lineno" : 179,
       "value" : { "s" : { "a" : 8, "b" : "abacabb" } },
       "type_enum" : "STRUCT",
       "spec_args" : "union2"
     },
     "u_2_4" : {
-      "lineno" : 242,
+      "lineno" : 181,
       "value" : { "u" : { "i" : 43 } },
       "type_enum" : "STRUCT",
       "spec_args" : "union2"
     },
     "u_2_5" : {
-      "lineno" : 248,
+      "lineno" : 183,
       "value" : { "u" : { "d" : 9.8 } },
       "type_enum" : "STRUCT",
       "spec_args" : "union2"
     },
     "u_2_6" : {
-      "lineno" : 254,
+      "lineno" : 185,
       "value" : { "u" : {  } },
       "type_enum" : "STRUCT",
       "spec_args" : "union2"
     },
     "apostrophe" : {
-      "lineno" : 258,
+      "lineno" : 187,
       "value" : "'",
       "type_enum" : "STRING",
       "spec_args" : null
     },
     "tripleApostrophe" : {
-      "lineno" : 259,
+      "lineno" : 188,
       "value" : "'''",
       "type_enum" : "STRING",
       "spec_args" : null
     },
     "quotationMark" : {
-      "lineno" : 260,
+      "lineno" : 189,
       "value" : "\"",
       "type_enum" : "STRING",
       "spec_args" : null
     },
     "backslash" : {
-      "lineno" : 261,
+      "lineno" : 190,
       "value" : "\\\\",
       "type_enum" : "STRING",
       "spec_args" : null
     },
     "escaped_a" : {
-      "lineno" : 262,
+      "lineno" : 191,
       "value" : "\\x61",
       "type_enum" : "STRING",
       "spec_args" : null
     },
     "char2ascii" : {
-      "lineno" : 264,
+      "lineno" : 193,
       "value" : { "'" : 39, "\"" : 34, "\\\\" : 92, "\\x61" : 97 },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "I32", "spec_args" : null} } 
     },
     "escaped_strings" : {
-      "lineno" : 271,
+      "lineno" : 195,
       "value" : [ "\\x61", "\\xab", "\\x6a", "\\xa6", "\\x61yyy", "\\xabyyy", "\\x6ayyy", "\\xa6yyy", "zzz\\x61", "zzz\\xab", "zzz\\x6a", "zzz\\xa6", "zzz\\x61yyy", "zzz\\xabyyy", "zzz\\x6ayyy", "zzz\\xa6yyy" ],
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },
     "false_c" : {
-      "lineno" : 278,
+      "lineno" : 214,
       "value" : false,
       "type_enum" : "BOOL",
       "spec_args" : null
     },
     "true_c" : {
-      "lineno" : 279,
+      "lineno" : 215,
       "value" : true,
       "type_enum" : "BOOL",
       "spec_args" : null
     },
     "zero_byte" : {
-      "lineno" : 280,
+      "lineno" : 216,
       "value" : 0,
       "type_enum" : "BYTE",
       "spec_args" : null
     },
     "zero16" : {
-      "lineno" : 281,
+      "lineno" : 217,
       "value" : 0,
       "type_enum" : "I16",
       "spec_args" : null
     },
     "zero32" : {
-      "lineno" : 282,
+      "lineno" : 218,
       "value" : 0,
       "type_enum" : "I32",
       "spec_args" : null
     },
     "zero64" : {
-      "lineno" : 283,
+      "lineno" : 219,
       "value" : 0,
       "type_enum" : "I64",
       "spec_args" : null
     },
     "zero_dot_zero" : {
-      "lineno" : 284,
+      "lineno" : 220,
       "value" : 0,
       "type_enum" : "DOUBLE",
       "spec_args" : null
     },
     "empty_string" : {
-      "lineno" : 285,
+      "lineno" : 221,
       "value" : "",
       "type_enum" : "STRING",
       "spec_args" : null
     },
     "empty_int_list" : {
-      "lineno" : 286,
+      "lineno" : 222,
       "value" : {  },
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "I32", "spec_args" : null} 
     },
     "empty_string_list" : {
-      "lineno" : 287,
+      "lineno" : 223,
       "value" : {  },
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },
     "empty_int_set" : {
-      "lineno" : 288,
+      "lineno" : 224,
       "value" : {  },
       "type_enum" : "SET",
       "spec_args" : { "type_enum" : "I32", "spec_args" : null} 
     },
     "empty_string_set" : {
-      "lineno" : 289,
+      "lineno" : 225,
       "value" : {  },
       "type_enum" : "SET",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },
     "empty_int_int_map" : {
-      "lineno" : 290,
+      "lineno" : 226,
       "value" : {  },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "I32", "spec_args" : null }, "val_type" : { "type_enum" : "I32", "spec_args" : null} } 
     },
     "empty_int_string_map" : {
-      "lineno" : 291,
+      "lineno" : 227,
       "value" : {  },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "I32", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } 
     },
     "empty_string_int_map" : {
-      "lineno" : 292,
+      "lineno" : 228,
       "value" : {  },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "I32", "spec_args" : null} } 
     },
     "empty_string_string_map" : {
-      "lineno" : 293,
+      "lineno" : 229,
       "value" : {  },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } 
@@ -365,7 +365,7 @@
       }
     },
     "City" : {
-      "lineno" : 39,
+      "lineno" : 40,
       "constants" : {
         "NYC" : 0,
         "MPK" : 1,
@@ -374,7 +374,7 @@
       }
     },
     "Company" : {
-      "lineno" : 45,
+      "lineno" : 46,
       "constants" : {
         "FACEBOOK" : 0,
         "WHATSAPP" : 1,
@@ -385,29 +385,29 @@
   },
   "typedefs" : {
     "MyCompany" : {
-      "lineno" : 52,
+      "lineno" : 53,
       "type_enum" : "ENUM",
       "spec_args" : "Company"
     },
     "MyStringIdentifier" : {
-      "lineno" : 61,
+      "lineno" : 62,
       "type_enum" : "STRING",
       "spec_args" : null
     },
     "MyIntIdentifier" : {
-      "lineno" : 62,
+      "lineno" : 63,
       "type_enum" : "I32",
       "spec_args" : null
     },
     "MyMapIdentifier" : {
-      "lineno" : 63,
+      "lineno" : 64,
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } 
     }
   },
   "structs" : {
     "Internship" : {
-      "lineno" : 55,
+      "lineno" : 56,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -430,7 +430,7 @@
       "annotation_last_lineno" : -1
     },
     "Range" : {
-      "lineno" : 82,
+      "lineno" : 78,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -448,7 +448,7 @@
       "annotation_last_lineno" : -1
     },
     "struct1" : {
-      "lineno" : 107,
+      "lineno" : 90,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -468,7 +468,7 @@
       "annotation_last_lineno" : -1
     },
     "struct2" : {
-      "lineno" : 126,
+      "lineno" : 103,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -496,7 +496,7 @@
       "annotation_last_lineno" : -1
     },
     "struct3" : {
-      "lineno" : 163,
+      "lineno" : 131,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -519,7 +519,7 @@
       "annotation_last_lineno" : -1
     },
     "struct4" : {
-      "lineno" : 193,
+      "lineno" : 149,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -542,7 +542,7 @@
       "annotation_last_lineno" : -1
     },
     "union1" : {
-      "lineno" : 205,
+      "lineno" : 157,
       "is_exception" : false,
       "is_union" : true,
       "fields" : {
@@ -560,7 +560,7 @@
       "annotation_last_lineno" : -1
     },
     "union2" : {
-      "lineno" : 220,
+      "lineno" : 168,
       "is_exception" : false,
       "is_union" : true,
       "fields" : {

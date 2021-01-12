@@ -20,30 +20,30 @@ namespace cpp2 test.fixtures.tablebased
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
 enum ExampleEnum {
-  ZERO = 0;
-  NONZERO = 123;
+  ZERO = 0,
+  NONZERO = 123,
 }
 
 struct TrivialTypesStruct {
-  1: optional i32 fieldA
-  2: optional string fieldB
-  3: optional binary fieldC
-  4: optional IOBufPtr fieldD
-  5: ExampleEnum fieldE
+  1: optional i32 fieldA;
+  2: optional string fieldB;
+  3: optional binary fieldC;
+  4: optional IOBufPtr fieldD;
+  5: ExampleEnum fieldE;
 }
 
 struct ContainerStruct {
-  12: list<i32> fieldA
-  2: list<i32> (cpp.template = "std::list") fieldB
-  3: list<i32> (cpp.template = "std::deque") fieldC
-  4: list<i32> (cpp.template = "folly::fbvector") fieldD
-  5: list<i32> (cpp.template = "folly::small_vector") fieldE
-  6: set<i32> (cpp.template = "folly::sorted_vector_set") fieldF
-  7: map<i32, string> (cpp.template = "folly::sorted_vector_map") fieldG
-  8: list<TrivialTypesStruct> fieldH
+  12: list<i32> fieldA;
+  2: list<i32> (cpp.template = "std::list") fieldB;
+  3: list<i32> (cpp.template = "std::deque") fieldC;
+  4: list<i32> (cpp.template = "folly::fbvector") fieldD;
+  5: list<i32> (cpp.template = "folly::small_vector") fieldE;
+  6: set<i32> (cpp.template = "folly::sorted_vector_set") fieldF;
+  7: map<i32, string> (cpp.template = "folly::sorted_vector_map") fieldG;
+  8: list<TrivialTypesStruct> fieldH;
 }
 
 union ExampleUnion {
-  1: ContainerStruct fieldA,
-  2: TrivialTypesStruct fieldB,
+  1: ContainerStruct fieldA;
+  2: TrivialTypesStruct fieldB;
 }

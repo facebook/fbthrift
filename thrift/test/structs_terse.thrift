@@ -19,5 +19,5 @@ include "thrift/test/structs.thrift"
 namespace cpp2 apache.thrift.test
 
 struct BasicRefsSharedTerseWrites {
-  1: structs.HasInt def_field (cpp.ref),
+  1: structs.HasInt def_field (cpp.ref);
 }

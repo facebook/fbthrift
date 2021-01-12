@@ -17,21 +17,21 @@
 namespace cpp2 apache.thrift.test
 
 struct TestStruct {
-  1: string s,
-  2: i32 i,
+  1: string s;
+  2: i32 i;
 }
 
 typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
 struct TestStructIOBuf {
-  1: IOBuf buf,
-  2: i32 i,
+  1: IOBuf buf;
+  2: i32 i;
 }
 
 struct TestStructRecursive {
-  6: string tag,
-  99: optional TestStructRecursive cdr (cpp.ref = 'true'),
+  6: string tag;
+  99: optional TestStructRecursive cdr (cpp.ref = 'true');
 }
 
 typedef byte (cpp2.type = "uint8_t") UInt8
@@ -40,42 +40,42 @@ typedef i32 (cpp2.type = "uint32_t") UInt32
 typedef i64 (cpp2.type = "uint64_t") UInt64
 
 struct TestUnsignedIntStruct {
-  1: UInt8 u8,
-  2: UInt16 u16,
-  3: UInt32 u32,
-  4: UInt64 u64
+  1: UInt8 u8;
+  2: UInt16 u16;
+  3: UInt32 u32;
+  4: UInt64 u64;
 }
 
 union TestUnsignedIntUnion {
-  1: UInt8 u8,
-  2: UInt16 u16,
-  3: UInt32 u32,
-  4: UInt64 u64
+  1: UInt8 u8;
+  2: UInt16 u16;
+  3: UInt32 u32;
+  4: UInt64 u64;
 }
 
 struct TestUnsignedInt32ListStruct {
-  1: list<UInt32> l
+  1: list<UInt32> l;
 }
 
 struct TestUnsignedIntMapStruct {
-  1: map<UInt32, UInt64> m
+  1: map<UInt32, UInt64> m;
 }
 
 service TestService {
-  string sendResponse(1:i64 size)
-  oneway void noResponse(1:i64 size)
-  string echoRequest(1:string req)
-  i32 echoInt(1:i32 req)
-  string serializationTest(1: bool inEventBase)
-  string eventBaseAsync() (thread = 'eb')
-  void notCalledBack()
-  void voidResponse()
-  i32 processHeader()
-  IOBufPtr echoIOBuf(1: IOBuf buf)
-  oneway void noResponseIOBuf(1: IOBuf buf)
-  stream<byte> echoIOBufAsByteStream(1: IOBuf buf, 2: i32 delayMs)
+  string sendResponse(1: i64 size);
+  oneway void noResponse(1: i64 size);
+  string echoRequest(1: string req);
+  i32 echoInt(1: i32 req);
+  string serializationTest(1: bool inEventBase);
+  string eventBaseAsync() (thread = 'eb');
+  void notCalledBack();
+  void voidResponse();
+  i32 processHeader();
+  IOBufPtr echoIOBuf(1: IOBuf buf);
+  oneway void noResponseIOBuf(1: IOBuf buf);
+  stream<byte> echoIOBufAsByteStream(1: IOBuf buf, 2: i32 delayMs);
   void throwsHandlerException();
-  stream<i32> range(1: i32 from, 2: i32 to)
-  void priorityHigh() (priority = "HIGH")
-  void priorityBestEffort() (priority = "BEST_EFFORT", cpp.coroutine)
+  stream<i32> range(1: i32 from, 2: i32 to);
+  void priorityHigh() (priority = "HIGH");
+  void priorityBestEffort() (priority = "BEST_EFFORT", cpp.coroutine);
 }

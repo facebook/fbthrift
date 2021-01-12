@@ -16,13 +16,13 @@
 
 namespace hack foo.hack_ns
 
-
 enum Status {
-  Unknown = 0;
+  Unknown = 0,
 }
 
 struct TestStruct {
-  1: string str_value,
+  1: string str_value;
 }
 
-service FooHackService{}
+service FooHackService {
+}

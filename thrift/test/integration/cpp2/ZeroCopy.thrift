@@ -24,7 +24,5 @@ cpp_include "folly/io/IOBuf.h"
 typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 
 service ZeroCopyService extends fb303.FacebookService {
-  IOBuf echo(
-    1: IOBuf data,
-  );
+  IOBuf echo(1: IOBuf data);
 }

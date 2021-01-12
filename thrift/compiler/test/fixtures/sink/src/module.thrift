@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- namespace java.swift test.fixtures.sink
+namespace java.swift test.fixtures.sink
 
 struct InitialResponse {
   1: string content;
@@ -48,9 +48,20 @@ exception SinkException2 {
 service SinkService {
   sink<SinkPayload, FinalResponse> method();
   InitialResponse, sink<SinkPayload, FinalResponse> methodAndReponse();
-  sink<SinkPayload, FinalResponse> methodThrow() throws (1: InitialException ex);
-  sink<SinkPayload throws (1: SinkException1 ex), FinalResponse> methodSinkThrow();
-  sink<SinkPayload, FinalResponse throws (1:  SinkException2 ex)> methodFinalThrow();
-  sink<SinkPayload throws (1: SinkException1 ex), FinalResponse throws (1:  SinkException2 ex)> methodBothThrow();
-  sink<SinkPayload, FinalResponse> methodFast() (thread='eb');
+  sink<SinkPayload, FinalResponse> methodThrow() throws (
+    1: InitialException ex,
+  );
+  sink<
+    SinkPayload throws (1: SinkException1 ex),
+    FinalResponse
+  > methodSinkThrow();
+  sink<
+    SinkPayload,
+    FinalResponse throws (1: SinkException2 ex)
+  > methodFinalThrow();
+  sink<
+    SinkPayload throws (1: SinkException1 ex),
+    FinalResponse throws (1: SinkException2 ex)
+  > methodBothThrow();
+  sink<SinkPayload, FinalResponse> methodFast() (thread = 'eb');
 }

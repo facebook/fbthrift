@@ -18,7 +18,7 @@
 namespace java com.facebook.movies
 
 exception MovieNotFoundException {
-  1: string message
+  1: string message;
 }
 
 struct MovieInfo {
@@ -27,10 +27,11 @@ struct MovieInfo {
 }
 
 struct MovieInfoRequest {
-  1: string title
+  1: string title;
 }
 
 service MoviesService {
-  MovieInfo getMovieInfo(1: MovieInfoRequest request)
-    throws (1: MovieNotFoundException e);
+  MovieInfo getMovieInfo(1: MovieInfoRequest request) throws (
+    1: MovieNotFoundException e,
+  );
 }

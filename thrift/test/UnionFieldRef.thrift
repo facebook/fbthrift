@@ -17,18 +17,18 @@
 namespace cpp2 apache.thrift.test
 
 union Basic {
-  2: string str
-  1: i64 int64
-  4: list<i32> list_i32
+  2: string str;
+  1: i64 int64;
+  4: list<i32> list_i32;
 }
 
 union DuplicateType {
-  1: string str1
-  2: list<i32> list_i32
-  3: string str2
+  1: string str1;
+  2: list<i32> list_i32;
+  3: string str2;
 }
 
 union TreeNode {
-  1: list<TreeNode> nodes
-  2: i32 data
+  1: list<TreeNode> nodes;
+  2: i32 data;
 }

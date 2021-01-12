@@ -22,7 +22,7 @@ enum ValueEnum {
 }
 
 struct AddValueRequest {
-  1: ValueEnum val,
+  1: ValueEnum val;
 }
 
 service RepeatedTestService {

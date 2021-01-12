@@ -15,7 +15,7 @@
  */
 
 enum Enum {
-  ENUM = 1;
+  ENUM = 1,
 }
 
 struct A {
@@ -42,13 +42,13 @@ struct B {
   17: Enum just_an_enum;
 
   51: optional A optional_just_an_A;
-  52: optional set<i32>  optional_set_of_i32;
-  53: optional list<i32>  optional_list_of_i32;
-  54: optional list<string>  optional_list_of_string;
-  55: optional map<string, i32>  optional_map_of_string_to_i32;
-  56: optional map<string, A>  optional_map_of_string_to_A;
-  57: optional map<string, list<i32>>  optional_map_of_string_to_list_of_i32;
-  58: optional map<string, list<A>>  optional_map_of_string_to_list_of_A;
-  59: optional map<string, set<i32>>  optional_map_of_string_to_set_of_i32;
+  52: optional set<i32> optional_set_of_i32;
+  53: optional list<i32> optional_list_of_i32;
+  54: optional list<string> optional_list_of_string;
+  55: optional map<string, i32> optional_map_of_string_to_i32;
+  56: optional map<string, A> optional_map_of_string_to_A;
+  57: optional map<string, list<i32>> optional_map_of_string_to_list_of_i32;
+  58: optional map<string, list<A>> optional_map_of_string_to_list_of_A;
+  59: optional map<string, set<i32>> optional_map_of_string_to_set_of_i32;
   60: optional Enum optional_enum;
 }

@@ -19,7 +19,9 @@ namespace cpp2 apache.thrift.test
 struct empty {
 } (cpp.minimize_padding)
 
-enum test_enum { foo = 0 }
+enum test_enum {
+  foo = 0,
+}
 
 struct nonoptimal {
   1: required i16 a;

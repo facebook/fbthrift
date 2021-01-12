@@ -26,7 +26,7 @@ exception SinkException {
 }
 
 exception FinalException {
-  1: string reason
+  1: string reason;
 }
 
 service TestSinkService {

@@ -21,8 +21,8 @@ namespace py module1
 namespace java.swift test.fixtures.module1
 
 struct Struct {
- 1: i32 first,
- 2: string second,
+  1: i32 first;
+  2: string second;
 }
 
 enum Enum {
@@ -31,9 +31,6 @@ enum Enum {
   THREE = 3,
 }
 
-const Struct c1 = {
-  "first": 201,
-  "second": "module1_str"
-};
+const Struct c1 = {"first": 201, "second": "module1_str"};
 
 const list<Enum> e1s = [ONE, THREE];

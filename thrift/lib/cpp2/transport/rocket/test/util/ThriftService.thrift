@@ -17,20 +17,20 @@
 namespace cpp2 testutil.testservice
 
 struct Message {
-  1: string message
-  2: i64 timestamp
+  1: string message;
+  2: i64 timestamp;
 }
 
 exception Error {
 }
 
 exception FirstEx {
-  1: i64 errCode
-  2: string errMsg
+  1: i64 errCode;
+  2: string errMsg;
 }
 
 exception SecondEx {
-  1: i64 errCode
+  1: i64 errCode;
 }
 
 service StreamService {
@@ -53,7 +53,7 @@ service StreamService {
 
   stream<Message> returnNullptr();
 
-  i32, stream<Message> throwError() throws (1: Error ex)
+  i32, stream<Message> throwError() throws (1: Error ex);
 
   i32, stream<i32> leakCheck(1: i32 from, 2: i32 to);
   i32, stream<i32> leakCheckWithSleep(1: i32 from, 2: i32 to, 3: i32 sleepMs);
@@ -68,11 +68,13 @@ service StreamService {
   void sendMessage(1: i32 messageId, 2: bool complete, 3: bool error);
   stream<i32> registerToMessages();
 
-  stream<Message throws (1: FirstEx e)> streamThrows(1: i32 whichEx)
-      throws (1: SecondEx e);
+  stream<Message throws (1: FirstEx e)> streamThrows(1: i32 whichEx) throws (
+    1: SecondEx e,
+  );
 
-  i32, stream<Message throws (1: FirstEx e)>
-      responseAndStreamThrows(1: i32 whichEx) throws (1: SecondEx e);
+  i32, stream<Message throws (1: FirstEx e)> responseAndStreamThrows(
+    1: i32 whichEx,
+  ) throws (1: SecondEx e);
 
   stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
 

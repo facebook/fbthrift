@@ -18,17 +18,16 @@ include "module.thrift"
 
 namespace hack hack_ns2
 
-
 enum Status {
-  Unknown = 0;
+  Unknown = 0,
 }
 
 struct FBStruct {
-  1: string str_value,
-  2: module.Status enum_value,
-  3: module.TestStruct struct_value,
+  1: string str_value;
+  2: module.Status enum_value;
+  3: module.TestStruct struct_value;
 }
 
 service TestService extends module.FooHackService {
-  i32 ping(1: string str_arg)
+  i32 ping(1: string str_arg);
 }

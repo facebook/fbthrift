@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-
 struct def {
-  1: i64 from,
-  2: string in,
-  3: i32 as,
-  4: bool if,
-  5: list<i32> else,
-  6: i32 try,
-  7: i32 while,
-  8: bool yield,
-  9: bool break,
-  10: bool await,
-  11: bool return,
+  1: i64 from;
+  2: string in;
+  3: i32 as;
+  4: bool if;
+  5: list<i32> else;
+  6: i32 try;
+  7: i32 while;
+  8: bool yield;
+  9: bool break;
+  10: bool await;
+  11: bool return;
 }
 
 service lambda {

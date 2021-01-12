@@ -17,9 +17,9 @@
 namespace cpp2 facebook.thrift.test
 
 struct FrozenStructA {
-    1: i64 fieldA;
+  1: i64 fieldA;
 }
 
 struct FrozenStructB {
-    1: i64 fieldA;
+  1: i64 fieldA;
 }

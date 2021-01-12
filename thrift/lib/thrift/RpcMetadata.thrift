@@ -22,15 +22,14 @@ namespace py.asyncio thrift.lib.thrift.asyncio.RpcMetadata
 namespace py3 thrift.lib.thrift
 namespace go thrift.lib.thrift.RpcMetadata
 
-
 cpp_include "thrift/lib/thrift/RpcMetadata_extra.h"
 
 enum ProtocolId {
   // The values must match those in thrift/lib/cpp/protocol/TProtocolTypes.h
   BINARY = 0,
   COMPACT = 2,
-  // Deprecated.
-  // FROZEN2 = 6,
+// Deprecated.
+// FROZEN2 = 6,
 }
 
 enum RpcKind {
@@ -68,14 +67,14 @@ struct ZstdCompressionCodecConfig {
 }
 
 union CodecConfig {
-  1: ZlibCompressionCodecConfig zlibConfig
-  2: ZstdCompressionCodecConfig zstdConfig
+  1: ZlibCompressionCodecConfig zlibConfig;
+  2: ZstdCompressionCodecConfig zstdConfig;
 }
 
 // Represent the compression config user set
 struct CompressionConfig {
-  1: optional CodecConfig codecConfig
-  2: optional i64 compressionSizeLimit
+  1: optional CodecConfig codecConfig;
+  2: optional i64 compressionSizeLimit;
 }
 
 // A TLS extension used for thrift parameters negotiation during TLS handshake.
@@ -295,8 +294,9 @@ enum InterfaceKind {
 const i64 kRocketProtocolKey = 0xf09f9a80;
 
 struct RequestSetupMetadata {
-  1: optional map<string, binary>
-      (cpp.template = "apache::thrift::MetadataOpaqueMap") opaque;
+  1: optional map<string, binary> (
+    cpp.template = "apache::thrift::MetadataOpaqueMap",
+  ) opaque;
   // Indicates client wants to use admin interface
   2: optional InterfaceKind interfaceKind;
   // Min Rocket protocol version supported by the client
@@ -317,7 +317,7 @@ struct SetupResponse {
 }
 
 union ServerPushMetadata {
-  1: SetupResponse setupResponse
+  1: SetupResponse setupResponse;
 }
 
 struct HeadersPayloadContent {

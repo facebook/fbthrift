@@ -592,6 +592,19 @@ TEST_F(CoroutineClientTest, takesRequestParamsCoroClient) {
       .getVia(&eventBase_);
 }
 
+TEST_F(CoroutineClientTest, cancelCoroClient) {
+  folly::CancellationSource source;
+  source.requestCancellation();
+  folly::coro::co_withCancellation(
+      source.getToken(), client_->co_computeSumPrimitive(12, 408))
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) {
+        EXPECT_TRUE(result.hasException<folly::OperationCancelled>());
+      })
+      .getVia(&eventBase_);
+}
+
 TEST(CoroutineExceptionTest, completesHandlerCallback) {
   class CoroutineServiceHandlerThrowing : virtual public CoroutineSvIf {
    public:

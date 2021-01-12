@@ -17,6 +17,6 @@
 namespace cpp2 apache.thrift.test
 
 struct TestStruct {
-  1: i32 foo
-  2: i32 bar
+  1: i32 foo;
+  2: i32 bar;
 }

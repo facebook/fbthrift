@@ -16,13 +16,11 @@
 
 namespace cpp thrift.test
 
-struct QQQ
-{
+struct QQQ {
   1: i32 y;
 }
 
-struct Order
-{
+struct Order {
   1: i32 x;
   2: QQQ qqq;
 }

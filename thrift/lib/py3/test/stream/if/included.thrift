@@ -17,10 +17,9 @@
 namespace cpp2 thrift.py3.test.included
 namespace py3 thrift.py3.test.included
 
-
 typedef i64 IncludedInt64
 
-const i64 IncludedConstant = 42
+const i64 IncludedConstant = 42;
 
 struct Included {
   1: IncludedInt64 from (py3.name = "from_");

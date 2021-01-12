@@ -27,11 +27,11 @@ struct Included {
 const Included ExampleIncluded = {
   MyIntField: 2,
   MyTransitiveField: transitive.ExampleFoo,
-}
+};
 
 typedef i64 IncludedInt64
 
-const i64 IncludedConstant = 42
+const i64 IncludedConstant = 42;
 
 // This lets us test typedefs-of-typedefs, see `service.thrift`.
 typedef transitive.Foo TransitiveFoo

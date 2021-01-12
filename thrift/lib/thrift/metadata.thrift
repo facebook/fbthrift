@@ -22,33 +22,49 @@ namespace php tmeta
 namespace go thrift.lib.thrift.metadata
 
 enum ThriftPrimitiveType {
-  THRIFT_BOOL_TYPE = 1;
-  THRIFT_BYTE_TYPE = 2;
-  THRIFT_I16_TYPE = 3;
-  THRIFT_I32_TYPE = 4;
-  THRIFT_I64_TYPE = 5;
-  THRIFT_FLOAT_TYPE = 6;
-  THRIFT_DOUBLE_TYPE = 7;
-  THRIFT_BINARY_TYPE = 8;
-  THRIFT_STRING_TYPE = 9;
-  THRIFT_VOID_TYPE = 10;
+  THRIFT_BOOL_TYPE = 1,
+  THRIFT_BYTE_TYPE = 2,
+  THRIFT_I16_TYPE = 3,
+  THRIFT_I32_TYPE = 4,
+  THRIFT_I64_TYPE = 5,
+  THRIFT_FLOAT_TYPE = 6,
+  THRIFT_DOUBLE_TYPE = 7,
+  THRIFT_BINARY_TYPE = 8,
+  THRIFT_STRING_TYPE = 9,
+  THRIFT_VOID_TYPE = 10,
 }
 
 struct ThriftListType {
-  1: optional ThriftType valueType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  1: optional ThriftType valueType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftSetType {
-  1: optional ThriftType valueType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  1: optional ThriftType valueType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftMapType {
-  1: optional ThriftType keyType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  2: optional ThriftType valueType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  1: optional ThriftType keyType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  2: optional ThriftType valueType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftEnumType {
@@ -65,24 +81,48 @@ struct ThriftUnionType {
 
 struct ThriftTypedefType {
   1: string name;
-  2: optional ThriftType underlyingType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  2: optional ThriftType underlyingType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftStreamType {
-  1: optional ThriftType elemType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  2: optional ThriftType initialResponseType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  1: optional ThriftType elemType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  2: optional ThriftType initialResponseType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftSinkType {
-  1: optional ThriftType elemType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  2: optional ThriftType finalResponseType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  3: optional ThriftType initialResponseType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  1: optional ThriftType elemType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  2: optional ThriftType finalResponseType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  3: optional ThriftType initialResponseType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 union ThriftType {
@@ -167,5 +207,5 @@ struct ThriftMetadata {
 }
 
 service ThriftMetadataService {
-  ThriftServiceMetadataResponse getThriftServiceMetadata()
+  ThriftServiceMetadataResponse getThriftServiceMetadata();
 }

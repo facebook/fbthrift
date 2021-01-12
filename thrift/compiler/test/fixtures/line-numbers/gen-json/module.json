@@ -11,7 +11,7 @@
   },
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 40,
+      "lineno" : 27,
       "constants" : {
         "VALUE1" : 1,
         "VALUE2" : 2
@@ -20,14 +20,14 @@
   },
   "typedefs" : {
     "MyMapTypedef" : {
-      "lineno" : 23,
+      "lineno" : 20,
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "I64", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } 
     }
   },
   "structs" : {
     "MyStruct" : {
-      "lineno" : 29,
+      "lineno" : 22,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -47,7 +47,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 50,
+      "lineno" : 32,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {

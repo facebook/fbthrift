@@ -33,8 +33,8 @@ union ListUnion {
 }
 
 union DataUnion {
-  1: binary binaryData,
-  2: string stringData,
+  1: binary binaryData;
+  2: string stringData;
 }
 
 struct Val {
@@ -44,8 +44,8 @@ struct Val {
 }
 
 union ValUnion {
-  1: Val v1,
-  2: Val v2,
+  1: Val v1;
+  2: Val v2;
 }
 
 union VirtualComplexUnion {
@@ -54,9 +54,9 @@ union VirtualComplexUnion {
 } (cpp.virtual)
 
 struct NonCopyableStruct {
-  1: i64 num,
+  1: i64 num;
 } (cpp2.noncopyable)
 
 union NonCopyableUnion {
-  1: NonCopyableStruct s,
+  1: NonCopyableStruct s;
 } (cpp2.noncopyable)

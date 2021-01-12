@@ -15,5 +15,5 @@
  */
 
 struct structured_annotation_included {
-  1: string name = 'cacbcac'
+  1: string name = 'cacbcac';
 }

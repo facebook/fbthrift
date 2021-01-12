@@ -15,16 +15,16 @@
  */
 
 struct Foo {
- 1: list<string> a;
- 2: optional map<string, list<set<i32>>> b;
- 3: i64 c = 7;
- 4: optional bool d = 0;
+  1: list<string> a;
+  2: optional map<string, list<set<i32>>> b;
+  3: i64 c = 7;
+  4: optional bool d = 0;
 }
 
 enum TestEnum {
-  UNKNOWN = 0;
-  VALUE1 = 1;
-  VALUE2 = 2;
+  UNKNOWN = 0,
+  VALUE1 = 1,
+  VALUE2 = 2,
 }
 
 union TestUnion {
@@ -45,10 +45,10 @@ service Bar {
 }
 
 exception Baz {
- 1: string message;
- 2: Foo some_field;
- 3: set<string> some_container;
- 4: i32 code;
+  1: string message;
+  2: Foo some_field;
+  3: set<string> some_container;
+  4: i32 code;
 }
 
 exception OptBaz {

@@ -18,5 +18,5 @@ namespace hack test.namespace
 namespace json test.namespace
 
 struct structured_annotation_with_namespace {
-  1: string name = 'abacaba'
+  1: string name = 'abacaba';
 }

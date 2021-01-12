@@ -18,11 +18,11 @@ namespace cpp thrift.test.debug
 namespace py thrift.test.UnionTest
 
 struct I32Stuff {
-  1: i32 a,
+  1: i32 a;
 }
 
 struct StringStuff {
-  1: string a,
+  1: string a;
 }
 
 union TerseTestUnion {

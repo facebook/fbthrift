@@ -3,7 +3,7 @@
   "thrift_module" : "module",
   "constants" : {
     "MyConst" : {
-      "lineno" : 122,
+      "lineno" : 125,
       "value" : { "ENUMERATOR" : "enum", "CONST" : "const" },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
@@ -14,7 +14,7 @@
   },
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 113,
+      "lineno" : 115,
       "structured_annotations" : {
         "structured_annotation_inline" : { "count" : 4 }
       },
@@ -34,7 +34,7 @@
       }
     },
     "annotated_inline_string" : {
-      "lineno" : 49,
+      "lineno" : 50,
       "type_enum" : "STRING",
       "spec_args" : null,
       "structured_annotations" : {
@@ -43,7 +43,7 @@
       }
     },
     "annotated_inline_i64" : {
-      "lineno" : 52,
+      "lineno" : 53,
       "type_enum" : "I64",
       "spec_args" : null,
       "structured_annotations" : {
@@ -140,7 +140,7 @@
       "annotation_last_lineno" : -1
     },
     "MyStruct" : {
-      "lineno" : 62,
+      "lineno" : 63,
       "is_exception" : false,
       "is_union" : false,
       "structured_annotations" : {
@@ -232,7 +232,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 101,
+      "lineno" : 102,
       "structured_annotations" : {
         "structured_annotation_inline" : { "count" : 3 }
       },

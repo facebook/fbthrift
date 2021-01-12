@@ -17,5 +17,5 @@
 include "thrift/lib/hs/tests/if/IncludedTest.thrift"
 
 struct Bar {
-  1: IncludedTest.Foo baz = { "Baz": 1 };
+  1: IncludedTest.Foo baz = {"Baz": 1};
 }

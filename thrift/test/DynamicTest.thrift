@@ -17,7 +17,7 @@
 include "thrift/lib/thrift/dynamic.thrift"
 
 struct Container {
-  1: dynamic.DynamicType data
+  1: dynamic.DynamicType data;
 }
 
 service DynamicTestService {

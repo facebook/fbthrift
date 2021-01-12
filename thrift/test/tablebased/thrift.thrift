@@ -21,8 +21,8 @@ include "thrift/test/tablebased/include.thrift"
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
 enum Enum {
-  A = 1;
-  B = 2;
+  A = 1,
+  B = 2,
 }
 
 struct StructA {
@@ -43,8 +43,9 @@ struct StructWithRef {
 }
 
 struct StructWithCppType {
-  1: optional map<string, StructA>
-    (cpp.type = "std::unordered_map<std::string, StructA>") fieldA;
+  1: optional map<string, StructA> (
+    cpp.type = "std::unordered_map<std::string, StructA>",
+  ) fieldA;
 }
 
 struct StructB {

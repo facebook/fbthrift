@@ -38,7 +38,7 @@ struct UnTwo {
 }
 union Un {
   1: UnOne un1;
-  2: UnTwo un2
+  2: UnTwo un2;
 }
 
 enum En {

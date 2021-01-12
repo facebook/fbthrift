@@ -17,5 +17,5 @@
 namespace py3 transitive_deps
 
 struct C {
-    1: i64 i,
+  1: i64 i;
 }
