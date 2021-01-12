@@ -23,7 +23,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Empty", builder=Empty.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Empty", builder=Empty.Builder.class)
 public final class Empty {
 
     @ThriftConstructor

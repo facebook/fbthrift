@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="SimpleStruct", builder=SimpleStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="SimpleStruct", builder=SimpleStruct.Builder.class)
 public final class SimpleStruct {
 
     @ThriftConstructor
     public SimpleStruct(
-        @ThriftField(value=1, name="age", requiredness=Requiredness.NONE) final long age,
-        @ThriftField(value=2, name="name", requiredness=Requiredness.NONE) final String name
+        @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE) final long age,
+        @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE) final String name
     ) {
         this.age = age;
         this.name = name;
@@ -46,7 +46,7 @@ public final class SimpleStruct {
         private long age = 60L;
         private String name = "Batman";
     
-        @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
         public Builder setAge(long age) {
             this.age = age;
             return this;
@@ -54,7 +54,7 @@ public final class SimpleStruct {
     
         public long getAge() { return age; }
     
-            @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
@@ -94,11 +94,11 @@ public final class SimpleStruct {
       FIELD_METADATA.put(2, NAME_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
     
     
-    @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
     
     @java.lang.Override

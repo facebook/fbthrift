@@ -110,7 +110,7 @@ public final class Union2 {
     }
     
 
-    @ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
     public int getI() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a i element!");
@@ -122,7 +122,7 @@ public final class Union2 {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="d", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="d", requiredness=Requiredness.NONE)
     public double getD() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a d element!");
@@ -134,7 +134,7 @@ public final class Union2 {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="s", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct1 getS() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a s element!");
@@ -146,7 +146,7 @@ public final class Union2 {
         return this.id == 3;
     }
 
-    @ThriftField(value=4, name="u", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Union1 getU() {
         if (this.id != 4) {
             throw new IllegalStateException("Not a u element!");

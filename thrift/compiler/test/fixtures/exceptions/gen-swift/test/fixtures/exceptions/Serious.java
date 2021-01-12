@@ -21,7 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("Serious")
+@com.facebook.swift.codec.ThriftStruct("Serious")
 public final class Serious extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public final class Serious extends java.lang.RuntimeException {
 
     @ThriftConstructor
     public Serious(
-        @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL) final String sonnet
+        @com.facebook.swift.codec.ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL) final String sonnet
     ) {
         this.sonnet = sonnet;
     }
@@ -50,7 +50,7 @@ public final class Serious extends java.lang.RuntimeException {
     
         private String sonnet = null;
     
-        @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
+        @com.facebook.swift.codec.ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
         public Builder setSonnet(String sonnet) {
             this.sonnet = sonnet;
             return this;
@@ -73,7 +73,7 @@ public final class Serious extends java.lang.RuntimeException {
     }
     
     
-    @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
     public String getSonnet() { return sonnet; }
         
     @java.lang.Override

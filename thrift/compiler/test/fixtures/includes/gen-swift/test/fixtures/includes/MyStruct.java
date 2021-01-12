@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
-        @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myOtherIncludedField,
-        @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE) final long myIncludedInt
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myOtherIncludedField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE) final long myIncludedInt
     ) {
         this.myIncludedField = myIncludedField;
         this.myOtherIncludedField = myOtherIncludedField;
@@ -50,7 +50,7 @@ public final class MyStruct {
         private test.fixtures.includes.includes.Included myOtherIncludedField = null;
         private long myIncludedInt = 42L;
     
-        @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
         public Builder setMyIncludedField(test.fixtures.includes.includes.Included myIncludedField) {
             this.myIncludedField = myIncludedField;
             return this;
@@ -58,7 +58,7 @@ public final class MyStruct {
     
         public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
     
-            @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
         public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
             this.myOtherIncludedField = myOtherIncludedField;
             return this;
@@ -66,7 +66,7 @@ public final class MyStruct {
     
         public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
     
-            @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
         public Builder setMyIncludedInt(long myIncludedInt) {
             this.myIncludedInt = myIncludedInt;
             return this;
@@ -113,15 +113,15 @@ public final class MyStruct {
       FIELD_METADATA.put(3, MY_INCLUDED_INT_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
     
     
-    @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
     
     
-    @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
     public long getMyIncludedInt() { return myIncludedInt; }
     
     @java.lang.Override

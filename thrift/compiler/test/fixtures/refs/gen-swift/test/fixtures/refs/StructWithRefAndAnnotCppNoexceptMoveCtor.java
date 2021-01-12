@@ -23,12 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
 public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
 
     @ThriftConstructor
     public StructWithRefAndAnnotCppNoexceptMoveCtor(
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField
+        @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField
     ) {
         this.defField = defField;
     }
@@ -42,7 +42,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     
         private test.fixtures.refs.Empty defField = null;
     
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
         public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;
             return this;
@@ -75,7 +75,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
       FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
     
     @java.lang.Override

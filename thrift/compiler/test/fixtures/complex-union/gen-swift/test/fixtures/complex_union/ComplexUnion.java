@@ -103,44 +103,44 @@ public final class ComplexUnion {
         return res;
     }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setIntValue(final long intValue) {
         this.value = intValue;
         this.id = 1;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setStringValue(final String stringValue) {
         this.value = stringValue;
         this.id = 5;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setTypedefValue(final Map<Short, String> typedefValue) {
         this.value = typedefValue;
         this.id = 9;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setStringRef(final String stringRef) {
         this.value = stringRef;
         this.id = 14;
     }
 
-    @ThriftField(value=1, name="intValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="intValue", requiredness=Requiredness.NONE)
     public long getIntValue() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a intValue element!");
@@ -152,7 +152,7 @@ public final class ComplexUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=5, name="stringValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="stringValue", requiredness=Requiredness.NONE)
     public String getStringValue() {
         if (this.id != 5) {
             throw new IllegalStateException("Not a stringValue element!");
@@ -164,7 +164,7 @@ public final class ComplexUnion {
         return this.id == 5;
     }
 
-    @ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
     public List<Long> getIntListValue() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a intListValue element!");
@@ -176,7 +176,7 @@ public final class ComplexUnion {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="stringListValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="stringListValue", requiredness=Requiredness.NONE)
     public List<String> getStringListValue() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a stringListValue element!");
@@ -188,7 +188,7 @@ public final class ComplexUnion {
         return this.id == 3;
     }
 
-    @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
     public Map<Short, String> getTypedefValue() {
         if (this.id != 9) {
             throw new IllegalStateException("Not a typedefValue element!");
@@ -200,7 +200,7 @@ public final class ComplexUnion {
         return this.id == 9;
     }
 
-    @ThriftField(value=14, name="stringRef", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=14, name="stringRef", requiredness=Requiredness.NONE)
     public String getStringRef() {
         if (this.id != 14) {
             throw new IllegalStateException("Not a stringRef element!");

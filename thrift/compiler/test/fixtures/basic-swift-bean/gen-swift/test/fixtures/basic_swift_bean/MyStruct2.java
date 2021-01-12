@@ -23,7 +23,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct2")
+@com.facebook.swift.codec.ThriftStruct("MyStruct2")
 public final class MyStruct2 {
 
     @ThriftConstructor
@@ -37,7 +37,7 @@ public final class MyStruct2 {
         private test.fixtures.basic_swift_bean.MyStruct1 myStruct1 = null;
         private String myString = null;
     
-        @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
         public Builder setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
             this.myStruct1 = myStruct1;
             return this;
@@ -45,7 +45,7 @@ public final class MyStruct2 {
     
         public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
     
-            @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
@@ -84,20 +84,20 @@ static {
       FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct2 setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
         this.myStruct1 = myStruct1;
         return this;
     }
     
     
-    @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct2 setMyString(String myString) {
         this.myString = myString;
         return this;

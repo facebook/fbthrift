@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="struct3", builder=Struct3.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="struct3", builder=Struct3.Builder.class)
 public final class Struct3 {
 
     @ThriftConstructor
     public Struct3(
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final String a,
-        @ThriftField(value=2, name="b", requiredness=Requiredness.NONE) final int b,
-        @ThriftField(value=3, name="c", requiredness=Requiredness.NONE) final test.fixtures.constants.Struct2 c
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final String a,
+        @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE) final int b,
+        @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE) final test.fixtures.constants.Struct2 c
     ) {
         this.a = a;
         this.b = b;
@@ -50,7 +50,7 @@ public final class Struct3 {
         private int b = 0;
         private test.fixtures.constants.Struct2 c = null;
     
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(String a) {
             this.a = a;
             return this;
@@ -58,7 +58,7 @@ public final class Struct3 {
     
         public String getA() { return a; }
     
-            @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
         public Builder setB(int b) {
             this.b = b;
             return this;
@@ -66,7 +66,7 @@ public final class Struct3 {
     
         public int getB() { return b; }
     
-            @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
         public Builder setC(test.fixtures.constants.Struct2 c) {
             this.c = c;
             return this;
@@ -113,15 +113,15 @@ public final class Struct3 {
       FIELD_METADATA.put(3, C_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public String getA() { return a; }
     
     
-    @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public int getB() { return b; }
     
     
-    @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct2 getC() { return c; }
     
     @java.lang.Override

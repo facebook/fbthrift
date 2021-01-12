@@ -23,12 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="NonCopyableStruct", builder=NonCopyableStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="NonCopyableStruct", builder=NonCopyableStruct.Builder.class)
 public final class NonCopyableStruct {
 
     @ThriftConstructor
     public NonCopyableStruct(
-        @ThriftField(value=1, name="num", requiredness=Requiredness.NONE) final long num
+        @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE) final long num
     ) {
         this.num = num;
     }
@@ -42,7 +42,7 @@ public final class NonCopyableStruct {
     
         private long num = 0L;
     
-        @ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
         public Builder setNum(long num) {
             this.num = num;
             return this;
@@ -75,7 +75,7 @@ public final class NonCopyableStruct {
       FIELD_METADATA.put(1, NUM_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
     public long getNum() { return num; }
     
     @java.lang.Override

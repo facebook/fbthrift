@@ -23,15 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct1", builder=MyStruct1.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct1", builder=MyStruct1.Builder.class)
 public final class MyStruct1 {
 
     @ThriftConstructor
     public MyStruct1(
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
-        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
-        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic_swift_bean.MyDataItem myDataField,
-        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE) final long major
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic_swift_bean.MyDataItem myDataField,
+        @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE) final long major
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
@@ -54,7 +54,7 @@ public final class MyStruct1 {
         private test.fixtures.basic_swift_bean.MyDataItem myDataField = null;
         private long major = 0L;
     
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
@@ -62,7 +62,7 @@ public final class MyStruct1 {
     
         public long getMyIntField() { return myIntField; }
     
-            @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
@@ -70,7 +70,7 @@ public final class MyStruct1 {
     
         public String getMyStringField() { return myStringField; }
     
-            @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
@@ -78,7 +78,7 @@ public final class MyStruct1 {
     
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
     
-            @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
             return this;
@@ -132,19 +132,19 @@ public final class MyStruct1 {
       FIELD_METADATA.put(4, MAJOR_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     
     
-    @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
     
     
-    @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
     
     
-    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
     
     @java.lang.Override

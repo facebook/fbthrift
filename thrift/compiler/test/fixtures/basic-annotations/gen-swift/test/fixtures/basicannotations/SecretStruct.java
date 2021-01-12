@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="SecretStruct", builder=SecretStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="SecretStruct", builder=SecretStruct.Builder.class)
 public final class SecretStruct {
 
     @ThriftConstructor
     public SecretStruct(
-        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-        @ThriftField(value=2, name="password", requiredness=Requiredness.NONE) final String password
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE) final String password
     ) {
         this.id = id;
         this.password = password;
@@ -46,7 +46,7 @@ public final class SecretStruct {
         private long id = 0L;
         private String password = null;
     
-        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
         public Builder setId(long id) {
             this.id = id;
             return this;
@@ -54,7 +54,7 @@ public final class SecretStruct {
     
         public long getId() { return id; }
     
-            @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
         public Builder setPassword(String password) {
             this.password = password;
             return this;
@@ -94,11 +94,11 @@ public final class SecretStruct {
       FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
     
     
-    @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
     
     @java.lang.Override

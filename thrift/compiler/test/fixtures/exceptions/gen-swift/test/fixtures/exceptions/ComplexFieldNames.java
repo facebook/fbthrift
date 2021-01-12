@@ -21,7 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("ComplexFieldNames")
+@com.facebook.swift.codec.ThriftStruct("ComplexFieldNames")
 public final class ComplexFieldNames extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
@@ -39,8 +39,8 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
 
     @ThriftConstructor
     public ComplexFieldNames(
-        @ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE) final String errorMessage,
-        @ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE) final String internalErrorMessage
+        @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE) final String errorMessage,
+        @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE) final String internalErrorMessage
     ) {
         this.errorMessage = errorMessage;
         this.internalErrorMessage = internalErrorMessage;
@@ -57,7 +57,7 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
         private String errorMessage = null;
         private String internalErrorMessage = null;
     
-        @ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
         public Builder setErrorMessage(String errorMessage) {
             this.errorMessage = errorMessage;
             return this;
@@ -65,7 +65,7 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
     
         public String getErrorMessage() { return errorMessage; }
     
-            @ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
         public Builder setInternalErrorMessage(String internalErrorMessage) {
             this.internalErrorMessage = internalErrorMessage;
             return this;
@@ -90,10 +90,10 @@ public final class ComplexFieldNames extends java.lang.RuntimeException {
     }
     
     
-    @ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
     public String getErrorMessage() { return errorMessage; }
         
-    @ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
     public String getInternalErrorMessage() { return internalErrorMessage; }
         
     @java.lang.Override

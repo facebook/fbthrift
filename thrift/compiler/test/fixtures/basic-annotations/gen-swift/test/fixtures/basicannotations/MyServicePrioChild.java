@@ -16,9 +16,9 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("MyServicePrioChild")
+@com.facebook.swift.service.ThriftService("MyServicePrioChild")
 public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.basicannotations.MyServicePrioParent {
-    @ThriftService("MyServicePrioChild")
+    @com.facebook.swift.service.ThriftService("MyServicePrioChild")
     public interface Async extends java.io.Closeable, test.fixtures.basicannotations.MyServicePrioParent.Async {
         @java.lang.Override void close();
 

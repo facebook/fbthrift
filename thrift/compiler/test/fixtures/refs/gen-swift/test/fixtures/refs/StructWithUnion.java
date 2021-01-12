@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
 public final class StructWithUnion {
 
     @ThriftConstructor
     public StructWithUnion(
-        @ThriftField(value=1, name="u", requiredness=Requiredness.NONE) final test.fixtures.refs.MyUnion u,
-        @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE) final double aDouble,
-        @ThriftField(value=3, name="f", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField f
+        @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE) final test.fixtures.refs.MyUnion u,
+        @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE) final double aDouble,
+        @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField f
     ) {
         this.u = u;
         this.aDouble = aDouble;
@@ -50,7 +50,7 @@ public final class StructWithUnion {
         private double aDouble = 0.;
         private test.fixtures.refs.MyField f = null;
     
-        @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
         public Builder setU(test.fixtures.refs.MyUnion u) {
             this.u = u;
             return this;
@@ -58,7 +58,7 @@ public final class StructWithUnion {
     
         public test.fixtures.refs.MyUnion getU() { return u; }
     
-            @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
         public Builder setADouble(double aDouble) {
             this.aDouble = aDouble;
             return this;
@@ -66,7 +66,7 @@ public final class StructWithUnion {
     
         public double getADouble() { return aDouble; }
     
-            @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
         public Builder setF(test.fixtures.refs.MyField f) {
             this.f = f;
             return this;
@@ -113,15 +113,15 @@ public final class StructWithUnion {
       FIELD_METADATA.put(3, F_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyUnion getU() { return u; }
     
     
-    @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
     public double getADouble() { return aDouble; }
     
     
-    @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getF() { return f; }
     
     @java.lang.Override

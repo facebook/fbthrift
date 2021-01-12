@@ -23,15 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="TypeRemapped", builder=TypeRemapped.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="TypeRemapped", builder=TypeRemapped.Builder.class)
 public final class TypeRemapped {
 
     @ThriftConstructor
     public TypeRemapped(
-        @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap,
-        @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap,
-        @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE) final java.math.BigInteger bigInteger,
-        @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE) final java.nio.ByteBuffer binaryTestBuffer
+        @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap,
+        @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap,
+        @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE) final java.math.BigInteger bigInteger,
+        @com.facebook.swift.codec.ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE) final java.nio.ByteBuffer binaryTestBuffer
     ) {
         this.lsMap = lsMap;
         this.ioMap = ioMap;
@@ -54,7 +54,7 @@ public final class TypeRemapped {
         private java.math.BigInteger bigInteger = 0;
         private java.nio.ByteBuffer binaryTestBuffer = null;
     
-        @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;
             return this;
@@ -62,7 +62,7 @@ public final class TypeRemapped {
     
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
-            @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
         public Builder setIoMap(it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap) {
             this.ioMap = ioMap;
             return this;
@@ -70,7 +70,7 @@ public final class TypeRemapped {
     
         public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
     
-            @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
         public Builder setBigInteger(java.math.BigInteger bigInteger) {
             this.bigInteger = bigInteger;
             return this;
@@ -78,7 +78,7 @@ public final class TypeRemapped {
     
         public java.math.BigInteger getBigInteger() { return bigInteger; }
     
-            @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
         public Builder setBinaryTestBuffer(java.nio.ByteBuffer binaryTestBuffer) {
             this.binaryTestBuffer = binaryTestBuffer;
             return this;
@@ -132,19 +132,19 @@ public final class TypeRemapped {
       FIELD_METADATA.put(4, BINARY_TEST_BUFFER_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
     
-    @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> getIoMap() { return ioMap; }
     
     
-    @ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="BigInteger", requiredness=Requiredness.NONE)
     public java.math.BigInteger getBigInteger() { return bigInteger; }
     
     
-    @ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="binaryTestBuffer", requiredness=Requiredness.NONE)
     public java.nio.ByteBuffer getBinaryTestBuffer() { return binaryTestBuffer; }
     
     @java.lang.Override

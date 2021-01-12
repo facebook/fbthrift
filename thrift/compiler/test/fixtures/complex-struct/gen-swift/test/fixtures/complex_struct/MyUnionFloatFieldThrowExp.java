@@ -110,7 +110,7 @@ public final class MyUnionFloatFieldThrowExp {
     }
     
 
-    @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getMyEnum() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a myEnum element!");
@@ -122,7 +122,7 @@ public final class MyUnionFloatFieldThrowExp {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="setFloat", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="setFloat", requiredness=Requiredness.NONE)
     public List<List<Float>> getSetFloat() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a setFloat element!");
@@ -134,7 +134,7 @@ public final class MyUnionFloatFieldThrowExp {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="myDataItem", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="myDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyDataItem getMyDataItem() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a myDataItem element!");
@@ -146,7 +146,7 @@ public final class MyUnionFloatFieldThrowExp {
         return this.id == 3;
     }
 
-    @ThriftField(value=4, name="complexNestedStruct", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="complexNestedStruct", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.ComplexNestedStruct getComplexNestedStruct() {
         if (this.id != 4) {
             throw new IllegalStateException("Not a complexNestedStruct element!");

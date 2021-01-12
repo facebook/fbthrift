@@ -59,20 +59,20 @@ public final class ListUnion {
         return res;
     }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;
     }
 
-    @ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
     public List<Long> getIntListValue() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a intListValue element!");
@@ -84,7 +84,7 @@ public final class ListUnion {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="stringListValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="stringListValue", requiredness=Requiredness.NONE)
     public List<String> getStringListValue() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a stringListValue element!");

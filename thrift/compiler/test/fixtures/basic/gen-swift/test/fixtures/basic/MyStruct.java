@@ -23,15 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
-        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
-        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
-        @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
+        @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
@@ -54,7 +54,7 @@ public final class MyStruct {
         private test.fixtures.basic.MyDataItem myDataField = null;
         private test.fixtures.basic.MyEnum myEnum = null;
     
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
@@ -62,7 +62,7 @@ public final class MyStruct {
     
         public long getMyIntField() { return myIntField; }
     
-            @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
@@ -70,7 +70,7 @@ public final class MyStruct {
     
         public String getMyStringField() { return myStringField; }
     
-            @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.basic.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
@@ -78,7 +78,7 @@ public final class MyStruct {
     
         public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
     
-            @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.basic.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
@@ -132,19 +132,19 @@ public final class MyStruct {
       FIELD_METADATA.put(4, MY_ENUM_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     
     
-    @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
     
     
-    @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
     
     
-    @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
     
     @java.lang.Override

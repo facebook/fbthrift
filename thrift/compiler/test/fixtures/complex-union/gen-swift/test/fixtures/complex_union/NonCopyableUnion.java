@@ -56,7 +56,7 @@ public final class NonCopyableUnion {
     }
     
 
-    @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.complex_union.NonCopyableStruct getS() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a s element!");

@@ -23,15 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStructAnnotation", builder=MyStructAnnotation.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStructAnnotation", builder=MyStructAnnotation.Builder.class)
 public final class MyStructAnnotation {
 
     @ThriftConstructor
     public MyStructAnnotation(
-        @ThriftField(value=1, name="count", requiredness=Requiredness.NONE) final long count,
-        @ThriftField(value=2, name="name", requiredness=Requiredness.NONE) final String name,
-        @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL) final String extra,
-        @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE) final test.fixtures.basicannotations.MyStructNestedAnnotation nest
+        @com.facebook.swift.codec.ThriftField(value=1, name="count", requiredness=Requiredness.NONE) final long count,
+        @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE) final String name,
+        @com.facebook.swift.codec.ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL) final String extra,
+        @com.facebook.swift.codec.ThriftField(value=4, name="nest", requiredness=Requiredness.NONE) final test.fixtures.basicannotations.MyStructNestedAnnotation nest
     ) {
         this.count = count;
         this.name = name;
@@ -54,7 +54,7 @@ public final class MyStructAnnotation {
         private String extra = null;
         private test.fixtures.basicannotations.MyStructNestedAnnotation nest = null;
     
-        @ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
         public Builder setCount(long count) {
             this.count = count;
             return this;
@@ -62,7 +62,7 @@ public final class MyStructAnnotation {
     
         public long getCount() { return count; }
     
-            @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
@@ -70,7 +70,7 @@ public final class MyStructAnnotation {
     
         public String getName() { return name; }
     
-            @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
         public Builder setExtra(String extra) {
             this.extra = extra;
             return this;
@@ -78,7 +78,7 @@ public final class MyStructAnnotation {
     
         public String getExtra() { return extra; }
     
-            @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
         public Builder setNest(test.fixtures.basicannotations.MyStructNestedAnnotation nest) {
             this.nest = nest;
             return this;
@@ -132,19 +132,19 @@ public final class MyStructAnnotation {
       FIELD_METADATA.put(4, NEST_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="count", requiredness=Requiredness.NONE)
     public long getCount() { return count; }
     
     
-    @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
     
     
-    @ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=3, name="extra", requiredness=Requiredness.OPTIONAL)
     public String getExtra() { return extra; }
     
     
-    @ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="nest", requiredness=Requiredness.NONE)
     public test.fixtures.basicannotations.MyStructNestedAnnotation getNest() { return nest; }
     
     @java.lang.Override

@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="struct4", builder=Struct4.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="struct4", builder=Struct4.Builder.class)
 public final class Struct4 {
 
     @ThriftConstructor
     public Struct4(
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final int a,
-        @ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL) final Double b,
-        @ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL) final Byte c
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final int a,
+        @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL) final Double b,
+        @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL) final Byte c
     ) {
         this.a = a;
         this.b = b;
@@ -50,7 +50,7 @@ public final class Struct4 {
         private Double b = null;
         private Byte c = null;
     
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(int a) {
             this.a = a;
             return this;
@@ -58,7 +58,7 @@ public final class Struct4 {
     
         public int getA() { return a; }
     
-            @ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
         public Builder setB(Double b) {
             this.b = b;
             return this;
@@ -66,7 +66,7 @@ public final class Struct4 {
     
         public Double getB() { return b; }
     
-            @ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
         public Builder setC(Byte c) {
             this.c = c;
             return this;
@@ -113,15 +113,15 @@ public final class Struct4 {
       FIELD_METADATA.put(3, C_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
     
     
-    @ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.OPTIONAL)
     public Double getB() { return b; }
     
     
-    @ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.OPTIONAL)
     public Byte getC() { return c; }
     
     @java.lang.Override

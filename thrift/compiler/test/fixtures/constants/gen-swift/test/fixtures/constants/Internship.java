@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Internship", builder=Internship.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Internship", builder=Internship.Builder.class)
 public final class Internship {
 
     @ThriftConstructor
     public Internship(
-        @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED) final int weeks,
-        @ThriftField(value=2, name="title", requiredness=Requiredness.NONE) final String title,
-        @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final test.fixtures.constants.Company employer
+        @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED) final int weeks,
+        @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE) final String title,
+        @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final test.fixtures.constants.Company employer
     ) {
         this.weeks = weeks;
         this.title = title;
@@ -50,7 +50,7 @@ public final class Internship {
         private String title = null;
         private test.fixtures.constants.Company employer = null;
     
-        @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
         public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
@@ -58,7 +58,7 @@ public final class Internship {
     
         public int getWeeks() { return weeks; }
     
-            @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
         public Builder setTitle(String title) {
             this.title = title;
             return this;
@@ -66,7 +66,7 @@ public final class Internship {
     
         public String getTitle() { return title; }
     
-            @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
         public Builder setEmployer(test.fixtures.constants.Company employer) {
             this.employer = employer;
             return this;
@@ -113,15 +113,15 @@ public final class Internship {
       FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
     
     
-    @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
     
     
-    @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.constants.Company getEmployer() { return employer; }
     
     @java.lang.Override

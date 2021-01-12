@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyMapping", builder=MyMapping.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyMapping", builder=MyMapping.Builder.class)
 public final class MyMapping {
 
     @ThriftConstructor
     public MyMapping(
-        @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final com.foo.FastLongStringMap lsMap,
-        @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap
+        @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final com.foo.FastLongStringMap lsMap,
+        @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap
     ) {
         this.lsMap = lsMap;
         this.ioMap = ioMap;
@@ -46,7 +46,7 @@ public final class MyMapping {
         private com.foo.FastLongStringMap lsMap = null;
         private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap = null;
     
-        @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(com.foo.FastLongStringMap lsMap) {
             this.lsMap = lsMap;
             return this;
@@ -54,7 +54,7 @@ public final class MyMapping {
     
         public com.foo.FastLongStringMap getLsMap() { return lsMap; }
     
-            @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
         public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
             this.ioMap = ioMap;
             return this;
@@ -94,11 +94,11 @@ public final class MyMapping {
       FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
     public com.foo.FastLongStringMap getLsMap() { return lsMap; }
     
     
-    @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     
     @java.lang.Override

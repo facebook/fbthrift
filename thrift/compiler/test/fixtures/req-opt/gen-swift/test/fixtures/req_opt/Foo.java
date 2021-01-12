@@ -23,15 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Foo", builder=Foo.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Foo", builder=Foo.Builder.class)
 public final class Foo {
 
     @ThriftConstructor
     public Foo(
-        @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED) final int myInteger,
-        @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL) final String myString,
-        @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE) final List<Boolean> myBools,
-        @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED) final List<Integer> myNumbers
+        @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED) final int myInteger,
+        @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL) final String myString,
+        @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE) final List<Boolean> myBools,
+        @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED) final List<Integer> myNumbers
     ) {
         this.myInteger = myInteger;
         this.myString = myString;
@@ -54,7 +54,7 @@ public final class Foo {
         private List<Boolean> myBools = null;
         private List<Integer> myNumbers = null;
     
-        @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
         public Builder setMyInteger(int myInteger) {
             this.myInteger = myInteger;
             return this;
@@ -62,7 +62,7 @@ public final class Foo {
     
         public int getMyInteger() { return myInteger; }
     
-            @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
@@ -70,7 +70,7 @@ public final class Foo {
     
         public String getMyString() { return myString; }
     
-            @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
         public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
@@ -78,7 +78,7 @@ public final class Foo {
     
         public List<Boolean> getMyBools() { return myBools; }
     
-            @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
         public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;
             return this;
@@ -132,19 +132,19 @@ public final class Foo {
       FIELD_METADATA.put(4, MY_NUMBERS_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
     public int getMyInteger() { return myInteger; }
     
     
-    @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
     public String getMyString() { return myString; }
     
     
-    @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
     public List<Boolean> getMyBools() { return myBools; }
     
     
-    @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
     public List<Integer> getMyNumbers() { return myNumbers; }
     
     @java.lang.Override

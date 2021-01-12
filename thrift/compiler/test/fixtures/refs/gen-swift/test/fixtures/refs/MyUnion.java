@@ -74,7 +74,7 @@ public final class MyUnion {
     }
     
 
-    @ThriftField(value=1, name="anInteger", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="anInteger", requiredness=Requiredness.NONE)
     public int getAnInteger() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a anInteger element!");
@@ -86,7 +86,7 @@ public final class MyUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="aString", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="aString", requiredness=Requiredness.NONE)
     public String getAString() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a aString element!");

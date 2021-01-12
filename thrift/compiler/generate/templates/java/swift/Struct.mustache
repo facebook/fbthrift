@@ -36,10 +36,10 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 {{#struct:asBean?}}
-@ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
+@com.facebook.swift.codec.ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
 {{/struct:asBean?}}
 {{^struct:asBean?}}
-@ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
+@com.facebook.swift.codec.ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
 {{/struct:asBean?}}
 public final class {{struct:javaCapitalName}} {
     {{#struct:enableIsSet?}}

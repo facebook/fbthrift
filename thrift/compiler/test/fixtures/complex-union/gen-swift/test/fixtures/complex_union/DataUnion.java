@@ -74,7 +74,7 @@ public final class DataUnion {
     }
     
 
-    @ThriftField(value=1, name="binaryData", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="binaryData", requiredness=Requiredness.NONE)
     public byte[] getBinaryData() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a binaryData element!");
@@ -86,7 +86,7 @@ public final class DataUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="stringData", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="stringData", requiredness=Requiredness.NONE)
     public String getStringData() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a stringData element!");

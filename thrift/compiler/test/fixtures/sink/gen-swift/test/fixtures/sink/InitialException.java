@@ -21,7 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("InitialException")
+@com.facebook.swift.codec.ThriftStruct("InitialException")
 public final class InitialException extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public final class InitialException extends java.lang.Exception {
 
     @ThriftConstructor
     public InitialException(
-        @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE) final String reason
+        @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE) final String reason
     ) {
         this.reason = reason;
     }
@@ -50,7 +50,7 @@ public final class InitialException extends java.lang.Exception {
     
         private String reason = null;
     
-        @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
         public Builder setReason(String reason) {
             this.reason = reason;
             return this;
@@ -73,7 +73,7 @@ public final class InitialException extends java.lang.Exception {
     }
     
     
-    @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public String getReason() { return reason; }
     
     

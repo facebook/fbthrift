@@ -92,7 +92,7 @@ public final class MyUnion {
     }
     
 
-    @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a myEnum element!");
@@ -104,7 +104,7 @@ public final class MyUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="myStruct", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myStruct", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyStruct getMyStruct() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a myStruct element!");
@@ -116,7 +116,7 @@ public final class MyUnion {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="myDataItem", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="myDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataItem() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a myDataItem element!");

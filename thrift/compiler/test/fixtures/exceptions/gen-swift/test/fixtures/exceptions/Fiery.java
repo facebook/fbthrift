@@ -21,7 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("Fiery")
+@com.facebook.swift.codec.ThriftStruct("Fiery")
 public final class Fiery extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public final class Fiery extends java.lang.RuntimeException {
 
     @ThriftConstructor
     public Fiery(
-        @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED) final String message
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED) final String message
     ) {
         this.message = message;
     }
@@ -50,7 +50,7 @@ public final class Fiery extends java.lang.RuntimeException {
     
         private String message = null;
     
-        @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
@@ -73,7 +73,7 @@ public final class Fiery extends java.lang.RuntimeException {
     }
     
     
-    @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
     
     

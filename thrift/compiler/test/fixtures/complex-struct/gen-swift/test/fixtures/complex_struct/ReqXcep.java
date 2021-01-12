@@ -21,7 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("reqXcep")
+@com.facebook.swift.codec.ThriftStruct("reqXcep")
 public final class ReqXcep extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
@@ -39,8 +39,8 @@ public final class ReqXcep extends java.lang.Exception {
 
     @ThriftConstructor
     public ReqXcep(
-        @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED) final String message,
-        @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED) final int errorCode
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED) final String message,
+        @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED) final int errorCode
     ) {
         this.message = message;
         this.errorCode = errorCode;
@@ -57,7 +57,7 @@ public final class ReqXcep extends java.lang.Exception {
         private String message = null;
         private int errorCode = 0;
     
-        @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
@@ -65,7 +65,7 @@ public final class ReqXcep extends java.lang.Exception {
     
         public String getMessage() { return message; }
     
-            @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
         public Builder setErrorCode(int errorCode) {
             this.errorCode = errorCode;
             return this;
@@ -90,10 +90,10 @@ public final class ReqXcep extends java.lang.Exception {
     }
     
     
-    @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
         
-    @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
     public int getErrorCode() { return errorCode; }
     
     

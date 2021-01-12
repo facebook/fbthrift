@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStructMapFloatThrowExp", builder=MyStructMapFloatThrowExp.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStructMapFloatThrowExp", builder=MyStructMapFloatThrowExp.Builder.class)
 public final class MyStructMapFloatThrowExp {
 
     @ThriftConstructor
     public MyStructMapFloatThrowExp(
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
-        @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE) final Map<Integer, List<List<Float>>> mapListOfFloats
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE) final Map<Integer, List<List<Float>>> mapListOfFloats
     ) {
         this.myLongField = myLongField;
         this.mapListOfFloats = mapListOfFloats;
@@ -46,7 +46,7 @@ public final class MyStructMapFloatThrowExp {
         private long myLongField = 0L;
         private Map<Integer, List<List<Float>>> mapListOfFloats = null;
     
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
@@ -54,7 +54,7 @@ public final class MyStructMapFloatThrowExp {
     
         public long getMyLongField() { return myLongField; }
     
-            @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
         public Builder setMapListOfFloats(Map<Integer, List<List<Float>>> mapListOfFloats) {
             this.mapListOfFloats = mapListOfFloats;
             return this;
@@ -94,11 +94,11 @@ public final class MyStructMapFloatThrowExp {
       FIELD_METADATA.put(2, MAP_LIST_OF_FLOATS_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
     
     
-    @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
     public Map<Integer, List<List<Float>>> getMapListOfFloats() { return mapListOfFloats; }
     
     @java.lang.Override

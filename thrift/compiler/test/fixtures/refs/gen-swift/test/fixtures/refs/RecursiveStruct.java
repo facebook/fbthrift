@@ -23,12 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="RecursiveStruct", builder=RecursiveStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="RecursiveStruct", builder=RecursiveStruct.Builder.class)
 public final class RecursiveStruct {
 
     @ThriftConstructor
     public RecursiveStruct(
-        @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE) final List<test.fixtures.refs.RecursiveStruct> mes
+        @com.facebook.swift.codec.ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE) final List<test.fixtures.refs.RecursiveStruct> mes
     ) {
         this.mes = mes;
     }
@@ -42,7 +42,7 @@ public final class RecursiveStruct {
     
         private List<test.fixtures.refs.RecursiveStruct> mes = null;
     
-        @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
         public Builder setMes(List<test.fixtures.refs.RecursiveStruct> mes) {
             this.mes = mes;
             return this;
@@ -75,7 +75,7 @@ public final class RecursiveStruct {
       FIELD_METADATA.put(1, MES_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
     public List<test.fixtures.refs.RecursiveStruct> getMes() { return mes; }
     
     @java.lang.Override

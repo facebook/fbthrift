@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Struct", builder=Struct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Struct", builder=Struct.Builder.class)
 public final class Struct {
 
     @ThriftConstructor
     public Struct(
-        @ThriftField(value=1, name="first", requiredness=Requiredness.NONE) final test.fixtures.module0.Struct first,
-        @ThriftField(value=2, name="second", requiredness=Requiredness.NONE) final test.fixtures.module1.Struct second
+        @com.facebook.swift.codec.ThriftField(value=1, name="first", requiredness=Requiredness.NONE) final test.fixtures.module0.Struct first,
+        @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE) final test.fixtures.module1.Struct second
     ) {
         this.first = first;
         this.second = second;
@@ -46,7 +46,7 @@ public final class Struct {
         private test.fixtures.module0.Struct first = null;
         private test.fixtures.module1.Struct second = null;
     
-        @ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
         public Builder setFirst(test.fixtures.module0.Struct first) {
             this.first = first;
             return this;
@@ -54,7 +54,7 @@ public final class Struct {
     
         public test.fixtures.module0.Struct getFirst() { return first; }
     
-            @ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
         public Builder setSecond(test.fixtures.module1.Struct second) {
             this.second = second;
             return this;
@@ -94,11 +94,11 @@ public final class Struct {
       FIELD_METADATA.put(2, SECOND_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
     public test.fixtures.module0.Struct getFirst() { return first; }
     
     
-    @ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="second", requiredness=Requiredness.NONE)
     public test.fixtures.module1.Struct getSecond() { return second; }
     
     @java.lang.Override

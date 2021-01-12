@@ -23,7 +23,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyDataItem")
+@com.facebook.swift.codec.ThriftStruct("MyDataItem")
 public final class MyDataItem {
 
     @ThriftConstructor
@@ -37,7 +37,7 @@ public final class MyDataItem {
         private int field1 = 0;
         private int field2 = 0;
     
-        @ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
         public Builder setField1(int field1) {
             this.field1 = field1;
             return this;
@@ -45,7 +45,7 @@ public final class MyDataItem {
     
         public int getField1() { return field1; }
     
-            @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
         public Builder setField2(int field2) {
             this.field2 = field2;
             return this;
@@ -84,20 +84,20 @@ static {
       FIELD_METADATA.put(2, FIELD2_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyDataItem setField1(int field1) {
         this.field1 = field1;
         return this;
     }
     
     
-    @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyDataItem setField2(int field2) {
         this.field2 = field2;
         return this;

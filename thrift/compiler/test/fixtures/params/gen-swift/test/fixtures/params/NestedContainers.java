@@ -16,88 +16,88 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("NestedContainers")
+@com.facebook.swift.service.ThriftService("NestedContainers")
 public interface NestedContainers extends java.io.Closeable {
-    @ThriftService("NestedContainers")
+    @com.facebook.swift.service.ThriftService("NestedContainers")
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();
 
         @ThriftMethod(value = "mapList")
         ListenableFuture<Void> mapList(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo);
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo);
 
         default ListenableFuture<Void> mapList(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<Void>> mapListWrapper(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         @ThriftMethod(value = "mapSet")
         ListenableFuture<Void> mapSet(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo);
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo);
 
         default ListenableFuture<Void> mapSet(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<Void>> mapSetWrapper(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         @ThriftMethod(value = "listMap")
         ListenableFuture<Void> listMap(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo);
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo);
 
         default ListenableFuture<Void> listMap(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<Void>> listMapWrapper(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         @ThriftMethod(value = "listSet")
         ListenableFuture<Void> listSet(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo);
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo);
 
         default ListenableFuture<Void> listSet(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<Void>> listSetWrapper(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         @ThriftMethod(value = "turtles")
         ListenableFuture<Void> turtles(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
 
         default ListenableFuture<Void> turtles(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<Void>> turtlesWrapper(
-            @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+            @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
@@ -106,80 +106,80 @@ public interface NestedContainers extends java.io.Closeable {
 
     @ThriftMethod(value = "mapList")
     void mapList(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo) throws org.apache.thrift.TException;
 
     default void mapList(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<Void> mapListWrapper(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     @ThriftMethod(value = "mapSet")
     void mapSet(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo) throws org.apache.thrift.TException;
 
     default void mapSet(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<Void> mapSetWrapper(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     @ThriftMethod(value = "listMap")
     void listMap(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo) throws org.apache.thrift.TException;
 
     default void listMap(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<Void> listMapWrapper(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     @ThriftMethod(value = "listSet")
     void listSet(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo) throws org.apache.thrift.TException;
 
     default void listSet(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<Void> listSetWrapper(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     @ThriftMethod(value = "turtles")
     void turtles(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) throws org.apache.thrift.TException;
 
     default void turtles(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<Void> turtlesWrapper(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+        @com.facebook.swift.codec.ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }

@@ -23,17 +23,17 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="major", requiredness=Requiredness.NONE) final long major,
-        @ThriftField(value=2, name="package", requiredness=Requiredness.NONE) final String _package,
-        @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote,
-        @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_,
-        @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE) final String annotationWithTrailingComma,
-        @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE) final String emptyAnnotations
+        @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE) final long major,
+        @com.facebook.swift.codec.ThriftField(value=2, name="package", requiredness=Requiredness.NONE) final String _package,
+        @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote,
+        @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_,
+        @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE) final String annotationWithTrailingComma,
+        @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE) final String emptyAnnotations
     ) {
         this.major = major;
         this._package = _package;
@@ -62,7 +62,7 @@ public final class MyStruct {
         private String annotationWithTrailingComma = null;
         private String emptyAnnotations = null;
     
-        @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
             return this;
@@ -70,7 +70,7 @@ public final class MyStruct {
     
         public long getMajor() { return major; }
     
-            @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
         public Builder setPackage(String _package) {
             this._package = _package;
             return this;
@@ -78,7 +78,7 @@ public final class MyStruct {
     
         public String getPackage() { return _package; }
     
-            @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
         public Builder setAnnotationWithQuote(String annotationWithQuote) {
             this.annotationWithQuote = annotationWithQuote;
             return this;
@@ -86,7 +86,7 @@ public final class MyStruct {
     
         public String getAnnotationWithQuote() { return annotationWithQuote; }
     
-            @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
         public Builder setClass_(String class_) {
             this.class_ = class_;
             return this;
@@ -94,7 +94,7 @@ public final class MyStruct {
     
         public String getClass_() { return class_; }
     
-            @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
         public Builder setAnnotationWithTrailingComma(String annotationWithTrailingComma) {
             this.annotationWithTrailingComma = annotationWithTrailingComma;
             return this;
@@ -102,7 +102,7 @@ public final class MyStruct {
     
         public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
     
-            @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
         public Builder setEmptyAnnotations(String emptyAnnotations) {
             this.emptyAnnotations = emptyAnnotations;
             return this;
@@ -170,27 +170,27 @@ public final class MyStruct {
       FIELD_METADATA.put(6, EMPTY_ANNOTATIONS_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
     
     
-    @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
     public String getPackage() { return _package; }
     
     
-    @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
     public String getAnnotationWithQuote() { return annotationWithQuote; }
     
     
-    @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
     public String getClass_() { return class_; }
     
     
-    @ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="annotation_with_trailing_comma", requiredness=Requiredness.NONE)
     public String getAnnotationWithTrailingComma() { return annotationWithTrailingComma; }
     
     
-    @ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=6, name="empty_annotations", requiredness=Requiredness.NONE)
     public String getEmptyAnnotations() { return emptyAnnotations; }
     
     @java.lang.Override

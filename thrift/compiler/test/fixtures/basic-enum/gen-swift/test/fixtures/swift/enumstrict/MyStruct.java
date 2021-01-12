@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyEnum myEnum,
-        @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyBigEnum myBigEnum
+        @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyEnum myEnum,
+        @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyBigEnum myBigEnum
     ) {
         this.myEnum = myEnum;
         this.myBigEnum = myBigEnum;
@@ -46,7 +46,7 @@ public final class MyStruct {
         private test.fixtures.swift.enumstrict.MyEnum myEnum = null;
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
     
-        @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.swift.enumstrict.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
@@ -54,7 +54,7 @@ public final class MyStruct {
     
         public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
     
-            @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
         public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
             this.myBigEnum = myBigEnum;
             return this;
@@ -94,11 +94,11 @@ public final class MyStruct {
       FIELD_METADATA.put(2, MY_BIG_ENUM_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
     
     
-    @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyBigEnum getMyBigEnum() { return myBigEnum; }
     
     @java.lang.Override

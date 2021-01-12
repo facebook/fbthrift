@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="struct1", builder=Struct1.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="struct1", builder=Struct1.Builder.class)
 public final class Struct1 {
 
     @ThriftConstructor
     public Struct1(
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final int a,
-        @ThriftField(value=2, name="b", requiredness=Requiredness.NONE) final String b
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final int a,
+        @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE) final String b
     ) {
         this.a = a;
         this.b = b;
@@ -46,7 +46,7 @@ public final class Struct1 {
         private int a = 1234567;
         private String b = "<uninitialized>";
     
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(int a) {
             this.a = a;
             return this;
@@ -54,7 +54,7 @@ public final class Struct1 {
     
         public int getA() { return a; }
     
-            @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
         public Builder setB(String b) {
             this.b = b;
             return this;
@@ -94,11 +94,11 @@ public final class Struct1 {
       FIELD_METADATA.put(2, B_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public int getA() { return a; }
     
     
-    @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public String getB() { return b; }
     
     @java.lang.Override

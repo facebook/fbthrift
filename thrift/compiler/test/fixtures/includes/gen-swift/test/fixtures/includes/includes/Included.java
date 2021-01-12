@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Included", builder=Included.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Included", builder=Included.Builder.class)
 public final class Included {
 
     @ThriftConstructor
     public Included(
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
-        @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE) final test.fixtures.includes.transitive.Foo myTransitiveField
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE) final test.fixtures.includes.transitive.Foo myTransitiveField
     ) {
         this.myIntField = myIntField;
         this.myTransitiveField = myTransitiveField;
@@ -46,7 +46,7 @@ public final class Included {
         private long myIntField = 0L;
         private test.fixtures.includes.transitive.Foo myTransitiveField = new test.fixtures.includes.transitive.Foo.Builder().setA(2L).build();
     
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
@@ -54,7 +54,7 @@ public final class Included {
     
         public long getMyIntField() { return myIntField; }
     
-            @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
         public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;
             return this;
@@ -94,11 +94,11 @@ public final class Included {
       FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
     
     
-    @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
     
     @java.lang.Override

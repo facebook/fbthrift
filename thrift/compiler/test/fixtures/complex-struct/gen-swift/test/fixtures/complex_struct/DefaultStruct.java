@@ -23,33 +23,33 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="defaultStruct", builder=DefaultStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="defaultStruct", builder=DefaultStruct.Builder.class)
 public final class DefaultStruct {
 
     @ThriftConstructor
     public DefaultStruct(
-        @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE) final long myLongDFset,
-        @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE) final long myLongDF,
-        @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE) final int portDFset,
-        @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE) final int portNum,
-        @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE) final byte[] myBinaryDFset,
-        @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE) final byte[] myBinary,
-        @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE) final byte myByteDFSet,
-        @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE) final byte myByte,
-        @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE) final double myDoubleDFset,
-        @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE) final double myDoubleDFZero,
-        @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE) final double myDouble,
-        @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE) final Map<Integer, String> field3,
-        @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE) final List<test.fixtures.complex_struct.MyEnum> myList,
-        @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE) final Set<String> mySet,
-        @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.SimpleStruct simpleStruct,
-        @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE) final List<test.fixtures.complex_struct.SimpleStruct> listStructDFset,
-        @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.MyUnion myUnion,
-        @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE) final List<test.fixtures.complex_struct.MyUnion> listUnionDFset,
-        @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE) final Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet,
-        @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset,
-        @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE) final Map<Long, Integer> emptyMap,
-        @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE) final Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE) final long myLongDFset,
+        @com.facebook.swift.codec.ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE) final long myLongDF,
+        @com.facebook.swift.codec.ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE) final int portDFset,
+        @com.facebook.swift.codec.ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE) final int portNum,
+        @com.facebook.swift.codec.ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE) final byte[] myBinaryDFset,
+        @com.facebook.swift.codec.ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE) final byte[] myBinary,
+        @com.facebook.swift.codec.ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE) final byte myByteDFSet,
+        @com.facebook.swift.codec.ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE) final byte myByte,
+        @com.facebook.swift.codec.ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE) final double myDoubleDFset,
+        @com.facebook.swift.codec.ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE) final double myDoubleDFZero,
+        @com.facebook.swift.codec.ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE) final double myDouble,
+        @com.facebook.swift.codec.ThriftField(value=13, name="field3", requiredness=Requiredness.NONE) final Map<Integer, String> field3,
+        @com.facebook.swift.codec.ThriftField(value=14, name="myList", requiredness=Requiredness.NONE) final List<test.fixtures.complex_struct.MyEnum> myList,
+        @com.facebook.swift.codec.ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE) final Set<String> mySet,
+        @com.facebook.swift.codec.ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.SimpleStruct simpleStruct,
+        @com.facebook.swift.codec.ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE) final List<test.fixtures.complex_struct.SimpleStruct> listStructDFset,
+        @com.facebook.swift.codec.ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.MyUnion myUnion,
+        @com.facebook.swift.codec.ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE) final List<test.fixtures.complex_struct.MyUnion> listUnionDFset,
+        @com.facebook.swift.codec.ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE) final Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet,
+        @com.facebook.swift.codec.ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset,
+        @com.facebook.swift.codec.ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE) final Map<Long, Integer> emptyMap,
+        @com.facebook.swift.codec.ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE) final Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset
     ) {
         this.myLongDFset = myLongDFset;
         this.myLongDF = myLongDF;
@@ -174,7 +174,7 @@ public final class DefaultStruct {
         .build())
         .build();
     
-        @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
         public Builder setMyLongDFset(long myLongDFset) {
             this.myLongDFset = myLongDFset;
             return this;
@@ -182,7 +182,7 @@ public final class DefaultStruct {
     
         public long getMyLongDFset() { return myLongDFset; }
     
-            @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
         public Builder setMyLongDF(long myLongDF) {
             this.myLongDF = myLongDF;
             return this;
@@ -190,7 +190,7 @@ public final class DefaultStruct {
     
         public long getMyLongDF() { return myLongDF; }
     
-            @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
         public Builder setPortDFset(int portDFset) {
             this.portDFset = portDFset;
             return this;
@@ -198,7 +198,7 @@ public final class DefaultStruct {
     
         public int getPortDFset() { return portDFset; }
     
-            @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
         public Builder setPortNum(int portNum) {
             this.portNum = portNum;
             return this;
@@ -206,7 +206,7 @@ public final class DefaultStruct {
     
         public int getPortNum() { return portNum; }
     
-            @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
         public Builder setMyBinaryDFset(byte[] myBinaryDFset) {
             this.myBinaryDFset = myBinaryDFset;
             return this;
@@ -214,7 +214,7 @@ public final class DefaultStruct {
     
         public byte[] getMyBinaryDFset() { return myBinaryDFset; }
     
-            @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
         public Builder setMyBinary(byte[] myBinary) {
             this.myBinary = myBinary;
             return this;
@@ -222,7 +222,7 @@ public final class DefaultStruct {
     
         public byte[] getMyBinary() { return myBinary; }
     
-            @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
         public Builder setMyByteDFSet(byte myByteDFSet) {
             this.myByteDFSet = myByteDFSet;
             return this;
@@ -230,7 +230,7 @@ public final class DefaultStruct {
     
         public byte getMyByteDFSet() { return myByteDFSet; }
     
-            @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
         public Builder setMyByte(byte myByte) {
             this.myByte = myByte;
             return this;
@@ -238,7 +238,7 @@ public final class DefaultStruct {
     
         public byte getMyByte() { return myByte; }
     
-            @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
         public Builder setMyDoubleDFset(double myDoubleDFset) {
             this.myDoubleDFset = myDoubleDFset;
             return this;
@@ -246,7 +246,7 @@ public final class DefaultStruct {
     
         public double getMyDoubleDFset() { return myDoubleDFset; }
     
-            @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
         public Builder setMyDoubleDFZero(double myDoubleDFZero) {
             this.myDoubleDFZero = myDoubleDFZero;
             return this;
@@ -254,7 +254,7 @@ public final class DefaultStruct {
     
         public double getMyDoubleDFZero() { return myDoubleDFZero; }
     
-            @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
         public Builder setMyDouble(double myDouble) {
             this.myDouble = myDouble;
             return this;
@@ -262,7 +262,7 @@ public final class DefaultStruct {
     
         public double getMyDouble() { return myDouble; }
     
-            @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
         public Builder setField3(Map<Integer, String> field3) {
             this.field3 = field3;
             return this;
@@ -270,7 +270,7 @@ public final class DefaultStruct {
     
         public Map<Integer, String> getField3() { return field3; }
     
-            @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
         public Builder setMyList(List<test.fixtures.complex_struct.MyEnum> myList) {
             this.myList = myList;
             return this;
@@ -278,7 +278,7 @@ public final class DefaultStruct {
     
         public List<test.fixtures.complex_struct.MyEnum> getMyList() { return myList; }
     
-            @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
         public Builder setMySet(Set<String> mySet) {
             this.mySet = mySet;
             return this;
@@ -286,7 +286,7 @@ public final class DefaultStruct {
     
         public Set<String> getMySet() { return mySet; }
     
-            @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
         public Builder setSimpleStruct(test.fixtures.complex_struct.SimpleStruct simpleStruct) {
             this.simpleStruct = simpleStruct;
             return this;
@@ -294,7 +294,7 @@ public final class DefaultStruct {
     
         public test.fixtures.complex_struct.SimpleStruct getSimpleStruct() { return simpleStruct; }
     
-            @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
         public Builder setListStructDFset(List<test.fixtures.complex_struct.SimpleStruct> listStructDFset) {
             this.listStructDFset = listStructDFset;
             return this;
@@ -302,7 +302,7 @@ public final class DefaultStruct {
     
         public List<test.fixtures.complex_struct.SimpleStruct> getListStructDFset() { return listStructDFset; }
     
-            @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
         public Builder setMyUnion(test.fixtures.complex_struct.MyUnion myUnion) {
             this.myUnion = myUnion;
             return this;
@@ -310,7 +310,7 @@ public final class DefaultStruct {
     
         public test.fixtures.complex_struct.MyUnion getMyUnion() { return myUnion; }
     
-            @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
         public Builder setListUnionDFset(List<test.fixtures.complex_struct.MyUnion> listUnionDFset) {
             this.listUnionDFset = listUnionDFset;
             return this;
@@ -318,7 +318,7 @@ public final class DefaultStruct {
     
         public List<test.fixtures.complex_struct.MyUnion> getListUnionDFset() { return listUnionDFset; }
     
-            @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
         public Builder setMapNestlistStructDfSet(Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> mapNestlistStructDfSet) {
             this.mapNestlistStructDfSet = mapNestlistStructDfSet;
             return this;
@@ -326,7 +326,7 @@ public final class DefaultStruct {
     
         public Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> getMapNestlistStructDfSet() { return mapNestlistStructDfSet; }
     
-            @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
         public Builder setMapJavaTypeDFset(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> mapJavaTypeDFset) {
             this.mapJavaTypeDFset = mapJavaTypeDFset;
             return this;
@@ -334,7 +334,7 @@ public final class DefaultStruct {
     
         public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getMapJavaTypeDFset() { return mapJavaTypeDFset; }
     
-            @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
         public Builder setEmptyMap(Map<Long, Integer> emptyMap) {
             this.emptyMap = emptyMap;
             return this;
@@ -342,7 +342,7 @@ public final class DefaultStruct {
     
         public Map<Long, Integer> getEmptyMap() { return emptyMap; }
     
-            @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
         public Builder setEnumMapDFset(Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> enumMapDFset) {
             this.enumMapDFset = enumMapDFset;
             return this;
@@ -522,91 +522,91 @@ public final class DefaultStruct {
       FIELD_METADATA.put(23, ENUM_MAP_DFSET_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myLongDFset", requiredness=Requiredness.NONE)
     public long getMyLongDFset() { return myLongDFset; }
     
     
-    @ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myLongDF", requiredness=Requiredness.NONE)
     public long getMyLongDF() { return myLongDF; }
     
     
-    @ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="portDFset", requiredness=Requiredness.NONE)
     public int getPortDFset() { return portDFset; }
     
     
-    @ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="portNum", requiredness=Requiredness.NONE)
     public int getPortNum() { return portNum; }
     
     
-    @ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="myBinaryDFset", requiredness=Requiredness.NONE)
     public byte[] getMyBinaryDFset() { return myBinaryDFset; }
     
     
-    @ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=6, name="myBinary", requiredness=Requiredness.NONE)
     public byte[] getMyBinary() { return myBinary; }
     
     
-    @ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=7, name="myByteDFSet", requiredness=Requiredness.NONE)
     public byte getMyByteDFSet() { return myByteDFSet; }
     
     
-    @ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=8, name="myByte", requiredness=Requiredness.NONE)
     public byte getMyByte() { return myByte; }
     
     
-    @ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=9, name="myDoubleDFset", requiredness=Requiredness.NONE)
     public double getMyDoubleDFset() { return myDoubleDFset; }
     
     
-    @ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=10, name="myDoubleDFZero", requiredness=Requiredness.NONE)
     public double getMyDoubleDFZero() { return myDoubleDFZero; }
     
     
-    @ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=12, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
     
     
-    @ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=13, name="field3", requiredness=Requiredness.NONE)
     public Map<Integer, String> getField3() { return field3; }
     
     
-    @ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=14, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyEnum> getMyList() { return myList; }
     
     
-    @ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=15, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
     
     
-    @ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=16, name="simpleStruct", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.SimpleStruct getSimpleStruct() { return simpleStruct; }
     
     
-    @ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=17, name="listStructDFset", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.SimpleStruct> getListStructDFset() { return listStructDFset; }
     
     
-    @ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=18, name="myUnion", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyUnion getMyUnion() { return myUnion; }
     
     
-    @ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=19, name="listUnionDFset", requiredness=Requiredness.NONE)
     public List<test.fixtures.complex_struct.MyUnion> getListUnionDFset() { return listUnionDFset; }
     
     
-    @ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=20, name="mapNestlistStructDfSet", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.complex_struct.SimpleStruct>> getMapNestlistStructDfSet() { return mapNestlistStructDfSet; }
     
     
-    @ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=21, name="mapJavaTypeDFset", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getMapJavaTypeDFset() { return mapJavaTypeDFset; }
     
     
-    @ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=22, name="emptyMap", requiredness=Requiredness.NONE)
     public Map<Long, Integer> getEmptyMap() { return emptyMap; }
     
     
-    @ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=23, name="enumMapDFset", requiredness=Requiredness.NONE)
     public Map<String, Map<Integer, test.fixtures.complex_struct.MyEnum>> getEnumMapDFset() { return enumMapDFset; }
     
     @java.lang.Override

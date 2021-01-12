@@ -23,12 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="CompatibleWithKeywordSink", builder=CompatibleWithKeywordSink.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="CompatibleWithKeywordSink", builder=CompatibleWithKeywordSink.Builder.class)
 public final class CompatibleWithKeywordSink {
 
     @ThriftConstructor
     public CompatibleWithKeywordSink(
-        @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final String sink
+        @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final String sink
     ) {
         this.sink = sink;
     }
@@ -42,7 +42,7 @@ public final class CompatibleWithKeywordSink {
     
         private String sink = null;
     
-        @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
         public Builder setSink(String sink) {
             this.sink = sink;
             return this;
@@ -75,7 +75,7 @@ public final class CompatibleWithKeywordSink {
       FIELD_METADATA.put(1, SINK_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
     public String getSink() { return sink; }
     
     @java.lang.Override

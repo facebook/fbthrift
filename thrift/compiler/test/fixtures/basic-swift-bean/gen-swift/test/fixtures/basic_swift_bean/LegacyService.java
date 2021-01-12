@@ -16,27 +16,27 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("LegacyService")
+@com.facebook.swift.service.ThriftService("LegacyService")
 public interface LegacyService extends java.io.Closeable {
-    @ThriftService("LegacyService")
+    @com.facebook.swift.service.ThriftService("LegacyService")
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();
 
         @ThriftMethod(value = "getPoints")
         ListenableFuture<Map<String, List<Integer>>> getPoints(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-            @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff);
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+            @com.facebook.swift.codec.ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff);
 
         default ListenableFuture<Map<String, List<Integer>>> getPoints(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-            @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+            @com.facebook.swift.codec.ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<Map<String, List<Integer>>>> getPointsWrapper(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-            @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+            @com.facebook.swift.codec.ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
@@ -45,19 +45,19 @@ public interface LegacyService extends java.io.Closeable {
 
     @ThriftMethod(value = "getPoints")
     Map<String, List<Integer>> getPoints(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-        @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+        @com.facebook.swift.codec.ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff) throws org.apache.thrift.TException;
 
     default Map<String, List<Integer>> getPoints(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-        @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+        @com.facebook.swift.codec.ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<Map<String, List<Integer>>> getPointsWrapper(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-        @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
+        @com.facebook.swift.codec.ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }

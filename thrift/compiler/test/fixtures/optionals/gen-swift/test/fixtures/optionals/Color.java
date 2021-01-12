@@ -23,15 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Color", builder=Color.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Color", builder=Color.Builder.class)
 public final class Color {
 
     @ThriftConstructor
     public Color(
-        @ThriftField(value=1, name="red", requiredness=Requiredness.NONE) final double red,
-        @ThriftField(value=2, name="green", requiredness=Requiredness.NONE) final double green,
-        @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE) final double blue,
-        @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE) final double alpha
+        @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE) final double red,
+        @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE) final double green,
+        @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE) final double blue,
+        @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE) final double alpha
     ) {
         this.red = red;
         this.green = green;
@@ -54,7 +54,7 @@ public final class Color {
         private double blue = 0.;
         private double alpha = 0.;
     
-        @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
         public Builder setRed(double red) {
             this.red = red;
             return this;
@@ -62,7 +62,7 @@ public final class Color {
     
         public double getRed() { return red; }
     
-            @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
         public Builder setGreen(double green) {
             this.green = green;
             return this;
@@ -70,7 +70,7 @@ public final class Color {
     
         public double getGreen() { return green; }
     
-            @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
         public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
@@ -78,7 +78,7 @@ public final class Color {
     
         public double getBlue() { return blue; }
     
-            @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
         public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;
@@ -132,19 +132,19 @@ public final class Color {
       FIELD_METADATA.put(4, ALPHA_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
     public double getRed() { return red; }
     
     
-    @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
     public double getGreen() { return green; }
     
     
-    @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
     public double getBlue() { return blue; }
     
     
-    @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
     public double getAlpha() { return alpha; }
     
     @java.lang.Override

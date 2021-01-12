@@ -59,20 +59,20 @@ public final class VirtualComplexUnion {
         return res;
     }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setThingOne(final String thingOne) {
         this.value = thingOne;
         this.id = 1;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setThingTwo(final String thingTwo) {
         this.value = thingTwo;
         this.id = 2;
     }
 
-    @ThriftField(value=1, name="thingOne", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="thingOne", requiredness=Requiredness.NONE)
     public String getThingOne() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a thingOne element!");
@@ -84,7 +84,7 @@ public final class VirtualComplexUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="thingTwo", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="thingTwo", requiredness=Requiredness.NONE)
     public String getThingTwo() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a thingTwo element!");

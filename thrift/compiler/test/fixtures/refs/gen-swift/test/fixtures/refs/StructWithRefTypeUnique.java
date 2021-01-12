@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithRefTypeUnique", builder=StructWithRefTypeUnique.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="StructWithRefTypeUnique", builder=StructWithRefTypeUnique.Builder.class)
 public final class StructWithRefTypeUnique {
 
     @ThriftConstructor
     public StructWithRefTypeUnique(
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField,
-        @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.Empty optField,
-        @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.Empty reqField
+        @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.Empty optField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.Empty reqField
     ) {
         this.defField = defField;
         this.optField = optField;
@@ -50,7 +50,7 @@ public final class StructWithRefTypeUnique {
         private test.fixtures.refs.Empty optField = null;
         private test.fixtures.refs.Empty reqField = null;
     
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
         public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;
             return this;
@@ -58,7 +58,7 @@ public final class StructWithRefTypeUnique {
     
         public test.fixtures.refs.Empty getDefField() { return defField; }
     
-            @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
         public Builder setOptField(test.fixtures.refs.Empty optField) {
             this.optField = optField;
             return this;
@@ -66,7 +66,7 @@ public final class StructWithRefTypeUnique {
     
         public test.fixtures.refs.Empty getOptField() { return optField; }
     
-            @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
         public Builder setReqField(test.fixtures.refs.Empty reqField) {
             this.reqField = reqField;
             return this;
@@ -113,15 +113,15 @@ public final class StructWithRefTypeUnique {
       FIELD_METADATA.put(3, REQ_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
     
     
-    @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.Empty getOptField() { return optField; }
     
     
-    @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.Empty getReqField() { return reqField; }
     
     @java.lang.Override

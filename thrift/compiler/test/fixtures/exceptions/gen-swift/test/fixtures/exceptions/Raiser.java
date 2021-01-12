@@ -16,9 +16,9 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("Raiser")
+@com.facebook.swift.service.ThriftService("Raiser")
 public interface Raiser extends java.io.Closeable {
-    @ThriftService("Raiser")
+    @com.facebook.swift.service.ThriftService("Raiser")
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();
 

@@ -23,12 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStructNestedAnnotation", builder=MyStructNestedAnnotation.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyStructNestedAnnotation", builder=MyStructNestedAnnotation.Builder.class)
 public final class MyStructNestedAnnotation {
 
     @ThriftConstructor
     public MyStructNestedAnnotation(
-        @ThriftField(value=1, name="name", requiredness=Requiredness.NONE) final String name
+        @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE) final String name
     ) {
         this.name = name;
     }
@@ -42,7 +42,7 @@ public final class MyStructNestedAnnotation {
     
         private String name = null;
     
-        @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
@@ -75,7 +75,7 @@ public final class MyStructNestedAnnotation {
       FIELD_METADATA.put(1, NAME_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
     
     @java.lang.Override

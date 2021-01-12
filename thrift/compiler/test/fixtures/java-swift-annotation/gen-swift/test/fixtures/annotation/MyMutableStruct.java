@@ -23,7 +23,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyMutableStruct") @com.foo.Enabled 
+@com.facebook.swift.codec.ThriftStruct("MyMutableStruct") @com.foo.Enabled 
 public final class MyMutableStruct {
 
     @ThriftConstructor
@@ -37,7 +37,7 @@ public final class MyMutableStruct {
         private long intField = 0L;
         private String stringField = null;
     
-        @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
@@ -45,7 +45,7 @@ public final class MyMutableStruct {
     
         public long getIntField() { return intField; }
     
-            @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
@@ -84,20 +84,20 @@ static {
       FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyMutableStruct setIntField(long intField) {
         this.intField = intField;
         return this;
     }
     
     
-    @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyMutableStruct setStringField(String stringField) {
         this.stringField = stringField;
         return this;

@@ -59,20 +59,20 @@ public final class ValUnion {
         return res;
     }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setV1(final test.fixtures.complex_union.Val v1) {
         this.value = v1;
         this.id = 1;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setV2(final test.fixtures.complex_union.Val v2) {
         this.value = v2;
         this.id = 2;
     }
 
-    @ThriftField(value=1, name="v1", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="v1", requiredness=Requiredness.NONE)
     public test.fixtures.complex_union.Val getV1() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a v1 element!");
@@ -84,7 +84,7 @@ public final class ValUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="v2", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="v2", requiredness=Requiredness.NONE)
     public test.fixtures.complex_union.Val getV2() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a v2 element!");

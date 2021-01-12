@@ -21,7 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("SinkException2")
+@com.facebook.swift.codec.ThriftStruct("SinkException2")
 public final class SinkException2 extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public final class SinkException2 extends java.lang.Exception {
 
     @ThriftConstructor
     public SinkException2(
-        @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE) final long reason
+        @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE) final long reason
     ) {
         this.reason = reason;
     }
@@ -50,7 +50,7 @@ public final class SinkException2 extends java.lang.Exception {
     
         private long reason = 0L;
     
-        @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
         public Builder setReason(long reason) {
             this.reason = reason;
             return this;
@@ -73,7 +73,7 @@ public final class SinkException2 extends java.lang.Exception {
     }
     
     
-    @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public long getReason() { return reason; }
     
     

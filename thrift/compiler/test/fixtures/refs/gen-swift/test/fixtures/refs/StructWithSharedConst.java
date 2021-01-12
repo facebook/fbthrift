@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithSharedConst", builder=StructWithSharedConst.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="StructWithSharedConst", builder=StructWithSharedConst.Builder.class)
 public final class StructWithSharedConst {
 
     @ThriftConstructor
     public StructWithSharedConst(
-        @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optSharedConst,
-        @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField sharedConst,
-        @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqSharedConst
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optSharedConst,
+        @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField sharedConst,
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqSharedConst
     ) {
         this.optSharedConst = optSharedConst;
         this.sharedConst = sharedConst;
@@ -50,7 +50,7 @@ public final class StructWithSharedConst {
         private test.fixtures.refs.MyField sharedConst = null;
         private test.fixtures.refs.MyField reqSharedConst = null;
     
-        @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
         public Builder setOptSharedConst(test.fixtures.refs.MyField optSharedConst) {
             this.optSharedConst = optSharedConst;
             return this;
@@ -58,7 +58,7 @@ public final class StructWithSharedConst {
     
         public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
     
-            @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
         public Builder setSharedConst(test.fixtures.refs.MyField sharedConst) {
             this.sharedConst = sharedConst;
             return this;
@@ -66,7 +66,7 @@ public final class StructWithSharedConst {
     
         public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
     
-            @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
         public Builder setReqSharedConst(test.fixtures.refs.MyField reqSharedConst) {
             this.reqSharedConst = reqSharedConst;
             return this;
@@ -113,15 +113,15 @@ public final class StructWithSharedConst {
       FIELD_METADATA.put(3, REQ_SHARED_CONST_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
     
     
-    @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
     
     
-    @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
     
     @java.lang.Override

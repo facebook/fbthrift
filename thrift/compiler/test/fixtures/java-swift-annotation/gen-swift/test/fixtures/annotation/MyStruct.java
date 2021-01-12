@@ -23,16 +23,16 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled @com.bar.AnotherAnnotation(val = 1) 
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled @com.bar.AnotherAnnotation(val = 1) 
 public final class MyStruct {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
-        @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE) final String stringField,
-        @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) final String detailField,
-        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap,
-        @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE) final String toto
+        @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE) final String stringField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) final String detailField,
+        @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap,
+        @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE) final String toto
     ) {
         this.intField = intField;
         this.stringField = stringField;
@@ -58,7 +58,7 @@ public final class MyStruct {
         private com.foo.FastIntLongMap detailMap = null;
         private String toto = null;
     
-        @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
@@ -66,7 +66,7 @@ public final class MyStruct {
     
         public long getIntField() { return intField; }
     
-            @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
@@ -74,7 +74,7 @@ public final class MyStruct {
     
         public String getStringField() { return stringField; }
     
-            @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
         public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
@@ -82,7 +82,7 @@ public final class MyStruct {
     
         public String getDetailField() { return detailField; }
     
-            @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
         public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
@@ -90,7 +90,7 @@ public final class MyStruct {
     
         public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
-            @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
         public Builder setToto(String toto) {
             this.toto = toto;
             return this;
@@ -151,23 +151,23 @@ public final class MyStruct {
       FIELD_METADATA.put(5, TITI_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
     
     
-    @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
     
     
-    @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
     public String getDetailField() { return detailField; }
     
     
-    @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
     
-    @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
     public String getToto() { return toto; }
     
     @java.lang.Override

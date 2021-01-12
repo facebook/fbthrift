@@ -23,15 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="SomeStruct", builder=SomeStruct.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="SomeStruct", builder=SomeStruct.Builder.class)
 public final class SomeStruct {
 
     @ThriftConstructor
     public SomeStruct(
-        @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic reasonable,
-        @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic fine,
-        @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic questionable,
-        @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE) final Set<Integer> tags
+        @com.facebook.swift.codec.ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic reasonable,
+        @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic fine,
+        @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE) final test.fixtures.enums.Metasyntactic questionable,
+        @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE) final Set<Integer> tags
     ) {
         this.reasonable = reasonable;
         this.fine = fine;
@@ -55,7 +55,7 @@ public final class SomeStruct {
         private Set<Integer> tags = ImmutableSet.<Integer>builder()
         .build();
     
-        @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
         public Builder setReasonable(test.fixtures.enums.Metasyntactic reasonable) {
             this.reasonable = reasonable;
             return this;
@@ -63,7 +63,7 @@ public final class SomeStruct {
     
         public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
     
-            @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
         public Builder setFine(test.fixtures.enums.Metasyntactic fine) {
             this.fine = fine;
             return this;
@@ -71,7 +71,7 @@ public final class SomeStruct {
     
         public test.fixtures.enums.Metasyntactic getFine() { return fine; }
     
-            @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
         public Builder setQuestionable(test.fixtures.enums.Metasyntactic questionable) {
             this.questionable = questionable;
             return this;
@@ -79,7 +79,7 @@ public final class SomeStruct {
     
         public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
     
-            @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
         public Builder setTags(Set<Integer> tags) {
             this.tags = tags;
             return this;
@@ -133,19 +133,19 @@ public final class SomeStruct {
       FIELD_METADATA.put(4, TAGS_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="reasonable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getReasonable() { return reasonable; }
     
     
-    @ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="fine", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getFine() { return fine; }
     
     
-    @ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="questionable", requiredness=Requiredness.NONE)
     public test.fixtures.enums.Metasyntactic getQuestionable() { return questionable; }
     
     
-    @ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="tags", requiredness=Requiredness.NONE)
     public Set<Integer> getTags() { return tags; }
     
     @java.lang.Override

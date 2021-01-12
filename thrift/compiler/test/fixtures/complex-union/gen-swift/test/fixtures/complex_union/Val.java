@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Val", builder=Val.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Val", builder=Val.Builder.class)
 public final class Val {
 
     @ThriftConstructor
     public Val(
-        @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE) final String strVal,
-        @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE) final int intVal,
-        @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE) final Map<Short, String> typedefValue
+        @com.facebook.swift.codec.ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE) final String strVal,
+        @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE) final int intVal,
+        @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE) final Map<Short, String> typedefValue
     ) {
         this.strVal = strVal;
         this.intVal = intVal;
@@ -50,7 +50,7 @@ public final class Val {
         private int intVal = 0;
         private Map<Short, String> typedefValue = null;
     
-        @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
         public Builder setStrVal(String strVal) {
             this.strVal = strVal;
             return this;
@@ -58,7 +58,7 @@ public final class Val {
     
         public String getStrVal() { return strVal; }
     
-            @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
         public Builder setIntVal(int intVal) {
             this.intVal = intVal;
             return this;
@@ -66,7 +66,7 @@ public final class Val {
     
         public int getIntVal() { return intVal; }
     
-            @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
         public Builder setTypedefValue(Map<Short, String> typedefValue) {
             this.typedefValue = typedefValue;
             return this;
@@ -113,15 +113,15 @@ public final class Val {
       FIELD_METADATA.put(9, TYPEDEF_VALUE_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
     public String getStrVal() { return strVal; }
     
     
-    @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
     public int getIntVal() { return intVal; }
     
     
-    @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
     public Map<Short, String> getTypedefValue() { return typedefValue; }
     
     @java.lang.Override

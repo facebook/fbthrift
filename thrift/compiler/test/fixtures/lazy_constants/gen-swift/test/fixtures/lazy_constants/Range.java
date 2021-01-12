@@ -23,13 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Range", builder=Range.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="Range", builder=Range.Builder.class)
 public final class Range {
 
     @ThriftConstructor
     public Range(
-        @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED) final int min,
-        @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED) final int max
+        @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED) final int min,
+        @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED) final int max
     ) {
         this.min = min;
         this.max = max;
@@ -46,7 +46,7 @@ public final class Range {
         private int min = 0;
         private int max = 0;
     
-        @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
         public Builder setMin(int min) {
             this.min = min;
             return this;
@@ -54,7 +54,7 @@ public final class Range {
     
         public int getMin() { return min; }
     
-            @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
         public Builder setMax(int max) {
             this.max = max;
             return this;
@@ -94,11 +94,11 @@ public final class Range {
       FIELD_METADATA.put(2, MAX_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
     public int getMin() { return min; }
     
     
-    @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
     
     @java.lang.Override

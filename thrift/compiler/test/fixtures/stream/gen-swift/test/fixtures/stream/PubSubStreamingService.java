@@ -16,9 +16,9 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("PubSubStreamingService")
+@com.facebook.swift.service.ThriftService("PubSubStreamingService")
 public interface PubSubStreamingService extends java.io.Closeable {
-    @ThriftService("PubSubStreamingService")
+    @com.facebook.swift.service.ThriftService("PubSubStreamingService")
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();
 

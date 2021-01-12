@@ -21,7 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("FooEx")
+@com.facebook.swift.codec.ThriftStruct("FooEx")
 public final class FooEx extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 

@@ -16,9 +16,9 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("MyNode")
+@com.facebook.swift.service.ThriftService("MyNode")
 public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyRoot {
-    @ThriftService("MyNode")
+    @com.facebook.swift.service.ThriftService("MyNode")
     public interface Async extends java.io.Closeable, test.fixtures.inheritance.MyRoot.Async {
         @java.lang.Override void close();
 

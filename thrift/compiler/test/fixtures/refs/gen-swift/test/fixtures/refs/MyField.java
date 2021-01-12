@@ -23,14 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyField", builder=MyField.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="MyField", builder=MyField.Builder.class)
 public final class MyField {
 
     @ThriftConstructor
     public MyField(
-        @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL) final Long optValue,
-        @ThriftField(value=2, name="value", requiredness=Requiredness.NONE) final long value,
-        @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED) final long reqValue
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL) final Long optValue,
+        @com.facebook.swift.codec.ThriftField(value=2, name="value", requiredness=Requiredness.NONE) final long value,
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED) final long reqValue
     ) {
         this.optValue = optValue;
         this.value = value;
@@ -50,7 +50,7 @@ public final class MyField {
         private long value = 0L;
         private long reqValue = 0L;
     
-        @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
         public Builder setOptValue(Long optValue) {
             this.optValue = optValue;
             return this;
@@ -58,7 +58,7 @@ public final class MyField {
     
         public Long getOptValue() { return optValue; }
     
-            @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
         public Builder setValue(long value) {
             this.value = value;
             return this;
@@ -66,7 +66,7 @@ public final class MyField {
     
         public long getValue() { return value; }
     
-            @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
         public Builder setReqValue(long reqValue) {
             this.reqValue = reqValue;
             return this;
@@ -113,15 +113,15 @@ public final class MyField {
       FIELD_METADATA.put(3, REQ_VALUE_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
     public Long getOptValue() { return optValue; }
     
     
-    @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
     public long getValue() { return value; }
     
     
-    @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
     public long getReqValue() { return reqValue; }
     
     @java.lang.Override

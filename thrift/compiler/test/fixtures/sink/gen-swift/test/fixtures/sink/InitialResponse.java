@@ -23,12 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="InitialResponse", builder=InitialResponse.Builder.class)
+@com.facebook.swift.codec.ThriftStruct(value="InitialResponse", builder=InitialResponse.Builder.class)
 public final class InitialResponse {
 
     @ThriftConstructor
     public InitialResponse(
-        @ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content
+        @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content
     ) {
         this.content = content;
     }
@@ -42,7 +42,7 @@ public final class InitialResponse {
     
         private String content = null;
     
-        @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
         public Builder setContent(String content) {
             this.content = content;
             return this;
@@ -75,7 +75,7 @@ public final class InitialResponse {
       FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
     public String getContent() { return content; }
     
     @java.lang.Override

@@ -16,40 +16,40 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("DbMixedStackArguments")
+@com.facebook.swift.service.ThriftService("DbMixedStackArguments")
 public interface DbMixedStackArguments extends java.io.Closeable {
-    @ThriftService("DbMixedStackArguments")
+    @com.facebook.swift.service.ThriftService("DbMixedStackArguments")
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();
 
         @ThriftMethod(value = "getDataByKey0")
         ListenableFuture<byte[]> getDataByKey0(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key);
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key);
 
         default ListenableFuture<byte[]> getDataByKey0(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<byte[]>> getDataByKey0Wrapper(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         @ThriftMethod(value = "getDataByKey1")
         ListenableFuture<byte[]> getDataByKey1(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key);
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key);
 
         default ListenableFuture<byte[]> getDataByKey1(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
         default ListenableFuture<ResponseWrapper<byte[]>> getDataByKey1Wrapper(
-            @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+            @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
@@ -58,32 +58,32 @@ public interface DbMixedStackArguments extends java.io.Closeable {
 
     @ThriftMethod(value = "getDataByKey0")
     byte[] getDataByKey0(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key) throws org.apache.thrift.TException;
 
     default byte[] getDataByKey0(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<byte[]> getDataByKey0Wrapper(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     @ThriftMethod(value = "getDataByKey1")
     byte[] getDataByKey1(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key) throws org.apache.thrift.TException;
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key) throws org.apache.thrift.TException;
 
     default byte[] getDataByKey1(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
     default ResponseWrapper<byte[]> getDataByKey1Wrapper(
-        @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
+        @com.facebook.swift.codec.ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final String key,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
