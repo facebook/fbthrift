@@ -152,15 +152,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
     version_ = std::min(version_, maxVersion);
-    if (meta.clientAgent_ref()) {
-      loggingContext_.setClientAgent(std::move(*meta.clientAgent_ref()));
-    }
-    if (meta.clientHostId_ref()) {
-      loggingContext_.setClientHostId(std::move(*meta.clientHostId_ref()));
-    }
-    loggingContext_.setInterfaceKind(
-        meta.interfaceKind_ref().value_or(apache::thrift::InterfaceKind::USER));
-
+    loggingContext_.readSetupMetadata(meta);
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
       auto processorInfo = h->tryHandle(meta);

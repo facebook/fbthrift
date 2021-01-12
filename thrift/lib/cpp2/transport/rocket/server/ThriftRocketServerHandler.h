@@ -100,6 +100,10 @@ class ThriftRocketServerHandler : public RocketServerHandler {
     return &connContext_;
   }
 
+  const ConnectionLoggingContext* getLoggingContext() const final {
+    return &loggingContext_;
+  }
+
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;

@@ -21,6 +21,7 @@ namespace apache {
 namespace thrift {
 
 class Cpp2ConnContext;
+class ConnectionLoggingContext;
 
 namespace rocket {
 
@@ -67,6 +68,10 @@ class RocketServerHandler {
   virtual void connectionClosing() = 0;
 
   virtual Cpp2ConnContext* getCpp2ConnContext() {
+    return nullptr;
+  }
+
+  virtual const ConnectionLoggingContext* getLoggingContext() const {
     return nullptr;
   }
 };

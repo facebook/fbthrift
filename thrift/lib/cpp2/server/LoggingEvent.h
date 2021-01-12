@@ -104,6 +104,17 @@ class ConnectionLoggingContext {
     return interfaceKind_;
   }
 
+  void readSetupMetadata(const RequestSetupMetadata& meta) {
+    if (meta.clientAgent_ref()) {
+      setClientAgent(*meta.clientAgent_ref());
+    }
+    if (meta.clientHostId_ref()) {
+      setClientHostId(*meta.clientHostId_ref());
+    }
+    setInterfaceKind(
+        meta.interfaceKind_ref().value_or(apache::thrift::InterfaceKind::USER));
+  }
+
  private:
   TransportType transportType_;
   const Cpp2Worker& worker_;

@@ -29,6 +29,7 @@
 #include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
 #include <folly/Utility.h>
+#include <folly/dynamic.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/SocketOptionMap.h>
@@ -38,6 +39,7 @@
 #include <wangle/acceptor/ConnectionManager.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
@@ -732,12 +734,20 @@ void RocketServerConnection::applyDscpAndMarkToSocket(
     if (auto* sock = socket_->getUnderlyingTransport<folly::AsyncSocket>()) {
       const auto fd = sock->getNetworkSocket();
 
-      auto dscp = setupMetadata.dscpToReflect_ref();
-      if (dscp && *dscp >= 0 && *dscp <= kMaxDscpValue) {
-        const folly::SocketOptionKey kIpv4TosKey = {IPPROTO_IP, IP_TOS};
-        const folly::SocketOptionKey kIpv6TosKey = {IPPROTO_IPV6, IPV6_TCLASS};
-        auto& dscpKey = addr.getIPAddress().isV4() ? kIpv4TosKey : kIpv6TosKey;
-        dscpKey.apply(fd, *dscp << 2);
+      if (auto dscp = setupMetadata.dscpToReflect_ref()) {
+        if (auto loggingContext = frameHandler_->getLoggingContext()) {
+          THRIFT_CONNECTION_EVENT(rocket.dscp).log(*loggingContext, [&] {
+            return folly::dynamic::object("rocket_dscp", *dscp);
+          });
+        }
+        if (*dscp >= 0 && *dscp <= kMaxDscpValue) {
+          const folly::SocketOptionKey kIpv4TosKey = {IPPROTO_IP, IP_TOS};
+          const folly::SocketOptionKey kIpv6TosKey = {
+              IPPROTO_IPV6, IPV6_TCLASS};
+          auto& dscpKey =
+              addr.getIPAddress().isV4() ? kIpv4TosKey : kIpv6TosKey;
+          dscpKey.apply(fd, *dscp << 2);
+        }
       }
 
 #if defined(SO_MARK)
