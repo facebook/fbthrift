@@ -23,7 +23,7 @@
 #include <folly/Optional.h>
 #include <folly/SharedMutex.h>
 #include <folly/experimental/observer/SimpleObservable.h>
-#include <folly/synchronization/CallOnce.h>
+#include <folly/synchronization/DelayedInit.h>
 
 namespace apache {
 namespace thrift {
@@ -106,8 +106,8 @@ struct ServerAttributeObservable {
   }
 
   const folly::observer::Observer<T>& getObserver() const {
-    folly::call_once(mergedObserverInit_, [&] {
-      mergedObserver_ = folly::observer::makeObserver(
+    return mergedObserver_.try_emplace_with([&] {
+      return folly::observer::makeObserver(
           [overrideObserver = rawValues_.override_.getObserver(),
            baselineObserver = rawValues_.baseline_.getObserver(),
            defaultObserver =
@@ -121,7 +121,6 @@ struct ServerAttributeObservable {
                     override, baseline, defaultObserver));
           });
     });
-    return *mergedObserver_;
   }
 
   void set(folly::observer::Observer<T> value, AttributeSource source) {
@@ -152,8 +151,7 @@ struct ServerAttributeObservable {
       folly::Optional<folly::observer::Observer<T>>>>
       rawValues_{folly::none, folly::none};
   folly::observer::Observer<T> default_;
-  mutable folly::once_flag mergedObserverInit_;
-  mutable folly::Optional<folly::observer::Observer<T>> mergedObserver_;
+  folly::DelayedInit<folly::observer::Observer<T>> mergedObserver_;
 };
 
 } // namespace detail
@@ -172,14 +170,11 @@ struct ServerAttributeAtomic
   }
 
   const folly::observer::AtomicObserver<T>& getAtomicObserver() const {
-    folly::call_once(
-        atomicObserverInit_, [&] { atomicObserver_.emplace(getObserver()); });
-    return *atomicObserver_;
+    return atomicObserver_.try_emplace(getObserver());
   }
 
  private:
-  mutable folly::once_flag atomicObserverInit_;
-  mutable folly::Optional<folly::observer::AtomicObserver<T>> atomicObserver_;
+  folly::DelayedInit<folly::observer::AtomicObserver<T>> atomicObserver_;
 };
 
 template <typename T>
@@ -196,14 +191,11 @@ struct ServerAttributeThreadLocal
   }
 
   const folly::observer::TLObserver<T>& getTLObserver() const {
-    folly::call_once(
-        tlObserverInit_, [&] { tlObserver_.emplace(getObserver()); });
-    return *tlObserver_;
+    return tlObserver_.try_emplace(getObserver());
   }
 
  private:
-  mutable folly::once_flag tlObserverInit_;
-  mutable folly::Optional<folly::observer::TLObserver<T>> tlObserver_;
+  folly::DelayedInit<folly::observer::TLObserver<T>> tlObserver_;
 };
 
 } // namespace thrift
