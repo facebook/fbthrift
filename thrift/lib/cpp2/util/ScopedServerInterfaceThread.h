@@ -70,6 +70,11 @@ class ScopedServerInterfaceThread {
       folly::Executor* callbackExecutor = nullptr,
       MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
 
+  /**
+   * Creates and returns a new AsyncClientT. Uses the given channelFunc to
+   * create a channel for the client by passing it a connected, plaintext
+   * folly::AsyncSocket.
+   */
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClient(
       folly::Executor* callbackExecutor = nullptr,

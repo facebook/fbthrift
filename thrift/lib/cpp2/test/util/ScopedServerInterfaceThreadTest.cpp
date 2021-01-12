@@ -24,6 +24,7 @@
 #include <folly/experimental/coro/Sleep.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/test/TestSSLServer.h>
 #include <folly/portability/GTest.h>
 #include <folly/stop_watch.h>
 #include <folly/test/TestUtils.h>
@@ -107,6 +108,28 @@ TEST(ScopedServerInterfaceThread, newClient) {
 TEST(ScopedServerInterfaceThread, newClient_SemiFuture) {
   ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
 
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>();
+
+  EXPECT_EQ(6, cli->semifuture_add(-3, 9).get());
+}
+
+// Test that the client returned by newClient can still send requests when the
+// ThriftServer's SSLPolicy is REQUIRED
+TEST(ScopedServerInterfaceThread, newClientWithSSLPolicyREQUIRED) {
+  ScopedServerInterfaceThread ssit(
+      make_shared<SimpleServiceImpl>(), "::1", 0, [](ThriftServer& server) {
+        // server TLS setup
+        auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
+        sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
+        sslConfig->clientCAFile = folly::kTestCA;
+        sslConfig->sessionContext = "ThriftServerTest";
+        sslConfig->setNextProtocols(
+            **apache::thrift::ThriftServer::defaultNextProtocols());
+        server.setSSLConfig(std::move(sslConfig));
+        // even with REQUIRED, plaintext clients from newClient should continue
+        // connecting successfully
+        server.setSSLPolicy(SSLPolicy::REQUIRED);
+      });
   auto cli = ssit.newClient<SimpleServiceAsyncClient>();
 
   EXPECT_EQ(6, cli->semifuture_add(-3, 9).get());
