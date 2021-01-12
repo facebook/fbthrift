@@ -100,8 +100,8 @@ const std::type_info& AnyRegistry::getTypeId(const Any& value) const {
 }
 
 // Same as above, except returns nullptr if the type has not been registered.
-const std::type_info* AnyRegistry::tryGetTypeId(const Any& value) const
-    noexcept {
+const std::type_info* AnyRegistry::tryGetTypeId(
+    const Any& value) const noexcept {
   const auto* entry = getTypeEntryFor(value);
   if (entry == nullptr) {
     return nullptr;
