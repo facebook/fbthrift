@@ -2289,9 +2289,9 @@ void t_hack_generator::generate_adapter_type_checks(
 
   indent(out) << "private static function __hackAdapterTypeChecks(): void {\n";
   indent_up();
-  for (const auto& [adapter, type] : adapter_types_) {
-    indent(out) << "\\ThriftUtil::requireSameType<" << adapter
-                << "::TThriftType, " << type << ">();\n";
+  for (const auto& kv : adapter_types_) {
+    indent(out) << "\\ThriftUtil::requireSameType<" << kv.first
+                << "::TThriftType, " << kv.second << ">();\n";
   }
   indent_down();
   indent(out) << "}\n\n";
