@@ -61,7 +61,7 @@ namespace thrift {
 class Cpp2Connection;
 class Cpp2Worker;
 namespace rocket {
-  class ThriftRocketServerHandler;
+class ThriftRocketServerHandler;
 }
 
 enum class SSLPolicy { DISABLED, PERMITTED, REQUIRED };
