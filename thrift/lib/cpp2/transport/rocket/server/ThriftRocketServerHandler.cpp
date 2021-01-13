@@ -336,6 +336,8 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   folly::RequestContextScopeGuard rctx(reqCtx);
 
+  worker_->getServer()->touchRequestTimestamp();
+
   auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));
 
   if (requestPayloadTry.hasException()) {

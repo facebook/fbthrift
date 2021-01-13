@@ -60,6 +60,9 @@ namespace thrift {
 // Forward declaration of classes
 class Cpp2Connection;
 class Cpp2Worker;
+namespace rocket {
+  class ThriftRocketServerHandler;
+}
 
 enum class SSLPolicy { DISABLED, PERMITTED, REQUIRED };
 
@@ -201,6 +204,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
+  friend class rocket::ThriftRocketServerHandler;
 
   bool tosReflect_{false};
 
