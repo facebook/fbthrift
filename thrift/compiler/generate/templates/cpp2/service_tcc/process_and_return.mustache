@@ -112,10 +112,10 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
       <%#type:streamHasFirstResponse?%>
   result.get<0>().value = const_cast<<% > types/type%>::ResponseType*>(&_return.response);
   result.setIsSet(0, true);
-  auto& _returnStream = _return.stream;
+  auto& returnStream = _return.stream;
       <%/type:streamHasFirstResponse?%>
       <%^type:streamHasFirstResponse?%>
-  auto& _returnStream = _return;
+  auto& returnStream = _return;
       <%/type:streamHasFirstResponse?%>
 
       <%^function:stream_exceptions?%>
@@ -136,8 +136,8 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
     }
   };
       <%/function:stream_exceptions?%>
-  auto _encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream), std::move(executor));
-  return {serializeResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
+  auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
+  return {serializeResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 <%/function:returns_stream?%>
 <%#function:returns_sink?%>
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;

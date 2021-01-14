@@ -48,24 +48,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_frobnicate() {
-    auto _task = semifuture_frobnicate();
+    auto task = semifuture_frobnicate();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_frobnicate(rpcOptions);
+    auto task = semifuture_frobnicate(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -87,24 +87,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_ping() {
-    auto _task = semifuture_ping();
+    auto task = semifuture_ping();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<void> co_ping(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_ping(rpcOptions);
+    auto task = semifuture_ping(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -124,24 +124,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<bool>> co_truthify() {
-    auto _task = semifuture_truthify();
+    auto task = semifuture_truthify();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<bool>> co_truthify(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_truthify(rpcOptions);
+    auto task = semifuture_truthify(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -188,24 +188,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<int32_t> co_frobnicate() {
-    auto _task = semifuture_frobnicate();
+    auto task = semifuture_frobnicate();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<int32_t> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_frobnicate(rpcOptions);
+    auto task = semifuture_frobnicate(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -227,24 +227,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_ping() {
-    auto _task = semifuture_ping();
+    auto task = semifuture_ping();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<void> co_ping(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_ping(rpcOptions);
+    auto task = semifuture_ping(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -264,24 +264,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<bool>> co_truthify() {
-    auto _task = semifuture_truthify();
+    auto task = semifuture_truthify();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<apache::thrift::ClientBufferedStream<bool>> co_truthify(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_truthify(rpcOptions);
+    auto task = semifuture_truthify(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -328,24 +328,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_frobnicate() {
-    auto _task = semifuture_frobnicate();
+    auto task = semifuture_frobnicate();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<void> co_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_frobnicate(rpcOptions);
+    auto task = semifuture_frobnicate(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES
@@ -382,24 +382,24 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_foo() {
-    auto _task = semifuture_foo();
+    auto task = semifuture_foo();
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
   template <int = 0>
   folly::coro::Task<void> co_foo(apache::thrift::RpcOptions& rpcOptions) {
-    auto _task = semifuture_foo(rpcOptions);
+    auto task = semifuture_foo(rpcOptions);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
     }
   }
 #endif // FOLLY_HAS_COROUTINES

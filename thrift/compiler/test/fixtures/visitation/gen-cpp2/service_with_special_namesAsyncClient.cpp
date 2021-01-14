@@ -437,11 +437,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_get
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_get(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_get, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_get, channel_);
   get(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_get(apache::thrift::RpcOptions& rpcOptions) {
@@ -452,11 +452,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_get
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_get(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_get, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_get, channel_);
   get(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_get(apache::thrift::RpcOptions& rpcOptions) {
@@ -607,11 +607,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_get
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_getter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_getter, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_getter, channel_);
   getter(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_getter(apache::thrift::RpcOptions& rpcOptions) {
@@ -622,11 +622,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_get
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_getter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_getter, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_getter, channel_);
   getter(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_getter(apache::thrift::RpcOptions& rpcOptions) {
@@ -777,11 +777,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_lis
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_lists(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_lists, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_lists, channel_);
   lists(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_lists(apache::thrift::RpcOptions& rpcOptions) {
@@ -792,11 +792,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_lis
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_lists(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_lists, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_lists, channel_);
   lists(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_lists(apache::thrift::RpcOptions& rpcOptions) {
@@ -947,11 +947,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_map
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_maps(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_maps, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_maps, channel_);
   maps(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_maps(apache::thrift::RpcOptions& rpcOptions) {
@@ -962,11 +962,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_map
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_maps(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_maps, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_maps, channel_);
   maps(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_maps(apache::thrift::RpcOptions& rpcOptions) {
@@ -1117,11 +1117,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_nam
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_name, channel_);
   name(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_name(apache::thrift::RpcOptions& rpcOptions) {
@@ -1132,11 +1132,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_nam
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_name, channel_);
   name(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_name(apache::thrift::RpcOptions& rpcOptions) {
@@ -1287,11 +1287,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_nam
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name_to_value, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_name_to_value, channel_);
   name_to_value(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
@@ -1302,11 +1302,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_nam
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name_to_value, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_name_to_value, channel_);
   name_to_value(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
@@ -1457,11 +1457,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_nam
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_names(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_names, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_names, channel_);
   names(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_names(apache::thrift::RpcOptions& rpcOptions) {
@@ -1472,11 +1472,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_nam
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_names(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_names, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_names, channel_);
   names(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_names(apache::thrift::RpcOptions& rpcOptions) {
@@ -1627,11 +1627,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_pre
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_prefix_tree, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_prefix_tree, channel_);
   prefix_tree(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
@@ -1642,11 +1642,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_pre
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_prefix_tree, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_prefix_tree, channel_);
   prefix_tree(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
@@ -1797,11 +1797,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_set
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_sets(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_sets, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_sets, channel_);
   sets(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_sets(apache::thrift::RpcOptions& rpcOptions) {
@@ -1812,11 +1812,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_set
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_sets(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_sets, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_sets, channel_);
   sets(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_sets(apache::thrift::RpcOptions& rpcOptions) {
@@ -1967,11 +1967,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_set
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_setter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_setter, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_setter, channel_);
   setter(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_setter(apache::thrift::RpcOptions& rpcOptions) {
@@ -1982,11 +1982,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_set
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_setter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_setter, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_setter, channel_);
   setter(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_setter(apache::thrift::RpcOptions& rpcOptions) {
@@ -2137,11 +2137,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_str
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_str(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_str, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_str, channel_);
   str(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_str(apache::thrift::RpcOptions& rpcOptions) {
@@ -2152,11 +2152,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_str
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_str(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_str, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_str, channel_);
   str(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_str(apache::thrift::RpcOptions& rpcOptions) {
@@ -2307,11 +2307,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_str
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_strings(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_strings, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_strings, channel_);
   strings(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_strings(apache::thrift::RpcOptions& rpcOptions) {
@@ -2322,11 +2322,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_str
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_strings(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_strings, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_strings, channel_);
   strings(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_strings(apache::thrift::RpcOptions& rpcOptions) {
@@ -2477,11 +2477,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_typ
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_type(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_type, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_type, channel_);
   type(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_type(apache::thrift::RpcOptions& rpcOptions) {
@@ -2492,11 +2492,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_typ
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_type(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_type, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_type, channel_);
   type(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_type(apache::thrift::RpcOptions& rpcOptions) {
@@ -2647,11 +2647,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_val
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_value, channel_);
   value(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_value(apache::thrift::RpcOptions& rpcOptions) {
@@ -2662,11 +2662,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_val
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_value, channel_);
   value(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_value(apache::thrift::RpcOptions& rpcOptions) {
@@ -2817,11 +2817,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_val
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value_to_name, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_value_to_name, channel_);
   value_to_name(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
@@ -2832,11 +2832,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_val
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value_to_name, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_value_to_name, channel_);
   value_to_name(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
@@ -2987,11 +2987,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_val
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_values(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_values, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_values, channel_);
   values(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_values(apache::thrift::RpcOptions& rpcOptions) {
@@ -3002,11 +3002,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_val
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_values(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_values, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_values, channel_);
   values(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_values(apache::thrift::RpcOptions& rpcOptions) {
@@ -3157,11 +3157,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_id(
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_id(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_id, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_id, channel_);
   id(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_id(apache::thrift::RpcOptions& rpcOptions) {
@@ -3172,11 +3172,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_id(
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_id(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_id, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_id, channel_);
   id(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_id(apache::thrift::RpcOptions& rpcOptions) {
@@ -3327,11 +3327,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ids
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_ids(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_ids, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_ids, channel_);
   ids(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ids(apache::thrift::RpcOptions& rpcOptions) {
@@ -3342,11 +3342,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ids
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_ids(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_ids, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_ids, channel_);
   ids(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_ids(apache::thrift::RpcOptions& rpcOptions) {
@@ -3497,11 +3497,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_des
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptor(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptor, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_descriptor, channel_);
   descriptor(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_descriptor(apache::thrift::RpcOptions& rpcOptions) {
@@ -3512,11 +3512,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_des
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_descriptor(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptor, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_descriptor, channel_);
   descriptor(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_descriptor(apache::thrift::RpcOptions& rpcOptions) {
@@ -3667,11 +3667,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_des
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptors(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptors, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_descriptors, channel_);
   descriptors(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_descriptors(apache::thrift::RpcOptions& rpcOptions) {
@@ -3682,11 +3682,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_des
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_descriptors(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptors, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_descriptors, channel_);
   descriptors(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_descriptors(apache::thrift::RpcOptions& rpcOptions) {
@@ -3837,11 +3837,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_key
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_key(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_key, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_key, channel_);
   key(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_key(apache::thrift::RpcOptions& rpcOptions) {
@@ -3852,11 +3852,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_key
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_key(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_key, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_key, channel_);
   key(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_key(apache::thrift::RpcOptions& rpcOptions) {
@@ -4007,11 +4007,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_key
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_keys(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_keys, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_keys, channel_);
   keys(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_keys(apache::thrift::RpcOptions& rpcOptions) {
@@ -4022,11 +4022,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_key
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_keys(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_keys, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_keys, channel_);
   keys(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_keys(apache::thrift::RpcOptions& rpcOptions) {
@@ -4177,11 +4177,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ann
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotation(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotation, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_annotation, channel_);
   annotation(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_annotation(apache::thrift::RpcOptions& rpcOptions) {
@@ -4192,11 +4192,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ann
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_annotation(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotation, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_annotation, channel_);
   annotation(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_annotation(apache::thrift::RpcOptions& rpcOptions) {
@@ -4347,11 +4347,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ann
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotations(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotations, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_annotations, channel_);
   annotations(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_annotations(apache::thrift::RpcOptions& rpcOptions) {
@@ -4362,11 +4362,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_ann
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_annotations(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotations, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_annotations, channel_);
   annotations(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_annotations(apache::thrift::RpcOptions& rpcOptions) {
@@ -4517,11 +4517,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_mem
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_member(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_member, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_member, channel_);
   member(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_member(apache::thrift::RpcOptions& rpcOptions) {
@@ -4532,11 +4532,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_mem
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_member(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_member, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_member, channel_);
   member(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_member(apache::thrift::RpcOptions& rpcOptions) {
@@ -4687,11 +4687,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_mem
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_members(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_members, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_members, channel_);
   members(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_members(apache::thrift::RpcOptions& rpcOptions) {
@@ -4702,11 +4702,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_mem
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_members(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_members, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_members, channel_);
   members(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_members(apache::thrift::RpcOptions& rpcOptions) {
@@ -4857,11 +4857,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_fie
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_field(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_field, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_field, channel_);
   field(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_field(apache::thrift::RpcOptions& rpcOptions) {
@@ -4872,11 +4872,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_fie
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_field(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_field, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_field, channel_);
   field(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_field(apache::thrift::RpcOptions& rpcOptions) {
@@ -5027,11 +5027,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_fie
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_fields(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_fields, channel_);
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise), recv_wrapped_fields, channel_);
   fields(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_fields(apache::thrift::RpcOptions& rpcOptions) {
@@ -5042,11 +5042,11 @@ folly::SemiFuture<int32_t> service_with_special_namesAsyncClient::semifuture_fie
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_fields(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_fields, channel_);
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise), recv_wrapped_fields, channel_);
   fields(rpcOptions, std::move(callback));
-  return _future;
+  return future;
 }
 
 folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_semifuture_fields(apache::thrift::RpcOptions& rpcOptions) {

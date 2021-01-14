@@ -76,10 +76,10 @@ class ReturnServiceSvAsyncIf {
   virtual void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback) = 0;
   virtual folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> future_list_UnionReturn() = 0;
   virtual folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> semifuture_list_UnionReturn() = 0;
-  virtual void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) = 0;
-  virtual void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) = 0;
-  virtual folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> future_readData(int64_t size) = 0;
-  virtual folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> semifuture_readData(int64_t size) = 0;
+  virtual void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t p_size) = 0;
+  virtual void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t p_size) = 0;
+  virtual folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> future_readData(int64_t p_size) = 0;
+  virtual folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> semifuture_readData(int64_t p_size) = 0;
 };
 
 class ReturnServiceAsyncProcessor;
@@ -151,11 +151,11 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> future_list_UnionReturn() override;
   folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> semifuture_list_UnionReturn() override;
   void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback) override;
-  void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) override;
+  void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t p_size) override;
   virtual void readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/);
-  folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> future_readData(int64_t size) override;
-  folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> semifuture_readData(int64_t size) override;
-  void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) override;
+  folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> future_readData(int64_t p_size) override;
+  folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> semifuture_readData(int64_t p_size) override;
+  void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t p_size) override;
 };
 
 class ReturnServiceSvNull : public ReturnServiceSvIf {

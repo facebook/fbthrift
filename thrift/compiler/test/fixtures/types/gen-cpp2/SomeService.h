@@ -28,12 +28,12 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 class SomeServiceSvAsyncIf {
  public:
   virtual ~SomeServiceSvAsyncIf() {}
-  virtual void async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) = 0;
-  virtual folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) = 0;
-  virtual folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> semifuture_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) = 0;
-  virtual void async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> r) = 0;
-  virtual folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> r) = 0;
-  virtual folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> semifuture_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> r) = 0;
+  virtual void async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) = 0;
+  virtual folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) = 0;
+  virtual folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> semifuture_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) = 0;
+  virtual void async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> p_r) = 0;
+  virtual folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> p_r) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> semifuture_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> p_r) = 0;
 };
 
 class SomeServiceAsyncProcessor;
@@ -45,13 +45,13 @@ class SomeServiceSvIf : public SomeServiceSvAsyncIf, public apache::thrift::Serv
 
 
   virtual void bounce_map( ::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> /*m*/);
-  folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) override;
-  folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> semifuture_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) override;
-  void async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) override;
+  folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) override;
+  folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> semifuture_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) override;
+  void async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) override;
   virtual void binary_keyed_map(::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& /*_return*/, std::unique_ptr<::std::vector<int64_t>> /*r*/);
-  folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> r) override;
-  folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> semifuture_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> r) override;
-  void async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> r) override;
+  folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> p_r) override;
+  folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> semifuture_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> p_r) override;
+  void async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> p_r) override;
 };
 
 class SomeServiceSvNull : public SomeServiceSvIf {

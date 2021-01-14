@@ -63,22 +63,22 @@ bool MyServiceSvIf::hasDataById(int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("hasDataById");
 }
 
-folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t id) {
+folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t p_id) {
   return apache::thrift::detail::si::semifuture([&] {
-    return hasDataById(id);
+    return hasDataById(p_id);
   });
 }
 
-folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
+folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_hasDataById(id), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_hasDataById(p_id), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
+void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t p_id) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_hasDataById(id);
+    return future_hasDataById(p_id);
   });
 }
 
@@ -86,20 +86,20 @@ void MyServiceSvIf::getDataById(::std::string& /*_return*/, int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataById");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> MyServiceSvIf::semifuture_getDataById(int64_t id) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { getDataById(_return, id); });
+folly::SemiFuture<std::unique_ptr<::std::string>> MyServiceSvIf::semifuture_getDataById(int64_t p_id) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { getDataById(_return, p_id); });
 }
 
-folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getDataById(int64_t id) {
+folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_getDataById(id), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_getDataById(p_id), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t id) {
+void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t p_id) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_getDataById(id);
+    return future_getDataById(p_id);
   });
 }
 
@@ -107,22 +107,22 @@ void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /
   apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   return apache::thrift::detail::si::semifuture([&] {
-    return putDataById(id, std::move(data));
+    return putDataById(p_id, std::move(p_data));
   });
 }
 
-folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_putDataById(id, std::move(data)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_putDataById(p_id, std::move(p_data)), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) {
+void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t p_id, std::unique_ptr<::std::string> p_data) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_putDataById(id, std::move(data));
+    return future_putDataById(p_id, std::move(p_data));
   });
 }
 
@@ -130,22 +130,22 @@ void MyServiceSvIf::lobDataById(int64_t /*id*/, std::unique_ptr<::std::string> /
   apache::thrift::detail::si::throw_app_exn_unimplemented("lobDataById");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_lobDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_lobDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   return apache::thrift::detail::si::semifuture([&] {
-    return lobDataById(id, std::move(data));
+    return lobDataById(p_id, std::move(p_data));
   });
 }
 
-folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_lobDataById(id, std::move(data)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_lobDataById(p_id, std::move(p_data)), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<::std::string> data) {
+void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t p_id, std::unique_ptr<::std::string> p_data) {
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] {
-    return future_lobDataById(id, std::move(data));
+    return future_lobDataById(p_id, std::move(p_data));
   });
 }
 

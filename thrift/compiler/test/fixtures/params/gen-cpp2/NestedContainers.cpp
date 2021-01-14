@@ -19,22 +19,22 @@ void NestedContainersSvIf::mapList(std::unique_ptr<::std::map<int32_t, ::std::ve
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapList");
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
+folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return mapList(std::move(foo));
+    return mapList(std::move(p_foo));
   });
 }
 
-folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
+folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_mapList(std::move(foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_mapList(std::move(p_foo)), std::move(ka));
 }
 
-void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> foo) {
+void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_mapList(std::move(foo));
+    return future_mapList(std::move(p_foo));
   });
 }
 
@@ -42,22 +42,22 @@ void NestedContainersSvIf::mapSet(std::unique_ptr<::std::map<int32_t, ::std::set
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapSet");
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
+folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return mapSet(std::move(foo));
+    return mapSet(std::move(p_foo));
   });
 }
 
-folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
+folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_mapSet(std::move(foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_mapSet(std::move(p_foo)), std::move(ka));
 }
 
-void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> foo) {
+void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_mapSet(std::move(foo));
+    return future_mapSet(std::move(p_foo));
   });
 }
 
@@ -65,22 +65,22 @@ void NestedContainersSvIf::listMap(std::unique_ptr<::std::vector<::std::map<int3
   apache::thrift::detail::si::throw_app_exn_unimplemented("listMap");
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
+folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return listMap(std::move(foo));
+    return listMap(std::move(p_foo));
   });
 }
 
-folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
+folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_listMap(std::move(foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_listMap(std::move(p_foo)), std::move(ka));
 }
 
-void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> foo) {
+void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_listMap(std::move(foo));
+    return future_listMap(std::move(p_foo));
   });
 }
 
@@ -88,22 +88,22 @@ void NestedContainersSvIf::listSet(std::unique_ptr<::std::vector<::std::set<int3
   apache::thrift::detail::si::throw_app_exn_unimplemented("listSet");
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
+folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return listSet(std::move(foo));
+    return listSet(std::move(p_foo));
   });
 }
 
-folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
+folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_listSet(std::move(foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_listSet(std::move(p_foo)), std::move(ka));
 }
 
-void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::set<int32_t>>> foo) {
+void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::set<int32_t>>> p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_listSet(std::move(foo));
+    return future_listSet(std::move(p_foo));
   });
 }
 
@@ -111,22 +111,22 @@ void NestedContainersSvIf::turtles(std::unique_ptr<::std::vector<::std::vector<:
   apache::thrift::detail::si::throw_app_exn_unimplemented("turtles");
 }
 
-folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {
+folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return turtles(std::move(foo));
+    return turtles(std::move(p_foo));
   });
 }
 
-folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {
+folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_turtles(std::move(foo)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_turtles(std::move(p_foo)), std::move(ka));
 }
 
-void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> foo) {
+void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_turtles(std::move(foo));
+    return future_turtles(std::move(p_foo));
   });
 }
 

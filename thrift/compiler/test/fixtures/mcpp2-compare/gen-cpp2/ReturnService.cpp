@@ -351,20 +351,20 @@ void ReturnServiceSvIf::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int6
   apache::thrift::detail::si::throw_app_exn_unimplemented("readData");
 }
 
-folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::semifuture_readData(int64_t size) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::IOBufPtr& _return) { readData(_return, size); });
+folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::semifuture_readData(int64_t p_size) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::IOBufPtr& _return) { readData(_return, p_size); });
 }
 
-folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(int64_t size) {
+folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(int64_t p_size) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_readData(size), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_readData(p_size), std::move(ka));
 }
 
-void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) {
+void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t p_size) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_readData(size);
+    return future_readData(p_size);
   });
 }
 

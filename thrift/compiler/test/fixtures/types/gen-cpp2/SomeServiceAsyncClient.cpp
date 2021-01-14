@@ -16,10 +16,10 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apac
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::map<::apache::thrift::type_class::binary, ::apache::thrift::type_class::integral>, ::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>*>> SomeService_binary_keyed_map_presult;
 
 template <typename Protocol_>
-void SomeServiceAsyncClient::bounce_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+void SomeServiceAsyncClient::bounce_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   SomeService_bounce_map_pargs args;
-  args.get<0>().value = const_cast< ::apache::thrift::fixtures::types::SomeMap*>(&m);
+  args.get<0>().value = const_cast< ::apache::thrift::fixtures::types::SomeMap*>(&p_m);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "bounce_map", writer, sizer);
@@ -27,10 +27,10 @@ void SomeServiceAsyncClient::bounce_mapT(Protocol_* prot, apache::thrift::RpcOpt
 }
 
 template <typename Protocol_>
-void SomeServiceAsyncClient::binary_keyed_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<int64_t>& r) {
+void SomeServiceAsyncClient::binary_keyed_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<int64_t>& p_r) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   SomeService_binary_keyed_map_pargs args;
-  args.get<0>().value = const_cast<::std::vector<int64_t>*>(&r);
+  args.get<0>().value = const_cast<::std::vector<int64_t>*>(&p_r);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "binary_keyed_map", writer, sizer);
@@ -39,12 +39,12 @@ void SomeServiceAsyncClient::binary_keyed_mapT(Protocol_* prot, apache::thrift::
 
 
 
-void SomeServiceAsyncClient::bounce_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+void SomeServiceAsyncClient::bounce_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   ::apache::thrift::RpcOptions rpcOptions;
-  bounce_map(rpcOptions, std::move(callback), m);
+  bounce_map(rpcOptions, std::move(callback), p_m);
 }
 
-void SomeServiceAsyncClient::bounce_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+void SomeServiceAsyncClient::bounce_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -56,21 +56,21 @@ void SomeServiceAsyncClient::bounce_map(apache::thrift::RpcOptions& rpcOptions, 
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
-  bounce_mapImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), m);
+  bounce_mapImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_m);
 }
 
-void SomeServiceAsyncClient::bounce_mapImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+void SomeServiceAsyncClient::bounce_mapImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      bounce_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), m);
+      bounce_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_m);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      bounce_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), m);
+      bounce_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_m);
       break;
     }
     default:
@@ -80,12 +80,12 @@ void SomeServiceAsyncClient::bounce_mapImpl(apache::thrift::RpcOptions& rpcOptio
   }
 }
 
-void SomeServiceAsyncClient::sync_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+void SomeServiceAsyncClient::sync_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   ::apache::thrift::RpcOptions rpcOptions;
-  sync_bounce_map(rpcOptions, _return, m);
+  sync_bounce_map(rpcOptions, _return, p_m);
 }
 
-void SomeServiceAsyncClient::sync_bounce_map(apache::thrift::RpcOptions& rpcOptions,  ::apache::thrift::fixtures::types::SomeMap& _return, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+void SomeServiceAsyncClient::sync_bounce_map(apache::thrift::RpcOptions& rpcOptions,  ::apache::thrift::fixtures::types::SomeMap& _return, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -97,7 +97,7 @@ void SomeServiceAsyncClient::sync_bounce_map(apache::thrift::RpcOptions& rpcOpti
       this->getServiceName(),
       "SomeService.bounce_map");
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  bounce_mapImpl(rpcOptions, ctx, std::move(wrappedCallback), m);
+  bounce_mapImpl(rpcOptions, ctx, std::move(wrappedCallback), p_m);
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
@@ -116,48 +116,48 @@ void SomeServiceAsyncClient::sync_bounce_map(apache::thrift::RpcOptions& rpcOpti
 }
 
 
-folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
+folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return future_bounce_map(rpcOptions, m);
+  return future_bounce_map(rpcOptions, p_m);
 }
 
-folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
+folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_bounce_map(rpcOptions, m);
+  return semifuture_bounce_map(rpcOptions, p_m);
 }
 
-folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  folly::Promise< ::apache::thrift::fixtures::types::SomeMap> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback< ::apache::thrift::fixtures::types::SomeMap>>(std::move(_promise), recv_wrapped_bounce_map, channel_);
-  bounce_map(rpcOptions, std::move(callback), m);
-  return _future;
+folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
+  folly::Promise< ::apache::thrift::fixtures::types::SomeMap> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback< ::apache::thrift::fixtures::types::SomeMap>>(std::move(promise), recv_wrapped_bounce_map, channel_);
+  bounce_map(rpcOptions, std::move(callback), p_m);
+  return future;
 }
 
-folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_bounce_map, channel_);
   auto callback = std::move(callbackAndFuture.first);
-  bounce_map(rpcOptions, std::move(callback), m);
+  bounce_map(rpcOptions, std::move(callback), p_m);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  folly::Promise<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::apache::thrift::fixtures::types::SomeMap>>(std::move(_promise), recv_wrapped_bounce_map, channel_);
-  bounce_map(rpcOptions, std::move(callback), m);
-  return _future;
+folly::Future<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
+  folly::Promise<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback< ::apache::thrift::fixtures::types::SomeMap>>(std::move(promise), recv_wrapped_bounce_map, channel_);
+  bounce_map(rpcOptions, std::move(callback), p_m);
+  return future;
 }
 
-folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_bounce_map, channel_);
   auto callback = std::move(callbackAndFuture.first);
-  bounce_map(rpcOptions, std::move(callback), m);
+  bounce_map(rpcOptions, std::move(callback), p_m);
   return std::move(callbackAndFuture.second);
 }
 
-void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  bounce_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), m);
+void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
+  bounce_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_m);
 }
 
 #if FOLLY_HAS_COROUTINES
@@ -207,12 +207,12 @@ folly::exception_wrapper SomeServiceAsyncClient::recv_instance_wrapped_bounce_ma
   return recv_wrapped_bounce_map(_return, state);
 }
 
-void SomeServiceAsyncClient::binary_keyed_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& r) {
+void SomeServiceAsyncClient::binary_keyed_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& p_r) {
   ::apache::thrift::RpcOptions rpcOptions;
-  binary_keyed_map(rpcOptions, std::move(callback), r);
+  binary_keyed_map(rpcOptions, std::move(callback), p_r);
 }
 
-void SomeServiceAsyncClient::binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& r) {
+void SomeServiceAsyncClient::binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& p_r) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
@@ -224,21 +224,21 @@ void SomeServiceAsyncClient::binary_keyed_map(apache::thrift::RpcOptions& rpcOpt
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext));
-  binary_keyed_mapImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), r);
+  binary_keyed_mapImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_r);
 }
 
-void SomeServiceAsyncClient::binary_keyed_mapImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<int64_t>& r) {
+void SomeServiceAsyncClient::binary_keyed_mapImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<int64_t>& p_r) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      binary_keyed_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), r);
+      binary_keyed_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_r);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      binary_keyed_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), r);
+      binary_keyed_mapT(&writer, rpcOptions, std::move(ctx), std::move(callback), p_r);
       break;
     }
     default:
@@ -248,12 +248,12 @@ void SomeServiceAsyncClient::binary_keyed_mapImpl(apache::thrift::RpcOptions& rp
   }
 }
 
-void SomeServiceAsyncClient::sync_binary_keyed_map(::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, const ::std::vector<int64_t>& r) {
+void SomeServiceAsyncClient::sync_binary_keyed_map(::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, const ::std::vector<int64_t>& p_r) {
   ::apache::thrift::RpcOptions rpcOptions;
-  sync_binary_keyed_map(rpcOptions, _return, r);
+  sync_binary_keyed_map(rpcOptions, _return, p_r);
 }
 
-void SomeServiceAsyncClient::sync_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, ::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, const ::std::vector<int64_t>& r) {
+void SomeServiceAsyncClient::sync_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, ::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, const ::std::vector<int64_t>& p_r) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -265,7 +265,7 @@ void SomeServiceAsyncClient::sync_binary_keyed_map(apache::thrift::RpcOptions& r
       this->getServiceName(),
       "SomeService.binary_keyed_map");
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  binary_keyed_mapImpl(rpcOptions, ctx, std::move(wrappedCallback), r);
+  binary_keyed_mapImpl(rpcOptions, ctx, std::move(wrappedCallback), p_r);
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
   _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
@@ -284,48 +284,48 @@ void SomeServiceAsyncClient::sync_binary_keyed_map(apache::thrift::RpcOptions& r
 }
 
 
-folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::future_binary_keyed_map(const ::std::vector<int64_t>& r) {
+folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::future_binary_keyed_map(const ::std::vector<int64_t>& p_r) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return future_binary_keyed_map(rpcOptions, r);
+  return future_binary_keyed_map(rpcOptions, p_r);
 }
 
-folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::semifuture_binary_keyed_map(const ::std::vector<int64_t>& r) {
+folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::semifuture_binary_keyed_map(const ::std::vector<int64_t>& p_r) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_binary_keyed_map(rpcOptions, r);
+  return semifuture_binary_keyed_map(rpcOptions, p_r);
 }
 
-folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
-  folly::Promise<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>(std::move(_promise), recv_wrapped_binary_keyed_map, channel_);
-  binary_keyed_map(rpcOptions, std::move(callback), r);
-  return _future;
+folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& p_r) {
+  folly::Promise<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>(std::move(promise), recv_wrapped_binary_keyed_map, channel_);
+  binary_keyed_map(rpcOptions, std::move(callback), p_r);
+  return future;
 }
 
-folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
+folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& p_r) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_binary_keyed_map, channel_);
   auto callback = std::move(callbackAndFuture.first);
-  binary_keyed_map(rpcOptions, std::move(callback), r);
+  binary_keyed_map(rpcOptions, std::move(callback), p_r);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
-  folly::Promise<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>(std::move(_promise), recv_wrapped_binary_keyed_map, channel_);
-  binary_keyed_map(rpcOptions, std::move(callback), r);
-  return _future;
+folly::Future<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& p_r) {
+  folly::Promise<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>(std::move(promise), recv_wrapped_binary_keyed_map, channel_);
+  binary_keyed_map(rpcOptions, std::move(callback), p_r);
+  return future;
 }
 
-folly::SemiFuture<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
+folly::SemiFuture<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& p_r) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_binary_keyed_map, channel_);
   auto callback = std::move(callbackAndFuture.first);
-  binary_keyed_map(rpcOptions, std::move(callback), r);
+  binary_keyed_map(rpcOptions, std::move(callback), p_r);
   return std::move(callbackAndFuture.second);
 }
 
-void SomeServiceAsyncClient::binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<int64_t>& r) {
-  binary_keyed_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), r);
+void SomeServiceAsyncClient::binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<int64_t>& p_r) {
+  binary_keyed_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_r);
 }
 
 #if FOLLY_HAS_COROUTINES

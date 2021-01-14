@@ -206,11 +206,11 @@ apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_M
   ProtocolOut_ prot;
   MyService_MyInteraction_truthify_presult::FieldsType result;
   using StreamPResultType = MyService_MyInteraction_truthify_presult::StreamPResultType;
-  auto& _returnStream = _return;
+  auto& returnStream = _return;
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
-  auto _encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream), std::move(executor));
-  return {serializeResponse("MyInteraction.truthify", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
+  auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
+  return {serializeResponse("MyInteraction.truthify", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -423,11 +423,11 @@ apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_M
   ProtocolOut_ prot;
   MyService_MyInteractionFast_truthify_presult::FieldsType result;
   using StreamPResultType = MyService_MyInteractionFast_truthify_presult::StreamPResultType;
-  auto& _returnStream = _return;
+  auto& returnStream = _return;
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
-  auto _encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream), std::move(executor));
-  return {serializeResponse("MyInteractionFast.truthify", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
+  auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
+  return {serializeResponse("MyInteractionFast.truthify", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

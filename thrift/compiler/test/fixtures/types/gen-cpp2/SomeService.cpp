@@ -19,20 +19,20 @@ void SomeServiceSvIf::bounce_map( ::apache::thrift::fixtures::types::SomeMap& /*
   apache::thrift::detail::si::throw_app_exn_unimplemented("bounce_map");
 }
 
-folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> SomeServiceSvIf::semifuture_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::apache::thrift::fixtures::types::SomeMap& _return) { bounce_map(_return, std::move(m)); });
+folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> SomeServiceSvIf::semifuture_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::apache::thrift::fixtures::types::SomeMap& _return) { bounce_map(_return, std::move(p_m)); });
 }
 
-folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> SomeServiceSvIf::future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) {
+folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> SomeServiceSvIf::future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_bounce_map(std::move(m)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_bounce_map(std::move(p_m)), std::move(ka));
 }
 
-void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> m) {
+void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_bounce_map(std::move(m));
+    return future_bounce_map(std::move(p_m));
   });
 }
 
@@ -40,20 +40,20 @@ void SomeServiceSvIf::binary_keyed_map(::std::map< ::apache::thrift::fixtures::t
   apache::thrift::detail::si::throw_app_exn_unimplemented("binary_keyed_map");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> SomeServiceSvIf::semifuture_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> r) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return) { binary_keyed_map(_return, std::move(r)); });
+folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> SomeServiceSvIf::semifuture_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> p_r) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return) { binary_keyed_map(_return, std::move(p_r)); });
 }
 
-folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> SomeServiceSvIf::future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> r) {
+folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> SomeServiceSvIf::future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> p_r) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_binary_keyed_map(std::move(r)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_binary_keyed_map(std::move(p_r)), std::move(ka));
 }
 
-void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> r) {
+void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<::std::vector<int64_t>> p_r) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_binary_keyed_map(std::move(r));
+    return future_binary_keyed_map(std::move(p_r));
   });
 }
 

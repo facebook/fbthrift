@@ -18,13 +18,13 @@
   %><%^first?%>, <%/first?%><%!
 %><%#type:resolves_to_complex_return?%><%!
 %><%#function:stack_arguments?%><%!
-  %><%field:cpp_name%><%!
+  %>p_<%field:cpp_name%><%!
 %><%/function:stack_arguments?%><%!
 %><%^function:stack_arguments?%><%!
-  %>std::move(<%field:cpp_name%>)<%!
+  %>std::move(p_<%field:cpp_name%>)<%!
 %><%/function:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-    %><%field:cpp_name%><%!
+    %>p_<%field:cpp_name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>

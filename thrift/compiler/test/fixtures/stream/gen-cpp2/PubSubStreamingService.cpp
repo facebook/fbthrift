@@ -19,22 +19,22 @@ apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::returnstream(i
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");
 }
 
-folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_returnstream(int32_t i32_from, int32_t i32_to) {
+folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_returnstream(int32_t p_i32_from, int32_t p_i32_to) {
   return apache::thrift::detail::si::semifuture([&] {
-    return returnstream(i32_from, i32_to);
+    return returnstream(p_i32_from, p_i32_to);
   });
 }
 
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_returnstream(int32_t i32_from, int32_t i32_to) {
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_returnstream(int32_t p_i32_from, int32_t p_i32_to) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_returnstream(i32_from, i32_to), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_returnstream(p_i32_from, p_i32_to), std::move(ka));
 }
 
-void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) {
+void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t p_i32_from, int32_t p_i32_to) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_returnstream(i32_from, i32_to);
+    return future_returnstream(p_i32_from, p_i32_to);
   });
 }
 
@@ -42,22 +42,22 @@ apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::streamthrows(i
   apache::thrift::detail::si::throw_app_exn_unimplemented("streamthrows");
 }
 
-folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_streamthrows(int32_t foo) {
+folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_streamthrows(int32_t p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return streamthrows(foo);
+    return streamthrows(p_foo);
   });
 }
 
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_streamthrows(int32_t foo) {
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_streamthrows(int32_t p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_streamthrows(foo), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_streamthrows(p_foo), std::move(ka));
 }
 
-void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) {
+void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_streamthrows(foo);
+    return future_streamthrows(p_foo);
   });
 }
 
@@ -65,22 +65,22 @@ apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::boththrows(int
   apache::thrift::detail::si::throw_app_exn_unimplemented("boththrows");
 }
 
-folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_boththrows(int32_t foo) {
+folly::SemiFuture<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::semifuture_boththrows(int32_t p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return boththrows(foo);
+    return boththrows(p_foo);
   });
 }
 
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_boththrows(int32_t foo) {
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceSvIf::future_boththrows(int32_t p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_boththrows(foo), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_boththrows(p_foo), std::move(ka));
 }
 
-void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) {
+void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_boththrows(foo);
+    return future_boththrows(p_foo);
   });
 }
 
@@ -88,22 +88,22 @@ apache::thrift::ResponseAndServerStream<int32_t,int32_t> PubSubStreamingServiceS
   apache::thrift::detail::si::throw_app_exn_unimplemented("responseandstreamthrows");
 }
 
-folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceSvIf::semifuture_responseandstreamthrows(int32_t foo) {
+folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceSvIf::semifuture_responseandstreamthrows(int32_t p_foo) {
   return apache::thrift::detail::si::semifuture([&] {
-    return responseandstreamthrows(foo);
+    return responseandstreamthrows(p_foo);
   });
 }
 
-folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceSvIf::future_responseandstreamthrows(int32_t foo) {
+folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceSvIf::future_responseandstreamthrows(int32_t p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_responseandstreamthrows(foo), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_responseandstreamthrows(p_foo), std::move(ka));
 }
 
-void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) {
+void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t p_foo) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_responseandstreamthrows(foo);
+    return future_responseandstreamthrows(p_foo);
   });
 }
 

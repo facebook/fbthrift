@@ -94,29 +94,29 @@ bool MyServiceSvIf::hasDataById(int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("hasDataById");
 }
 
-folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t id) {
+folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t p_id) {
   return apache::thrift::detail::si::semifuture([&] {
-    return hasDataById(id);
+    return hasDataById(p_id);
   });
 }
 
-folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
+folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_hasDataById(id), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_hasDataById(p_id), std::move(ka));
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(int64_t id) {
-  return folly::coro::toTask(future_hasDataById(id));
+folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(int64_t p_id) {
+  return folly::coro::toTask(future_hasDataById(p_id));
 }
 
-folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(apache::thrift::RequestParams /* params */, int64_t id) {
-  return co_hasDataById(id);
+folly::coro::Task<bool> MyServiceSvIf::co_hasDataById(apache::thrift::RequestParams /* params */, int64_t p_id) {
+  return co_hasDataById(p_id);
 }
 #endif // FOLLY_HAS_COROUTINES
-void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
+void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t p_id) {
 #if FOLLY_HAS_COROUTINES
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -131,7 +131,7 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
     using Source = apache::thrift::concurrency::ThreadManager::Source;
     auto pri = params.getRequestContext()->getRequestPriority();
     apache::thrift::detail::si::async_tm_coro_start(
-      co_hasDataById(params, id),
+      co_hasDataById(params, p_id),
       params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
       std::move(callback));
   } catch (...) {
@@ -139,7 +139,7 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
   }
 #else // FOLLY_HAS_COROUTINES
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_hasDataById(id);
+    return future_hasDataById(p_id);
   });
 #endif // FOLLY_HAS_COROUTINES
 }
@@ -152,22 +152,22 @@ void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /
   apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   return apache::thrift::detail::si::semifuture([&] {
-    return putDataById(id, std::move(data));
+    return putDataById(p_id, std::move(p_data));
   });
 }
 
-folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_putDataById(id, std::move(data)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_putDataById(p_id, std::move(p_data)), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) {
+void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t p_id, std::unique_ptr<::std::string> p_data) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_putDataById(id, std::move(data));
+    return future_putDataById(p_id, std::move(p_data));
   });
 }
 

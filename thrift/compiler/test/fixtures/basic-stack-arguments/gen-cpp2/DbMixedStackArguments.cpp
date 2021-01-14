@@ -19,20 +19,20 @@ void DbMixedStackArgumentsSvIf::getDataByKey0(::std::string& /*_return*/, std::u
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataByKey0");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::semifuture_getDataByKey0(std::unique_ptr<::std::string> key) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { getDataByKey0(_return, std::move(key)); });
+folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::semifuture_getDataByKey0(std::unique_ptr<::std::string> p_key) {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { getDataByKey0(_return, std::move(p_key)); });
 }
 
-folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey0(std::unique_ptr<::std::string> key) {
+folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey0(std::unique_ptr<::std::string> p_key) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(key)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(p_key)), std::move(ka));
 }
 
-void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> key) {
+void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_getDataByKey0(std::move(key));
+    return future_getDataByKey0(std::move(p_key));
   });
 }
 
@@ -40,20 +40,20 @@ void DbMixedStackArgumentsSvIf::getDataByKey1(::std::string& /*_return*/, const 
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataByKey1");
 }
 
-folly::SemiFuture<::std::string> DbMixedStackArgumentsSvIf::semifuture_getDataByKey1(const ::std::string& key) {
-  return apache::thrift::detail::si::semifuture_returning([&](::std::string& _return) { getDataByKey1(_return, key); });
+folly::SemiFuture<::std::string> DbMixedStackArgumentsSvIf::semifuture_getDataByKey1(const ::std::string& p_key) {
+  return apache::thrift::detail::si::semifuture_returning([&](::std::string& _return) { getDataByKey1(_return, p_key); });
 }
 
-folly::Future<::std::string> DbMixedStackArgumentsSvIf::future_getDataByKey1(const ::std::string& key) {
+folly::Future<::std::string> DbMixedStackArgumentsSvIf::future_getDataByKey1(const ::std::string& p_key) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_getDataByKey1(key), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_getDataByKey1(p_key), std::move(ka));
 }
 
-void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& key) {
+void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& p_key) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_getDataByKey1(key);
+    return future_getDataByKey1(p_key);
   });
 }
 
