@@ -19,9 +19,11 @@ public class MyServiceRpcServerHandler
 
   private final java.util.List<com.facebook.swift.transport.payload.Reader> _pingReaders;
   private final java.util.List<com.facebook.swift.transport.payload.Reader> _getRandomDataReaders;
+  private final java.util.List<com.facebook.swift.transport.payload.Reader> _sinkReaders;
+  private final java.util.List<com.facebook.swift.transport.payload.Reader> _putDataByIdReaders;
   private final java.util.List<com.facebook.swift.transport.payload.Reader> _hasDataByIdReaders;
   private final java.util.List<com.facebook.swift.transport.payload.Reader> _getDataByIdReaders;
-  private final java.util.List<com.facebook.swift.transport.payload.Reader> _putDataByIdReaders;
+  private final java.util.List<com.facebook.swift.transport.payload.Reader> _deleteDataByIdReaders;
   private final java.util.List<com.facebook.swift.transport.payload.Reader> _lobDataByIdReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
@@ -50,14 +52,20 @@ public class MyServiceRpcServerHandler
     _methodMap.put("getRandomData", this);
     _getRandomDataReaders = _creategetRandomDataReaders();
 
+    _methodMap.put("sink", this);
+    _sinkReaders = _createsinkReaders();
+
+    _methodMap.put("putDataById", this);
+    _putDataByIdReaders = _createputDataByIdReaders();
+
     _methodMap.put("hasDataById", this);
     _hasDataByIdReaders = _createhasDataByIdReaders();
 
     _methodMap.put("getDataById", this);
     _getDataByIdReaders = _creategetDataByIdReaders();
 
-    _methodMap.put("putDataById", this);
-    _putDataByIdReaders = _createputDataByIdReaders();
+    _methodMap.put("deleteDataById", this);
+    _deleteDataByIdReaders = _createdeleteDataByIdReaders();
 
     _methodMap.put("lobDataById", this);
     _lobDataByIdReaders = _createlobDataByIdReaders();
@@ -193,6 +201,181 @@ oprot.writeString(_iter0);
                     com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
                         _creategetRandomDataWriter(_response, _chain, _payload.getMessageSeqId()));
+
+                return _serverResponsePayload;
+            })
+            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+                _chain.preWriteException(_t);
+                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+
+                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                return reactor.core.publisher.Mono.just(_serverResponsePayload);
+            });
+  }
+  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createsinkReaders() {
+    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+
+    
+    _readerList.add(oprot -> {
+      try {
+        long _r = oprot.readI64();
+        return _r;
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    });
+
+    return _readerList;
+  }
+
+  private static com.facebook.swift.transport.payload.Writer _createsinkWriter(
+      final Object _r,
+      final com.facebook.swift.service.ContextChain _chain,
+      final int _seqId) {
+      return oprot -> {
+      try {
+        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("sink", TMessageType.REPLY, _seqId));
+        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+
+        
+
+        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+
+
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        oprot.writeMessageEnd();
+
+        _chain.postWrite(_r);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+    _dosink(
+    MyService.Reactive _delegate,
+    String _name,
+    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+          _chain.preRead();
+          java.util.List<Object>_data = _payload.getData(_readers);
+          java.util.Iterator<Object> _iterator = _data.iterator();
+
+          long sink = (long) _iterator.next();
+
+          _chain.postRead(_data);
+
+          return _delegate
+            .sink(sink)
+            .map(_response -> {
+              _chain.preWrite(_response);
+                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _createsinkWriter(_response, _chain, _payload.getMessageSeqId()));
+
+                return _serverResponsePayload;
+            })
+            .<com.facebook.swift.transport.payload.ServerResponsePayload>onErrorResume(_t -> {
+                _chain.preWriteException(_t);
+                com.facebook.swift.transport.payload.Writer _exceptionWriter = null;
+
+                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                return reactor.core.publisher.Mono.just(_serverResponsePayload);
+            });
+  }
+  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createputDataByIdReaders() {
+    java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
+
+    
+    _readerList.add(oprot -> {
+      try {
+        long _r = oprot.readI64();
+        return _r;
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    });
+    
+    _readerList.add(oprot -> {
+      try {
+        String _r = oprot.readString();
+        return _r;
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    });
+
+    return _readerList;
+  }
+
+  private static com.facebook.swift.transport.payload.Writer _createputDataByIdWriter(
+      final Object _r,
+      final com.facebook.swift.service.ContextChain _chain,
+      final int _seqId) {
+      return oprot -> {
+      try {
+        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("putDataById", TMessageType.REPLY, _seqId));
+        oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
+
+        
+
+        oprot.writeFieldBegin(com.facebook.swift.transport.util.GeneratedUtil.VOID_FIELD);
+
+
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        oprot.writeMessageEnd();
+
+        _chain.postWrite(_r);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
+    _doputDataById(
+    MyService.Reactive _delegate,
+    String _name,
+    com.facebook.swift.transport.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.swift.transport.payload.Reader> _readers,
+    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+          _chain.preRead();
+          java.util.List<Object>_data = _payload.getData(_readers);
+          java.util.Iterator<Object> _iterator = _data.iterator();
+
+          long id = (long) _iterator.next();
+          String data = (String) _iterator.next();
+
+          _chain.postRead(_data);
+
+          return _delegate
+            .putDataById(id, data)
+            .map(_response -> {
+              _chain.preWrite(_response);
+                com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _createputDataByIdWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
@@ -376,7 +559,7 @@ oprot.writeString(_iter0);
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
   }
-  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createputDataByIdReaders() {
+  private static java.util.List<com.facebook.swift.transport.payload.Reader> _createdeleteDataByIdReaders() {
     java.util.List<com.facebook.swift.transport.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
@@ -389,27 +572,17 @@ oprot.writeString(_iter0);
         throw reactor.core.Exceptions.propagate(_e);
       }
     });
-    
-    _readerList.add(oprot -> {
-      try {
-        String _r = oprot.readString();
-        return _r;
-
-      } catch (Throwable _e) {
-        throw reactor.core.Exceptions.propagate(_e);
-      }
-    });
 
     return _readerList;
   }
 
-  private static com.facebook.swift.transport.payload.Writer _createputDataByIdWriter(
+  private static com.facebook.swift.transport.payload.Writer _createdeleteDataByIdWriter(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("putDataById", TMessageType.REPLY, _seqId));
+        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("deleteDataById", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.swift.transport.util.GeneratedUtil.TSTRUCT);
 
         
@@ -430,7 +603,7 @@ oprot.writeString(_iter0);
   }
 
   private static reactor.core.publisher.Mono<com.facebook.swift.transport.payload.ServerResponsePayload>
-    _doputDataById(
+    _dodeleteDataById(
     MyService.Reactive _delegate,
     String _name,
     com.facebook.swift.transport.payload.ServerRequestPayload _payload,
@@ -442,18 +615,17 @@ oprot.writeString(_iter0);
           java.util.Iterator<Object> _iterator = _data.iterator();
 
           long id = (long) _iterator.next();
-          String data = (String) _iterator.next();
 
           _chain.postRead(_data);
 
           return _delegate
-            .putDataById(id, data)
+            .deleteDataById(id)
             .map(_response -> {
               _chain.preWrite(_response);
                 com.facebook.swift.transport.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.swift.transport.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
-                        _createputDataByIdWriter(_response, _chain, _payload.getMessageSeqId()));
+                        _createdeleteDataByIdWriter(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
@@ -576,14 +748,20 @@ oprot.writeString(_iter0);
         case "getRandomData":
           _result = _dogetRandomData(_delegate, _name, _payload, _getRandomDataReaders, _eventHandlers);
         break;
+        case "sink":
+          _result = _dosink(_delegate, _name, _payload, _sinkReaders, _eventHandlers);
+        break;
+        case "putDataById":
+          _result = _doputDataById(_delegate, _name, _payload, _putDataByIdReaders, _eventHandlers);
+        break;
         case "hasDataById":
           _result = _dohasDataById(_delegate, _name, _payload, _hasDataByIdReaders, _eventHandlers);
         break;
         case "getDataById":
           _result = _dogetDataById(_delegate, _name, _payload, _getDataByIdReaders, _eventHandlers);
         break;
-        case "putDataById":
-          _result = _doputDataById(_delegate, _name, _payload, _putDataByIdReaders, _eventHandlers);
+        case "deleteDataById":
+          _result = _dodeleteDataById(_delegate, _name, _payload, _deleteDataByIdReaders, _eventHandlers);
         break;
         case "lobDataById":
           _result = _dolobDataById(_delegate, _name, _payload, _lobDataByIdReaders, _eventHandlers);

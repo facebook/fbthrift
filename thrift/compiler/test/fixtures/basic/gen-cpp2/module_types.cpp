@@ -133,15 +133,33 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg) :
+MyStruct::MyStruct() :
+      MyIntField(0),
+      myEnum( ::cpp2::MyEnum::MyValue1),
+      oneway(0),
+      readonly(0),
+      idempotent(0) {}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+MyStruct::~MyStruct() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
-    myEnum(std::move(myEnum__arg)) {
+    myEnum(std::move(myEnum__arg)),
+    oneway(std::move(oneway__arg)),
+    readonly(std::move(readonly__arg)),
+    idempotent(std::move(idempotent__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
   __isset.MyDataField = true;
   __isset.myEnum = true;
+  __isset.oneway = true;
+  __isset.readonly = true;
+  __isset.idempotent = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
@@ -149,6 +167,9 @@ void MyStruct::__clear() {
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   myEnum =  ::cpp2::MyEnum::MyValue1;
+  oneway = 0;
+  readonly = 0;
+  idempotent = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -170,6 +191,15 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.myEnum == rhs.myEnum)) {
     return false;
   }
+  if (!(lhs.oneway == rhs.oneway)) {
+    return false;
+  }
+  if (!(lhs.readonly == rhs.readonly)) {
+    return false;
+  }
+  if (!(lhs.idempotent == rhs.idempotent)) {
+    return false;
+  }
   return true;
 }
 
@@ -189,6 +219,15 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.myEnum == rhs.myEnum)) {
     return lhs.myEnum < rhs.myEnum;
   }
+  if (!(lhs.oneway == rhs.oneway)) {
+    return lhs.oneway < rhs.oneway;
+  }
+  if (!(lhs.readonly == rhs.readonly)) {
+    return lhs.readonly < rhs.readonly;
+  }
+  if (!(lhs.idempotent == rhs.idempotent)) {
+    return lhs.idempotent < rhs.idempotent;
+  }
   return false;
 }
 
@@ -207,6 +246,9 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyStringField_ref().value(), b.MyStringField_ref().value());
   swap(a.MyDataField_ref().value(), b.MyDataField_ref().value());
   swap(a.myEnum_ref().value(), b.myEnum_ref().value());
+  swap(a.oneway_ref().value(), b.oneway_ref().value());
+  swap(a.readonly_ref().value(), b.readonly_ref().value());
+  swap(a.idempotent_ref().value(), b.idempotent_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

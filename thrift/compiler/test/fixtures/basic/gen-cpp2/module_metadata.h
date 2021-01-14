@@ -48,9 +48,11 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
  private:
   static void gen_ping(ThriftMetadata& metadata, ThriftService& context);
   static void gen_getRandomData(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_sink(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_putDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_hasDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_getDataById(ThriftMetadata& metadata, ThriftService& context);
-  static void gen_putDataById(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_deleteDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_lobDataById(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>

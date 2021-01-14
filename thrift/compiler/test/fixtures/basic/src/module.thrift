@@ -29,7 +29,9 @@ struct MyStruct {
   # use the type before it is defined. Thrift should be able to handle this
   3: MyDataItem MyDataField;
   4: MyEnum myEnum;
-# TODO(afuller): Add a field name 'oneway' once linter allows it.
+  5: bool oneway;
+  6: bool readonly;
+  7: bool idempotent;
 }
 
 struct MyDataItem {
@@ -44,9 +46,12 @@ union MyUnion {
 service MyService {
   void ping();
   string getRandomData();
+  void sink(1: i64 sink);
+
+  void putDataById(1: i64 id, 2: string data);
   bool hasDataById(1: i64 id);
   string getDataById(1: i64 id);
-  void putDataById(1: i64 id, 2: string data);
+  void deleteDataById(1: i64 id);
   oneway void lobDataById(1: i64 id, 2: string data);
 }
 

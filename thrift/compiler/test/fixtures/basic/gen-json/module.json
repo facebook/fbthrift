@@ -35,12 +35,27 @@
           "type_enum" : "ENUM",
           "spec_args" : "MyEnum",
           "required" : true
+        },
+        "oneway" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true
+        },
+        "readonly" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true
+        },
+        "idempotent" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true
         }
       },
       "annotation_last_lineno" : -1
     },
     "MyDataItem" : {
-      "lineno" : 35,
+      "lineno" : 37,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -49,7 +64,7 @@
       "annotation_last_lineno" : -1
     },
     "MyUnion" : {
-      "lineno" : 38,
+      "lineno" : 40,
       "is_exception" : false,
       "is_union" : true,
       "fields" : {
@@ -74,7 +89,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 44,
+      "lineno" : 46,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -90,6 +105,36 @@
             "spec_args" : null
           },
           "args" : [],
+          "throws" : []
+        },
+        "MyService.sink" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            }
+          ],
+          "throws" : []
+        },
+        "MyService.putDataById" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "I64",
+              "spec_args" : null
+            },
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            }
+          ],
           "throws" : []
         },
         "MyService.hasDataById" : {
@@ -118,7 +163,7 @@
           ],
           "throws" : []
         },
-        "MyService.putDataById" : {
+        "MyService.deleteDataById" : {
           "return_type" : {
             "type_enum" : "VOID",
             "spec_args" : null
@@ -126,10 +171,6 @@
           "args" : [
             {
               "type_enum" : "I64",
-              "spec_args" : null
-            },
-            {
-              "type_enum" : "STRING",
               "spec_args" : null
             }
           ],
@@ -155,7 +196,7 @@
       }
     },
     "DbMixedStackArguments" : {
-      "lineno" : 53,
+      "lineno" : 58,
       "functions" : {
         "DbMixedStackArguments.getDataByKey0" : {
           "return_type" : {

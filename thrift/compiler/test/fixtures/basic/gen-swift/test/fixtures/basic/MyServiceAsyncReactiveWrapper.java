@@ -34,6 +34,16 @@ public class MyServiceAsyncReactiveWrapper
     }
     
     @java.lang.Override
+    public reactor.core.publisher.Mono<Void> sink(final long sink) {
+        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.sink(sink));
+    }
+    
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
+        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.putDataById(id, data));
+    }
+    
+    @java.lang.Override
     public reactor.core.publisher.Mono<Boolean> hasDataById(final long id) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.hasDataById(id));
     }
@@ -44,8 +54,8 @@ public class MyServiceAsyncReactiveWrapper
     }
     
     @java.lang.Override
-    public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
-        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.putDataById(id, data));
+    public reactor.core.publisher.Mono<Void> deleteDataById(final long id) {
+        return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.deleteDataById(id));
     }
     
     @java.lang.Override

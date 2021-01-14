@@ -18,6 +18,9 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public str MyStringField
     cdef public object MyDataField
     cdef public _module_types.MyEnum myEnum
+    cdef public pbool oneway
+    cdef public pbool readonly
+    cdef public pbool idempotent
 
 
 cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):

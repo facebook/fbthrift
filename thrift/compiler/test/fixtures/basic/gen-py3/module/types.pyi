@@ -30,6 +30,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyStringField: bool
         MyDataField: bool
         myEnum: bool
+        oneway: bool
+        readonly: bool
+        idempotent: bool
         pass
 
     MyIntField: Final[int] = ...
@@ -40,12 +43,21 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
 
     myEnum: Final[MyEnum] = ...
 
+    oneway: Final[bool] = ...
+
+    readonly: Final[bool] = ...
+
+    idempotent: Final[bool] = ...
+
     def __init__(
         self, *,
         MyIntField: _typing.Optional[int]=None,
         MyStringField: _typing.Optional[str]=None,
         MyDataField: _typing.Optional['MyDataItem']=None,
-        myEnum: _typing.Optional[MyEnum]=None
+        myEnum: _typing.Optional[MyEnum]=None,
+        oneway: _typing.Optional[bool]=None,
+        readonly: _typing.Optional[bool]=None,
+        idempotent: _typing.Optional[bool]=None
     ) -> None: ...
 
     def __call__(
@@ -53,7 +65,10 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyIntField: _typing.Union[int, __NotSet, None]=NOTSET,
         MyStringField: _typing.Union[str, __NotSet, None]=NOTSET,
         MyDataField: _typing.Union['MyDataItem', __NotSet, None]=NOTSET,
-        myEnum: _typing.Union[MyEnum, __NotSet, None]=NOTSET
+        myEnum: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
+        oneway: _typing.Union[bool, __NotSet, None]=NOTSET,
+        readonly: _typing.Union[bool, __NotSet, None]=NOTSET,
+        idempotent: _typing.Union[bool, __NotSet, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...

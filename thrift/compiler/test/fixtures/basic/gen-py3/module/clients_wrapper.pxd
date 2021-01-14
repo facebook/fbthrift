@@ -51,13 +51,17 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
 
     cFollyFuture[cFollyUnit] ping(cRpcOptions, )
     cFollyFuture[string] getRandomData(cRpcOptions, )
+    cFollyFuture[cFollyUnit] sink(cRpcOptions, 
+      cint64_t arg_sink,)
+    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
+      cint64_t arg_id,
+      string arg_data,)
     cFollyFuture[cbool] hasDataById(cRpcOptions, 
       cint64_t arg_id,)
     cFollyFuture[string] getDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
-      cint64_t arg_id,
-      string arg_data,)
+    cFollyFuture[cFollyUnit] deleteDataById(cRpcOptions, 
+      cint64_t arg_id,)
     cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)

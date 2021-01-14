@@ -57,6 +57,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint MyStringField
         bint MyDataField
         bint myEnum
+        bint oneway
+        bint readonly
+        bint idempotent
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -75,6 +78,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cMyDataItem MyDataField
         __field_ref[cMyEnum] myEnum_ref()
         cMyEnum myEnum
+        __field_ref[cbool] oneway_ref()
+        cbool oneway
+        __field_ref[cbool] readonly_ref()
+        cbool readonly
+        __field_ref[cbool] idempotent_ref()
+        cbool idempotent
         cMyStruct__isset __isset
 
     cdef cppclass cMyDataItem__isset "::cpp2::MyDataItem::__isset":

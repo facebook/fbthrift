@@ -55,6 +55,15 @@ void reset_field<::cpp2::MyStruct>(
     case 3:
       obj.myEnum_ref().copy_from(default_inst<::cpp2::MyStruct>().myEnum_ref());
       return;
+    case 4:
+      obj.oneway_ref().copy_from(default_inst<::cpp2::MyStruct>().oneway_ref());
+      return;
+    case 5:
+      obj.readonly_ref().copy_from(default_inst<::cpp2::MyStruct>().readonly_ref());
+      return;
+    case 6:
+      obj.idempotent_ref().copy_from(default_inst<::cpp2::MyStruct>().idempotent_ref());
+      return;
   }
 }
 

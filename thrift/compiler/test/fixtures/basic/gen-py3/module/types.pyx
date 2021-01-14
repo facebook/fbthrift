@@ -149,6 +149,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "MyStringField": deref(self._cpp_obj).MyStringField_ref().has_value(),
           "MyDataField": deref(self._cpp_obj).MyDataField_ref().has_value(),
           "myEnum": deref(self._cpp_obj).myEnum_ref().has_value(),
+          "oneway": deref(self._cpp_obj).oneway_ref().has_value(),
+          "readonly": deref(self._cpp_obj).readonly_ref().has_value(),
+          "idempotent": deref(self._cpp_obj).idempotent_ref().has_value(),
         })
 
     @staticmethod
@@ -181,6 +184,21 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.__fbthrift_cached_myEnum = translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum_ref().value()))
         return self.__fbthrift_cached_myEnum
 
+    @property
+    def oneway(self):
+
+        return <pbool> deref(self._cpp_obj).oneway_ref().value()
+
+    @property
+    def readonly(self):
+
+        return <pbool> deref(self._cpp_obj).readonly_ref().value()
+
+    @property
+    def idempotent(self):
+
+        return <pbool> deref(self._cpp_obj).idempotent_ref().value()
+
 
     def __hash__(MyStruct self):
         return  super().__hash__()
@@ -207,7 +225,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 4
+        self.__fbthrift_struct_size = 7
 
     cdef __iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

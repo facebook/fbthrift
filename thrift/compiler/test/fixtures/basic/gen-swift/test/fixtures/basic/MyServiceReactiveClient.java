@@ -17,13 +17,17 @@ public class MyServiceReactiveClient
 
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _ping_EXCEPTION_READERS;
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getRandomData_EXCEPTION_READERS;
+  private static final TField _sink_SINK_FIELD_DESC = new TField("sink", TType.I64, (short)(0 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _sink_EXCEPTION_READERS;
+  private static final TField _putDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
+  private static final TField _putDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)(1 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _putDataById_EXCEPTION_READERS;
   private static final TField _hasDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _hasDataById_EXCEPTION_READERS;
   private static final TField _getDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _getDataById_EXCEPTION_READERS;
-  private static final TField _putDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
-  private static final TField _putDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)(1 + 1));
-  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _putDataById_EXCEPTION_READERS;
+  private static final TField _deleteDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _deleteDataById_EXCEPTION_READERS;
   private static final TField _lobDataById_ID_FIELD_DESC = new TField("id", TType.I64, (short)(0 + 1));
   private static final TField _lobDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)(1 + 1));
   private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _lobDataById_EXCEPTION_READERS;
@@ -31,9 +35,11 @@ public class MyServiceReactiveClient
   static {
     _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
     _getRandomData_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _sink_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _putDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
     _hasDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
     _getDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
-    _putDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _deleteDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
     _lobDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
@@ -132,6 +138,127 @@ public class MyServiceReactiveClient
                     _creategetRandomDataWriter(),
                     _getRandomData_READER,
                     _getRandomData_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .map(_p -> _p.getData());
+      });
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createsinkWriter(final long sink) {
+    return oprot -> {
+      try {
+        {
+          oprot.writeFieldBegin(_sink_SINK_FIELD_DESC);
+
+          long _iter0 = sink;
+
+          oprot.writeI64(sink);
+          oprot.writeFieldEnd();
+        }
+
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _sink_READER =
+    oprot -> {
+              try {
+
+                return null;
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> sink(final long sink) {
+    return _rpcClient
+      .flatMap(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("sink")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<Void> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createsinkWriter(sink),
+                    _sink_READER,
+                    _sink_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .map(_p -> _p.getData());
+      });
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createputDataByIdWriter(final long id, final String data) {
+    return oprot -> {
+      try {
+        {
+          oprot.writeFieldBegin(_putDataById_ID_FIELD_DESC);
+
+          long _iter0 = id;
+
+          oprot.writeI64(id);
+          oprot.writeFieldEnd();
+        }
+
+        {
+          oprot.writeFieldBegin(_putDataById_DATA_FIELD_DESC);
+
+          String _iter0 = data;
+
+          oprot.writeString(data);
+          oprot.writeFieldEnd();
+        }
+
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _putDataById_READER =
+    oprot -> {
+              try {
+
+                return null;
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
+    return _rpcClient
+      .flatMap(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("putDataById")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<Void> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createputDataByIdWriter(id, data),
+                    _putDataById_READER,
+                    _putDataById_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 
@@ -255,24 +382,15 @@ public class MyServiceReactiveClient
       });
   }
 
-  private com.facebook.swift.transport.payload.Writer _createputDataByIdWriter(final long id, final String data) {
+  private com.facebook.swift.transport.payload.Writer _createdeleteDataByIdWriter(final long id) {
     return oprot -> {
       try {
         {
-          oprot.writeFieldBegin(_putDataById_ID_FIELD_DESC);
+          oprot.writeFieldBegin(_deleteDataById_ID_FIELD_DESC);
 
           long _iter0 = id;
 
           oprot.writeI64(id);
-          oprot.writeFieldEnd();
-        }
-
-        {
-          oprot.writeFieldBegin(_putDataById_DATA_FIELD_DESC);
-
-          String _iter0 = data;
-
-          oprot.writeString(data);
           oprot.writeFieldEnd();
         }
 
@@ -283,7 +401,7 @@ public class MyServiceReactiveClient
     };
   }
 
-  private static final com.facebook.swift.transport.payload.Reader _putDataById_READER =
+  private static final com.facebook.swift.transport.payload.Reader _deleteDataById_READER =
     oprot -> {
               try {
 
@@ -296,11 +414,11 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
+  public reactor.core.publisher.Mono<Void> deleteDataById(final long id) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
-                .setName("putDataById")
+                .setName("deleteDataById")
                 .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
                 .setOtherMetadata(Collections.emptyMap())
                 .setProtocol(_protocolId)
@@ -308,9 +426,9 @@ public class MyServiceReactiveClient
 
             com.facebook.swift.transport.payload.ClientRequestPayload<Void> _crp =
                 com.facebook.swift.transport.payload.ClientRequestPayload.create(
-                    _createputDataByIdWriter(id, data),
-                    _putDataById_READER,
-                    _putDataById_EXCEPTION_READERS,
+                    _createdeleteDataByIdWriter(id),
+                    _deleteDataById_READER,
+                    _deleteDataById_EXCEPTION_READERS,
                     _metadata,
                     java.util.Collections.emptyMap());
 

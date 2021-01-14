@@ -27,6 +27,21 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
 
   /**
    * Original thrift definition:-
+   * void
+   *   sink(1: i64 sink);
+   */
+  public function sink(int $sink): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function putDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
    * bool
    *   hasDataById(1: i64 id);
    */
@@ -42,10 +57,9 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
    * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
+   *   deleteDataById(1: i64 id);
    */
-  public function putDataById(int $id, string $data): Awaitable<void>;
+  public function deleteDataById(int $id): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -77,6 +91,21 @@ interface MyServiceIf extends \IThriftSyncIf {
 
   /**
    * Original thrift definition:-
+   * void
+   *   sink(1: i64 sink);
+   */
+  public function sink(int $sink): void;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function putDataById(int $id, string $data): void;
+
+  /**
+   * Original thrift definition:-
    * bool
    *   hasDataById(1: i64 id);
    */
@@ -92,10 +121,9 @@ interface MyServiceIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
+   *   deleteDataById(1: i64 id);
    */
-  public function putDataById(int $id, string $data): void;
+  public function deleteDataById(int $id): void;
 
   /**
    * Original thrift definition:-
@@ -127,6 +155,21 @@ interface MyServiceClientIf extends \IThriftSyncIf {
 
   /**
    * Original thrift definition:-
+   * void
+   *   sink(1: i64 sink);
+   */
+  public function sink(int $sink): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function putDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
    * bool
    *   hasDataById(1: i64 id);
    */
@@ -142,10 +185,9 @@ interface MyServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
+   *   deleteDataById(1: i64 id);
    */
-  public function putDataById(int $id, string $data): Awaitable<void>;
+  public function deleteDataById(int $id): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -177,6 +219,21 @@ interface MyServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 
   /**
    * Original thrift definition:-
+   * void
+   *   sink(1: i64 sink);
+   */
+  public function sink(\RpcOptions $rpc_options, int $sink): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function putDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
    * bool
    *   hasDataById(1: i64 id);
    */
@@ -192,10 +249,9 @@ interface MyServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
   /**
    * Original thrift definition:-
    * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
+   *   deleteDataById(1: i64 id);
    */
-  public function putDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void>;
+  public function deleteDataById(\RpcOptions $rpc_options, int $id): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -405,6 +461,197 @@ trait MyServiceClientBase {
     throw $x;
   }
 
+  protected function sendImpl_sink(int $sink): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_sink_args::fromShape(shape(
+      'sink' => $sink,
+    ));
+    try {
+      $this->eventHandler_->preSend('sink', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'sink', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'sink', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('sink', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('sink', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('sink', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('sink', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('sink', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_sink(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+    try {
+      $this->eventHandler_->preRecv('sink', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_sink_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_sink_result', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_sink_result::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+          throw new \TProtocolException("sink failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('sink', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('sink', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('sink', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('sink', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postRecv('sink', $expectedsequenceid, null);
+    return;
+  }
+
+  protected function sendImpl_putDataById(int $id, string $data): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_putDataById_args::fromShape(shape(
+      'id' => $id,
+      'data' => $data,
+    ));
+    try {
+      $this->eventHandler_->preSend('putDataById', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('putDataById', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('putDataById', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('putDataById', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('putDataById', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('putDataById', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_putDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+    try {
+      $this->eventHandler_->preRecv('putDataById', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_putDataById_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_putDataById_result', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_putDataById_result::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+          throw new \TProtocolException("putDataById failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('putDataById', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('putDataById', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('putDataById', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('putDataById', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postRecv('putDataById', $expectedsequenceid, null);
+    return;
+  }
+
   protected function sendImpl_hasDataById(int $id): int {
     $currentseqid = $this->getNextSequenceID();
     $args = MyService_hasDataById_args::fromShape(shape(
@@ -607,25 +854,24 @@ trait MyServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_putDataById(int $id, string $data): int {
+  protected function sendImpl_deleteDataById(int $id): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = MyService_putDataById_args::fromShape(shape(
+    $args = MyService_deleteDataById_args::fromShape(shape(
       'id' => $id,
-      'data' => $data,
     ));
     try {
-      $this->eventHandler_->preSend('putDataById', $args, $currentseqid);
+      $this->eventHandler_->preSend('deleteDataById', $args, $currentseqid);
       if ($this->output_ is \TBinaryProtocolAccelerated)
       {
-        \thrift_protocol_write_binary($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'deleteDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ is \TCompactProtocolAccelerated)
       {
-        \thrift_protocol_write_compact($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'deleteDataById', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
-        $this->output_->writeMessageBegin('putDataById', \TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('deleteDataById', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->flush();
@@ -634,29 +880,29 @@ trait MyServiceClientBase {
       switch ($ex->resultType) {
         case \THandlerShortCircuitException::R_EXPECTED_EX:
         case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('putDataById', $args, $currentseqid, $ex->result);
+          $this->eventHandler_->sendError('deleteDataById', $args, $currentseqid, $ex->result);
           throw $ex->result;
         case \THandlerShortCircuitException::R_SUCCESS:
         default:
-          $this->eventHandler_->postSend('putDataById', $args, $currentseqid);
+          $this->eventHandler_->postSend('deleteDataById', $args, $currentseqid);
           return $currentseqid;
       }
     } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('putDataById', $args, $currentseqid, $ex);
+      $this->eventHandler_->sendError('deleteDataById', $args, $currentseqid, $ex);
       throw $ex;
     }
-    $this->eventHandler_->postSend('putDataById', $args, $currentseqid);
+    $this->eventHandler_->postSend('deleteDataById', $args, $currentseqid);
     return $currentseqid;
   }
 
-  protected function recvImpl_putDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+  protected function recvImpl_deleteDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
-      $this->eventHandler_->preRecv('putDataById', $expectedsequenceid);
+      $this->eventHandler_->preRecv('deleteDataById', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_putDataById_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_deleteDataById_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_putDataById_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_deleteDataById_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -675,31 +921,31 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_putDataById_result::withDefaultValues();
+        $result = MyService_deleteDataById_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
-          throw new \TProtocolException("putDataById failed: sequence id is out of order");
+          throw new \TProtocolException("deleteDataById failed: sequence id is out of order");
         }
       }
     } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
         case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('putDataById', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->recvException('deleteDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
         case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('putDataById', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->recvError('deleteDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
         case \THandlerShortCircuitException::R_SUCCESS:
         default:
-          $this->eventHandler_->postRecv('putDataById', $expectedsequenceid, $ex->result);
+          $this->eventHandler_->postRecv('deleteDataById', $expectedsequenceid, $ex->result);
           return;
       }
     } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('putDataById', $expectedsequenceid, $ex);
+      $this->eventHandler_->recvError('deleteDataById', $expectedsequenceid, $ex);
       throw $ex;
     }
-    $this->eventHandler_->postRecv('putDataById', $expectedsequenceid, null);
+    $this->eventHandler_->postRecv('deleteDataById', $expectedsequenceid, null);
     return;
   }
 
@@ -798,6 +1044,53 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
 
   /**
    * Original thrift definition:-
+   * void
+   *   sink(1: i64 sink);
+   */
+  public async function sink(int $sink): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "sink");
+    $currentseqid = $this->sendImpl_sink($sink);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_sink($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public async function putDataById(int $id, string $data): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "putDataById");
+    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_putDataById($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
    * bool
    *   hasDataById(1: i64 id);
    */
@@ -845,12 +1138,11 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
   /**
    * Original thrift definition:-
    * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
+   *   deleteDataById(1: i64 id);
    */
-  public async function putDataById(int $id, string $data): Awaitable<void> {
-    await $this->asyncHandler_->genBefore("MyService", "putDataById");
-    $currentseqid = $this->sendImpl_putDataById($id, $data);
+  public async function deleteDataById(int $id): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "deleteDataById");
+    $currentseqid = $this->sendImpl_deleteDataById($id);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -863,7 +1155,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_putDataById($currentseqid);
+    $this->recvImpl_deleteDataById($currentseqid);
   }
 
   /**
@@ -937,6 +1229,53 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 
   /**
    * Original thrift definition:-
+   * void
+   *   sink(1: i64 sink);
+   */
+  public async function sink(int $sink): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "sink");
+    $currentseqid = $this->sendImpl_sink($sink);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_sink($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public async function putDataById(int $id, string $data): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "putDataById");
+    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse(new \RpcOptions(), $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_putDataById($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
    * bool
    *   hasDataById(1: i64 id);
    */
@@ -984,12 +1323,11 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   /**
    * Original thrift definition:-
    * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
+   *   deleteDataById(1: i64 id);
    */
-  public async function putDataById(int $id, string $data): Awaitable<void> {
-    await $this->asyncHandler_->genBefore("MyService", "putDataById");
-    $currentseqid = $this->sendImpl_putDataById($id, $data);
+  public async function deleteDataById(int $id): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "deleteDataById");
+    $currentseqid = $this->sendImpl_deleteDataById($id);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1002,7 +1340,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_putDataById($currentseqid);
+    $this->recvImpl_deleteDataById($currentseqid);
   }
 
   /**
@@ -1036,6 +1374,18 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public function recv_getRandomData(?int $expectedsequenceid = null): string {
     return $this->recvImpl_getRandomData($expectedsequenceid);
   }
+  public function send_sink(int $sink): int {
+    return $this->sendImpl_sink($sink);
+  }
+  public function recv_sink(?int $expectedsequenceid = null): void {
+    $this->recvImpl_sink($expectedsequenceid);
+  }
+  public function send_putDataById(int $id, string $data): int {
+    return $this->sendImpl_putDataById($id, $data);
+  }
+  public function recv_putDataById(?int $expectedsequenceid = null): void {
+    $this->recvImpl_putDataById($expectedsequenceid);
+  }
   public function send_hasDataById(int $id): int {
     return $this->sendImpl_hasDataById($id);
   }
@@ -1048,11 +1398,11 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   public function recv_getDataById(?int $expectedsequenceid = null): string {
     return $this->recvImpl_getDataById($expectedsequenceid);
   }
-  public function send_putDataById(int $id, string $data): int {
-    return $this->sendImpl_putDataById($id, $data);
+  public function send_deleteDataById(int $id): int {
+    return $this->sendImpl_deleteDataById($id);
   }
-  public function recv_putDataById(?int $expectedsequenceid = null): void {
-    $this->recvImpl_putDataById($expectedsequenceid);
+  public function recv_deleteDataById(?int $expectedsequenceid = null): void {
+    $this->recvImpl_deleteDataById($expectedsequenceid);
   }
   public function send_lobDataById(int $id, string $data): int {
     return $this->sendImpl_lobDataById($id, $data);
@@ -1110,6 +1460,53 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
 
   /**
    * Original thrift definition:-
+   * void
+   *   sink(1: i64 sink);
+   */
+  public async function sink(\RpcOptions $rpc_options, int $sink): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "sink");
+    $currentseqid = $this->sendImpl_sink($sink);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_sink($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public async function putDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "putDataById");
+    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_putDataById($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
    * bool
    *   hasDataById(1: i64 id);
    */
@@ -1157,12 +1554,11 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
   /**
    * Original thrift definition:-
    * void
-   *   putDataById(1: i64 id,
-   *               2: string data);
+   *   deleteDataById(1: i64 id);
    */
-  public async function putDataById(\RpcOptions $rpc_options, int $id, string $data): Awaitable<void> {
-    await $this->asyncHandler_->genBefore("MyService", "putDataById");
-    $currentseqid = $this->sendImpl_putDataById($id, $data);
+  public async function deleteDataById(\RpcOptions $rpc_options, int $id): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "deleteDataById");
+    $currentseqid = $this->sendImpl_deleteDataById($id);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1175,7 +1571,7 @@ class MyServiceAsyncRpcOptionsClient extends \ThriftClientBase implements MyServ
     } else {
       await $this->asyncHandler_->genWait($currentseqid);
     }
-    $this->recvImpl_putDataById($currentseqid);
+    $this->recvImpl_deleteDataById($currentseqid);
   }
 
   /**
@@ -1288,6 +1684,94 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getRandomData', $result);
   }
+  protected async function process_sink(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('sink');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'sink', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_sink_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_sink_args');
+    } else {
+      $args = MyService_sink_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'sink', $args);
+    $result = MyService_sink_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'sink', $args);
+      await $this->handler->sink($args->sink);
+      $this->eventHandler_->postExec($handler_ctx, 'sink', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'sink', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'sink', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'sink', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'sink', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("sink", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'sink', $result);
+  }
+  protected async function process_putDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'putDataById', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_putDataById_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_putDataById_args');
+    } else {
+      $args = MyService_putDataById_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
+    $result = MyService_putDataById_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'putDataById', $args);
+      await $this->handler->putDataById($args->id, $args->data);
+      $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'putDataById', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'putDataById', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'putDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'putDataById', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("putDataById", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'putDataById', $result);
+  }
   protected async function process_hasDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
     $reply_type = \TMessageType::REPLY;
@@ -1376,49 +1860,49 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getDataById', $result);
   }
-  protected async function process_putDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
-    $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
+  protected async function process_deleteDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('deleteDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'putDataById', dict[]);
+    $this->eventHandler_->preRead($handler_ctx, 'deleteDataById', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'MyService_putDataById_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_deleteDataById_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'MyService_putDataById_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_deleteDataById_args');
     } else {
-      $args = MyService_putDataById_args::withDefaultValues();
+      $args = MyService_deleteDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
-    $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
-    $result = MyService_putDataById_result::withDefaultValues();
+    $this->eventHandler_->postRead($handler_ctx, 'deleteDataById', $args);
+    $result = MyService_deleteDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'putDataById', $args);
-      await $this->handler->putDataById($args->id, $args->data);
-      $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'deleteDataById', $args);
+      await $this->handler->deleteDataById($args->id);
+      $this->eventHandler_->postExec($handler_ctx, 'deleteDataById', $result);
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
-      $this->eventHandler_->handlerError($handler_ctx, 'putDataById', $ex);
+      $this->eventHandler_->handlerError($handler_ctx, 'deleteDataById', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
-    $this->eventHandler_->preWrite($handler_ctx, 'putDataById', $result);
+    $this->eventHandler_->preWrite($handler_ctx, 'deleteDataById', $result);
     if ($output is \TBinaryProtocolAccelerated)
     {
-      \thrift_protocol_write_binary($output, 'putDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'deleteDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output is \TCompactProtocolAccelerated)
     {
-      \thrift_protocol_write_compact($output, 'putDataById', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'deleteDataById', $reply_type, $result, $seqid);
     }
     else
     {
-      $output->writeMessageBegin("putDataById", $reply_type, $seqid);
+      $output->writeMessageBegin("deleteDataById", $reply_type, $seqid);
       $result->write($output);
       $output->writeMessageEnd();
       $output->getTransport()->flush();
     }
-    $this->eventHandler_->postWrite($handler_ctx, 'putDataById', $result);
+    $this->eventHandler_->postWrite($handler_ctx, 'deleteDataById', $result);
   }
   protected async function process_lobDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
@@ -1541,6 +2025,94 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getRandomData', $result);
   }
+  protected function process_sink(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('sink');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'sink', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_sink_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_sink_args');
+    } else {
+      $args = MyService_sink_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'sink', $args);
+    $result = MyService_sink_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'sink', $args);
+      $this->handler->sink($args->sink);
+      $this->eventHandler_->postExec($handler_ctx, 'sink', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'sink', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'sink', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'sink', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'sink', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("sink", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'sink', $result);
+  }
+  protected function process_putDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'putDataById', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_putDataById_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_putDataById_args');
+    } else {
+      $args = MyService_putDataById_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
+    $result = MyService_putDataById_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'putDataById', $args);
+      $this->handler->putDataById($args->id, $args->data);
+      $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'putDataById', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'putDataById', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'putDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'putDataById', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("putDataById", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'putDataById', $result);
+  }
   protected function process_hasDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
     $reply_type = \TMessageType::REPLY;
@@ -1629,49 +2201,49 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getDataById', $result);
   }
-  protected function process_putDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
-    $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
+  protected function process_deleteDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('deleteDataById');
     $reply_type = \TMessageType::REPLY;
 
-    $this->eventHandler_->preRead($handler_ctx, 'putDataById', dict[]);
+    $this->eventHandler_->preRead($handler_ctx, 'deleteDataById', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'MyService_putDataById_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_deleteDataById_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'MyService_putDataById_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_deleteDataById_args');
     } else {
-      $args = MyService_putDataById_args::withDefaultValues();
+      $args = MyService_deleteDataById_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
-    $this->eventHandler_->postRead($handler_ctx, 'putDataById', $args);
-    $result = MyService_putDataById_result::withDefaultValues();
+    $this->eventHandler_->postRead($handler_ctx, 'deleteDataById', $args);
+    $result = MyService_deleteDataById_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'putDataById', $args);
-      $this->handler->putDataById($args->id, $args->data);
-      $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
+      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'deleteDataById', $args);
+      $this->handler->deleteDataById($args->id);
+      $this->eventHandler_->postExec($handler_ctx, 'deleteDataById', $result);
     } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
-      $this->eventHandler_->handlerError($handler_ctx, 'putDataById', $ex);
+      $this->eventHandler_->handlerError($handler_ctx, 'deleteDataById', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
-    $this->eventHandler_->preWrite($handler_ctx, 'putDataById', $result);
+    $this->eventHandler_->preWrite($handler_ctx, 'deleteDataById', $result);
     if ($output is \TBinaryProtocolAccelerated)
     {
-      \thrift_protocol_write_binary($output, 'putDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'deleteDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output is \TCompactProtocolAccelerated)
     {
-      \thrift_protocol_write_compact($output, 'putDataById', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'deleteDataById', $reply_type, $result, $seqid);
     }
     else
     {
-      $output->writeMessageBegin("putDataById", $reply_type, $seqid);
+      $output->writeMessageBegin("deleteDataById", $reply_type, $seqid);
       $result->write($output);
       $output->writeMessageEnd();
       $output->getTransport()->flush();
     }
-    $this->eventHandler_->postWrite($handler_ctx, 'putDataById', $result);
+    $this->eventHandler_->postWrite($handler_ctx, 'deleteDataById', $result);
   }
   protected function process_lobDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
@@ -1947,6 +2519,283 @@ class MyService_getRandomData_result implements \IThriftStruct {
     if (idx($parsed, 'success') !== null) {
       $this->success = /* HH_FIXME[4110] */ $parsed['success'];
     }    
+  }
+
+}
+
+class MyService_sink_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'sink',
+      'type' => \TType::I64,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'sink' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'sink' => ?int,
+  );
+
+  const type TShape = shape(
+    'sink' => int,
+    ...
+  );
+  const int STRUCTURAL_ID = 7104007081489563250;
+  public int $sink;
+
+  <<__Rx>>
+  public function __construct(?int $sink = null  ) {
+    $this->sink = $sink ?? 0;
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'sink'),
+    );
+  }
+
+  public function getName(): string {
+    return 'MyService_sink_args';
+  }
+
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function __fromShape(self::TShape $shape): this {
+    return new static(
+      $shape['sink'],
+    );
+  }
+
+  <<__Rx>>
+  public function __toShape(): self::TShape {
+    return shape(
+      'sink' => $this->sink,
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'sink') !== null) {
+      $this->sink = /* HH_FIXME[4110] */ $parsed['sink'];
+    }    
+  }
+
+}
+
+class MyService_sink_result implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  <<__Rx>>
+  public function __construct(  ) {
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
+  }
+
+  public function getName(): string {
+    return 'MyService_sink_result';
+  }
+
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'id',
+      'type' => \TType::I64,
+    ),
+    2 => shape(
+      'var' => 'data',
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'id' => 1,
+    'data' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'id' => ?int,
+    ?'data' => ?string,
+  );
+
+  const type TShape = shape(
+    'id' => int,
+    'data' => string,
+    ...
+  );
+  const int STRUCTURAL_ID = 1055685087985327657;
+  public int $id;
+  public string $data;
+
+  <<__Rx>>
+  public function __construct(?int $id = null, ?string $data = null  ) {
+    $this->id = $id ?? 0;
+    $this->data = $data ?? '';
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+      Shapes::idx($shape, 'id'),
+      Shapes::idx($shape, 'data'),
+    );
+  }
+
+  public function getName(): string {
+    return 'MyService_putDataById_args';
+  }
+
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function __fromShape(self::TShape $shape): this {
+    return new static(
+      $shape['id'],
+      $shape['data'],
+    );
+  }
+
+  <<__Rx>>
+  public function __toShape(): self::TShape {
+    return shape(
+      'id' => $this->id,
+      'data' => $this->data,
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'id') !== null) {
+      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
+    }    
+    if (idx($parsed, 'data') !== null) {
+      $this->data = /* HH_FIXME[4110] */ $parsed['data'];
+    }    
+  }
+
+}
+
+class MyService_putDataById_result implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  <<__Rx>>
+  public function __construct(  ) {
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function withDefaultValues(): this {
+    return new static();
+  }
+
+  <<__Rx, __MutableReturn>>
+  public static function fromShape(self::TConstructorShape $shape): this {
+    return new static(
+    );
+  }
+
+  public function getName(): string {
+    return 'MyService_putDataById_result';
+  }
+
+  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }
@@ -2235,7 +3084,7 @@ class MyService_getDataById_result implements \IThriftStruct {
 
 }
 
-class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+class MyService_deleteDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2243,34 +3092,25 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'var' => 'id',
       'type' => \TType::I64,
     ),
-    2 => shape(
-      'var' => 'data',
-      'type' => \TType::STRING,
-    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,
-    'data' => 2,
   ];
 
   const type TConstructorShape = shape(
     ?'id' => ?int,
-    ?'data' => ?string,
   );
 
   const type TShape = shape(
     'id' => int,
-    'data' => string,
     ...
   );
-  const int STRUCTURAL_ID = 1055685087985327657;
+  const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
-  public string $data;
 
   <<__Rx>>
-  public function __construct(?int $id = null, ?string $data = null  ) {
+  public function __construct(?int $id = null  ) {
     $this->id = $id ?? 0;
-    $this->data = $data ?? '';
   }
 
   <<__Rx, __MutableReturn>>
@@ -2282,12 +3122,11 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public static function fromShape(self::TConstructorShape $shape): this {
     return new static(
       Shapes::idx($shape, 'id'),
-      Shapes::idx($shape, 'data'),
     );
   }
 
   public function getName(): string {
-    return 'MyService_putDataById_args';
+    return 'MyService_deleteDataById_args';
   }
 
   public static function getAllStructuredAnnotations(): \TStructAnnotations {
@@ -2302,7 +3141,6 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public static function __fromShape(self::TShape $shape): this {
     return new static(
       $shape['id'],
-      $shape['data'],
     );
   }
 
@@ -2310,7 +3148,6 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public function __toShape(): self::TShape {
     return shape(
       'id' => $this->id,
-      'data' => $this->data,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -2323,14 +3160,11 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     if (idx($parsed, 'id') !== null) {
       $this->id = /* HH_FIXME[4110] */ $parsed['id'];
     }    
-    if (idx($parsed, 'data') !== null) {
-      $this->data = /* HH_FIXME[4110] */ $parsed['data'];
-    }    
   }
 
 }
 
-class MyService_putDataById_result implements \IThriftStruct {
+class MyService_deleteDataById_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -2359,7 +3193,7 @@ class MyService_putDataById_result implements \IThriftStruct {
   }
 
   public function getName(): string {
-    return 'MyService_putDataById_result';
+    return 'MyService_deleteDataById_result';
   }
 
   public static function getAllStructuredAnnotations(): \TStructAnnotations {

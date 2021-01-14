@@ -40,6 +40,42 @@ MyServiceClientWrapper::getRandomData(
   return _future;
 }
 
+folly::Future<folly::Unit>
+MyServiceClientWrapper::sink(
+    apache::thrift::RpcOptions& rpcOptions,
+    int64_t arg_sink) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_sink, channel_);
+  client->sink(
+    rpcOptions,
+    std::move(callback),
+    arg_sink
+  );
+  return _future;
+}
+
+folly::Future<folly::Unit>
+MyServiceClientWrapper::putDataById(
+    apache::thrift::RpcOptions& rpcOptions,
+    int64_t arg_id,
+    std::string arg_data) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_putDataById, channel_);
+  client->putDataById(
+    rpcOptions,
+    std::move(callback),
+    arg_id,
+    arg_data
+  );
+  return _future;
+}
+
 folly::Future<bool>
 MyServiceClientWrapper::hasDataById(
     apache::thrift::RpcOptions& rpcOptions,
@@ -75,20 +111,18 @@ MyServiceClientWrapper::getDataById(
 }
 
 folly::Future<folly::Unit>
-MyServiceClientWrapper::putDataById(
+MyServiceClientWrapper::deleteDataById(
     apache::thrift::RpcOptions& rpcOptions,
-    int64_t arg_id,
-    std::string arg_data) {
+    int64_t arg_id) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_putDataById, channel_);
-  client->putDataById(
+    std::move(_promise), rpcOptions, client->recv_wrapped_deleteDataById, channel_);
+  client->deleteDataById(
     rpcOptions,
     std::move(callback),
-    arg_id,
-    arg_data
+    arg_id
   );
   return _future;
 }

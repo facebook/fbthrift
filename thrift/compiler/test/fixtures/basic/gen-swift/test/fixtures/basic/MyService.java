@@ -48,6 +48,41 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
+        @ThriftMethod(value = "sink")
+        ListenableFuture<Void> sink(
+            @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final long sink);
+
+        default ListenableFuture<Void> sink(
+            @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final long sink,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> sinkWrapper(
+            @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final long sink,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @ThriftMethod(value = "putDataById")
+        ListenableFuture<Void> putDataById(
+            @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
+
+        default ListenableFuture<Void> putDataById(
+            @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> putDataByIdWrapper(
+            @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+            @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         @ThriftMethod(value = "hasDataById")
         ListenableFuture<Boolean> hasDataById(
             @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id);
@@ -80,21 +115,18 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
-        @ThriftMethod(value = "putDataById")
-        ListenableFuture<Void> putDataById(
-            @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-            @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
+        @ThriftMethod(value = "deleteDataById")
+        ListenableFuture<Void> deleteDataById(
+            @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id);
 
-        default ListenableFuture<Void> putDataById(
+        default ListenableFuture<Void> deleteDataById(
             @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-            @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 
-        default ListenableFuture<ResponseWrapper<Void>> putDataByIdWrapper(
+        default ListenableFuture<ResponseWrapper<Void>> deleteDataByIdWrapper(
             @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-            @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
@@ -147,6 +179,41 @@ public interface MyService extends java.io.Closeable {
         throw new UnsupportedOperationException();
     }
 
+    @ThriftMethod(value = "sink")
+    void sink(
+        @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final long sink) throws org.apache.thrift.TException;
+
+    default void sink(
+        @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final long sink,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> sinkWrapper(
+        @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final long sink,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    @ThriftMethod(value = "putDataById")
+    void putDataById(
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data) throws org.apache.thrift.TException;
+
+    default void putDataById(
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> putDataByIdWrapper(
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
     @ThriftMethod(value = "hasDataById")
     boolean hasDataById(
         @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id) throws org.apache.thrift.TException;
@@ -179,21 +246,18 @@ public interface MyService extends java.io.Closeable {
         throw new UnsupportedOperationException();
     }
 
-    @ThriftMethod(value = "putDataById")
-    void putDataById(
-        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-        @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data) throws org.apache.thrift.TException;
+    @ThriftMethod(value = "deleteDataById")
+    void deleteDataById(
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id) throws org.apache.thrift.TException;
 
-    default void putDataById(
+    default void deleteDataById(
         @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-        @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
 
-    default ResponseWrapper<Void> putDataByIdWrapper(
+    default ResponseWrapper<Void> deleteDataByIdWrapper(
         @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-        @com.facebook.swift.codec.ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
         throw new UnsupportedOperationException();
     }
@@ -222,9 +286,11 @@ public interface MyService extends java.io.Closeable {
         @java.lang.Override void close();
         reactor.core.publisher.Mono<Void> ping();
         reactor.core.publisher.Mono<String> getRandomData();
+        reactor.core.publisher.Mono<Void> sink(final long sink);
+        reactor.core.publisher.Mono<Void> putDataById(final long id, final String data);
         reactor.core.publisher.Mono<Boolean> hasDataById(final long id);
         reactor.core.publisher.Mono<String> getDataById(final long id);
-        reactor.core.publisher.Mono<Void> putDataById(final long id, final String data);
+        reactor.core.publisher.Mono<Void> deleteDataById(final long id);
         reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data);
     }
 }

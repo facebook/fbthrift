@@ -31,12 +31,18 @@ public final class MyStruct {
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
         @com.facebook.swift.codec.ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
         @com.facebook.swift.codec.ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
-        @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum
+        @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum,
+        @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE) final boolean oneway,
+        @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE) final boolean readonly,
+        @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE) final boolean idempotent
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
         this.myDataField = myDataField;
         this.myEnum = myEnum;
+        this.oneway = oneway;
+        this.readonly = readonly;
+        this.idempotent = idempotent;
     }
     
     @ThriftConstructor
@@ -45,6 +51,9 @@ public final class MyStruct {
       this.myStringField = null;
       this.myDataField = null;
       this.myEnum = null;
+      this.oneway = false;
+      this.readonly = false;
+      this.idempotent = false;
     }
     
     public static class Builder {
@@ -53,6 +62,9 @@ public final class MyStruct {
         private String myStringField = null;
         private test.fixtures.basic.MyDataItem myDataField = null;
         private test.fixtures.basic.MyEnum myEnum = null;
+        private boolean oneway = false;
+        private boolean readonly = false;
+        private boolean idempotent = false;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
@@ -86,12 +98,39 @@ public final class MyStruct {
     
         public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
     
+            @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE)
+        public Builder setOneway(boolean oneway) {
+            this.oneway = oneway;
+            return this;
+        }
+    
+        public boolean isOneway() { return oneway; }
+    
+            @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE)
+        public Builder setReadonly(boolean readonly) {
+            this.readonly = readonly;
+            return this;
+        }
+    
+        public boolean isReadonly() { return readonly; }
+    
+            @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)
+        public Builder setIdempotent(boolean idempotent) {
+            this.idempotent = idempotent;
+            return this;
+        }
+    
+        public boolean isIdempotent() { return idempotent; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
             this.myStringField = other.myStringField;
             this.myDataField = other.myDataField;
             this.myEnum = other.myEnum;
+            this.oneway = other.oneway;
+            this.readonly = other.readonly;
+            this.idempotent = other.idempotent;
         }
     
         @ThriftConstructor
@@ -100,7 +139,10 @@ public final class MyStruct {
                 this.myIntField,
                 this.myStringField,
                 this.myDataField,
-                this.myEnum
+                this.myEnum,
+                this.oneway,
+                this.readonly,
+                this.idempotent
             );
             return result;
         }
@@ -121,6 +163,15 @@ public final class MyStruct {
         private final test.fixtures.basic.MyEnum myEnum;
     public static final int _MYENUM = 4;
     private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)4);
+        private final boolean oneway;
+    public static final int _ONEWAY = 5;
+    private static final TField ONEWAY_FIELD_DESC = new TField("oneway", TType.BOOL, (short)5);
+        private final boolean readonly;
+    public static final int _READONLY = 6;
+    private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
+        private final boolean idempotent;
+    public static final int _IDEMPOTENT = 7;
+    private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
     static {
       NAMES_TO_IDS.put("myIntField", 1);
       FIELD_METADATA.put(1, MY_INT_FIELD_FIELD_DESC);
@@ -130,6 +181,12 @@ public final class MyStruct {
       FIELD_METADATA.put(3, MY_DATA_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("myEnum", 4);
       FIELD_METADATA.put(4, MY_ENUM_FIELD_DESC);
+      NAMES_TO_IDS.put("oneway", 5);
+      FIELD_METADATA.put(5, ONEWAY_FIELD_DESC);
+      NAMES_TO_IDS.put("readonly", 6);
+      FIELD_METADATA.put(6, READONLY_FIELD_DESC);
+      NAMES_TO_IDS.put("idempotent", 7);
+      FIELD_METADATA.put(7, IDEMPOTENT_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
@@ -147,6 +204,18 @@ public final class MyStruct {
     @com.facebook.swift.codec.ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE)
+    public boolean isOneway() { return oneway; }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE)
+    public boolean isReadonly() { return readonly; }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE)
+    public boolean isIdempotent() { return idempotent; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -154,6 +223,9 @@ public final class MyStruct {
         helper.add("myStringField", myStringField);
         helper.add("myDataField", myDataField);
         helper.add("myEnum", myEnum);
+        helper.add("oneway", oneway);
+        helper.add("readonly", readonly);
+        helper.add("idempotent", idempotent);
         return helper.toString();
     }
     
@@ -173,6 +245,9 @@ public final class MyStruct {
             Objects.equals(myStringField, other.myStringField) &&
             Objects.equals(myDataField, other.myDataField) &&
             Objects.equals(myEnum, other.myEnum) &&
+            Objects.equals(oneway, other.oneway) &&
+            Objects.equals(readonly, other.readonly) &&
+            Objects.equals(idempotent, other.idempotent) &&
             true;
     }
     
@@ -182,7 +257,10 @@ public final class MyStruct {
             myIntField,
             myStringField,
             myDataField,
-            myEnum
+            myEnum,
+            oneway,
+            readonly,
+            idempotent
         });
     }
     
@@ -227,6 +305,30 @@ public final class MyStruct {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _ONEWAY:
+          if (__field.type == TType.BOOL) {
+            boolean oneway = oprot.readBool();
+            builder.setOneway(oneway);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _READONLY:
+          if (__field.type == TType.BOOL) {
+            boolean readonly = oprot.readBool();
+            builder.setReadonly(readonly);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _IDEMPOTENT:
+          if (__field.type == TType.BOOL) {
+            boolean idempotent = oprot.readBool();
+            builder.setIdempotent(idempotent);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -254,6 +356,15 @@ public final class MyStruct {
       }
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
       oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(ONEWAY_FIELD_DESC);
+      oprot.writeBool(this.oneway);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(READONLY_FIELD_DESC);
+      oprot.writeBool(this.readonly);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
+      oprot.writeBool(this.idempotent);
       oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();

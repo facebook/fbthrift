@@ -35,11 +35,15 @@ public class MyService {
 
     public String getRandomData() throws TException;
 
+    public void sink(Long sink) throws TException;
+
+    public void putDataById(Long id, String data) throws TException;
+
     public Boolean hasDataById(Long id) throws TException;
 
     public String getDataById(Long id) throws TException;
 
-    public void putDataById(Long id, String data) throws TException;
+    public void deleteDataById(Long id) throws TException;
 
     public void lobDataById(Long id, String data) throws TException;
 
@@ -51,11 +55,15 @@ public class MyService {
 
     public void getRandomData(AsyncMethodCallback resultHandler) throws TException;
 
+    public void sink(Long sink, AsyncMethodCallback resultHandler) throws TException;
+
+    public void putDataById(Long id, String data, AsyncMethodCallback resultHandler) throws TException;
+
     public void hasDataById(Long id, AsyncMethodCallback resultHandler) throws TException;
 
     public void getDataById(Long id, AsyncMethodCallback resultHandler) throws TException;
 
-    public void putDataById(Long id, String data, AsyncMethodCallback resultHandler) throws TException;
+    public void deleteDataById(Long id, AsyncMethodCallback resultHandler) throws TException;
 
     public void lobDataById(Long id, String data, AsyncMethodCallback resultHandler) throws TException;
 
@@ -175,6 +183,91 @@ public class MyService {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "getRandomData failed: unknown result");
     }
 
+    public void sink(Long sink) throws TException
+    {
+      ContextStack ctx = getContextStack("MyService.sink", null);
+      this.setContextStack(ctx);
+      send_sink(sink);
+      recv_sink();
+    }
+
+    public void send_sink(Long sink) throws TException
+    {
+      ContextStack ctx = this.getContextStack();
+      super.preWrite(ctx, "MyService.sink", null);
+      oprot_.writeMessageBegin(new TMessage("sink", TMessageType.CALL, seqid_));
+      sink_args args = new sink_args();
+      args.sink = sink;
+      args.write(oprot_);
+      oprot_.writeMessageEnd();
+      oprot_.getTransport().flush();
+      super.postWrite(ctx, "MyService.sink", args);
+      return;
+    }
+
+    public void recv_sink() throws TException
+    {
+      ContextStack ctx = super.getContextStack();
+      long bytes;
+      TMessageType mtype;
+      super.preRead(ctx, "MyService.sink");
+      TMessage msg = iprot_.readMessageBegin();
+      if (msg.type == TMessageType.EXCEPTION) {
+        TApplicationException x = TApplicationException.read(iprot_);
+        iprot_.readMessageEnd();
+        throw x;
+      }
+      sink_result result = new sink_result();
+      result.read(iprot_);
+      iprot_.readMessageEnd();
+      super.postRead(ctx, "MyService.sink", result);
+
+      return;
+    }
+
+    public void putDataById(Long id, String data) throws TException
+    {
+      ContextStack ctx = getContextStack("MyService.putDataById", null);
+      this.setContextStack(ctx);
+      send_putDataById(id, data);
+      recv_putDataById();
+    }
+
+    public void send_putDataById(Long id, String data) throws TException
+    {
+      ContextStack ctx = this.getContextStack();
+      super.preWrite(ctx, "MyService.putDataById", null);
+      oprot_.writeMessageBegin(new TMessage("putDataById", TMessageType.CALL, seqid_));
+      putDataById_args args = new putDataById_args();
+      args.id = id;
+      args.data = data;
+      args.write(oprot_);
+      oprot_.writeMessageEnd();
+      oprot_.getTransport().flush();
+      super.postWrite(ctx, "MyService.putDataById", args);
+      return;
+    }
+
+    public void recv_putDataById() throws TException
+    {
+      ContextStack ctx = super.getContextStack();
+      long bytes;
+      TMessageType mtype;
+      super.preRead(ctx, "MyService.putDataById");
+      TMessage msg = iprot_.readMessageBegin();
+      if (msg.type == TMessageType.EXCEPTION) {
+        TApplicationException x = TApplicationException.read(iprot_);
+        iprot_.readMessageEnd();
+        throw x;
+      }
+      putDataById_result result = new putDataById_result();
+      result.read(iprot_);
+      iprot_.readMessageEnd();
+      super.postRead(ctx, "MyService.putDataById", result);
+
+      return;
+    }
+
     public Boolean hasDataById(Long id) throws TException
     {
       ContextStack ctx = getContextStack("MyService.hasDataById", null);
@@ -265,45 +358,44 @@ public class MyService {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "getDataById failed: unknown result");
     }
 
-    public void putDataById(Long id, String data) throws TException
+    public void deleteDataById(Long id) throws TException
     {
-      ContextStack ctx = getContextStack("MyService.putDataById", null);
+      ContextStack ctx = getContextStack("MyService.deleteDataById", null);
       this.setContextStack(ctx);
-      send_putDataById(id, data);
-      recv_putDataById();
+      send_deleteDataById(id);
+      recv_deleteDataById();
     }
 
-    public void send_putDataById(Long id, String data) throws TException
+    public void send_deleteDataById(Long id) throws TException
     {
       ContextStack ctx = this.getContextStack();
-      super.preWrite(ctx, "MyService.putDataById", null);
-      oprot_.writeMessageBegin(new TMessage("putDataById", TMessageType.CALL, seqid_));
-      putDataById_args args = new putDataById_args();
+      super.preWrite(ctx, "MyService.deleteDataById", null);
+      oprot_.writeMessageBegin(new TMessage("deleteDataById", TMessageType.CALL, seqid_));
+      deleteDataById_args args = new deleteDataById_args();
       args.id = id;
-      args.data = data;
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
-      super.postWrite(ctx, "MyService.putDataById", args);
+      super.postWrite(ctx, "MyService.deleteDataById", args);
       return;
     }
 
-    public void recv_putDataById() throws TException
+    public void recv_deleteDataById() throws TException
     {
       ContextStack ctx = super.getContextStack();
       long bytes;
       TMessageType mtype;
-      super.preRead(ctx, "MyService.putDataById");
+      super.preRead(ctx, "MyService.deleteDataById");
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
         TApplicationException x = TApplicationException.read(iprot_);
         iprot_.readMessageEnd();
         throw x;
       }
-      putDataById_result result = new putDataById_result();
+      deleteDataById_result result = new deleteDataById_result();
       result.read(iprot_);
       iprot_.readMessageEnd();
-      super.postRead(ctx, "MyService.putDataById", result);
+      super.postRead(ctx, "MyService.deleteDataById", result);
 
       return;
     }
@@ -348,16 +440,16 @@ public class MyService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void ping(AsyncMethodCallback resultHandler9) throws TException {
+    public void ping(AsyncMethodCallback resultHandler11) throws TException {
       checkReady();
-      ping_call method_call = new ping_call(resultHandler9, this, ___protocolFactory, ___transport);
+      ping_call method_call = new ping_call(resultHandler11, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class ping_call extends TAsyncMethodCall {
-      public ping_call(AsyncMethodCallback resultHandler10, TAsyncClient client6, TProtocolFactory protocolFactory7, TNonblockingTransport transport8) throws TException {
-        super(client6, protocolFactory7, transport8, resultHandler10, false);
+      public ping_call(AsyncMethodCallback resultHandler12, TAsyncClient client8, TProtocolFactory protocolFactory9, TNonblockingTransport transport10) throws TException {
+        super(client8, protocolFactory9, transport10, resultHandler12, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -377,16 +469,16 @@ public class MyService {
       }
     }
 
-    public void getRandomData(AsyncMethodCallback resultHandler14) throws TException {
+    public void getRandomData(AsyncMethodCallback resultHandler16) throws TException {
       checkReady();
-      getRandomData_call method_call = new getRandomData_call(resultHandler14, this, ___protocolFactory, ___transport);
+      getRandomData_call method_call = new getRandomData_call(resultHandler16, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRandomData_call extends TAsyncMethodCall {
-      public getRandomData_call(AsyncMethodCallback resultHandler15, TAsyncClient client11, TProtocolFactory protocolFactory12, TNonblockingTransport transport13) throws TException {
-        super(client11, protocolFactory12, transport13, resultHandler15, false);
+      public getRandomData_call(AsyncMethodCallback resultHandler17, TAsyncClient client13, TProtocolFactory protocolFactory14, TNonblockingTransport transport15) throws TException {
+        super(client13, protocolFactory14, transport15, resultHandler17, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -406,73 +498,41 @@ public class MyService {
       }
     }
 
-    public void hasDataById(Long id, AsyncMethodCallback resultHandler19) throws TException {
+    public void sink(Long sink, AsyncMethodCallback resultHandler21) throws TException {
       checkReady();
-      hasDataById_call method_call = new hasDataById_call(id, resultHandler19, this, ___protocolFactory, ___transport);
+      sink_call method_call = new sink_call(sink, resultHandler21, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class hasDataById_call extends TAsyncMethodCall {
-      private Long id;
-      public hasDataById_call(Long id, AsyncMethodCallback resultHandler20, TAsyncClient client16, TProtocolFactory protocolFactory17, TNonblockingTransport transport18) throws TException {
-        super(client16, protocolFactory17, transport18, resultHandler20, false);
-        this.id = id;
+    public static class sink_call extends TAsyncMethodCall {
+      private Long sink;
+      public sink_call(Long sink, AsyncMethodCallback resultHandler22, TAsyncClient client18, TProtocolFactory protocolFactory19, TNonblockingTransport transport20) throws TException {
+        super(client18, protocolFactory19, transport20, resultHandler22, false);
+        this.sink = sink;
       }
 
       public void write_args(TProtocol prot) throws TException {
-        prot.writeMessageBegin(new TMessage("hasDataById", TMessageType.CALL, 0));
-        hasDataById_args args = new hasDataById_args();
-        args.setId(id);
+        prot.writeMessageBegin(new TMessage("sink", TMessageType.CALL, 0));
+        sink_args args = new sink_args();
+        args.setSink(sink);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public Boolean getResult() throws TException {
+      public void getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
         TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_hasDataById();
+        (new Client(prot)).recv_sink();
       }
     }
 
-    public void getDataById(Long id, AsyncMethodCallback resultHandler24) throws TException {
+    public void putDataById(Long id, String data, AsyncMethodCallback resultHandler26) throws TException {
       checkReady();
-      getDataById_call method_call = new getDataById_call(id, resultHandler24, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class getDataById_call extends TAsyncMethodCall {
-      private Long id;
-      public getDataById_call(Long id, AsyncMethodCallback resultHandler25, TAsyncClient client21, TProtocolFactory protocolFactory22, TNonblockingTransport transport23) throws TException {
-        super(client21, protocolFactory22, transport23, resultHandler25, false);
-        this.id = id;
-      }
-
-      public void write_args(TProtocol prot) throws TException {
-        prot.writeMessageBegin(new TMessage("getDataById", TMessageType.CALL, 0));
-        getDataById_args args = new getDataById_args();
-        args.setId(id);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public String getResult() throws TException {
-        if (getState() != State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-        TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getDataById();
-      }
-    }
-
-    public void putDataById(Long id, String data, AsyncMethodCallback resultHandler29) throws TException {
-      checkReady();
-      putDataById_call method_call = new putDataById_call(id, data, resultHandler29, this, ___protocolFactory, ___transport);
+      putDataById_call method_call = new putDataById_call(id, data, resultHandler26, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -480,8 +540,8 @@ public class MyService {
     public static class putDataById_call extends TAsyncMethodCall {
       private Long id;
       private String data;
-      public putDataById_call(Long id, String data, AsyncMethodCallback resultHandler30, TAsyncClient client26, TProtocolFactory protocolFactory27, TNonblockingTransport transport28) throws TException {
-        super(client26, protocolFactory27, transport28, resultHandler30, false);
+      public putDataById_call(Long id, String data, AsyncMethodCallback resultHandler27, TAsyncClient client23, TProtocolFactory protocolFactory24, TNonblockingTransport transport25) throws TException {
+        super(client23, protocolFactory24, transport25, resultHandler27, false);
         this.id = id;
         this.data = data;
       }
@@ -505,9 +565,105 @@ public class MyService {
       }
     }
 
-    public void lobDataById(Long id, String data, AsyncMethodCallback resultHandler34) throws TException {
+    public void hasDataById(Long id, AsyncMethodCallback resultHandler31) throws TException {
       checkReady();
-      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler34, this, ___protocolFactory, ___transport);
+      hasDataById_call method_call = new hasDataById_call(id, resultHandler31, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class hasDataById_call extends TAsyncMethodCall {
+      private Long id;
+      public hasDataById_call(Long id, AsyncMethodCallback resultHandler32, TAsyncClient client28, TProtocolFactory protocolFactory29, TNonblockingTransport transport30) throws TException {
+        super(client28, protocolFactory29, transport30, resultHandler32, false);
+        this.id = id;
+      }
+
+      public void write_args(TProtocol prot) throws TException {
+        prot.writeMessageBegin(new TMessage("hasDataById", TMessageType.CALL, 0));
+        hasDataById_args args = new hasDataById_args();
+        args.setId(id);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public Boolean getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
+        TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_hasDataById();
+      }
+    }
+
+    public void getDataById(Long id, AsyncMethodCallback resultHandler36) throws TException {
+      checkReady();
+      getDataById_call method_call = new getDataById_call(id, resultHandler36, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getDataById_call extends TAsyncMethodCall {
+      private Long id;
+      public getDataById_call(Long id, AsyncMethodCallback resultHandler37, TAsyncClient client33, TProtocolFactory protocolFactory34, TNonblockingTransport transport35) throws TException {
+        super(client33, protocolFactory34, transport35, resultHandler37, false);
+        this.id = id;
+      }
+
+      public void write_args(TProtocol prot) throws TException {
+        prot.writeMessageBegin(new TMessage("getDataById", TMessageType.CALL, 0));
+        getDataById_args args = new getDataById_args();
+        args.setId(id);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public String getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
+        TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getDataById();
+      }
+    }
+
+    public void deleteDataById(Long id, AsyncMethodCallback resultHandler41) throws TException {
+      checkReady();
+      deleteDataById_call method_call = new deleteDataById_call(id, resultHandler41, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class deleteDataById_call extends TAsyncMethodCall {
+      private Long id;
+      public deleteDataById_call(Long id, AsyncMethodCallback resultHandler42, TAsyncClient client38, TProtocolFactory protocolFactory39, TNonblockingTransport transport40) throws TException {
+        super(client38, protocolFactory39, transport40, resultHandler42, false);
+        this.id = id;
+      }
+
+      public void write_args(TProtocol prot) throws TException {
+        prot.writeMessageBegin(new TMessage("deleteDataById", TMessageType.CALL, 0));
+        deleteDataById_args args = new deleteDataById_args();
+        args.setId(id);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public void getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
+        TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
+        (new Client(prot)).recv_deleteDataById();
+      }
+    }
+
+    public void lobDataById(Long id, String data, AsyncMethodCallback resultHandler46) throws TException {
+      checkReady();
+      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler46, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -515,8 +671,8 @@ public class MyService {
     public static class lobDataById_call extends TAsyncMethodCall {
       private Long id;
       private String data;
-      public lobDataById_call(Long id, String data, AsyncMethodCallback resultHandler35, TAsyncClient client31, TProtocolFactory protocolFactory32, TNonblockingTransport transport33) throws TException {
-        super(client31, protocolFactory32, transport33, resultHandler35, true);
+      public lobDataById_call(Long id, String data, AsyncMethodCallback resultHandler47, TAsyncClient client43, TProtocolFactory protocolFactory44, TNonblockingTransport transport45) throws TException {
+        super(client43, protocolFactory44, transport45, resultHandler47, true);
         this.id = id;
         this.data = data;
       }
@@ -549,9 +705,11 @@ public class MyService {
       event_handler_ = new TProcessorEventHandler(); // Empty handler
       processMap_.put("ping", new ping());
       processMap_.put("getRandomData", new getRandomData());
+      processMap_.put("sink", new sink());
+      processMap_.put("putDataById", new putDataById());
       processMap_.put("hasDataById", new hasDataById());
       processMap_.put("getDataById", new getDataById());
-      processMap_.put("putDataById", new putDataById());
+      processMap_.put("deleteDataById", new deleteDataById());
       processMap_.put("lobDataById", new lobDataById());
     }
 
@@ -627,6 +785,48 @@ public class MyService {
 
     }
 
+    private class sink implements ProcessFunction {
+      public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
+      {
+        Object handler_ctx = event_handler_.getContext("MyService.sink", server_ctx);
+        sink_args args = new sink_args();
+        event_handler_.preRead(handler_ctx, "MyService.sink");
+        args.read(iprot);
+        iprot.readMessageEnd();
+        event_handler_.postRead(handler_ctx, "MyService.sink", args);
+        sink_result result = new sink_result();
+        iface_.sink(args.sink);
+        event_handler_.preWrite(handler_ctx, "MyService.sink", result);
+        oprot.writeMessageBegin(new TMessage("sink", TMessageType.REPLY, seqid));
+        result.write(oprot);
+        oprot.writeMessageEnd();
+        oprot.getTransport().flush();
+        event_handler_.postWrite(handler_ctx, "MyService.sink", result);
+      }
+
+    }
+
+    private class putDataById implements ProcessFunction {
+      public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
+      {
+        Object handler_ctx = event_handler_.getContext("MyService.putDataById", server_ctx);
+        putDataById_args args = new putDataById_args();
+        event_handler_.preRead(handler_ctx, "MyService.putDataById");
+        args.read(iprot);
+        iprot.readMessageEnd();
+        event_handler_.postRead(handler_ctx, "MyService.putDataById", args);
+        putDataById_result result = new putDataById_result();
+        iface_.putDataById(args.id, args.data);
+        event_handler_.preWrite(handler_ctx, "MyService.putDataById", result);
+        oprot.writeMessageBegin(new TMessage("putDataById", TMessageType.REPLY, seqid));
+        result.write(oprot);
+        oprot.writeMessageEnd();
+        oprot.getTransport().flush();
+        event_handler_.postWrite(handler_ctx, "MyService.putDataById", result);
+      }
+
+    }
+
     private class hasDataById implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
@@ -669,23 +869,23 @@ public class MyService {
 
     }
 
-    private class putDataById implements ProcessFunction {
+    private class deleteDataById implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
       {
-        Object handler_ctx = event_handler_.getContext("MyService.putDataById", server_ctx);
-        putDataById_args args = new putDataById_args();
-        event_handler_.preRead(handler_ctx, "MyService.putDataById");
+        Object handler_ctx = event_handler_.getContext("MyService.deleteDataById", server_ctx);
+        deleteDataById_args args = new deleteDataById_args();
+        event_handler_.preRead(handler_ctx, "MyService.deleteDataById");
         args.read(iprot);
         iprot.readMessageEnd();
-        event_handler_.postRead(handler_ctx, "MyService.putDataById", args);
-        putDataById_result result = new putDataById_result();
-        iface_.putDataById(args.id, args.data);
-        event_handler_.preWrite(handler_ctx, "MyService.putDataById", result);
-        oprot.writeMessageBegin(new TMessage("putDataById", TMessageType.REPLY, seqid));
+        event_handler_.postRead(handler_ctx, "MyService.deleteDataById", args);
+        deleteDataById_result result = new deleteDataById_result();
+        iface_.deleteDataById(args.id);
+        event_handler_.preWrite(handler_ctx, "MyService.deleteDataById", result);
+        oprot.writeMessageBegin(new TMessage("deleteDataById", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
         oprot.getTransport().flush();
-        event_handler_.postWrite(handler_ctx, "MyService.putDataById", result);
+        event_handler_.postWrite(handler_ctx, "MyService.deleteDataById", result);
       }
 
     }
@@ -1098,6 +1298,520 @@ public class MyService {
         oprot.writeString(this.success);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class sink_args implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("sink_args");
+    private static final TField SINK_FIELD_DESC = new TField("sink", TType.I64, (short)1);
+
+    public Long sink;
+    public static final int SINK = 1;
+
+    // isset id assignments
+
+
+    public sink_args() {
+    }
+
+    public sink_args(
+        Long sink) {
+      this.sink = sink;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public sink_args(sink_args other) {
+      if (other.isSetSink()) {
+        this.sink = TBaseHelper.deepCopy(other.sink);
+      }
+    }
+
+    public sink_args deepCopy() {
+      return new sink_args(this);
+    }
+
+    public Long getSink() {
+      return this.sink;
+    }
+
+    public sink_args setSink(Long sink) {
+      this.sink = sink;
+      return this;
+    }
+
+    public void unsetSink() {
+      this.sink = null;
+    }
+
+    // Returns true if field sink is set (has been assigned a value) and false otherwise
+    public boolean isSetSink() {
+      return this.sink != null;
+    }
+
+    public void setSinkIsSet(boolean __value) {
+      if (!__value) {
+        this.sink = null;
+      }
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof sink_args))
+        return false;
+      sink_args that = (sink_args)_that;
+
+      if (!TBaseHelper.equalsNobinary(this.isSetSink(), that.isSetSink(), this.sink, that.sink)) { return false; }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {sink});
+    }
+
+    // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
+    public void read(TProtocol iprot) throws TException {
+      throw new TException("unimplemented in android immutable structure");
+    }
+
+    public static sink_args deserialize(TProtocol iprot) throws TException {
+      Long tmp_sink = null;
+      TField __field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
+          break;
+        }
+        switch (__field.id)
+        {
+          case SINK:
+            if (__field.type == TType.I64) {
+              tmp_sink = iprot.readI64();
+            } else { 
+              TProtocolUtil.skip(iprot, __field.type);
+            }
+            break;
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      sink_args _that;
+      _that = new sink_args(
+        tmp_sink
+      );
+      _that.validate();
+      return _that;
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.sink != null) {
+        oprot.writeFieldBegin(SINK_FIELD_DESC);
+        oprot.writeI64(this.sink);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class sink_result implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("sink_result");
+
+
+    public sink_result() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public sink_result(sink_result other) {
+    }
+
+    public sink_result deepCopy() {
+      return new sink_result(this);
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof sink_result))
+        return false;
+      sink_result that = (sink_result)_that;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {});
+    }
+
+    // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
+    public void read(TProtocol iprot) throws TException {
+      throw new TException("unimplemented in android immutable structure");
+    }
+
+    public static sink_result deserialize(TProtocol iprot) throws TException {
+      TField __field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
+          break;
+        }
+        switch (__field.id)
+        {
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      sink_result _that;
+      _that = new sink_result(
+      );
+      _that.validate();
+      return _that;
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class putDataById_args implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("putDataById_args");
+    private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
+    private static final TField DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
+
+    public Long id;
+    public String data;
+    public static final int ID = 1;
+    public static final int DATA = 2;
+
+    // isset id assignments
+
+
+    public putDataById_args() {
+    }
+
+    public putDataById_args(
+        Long id,
+        String data) {
+      this.id = id;
+      this.data = data;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public putDataById_args(putDataById_args other) {
+      if (other.isSetId()) {
+        this.id = TBaseHelper.deepCopy(other.id);
+      }
+      if (other.isSetData()) {
+        this.data = TBaseHelper.deepCopy(other.data);
+      }
+    }
+
+    public putDataById_args deepCopy() {
+      return new putDataById_args(this);
+    }
+
+    public Long getId() {
+      return this.id;
+    }
+
+    public putDataById_args setId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public void unsetId() {
+      this.id = null;
+    }
+
+    // Returns true if field id is set (has been assigned a value) and false otherwise
+    public boolean isSetId() {
+      return this.id != null;
+    }
+
+    public void setIdIsSet(boolean __value) {
+      if (!__value) {
+        this.id = null;
+      }
+    }
+
+    public String getData() {
+      return this.data;
+    }
+
+    public putDataById_args setData(String data) {
+      this.data = data;
+      return this;
+    }
+
+    public void unsetData() {
+      this.data = null;
+    }
+
+    // Returns true if field data is set (has been assigned a value) and false otherwise
+    public boolean isSetData() {
+      return this.data != null;
+    }
+
+    public void setDataIsSet(boolean __value) {
+      if (!__value) {
+        this.data = null;
+      }
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof putDataById_args))
+        return false;
+      putDataById_args that = (putDataById_args)_that;
+
+      if (!TBaseHelper.equalsNobinary(this.isSetId(), that.isSetId(), this.id, that.id)) { return false; }
+
+      if (!TBaseHelper.equalsNobinary(this.isSetData(), that.isSetData(), this.data, that.data)) { return false; }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {id, data});
+    }
+
+    // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
+    public void read(TProtocol iprot) throws TException {
+      throw new TException("unimplemented in android immutable structure");
+    }
+
+    public static putDataById_args deserialize(TProtocol iprot) throws TException {
+      Long tmp_id = null;
+      String tmp_data = null;
+      TField __field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
+          break;
+        }
+        switch (__field.id)
+        {
+          case ID:
+            if (__field.type == TType.I64) {
+              tmp_id = iprot.readI64();
+            } else { 
+              TProtocolUtil.skip(iprot, __field.type);
+            }
+            break;
+          case DATA:
+            if (__field.type == TType.STRING) {
+              tmp_data = iprot.readString();
+            } else { 
+              TProtocolUtil.skip(iprot, __field.type);
+            }
+            break;
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      putDataById_args _that;
+      _that = new putDataById_args(
+        tmp_id
+        ,tmp_data
+      );
+      _that.validate();
+      return _that;
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.id != null) {
+        oprot.writeFieldBegin(ID_FIELD_DESC);
+        oprot.writeI64(this.id);
+        oprot.writeFieldEnd();
+      }
+      if (this.data != null) {
+        oprot.writeFieldBegin(DATA_FIELD_DESC);
+        oprot.writeString(this.data);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class putDataById_result implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("putDataById_result");
+
+
+    public putDataById_result() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public putDataById_result(putDataById_result other) {
+    }
+
+    public putDataById_result deepCopy() {
+      return new putDataById_result(this);
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof putDataById_result))
+        return false;
+      putDataById_result that = (putDataById_result)_that;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {});
+    }
+
+    // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
+    public void read(TProtocol iprot) throws TException {
+      throw new TException("unimplemented in android immutable structure");
+    }
+
+    public static putDataById_result deserialize(TProtocol iprot) throws TException {
+      TField __field;
+      iprot.readStructBegin();
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
+          break;
+        }
+        switch (__field.id)
+        {
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+      putDataById_result _that;
+      _that = new putDataById_result(
+      );
+      _that.validate();
+      return _that;
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1692,50 +2406,42 @@ public class MyService {
 
   }
 
-  public static class putDataById_args implements TBase, java.io.Serializable, Cloneable   {
-    private static final TStruct STRUCT_DESC = new TStruct("putDataById_args");
+  public static class deleteDataById_args implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("deleteDataById_args");
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-    private static final TField DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
 
     public Long id;
-    public String data;
     public static final int ID = 1;
-    public static final int DATA = 2;
 
     // isset id assignments
 
 
-    public putDataById_args() {
+    public deleteDataById_args() {
     }
 
-    public putDataById_args(
-        Long id,
-        String data) {
+    public deleteDataById_args(
+        Long id) {
       this.id = id;
-      this.data = data;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public putDataById_args(putDataById_args other) {
+    public deleteDataById_args(deleteDataById_args other) {
       if (other.isSetId()) {
         this.id = TBaseHelper.deepCopy(other.id);
       }
-      if (other.isSetData()) {
-        this.data = TBaseHelper.deepCopy(other.data);
-      }
     }
 
-    public putDataById_args deepCopy() {
-      return new putDataById_args(this);
+    public deleteDataById_args deepCopy() {
+      return new deleteDataById_args(this);
     }
 
     public Long getId() {
       return this.id;
     }
 
-    public putDataById_args setId(Long id) {
+    public deleteDataById_args setId(Long id) {
       this.id = id;
       return this;
     }
@@ -1755,50 +2461,24 @@ public class MyService {
       }
     }
 
-    public String getData() {
-      return this.data;
-    }
-
-    public putDataById_args setData(String data) {
-      this.data = data;
-      return this;
-    }
-
-    public void unsetData() {
-      this.data = null;
-    }
-
-    // Returns true if field data is set (has been assigned a value) and false otherwise
-    public boolean isSetData() {
-      return this.data != null;
-    }
-
-    public void setDataIsSet(boolean __value) {
-      if (!__value) {
-        this.data = null;
-      }
-    }
-
     @Override
     public boolean equals(Object _that) {
       if (_that == null)
         return false;
       if (this == _that)
         return true;
-      if (!(_that instanceof putDataById_args))
+      if (!(_that instanceof deleteDataById_args))
         return false;
-      putDataById_args that = (putDataById_args)_that;
+      deleteDataById_args that = (deleteDataById_args)_that;
 
       if (!TBaseHelper.equalsNobinary(this.isSetId(), that.isSetId(), this.id, that.id)) { return false; }
-
-      if (!TBaseHelper.equalsNobinary(this.isSetData(), that.isSetData(), this.data, that.data)) { return false; }
 
       return true;
     }
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {id, data});
+      return Arrays.deepHashCode(new Object[] {id});
     }
 
     // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -1806,9 +2486,8 @@ public class MyService {
       throw new TException("unimplemented in android immutable structure");
     }
 
-    public static putDataById_args deserialize(TProtocol iprot) throws TException {
+    public static deleteDataById_args deserialize(TProtocol iprot) throws TException {
       Long tmp_id = null;
-      String tmp_data = null;
       TField __field;
       iprot.readStructBegin();
       while (true)
@@ -1826,13 +2505,6 @@ public class MyService {
               TProtocolUtil.skip(iprot, __field.type);
             }
             break;
-          case DATA:
-            if (__field.type == TType.STRING) {
-              tmp_data = iprot.readString();
-            } else { 
-              TProtocolUtil.skip(iprot, __field.type);
-            }
-            break;
           default:
             TProtocolUtil.skip(iprot, __field.type);
             break;
@@ -1841,10 +2513,9 @@ public class MyService {
       }
       iprot.readStructEnd();
 
-      putDataById_args _that;
-      _that = new putDataById_args(
+      deleteDataById_args _that;
+      _that = new deleteDataById_args(
         tmp_id
-        ,tmp_data
       );
       _that.validate();
       return _that;
@@ -1857,11 +2528,6 @@ public class MyService {
       if (this.id != null) {
         oprot.writeFieldBegin(ID_FIELD_DESC);
         oprot.writeI64(this.id);
-        oprot.writeFieldEnd();
-      }
-      if (this.data != null) {
-        oprot.writeFieldBegin(DATA_FIELD_DESC);
-        oprot.writeString(this.data);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1884,21 +2550,21 @@ public class MyService {
 
   }
 
-  public static class putDataById_result implements TBase, java.io.Serializable, Cloneable   {
-    private static final TStruct STRUCT_DESC = new TStruct("putDataById_result");
+  public static class deleteDataById_result implements TBase, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("deleteDataById_result");
 
 
-    public putDataById_result() {
+    public deleteDataById_result() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public putDataById_result(putDataById_result other) {
+    public deleteDataById_result(deleteDataById_result other) {
     }
 
-    public putDataById_result deepCopy() {
-      return new putDataById_result(this);
+    public deleteDataById_result deepCopy() {
+      return new deleteDataById_result(this);
     }
 
     @Override
@@ -1907,9 +2573,9 @@ public class MyService {
         return false;
       if (this == _that)
         return true;
-      if (!(_that instanceof putDataById_result))
+      if (!(_that instanceof deleteDataById_result))
         return false;
-      putDataById_result that = (putDataById_result)_that;
+      deleteDataById_result that = (deleteDataById_result)_that;
 
       return true;
     }
@@ -1924,7 +2590,7 @@ public class MyService {
       throw new TException("unimplemented in android immutable structure");
     }
 
-    public static putDataById_result deserialize(TProtocol iprot) throws TException {
+    public static deleteDataById_result deserialize(TProtocol iprot) throws TException {
       TField __field;
       iprot.readStructBegin();
       while (true)
@@ -1943,8 +2609,8 @@ public class MyService {
       }
       iprot.readStructEnd();
 
-      putDataById_result _that;
-      _that = new putDataById_result(
+      deleteDataById_result _that;
+      _that = new deleteDataById_result(
       );
       _that.validate();
       return _that;

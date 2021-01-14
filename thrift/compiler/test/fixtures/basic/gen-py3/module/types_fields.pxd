@@ -55,6 +55,9 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_1(self, __fbthrift_value) except *
     cdef void _set_field_2(self, __fbthrift_value) except *
     cdef void _set_field_3(self, __fbthrift_value) except *
+    cdef void _set_field_4(self, __fbthrift_value) except *
+    cdef void _set_field_5(self, __fbthrift_value) except *
+    cdef void _set_field_6(self, __fbthrift_value) except *
 
 
 ctypedef void (*__MyDataItem_FieldsSetterFunc)(__MyDataItem_FieldsSetter, object) except *

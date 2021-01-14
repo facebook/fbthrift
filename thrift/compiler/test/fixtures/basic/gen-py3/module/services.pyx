@@ -135,6 +135,25 @@ cdef class MyServiceInterface(
         raise NotImplementedError("async def getRandomData is not implemented")
 
     @staticmethod
+    def pass_context_sink(fn):
+        return pass_context(fn)
+
+    async def sink(
+            self,
+            sink):
+        raise NotImplementedError("async def sink is not implemented")
+
+    @staticmethod
+    def pass_context_putDataById(fn):
+        return pass_context(fn)
+
+    async def putDataById(
+            self,
+            id,
+            data):
+        raise NotImplementedError("async def putDataById is not implemented")
+
+    @staticmethod
     def pass_context_hasDataById(fn):
         return pass_context(fn)
 
@@ -153,14 +172,13 @@ cdef class MyServiceInterface(
         raise NotImplementedError("async def getDataById is not implemented")
 
     @staticmethod
-    def pass_context_putDataById(fn):
+    def pass_context_deleteDataById(fn):
         return pass_context(fn)
 
-    async def putDataById(
+    async def deleteDataById(
             self,
-            id,
-            data):
-        raise NotImplementedError("async def putDataById is not implemented")
+            id):
+        raise NotImplementedError("async def deleteDataById is not implemented")
 
     @staticmethod
     def pass_context_lobDataById(fn):
@@ -308,6 +326,116 @@ async def MyService_getRandomData_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
+cdef api void call_cy_MyService_sink(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t sink
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    arg_sink = sink
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        MyService_sink_coro(
+            self,
+            __context,
+            __promise,
+            arg_sink
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def MyService_sink_coro(
+    object self,
+    object ctx,
+    Promise_cFollyUnit promise,
+    sink
+):
+    try:
+        if ctx and getattr(self.sink, "pass_context", False):
+            result = await self.sink(ctx,
+                      sink)
+        else:
+            result = await self.sink(
+                      sink)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sink:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyService_putDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t id,
+    unique_ptr[string] data
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    arg_id = id
+    arg_data = (deref(data)).data().decode('UTF-8')
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        MyService_putDataById_coro(
+            self,
+            __context,
+            __promise,
+            arg_id,
+            arg_data
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def MyService_putDataById_coro(
+    object self,
+    object ctx,
+    Promise_cFollyUnit promise,
+    id,
+    data
+):
+    try:
+        if ctx and getattr(self.putDataById, "pass_context", False):
+            result = await self.putDataById(ctx,
+                      id,
+                      data)
+        else:
+            result = await self.putDataById(
+                      id,
+                      data)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler putDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
 cdef api void call_cy_MyService_hasDataById(
     object self,
     Cpp2RequestContext* ctx,
@@ -412,48 +540,42 @@ async def MyService_getDataById_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef api void call_cy_MyService_putDataById(
+cdef api void call_cy_MyService_deleteDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    cint64_t id,
-    unique_ptr[string] data
+    cint64_t id
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
-    arg_data = (deref(data)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
         __context = None
     asyncio.get_event_loop().create_task(
-        MyService_putDataById_coro(
+        MyService_deleteDataById_coro(
             self,
             __context,
             __promise,
-            arg_id,
-            arg_data
+            arg_id
         )
     )
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
-async def MyService_putDataById_coro(
+async def MyService_deleteDataById_coro(
     object self,
     object ctx,
     Promise_cFollyUnit promise,
-    id,
-    data
+    id
 ):
     try:
-        if ctx and getattr(self.putDataById, "pass_context", False):
-            result = await self.putDataById(ctx,
-                      id,
-                      data)
+        if ctx and getattr(self.deleteDataById, "pass_context", False):
+            result = await self.deleteDataById(ctx,
+                      id)
         else:
-            result = await self.putDataById(
-                      id,
-                      data)
+            result = await self.deleteDataById(
+                      id)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -461,7 +583,7 @@ async def MyService_putDataById_coro(
         ))
     except Exception as ex:
         print(
-            "Unexpected error in service handler putDataById:",
+            "Unexpected error in service handler deleteDataById:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(

@@ -37,6 +37,12 @@ struct VisitByThriftId<::cpp2::MyStruct> {
       return f(2, static_cast<T&&>(t).MyDataField_ref());
     case 4:
       return f(3, static_cast<T&&>(t).myEnum_ref());
+    case 5:
+      return f(4, static_cast<T&&>(t).oneway_ref());
+    case 6:
+      return f(5, static_cast<T&&>(t).readonly_ref());
+    case 7:
+      return f(6, static_cast<T&&>(t).idempotent_ref());
     default:
       throwInvalidThriftId(id, "::cpp2::MyStruct");
     }

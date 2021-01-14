@@ -32,6 +32,14 @@ public class MyServiceReactiveBlockingWrapper
       return _delegate.getRandomData().block();
   }
   @java.lang.Override
+  public void sink(final long sink) throws org.apache.thrift.TException {
+      _delegate.sink(sink).block();
+  }
+  @java.lang.Override
+  public void putDataById(final long id,final String data) throws org.apache.thrift.TException {
+      _delegate.putDataById(id, data).block();
+  }
+  @java.lang.Override
   public boolean hasDataById(final long id) throws org.apache.thrift.TException {
       return _delegate.hasDataById(id).block();
   }
@@ -40,8 +48,8 @@ public class MyServiceReactiveBlockingWrapper
       return _delegate.getDataById(id).block();
   }
   @java.lang.Override
-  public void putDataById(final long id,final String data) throws org.apache.thrift.TException {
-      _delegate.putDataById(id, data).block();
+  public void deleteDataById(final long id) throws org.apache.thrift.TException {
+      _delegate.deleteDataById(id).block();
   }
   @java.lang.Override
   public void lobDataById(final long id,final String data) throws org.apache.thrift.TException {

@@ -144,6 +144,112 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void getRandomDataT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
+  virtual void sink(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t sink);
+  virtual void sink(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t sink);
+ protected:
+  void sinkImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t sink);
+ public:
+
+  virtual void sync_sink(int64_t sink);
+  virtual void sync_sink(apache::thrift::RpcOptions& rpcOptions, int64_t sink);
+
+  virtual folly::Future<folly::Unit> future_sink(int64_t sink);
+  virtual folly::SemiFuture<folly::Unit> semifuture_sink(int64_t sink);
+  virtual folly::Future<folly::Unit> future_sink(apache::thrift::RpcOptions& rpcOptions, int64_t sink);
+  virtual folly::SemiFuture<folly::Unit> semifuture_sink(apache::thrift::RpcOptions& rpcOptions, int64_t sink);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_sink(apache::thrift::RpcOptions& rpcOptions, int64_t sink);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_sink(apache::thrift::RpcOptions& rpcOptions, int64_t sink);
+
+#if FOLLY_HAS_COROUTINES
+  template <int = 0>
+  folly::coro::Task<void> co_sink(int64_t sink) {
+    auto _task = semifuture_sink(sink);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_sink(apache::thrift::RpcOptions& rpcOptions, int64_t sink) {
+    auto _task = semifuture_sink(rpcOptions, sink);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+#endif // FOLLY_HAS_COROUTINES
+
+  virtual void sink(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t sink);
+
+
+  static folly::exception_wrapper recv_wrapped_sink(::apache::thrift::ClientReceiveState& state);
+  static void recv_sink(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_sink(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_sink(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void sinkT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t sink);
+ public:
+  virtual void putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
+  virtual void putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
+ protected:
+  void putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
+ public:
+
+  virtual void sync_putDataById(int64_t id, const ::std::string& data);
+  virtual void sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+
+  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, const ::std::string& data);
+  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const ::std::string& data);
+  virtual folly::Future<folly::Unit> future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+
+#if FOLLY_HAS_COROUTINES
+  template <int = 0>
+  folly::coro::Task<void> co_putDataById(int64_t id, const ::std::string& data) {
+    auto _task = semifuture_putDataById(id, data);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+    auto _task = semifuture_putDataById(rpcOptions, id, data);
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    if (cancelToken.canBeCancelled()) {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(_task))));
+    } else {
+      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(_task)));
+    }
+  }
+#endif // FOLLY_HAS_COROUTINES
+
+  virtual void putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data);
+
+
+  static folly::exception_wrapper recv_wrapped_putDataById(::apache::thrift::ClientReceiveState& state);
+  static void recv_putDataById(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_putDataById(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_putDataById(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
+ public:
   virtual void hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
   virtual void hasDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
  protected:
@@ -272,26 +378,26 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void getDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
-  virtual void putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
-  virtual void putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
+  virtual void deleteDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
+  virtual void deleteDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id);
  protected:
-  void putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
+  void deleteDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
 
-  virtual void sync_putDataById(int64_t id, const ::std::string& data);
-  virtual void sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+  virtual void sync_deleteDataById(int64_t id);
+  virtual void sync_deleteDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
 
-  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, const ::std::string& data);
-  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const ::std::string& data);
-  virtual folly::Future<folly::Unit> future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
-  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
-  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+  virtual folly::Future<folly::Unit> future_deleteDataById(int64_t id);
+  virtual folly::SemiFuture<folly::Unit> semifuture_deleteDataById(int64_t id);
+  virtual folly::Future<folly::Unit> future_deleteDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
+  virtual folly::SemiFuture<folly::Unit> semifuture_deleteDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_deleteDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_deleteDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
-  folly::coro::Task<void> co_putDataById(int64_t id, const ::std::string& data) {
-    auto _task = semifuture_putDataById(id, data);
+  folly::coro::Task<void> co_deleteDataById(int64_t id) {
+    auto _task = semifuture_deleteDataById(id);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
@@ -301,8 +407,8 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     }
   }
   template <int = 0>
-  folly::coro::Task<void> co_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
-    auto _task = semifuture_putDataById(rpcOptions, id, data);
+  folly::coro::Task<void> co_deleteDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+    auto _task = semifuture_deleteDataById(rpcOptions, id);
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     if (cancelToken.canBeCancelled()) {
@@ -313,17 +419,17 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   }
 #endif // FOLLY_HAS_COROUTINES
 
-  virtual void putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data);
+  virtual void deleteDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id);
 
 
-  static folly::exception_wrapper recv_wrapped_putDataById(::apache::thrift::ClientReceiveState& state);
-  static void recv_putDataById(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_deleteDataById(::apache::thrift::ClientReceiveState& state);
+  static void recv_deleteDataById(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_putDataById(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_putDataById(::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_deleteDataById(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_deleteDataById(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data);
+  void deleteDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id);
  public:
   virtual void lobDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);
   virtual void lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data);

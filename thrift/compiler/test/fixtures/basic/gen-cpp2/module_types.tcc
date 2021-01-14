@@ -203,6 +203,51 @@ _readField_myEnum:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           4,
+          5,
+          apache::thrift::protocol::T_BOOL))) {
+    goto _loop;
+  }
+_readField_oneway:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->oneway, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.oneway = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          5,
+          6,
+          apache::thrift::protocol::T_BOOL))) {
+    goto _loop;
+  }
+_readField_readonly:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->readonly, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.readonly = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          6,
+          7,
+          apache::thrift::protocol::T_BOOL))) {
+    goto _loop;
+  }
+_readField_idempotent:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->idempotent, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.idempotent = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          7,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -255,6 +300,30 @@ _loop:
         goto _skip;
       }
     }
+    case 5:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_BOOL))) {
+        goto _readField_oneway;
+      } else {
+        goto _skip;
+      }
+    }
+    case 6:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_BOOL))) {
+        goto _readField_readonly;
+      } else {
+        goto _skip;
+      }
+    }
+    case 7:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_BOOL))) {
+        goto _readField_idempotent;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -278,6 +347,12 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyDataItem>::serializedSize<false>(*prot_, this->MyDataField);
   xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
+  xfer += prot_->serializedFieldSize("oneway", apache::thrift::protocol::T_BOOL, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->oneway);
+  xfer += prot_->serializedFieldSize("readonly", apache::thrift::protocol::T_BOOL, 6);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->readonly);
+  xfer += prot_->serializedFieldSize("idempotent", apache::thrift::protocol::T_BOOL, 7);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->idempotent);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -294,6 +369,12 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::structure,  ::cpp2::MyDataItem>::serializedSize<true>(*prot_, this->MyDataField);
   xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
+  xfer += prot_->serializedFieldSize("oneway", apache::thrift::protocol::T_BOOL, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->oneway);
+  xfer += prot_->serializedFieldSize("readonly", apache::thrift::protocol::T_BOOL, 6);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->readonly);
+  xfer += prot_->serializedFieldSize("idempotent", apache::thrift::protocol::T_BOOL, 7);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::serializedSize<false>(*prot_, this->idempotent);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -313,6 +394,15 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("myEnum", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::write(*prot_, this->myEnum);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("oneway", apache::thrift::protocol::T_BOOL, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::write(*prot_, this->oneway);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("readonly", apache::thrift::protocol::T_BOOL, 6);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::write(*prot_, this->readonly);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("idempotent", apache::thrift::protocol::T_BOOL, 7);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::write(*prot_, this->idempotent);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

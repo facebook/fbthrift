@@ -23,15 +23,21 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
     void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
     void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
+    void async_tm_sink(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+        , int64_t sink
+    ) override;
+    void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+        , int64_t id
+        , std::unique_ptr<std::string> data
+    ) override;
     void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
         , int64_t id
     ) override;
     void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
         , int64_t id
     ) override;
-    void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    void async_tm_deleteDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
         , int64_t id
-        , std::unique_ptr<std::string> data
     ) override;
     void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback
         , int64_t id

@@ -51,12 +51,27 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'type' => \TType::I32,
       'enum' => MyEnum::class,
     ),
+    5 => shape(
+      'var' => 'oneway',
+      'type' => \TType::BOOL,
+    ),
+    6 => shape(
+      'var' => 'readonly',
+      'type' => \TType::BOOL,
+    ),
+    7 => shape(
+      'var' => 'idempotent',
+      'type' => \TType::BOOL,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
     'MyStringField' => 2,
     'MyDataField' => 3,
     'myEnum' => 4,
+    'oneway' => 5,
+    'readonly' => 6,
+    'idempotent' => 7,
   ];
 
   const type TConstructorShape = shape(
@@ -64,6 +79,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'MyStringField' => ?string,
     ?'MyDataField' => ?MyDataItem,
     ?'myEnum' => ?MyEnum,
+    ?'oneway' => ?bool,
+    ?'readonly' => ?bool,
+    ?'idempotent' => ?bool,
   );
 
   const type TShape = shape(
@@ -71,9 +89,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'MyStringField' => string,
     ?'MyDataField' => ?MyDataItem::TShape,
     ?'myEnum' => ?MyEnum,
+    'oneway' => bool,
+    'readonly' => bool,
+    'idempotent' => bool,
     ...
   );
-  const int STRUCTURAL_ID = 1814653584841679556;
+  const int STRUCTURAL_ID = 8914171512789040840;
   /**
    * Original thrift field:-
    * 1: i64 MyIntField
@@ -94,13 +115,31 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 4: enum module.MyEnum myEnum
    */
   public ?MyEnum $myEnum;
+  /**
+   * Original thrift field:-
+   * 5: bool oneway
+   */
+  public bool $oneway;
+  /**
+   * Original thrift field:-
+   * 6: bool readonly
+   */
+  public bool $readonly;
+  /**
+   * Original thrift field:-
+   * 7: bool idempotent
+   */
+  public bool $idempotent;
 
   <<__Rx>>
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null  ) {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null  ) {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
     $this->MyDataField = $MyDataField;
     $this->myEnum = $myEnum;
+    $this->oneway = $oneway ?? false;
+    $this->readonly = $readonly ?? false;
+    $this->idempotent = $idempotent ?? false;
   }
 
   <<__Rx, __MutableReturn>>
@@ -115,6 +154,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'MyStringField'),
       Shapes::idx($shape, 'MyDataField'),
       Shapes::idx($shape, 'myEnum'),
+      Shapes::idx($shape, 'oneway'),
+      Shapes::idx($shape, 'readonly'),
+      Shapes::idx($shape, 'idempotent'),
     );
   }
 
@@ -137,6 +179,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $shape['MyStringField'],
       Shapes::idx($shape, 'MyDataField') === null ? null : (MyDataItem::__fromShape($shape['MyDataField'])),
       Shapes::idx($shape, 'myEnum') === null ? null : ($shape['myEnum']),
+      $shape['oneway'],
+      $shape['readonly'],
+      $shape['idempotent'],
     );
   }
 
@@ -147,6 +192,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'MyStringField' => $this->MyStringField,
       'MyDataField' => $this->MyDataField?->__toShape(),
       'myEnum' => $this->myEnum,
+      'oneway' => $this->oneway,
+      'readonly' => $this->readonly,
+      'idempotent' => $this->idempotent,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -170,6 +218,15 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'myEnum') !== null) {
       $this->myEnum = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);    }    
+    if (idx($parsed, 'oneway') !== null) {
+      $this->oneway = /* HH_FIXME[4110] */ $parsed['oneway'];
+    }    
+    if (idx($parsed, 'readonly') !== null) {
+      $this->readonly = /* HH_FIXME[4110] */ $parsed['readonly'];
+    }    
+    if (idx($parsed, 'idempotent') !== null) {
+      $this->idempotent = /* HH_FIXME[4110] */ $parsed['idempotent'];
+    }    
   }
 
 }

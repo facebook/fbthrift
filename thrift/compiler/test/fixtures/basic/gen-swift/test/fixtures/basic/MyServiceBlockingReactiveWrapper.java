@@ -48,6 +48,28 @@ public class MyServiceBlockingReactiveWrapper
     }
 
     @java.lang.Override
+    public reactor.core.publisher.Mono<Void> sink(final long sink) {
+        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                try {
+                    _delegate.sink(sink);
+                } catch (Throwable _e) {
+                    throw reactor.core.Exceptions.propagate(_e);
+                }
+            }).subscribeOn(_scheduler);
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
+        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                try {
+                    _delegate.putDataById(id, data);
+                } catch (Throwable _e) {
+                    throw reactor.core.Exceptions.propagate(_e);
+                }
+            }).subscribeOn(_scheduler);
+    }
+
+    @java.lang.Override
     public reactor.core.publisher.Mono<Boolean> hasDataById(final long id) {
         return reactor.core.publisher.Mono.fromSupplier(() -> {
                 try {
@@ -70,10 +92,10 @@ public class MyServiceBlockingReactiveWrapper
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
+    public reactor.core.publisher.Mono<Void> deleteDataById(final long id) {
         return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
-                    _delegate.putDataById(id, data);
+                    _delegate.deleteDataById(id);
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }

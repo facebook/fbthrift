@@ -59,6 +59,52 @@ void MyServiceSvIf::async_tm_getRandomData(std::unique_ptr<apache::thrift::Handl
   });
 }
 
+void MyServiceSvIf::sink(int64_t /*sink*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("sink");
+}
+
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_sink(int64_t sink) {
+  return apache::thrift::detail::si::semifuture([&] {
+    return sink(sink);
+  });
+}
+
+folly::Future<folly::Unit> MyServiceSvIf::future_sink(int64_t sink) {
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_sink(sink), std::move(ka));
+}
+
+void MyServiceSvIf::async_tm_sink(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t sink) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_sink(sink);
+  });
+}
+
+void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
+}
+
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+  return apache::thrift::detail::si::semifuture([&] {
+    return putDataById(id, std::move(data));
+  });
+}
+
+folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+  using Source = apache::thrift::concurrency::ThreadManager::Source;
+  auto pri = getRequestContext()->getRequestPriority();
+  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  return apache::thrift::detail::si::future(semifuture_putDataById(id, std::move(data)), std::move(ka));
+}
+
+void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
+    return future_putDataById(id, std::move(data));
+  });
+}
+
 bool MyServiceSvIf::hasDataById(int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("hasDataById");
 }
@@ -103,26 +149,26 @@ void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::Handler
   });
 }
 
-void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
+void MyServiceSvIf::deleteDataById(int64_t /*id*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("deleteDataById");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_deleteDataById(int64_t id) {
   return apache::thrift::detail::si::semifuture([&] {
-    return putDataById(id, std::move(data));
+    return deleteDataById(id);
   });
 }
 
-folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, std::unique_ptr<::std::string> data) {
+folly::Future<folly::Unit> MyServiceSvIf::future_deleteDataById(int64_t id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
   auto pri = getRequestContext()->getRequestPriority();
   auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
-  return apache::thrift::detail::si::future(semifuture_putDataById(id, std::move(data)), std::move(ka));
+  return apache::thrift::detail::si::future(semifuture_deleteDataById(id), std::move(ka));
 }
 
-void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) {
+void MyServiceSvIf::async_tm_deleteDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_putDataById(id, std::move(data));
+    return future_deleteDataById(id);
   });
 }
 
@@ -155,13 +201,21 @@ void MyServiceSvNull::ping() {
 
 void MyServiceSvNull::getRandomData(::std::string& /*_return*/) {}
 
+void MyServiceSvNull::sink(int64_t /*sink*/) {
+  return;
+}
+
+void MyServiceSvNull::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
+  return;
+}
+
 bool MyServiceSvNull::hasDataById(int64_t /*id*/) {
   return 0;
 }
 
 void MyServiceSvNull::getDataById(::std::string& /*_return*/, int64_t /*id*/) {}
 
-void MyServiceSvNull::putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
+void MyServiceSvNull::deleteDataById(int64_t /*id*/) {
   return;
 }
 
@@ -194,9 +248,11 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getBinaryPro
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::binaryProcessMap_ {
   {"ping", &MyServiceAsyncProcessor::setUpAndProcess_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"getRandomData", &MyServiceAsyncProcessor::setUpAndProcess_getRandomData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"sink", &MyServiceAsyncProcessor::setUpAndProcess_sink<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"putDataById", &MyServiceAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"hasDataById", &MyServiceAsyncProcessor::setUpAndProcess_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"getDataById", &MyServiceAsyncProcessor::setUpAndProcess_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"putDataById", &MyServiceAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"deleteDataById", &MyServiceAsyncProcessor::setUpAndProcess_deleteDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"lobDataById", &MyServiceAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
@@ -207,9 +263,11 @@ const MyServiceAsyncProcessor::ProcessMap& MyServiceAsyncProcessor::getCompactPr
 const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProcessMap_ {
   {"ping", &MyServiceAsyncProcessor::setUpAndProcess_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"getRandomData", &MyServiceAsyncProcessor::setUpAndProcess_getRandomData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"sink", &MyServiceAsyncProcessor::setUpAndProcess_sink<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"putDataById", &MyServiceAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"hasDataById", &MyServiceAsyncProcessor::setUpAndProcess_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"getDataById", &MyServiceAsyncProcessor::setUpAndProcess_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"putDataById", &MyServiceAsyncProcessor::setUpAndProcess_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"deleteDataById", &MyServiceAsyncProcessor::setUpAndProcess_deleteDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"lobDataById", &MyServiceAsyncProcessor::setUpAndProcess_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 

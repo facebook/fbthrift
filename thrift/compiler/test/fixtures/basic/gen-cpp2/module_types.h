@@ -17,6 +17,9 @@ struct MyIntField;
 struct MyStringField;
 struct MyDataField;
 struct myEnum;
+struct oneway;
+struct readonly;
+struct idempotent;
 struct myEnum;
 struct myStruct;
 struct myDataItem;
@@ -37,6 +40,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(MyDataField);
 #ifndef APACHE_THRIFT_ACCESSOR_myEnum
 #define APACHE_THRIFT_ACCESSOR_myEnum
 APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_oneway
+#define APACHE_THRIFT_ACCESSOR_oneway
+APACHE_THRIFT_DEFINE_ACCESSOR(oneway);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_readonly
+#define APACHE_THRIFT_ACCESSOR_readonly
+APACHE_THRIFT_DEFINE_ACCESSOR(readonly);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_idempotent
+#define APACHE_THRIFT_ACCESSOR_idempotent
+APACHE_THRIFT_DEFINE_ACCESSOR(idempotent);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_myEnum
 #define APACHE_THRIFT_ACCESSOR_myEnum
@@ -216,13 +231,12 @@ class MyStruct final  {
 
  public:
 
+  MyStruct();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStruct() :
-      MyIntField(0),
-      myEnum( ::cpp2::MyEnum::MyValue1) {}
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -234,6 +248,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
+
+  ~MyStruct();
+
  private:
   int64_t MyIntField;
  private:
@@ -242,6 +259,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
    ::cpp2::MyDataItem MyDataField;
  private:
    ::cpp2::MyEnum myEnum;
+ private:
+  bool oneway;
+ private:
+  bool readonly;
+ private:
+  bool idempotent;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -250,6 +273,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool MyStringField;
     bool MyDataField;
     bool myEnum;
+    bool oneway;
+    bool readonly;
+    bool idempotent;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
 #ifndef SWIG
@@ -358,6 +384,72 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> oneway_ref() const& {
+    return {this->oneway, __isset.oneway};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> oneway_ref() const&& {
+    return {std::move(this->oneway), __isset.oneway};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> oneway_ref() & {
+    return {this->oneway, __isset.oneway};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> oneway_ref() && {
+    return {std::move(this->oneway), __isset.oneway};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> readonly_ref() const& {
+    return {this->readonly, __isset.readonly};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> readonly_ref() const&& {
+    return {std::move(this->readonly), __isset.readonly};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> readonly_ref() & {
+    return {this->readonly, __isset.readonly};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> readonly_ref() && {
+    return {std::move(this->readonly), __isset.readonly};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> idempotent_ref() const& {
+    return {this->idempotent, __isset.idempotent};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> idempotent_ref() const&& {
+    return {std::move(this->idempotent), __isset.idempotent};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> idempotent_ref() & {
+    return {this->idempotent, __isset.idempotent};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> idempotent_ref() && {
+    return {std::move(this->idempotent), __isset.idempotent};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   int64_t get_MyIntField() const {
     return MyIntField;
   }
@@ -408,6 +500,42 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myEnum;
+  }
+
+  bool get_oneway() const {
+    return oneway;
+  }
+
+  bool& set_oneway(bool oneway_) {
+    oneway = oneway_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.oneway = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return oneway;
+  }
+
+  bool get_readonly() const {
+    return readonly;
+  }
+
+  bool& set_readonly(bool readonly_) {
+    readonly = readonly_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.readonly = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return readonly;
+  }
+
+  bool get_idempotent() const {
+    return idempotent;
+  }
+
+  bool& set_idempotent(bool idempotent_) {
+    idempotent = idempotent_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.idempotent = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return idempotent;
   }
 
   template <class Protocol_>

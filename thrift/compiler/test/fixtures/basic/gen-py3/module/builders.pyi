@@ -19,6 +19,9 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     MyStringField: _typing.Optional[str]
     MyDataField: _typing.Any
     myEnum: _typing.Optional[_module_types.MyEnum]
+    oneway: _typing.Optional[bool]
+    readonly: _typing.Optional[bool]
+    idempotent: _typing.Optional[bool]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

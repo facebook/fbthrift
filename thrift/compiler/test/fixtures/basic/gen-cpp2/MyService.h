@@ -33,15 +33,21 @@ class MyServiceSvAsyncIf {
   virtual void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) = 0;
   virtual folly::Future<std::unique_ptr<::std::string>> future_getRandomData() = 0;
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getRandomData() = 0;
+  virtual void async_tm_sink(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t sink) = 0;
+  virtual folly::Future<folly::Unit> future_sink(int64_t sink) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_sink(int64_t sink) = 0;
+  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) = 0;
+  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
   virtual void async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = 0;
   virtual folly::Future<bool> future_hasDataById(int64_t id) = 0;
   virtual folly::SemiFuture<bool> semifuture_hasDataById(int64_t id) = 0;
   virtual void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t id) = 0;
   virtual folly::Future<std::unique_ptr<::std::string>> future_getDataById(int64_t id) = 0;
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataById(int64_t id) = 0;
-  virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) = 0;
-  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
+  virtual void async_tm_deleteDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id) = 0;
+  virtual folly::Future<folly::Unit> future_deleteDataById(int64_t id) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_deleteDataById(int64_t id) = 0;
   virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<::std::string> data) = 0;
   virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
   virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
@@ -63,6 +69,14 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   folly::Future<std::unique_ptr<::std::string>> future_getRandomData() override;
   folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getRandomData() override;
   void async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) override;
+  virtual void sink(int64_t /*sink*/);
+  folly::Future<folly::Unit> future_sink(int64_t sink) override;
+  folly::SemiFuture<folly::Unit> semifuture_sink(int64_t sink) override;
+  void async_tm_sink(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t sink) override;
+  virtual void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
+  folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<::std::string> data) override;
+  folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) override;
+  void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) override;
   virtual bool hasDataById(int64_t /*id*/);
   folly::Future<bool> future_hasDataById(int64_t id) override;
   folly::SemiFuture<bool> semifuture_hasDataById(int64_t id) override;
@@ -71,10 +85,10 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   folly::Future<std::unique_ptr<::std::string>> future_getDataById(int64_t id) override;
   folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataById(int64_t id) override;
   void async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, int64_t id) override;
-  virtual void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
-  folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<::std::string> data) override;
-  folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, std::unique_ptr<::std::string> data) override;
-  void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<::std::string> data) override;
+  virtual void deleteDataById(int64_t /*id*/);
+  folly::Future<folly::Unit> future_deleteDataById(int64_t id) override;
+  folly::SemiFuture<folly::Unit> semifuture_deleteDataById(int64_t id) override;
+  void async_tm_deleteDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id) override;
   virtual void lobDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
   folly::Future<folly::Unit> future_lobDataById(int64_t id, std::unique_ptr<::std::string> data) override;
   folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, std::unique_ptr<::std::string> data) override;
@@ -85,9 +99,11 @@ class MyServiceSvNull : public MyServiceSvIf {
  public:
   void ping() override;
   void getRandomData(::std::string& /*_return*/) override;
+  void sink(int64_t /*sink*/) override;
+  void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
   bool hasDataById(int64_t /*id*/) override;
   void getDataById(::std::string& /*_return*/, int64_t /*id*/) override;
-  void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
+  void deleteDataById(int64_t /*id*/) override;
   void lobDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
 };
 
@@ -128,6 +144,22 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getRandomData(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
+  void setUpAndProcess_sink(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_sink(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_sink(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_sink(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void setUpAndProcess_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_putDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
   void setUpAndProcess_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_hasDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
@@ -144,13 +176,13 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getDataById(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void setUpAndProcess_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void setUpAndProcess_deleteDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_deleteDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_putDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static folly::IOBufQueue return_deleteDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_putDataById(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  static void throw_wrapped_deleteDataById(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void setUpAndProcess_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>

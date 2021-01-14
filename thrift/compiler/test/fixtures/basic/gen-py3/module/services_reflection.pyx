@@ -51,6 +51,53 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
     )
     spec.add_method(
         __MethodSpec.create(
+            name="sink",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="sink",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="putDataById",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="id",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="data",
+                    type=str,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
             name="hasDataById",
             arguments=(
                 __ArgumentSpec.create(
@@ -91,19 +138,12 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
     )
     spec.add_method(
         __MethodSpec.create(
-            name="putDataById",
+            name="deleteDataById",
             arguments=(
                 __ArgumentSpec.create(
                     name="id",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations={
-                    },
-                ),
-                __ArgumentSpec.create(
-                    name="data",
-                    type=str,
-                    kind=__NumberType.NOT_A_NUMBER,
                     annotations={
                     },
                 ),

@@ -28,6 +28,9 @@ struct ForEachField<::cpp2::MyStruct> {
     f(1, static_cast<T&&>(t).MyStringField_ref()...);
     f(2, static_cast<T&&>(t).MyDataField_ref()...);
     f(3, static_cast<T&&>(t).myEnum_ref()...);
+    f(4, static_cast<T&&>(t).oneway_ref()...);
+    f(5, static_cast<T&&>(t).readonly_ref()...);
+    f(6, static_cast<T&&>(t).idempotent_ref()...);
   }
 };
 

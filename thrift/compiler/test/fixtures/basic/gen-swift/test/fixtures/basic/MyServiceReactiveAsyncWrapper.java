@@ -34,6 +34,16 @@ public class MyServiceReactiveAsyncWrapper
   }
 
   @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> sink(final long sink) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.sink(sink));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> putDataById(final long id, final String data) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.putDataById(id, data));
+  }
+
+  @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Boolean> hasDataById(final long id) {
       return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.hasDataById(id));
   }
@@ -44,8 +54,8 @@ public class MyServiceReactiveAsyncWrapper
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<Void> putDataById(final long id, final String data) {
-      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.putDataById(id, data));
+  public com.google.common.util.concurrent.ListenableFuture<Void> deleteDataById(final long id) {
+      return com.facebook.swift.transport.util.FutureUtil.toListenableFuture(_delegate.deleteDataById(id));
   }
 
   @java.lang.Override
