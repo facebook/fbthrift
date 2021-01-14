@@ -228,6 +228,8 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
  * Function modifiers
  */
 %token tok_oneway
+%token tok_idempotent
+%token tok_readonly
 
 /**
  * Thrift language keywords
@@ -320,7 +322,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_struct*>        Throws
 %type<t_struct*>        MaybeThrows
 %type<t_service*>       Extends
-%type<bool>             Oneway
+%type<t_function_qualifier> FunctionQualifier
 
 %type<boost::optional<std::string>>
                         CaptureDocText
@@ -360,9 +362,17 @@ Identifier:
     {
       $$ = "sink";
     }
-| tok_oneway  /* Allow the keyword 'oneway' in identifiers. */
+| tok_oneway /* Allow the keyword 'oneway' in identifiers. */
     {
       $$ = "oneway";
+    }
+| tok_readonly /* Allow the keyword 'readonly' in identifiers. */
+    {
+      $$ = "readonly";
+    }
+| tok_idempotent /* Allow the keyword 'idempotent' in identifiers. */
+    {
+      $$ = "idempotent";
     }
 
 CaptureDocText:
@@ -1118,9 +1128,9 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText StructuredAnnotations Oneway FunctionType Identifier "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
+  CaptureDocText StructuredAnnotations FunctionQualifier FunctionType Identifier "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
     {
-      driver.debug("Function => CaptureDocText StructuredAnnotations Oneway "
+      driver.debug("Function => CaptureDocText StructuredAnnotations FunctionQualifier "
         "FunctionType Identifier ( ParamList ) MaybeThrows "
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
@@ -1203,14 +1213,22 @@ Param:
       $$ = $1;
     }
 
-Oneway:
+FunctionQualifier:
   tok_oneway
     {
-      $$ = true;
+      $$ = t_function_qualifier::Oneway;
+    }
+| tok_idempotent
+    {
+      $$ = t_function_qualifier::Idempotent;
+    }
+| tok_readonly
+    {
+      $$ = t_function_qualifier::Readonly;
     }
 |
     {
-      $$ = false;
+      $$ = t_function_qualifier::None;
     }
 
 

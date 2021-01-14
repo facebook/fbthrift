@@ -27,6 +27,13 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+enum class t_function_qualifier {
+  None = 0,
+  Oneway,
+  Idempotent,
+  Readonly,
+};
+
 /**
  * class t_function
  *
@@ -40,12 +47,12 @@ class t_function : public t_annotated {
   /**
    * Constructor for t_function
    *
-   * @param returntype  - The type of the value that will be returned
-   * @param name        - The symbolic name of the function
-   * @param arglist     - The parameters that are passed to the functions
-   * @param xceptions   - Declare the exceptions that function might throw
+   * @param returntype       - The type of the value that will be returned
+   * @param name             - The symbolic name of the function
+   * @param arglist          - The parameters that are passed to the functions
+   * @param xceptions        - Declare the exceptions that function might throw
    * @param stream_xceptions - Exceptions to be sent via the stream
-   * @param oneway      - Determines if it is a one way function
+   * @param qualifier        - The qualifier of the function, if any.
    */
   t_function(
       t_type* returntype,
@@ -53,14 +60,14 @@ class t_function : public t_annotated {
       std::unique_ptr<t_struct> arglist,
       std::unique_ptr<t_struct> xceptions = nullptr,
       std::unique_ptr<t_struct> stream_xceptions = nullptr,
-      bool oneway = false)
+      t_function_qualifier qualifier = t_function_qualifier::None)
       : returntype_(returntype),
         name_(name),
         arglist_(std::move(arglist)),
         xceptions_(std::move(xceptions)),
         stream_xceptions_(std::move(stream_xceptions)),
-        oneway_(oneway) {
-    if (oneway_) {
+        qualifier_(qualifier) {
+    if (is_oneway()) {
       if (!xceptions_->get_members().empty()) {
         throw std::string("Oneway methods can't throw exceptions.");
       }
@@ -101,7 +108,7 @@ class t_function : public t_annotated {
             std::unique_ptr<t_struct>(returntype->get_sink_xceptions())),
         sink_final_response_xceptions_(std::unique_ptr<t_struct>(
             returntype->get_final_response_xceptions())),
-        oneway_(false) {
+        qualifier_(t_function_qualifier::None) {
     if (!xceptions_) {
       xceptions_ = std::make_unique<t_struct>(nullptr);
     }
@@ -148,7 +155,7 @@ class t_function : public t_annotated {
   }
 
   bool is_oneway() const {
-    return oneway_;
+    return qualifier_ == t_function_qualifier::Oneway;
   }
 
   bool returns_stream() const {
@@ -180,7 +187,7 @@ class t_function : public t_annotated {
   std::unique_ptr<t_struct> stream_xceptions_;
   std::unique_ptr<t_struct> sink_xceptions_;
   std::unique_ptr<t_struct> sink_final_response_xceptions_;
-  bool oneway_;
+  t_function_qualifier qualifier_;
   bool isInteractionConstructor_{false};
   bool isInteractionMember_{false};
 };

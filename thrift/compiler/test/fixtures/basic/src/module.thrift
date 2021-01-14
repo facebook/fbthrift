@@ -49,9 +49,9 @@ service MyService {
   void sink(1: i64 sink);
 
   void putDataById(1: i64 id, 2: string data);
-  bool hasDataById(1: i64 id);
-  string getDataById(1: i64 id);
-  void deleteDataById(1: i64 id);
+  readonly bool hasDataById(1: i64 id);
+  readonly string getDataById(1: i64 id);
+  idempotent void deleteDataById(1: i64 id);
   oneway void lobDataById(1: i64 id, 2: string data);
 }
 

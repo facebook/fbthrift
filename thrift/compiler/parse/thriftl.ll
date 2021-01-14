@@ -150,6 +150,8 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "interaction"        { return apache::thrift::compiler::yy::parser::make_tok_interaction();          }
 "performs"           { return apache::thrift::compiler::yy::parser::make_tok_performs();             }
 "oneway"             { return apache::thrift::compiler::yy::parser::make_tok_oneway();               }
+"idempotent"         { return apache::thrift::compiler::yy::parser::make_tok_idempotent();           }
+"readonly"           { return apache::thrift::compiler::yy::parser::make_tok_readonly();             }
 "typedef"            { return apache::thrift::compiler::yy::parser::make_tok_typedef();              }
 "struct"             { return apache::thrift::compiler::yy::parser::make_tok_struct();               }
 "union"              { return apache::thrift::compiler::yy::parser::make_tok_union();                }
