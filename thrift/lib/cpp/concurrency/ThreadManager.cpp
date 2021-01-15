@@ -209,7 +209,7 @@ class ThreadManager::Impl : public ThreadManager,
         executingTimeUs_(0),
         numTasks_(0),
         state_(ThreadManager::UNINITIALIZED),
-        tasks_(3 * numPriorities),
+        tasks_(N_SOURCES * numPriorities),
         deadWorkers_(),
         namePrefix_(""),
         namePrefixCounter_(0),
@@ -852,7 +852,7 @@ void ThreadManager::Impl::add(
     return;
   }
 
-  priority = 3 * priority + static_cast<int>(source);
+  priority = N_SOURCES * priority + static_cast<int>(source);
   auto const qpriority = std::min(tasks_.priorities() - 1, priority);
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration}, qpriority);
