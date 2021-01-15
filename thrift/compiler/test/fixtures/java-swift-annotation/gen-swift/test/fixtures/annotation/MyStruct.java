@@ -32,13 +32,15 @@ public final class MyStruct {
         @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE) final String stringField,
         @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) final String detailField,
         @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap,
-        @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE) final String toto
+        @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE) final String toto,
+        @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE) final String password
     ) {
         this.intField = intField;
         this.stringField = stringField;
         this.detailField = detailField;
         this.detailMap = detailMap;
         this.toto = toto;
+        this.password = password;
     }
     
     @ThriftConstructor
@@ -48,6 +50,7 @@ public final class MyStruct {
       this.detailField = null;
       this.detailMap = null;
       this.toto = null;
+      this.password = null;
     }
     
     public static class Builder {
@@ -57,6 +60,7 @@ public final class MyStruct {
         private String detailField = null;
         private com.foo.FastIntLongMap detailMap = null;
         private String toto = null;
+        private String password = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
@@ -98,6 +102,14 @@ public final class MyStruct {
     
         public String getToto() { return toto; }
     
+            @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+    
+        public String getPassword() { return password; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.intField = other.intField;
@@ -105,6 +117,7 @@ public final class MyStruct {
             this.detailField = other.detailField;
             this.detailMap = other.detailMap;
             this.toto = other.toto;
+            this.password = other.password;
         }
     
         @ThriftConstructor
@@ -114,7 +127,8 @@ public final class MyStruct {
                 this.stringField,
                 this.detailField,
                 this.detailMap,
-                this.toto
+                this.toto,
+                this.password
             );
             return result;
         }
@@ -138,6 +152,9 @@ public final class MyStruct {
         private final String toto;
     public static final int _TITI = 5;
     private static final TField TITI_FIELD_DESC = new TField("titi", TType.STRING, (short)5);
+        private final String password;
+    public static final int _PASSWORD = 6;
+    private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)6);
     static {
       NAMES_TO_IDS.put("intField", 1);
       FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
@@ -149,6 +166,8 @@ public final class MyStruct {
       FIELD_METADATA.put(4, DETAIL_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("toto", 5);
       FIELD_METADATA.put(5, TITI_FIELD_DESC);
+      NAMES_TO_IDS.put("password", 6);
+      FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
@@ -170,6 +189,10 @@ public final class MyStruct {
     @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
     public String getToto() { return toto; }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
+    public String getPassword() { return password; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -178,6 +201,7 @@ public final class MyStruct {
         helper.add("detailField", detailField);
         helper.add("detailMap", detailMap);
         helper.add("toto", toto);
+        helper.add("password", "<SENSITIVE FIELD>");
         return helper.toString();
     }
     
@@ -198,6 +222,7 @@ public final class MyStruct {
             Objects.equals(detailField, other.detailField) &&
             Objects.equals(detailMap, other.detailMap) &&
             Objects.equals(toto, other.toto) &&
+            Objects.equals(password, other.password) &&
             true;
     }
     
@@ -208,7 +233,8 @@ public final class MyStruct {
             stringField,
             detailField,
             detailMap,
-            toto
+            toto,
+            password
         });
     }
     
@@ -272,6 +298,14 @@ public final class MyStruct {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _PASSWORD:
+          if (__field.type == TType.STRING) {
+            String password = oprot.readString();
+            builder.setPassword(password);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -311,6 +345,11 @@ public final class MyStruct {
       if (this.toto != null) {
         oprot.writeFieldBegin(TITI_FIELD_DESC);
         oprot.writeString(this.toto);
+        oprot.writeFieldEnd();
+      }
+      if (this.password != null) {
+        oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
+        oprot.writeString(this.password);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
