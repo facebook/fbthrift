@@ -24,58 +24,56 @@ enum MyEnum {
 }
 
 struct MyStructNestedAnnotation {
-  1: string name
+  1: string name;
 }
 
 struct MyStructAnnotation {
-  1: i64 count,
-  2: string name,
-  3: optional string extra,
-  4: MyStructNestedAnnotation nest
+  1: i64 count;
+  2: string name;
+  3: optional string extra;
+  4: MyStructNestedAnnotation nest;
 }
 
 struct MyStruct {
   # glibc has macros with this name, Thrift should be able to prevent collisions
-  1: i64 major (cpp.name = 'majorVer'),
+  1: i64 major (cpp.name = 'majorVer');
   # package is a reserved keyword in Java, Thrift should be able to handle this
-  2: string package (java.swift.name = '_package'),
+  2: string package (java.swift.name = '_package');
   # should generate valid code even with double quotes in an annotation
-  3: string annotation_with_quote (go.tag = 'tag:"somevalue"'),
-  4: string class_ (java.swift.name = 'class_'),
-  5: string annotation_with_trailing_comma (custom = 'test',),
-  6: string empty_annotations ()
+  3: string annotation_with_quote (go.tag = 'tag:"somevalue"');
+  4: string class_ (java.swift.name = 'class_');
+  5: string annotation_with_trailing_comma (custom = 'test');
+  6: string empty_annotations ();
 } (
   android.generate_builder,
-  struct_annotation=MyStructAnnotation{
-    'count': 123,
-    'name': '"structy"',
-    'nest': {
-      'name': "'nesty'",
-    }
+  struct_annotation = MyStructAnnotation {
+    'count' : 123,
+    'name' : '"structy"',
+    'nest' : {'name': "'nesty'"},
   },
   cpp.internal.deprecated._data.method,
 )
 
 service MyService {
-  void ping()
-  string getRandomData()
-  bool hasDataById(1: i64 id)
-  string getDataById(1: i64 id)
-  void putDataById(1: i64 id, 2: string data)
-  oneway void lobDataById(1: i64 id, 2: string data)
-  void doNothing() (cpp.name = 'cppDoNothing')
+  void ping();
+  string getRandomData();
+  bool hasDataById(1: i64 id);
+  string getDataById(1: i64 id);
+  void putDataById(1: i64 id, 2: string data);
+  oneway void lobDataById(1: i64 id, 2: string data);
+  void doNothing() (cpp.name = 'cppDoNothing');
 }
 
 service MyServicePrioParent {
-  void ping() (priority = 'IMPORTANT')
-  void pong() (priority = 'HIGH_IMPORTANT')
+  void ping() (priority = 'IMPORTANT');
+  void pong() (priority = 'HIGH_IMPORTANT');
 } (priority = 'HIGH')
 
 service MyServicePrioChild extends MyServicePrioParent {
-  void pang() (priority = 'BEST_EFFORT')
+  void pang() (priority = 'BEST_EFFORT');
 }
 
 struct SecretStruct {
-  1: i64 id,
-  2: string password (java.sensitive)
+  1: i64 id;
+  2: string password (java.sensitive);
 }

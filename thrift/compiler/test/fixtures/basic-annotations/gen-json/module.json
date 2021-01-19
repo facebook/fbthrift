@@ -108,10 +108,10 @@
           "required" : true
         }
       },
-      "annotation_last_lineno" : 57
+      "annotation_last_lineno" : 55
     },
     "SecretStruct" : {
-      "lineno" : 78,
+      "lineno" : 76,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -134,7 +134,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 59,
+      "lineno" : 57,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -226,7 +226,7 @@
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 69,
+      "lineno" : 67,
       "annotations" : {
         "priority" : "HIGH"
       },
@@ -260,7 +260,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 74,
+      "lineno" : 72,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {
