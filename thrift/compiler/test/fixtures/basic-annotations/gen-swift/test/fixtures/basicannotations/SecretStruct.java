@@ -54,7 +54,8 @@ public final class SecretStruct {
     
         public long getId() { return id; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
+            @org.apache.thrift.annotations.Sensitive
+        @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
         public Builder setPassword(String password) {
             this.password = password;
             return this;
@@ -84,7 +85,8 @@ public final class SecretStruct {
     private final long id;
     public static final int _ID = 1;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-        private final String password;
+        @org.apache.thrift.annotations.Sensitive
+    private final String password;
     public static final int _PASSWORD = 2;
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)2);
     static {

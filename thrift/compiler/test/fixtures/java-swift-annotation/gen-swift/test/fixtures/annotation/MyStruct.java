@@ -102,7 +102,8 @@ public final class MyStruct {
     
         public String getToto() { return toto; }
     
-            @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
+            @org.apache.thrift.annotations.Sensitive
+        @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
         public Builder setPassword(String password) {
             this.password = password;
             return this;
@@ -152,7 +153,8 @@ public final class MyStruct {
         private final String toto;
     public static final int _TITI = 5;
     private static final TField TITI_FIELD_DESC = new TField("titi", TType.STRING, (short)5);
-        private final String password;
+        @org.apache.thrift.annotations.Sensitive
+    private final String password;
     public static final int _PASSWORD = 6;
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)6);
     static {

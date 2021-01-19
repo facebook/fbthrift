@@ -30,6 +30,9 @@ public static class Builder {
     {{/struct:fields}}
 
     {{#struct:fields}}
+    {{#field:isSensitive?}}
+    @org.apache.thrift.annotations.Sensitive
+    {{/field:isSensitive?}}
     {{> ThriftFieldAnnotation}}{{#field:javaAnnotation?}} @{{field:javaAnnotation}}{{/field:javaAnnotation?}}
     public Builder {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
         this.{{field:javaName}} = {{field:javaName}};
