@@ -164,7 +164,7 @@ class EvbStreamCallback final : public StreamClientCallback,
   }
 
   bool onStreamRequestN(uint64_t num) noexcept override {
-    eventBaseRunHelper(serverEvb_, [&]() mutable {
+    eventBaseRunHelper(serverEvb_, [&, num]() mutable {
       if (serverCallback_) {
         std::ignore = serverCallback_->onStreamRequestN(num);
       }
