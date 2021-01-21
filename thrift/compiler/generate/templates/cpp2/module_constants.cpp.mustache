@@ -15,18 +15,17 @@
   limitations under the License.
 
 %><% > Autogen%>
+<%#program:constants?%>
 
 #include "<%program:include_prefix%><%program:name%>_constants.h"
 
 #include <thrift/lib/cpp2/gen/module_constants_cpp.h>
 
-<%#program:constants?%>
 <%#program:thrift_includes%>
   <%#program:constants?%>
 #include "<%program:include_prefix%><%program:name%>_constants.h"
   <%/program:constants?%>
 <%/program:thrift_includes%>
-<%/program:constants?%>
 
 <% > common/namespace_cpp2_begin%>
 
@@ -53,3 +52,4 @@ constexpr <% > types/type%> const <%program:name%>_constants::<%constant:name%>_
   <%/type:resolves_to_container_or_struct?%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 <% > common/namespace_cpp2_end%>
+<%/program:constants?%>
