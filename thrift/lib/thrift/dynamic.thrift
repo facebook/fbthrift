@@ -20,6 +20,7 @@ namespace py apache.thrift.dynamic
 namespace py.asyncio apache.asyncio.thrift.dynamic
 namespace py3 apache.thrift
 namespace java.swift org.apache.thrift.dynamic
+namespace js thrift
 
 cpp_include "thrift/lib/thrift/SerializableDynamic.h"
 
