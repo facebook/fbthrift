@@ -66,6 +66,13 @@ void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
   }
 }
 
+void InteractionEventTask::failWith(
+    folly::exception_wrapper ex,
+    std::string exCode) {
+  tile_ = nullptr;
+  EventTask::failWith(std::move(ex), std::move(exCode));
+}
+
 void AsyncProcessor::terminateInteraction(
     int64_t,
     Cpp2ConnContext&,
@@ -139,7 +146,7 @@ bool GeneratedAsyncProcessor::createInteraction(
         }
 
         if (!tile) {
-          promise->failWith<EventTask>(
+          promise->failWith<InteractionEventTask>(
               folly::make_exception_wrapper<TApplicationException>(
                   "Interaction constructor failed with " +
                   t.exception().what().toStdString()),

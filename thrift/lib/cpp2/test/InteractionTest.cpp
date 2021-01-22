@@ -164,6 +164,33 @@ TEST(InteractionTest, IsDetachable) {
   EXPECT_TRUE(detached);
 }
 
+TEST(InteractionTest, QueueTimeout) {
+  struct SlowCalculatorHandler : CalculatorSvIf {
+    struct SemiAdditionHandler : CalculatorSvIf::AdditionIf {
+      folly::SemiFuture<int32_t> semifuture_getPrimitive() override {
+        /* sleep override: testing timeout */
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return 0;
+      }
+    };
+
+    std::unique_ptr<AdditionIf> createAddition() override {
+      return std::make_unique<SemiAdditionHandler>();
+    }
+  };
+
+  ScopedServerInterfaceThread runner{std::make_shared<SlowCalculatorHandler>()};
+  runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds(50));
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  auto adder = client->createAddition();
+  auto f1 = adder.semifuture_getPrimitive(),
+       f2 = adder.semifuture_getPrimitive();
+  EXPECT_FALSE(std::move(f1).getTry().hasException());
+  EXPECT_TRUE(std::move(f2).getTry().hasException());
+}
+
 struct CalculatorHandler : CalculatorSvIf {
   struct AdditionHandler : CalculatorSvIf::AdditionIf {
     int acc_{0};

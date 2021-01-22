@@ -100,13 +100,15 @@ class InteractionEventTask : public EventTask {
 
   ~InteractionEventTask() {
     if (tile_) {
-      tile_->__fbthrift_releaseRef(*base_);
+      base_->runInEventBaseThread(
+          [tile = tile_, eb = base_] { tile->__fbthrift_releaseRef(*eb); });
     }
   }
 
   void setTile(Tile& tile) {
     tile_ = &tile;
   }
+  void failWith(folly::exception_wrapper ex, std::string exCode);
 
  private:
   Tile* tile_;
