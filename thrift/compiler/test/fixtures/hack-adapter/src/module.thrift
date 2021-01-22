@@ -36,3 +36,7 @@ struct Bar {
   3: list<Foo (hack.adapter = '\Adapter1')> structListField;
   4: optional list<Foo (hack.adapter = '\Adapter1')> optionalStructListField;
 }
+
+service Service {
+  i32 func(1: string arg1, 2: Foo arg2);
+}
