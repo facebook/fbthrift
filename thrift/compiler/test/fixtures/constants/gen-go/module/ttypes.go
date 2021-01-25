@@ -31,6 +31,12 @@ var EmptyEnumToName = map[EmptyEnum]string {
 var EmptyEnumToValue = map[string]EmptyEnum {
 }
 
+var EmptyEnumNames = []string {
+}
+
+var EmptyEnumValues = []EmptyEnum {
+}
+
 func (p EmptyEnum) String() string {
   if v, ok := EmptyEnumToName[p]; ok {
     return v
@@ -69,6 +75,20 @@ var CityToValue = map[string]City {
   "LON": City_LON,
 }
 
+var CityNames = []string {
+  "NYC",
+  "MPK",
+  "SEA",
+  "LON",
+}
+
+var CityValues = []City {
+  City_NYC,
+  City_MPK,
+  City_SEA,
+  City_LON,
+}
+
 func (p City) String() string {
   if v, ok := CityToName[p]; ok {
     return v
@@ -105,6 +125,20 @@ var CompanyToValue = map[string]Company {
   "WHATSAPP": Company_WHATSAPP,
   "OCULUS": Company_OCULUS,
   "INSTAGRAM": Company_INSTAGRAM,
+}
+
+var CompanyNames = []string {
+  "FACEBOOK",
+  "WHATSAPP",
+  "OCULUS",
+  "INSTAGRAM",
+}
+
+var CompanyValues = []Company {
+  Company_FACEBOOK,
+  Company_WHATSAPP,
+  Company_OCULUS,
+  Company_INSTAGRAM,
 }
 
 func (p Company) String() string {

@@ -17,6 +17,8 @@
 package gotest
 
 import (
+	"reflect"
+	"sort"
 	"testing"
 	"thrift/test/go/if/thrifttest"
 )
@@ -41,5 +43,35 @@ func TestStructMapKey(t *testing.T) {
 
 	if len(maps.Struct2str) != 2 {
 		t.Fatalf("unexpected map length (should have been 2)")
+	}
+}
+
+func TestEnumValues(t *testing.T) {
+	generatedValues := thrifttest.NumberzValues
+	sort.Slice(generatedValues, func(i, j int) bool { return generatedValues[i] < generatedValues[j] })
+
+	values := []thrifttest.Numberz{}
+	for k := range thrifttest.NumberzToName {
+		values = append(values, k)
+	}
+	sort.Slice(values, func(i, j int) bool { return values[i] < values[j] })
+
+	if !reflect.DeepEqual(generatedValues, values) {
+		t.Fatalf("values slices are not equal (should be equal)")
+	}
+}
+
+func TestEnumNames(t *testing.T) {
+	generatedNames := thrifttest.NumberzNames
+	sort.Strings(generatedNames)
+
+	names := []string{}
+	for k := range thrifttest.NumberzToValue {
+		names = append(names, k)
+	}
+	sort.Strings(names)
+
+	if !reflect.DeepEqual(generatedNames, names) {
+		t.Fatalf("names slices are not equal (should be equal)")
 	}
 }

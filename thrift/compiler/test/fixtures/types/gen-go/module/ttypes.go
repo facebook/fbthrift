@@ -49,6 +49,22 @@ var HasBitwiseOpsToValue = map[string]HasBitwiseOps {
   "three": HasBitwiseOps_three,
 }
 
+var HasBitwiseOpsNames = []string {
+  "none",
+  "zero",
+  "one",
+  "two",
+  "three",
+}
+
+var HasBitwiseOpsValues = []HasBitwiseOps {
+  HasBitwiseOps_none,
+  HasBitwiseOps_zero,
+  HasBitwiseOps_one,
+  HasBitwiseOps_two,
+  HasBitwiseOps_three,
+}
+
 func (p HasBitwiseOps) String() string {
   if v, ok := HasBitwiseOpsToName[p]; ok {
     return v
@@ -81,6 +97,16 @@ var IsUnscopedToValue = map[string]IsUnscoped {
   "world": IsUnscoped_world,
 }
 
+var IsUnscopedNames = []string {
+  "hello",
+  "world",
+}
+
+var IsUnscopedValues = []IsUnscoped {
+  IsUnscoped_hello,
+  IsUnscoped_world,
+}
+
 func (p IsUnscoped) String() string {
   if v, ok := IsUnscopedToName[p]; ok {
     return v
@@ -111,6 +137,16 @@ var MyForwardRefEnumToName = map[MyForwardRefEnum]string {
 var MyForwardRefEnumToValue = map[string]MyForwardRefEnum {
   "ZERO": MyForwardRefEnum_ZERO,
   "NONZERO": MyForwardRefEnum_NONZERO,
+}
+
+var MyForwardRefEnumNames = []string {
+  "ZERO",
+  "NONZERO",
+}
+
+var MyForwardRefEnumValues = []MyForwardRefEnum {
+  MyForwardRefEnum_ZERO,
+  MyForwardRefEnum_NONZERO,
 }
 
 func (p MyForwardRefEnum) String() string {
@@ -146,6 +182,18 @@ var MyEnumAToValue = map[string]MyEnumA {
   "fieldA": MyEnumA_fieldA,
   "fieldB": MyEnumA_fieldB,
   "fieldC": MyEnumA_fieldC,
+}
+
+var MyEnumANames = []string {
+  "fieldA",
+  "fieldB",
+  "fieldC",
+}
+
+var MyEnumAValues = []MyEnumA {
+  MyEnumA_fieldA,
+  MyEnumA_fieldB,
+  MyEnumA_fieldC,
 }
 
 func (p MyEnumA) String() string {

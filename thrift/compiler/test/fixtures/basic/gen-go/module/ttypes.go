@@ -37,6 +37,16 @@ var MyEnumToValue = map[string]MyEnum {
   "MyValue2": MyEnum_MyValue2,
 }
 
+var MyEnumNames = []string {
+  "MyValue1",
+  "MyValue2",
+}
+
+var MyEnumValues = []MyEnum {
+  MyEnum_MyValue1,
+  MyEnum_MyValue2,
+}
+
 func (p MyEnum) String() string {
   if v, ok := MyEnumToName[p]; ok {
     return v

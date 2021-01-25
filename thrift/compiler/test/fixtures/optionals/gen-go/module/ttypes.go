@@ -40,6 +40,18 @@ var AnimalToValue = map[string]Animal {
   "TARANTULA": Animal_TARANTULA,
 }
 
+var AnimalNames = []string {
+  "DOG",
+  "CAT",
+  "TARANTULA",
+}
+
+var AnimalValues = []Animal {
+  Animal_DOG,
+  Animal_CAT,
+  Animal_TARANTULA,
+}
+
 func (p Animal) String() string {
   if v, ok := AnimalToName[p]; ok {
     return v

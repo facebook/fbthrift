@@ -981,7 +981,7 @@ void t_go_generator::generate_typedef(t_typedef* ttypedef) {
  * @param tenum The enumeration
  */
 void t_go_generator::generate_enum(t_enum* tenum) {
-  std::ostringstream name_mapping, value_mapping;
+  std::ostringstream name_mapping, value_mapping, names_slice, values_slice;
   std::string tenum_name(publicize(tenum->get_name()));
   generate_go_docstring(f_types_, tenum);
   f_types_ << "type " << tenum_name << " int64" << endl << "const (" << endl;
@@ -991,6 +991,12 @@ void t_go_generator::generate_enum(t_enum* tenum) {
 
   value_mapping << indent() << "var " << tenum_name << "ToValue = map[string]"
                 << tenum_name << " {" << endl;
+
+  names_slice << indent() << "var " << tenum_name << "Names = []string {"
+              << endl;
+
+  values_slice << indent() << "var " << tenum_name << "Values = []"
+               << tenum_name << " {" << endl;
 
   vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
@@ -1013,6 +1019,12 @@ void t_go_generator::generate_enum(t_enum* tenum) {
 
     value_mapping << indent() << "  \"" << iter_std_name << "\": " << tenum_name
                   << "_" << iter_name << "," << endl;
+
+    names_slice << indent() << "  \"" << iter_std_name << "\"," << endl;
+
+    values_slice << indent() << "  " << tenum_name << "_" << iter_name << ","
+                 << endl;
+
     if (iter_std_name != escape_string(iter_name)) {
       value_mapping << indent() << "  \"" << escape_string(iter_std_name)
                     << "\": " << tenum_name << "_" << iter_name << "," << endl;
@@ -1022,10 +1034,14 @@ void t_go_generator::generate_enum(t_enum* tenum) {
 
   name_mapping << indent() << "}" << endl;
   value_mapping << indent() << "}" << endl;
+  names_slice << indent() << "}" << endl;
+  values_slice << indent() << "}" << endl;
 
   f_types_ << ")" << endl << endl;
   f_types_ << name_mapping.str() << endl;
   f_types_ << value_mapping.str() << endl;
+  f_types_ << names_slice.str() << endl;
+  f_types_ << values_slice.str() << endl;
   f_types_ << "func (p " << tenum_name << ") String() string {" << endl
            << "  if v, ok := " << tenum_name << "ToName[p]; ok {" << endl
            << "    return v" << endl
