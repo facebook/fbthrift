@@ -291,8 +291,25 @@ class ThreadManager : public virtual folly::Executor {
 
   virtual folly::Codel* getCodel() = 0;
 
-  [[nodiscard]] virtual KeepAlive<> getKeepAlive(PRIORITY pri, Source level)
-      const = 0;
+  /**
+   * This class may be used by getKeepAlive() to decide which executor to
+   * return.
+   */
+  class ExecutionScope {
+   public:
+    ExecutionScope(PRIORITY priority) : pri_(priority) {}
+
+    PRIORITY getPriority() const {
+      return pri_;
+    }
+
+   private:
+    PRIORITY pri_;
+  };
+
+  [[nodiscard]] virtual KeepAlive<> getKeepAlive(
+      ExecutionScope es,
+      Source level) const = 0;
 
   class Impl;
 
@@ -458,7 +475,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
     return nullptr;
   }
 
-  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY pri, Source source)
+  [[nodiscard]] KeepAlive<> getKeepAlive(ExecutionScope es, Source source)
       const override;
 
  private:
@@ -511,7 +528,7 @@ class SimpleThreadManager : public ThreadManager,
       std::chrono::microseconds& waitTime,
       std::chrono::microseconds& runTime,
       int64_t /*maxItems*/) override;
-  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY pri, Source source)
+  [[nodiscard]] KeepAlive<> getKeepAlive(ExecutionScope es, Source source)
       const override;
 
  private:

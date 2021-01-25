@@ -337,7 +337,7 @@ class ThreadManager::Impl : public ThreadManager,
 
   folly::Codel codel_;
 
-  KeepAlive<> getKeepAlive(PRIORITY, Source) const override {
+  KeepAlive<> getKeepAlive(ExecutionScope, Source) const override {
     LOG(FATAL)
         << "getKeepAlive() should be implemented in derived/wrapper class";
   }
@@ -439,7 +439,7 @@ class SimpleThreadManagerImpl : public ThreadManager::Impl {
     addWorker(workerCount_);
   }
 
-  KeepAlive<> getKeepAlive(PRIORITY /* pri */, Source source) const override {
+  KeepAlive<> getKeepAlive(ExecutionScope, Source source) const override {
     DCHECK(static_cast<uint8_t>(source) < executors_.size());
     return getKeepAliveToken(*executors_[static_cast<uint8_t>(source)]);
   }
@@ -565,9 +565,9 @@ void SimpleThreadManager::getStats(
 }
 
 folly::Executor::KeepAlive<> SimpleThreadManager::getKeepAlive(
-    PRIORITY pri,
+    ExecutionScope es,
     Source source) const {
-  return impl_->getKeepAlive(pri, source);
+  return impl_->getKeepAlive(std::move(es), source);
 }
 
 class ThreadManager::Impl::Worker : public Runnable {
@@ -1212,8 +1212,8 @@ class PriorityThreadManager::PriorityImpl
     managers_[pri]->add(FunctionRunner::create(std::move(f)), 0, 0, source);
   }
 
-  KeepAlive<> getKeepAlive(PRIORITY pri, Source source) const override {
-    size_t idx = pri * N_SOURCES + static_cast<uint8_t>(source);
+  KeepAlive<> getKeepAlive(ExecutionScope es, Source source) const override {
+    size_t idx = es.getPriority() * N_SOURCES + static_cast<uint8_t>(source);
     DCHECK(idx < executors_.size());
     return getKeepAliveToken(*executors_[idx]);
   }
@@ -1422,8 +1422,8 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
     add(pri, std::make_shared<FunctionRunner>(std::move(f)), 0, 0, source);
   }
 
-  KeepAlive<> getKeepAlive(PRIORITY pri, Source source) const override {
-    size_t idx = pri * N_SOURCES + static_cast<uint8_t>(source);
+  KeepAlive<> getKeepAlive(ExecutionScope es, Source source) const override {
+    size_t idx = es.getPriority() * N_SOURCES + static_cast<uint8_t>(source);
     DCHECK(idx < executors_.size());
     return getKeepAliveToken(*executors_[idx]);
   }
@@ -1439,7 +1439,7 @@ class PriorityQueueThreadManager : public ThreadManager::Impl {
 
   using Task = typename ThreadManager::Impl::Task;
 
-  std::string statContext(PRIORITY p = PRIORITY::NORMAL) override {
+  std::string statContext(PRIORITY p = concurrency::PRIORITY::NORMAL) override {
     return statContexts_[p];
   }
 
@@ -1581,9 +1581,9 @@ void ThreadManagerExecutorAdapter::add(folly::Func f) {
 }
 
 folly::Executor::KeepAlive<> ThreadManagerExecutorAdapter::getKeepAlive(
-    PRIORITY pri,
+    ExecutionScope es,
     Source source) const {
-  return getKeepAliveToken(executors_[idxFromPriSrc(pri, source)]);
+  return getKeepAliveToken(executors_[idxFromPriSrc(es.getPriority(), source)]);
 }
 
 void ThreadManager::setObserver(

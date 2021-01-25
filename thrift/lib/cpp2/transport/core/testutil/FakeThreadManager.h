@@ -37,7 +37,8 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
     thread->start();
   }
 
-  [[nodiscard]] KeepAlive<> getKeepAlive(PRIORITY, Source) const override {
+  [[nodiscard]] KeepAlive<> getKeepAlive(ExecutionScope, Source)
+      const override {
     return getKeepAliveToken(const_cast<FakeThreadManager*>(this));
   }
 
