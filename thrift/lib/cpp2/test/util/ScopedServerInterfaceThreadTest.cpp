@@ -483,8 +483,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStreamTaskTimeout) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Streaming is not implemented for Header transport";
+  if (this->isHeaderTransport()) {
+    return; // Streaming is not implemented for Header transport.
+  }
 
   auto serviceImpl = this->newService();
 
@@ -509,8 +510,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStreamTaskTimeout) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsLargeMessage) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Clean shutdown is not implemented for Header transport";
+  if (this->isHeaderTransport()) {
+    return; // Clean shutdown is not implemented for Header transport.
+  }
 
   std::string message(10000000, 'a');
 
@@ -599,8 +601,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, writeError) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Clean shutdown is not implemented for Header transport";
+  if (this->isHeaderTransport()) {
+    return; // Clean shutdown is not implemented for Header transport.
+  }
 
   std::string message(10000000, 'a');
 
@@ -818,8 +821,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsCancel) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, SetMaxRequestsJoinWrites) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Joining writes is not implemented for Header transport";
+  if (this->isHeaderTransport()) {
+    return; // Joining writes is not implemented for Header transport.
+  }
 
   std::string message(10000000, 'a');
 
