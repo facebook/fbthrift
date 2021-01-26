@@ -474,6 +474,26 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
 }
 
 class MyServicePrioChildStaticMetadata implements \IThriftServiceStaticMetadata {
+  public static function getServiceMetadata(): \tmeta_ThriftService {
+    return tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "MyServicePrioChild",
+        "functions" => vec[
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "pang",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+            )
+          ),
+        ],
+        "parent" => "MyServicePrioParent",
+      )
+    );
+  }
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

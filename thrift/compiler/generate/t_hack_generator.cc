@@ -122,6 +122,43 @@ class t_hack_generator : public t_oop_generator {
   std::string render_default_value(t_type* type);
 
   /**
+   * Metadata Types functions
+   */
+
+  /**
+   * Keep synced with : thrift/lib/thrift/metadata.thrift
+   */
+  enum ThriftPrimitiveType {
+    THRIFT_BOOL_TYPE = 1,
+    THRIFT_BYTE_TYPE = 2,
+    THRIFT_I16_TYPE = 3,
+    THRIFT_I32_TYPE = 4,
+    THRIFT_I64_TYPE = 5,
+    THRIFT_FLOAT_TYPE = 6,
+    THRIFT_DOUBLE_TYPE = 7,
+    THRIFT_BINARY_TYPE = 8,
+    THRIFT_STRING_TYPE = 9,
+    THRIFT_VOID_TYPE = 10,
+  };
+
+  ThriftPrimitiveType base_to_t_primitive(t_base_type* base_type);
+
+  std::unique_ptr<t_const_value> type_to_tmeta(t_type* type);
+  std::unique_ptr<t_const_value> field_to_tmeta(t_field* field);
+  std::unique_ptr<t_const_value> function_to_tmeta(t_function* function);
+  std::unique_ptr<t_const_value> service_to_tmeta(t_service* service);
+
+  void append_to_t_enum(
+      t_enum* tenum,
+      t_program* program,
+      ThriftPrimitiveType value);
+
+  t_type* tmeta_ThriftType_type();
+  t_type* tmeta_ThriftField_type();
+  t_type* tmeta_ThriftFunction_type();
+  t_type* tmeta_ThriftService_type();
+
+  /**
    * Structs!
    */
 
@@ -1367,6 +1404,396 @@ string t_hack_generator::render_default_value(t_type* type) {
     }
   }
   return dval;
+}
+
+t_hack_generator::ThriftPrimitiveType t_hack_generator::base_to_t_primitive(
+    t_base_type* tbase) {
+  switch (tbase->get_base()) {
+    case t_base_type::TYPE_BOOL:
+      return ThriftPrimitiveType::THRIFT_BOOL_TYPE;
+    case t_base_type::TYPE_BYTE:
+      return ThriftPrimitiveType::THRIFT_BYTE_TYPE;
+    case t_base_type::TYPE_I16:
+      return ThriftPrimitiveType::THRIFT_I16_TYPE;
+    case t_base_type::TYPE_I32:
+      return ThriftPrimitiveType::THRIFT_I32_TYPE;
+    case t_base_type::TYPE_I64:
+      return ThriftPrimitiveType::THRIFT_I64_TYPE;
+    case t_base_type::TYPE_FLOAT:
+      return ThriftPrimitiveType::THRIFT_FLOAT_TYPE;
+    case t_base_type::TYPE_DOUBLE:
+      return ThriftPrimitiveType::THRIFT_DOUBLE_TYPE;
+    case t_base_type::TYPE_BINARY:
+      return ThriftPrimitiveType::THRIFT_BINARY_TYPE;
+    case t_base_type::TYPE_STRING:
+      return ThriftPrimitiveType::THRIFT_STRING_TYPE;
+    case t_base_type::TYPE_VOID:
+      return ThriftPrimitiveType::THRIFT_VOID_TYPE;
+    default:
+      throw std::invalid_argument(
+          "compiler error: no ThriftPrimitiveType mapped to base type " +
+          t_base_type::t_base_name(tbase->get_base()));
+  }
+}
+
+std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(t_type* type) {
+  auto tmeta_ThriftType = std::make_unique<t_const_value>();
+
+  if (type->is_base_type()) {
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_primitive"),
+        std::make_unique<t_const_value>(
+            base_to_t_primitive((t_base_type*)type)));
+  } else if (type->is_list()) {
+    t_list* tlist = (t_list*)type;
+    auto tlist_tmeta = std::make_unique<t_const_value>();
+    tlist_tmeta->add_map(
+        std::make_unique<t_const_value>("valueType"),
+        type_to_tmeta(tlist->get_elem_type()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_list"), std::move(tlist_tmeta));
+  } else if (type->is_set()) {
+    t_set* tset = (t_set*)type;
+    auto tset_tmeta = std::make_unique<t_const_value>();
+    tset_tmeta->add_map(
+        std::make_unique<t_const_value>("valueType"),
+        type_to_tmeta(tset->get_elem_type()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_set"), std::move(tset_tmeta));
+  } else if (type->is_map()) {
+    t_map* tmap = (t_map*)type;
+    auto tmap_tmeta = std::make_unique<t_const_value>();
+    tmap_tmeta->add_map(
+        std::make_unique<t_const_value>("keyType"),
+        type_to_tmeta(tmap->get_key_type()));
+    tmap_tmeta->add_map(
+        std::make_unique<t_const_value>("valueType"),
+        type_to_tmeta(tmap->get_val_type()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_map"), std::move(tmap_tmeta));
+  } else if (type->is_enum()) {
+    auto tenum_tmeta = std::make_unique<t_const_value>();
+    tenum_tmeta->add_map(
+        std::make_unique<t_const_value>("name"),
+        std::make_unique<t_const_value>(type->get_name()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_enum"), std::move(tenum_tmeta));
+  } else if (type->is_struct()) {
+    auto tstruct_tmeta = std::make_unique<t_const_value>();
+    tstruct_tmeta->add_map(
+        std::make_unique<t_const_value>("name"),
+        std::make_unique<t_const_value>(type->get_name()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_struct"), std::move(tstruct_tmeta));
+  } else if (type->is_union()) {
+    auto tunion_tmeta = std::make_unique<t_const_value>();
+    tunion_tmeta->add_map(
+        std::make_unique<t_const_value>("name"),
+        std::make_unique<t_const_value>(type->get_name()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_union"), std::move(tunion_tmeta));
+  } else if (type->is_typedef()) {
+    t_typedef* ttypedef = (t_typedef*)type;
+    auto ttypedef_tmeta = std::make_unique<t_const_value>();
+    ttypedef_tmeta->add_map(
+        std::make_unique<t_const_value>("name"),
+        std::make_unique<t_const_value>(ttypedef->get_name()));
+    ttypedef_tmeta->add_map(
+        std::make_unique<t_const_value>("underlyingType"),
+        type_to_tmeta(ttypedef->get_type()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_typedef"),
+        std::move(ttypedef_tmeta));
+  } else if (type->is_sink()) {
+    t_sink* tsink = (t_sink*)type;
+    auto tsink_tmeta = std::make_unique<t_const_value>();
+    tsink_tmeta->add_map(
+        std::make_unique<t_const_value>("elemType"),
+        type_to_tmeta(tsink->get_sink_type()));
+    tsink_tmeta->add_map(
+        std::make_unique<t_const_value>("finalResponseType"),
+        type_to_tmeta(tsink->get_final_response_type()));
+    tsink_tmeta->add_map(
+        std::make_unique<t_const_value>("initialResponseType"),
+        type_to_tmeta(tsink->get_first_response_type()));
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_sink"), std::move(tsink_tmeta));
+  } else {
+    // Unsupported type
+  }
+
+  return tmeta_ThriftType;
+}
+
+std::unique_ptr<t_const_value> t_hack_generator::field_to_tmeta(
+    t_field* field) {
+  auto tmeta_ThriftField = std::make_unique<t_const_value>();
+
+  tmeta_ThriftField->add_map(
+      std::make_unique<t_const_value>("id"),
+      std::make_unique<t_const_value>(field->get_key()));
+
+  tmeta_ThriftField->add_map(
+      std::make_unique<t_const_value>("type"),
+      type_to_tmeta(field->get_type()));
+
+  tmeta_ThriftField->add_map(
+      std::make_unique<t_const_value>("name"),
+      std::make_unique<t_const_value>(field->get_name()));
+
+  if (field->get_req() == t_field::T_OPTIONAL) {
+    auto is_optional = std::make_unique<t_const_value>();
+    is_optional->set_bool(true);
+    tmeta_ThriftField->add_map(
+        std::make_unique<t_const_value>("is_optional"), std::move(is_optional));
+  }
+
+  return tmeta_ThriftField;
+}
+
+std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
+    t_function* function) {
+  auto tmeta_ThriftFunction = std::make_unique<t_const_value>();
+
+  tmeta_ThriftFunction->add_map(
+      std::make_unique<t_const_value>("name"),
+      std::make_unique<t_const_value>(function->get_name()));
+
+  tmeta_ThriftFunction->add_map(
+      std::make_unique<t_const_value>("return_type"),
+      type_to_tmeta(function->get_returntype()));
+
+  vector<t_field*> arguments_fields = function->get_arglist()->get_members();
+  if (!arguments_fields.empty()) {
+    auto arguments = std::make_unique<t_const_value>();
+    arguments->set_list();
+    for (const auto& field : arguments_fields) {
+      arguments->add_list(field_to_tmeta(field));
+    }
+    tmeta_ThriftFunction->add_map(
+        make_unique<t_const_value>("arguments"), std::move(arguments));
+  }
+
+  vector<t_field*> exceptions_fields = function->get_xceptions()->get_members();
+  if (!exceptions_fields.empty()) {
+    auto exceptions = std::make_unique<t_const_value>();
+    exceptions->set_list();
+    for (const auto& field : exceptions_fields) {
+      exceptions->add_list(field_to_tmeta(field));
+    }
+    tmeta_ThriftFunction->add_map(
+        make_unique<t_const_value>("exceptions"), std::move(exceptions));
+  }
+
+  if (function->is_oneway()) {
+    auto is_oneway = std::make_unique<t_const_value>();
+    is_oneway->set_bool(true);
+    tmeta_ThriftFunction->add_map(
+        std::make_unique<t_const_value>("is_oneway"), std::move(is_oneway));
+  }
+
+  return tmeta_ThriftFunction;
+}
+
+std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
+    t_service* service) {
+  auto tmeta_ThriftService = std::make_unique<t_const_value>();
+
+  tmeta_ThriftService->add_map(
+      std::make_unique<t_const_value>("name"),
+      std::make_unique<t_const_value>(service->get_name()));
+
+  vector<t_function*> functions = get_supported_functions(service);
+  if (!functions.empty()) {
+    auto tmeta_functions = std::make_unique<t_const_value>();
+    tmeta_functions->set_list();
+    for (const auto& function : functions) {
+      tmeta_functions->add_list(function_to_tmeta(function));
+    }
+    tmeta_ThriftService->add_map(
+        std::make_unique<t_const_value>("functions"),
+        std::move(tmeta_functions));
+  }
+
+  t_service* parent = service->get_extends();
+  if (parent) {
+    tmeta_ThriftService->add_map(
+        std::make_unique<t_const_value>("parent"),
+        std::make_unique<t_const_value>(parent->get_name()));
+  }
+  return tmeta_ThriftService;
+}
+
+void t_hack_generator::append_to_t_enum(
+    t_enum* tenum,
+    t_program* program,
+    ThriftPrimitiveType value) {
+  string str_value = "";
+  switch (value) {
+    case ThriftPrimitiveType::THRIFT_BOOL_TYPE:
+      str_value = "THRIFT_BOOL_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_BYTE_TYPE:
+      str_value = "THRIFT_BYTE_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_I16_TYPE:
+      str_value = "THRIFT_I16_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_I32_TYPE:
+      str_value = "THRIFT_I32_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_I64_TYPE:
+      str_value = "THRIFT_I64_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_FLOAT_TYPE:
+      str_value = "THRIFT_FLOAT_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_DOUBLE_TYPE:
+      str_value = "THRIFT_DOUBLE_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_BINARY_TYPE:
+      str_value = "THRIFT_BINARY_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_STRING_TYPE:
+      str_value = "THRIFT_STRING_TYPE";
+      break;
+    case ThriftPrimitiveType::THRIFT_VOID_TYPE:
+      str_value = "THRIFT_VOID_TYPE";
+      break;
+  }
+  tenum->append(
+      std::make_unique<t_enum_value>(str_value, value),
+      std::make_unique<t_const>(
+          program,
+          (t_type*)tenum,
+          str_value,
+          std::make_unique<t_const_value>(value)));
+}
+
+t_type* t_hack_generator::tmeta_ThriftType_type() {
+  static t_program empty_program("");
+  static t_struct type(&empty_program, "tmeta_ThriftType");
+  static t_enum primitive_type(&empty_program);
+  static t_struct list_type(&empty_program, "tmeta_ThriftListType");
+  static t_struct set_type(&empty_program, "tmeta_ThriftSetType");
+  static t_struct map_type(&empty_program, "tmeta_ThriftMapType");
+  static t_struct enum_type(&empty_program, "tmeta_ThriftEnumType");
+  static t_struct struct_type(&empty_program, "tmeta_ThriftStructType");
+  static t_struct union_type(&empty_program, "tmeta_ThriftUnionType");
+  static t_struct typedef_type(&empty_program, "tmeta_ThriftTypedefType");
+  static t_struct stream_type(&empty_program, "tmeta_ThriftStreamType");
+  static t_struct sink_type(&empty_program, "tmeta_ThriftSinkType");
+  if (!type.get_members().empty()) {
+    return (t_type*)&type;
+  }
+
+  primitive_type.set_name("tmeta_ThriftPrimitiveType");
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_BOOL_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_BYTE_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_I16_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_I32_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_I64_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_FLOAT_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_BINARY_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_STRING_TYPE);
+  append_to_t_enum(
+      &primitive_type, &empty_program, ThriftPrimitiveType::THRIFT_VOID_TYPE);
+
+  list_type.append(std::make_unique<t_field>((t_type*)&type, "valueType"));
+  set_type.append(std::make_unique<t_field>((t_type*)&type, "valueType"));
+  map_type.append(std::make_unique<t_field>((t_type*)&type, "keyType"));
+  map_type.append(std::make_unique<t_field>((t_type*)&type, "valueType"));
+  enum_type.append(std::make_unique<t_field>(string_type(), "name"));
+  struct_type.append(std::make_unique<t_field>(string_type(), "name"));
+  union_type.append(std::make_unique<t_field>(string_type(), "name"));
+  typedef_type.append(std::make_unique<t_field>(string_type(), "name"));
+  typedef_type.append(
+      std::make_unique<t_field>((t_type*)&type, "underlyingType"));
+  stream_type.append(std::make_unique<t_field>((t_type*)&type, "elemType"));
+  stream_type.append(
+      std::make_unique<t_field>((t_type*)&type, "initialResponseType"));
+  sink_type.append(std::make_unique<t_field>((t_type*)&type, "elemType"));
+  sink_type.append(
+      std::make_unique<t_field>((t_type*)&type, "finalResponseType"));
+  sink_type.append(
+      std::make_unique<t_field>((t_type*)&type, "initialResponseType"));
+
+  type.set_union(true);
+  type.append(
+      std::make_unique<t_field>((t_type*)&primitive_type, "t_primitive"));
+  type.append(std::make_unique<t_field>((t_type*)&list_type, "t_list"));
+  type.append(std::make_unique<t_field>((t_type*)&set_type, "t_set"));
+  type.append(std::make_unique<t_field>((t_type*)&map_type, "t_map"));
+  type.append(std::make_unique<t_field>((t_type*)&enum_type, "t_enum"));
+  type.append(std::make_unique<t_field>((t_type*)&struct_type, "t_struct"));
+  type.append(std::make_unique<t_field>((t_type*)&union_type, "t_union"));
+  type.append(std::make_unique<t_field>((t_type*)&typedef_type, "t_typedef"));
+  type.append(std::make_unique<t_field>((t_type*)&stream_type, "t_stream"));
+  type.append(std::make_unique<t_field>((t_type*)&sink_type, "t_sink"));
+  return (t_type*)&type;
+}
+
+t_type* t_hack_generator::tmeta_ThriftField_type() {
+  static t_program empty_program("");
+  static t_struct type(&empty_program, "tmeta_ThriftField");
+  if (!type.get_members().empty()) {
+    return (t_type*)&type;
+  }
+
+  type.append(std::make_unique<t_field>(i64_type(), "id"));
+  type.append(std::make_unique<t_field>(tmeta_ThriftType_type(), "type"));
+  type.append(std::make_unique<t_field>(string_type(), "name"));
+  type.append(std::make_unique<t_field>(bool_type(), "is_optional"));
+  return (t_type*)&type;
+}
+
+t_type* t_hack_generator::tmeta_ThriftFunction_type() {
+  static t_program empty_program("");
+  static t_struct type(&empty_program, "tmeta_ThriftFunction");
+  static t_list tlist(tmeta_ThriftField_type());
+  if (!type.get_members().empty()) {
+    return (t_type*)&type;
+  }
+
+  type.append(std::make_unique<t_field>(string_type(), "name"));
+  type.append(
+      std::make_unique<t_field>(tmeta_ThriftType_type(), "return_type"));
+  type.append(std::make_unique<t_field>((t_type*)&tlist, "arguments"));
+  type.append(std::make_unique<t_field>((t_type*)&tlist, "exceptions"));
+  type.append(std::make_unique<t_field>(bool_type(), "is_oneway"));
+  return (t_type*)&type;
+}
+
+t_type* t_hack_generator::tmeta_ThriftService_type() {
+  static t_program empty_program("");
+  static t_struct type(&empty_program, "tmeta_ThriftService");
+  static t_list tlist(tmeta_ThriftFunction_type());
+  if (!type.get_members().empty()) {
+    return (t_type*)&type;
+  }
+
+  type.append(std::make_unique<t_field>(string_type(), "name"));
+  type.append(std::make_unique<t_field>((t_type*)&tlist, "functions"));
+  type.append(std::make_unique<t_field>(string_type(), "parent"));
+  return (t_type*)&type;
 }
 
 /**
@@ -3011,6 +3438,24 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << indent() << "class " << php_servicename_mangle(mangle, tservice)
              << "StaticMetadata implements \\IThriftServiceStaticMetadata {\n";
   indent_up();
+
+  // Expose service metadata
+  f_service_ << indent() << "public static function getServiceMetadata(): "
+             << "\\tmeta_ThriftService {\n";
+  indent_up();
+
+  bool saved_arrays_ = arrays_;
+  arrays_ = true;
+  f_service_ << indent() << "return "
+             << render_const_value(
+                    tmeta_ThriftService_type(),
+                    service_to_tmeta(tservice).get())
+             << ";\n";
+  arrays_ = saved_arrays_;
+
+  indent_down();
+  f_service_ << indent() << "}\n";
+
   // Structured annotations
   f_service_ << indent()
              << "public static function getAllStructuredAnnotations(): "

@@ -874,6 +874,35 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
 }
 
 class MyServicePrioParentStaticMetadata implements \IThriftServiceStaticMetadata {
+  public static function getServiceMetadata(): \tmeta_ThriftService {
+    return tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "MyServicePrioParent",
+        "functions" => vec[
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "ping",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "pong",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+            )
+          ),
+        ],
+      )
+    );
+  }
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

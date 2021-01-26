@@ -21,6 +21,9 @@ namespace py3 apache.thrift
 namespace php tmeta
 namespace go thrift.lib.thrift.metadata
 
+/*
+ * Keep synced with : thrift/compiler/generate/t_hack_generator.cc
+ */
 enum ThriftPrimitiveType {
   THRIFT_BOOL_TYPE = 1,
   THRIFT_BYTE_TYPE = 2,

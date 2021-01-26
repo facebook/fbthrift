@@ -2189,6 +2189,259 @@ class NestedContainers_turtles_result implements \IThriftStruct {
 }
 
 class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
+  public static function getServiceMetadata(): \tmeta_ThriftService {
+    return tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "NestedContainers",
+        "functions" => vec[
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "mapList",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_map" => tmeta_ThriftMapType::fromShape(
+                          shape(
+                            "keyType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                              )
+                            ),
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_list" => tmeta_ThriftListType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "mapSet",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_map" => tmeta_ThriftMapType::fromShape(
+                          shape(
+                            "keyType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                              )
+                            ),
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_set" => tmeta_ThriftSetType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "listMap",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_map" => tmeta_ThriftMapType::fromShape(
+                                  shape(
+                                    "keyType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "listSet",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_set" => tmeta_ThriftSetType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "turtles",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_list" => tmeta_ThriftListType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_map" => tmeta_ThriftMapType::fromShape(
+                                          shape(
+                                            "keyType" => tmeta_ThriftType::fromShape(
+                                              shape(
+                                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                              )
+                                            ),
+                                            "valueType" => tmeta_ThriftType::fromShape(
+                                              shape(
+                                                "t_map" => tmeta_ThriftMapType::fromShape(
+                                                  shape(
+                                                    "keyType" => tmeta_ThriftType::fromShape(
+                                                      shape(
+                                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                                      )
+                                                    ),
+                                                    "valueType" => tmeta_ThriftType::fromShape(
+                                                      shape(
+                                                        "t_set" => tmeta_ThriftSetType::fromShape(
+                                                          shape(
+                                                            "valueType" => tmeta_ThriftType::fromShape(
+                                                              shape(
+                                                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                                              )
+                                                            ),
+                                                          )
+                                                        ),
+                                                      )
+                                                    ),
+                                                  )
+                                                ),
+                                              )
+                                            ),
+                                          )
+                                        ),
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+        ],
+      )
+    );
+  }
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],

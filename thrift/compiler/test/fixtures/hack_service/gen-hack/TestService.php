@@ -365,6 +365,39 @@ class TestService_ping_result implements \IThriftStruct {
 }
 
 class TestServiceStaticMetadata implements \IThriftServiceStaticMetadata {
+  public static function getServiceMetadata(): \tmeta_ThriftService {
+    return \tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "TestService",
+        "functions" => vec[
+          \tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "ping",
+              "return_type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                \tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => \tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                      )
+                    ),
+                    "name" => "str_arg",
+                  )
+                ),
+              ],
+            )
+          ),
+        ],
+        "parent" => "FooHackService",
+      )
+    );
+  }
   public static function getAllStructuredAnnotations(): \TServiceAnnotations {
     return shape(
       'service' => dict[],
