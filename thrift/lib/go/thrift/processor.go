@@ -78,6 +78,9 @@ func (p ctxProcessorAdapter) GetProcessorFunctionContext(name string) (Processor
 	if err != nil {
 		return nil, err
 	}
+	if f == nil {
+		return nil, nil
+	}
 	return NewProcessorFunctionContextAdapter(f), nil
 }
 

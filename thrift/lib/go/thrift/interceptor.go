@@ -51,6 +51,9 @@ func (p *interceptorProcessor) GetProcessorFunction(name string) (ProcessorFunct
 	if err != nil {
 		return nil, err
 	}
+	if pf == nil {
+		return nil, nil
+	}
 	return &interceptorProcessorFunction{
 		interceptor:       p.interceptor,
 		methodName:        name,
@@ -91,6 +94,9 @@ func (p *interceptorProcessorContext) GetProcessorFunctionContext(name string) (
 	pf, err := p.ProcessorContext.GetProcessorFunctionContext(name)
 	if err != nil {
 		return nil, err
+	}
+	if pf == nil {
+		return nil, nil // see ProcessContext, this semantic means 'no such function'.
 	}
 	return &interceptorProcessorFunctionContext{
 		interceptor:              p.interceptor,
