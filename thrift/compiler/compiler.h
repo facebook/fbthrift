@@ -39,7 +39,8 @@ struct compile_result {
  * Parse it up, then spit it back out, in pretty much every language. Alright
  * not that many languages, but the cool ones that we care about.
  */
-compile_result compile(std::vector<std::string> arguments);
+compile_result compile(const std::vector<std::string>& arguments);
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
