@@ -17,7 +17,7 @@ interface ServiceAsyncIf extends \IThriftAsyncIf {
    *   func(1: string arg1,
    *        2: Foo arg2);
    */
-  public function func(string $arg1, ?Foo $arg2): Awaitable<int>;
+  public function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType>;
 }
 
 /**
@@ -31,7 +31,7 @@ interface ServiceIf extends \IThriftSyncIf {
    *   func(1: string arg1,
    *        2: Foo arg2);
    */
-  public function func(string $arg1, ?Foo $arg2): int;
+  public function func(\Adapter2::THackType $arg1, ?Foo $arg2): \Adapter1::THackType;
 }
 
 /**
@@ -45,7 +45,7 @@ interface ServiceClientIf extends \IThriftSyncIf {
    *   func(1: string arg1,
    *        2: Foo arg2);
    */
-  public function func(string $arg1, ?Foo $arg2): Awaitable<int>;
+  public function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType>;
 }
 
 /**
@@ -59,7 +59,7 @@ interface ServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
    *   func(1: string arg1,
    *        2: Foo arg2);
    */
-  public function func(\RpcOptions $rpc_options, string $arg1, ?Foo $arg2): Awaitable<int>;
+  public function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType>;
 }
 
 /**
@@ -69,7 +69,7 @@ interface ServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 trait ServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_func(string $arg1, ?Foo $arg2): int {
+  protected function sendImpl_func(\Adapter2::THackType $arg1, ?Foo $arg2): int {
     $currentseqid = $this->getNextSequenceID();
     $args = Service_func_args::fromShape(shape(
       'arg1' => $arg1,
@@ -111,7 +111,7 @@ trait ServiceClientBase {
     return $currentseqid;
   }
 
-  protected function recvImpl_func(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
+  protected function recvImpl_func(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): \Adapter1::THackType {
     try {
       $this->eventHandler_->preRecv('func', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
@@ -182,7 +182,7 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncIf {
    *   func(1: string arg1,
    *        2: Foo arg2);
    */
-  public async function func(string $arg1, ?Foo $arg2): Awaitable<int> {
+  public async function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2);
     $channel = $this->channel_;
@@ -211,7 +211,7 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
    *   func(1: string arg1,
    *        2: Foo arg2);
    */
-  public async function func(string $arg1, ?Foo $arg2): Awaitable<int> {
+  public async function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2);
     $channel = $this->channel_;
@@ -230,10 +230,10 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
   }
 
   /* send and recv functions */
-  public function send_func(string $arg1, ?Foo $arg2): int {
+  public function send_func(\Adapter2::THackType $arg1, ?Foo $arg2): int {
     return $this->sendImpl_func($arg1, $arg2);
   }
-  public function recv_func(?int $expectedsequenceid = null): int {
+  public function recv_func(?int $expectedsequenceid = null): \Adapter1::THackType {
     return $this->recvImpl_func($expectedsequenceid);
   }
 }
@@ -247,7 +247,7 @@ class ServiceAsyncRpcOptionsClient extends \ThriftClientBase implements ServiceA
    *   func(1: string arg1,
    *        2: Foo arg2);
    */
-  public async function func(\RpcOptions $rpc_options, string $arg1, ?Foo $arg2): Awaitable<int> {
+  public async function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
     await $this->asyncHandler_->genBefore("Service", "func");
     $currentseqid = $this->sendImpl_func($arg1, $arg2);
     $channel = $this->channel_;
@@ -275,6 +275,7 @@ class Service_func_args implements \IThriftStruct {
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'arg1',
+      'adapter' => \Adapter2::class,
       'type' => \TType::STRING,
     ),
     2 => shape(
@@ -289,17 +290,17 @@ class Service_func_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'arg1' => ?string,
+    ?'arg1' => ?\Adapter2::THackType,
     ?'arg2' => ?Foo,
   );
 
   const int STRUCTURAL_ID = 9020910946086583191;
-  public string $arg1;
+  public \Adapter2::THackType $arg1;
   public ?Foo $arg2;
 
   <<__Rx>>
-  public function __construct(?string $arg1 = null, ?Foo $arg2 = null  ) {
-    $this->arg1 = $arg1 ?? '';
+  public function __construct(?\Adapter2::THackType $arg1 = null, ?Foo $arg2 = null  ) {
+    $this->arg1 = $arg1 ?? \Adapter2::fromThrift('');
     $this->arg2 = $arg2;
   }
 
@@ -328,6 +329,10 @@ class Service_func_args implements \IThriftStruct {
     );
   }
 
+  private static function __hackAdapterTypeChecks(): void {
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, string>();
+  }
+
 }
 
 class Service_func_result implements \IThriftStruct {
@@ -336,6 +341,7 @@ class Service_func_result implements \IThriftStruct {
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
+      'adapter' => \Adapter1::class,
       'type' => \TType::I32,
     ),
   ];
@@ -344,14 +350,14 @@ class Service_func_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?int,
+    ?'success' => ?\Adapter1::THackType,
   );
 
   const int STRUCTURAL_ID = 3865318819874171525;
-  public ?int $success;
+  public ?\Adapter1::THackType $success;
 
   <<__Rx>>
-  public function __construct(?int $success = null  ) {
+  public function __construct(?\Adapter1::THackType $success = null  ) {
   }
 
   <<__Rx, __MutableReturn>>
@@ -376,6 +382,10 @@ class Service_func_result implements \IThriftStruct {
       'fields' => dict[
       ],
     );
+  }
+
+  private static function __hackAdapterTypeChecks(): void {
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
   }
 
 }

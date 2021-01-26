@@ -38,5 +38,8 @@ struct Bar {
 }
 
 service Service {
-  i32 func(1: string arg1, 2: Foo arg2);
+  i32 (hack.adapter = '\Adapter1') func(
+    1: string (hack.adapter = '\Adapter2') arg1,
+    2: Foo arg2,
+  );
 }
