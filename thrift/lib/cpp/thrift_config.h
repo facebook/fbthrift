@@ -24,11 +24,6 @@
 #endif
 #endif // defined(__linux__) || defined(__FreeBSD__)
 
-/* Define to 1 if you have the `gettimeofday' function. */
-#ifndef THRIFT_HAVE_GETTIMEOFDAY
-#define THRIFT_HAVE_GETTIMEOFDAY 1
-#endif
-
 /* Define to 1 if you have the `snappy' library (-lsnappy). */
 #ifndef THRIFT_HAVE_LIBSNAPPY
 #define THRIFT_HAVE_LIBSNAPPY 1

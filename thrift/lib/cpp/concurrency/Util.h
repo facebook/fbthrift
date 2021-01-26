@@ -17,8 +17,6 @@
 #ifndef _THRIFT_CONCURRENCY_UTIL_H_
 #define _THRIFT_CONCURRENCY_UTIL_H_ 1
 
-#include <cassert>
-#include <chrono>
 #include <cstddef>
 #include <cstdint>
 #include <ctime>
@@ -44,11 +42,6 @@ namespace concurrency {
  */
 class Util {
  public:
-  static const int64_t ONE_KB = 1024LL;
-  static const int64_t ONE_MB = ONE_KB * ONE_KB;
-  static const int64_t ONE_GB = ONE_MB * ONE_KB;
-  static const int64_t ONE_TB = ONE_GB * ONE_KB;
-
   static const int64_t NS_PER_S = 1000000000LL;
   static const int64_t US_PER_S = 1000000LL;
   static const int64_t MS_PER_S = 1000LL;
@@ -113,20 +106,6 @@ class Util {
   }
 
   /**
-   * Converts struct timespec to microseconds
-   */
-  static void toUsec(int64_t& result, const struct timespec& value) {
-    return toTicks(result, value, US_PER_S);
-  }
-
-  /**
-   * Converts struct timeval to microseconds
-   */
-  static void toUsec(int64_t& result, const struct timeval& value) {
-    return toTicks(result, value, US_PER_S);
-  }
-
-  /**
    * Get current time as a number of arbitrary-size ticks from epoch
    */
   static int64_t currentTimeTicks(int64_t ticksPerSec);
@@ -144,33 +123,7 @@ class Util {
   static int64_t currentTimeUsec() {
     return currentTimeTicks(US_PER_S);
   }
-
-  /**
-   * Get monotonic time as a number of arbitrary-size ticks from some
-   * unspecified starting point.
-   *
-   * This may fall back to the current time (potentially non-monotonic) on
-   * systems that do not support monotonic time.
-   */
-  static int64_t monotonicTimeTicks(int64_t ticksPerSec);
-
-  /**
-   * Get monotonic time as milliseconds.
-   */
-  static int64_t monotonicTime() {
-    return monotonicTimeTicks(MS_PER_S);
-  }
-
-  /**
-   * Get current time as micros from epoch
-   */
-  static int64_t monotonicTimeUsec() {
-    return monotonicTimeTicks(US_PER_S);
-  }
 };
-
-typedef std::chrono::system_clock SystemClock;
-typedef std::chrono::time_point<SystemClock> SystemClockTimePoint;
 
 } // namespace concurrency
 } // namespace thrift
