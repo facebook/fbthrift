@@ -257,6 +257,7 @@ class optional_field_ref {
   template <typename U>
   friend class optional_field_ref;
   friend struct apache::thrift::detail::ensure_isset_unsafe_fn;
+  friend struct apache::thrift::detail::unset_unsafe_fn;
   friend struct apache::thrift::detail::alias_isset_fn;
 
  public:
@@ -578,6 +579,11 @@ struct unset_unsafe_fn {
   void operator()(field_ref<T> ref) const noexcept {
     ref.is_set_ = false;
   }
+
+  template <typename T>
+  void operator()(optional_field_ref<T> ref) const noexcept {
+    ref.is_set_ = false;
+  }
 };
 
 struct alias_isset_fn {
@@ -589,8 +595,6 @@ struct alias_isset_fn {
         static_cast<decltype(result)>(result), ref.is_set_);
   }
 };
-
-constexpr unset_unsafe_fn unset_unsafe;
 
 } // namespace detail
 
@@ -611,6 +615,11 @@ constexpr apache::thrift::detail::ensure_isset_unsafe_fn ensure_isset_unsafe;
 
 constexpr apache::thrift::detail::ensure_isset_unsafe_fn
     ensure_isset_unsafe_deprecated;
+
+[[deprecated("Use `reset` to clear Thrift fields.")]] //
+constexpr apache::thrift::detail::unset_unsafe_fn unset_unsafe;
+
+constexpr apache::thrift::detail::unset_unsafe_fn unset_unsafe_deprecated;
 
 [[deprecated]] //
 constexpr apache::thrift::detail::alias_isset_fn alias_isset;

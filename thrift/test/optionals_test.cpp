@@ -458,8 +458,15 @@ TEST(OptionalsTest, UnsetUnsafe) {
   EXPECT_FALSE(obj.int64Def_ref().is_set());
   obj.int64Def_ref() = 1;
   EXPECT_TRUE(obj.int64Def_ref().is_set());
-  detail::unset_unsafe(obj.int64Def_ref());
+  unset_unsafe(obj.int64Def_ref());
   EXPECT_FALSE(obj.int64Def_ref().is_set());
+  EXPECT_EQ(obj.int64Def_ref(), 1);
+
+  obj.int64Opt_ref() = 2;
+  EXPECT_TRUE(obj.int64Opt_ref().has_value());
+  unset_unsafe(obj.int64Opt_ref());
+  EXPECT_FALSE(obj.int64Opt_ref().has_value());
+  EXPECT_EQ(obj.int64Opt_ref().value_unchecked(), 2);
 }
 
 TEST(OptionalsTest, RefForUnqualifiedField) {
