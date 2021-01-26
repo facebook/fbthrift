@@ -26,7 +26,6 @@
 #include <folly/Utility.h>
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
-#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
@@ -44,8 +43,6 @@
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/FutureUtil.h>
 #endif
-
-THRIFT_FLAG_DECLARE_bool(reschedule_handler_future_on_tm);
 
 namespace apache {
 namespace thrift {
@@ -1253,33 +1250,20 @@ auto makeFutureWithAndMaybeReschedule(CallbackBase& callback, F&& f) {
 
 template <class F>
 void async_tm_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
-  async_tm_prep(si, callback.get());
-  if (THRIFT_FLAG(reschedule_handler_future_on_tm)) {
-    auto callbackRaw = callback.get();
-    makeFutureWithAndMaybeReschedule(*callbackRaw, std::forward<F>(f))
-        .thenValueInline([cb = std::move(callback)](auto&&) {});
-  } else {
-    folly::makeFutureWith(std::forward<F>(f))
-        .thenValue([cb = std::move(callback)](auto&&) {});
-  }
+  auto callbackRaw = callback.get();
+  async_tm_prep(si, callbackRaw);
+  makeFutureWithAndMaybeReschedule(*callbackRaw, std::forward<F>(f))
+      .thenValueInline([cb = std::move(callback)](auto&&) {});
 }
 
 template <class F>
 void async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
-  async_tm_prep(si, callback.get());
-  if (THRIFT_FLAG(reschedule_handler_future_on_tm)) {
-    auto callbackRaw = callback.get();
-    makeFutureWithAndMaybeReschedule(*callbackRaw, std::forward<F>(f))
-        .thenTryInline(
-            [cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
-              cb->complete(std::move(_ret));
-            });
-  } else {
-    folly::makeFutureWith(std::forward<F>(f))
-        .thenTry([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
-          cb->complete(std::move(_ret));
-        });
-  }
+  auto callbackRaw = callback.get();
+  async_tm_prep(si, callbackRaw);
+  makeFutureWithAndMaybeReschedule(*callbackRaw, std::forward<F>(f))
+      .thenTryInline([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
+        cb->complete(std::move(_ret));
+      });
 }
 
 #if FOLLY_HAS_COROUTINES
