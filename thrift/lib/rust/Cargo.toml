@@ -3,6 +3,8 @@
 name = "fbthrift"
 edition = "2018"
 version = "0.0.1+unstable"
+authors = ['Facebook', 'Daniel Xu <dlxu@fb.com>']
+license = "Apache-2.0"
 publish = false
 include = ["src/*.rs", "src/tests/*.rs"]
 
