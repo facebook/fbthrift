@@ -80,6 +80,7 @@ class MyLeafAsyncClient : public ::cpp2::MyNodeAsyncClient {
  private:
   template <typename Protocol_>
   void do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> do_leafCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

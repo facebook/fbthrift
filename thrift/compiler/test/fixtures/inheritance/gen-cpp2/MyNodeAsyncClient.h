@@ -80,6 +80,7 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
  private:
   template <typename Protocol_>
   void do_midT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> do_midCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

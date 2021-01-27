@@ -26,7 +26,7 @@ folly::coro::Task<<% > types/semi_type%>> <% > service_common/client_class_name%
   setInteraction(rpcOptions);
   <%/service:interaction?%>
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "<%service:name%>.<%function:name%>");
+  auto ctx = <%function:cpp_name%>Ctx(rpcOptions);
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
   <%function:cpp_name%>Impl(rpcOptions, ctx, callback.get()<%function:comma%><% > service_common/param_list%>);
   auto firstPayload = co_await callback->getFirstThriftResponse();

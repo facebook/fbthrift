@@ -31,12 +31,7 @@ void MyNodeAsyncClient::do_mid(std::unique_ptr<apache::thrift::RequestCallback> 
 }
 
 void MyNodeAsyncClient::do_mid(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyNode.do_mid");
+  auto ctx = do_midCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -66,6 +61,15 @@ void MyNodeAsyncClient::do_midImpl(apache::thrift::RpcOptions& rpcOptions, std::
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyNodeAsyncClient::do_midCtx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "MyNode.do_mid");
+}
+
 void MyNodeAsyncClient::sync_do_mid() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_do_mid(rpcOptions);
@@ -76,12 +80,7 @@ void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyNode.do_mid");
+  auto ctx = do_midCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   do_midImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);

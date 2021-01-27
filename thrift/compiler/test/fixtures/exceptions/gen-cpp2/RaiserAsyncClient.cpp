@@ -67,12 +67,7 @@ void RaiserAsyncClient::doBland(std::unique_ptr<apache::thrift::RequestCallback>
 }
 
 void RaiserAsyncClient::doBland(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.doBland");
+  auto ctx = doBlandCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -102,6 +97,15 @@ void RaiserAsyncClient::doBlandImpl(apache::thrift::RpcOptions& rpcOptions, std:
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> RaiserAsyncClient::doBlandCtx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "Raiser.doBland");
+}
+
 void RaiserAsyncClient::sync_doBland() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_doBland(rpcOptions);
@@ -112,12 +116,7 @@ void RaiserAsyncClient::sync_doBland(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.doBland");
+  auto ctx = doBlandCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   doBlandImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
@@ -235,12 +234,7 @@ void RaiserAsyncClient::doRaise(std::unique_ptr<apache::thrift::RequestCallback>
 }
 
 void RaiserAsyncClient::doRaise(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.doRaise");
+  auto ctx = doRaiseCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -270,6 +264,15 @@ void RaiserAsyncClient::doRaiseImpl(apache::thrift::RpcOptions& rpcOptions, std:
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> RaiserAsyncClient::doRaiseCtx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "Raiser.doRaise");
+}
+
 void RaiserAsyncClient::sync_doRaise() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_doRaise(rpcOptions);
@@ -280,12 +283,7 @@ void RaiserAsyncClient::sync_doRaise(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.doRaise");
+  auto ctx = doRaiseCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   doRaiseImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
@@ -403,12 +401,7 @@ void RaiserAsyncClient::get200(std::unique_ptr<apache::thrift::RequestCallback> 
 }
 
 void RaiserAsyncClient::get200(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.get200");
+  auto ctx = get200Ctx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -438,6 +431,15 @@ void RaiserAsyncClient::get200Impl(apache::thrift::RpcOptions& rpcOptions, std::
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> RaiserAsyncClient::get200Ctx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "Raiser.get200");
+}
+
 void RaiserAsyncClient::sync_get200(::std::string& _return) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get200(rpcOptions, _return);
@@ -448,12 +450,7 @@ void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, ::st
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.get200");
+  auto ctx = get200Ctx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   get200Impl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
@@ -571,12 +568,7 @@ void RaiserAsyncClient::get500(std::unique_ptr<apache::thrift::RequestCallback> 
 }
 
 void RaiserAsyncClient::get500(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.get500");
+  auto ctx = get500Ctx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -606,6 +598,15 @@ void RaiserAsyncClient::get500Impl(apache::thrift::RpcOptions& rpcOptions, std::
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> RaiserAsyncClient::get500Ctx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "Raiser.get500");
+}
+
 void RaiserAsyncClient::sync_get500(::std::string& _return) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get500(rpcOptions, _return);
@@ -616,12 +617,7 @@ void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, ::st
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "Raiser.get500");
+  auto ctx = get500Ctx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   get500Impl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);

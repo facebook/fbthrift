@@ -31,12 +31,7 @@ void MyServicePrioChildAsyncClient::pang(std::unique_ptr<apache::thrift::Request
 }
 
 void MyServicePrioChildAsyncClient::pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyServicePrioChild.pang");
+  auto ctx = pangCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -66,6 +61,15 @@ void MyServicePrioChildAsyncClient::pangImpl(apache::thrift::RpcOptions& rpcOpti
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServicePrioChildAsyncClient::pangCtx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "MyServicePrioChild.pang");
+}
+
 void MyServicePrioChildAsyncClient::sync_pang() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_pang(rpcOptions);
@@ -76,12 +80,7 @@ void MyServicePrioChildAsyncClient::sync_pang(apache::thrift::RpcOptions& rpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyServicePrioChild.pang");
+  auto ctx = pangCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   pangImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);

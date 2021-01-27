@@ -87,6 +87,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
  private:
   template <typename Protocol_>
   void returnstreamT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> returnstreamCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void streamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
   virtual void streamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
@@ -147,6 +148,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
  private:
   template <typename Protocol_>
   void streamthrowsT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> streamthrowsCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void boththrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
   virtual void boththrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
@@ -207,6 +209,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
  private:
   template <typename Protocol_>
   void boththrowsT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> boththrowsCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void responseandstreamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
   virtual void responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_foo);
@@ -267,6 +270,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
  private:
   template <typename Protocol_>
   void responseandstreamthrowsT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> responseandstreamthrowsCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void returnstreamFast(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to);
   virtual void returnstreamFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i32_from, int32_t p_i32_to);
@@ -327,6 +331,7 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
  private:
   template <typename Protocol_>
   void returnstreamFastT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback, int32_t p_i32_from, int32_t p_i32_to);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> returnstreamFastCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

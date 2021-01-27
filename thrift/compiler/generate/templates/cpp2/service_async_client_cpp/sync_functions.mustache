@@ -39,14 +39,11 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
 <%/type:resolves_to_complex_return?%>
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<<%#function:oneway?%>true<%/function:oneway?%><%^function:oneway?%>false<%/function:oneway?%>> callback(&_returnState);
+<%^function:oneway?%>
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+<%/function:oneway?%>
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "<%service:name%>.<%function:name%>");
+  auto ctx = <%function:cpp_name%>Ctx(rpcOptions);
 <%^function:returns_stream?%>
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
 <%/function:returns_stream?%><%#function:returns_stream?%>
@@ -90,15 +87,10 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
 <%service:name%>AsyncClient::sync_complete_<%function:cpp_name%>(
     apache::thrift::RpcOptions& rpcOptions<%function:comma%> <% > service_common/function_param_list_const%>) {
   apache::thrift::ClientReceiveState returnState;
+  auto ctx = <%function:cpp_name%>Ctx(rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "<%service:name%>.<%function:name%>");
 <%^function:returns_stream?%>
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
 <%/function:returns_stream?%><%#function:returns_stream?%>

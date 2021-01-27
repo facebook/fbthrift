@@ -31,12 +31,7 @@ void MyLeafAsyncClient::do_leaf(std::unique_ptr<apache::thrift::RequestCallback>
 }
 
 void MyLeafAsyncClient::do_leaf(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyLeaf.do_leaf");
+  auto ctx = do_leafCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -66,6 +61,15 @@ void MyLeafAsyncClient::do_leafImpl(apache::thrift::RpcOptions& rpcOptions, std:
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyLeafAsyncClient::do_leafCtx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "MyLeaf.do_leaf");
+}
+
 void MyLeafAsyncClient::sync_do_leaf() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_do_leaf(rpcOptions);
@@ -76,12 +80,7 @@ void MyLeafAsyncClient::sync_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyLeaf.do_leaf");
+  auto ctx = do_leafCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   do_leafImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);

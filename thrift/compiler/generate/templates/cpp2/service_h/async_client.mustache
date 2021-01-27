@@ -141,13 +141,8 @@
   virtual void recv_instance_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state);
 <%/service:interaction?%><%/function:oneway?%>
- private:
-  template <typename Protocol_>
-  void <%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>);
- public:
 <%/type:void?%>
 <%^type:void?%>
-<%^function:oneway?%>
   static folly::exception_wrapper recv_wrapped_<%function:cpp_name%>(<% > types/semi_type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%^type:resolves_to_complex_return?%>
   static <% > types/semi_type%> recv_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state);
@@ -163,11 +158,12 @@
 <%/service:interaction?%><%/type:resolves_to_complex_return?%>
 <%^service:interaction?%>
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:cpp_name%>(<% > types/semi_type%>& _return, ::apache::thrift::ClientReceiveState& state);
-<%/service:interaction?%><%/function:oneway?%>
+<%/service:interaction?%>
+<%/type:void?%>
  private:
   template <typename Protocol_>
   void <%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>);
-<%^function:oneway?%> public:<%/function:oneway?%>
-<%/type:void?%>
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> <%function:cpp_name%>Ctx(apache::thrift::RpcOptions& rpcOptions);
+ public:
 <%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>
 };

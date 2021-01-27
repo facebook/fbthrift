@@ -79,6 +79,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> pingCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void getRandomData(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void getRandomData(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -143,6 +144,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void getRandomDataT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> getRandomDataCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_id);
   virtual void hasDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_id);
@@ -207,6 +209,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void hasDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t p_id);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> hasDataByIdCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void getDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_id);
   virtual void getDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_id);
@@ -271,6 +274,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void getDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t p_id);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> getDataByIdCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_id, const ::std::string& p_data);
   virtual void putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_id, const ::std::string& p_data);
@@ -324,6 +328,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t p_id, const ::std::string& p_data);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> putDataByIdCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

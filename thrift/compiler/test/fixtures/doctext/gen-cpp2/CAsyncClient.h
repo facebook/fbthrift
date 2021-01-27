@@ -79,6 +79,7 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void fT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> fCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

@@ -45,12 +45,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey0(std::unique_ptr<apache::thr
 }
 
 void DbMixedStackArgumentsAsyncClient::getDataByKey0(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "DbMixedStackArguments.getDataByKey0");
+  auto ctx = getDataByKey0Ctx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -80,6 +75,15 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey0Impl(apache::thrift::RpcOpti
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> DbMixedStackArgumentsAsyncClient::getDataByKey0Ctx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "DbMixedStackArguments.getDataByKey0");
+}
+
 void DbMixedStackArgumentsAsyncClient::sync_getDataByKey0(::std::string& _return, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_getDataByKey0(rpcOptions, _return, p_key);
@@ -90,12 +94,7 @@ void DbMixedStackArgumentsAsyncClient::sync_getDataByKey0(apache::thrift::RpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "DbMixedStackArguments.getDataByKey0");
+  auto ctx = getDataByKey0Ctx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   getDataByKey0Impl(rpcOptions, ctx, std::move(wrappedCallback), p_key);
   callback.waitUntilDone(evb);
@@ -213,12 +212,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey1(std::unique_ptr<apache::thr
 }
 
 void DbMixedStackArgumentsAsyncClient::getDataByKey1(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "DbMixedStackArguments.getDataByKey1");
+  auto ctx = getDataByKey1Ctx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -248,6 +242,15 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey1Impl(apache::thrift::RpcOpti
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> DbMixedStackArgumentsAsyncClient::getDataByKey1Ctx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "DbMixedStackArguments.getDataByKey1");
+}
+
 void DbMixedStackArgumentsAsyncClient::sync_getDataByKey1(::std::string& _return, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_getDataByKey1(rpcOptions, _return, p_key);
@@ -258,12 +261,7 @@ void DbMixedStackArgumentsAsyncClient::sync_getDataByKey1(apache::thrift::RpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "DbMixedStackArguments.getDataByKey1");
+  auto ctx = getDataByKey1Ctx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   getDataByKey1Impl(rpcOptions, ctx, std::move(wrappedCallback), p_key);
   callback.waitUntilDone(evb);

@@ -79,6 +79,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
  private:
   template <typename Protocol_>
   void mapListT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> mapListCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void mapSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo);
   virtual void mapSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo);
@@ -132,6 +133,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
  private:
   template <typename Protocol_>
   void mapSetT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> mapSetCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void listMap(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo);
   virtual void listMap(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo);
@@ -185,6 +187,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
  private:
   template <typename Protocol_>
   void listMapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> listMapCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void listSet(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<int32_t>>& p_foo);
   virtual void listSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<int32_t>>& p_foo);
@@ -238,6 +241,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
  private:
   template <typename Protocol_>
   void listSetT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<int32_t>>& p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> listSetCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void turtles(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo);
   virtual void turtles(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo);
@@ -291,6 +295,7 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
  private:
   template <typename Protocol_>
   void turtlesT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> turtlesCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

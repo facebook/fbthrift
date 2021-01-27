@@ -26,12 +26,7 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>(apache::thri
   <%#service:interaction?%>
   setInteraction(rpcOptions);
   <%/service:interaction?%>
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
+  auto ctx = <%function:cpp_name%>Ctx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   <%#function:oneway?%>
   callbackContext.oneWay = true;
@@ -69,4 +64,13 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>Impl(apache::
       apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
+}
+
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> <% > service_common/client_class_name%>::<%function:cpp_name%>Ctx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
 }

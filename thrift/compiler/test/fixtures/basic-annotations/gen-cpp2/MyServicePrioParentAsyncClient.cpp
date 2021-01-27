@@ -43,12 +43,7 @@ void MyServicePrioParentAsyncClient::ping(std::unique_ptr<apache::thrift::Reques
 }
 
 void MyServicePrioParentAsyncClient::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyServicePrioParent.ping");
+  auto ctx = pingCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -78,6 +73,15 @@ void MyServicePrioParentAsyncClient::pingImpl(apache::thrift::RpcOptions& rpcOpt
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServicePrioParentAsyncClient::pingCtx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "MyServicePrioParent.ping");
+}
+
 void MyServicePrioParentAsyncClient::sync_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_ping(rpcOptions);
@@ -88,12 +92,7 @@ void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOp
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyServicePrioParent.ping");
+  auto ctx = pingCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   pingImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
@@ -211,12 +210,7 @@ void MyServicePrioParentAsyncClient::pong(std::unique_ptr<apache::thrift::Reques
 }
 
 void MyServicePrioParentAsyncClient::pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyServicePrioParent.pong");
+  auto ctx = pongCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -246,6 +240,15 @@ void MyServicePrioParentAsyncClient::pongImpl(apache::thrift::RpcOptions& rpcOpt
   }
 }
 
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServicePrioParentAsyncClient::pongCtx(apache::thrift::RpcOptions& rpcOptions) {
+  return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      channel_->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      handlers_,
+      getServiceName(),
+      "MyServicePrioParent.pong");
+}
+
 void MyServicePrioParentAsyncClient::sync_pong() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_pong(rpcOptions);
@@ -256,12 +259,7 @@ void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOp
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "MyServicePrioParent.pong");
+  auto ctx = pongCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   pongImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);

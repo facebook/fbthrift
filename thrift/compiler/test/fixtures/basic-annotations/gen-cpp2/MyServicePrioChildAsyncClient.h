@@ -80,6 +80,7 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
  private:
   template <typename Protocol_>
   void pangT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> pangCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

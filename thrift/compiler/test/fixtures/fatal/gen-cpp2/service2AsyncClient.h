@@ -82,6 +82,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodAT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodACtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void methodB(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_x, const  ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
   virtual void methodB(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_x, const  ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
@@ -135,6 +136,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodBT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_x, const  ::test_cpp2::cpp_reflection::struct1& p_y, double p_z);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodBCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void methodC(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void methodC(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -199,6 +201,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodCT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodCCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void methodD(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i, const  ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
   virtual void methodD(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_i, const  ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
@@ -263,6 +266,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodDT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_i, const  ::test_cpp2::cpp_reflection::struct1& p_j, double p_k);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodDCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void methodE(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void methodE(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -327,6 +331,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodET(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodECtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void methodF(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_l, const  ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
   virtual void methodF(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_l, const  ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
@@ -391,6 +396,7 @@ class service2AsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodFT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_l, const  ::test_cpp2::cpp_reflection::struct1& p_m, double p_n);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodFCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

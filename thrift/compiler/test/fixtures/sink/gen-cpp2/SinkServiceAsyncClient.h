@@ -45,6 +45,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
   void methodAndReponseImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
@@ -62,6 +63,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodAndReponseT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodAndReponseCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
   void methodThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
@@ -79,6 +81,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodThrowCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
   void methodSinkThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
@@ -96,6 +99,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodSinkThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodSinkThrowCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
   void methodFinalThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
@@ -113,6 +117,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodFinalThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodFinalThrowCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
   void methodBothThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
@@ -130,6 +135,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodBothThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodBothThrowCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
   void methodFastImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
@@ -147,6 +153,7 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void methodFastT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> methodFastCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 

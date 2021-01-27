@@ -91,6 +91,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void bounce_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> bounce_mapCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
   virtual void binary_keyed_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& p_r);
   virtual void binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& p_r);
@@ -155,6 +156,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void binary_keyed_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<int64_t>& p_r);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> binary_keyed_mapCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
 
