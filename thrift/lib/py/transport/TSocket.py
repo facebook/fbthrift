@@ -36,6 +36,14 @@ except ImportError:
     # Windows doesn't have this module
     fcntl = None
 
+
+def py2_compatible_process_time():
+    if sys.version_info.major >= 3 and sys.version_info.minor >= 3:
+        return time.process_time()
+    else:
+        return time.clock()
+
+
 class ConnectionEpoll:
     """ epoll is preferred over select due to its efficiency and ability to
         handle more than 1024 simultaneous connections """
@@ -68,17 +76,13 @@ class ConnectionEpoll:
         # poll() invokes a "long" syscall that will be interrupted by any signal
         # that comes in, causing an EINTR error.  If this happens, avoid dying
         # horribly by trying again with the appropriately shortened timout.
-        process_time = None
-        if sys.version_info.major >= 3 and sys.version_info.minor >= 3:
-            process_time = time.process_time()
-        else:
-            process_time = time.clock()
+        process_time = py2_compatible_process_time()
 
         deadline = process_time + float(timeout or 0)
         poll_timeout = float(timeout or -1)
         while True:
             if timeout is not None and timeout > 0:
-                poll_timeout = max(0, deadline - time.clock())
+                poll_timeout = max(0, deadline - py2_compatible_process_time())
             try:
                 msgs = self.epoll.poll(timeout=poll_timeout)
                 break
@@ -131,11 +135,11 @@ class ConnectionSelect:
         # signal that comes in, causing an EINTR error.  If this happens,
         # avoid dying horribly by trying again with the appropriately
         # shortened timout.
-        deadline = time.clock() + float(timeout or 0)
+        deadline = py2_compatible_process_time() + float(timeout or 0)
         poll_timeout = timeout if timeout is None or timeout > 0 else None
         while True:
             if timeout is not None and timeout > 0:
-                poll_timeout = max(0, deadline - time.clock())
+                poll_timeout = max(0, deadline - py2_compatible_process_time())
             try:
                 return select.select(list(self.readable), list(self.writable),
                         list(self.readable), poll_timeout)
