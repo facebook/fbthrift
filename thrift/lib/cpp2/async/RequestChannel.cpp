@@ -48,7 +48,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
        callback = std::move(callback)]() mutable {
         sendRequestNoResponse(
             rpcOptions,
-            methodNameStr.c_str(),
+            methodNameStr,
             std::move(request),
             std::move(header),
             std::move(callback));
@@ -71,7 +71,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
        callback = std::move(callback)]() mutable {
         sendRequestResponse(
             rpcOptions,
-            methodNameStr.c_str(),
+            methodNameStr,
             std::move(request),
             std::move(header),
             std::move(callback));
@@ -95,7 +95,7 @@ void RequestChannel::sendRequestAsync<
        callback = std::move(callback)]() mutable {
         sendRequestStream(
             rpcOptions,
-            methodNameStr.c_str(),
+            methodNameStr,
             std::move(request),
             std::move(header),
             callback);
@@ -118,7 +118,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINK>(
        callback = std::move(callback)]() mutable {
         sendRequestSink(
             rpcOptions,
-            methodNameStr.c_str(),
+            methodNameStr,
             std::move(request),
             std::move(header),
             callback);
