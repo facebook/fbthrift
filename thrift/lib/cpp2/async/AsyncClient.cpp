@@ -61,6 +61,7 @@ InteractionHandle& InteractionHandle::operator=(InteractionHandle&& other) {
 
 void InteractionHandle::setInteraction(RpcOptions& rpcOptions) {
   DCHECK(interactionId_);
+  DCHECK(rpcOptions.getInteractionId() == 0);
   rpcOptions.setInteractionId(interactionId_);
 }
 

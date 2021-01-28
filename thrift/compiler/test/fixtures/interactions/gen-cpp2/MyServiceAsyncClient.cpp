@@ -14,12 +14,13 @@ typedef apache::thrift::ThriftPresult<false> MyService_foo_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_foo_presult;
 
 template <typename Protocol_>
-void MyServiceAsyncClient::fooT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::fooT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_foo_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "foo", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "foo", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -49,7 +50,7 @@ void MyServiceAsyncClient::foo(apache::thrift::RpcOptions& rpcOptions, std::uniq
   fooImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::fooImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::fooImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -219,49 +220,56 @@ typedef apache::thrift::ThriftPResultSink<
     > MyService_MyInteraction_encode_presult;
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteraction::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteraction::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteraction_frobnicate_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.frobnicate", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.frobnicate", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteraction::pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteraction::pingT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteraction_ping_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.ping", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.ping", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteraction::truthifyT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
+void MyServiceAsyncClient::MyInteraction::truthifyT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteraction_truthify_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.truthify", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.truthify", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteraction::encodeT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+void MyServiceAsyncClient::MyInteraction::encodeT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteraction_encode_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.encode", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteraction.encode", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 
 
 void MyServiceAsyncClient::MyInteraction::frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  setInteraction(rpcOptions);
   auto ctx = frobnicateCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -271,7 +279,7 @@ void MyServiceAsyncClient::MyInteraction::frobnicate(apache::thrift::RpcOptions&
   frobnicateImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::MyInteraction::frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteraction::frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -354,7 +362,6 @@ int32_t MyServiceAsyncClient::MyInteraction::recv_frobnicate(::apache::thrift::C
 }
 
 void MyServiceAsyncClient::MyInteraction::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  setInteraction(rpcOptions);
   auto ctx = pingCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.oneWay = true;
@@ -365,7 +372,7 @@ void MyServiceAsyncClient::MyInteraction::ping(apache::thrift::RpcOptions& rpcOp
   pingImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::MyInteraction::pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteraction::pingImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -412,7 +419,6 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteraction::semifuture_p
 
 
 void MyServiceAsyncClient::MyInteraction::truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  setInteraction(rpcOptions);
   auto ctx = truthifyCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -424,7 +430,7 @@ void MyServiceAsyncClient::MyInteraction::truthify(apache::thrift::RpcOptions& r
   truthifyImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::MyInteraction::truthifyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
+void MyServiceAsyncClient::MyInteraction::truthifyImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -505,7 +511,7 @@ apache::thrift::ClientBufferedStream<bool> MyServiceAsyncClient::MyInteraction::
   }
   return _return;
 }
-void MyServiceAsyncClient::MyInteraction::encodeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+void MyServiceAsyncClient::MyInteraction::encodeImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -541,7 +547,6 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   co_return co_await co_encode(rpcOptions);
 }
 folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteraction::co_encode(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = encodeCtx(rpcOptions);
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
@@ -619,49 +624,56 @@ typedef apache::thrift::ThriftPResultSink<
     > MyService_MyInteractionFast_encode_presult;
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteractionFast::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteractionFast::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteractionFast_frobnicate_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.frobnicate", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.frobnicate", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteractionFast::pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteractionFast::pingT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteractionFast_ping_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.ping", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.ping", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteractionFast::truthifyT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
+void MyServiceAsyncClient::MyInteractionFast::truthifyT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteractionFast_truthify_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.truthify", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.truthify", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::MyInteractionFast::encodeT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+void MyServiceAsyncClient::MyInteractionFast::encodeT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_MyInteractionFast_encode_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.encode", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINK, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "MyInteractionFast.encode", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 
 
 void MyServiceAsyncClient::MyInteractionFast::frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  setInteraction(rpcOptions);
   auto ctx = frobnicateCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -671,7 +683,7 @@ void MyServiceAsyncClient::MyInteractionFast::frobnicate(apache::thrift::RpcOpti
   frobnicateImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::MyInteractionFast::frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteractionFast::frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -754,7 +766,6 @@ int32_t MyServiceAsyncClient::MyInteractionFast::recv_frobnicate(::apache::thrif
 }
 
 void MyServiceAsyncClient::MyInteractionFast::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  setInteraction(rpcOptions);
   auto ctx = pingCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.oneWay = true;
@@ -765,7 +776,7 @@ void MyServiceAsyncClient::MyInteractionFast::ping(apache::thrift::RpcOptions& r
   pingImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::MyInteractionFast::pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::MyInteractionFast::pingImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -812,7 +823,6 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::MyInteractionFast::semifutu
 
 
 void MyServiceAsyncClient::MyInteractionFast::truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  setInteraction(rpcOptions);
   auto ctx = truthifyCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -824,7 +834,7 @@ void MyServiceAsyncClient::MyInteractionFast::truthify(apache::thrift::RpcOption
   truthifyImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::MyInteractionFast::truthifyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
+void MyServiceAsyncClient::MyInteractionFast::truthifyImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -905,7 +915,7 @@ apache::thrift::ClientBufferedStream<bool> MyServiceAsyncClient::MyInteractionFa
   }
   return _return;
 }
-void MyServiceAsyncClient::MyInteractionFast::encodeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
+void MyServiceAsyncClient::MyInteractionFast::encodeImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -941,7 +951,6 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   co_return co_await co_encode(rpcOptions);
 }
 folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteractionFast::co_encode(apache::thrift::RpcOptions& rpcOptions) {
-  setInteraction(rpcOptions);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = encodeCtx(rpcOptions);
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
@@ -1007,19 +1016,20 @@ typedef apache::thrift::ThriftPresult<false> MyService_SerialInteraction_frobnic
 typedef apache::thrift::ThriftPresult<true> MyService_SerialInteraction_frobnicate_presult;
 
 template <typename Protocol_>
-void MyServiceAsyncClient::SerialInteraction::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::SerialInteraction::frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  setInteraction(rpcOptions);
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyService_SerialInteraction_frobnicate_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "SerialInteraction.frobnicate", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "SerialInteraction.frobnicate", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 
 
 void MyServiceAsyncClient::SerialInteraction::frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  setInteraction(rpcOptions);
   auto ctx = frobnicateCtx(rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -1029,7 +1039,7 @@ void MyServiceAsyncClient::SerialInteraction::frobnicate(apache::thrift::RpcOpti
   frobnicateImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyServiceAsyncClient::SerialInteraction::frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyServiceAsyncClient::SerialInteraction::frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

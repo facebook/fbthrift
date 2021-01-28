@@ -14,12 +14,13 @@ typedef apache::thrift::ThriftPresult<false> MyLeaf_do_leaf_pargs;
 typedef apache::thrift::ThriftPresult<true> MyLeaf_do_leaf_presult;
 
 template <typename Protocol_>
-void MyLeafAsyncClient::do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyLeafAsyncClient::do_leafT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyLeaf_do_leaf_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "do_leaf", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "do_leaf", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -40,7 +41,7 @@ void MyLeafAsyncClient::do_leaf(apache::thrift::RpcOptions& rpcOptions, std::uni
   do_leafImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
-void MyLeafAsyncClient::do_leafImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyLeafAsyncClient::do_leafImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

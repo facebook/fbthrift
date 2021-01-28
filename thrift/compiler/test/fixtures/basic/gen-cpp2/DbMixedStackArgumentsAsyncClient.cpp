@@ -16,24 +16,26 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apac
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>> DbMixedStackArguments_getDataByKey1_presult;
 
 template <typename Protocol_>
-void DbMixedStackArgumentsAsyncClient::getDataByKey0T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+void DbMixedStackArgumentsAsyncClient::getDataByKey0T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   DbMixedStackArguments_getDataByKey0_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_key);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "getDataByKey0", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "getDataByKey0", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
-void DbMixedStackArgumentsAsyncClient::getDataByKey1T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+void DbMixedStackArgumentsAsyncClient::getDataByKey1T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   DbMixedStackArguments_getDataByKey1_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_key);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "getDataByKey1", writer, sizer);
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "getDataByKey1", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -54,7 +56,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey0(apache::thrift::RpcOptions&
   getDataByKey0Impl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey0Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+void DbMixedStackArgumentsAsyncClient::getDataByKey0Impl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -221,7 +223,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey1(apache::thrift::RpcOptions&
   getDataByKey1Impl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey1Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+void DbMixedStackArgumentsAsyncClient::getDataByKey1Impl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {

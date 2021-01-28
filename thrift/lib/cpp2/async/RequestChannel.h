@@ -87,7 +87,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   template <RpcKind Kind>
   void sendRequestAsync(
-      const apache::thrift::RpcOptions&,
+      apache::thrift::RpcOptions&&,
       folly::StringPiece methodName,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
@@ -170,14 +170,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
-    const apache::thrift::RpcOptions&,
+    apache::thrift::RpcOptions&&,
     folly::StringPiece methodName,
     SerializedRequest&&,
     std::shared_ptr<apache::thrift::transport::THeader>,
     RequestClientCallback::Ptr);
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
-    const apache::thrift::RpcOptions&,
+    apache::thrift::RpcOptions&&,
     folly::StringPiece methodName,
     SerializedRequest&&,
     std::shared_ptr<apache::thrift::transport::THeader>,
@@ -185,14 +185,14 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
 template <>
 void RequestChannel::sendRequestAsync<
     RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
-    const apache::thrift::RpcOptions&,
+    apache::thrift::RpcOptions&&,
     folly::StringPiece methodName,
     SerializedRequest&&,
     std::shared_ptr<apache::thrift::transport::THeader>,
     StreamClientCallback*);
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINK>(
-    const apache::thrift::RpcOptions&,
+    apache::thrift::RpcOptions&&,
     folly::StringPiece methodName,
     SerializedRequest&&,
     std::shared_ptr<apache::thrift::transport::THeader>,
@@ -336,7 +336,7 @@ SerializedRequest preprocessSendT(
 template <RpcKind Kind, class Protocol>
 void clientSendT(
     Protocol* prot,
-    const apache::thrift::RpcOptions& rpcOptions,
+    apache::thrift::RpcOptions&& rpcOptions,
     typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr
         callback,
     apache::thrift::ContextStack& ctx,
@@ -349,7 +349,7 @@ void clientSendT(
       prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
 
   channel->sendRequestAsync<Kind>(
-      rpcOptions,
+      std::move(rpcOptions),
       methodName,
       std::move(request),
       std::move(header),

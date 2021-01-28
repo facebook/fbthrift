@@ -42,7 +42,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
  void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
 #if FOLLY_HAS_COROUTINES
@@ -77,12 +77,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   static int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> frobnicateCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void pingImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
 #if FOLLY_HAS_COROUTINES
@@ -115,12 +115,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
  private:
   template <typename Protocol_>
-  void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void pingT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> pingCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  void truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void truthifyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
+  void truthifyImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
  public:
 
 #if FOLLY_HAS_COROUTINES
@@ -155,11 +155,11 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   static apache::thrift::ClientBufferedStream<bool> recv_truthify(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void truthifyT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
+  void truthifyT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> truthifyCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
-  void encodeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  void encodeImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES
   folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> co_encode();
@@ -170,7 +170,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   static apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string> recv_encode(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void encodeT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  void encodeT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> encodeCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };class MyInteractionFast final : public apache::thrift::InteractionHandle {
@@ -186,7 +186,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
  void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
 #if FOLLY_HAS_COROUTINES
@@ -221,12 +221,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   static int32_t recv_frobnicate(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> frobnicateCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void pingImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
 #if FOLLY_HAS_COROUTINES
@@ -259,12 +259,12 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
  private:
   template <typename Protocol_>
-  void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void pingT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> pingCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  void truthify(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void truthifyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
+  void truthifyImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
  public:
 
 #if FOLLY_HAS_COROUTINES
@@ -299,11 +299,11 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   static apache::thrift::ClientBufferedStream<bool> recv_truthify(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void truthifyT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
+  void truthifyT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::StreamClientCallback* callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> truthifyCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
  protected:
-  void encodeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  void encodeImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
 #if FOLLY_HAS_COROUTINES
   folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> co_encode();
@@ -314,7 +314,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   static apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string> recv_encode(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void encodeT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+  void encodeT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> encodeCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };class SerialInteraction final : public apache::thrift::InteractionHandle {
@@ -330,7 +330,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
  void frobnicate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void frobnicateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void frobnicateImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
 #if FOLLY_HAS_COROUTINES
@@ -365,7 +365,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   static void recv_frobnicate(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void frobnicateT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> frobnicateCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };
@@ -375,7 +375,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   virtual void foo(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void foo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  protected:
-  void fooImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void fooImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 
   virtual void sync_foo();
@@ -423,7 +423,7 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
   virtual folly::exception_wrapper recv_instance_wrapped_foo(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void fooT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
+  void fooT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
   std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> fooCtx(apache::thrift::RpcOptions& rpcOptions);
  public:
 };

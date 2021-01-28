@@ -16,7 +16,11 @@
 
 %><%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
 template <typename Protocol_>
-void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+  <%#service:interaction?%>
+  setInteraction(rpcOptions);
+  <%/service:interaction?%>
+
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_pargs args;
 <%#function:args%><%#field:type%>
@@ -31,7 +35,7 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* 
 %>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<<% > types/function_kind%>, Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", writer, sizer);
+  apache::thrift::clientSendT<<% > types/function_kind%>, Protocol_>(prot, std::move(rpcOptions), std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 

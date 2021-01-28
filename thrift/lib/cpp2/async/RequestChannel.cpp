@@ -33,7 +33,7 @@ static void maybeRunInEb(folly::EventBase* eb, F func) {
 
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
-    const apache::thrift::RpcOptions& rpcOptions,
+    apache::thrift::RpcOptions&& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -41,7 +41,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
   maybeRunInEb(
       getEventBase(),
       [this,
-       rpcOptions,
+       rpcOptions = std::move(rpcOptions),
        methodNameStr = std::string(methodName),
        request = std::move(request),
        header = std::move(header),
@@ -56,7 +56,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
 }
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
-    const apache::thrift::RpcOptions& rpcOptions,
+    apache::thrift::RpcOptions&& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -64,7 +64,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
   maybeRunInEb(
       getEventBase(),
       [this,
-       rpcOptions,
+       rpcOptions = std::move(rpcOptions),
        methodNameStr = std::string(methodName),
        request = std::move(request),
        header = std::move(header),
@@ -80,7 +80,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
 template <>
 void RequestChannel::sendRequestAsync<
     RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
-    const apache::thrift::RpcOptions& rpcOptions,
+    apache::thrift::RpcOptions&& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -88,7 +88,7 @@ void RequestChannel::sendRequestAsync<
   maybeRunInEb(
       getEventBase(),
       [this,
-       rpcOptions,
+       rpcOptions = std::move(rpcOptions),
        methodNameStr = std::string(methodName),
        request = std::move(request),
        header = std::move(header),
@@ -103,7 +103,7 @@ void RequestChannel::sendRequestAsync<
 }
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINK>(
-    const apache::thrift::RpcOptions& rpcOptions,
+    apache::thrift::RpcOptions&& rpcOptions,
     folly::StringPiece methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
@@ -111,7 +111,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINK>(
   maybeRunInEb(
       getEventBase(),
       [this,
-       rpcOptions,
+       rpcOptions = std::move(rpcOptions),
        methodNameStr = std::string(methodName),
        request = std::move(request),
        header = std::move(header),

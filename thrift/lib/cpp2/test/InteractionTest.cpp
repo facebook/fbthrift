@@ -259,6 +259,36 @@ TEST(InteractionCodegenTest, Basic) {
 #endif
 }
 
+TEST(InteractionCodegenTest, RpcOptions) {
+  ScopedServerInterfaceThread runner{std::make_shared<CalculatorHandler>()};
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  RpcOptions rpcOptions;
+  auto adder = client->createAddition();
+#if FOLLY_HAS_COROUTINES
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    co_await adder.co_accumulatePrimitive(rpcOptions, 1);
+    co_await adder.semifuture_accumulatePrimitive(rpcOptions, 2);
+    co_await adder.co_noop(rpcOptions);
+    auto acc = co_await adder.co_getPrimitive(rpcOptions);
+    EXPECT_EQ(acc, 3);
+
+    auto sum = co_await client->co_addPrimitive(rpcOptions, 20, 22);
+    EXPECT_EQ(sum, 42);
+
+    Point p;
+    p.x_ref() = 1;
+    co_await adder.co_accumulatePoint(rpcOptions, p);
+    p.y_ref() = 2;
+    co_await adder.co_accumulatePoint(rpcOptions, p);
+    auto pacc = co_await adder.co_getPoint(rpcOptions);
+    EXPECT_EQ(*pacc.x_ref(), 2);
+    EXPECT_EQ(*pacc.y_ref(), 2);
+  }());
+#endif
+}
+
 TEST(InteractionCodegenTest, BasicSemiFuture) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
   auto client = runner.newClient<CalculatorAsyncClient>(
