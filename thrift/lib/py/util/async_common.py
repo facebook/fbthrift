@@ -169,8 +169,7 @@ class WrappedTransport(TWriteOnlyBuffer):
         self._consumer = self._loop.create_task(self._send())
         self._producers = []
 
-    @asyncio.coroutine
-    def _send(self):
+    async def _send(self):
         raise NotImplementedError
 
     def send_message(self, msg):
@@ -232,8 +231,7 @@ class FramedProtocol(asyncio.Protocol):
         self.loop = loop or asyncio.get_event_loop()
         self.recvd = b""
 
-    @asyncio.coroutine
-    def message_received(self, frame):
+    async def message_received(self, frame):
         raise NotImplementedError
 
     def data_received(self, data):
@@ -299,12 +297,10 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
         self.pending_tasks = {}
         self.transport = None  # TTransport wrapping an asyncio.Transport
 
-    @asyncio.coroutine
-    def message_received(self, frame):
+    async def message_received(self, frame):
         self._handle_message(frame, clear_timeout=True)
 
-    @asyncio.coroutine
-    def timeout_task(self, fname, delay):
+    async def timeout_task(self, fname, delay):
         # timeout_task must to be implemented in a subclass
         raise NotImplementedError
 
