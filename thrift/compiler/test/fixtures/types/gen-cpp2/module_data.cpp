@@ -13,123 +13,418 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::size;
-constexpr const std::array<::apache::thrift::fixtures::types::has_bitwise_ops, 5> TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::values;
-constexpr const std::array<folly::StringPiece, 5> TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::names;
+const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::size;
+const std::array<::apache::thrift::fixtures::types::has_bitwise_ops, 5> TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::values = {{
+  type::none,
+  type::zero,
+  type::one,
+  type::two,
+  type::three,
+}};
+const std::array<folly::StringPiece, 5> TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>::names = {{
+  "none",
+  "zero",
+  "one",
+  "two",
+  "three",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::size;
-constexpr const std::array<::apache::thrift::fixtures::types::is_unscoped, 2> TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::values;
-constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::names;
+const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::size;
+const std::array<::apache::thrift::fixtures::types::is_unscoped, 2> TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::values = {{
+  type::hello,
+  type::world,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>::names = {{
+  "hello",
+  "world",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
-constexpr const std::array<::apache::thrift::fixtures::types::MyForwardRefEnum, 2> TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::values;
-constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::names;
+const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
+const std::array<::apache::thrift::fixtures::types::MyForwardRefEnum, 2> TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::values = {{
+  type::ZERO,
+  type::NONZERO,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>::names = {{
+  "ZERO",
+  "NONZERO",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::size;
-constexpr const std::array<::apache::thrift::fixtures::types::MyEnumA, 3> TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::values;
-constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::names;
+const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::size;
+const std::array<::apache::thrift::fixtures::types::MyEnumA, 3> TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::values = {{
+  type::fieldA,
+  type::fieldB,
+  type::fieldC,
+}};
+const std::array<folly::StringPiece, 3> TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>::names = {{
+  "fieldA",
+  "fieldB",
+  "fieldC",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::size;
-constexpr const std::array<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type, 2> TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values;
-constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names;
+const std::size_t TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::size;
+const std::array<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type, 2> TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::values = {{
+  type::string_field,
+  type::i32_field,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type>::names = {{
+  "string_field",
+  "i32_field",
+}};
 
 
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_types;
-constexpr const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_types;
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_names = {{
+  "field",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::decorated_struct>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_names = {{
+  "fieldA",
+  "fieldB",
+  "fieldC",
+  "fieldD",
+  "fieldE",
+  "fieldF",
+  "fieldG",
+  "fieldH",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_ids = {{
+  12,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct>::fields_types = {{
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_names = {{
+  "fieldA",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct>::fields_types = {{
+  TType::T_LIST,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_names = {{
+  "MyIntField",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct>::fields_types = {{
+  TType::T_I64,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_names = {{
+  "a",
+  "b",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_names = {{
+  "a",
+  "b",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric>::fields_types = {{
+  TType::T_I32,
+  TType::T_BOOL,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_names = {{
+  "z",
+  "n",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_names = {{
+  "a",
+  "b",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexString>::fields_types = {{
+  TType::T_STRING,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_names = {{
+  "z",
+  "n",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::fields_types = {{
+  TType::T_STRING,
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_names = {{
+  "small",
+  "big",
+  "medium",
+  "biggish",
+  "tiny",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MinPadding>::fields_types = {{
+  TType::T_BYTE,
+  TType::T_I64,
+  TType::T_I16,
+  TType::T_I32,
+  TType::T_BYTE,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_names = {{
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_ids = {{
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem>::fields_types = {{
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_names = {{
+  "MyIntField",
+  "MyStringField",
+  "majorVer",
+  "data",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::MyStruct>::fields_types = {{
+  TType::T_I64,
+  TType::T_STRING,
+  TType::T_I64,
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_names = {{
+  "foo",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::Renaming>::fields_types = {{
+  TType::T_I64,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_names = {{
+  "binary_field",
+  "list_field",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes>::fields_types = {{
+  TType::T_STRING,
+  TType::T_LIST,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_names = {{
+  "foo",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct>::fields_types = {{
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_names = {{
+  "ForwardUsageStruct",
+  "ForwardUsageByRef",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_names = {{
+  "foo",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef>::fields_types = {{
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_names = {{
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_ids = {{
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::fields_types = {{
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_names = {{
+  "boolField",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::fields_types = {{
+  TType::T_I64,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_names = {{
+  "MyBoolField",
+  "MyIntField",
+  "MyStringField",
+  "MyStringField2",
+  "MyBinaryField",
+  "MyBinaryField2",
+  "MyBinaryField3",
+  "MyBinaryListField4",
+  "MyMapEnumAndInt",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_I64,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_names = {{
+  "string_field",
+  "i32_field",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion>::fields_types = {{
+  TType::T_STRING,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_names = {{
+  "aa_list",
+  "aa_set",
+  "aa_map",
+  "aa_string",
+  "not_a_container",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware>::fields_types = {{
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_STRING,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_names = {{
+  "not_a_container",
+}};
+const std::array<int16_t, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_size> TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2>::fields_types = {{
+  TType::T_I32,
+}};
 
 } // namespace thrift
 } // namespace apache

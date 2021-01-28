@@ -13,22 +13,59 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::Mixin1>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Mixin2>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Mixin3Base>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Foo>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::Mixin1>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_names = {{
+  "field1",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin1>::fields_size> TStructDataStorage<::cpp2::Mixin1>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Mixin2>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_names = {{
+  "m1",
+  "field2",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin2>::fields_size> TStructDataStorage<::cpp2::Mixin2>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Mixin3Base>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_names = {{
+  "field3",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Mixin3Base>::fields_size> TStructDataStorage<::cpp2::Mixin3Base>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Foo>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_names = {{
+  "field4",
+  "m2",
+  "m3",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
+  1,
+  2,
+  3,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_types = {{
+  TType::T_STRING,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
 
 } // namespace thrift
 } // namespace apache

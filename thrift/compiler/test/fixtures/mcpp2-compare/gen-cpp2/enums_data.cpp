@@ -13,35 +13,64 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::size;
-constexpr const std::array<::facebook::ns::qwerty::AnEnumA, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::values;
-constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::names;
+const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::size;
+const std::array<::facebook::ns::qwerty::AnEnumA, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::values = {{
+  type::FIELDA,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::names = {{
+  "FIELDA",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::size;
-constexpr const std::array<::facebook::ns::qwerty::AnEnumB, 2> TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::values;
-constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::names;
+const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::size;
+const std::array<::facebook::ns::qwerty::AnEnumB, 2> TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::values = {{
+  type::FIELDA,
+  type::FIELDB,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::names = {{
+  "FIELDA",
+  "FIELDB",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::size;
-constexpr const std::array<::facebook::ns::qwerty::AnEnumC, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::values;
-constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::names;
+const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::size;
+const std::array<::facebook::ns::qwerty::AnEnumC, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::values = {{
+  type::FIELDC,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::names = {{
+  "FIELDC",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::size;
-constexpr const std::array<::facebook::ns::qwerty::AnEnumD, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::values;
-constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::names;
+const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::size;
+const std::array<::facebook::ns::qwerty::AnEnumD, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::values = {{
+  type::FIELDD,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::names = {{
+  "FIELDD",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::size;
-constexpr const std::array<::facebook::ns::qwerty::AnEnumE, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::values;
-constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::names;
+const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::size;
+const std::array<::facebook::ns::qwerty::AnEnumE, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::values = {{
+  type::FIELDA,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::names = {{
+  "FIELDA",
+}};
 
 
-constexpr const std::size_t TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_types;
+
+const std::size_t TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_names = {{
+  "fieldA",
+}};
+const std::array<int16_t, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_types = {{
+  TType::T_I32,
+}};
 
 } // namespace thrift
 } // namespace apache

@@ -13,26 +13,64 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::Banal>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Banal>::fields_size> TStructDataStorage<::cpp2::Banal>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Banal>::fields_size> TStructDataStorage<::cpp2::Banal>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Banal>::fields_size> TStructDataStorage<::cpp2::Banal>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Fiery>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Fiery>::fields_size> TStructDataStorage<::cpp2::Fiery>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Fiery>::fields_size> TStructDataStorage<::cpp2::Fiery>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Fiery>::fields_size> TStructDataStorage<::cpp2::Fiery>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Serious>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Serious>::fields_size> TStructDataStorage<::cpp2::Serious>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Serious>::fields_size> TStructDataStorage<::cpp2::Serious>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Serious>::fields_size> TStructDataStorage<::cpp2::Serious>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size> TStructDataStorage<::cpp2::ComplexFieldNames>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size> TStructDataStorage<::cpp2::ComplexFieldNames>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size> TStructDataStorage<::cpp2::ComplexFieldNames>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::CustomFieldNames>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::CustomFieldNames>::fields_size> TStructDataStorage<::cpp2::CustomFieldNames>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::CustomFieldNames>::fields_size> TStructDataStorage<::cpp2::CustomFieldNames>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::CustomFieldNames>::fields_size> TStructDataStorage<::cpp2::CustomFieldNames>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::Banal>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Banal>::fields_size> TStructDataStorage<::cpp2::Banal>::fields_names = {{
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Banal>::fields_size> TStructDataStorage<::cpp2::Banal>::fields_ids = {{
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Banal>::fields_size> TStructDataStorage<::cpp2::Banal>::fields_types = {{
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Fiery>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Fiery>::fields_size> TStructDataStorage<::cpp2::Fiery>::fields_names = {{
+  "message",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Fiery>::fields_size> TStructDataStorage<::cpp2::Fiery>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Fiery>::fields_size> TStructDataStorage<::cpp2::Fiery>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Serious>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Serious>::fields_size> TStructDataStorage<::cpp2::Serious>::fields_names = {{
+  "sonnet",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Serious>::fields_size> TStructDataStorage<::cpp2::Serious>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Serious>::fields_size> TStructDataStorage<::cpp2::Serious>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size> TStructDataStorage<::cpp2::ComplexFieldNames>::fields_names = {{
+  "error_message",
+  "internal_error_message",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size> TStructDataStorage<::cpp2::ComplexFieldNames>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ComplexFieldNames>::fields_size> TStructDataStorage<::cpp2::ComplexFieldNames>::fields_types = {{
+  TType::T_STRING,
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::CustomFieldNames>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::CustomFieldNames>::fields_size> TStructDataStorage<::cpp2::CustomFieldNames>::fields_names = {{
+  "error_message",
+  "internal_error_message",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::CustomFieldNames>::fields_size> TStructDataStorage<::cpp2::CustomFieldNames>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::CustomFieldNames>::fields_size> TStructDataStorage<::cpp2::CustomFieldNames>::fields_types = {{
+  TType::T_STRING,
+  TType::T_STRING,
+}};
 
 } // namespace thrift
 } // namespace apache

@@ -12,45 +12,25 @@
 
 namespace apache { namespace thrift {
 
-
 template <> struct TEnumDataStorage<::cpp2::Nada::Type> {
   using type = ::cpp2::Nada::Type;
   static constexpr const std::size_t size = 0;
-  static constexpr const std::array<type, size> values = {{
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::Empty> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 0;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::Nada> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 0;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 }} // apache::thrift

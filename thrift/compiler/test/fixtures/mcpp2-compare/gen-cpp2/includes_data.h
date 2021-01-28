@@ -15,51 +15,22 @@ namespace apache { namespace thrift {
 template <> struct TEnumDataStorage<::a::different::ns::AnEnum> {
   using type = ::a::different::ns::AnEnum;
   static constexpr const std::size_t size = 2;
-  static constexpr const std::array<type, size> values = {{
-    type::FIELDA,
-    type::FIELDB,
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-    "FIELDA",
-    "FIELDB",
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
-
 
 template <> struct TStructDataStorage<::a::different::ns::AStruct> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "FieldA",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_I32,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::a::different::ns::AStructB> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "FieldA",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_STRUCT,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 }} // apache::thrift

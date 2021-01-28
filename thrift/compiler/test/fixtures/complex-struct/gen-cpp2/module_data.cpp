@@ -13,81 +13,504 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::MyEnum>::size;
-constexpr const std::array<::cpp2::MyEnum, 5> TEnumDataStorage<::cpp2::MyEnum>::values;
-constexpr const std::array<folly::StringPiece, 5> TEnumDataStorage<::cpp2::MyEnum>::names;
+const std::size_t TEnumDataStorage<::cpp2::MyEnum>::size;
+const std::array<::cpp2::MyEnum, 5> TEnumDataStorage<::cpp2::MyEnum>::values = {{
+  type::MyValue1,
+  type::MyValue2,
+  type::MyValue3,
+  type::MyValue4,
+  type::MyValue5,
+}};
+const std::array<folly::StringPiece, 5> TEnumDataStorage<::cpp2::MyEnum>::names = {{
+  "MyValue1",
+  "MyValue2",
+  "MyValue3",
+  "MyValue4",
+  "MyValue5",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::MyUnion::Type>::size;
-constexpr const std::array<::cpp2::MyUnion::Type, 6> TEnumDataStorage<::cpp2::MyUnion::Type>::values;
-constexpr const std::array<folly::StringPiece, 6> TEnumDataStorage<::cpp2::MyUnion::Type>::names;
+const std::size_t TEnumDataStorage<::cpp2::MyUnion::Type>::size;
+const std::array<::cpp2::MyUnion::Type, 6> TEnumDataStorage<::cpp2::MyUnion::Type>::values = {{
+  type::myEnum,
+  type::myStruct,
+  type::myDataItem,
+  type::complexNestedStruct,
+  type::longValue,
+  type::intValue,
+}};
+const std::array<folly::StringPiece, 6> TEnumDataStorage<::cpp2::MyUnion::Type>::names = {{
+  "myEnum",
+  "myStruct",
+  "myDataItem",
+  "complexNestedStruct",
+  "longValue",
+  "intValue",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::MyUnionFloatFieldThrowExp::Type>::size;
-constexpr const std::array<::cpp2::MyUnionFloatFieldThrowExp::Type, 4> TEnumDataStorage<::cpp2::MyUnionFloatFieldThrowExp::Type>::values;
-constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::MyUnionFloatFieldThrowExp::Type>::names;
+const std::size_t TEnumDataStorage<::cpp2::MyUnionFloatFieldThrowExp::Type>::size;
+const std::array<::cpp2::MyUnionFloatFieldThrowExp::Type, 4> TEnumDataStorage<::cpp2::MyUnionFloatFieldThrowExp::Type>::values = {{
+  type::myEnum,
+  type::setFloat,
+  type::myDataItem,
+  type::complexNestedStruct,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::MyUnionFloatFieldThrowExp::Type>::names = {{
+  "myEnum",
+  "setFloat",
+  "myDataItem",
+  "complexNestedStruct",
+}};
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::MyDataItem>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::MyStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::SimpleStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SimpleStruct>::fields_size> TStructDataStorage<::cpp2::SimpleStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::SimpleStruct>::fields_size> TStructDataStorage<::cpp2::SimpleStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SimpleStruct>::fields_size> TStructDataStorage<::cpp2::SimpleStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size> TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size> TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size> TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::MyUnion>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::defaultStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::defaultStruct>::fields_size> TStructDataStorage<::cpp2::defaultStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::defaultStruct>::fields_size> TStructDataStorage<::cpp2::defaultStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::defaultStruct>::fields_size> TStructDataStorage<::cpp2::defaultStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size> TStructDataStorage<::cpp2::MyStructTypeDef>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size> TStructDataStorage<::cpp2::MyStructTypeDef>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size> TStructDataStorage<::cpp2::MyStructTypeDef>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::TypeRemapped>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::TypeRemapped>::fields_size> TStructDataStorage<::cpp2::TypeRemapped>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::TypeRemapped>::fields_size> TStructDataStorage<::cpp2::TypeRemapped>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::TypeRemapped>::fields_size> TStructDataStorage<::cpp2::TypeRemapped>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::emptyXcep>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::emptyXcep>::fields_size> TStructDataStorage<::cpp2::emptyXcep>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::emptyXcep>::fields_size> TStructDataStorage<::cpp2::emptyXcep>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::emptyXcep>::fields_size> TStructDataStorage<::cpp2::emptyXcep>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::reqXcep>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::reqXcep>::fields_size> TStructDataStorage<::cpp2::reqXcep>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::reqXcep>::fields_size> TStructDataStorage<::cpp2::reqXcep>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::reqXcep>::fields_size> TStructDataStorage<::cpp2::reqXcep>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::optXcep>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::optXcep>::fields_size> TStructDataStorage<::cpp2::optXcep>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::optXcep>::fields_size> TStructDataStorage<::cpp2::optXcep>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::optXcep>::fields_size> TStructDataStorage<::cpp2::optXcep>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::complexException>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::complexException>::fields_size> TStructDataStorage<::cpp2::complexException>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::complexException>::fields_size> TStructDataStorage<::cpp2::complexException>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::complexException>::fields_size> TStructDataStorage<::cpp2::complexException>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_names = {{
+  "myLongField",
+  "MyByteField",
+  "myStringField",
+  "myFloatField",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructFloatFieldThrowExp>::fields_types = {{
+  TType::T_I64,
+  TType::T_BYTE,
+  TType::T_STRING,
+  TType::T_FLOAT,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_names = {{
+  "myLongField",
+  "mapListOfFloats",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_size> TStructDataStorage<::cpp2::MyStructMapFloatThrowExp>::fields_types = {{
+  TType::T_I64,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::MyDataItem>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_names = {{
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_ids = {{
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyDataItem>::fields_size> TStructDataStorage<::cpp2::MyDataItem>::fields_types = {{
+}};
+
+const std::size_t TStructDataStorage<::cpp2::MyStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+  "MyIntField",
+  "MyStringField",
+  "MyDataField",
+  "myEnum",
+  "MyBoolField",
+  "MyByteField",
+  "MyShortField",
+  "MyLongField",
+  "MyDoubleField",
+  "lDouble",
+  "lShort",
+  "lInteger",
+  "lLong",
+  "lString",
+  "lBool",
+  "lByte",
+  "mShortString",
+  "mIntegerString",
+  "mStringMyStruct",
+  "mStringBool",
+  "mIntegerInteger",
+  "mIntegerBool",
+  "sShort",
+  "sMyStruct",
+  "sLong",
+  "sString",
+  "sByte",
+  "mListList",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+  TType::T_I64,
+  TType::T_STRING,
+  TType::T_STRUCT,
+  TType::T_I32,
+  TType::T_BOOL,
+  TType::T_BYTE,
+  TType::T_I16,
+  TType::T_I64,
+  TType::T_DOUBLE,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::SimpleStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SimpleStruct>::fields_size> TStructDataStorage<::cpp2::SimpleStruct>::fields_names = {{
+  "age",
+  "name",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::SimpleStruct>::fields_size> TStructDataStorage<::cpp2::SimpleStruct>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SimpleStruct>::fields_size> TStructDataStorage<::cpp2::SimpleStruct>::fields_types = {{
+  TType::T_I64,
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size> TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_names = {{
+  "setOfSetOfInt",
+  "listofListOfListOfListOfEnum",
+  "listOfListOfMyStruct",
+  "setOfListOfListOfLong",
+  "setOfSetOfsetOfLong",
+  "mapStructListOfListOfLong",
+  "mKeyStructValInt",
+  "listOfMapKeyIntValInt",
+  "listOfMapKeyStrValList",
+  "mapKeySetValLong",
+  "mapKeyListValLong",
+  "mapKeyMapValMap",
+  "mapKeySetValMap",
+  "NestedMaps",
+  "mapKeyIntValList",
+  "mapKeyIntValSet",
+  "mapKeySetValInt",
+  "mapKeyListValSet",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size> TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_size> TStructDataStorage<::cpp2::ComplexNestedStruct>::fields_types = {{
+  TType::T_SET,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::MyUnion>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_names = {{
+  "myEnum",
+  "myStruct",
+  "myDataItem",
+  "complexNestedStruct",
+  "longValue",
+  "intValue",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyUnion>::fields_size> TStructDataStorage<::cpp2::MyUnion>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_I64,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::defaultStruct>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::defaultStruct>::fields_size> TStructDataStorage<::cpp2::defaultStruct>::fields_names = {{
+  "myLongDFset",
+  "myLongDF",
+  "portDFset",
+  "portNum",
+  "myBinaryDFset",
+  "myBinary",
+  "myByteDFSet",
+  "myByte",
+  "myDoubleDFset",
+  "myDoubleDFZero",
+  "myDouble",
+  "field3",
+  "myList",
+  "mySet",
+  "simpleStruct",
+  "listStructDFset",
+  "myUnion",
+  "listUnionDFset",
+  "mapNestlistStructDfSet",
+  "mapJavaTypeDFset",
+  "emptyMap",
+  "enumMapDFset",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::defaultStruct>::fields_size> TStructDataStorage<::cpp2::defaultStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::defaultStruct>::fields_size> TStructDataStorage<::cpp2::defaultStruct>::fields_types = {{
+  TType::T_I64,
+  TType::T_I64,
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_BYTE,
+  TType::T_BYTE,
+  TType::T_DOUBLE,
+  TType::T_DOUBLE,
+  TType::T_DOUBLE,
+  TType::T_MAP,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_STRUCT,
+  TType::T_LIST,
+  TType::T_STRUCT,
+  TType::T_LIST,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size> TStructDataStorage<::cpp2::MyStructTypeDef>::fields_names = {{
+  "myLongField",
+  "myLongTypeDef",
+  "myStringField",
+  "myStringTypedef",
+  "myMapField",
+  "myMapTypedef",
+  "myListField",
+  "myListTypedef",
+  "myMapListOfTypeDef",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size> TStructDataStorage<::cpp2::MyStructTypeDef>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStructTypeDef>::fields_size> TStructDataStorage<::cpp2::MyStructTypeDef>::fields_types = {{
+  TType::T_I64,
+  TType::T_I64,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_MAP,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_names = {{
+  "myEnum",
+  "setFloat",
+  "myDataItem",
+  "complexNestedStruct",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_size> TStructDataStorage<::cpp2::MyUnionFloatFieldThrowExp>::fields_types = {{
+  TType::T_I32,
+  TType::T_LIST,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::TypeRemapped>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::TypeRemapped>::fields_size> TStructDataStorage<::cpp2::TypeRemapped>::fields_names = {{
+  "lsMap",
+  "ioMap",
+  "BigInteger",
+  "binaryTestBuffer",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::TypeRemapped>::fields_size> TStructDataStorage<::cpp2::TypeRemapped>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::TypeRemapped>::fields_size> TStructDataStorage<::cpp2::TypeRemapped>::fields_types = {{
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_I32,
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::emptyXcep>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::emptyXcep>::fields_size> TStructDataStorage<::cpp2::emptyXcep>::fields_names = {{
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::emptyXcep>::fields_size> TStructDataStorage<::cpp2::emptyXcep>::fields_ids = {{
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::emptyXcep>::fields_size> TStructDataStorage<::cpp2::emptyXcep>::fields_types = {{
+}};
+
+const std::size_t TStructDataStorage<::cpp2::reqXcep>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::reqXcep>::fields_size> TStructDataStorage<::cpp2::reqXcep>::fields_names = {{
+  "message",
+  "errorCode",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::reqXcep>::fields_size> TStructDataStorage<::cpp2::reqXcep>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::reqXcep>::fields_size> TStructDataStorage<::cpp2::reqXcep>::fields_types = {{
+  TType::T_STRING,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::optXcep>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::optXcep>::fields_size> TStructDataStorage<::cpp2::optXcep>::fields_names = {{
+  "message",
+  "errorCode",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::optXcep>::fields_size> TStructDataStorage<::cpp2::optXcep>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::optXcep>::fields_size> TStructDataStorage<::cpp2::optXcep>::fields_types = {{
+  TType::T_STRING,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::complexException>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::complexException>::fields_size> TStructDataStorage<::cpp2::complexException>::fields_names = {{
+  "message",
+  "listStrings",
+  "errorEnum",
+  "unionError",
+  "structError",
+  "lsMap",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::complexException>::fields_size> TStructDataStorage<::cpp2::complexException>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::complexException>::fields_size> TStructDataStorage<::cpp2::complexException>::fields_types = {{
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_I32,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_MAP,
+}};
 
 } // namespace thrift
 } // namespace apache

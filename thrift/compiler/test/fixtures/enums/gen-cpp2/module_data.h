@@ -15,46 +15,15 @@ namespace apache { namespace thrift {
 template <> struct TEnumDataStorage<::cpp2::Metasyntactic> {
   using type = ::cpp2::Metasyntactic;
   static constexpr const std::size_t size = 4;
-  static constexpr const std::array<type, size> values = {{
-    type::FOO,
-    type::BAR,
-    type::BAZ,
-    type::BAX,
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-    "FOO",
-    "BAR",
-    "BAZ",
-    "BAX",
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::SomeStruct> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 4;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "reasonable",
-    "fine",
-    "questionable",
-    "tags",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-    2,
-    3,
-    4,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_I32,
-    TType::T_I32,
-    TType::T_I32,
-    TType::T_SET,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 }} // apache::thrift

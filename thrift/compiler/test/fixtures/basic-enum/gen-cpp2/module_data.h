@@ -15,92 +15,29 @@ namespace apache { namespace thrift {
 template <> struct TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum> {
   using type = ::test::fixtures::enumstrict::EmptyEnum;
   static constexpr const std::size_t size = 0;
-  static constexpr const std::array<type, size> values = {{
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
+
 template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyEnum> {
   using type = ::test::fixtures::enumstrict::MyEnum;
   static constexpr const std::size_t size = 2;
-  static constexpr const std::array<type, size> values = {{
-    type::ONE,
-    type::TWO,
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-    "ONE",
-    "TWO",
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
+
 template <> struct TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum> {
   using type = ::test::fixtures::enumstrict::MyBigEnum;
   static constexpr const std::size_t size = 20;
-  static constexpr const std::array<type, size> values = {{
-    type::UNKNOWN,
-    type::ONE,
-    type::TWO,
-    type::THREE,
-    type::FOUR,
-    type::FIVE,
-    type::SIX,
-    type::SEVEN,
-    type::EIGHT,
-    type::NINE,
-    type::TEN,
-    type::ELEVEN,
-    type::TWELVE,
-    type::THIRTEEN,
-    type::FOURTEEN,
-    type::FIFTEEN,
-    type::SIXTEEN,
-    type::SEVENTEEN,
-    type::EIGHTEEN,
-    type::NINETEEN,
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-    "UNKNOWN",
-    "ONE",
-    "TWO",
-    "THREE",
-    "FOUR",
-    "FIVE",
-    "SIX",
-    "SEVEN",
-    "EIGHT",
-    "NINE",
-    "TEN",
-    "ELEVEN",
-    "TWELVE",
-    "THIRTEEN",
-    "FOURTEEN",
-    "FIFTEEN",
-    "SIXTEEN",
-    "SEVENTEEN",
-    "EIGHTEEN",
-    "NINETEEN",
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
-
 
 template <> struct TStructDataStorage<::test::fixtures::enumstrict::MyStruct> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 2;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "myEnum",
-    "myBigEnum",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-    2,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_I32,
-    TType::T_I32,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 }} // apache::thrift

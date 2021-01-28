@@ -13,34 +13,83 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::InitialResponse>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::InitialResponse>::fields_size> TStructDataStorage<::cpp2::InitialResponse>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::InitialResponse>::fields_size> TStructDataStorage<::cpp2::InitialResponse>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::InitialResponse>::fields_size> TStructDataStorage<::cpp2::InitialResponse>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::FinalResponse>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::FinalResponse>::fields_size> TStructDataStorage<::cpp2::FinalResponse>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::FinalResponse>::fields_size> TStructDataStorage<::cpp2::FinalResponse>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::FinalResponse>::fields_size> TStructDataStorage<::cpp2::FinalResponse>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::SinkPayload>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SinkPayload>::fields_size> TStructDataStorage<::cpp2::SinkPayload>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::SinkPayload>::fields_size> TStructDataStorage<::cpp2::SinkPayload>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SinkPayload>::fields_size> TStructDataStorage<::cpp2::SinkPayload>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::InitialException>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::InitialException>::fields_size> TStructDataStorage<::cpp2::InitialException>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::InitialException>::fields_size> TStructDataStorage<::cpp2::InitialException>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::InitialException>::fields_size> TStructDataStorage<::cpp2::InitialException>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::SinkException1>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SinkException1>::fields_size> TStructDataStorage<::cpp2::SinkException1>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::SinkException1>::fields_size> TStructDataStorage<::cpp2::SinkException1>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SinkException1>::fields_size> TStructDataStorage<::cpp2::SinkException1>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::SinkException2>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SinkException2>::fields_size> TStructDataStorage<::cpp2::SinkException2>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::SinkException2>::fields_size> TStructDataStorage<::cpp2::SinkException2>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SinkException2>::fields_size> TStructDataStorage<::cpp2::SinkException2>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::InitialResponse>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::InitialResponse>::fields_size> TStructDataStorage<::cpp2::InitialResponse>::fields_names = {{
+  "content",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::InitialResponse>::fields_size> TStructDataStorage<::cpp2::InitialResponse>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::InitialResponse>::fields_size> TStructDataStorage<::cpp2::InitialResponse>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::FinalResponse>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::FinalResponse>::fields_size> TStructDataStorage<::cpp2::FinalResponse>::fields_names = {{
+  "content",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::FinalResponse>::fields_size> TStructDataStorage<::cpp2::FinalResponse>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::FinalResponse>::fields_size> TStructDataStorage<::cpp2::FinalResponse>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::SinkPayload>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SinkPayload>::fields_size> TStructDataStorage<::cpp2::SinkPayload>::fields_names = {{
+  "content",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::SinkPayload>::fields_size> TStructDataStorage<::cpp2::SinkPayload>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SinkPayload>::fields_size> TStructDataStorage<::cpp2::SinkPayload>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_names = {{
+  "sink",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_size> TStructDataStorage<::cpp2::CompatibleWithKeywordSink>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::InitialException>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::InitialException>::fields_size> TStructDataStorage<::cpp2::InitialException>::fields_names = {{
+  "reason",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::InitialException>::fields_size> TStructDataStorage<::cpp2::InitialException>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::InitialException>::fields_size> TStructDataStorage<::cpp2::InitialException>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::SinkException1>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SinkException1>::fields_size> TStructDataStorage<::cpp2::SinkException1>::fields_names = {{
+  "reason",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::SinkException1>::fields_size> TStructDataStorage<::cpp2::SinkException1>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SinkException1>::fields_size> TStructDataStorage<::cpp2::SinkException1>::fields_types = {{
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::SinkException2>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SinkException2>::fields_size> TStructDataStorage<::cpp2::SinkException2>::fields_names = {{
+  "reason",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::SinkException2>::fields_size> TStructDataStorage<::cpp2::SinkException2>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SinkException2>::fields_size> TStructDataStorage<::cpp2::SinkException2>::fields_types = {{
+  TType::T_I64,
+}};
 
 } // namespace thrift
 } // namespace apache

@@ -13,15 +13,26 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::B>::size;
-constexpr const std::array<::cpp2::B, 1> TEnumDataStorage<::cpp2::B>::values;
-constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::cpp2::B>::names;
+const std::size_t TEnumDataStorage<::cpp2::B>::size;
+const std::array<::cpp2::B, 1> TEnumDataStorage<::cpp2::B>::values = {{
+  type::HELLO,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::cpp2::B>::names = {{
+  "HELLO",
+}};
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::A>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::A>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_names = {{
+  "useless_field",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_ids = {{
+  1,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_types = {{
+  TType::T_I32,
+}};
 
 } // namespace thrift
 } // namespace apache

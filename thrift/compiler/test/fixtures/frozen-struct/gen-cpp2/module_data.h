@@ -15,67 +15,22 @@ namespace apache { namespace thrift {
 template <> struct TEnumDataStorage<::some::ns::EnumB> {
   using type = ::some::ns::EnumB;
   static constexpr const std::size_t size = 1;
-  static constexpr const std::array<type, size> values = {{
-    type::EMPTY,
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-    "EMPTY",
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
-
 
 template <> struct TStructDataStorage<::some::ns::ModuleA> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 6;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "i32Field",
-    "strField",
-    "listField",
-    "mapField",
-    "inclAField",
-    "inclBField",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_I32,
-    TType::T_STRING,
-    TType::T_LIST,
-    TType::T_MAP,
-    TType::T_STRUCT,
-    TType::T_STRUCT,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::some::ns::ModuleB> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 2;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "i32Field",
-    "inclEnumB",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-    2,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_I32,
-    TType::T_I32,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 }} // apache::thrift

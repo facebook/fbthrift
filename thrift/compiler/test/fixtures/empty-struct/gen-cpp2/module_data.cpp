@@ -13,19 +13,29 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::Nada::Type>::size;
-constexpr const std::array<::cpp2::Nada::Type, 0> TEnumDataStorage<::cpp2::Nada::Type>::values;
-constexpr const std::array<folly::StringPiece, 0> TEnumDataStorage<::cpp2::Nada::Type>::names;
+const std::size_t TEnumDataStorage<::cpp2::Nada::Type>::size;
+const std::array<::cpp2::Nada::Type, 0> TEnumDataStorage<::cpp2::Nada::Type>::values = {{
+}};
+const std::array<folly::StringPiece, 0> TEnumDataStorage<::cpp2::Nada::Type>::names = {{
+}};
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::Empty>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Empty>::fields_size> TStructDataStorage<::cpp2::Empty>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Empty>::fields_size> TStructDataStorage<::cpp2::Empty>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Empty>::fields_size> TStructDataStorage<::cpp2::Empty>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Nada>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Nada>::fields_size> TStructDataStorage<::cpp2::Nada>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Nada>::fields_size> TStructDataStorage<::cpp2::Nada>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Nada>::fields_size> TStructDataStorage<::cpp2::Nada>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::Empty>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Empty>::fields_size> TStructDataStorage<::cpp2::Empty>::fields_names = {{
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Empty>::fields_size> TStructDataStorage<::cpp2::Empty>::fields_ids = {{
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Empty>::fields_size> TStructDataStorage<::cpp2::Empty>::fields_types = {{
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Nada>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Nada>::fields_size> TStructDataStorage<::cpp2::Nada>::fields_names = {{
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Nada>::fields_size> TStructDataStorage<::cpp2::Nada>::fields_ids = {{
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Nada>::fields_size> TStructDataStorage<::cpp2::Nada>::fields_types = {{
+}};
 
 } // namespace thrift
 } // namespace apache

@@ -12,60 +12,11 @@
 
 namespace apache { namespace thrift {
 
-
-
 template <> struct TStructDataStorage<::extra::svc::containerStruct2> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 13;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "fieldA",
-    "req_fieldA",
-    "opt_fieldA",
-    "fieldB",
-    "req_fieldB",
-    "opt_fieldB",
-    "fieldC",
-    "req_fieldC",
-    "opt_fieldC",
-    "fieldD",
-    "fieldE",
-    "req_fieldE",
-    "opt_fieldE",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-    101,
-    201,
-    2,
-    102,
-    202,
-    3,
-    103,
-    203,
-    4,
-    5,
-    105,
-    205,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_BOOL,
-    TType::T_BOOL,
-    TType::T_BOOL,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_MAP,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_SET,
-    TType::T_STRING,
-    TType::T_STRING,
-    TType::T_STRING,
-    TType::T_STRING,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 }} // apache::thrift

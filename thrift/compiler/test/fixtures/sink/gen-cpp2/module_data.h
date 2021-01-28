@@ -12,132 +12,53 @@
 
 namespace apache { namespace thrift {
 
-
-
 template <> struct TStructDataStorage<::cpp2::InitialResponse> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "content",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_STRING,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::FinalResponse> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "content",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_STRING,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::SinkPayload> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "content",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_STRING,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::CompatibleWithKeywordSink> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "sink",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_STRING,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::InitialException> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "reason",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_STRING,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::SinkException1> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "reason",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_STRING,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 template <> struct TStructDataStorage<::cpp2::SinkException2> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = 1;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    "reason",
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    1,
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    TType::T_I64,
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
 };
-
 
 }} // apache::thrift

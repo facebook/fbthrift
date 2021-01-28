@@ -13,23 +13,100 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::Animal>::size;
-constexpr const std::array<::cpp2::Animal, 3> TEnumDataStorage<::cpp2::Animal>::values;
-constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::Animal>::names;
+const std::size_t TEnumDataStorage<::cpp2::Animal>::size;
+const std::array<::cpp2::Animal, 3> TEnumDataStorage<::cpp2::Animal>::values = {{
+  type::DOG,
+  type::CAT,
+  type::TARANTULA,
+}};
+const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::Animal>::names = {{
+  "DOG",
+  "CAT",
+  "TARANTULA",
+}};
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::Color>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Vehicle>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Person>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::Color>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_names = {{
+  "red",
+  "green",
+  "blue",
+  "alpha",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_types = {{
+  TType::T_DOUBLE,
+  TType::T_DOUBLE,
+  TType::T_DOUBLE,
+  TType::T_DOUBLE,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Vehicle>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_names = {{
+  "color",
+  "licensePlate",
+  "description",
+  "name",
+  "hasAC",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_BOOL,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Person>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_names = {{
+  "id",
+  "name",
+  "age",
+  "address",
+  "favoriteColor",
+  "friends",
+  "bestFriend",
+  "petNames",
+  "afraidOfAnimal",
+  "vehicles",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_types = {{
+  TType::T_I64,
+  TType::T_STRING,
+  TType::T_I16,
+  TType::T_STRING,
+  TType::T_STRUCT,
+  TType::T_SET,
+  TType::T_I64,
+  TType::T_MAP,
+  TType::T_I32,
+  TType::T_LIST,
+}};
 
 } // namespace thrift
 } // namespace apache

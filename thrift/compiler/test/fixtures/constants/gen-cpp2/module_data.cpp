@@ -13,63 +13,202 @@ namespace apache {
 namespace thrift {
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::EmptyEnum>::size;
-constexpr const std::array<::cpp2::EmptyEnum, 0> TEnumDataStorage<::cpp2::EmptyEnum>::values;
-constexpr const std::array<folly::StringPiece, 0> TEnumDataStorage<::cpp2::EmptyEnum>::names;
+const std::size_t TEnumDataStorage<::cpp2::EmptyEnum>::size;
+const std::array<::cpp2::EmptyEnum, 0> TEnumDataStorage<::cpp2::EmptyEnum>::values = {{
+}};
+const std::array<folly::StringPiece, 0> TEnumDataStorage<::cpp2::EmptyEnum>::names = {{
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::City>::size;
-constexpr const std::array<::cpp2::City, 4> TEnumDataStorage<::cpp2::City>::values;
-constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::City>::names;
+const std::size_t TEnumDataStorage<::cpp2::City>::size;
+const std::array<::cpp2::City, 4> TEnumDataStorage<::cpp2::City>::values = {{
+  type::NYC,
+  type::MPK,
+  type::SEA,
+  type::LON,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::City>::names = {{
+  "NYC",
+  "MPK",
+  "SEA",
+  "LON",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::Company>::size;
-constexpr const std::array<::cpp2::Company, 4> TEnumDataStorage<::cpp2::Company>::values;
-constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Company>::names;
+const std::size_t TEnumDataStorage<::cpp2::Company>::size;
+const std::array<::cpp2::Company, 4> TEnumDataStorage<::cpp2::Company>::values = {{
+  type::FACEBOOK,
+  type::WHATSAPP,
+  type::OCULUS,
+  type::INSTAGRAM,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Company>::names = {{
+  "FACEBOOK",
+  "WHATSAPP",
+  "OCULUS",
+  "INSTAGRAM",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::union1::Type>::size;
-constexpr const std::array<::cpp2::union1::Type, 2> TEnumDataStorage<::cpp2::union1::Type>::values;
-constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::union1::Type>::names;
+const std::size_t TEnumDataStorage<::cpp2::union1::Type>::size;
+const std::array<::cpp2::union1::Type, 2> TEnumDataStorage<::cpp2::union1::Type>::values = {{
+  type::i,
+  type::d,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::union1::Type>::names = {{
+  "i",
+  "d",
+}};
 
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::union2::Type>::size;
-constexpr const std::array<::cpp2::union2::Type, 4> TEnumDataStorage<::cpp2::union2::Type>::values;
-constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::union2::Type>::names;
+const std::size_t TEnumDataStorage<::cpp2::union2::Type>::size;
+const std::array<::cpp2::union2::Type, 4> TEnumDataStorage<::cpp2::union2::Type>::values = {{
+  type::i,
+  type::d,
+  type::s,
+  type::u,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::union2::Type>::names = {{
+  "i",
+  "d",
+  "s",
+  "u",
+}};
 
 
-constexpr const std::size_t TStructDataStorage<::cpp2::Internship>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Internship>::fields_size> TStructDataStorage<::cpp2::Internship>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Internship>::fields_size> TStructDataStorage<::cpp2::Internship>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Internship>::fields_size> TStructDataStorage<::cpp2::Internship>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::Range>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Range>::fields_size> TStructDataStorage<::cpp2::Range>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::Range>::fields_size> TStructDataStorage<::cpp2::Range>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Range>::fields_size> TStructDataStorage<::cpp2::Range>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::struct1>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct1>::fields_size> TStructDataStorage<::cpp2::struct1>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::struct1>::fields_size> TStructDataStorage<::cpp2::struct1>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct1>::fields_size> TStructDataStorage<::cpp2::struct1>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::struct2>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct2>::fields_size> TStructDataStorage<::cpp2::struct2>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::struct2>::fields_size> TStructDataStorage<::cpp2::struct2>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct2>::fields_size> TStructDataStorage<::cpp2::struct2>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::struct3>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct3>::fields_size> TStructDataStorage<::cpp2::struct3>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::struct3>::fields_size> TStructDataStorage<::cpp2::struct3>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct3>::fields_size> TStructDataStorage<::cpp2::struct3>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::struct4>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct4>::fields_size> TStructDataStorage<::cpp2::struct4>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::struct4>::fields_size> TStructDataStorage<::cpp2::struct4>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct4>::fields_size> TStructDataStorage<::cpp2::struct4>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::union1>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::union1>::fields_size> TStructDataStorage<::cpp2::union1>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::union1>::fields_size> TStructDataStorage<::cpp2::union1>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::union1>::fields_size> TStructDataStorage<::cpp2::union1>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::union2>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::union2>::fields_size> TStructDataStorage<::cpp2::union2>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::union2>::fields_size> TStructDataStorage<::cpp2::union2>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::union2>::fields_size> TStructDataStorage<::cpp2::union2>::fields_types;
+
+const std::size_t TStructDataStorage<::cpp2::Internship>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Internship>::fields_size> TStructDataStorage<::cpp2::Internship>::fields_names = {{
+  "weeks",
+  "title",
+  "employer",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Internship>::fields_size> TStructDataStorage<::cpp2::Internship>::fields_ids = {{
+  1,
+  2,
+  3,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Internship>::fields_size> TStructDataStorage<::cpp2::Internship>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::Range>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Range>::fields_size> TStructDataStorage<::cpp2::Range>::fields_names = {{
+  "min",
+  "max",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::Range>::fields_size> TStructDataStorage<::cpp2::Range>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Range>::fields_size> TStructDataStorage<::cpp2::Range>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::struct1>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct1>::fields_size> TStructDataStorage<::cpp2::struct1>::fields_names = {{
+  "a",
+  "b",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::struct1>::fields_size> TStructDataStorage<::cpp2::struct1>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct1>::fields_size> TStructDataStorage<::cpp2::struct1>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRING,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::struct2>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct2>::fields_size> TStructDataStorage<::cpp2::struct2>::fields_names = {{
+  "a",
+  "b",
+  "c",
+  "d",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::struct2>::fields_size> TStructDataStorage<::cpp2::struct2>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct2>::fields_size> TStructDataStorage<::cpp2::struct2>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_STRUCT,
+  TType::T_LIST,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::struct3>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct3>::fields_size> TStructDataStorage<::cpp2::struct3>::fields_names = {{
+  "a",
+  "b",
+  "c",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::struct3>::fields_size> TStructDataStorage<::cpp2::struct3>::fields_ids = {{
+  1,
+  2,
+  3,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct3>::fields_size> TStructDataStorage<::cpp2::struct3>::fields_types = {{
+  TType::T_STRING,
+  TType::T_I32,
+  TType::T_STRUCT,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::struct4>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::struct4>::fields_size> TStructDataStorage<::cpp2::struct4>::fields_names = {{
+  "a",
+  "b",
+  "c",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::struct4>::fields_size> TStructDataStorage<::cpp2::struct4>::fields_ids = {{
+  1,
+  2,
+  3,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::struct4>::fields_size> TStructDataStorage<::cpp2::struct4>::fields_types = {{
+  TType::T_I32,
+  TType::T_DOUBLE,
+  TType::T_BYTE,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::union1>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::union1>::fields_size> TStructDataStorage<::cpp2::union1>::fields_names = {{
+  "i",
+  "d",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::union1>::fields_size> TStructDataStorage<::cpp2::union1>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::union1>::fields_size> TStructDataStorage<::cpp2::union1>::fields_types = {{
+  TType::T_I32,
+  TType::T_DOUBLE,
+}};
+
+const std::size_t TStructDataStorage<::cpp2::union2>::fields_size;
+const std::array<folly::StringPiece, TStructDataStorage<::cpp2::union2>::fields_size> TStructDataStorage<::cpp2::union2>::fields_names = {{
+  "i",
+  "d",
+  "s",
+  "u",
+}};
+const std::array<int16_t, TStructDataStorage<::cpp2::union2>::fields_size> TStructDataStorage<::cpp2::union2>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::union2>::fields_size> TStructDataStorage<::cpp2::union2>::fields_types = {{
+  TType::T_I32,
+  TType::T_DOUBLE,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
 
 } // namespace thrift
 } // namespace apache
