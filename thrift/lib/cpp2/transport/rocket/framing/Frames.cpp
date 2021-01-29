@@ -584,7 +584,8 @@ void KeepAliveFrame::serialize(Serializer& writer) && {
    */
 
   // Excludes room for frame length
-  const auto frameSize = frameHeaderSize() + data_->computeChainDataLength();
+  const auto frameSize =
+      frameHeaderSize() + (data_ ? data_->computeChainDataLength() : 0);
   auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
 
   nwritten += writer.write(StreamId{0});
@@ -593,7 +594,9 @@ void KeepAliveFrame::serialize(Serializer& writer) && {
   // Last received position: send 0 if not supported.
   nwritten += writer.writeBE(static_cast<uint64_t>(0));
 
-  nwritten += writer.write(std::move(data_));
+  if (data_) {
+    nwritten += writer.write(std::move(data_));
+  }
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }

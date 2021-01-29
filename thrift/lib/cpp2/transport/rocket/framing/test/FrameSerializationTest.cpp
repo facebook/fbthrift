@@ -343,6 +343,27 @@ TEST(FrameSerialization, KeepAliveSanity) {
   validate(serializeAndDeserialize(makeKeepAliveFrame()));
 }
 
+TEST(FrameSerialization, KeepAliveSanityEmptyPayload) {
+  constexpr folly::StringPiece kKeepAliveData = folly::StringPiece();
+
+  auto makeKeepAliveFrame = [&] {
+    return KeepAliveFrame(
+        Flags::none().respond(true), folly::IOBuf::copyBuffer(kKeepAliveData));
+  };
+
+  auto validate = [=](KeepAliveFrame&& f) {
+    EXPECT_TRUE(f.hasRespondFlag());
+    EXPECT_EQ(kKeepAliveData, getRange(*std::move(f).data()));
+  };
+  auto validateSerialized = [=](KeepAliveFrame&& f) {
+    EXPECT_TRUE(f.hasRespondFlag());
+    EXPECT_EQ(nullptr, std::move(f).data());
+  };
+
+  validate(makeKeepAliveFrame());
+  validateSerialized(serializeAndDeserialize(makeKeepAliveFrame()));
+}
+
 TEST(FrameSerialization, PayloadLargeMetadata) {
   const auto metadata = makeLargeIOBuf();
 
