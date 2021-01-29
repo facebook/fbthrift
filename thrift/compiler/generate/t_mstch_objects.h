@@ -132,6 +132,18 @@ class annotation_generator {
       int32_t index = 0) const;
 };
 
+class structured_annotation_generator {
+ public:
+  structured_annotation_generator() = default;
+  virtual ~structured_annotation_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      const std::shared_ptr<t_const>& annotValue,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0) const;
+};
+
 class struct_generator {
  public:
   struct_generator() = default;
@@ -247,6 +259,8 @@ class mstch_generators {
         type_generator_(std::make_unique<type_generator>()),
         field_generator_(std::make_unique<field_generator>()),
         annotation_generator_(std::make_unique<annotation_generator>()),
+        structured_annotation_generator_(
+            std::make_unique<structured_annotation_generator>()),
         struct_generator_(std::make_unique<struct_generator>()),
         function_generator_(std::make_unique<function_generator>()),
         service_generator_(std::make_unique<service_generator>()),
@@ -309,6 +323,8 @@ class mstch_generators {
   std::unique_ptr<type_generator> type_generator_;
   std::unique_ptr<field_generator> field_generator_;
   std::unique_ptr<annotation_generator> annotation_generator_;
+  std::unique_ptr<structured_annotation_generator>
+      structured_annotation_generator_;
   std::unique_ptr<struct_generator> struct_generator_;
   std::unique_ptr<function_generator> function_generator_;
   std::unique_ptr<service_generator> service_generator_;
@@ -348,6 +364,12 @@ class mstch_base : public mstch::object {
       annotations.emplace_back(itr.first, itr.second);
     }
     return generate_annotations(annotations);
+  }
+
+  mstch::node structured_annotations(t_annotated const* annotated) {
+    return generate_elements(
+        annotated->structured_annotations_,
+        generators_->structured_annotation_generator_.get());
   }
 
   static ELEMENT_POSITION element_position(size_t index, size_t length) {
@@ -513,6 +535,8 @@ class mstch_enum : public mstch_base {
         {
             {"enum:name", &mstch_enum::name},
             {"enum:values", &mstch_enum::values},
+            {"enum:structured_annotations",
+             &mstch_enum::structured_annotations},
         });
   }
 
@@ -520,6 +544,9 @@ class mstch_enum : public mstch_base {
     return enm_->get_name();
   }
   mstch::node values();
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(enm_);
+  }
 
  protected:
   t_enum const* enm_;
@@ -875,6 +902,8 @@ class mstch_field : public mstch_base {
             {"field:optional?", &mstch_field::is_optional},
             {"field:optInReqOut?", &mstch_field::is_optInReqOut},
             {"field:annotations", &mstch_field::annotations},
+            {"field:structured_annotations",
+             &mstch_field::structured_annotations},
         });
   }
   bool has_annotation(std::string const& name) {
@@ -908,6 +937,9 @@ class mstch_field : public mstch_base {
   }
   mstch::node annotations() {
     return mstch_base::annotations(field_);
+  }
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(field_);
   }
 
  protected:
@@ -948,6 +980,36 @@ class mstch_annotation : public mstch_base {
   int32_t index_;
 };
 
+class mstch_structured_annotation : public mstch_base {
+ public:
+  mstch_structured_annotation(
+      const t_const& cnst,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_base(generators, cache, pos), cnst_(cnst), index_(index) {
+    register_methods(
+        this,
+        {{"structured_annotation:const",
+          &mstch_structured_annotation::constant},
+         {"structured_annotation:const_struct?",
+          &mstch_structured_annotation::is_const_struct}});
+  }
+  mstch::node constant() {
+    return generators_->const_generator_->generate(
+        &cnst_, generators_, cache_, pos_, index_, &cnst_, cnst_.get_type());
+  }
+
+  mstch::node is_const_struct() {
+    return cnst_.get_type()->is_struct();
+  }
+
+ protected:
+  const t_const& cnst_;
+  int32_t index_;
+};
+
 class mstch_struct : public mstch_base {
  public:
   mstch_struct(
@@ -967,6 +1029,8 @@ class mstch_struct : public mstch_base {
             {"struct:plain?", &mstch_struct::is_plain},
             {"struct:annotations", &mstch_struct::annotations},
             {"struct:thrift_uri", &mstch_struct::thrift_uri},
+            {"struct:structured_annotations",
+             &mstch_struct::structured_annotations},
         });
   }
   mstch::node name() {
@@ -989,6 +1053,9 @@ class mstch_struct : public mstch_base {
     return mstch_base::annotations(strct_);
   }
   mstch::node thrift_uri();
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(strct_);
+  }
 
  protected:
   t_struct const* strct_;
@@ -1028,6 +1095,8 @@ class mstch_function : public mstch_base {
             {"function:annotations", &mstch_function::annotations},
             {"function:starts_interaction?",
              &mstch_function::starts_interaction},
+            {"function:structured_annotations",
+             &mstch_function::structured_annotations},
         });
   }
 
@@ -1081,6 +1150,10 @@ class mstch_function : public mstch_base {
     return function_->get_returntype()->is_service();
   }
 
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(function_);
+  }
+
  protected:
   t_function const* function_;
 };
@@ -1107,6 +1180,8 @@ class mstch_service : public mstch_base {
             {"service:interaction?", &mstch_service::is_interaction},
             {"service:interactions", &mstch_service::interactions},
             {"service:interactions?", &mstch_service::has_interactions},
+            {"service:structured_annotations",
+             &mstch_service::structured_annotations},
             {"interaction:serial?", &mstch_service::is_serial_interaction},
         });
   }
@@ -1159,6 +1234,9 @@ class mstch_service : public mstch_base {
       }
     }
     return generate_services(interactions);
+  }
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(service_);
   }
   mstch::node is_interaction() {
     return service_->is_interaction();

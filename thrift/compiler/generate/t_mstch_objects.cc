@@ -109,6 +109,16 @@ std::shared_ptr<mstch_base> annotation_generator::generate(
       annotation.key, annotation.val, generators, cache, pos, index);
 }
 
+std::shared_ptr<mstch_base> structured_annotation_generator::generate(
+    const std::shared_ptr<t_const>& annotValue,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t index) const {
+  return std::make_shared<mstch_structured_annotation>(
+      *annotValue.get(), generators, cache, pos, index);
+}
+
 std::shared_ptr<mstch_base> struct_generator::generate(
     t_struct const* strct,
     std::shared_ptr<mstch_generators const> generators,
