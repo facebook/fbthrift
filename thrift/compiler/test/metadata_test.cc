@@ -88,8 +88,6 @@ TEST_F(MetadataCodegenTest, structTest) {
   EXPECT_EQ(e.elements_ref()->at(9), "THRIFT_STRING_TYPE");
   EXPECT_EQ(e.elements_ref()->at(10), "THRIFT_VOID_TYPE");
 
-  EXPECT_EQ(metadata_.structs_ref()->size(), 11);
-
   ThriftStruct s;
   s = getStruct("metadata.ThriftListType");
   EXPECT_EQ(s.fields_ref()->size(), 1);

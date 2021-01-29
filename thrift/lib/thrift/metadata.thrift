@@ -37,6 +37,26 @@ enum ThriftPrimitiveType {
   THRIFT_VOID_TYPE = 10,
 }
 
+struct ThriftConstValuePair {
+  1: ThriftConstValue key;
+  2: ThriftConstValue value;
+}
+
+union ThriftConstValue {
+  1: bool cv_bool;
+  2: i64 cv_integer;
+  3: double cv_double;
+  4: string cv_string;
+  5: list<ThriftConstValuePair> cv_map;
+  6: list<ThriftConstValue> cv_list;
+  7: ThriftConstStruct cv_struct;
+}
+
+struct ThriftConstStruct {
+  1: ThriftStructType type;
+  2: map<string, ThriftConstValue> fields;
+}
+
 struct ThriftListType {
   1: optional ThriftType valueType (
     cpp.ref = "true",
@@ -144,6 +164,7 @@ union ThriftType {
 struct ThriftEnum {
   1: string name;
   2: map<i32, string> elements;
+  3: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftField {
@@ -151,17 +172,20 @@ struct ThriftField {
   2: ThriftType type;
   3: string name;
   4: bool is_optional;
+  5: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftStruct {
   1: string name;
   2: list<ThriftField> fields;
   3: bool is_union;
+  4: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftException {
   1: string name;
   2: list<ThriftField> fields;
+  3: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftFunction {
@@ -170,12 +194,14 @@ struct ThriftFunction {
   3: list<ThriftField> arguments;
   4: list<ThriftField> exceptions;
   5: bool is_oneway;
+  6: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftService {
   1: string name;
   2: list<ThriftFunction> functions;
   3: optional string parent;
+  4: list<ThriftConstStruct> structured_annotations;
 }
 
 // ThriftModuleContext represents module-specific metadata.
