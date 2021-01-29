@@ -37,8 +37,8 @@ public final class SimpleStruct {
     
     @ThriftConstructor
     protected SimpleStruct() {
-      this.age = 0L;
-      this.name = null;
+      this.age = 60L;
+      this.name = "Batman";
     }
     
     public static class Builder {

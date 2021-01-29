@@ -39,9 +39,9 @@ public final class MyStruct {
     
     @ThriftConstructor
     protected MyStruct() {
-      this.myIncludedField = null;
+      this.myIncludedField = new test.fixtures.includes.includes.Included.Builder().setMyIntField(2L).setMyTransitiveField(test.fixtures.includes.transitive.Constants.EXAMPLE_FOO).build();
       this.myOtherIncludedField = null;
-      this.myIncludedInt = 0L;
+      this.myIncludedInt = 42L;
     }
     
     public static class Builder {

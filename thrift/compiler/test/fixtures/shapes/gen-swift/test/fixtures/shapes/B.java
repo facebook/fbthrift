@@ -137,16 +137,37 @@ public final class B {
       this.optionalMapOfStringToListOfA = null;
       this.optionalMapOfStringToSetOfI32 = null;
       this.optionalEnum = null;
-      this.requiredEnumWithDefault = null;
-      this.stringWithDefaultValue = null;
-      this.i32WithDefaultValue = 0;
-      this.doubleWithDefaultValue = 0.;
-      this.enumWithDefaultValue = null;
-      this.aWithDefaultValue = null;
-      this.setOfI32WithDefaultValue = null;
-      this.mapOfI32ToStringWithDefaultValue = null;
-      this.listOfStringWithDefaultValue = null;
-      this.mapOfStringToListOfI32WithDefaultValue = null;
+      this.requiredEnumWithDefault = test.fixtures.shapes.Enum.ENUM;
+      this.stringWithDefaultValue = "de_fault_in_our_stars";
+      this.i32WithDefaultValue = 1729;
+      this.doubleWithDefaultValue = (double)3.1415926;
+      this.enumWithDefaultValue = test.fixtures.shapes.Enum.ENUM;
+      this.aWithDefaultValue = new test.fixtures.shapes.A.Builder().setA("bc").build();
+      this.setOfI32WithDefaultValue = ImmutableSet.<Integer>builder()
+        .add(3)
+        .add(7)
+        .add(31)
+        .add(127)
+        .build();
+      this.mapOfI32ToStringWithDefaultValue = ImmutableMap.<Integer, String>builder()
+        .put(1, "fish")
+        .put(2, "fish")
+        .build();
+      this.listOfStringWithDefaultValue = ImmutableList.<String>builder()
+        .add("red fish")
+        .add("blue fish")
+        .build();
+      this.mapOfStringToListOfI32WithDefaultValue = ImmutableMap.<String, List<Integer>>builder()
+        .put("Jenny", ImmutableList.<Integer>builder()
+        .add(8)
+        .add(6)
+        .add(7)
+        .add(5)
+        .add(3)
+        .add(0)
+        .add(9)
+        .build())
+        .build();
     }
     
     public static class Builder {

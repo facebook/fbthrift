@@ -77,28 +77,76 @@ public final class DefaultStruct {
     
     @ThriftConstructor
     protected DefaultStruct() {
-      this.myLongDFset = 0L;
+      this.myLongDFset = 10L;
       this.myLongDF = 0L;
-      this.portDFset = 0;
+      this.portDFset = 3456;
       this.portNum = 0;
-      this.myBinaryDFset = null;
+      this.myBinaryDFset = "abc".getBytes();
       this.myBinary = null;
-      this.myByteDFSet = 0;
+      this.myByteDFSet = (byte)17;
       this.myByte = 0;
-      this.myDoubleDFset = 0.;
-      this.myDoubleDFZero = 0.;
+      this.myDoubleDFset = (double)99.7678;
+      this.myDoubleDFZero = (double)0;
       this.myDouble = 0.;
-      this.field3 = null;
-      this.myList = null;
-      this.mySet = null;
-      this.simpleStruct = null;
-      this.listStructDFset = null;
-      this.myUnion = null;
-      this.listUnionDFset = null;
-      this.mapNestlistStructDfSet = null;
-      this.mapJavaTypeDFset = null;
-      this.emptyMap = null;
-      this.enumMapDFset = null;
+      this.field3 = ImmutableMap.<Integer, String>builder()
+        .put(15, "a_value")
+        .put(2, "b_value")
+        .build();
+      this.myList = ImmutableList.<test.fixtures.complex_struct.MyEnum>builder()
+        .add(test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .add(test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .add(test.fixtures.complex_struct.MyEnum.MY_VALUE2)
+        .build();
+      this.mySet = ImmutableSet.<String>builder()
+        .add("house")
+        .add("car")
+        .add("dog")
+        .build();
+      this.simpleStruct = new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(40L).setName("John").build();
+      this.listStructDFset = ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(40L).setName("IronMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(999L).setName("Thanos").build())
+        .build();
+      this.myUnion = test.fixtures.complex_struct.MyUnion.fromMyEnum(test.fixtures.complex_struct.MyEnum.MY_VALUE2);
+      this.listUnionDFset = ImmutableList.<test.fixtures.complex_struct.MyUnion>builder()
+        .add(test.fixtures.complex_struct.MyUnion.fromMyEnum(test.fixtures.complex_struct.MyEnum.MY_VALUE2))
+        .add(test.fixtures.complex_struct.MyUnion.fromIntValue(123))
+        .build();
+      this.mapNestlistStructDfSet = ImmutableMap.<Integer, List<test.fixtures.complex_struct.SimpleStruct>>builder()
+        .put(1, ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(40L).setName("IronMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(999L).setName("Thanos").build())
+        .build())
+        .put(2, ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(28L).setName("BatMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(12L).setName("Robin").build())
+        .build())
+        .put(5, ImmutableList.<test.fixtures.complex_struct.SimpleStruct>builder()
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(12L).setName("RatMan").build())
+        .add(new test.fixtures.complex_struct.SimpleStruct.Builder().setAge(6L).setName("Catman").build())
+        .build())
+        .build();
+      this.mapJavaTypeDFset = ImmutableMap.<Long, String>builder()
+        .put(15L, "a_value")
+        .put(2L, "b_value")
+        .build();
+      this.emptyMap = ImmutableMap.<Long, Integer>builder()
+        .build();
+      this.enumMapDFset = ImmutableMap.<String, Map<Integer, test.fixtures.complex_struct.MyEnum>>builder()
+        .put("SANDY BRIDGE", ImmutableMap.<Integer, test.fixtures.complex_struct.MyEnum>builder()
+        .put(16, test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .put(144, test.fixtures.complex_struct.MyEnum.MY_VALUE1)
+        .build())
+        .put("IVY BRIDGE", ImmutableMap.<Integer, test.fixtures.complex_struct.MyEnum>builder()
+        .put(32, test.fixtures.complex_struct.MyEnum.MY_VALUE2)
+        .put(144, test.fixtures.complex_struct.MyEnum.MY_VALUE2)
+        .build())
+        .put("HASWELL", ImmutableMap.<Integer, test.fixtures.complex_struct.MyEnum>builder()
+        .put(32, test.fixtures.complex_struct.MyEnum.MY_VALUE3)
+        .put(128, test.fixtures.complex_struct.MyEnum.MY_VALUE3)
+        .put(256, test.fixtures.complex_struct.MyEnum.MY_VALUE3)
+        .build())
+        .build();
     }
     
     public static class Builder {

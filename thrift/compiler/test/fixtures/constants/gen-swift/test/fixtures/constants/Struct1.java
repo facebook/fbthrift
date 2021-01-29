@@ -37,8 +37,8 @@ public final class Struct1 {
     
     @ThriftConstructor
     protected Struct1() {
-      this.a = 0;
-      this.b = null;
+      this.a = 1234567;
+      this.b = "<uninitialized>";
     }
     
     public static class Builder {

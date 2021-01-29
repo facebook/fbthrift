@@ -35,7 +35,7 @@ public final class Foo {
     
     @ThriftConstructor
     protected Foo() {
-      this.a = 0L;
+      this.a = 2L;
     }
     
     public static class Builder {

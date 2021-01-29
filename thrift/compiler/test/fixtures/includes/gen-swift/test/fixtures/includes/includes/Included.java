@@ -38,7 +38,7 @@ public final class Included {
     @ThriftConstructor
     protected Included() {
       this.myIntField = 0L;
-      this.myTransitiveField = null;
+      this.myTransitiveField = new test.fixtures.includes.transitive.Foo.Builder().setA(2L).build();
     }
     
     public static class Builder {

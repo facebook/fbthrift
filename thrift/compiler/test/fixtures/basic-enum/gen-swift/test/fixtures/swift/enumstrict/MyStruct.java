@@ -38,7 +38,7 @@ public final class MyStruct {
     @ThriftConstructor
     protected MyStruct() {
       this.myEnum = null;
-      this.myBigEnum = null;
+      this.myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
     }
     
     public static class Builder {

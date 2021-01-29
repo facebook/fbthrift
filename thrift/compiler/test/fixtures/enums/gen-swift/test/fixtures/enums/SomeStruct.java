@@ -41,10 +41,11 @@ public final class SomeStruct {
     
     @ThriftConstructor
     protected SomeStruct() {
-      this.reasonable = null;
-      this.fine = null;
-      this.questionable = null;
-      this.tags = null;
+      this.reasonable = test.fixtures.enums.Metasyntactic.FOO;
+      this.fine = test.fixtures.enums.Metasyntactic.BAR;
+      this.questionable = test.fixtures.enums.Metasyntactic.fromInteger(-1);
+      this.tags = ImmutableSet.<Integer>builder()
+        .build();
     }
     
     public static class Builder {
