@@ -1286,8 +1286,8 @@ type GetEntityGetEntityArgs struct {
 
 func NewGetEntityGetEntityArgs() *GetEntityGetEntityArgs {
   return &GetEntityGetEntityArgs{
-R: NewGetEntityRequest(),
-}
+    R: NewGetEntityRequest(),
+  }
 }
 
 var GetEntityGetEntityArgs_R_DEFAULT *GetEntityRequest

@@ -32,8 +32,8 @@ type IncludesAlso struct {
 
 func NewIncludesAlso() *IncludesAlso {
   return &IncludesAlso{
-Also: IncludesAlso0.NewAlso(),
-}
+    Also: IncludesAlso0.NewAlso(),
+  }
 }
 
 var IncludesAlso_Also_DEFAULT *IncludesAlso0.Also

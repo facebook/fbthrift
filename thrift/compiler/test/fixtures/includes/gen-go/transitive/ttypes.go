@@ -29,8 +29,8 @@ type Foo struct {
 
 func NewFoo() *Foo {
   return &Foo{
-A: 2,
-}
+    A: 2,
+  }
 }
 
 

@@ -1288,11 +1288,14 @@ void t_go_generator::generate_go_struct_initializer(
     t_struct* tstruct,
     bool is_args_or_result) {
   out << publicize(type_name(tstruct), is_args_or_result) << "{";
+  indent_up();
   const vector<t_field*>& members = tstruct->get_members();
+  // This boolean flag is used for formatting & indentation purposes
+  bool member_has_been_initialized = false;
   for (vector<t_field*>::const_iterator m_iter = members.begin();
        m_iter != members.end();
        ++m_iter) {
-    t_type* ttype = (*m_iter)->get_type();
+    t_type* ttype = (*m_iter)->get_type()->get_true_type();
     bool pointer_field = is_pointer_field(*m_iter);
     bool struct_field =
         ttype->is_struct() && !(dynamic_cast<t_struct*>(ttype)->is_union());
@@ -1308,19 +1311,29 @@ void t_go_generator::generate_go_struct_initializer(
     get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
     if (!pointer_field && def_value != nullptr &&
         !omit_initialization(*m_iter)) {
-      out << endl
-          << indent() << publicized_name << ": "
+      if (!member_has_been_initialized) {
+        out << endl;
+      }
+      out << indent() << publicized_name << ": "
           << render_field_initial_value(
                  *m_iter, (*m_iter)->get_name(), pointer_field)
           << "," << endl;
+      member_has_been_initialized = true;
     } else if (struct_field && (*m_iter)->get_req() != t_field::T_OPTIONAL) {
-      out << endl
-          << indent() << publicized_name << ": " << module << "New"
+      if (!member_has_been_initialized) {
+        out << endl;
+      }
+      out << indent() << publicized_name << ": " << module << "New"
           << publicize(ttype->get_name()) << "()"
           << "," << endl;
+      member_has_been_initialized = true;
     }
   }
 
+  indent_down();
+  if (member_has_been_initialized) {
+    out << indent();
+  }
   out << "}" << endl;
 }
 
@@ -1440,8 +1453,10 @@ void t_go_generator::generate_go_struct_definition(
   out << indent() << "}" << endl << endl;
   out << indent() << "func New" << tstruct_name << "() *" << tstruct_name
       << " {" << endl;
-  out << indent() << "  return &";
+  indent_up();
+  out << indent() << "return &";
   generate_go_struct_initializer(out, tstruct, is_result || is_args);
+  indent_down();
   out << indent() << "}" << endl << endl;
   // Default values for optional fields
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {

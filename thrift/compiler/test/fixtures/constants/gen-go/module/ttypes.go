@@ -476,10 +476,9 @@ type Struct1 struct {
 
 func NewStruct1() *Struct1 {
   return &Struct1{
-A: 1234567,
-
-B: "<uninitialized>",
-}
+    A: 1234567,
+    B: "<uninitialized>",
+  }
 }
 
 
@@ -600,8 +599,8 @@ type Struct2 struct {
 
 func NewStruct2() *Struct2 {
   return &Struct2{
-C: NewStruct1(),
-}
+    C: NewStruct1(),
+  }
 }
 
 
@@ -811,8 +810,8 @@ type Struct3 struct {
 
 func NewStruct3() *Struct3 {
   return &Struct3{
-C: NewStruct2(),
-}
+    C: NewStruct2(),
+  }
 }
 
 

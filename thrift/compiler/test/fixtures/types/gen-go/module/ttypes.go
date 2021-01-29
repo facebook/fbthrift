@@ -997,10 +997,9 @@ type MyStructWithForwardRefEnum struct {
 
 func NewMyStructWithForwardRefEnum() *MyStructWithForwardRefEnum {
   return &MyStructWithForwardRefEnum{
-A: 12,
-
-B: 12,
-}
+    A:     12,
+    B:     12,
+  }
 }
 
 
@@ -1235,10 +1234,9 @@ type TrivialNestedWithDefault struct {
 
 func NewTrivialNestedWithDefault() *TrivialNestedWithDefault {
   return &TrivialNestedWithDefault{
-Z: 4,
-
-N: NewTrivialNumeric(),
-}
+    Z: 4,
+    N: NewTrivialNumeric(),
+  }
 }
 
 
@@ -1515,10 +1513,9 @@ type ComplexNestedWithDefault struct {
 
 func NewComplexNestedWithDefault() *ComplexNestedWithDefault {
   return &ComplexNestedWithDefault{
-Z: "4",
-
-N: NewComplexString(),
-}
+    Z: "4",
+    N: NewComplexString(),
+  }
 }
 
 
@@ -1891,7 +1888,9 @@ type MyStruct struct {
 }
 
 func NewMyStruct() *MyStruct {
-  return &MyStruct{}
+  return &MyStruct{
+    Data: NewMyDataItem(),
+  }
 }
 
 
@@ -2870,15 +2869,13 @@ type NoexceptMoveComplexStruct struct {
 
 func NewNoexceptMoveComplexStruct() *NoexceptMoveComplexStruct {
   return &NoexceptMoveComplexStruct{
-MyIntField: 12,
-
-MyStringField: "test",
-
-MyMapEnumAndInt: map[MyEnumA]string{
-    1: "fieldA",
-    4: "fieldC",
-},
-}
+    MyIntField: 12,
+    MyStringField: "test",
+    MyMapEnumAndInt: map[MyEnumA]string{
+            1: "fieldA",
+            4: "fieldC",
+    },
+  }
 }
 
 

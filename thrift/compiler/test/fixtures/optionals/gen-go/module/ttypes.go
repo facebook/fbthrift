@@ -266,8 +266,8 @@ type Vehicle struct {
 
 func NewVehicle() *Vehicle {
   return &Vehicle{
-Color: NewColor(),
-}
+    Color: NewColor(),
+  }
 }
 
 var Vehicle_Color_DEFAULT *Color

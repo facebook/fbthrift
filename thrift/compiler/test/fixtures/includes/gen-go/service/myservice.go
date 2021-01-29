@@ -342,10 +342,9 @@ type MyServiceQueryArgs struct {
 
 func NewMyServiceQueryArgs() *MyServiceQueryArgs {
   return &MyServiceQueryArgs{
-S: module0.NewMyStruct(),
-
-I: includes1.NewIncluded(),
-}
+    S: module0.NewMyStruct(),
+    I: includes1.NewIncluded(),
+  }
 }
 
 var MyServiceQueryArgs_S_DEFAULT *module0.MyStruct
@@ -538,10 +537,9 @@ type MyServiceHasArgDocsArgs struct {
 
 func NewMyServiceHasArgDocsArgs() *MyServiceHasArgDocsArgs {
   return &MyServiceHasArgDocsArgs{
-S: module0.NewMyStruct(),
-
-I: includes1.NewIncluded(),
-}
+    S: module0.NewMyStruct(),
+    I: includes1.NewIncluded(),
+  }
 }
 
 var MyServiceHasArgDocsArgs_S_DEFAULT *module0.MyStruct

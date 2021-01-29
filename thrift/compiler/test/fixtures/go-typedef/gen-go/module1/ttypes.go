@@ -78,8 +78,8 @@ type Automobile struct {
 
 func NewAutomobile() *Automobile {
   return &Automobile{
-FirstPlate: "0000",
-}
+    FirstPlate: "0000",
+  }
 }
 
 
@@ -664,8 +664,9 @@ type Pair struct {
 
 func NewPair() *Pair {
   return &Pair{
-Automobile: NewAutomobile(),
-}
+    Automobile: NewAutomobile(),
+    Car: NewAutomobile(),
+  }
 }
 
 var Pair_Automobile_DEFAULT *Automobile

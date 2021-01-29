@@ -82,7 +82,9 @@ type MyStruct struct {
 }
 
 func NewMyStruct() *MyStruct {
-  return &MyStruct{}
+  return &MyStruct{
+    MyDataField: NewMyDataItem(),
+  }
 }
 
 

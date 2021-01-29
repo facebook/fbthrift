@@ -167,8 +167,8 @@ type MyStructAnnotation struct {
 
 func NewMyStructAnnotation() *MyStructAnnotation {
   return &MyStructAnnotation{
-Nest: NewMyStructNestedAnnotation(),
-}
+    Nest: NewMyStructNestedAnnotation(),
+  }
 }
 
 
