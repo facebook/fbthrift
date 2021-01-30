@@ -1220,10 +1220,12 @@ FunctionQualifier:
     }
 | tok_idempotent
     {
+      driver.require_experimental_feature("idempotent");
       $$ = t_function_qualifier::Idempotent;
     }
 | tok_readonly
     {
+      driver.require_experimental_feature("readonly");
       $$ = t_function_qualifier::Readonly;
     }
 |

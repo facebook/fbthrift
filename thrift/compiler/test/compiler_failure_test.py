@@ -70,6 +70,56 @@ class CompilerFailureTest(unittest.TestCase):
         err = err.replace("{}/".format(self.tmp), "")
         return p.returncode, out, err
 
+    def test_idempotent_requires_experimental(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                service MyService {
+                    idempotent void deleteDataById(1: i64 id);
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:2] 'idempotent' is an experimental feature.\n",
+        )
+        ret, out, err = self.run_thrift(
+            "--allow-experimental-features", "idempotent", "--strict", "foo.thrift"
+        )
+        self.assertEqual(ret, 0, err)
+        # TODO(afuller): Figure out why this is outputing twice. (Are we parsing twice?)
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] 'idempotent' is an experimental feature.\n"
+            "[WARNING:foo.thrift:2] 'idempotent' is an experimental feature.\n",
+        )
+
+    def test_readonly_requires_experimental(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                service MyService {
+                    readonly string getDataById(1: i64 id);
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:2] 'readonly' is an experimental feature.\n",
+        )
+        ret, out, err = self.run_thrift(
+            "--allow-experimental-features", "idempotent,readonly", "foo.thrift"
+        )
+        self.assertEqual(ret, 0, err)
+
     def test_enum_wrong_default_value(self):
         # tests initializing enum with default value of wrong type
         write_file(
