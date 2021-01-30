@@ -543,6 +543,17 @@ boost::optional<std::string> parsing_driver::clean_up_doctext(
   return docstring;
 }
 
+bool parsing_driver::require_experimental_feature(const char* feature) {
+  assert(feature != std::string("all"));
+  if (params.allow_experimental_features.count("all") ||
+      params.allow_experimental_features.count(feature)) {
+    warning(2, "'%s' is an experimental feature.", feature);
+    return true;
+  }
+  failure("'%s' is an experimental feature.", feature);
+  return false;
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

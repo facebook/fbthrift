@@ -140,6 +140,8 @@ class CompilerTest(unittest.TestCase):
             args = [
                 thrift,
                 "-r",
+                "--allow-experimental-features",
+                "all",
                 "--gen",
                 args[0],
                 *args[1:],

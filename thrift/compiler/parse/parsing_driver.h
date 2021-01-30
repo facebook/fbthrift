@@ -21,6 +21,7 @@
 #include <set>
 #include <string>
 #include <system_error>
+#include <unordered_set>
 
 #include <boost/optional.hpp>
 
@@ -121,6 +122,13 @@ struct parsing_params {
    * languages.
    */
   bool allow_64bit_consts = false;
+
+  /**
+   * Which experimental features should be allowed.
+   *
+   * 'all' can be used to enable all experimental featuers.
+   */
+  std::unordered_set<std::string> allow_experimental_features;
 
   /**
    * Search path for inclusions
@@ -305,6 +313,10 @@ class parsing_driver {
    * you will get what you deserve.
    */
   boost::optional<std::string> clean_up_doctext(std::string docstring);
+
+  // Checks if the given experimental features is enabled, and reports a failure
+  // and returns false iff not.
+  bool require_experimental_feature(const char* feature);
 
  private:
   class deleter {

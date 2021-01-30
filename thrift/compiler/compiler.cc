@@ -65,13 +65,17 @@ void usage() {
   fprintf(stderr, "Usage: thrift [options] file\n");
   fprintf(stderr, "Options:\n");
   fprintf(
-      stderr, "  -o dir      Set the output directory for gen-* packages\n");
-  fprintf(stderr, "               (default: current directory)\n");
+      stderr,
+      "  -o dir      Set the output directory for gen-* packages\n"
+      "              (default: current directory)\n");
   fprintf(
-      stderr, "  -out dir    Set the output location for generated files\n");
-  fprintf(stderr, "               (no gen-* folder will be created)\n");
-  fprintf(stderr, "  -I dir      Add a directory to the list of directories\n");
-  fprintf(stderr, "                searched for include directives\n");
+      stderr,
+      "  -out dir    Set the output location for generated files\n"
+      "              (no gen-* folder will be created)\n");
+  fprintf(
+      stderr,
+      "  -I dir      Add a directory to the list of directories\n"
+      "              searched for include directives\n");
   fprintf(stderr, "  -nowarn     Suppress all compiler warnings (BAD!)\n");
   fprintf(stderr, "  -strict     Strict compiler warnings on\n");
   fprintf(stderr, "  -v[erbose]  Verbose mode\n");
@@ -79,25 +83,26 @@ void usage() {
   fprintf(stderr, "  -debug      Parse debug trace to stdout\n");
   fprintf(
       stderr,
-      "  --allow-neg-keys  Allow negative field keys (Used to "
-      "preserve protocol\n");
-  fprintf(stderr, "                compatibility with older .thrift files)\n");
+      "  --allow-neg-keys  Allow negative field keys (Used to preserve protocol\n"
+      "                    compatibility with older .thrift files)\n");
   fprintf(stderr, "  --allow-neg-enum-vals Allow negative enum vals\n");
   fprintf(
       stderr,
       "  --allow-64bit-consts  Do not print warnings about using 64-bit constants\n");
   fprintf(
       stderr,
-      "  --gen STR   Generate code with a dynamically-registered generator.\n");
+      "  --allow-experimental-features feature[,feature]\n"
+      "              Enable experimental features. Use 'all' to enable all experimental features.\n");
   fprintf(
       stderr,
-      "                STR has the form language[:key1=val1[,key2,[key3=val3]]].\n");
+      "  --gen STR   Generate code with a dynamically-registered generator.\n"
+      "              STR has the form language[:key1=val1[,key2,[key3=val3]]].\n"
+      "              Keys and values are options passed to the generator.\n"
+      "              Many options will not require values.\n");
   fprintf(
       stderr,
-      "                Keys and values are options passed to the generator.\n");
-  fprintf(stderr, "                Many options will not require values.\n");
-  fprintf(stderr, "  --record-genfiles FILE\n");
-  fprintf(stderr, "              Save the list of generated files to FILE\n");
+      "  --record-genfiles FILE\n"
+      "              Save the list of generated files to FILE,\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Available generators (and options):\n");
 
@@ -114,7 +119,12 @@ void usage() {
   }
 }
 
-// Returns the input file name if successful, otherwise returns an empty string.
+bool isComma(const char& c) {
+  return c == ',';
+}
+
+// Returns the input file name if successful, otherwise returns an empty
+// string.
 std::string parseArgs(
     const std::vector<std::string>& arguments,
     parsing_params& pparams,
@@ -161,7 +171,14 @@ std::string parseArgs(
     }
 
     // Interpret flag.
-    if (flag == "debug") {
+    if (flag == "allow-experimental-features") {
+      auto* arg = consume_arg("feature");
+      if (arg == nullptr) {
+        return {};
+      }
+      boost::algorithm::split(
+          pparams.allow_experimental_features, *arg, isComma);
+    } else if (flag == "debug") {
       pparams.debug = true;
       g_debug = 1;
     } else if (flag == "nowarn") {
@@ -357,8 +374,7 @@ std::string get_include_path(
 
     auto const lang_args = target.substr(colon_pos + 1);
     std::vector<std::string> parts;
-    boost::algorithm::split(
-        parts, lang_args, [](const char& c) { return c == ','; });
+    boost::algorithm::split(parts, lang_args, isComma);
     for (auto const& part : parts) {
       auto const equal_pos = part.find('=');
       auto const arg_name = part.substr(0, equal_pos);

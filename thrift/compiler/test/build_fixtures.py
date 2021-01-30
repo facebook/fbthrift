@@ -158,7 +158,7 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
         if re.match(r"^\s*#", cmd):
             continue
         args = shlex.split(cmd.strip())
-        base_args = [thrift, "-r", "--gen"]
+        base_args = [thrift, "-r", "--allow-experimental-features", "all", "--gen"]
         if "cpp" in args[0]:
             path = os.path.join("thrift/compiler/test/fixtures", name)
             extra = "include_prefix=" + path
