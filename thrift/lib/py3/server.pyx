@@ -193,9 +193,6 @@ cdef class ThriftServer:
     def get_io_worker_threads(self):
         return self.server.get().getNumIOWorkerThreads()
 
-    def set_cpu_worker_threads(self, num):
-        self.server.get().setNumCPUWorkerThreads(num)
-
     def get_cpu_worker_threads(self):
         return self.server.get().getNumCPUWorkerThreads()
 
