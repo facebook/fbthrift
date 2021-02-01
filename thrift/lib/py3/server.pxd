@@ -118,7 +118,6 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setIsOverloaded(cIsOverloadedFunc isOverloaded)
         void useExistingSocket(int socket) except +
         cBaseThriftServerMetadata& metadata()
-        void setThreadManagerFromExecutor(cFollyExecutor*)
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs

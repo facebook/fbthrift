@@ -113,7 +113,6 @@ cdef class ThriftServer:
     def __init__(self, AsyncProcessorFactory handler, int port=0, ip=None, path=None):
         self.loop = asyncio.get_event_loop()
         self.factory = handler
-        self.server.get().setThreadManagerFromExecutor(get_executor())
 
         if handler._cpp_obj:
             self.server.get().setProcessorFactory(handler._cpp_obj)
