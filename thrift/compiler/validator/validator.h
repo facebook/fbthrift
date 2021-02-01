@@ -256,6 +256,15 @@ class interactions_validator : virtual public validator {
   bool visit(t_service* s) override;
 };
 
+class reserved_field_id_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  /**
+   * check whether struct contains reserved field id
+   */
+  bool visit(t_struct* s) override;
+};
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

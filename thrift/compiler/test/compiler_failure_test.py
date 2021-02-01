@@ -612,3 +612,18 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift] `types_cpp_splits=5` is misconfigured: "
             "it can not be greater than number of object, which is 4.\n",
         )
+
+    def test_reserved_field_id(self):
+        lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(32768)] + ["}"]
+        write_file("foo.thrift", "\n".join(lines))
+
+        expected_error = ["[FAILURE:foo.thrift:32769] Too many fields in `Foo`"] + [
+            f"[WARNING:foo.thrift:{i+3}] No field key specified for field_{i}, "
+            "resulting protocol may have conflicts or not be backwards compatible!"
+            for i in range(32768)
+        ] * 2
+        expected_error = "\n".join(expected_error) + "\n"
+
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(err, expected_error)

@@ -138,6 +138,7 @@ static void fill_validators(validator_list& vs) {
   vs.add<field_names_uniqueness_validator>();
   vs.add<struct_names_uniqueness_validator>();
   vs.add<structured_annotations_uniqueness_validator>();
+  vs.add<reserved_field_id_validator>();
 
   // add more validators here ...
 }
@@ -446,6 +447,16 @@ void structured_annotations_uniqueness_validator::validate_annotations(
       full_names.insert(name);
     }
   }
+}
+
+bool reserved_field_id_validator::visit(t_struct* s) {
+  for (auto* member : s->get_members()) {
+    if (member->get_key() == -32768) {
+      add_error(
+          member->get_lineno(), "Too many fields in `" + s->get_name() + "`");
+    }
+  }
+  return true;
 }
 
 } // namespace compiler
