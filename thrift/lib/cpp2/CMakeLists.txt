@@ -73,6 +73,9 @@ add_library(
   ${RpcMetadata-cpp2-SOURCES}
   gen/module_types_cpp.cpp
   protocol/CompactProtocol.cpp # can't link against thriftprotocol, dep cycle
+  protocol/JSONProtocolCommon.cpp
+  ../cpp/protocol/TBase64Utils.cpp
+  ../cpp/protocol/TJSONProtocol.cpp
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/util/VarintUtils.cpp
 )

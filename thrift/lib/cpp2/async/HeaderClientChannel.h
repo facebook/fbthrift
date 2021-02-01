@@ -234,7 +234,7 @@ class HeaderClientChannel : public ClientChannel,
 
   uint16_t protocolId_;
 
-  std::string connectionAgentName_;
+  std::string agentName_;
   bool firstRequest_{true};
 };
 

@@ -500,12 +500,7 @@ void Cpp2Connection::requestReceived(
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
       clientQueueTimeout, clientTimeout, queueTimeout, taskTimeout);
   folly::call_once(clientInfoFlag_, [&] {
-    if (auto clientAgent = hreq->getHeader()->extractClientAgent()) {
-      loggingContext_.setClientAgent(*clientAgent);
-    }
-    if (auto clientHostId = hreq->getHeader()->extractClientHostId()) {
-      loggingContext_.setClientHostId(*clientHostId);
-    }
+    hreq->getHeader()->extractClientMetadata();
     loggingContext_.setInterfaceKind(apache::thrift::InterfaceKind::USER);
   });
 

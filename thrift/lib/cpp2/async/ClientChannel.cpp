@@ -25,21 +25,22 @@
 namespace apache {
 namespace thrift {
 namespace {
-THRIFT_PLUGGABLE_FUNC_REGISTER(std::optional<std::string>, getClientHostId) {
+THRIFT_PLUGGABLE_FUNC_REGISTER(ClientHostMetadata, getClientHostMetadata) {
+  ClientHostMetadata hostMetadata;
 #ifdef __linux__
   struct utsname bufs;
   ::uname(&bufs);
-  return bufs.nodename;
-#else
-  return {};
+  hostMetadata.hostname = bufs.nodename;
 #endif
+  return hostMetadata;
 }
 } // namespace
 
-/* static */ const std::optional<std::string>& ClientChannel::getHostId() {
-  static const auto& hostId =
-      *new std::optional<std::string>{THRIFT_PLUGGABLE_FUNC(getClientHostId)()};
-  return hostId;
+/* static */ const std::optional<ClientHostMetadata>&
+ClientChannel::getHostMetadata() {
+  static const auto& hostMetadata = *new std::optional<ClientHostMetadata>{
+      THRIFT_PLUGGABLE_FUNC(getClientHostMetadata)()};
+  return hostMetadata;
 }
 } // namespace thrift
 } // namespace apache

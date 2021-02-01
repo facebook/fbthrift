@@ -293,6 +293,12 @@ enum InterfaceKind {
 // types.
 const i64 kRocketProtocolKey = 0xf09f9a80;
 
+struct ClientMetadata {
+  1: optional string agent;
+  2: optional string hostname;
+  3: optional map<string, string> otherMetadata;
+}
+
 struct RequestSetupMetadata {
   1: optional map<string, binary> (
     cpp.template = "apache::thrift::MetadataOpaqueMap",
@@ -307,8 +313,7 @@ struct RequestSetupMetadata {
   // the connection
   5: optional i32 dscpToReflect;
   6: optional i32 markToReflect;
-  7: optional string clientAgent;
-  8: optional string clientHostId;
+  9: optional ClientMetadata clientMetadata;
 }
 
 struct SetupResponse {

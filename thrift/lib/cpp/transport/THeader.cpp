@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 #include <thrift/lib/cpp/util/VarintUtils.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 #include <algorithm>
 #include <cassert>
@@ -1009,6 +1010,21 @@ const folly::StringPiece THeader::getStringTransform(
       num_string_transforms == THeader::TRANSFORMS::TRANSFORM_LAST_FIELD,
       "TRANSFORMS enum and TRANSFORMS_STRING_LIST mismatch");
   return TRANSFORMS_STRING_LIST[transform];
+}
+
+void THeader::setClientMetadata(const ClientMetadata& clientMetadata) {
+  writeHeaders_[std::string{CLIENT_METADATA_HEADER}] =
+      apache::thrift::SimpleJSONSerializer::serialize<std::string>(
+          clientMetadata);
+}
+
+std::optional<ClientMetadata> THeader::extractClientMetadata() {
+  if (auto mdString = extractHeader(CLIENT_METADATA_HEADER)) {
+    return apache::thrift::SimpleJSONSerializer::deserialize<ClientMetadata>(
+        *mdString);
+  }
+
+  return {};
 }
 
 std::optional<std::string> THeader::extractHeader(std::string_view key) {

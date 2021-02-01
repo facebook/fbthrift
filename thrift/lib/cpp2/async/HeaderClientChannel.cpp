@@ -142,17 +142,20 @@ void HeaderClientChannel::setRequestHeaderOptions(THeader* header) {
 }
 
 void HeaderClientChannel::setConnectionAgentName(std::string_view name) {
-  connectionAgentName_ = name;
+  agentName_ = name;
 }
 
 void HeaderClientChannel::attachConnectionMetadataOnce(THeader* header) {
   if (std::exchange(firstRequest_, false)) {
-    if (!connectionAgentName_.empty()) {
-      header->setClientAgent(std::move(connectionAgentName_));
+    ClientMetadata md;
+    if (const auto& hostMetadata = ClientChannel::getHostMetadata()) {
+      md.hostname_ref().from_optional(hostMetadata->hostname);
+      md.otherMetadata_ref().from_optional(hostMetadata->otherMetadata);
     }
-    if (const auto& hostId = ClientChannel::getHostId(); hostId) {
-      header->setClientHostId(*hostId);
+    if (!agentName_.empty()) {
+      md.agent_ref() = std::move(agentName_);
     }
+    header->setClientMetadata(md);
   }
 }
 
