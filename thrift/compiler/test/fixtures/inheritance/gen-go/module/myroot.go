@@ -123,6 +123,37 @@ func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
 }
 
 
+type MyRootChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *MyRootChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyRootChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyRootChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyRootChannelClient(channel thrift.RequestChannel) *MyRootChannelClient {
+  return &MyRootChannelClient{RequestChannel: channel}
+}
+
+func (p *MyRootChannelClient) DoRoot(ctx context.Context) (err error) {
+  args := MyRootDoRootArgs{
+  }
+  var result MyRootDoRootResult
+  err = p.RequestChannel.Call(ctx, "do_root", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyRootProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler MyRoot

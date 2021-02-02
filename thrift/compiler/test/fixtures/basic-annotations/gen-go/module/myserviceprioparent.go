@@ -153,6 +153,47 @@ func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
 }
 
 
+type MyServicePrioParentChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *MyServicePrioParentChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyServicePrioParentChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyServicePrioParentChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyServicePrioParentChannelClient(channel thrift.RequestChannel) *MyServicePrioParentChannelClient {
+  return &MyServicePrioParentChannelClient{RequestChannel: channel}
+}
+
+func (p *MyServicePrioParentChannelClient) Ping(ctx context.Context) (err error) {
+  args := MyServicePrioParentPingArgs{
+  }
+  var result MyServicePrioParentPingResult
+  err = p.RequestChannel.Call(ctx, "ping", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+func (p *MyServicePrioParentChannelClient) Pong(ctx context.Context) (err error) {
+  args := MyServicePrioParentPongArgs{
+  }
+  var result MyServicePrioParentPongResult
+  err = p.RequestChannel.Call(ctx, "pong", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyServicePrioParentProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler MyServicePrioParent

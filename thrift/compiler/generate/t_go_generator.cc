@@ -170,11 +170,17 @@ class t_go_generator : public t_concat_generator {
   void generate_service_interface(t_service* tservice);
   void generate_service_client_interface(t_service* tservice);
   void generate_service_client(t_service* tservice, bool);
+  void generate_service_client_channel(t_service* tservice);
   void generate_service_client_common_methods(string&, bool);
   void generate_service_client_method(
       string&,
       const vector<t_function*>::const_iterator&,
       bool);
+  void generate_service_client_channel_method(
+      string&,
+      const vector<t_function*>::const_iterator&);
+  void generate_service_client_channel_call(
+      const vector<t_function*>::const_iterator& f_iter);
   void generate_service_client_send_msg_call(
       const vector<t_function*>::const_iterator&);
   void generate_service_client_recv_method(
@@ -1926,6 +1932,7 @@ void t_go_generator::generate_service(t_service* tservice) {
   generate_service_client_interface(tservice);
   generate_service_client(tservice, false);
   generate_service_client(tservice, true); // threadsafe client
+  generate_service_client_channel(tservice); // channel client
   generate_service_server(tservice);
   generate_service_helpers(tservice);
   generate_service_remote(tservice);
@@ -2068,6 +2075,74 @@ void t_go_generator::generate_service_client_method(
   if (!(*f_iter)->is_oneway()) {
     generate_service_client_recv_method(clientTypeName, f_iter);
   }
+}
+
+void t_go_generator::generate_service_client_channel_method(
+    string& clientTypeName,
+    const vector<t_function*>::const_iterator& f_iter) {
+  string funname = publicize((*f_iter)->get_name());
+  // Open function
+  generate_go_docstring(f_service_, (*f_iter));
+  f_service_ << indent() << "func (p *" << clientTypeName << ") "
+             << function_signature_if(*f_iter, "", true) << " {" << endl;
+  indent_up();
+
+  generate_service_client_channel_call(f_iter);
+}
+
+void t_go_generator::generate_service_client_channel_call(
+    const vector<t_function*>::const_iterator& f_iter) {
+  auto methodName = (*f_iter)->get_name();
+  auto result_type_name = publicize((*f_iter)->get_name() + "_result", true);
+  auto argsType = publicize(methodName + "_args", true);
+  auto isOneway = (*f_iter)->is_oneway();
+  auto returnsVoid = (*f_iter)->get_returntype()->is_void();
+  const auto& exceptions = (*f_iter)->get_xceptions()->get_members();
+  // bool raisesExceptions = exceptions.size() > 0;
+
+  auto arg_struct = (*f_iter)->get_arglist();
+  const auto& fields = arg_struct->get_members();
+
+  // Initialize request struct
+  f_service_ << indent() << "args := " << argsType << "{" << endl;
+  indent_up();
+  for (auto fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+    f_service_ << indent() << publicize((*fld_iter)->get_name()) << " : "
+               << variable_name_to_go_name((*fld_iter)->get_name()) << ","
+               << endl;
+  }
+  indent_down();
+  f_service_ << indent() << "}" << endl;
+
+  if (!isOneway) {
+    // Declare response struct
+    f_service_ << indent() << "var result " << result_type_name << endl;
+  }
+
+  if (isOneway) {
+    f_service_ << indent() << "err = p.RequestChannel.Oneway(ctx, \""
+               << methodName << "\", &args)" << endl;
+  } else {
+    f_service_ << indent() << "err = p.RequestChannel.Call(ctx, \""
+               << methodName << "\", &args, &result)" << endl;
+  }
+
+  f_service_ << indent() << "if err != nil { return }" << endl;
+
+  // If there are no exceptions, no code is generated. So we can always call
+  // this.
+  generate_service_client_recv_method_exception_handling(exceptions);
+
+  // Careful, only return _result if not a void function
+  if (returnsVoid || isOneway) {
+    f_service_ << indent() << "return nil" << endl;
+  } else {
+    f_service_ << indent() << "return result.GetSuccess(), nil" << endl;
+  }
+
+  // Close function
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
 }
 
 void t_go_generator::generate_service_client_send_msg_call(
@@ -2319,6 +2394,105 @@ void t_go_generator::generate_service_client(
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     generate_service_client_method(clientTypeName, f_iter, isThreadsafe);
+  }
+
+  // indent_down();
+  f_service_ << endl;
+}
+
+/**
+ * Generates a service client definition.
+ *
+ * @param tservice The service to generate a client for.
+ * @param isThreadsafe indicates if the generated client should be
+ *     threadsafe.
+ */
+void t_go_generator::generate_service_client_channel(t_service* tservice) {
+  string extends = "";
+  string extends_field = "";
+  string extends_client = "";
+  string extends_client_new = "";
+  string serviceName(publicize(tservice->get_name()));
+  string clientTypeNameSuffix = "ChannelClient";
+  string clientTypeName = serviceName + clientTypeNameSuffix;
+
+  if (tservice->get_extends() != nullptr) {
+    extends = type_name(tservice->get_extends());
+    size_t index = extends.rfind('.');
+
+    if (index != string::npos) {
+      extends_client = extends.substr(0, index + 1) +
+          publicize(extends.substr(index + 1)) + clientTypeNameSuffix;
+      extends_client_new = extends.substr(0, index + 1) + "New" +
+          publicize(extends.substr(index + 1)) + clientTypeNameSuffix;
+    } else {
+      extends_client = publicize(extends) + clientTypeNameSuffix;
+      extends_client_new = "New" + extends_client;
+    }
+  }
+
+  extends_field = extends_client.substr(extends_client.find('.') + 1);
+
+  generate_go_docstring(f_service_, tservice);
+  f_service_ << indent() << "type " << clientTypeName << " struct {" << endl;
+  indent_up();
+
+  if (!extends_client.empty()) {
+    f_service_ << indent() << "*" << extends_client << endl;
+  } else {
+    f_service_ << indent() << "RequestChannel thrift.RequestChannel" << endl;
+  }
+
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+
+  // Close method
+  f_service_ << indent() << "func (c *" << clientTypeName << ") Close() error {"
+             << endl;
+  indent_up();
+  f_service_ << indent() << "return c.RequestChannel.Close()" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+
+  // IsOpen method
+  f_service_ << indent() << "func (c *" << clientTypeName << ") IsOpen() bool {"
+             << endl;
+  indent_up();
+  f_service_ << indent() << "return c.RequestChannel.IsOpen()" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+
+  // Open method
+  f_service_ << indent() << "func (c *" << clientTypeName << ") Open() error {"
+             << endl;
+  indent_up();
+  f_service_ << indent() << "return c.RequestChannel.Open()" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+
+  // Constructor function
+  f_service_ << indent() << "func New" << clientTypeName
+             << "(channel thrift.RequestChannel) *" << clientTypeName << " {"
+             << endl;
+  indent_up();
+
+  f_service_ << indent() << "return &" << clientTypeName;
+  if (!extends.empty()) {
+    f_service_ << "{" << extends_field << ": " << extends_client_new
+               << "(channel)}" << endl;
+  } else {
+    f_service_ << "{RequestChannel: channel}" << endl;
+  }
+
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+
+  // Generate client method implementations
+  vector<t_function*> functions = tservice->get_functions();
+  vector<t_function*>::const_iterator f_iter;
+
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    generate_service_client_channel_method(clientTypeName, f_iter);
   }
 
   // indent_down();

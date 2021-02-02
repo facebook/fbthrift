@@ -303,6 +303,92 @@ func (p *NestedContainersThreadsafeClient) recvTurtles() (err error) {
 }
 
 
+type NestedContainersChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *NestedContainersChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *NestedContainersChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *NestedContainersChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewNestedContainersChannelClient(channel thrift.RequestChannel) *NestedContainersChannelClient {
+  return &NestedContainersChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) MapList(ctx context.Context, foo map[int32][]int32) (err error) {
+  args := NestedContainersMapListArgs{
+    Foo : foo,
+  }
+  var result NestedContainersMapListResult
+  err = p.RequestChannel.Call(ctx, "mapList", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) MapSet(ctx context.Context, foo map[int32][]int32) (err error) {
+  args := NestedContainersMapSetArgs{
+    Foo : foo,
+  }
+  var result NestedContainersMapSetResult
+  err = p.RequestChannel.Call(ctx, "mapSet", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) ListMap(ctx context.Context, foo []map[int32]int32) (err error) {
+  args := NestedContainersListMapArgs{
+    Foo : foo,
+  }
+  var result NestedContainersListMapResult
+  err = p.RequestChannel.Call(ctx, "listMap", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) ListSet(ctx context.Context, foo [][]int32) (err error) {
+  args := NestedContainersListSetArgs{
+    Foo : foo,
+  }
+  var result NestedContainersListSetResult
+  err = p.RequestChannel.Call(ctx, "listSet", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) Turtles(ctx context.Context, foo [][]map[int32]map[int32][]int32) (err error) {
+  args := NestedContainersTurtlesArgs{
+    Foo : foo,
+  }
+  var result NestedContainersTurtlesResult
+  err = p.RequestChannel.Call(ctx, "turtles", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type NestedContainersProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler NestedContainers

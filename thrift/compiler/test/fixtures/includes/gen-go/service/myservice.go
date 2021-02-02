@@ -205,6 +205,60 @@ func (p *MyServiceThreadsafeClient) recvHasArgDocs() (err error) {
 }
 
 
+//This is a service-level docblock
+type MyServiceChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *MyServiceChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyServiceChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyServiceChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyServiceChannelClient(channel thrift.RequestChannel) *MyServiceChannelClient {
+  return &MyServiceChannelClient{RequestChannel: channel}
+}
+
+// This is a function-level docblock
+// 
+// Parameters:
+//  - S
+//  - I
+func (p *MyServiceChannelClient) Query(ctx context.Context, s *module0.MyStruct, i *includes1.Included) (err error) {
+  args := MyServiceQueryArgs{
+    S : s,
+    I : i,
+  }
+  var result MyServiceQueryResult
+  err = p.RequestChannel.Call(ctx, "query", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - S
+//  - I: arg doc
+func (p *MyServiceChannelClient) HasArgDocs(ctx context.Context, s *module0.MyStruct, i *includes1.Included) (err error) {
+  args := MyServiceHasArgDocsArgs{
+    S : s,
+    I : i,
+  }
+  var result MyServiceHasArgDocsResult
+  err = p.RequestChannel.Call(ctx, "has_arg_docs", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler MyService

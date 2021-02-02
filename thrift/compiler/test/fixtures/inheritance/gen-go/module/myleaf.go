@@ -124,6 +124,37 @@ func (p *MyLeafThreadsafeClient) recvDoLeaf() (err error) {
 }
 
 
+type MyLeafChannelClient struct {
+  *MyNodeChannelClient
+}
+
+func (c *MyLeafChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyLeafChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyLeafChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyLeafChannelClient(channel thrift.RequestChannel) *MyLeafChannelClient {
+  return &MyLeafChannelClient{MyNodeChannelClient: NewMyNodeChannelClient(channel)}
+}
+
+func (p *MyLeafChannelClient) DoLeaf(ctx context.Context) (err error) {
+  args := MyLeafDoLeafArgs{
+  }
+  var result MyLeafDoLeafResult
+  err = p.RequestChannel.Call(ctx, "do_leaf", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyLeafProcessor struct {
   *MyNodeProcessor
 }

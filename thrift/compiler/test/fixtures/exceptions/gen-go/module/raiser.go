@@ -267,6 +267,85 @@ func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
 }
 
 
+type RaiserChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *RaiserChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *RaiserChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *RaiserChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewRaiserChannelClient(channel thrift.RequestChannel) *RaiserChannelClient {
+  return &RaiserChannelClient{RequestChannel: channel}
+}
+
+func (p *RaiserChannelClient) DoBland(ctx context.Context) (err error) {
+  args := RaiserDoBlandArgs{
+  }
+  var result RaiserDoBlandResult
+  err = p.RequestChannel.Call(ctx, "doBland", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+func (p *RaiserChannelClient) DoRaise(ctx context.Context) (err error) {
+  args := RaiserDoRaiseArgs{
+  }
+  var result RaiserDoRaiseResult
+  err = p.RequestChannel.Call(ctx, "doRaise", &args, &result)
+  if err != nil { return }
+  if result.B != nil {
+    err = result.B
+    return 
+  } else if result.F != nil {
+    err = result.F
+    return 
+  } else if result.S != nil {
+    err = result.S
+    return 
+  }
+  return nil
+}
+
+func (p *RaiserChannelClient) Get200(ctx context.Context) (_r string, err error) {
+  args := RaiserGet200Args{
+  }
+  var result RaiserGet200Result
+  err = p.RequestChannel.Call(ctx, "get200", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *RaiserChannelClient) Get500(ctx context.Context) (_r string, err error) {
+  args := RaiserGet500Args{
+  }
+  var result RaiserGet500Result
+  err = p.RequestChannel.Call(ctx, "get500", &args, &result)
+  if err != nil { return }
+  if result.F != nil {
+    err = result.F
+    return 
+  } else if result.B != nil {
+    err = result.B
+    return 
+  } else if result.S != nil {
+    err = result.S
+    return 
+  }
+  return result.GetSuccess(), nil
+}
+
+
 type RaiserProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler Raiser

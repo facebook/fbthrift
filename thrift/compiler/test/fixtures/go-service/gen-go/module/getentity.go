@@ -597,6 +597,167 @@ func (p *GetEntityThreadsafeClient) recvGetLegacyStuff() (value int32, err error
 }
 
 
+type GetEntityChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *GetEntityChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *GetEntityChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *GetEntityChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewGetEntityChannelClient(channel thrift.RequestChannel) *GetEntityChannelClient {
+  return &GetEntityChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - R
+func (p *GetEntityChannelClient) GetEntity(ctx context.Context, r *GetEntityRequest) (_r *GetEntityResponse, err error) {
+  args := GetEntityGetEntityArgs{
+    R : r,
+  }
+  var result GetEntityGetEntityResult
+  err = p.RequestChannel.Call(ctx, "getEntity", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetBool(ctx context.Context) (_r bool, err error) {
+  args := GetEntityGetBoolArgs{
+  }
+  var result GetEntityGetBoolResult
+  err = p.RequestChannel.Call(ctx, "getBool", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetByte(ctx context.Context) (_r int8, err error) {
+  args := GetEntityGetByteArgs{
+  }
+  var result GetEntityGetByteResult
+  err = p.RequestChannel.Call(ctx, "getByte", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetI16(ctx context.Context) (_r int16, err error) {
+  args := GetEntityGetI16Args{
+  }
+  var result GetEntityGetI16Result
+  err = p.RequestChannel.Call(ctx, "getI16", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetI32(ctx context.Context) (_r int32, err error) {
+  args := GetEntityGetI32Args{
+  }
+  var result GetEntityGetI32Result
+  err = p.RequestChannel.Call(ctx, "getI32", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetI64(ctx context.Context) (_r int64, err error) {
+  args := GetEntityGetI64Args{
+  }
+  var result GetEntityGetI64Result
+  err = p.RequestChannel.Call(ctx, "getI64", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetDouble(ctx context.Context) (_r float64, err error) {
+  args := GetEntityGetDoubleArgs{
+  }
+  var result GetEntityGetDoubleResult
+  err = p.RequestChannel.Call(ctx, "getDouble", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetString(ctx context.Context) (_r string, err error) {
+  args := GetEntityGetStringArgs{
+  }
+  var result GetEntityGetStringResult
+  err = p.RequestChannel.Call(ctx, "getString", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetBinary(ctx context.Context) (_r []byte, err error) {
+  args := GetEntityGetBinaryArgs{
+  }
+  var result GetEntityGetBinaryResult
+  err = p.RequestChannel.Call(ctx, "getBinary", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetMap(ctx context.Context) (_r map[string]string, err error) {
+  args := GetEntityGetMapArgs{
+  }
+  var result GetEntityGetMapResult
+  err = p.RequestChannel.Call(ctx, "getMap", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetSet(ctx context.Context) (_r []string, err error) {
+  args := GetEntityGetSetArgs{
+  }
+  var result GetEntityGetSetResult
+  err = p.RequestChannel.Call(ctx, "getSet", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetList(ctx context.Context) (_r []string, err error) {
+  args := GetEntityGetListArgs{
+  }
+  var result GetEntityGetListResult
+  err = p.RequestChannel.Call(ctx, "getList", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - NumPos
+//  - NumNeg1
+//  - NumNeg2
+func (p *GetEntityChannelClient) GetLegacyStuff(ctx context.Context, numPos int64, numNeg1 int64, numNeg2 int64) (_r int32, err error) {
+  args := GetEntityGetLegacyStuffArgs{
+    NumPos : numPos,
+    NumNeg1 : numNeg1,
+    NumNeg2 : numNeg2,
+  }
+  var result GetEntityGetLegacyStuffResult
+  err = p.RequestChannel.Call(ctx, "getLegacyStuff", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+
 type GetEntityProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler GetEntity

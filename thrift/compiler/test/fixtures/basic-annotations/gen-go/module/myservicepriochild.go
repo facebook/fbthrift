@@ -124,6 +124,37 @@ func (p *MyServicePrioChildThreadsafeClient) recvPang() (err error) {
 }
 
 
+type MyServicePrioChildChannelClient struct {
+  *MyServicePrioParentChannelClient
+}
+
+func (c *MyServicePrioChildChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyServicePrioChildChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyServicePrioChildChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyServicePrioChildChannelClient(channel thrift.RequestChannel) *MyServicePrioChildChannelClient {
+  return &MyServicePrioChildChannelClient{MyServicePrioParentChannelClient: NewMyServicePrioParentChannelClient(channel)}
+}
+
+func (p *MyServicePrioChildChannelClient) Pang(ctx context.Context) (err error) {
+  args := MyServicePrioChildPangArgs{
+  }
+  var result MyServicePrioChildPangResult
+  err = p.RequestChannel.Call(ctx, "pang", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyServicePrioChildProcessor struct {
   *MyServicePrioParentProcessor
 }

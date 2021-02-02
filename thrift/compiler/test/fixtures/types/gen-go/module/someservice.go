@@ -192,6 +192,53 @@ func (p *SomeServiceThreadsafeClient) recvBinaryKeyedMap() (value map[string]int
 }
 
 
+type SomeServiceChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *SomeServiceChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *SomeServiceChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *SomeServiceChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewSomeServiceChannelClient(channel thrift.RequestChannel) *SomeServiceChannelClient {
+  return &SomeServiceChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - M
+func (p *SomeServiceChannelClient) BounceMap(ctx context.Context, m include0.SomeMap) (_r include0.SomeMap, err error) {
+  args := SomeServiceBounceMapArgs{
+    M : m,
+  }
+  var result SomeServiceBounceMapResult
+  err = p.RequestChannel.Call(ctx, "bounce_map", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - R
+func (p *SomeServiceChannelClient) BinaryKeyedMap(ctx context.Context, r []int64) (_r map[string]int64, err error) {
+  args := SomeServiceBinaryKeyedMapArgs{
+    R : r,
+  }
+  var result SomeServiceBinaryKeyedMapResult
+  err = p.RequestChannel.Call(ctx, "binary_keyed_map", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+
 type SomeServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler SomeService

@@ -189,6 +189,53 @@ func (p *DbMixedStackArgumentsThreadsafeClient) recvGetDataByKey1() (value []byt
 }
 
 
+type DbMixedStackArgumentsChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *DbMixedStackArgumentsChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *DbMixedStackArgumentsChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *DbMixedStackArgumentsChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewDbMixedStackArgumentsChannelClient(channel thrift.RequestChannel) *DbMixedStackArgumentsChannelClient {
+  return &DbMixedStackArgumentsChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - Key
+func (p *DbMixedStackArgumentsChannelClient) GetDataByKey0(ctx context.Context, key string) (_r []byte, err error) {
+  args := DbMixedStackArgumentsGetDataByKey0Args{
+    Key : key,
+  }
+  var result DbMixedStackArgumentsGetDataByKey0Result
+  err = p.RequestChannel.Call(ctx, "getDataByKey0", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Key
+func (p *DbMixedStackArgumentsChannelClient) GetDataByKey1(ctx context.Context, key string) (_r []byte, err error) {
+  args := DbMixedStackArgumentsGetDataByKey1Args{
+    Key : key,
+  }
+  var result DbMixedStackArgumentsGetDataByKey1Result
+  err = p.RequestChannel.Call(ctx, "getDataByKey1", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+
 type DbMixedStackArgumentsProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler DbMixedStackArguments

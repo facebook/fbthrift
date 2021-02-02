@@ -240,6 +240,66 @@ func (p *FinderThreadsafeClient) recvPreviousPlate() (value Plate, err error) {
 }
 
 
+type FinderChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *FinderChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *FinderChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *FinderChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewFinderChannelClient(channel thrift.RequestChannel) *FinderChannelClient {
+  return &FinderChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - Plate
+func (p *FinderChannelClient) ByPlate(ctx context.Context, plate Plate) (_r *Automobile, err error) {
+  args := FinderByPlateArgs{
+    Plate : plate,
+  }
+  var result FinderByPlateResult
+  err = p.RequestChannel.Call(ctx, "byPlate", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Plate
+func (p *FinderChannelClient) AliasByPlate(ctx context.Context, plate Plate) (_r *Car, err error) {
+  args := FinderAliasByPlateArgs{
+    Plate : plate,
+  }
+  var result FinderAliasByPlateResult
+  err = p.RequestChannel.Call(ctx, "aliasByPlate", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Plate
+func (p *FinderChannelClient) PreviousPlate(ctx context.Context, plate Plate) (_r Plate, err error) {
+  args := FinderPreviousPlateArgs{
+    Plate : plate,
+  }
+  var result FinderPreviousPlateResult
+  err = p.RequestChannel.Call(ctx, "previousPlate", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+
 type FinderProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler Finder

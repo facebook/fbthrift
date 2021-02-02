@@ -423,6 +423,128 @@ func (p *MyServiceThreadsafeClient) LobDataById(id int64, data string) (err erro
 }
 
 
+type MyServiceChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *MyServiceChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyServiceChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyServiceChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyServiceChannelClient(channel thrift.RequestChannel) *MyServiceChannelClient {
+  return &MyServiceChannelClient{RequestChannel: channel}
+}
+
+func (p *MyServiceChannelClient) Ping(ctx context.Context) (err error) {
+  args := MyServicePingArgs{
+  }
+  var result MyServicePingResult
+  err = p.RequestChannel.Call(ctx, "ping", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+func (p *MyServiceChannelClient) GetRandomData(ctx context.Context) (_r string, err error) {
+  args := MyServiceGetRandomDataArgs{
+  }
+  var result MyServiceGetRandomDataResult
+  err = p.RequestChannel.Call(ctx, "getRandomData", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Sink
+func (p *MyServiceChannelClient) Sink(ctx context.Context, sink int64) (err error) {
+  args := MyServiceSinkArgs{
+    Sink : sink,
+  }
+  var result MyServiceSinkResult
+  err = p.RequestChannel.Call(ctx, "sink", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Id
+//  - Data
+func (p *MyServiceChannelClient) PutDataById(ctx context.Context, id int64, data string) (err error) {
+  args := MyServicePutDataByIdArgs{
+    Id : id,
+    Data : data,
+  }
+  var result MyServicePutDataByIdResult
+  err = p.RequestChannel.Call(ctx, "putDataById", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Id
+func (p *MyServiceChannelClient) HasDataById(ctx context.Context, id int64) (_r bool, err error) {
+  args := MyServiceHasDataByIdArgs{
+    Id : id,
+  }
+  var result MyServiceHasDataByIdResult
+  err = p.RequestChannel.Call(ctx, "hasDataById", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Id
+func (p *MyServiceChannelClient) GetDataById(ctx context.Context, id int64) (_r string, err error) {
+  args := MyServiceGetDataByIdArgs{
+    Id : id,
+  }
+  var result MyServiceGetDataByIdResult
+  err = p.RequestChannel.Call(ctx, "getDataById", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Id
+func (p *MyServiceChannelClient) DeleteDataById(ctx context.Context, id int64) (err error) {
+  args := MyServiceDeleteDataByIdArgs{
+    Id : id,
+  }
+  var result MyServiceDeleteDataByIdResult
+  err = p.RequestChannel.Call(ctx, "deleteDataById", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Id
+//  - Data
+func (p *MyServiceChannelClient) LobDataById(ctx context.Context, id int64, data string) (err error) {
+  args := MyServiceLobDataByIdArgs{
+    Id : id,
+    Data : data,
+  }
+  err = p.RequestChannel.Oneway(ctx, "lobDataById", &args)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
   handler MyService

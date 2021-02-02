@@ -124,6 +124,37 @@ func (p *MyNodeThreadsafeClient) recvDoMid() (err error) {
 }
 
 
+type MyNodeChannelClient struct {
+  *MyRootChannelClient
+}
+
+func (c *MyNodeChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyNodeChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyNodeChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyNodeChannelClient(channel thrift.RequestChannel) *MyNodeChannelClient {
+  return &MyNodeChannelClient{MyRootChannelClient: NewMyRootChannelClient(channel)}
+}
+
+func (p *MyNodeChannelClient) DoMid(ctx context.Context) (err error) {
+  args := MyNodeDoMidArgs{
+  }
+  var result MyNodeDoMidResult
+  err = p.RequestChannel.Call(ctx, "do_mid", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyNodeProcessor struct {
   *MyRootProcessor
 }
