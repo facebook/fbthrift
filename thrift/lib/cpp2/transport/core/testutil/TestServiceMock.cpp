@@ -20,6 +20,7 @@
 #include <thread>
 
 #include <folly/io/async/AsyncSocket.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
@@ -123,7 +124,14 @@ void TestServiceMock::onewayLogBlob(std::unique_ptr<folly::IOBuf> val) {
 IntermHeaderService::IntermHeaderService(
     std::string const& host,
     int16_t port) {
-  if (FLAGS_transport == "rocket") {
+  if (FLAGS_transport == "header") {
+    HeaderClientChannel::Ptr channel;
+    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
+      channel = HeaderClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
+          new folly::AsyncSocket(evbThread_.getEventBase(), host, port)));
+    });
+    client_ = std::make_unique<TestServiceAsyncClient>(std::move(channel));
+  } else if (FLAGS_transport == "rocket") {
     RocketClientChannel::Ptr channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
       channel = RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(

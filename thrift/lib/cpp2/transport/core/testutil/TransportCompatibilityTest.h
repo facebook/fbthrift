@@ -77,6 +77,11 @@ class TransportCompatibilityTest {
 
   void addRoutingHandler(
       std::unique_ptr<TransportRoutingHandler> routingHandler);
+
+  void setTransportUpgrade(bool upgradeToRocket) {
+    upgradeToRocket_ = upgradeToRocket;
+  }
+
   ThriftServer* getServer();
 
   void connectToServer(
@@ -140,6 +145,7 @@ class TransportCompatibilityTest {
 
  protected:
   std::unique_ptr<SampleServer<testutil::testservice::TestServiceMock>> server_;
+  bool upgradeToRocket_{false};
 };
 
 } // namespace thrift

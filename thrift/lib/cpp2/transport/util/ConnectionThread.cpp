@@ -53,8 +53,7 @@ void ConnectionThread::maybeCreateConnection(
     const std::string& addr,
     uint16_t port) {
   LOG_IF(FATAL, FLAGS_transport == "rocket")
-      << "Use RSocketClientChannel::newChannel() or"
-         " RocketClientChannel::newChannel()";
+      << "Use RocketClientChannel::newChannel()";
 
   connections_.withWLock([&, this](auto& connections) {
     std::shared_ptr<ClientConnectionIf>& connection = connections[serverKey];

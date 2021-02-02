@@ -27,6 +27,7 @@
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
@@ -47,6 +48,9 @@ DECLARE_bool(use_ssl);
 DECLARE_string(transport);
 
 DEFINE_string(host, "::1", "host to connect to");
+
+THRIFT_FLAG_DECLARE_bool(raw_client_rocket_upgrade_enabled);
+THRIFT_FLAG_DECLARE_bool(server_rocket_upgrade_enabled);
 
 namespace apache {
 namespace thrift {
@@ -177,6 +181,13 @@ void TransportCompatibilityTest::connectToServer(
     folly::Function<void(
         std::unique_ptr<TestServiceAsyncClient>,
         std::shared_ptr<ClientConnectionIf>)> callMe) {
+  if (upgradeToRocket_) {
+    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+    THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
+  } else {
+    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, false);
+    THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, false);
+  }
   server_->connectToServer(
       FLAGS_transport,
       [callMe = std::move(callMe)](
@@ -196,12 +207,22 @@ void SampleServer<Service>::connectToServer(
         std::shared_ptr<ClientConnectionIf>)> callMe) {
   ASSERT_GT(port_, 0) << "Check if the server has started already";
   if (transport == "header") {
-    auto addr = folly::SocketAddress(FLAGS_host, port_);
-    folly::AsyncSocket::UniquePtr sock(new TAsyncSocketIntercepted(
-        folly::EventBaseManager::get()->getEventBase(), addr));
-    auto chan = HeaderClientChannel::newChannel(std::move(sock));
-    chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-    callMe(std::move(chan), nullptr);
+    std::shared_ptr<HeaderClientChannel> channel;
+    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
+      channel = HeaderClientChannel::newChannel(
+          folly::AsyncSocket::UniquePtr(new TAsyncSocketIntercepted(
+              evbThread_.getEventBase(), FLAGS_host, port_)));
+      channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+    });
+    auto channelPtr = channel.get();
+    std::shared_ptr<HeaderClientChannel> destroyInEvbChannel(
+        channelPtr,
+        [channel = std::move(channel),
+         eventBase = evbThread_.getEventBase()](HeaderClientChannel*) mutable {
+          eventBase->runImmediatelyOrRunInEventBaseThreadAndWait(
+              [channel_ = std::move(channel)] {});
+        });
+    callMe(std::move(destroyInEvbChannel), nullptr);
   } else if (transport == "rocket") {
     std::shared_ptr<RocketClientChannel> channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
@@ -267,8 +288,14 @@ void TransportCompatibilityTest::TestConnectionStats() {
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(1);
     EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
 
-    EXPECT_EQ(1, server_->observer_->connAccepted_);
-    EXPECT_EQ(server_->numIOThreads_, server_->observer_->activeConns_);
+    if (!upgradeToRocket_) {
+      EXPECT_EQ(1, server_->observer_->connAccepted_);
+      EXPECT_EQ(server_->numIOThreads_, server_->observer_->activeConns_);
+    } else {
+      // for transport upgrade there are both header and rocket connections
+      EXPECT_EQ(2, server_->observer_->connAccepted_);
+      EXPECT_EQ(2 * server_->numIOThreads_, server_->observer_->activeConns_);
+    }
 
     folly::Baton<> connCloseBaton;
     server_->observer_->connClosedNotifBaton = &connCloseBaton;
@@ -282,7 +309,11 @@ void TransportCompatibilityTest::TestConnectionStats() {
 
     ASSERT_TRUE(connCloseBaton.try_wait_for(std::chrono::seconds(10)));
 
-    EXPECT_EQ(1, server_->observer_->connClosed_);
+    if (!upgradeToRocket_) {
+      EXPECT_EQ(1, server_->observer_->connClosed_);
+    } else {
+      EXPECT_EQ(2, server_->observer_->connClosed_);
+    }
   });
 }
 
@@ -648,8 +679,14 @@ void TransportCompatibilityTest::TestRequestResponse_IsOverloaded() {
       EXPECT_TRUE(false) << "header_future_headers should have thrown";
     } catch (TApplicationException& ex) {
       EXPECT_EQ(TApplicationException::LOADSHEDDING, ex.getType());
-      EXPECT_EQ(1, server_->observer_->serverOverloaded_);
       EXPECT_EQ(0, server_->observer_->taskKilled_);
+      if (!upgradeToRocket_) {
+        EXPECT_EQ(1, server_->observer_->serverOverloaded_);
+      } else {
+        // for transport upgrade, upgrade request and original request both hit
+        // the server
+        EXPECT_EQ(2, server_->observer_->serverOverloaded_);
+      }
     }
   });
 }
@@ -958,12 +995,13 @@ void TransportCompatibilityTest::TestRequestContextIsPreserved() {
   SampleServer<IntermHeaderService> server(service);
   server.startServer();
 
-  server.connectToServer(
-      "header", [](std::shared_ptr<RequestChannel> channel, auto) mutable {
-        auto client = std::make_unique<IntermHeaderServiceAsyncClient>(
-            std::move(channel));
-        EXPECT_EQ(5, client->sync_callAdd(5));
-      });
+  auto addr = folly::SocketAddress(FLAGS_host, server.port_);
+  folly::AsyncSocket::UniquePtr sock(new TAsyncSocketIntercepted(
+      folly::EventBaseManager::get()->getEventBase(), addr));
+  auto channel = HeaderClientChannel::newChannel(std::move(sock));
+  auto client =
+      std::make_unique<IntermHeaderServiceAsyncClient>(std::move(channel));
+  EXPECT_EQ(5, client->sync_callAdd(5));
 
   server.stopServer();
 }
