@@ -123,8 +123,9 @@ std::string THttpServer::getTimeRFC1123() {
   time_t t = time(nullptr);
   tm* broken_t = gmtime(&t);
 
-  sprintf(
+  snprintf(
       buff,
+      sizeof(buff),
       "%s, %d %s %d %d:%d:%d GMT",
       Days[broken_t->tm_wday],
       broken_t->tm_mday,
