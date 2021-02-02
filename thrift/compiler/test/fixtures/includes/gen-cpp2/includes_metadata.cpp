@@ -28,10 +28,10 @@ StructMetadata<::cpp2::Included>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& includes_Included = res.first->second;
   includes_Included.name_ref() = "includes.Included";
   includes_Included.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   includes_Included_fields[] = {
-    std::make_tuple(1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
-    std::make_tuple(2, "MyTransitiveField", false, std::make_unique<Struct< ::cpp2::Foo>>("transitive.Foo")),
+    std::make_tuple(1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "MyTransitiveField", false, std::make_unique<Struct< ::cpp2::Foo>>("transitive.Foo"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : includes_Included_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -39,6 +39,7 @@ StructMetadata<::cpp2::Included>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     includes_Included.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

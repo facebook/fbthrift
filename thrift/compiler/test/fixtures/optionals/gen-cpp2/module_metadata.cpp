@@ -40,12 +40,12 @@ StructMetadata<::cpp2::Color>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Color = res.first->second;
   module_Color.name_ref() = "module.Color";
   module_Color.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Color_fields[] = {
-    std::make_tuple(1, "red", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
-    std::make_tuple(2, "green", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
-    std::make_tuple(3, "blue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
-    std::make_tuple(4, "alpha", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
+    std::make_tuple(1, "red", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "green", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "blue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "alpha", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Color_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -53,6 +53,7 @@ StructMetadata<::cpp2::Color>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_Color.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -66,13 +67,13 @@ StructMetadata<::cpp2::Vehicle>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Vehicle = res.first->second;
   module_Vehicle.name_ref() = "module.Vehicle";
   module_Vehicle.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Vehicle_fields[] = {
-    std::make_tuple(1, "color", false, std::make_unique<Struct< ::cpp2::Color>>("module.Color")),
-    std::make_tuple(2, "licensePlate", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(3, "description", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(4, "name", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(5, "hasAC", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)),
+    std::make_tuple(1, "color", false, std::make_unique<Struct< ::cpp2::Color>>("module.Color"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "licensePlate", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "description", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "name", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(5, "hasAC", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Vehicle_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -80,6 +81,7 @@ StructMetadata<::cpp2::Vehicle>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_Vehicle.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -93,18 +95,18 @@ StructMetadata<::cpp2::Person>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Person = res.first->second;
   module_Person.name_ref() = "module.Person";
   module_Person.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Person_fields[] = {
-    std::make_tuple(1, "id", false, std::make_unique<Typedef>("module.PersonID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))),
-    std::make_tuple(2, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(3, "age", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)),
-    std::make_tuple(4, "address", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(5, "favoriteColor", true, std::make_unique<Struct< ::cpp2::Color>>("module.Color")),
-    std::make_tuple(6, "friends", true, std::make_unique<Set>(std::make_unique<Typedef>("module.PersonID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)))),
-    std::make_tuple(7, "bestFriend", true, std::make_unique<Typedef>("module.PersonID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))),
-    std::make_tuple(8, "petNames", true, std::make_unique<Map>(std::make_unique<Enum< ::cpp2::Animal>>("module.Animal"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))),
-    std::make_tuple(9, "afraidOfAnimal", true, std::make_unique<Enum< ::cpp2::Animal>>("module.Animal")),
-    std::make_tuple(10, "vehicles", true, std::make_unique<List>(std::make_unique<Struct< ::cpp2::Vehicle>>("module.Vehicle"))),
+    std::make_tuple(1, "id", false, std::make_unique<Typedef>("module.PersonID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "age", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "address", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(5, "favoriteColor", true, std::make_unique<Struct< ::cpp2::Color>>("module.Color"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(6, "friends", true, std::make_unique<Set>(std::make_unique<Typedef>("module.PersonID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(7, "bestFriend", true, std::make_unique<Typedef>("module.PersonID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(8, "petNames", true, std::make_unique<Map>(std::make_unique<Enum< ::cpp2::Animal>>("module.Animal"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(9, "afraidOfAnimal", true, std::make_unique<Enum< ::cpp2::Animal>>("module.Animal"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(10, "vehicles", true, std::make_unique<List>(std::make_unique<Struct< ::cpp2::Vehicle>>("module.Vehicle")), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Person_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -112,6 +114,7 @@ StructMetadata<::cpp2::Person>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_Person.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

@@ -40,9 +40,9 @@ StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) 
   ::apache::thrift::metadata::ThriftStruct& module_MyStructNestedAnnotation = res.first->second;
   module_MyStructNestedAnnotation.name_ref() = "module.MyStructNestedAnnotation";
   module_MyStructNestedAnnotation.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_MyStructNestedAnnotation_fields[] = {
-    std::make_tuple(1, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_MyStructNestedAnnotation_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -50,6 +50,7 @@ StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) 
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_MyStructNestedAnnotation.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -63,12 +64,12 @@ StructMetadata<::cpp2::MyStructAnnotation>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_MyStructAnnotation = res.first->second;
   module_MyStructAnnotation.name_ref() = "module.MyStructAnnotation";
   module_MyStructAnnotation.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_MyStructAnnotation_fields[] = {
-    std::make_tuple(1, "count", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
-    std::make_tuple(2, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(3, "extra", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(4, "nest", false, std::make_unique<Struct< ::cpp2::MyStructNestedAnnotation>>("module.MyStructNestedAnnotation")),
+    std::make_tuple(1, "count", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "extra", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "nest", false, std::make_unique<Struct< ::cpp2::MyStructNestedAnnotation>>("module.MyStructNestedAnnotation"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_MyStructAnnotation_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -76,6 +77,7 @@ StructMetadata<::cpp2::MyStructAnnotation>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_MyStructAnnotation.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -89,14 +91,14 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
   module_MyStruct.name_ref() = "module.MyStruct";
   module_MyStruct.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_MyStruct_fields[] = {
-    std::make_tuple(1, "major", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
-    std::make_tuple(2, "package", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(3, "annotation_with_quote", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(4, "class_", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(5, "annotation_with_trailing_comma", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(6, "empty_annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "major", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "package", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "annotation_with_quote", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "class_", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(5, "annotation_with_trailing_comma", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(6, "empty_annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -104,6 +106,7 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_MyStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -117,10 +120,10 @@ StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SecretStruct = res.first->second;
   module_SecretStruct.name_ref() = "module.SecretStruct";
   module_SecretStruct.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_SecretStruct_fields[] = {
-    std::make_tuple(1, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
-    std::make_tuple(2, "password", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "password", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_SecretStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -128,6 +131,7 @@ StructMetadata<::cpp2::SecretStruct>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_SecretStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

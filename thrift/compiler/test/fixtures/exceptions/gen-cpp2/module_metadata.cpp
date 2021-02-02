@@ -39,9 +39,9 @@ StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Fiery = res.first->second;
   module_Fiery.name_ref() = "module.Fiery";
   module_Fiery.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Fiery_fields[] = {
-    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Fiery_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -49,6 +49,7 @@ StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_Fiery.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -62,9 +63,9 @@ StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Serious = res.first->second;
   module_Serious.name_ref() = "module.Serious";
   module_Serious.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Serious_fields[] = {
-    std::make_tuple(1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Serious_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -72,6 +73,7 @@ StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_Serious.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -85,10 +87,10 @@ StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ComplexFieldNames = res.first->second;
   module_ComplexFieldNames.name_ref() = "module.ComplexFieldNames";
   module_ComplexFieldNames.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_ComplexFieldNames_fields[] = {
-    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ComplexFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -96,6 +98,7 @@ StructMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_ComplexFieldNames.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -109,10 +112,10 @@ StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_CustomFieldNames = res.first->second;
   module_CustomFieldNames.name_ref() = "module.CustomFieldNames";
   module_CustomFieldNames.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_CustomFieldNames_fields[] = {
-    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_CustomFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -120,6 +123,7 @@ StructMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_CustomFieldNames.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -140,9 +144,9 @@ void ExceptionMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
   }
   ::apache::thrift::metadata::ThriftException& module_Fiery = res.first->second;
   module_Fiery.name_ref() = "module.Fiery";
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Fiery_fields[] = {
-    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Fiery_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -160,9 +164,9 @@ void ExceptionMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
   }
   ::apache::thrift::metadata::ThriftException& module_Serious = res.first->second;
   module_Serious.name_ref() = "module.Serious";
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Serious_fields[] = {
-    std::make_tuple(1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Serious_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -180,10 +184,10 @@ void ExceptionMetadata<::cpp2::ComplexFieldNames>::gen(ThriftMetadata& metadata)
   }
   ::apache::thrift::metadata::ThriftException& module_ComplexFieldNames = res.first->second;
   module_ComplexFieldNames.name_ref() = "module.ComplexFieldNames";
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_ComplexFieldNames_fields[] = {
-    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ComplexFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -201,10 +205,10 @@ void ExceptionMetadata<::cpp2::CustomFieldNames>::gen(ThriftMetadata& metadata) 
   }
   ::apache::thrift::metadata::ThriftException& module_CustomFieldNames = res.first->second;
   module_CustomFieldNames.name_ref() = "module.CustomFieldNames";
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_CustomFieldNames_fields[] = {
-    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "internal_error_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_CustomFieldNames_fields) {
     ::apache::thrift::metadata::ThriftField field;

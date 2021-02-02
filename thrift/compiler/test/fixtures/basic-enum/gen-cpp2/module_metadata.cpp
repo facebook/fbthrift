@@ -64,10 +64,10 @@ StructMetadata<::test::fixtures::enumstrict::MyStruct>::gen(ThriftMetadata& meta
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
   module_MyStruct.name_ref() = "module.MyStruct";
   module_MyStruct.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_MyStruct_fields[] = {
-    std::make_tuple(1, "myEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyEnum>>("module.MyEnum")),
-    std::make_tuple(2, "myBigEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyBigEnum>>("module.MyBigEnum")),
+    std::make_tuple(1, "myEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "myBigEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyBigEnum>>("module.MyBigEnum"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -75,6 +75,7 @@ StructMetadata<::test::fixtures::enumstrict::MyStruct>::gen(ThriftMetadata& meta
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_MyStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

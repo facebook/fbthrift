@@ -463,6 +463,28 @@ mstch::node mstch_const_value::map_elems() {
   return mstch::node();
 }
 
+mstch::node mstch_const_value::is_const_struct() {
+  if (!const_value_->get_ttype()) {
+    return false;
+  }
+  return const_value_->get_ttype()->is_struct() ||
+      const_value_->get_ttype()->is_xception();
+}
+
+mstch::node mstch_const_value::const_struct_type() {
+  if (!const_value_->get_ttype()) {
+    return {};
+  }
+
+  if (const_value_->get_ttype()->is_struct() ||
+      const_value_->get_ttype()->is_xception()) {
+    return generators_->type_generator_->generate(
+        const_value_->get_ttype(), generators_, cache_);
+  }
+
+  return {};
+}
+
 mstch::node mstch_const_value::const_struct() {
   std::vector<t_const*> constants;
   std::vector<int32_t> idx;

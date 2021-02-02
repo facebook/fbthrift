@@ -40,10 +40,10 @@ StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SmallStruct = res.first->second;
   module_SmallStruct.name_ref() = "module.SmallStruct";
   module_SmallStruct.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_SmallStruct_fields[] = {
-    std::make_tuple(1, "small_A", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)),
-    std::make_tuple(2, "small_B", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+    std::make_tuple(1, "small_A", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "small_B", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_SmallStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -51,6 +51,7 @@ StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_SmallStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -64,30 +65,30 @@ StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_containerStruct = res.first->second;
   module_containerStruct.name_ref() = "module.containerStruct";
   module_containerStruct.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_containerStruct_fields[] = {
-    std::make_tuple(1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)),
-    std::make_tuple(2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))),
-    std::make_tuple(3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
-    std::make_tuple(4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(6, "fieldF", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))))),
-    std::make_tuple(7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))))),
-    std::make_tuple(8, "fieldH", false, std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))),
-    std::make_tuple(9, "fieldI", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)),
-    std::make_tuple(10, "fieldJ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))),
-    std::make_tuple(11, "fieldK", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))))),
-    std::make_tuple(12, "fieldL", false, std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))))),
-    std::make_tuple(13, "fieldM", false, std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))),
-    std::make_tuple(14, "fieldN", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionA", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)))),
-    std::make_tuple(15, "fieldO", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)))),
-    std::make_tuple(16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))),
-    std::make_tuple(17, "fieldQ", false, std::make_unique<Enum< ::cpp2::MyEnumA>>("module.MyEnumA")),
-    std::make_tuple(18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))),
-    std::make_tuple(19, "fieldS", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
-    std::make_tuple(20, "fieldT", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
-    std::make_tuple(21, "fieldU", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
-    std::make_tuple(23, "fieldX", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
+    std::make_tuple(1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(6, "fieldF", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(8, "fieldH", false, std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(9, "fieldI", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(10, "fieldJ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(11, "fieldK", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(12, "fieldL", false, std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(13, "fieldM", false, std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(14, "fieldN", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionA", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(15, "fieldO", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(17, "fieldQ", false, std::make_unique<Enum< ::cpp2::MyEnumA>>("module.MyEnumA"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(19, "fieldS", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(20, "fieldT", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(21, "fieldU", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(23, "fieldX", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_containerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -95,6 +96,7 @@ StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_containerStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

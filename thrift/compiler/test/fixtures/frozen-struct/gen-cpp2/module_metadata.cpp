@@ -40,14 +40,14 @@ StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ModuleA = res.first->second;
   module_ModuleA.name_ref() = "module.ModuleA";
   module_ModuleA.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_ModuleA_fields[] = {
-    std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
-    std::make_tuple(2, "strField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(3, "listField", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE))),
-    std::make_tuple(4, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
-    std::make_tuple(5, "inclAField", false, std::make_unique<Struct< ::some::ns::IncludedA>>("include1.IncludedA")),
-    std::make_tuple(6, "inclBField", false, std::make_unique<Struct< ::some::ns::IncludedB>>("include2.IncludedB")),
+    std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "strField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "listField", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(4, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(5, "inclAField", false, std::make_unique<Struct< ::some::ns::IncludedA>>("include1.IncludedA"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(6, "inclBField", false, std::make_unique<Struct< ::some::ns::IncludedB>>("include2.IncludedB"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ModuleA_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -55,6 +55,7 @@ StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_ModuleA.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -68,10 +69,10 @@ StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ModuleB = res.first->second;
   module_ModuleB.name_ref() = "module.ModuleB";
   module_ModuleB.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_ModuleB_fields[] = {
-    std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
-    std::make_tuple(2, "inclEnumB", false, std::make_unique<Enum< ::some::ns::EnumB>>("module.EnumB")),
+    std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "inclEnumB", false, std::make_unique<Enum< ::some::ns::EnumB>>("module.EnumB"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ModuleB_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -79,6 +80,7 @@ StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_ModuleB.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

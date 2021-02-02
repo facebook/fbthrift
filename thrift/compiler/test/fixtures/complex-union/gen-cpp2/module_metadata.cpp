@@ -28,14 +28,14 @@ StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ComplexUnion = res.first->second;
   module_ComplexUnion.name_ref() = "module.ComplexUnion";
   module_ComplexUnion.is_union_ref() = true;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_ComplexUnion_fields[] = {
-    std::make_tuple(1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
-    std::make_tuple(5, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))),
-    std::make_tuple(3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))),
-    std::make_tuple(9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))),
-    std::make_tuple(14, "stringRef", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(5, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(14, "stringRef", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ComplexUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -43,6 +43,7 @@ StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_ComplexUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -56,10 +57,10 @@ StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ListUnion = res.first->second;
   module_ListUnion.name_ref() = "module.ListUnion";
   module_ListUnion.is_union_ref() = true;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_ListUnion_fields[] = {
-    std::make_tuple(2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))),
-    std::make_tuple(3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))),
+    std::make_tuple(2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ListUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -67,6 +68,7 @@ StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_ListUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -80,10 +82,10 @@ StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_DataUnion = res.first->second;
   module_DataUnion.name_ref() = "module.DataUnion";
   module_DataUnion.is_union_ref() = true;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_DataUnion_fields[] = {
-    std::make_tuple(1, "binaryData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)),
-    std::make_tuple(2, "stringData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "binaryData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "stringData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_DataUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -91,6 +93,7 @@ StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_DataUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -104,11 +107,11 @@ StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Val = res.first->second;
   module_Val.name_ref() = "module.Val";
   module_Val.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Val_fields[] = {
-    std::make_tuple(1, "strVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "intVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
-    std::make_tuple(9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))),
+    std::make_tuple(1, "strVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "intVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Val_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -116,6 +119,7 @@ StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_Val.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -129,10 +133,10 @@ StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_ValUnion = res.first->second;
   module_ValUnion.name_ref() = "module.ValUnion";
   module_ValUnion.is_union_ref() = true;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_ValUnion_fields[] = {
-    std::make_tuple(1, "v1", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val")),
-    std::make_tuple(2, "v2", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val")),
+    std::make_tuple(1, "v1", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "v2", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ValUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -140,6 +144,7 @@ StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_ValUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -153,10 +158,10 @@ StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_VirtualComplexUnion = res.first->second;
   module_VirtualComplexUnion.name_ref() = "module.VirtualComplexUnion";
   module_VirtualComplexUnion.is_union_ref() = true;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_VirtualComplexUnion_fields[] = {
-    std::make_tuple(1, "thingOne", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "thingTwo", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "thingOne", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(2, "thingTwo", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_VirtualComplexUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -164,6 +169,7 @@ StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_VirtualComplexUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -177,9 +183,9 @@ StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_NonCopyableStruct = res.first->second;
   module_NonCopyableStruct.name_ref() = "module.NonCopyableStruct";
   module_NonCopyableStruct.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_NonCopyableStruct_fields[] = {
-    std::make_tuple(1, "num", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(1, "num", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_NonCopyableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -187,6 +193,7 @@ StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_NonCopyableStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -200,9 +207,9 @@ StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_NonCopyableUnion = res.first->second;
   module_NonCopyableUnion.name_ref() = "module.NonCopyableUnion";
   module_NonCopyableUnion.is_union_ref() = true;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_NonCopyableUnion_fields[] = {
-    std::make_tuple(1, "s", false, std::make_unique<Struct< ::cpp2::NonCopyableStruct>>("module.NonCopyableStruct")),
+    std::make_tuple(1, "s", false, std::make_unique<Struct< ::cpp2::NonCopyableStruct>>("module.NonCopyableStruct"), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_NonCopyableUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -210,6 +217,7 @@ StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_NonCopyableUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

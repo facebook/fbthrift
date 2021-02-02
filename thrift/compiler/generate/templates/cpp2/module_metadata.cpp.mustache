@@ -41,6 +41,11 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata
   for (std::size_t i = 0; i < EnumTraits::size; ++i) {
     enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
+<%#enum:structured_annotations%>
+<%#structured_annotation:const_struct?%>
+  enum_metadata.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+<%/structured_annotation:const_struct?%>
+<%/enum:structured_annotations%>
 }
 <%/program:enums%>
 
@@ -55,7 +60,7 @@ StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata&
   <%struct:metadata_name%>.name_ref() = "<%program:name%>.<%struct:name%>";
   <%struct:metadata_name%>.is_union_ref() = <%struct:union?%>;
 <%#struct:fields?%>
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   <%struct:metadata_name%>_fields[] = {
 <%#struct:fields%>
     <% > metadata/field_gen%>
@@ -67,9 +72,15 @@ StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata&
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     <%struct:metadata_name%>.fields_ref()->push_back(std::move(field));
   }
 <%/struct:fields?%>
+<%#struct:structured_annotations%>
+<%#structured_annotation:const_struct?%>
+  <%struct:metadata_name%>.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+<%/structured_annotation:const_struct?%>
+<%/struct:structured_annotations%>
   return res.first->second;
 }
 <%/program:structs%>
@@ -84,7 +95,7 @@ void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftM
   ::apache::thrift::metadata::ThriftException& <%struct:metadata_name%> = res.first->second;
   <%struct:metadata_name%>.name_ref() = "<%program:name%>.<%struct:name%>";
 <%#struct:fields?%>
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   <%struct:metadata_name%>_fields[] = {
 <%#struct:fields%>
     <% > metadata/field_gen%>
@@ -99,6 +110,11 @@ void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftM
     <%struct:metadata_name%>.fields_ref()->push_back(std::move(field));
   }
 <%/struct:fields?%>
+<%#struct:structured_annotations%>
+<%#structured_annotation:const_struct?%>
+  <%struct:metadata_name%>.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+<%/structured_annotation:const_struct?%>
+<%/struct:structured_annotations%>
 }
 <%/struct:exception?%>
 <%/program:structs%>
@@ -126,6 +142,11 @@ func.exceptions_ref()->push_back(std::move(<% > metadata/func_field_name%>));
 <%/field:type%>
 <%/function:exceptions%>
   func.is_oneway_ref() = <%function:oneway?%>;
+<%#function:structured_annotations%>
+<%#structured_annotation:const_struct?%>
+  func.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+<%/structured_annotation:const_struct?%>
+<%/function:structured_annotations%>
   service.functions_ref()->push_back(std::move(func));
 }
 <%/function:starts_interaction?%><%/service:functions%>
@@ -153,6 +174,11 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
   metadata.services_ref()->emplace(std::move(<%service:metadata_name%>_parent_name), std::move(*<%service:metadata_name%>_parent_context.service_info_ref()));
 <%/service:extends%>
 <%/service:extends?%>
+<%#service:structured_annotations%>
+<%#structured_annotation:const_struct?%>
+  <%service:metadata_name%>.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+<%/structured_annotation:const_struct?%>
+<%/service:structured_annotations%>
   context.service_info_ref() = std::move(<%service:metadata_name%>);
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "<%program:name%>";

@@ -17,12 +17,15 @@
 namespace cpp2 metadata.test.services
 
 include "thrift/lib/cpp2/test/metadata/typedef_test.thrift"
+include "thrift/lib/cpp2/test/metadata/simple_structs_test.thrift"
 
 exception CutoffException {
   1: string reason;
 }
 
+@simple_structs_test.Nat {data = "service"}
 service ParentService {
+  @simple_structs_test.Nat {data = "function"}
   i32 parentFun();
 }
 

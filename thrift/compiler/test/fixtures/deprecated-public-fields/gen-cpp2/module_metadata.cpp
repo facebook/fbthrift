@@ -28,9 +28,9 @@ StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_Foo = res.first->second;
   module_Foo.name_ref() = "module.Foo";
   module_Foo.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_Foo_fields[] = {
-    std::make_tuple(1, "bar", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+    std::make_tuple(1, "bar", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_Foo_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -38,6 +38,7 @@ StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_Foo.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

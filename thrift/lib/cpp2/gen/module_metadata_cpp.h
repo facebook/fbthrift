@@ -15,6 +15,7 @@
  */
 
 #pragma once
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
@@ -22,8 +23,13 @@ namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
+
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 using ThriftType = ::apache::thrift::metadata::ThriftType;
+using ThriftConstValue = ::apache::thrift::metadata::ThriftConstValue;
+using ThriftConstValuePair = ::apache::thrift::metadata::ThriftConstValuePair;
+using ThriftConstStruct = ::apache::thrift::metadata::ThriftConstStruct;
+using ThriftStructType = ::apache::thrift::metadata::ThriftStructType;
 
 class MetadataTypeInterface {
  public:
@@ -36,6 +42,13 @@ class MetadataTypeInterface {
   virtual void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) = 0;
   virtual ~MetadataTypeInterface() {}
 };
+
+using EncodedThriftField = std::tuple<
+    int32_t,
+    const char*,
+    bool,
+    std::unique_ptr<MetadataTypeInterface>,
+    std::vector<ThriftConstStruct>>;
 
 class Primitive : public MetadataTypeInterface {
  public:
@@ -214,6 +227,17 @@ class Sink : public MetadataTypeInterface {
   ::std::unique_ptr<MetadataTypeInterface> finalResponseType_;
   ::std::unique_ptr<MetadataTypeInterface> initialResponseType_;
 };
+
+ThriftConstValue cvBool(bool value);
+ThriftConstValue cvInteger(int64_t value);
+ThriftConstValue cvDouble(double value);
+ThriftConstValue cvString(std::string&& value);
+ThriftConstValue cvMap(std::vector<ThriftConstValuePair>&& value);
+ThriftConstValue cvList(std::vector<ThriftConstValue>&& value);
+ThriftConstValue cvStruct(
+    std::string&& name,
+    std::map<std::string, ThriftConstValue>&& fields);
+ThriftConstValuePair cvPair(ThriftConstValue&& key, ThriftConstValue&& value);
 
 } // namespace md
 } // namespace detail

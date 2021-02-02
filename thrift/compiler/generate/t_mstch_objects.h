@@ -596,6 +596,8 @@ class mstch_const_value : public mstch_base {
             {"value:listElements", &mstch_const_value::list_elems},
             {"value:mapElements", &mstch_const_value::map_elems},
             {"value:const_struct", &mstch_const_value::const_struct},
+            {"value:const_struct?", &mstch_const_value::is_const_struct},
+            {"value:const_struct_type", &mstch_const_value::const_struct_type},
             {"value:referenceable?", &mstch_const_value::referenceable},
             {"value:owning_const", &mstch_const_value::owning_const},
             {"value:enable_referencing",
@@ -666,6 +668,8 @@ class mstch_const_value : public mstch_base {
   mstch::node enable_referencing() {
     return mstch::map{{"value:enable_referencing?", true}};
   }
+  mstch::node is_const_struct();
+  mstch::node const_struct_type();
 
  protected:
   t_const_value const* const_value_;
