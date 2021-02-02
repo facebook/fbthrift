@@ -457,7 +457,7 @@ void doFailLastRequestsInBatchFiber(
     futures.push_back(std::move(sf));
 
     sf = noResponseIOBufSync(client, 25).via(&evb).thenTry([](auto&& response) {
-      EXPECT_TRUE(response.hasValue());
+      EXPECT_FALSE(response.hasValue());
     });
     futures.push_back(std::move(sf));
 

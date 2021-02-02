@@ -37,8 +37,8 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(<% > types/type%>& 
 <%#type:resolves_to_complex_return?%>
 void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
-  apache::thrift::ClientReceiveState _returnState;
-  apache::thrift::ClientSyncCallback<<%#function:oneway?%>true<%/function:oneway?%><%^function:oneway?%>false<%/function:oneway?%>> callback(&_returnState);
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<<%#function:oneway?%>true<%/function:oneway?%><%^function:oneway?%>false<%/function:oneway?%>> callback(&returnState);
 <%^function:oneway?%>
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
 <%/function:oneway?%>
@@ -53,29 +53,27 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
 <%/function:returns_stream?%>
   <%function:cpp_name%>Impl(rpcOptions, ctx, std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
   callback.waitUntilDone(evb);
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
 <%^function:oneway?%>
-  _returnState.resetProtocolId(protocolId);
-  _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  SCOPE_EXIT {
-    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
-      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
-    }
-  };
-  if (!_returnState.buf()) {
-    assert(!!_returnState.exception());
-    _returnState.exception().throw_exception();
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
   }
   return folly::fibers::runInMainContext([&] {
     <%^type:resolves_to_complex_return?%>
     <%#type:void?%>
-      recv_<%function:cpp_name%>(_returnState);
+      recv_<%function:cpp_name%>(returnState);
     <%/type:void?%>
     <%^type:void?%>
-      return recv_<%function:cpp_name%>(_returnState);
+      return recv_<%function:cpp_name%>(returnState);
     <%/type:void?%>
     <%/type:resolves_to_complex_return?%>
     <%#type:resolves_to_complex_return?%>
-      recv_<%function:cpp_name%>(_return, _returnState);
+      recv_<%function:cpp_name%>(_return, returnState);
     <%/type:resolves_to_complex_return?%>
   });
 <%/function:oneway?%>

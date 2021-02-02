@@ -281,6 +281,9 @@ TEST(ScopedServerInterfaceThread, faultInjection) {
     EXPECT_THROW(co_await client->co_lob(), CustomException);
     EXPECT_NO_THROW(co_await client->co_lob());
 
+    EXPECT_THROW(client->sync_lob(), CustomException);
+    EXPECT_NO_THROW(client->sync_lob());
+
     EXPECT_THROW(co_await client->co_emptyStreamSlow(0), CustomException);
     EXPECT_NO_THROW(co_await client->co_emptyStreamSlow(0));
 
