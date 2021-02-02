@@ -69,28 +69,28 @@ class RocketClientChannel final : public ClientChannel {
 
   void sendRequestResponse(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestNoResponse(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestStream(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
 
   void sendRequestSink(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback) override;
@@ -150,8 +150,9 @@ class RocketClientChannel final : public ClientChannel {
 
   // supports nesting
   // must be called from evb thread
-  InteractionId registerInteraction(folly::StringPiece name, int64_t id)
-      override;
+  InteractionId registerInteraction(
+      apache::thrift::ManagedStringView&& name,
+      int64_t id) override;
 
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};
@@ -168,7 +169,7 @@ class RocketClientChannel final : public ClientChannel {
   };
   const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
 
-  folly::F14FastMap<int64_t, std::string> pendingInteractions_;
+  folly::F14FastMap<int64_t, ManagedStringView> pendingInteractions_;
   folly::Optional<int32_t> serverVersion_;
 
   RocketClientChannel(
@@ -183,7 +184,7 @@ class RocketClientChannel final : public ClientChannel {
   void sendThriftRequest(
       const RpcOptions& rpcOptions,
       RpcKind kind,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cb);

@@ -60,28 +60,28 @@ class PooledRequestChannel : public RequestChannel {
 
   void sendRequestResponse(
       const RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&& methodName,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&& methodName,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestStream(
       const RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&& methodName,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* cob) override;
 
   void sendRequestSink(
       const RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&& methodName,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* cob) override;
@@ -105,7 +105,7 @@ class PooledRequestChannel : public RequestChannel {
   void terminateInteraction(InteractionId id) override;
 
   // may be called from any thread
-  InteractionId createInteraction(folly::StringPiece name) override;
+  InteractionId createInteraction(ManagedStringView&& name) override;
 
  protected:
   template <typename SendFunc>

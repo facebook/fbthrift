@@ -19,6 +19,7 @@
 #include <chrono>
 
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/util/ManagedStringView.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -32,7 +33,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
     ProtocolId protocolId,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     std::chrono::milliseconds defaultChannelTimeout,
     transport::THeader& header,
     const transport::THeader::StringToStringMap& persistentWriteHeaders,

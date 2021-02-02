@@ -104,7 +104,7 @@ class ChannelKeepAliveStream : public StreamClientCallback {
 
 void ReconnectingRequestChannel::sendRequestResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -114,7 +114,7 @@ void ReconnectingRequestChannel::sendRequestResponse(
 
   return impl_->sendRequestResponse(
       options,
-      methodName,
+      std::move(methodName),
       std::move(request),
       std::move(header),
       std::move(cob));
@@ -122,7 +122,7 @@ void ReconnectingRequestChannel::sendRequestResponse(
 
 void ReconnectingRequestChannel::sendRequestNoResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -132,7 +132,7 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
 
   return impl_->sendRequestNoResponse(
       options,
-      methodName,
+      std::move(methodName),
       std::move(request),
       std::move(header),
       std::move(cob));
@@ -140,7 +140,7 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
 
 void ReconnectingRequestChannel::sendRequestStream(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
@@ -148,7 +148,11 @@ void ReconnectingRequestChannel::sendRequestStream(
   cob = new ChannelKeepAliveStream(impl_, *cob);
 
   return impl_->sendRequestStream(
-      options, methodName, std::move(request), std::move(header), cob);
+      options,
+      std::move(methodName),
+      std::move(request),
+      std::move(header),
+      cob);
 }
 
 void ReconnectingRequestChannel::reconnectIfNeeded() {

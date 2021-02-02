@@ -200,7 +200,7 @@ class RetryingRequestChannel::StreamCallback
 
 void RetryingRequestChannel::sendRequestStream(
     const apache::thrift::RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     apache::thrift::SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     apache::thrift::StreamClientCallback* clientCallback) {
@@ -210,13 +210,13 @@ void RetryingRequestChannel::sendRequestStream(
       numRetries_,
       rpcOptions,
       *clientCallback,
-      methodName,
+      methodName.view(),
       SerializedRequest(request.buffer->clone()),
       header);
 
   return impl_->sendRequestStream(
       rpcOptions,
-      methodName,
+      std::move(methodName),
       std::move(request),
       std::move(header),
       streamCallback);
@@ -224,7 +224,7 @@ void RetryingRequestChannel::sendRequestStream(
 
 void RetryingRequestChannel::sendRequestResponse(
     const apache::thrift::RpcOptions& options,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -234,13 +234,13 @@ void RetryingRequestChannel::sendRequestResponse(
       numRetries_,
       options,
       std::move(cob),
-      methodName,
+      methodName.view(),
       SerializedRequest(request.buffer->clone()),
       header));
 
   return impl_->sendRequestResponse(
       options,
-      methodName,
+      std::move(methodName),
       std::move(request),
       std::move(header),
       std::move(cob));

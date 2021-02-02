@@ -34,28 +34,28 @@ class ThreadBoundAdaptorChannel : public apache::thrift::RequestChannel {
   // RequestChannel
   void sendRequestResponse(
       const apache::thrift::RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const apache::thrift::RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::RequestClientCallback::Ptr cob) override;
 
   void sendRequestStream(
       const apache::thrift::RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::StreamClientCallback* cob) override;
 
   void sendRequestSink(
       const apache::thrift::RpcOptions& options,
-      folly::StringPiece,
+      ManagedStringView&&,
       apache::thrift::SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::SinkClientCallback* cob) override;
@@ -69,7 +69,7 @@ class ThreadBoundAdaptorChannel : public apache::thrift::RequestChannel {
   void terminateInteraction(apache::thrift::InteractionId id) override;
 
   apache::thrift::InteractionId createInteraction(
-      folly::StringPiece name) override;
+      ManagedStringView&& name) override;
 
  private:
   std::shared_ptr<apache::thrift::RequestChannel> threadSafeChannel_;

@@ -34,7 +34,7 @@ static void maybeRunInEb(folly::EventBase* eb, F func) {
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
     apache::thrift::RpcOptions&& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr callback) {
@@ -42,13 +42,13 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
       getEventBase(),
       [this,
        rpcOptions = std::move(rpcOptions),
-       methodNameStr = std::string(methodName),
+       methodName = std::move(methodName),
        request = std::move(request),
        header = std::move(header),
        callback = std::move(callback)]() mutable {
         sendRequestNoResponse(
             rpcOptions,
-            methodNameStr,
+            std::move(methodName),
             std::move(request),
             std::move(header),
             std::move(callback));
@@ -57,7 +57,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
     apache::thrift::RpcOptions&& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr callback) {
@@ -65,13 +65,13 @@ void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
       getEventBase(),
       [this,
        rpcOptions = std::move(rpcOptions),
-       methodNameStr = std::string(methodName),
+       methodName = std::move(methodName),
        request = std::move(request),
        header = std::move(header),
        callback = std::move(callback)]() mutable {
         sendRequestResponse(
             rpcOptions,
-            methodNameStr,
+            std::move(methodName),
             std::move(request),
             std::move(header),
             std::move(callback));
@@ -81,7 +81,7 @@ template <>
 void RequestChannel::sendRequestAsync<
     RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
     apache::thrift::RpcOptions&& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     StreamClientCallback* callback) {
@@ -89,13 +89,13 @@ void RequestChannel::sendRequestAsync<
       getEventBase(),
       [this,
        rpcOptions = std::move(rpcOptions),
-       methodNameStr = std::string(methodName),
+       methodName = std::move(methodName),
        request = std::move(request),
        header = std::move(header),
        callback = std::move(callback)]() mutable {
         sendRequestStream(
             rpcOptions,
-            methodNameStr,
+            std::move(methodName),
             std::move(request),
             std::move(header),
             callback);
@@ -104,7 +104,7 @@ void RequestChannel::sendRequestAsync<
 template <>
 void RequestChannel::sendRequestAsync<RpcKind::SINK>(
     apache::thrift::RpcOptions&& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     SinkClientCallback* callback) {
@@ -112,13 +112,13 @@ void RequestChannel::sendRequestAsync<RpcKind::SINK>(
       getEventBase(),
       [this,
        rpcOptions = std::move(rpcOptions),
-       methodNameStr = std::string(methodName),
+       methodName = std::move(methodName),
        request = std::move(request),
        header = std::move(header),
        callback = std::move(callback)]() mutable {
         sendRequestSink(
             rpcOptions,
-            methodNameStr,
+            std::move(methodName),
             std::move(request),
             std::move(header),
             callback);
@@ -127,7 +127,7 @@ void RequestChannel::sendRequestAsync<RpcKind::SINK>(
 
 void RequestChannel::sendRequestStream(
     const RpcOptions&,
-    folly::StringPiece,
+    ManagedStringView&&,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
     StreamClientCallback* clientCallback) {
@@ -138,7 +138,7 @@ void RequestChannel::sendRequestStream(
 
 void RequestChannel::sendRequestSink(
     const RpcOptions&,
-    folly::StringPiece,
+    ManagedStringView&&,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
     SinkClientCallback* clientCallback) {
@@ -151,12 +151,14 @@ void RequestChannel::terminateInteraction(InteractionId) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
 }
-InteractionId RequestChannel::createInteraction(folly::StringPiece name) {
+InteractionId RequestChannel::createInteraction(ManagedStringView&& name) {
   static std::atomic<int64_t> nextId{0};
   int64_t id = 1 + nextId.fetch_add(1, std::memory_order_relaxed);
-  return registerInteraction(name, id);
+  return registerInteraction(std::move(name), id);
 }
-InteractionId RequestChannel::registerInteraction(folly::StringPiece, int64_t) {
+InteractionId RequestChannel::registerInteraction(
+    ManagedStringView&&,
+    int64_t) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
 }

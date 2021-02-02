@@ -267,11 +267,11 @@ class FirstRequestProcessorStream : public StreamClientCallback,
  public:
   FirstRequestProcessorStream(
       uint16_t protocolId,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       StreamClientCallback* clientCallback,
       folly::EventBase* evb)
       : protocolId_(protocolId),
-        methodName_(methodName),
+        methodName_(std::move(methodName)),
         clientCallback_(clientCallback),
         evb_(evb) {}
 
@@ -287,7 +287,7 @@ class FirstRequestProcessorStream : public StreamClientCallback,
             firstResponse.metadata,
             firstResponse.payload,
             protocolId_,
-            methodName_)) {
+            methodName_.view())) {
       serverCallback->onStreamCancel();
       clientCallback_->onFirstResponseError(std::move(error));
       return false;
@@ -302,8 +302,8 @@ class FirstRequestProcessorStream : public StreamClientCallback,
     };
     ew.handle(
         [&](rocket::RocketException& ex) {
-          auto response =
-              decodeResponseError(std::move(ex), protocolId_, methodName_);
+          auto response = decodeResponseError(
+              std::move(ex), protocolId_, methodName_.view());
           if (response.hasException()) {
             clientCallback_->onFirstResponseError(
                 std::move(response).exception());
@@ -344,7 +344,7 @@ class FirstRequestProcessorStream : public StreamClientCallback,
 
  private:
   const uint16_t protocolId_;
-  const std::string methodName_;
+  const ManagedStringView methodName_;
   StreamClientCallback* clientCallback_;
   folly::EventBase* evb_;
 };
@@ -354,11 +354,11 @@ class FirstRequestProcessorSink : public SinkClientCallback,
  public:
   FirstRequestProcessorSink(
       uint16_t protocolId,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       SinkClientCallback* clientCallback,
       folly::EventBase* evb)
       : protocolId_(protocolId),
-        methodName_(methodName),
+        methodName_(std::move(methodName)),
         clientCallback_(clientCallback),
         evb_(evb) {}
 
@@ -373,7 +373,7 @@ class FirstRequestProcessorSink : public SinkClientCallback,
             firstResponse.metadata,
             firstResponse.payload,
             protocolId_,
-            methodName_)) {
+            methodName_.view())) {
       serverCallback->onSinkError(
           folly::make_exception_wrapper<TApplicationException>(
               TApplicationException::INTERRUPTION,
@@ -391,8 +391,8 @@ class FirstRequestProcessorSink : public SinkClientCallback,
     };
     ew.handle(
         [&](rocket::RocketException& ex) {
-          auto response =
-              decodeResponseError(std::move(ex), protocolId_, methodName_);
+          auto response = decodeResponseError(
+              std::move(ex), protocolId_, methodName_.view());
           if (response.hasException()) {
             clientCallback_->onFirstResponseError(
                 std::move(response).exception());
@@ -444,7 +444,7 @@ class FirstRequestProcessorSink : public SinkClientCallback,
 
  private:
   const uint16_t protocolId_;
-  const std::string methodName_;
+  const ManagedStringView methodName_;
   SinkClientCallback* clientCallback_;
   folly::EventBase* evb_;
 };
@@ -695,14 +695,14 @@ RocketClientChannel::Ptr RocketClientChannel::newChannelWithMetadata(
 
 void RocketClientChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
-      methodName,
+      std::move(methodName),
       std::move(request),
       std::move(header),
       std::move(cb));
@@ -710,14 +710,14 @@ void RocketClientChannel::sendRequestResponse(
 
 void RocketClientChannel::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      methodName,
+      std::move(methodName),
       std::move(request),
       std::move(header),
       std::move(cb));
@@ -725,7 +725,7 @@ void RocketClientChannel::sendRequestNoResponse(
 
 void RocketClientChannel::sendRequestStream(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<THeader> header,
     StreamClientCallback* clientCallback) {
@@ -735,7 +735,7 @@ void RocketClientChannel::sendRequestStream(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       static_cast<ProtocolId>(protocolId_),
-      methodName,
+      folly::copy(methodName),
       timeout_,
       *header,
       getPersistentWriteHeaders(),
@@ -756,12 +756,12 @@ void RocketClientChannel::sendRequestStream(
       rpcOptions.getChunkTimeout(),
       rpcOptions.getChunkBufferSize(),
       new FirstRequestProcessorStream(
-          protocolId_, methodName, clientCallback, evb_));
+          protocolId_, std::move(methodName), clientCallback, evb_));
 }
 
 void RocketClientChannel::sendRequestSink(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* clientCallback) {
@@ -771,7 +771,7 @@ void RocketClientChannel::sendRequestSink(
       rpcOptions,
       RpcKind::SINK,
       static_cast<ProtocolId>(protocolId_),
-      methodName,
+      folly::copy(methodName),
       timeout_,
       *header,
       getPersistentWriteHeaders(),
@@ -790,7 +790,7 @@ void RocketClientChannel::sendRequestSink(
       rocket::pack(metadata, std::move(buf)),
       firstResponseTimeout,
       new FirstRequestProcessorSink(
-          protocolId_, methodName, clientCallback, evb_),
+          protocolId_, std::move(methodName), clientCallback, evb_),
       rpcOptions.getEnablePageAlignment(),
       header->getDesiredCompressionConfig());
 }
@@ -798,7 +798,7 @@ void RocketClientChannel::sendRequestSink(
 void RocketClientChannel::sendThriftRequest(
     const RpcOptions& rpcOptions,
     RpcKind kind,
-    folly::StringPiece methodName,
+    apache::thrift::ManagedStringView&& methodName,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cb) {
@@ -808,7 +808,7 @@ void RocketClientChannel::sendThriftRequest(
       rpcOptions,
       kind,
       static_cast<ProtocolId>(protocolId_),
-      methodName,
+      std::move(methodName),
       timeout_,
       *header,
       getPersistentWriteHeaders(),
@@ -955,7 +955,7 @@ bool RocketClientChannel::preSendValidation(
     if (auto* name = folly::get_ptr(pendingInteractions_, interactionId)) {
       InteractionCreate create;
       create.set_interactionId(interactionId);
-      create.set_interactionName(std::move(*name));
+      create.set_interactionName(std::move(*name).str());
       metadata.interactionCreate_ref() = std::move(create);
       pendingInteractions_.erase(interactionId);
     } else {
@@ -1074,13 +1074,13 @@ void RocketClientChannel::terminateInteraction(InteractionId id) {
 }
 
 InteractionId RocketClientChannel::registerInteraction(
-    folly::StringPiece name,
+    ManagedStringView&& name,
     int64_t id) {
-  CHECK(!name.empty());
+  CHECK(!name.view().empty());
   CHECK_GT(id, 0);
   evb_->dcheckIsInEventBaseThread();
 
-  auto res = pendingInteractions_.insert({id, name.str()});
+  auto res = pendingInteractions_.insert({id, std::move(name)});
   DCHECK(res.second);
 
   rclient_->addInteraction();

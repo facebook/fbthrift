@@ -39,21 +39,21 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
 
   void sendRequestStream(
       const apache::thrift::RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      ManagedStringView&& methodName,
       apache::thrift::SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::StreamClientCallback* clientCallback) override;
 
   void sendRequestResponse(
       const apache::thrift::RpcOptions& options,
-      folly::StringPiece methodName,
+      ManagedStringView&& methodName,
       SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const apache::thrift::RpcOptions&,
-      folly::StringPiece,
+      ManagedStringView&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override {

@@ -127,14 +127,14 @@ class HeaderClientChannel : public ClientChannel,
 
   void sendRequestResponse(
       const RpcOptions&,
-      folly::StringPiece,
+      ManagedStringView&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
 
   void sendRequestNoResponse(
       const RpcOptions&,
-      folly::StringPiece,
+      ManagedStringView&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
@@ -316,20 +316,20 @@ class HeaderClientChannel : public ClientChannel,
    public:
     HeaderRequestContext(
         const RpcOptions& rpcOptions,
-        folly::StringPiece methodName,
+        ManagedStringView&& methodName,
         SerializedRequest&& serializedRequest,
         std::shared_ptr<apache::thrift::transport::THeader> header,
         RequestClientCallback::Ptr cb,
         bool oneWay)
         : rpcOptions_(rpcOptions),
-          methodName_(std::string(methodName)),
+          methodName_(std::move(methodName)),
           serializedRequest_(std::move(serializedRequest)),
           header_(std::move(header)),
           callback_(std::move(cb)),
           oneWay_(oneWay) {}
 
     const RpcOptions rpcOptions_;
-    const std::string methodName_;
+    ManagedStringView methodName_;
     SerializedRequest serializedRequest_;
     std::shared_ptr<apache::thrift::transport::THeader> header_;
     RequestClientCallback::Ptr callback_;

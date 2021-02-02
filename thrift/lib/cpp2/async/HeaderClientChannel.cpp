@@ -222,14 +222,14 @@ class HeaderClientChannel::RocketUpgradeCallback
       if (req.oneWay_) {
         headerClientChannel_->sendRequestNoResponse(
             req.rpcOptions_,
-            req.methodName_,
+            std::move(req.methodName_),
             std::move(req.serializedRequest_),
             std::move(req.header_),
             std::move(req.callback_));
       } else {
         headerClientChannel_->sendRequestResponse(
             req.rpcOptions_,
-            req.methodName_,
+            std::move(req.methodName_),
             std::move(req.serializedRequest_),
             std::move(req.header_),
             std::move(req.callback_));
@@ -266,7 +266,7 @@ void HeaderClientChannel::tryUpgradeTransportToRocket(
 // Client Interface
 void HeaderClientChannel::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
@@ -277,7 +277,7 @@ void HeaderClientChannel::sendRequestNoResponse(
       if (std::exchange(upgradeToRocket_, false)) {
         pendingRequests_.emplace_back(HeaderRequestContext(
             rpcOptions,
-            methodName,
+            std::move(methodName),
             std::move(serializedRequest),
             std::move(header),
             std::move(cb),
@@ -289,7 +289,7 @@ void HeaderClientChannel::sendRequestNoResponse(
     case RocketUpgradeState::IN_PROGRESS:
       pendingRequests_.emplace_back(HeaderRequestContext(
           rpcOptions,
-          methodName,
+          std::move(methodName),
           std::move(serializedRequest),
           std::move(header),
           std::move(cb),
@@ -302,15 +302,16 @@ void HeaderClientChannel::sendRequestNoResponse(
   if (rocketChannel_) {
     rocketChannel_->sendRequestNoResponse(
         rpcOptions,
-        methodName,
+        std::move(methodName),
         std::move(serializedRequest),
         std::move(header),
         std::move(cb));
   } else {
-    auto buf =
-        LegacySerializedRequest(
-            header->getProtocolId(), methodName, std::move(serializedRequest))
-            .buffer;
+    auto buf = LegacySerializedRequest(
+                   header->getProtocolId(),
+                   methodName.view(),
+                   std::move(serializedRequest))
+                   .buffer;
 
     setRequestHeaderOptions(header.get());
     addRpcOptionHeaders(header.get(), rpcOptions);
@@ -383,7 +384,7 @@ uint16_t HeaderClientChannel::getProtocolId() {
 
 void HeaderClientChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
@@ -397,7 +398,7 @@ void HeaderClientChannel::sendRequestResponse(
       if (std::exchange(upgradeToRocket_, false)) {
         pendingRequests_.emplace_back(HeaderRequestContext(
             rpcOptions,
-            methodName,
+            std::move(methodName),
             std::move(serializedRequest),
             std::move(header),
             std::move(cb),
@@ -407,10 +408,10 @@ void HeaderClientChannel::sendRequestResponse(
       }
       break;
     case RocketUpgradeState::IN_PROGRESS:
-      if (methodName.str() != "upgradeToRocket") {
+      if (methodName.view() != "upgradeToRocket") {
         pendingRequests_.emplace_back(HeaderRequestContext(
             rpcOptions,
-            methodName,
+            std::move(methodName),
             std::move(serializedRequest),
             std::move(header),
             std::move(cb),
@@ -425,15 +426,16 @@ void HeaderClientChannel::sendRequestResponse(
   if (rocketChannel_) {
     rocketChannel_->sendRequestResponse(
         rpcOptions,
-        methodName,
+        std::move(methodName),
         std::move(serializedRequest),
         std::move(header),
         std::move(cb));
   } else {
-    auto buf =
-        LegacySerializedRequest(
-            header->getProtocolId(), methodName, std::move(serializedRequest))
-            .buffer;
+    auto buf = LegacySerializedRequest(
+                   header->getProtocolId(),
+                   methodName.view(),
+                   std::move(serializedRequest))
+                   .buffer;
 
     // cb is not allowed to be null.
     DCHECK(cb);

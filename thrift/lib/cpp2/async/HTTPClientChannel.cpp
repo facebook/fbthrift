@@ -163,14 +163,15 @@ void HTTPClientChannel::destroy() {
 
 void HTTPClientChannel::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
+  auto buf = LegacySerializedRequest(
+                 header->getProtocolId(),
+                 methodName.view(),
+                 std::move(serializedRequest))
+                 .buffer;
 
   sendRequest_(
       rpcOptions, true, std::move(buf), std::move(header), std::move(cb));
@@ -178,14 +179,15 @@ void HTTPClientChannel::sendRequestNoResponse(
 
 void HTTPClientChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
+  auto buf = LegacySerializedRequest(
+                 header->getProtocolId(),
+                 methodName.view(),
+                 std::move(serializedRequest))
+                 .buffer;
 
   sendRequest_(
       rpcOptions, false, std::move(buf), std::move(header), std::move(cb));

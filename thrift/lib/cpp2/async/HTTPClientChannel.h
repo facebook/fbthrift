@@ -114,14 +114,14 @@ class HTTPClientChannel : public ClientChannel,
 
   void sendRequestResponse(
       const RpcOptions&,
-      folly::StringPiece,
+      ManagedStringView&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
 
   void sendRequestNoResponse(
       const RpcOptions&,
-      folly::StringPiece,
+      ManagedStringView&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;

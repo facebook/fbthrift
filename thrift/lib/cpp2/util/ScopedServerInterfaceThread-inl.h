@@ -30,68 +30,68 @@ class FaultInjectionChannel : public RequestChannel {
 
   void sendRequestResponse(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      ManagedStringView&& methodName,
       SerializedRequest&& req,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr clientCallback) override {
-    if (auto ex = injectFault_(methodName)) {
+    if (auto ex = injectFault_(methodName.view())) {
       clientCallback.release()->onResponseError(std::move(ex));
       return;
     }
     client_->sendRequestResponse(
         rpcOptions,
-        methodName,
+        std::move(methodName),
         std::move(req),
         std::move(header),
         std::move(clientCallback));
   }
   void sendRequestNoResponse(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      ManagedStringView&& methodName,
       SerializedRequest&& req,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr clientCallback) override {
-    if (auto ex = injectFault_(methodName)) {
+    if (auto ex = injectFault_(methodName.view())) {
       clientCallback.release()->onResponseError(std::move(ex));
       return;
     }
     client_->sendRequestNoResponse(
         rpcOptions,
-        methodName,
+        std::move(methodName),
         std::move(req),
         std::move(header),
         std::move(clientCallback));
   }
   void sendRequestStream(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      ManagedStringView&& methodName,
       SerializedRequest&& req,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override {
-    if (auto ex = injectFault_(methodName)) {
+    if (auto ex = injectFault_(methodName.view())) {
       clientCallback->onFirstResponseError(std::move(ex));
       return;
     }
     client_->sendRequestStream(
         rpcOptions,
-        methodName,
+        std::move(methodName),
         std::move(req),
         std::move(header),
         clientCallback);
   }
   void sendRequestSink(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      ManagedStringView&& methodName,
       SerializedRequest&& req,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback) override {
-    if (auto ex = injectFault_(methodName)) {
+    if (auto ex = injectFault_(methodName.view())) {
       clientCallback->onFirstResponseError(std::move(ex));
       return;
     }
     client_->sendRequestSink(
         rpcOptions,
-        methodName,
+        std::move(methodName),
         std::move(req),
         std::move(header),
         clientCallback);
