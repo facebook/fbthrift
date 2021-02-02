@@ -20,6 +20,7 @@ namespace cpp2 apache.thrift.test
 
 cpp_include "<unordered_set>"
 cpp_include "thrift/lib/cpp2/frozen/VectorAssociative.h"
+cpp_include "thrift/lib/cpp2/frozen/HintTypes.h"
 
 enum Gender {
   Male = 0,
@@ -154,6 +155,20 @@ struct User {
 
 struct TriviallyCopyableStruct {
   1: required i32 field;
+}
+
+typedef string Fixed2 (cpp.type = "apache::thrift::frozen::FixedSizeString<2>")
+typedef string Fixed8 (cpp.type = "apache::thrift::frozen::FixedSizeString<8>")
+
+struct TestFixedSizeString {
+  1: Fixed8 bytes8;
+  2: optional string (
+    cpp.type = "apache::thrift::frozen::FixedSizeString<4>",
+  ) bytes4;
+  3: map<Fixed8, Fixed2> (
+    cpp.template = "apache::thrift::frozen::VectorAsHashMap",
+  ) aMapToFreeze;
+  4: map<Fixed8, Fixed2> aMap;
 }
 
 struct Empty {

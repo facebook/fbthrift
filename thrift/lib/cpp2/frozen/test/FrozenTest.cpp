@@ -23,11 +23,14 @@
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
+namespace {
 using namespace apache::thrift;
 using namespace apache::thrift::frozen;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace testing;
+using Fixed8 = apache::thrift::frozen::FixedSizeString<8>;
+using Fixed2 = apache::thrift::frozen::FixedSizeString<2>;
 
 template <class T>
 std::string toString(const T& x) {
@@ -538,7 +541,123 @@ TEST(Frozen, TrivialCopyable) {
   EXPECT_EQ(view.field(), 42);
 }
 
+MATCHER(PairStrEq, "") {
+  *result_listener << std::get<0>(arg).first << ", " << std::get<0>(arg).second
+                   << ", vs " << std::get<1>(arg).first << ", "
+                   << std::get<1>(arg).second;
+  return std::get<0>(arg).first == std::get<1>(arg).first &&
+      std::get<0>(arg).second == std::get<1>(arg).second;
+}
+
+TEST(Frozen, FixedSizeString) {
+  // Good example.
+  {
+    TestFixedSizeString s;
+    s.bytes8_ref() = "01234567";
+    // bytes4 field is optional and can be unset.
+    auto view = freeze(s);
+    ASSERT_TRUE(view.bytes8_ref().has_value());
+    EXPECT_EQ(view.bytes8_ref()->toString(), "01234567");
+  }
+  // Good example.
+  {
+    TestFixedSizeString s;
+    s.bytes8_ref() = "01234567";
+    s.bytes4_ref() = "0123";
+    auto view = freeze(s);
+    ASSERT_TRUE(view.bytes8_ref().has_value());
+    EXPECT_EQ(view.bytes8_ref()->toString(), "01234567");
+    ASSERT_TRUE(view.bytes4().has_value());
+    EXPECT_EQ(view.bytes4()->toString(), "0123");
+  }
+  // Throws if an unqualified FixedSizeString field is unset.
+  {
+    TestFixedSizeString s;
+    s.bytes4_ref() = "0123";
+    // bytes8 field is unqualified and must be set.
+    EXPECT_THROW(
+        [&s]() { auto view = freeze(s); }(),
+        apache::thrift::frozen::detail::FixedSizeMismatchException);
+  }
+  // Throws if a FixedSizeString field doesn't have the expected size.
+  {
+    EXPECT_THROW(
+        []() {
+          TestFixedSizeString s;
+          s.bytes8_ref() = "01234567";
+          s.bytes4_ref() = "0";
+          auto view = freeze(s);
+        }(),
+        apache::thrift::frozen::detail::FixedSizeMismatchException);
+    EXPECT_THROW(
+        []() {
+          TestFixedSizeString s;
+          s.bytes8_ref() = "0";
+          s.bytes4_ref() = "0123";
+          auto view = freeze(s);
+        }(),
+        apache::thrift::frozen::detail::FixedSizeMismatchException);
+  }
+  // Tests FixedSizeString as both the key_type and the value_type in a hashmap.
+  {
+    TestFixedSizeString s;
+    s.bytes8_ref() = "01234567";
+    std::unordered_map<std::string, std::string> rawMap = {
+        {"76543210", "ab"},
+        {"12345670", "cd"},
+        {"hellosnw", "ef"},
+        {"facebook", "hi"},
+    };
+    for (const auto& [key, val] : rawMap) {
+      s.aMapToFreeze_ref()[apache::thrift::frozen::FixedSizeString<8>(key)] =
+          val;
+      s.aMap_ref()[apache::thrift::frozen::FixedSizeString<8>(key)] = val;
+    }
+
+    // Tests aMap before serialization.
+    {
+      EXPECT_THAT(
+          *s.aMap_ref(), testing::UnorderedPointwise(PairStrEq(), rawMap));
+      auto iter = s.aMap_ref()->find(Fixed8("hellosnw"));
+      ASSERT_NE(iter, s.aMap_ref()->end());
+      EXPECT_THAT(
+          *iter,
+          testing::Pair(
+              testing::Eq(Fixed8("hellosnw")), testing::Eq(Fixed2("ef"))));
+    }
+
+    auto view = freeze(s);
+
+    auto extractToUnorderedMap = [](const auto& frozenMap) {
+      std::unordered_map<std::string, std::string> result;
+      for (auto iter = frozenMap.begin(); iter != frozenMap.end(); ++iter) {
+        result[iter->first().toString()] = iter->second().toString();
+      }
+      return result;
+    };
+
+    ASSERT_TRUE(view.aMap_ref().has_value());
+    EXPECT_THAT(
+        extractToUnorderedMap(*view.aMap_ref()),
+        testing::UnorderedElementsAreArray(rawMap.begin(), rawMap.end()));
+    ASSERT_TRUE(view.aMapToFreeze_ref().has_value());
+    EXPECT_THAT(
+        extractToUnorderedMap(*view.aMapToFreeze_ref()),
+        testing::UnorderedElementsAreArray(rawMap.begin(), rawMap.end()));
+
+    {
+      std::string key = "hellosnw";
+      auto iter = view.aMap_ref()->find(folly::ByteRange{
+          reinterpret_cast<const uint8_t*>(key.data()), key.size()});
+      ASSERT_NE(iter, view.aMap_ref()->end());
+      EXPECT_EQ(iter->first().toString(), "hellosnw");
+      EXPECT_EQ(iter->second().toString(), "ef");
+    }
+  }
+}
+
 TEST(Frozen, Empty) {
   Empty s;
   FOLLY_MAYBE_UNUSED auto view = freeze(s);
 }
+} // namespace

@@ -1105,6 +1105,7 @@ using View = typename Layout<T>::View;
 } // namespace thrift
 } // namespace apache
 
+#include <thrift/lib/cpp2/frozen/FrozenFixedSizeString-inl.h> // @nolint
 #include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h> // @nolint
 // depends on Trivial
 #include <thrift/lib/cpp2/frozen/FrozenBool-inl.h> // @nolint
