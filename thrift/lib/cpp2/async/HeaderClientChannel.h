@@ -35,6 +35,7 @@
 #include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
 namespace apache {
 namespace thrift {
@@ -57,6 +58,11 @@ class HeaderClientChannel : public ClientChannel,
   explicit HeaderClientChannel(
       const std::shared_ptr<folly::AsyncTransport>& transport);
 
+  struct WithoutRocketUpgrade {};
+  HeaderClientChannel(
+      WithoutRocketUpgrade,
+      const std::shared_ptr<folly::AsyncTransport>& transport);
+
   explicit HeaderClientChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
   typedef std::
@@ -66,6 +72,12 @@ class HeaderClientChannel : public ClientChannel,
   static Ptr newChannel(
       const std::shared_ptr<folly::AsyncTransport>& transport) {
     return Ptr(new HeaderClientChannel(transport));
+  }
+
+  static Ptr newChannel(
+      WithoutRocketUpgrade,
+      const std::shared_ptr<folly::AsyncTransport>& transport) {
+    return Ptr(new HeaderClientChannel(WithoutRocketUpgrade{}, transport));
   }
 
   virtual void sendMessage(
@@ -81,6 +93,9 @@ class HeaderClientChannel : public ClientChannel,
   void destroy() override;
 
   folly::AsyncTransport* getTransport() override {
+    if (isUpgradedToRocket()) {
+      return rocketChannel_->getTransport();
+    }
     return cpp2Channel_->getTransport();
   }
 
@@ -137,6 +152,9 @@ class HeaderClientChannel : public ClientChannel,
   // Servers should use timeout methods on underlying transport.
   void setTimeout(uint32_t ms) override;
   uint32_t getTimeout() override {
+    if (isUpgradedToRocket()) {
+      return rocketChannel_->getTimeout();
+    }
     return getTransport()->getSendTimeout();
   }
 
@@ -153,17 +171,26 @@ class HeaderClientChannel : public ClientChannel,
   }
 
   folly::EventBase* getEventBase() const override {
+    if (isUpgradedToRocket()) {
+      return rocketChannel_->getEventBase();
+    }
     return cpp2Channel_->getEventBase();
   }
 
   /**
-   * Set the channel up in HTTP CLIENT mode. host can be an empty string
+   * Set the channel up in HTTP CLIENT mode. host can be an empty string.
+   *
+   * Note: this needs to be called before sending first request due to the
+   * possibility of the channel upgrading itself to rocket.
    */
   void useAsHttpClient(const std::string& host, const std::string& uri);
 
   bool good() override;
 
   SaturationStatus getSaturationStatus() override {
+    if (isUpgradedToRocket()) {
+      return rocketChannel_->getSaturationStatus();
+    }
     return SaturationStatus(0, std::numeric_limits<uint32_t>::max());
   }
 
@@ -180,7 +207,25 @@ class HeaderClientChannel : public ClientChannel,
   bool expireCallback(uint32_t seqId);
 
   CLIENT_TYPE getClientType() override {
+    if (isUpgradedToRocket()) {
+      return rocketChannel_->getClientType();
+    }
     return HeaderChannelTrait::getClientType();
+  }
+
+  void setOnDetachable(folly::Function<void()> onDetachable) override {
+    if (isUpgradedToRocket()) {
+      rocketChannel_->setOnDetachable(std::move(onDetachable));
+    } else {
+      ClientChannel::setOnDetachable(std::move(onDetachable));
+    }
+  }
+  void unsetOnDetachable() override {
+    if (isUpgradedToRocket()) {
+      rocketChannel_->unsetOnDetachable();
+    } else {
+      ClientChannel::unsetOnDetachable();
+    }
   }
 
   class ClientFramingHandler : public FramingHandler {
@@ -214,6 +259,11 @@ class HeaderClientChannel : public ClientChannel,
   void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
   void attachConnectionMetadataOnce(apache::thrift::transport::THeader* header);
 
+  // Transport upgrade from header to rocket for raw header client. If
+  // successful, this HeaderClientChannel will manage a RocketClientChannel
+  // internally and send/receive messages through the rocket channel.
+  void tryUpgradeTransportToRocket(std::chrono::milliseconds timeout);
+
   std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 
   // Set the base class callback based on current state.
@@ -236,6 +286,73 @@ class HeaderClientChannel : public ClientChannel,
 
   std::string agentName_;
   bool firstRequest_{true};
+
+  // If true, on first request this HeaderClientChannel will try to upgrade to
+  // use rocket transport.
+  bool upgradeToRocket_;
+  // If rocket transport upgrade is enabled, HeaderClientChannel manages a
+  // rocket channel internally and uses this rocket channel for all
+  // requests/response handling.
+  RocketClientChannel::Ptr rocketChannel_;
+
+  enum class RocketUpgradeState {
+    NO_UPGRADE = 0,
+    INIT = 1,
+    IN_PROGRESS = 2,
+    DONE = 3
+  };
+  std::atomic<RocketUpgradeState> upgradeState_;
+
+  bool isUpgradedToRocket() const {
+    return upgradeState_.load(std::memory_order_acquire) ==
+        RocketUpgradeState::DONE &&
+        rocketChannel_;
+  }
+
+  // A class to hold the necessary data for a header request (SerializedRequest,
+  // THeader, RpcOptions, callback, etc.) so that the request can be queued and
+  // sent at a later point.
+  class HeaderRequestContext {
+   public:
+    HeaderRequestContext(
+        const RpcOptions& rpcOptions,
+        folly::StringPiece methodName,
+        SerializedRequest&& serializedRequest,
+        std::shared_ptr<apache::thrift::transport::THeader> header,
+        RequestClientCallback::Ptr cb,
+        bool oneWay)
+        : rpcOptions_(rpcOptions),
+          methodName_(std::string(methodName)),
+          serializedRequest_(std::move(serializedRequest)),
+          header_(std::move(header)),
+          callback_(std::move(cb)),
+          oneWay_(oneWay) {}
+
+    const RpcOptions rpcOptions_;
+    const std::string methodName_;
+    SerializedRequest serializedRequest_;
+    std::shared_ptr<apache::thrift::transport::THeader> header_;
+    RequestClientCallback::Ptr callback_;
+    bool oneWay_;
+  };
+
+  /**
+   * A container to hold the header requests that come in while transport
+   * upgrade from header to rocket is in progress.
+   *
+   * If transport upgrade for raw client is enabled, this HeaderClientChannel
+   * tries to upgrade the transport from header to rocket upon first request by
+   * sending a special request (upgradeToRocket). If upgrade succeeds, all
+   * requests on the channel (including the ones that come in while upgrade was
+   * in progress) should be sent using rocket transport.
+   */
+  std::deque<HeaderRequestContext> pendingRequests_;
+
+  class RocketUpgradeCallback;
+  friend class TransportUpgradeTest;
+  friend class TransportUpgradeTest_RawClientRocketUpgradeOneway_Test;
+  friend class TransportUpgradeTest_RawClientNoUpgrade_Test;
+  friend class TransportUpgradeTest_RawClientRocketUpgradeTimeout_Test;
 };
 
 } // namespace thrift

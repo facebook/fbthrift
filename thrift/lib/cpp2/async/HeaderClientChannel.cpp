@@ -16,18 +16,28 @@
 
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
+#include <chrono>
 #include <utility>
 
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/gen/client_cpp.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/thrift/gen-cpp2/RocketUpgradeAsyncClient.h>
+
+THRIFT_FLAG_DEFINE_bool(raw_client_rocket_upgrade_enabled, false);
+THRIFT_FLAG_DEFINE_int64(raw_client_rocket_upgrade_timeout_ms, 100);
 
 using folly::IOBuf;
 using folly::IOBufQueue;
 using std::make_unique;
 using std::pair;
 using std::unique_ptr;
+using namespace std::chrono_literals;
 using namespace apache::thrift::transport;
 using folly::EventBase;
 using folly::RequestContext;
@@ -46,21 +56,41 @@ HeaderClientChannel::HeaderClientChannel(
           make_unique<ClientFramingHandler>(*this)))) {}
 
 HeaderClientChannel::HeaderClientChannel(
+    WithoutRocketUpgrade,
+    const std::shared_ptr<folly::AsyncTransport>& transport)
+    : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
+          transport,
+          make_unique<ClientFramingHandler>(*this)))) {
+  upgradeToRocket_ = false;
+  upgradeState_ = RocketUpgradeState::NO_UPGRADE;
+}
+
+HeaderClientChannel::HeaderClientChannel(
     const std::shared_ptr<Cpp2Channel>& cpp2Channel)
     : sendSeqId_(0),
       closeCallback_(nullptr),
       timeout_(0),
       keepRegisteredForClose_(true),
       cpp2Channel_(cpp2Channel),
-      protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {}
+      protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL),
+      upgradeToRocket_(THRIFT_FLAG(raw_client_rocket_upgrade_enabled)),
+      upgradeState_(RocketUpgradeState::INIT) {}
 
 void HeaderClientChannel::setTimeout(uint32_t ms) {
-  getTransport()->setSendTimeout(ms);
-  timeout_ = ms;
+  if (isUpgradedToRocket()) {
+    rocketChannel_->setTimeout(ms);
+  } else {
+    getTransport()->setSendTimeout(ms);
+    timeout_ = ms;
+  }
 }
 
 void HeaderClientChannel::closeNow() {
-  cpp2Channel_->closeNow();
+  if (isUpgradedToRocket()) {
+    rocketChannel_->closeNow();
+  } else {
+    cpp2Channel_->closeNow();
+  }
 }
 
 void HeaderClientChannel::destroy() {
@@ -73,6 +103,10 @@ void HeaderClientChannel::useAsHttpClient(
     const std::string& uri) {
   setClientType(THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
+  // Do not attempt transport upgrade to rocket if the channel is used as http
+  // channel
+  upgradeToRocket_ = false;
+  upgradeState_ = RocketUpgradeState::NO_UPGRADE;
 }
 
 bool HeaderClientChannel::good() {
@@ -81,20 +115,152 @@ bool HeaderClientChannel::good() {
 }
 
 void HeaderClientChannel::attachEventBase(EventBase* eventBase) {
-  cpp2Channel_->attachEventBase(eventBase);
+  if (isUpgradedToRocket()) {
+    rocketChannel_->attachEventBase(eventBase);
+  } else {
+    cpp2Channel_->attachEventBase(eventBase);
+  }
 }
 
 void HeaderClientChannel::detachEventBase() {
-  cpp2Channel_->detachEventBase();
+  if (isUpgradedToRocket()) {
+    rocketChannel_->detachEventBase();
+  } else {
+    cpp2Channel_->detachEventBase();
+  }
 }
 
 bool HeaderClientChannel::isDetachable() {
+  if (isUpgradedToRocket()) {
+    return rocketChannel_->isDetachable();
+  }
   return getTransport()->isDetachable() && recvCallbacks_.empty();
 }
 
 bool HeaderClientChannel::clientSupportHeader() {
   return getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
       getClientType() == THRIFT_HTTP_CLIENT_TYPE;
+}
+
+class HeaderClientChannel::RocketUpgradeCallback
+    : public apache::thrift::RequestCallback {
+ public:
+  explicit RocketUpgradeCallback(
+      apache::thrift::HeaderClientChannel* headerClientChannel)
+      : headerClientChannel_(headerClientChannel) {}
+
+  void requestSent() override {}
+
+  void replyReceived(apache::thrift::ClientReceiveState&& state) override {
+    auto ew = RocketUpgradeAsyncClient::recv_wrapped_upgradeToRocket(state);
+
+    if (ew) {
+      VLOG(4) << "Unable to upgrade transport from header to rocket! "
+              << "Exception : " << folly::exceptionStr(ew);
+    } else {
+      // upgrade
+      auto transportShared =
+          headerClientChannel_->cpp2Channel_->getTransportShared();
+
+      auto deleter = std::get_deleter<folly::AsyncSocket::ReleasableDestructor>(
+          transportShared);
+      if (!deleter) {
+        LOG(DFATAL) << "Rocket upgrade cannot complete. "
+                    << "Underlying socket not using the special deleter.";
+        return;
+      }
+
+      headerClientChannel_->cpp2Channel_->setTransport(nullptr);
+      headerClientChannel_->cpp2Channel_->closeNow();
+      // Note here we have one instance of the
+      // std::shared_ptr<folly::AsyncTransport> in transportShared, and another
+      // one in cpp2Channel_->pipeline_. Calling closeNow() on cpp2Channel_
+      // inside a callback does not immediately close the OutboundLink of the
+      // pipeline.
+      assert(transportShared.use_count() == 2);
+      // header channel give up ownership of the socket so that rocket
+      // channel can own the socket from here onwards
+      deleter->release();
+
+      headerClientChannel_->rocketChannel_ =
+          apache::thrift::RocketClientChannel::newChannel(
+              folly::AsyncTransport::UniquePtr(transportShared.get()));
+      // make sure to set closeCallback
+      if (headerClientChannel_->closeCallback_) {
+        headerClientChannel_->rocketChannel_->setCloseCallback(
+            headerClientChannel_->closeCallback_);
+      }
+    }
+
+    auto oldState = headerClientChannel_->upgradeState_.exchange(
+        RocketUpgradeState::DONE, std::memory_order_acq_rel);
+    CHECK_EQ(int(oldState), int(RocketUpgradeState::IN_PROGRESS));
+
+    drainPendingRequests();
+  }
+
+  void requestError(apache::thrift::ClientReceiveState&& state) override {
+    VLOG(4) << "Transport upgrade from header to rocket failed! "
+            << "Exception : " << folly::exceptionStr(state.exception());
+
+    auto oldState = headerClientChannel_->upgradeState_.exchange(
+        RocketUpgradeState::DONE, std::memory_order_acq_rel);
+    CHECK_EQ(int(oldState), int(RocketUpgradeState::IN_PROGRESS));
+
+    drainPendingRequests();
+  }
+
+  bool isInlineSafe() const override {
+    return true;
+  }
+
+ private:
+  void drainPendingRequests() {
+    while (!headerClientChannel_->pendingRequests_.empty()) {
+      auto& req = headerClientChannel_->pendingRequests_.front();
+
+      if (req.oneWay_) {
+        headerClientChannel_->sendRequestNoResponse(
+            req.rpcOptions_,
+            req.methodName_,
+            std::move(req.serializedRequest_),
+            std::move(req.header_),
+            std::move(req.callback_));
+      } else {
+        headerClientChannel_->sendRequestResponse(
+            req.rpcOptions_,
+            req.methodName_,
+            std::move(req.serializedRequest_),
+            std::move(req.header_),
+            std::move(req.callback_));
+      }
+      headerClientChannel_->pendingRequests_.pop_front();
+    }
+  }
+
+  apache::thrift::HeaderClientChannel* headerClientChannel_;
+};
+
+void HeaderClientChannel::tryUpgradeTransportToRocket(
+    std::chrono::milliseconds timeout) {
+  auto state = upgradeState_.exchange(
+      RocketUpgradeState::IN_PROGRESS, std::memory_order_acq_rel);
+  CHECK_EQ(int(state), int(RocketUpgradeState::INIT));
+
+  apache::thrift::RpcOptions rpcOptions;
+  if (timeout <= 0ms) {
+    timeout = std::chrono::milliseconds(timeout_) > 0ms
+        ? std::chrono::milliseconds(timeout_)
+        : std::chrono::milliseconds(
+              THRIFT_FLAG(raw_client_rocket_upgrade_timeout_ms));
+  }
+  rpcOptions.setTimeout(timeout);
+
+  auto callback = std::make_unique<RocketUpgradeCallback>(this);
+
+  auto client = std::make_unique<apache::thrift::RocketUpgradeAsyncClient>(
+      std::shared_ptr<HeaderClientChannel>(this, [](HeaderClientChannel*) {}));
+  client->upgradeToRocket(rpcOptions, std::move(callback));
 }
 
 // Client Interface
@@ -104,31 +270,73 @@ void HeaderClientChannel::sendRequestNoResponse(
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
-
-  setRequestHeaderOptions(header.get());
-  addRpcOptionHeaders(header.get(), rpcOptions);
-  attachConnectionMetadataOnce(header.get());
-
-  // Both cb and buf are allowed to be null.
-  uint32_t oldSeqId = sendSeqId_;
-  sendSeqId_ = ResponseChannel::ONEWAY_REQUEST_ID;
-
-  if (cb) {
-    sendMessage(
-        new OnewayCallback(std::move(cb)), std::move(buf), header.get());
-  } else {
-    sendMessage(nullptr, std::move(buf), header.get());
+  // For raw thrift client only: before sending first request, check if we need
+  // to upgrade transport to rocket
+  switch (upgradeState_.load(std::memory_order_relaxed)) {
+    case RocketUpgradeState::INIT:
+      if (std::exchange(upgradeToRocket_, false)) {
+        pendingRequests_.emplace_back(HeaderRequestContext(
+            rpcOptions,
+            methodName,
+            std::move(serializedRequest),
+            std::move(header),
+            std::move(cb),
+            true /* oneWay */));
+        tryUpgradeTransportToRocket(rpcOptions.getTimeout());
+        return;
+      }
+      break;
+    case RocketUpgradeState::IN_PROGRESS:
+      pendingRequests_.emplace_back(HeaderRequestContext(
+          rpcOptions,
+          methodName,
+          std::move(serializedRequest),
+          std::move(header),
+          std::move(cb),
+          true /* oneWay */));
+      return;
+    case RocketUpgradeState::DONE:
+    case RocketUpgradeState::NO_UPGRADE:
+      break;
   }
-  sendSeqId_ = oldSeqId;
+  if (rocketChannel_) {
+    rocketChannel_->sendRequestNoResponse(
+        rpcOptions,
+        methodName,
+        std::move(serializedRequest),
+        std::move(header),
+        std::move(cb));
+  } else {
+    auto buf =
+        LegacySerializedRequest(
+            header->getProtocolId(), methodName, std::move(serializedRequest))
+            .buffer;
+
+    setRequestHeaderOptions(header.get());
+    addRpcOptionHeaders(header.get(), rpcOptions);
+    attachConnectionMetadataOnce(header.get());
+
+    // Both cb and buf are allowed to be null.
+    uint32_t oldSeqId = sendSeqId_;
+    sendSeqId_ = ResponseChannel::ONEWAY_REQUEST_ID;
+
+    if (cb) {
+      sendMessage(
+          new OnewayCallback(std::move(cb)), std::move(buf), header.get());
+    } else {
+      sendMessage(nullptr, std::move(buf), header.get());
+    }
+    sendSeqId_ = oldSeqId;
+  }
 }
 
 void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
-  closeCallback_ = cb;
-  setBaseReceivedCallback();
+  if (isUpgradedToRocket()) {
+    rocketChannel_->setCloseCallback(cb);
+  } else {
+    closeCallback_ = cb;
+    setBaseReceivedCallback();
+  }
 }
 
 void HeaderClientChannel::setRequestHeaderOptions(THeader* header) {
@@ -160,6 +368,9 @@ void HeaderClientChannel::attachConnectionMetadataOnce(THeader* header) {
 }
 
 uint16_t HeaderClientChannel::getProtocolId() {
+  if (isUpgradedToRocket()) {
+    return rocketChannel_->getProtocolId();
+  }
   if (getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
       getClientType() == THRIFT_HTTP_CLIENT_TYPE) {
     return protocolId_;
@@ -176,48 +387,92 @@ void HeaderClientChannel::sendRequestResponse(
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
-
-  // cb is not allowed to be null.
-  DCHECK(cb);
-
-  DestructorGuard dg(this);
-
-  // Oneway requests use a special sequence id.
-  // Make sure this non-oneway request doesn't use
-  // the oneway request ID.
-  if (++sendSeqId_ == ResponseChannel::ONEWAY_REQUEST_ID) {
-    ++sendSeqId_;
+  // Raw header client might go through a transport upgrade process.
+  // upgradeState_ ensures that the requests that are coming during upgrade can
+  // be properly handled
+  switch (upgradeState_.load(std::memory_order_relaxed)) {
+    case RocketUpgradeState::INIT:
+      // before sending first request, check if we
+      // need to upgrade transport to rocket
+      if (std::exchange(upgradeToRocket_, false)) {
+        pendingRequests_.emplace_back(HeaderRequestContext(
+            rpcOptions,
+            methodName,
+            std::move(serializedRequest),
+            std::move(header),
+            std::move(cb),
+            false /* oneWay */));
+        tryUpgradeTransportToRocket(rpcOptions.getTimeout());
+        return;
+      }
+      break;
+    case RocketUpgradeState::IN_PROGRESS:
+      if (methodName.str() != "upgradeToRocket") {
+        pendingRequests_.emplace_back(HeaderRequestContext(
+            rpcOptions,
+            methodName,
+            std::move(serializedRequest),
+            std::move(header),
+            std::move(cb),
+            false /* oneWay */));
+        return;
+      }
+      break;
+    case RocketUpgradeState::DONE:
+    case RocketUpgradeState::NO_UPGRADE:
+      break;
   }
+  if (rocketChannel_) {
+    rocketChannel_->sendRequestResponse(
+        rpcOptions,
+        methodName,
+        std::move(serializedRequest),
+        std::move(header),
+        std::move(cb));
+  } else {
+    auto buf =
+        LegacySerializedRequest(
+            header->getProtocolId(), methodName, std::move(serializedRequest))
+            .buffer;
 
-  std::chrono::milliseconds timeout(timeout_);
-  if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    timeout = rpcOptions.getTimeout();
+    // cb is not allowed to be null.
+    DCHECK(cb);
+
+    DestructorGuard dg(this);
+
+    // Oneway requests use a special sequence id.
+    // Make sure this non-oneway request doesn't use
+    // the oneway request ID.
+    if (++sendSeqId_ == ResponseChannel::ONEWAY_REQUEST_ID) {
+      ++sendSeqId_;
+    }
+
+    std::chrono::milliseconds timeout(timeout_);
+    if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
+      timeout = rpcOptions.getTimeout();
+    }
+
+    auto twcb = new TwowayCallback<HeaderClientChannel>(
+        this, sendSeqId_, std::move(cb), &getEventBase()->timer(), timeout);
+
+    setRequestHeaderOptions(header.get());
+    addRpcOptionHeaders(header.get(), rpcOptions);
+    attachConnectionMetadataOnce(header.get());
+
+    if (getClientType() != THRIFT_HEADER_CLIENT_TYPE) {
+      recvCallbackOrder_.push_back(sendSeqId_);
+    }
+    recvCallbacks_[sendSeqId_] = twcb;
+    try {
+      setBaseReceivedCallback(); // Cpp2Channel->setReceiveCallback can throw
+    } catch (const TTransportException& ex) {
+      twcb->messageSendError(
+          folly::exception_wrapper(std::current_exception(), ex));
+      return;
+    }
+
+    sendMessage(twcb, std::move(buf), header.get());
   }
-
-  auto twcb = new TwowayCallback<HeaderClientChannel>(
-      this, sendSeqId_, std::move(cb), &getEventBase()->timer(), timeout);
-
-  setRequestHeaderOptions(header.get());
-  addRpcOptionHeaders(header.get(), rpcOptions);
-  attachConnectionMetadataOnce(header.get());
-
-  if (getClientType() != THRIFT_HEADER_CLIENT_TYPE) {
-    recvCallbackOrder_.push_back(sendSeqId_);
-  }
-  recvCallbacks_[sendSeqId_] = twcb;
-  try {
-    setBaseReceivedCallback(); // Cpp2Channel->setReceiveCallback can throw
-  } catch (const TTransportException& ex) {
-    twcb->messageSendError(
-        folly::exception_wrapper(std::current_exception(), ex));
-    return;
-  }
-
-  sendMessage(twcb, std::move(buf), header.get());
 }
 
 // Header framing

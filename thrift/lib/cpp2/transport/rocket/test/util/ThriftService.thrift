@@ -119,3 +119,9 @@ service NewVersion {
   stream<Message> RequestResponseToStream();
   Message, stream<Message> RequestResponseToResponseandStream();
 }
+
+service TransportUpgrade {
+  i32 addTwoNumbers(1: i32 num1, 2: i32 num2);
+  i32 add(1: i32 x);
+  oneway void noResponse(1: string param);
+}

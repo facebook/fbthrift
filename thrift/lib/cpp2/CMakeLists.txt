@@ -28,6 +28,7 @@ get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
+get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY RocketUpgrade-cpp2-SOURCES)
 
 bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
@@ -84,6 +85,21 @@ target_link_libraries(
   rpcmetadata
   PUBLIC
     Folly::folly
+)
+
+bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
+add_library(
+  rocketupgrade
+
+  ${RocketUpgrade-cpp2-SOURCES}
+)
+add_dependencies(rocketupgrade RocketUpgrade-cpp2-target)
+target_link_libraries(
+  rocketupgrade
+  PUBLIC
+    Folly::folly
+    wangle::wangle
+    thrift
 )
 
 bypass_source_check("${reflection-cpp2-SOURCES}")
@@ -189,6 +205,7 @@ add_dependencies(
   thriftcpp2
   rpcmetadata
   thriftmetadata
+  rocketupgrade
 )
 target_link_libraries(
   thriftcpp2
@@ -198,6 +215,7 @@ target_link_libraries(
     thriftmetadata
     thriftfrozen2
     thriftprotocol
+    rocketupgrade
 )
 
 # Install includes
@@ -229,6 +247,7 @@ install(
     thriftfrozen2
     thriftprotocol
     thriftcpp2
+    rocketupgrade
   EXPORT fbthrift-exports
   DESTINATION ${LIB_INSTALL_DIR}
 )

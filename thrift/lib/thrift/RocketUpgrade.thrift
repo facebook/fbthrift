@@ -15,7 +15,7 @@
  */
 
 namespace cpp2 apache.thrift
-namespace py3 thrift.lib.cpp2.transport.util
+namespace py3 thrift.lib.thrift
 
 service RocketUpgrade {
   /**

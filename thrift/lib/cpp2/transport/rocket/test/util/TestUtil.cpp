@@ -28,9 +28,10 @@ namespace thrift {
 std::unique_ptr<ThriftServer> TestSetup::createServer(
     std::shared_ptr<AsyncProcessorFactory> processorFactory,
     uint16_t& port,
-    int maxRequests) {
+    int maxRequests,
+    std::string transport) {
   // override the default
-  FLAGS_transport = "rocket"; // client's transport
+  FLAGS_transport = transport; // client's transport
   observer_ = std::make_shared<FakeServerObserver>();
 
   auto server = std::make_unique<ThriftServer>();

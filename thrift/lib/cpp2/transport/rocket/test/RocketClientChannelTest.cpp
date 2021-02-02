@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
@@ -236,89 +237,6 @@ TEST_F(RocketClientChannelTest, ThriftClientLifetime) {
 }
 
 namespace {
-class SlowWritingSocket : public folly::AsyncSocket {
- public:
-  SlowWritingSocket(folly::EventBase* evb, const folly::SocketAddress& address)
-      : folly::AsyncSocket(evb, address) {}
-
-  void delayWritingAfterFirstNBytes(size_t nbytes) {
-    ASSERT_TRUE(bufferedWrites_.empty())
-        << "Can only be called on socket without buffered writes";
-    ASSERT_EQ(
-        std::numeric_limits<size_t>::max(),
-        bytesRemainingBeforeDelayingWrites_);
-
-    bytesRemainingBeforeDelayingWrites_ = nbytes;
-  }
-
-  void flushBufferedWrites() {
-    while (!bufferedWrites_.empty()) {
-      auto bufferedWrite = std::move(bufferedWrites_.front());
-      bufferedWrites_.pop_front();
-      folly::AsyncSocket::writeChain(
-          bufferedWrite.callback, std::move(bufferedWrite.iobuf));
-    }
-  }
-
-  void errorOutBufferedWrites(
-      folly::Optional<size_t> failRequestWithNBytesWritten) {
-    while (!bufferedWrites_.empty()) {
-      auto bufferedWrite = std::move(bufferedWrites_.front());
-      bufferedWrites_.pop_front();
-      bufferedWrite.callback->writeErr(
-          failRequestWithNBytesWritten ? *failRequestWithNBytesWritten
-                                       : bufferedWrite.bytesWritten,
-          folly::AsyncSocketException(
-              folly::AsyncSocketException::INTERRUPTED, "Write failed"));
-    }
-  }
-
-  void writeChain(
-      WriteCallback* callback,
-      std::unique_ptr<folly::IOBuf>&& buf,
-      folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    ASSERT_EQ(folly::WriteFlags::NONE, flags) << "Write flags not supported";
-
-    std::unique_ptr<folly::IOBuf> writeNow;
-    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    queue.append(std::move(buf));
-    if (bytesRemainingBeforeDelayingWrites_ != 0) {
-      writeNow = queue.splitAtMost(bytesRemainingBeforeDelayingWrites_);
-      bytesRemainingBeforeDelayingWrites_ -= writeNow->computeChainDataLength();
-    }
-
-    if (!queue.empty()) {
-      bufferedWrites_.emplace_back(
-          queue.move(),
-          callback,
-          writeNow ? writeNow->computeChainDataLength() : 0);
-      if (writeNow) {
-        folly::AsyncSocket::writeChain(nullptr, std::move(writeNow), flags);
-      }
-    } else if (!writeNow->empty()) {
-      folly::AsyncSocket::writeChain(callback, std::move(writeNow), flags);
-    }
-  }
-
- private:
-  struct BufferedWrite {
-    BufferedWrite(
-        std::unique_ptr<folly::IOBuf> _iobuf,
-        WriteCallback* _callback,
-        size_t _bytesWritten)
-        : iobuf(std::move(_iobuf)),
-          callback(_callback),
-          bytesWritten(_bytesWritten) {}
-
-    std::unique_ptr<folly::IOBuf> iobuf;
-    WriteCallback* callback;
-    size_t bytesWritten;
-  };
-
-  std::deque<BufferedWrite> bufferedWrites_;
-  size_t bytesRemainingBeforeDelayingWrites_{
-      std::numeric_limits<size_t>::max()};
-};
 
 folly::SemiFuture<std::unique_ptr<folly::IOBuf>> echoSync(
     test::TestServiceAsyncClient& client,

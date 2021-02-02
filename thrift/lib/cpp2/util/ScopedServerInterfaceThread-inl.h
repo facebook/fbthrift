@@ -152,7 +152,7 @@ ScopedServerInterfaceThread::newClientWithFaultInjection(
     folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
   return std::make_unique<AsyncClientT>(
-      RequestChannel::Ptr(new detail::FaultInjectionChannel(
+      RequestChannel::Ptr(new apache::thrift::detail::FaultInjectionChannel(
           PooledRequestChannel::newChannel(
               callbackExecutor,
               folly::getIOExecutor(),
