@@ -24,11 +24,11 @@
 
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_const.h>
-#include <thrift/compiler/ast/t_doc.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_include.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
+#include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_set.h>
@@ -56,7 +56,7 @@ namespace compiler {
  *
  * The program module also contains the definitions of the base types.
  */
-class t_program : public t_doc {
+class t_program : public t_node {
  public:
   /**
    * Constructor for t_program
@@ -69,79 +69,79 @@ class t_program : public t_doc {
    * Set program elements
    */
   void add_typedef(std::unique_ptr<t_typedef> td) {
-    typedefs_raw_.push_back(td.get());
-    typedefs_.push_back(std::move(td));
+    typedefs_.push_back(td.get());
+    elements_.push_back(std::move(td));
   }
   void add_enum(std::unique_ptr<t_enum> te) {
-    enums_raw_.push_back(te.get());
-    enums_.push_back(std::move(te));
+    enums_.push_back(te.get());
+    elements_.push_back(std::move(te));
   }
   void add_const(std::unique_ptr<t_const> tc) {
-    consts_raw_.push_back(tc.get());
-    consts_.push_back(std::move(tc));
+    consts_.push_back(tc.get());
+    elements_.push_back(std::move(tc));
   }
   void add_struct(std::unique_ptr<t_struct> ts) {
     objects_.push_back(ts.get());
-    structs_raw_.push_back(ts.get());
-    structs_.push_back(std::move(ts));
+    structs_.push_back(ts.get());
+    elements_.push_back(std::move(ts));
   }
   void add_xception(std::unique_ptr<t_struct> tx) {
     objects_.push_back(tx.get());
-    xceptions_raw_.push_back(tx.get());
-    xceptions_.push_back(std::move(tx));
+    xceptions_.push_back(tx.get());
+    elements_.push_back(std::move(tx));
   }
   void add_service(std::unique_ptr<t_service> ts) {
-    services_raw_.push_back(ts.get());
-    services_.push_back(std::move(ts));
+    services_.push_back(ts.get());
+    elements_.push_back(std::move(ts));
   }
   void add_interaction(std::unique_ptr<t_service> ti) {
-    interactions_raw_.push_back(ti.get());
-    interactions_.push_back(std::move(ti));
+    interactions_.push_back(ti.get());
+    elements_.push_back(std::move(ti));
   }
 
   void add_placeholder_typedef(std::unique_ptr<t_typedef> ptd) {
     assert(!ptd->is_defined());
-    placeholder_typedefs_raw_.push_back(ptd.get());
-    placeholder_typedefs_.push_back(std::move(ptd));
+    placeholder_typedefs_.push_back(ptd.get());
+    elements_.push_back(std::move(ptd));
   }
 
   void add_unnamed_typedef(std::unique_ptr<t_typedef> td) {
-    unnamed_typedefs_.push_back(std::move(td));
+    elements_.push_back(std::move(td));
   }
 
   void add_unnamed_type(std::unique_ptr<t_type> ut) {
-    unnamed_types_.push_back(std::move(ut));
+    elements_.push_back(std::move(ut));
   }
 
   /**
    * Get program elements
    */
   const std::vector<t_typedef*>& get_typedefs() const {
-    return typedefs_raw_;
+    return typedefs_;
   }
   const std::vector<t_enum*>& get_enums() const {
-    return enums_raw_;
+    return enums_;
   }
   const std::vector<t_const*>& get_consts() const {
-    return consts_raw_;
+    return consts_;
   }
   const std::vector<t_struct*>& get_structs() const {
-    return structs_raw_;
+    return structs_;
   }
   const std::vector<t_struct*>& get_xceptions() const {
-    return xceptions_raw_;
+    return xceptions_;
   }
   const std::vector<t_struct*>& get_objects() const {
     return objects_;
   }
   const std::vector<t_service*>& get_services() const {
-    return services_raw_;
+    return services_;
   }
   const std::vector<t_typedef*>& get_placeholder_typedefs() const {
-    return placeholder_typedefs_raw_;
+    return placeholder_typedefs_;
   }
   const std::vector<t_service*>& get_interactions() const {
-    return interactions_raw_;
+    return interactions_;
   }
 
   /**
@@ -191,7 +191,7 @@ class t_program : public t_doc {
    * well as the location of the include statement.
    */
   const std::vector<t_include*>& get_includes() const {
-    return includes_raw_;
+    return includes_;
   }
 
   /**
@@ -240,8 +240,8 @@ class t_program : public t_doc {
   add_include(std::string path, std::string include_site, int lineno);
 
   void add_include(std::unique_ptr<t_include> include) {
-    includes_raw_.push_back(include.get());
-    includes_.push_back(std::move(include));
+    includes_.push_back(include.get());
+    elements_.push_back(std::move(include));
   }
 
   /**
@@ -260,38 +260,22 @@ class t_program : public t_doc {
   std::string compute_name_from_file_path(std::string path);
 
  private:
+  // All the elements owned by this program.
+  std::vector<std::unique_ptr<t_node>> elements_;
+
   /**
    * Components to generate code for
    */
-  std::vector<std::unique_ptr<t_typedef>> typedefs_;
-  std::vector<std::unique_ptr<t_enum>> enums_;
-  std::vector<std::unique_ptr<t_const>> consts_;
-  std::vector<t_struct*> objects_; // objects_ is non-owning since it's simply
-                                   // structs_ + xceptions_
-  std::vector<std::unique_ptr<t_struct>> structs_;
-  std::vector<std::unique_ptr<t_struct>> xceptions_;
-  std::vector<std::unique_ptr<t_service>> services_;
-  std::vector<std::unique_ptr<t_include>> includes_;
-  std::vector<std::unique_ptr<t_service>> interactions_;
-
-  /**
-   * A place to store unnamed types so that they can be kept alive for the
-   * duration of the program's lifetime, and subsequently destroyed.
-   */
-  std::vector<std::unique_ptr<t_typedef>> placeholder_typedefs_;
-  std::vector<std::unique_ptr<t_typedef>> unnamed_typedefs_;
-  std::vector<std::unique_ptr<t_type>> unnamed_types_;
-
-  std::vector<t_typedef*> typedefs_raw_;
-  std::vector<t_enum*> enums_raw_;
-  std::vector<t_const*> consts_raw_;
-  std::vector<t_struct*> structs_raw_;
-  std::vector<t_struct*> xceptions_raw_;
-  std::vector<t_service*> services_raw_;
-  std::vector<t_include*> includes_raw_;
-  std::vector<t_service*> interactions_raw_;
-
-  std::vector<t_typedef*> placeholder_typedefs_raw_;
+  std::vector<t_typedef*> typedefs_;
+  std::vector<t_enum*> enums_;
+  std::vector<t_const*> consts_;
+  std::vector<t_struct*> structs_;
+  std::vector<t_struct*> xceptions_;
+  std::vector<t_service*> services_;
+  std::vector<t_include*> includes_;
+  std::vector<t_service*> interactions_;
+  std::vector<t_typedef*> placeholder_typedefs_;
+  std::vector<t_struct*> objects_; // structs_ + xceptions_
 
   std::string path_; // initialized in ctor init-list
   std::string name_{compute_name_from_file_path(path_)};

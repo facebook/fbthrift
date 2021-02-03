@@ -25,7 +25,7 @@ class t_program;
 /**
  * This node models an include statement in the Thrift program.
  */
-class t_include : public t_doc {
+class t_include : public t_node {
  public:
   explicit t_include(t_program* program) : program_(program) {}
 

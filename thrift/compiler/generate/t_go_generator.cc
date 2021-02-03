@@ -283,11 +283,11 @@ class t_go_generator : public t_concat_generator {
 
   void generate_go_docstring(
       std::ofstream& out,
-      t_doc* tdoc,
+      t_node* tdoc,
       t_struct* tstruct,
       const char* subheader);
 
-  void generate_go_docstring(std::ofstream& out, t_doc* tdoc);
+  void generate_go_docstring(std::ofstream& out, t_node* tdoc);
 
   /**
    * Helper rendering functions
@@ -3909,7 +3909,7 @@ void t_go_generator::generate_go_docstring(
  */
 void t_go_generator::generate_go_docstring(
     ofstream& out,
-    t_doc* tdoc,
+    t_node* tdoc,
     t_struct* tstruct,
     const char* subheader) {
   bool has_doc = false;
@@ -3951,7 +3951,7 @@ void t_go_generator::generate_go_docstring(
 /**
  * Generates the docstring for a generic object.
  */
-void t_go_generator::generate_go_docstring(ofstream& out, t_doc* tdoc) {
+void t_go_generator::generate_go_docstring(ofstream& out, t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_docstring_comment(out, "", "//", tdoc->get_doc(), "");
   }

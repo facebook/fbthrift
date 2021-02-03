@@ -4004,14 +4004,14 @@ void t_java_generator::generate_java_doc(ofstream& out, t_field* field) {
         field->get_doc() + "\n@see " + get_enum_class_name(field->get_type());
     generate_java_docstring_comment(out, combined_message);
   } else {
-    generate_java_doc(out, (t_doc*)field);
+    generate_java_doc(out, (t_node*)field);
   }
 }
 
 /**
  * Emits a JavaDoc comment if the provided object has a doc in Thrift
  */
-void t_java_generator::generate_java_doc(ofstream& out, t_doc* tdoc) {
+void t_java_generator::generate_java_doc(ofstream& out, t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_java_docstring_comment(out, tdoc->get_doc());
   }

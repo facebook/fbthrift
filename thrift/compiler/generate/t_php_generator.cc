@@ -288,7 +288,7 @@ class t_php_generator : public t_oop_generator {
   std::string argument_list(t_struct* tstruct, std::string moreparameters = "");
   std::string type_to_cast(t_type* ttype);
   std::string type_to_enum(t_type* ttype);
-  void generate_php_docstring(ofstream& out, t_doc* tdoc);
+  void generate_php_docstring(ofstream& out, t_node* tdoc);
   void generate_php_docstring(ofstream& out, t_function* tfunction);
   void
   generate_php_docstring_args(ofstream& out, int start_pos, t_struct* arg_list);
@@ -2048,7 +2048,7 @@ void t_php_generator::generate_php_function_helpers(t_function* tfunction) {
 /**
  * Generates the docstring for a generic object.
  */
-void t_php_generator::generate_php_docstring(ofstream& out, t_doc* tdoc) {
+void t_php_generator::generate_php_docstring(ofstream& out, t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_docstring_comment(
         out, // out

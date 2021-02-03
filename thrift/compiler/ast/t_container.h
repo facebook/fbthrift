@@ -27,8 +27,6 @@ class t_container : public t_type {
  public:
   t_container() : cpp_name_(), has_cpp_name_(false) {}
 
-  ~t_container() override {}
-
   void set_cpp_name(std::string cpp_name) {
     cpp_name_ = cpp_name;
     has_cpp_name_ = true;

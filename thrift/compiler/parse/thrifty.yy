@@ -263,7 +263,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_type*>          ListType
 
 %type<std::string>      Identifier
-%type<t_doc*>           Definition
+%type<t_node*>          Definition
 %type<t_type*>          TypeDefinition
 
 %type<t_typedef*>       Typedef

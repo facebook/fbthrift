@@ -23,31 +23,20 @@ namespace thrift {
 namespace compiler {
 
 /**
- * class t_doc
+ * class t_node
  *
  * Base data structure for every parsed element in
- * a thrift program that supports documentation.
+ * a thrift program.
  */
-class t_doc {
+class t_node {
  public:
-  /**
-   * Default constructor for t_doc
-   */
-  t_doc() {}
+  virtual ~t_node() = default;
 
-  virtual ~t_doc() {}
-
-  /**
-   * t_doc setters
-   */
   void set_doc(const std::string& doc) {
     doc_ = doc;
     has_doc_ = true;
   }
 
-  /**
-   * t_doc getters
-   */
   const std::string& get_doc() const {
     return doc_;
   }
@@ -59,6 +48,7 @@ class t_doc {
   void set_lineno(int lineno) {
     lineno_ = lineno;
   }
+
   int get_lineno() const {
     return lineno_;
   }

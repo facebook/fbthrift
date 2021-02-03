@@ -50,8 +50,6 @@ class t_enum_value : public t_annotated {
   t_enum_value(std::string name, int32_t value)
       : name_(std::move(name)), value_(value), has_value_(true) {}
 
-  virtual ~t_enum_value() {}
-
   /**
    * t_enum_value setters
    */

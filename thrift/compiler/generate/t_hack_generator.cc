@@ -340,7 +340,7 @@ class t_hack_generator : public t_oop_generator {
       bool force_nullable = false);
   std::string type_to_cast(t_type* ttype);
   std::string type_to_enum(t_type* ttype);
-  void generate_php_docstring(ofstream& out, t_doc* tdoc);
+  void generate_php_docstring(ofstream& out, t_node* tdoc);
   void generate_php_docstring(ofstream& out, t_enum* tenum);
   void generate_php_docstring(ofstream& out, t_service* tservice);
   void generate_php_docstring(ofstream& out, t_const* tconst);
@@ -3517,7 +3517,7 @@ void t_hack_generator::generate_php_function_helpers(t_function* tfunction) {
 /**
  * Generates the docstring for a generic object.
  */
-void t_hack_generator::generate_php_docstring(ofstream& out, t_doc* tdoc) {
+void t_hack_generator::generate_php_docstring(ofstream& out, t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_docstring_comment(
         out, // out

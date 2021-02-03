@@ -43,8 +43,6 @@ class t_concat_generator : public t_generator {
     escape_['\\'] = "\\\\";
   }
 
-  virtual ~t_concat_generator(void) {}
-
   /**
    * Framework generator method that iterates over all the parts of a program
    * and performs general actions. This is implemented by the base class and

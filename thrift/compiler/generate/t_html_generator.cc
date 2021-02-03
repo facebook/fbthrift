@@ -69,7 +69,7 @@ class t_html_generator : public t_concat_generator {
   void generate_service(t_service* tservice) override;
   void generate_xception(t_struct* txception) override;
 
-  void print_doc(t_doc* tdoc);
+  void print_doc(t_node* tdoc);
   int print_type(t_type* ttype);
   void print_const_value(const t_const_value* tvalue);
 
@@ -334,7 +334,7 @@ void t_html_generator::generate_css() {
  * If the provided documentable object has documentation attached, this
  * will emit it to the output stream in HTML format.
  */
-void t_html_generator::print_doc(t_doc* tdoc) {
+void t_html_generator::print_doc(t_node* tdoc) {
   if (tdoc->has_doc()) {
     string doc = tdoc->get_doc();
     size_t index;

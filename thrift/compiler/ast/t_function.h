@@ -18,7 +18,7 @@
 
 #include <string>
 
-#include <thrift/compiler/ast/t_doc.h>
+#include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_sink.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>

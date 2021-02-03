@@ -81,8 +81,6 @@ class t_type : public t_annotated {
    */
   using TypeValue = t_types::TypeValue;
 
-  virtual ~t_type() {}
-
   /**
    * t_type abstract methods
    */
@@ -212,7 +210,7 @@ class t_type : public t_annotated {
    * A t_type object can't be initialized by itself. The constructors
    * are protected and only t_type's children can initialize it.
    */
-  t_type() {}
+  t_type() = default;
 
   /**
    * Constructor for t_type

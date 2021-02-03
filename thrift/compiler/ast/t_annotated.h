@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/ast/t_doc.h>
+#include <thrift/compiler/ast/t_node.h>
 
 namespace apache {
 namespace thrift {
@@ -34,10 +34,8 @@ class t_const;
  *
  * Generic representation of any parsed element that can support annotations
  */
-class t_annotated : public t_doc {
+class t_annotated : public t_node {
  public:
-  virtual ~t_annotated() {}
-
   std::map<std::string, std::string> annotations_;
   // TODO (partisan): Try to use t_const without a pointer and rewrite the code
   // relying on copies.

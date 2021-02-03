@@ -243,7 +243,7 @@ class t_java_generator : public t_oop_generator {
 
   void generate_java_doc(std::ofstream& out, t_field* field);
 
-  void generate_java_doc(std::ofstream& out, t_doc* tdoc);
+  void generate_java_doc(std::ofstream& out, t_node* tdoc);
 
   void generate_java_doc(std::ofstream& out, t_function* tdoc);
 

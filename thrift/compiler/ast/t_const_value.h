@@ -25,7 +25,7 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/ast/t_doc.h>
+#include <thrift/compiler/ast/t_node.h>
 
 namespace apache {
 namespace thrift {

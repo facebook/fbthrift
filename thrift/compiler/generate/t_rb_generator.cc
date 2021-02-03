@@ -170,7 +170,7 @@ class t_rb_generator : public t_oop_generator {
       t_list* tlist,
       std::string iter);
 
-  void generate_rdoc(std::ofstream& out, t_doc* tdoc);
+  void generate_rdoc(std::ofstream& out, t_node* tdoc);
 
   /**
    * Helper rendering functions
@@ -1106,7 +1106,7 @@ string t_rb_generator::type_to_enum(t_type* type) {
   throw "INVALID TYPE IN type_to_enum: " + type->get_name();
 }
 
-void t_rb_generator::generate_rdoc(std::ofstream& out, t_doc* tdoc) {
+void t_rb_generator::generate_rdoc(std::ofstream& out, t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_docstring_comment(out, "", "# ", tdoc->get_doc(), "");
   }

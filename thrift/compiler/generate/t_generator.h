@@ -68,7 +68,7 @@ class t_generator {
     this->program_name_ = this->get_program_name(this->program_);
   }
 
-  virtual ~t_generator(void) {}
+  virtual ~t_generator() = default;
 
   virtual void fill_validator_list(validator_list&) const {}
 
@@ -142,7 +142,7 @@ class t_generator_factory {
       const std::string& long_name,
       const std::string& documentation);
 
-  virtual ~t_generator_factory() {}
+  virtual ~t_generator_factory() = default;
 
   virtual t_generator* get_generator(
       // The program to generate.

@@ -222,11 +222,11 @@ class t_py_generator : public t_concat_generator {
 
   void generate_python_docstring(
       std::ofstream& out,
-      t_doc* tdoc,
+      t_node* tdoc,
       t_struct* tstruct,
       const char* subheader);
 
-  void generate_python_docstring(std::ofstream& out, t_doc* tdoc);
+  void generate_python_docstring(std::ofstream& out, t_node* tdoc);
 
   void generate_json_enum(
       std::ofstream& out,
@@ -3330,7 +3330,7 @@ void t_py_generator::generate_python_docstring(
  */
 void t_py_generator::generate_python_docstring(
     ofstream& out,
-    t_doc* tdoc,
+    t_node* tdoc,
     t_struct* tstruct,
     const char* subheader) {
   bool has_doc = false;
@@ -3367,7 +3367,7 @@ void t_py_generator::generate_python_docstring(
 /**
  * Generates the docstring for a generic object.
  */
-void t_py_generator::generate_python_docstring(ofstream& out, t_doc* tdoc) {
+void t_py_generator::generate_python_docstring(ofstream& out, t_node* tdoc) {
   if (tdoc->has_doc()) {
     generate_docstring_comment(
         out, "\"\"\"\n", "", tdoc->get_doc(), "\"\"\"\n");
