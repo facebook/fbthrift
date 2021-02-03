@@ -471,7 +471,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   public varray<Foo> $f;
 
   <<__Rx, __ProvenanceSkipFrame>>
-  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  ) {
+  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  )[] {
     $this->a = $a ?? darray[];
     $this->b = $b ?? varray[];
     $this->d = $d;
@@ -480,12 +480,12 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -508,7 +508,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['a'],
       $shape['b'],
@@ -524,7 +524,7 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __ProvenanceSkipFrame>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'a' => $this->a,
       'b' => $this->b,
@@ -568,16 +568,16 @@ class Bar_baz_result implements \IThriftStruct {
   public ?varray<Foo> $success;
 
   <<__Rx, __ProvenanceSkipFrame>>
-  public function __construct(?varray<Foo> $success = null  ) {
+  public function __construct(?varray<Foo> $success = null  )[] {
   }
 
   <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
     );

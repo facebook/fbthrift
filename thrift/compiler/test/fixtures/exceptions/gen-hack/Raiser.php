@@ -939,16 +939,16 @@ class Raiser_doBland_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
@@ -981,16 +981,16 @@ class Raiser_doBland_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
@@ -1023,16 +1023,16 @@ class Raiser_doRaise_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
@@ -1089,16 +1089,16 @@ class Raiser_doRaise_result implements \IThriftStruct {
   public ?Serious $s;
 
   <<__Rx>>
-  public function __construct(?Banal $b = null, ?Fiery $f = null, ?Serious $s = null  ) {
+  public function __construct(?Banal $b = null, ?Fiery $f = null, ?Serious $s = null  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'b'),
       Shapes::idx($shape, 'f'),
@@ -1134,16 +1134,16 @@ class Raiser_get200_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
@@ -1183,16 +1183,16 @@ class Raiser_get200_result implements \IThriftStruct {
   public ?string $success;
 
   <<__Rx>>
-  public function __construct(?string $success = null  ) {
+  public function __construct(?string $success = null  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
@@ -1226,16 +1226,16 @@ class Raiser_get500_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
@@ -1299,16 +1299,16 @@ class Raiser_get500_result implements \IThriftStruct {
   public ?Serious $s;
 
   <<__Rx>>
-  public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null  ) {
+  public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
       Shapes::idx($shape, 'f'),

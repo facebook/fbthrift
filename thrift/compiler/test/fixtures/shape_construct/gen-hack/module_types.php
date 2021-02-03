@@ -141,7 +141,7 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   protected TestUnionEnum $_type = TestUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?int $int_value = null, ?string $str_value = null, ?float $double_value = null, ?Vector<string> $list_of_strings = null, ?Map<string, int> $map_of_string_to_ints = null, ?Foo $struct_foo = null  ) {
+  public function __construct(?int $int_value = null, ?string $str_value = null, ?float $double_value = null, ?Vector<string> $list_of_strings = null, ?Map<string, int> $map_of_string_to_ints = null, ?Foo $struct_foo = null  )[] {
     $this->_type = TestUnionEnum::_EMPTY_;
     if ($int_value !== null) {
       $this->int_value = $int_value;
@@ -170,12 +170,12 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'int_value'),
       Shapes::idx($shape, 'str_value'),
@@ -423,7 +423,7 @@ class Foo implements \IThriftStruct {
   public string $str_value;
 
   <<__Rx>>
-  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null  ) {
+  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null, ?int $c = null, ?bool $d = null, ?string $str_value = null  )[] {
     $this->a = $a ?? Vector {};
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -432,12 +432,12 @@ class Foo implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -570,7 +570,7 @@ class TestStruct implements \IThriftStruct {
   public Vector<TestStruct> $list_of_struct_self;
 
   <<__Rx>>
-  public function __construct(?Foo $foo_struct = null, ?TestUnion $union_value = null, ?TestStruct $struct_of_self = null, ?Vector<Foo> $list_of_struct_foo = null, ?Map<string, Foo> $map_of_string_to_struct_foo = null, ?Vector<TestStruct> $list_of_struct_self = null  ) {
+  public function __construct(?Foo $foo_struct = null, ?TestUnion $union_value = null, ?TestStruct $struct_of_self = null, ?Vector<Foo> $list_of_struct_foo = null, ?Map<string, Foo> $map_of_string_to_struct_foo = null, ?Vector<TestStruct> $list_of_struct_self = null  )[] {
     $this->foo_struct = $foo_struct;
     $this->union_value = $union_value;
     $this->struct_of_self = $struct_of_self;
@@ -580,12 +580,12 @@ class TestStruct implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo_struct'),
       Shapes::idx($shape, 'union_value'),
@@ -678,7 +678,7 @@ class Baz extends \TException implements \IThriftStruct {
   public int $code;
 
   <<__Rx>>
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?Set<string> $some_container = null, ?int $code = null  ) {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?Set<string> $some_container = null, ?int $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
@@ -687,12 +687,12 @@ class Baz extends \TException implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
       Shapes::idx($shape, 'some_field'),
@@ -744,18 +744,18 @@ class OptBaz extends \TException implements \IThriftStruct {
   public string $message;
 
   <<__Rx>>
-  public function __construct(?string $message = null  ) {
+  public function __construct(?string $message = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
     );

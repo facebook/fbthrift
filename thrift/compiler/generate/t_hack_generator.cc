@@ -2226,7 +2226,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
     }
     indent(out) << "<<__Rx>>\n";
     indent(out) << "public static function __stringifyMapKeys<T>("
-                << arg_return_type << "<arraykey, T> $m): " << arg_return_type
+                << arg_return_type << "<arraykey, T> $m)[]: " << arg_return_type
                 << "<string, T> {\n";
     indent_up();
     if (arrays_) {
@@ -2249,7 +2249,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
 
   generate_php_struct_construction_attributes(out);
   indent(out)
-      << "public static function __fromShape(self::TShape $shape): this {\n";
+      << "public static function __fromShape(self::TShape $shape)[]: this {\n";
   indent_up();
   indent(out) << "return new static(\n";
   indent_up();
@@ -2411,7 +2411,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
     out << ", __ProvenanceSkipFrame";
   }
   out << ">>\n";
-  indent(out) << "public function __toShape(): self::TShape {\n";
+  indent(out) << "public function __toShape()[]: self::TShape {\n";
   indent_up();
   indent(out) << "return shape(\n";
   indent_up();
@@ -2891,7 +2891,7 @@ void t_hack_generator::_generate_php_struct_definition(
         << (*m_iter)->get_name() << " = null";
     first = false;
   }
-  out << indent() << ") {\n";
+  out << indent() << ")[] {\n";
   indent_up();
 
   if (is_exception) {
@@ -2967,7 +2967,7 @@ void t_hack_generator::_generate_php_struct_definition(
   out << "\n";
 
   generate_php_struct_construction_attributes(out);
-  indent(out) << "public static function withDefaultValues(): this {\n";
+  indent(out) << "public static function withDefaultValues()[]: this {\n";
   indent_up();
   indent(out) << "return new static();\n";
   scope_down(out);
@@ -2993,7 +2993,7 @@ void t_hack_generator::_generate_php_struct_definition(
         message_annotation->second != "message") {
       auto message_field = tstruct->get_member(message_annotation->second);
       out << indent() << "<<__Override, __Rx, __MaybeMutable>>\n"
-          << indent() << "public function getMessage(): string {\n"
+          << indent() << "public function getMessage()[]: string {\n"
           << indent() << "  return $this->" << message_field->get_name();
       if (message_field->get_req() != t_field::T_REQUIRED) {
         out << " ?? ''";
@@ -3052,7 +3052,7 @@ void t_hack_generator::generate_php_struct_from_shape(
     t_struct* tstruct) {
   generate_php_struct_construction_attributes(out);
   out << indent() << "public static function fromShape"
-      << "(self::TConstructorShape $shape): this {\n";
+      << "(self::TConstructorShape $shape)[]: this {\n";
   indent_up();
   out << indent() << "return new static(\n";
   indent_up();
@@ -3081,7 +3081,7 @@ void t_hack_generator::generate_php_struct_from_map(
     out << (soft_attribute_ ? "<<__Soft>> " : "@")
         << "KeyedContainer<string, mixed> $map";
   }
-  out << "): this {\n";
+  out << ")[]: this {\n";
   indent_up();
   out << indent() << "return new static(\n";
   indent_up();

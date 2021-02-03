@@ -138,7 +138,7 @@ class Foo implements \IThriftStruct {
   public ?\Adapter3::THackType $optionalMapField;
 
   <<__Rx>>
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null  ) {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null  )[] {
     $this->intField = $intField ?? \Adapter1::fromThrift(0);
     $this->optionalIntField = $optionalIntField;
     $this->setField = $setField ?? \Adapter2::fromThrift(Set {});
@@ -148,12 +148,12 @@ class Foo implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'intField'),
       Shapes::idx($shape, 'optionalIntField'),
@@ -266,7 +266,7 @@ class Bar implements \IThriftStruct {
   public ?Vector<\Adapter1::THackType> $optionalStructListField;
 
   <<__Rx>>
-  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null  ) {
+  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null  )[] {
     $this->structField = $structField;
     $this->optionalStructField = $optionalStructField;
     $this->structListField = $structListField ?? Vector {};
@@ -274,12 +274,12 @@ class Bar implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'structField'),
       Shapes::idx($shape, 'optionalStructField'),

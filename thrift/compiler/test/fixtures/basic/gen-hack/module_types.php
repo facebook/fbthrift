@@ -132,7 +132,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   public bool $idempotent;
 
   <<__Rx>>
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null  ) {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null  )[] {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
     $this->MyDataField = $MyDataField;
@@ -143,12 +143,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
       Shapes::idx($shape, 'MyStringField'),
@@ -173,7 +173,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['MyIntField'],
       $shape['MyStringField'],
@@ -186,7 +186,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'MyIntField' => $this->MyIntField,
       'MyStringField' => $this->MyStringField,
@@ -252,16 +252,16 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
@@ -279,13 +279,13 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
     );
   }
@@ -371,7 +371,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?MyEnum $myEnum = null, ?MyStruct $myStruct = null, ?MyDataItem $myDataItem = null  ) {
+  public function __construct(?MyEnum $myEnum = null, ?MyStruct $myStruct = null, ?MyDataItem $myDataItem = null  )[] {
     $this->_type = MyUnionEnum::_EMPTY_;
     if ($myEnum !== null) {
       $this->myEnum = $myEnum;
@@ -388,12 +388,12 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'myEnum'),
       Shapes::idx($shape, 'myStruct'),
@@ -483,7 +483,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'myEnum') === null ? null : ($shape['myEnum']),
       Shapes::idx($shape, 'myStruct') === null ? null : (MyStruct::__fromShape($shape['myStruct'])),
@@ -492,7 +492,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'myEnum' => $this->myEnum,
       'myStruct' => $this->myStruct?->__toShape(),

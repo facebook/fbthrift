@@ -59,17 +59,17 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   public string $name;
 
   <<__Rx>>
-  public function __construct(?string $name = null  ) {
+  public function __construct(?string $name = null  )[] {
     $this->name = $name ?? '';
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
     );
@@ -88,14 +88,14 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['name'],
     );
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'name' => $this->name,
     );
@@ -184,7 +184,7 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   public ?MyStructNestedAnnotation $nest;
 
   <<__Rx>>
-  public function __construct(?int $count = null, ?string $name = null, ?string $extra = null, ?MyStructNestedAnnotation $nest = null  ) {
+  public function __construct(?int $count = null, ?string $name = null, ?string $extra = null, ?MyStructNestedAnnotation $nest = null  )[] {
     $this->count = $count ?? 0;
     $this->name = $name ?? '';
     $this->extra = $extra;
@@ -192,12 +192,12 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'count'),
       Shapes::idx($shape, 'name'),
@@ -219,7 +219,7 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['count'],
       $shape['name'],
@@ -229,7 +229,7 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'count' => $this->count,
       'name' => $this->name,
@@ -356,7 +356,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   public string $empty_annotations;
 
   <<__Rx>>
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null  ) {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null  )[] {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
     $this->annotation_with_quote = $annotation_with_quote ?? '';
@@ -366,12 +366,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'major'),
       Shapes::idx($shape, 'package'),
@@ -395,7 +395,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['major'],
       $shape['package'],
@@ -407,7 +407,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'major' => $this->major,
       'package' => $this->package,
@@ -491,18 +491,18 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   public string $password;
 
   <<__Rx>>
-  public function __construct(?int $id = null, ?string $password = null  ) {
+  public function __construct(?int $id = null, ?string $password = null  )[] {
     $this->id = $id ?? 0;
     $this->password = $password ?? '';
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'id'),
       Shapes::idx($shape, 'password'),
@@ -522,7 +522,7 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['id'],
       $shape['password'],
@@ -530,7 +530,7 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'id' => $this->id,
       'password' => $this->password,

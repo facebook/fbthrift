@@ -126,7 +126,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null, ?Map<int, string> $typedefValue = null, ?string $stringRef = null  ) {
+  public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null, ?Map<int, string> $typedefValue = null, ?string $stringRef = null  )[] {
     $this->_type = ComplexUnionEnum::_EMPTY_;
     if ($intValue !== null) {
       $this->intValue = $intValue;
@@ -155,12 +155,12 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'intValue'),
       Shapes::idx($shape, 'stringValue'),
@@ -425,7 +425,7 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   protected ListUnionEnum $_type = ListUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null  ) {
+  public function __construct(?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null  )[] {
     $this->_type = ListUnionEnum::_EMPTY_;
     if ($intListValue !== null) {
       $this->intListValue = $intListValue;
@@ -438,12 +438,12 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'intListValue'),
       Shapes::idx($shape, 'stringListValue'),
@@ -595,7 +595,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   protected DataUnionEnum $_type = DataUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?string $binaryData = null, ?string $stringData = null  ) {
+  public function __construct(?string $binaryData = null, ?string $stringData = null  )[] {
     $this->_type = DataUnionEnum::_EMPTY_;
     if ($binaryData !== null) {
       $this->binaryData = $binaryData;
@@ -608,12 +608,12 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'binaryData'),
       Shapes::idx($shape, 'stringData'),
@@ -762,19 +762,19 @@ class Val implements \IThriftStruct {
   public Map<int, string> $typedefValue;
 
   <<__Rx>>
-  public function __construct(?string $strVal = null, ?int $intVal = null, ?Map<int, string> $typedefValue = null  ) {
+  public function __construct(?string $strVal = null, ?int $intVal = null, ?Map<int, string> $typedefValue = null  )[] {
     $this->strVal = $strVal ?? '';
     $this->intVal = $intVal ?? 0;
     $this->typedefValue = $typedefValue ?? Map {};
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'strVal'),
       Shapes::idx($shape, 'intVal'),
@@ -877,7 +877,7 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   protected ValUnionEnum $_type = ValUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?Val $v1 = null, ?Val $v2 = null  ) {
+  public function __construct(?Val $v1 = null, ?Val $v2 = null  )[] {
     $this->_type = ValUnionEnum::_EMPTY_;
     if ($v1 !== null) {
       $this->v1 = $v1;
@@ -890,12 +890,12 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'v1'),
       Shapes::idx($shape, 'v2'),
@@ -1039,7 +1039,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   protected VirtualComplexUnionEnum $_type = VirtualComplexUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?string $thingOne = null, ?string $thingTwo = null  ) {
+  public function __construct(?string $thingOne = null, ?string $thingTwo = null  )[] {
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
     if ($thingOne !== null) {
       $this->thingOne = $thingOne;
@@ -1052,12 +1052,12 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'thingOne'),
       Shapes::idx($shape, 'thingTwo'),
@@ -1175,17 +1175,17 @@ class NonCopyableStruct implements \IThriftStruct {
   public int $num;
 
   <<__Rx>>
-  public function __construct(?int $num = null  ) {
+  public function __construct(?int $num = null  )[] {
     $this->num = $num ?? 0;
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'num'),
     );
@@ -1254,7 +1254,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
   protected NonCopyableUnionEnum $_type = NonCopyableUnionEnum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?NonCopyableStruct $s = null  ) {
+  public function __construct(?NonCopyableStruct $s = null  )[] {
     $this->_type = NonCopyableUnionEnum::_EMPTY_;
     if ($s !== null) {
       $this->s = $s;
@@ -1263,12 +1263,12 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 's'),
     );

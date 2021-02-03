@@ -55,17 +55,17 @@ class FBStruct implements \IThriftStruct {
   public string $str_value;
 
   <<__Rx>>
-  public function __construct(?string $str_value = null  ) {
+  public function __construct(?string $str_value = null  )[] {
     $this->str_value = $str_value ?? '';
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'str_value'),
     );

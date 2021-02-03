@@ -70,18 +70,18 @@ class Foo implements \IThriftStruct {
   public dict<string, vec<keyset<int>>> $b;
 
   <<__Rx>>
-  public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null  ) {
+  public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null  )[] {
     $this->a = $a ?? vec[];
     $this->b = $b ?? dict[];
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),

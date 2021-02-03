@@ -267,16 +267,16 @@ class MyService_foo_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
@@ -309,16 +309,16 @@ class MyService_foo_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }

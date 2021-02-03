@@ -60,18 +60,18 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   public ?Map<string, string> $map_of_string_to_string;
 
   <<__Rx>>
-  public function __construct(?string $a = null, ?Map<string, string> $map_of_string_to_string = null  ) {
+  public function __construct(?string $a = null, ?Map<string, string> $map_of_string_to_string = null  )[] {
     $this->a = $a;
     $this->map_of_string_to_string = $map_of_string_to_string;
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'map_of_string_to_string'),
@@ -91,7 +91,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a') === null ? null : ($shape['a']),
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
@@ -99,7 +99,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'a' => $this->a,
       'map_of_string_to_string' => $this->map_of_string_to_string
@@ -420,7 +420,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   public ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A;
 
   <<__Rx>>
-  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, B> $map_of_string_to_self = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<B> $list_of_self = null, ?Vector<Vector<B>> $list_of_list_of_self = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null  ) {
+  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, B> $map_of_string_to_self = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<B> $list_of_self = null, ?Vector<Vector<B>> $list_of_list_of_self = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null  )[] {
     $this->map_of_string_to_string = $map_of_string_to_string;
     $this->map_of_string_to_i32 = $map_of_string_to_i32;
     $this->map_of_string_to_A = $map_of_string_to_A;
@@ -436,12 +436,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
       Shapes::idx($shape, 'map_of_string_to_i32'),
@@ -471,7 +471,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
       Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : ((new Map($shape['map_of_string_to_i32']))),
@@ -519,7 +519,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'map_of_string_to_string' => $this->map_of_string_to_string
         |> $$ === null ? null : dict($$),
@@ -897,7 +897,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   public ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A;
 
   <<__Rx>>
-  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, B> $map_of_string_to_self = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<B> $list_of_self = null, ?Vector<Vector<B>> $list_of_list_of_self = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null  ) {
+  public function __construct(?Map<string, string> $map_of_string_to_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, B> $map_of_string_to_self = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<string> $list_of_string = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<B> $list_of_self = null, ?Vector<Vector<B>> $list_of_list_of_self = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null  )[] {
     $this->map_of_string_to_string = $map_of_string_to_string;
     $this->map_of_string_to_i32 = $map_of_string_to_i32;
     $this->map_of_string_to_A = $map_of_string_to_A;
@@ -913,12 +913,12 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
       Shapes::idx($shape, 'map_of_string_to_i32'),
@@ -948,7 +948,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string') === null ? null : ((new Map($shape['map_of_string_to_string']))),
       Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : ((new Map($shape['map_of_string_to_i32']))),
@@ -996,7 +996,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'map_of_string_to_string' => $this->map_of_string_to_string
         |> $$ === null ? null : dict($$),

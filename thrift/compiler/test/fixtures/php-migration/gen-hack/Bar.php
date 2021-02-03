@@ -554,7 +554,7 @@ class Bar_baz_args implements \IThriftStruct {
   public ?int $e;
 
   <<__Rx>>
-  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
+  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  )[] {
     $this->a = $a;
     $this->b = $b;
     $this->c = $c;
@@ -563,12 +563,12 @@ class Bar_baz_args implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -579,7 +579,7 @@ class Bar_baz_args implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'a'),
@@ -629,23 +629,23 @@ class Bar_baz_result implements \IThriftStruct {
   public ?string $success;
 
   <<__Rx>>
-  public function __construct(?string $success = null  ) {
+  public function __construct(?string $success = null  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'success'),

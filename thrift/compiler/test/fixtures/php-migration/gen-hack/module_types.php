@@ -92,7 +92,7 @@ class Foo implements \IThriftStruct {
   public ?bool $d;
 
   <<__Rx>>
-  public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  ) {
+  public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
     $this->a = $a;
     $this->b = $b;
     $this->c = $c ?? 7;
@@ -100,12 +100,12 @@ class Foo implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -115,7 +115,7 @@ class Foo implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'a'),
@@ -210,7 +210,7 @@ class Baz extends \TException implements \IThriftStruct {
   public int $code;
 
   <<__Rx>>
-  public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null  ) {
+  public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->some_field = $some_field;
@@ -219,12 +219,12 @@ class Baz extends \TException implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
       Shapes::idx($shape, 'some_field'),
@@ -234,7 +234,7 @@ class Baz extends \TException implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'message'),
@@ -290,25 +290,25 @@ class OptBaz extends \TException implements \IThriftStruct {
   public string $message;
 
   <<__Rx>>
-  public function __construct(?string $message = null  ) {
+  public function __construct(?string $message = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
     );
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): this {
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       idx($map, 'message'),

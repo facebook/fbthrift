@@ -190,7 +190,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   public ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets;
 
   <<__Rx>>
-  public function __construct(?int $just_int = null, ?Vector<string> $list_of_strings = null, ?darray<int, bool> $set_of_ints = null, ?Map<string, Vector<string>> $map_of_list_of_strings = null, ?Map<string, darray<string, bool>> $map_of_set_of_strings = null, ?Map<string, Map<string, int>> $map_of_strings_to_map_of_string_ints = null, ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets = null  ) {
+  public function __construct(?int $just_int = null, ?Vector<string> $list_of_strings = null, ?darray<int, bool> $set_of_ints = null, ?Map<string, Vector<string>> $map_of_list_of_strings = null, ?Map<string, darray<string, bool>> $map_of_set_of_strings = null, ?Map<string, Map<string, int>> $map_of_strings_to_map_of_string_ints = null, ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets = null  )[] {
     $this->just_int = $just_int ?? 0;
     $this->list_of_strings = $list_of_strings ?? Vector {};
     $this->set_of_ints = $set_of_ints ?? darray[];
@@ -201,12 +201,12 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'just_int'),
       Shapes::idx($shape, 'list_of_strings'),
@@ -231,7 +231,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function __fromShape(self::TShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['just_int'],
       (new Vector($shape['list_of_strings'])),
@@ -250,7 +250,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'just_int' => $this->just_int,
       'list_of_strings' => varray($this->list_of_strings),

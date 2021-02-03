@@ -323,18 +323,18 @@ class Bar_baz_args implements \IThriftStruct {
   public vec<dict<int, keyset<string>>> $b;
 
   <<__Rx>>
-  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null  ) {
+  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null  )[] {
     $this->a = $a ?? keyset[];
     $this->b = $b ?? vec[];
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -376,16 +376,16 @@ class Bar_baz_result implements \IThriftStruct {
   public ?string $success;
 
   <<__Rx>>
-  public function __construct(?string $success = null  ) {
+  public function __construct(?string $success = null  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
     );

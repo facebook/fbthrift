@@ -117,19 +117,19 @@ class Internship implements \IThriftStruct {
   public ?Company $employer;
 
   <<__Rx>>
-  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  ) {
+  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  )[] {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'weeks'),
       Shapes::idx($shape, 'title'),
@@ -191,18 +191,18 @@ class Range implements \IThriftStruct {
   public int $max;
 
   <<__Rx>>
-  public function __construct(?int $min = null, ?int $max = null  ) {
+  public function __construct(?int $min = null, ?int $max = null  )[] {
     $this->min = $min ?? 0;
     $this->max = $max ?? 0;
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'min'),
       Shapes::idx($shape, 'max'),
@@ -263,18 +263,18 @@ class struct1 implements \IThriftStruct {
   public string $b;
 
   <<__Rx>>
-  public function __construct(?int $a = null, ?string $b = null  ) {
+  public function __construct(?int $a = null, ?string $b = null  )[] {
     $this->a = $a ?? 1234567;
     $this->b = $b ?? "<uninitialized>";
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -363,7 +363,7 @@ class struct2 implements \IThriftStruct {
   public Vector<int> $d;
 
   <<__Rx>>
-  public function __construct(?int $a = null, ?string $b = null, ?struct1 $c = null, ?Vector<int> $d = null  ) {
+  public function __construct(?int $a = null, ?string $b = null, ?struct1 $c = null, ?Vector<int> $d = null  )[] {
     $this->a = $a ?? 0;
     $this->b = $b ?? '';
     $this->c = $c;
@@ -371,12 +371,12 @@ class struct2 implements \IThriftStruct {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -451,19 +451,19 @@ class struct3 implements \IThriftStruct {
   public ?struct2 $c;
 
   <<__Rx>>
-  public function __construct(?string $a = null, ?int $b = null, ?struct2 $c = null  ) {
+  public function __construct(?string $a = null, ?int $b = null, ?struct2 $c = null  )[] {
     $this->a = $a ?? '';
     $this->b = $b ?? 0;
     $this->c = $c;
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -536,19 +536,19 @@ class struct4 implements \IThriftStruct {
   public ?int $c;
 
   <<__Rx>>
-  public function __construct(?int $a = null, ?float $b = null, ?int $c = null  ) {
+  public function __construct(?int $a = null, ?float $b = null, ?int $c = null  )[] {
     $this->a = $a ?? 0;
     $this->b = $b;
     $this->c = $c;
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -619,7 +619,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   protected union1Enum $_type = union1Enum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?int $i = null, ?float $d = null  ) {
+  public function __construct(?int $i = null, ?float $d = null  )[] {
     $this->_type = union1Enum::_EMPTY_;
     if ($i !== null) {
       $this->i = $i;
@@ -632,12 +632,12 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'i'),
       Shapes::idx($shape, 'd'),
@@ -785,7 +785,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   protected union2Enum $_type = union2Enum::_EMPTY_;
 
   <<__Rx>>
-  public function __construct(?int $i = null, ?float $d = null, ?struct1 $s = null, ?union1 $u = null  ) {
+  public function __construct(?int $i = null, ?float $d = null, ?struct1 $s = null, ?union1 $u = null  )[] {
     $this->_type = union2Enum::_EMPTY_;
     if ($i !== null) {
       $this->i = $i;
@@ -806,12 +806,12 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'i'),
       Shapes::idx($shape, 'd'),

@@ -299,18 +299,18 @@ class Service_func_args implements \IThriftStruct {
   public ?Foo $arg2;
 
   <<__Rx>>
-  public function __construct(?\Adapter2::THackType $arg1 = null, ?Foo $arg2 = null  ) {
+  public function __construct(?\Adapter2::THackType $arg1 = null, ?Foo $arg2 = null  )[] {
     $this->arg1 = $arg1 ?? \Adapter2::fromThrift('');
     $this->arg2 = $arg2;
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'arg1'),
       Shapes::idx($shape, 'arg2'),
@@ -357,16 +357,16 @@ class Service_func_result implements \IThriftStruct {
   public ?\Adapter1::THackType $success;
 
   <<__Rx>>
-  public function __construct(?\Adapter1::THackType $success = null  ) {
+  public function __construct(?\Adapter1::THackType $success = null  )[] {
   }
 
   <<__Rx, __MutableReturn>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
   <<__Rx, __MutableReturn>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
