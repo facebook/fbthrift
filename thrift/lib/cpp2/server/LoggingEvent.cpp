@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 
 #include <folly/Portability.h>
+#include <folly/Random.h>
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
 #include <folly/io/async/AsyncSSLSocket.h>
@@ -67,6 +68,13 @@ struct RegistryTag {};
 folly::LeakySingleton<Registry, RegistryTag> registryStorage;
 
 } // namespace
+
+bool LoggingSampler::shouldSample(SamplingRate samplingRate) {
+  if (samplingRate <= 0) {
+    return false;
+  }
+  return folly::Random::rand64(samplingRate) == 0;
+}
 
 void useMockLoggingEventRegistry() {
   folly::LeakySingleton<Registry, RegistryTag>::make_mock();
