@@ -36,7 +36,7 @@ def main():
                   help='The server port')
     op.add_option('-s', '--servertype',
                   action='store', type='string', dest='servertype',
-                  default='TGeventServer',
+                  default='TCppServer',
                   help='Type name of server')
     op.add_option('-w', '--num_workers',
                   action='store', type='int', dest='workers', default=4,
@@ -55,12 +55,6 @@ def main():
         op.error('trailing arguments: ' + ' '.join(args))
 
     handler = LoadHandler()
-    if options.servertype == 'TGeventServer':
-        # only import TGeventServer when necessary. TGeventServer calls
-        # monkey_patch, which breaks other servers
-        from apache.thrift.test.sync_load_handler import GeventLoadHandler
-        from thrift.server import TGeventServer
-        handler = GeventLoadHandler()
     processor = LoadTest.Processor(handler)
 
     if options.header:
@@ -98,14 +92,6 @@ def main():
         if options.servertype == "TNonblockingServer":
             server = TNonblockingServer.TNonblockingServer(processor, transport,
                                 pfactory, maxQueueSize=options.max_queue_size)
-        elif options.servertype == "TGeventServer":
-            print('Worker processes: ' + str(options.workers))
-            # Gevent makes its own server transport.
-            server = TGeventServer.TGeventServer(options.port,
-                                                 processor, None,
-                                                 tfactory,
-                                                 pfactory)
-            server.setNumWorkers(options.workers)
         else:
             ServerClass = getattr(TServer, options.servertype)
             server = ServerClass(processor, transport, tfactory, pfactory)
