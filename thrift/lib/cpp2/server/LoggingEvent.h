@@ -61,63 +61,7 @@ class ServerEventHandler : public LoggingEventHandler {
   virtual ~ServerEventHandler() {}
 };
 
-class ConnectionLoggingContext {
- public:
-  enum class TransportType {
-    HEADER,
-    ROCKET,
-  };
-
-  explicit ConnectionLoggingContext(
-      TransportType transportType,
-      const Cpp2Worker& worker,
-      const Cpp2ConnContext& connContext)
-      : transportType_(transportType),
-        worker_(worker),
-        connContext_(connContext) {}
-
-  const Cpp2Worker& getWorker() const {
-    return worker_;
-  }
-  const Cpp2ConnContext& getConnContext() const {
-    return connContext_;
-  }
-  void setClientAgent(std::string clientAgent) {
-    clientAgent_ = clientAgent;
-  }
-  void setClientHostId(std::string clientHostId) {
-    clientHostId_ = clientHostId;
-  }
-  void setInterfaceKind(apache::thrift::InterfaceKind kind) {
-    interfaceKind_ = kind;
-  }
-  const std::optional<std::string>& getClientAgent() const {
-    return clientAgent_;
-  }
-  const std::optional<std::string>& getClientHostId() const {
-    return clientHostId_;
-  }
-  TransportType getTransportType() const {
-    return transportType_;
-  }
-  InterfaceKind getInterfaceKind() const {
-    return interfaceKind_;
-  }
-
-  void readSetupMetadata(const RequestSetupMetadata& meta) {
-    setInterfaceKind(
-        meta.interfaceKind_ref().value_or(apache::thrift::InterfaceKind::USER));
-  }
-
- private:
-  TransportType transportType_;
-  const Cpp2Worker& worker_;
-  const Cpp2ConnContext& connContext_;
-
-  std::optional<std::string> clientAgent_;
-  std::optional<std::string> clientHostId_;
-  apache::thrift::InterfaceKind interfaceKind_;
-};
+using ConnectionLoggingContext = Cpp2ConnContext;
 
 class ConnectionEventHandler : public LoggingEventHandler {
  public:

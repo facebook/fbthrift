@@ -139,13 +139,11 @@ Cpp2Connection::Cpp2Connection(
           worker_->getServer()->getEventBaseManager(),
           duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr,
           nullptr,
-          worker_->getServer()->getClientIdentityHook()),
+          worker_->getServer()->getClientIdentityHook(),
+          worker_.get()),
       transport_(transport),
-      threadManager_(worker_->getServer()->getThreadManager()),
-      loggingContext_(
-          ConnectionLoggingContext::TransportType::HEADER,
-          *worker_.get(),
-          context_) {
+      threadManager_(worker_->getServer()->getThreadManager()) {
+  context_.setTransportType(Cpp2ConnContext::TransportType::HEADER);
   channel_->setQueueSends(worker_->getServer()->getQueueSends());
 
   if (auto* observer = worker_->getServer()->getObserver()) {
@@ -500,15 +498,16 @@ void Cpp2Connection::requestReceived(
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
       clientQueueTimeout, clientTimeout, queueTimeout, taskTimeout);
   folly::call_once(clientInfoFlag_, [&] {
-    hreq->getHeader()->extractClientMetadata();
-    loggingContext_.setInterfaceKind(apache::thrift::InterfaceKind::USER);
+    if (const auto& meta = hreq->getHeader()->extractClientMetadata()) {
+      context_.setClientMetadata(*meta);
+    }
   });
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
       std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
 
   logSetupConnectionEventsOnce(
-      setupLoggingFlag_, t2r->getContext()->getMethodName(), loggingContext_);
+      setupLoggingFlag_, t2r->getContext()->getMethodName(), context_);
 
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));

@@ -257,7 +257,7 @@ class HeaderClientChannel : public ClientChannel,
 
  private:
   void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
-  void attachConnectionMetadataOnce(apache::thrift::transport::THeader* header);
+  void attachMetadataOnce(apache::thrift::transport::THeader* header);
 
   // Transport upgrade from header to rocket for raw header client. If
   // successful, this HeaderClientChannel will manage a RocketClientChannel

@@ -74,12 +74,10 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           nullptr, /* eventBaseManager */
           nullptr, /* duplexChannel */
           nullptr, /* x509PeerCert */
-          worker_->getServer()->getClientIdentityHook()),
-      setupFrameHandlers_(handlers),
-      loggingContext_(
-          ConnectionLoggingContext::TransportType::ROCKET,
-          *worker_.get(),
-          connContext_) {
+          worker_->getServer()->getClientIdentityHook(),
+          worker_.get()),
+      setupFrameHandlers_(handlers) {
+  connContext_.setTransportType(Cpp2ConnContext::TransportType::ROCKET);
   if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
     handler->newConnection(&connContext_);
   }
@@ -152,7 +150,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
     version_ = std::min(version_, maxVersion);
-    loggingContext_.readSetupMetadata(meta);
+    connContext_.readSetupMetadata(meta);
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
       auto processorInfo = h->tryHandle(meta);
@@ -402,7 +400,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
   }
 
   logSetupConnectionEventsOnce(
-      setupLoggingFlag_, request->getMethodName(), loggingContext_);
+      setupLoggingFlag_, request->getMethodName(), connContext_);
 
   auto* cpp2ReqCtx = request->getRequestContext();
   auto& timestamps = cpp2ReqCtx->getTimestamps();

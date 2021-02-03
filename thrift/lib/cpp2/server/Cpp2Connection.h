@@ -260,7 +260,6 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
   folly::once_flag setupLoggingFlag_;
   folly::once_flag clientInfoFlag_;
-  ConnectionLoggingContext loggingContext_;
 
   std::unordered_set<Cpp2Request*> activeRequests_;
 

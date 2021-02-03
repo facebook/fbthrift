@@ -86,8 +86,8 @@ void logSetupConnectionEventsOnce(
       return false;
     }
     try {
-      if (auto transport = context.getConnContext().getTransport()) {
-        const auto& protocol = context.getConnContext().getSecurityProtocol();
+      if (auto transport = context.getTransport()) {
+        const auto& protocol = context.getSecurityProtocol();
         if (protocol == "TLS" || protocol == "Fizz" || protocol == "stopTLS") {
           if (!transport->getPeerCertificate()) {
             THRIFT_CONNECTION_EVENT(tls.no_peer_cert).log(context);

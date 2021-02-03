@@ -18,8 +18,10 @@
 #define THRIFT_ASYNC_CPP2CONNCONTEXT_H_ 1
 
 #include <memory>
+#include <string_view>
 
 #include <folly/CancellationToken.h>
+#include <folly/MapUtil.h>
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -36,6 +38,10 @@ using apache::thrift::concurrency::PriorityThreadManager;
 namespace apache {
 namespace thrift {
 
+namespace rocket {
+class ThriftRocketServerHandler;
+}
+
 using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
     const folly::AsyncTransport* transport,
     X509* cert,
@@ -43,22 +49,42 @@ using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
 
 class RequestChannel;
 class TClientBase;
+class Cpp2Worker;
+
+class ClientMetadataRef {
+ public:
+  explicit ClientMetadataRef(const ClientMetadata& md) : md_(md) {}
+  std::optional<std::string_view> getAgent();
+  std::optional<std::string_view> getHostname();
+  std::optional<std::string_view> getOtherMetadataField(std::string_view key);
+
+ private:
+  const ClientMetadata& md_;
+};
 
 class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  public:
+  enum class TransportType {
+    HEADER,
+    ROCKET,
+    HTTP2,
+  };
+
   explicit Cpp2ConnContext(
       const folly::SocketAddress* address = nullptr,
       const folly::AsyncTransport* transport = nullptr,
       folly::EventBaseManager* manager = nullptr,
       const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
       const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
-      apache::thrift::ClientIdentityHook clientIdentityHook = nullptr)
+      apache::thrift::ClientIdentityHook clientIdentityHook = nullptr,
+      const Cpp2Worker* worker = nullptr)
       : userData_(nullptr, no_op_destructor),
         manager_(manager),
         duplexChannel_(duplexChannel),
         peerCert_(peerCert),
         peerIdentities_(nullptr, [](void*) {}),
-        transport_(transport) {
+        transport_(transport),
+        worker_(worker) {
     if (address) {
       peerAddress_ = *address;
     }
@@ -223,6 +249,25 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     cancellationSource_.requestCancellation();
   }
 
+  const Cpp2Worker* getWorker() const {
+    return worker_;
+  }
+
+  std::optional<TransportType> getTransportType() const {
+    return transportType_;
+  }
+
+  std::optional<ClientMetadataRef> getClientMetadataRef() const {
+    if (!clientMetadata_) {
+      return {};
+    }
+    return ClientMetadataRef{*clientMetadata_};
+  }
+
+  InterfaceKind getInterfaceKind() const {
+    return interfaceKind_;
+  }
+
  private:
   /**
    * Adds interaction to interaction map
@@ -262,6 +307,26 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   friend class GeneratedAsyncProcessor;
   friend class Tile;
   friend class TilePromise;
+
+  void setTransportType(TransportType transportType) {
+    transportType_ = transportType;
+  }
+
+  void readSetupMetadata(const RequestSetupMetadata& meta) {
+    if (const auto& md = meta.clientMetadata_ref()) {
+      setClientMetadata(*md);
+    }
+    if (auto interfaceKind = meta.interfaceKind_ref()) {
+      interfaceKind_ = *interfaceKind;
+    }
+  }
+
+  void setClientMetadata(const ClientMetadata& md) {
+    clientMetadata_ = md;
+  }
+
+  friend class Cpp2Connection;
+  friend class rocket::ThriftRocketServerHandler;
 
   /**
    * Platform-independent representation of unix domain socket peer credentials,
@@ -349,6 +414,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   // A CancellationSource that will be signaled when the connection is closed.
   folly::CancellationSource cancellationSource_;
   folly::F14FastMap<int64_t, std::unique_ptr<Tile>> tiles_;
+  const Cpp2Worker* worker_;
+  InterfaceKind interfaceKind_{InterfaceKind::USER};
+  std::optional<TransportType> transportType_;
+  std::optional<ClientMetadata> clientMetadata_;
 
   static void no_op_destructor(void* /*ptr*/) {}
 };

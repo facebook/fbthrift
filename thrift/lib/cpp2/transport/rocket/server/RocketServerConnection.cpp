@@ -735,8 +735,8 @@ void RocketServerConnection::applyDscpAndMarkToSocket(
       const auto fd = sock->getNetworkSocket();
 
       if (auto dscp = setupMetadata.dscpToReflect_ref()) {
-        if (auto loggingContext = frameHandler_->getLoggingContext()) {
-          THRIFT_CONNECTION_EVENT(rocket.dscp).log(*loggingContext, [&] {
+        if (auto context = frameHandler_->getCpp2ConnContext()) {
+          THRIFT_CONNECTION_EVENT(rocket.dscp).log(*context, [&] {
             return folly::dynamic::object("rocket_dscp", *dscp);
           });
         }

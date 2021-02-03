@@ -315,7 +315,7 @@ void HeaderClientChannel::sendRequestNoResponse(
 
     setRequestHeaderOptions(header.get());
     addRpcOptionHeaders(header.get(), rpcOptions);
-    attachConnectionMetadataOnce(header.get());
+    attachMetadataOnce(header.get());
 
     // Both cb and buf are allowed to be null.
     uint32_t oldSeqId = sendSeqId_;
@@ -354,7 +354,7 @@ void HeaderClientChannel::setConnectionAgentName(std::string_view name) {
   agentName_ = name;
 }
 
-void HeaderClientChannel::attachConnectionMetadataOnce(THeader* header) {
+void HeaderClientChannel::attachMetadataOnce(THeader* header) {
   if (std::exchange(firstRequest_, false)) {
     ClientMetadata md;
     if (const auto& hostMetadata = ClientChannel::getHostMetadata()) {
@@ -459,7 +459,7 @@ void HeaderClientChannel::sendRequestResponse(
 
     setRequestHeaderOptions(header.get());
     addRpcOptionHeaders(header.get(), rpcOptions);
-    attachConnectionMetadataOnce(header.get());
+    attachMetadataOnce(header.get());
 
     if (getClientType() != THRIFT_HEADER_CLIENT_TYPE) {
       recvCallbackOrder_.push_back(sendSeqId_);

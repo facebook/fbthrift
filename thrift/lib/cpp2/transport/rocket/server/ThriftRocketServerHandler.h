@@ -100,10 +100,6 @@ class ThriftRocketServerHandler : public RocketServerHandler {
     return &connContext_;
   }
 
-  const ConnectionLoggingContext* getLoggingContext() const final {
-    return &loggingContext_;
-  }
-
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;
@@ -123,8 +119,6 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   int32_t version_{6};
 
   folly::once_flag setupLoggingFlag_;
-
-  ConnectionLoggingContext loggingContext_;
 
   template <class F>
   void handleRequestCommon(Payload&& payload, F&& makeRequest);
