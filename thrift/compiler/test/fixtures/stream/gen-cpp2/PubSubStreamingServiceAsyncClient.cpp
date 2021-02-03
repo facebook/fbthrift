@@ -118,7 +118,7 @@ void PubSubStreamingServiceAsyncClient::returnstream(apache::thrift::RpcOptions&
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   returnstreamImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_i32_from, p_i32_to);
 }
 
@@ -165,7 +165,7 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   auto ctx = returnstreamCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   returnstreamImpl(rpcOptions, ctx, std::move(wrappedCallback), p_i32_from, p_i32_to);
   callback.waitUntilDone(evb);
 
@@ -268,7 +268,7 @@ void PubSubStreamingServiceAsyncClient::streamthrows(apache::thrift::RpcOptions&
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   streamthrowsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
@@ -315,7 +315,7 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   auto ctx = streamthrowsCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   streamthrowsImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);
 
@@ -418,7 +418,7 @@ void PubSubStreamingServiceAsyncClient::boththrows(apache::thrift::RpcOptions& r
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   boththrowsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
@@ -465,7 +465,7 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   auto ctx = boththrowsCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   boththrowsImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);
 
@@ -568,7 +568,7 @@ void PubSubStreamingServiceAsyncClient::responseandstreamthrows(apache::thrift::
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   responseandstreamthrowsImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_foo);
 }
 
@@ -615,7 +615,7 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
   auto ctx = responseandstreamthrowsCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   responseandstreamthrowsImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);
 
@@ -718,7 +718,7 @@ void PubSubStreamingServiceAsyncClient::returnstreamFast(apache::thrift::RpcOpti
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   returnstreamFastImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback), p_i32_from, p_i32_to);
 }
 
@@ -765,7 +765,7 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   auto ctx = returnstreamFastCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   returnstreamFastImpl(rpcOptions, ctx, std::move(wrappedCallback), p_i32_from, p_i32_to);
   callback.waitUntilDone(evb);
 

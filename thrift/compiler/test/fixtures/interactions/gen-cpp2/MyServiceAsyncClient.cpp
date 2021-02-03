@@ -429,7 +429,7 @@ void MyServiceAsyncClient::MyInteraction::truthify(apache::thrift::RpcOptions& r
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   truthifyImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 
@@ -837,7 +837,7 @@ void MyServiceAsyncClient::MyInteractionFast::truthify(apache::thrift::RpcOption
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
   truthifyImpl(rpcOptions, std::move(ctx), std::move(wrappedCallback));
 }
 

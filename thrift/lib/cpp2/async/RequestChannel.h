@@ -247,7 +247,7 @@ class ClientSyncCallback : public RequestClientCallback {
 
 inline StreamClientCallback* createStreamClientCallback(
     RequestClientCallback::Ptr requestCallback,
-    int32_t bufferSize) {
+    const BufferOptions& bufferOptions) {
   DCHECK(requestCallback->isInlineSafe());
   class RequestClientCallbackWrapper
       : public apache::thrift::detail::ClientStreamBridge::
@@ -255,9 +255,9 @@ inline StreamClientCallback* createStreamClientCallback(
    public:
     RequestClientCallbackWrapper(
         RequestClientCallback::Ptr requestCallback,
-        int32_t bufferSize)
+        const BufferOptions& bufferOptions)
         : requestCallback_(std::move(requestCallback)),
-          bufferSize_(bufferSize) {}
+          bufferOptions_(bufferOptions) {}
 
     void onFirstResponse(
         FirstResponsePayload&& firstResponse,
@@ -273,7 +273,7 @@ inline StreamClientCallback* createStreamClientCallback(
           std::move(tHeader),
           nullptr,
           std::move(clientStreamBridge),
-          bufferSize_));
+          bufferOptions_));
       delete this;
     }
 
@@ -284,11 +284,12 @@ inline StreamClientCallback* createStreamClientCallback(
 
    private:
     RequestClientCallback::Ptr requestCallback_;
-    const int32_t bufferSize_;
+    BufferOptions bufferOptions_;
   };
 
   return apache::thrift::detail::ClientStreamBridge::create(
-      new RequestClientCallbackWrapper(std::move(requestCallback), bufferSize));
+      new RequestClientCallbackWrapper(
+          std::move(requestCallback), bufferOptions));
 }
 
 template <class Protocol>

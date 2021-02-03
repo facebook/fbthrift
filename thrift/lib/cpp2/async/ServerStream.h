@@ -82,7 +82,7 @@ class ServerStream {
   ClientBufferedStream<T>
   toClientStreamUnsafeDoNotUse(
       folly::EventBase* evb = folly::getEventBase(),
-      size_t bufferSize = 100) &&;
+      int32_t bufferSize = 100) &&;
 
   apache::thrift::detail::ServerStreamFactory operator()(
       folly::Executor::KeepAlive<> serverExecutor,

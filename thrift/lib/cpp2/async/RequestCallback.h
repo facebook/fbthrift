@@ -73,13 +73,13 @@ class ClientReceiveState {
       std::unique_ptr<apache::thrift::transport::THeader> _header,
       std::shared_ptr<apache::thrift::ContextStack> _ctx,
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
-      int32_t chunkBufferSize)
+      const BufferOptions& bufferOptions)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
         buf_(std::move(buf)),
         header_(std::move(_header)),
         streamBridge_(std::move(streamBridge)),
-        chunkBufferSize_(std::move(chunkBufferSize)) {}
+        bufferOptions_(bufferOptions) {}
   ClientReceiveState(
       folly::exception_wrapper _excw,
       std::shared_ptr<apache::thrift::ContextStack> _ctx)
@@ -131,8 +131,8 @@ class ClientReceiveState {
     return std::move(sink_);
   }
 
-  int32_t chunkBufferSize() const {
-    return chunkBufferSize_;
+  const BufferOptions& bufferOptions() const {
+    return bufferOptions_;
   }
 
   apache::thrift::transport::THeader* header() const {
@@ -171,7 +171,7 @@ class ClientReceiveState {
   folly::exception_wrapper excw_;
   apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge_;
   apache::thrift::detail::ClientSinkBridge::Ptr sink_;
-  int32_t chunkBufferSize_;
+  BufferOptions bufferOptions_;
   RpcSizeStats rpcSizeStats_;
 };
 
@@ -481,12 +481,27 @@ class RpcOptions {
   }
 
   RpcOptions& setChunkBufferSize(int32_t chunkBufferSize) {
-    chunkBufferSize_ = chunkBufferSize;
+    CHECK_EQ(bufferOptions_.memSize, 0)
+        << "Only one of setMemoryBufferSize and setChunkBufferSize should be called";
+    bufferOptions_.chunkSize = chunkBufferSize;
     return *this;
   }
 
   int32_t getChunkBufferSize() const {
-    return chunkBufferSize_;
+    return bufferOptions_.chunkSize;
+  }
+
+  RpcOptions& setMemoryBufferSize(size_t targetBytes, int32_t initialChunks) {
+    CHECK_EQ(bufferOptions_.chunkSize, 100)
+        << "Only one of setMemoryBufferSize and setChunkBufferSize should be called";
+    CHECK_GT(targetBytes, 0);
+    bufferOptions_.memSize = targetBytes;
+    bufferOptions_.chunkSize = initialChunks;
+    return *this;
+  }
+
+  const BufferOptions& getBufferOptions() const {
+    return bufferOptions_;
   }
 
   RpcOptions& setQueueTimeout(std::chrono::milliseconds queueTimeout) {
@@ -608,7 +623,7 @@ class RpcOptions {
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
   bool enablePageAlignment_{false};
-  int32_t chunkBufferSize_{100};
+  BufferOptions bufferOptions_;
   int64_t interactionId_{0};
 
   std::string routingKey_;

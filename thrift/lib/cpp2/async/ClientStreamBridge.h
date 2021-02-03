@@ -23,6 +23,12 @@
 
 namespace apache {
 namespace thrift {
+
+struct BufferOptions {
+  int32_t chunkSize{100};
+  size_t memSize{0};
+};
+
 namespace detail {
 
 class ClientStreamConsumer {

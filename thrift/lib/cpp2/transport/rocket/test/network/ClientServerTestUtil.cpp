@@ -222,7 +222,7 @@ RocketTestClient::sendRequestStreamSync(Payload request) {
                 return folly::Try<Payload>();
               }
             },
-            100));
+            {100, 0}));
       }
       delete this;
     }

@@ -72,6 +72,8 @@ class Queue {
     friend class Queue;
     template <typename Message, typename Value>
     friend class AtomicQueueOrPtr;
+    template <typename U>
+    friend class QueueWithTailPtr;
 
     explicit Node(T&& t) : value(std::move(t)) {}
 
@@ -79,7 +81,7 @@ class Queue {
     Node* next{nullptr};
   };
 
- private:
+ protected:
   template <typename Consumer, typename Message>
   friend class AtomicQueue;
   template <typename Message, typename Value>
@@ -96,6 +98,32 @@ class Queue {
   }
 
   Node* head_{nullptr};
+};
+
+template <typename T>
+class QueueWithTailPtr : public Queue<T> {
+ public:
+  QueueWithTailPtr() = default;
+  template <typename F>
+  QueueWithTailPtr(Queue<T>&& queue, F&& visitor) : Queue<T>(std::move(queue)) {
+    for (auto* node = Queue<T>::head_; node; node = node->next) {
+      visitor(node->value);
+      tail_ = node;
+    }
+  }
+
+  void append(QueueWithTailPtr&& other) {
+    if (!Queue<T>::head_) {
+      Queue<T>::head_ = std::exchange(other.head_, nullptr);
+    } else {
+      tail_->next = std::exchange(other.head_, nullptr);
+    }
+    tail_ = other.tail_;
+  }
+
+ private:
+  // holds invalid pointer if head_ is null
+  typename Queue<T>::Node* tail_;
 };
 
 template <typename Consumer, typename Message>
@@ -378,6 +406,8 @@ class TwoWayBridge {
  public:
   using ClientQueue = twowaybridge_detail::Queue<ClientMessage>;
   using ServerQueue = twowaybridge_detail::Queue<ServerMessage>;
+  using ClientQueueWithTailPtr =
+      twowaybridge_detail::QueueWithTailPtr<ClientMessage>;
 
   struct Deleter {
     void operator()(Derived* ptr) {

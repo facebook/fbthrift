@@ -95,7 +95,8 @@ struct ClientBufferedStreamTest : public Test {
 };
 
 TEST_F(ClientBufferedStreamTest, Inline) {
-  ClientBufferedStream<int> stream(std::move(firstResponseCb.ptr), decode, 2);
+  ClientBufferedStream<int> stream(
+      std::move(firstResponseCb.ptr), decode, {2, 0});
   ebt.getEventBase()->runInEventBaseThreadAndWait([&] {
     for (int i = 1; i <= 10; ++i) {
       std::ignore = client->onStreamNext(*encode(folly::Try(i)));
@@ -113,7 +114,8 @@ TEST_F(ClientBufferedStreamTest, Inline) {
 }
 
 TEST_F(ClientBufferedStreamTest, InlineCancel) {
-  ClientBufferedStream<int> stream(std::move(firstResponseCb.ptr), decode, 2);
+  ClientBufferedStream<int> stream(
+      std::move(firstResponseCb.ptr), decode, {2, 0});
   ebt.getEventBase()->runInEventBaseThreadAndWait([&] {
     for (int i = 1; i <= 10; ++i) {
       std::ignore = client->onStreamNext(*encode(folly::Try(i)));
@@ -129,6 +131,90 @@ TEST_F(ClientBufferedStreamTest, InlineCancel) {
     return i != 6;
   });
   EXPECT_EQ(i, 6);
+}
+
+TEST_F(ClientBufferedStreamTest, RefillByCount) {
+  ClientBufferedStream<int> stream(
+      std::move(firstResponseCb.ptr), decode, {10, 0});
+
+  // Refills when half of buffer is used, i.e. after 5th payload
+  auto task = folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
+                auto gen = std::move(stream).toAsyncGenerator();
+                int i = 0;
+                while (auto val = co_await gen.next()) {
+                  EXPECT_EQ(*val, ++i);
+                  if (i >= 6) {
+                    co_await serverCb.requested;
+                  } else {
+                    EXPECT_FALSE(serverCb.requested.ready());
+                  }
+                }
+              })
+                  .scheduleOn(ebt.getEventBase())
+                  .start();
+  for (int i = 1; i <= 10; ++i) {
+    ebt.getEventBase()->runInEventBaseThreadAndWait(
+        [&] { std::ignore = client->onStreamNext(*encode(folly::Try(i))); });
+  }
+  ebt.getEventBase()->runInEventBaseThreadAndWait(
+      [&] { client->onStreamComplete(); });
+  std::move(task).get();
+}
+
+TEST_F(ClientBufferedStreamTest, RefillByCumulativeSize) {
+  ClientBufferedStream<int> stream(
+      std::move(firstResponseCb.ptr), decode, {100, 0});
+
+  // Refills after reading 16kB from wire, i.e. after 4th 4kB payload
+  auto task = folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
+                auto gen = std::move(stream).toAsyncGenerator();
+                int i = 0;
+                while (auto val = co_await gen.next()) {
+                  if (++i >= 5) {
+                    co_await serverCb.requested;
+                  } else {
+                    EXPECT_FALSE(serverCb.requested.ready());
+                  }
+                }
+              })
+                  .scheduleOn(ebt.getEventBase())
+                  .start();
+  for (int i = 1; i <= 10; ++i) {
+    ebt.getEventBase()->runInEventBaseThreadAndWait([&] {
+      std::ignore = client->onStreamNext(*encode(folly::Try(1 << 12)));
+    });
+  }
+  ebt.getEventBase()->runInEventBaseThreadAndWait(
+      [&] { client->onStreamComplete(); });
+  std::move(task).get();
+}
+
+TEST_F(ClientBufferedStreamTest, RefillBySizeTarget) {
+  ClientBufferedStream<int> stream(
+      std::move(firstResponseCb.ptr), decode, {10, 64});
+
+  // Refills when outstanding payload size (9B max * credits) drops below half
+  // of 64B target, i.e. after 3 9B payloads left (7/10 consumed)
+  auto task = folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
+                auto gen = std::move(stream).toAsyncGenerator();
+                int i = 0;
+                while (auto val = co_await gen.next()) {
+                  if (++i >= 8) {
+                    co_await serverCb.requested;
+                  } else {
+                    EXPECT_FALSE(serverCb.requested.ready());
+                  }
+                }
+              })
+                  .scheduleOn(ebt.getEventBase())
+                  .start();
+  for (int i = 1; i <= 10; ++i) {
+    ebt.getEventBase()->runInEventBaseThreadAndWait(
+        [&] { std::ignore = client->onStreamNext(*encode(folly::Try(8))); });
+  }
+  ebt.getEventBase()->runInEventBaseThreadAndWait(
+      [&] { client->onStreamComplete(); });
+  std::move(task).get();
 }
 
 } // namespace thrift

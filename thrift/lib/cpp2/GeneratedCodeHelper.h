@@ -426,7 +426,7 @@ folly::Try<T> decode_stream_element(
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
     apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
-    int32_t bufferSize);
+    const BufferOptions& bufferOptions);
 
 template <typename Protocol, typename PResult, typename T>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item);
@@ -595,7 +595,7 @@ folly::exception_wrapper recv_wrapped(
     _return.stream = apache::thrift::detail::ap::decode_client_buffered_stream<
         Protocol,
         typename PResult::StreamPResultType,
-        Item>(state.extractStreamBridge(), state.chunkBufferSize());
+        Item>(state.extractStreamBridge(), state.bufferOptions());
   }
   return ew;
 }
@@ -624,7 +624,7 @@ folly::exception_wrapper recv_wrapped(
     _return = apache::thrift::detail::ap::decode_client_buffered_stream<
         Protocol,
         typename PResult::StreamPResultType,
-        Item>(state.extractStreamBridge(), state.chunkBufferSize());
+        Item>(state.extractStreamBridge(), state.bufferOptions());
   }
   return ew;
 }
@@ -1081,11 +1081,11 @@ folly::Try<T> decode_stream_element(
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
     apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
-    int32_t bufferSize) {
+    const BufferOptions& bufferOptions) {
   return apache::thrift::ClientBufferedStream<T>(
       std::move(streamBridge),
       decode_stream_element<Protocol, PResult, T>,
-      bufferSize);
+      bufferOptions);
 }
 
 template <

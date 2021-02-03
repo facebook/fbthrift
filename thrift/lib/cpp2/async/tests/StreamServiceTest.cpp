@@ -102,3 +102,18 @@ TYPED_TEST(StreamServiceTest, WithHeader) {
         EXPECT_EQ(i, 101);
       });
 }
+
+TYPED_TEST(StreamServiceTest, WithSizeTarget) {
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen = (co_await client.co_range(
+                        RpcOptions().setMemoryBufferSize(512, 10), 0, 100))
+                       .toAsyncGenerator();
+        int i = 0;
+        while (auto t = co_await gen.next()) {
+          EXPECT_EQ(i, *t);
+          EXPECT_LE(++i, 101);
+        }
+        EXPECT_EQ(i, 101);
+      });
+}

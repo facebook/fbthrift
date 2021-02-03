@@ -36,7 +36,7 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>(apache::thri
 <%/function:returns_stream?%><%#function:returns_stream?%>
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)),
-    rpcOptions.getChunkBufferSize());
+    rpcOptions.getBufferOptions());
 <%/function:returns_stream?%>
   <%function:cpp_name%>Impl(rpcOptions, std::move(ctx), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
 }

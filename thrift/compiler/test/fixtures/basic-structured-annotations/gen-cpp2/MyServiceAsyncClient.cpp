@@ -93,27 +93,25 @@ void MyServiceAsyncClient::sync_first( ::cpp2::annotated_inline_string& _return)
 }
 
 void MyServiceAsyncClient::sync_first(apache::thrift::RpcOptions& rpcOptions,  ::cpp2::annotated_inline_string& _return) {
-  apache::thrift::ClientReceiveState _returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&_returnState);
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = firstCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   firstImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
-  _returnState.resetProtocolId(protocolId);
-  _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  SCOPE_EXIT {
-    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
-      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
-    }
-  };
-  if (!_returnState.buf()) {
-    assert(!!_returnState.exception());
-    _returnState.exception().throw_exception();
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
   }
   return folly::fibers::runInMainContext([&] {
-      recv_first(_return, _returnState);
+      recv_first(_return, returnState);
   });
 }
 
@@ -260,27 +258,25 @@ bool MyServiceAsyncClient::sync_second(int64_t p_count) {
 }
 
 bool MyServiceAsyncClient::sync_second(apache::thrift::RpcOptions& rpcOptions, int64_t p_count) {
-  apache::thrift::ClientReceiveState _returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&_returnState);
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = secondCtx(rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   secondImpl(rpcOptions, ctx, std::move(wrappedCallback), p_count);
   callback.waitUntilDone(evb);
-  _returnState.resetProtocolId(protocolId);
-  _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  SCOPE_EXIT {
-    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
-      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
-    }
-  };
-  if (!_returnState.buf()) {
-    assert(!!_returnState.exception());
-    _returnState.exception().throw_exception();
+
+  if (returnState.isException()) {
+    returnState.exception().throw_exception();
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
   }
   return folly::fibers::runInMainContext([&] {
-      return recv_second(_returnState);
+      return recv_second(returnState);
   });
 }
 
