@@ -1597,7 +1597,9 @@ void ThreadManager::setObserver(
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
     size_t count,
     bool enableTaskStats) {
-  return std::make_shared<SimpleThreadManagerImpl>(count, enableTaskStats);
+  auto tm = std::make_shared<SimpleThreadManagerImpl>(count, enableTaskStats);
+  tm->threadFactory(Factory(PosixThreadFactory::NORMAL_PRI));
+  return tm;
 }
 
 std::shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(

@@ -303,8 +303,17 @@ class ThreadManager : public virtual folly::Executor {
       return pri_;
     }
 
+    void setTenantId(std::optional<uint32_t> tenant) {
+      tenant_id_ = tenant;
+    }
+
+    std::optional<uint32_t> getTenantId() const {
+      return tenant_id_;
+    }
+
    private:
     PRIORITY pri_;
+    std::optional<uint32_t> tenant_id_;
   };
 
   [[nodiscard]] virtual KeepAlive<> getKeepAlive(
