@@ -21,14 +21,38 @@
 #include <glog/logging.h>
 
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
+
+THRIFT_FLAG_DEFINE_int64(monitoring_over_user_logging_sample_rate, 0);
 
 namespace apache {
 namespace thrift {
 
+namespace {
+bool isMonitoringMethod(std::string_view methodName) {
+  static const folly::sorted_vector_set<std::string_view>&
+      monitoringMethodNames = *new folly::sorted_vector_set<std::string_view>{
+          "getCounters",
+          "getRegexCounters",
+          "getSelectedCounters",
+          "getCounter",
+          "getExportedValues",
+          "getSelectedExportedValues",
+          "getRegexExportedValues",
+          "getExportedValue",
+          "getRegexCountersCompressed",
+          "getCountersCompressed",
+      };
+  return monitoringMethodNames.count(methodName) > 0;
+}
+} // namespace
+
+using apache::thrift::LoggingSampler;
 using apache::thrift::concurrency::ThreadManager;
 using folly::IOBuf;
 
@@ -75,6 +99,21 @@ void ThriftProcessor::onThriftRequest(
           "corrupted request");
     });
     return;
+  }
+
+  // Log monitoring methods that are called over non-monitoring interface so
+  // that they can be migrated.
+  LoggingSampler monitoringLogSampler{
+      THRIFT_FLAG(monitoring_over_user_logging_sample_rate)};
+  if (UNLIKELY(monitoringLogSampler.isSampled())) {
+    if (LIKELY(
+            connContext != nullptr &&
+            connContext->getInterfaceKind() != InterfaceKind::MONITORING)) {
+      if (UNLIKELY(isMonitoringMethod(request->getMethodName()))) {
+        THRIFT_CONNECTION_EVENT(monitoring_over_user)
+            .logSampled(*connContext, monitoringLogSampler);
+      }
+    }
   }
 
   auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
