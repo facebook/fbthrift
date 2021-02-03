@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -115,6 +116,24 @@ class HeaderClientChannel : public ClientChannel,
             folly::DelayedDestruction::Destructor>>(transportShared)
             ->stealPtr();
     return uPtr;
+  }
+
+  /**
+   * Sets the optional RequestSetupMetadata for transport upgrade from header to
+   * rocket. If this is provided, then the upgrade mechanism will call
+   * `RocketClientChannel::newChannelWithMetadata` instead of
+   * `RocketClientChannel::newChannel`.
+   * NOTE: This is for transport upgrade from header to rocket for non-TLS
+   * services.
+   */
+  void setRocketUpgradeSetupMetadata(
+      apache::thrift::RequestSetupMetadata rocketRequestSetupMetadata) {
+    CHECK(
+        upgradeState_.load(std::memory_order_acquire) ==
+        RocketUpgradeState::INIT);
+    rocketRequestSetupMetadata_ =
+        std::make_unique<apache::thrift::RequestSetupMetadata>(
+            std::move(rocketRequestSetupMetadata));
   }
 
   void setReadBufferSize(uint32_t readBufferSize) {
@@ -294,6 +313,9 @@ class HeaderClientChannel : public ClientChannel,
   // rocket channel internally and uses this rocket channel for all
   // requests/response handling.
   RocketClientChannel::Ptr rocketChannel_;
+  // The metadata that will be passed to the RocketClientChannel during
+  // transport upgrade.
+  std::unique_ptr<RequestSetupMetadata> rocketRequestSetupMetadata_;
 
   enum class RocketUpgradeState {
     NO_UPGRADE = 0,

@@ -182,9 +182,15 @@ class HeaderClientChannel::RocketUpgradeCallback
       // channel can own the socket from here onwards
       deleter->release();
 
+      using apache::thrift::RocketClientChannel;
+      auto rocketTransport =
+          folly::AsyncTransport::UniquePtr(transportShared.get());
       headerClientChannel_->rocketChannel_ =
-          apache::thrift::RocketClientChannel::newChannel(
-              folly::AsyncTransport::UniquePtr(transportShared.get()));
+          headerClientChannel_->rocketRequestSetupMetadata_ != nullptr
+          ? RocketClientChannel::newChannelWithMetadata(
+                std::move(rocketTransport),
+                std::move(*headerClientChannel_->rocketRequestSetupMetadata_))
+          : RocketClientChannel::newChannel(std::move(rocketTransport));
       // make sure to set closeCallback
       if (headerClientChannel_->closeCallback_) {
         headerClientChannel_->rocketChannel_->setCloseCallback(
