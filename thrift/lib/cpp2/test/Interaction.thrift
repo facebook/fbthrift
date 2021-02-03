@@ -22,31 +22,31 @@ struct Point {
 }
 
 interaction Addition {
-    void accumulatePrimitive(1: i32 a);
-    void accumulatePoint(1: Point a);
-    i32 getPrimitive();
-    Point getPoint();
-    oneway void noop();
+  void accumulatePrimitive(1: i32 a);
+  void accumulatePoint(1: Point a);
+  i32 getPrimitive();
+  Point getPoint();
+  oneway void noop();
 }
 
 interaction AdditionFast {
-    void accumulatePrimitive(1: i32 a);
-    void accumulatePoint(1: Point a);
-    i32 getPrimitive();
-    Point getPoint();
-    oneway void noop();
+  void accumulatePrimitive(1: i32 a);
+  void accumulatePoint(1: Point a);
+  i32 getPrimitive();
+  Point getPoint();
+  oneway void noop();
 } (process_in_event_base)
 
 interaction SerialAddition {
-    void accumulatePrimitive(1: i32 a);
-    i32 getPrimitive();
+  void accumulatePrimitive(1: i32 a);
+  i32 getPrimitive();
 } (serial)
 
 service Calculator {
-    performs Addition;
-    performs AdditionFast;
-    performs SerialAddition;
-    i32 addPrimitive(1: i32 a, 2: i32 b);
+  performs Addition;
+  performs AdditionFast;
+  performs SerialAddition;
+  i32 addPrimitive(1: i32 a, 2: i32 b);
 }
 
 interaction Streaming {
