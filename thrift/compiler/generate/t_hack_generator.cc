@@ -379,24 +379,17 @@ class t_hack_generator : public t_oop_generator {
   }
 
   bool is_bitmask_enum(t_enum* tenum) {
-    return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
-  }
-
-  string const* get_hack_annotation(
-      t_annotated* annotated,
-      const string& annotation) {
-    auto it = annotated->annotations_.find("hack." + annotation);
-    return it != annotated->annotations_.end() ? &it->second : nullptr;
+    return tenum->has_annotation("bitmask");
   }
 
   // Recursively traverse any typdefs and return the first found adapter name.
-  boost::optional<const string&> get_hack_adapter(t_type* type) {
+  const string* get_hack_adapter(t_type* type) {
     while (true) {
-      if (auto adapter = get_hack_annotation(type, "adapter")) {
-        return *adapter;
+      if (const auto* adapter = type->get_annotation_or_null("hack.adapter")) {
+        return adapter;
       }
       if (!type->is_typedef()) {
-        return {};
+        return nullptr;
       }
       type = static_cast<t_typedef*>(type)->get_type();
     }
@@ -1036,8 +1029,8 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
-    std::string const* attributes = get_hack_annotation(tenum, "attributes");
-    if (attributes) {
+    if (std::string const* attributes =
+            tenum->get_annotation_or_null("hack.attributes")) {
       f_types_ << "<<" << *attributes << ">>\n";
     }
     f_types_ << "enum " << hack_name(tenum, true) << ": int"
@@ -1824,7 +1817,7 @@ void t_hack_generator::generate_php_struct(
 
 void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
   // Check the adapter before resolving typedefs.
-  if (const auto adapter = get_hack_adapter(t)) {
+  if (const auto* adapter = get_hack_adapter(t)) {
     indent(out) << "'adapter' => " << *adapter << "::class,\n";
   }
   t = t->get_true_type();
@@ -1947,12 +1940,12 @@ void t_hack_generator::generate_php_struct_struct_trait(
     std::ofstream& out,
     t_struct* tstruct) {
   string traitName;
-  auto it = tstruct->annotations_.find("php.structtrait");
-  if (it != tstruct->annotations_.end()) {
-    if (it->second.empty() || it->second == "1") {
+  if (const auto* structtrait =
+          tstruct->get_annotation_or_null("php.structtrait")) {
+    if (structtrait->empty() || *structtrait == "1") {
       traitName = hack_name(tstruct) + "Trait";
     } else {
-      traitName = hack_name(it->second, tstruct->get_program());
+      traitName = hack_name(*structtrait, tstruct->get_program());
     }
   } else if (struct_trait_) {
     traitName = hack_name(tstruct) + "Trait";
@@ -2636,9 +2629,8 @@ void t_hack_generator::generate_php_union_enum(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  string const* union_enum_attributes =
-      get_hack_annotation(tstruct, "union_enum_attributes");
-  if (union_enum_attributes) {
+  if (string const* union_enum_attributes =
+          tstruct->get_annotation_or_null("hack.union_enum_attributes")) {
     indent(out) << "<<" << *union_enum_attributes << ">>\n";
   }
   out << "enum " << union_enum_name(tstruct, true) << ": int {\n";
@@ -2689,7 +2681,7 @@ void t_hack_generator::generate_adapter_type_checks(
 
   std::function<void(t_type*)> collect_adapters_recursively = [&](t_type* t) {
     // Check the adapter before resolving typedefs.
-    if (const auto adapter = get_hack_adapter(t)) {
+    if (const auto* adapter = get_hack_adapter(t)) {
       adapter_types_.emplace(
           *adapter,
           type_to_typehint(t, false, false, false, /* ignore_adapter */ true));
@@ -2739,14 +2731,13 @@ void t_hack_generator::_generate_php_struct_definition(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  bool generateAsTrait =
-      tstruct->annotations_.find("php.trait") != tstruct->annotations_.end();
+  bool generateAsTrait = tstruct->has_annotation("php.trait");
 
   if (!is_result && !is_args && (is_exception || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, is_exception);
   }
-  std::string const* attributes = get_hack_annotation(tstruct, "attributes");
-  if (attributes) {
+  if (string const* attributes =
+          tstruct->get_annotation_or_null("hack.attributes")) {
     f_types_ << "<<" << *attributes << ">>\n";
   }
   out << (generateAsTrait ? "trait " : "class ") << hack_name(tstruct, true);
@@ -2826,8 +2817,8 @@ void t_hack_generator::_generate_php_struct_definition(
       generate_php_docstring(out, *m_iter);
     }
 
-    string const* field_attributes = get_hack_annotation(*m_iter, "attributes");
-    if (field_attributes) {
+    if (string const* field_attributes =
+            (*m_iter)->get_annotation_or_null("hack.attributes")) {
       indent(out) << "<<" << *field_attributes << ">>\n";
     }
 
@@ -2930,7 +2921,7 @@ void t_hack_generator::_generate_php_struct_definition(
       dval = render_default_value(t);
     }
     if (dval != "null") {
-      if (const auto adapter = get_hack_adapter((*m_iter)->get_type())) {
+      if (const auto* adapter = get_hack_adapter((*m_iter)->get_type())) {
         dval = *adapter + "::fromThrift(" + dval + ")";
       }
     }
@@ -2988,10 +2979,9 @@ void t_hack_generator::_generate_php_struct_definition(
     generate_php_union_methods(out, tstruct);
   }
   if (is_exception) {
-    auto message_annotation = tstruct->annotations_.find("message");
-    if (message_annotation != tstruct->annotations_.end() &&
-        message_annotation->second != "message") {
-      auto message_field = tstruct->get_member(message_annotation->second);
+    const auto& value = tstruct->get_annotation("message");
+    if (tstruct->has_annotation("message") && value != "message") {
+      auto message_field = tstruct->get_member(value);
       out << indent() << "<<__Override, __Rx, __MaybeMutable>>\n"
           << indent() << "public function getMessage()[]: string {\n"
           << indent() << "  return $this->" << message_field->get_name();
@@ -3781,7 +3771,7 @@ string t_hack_generator::type_to_typehint(
     bool ignore_adapter) {
   if (!ignore_adapter) {
     // Check the adapter before resolving typedefs.
-    if (const auto adapter = get_hack_adapter(ttype)) {
+    if (const auto* adapter = get_hack_adapter(ttype)) {
       return *adapter + "::THackType";
     }
   }
