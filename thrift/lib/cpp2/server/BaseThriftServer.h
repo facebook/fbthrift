@@ -456,6 +456,19 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
+   * Set Thread Manager by using the executor (for Python server).
+   *
+   * @param executor folly::Executor to be set as the threadManager
+   */
+  void setThreadManagerFromExecutor(folly::Executor* executor) {
+    CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    threadManager_ =
+        std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
+            folly::getKeepAliveToken(executor));
+  }
+
+  /**
    * Get Thread Manager (for queuing mode).
    *
    * @return a shared pointer to the thread manager
