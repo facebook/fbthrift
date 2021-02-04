@@ -98,13 +98,14 @@ class field_ref {
     is_set_ = other.is_set();
   }
 
-  // Returns true iff the field is set. field_ref doesn't provide conversion to
-  // bool to avoid confusion between checking if the field is set and getting
-  // the field's value, particularly for bool fields.
-  FOLLY_ERASE bool has_value() const noexcept {
+  [[deprecated("Use is_set() method instead")]] FOLLY_ERASE bool has_value()
+      const noexcept {
     return is_set_;
   }
 
+  // Returns true iff the field is set. field_ref doesn't provide conversion to
+  // bool to avoid confusion between checking if the field is set and getting
+  // the field's value, particularly for bool fields.
   FOLLY_ERASE bool is_set() const noexcept {
     return is_set_;
   }
