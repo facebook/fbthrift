@@ -161,7 +161,7 @@ bool can_derive_ord(const t_type* type) {
       type->is_enum() || type->is_void()) {
     return true;
   }
-  if (type->annotations_.count("rust.ord")) {
+  if (type->has_annotation("rust.ord")) {
     return true;
   }
   if (type->is_list()) {
@@ -209,11 +209,11 @@ std::string get_import_name(
 
 enum class FieldKind { Box, Arc, Inline };
 
-FieldKind field_kind(const std::map<std::string, std::string>& annotations) {
-  if (annotations.count("rust.arc") != 0) {
+FieldKind field_kind(const t_annotated& node) {
+  if (node.has_annotation("rust.arc")) {
     return FieldKind::Arc;
   }
-  if (annotations.count("rust.box") != 0) {
+  if (node.has_annotation("rust.box")) {
     return FieldKind::Box;
   }
   return FieldKind::Inline;
@@ -225,9 +225,7 @@ FieldKind field_kind(const std::map<std::string, std::string>& annotations) {
 // fbthrift Rust runtime library and instead that logic will need to be emitted
 // into the generated crate.
 bool has_nonstandard_type_annotation(const t_type* type) {
-  auto rust_type = type->annotations_.find("rust.type");
-  return rust_type != type->annotations_.end() &&
-      rust_type->second.find("::") != string::npos;
+  return type->get_annotation("rust.type").find("::") != string::npos;
 }
 } // namespace
 
@@ -371,8 +369,8 @@ class mstch_rust_program : public mstch_program {
     // Sort/deduplicate by value of `rust.type` annotation.
     struct rust_type_less {
       bool operator()(const t_type* lhs, const t_type* rhs) const {
-        auto& lhs_annotation = lhs->annotations_.at("rust.type");
-        auto& rhs_annotation = rhs->annotations_.at("rust.type");
+        auto& lhs_annotation = lhs->get_annotation("rust.type");
+        auto& rhs_annotation = rhs->get_annotation("rust.type");
         if (lhs_annotation != rhs_annotation) {
           return lhs_annotation < rhs_annotation;
         }
@@ -420,7 +418,7 @@ class mstch_rust_struct : public mstch_struct {
     return get_import_name(strct_->get_program(), options_);
   }
   mstch::node rust_is_ord() {
-    if (strct_->annotations_.count("rust.ord")) {
+    if (strct_->has_annotation("rust.ord")) {
       return true;
     }
     for (const auto& member : strct_->get_members()) {
@@ -431,7 +429,7 @@ class mstch_rust_struct : public mstch_struct {
     return true;
   }
   mstch::node rust_is_copy() {
-    return strct_->annotations_.count("rust.copy") != 0;
+    return strct_->has_annotation("rust.copy");
   }
   mstch::node rust_fields_by_name() {
     std::vector<t_field*> fields = strct_->get_members();
@@ -474,14 +472,11 @@ class mstch_rust_service : public mstch_service {
     return get_import_name(service_->get_program(), options_);
   }
   mstch::node rust_snake() {
-    auto module_name = service_->annotations_.find("rust.mod");
-    if (module_name != service_->annotations_.end()) {
-      return module_name->second;
-    }
-    return mangle_type(snakecase(service_->get_name()));
+    return service_->get_annotation(
+        "rust.mod", mangle_type(snakecase(service_->get_name())));
   }
   mstch::node rust_request_context() {
-    return service_->annotations_.count("rust.request_context") > 0;
+    return service_->has_annotation("rust.request_context");
   }
   mstch::node rust_extended_services() {
     mstch::array extended_services;
@@ -690,15 +685,11 @@ class mstch_rust_type : public mstch_type {
     return get_import_name(type_->get_program(), options_);
   }
   mstch::node rust_type() {
-    auto rust_type = type_->annotations_.find("rust.type");
-    if (rust_type != type_->annotations_.end()) {
-      if (rust_type->second.find("::") == std::string::npos) {
-        return "std::collections::" + rust_type->second;
-      } else {
-        return rust_type->second;
-      }
+    const std::string& rust_type = type_->get_annotation("rust.type");
+    if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
+      return "std::collections::" + rust_type;
     }
-    return nullptr;
+    return rust_type;
   }
   mstch::node rust_nonstandard_collection() {
     return has_nonstandard_type_annotation(type_);
@@ -725,8 +716,7 @@ class mstch_rust_value : public mstch_base {
         depth_(depth),
         options_(options) {
     // Step through any non-newtype typedefs.
-    while (type_->is_typedef() &&
-           type_->annotations_.count("rust.newtype") == 0) {
+    while (type_->is_typedef() && !type_->has_annotation("rust.newtype")) {
       auto typedef_type = dynamic_cast<const t_typedef*>(type_);
       if (!typedef_type) {
         break;
@@ -774,8 +764,7 @@ class mstch_rust_value : public mstch_base {
         type_, generators_, cache_, pos_, options_);
   }
   mstch::node is_newtype() {
-    return type_->is_typedef() &&
-        type_->annotations_.count("rust.newtype") != 0;
+    return type_->is_typedef() && type_->has_annotation("rust.newtype");
   }
   mstch::node inner() {
     auto typedef_type = dynamic_cast<const t_typedef*>(type_);
@@ -1062,10 +1051,10 @@ class mstch_rust_struct_field : public mstch_base {
         type, generators_, cache_, pos_, options_);
   }
   mstch::node is_boxed() {
-    return field_kind(field_->annotations_) == FieldKind::Box;
+    return field_kind(*field_) == FieldKind::Box;
   }
   mstch::node is_arc() {
-    return field_kind(field_->annotations_) == FieldKind::Arc;
+    return field_kind(*field_) == FieldKind::Arc;
   }
 
  private:
@@ -1221,10 +1210,10 @@ class mstch_rust_field : public mstch_field {
     return mstch::node();
   }
   mstch::node rust_is_boxed() {
-    return field_kind(field_->annotations_) == FieldKind::Box;
+    return field_kind(*field_) == FieldKind::Box;
   }
   mstch::node rust_is_arc() {
-    return field_kind(field_->annotations_) == FieldKind::Arc;
+    return field_kind(*field_) == FieldKind::Arc;
   }
 
  private:
@@ -1252,10 +1241,10 @@ class mstch_rust_typedef : public mstch_typedef {
     return mangle_type(typedf_->get_symbolic());
   }
   mstch::node rust_newtype() {
-    return typedf_->annotations_.count("rust.newtype") != 0;
+    return typedf_->has_annotation("rust.newtype");
   }
   mstch::node rust_ord() {
-    return typedf_->annotations_.count("rust.ord") != 0 ||
+    return typedf_->has_annotation("rust.ord") ||
         can_derive_ord(typedf_->get_type());
   }
   mstch::node rust_copy() {
@@ -1265,7 +1254,7 @@ class mstch_rust_typedef : public mstch_typedef {
         inner->is_void()) {
       return true;
     }
-    if (typedf_->annotations_.count("rust.copy")) {
+    if (typedf_->has_annotation("rust.copy")) {
       return true;
     }
     return false;
@@ -1602,8 +1591,8 @@ class annotation_validator : public validator {
 
 bool annotation_validator::visit(t_struct* s) {
   for (auto* member : s->get_members()) {
-    bool box = member->annotations_.count("rust.box") != 0;
-    bool arc = member->annotations_.count("rust.arc") != 0;
+    bool box = member->has_annotation("rust.box");
+    bool arc = member->has_annotation("rust.arc");
     if (box && arc) {
       add_error(
           member->get_lineno(),
