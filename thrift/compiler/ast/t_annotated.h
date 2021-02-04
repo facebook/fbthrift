@@ -36,6 +36,36 @@ class t_const;
  */
 class t_annotated : public t_node {
  public:
+  // Returns true if there exists an annotation with the given name.
+  bool has_annotation(const std::string& name) const {
+    return annotations_.find(name) != annotations_.end();
+  }
+  // Returns true if there exists an annotation with any of the given names.
+  bool has_annotation(std::initializer_list<std::string> names) const;
+
+  // Returns the value of an annotation with the given name.
+  // If not found returns the provided default or "".
+  const std::string& get_annotation(
+      const std::string& name,
+      const std::string* default_value = nullptr) const;
+  std::string get_annotation(const std::string& name, std::string default_value)
+      const;
+
+  // Returns the value of the first annotation found with a given name.
+  // If not found returns the provided default or "".
+  const std::string& get_annotation(
+      std::initializer_list<std::string> names,
+      const std::string* default_value = nullptr) const;
+  std::string get_annotation(
+      std::initializer_list<std::string> names,
+      std::string default_value) const;
+
+  // Returns the ptr to the value of the first annotation found with a given
+  // name. If not found returns nullptr.
+  const std::string* get_annotation_or_null(const std::string& name) const;
+  const std::string* get_annotation_or_null(
+      std::initializer_list<std::string> names) const;
+
   std::map<std::string, std::string> annotations_;
   // TODO (partisan): Try to use t_const without a pointer and rewrite the code
   // relying on copies.

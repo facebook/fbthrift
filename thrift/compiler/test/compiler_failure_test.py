@@ -439,7 +439,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 """\
-                [FAILURE:foo.thrift:3] Mixin field `a` can not have annotation `(cpp.ref = true)`.
+                [FAILURE:foo.thrift:3] Mixin field `a` can not be a ref in cpp.
                 [WARNING:foo.thrift:3] `cpp.ref` field must be optional if it is recursive.
                 [WARNING:foo.thrift:3] `cpp.ref` field must be optional if it is recursive.
                 """

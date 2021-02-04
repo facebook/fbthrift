@@ -537,11 +537,7 @@ mstch::node mstch_struct::fields() {
 }
 
 mstch::node mstch_struct::thrift_uri() {
-  auto itr = strct_->annotations_.find("thrift.uri");
-  if (itr != strct_->annotations_.end()) {
-    return itr->second;
-  }
-  return std::string();
+  return strct_->get_annotation("thrift.uri");
 }
 
 mstch::node mstch_function::return_type() {
@@ -623,7 +619,7 @@ mstch::node mstch_const::program() {
 
 mstch::node mstch_program::has_thrift_uris() {
   for (const auto& strct : program_->get_structs()) {
-    if (strct->annotations_.find("thrift.uri") != strct->annotations_.end()) {
+    if (strct->has_annotation("thrift.uri")) {
       return true;
     }
   }

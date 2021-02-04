@@ -47,21 +47,39 @@ bool is_orderable(
 bool is_orderable(t_type const& type);
 
 /**
+ * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
+ */
+std::string const& get_type(const t_type* type);
+
+/**
  * If the cpp_type is std::unique_ptr<folly::IOBuf> the C++ compiler implicitly
  * assumes this is optional.
  */
 bool is_implicit_ref(const t_type* type);
 
 /**
- * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
+ * If the field has cpp.ref/cpp2.ref/cpp.ref_type/cpp2.ref_type.
  */
-std::string const& get_cpp_type(const t_type* type);
+bool is_explicit_ref(const t_field* f);
+
+inline bool is_ref(const t_field* f) {
+  return is_explicit_ref(f) || is_implicit_ref(f->get_type());
+}
 
 /**
- * Does the field have cpp.ref/cpp2.ref/cpp.ref_type/cpp2.ref_type or is an
- * implicit ref (see @is_implicit_ref).
+ * The value of cpp.ref_type/cpp2.ref_type.
  */
-bool is_cpp_ref(const t_field* f);
+std::string const& get_ref_type(const t_field* f);
+
+/**
+ * If the field has cpp.ref/cpp2.ref or cpp.ref_type/cpp2.ref_type == "unique".
+ */
+bool is_unique_ref(const t_field* f);
+
+template <typename Node>
+const std::string& get_name(const Node* node) {
+  return node->get_annotation("cpp.name", &node->get_name());
+}
 
 bool is_stack_arguments(
     std::map<std::string, std::string> const& options,

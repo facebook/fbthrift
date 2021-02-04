@@ -988,8 +988,8 @@ Xception:
       for (auto& annotation: annotations) {
         if (driver.mode == parsing_mode::PROGRAM
             && $$->has_field_named(annotation)
-            && $$->annotations_.find(annotation) != $$->annotations_.end()
-            && strcmp(annotation, $$->annotations_.find(annotation)->second.c_str()) != 0) {
+            && $$->has_annotation(annotation)
+            && strcmp(annotation, $$->get_annotation(annotation).c_str()) != 0) {
           driver.warning(1, "Some generators (e.g. PHP) will ignore annotation '%s' "
                          "as it is also used as field", annotation);
         }
@@ -998,10 +998,8 @@ Xception:
       // Check that value of "message" annotation is
       // - a valid member of struct
       // - of type STRING
-      if (driver.mode == parsing_mode::PROGRAM
-          && $$->annotations_.find("message") != $$->annotations_.end()) {
-        const std::string v = $$->annotations_.find("message")->second;
-
+      if (driver.mode == parsing_mode::PROGRAM && $$->has_annotation("message")) {
+        const std::string& v = $$->get_annotation("message");
         if (!$$->has_field_named(v.c_str())) {
           driver.failure("member specified as exception 'message' should be a valid"
                          " struct member, '%s' in '%s' is not", v.c_str(), $4.c_str());
@@ -1086,7 +1084,7 @@ Interaction:
       $$->set_lineno(lineno_stack.pop(LineType::kService));
       for (auto* func : $$->get_functions()) {
         func->set_is_interaction_member();
-        if (func->annotations_.count("thread")) {
+        if (func->has_annotation("thread")) {
           driver.failure("Interaction methods cannot be individually annotated with "
             "thread='eb'. Use process_in_event_base on the interaction instead.");
         }
@@ -1803,11 +1801,10 @@ FunctionAnnotations:
         break;
       }
       $$ = $1;
-      auto prio_iter = $$->annotations_.find("priority");
-      if (prio_iter == $$->annotations_.end()) {
+      if (!$$->has_annotation("priority")) {
         break;
       }
-      const std::string& prio = prio_iter->second;
+      const std::string& prio = $$->get_annotation("priority");
       const std::string prio_list[] = {"HIGH_IMPORTANT", "HIGH", "IMPORTANT",
                                        "NORMAL", "BEST_EFFORT"};
       const auto end = prio_list + sizeof(prio_list)/sizeof(prio_list[0]);

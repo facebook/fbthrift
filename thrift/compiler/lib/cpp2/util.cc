@@ -63,17 +63,12 @@ bool is_orderable(
     std::unordered_set<t_type const*>& seen,
     std::unordered_map<t_type const*, bool>& memo,
     t_type const& type) {
-  auto has_disqualifying_annotation = [](auto& t) {
-    static auto const& keys = *new std::vector<std::string>{
-        "cpp.template",
-        "cpp2.template",
-        "cpp.type",
-        "cpp2.type",
-    };
-    return std::any_of(keys.begin(), keys.end(), [&](auto key) {
-      return t.annotations_.count(key);
-    });
-  };
+  bool has_disqualifying_annotation = type.has_annotation({
+      "cpp.template",
+      "cpp2.template",
+      "cpp.type",
+      "cpp2.type",
+  });
   auto memo_it = memo.find(&type);
   if (memo_it != memo.end()) {
     return memo_it->second;
@@ -98,7 +93,7 @@ bool is_orderable(
     auto const& next = *(dynamic_cast<t_typedef const&>(type).get_type());
     return result = is_orderable(seen, memo, next) &&
         (!(real().is_set() || real().is_map()) ||
-         !has_disqualifying_annotation(type));
+         !has_disqualifying_annotation);
   }
   if (type.is_struct() || type.is_xception()) {
     auto& members = dynamic_cast<t_struct const&>(type).get_members();
@@ -113,12 +108,12 @@ bool is_orderable(
                *(dynamic_cast<t_list const&>(type).get_elem_type()));
   }
   if (type.is_set()) {
-    return result = !has_disqualifying_annotation(type) &&
+    return result = !has_disqualifying_annotation &&
         is_orderable(
                seen, memo, *(dynamic_cast<t_set const&>(type).get_elem_type()));
   }
   if (type.is_map()) {
-    return result = !has_disqualifying_annotation(type) &&
+    return result = !has_disqualifying_annotation &&
         is_orderable(
                seen,
                memo,
@@ -135,53 +130,38 @@ bool is_orderable(t_type const& type) {
   return is_orderable(seen, memo, type);
 }
 
-namespace {
-
-std::string const& map_find_first(
-    std::map<std::string, std::string> const& m,
-    std::initializer_list<char const*> keys) {
-  for (auto const& key : keys) {
-    auto const it = m.find(key);
-    if (it != m.end()) {
-      return it->second;
-    }
-  }
-  static auto const& empty = *new std::string();
-  return empty;
-}
-
-} // namespace
-
-std::string const& get_cpp_type(const t_type* type) {
-  return map_find_first(
-      type->annotations_,
-      {
-          "cpp.type",
-          "cpp2.type",
-      });
+std::string const& get_type(const t_type* type) {
+  return type->get_annotation({"cpp.type", "cpp2.type"});
 }
 
 bool is_implicit_ref(const t_type* type) {
   auto const* resolved_typedef = type->get_true_type();
   return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
-      get_cpp_type(resolved_typedef).find("std::unique_ptr") !=
-      std::string::npos &&
-      get_cpp_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
+      get_type(resolved_typedef).find("std::unique_ptr") != std::string::npos &&
+      get_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
 }
 
-bool is_cpp_ref(const t_field* f) {
-  return f->annotations_.count("cpp.ref") ||
-      f->annotations_.count("cpp2.ref") ||
-      f->annotations_.count("cpp.ref_type") ||
-      f->annotations_.count("cpp2.ref_type") || is_implicit_ref(f->get_type());
+bool is_explicit_ref(const t_field* f) {
+  return f->has_annotation(
+      {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"});
+}
+
+std::string const& get_ref_type(const t_field* f) {
+  return f->get_annotation({"cpp.ref_type", "cpp2.ref_type"});
+}
+
+bool is_unique_ref(const t_field* f) {
+  return f->has_annotation({"cpp.ref", "cpp2.ref"}) ||
+      get_ref_type(f) == "unique";
 }
 
 bool is_stack_arguments(
     std::map<std::string, std::string> const& options,
     t_function const& function) {
-  auto it = function.annotations_.find("cpp.stack_arguments");
-  auto ptr = it == function.annotations_.end() ? nullptr : &it->second;
-  return ptr ? *ptr != "0" : options.count("stack_arguments") != 0;
+  if (function.has_annotation("cpp.stack_arguments")) {
+    return function.get_annotation("cpp.stack_arguments") != "0";
+  }
+  return options.count("stack_arguments");
 }
 
 int32_t get_split_count(std::map<std::string, std::string> const& options) {
@@ -193,7 +173,7 @@ int32_t get_split_count(std::map<std::string, std::string> const& options) {
 }
 
 bool is_mixin(const t_field& field) {
-  return field.annotations_.count("cpp.mixin");
+  return field.has_annotation("cpp.mixin");
 }
 
 static void get_mixins_and_members_impl(
@@ -239,7 +219,7 @@ std::string get_gen_type_class_(
 
   auto const& type = *type_.get_true_type();
 
-  auto const ind = type.annotations_.count("cpp.indirection") > 0;
+  bool const ind = type.has_annotation("cpp.indirection");
   if (ind && opts.gen_indirection && !opts.gen_indirection_inner_) {
     opts.gen_indirection_inner_ = true;
     auto const inner = get_gen_type_class_(type_, opts);

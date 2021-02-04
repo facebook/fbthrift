@@ -919,8 +919,7 @@ class mstch_py3_field : public mstch_field {
 
     if (it == annotations.end() && field_->get_type() != nullptr) {
       const t_type* resolved_type = field_->get_type()->get_true_type();
-      if (cpp2::get_cpp_type(resolved_type) ==
-          "std::unique_ptr<folly::IOBuf>") {
+      if (cpp2::get_type(resolved_type) == "std::unique_ptr<folly::IOBuf>") {
         return ref_type_ = RefType::IOBuf;
       }
       return ref_type_ = RefType::NotRef;
@@ -1415,7 +1414,7 @@ std::shared_ptr<mstch_base> type_py3_generator<ForContainers>::generate(
     propsCache.emplace(
         trueType,
         mstch_py3_type::CachedProperties{
-            get_cpp_template(*trueType), cpp2::get_cpp_type(trueType), {}});
+            get_cpp_template(*trueType), cpp2::get_type(trueType), {}});
   }
   return std::make_shared<T>(
       trueType, generators, cache, pos, prog_, propsCache.at(trueType));

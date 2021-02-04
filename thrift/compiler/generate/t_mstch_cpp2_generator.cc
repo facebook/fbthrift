@@ -34,42 +34,15 @@ namespace compiler {
 namespace {
 bool field_has_isset(const t_field* field) {
   return field->get_req() != t_field::e_req::T_REQUIRED &&
-      !field->annotations_.count("cpp.ref") &&
-      !field->annotations_.count("cpp2.ref") &&
-      !field->annotations_.count("cpp.ref_type") &&
-      !field->annotations_.count("cpp2.ref_type");
-}
-
-std::string const& map_find_first(
-    std::map<std::string, std::string> const& m,
-    std::initializer_list<char const*> keys) {
-  for (auto const& key : keys) {
-    auto const it = m.find(key);
-    if (it != m.end()) {
-      return it->second;
-    }
-  }
-  static auto const& empty = *new std::string();
-  return empty;
+      !cpp2::is_explicit_ref(field);
 }
 
 std::string const& get_cpp_template(const t_type* type) {
-  return map_find_first(
-      type->annotations_,
-      {
-          "cpp.template",
-          "cpp2.template",
-      });
+  return type->get_annotation({"cpp.template", "cpp2.template"});
 }
 
 bool is_cpp_ref_unique_either(const t_field* f) {
-  return f->annotations_.count("cpp.ref") ||
-      f->annotations_.count("cpp2.ref") ||
-      (f->annotations_.count("cpp.ref_type") &&
-       f->annotations_.at("cpp.ref_type") == "unique") ||
-      (f->annotations_.count("cpp2.ref_type") &&
-       f->annotations_.at("cpp2.ref_type") == "unique") ||
-      cpp2::is_implicit_ref(f->get_type());
+  return cpp2::is_unique_ref(f) || cpp2::is_implicit_ref(f->get_type());
 }
 
 bool is_annotation_blacklisted_in_fatal(const std::string& key) {
@@ -96,7 +69,7 @@ bool same_types(const t_type* a, const t_type* b) {
   }
 
   if (get_cpp_template(a) != get_cpp_template(b) ||
-      cpp2::get_cpp_type(a) != cpp2::get_cpp_type(b)) {
+      cpp2::get_type(a) != cpp2::get_type(b)) {
     return false;
   }
 
@@ -127,12 +100,6 @@ bool same_types(const t_type* a, const t_type* b) {
     default:;
   }
   return true;
-}
-
-template <typename Node>
-const std::string& get_cpp_name(const Node* node) {
-  auto name = node->annotations_.find("cpp.name");
-  return name != node->annotations_.end() ? name->second : node->get_name();
 }
 
 std::vector<t_annotation> get_fatal_annotations(
@@ -293,7 +260,7 @@ class mstch_cpp2_enum : public mstch_enum {
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });
-      return get_cpp_name(*e_min);
+      return cpp2::get_name(*e_min);
     }
     return mstch::node();
   }
@@ -305,17 +272,13 @@ class mstch_cpp2_enum : public mstch_enum {
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });
-      return get_cpp_name(*e_max);
+      return cpp2::get_name(*e_max);
     }
     return mstch::node();
   }
   std::string const& cpp_is_unscoped_() {
-    return map_find_first(
-        enm_->annotations_,
-        {
-            "cpp2.deprecated_enum_unscoped",
-            "cpp.deprecated_enum_unscoped",
-        });
+    return enm_->get_annotation(
+        {"cpp2.deprecated_enum_unscoped", "cpp.deprecated_enum_unscoped"});
   }
   mstch::node cpp_is_unscoped() {
     return cpp_is_unscoped_();
@@ -377,7 +340,7 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
         });
   }
   mstch::node cpp_name() {
-    return get_cpp_name(enm_value_);
+    return cpp2::get_name(enm_value_);
   }
   mstch::node has_fatal_annotations() {
     return get_fatal_annotations(enm_value_->annotations_).size() > 0;
@@ -536,10 +499,10 @@ class mstch_cpp2_type : public mstch_type {
     return false;
   }
   mstch::node cpp_type() {
-    return cpp2::get_cpp_type(type_);
+    return cpp2::get_type(type_);
   }
   mstch::node resolved_cpp_type() {
-    return cpp2::get_cpp_type(resolved_type_);
+    return cpp2::get_type(resolved_type_);
   }
   mstch::node is_string_or_binary() {
     return resolved_type_->is_string_or_binary();
@@ -629,28 +592,23 @@ class mstch_cpp2_field : public mstch_field {
     return std::to_string(index_ + 1);
   }
   mstch::node cpp_name() {
-    return get_cpp_name(field_);
+    return cpp2::get_name(field_);
   }
   mstch::node cpp_ref() {
-    return has_annotation("cpp.ref") || has_annotation("cpp2.ref") ||
-        has_annotation("cpp.ref_type") || has_annotation("cpp2.ref_type");
+    return cpp2::is_explicit_ref(field_);
   }
   mstch::node cpp_ref_unique() {
-    return has_annotation("cpp.ref") || has_annotation("cpp2.ref") ||
-        get_annotation("cpp.ref_type") == "unique" ||
-        get_annotation("cpp2.ref_type") == "unique";
+    return cpp2::is_unique_ref(field_);
   }
   mstch::node cpp_ref_unique_either() {
     return boost::get<bool>(cpp_ref_unique()) ||
         cpp2::is_implicit_ref(field_->get_type());
   }
   mstch::node cpp_ref_shared() {
-    return get_annotation("cpp.ref_type") == "shared" ||
-        get_annotation("cpp2.ref_type") == "shared";
+    return cpp2::get_ref_type(field_) == "shared";
   }
   mstch::node cpp_ref_shared_const() {
-    return get_annotation("cpp.ref_type") == "shared_const" ||
-        get_annotation("cpp2.ref_type") == "shared_const";
+    return cpp2::get_ref_type(field_) == "shared_const";
   }
   mstch::node cpp_ref_shared_or_shared_const() {
     return boost::get<bool>(cpp_ref_shared()) ||
@@ -720,7 +678,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node visibility() {
     auto req = field_->get_req();
     bool isPrivate = true;
-    if (cpp2::is_cpp_ref(field_) || req == t_field::e_req::T_REQUIRED) {
+    if (cpp2::is_ref(field_) || req == t_field::e_req::T_REQUIRED) {
       isPrivate = false;
     } else if (req == t_field::e_req::T_OPTIONAL) {
       // Optional fields are always private.
@@ -791,37 +749,27 @@ class mstch_cpp2_struct : public mstch_struct {
     return std::to_string(strct_->get_members().size());
   }
   mstch::node filtered_fields() {
-    auto has_annotation = [](t_field const* field, std::string const& name) {
-      return field->annotations_.count(name);
-    };
     // Filter fields according to the following criteria:
+    // Get all enums
     // Get all base_types but strings (empty and non-empty)
     // Get all non empty strings
     // Get all non empty containers
-    // Get all enums
     // Get all containers with references
     std::vector<t_field const*> filtered_fields;
     for (auto const* field : get_members_in_layout_order()) {
       const t_type* type = field->get_type()->get_true_type();
-      if ((type->is_base_type() && !type->is_string_or_binary()) ||
+      if (type->is_enum() ||
+          (type->is_base_type() && !type->is_string_or_binary()) ||
           (type->is_string_or_binary() && field->get_value() != nullptr) ||
           (type->is_container() && field->get_value() != nullptr &&
            !field->get_value()->is_empty()) ||
           (type->is_struct() &&
            (strct_ != dynamic_cast<t_struct const*>(type)) &&
            ((field->get_value() && !field->get_value()->is_empty()) ||
-            ((has_annotation(field, "cpp.ref") ||
-              has_annotation(field, "cpp2.ref") ||
-              has_annotation(field, "cpp.ref_type") ||
-              has_annotation(field, "cpp2.ref_type")) &&
-             (field->get_req() != t_field::e_req::T_OPTIONAL)))) ||
-          type->is_enum() ||
-          (type->is_container() &&
-           (has_annotation(field, "cpp.ref") ||
-            has_annotation(field, "cpp2.ref") ||
-            has_annotation(field, "cpp.ref_type") ||
-            has_annotation(field, "cpp2.ref_type")) &&
-           (field->get_req() != t_field::e_req::T_OPTIONAL))) {
+            (cpp2::is_explicit_ref(field) &&
+             field->get_req() != t_field::e_req::T_OPTIONAL))) ||
+          (type->is_container() && cpp2::is_explicit_ref(field) &&
+           field->get_req() != t_field::e_req::T_OPTIONAL)) {
         filtered_fields.push_back(field);
       }
     }
@@ -904,7 +852,7 @@ class mstch_cpp2_struct : public mstch_struct {
     if (strct_->annotations_.count("cpp.allocator_via")) {
       auto name = strct_->annotations_.at("cpp.allocator_via");
       for (const auto* field : strct_->get_members()) {
-        if (get_cpp_name(field) == name) {
+        if (cpp2::get_name(field) == name) {
           return name;
         }
       }
@@ -943,7 +891,7 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     for (auto const* field : strct_->get_members()) {
       auto const* resolved_typedef = field->get_type()->get_true_type();
-      if (cpp2::is_cpp_ref(field) || resolved_typedef->is_string_or_binary() ||
+      if (cpp2::is_ref(field) || resolved_typedef->is_string_or_binary() ||
           resolved_typedef->is_container()) {
         return true;
       }
@@ -1131,7 +1079,7 @@ class mstch_cpp2_function : public mstch_function {
         function_->annotations_.at("thread") == "eb";
   }
   mstch::node cpp_name() {
-    return get_cpp_name(function_);
+    return cpp2::get_name(function_);
   }
   mstch::node stack_arguments() {
     return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
@@ -1338,7 +1286,7 @@ class mstch_cpp2_program : public mstch_program {
       std::map<std::string, std::string>& fatal_strings,
       const Node* node) {
     // TODO: extra copy
-    auto cpp_name = get_cpp_name(node);
+    auto cpp_name = cpp2::get_name(node);
     fatal_strings.emplace(get_fatal_string_short_id(cpp_name), cpp_name);
     for (const auto& a : node->annotations_) {
       if (!is_annotation_blacklisted_in_fatal(a.first)) {
@@ -1540,7 +1488,7 @@ class mstch_cpp2_program : public mstch_program {
     for (const t_struct* s : program_->get_objects()) {
       if (!s->is_union()) {
         for (const t_field* f : s->get_members()) {
-          auto result = fields.insert(get_cpp_name(f));
+          auto result = fields.insert(cpp2::get_name(f));
           if (result.second) {
             ordered_fields.push_back(&*result.first);
           }
@@ -1608,10 +1556,7 @@ class mstch_cpp2_program : public mstch_program {
       std::vector<t_struct*> deps;
       for (auto* f : obj->get_members()) {
         // Ignore ref fields.
-        if (f->annotations_.count("cpp.ref") ||
-            f->annotations_.count("cpp2.ref") ||
-            f->annotations_.count("cpp.ref_type") ||
-            f->annotations_.count("cpp2.ref_type")) {
+        if (cpp2::is_explicit_ref(f)) {
           continue;
         }
 
@@ -2075,17 +2020,13 @@ class annotation_validator : public validator {
 
 bool annotation_validator::visit(t_struct* s) {
   for (auto* member : s->get_members()) {
-    if (!cpp2::is_mixin(*member)) {
-      continue;
-    }
-    for (const auto& i : member->annotations_) {
-      if ((i.first == "cpp.ref" || i.first == "cpp2.ref") &&
-          i.second == "true") {
+    if (cpp2::is_mixin(*member)) {
+      // Mixins cannot be refs
+      if (cpp2::is_explicit_ref(member)) {
         add_error(
             member->get_lineno(),
             "Mixin field `" + member->get_name() +
-                "` can not have annotation `(" + i.first + " = " + i.second +
-                ")`.");
+                "` can not be a ref in cpp.");
       }
     }
   }

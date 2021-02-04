@@ -360,8 +360,8 @@ class mstch_base : public mstch::object {
 
   mstch::node annotations(t_annotated const* annotated) {
     std::vector<t_annotation> annotations;
-    for (const auto& itr : annotated->annotations_) {
-      annotations.emplace_back(itr.first, itr.second);
+    for (const auto& annotation : annotated->annotations_) {
+      annotations.emplace_back(annotation.first, annotation.second);
     }
     return generate_annotations(annotations);
   }
@@ -910,15 +910,6 @@ class mstch_field : public mstch_base {
              &mstch_field::structured_annotations},
         });
   }
-  bool has_annotation(std::string const& name) {
-    return field_->annotations_.count(name);
-  }
-  std::string get_annotation(std::string const& name) {
-    if (has_annotation(name)) {
-      return field_->annotations_.at(name);
-    }
-    return std::string();
-  }
   mstch::node name() {
     return field_->get_name();
   }
@@ -1131,10 +1122,7 @@ class mstch_function : public mstch_base {
     return std::string();
   }
   mstch::node priority() {
-    if (function_->annotations_.count("priority")) {
-      return function_->annotations_.at("priority");
-    }
-    return std::string("NORMAL");
+    return function_->get_annotation("priority", "NORMAL");
   }
   mstch::node returns_sink() {
     return function_->returns_sink();
