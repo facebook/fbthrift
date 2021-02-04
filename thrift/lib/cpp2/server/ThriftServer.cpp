@@ -101,7 +101,7 @@ ThriftServer::ThriftServer(
 }
 
 ThriftServer::~ThriftServer() {
-  ServerInstrumentation::removeServer(*this);
+  tracker_.reset();
   if (duplexWorker_) {
     // usually ServerBootstrap::stop drains the workers, but ServerBootstrap
     // doesn't know about duplexWorker_
@@ -460,7 +460,7 @@ void ThriftServer::serve() {
       ? getSSLCallbackHandle()
       : folly::observer::CallbackHandle{};
 
-  ServerInstrumentation::registerServer(*this);
+  tracker_.emplace(instrumentation::kThriftServerTrackerKey, *this);
   eventBaseManager_->getEventBase()->loopForever();
 }
 

@@ -561,9 +561,14 @@ TEST_F(ServerInstrumentationTest, simpleServerTest) {
   ScopedServerInterfaceThread server0(std::make_shared<TestInterface>());
   {
     ScopedServerInterfaceThread server1(std::make_shared<TestInterface>());
-    EXPECT_EQ(ServerInstrumentation::getServerCount(), 2);
+    EXPECT_EQ(
+        instrumentation::getServerCount(
+            instrumentation::kThriftServerTrackerKey),
+        2);
   }
-  EXPECT_EQ(ServerInstrumentation::getServerCount(), 1);
+  EXPECT_EQ(
+      instrumentation::getServerCount(instrumentation::kThriftServerTrackerKey),
+      1);
 }
 
 class RequestInstrumentationTestP

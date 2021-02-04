@@ -44,6 +44,7 @@
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
+#include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
@@ -207,6 +208,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   friend class rocket::ThriftRocketServerHandler;
 
   bool tosReflect_{false};
+
+  std::optional<instrumentation::ServerTracker> tracker_;
 
  public:
   ThriftServer();

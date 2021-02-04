@@ -16,63 +16,49 @@
 
 #pragma once
 
-#include <folly/Synchronized.h>
-#include <functional>
-#include <mutex>
+#include <cstddef>
 #include <set>
-#include <vector>
+#include <string>
+#include <string_view>
+
+#include <folly/Function.h>
 
 namespace apache {
 namespace thrift {
 
 class ThriftServer;
 
-/**
- * Instrument all the ThriftServer instances.
- * ServerInstrumentation serves for two purposes:
- * 1. Store a set of existing ThriftServer pointers in memory.
- * 2. As the entry point to access instrumentation data from servers.
- */
-class ServerInstrumentation {
-  friend class ThriftServer;
+namespace instrumentation {
 
+constexpr std::string_view kThriftServerTrackerKey = "thrift_server";
+
+class ServerTracker {
  public:
-  static size_t getServerCount() {
-    return ServerCollection::getInstance().getServers()->size();
+  ServerTracker(std::string_view key, ThriftServer& server);
+  ~ServerTracker();
+
+  ThriftServer& getServer() const {
+    return server_;
   }
 
-  template <typename F>
-  static void forEachServer(F&& f) {
-    auto servers = ServerCollection::getInstance().getServers();
-    for (auto server : *servers) {
-      f(*server);
-    }
+  const std::string& getKey() const {
+    return key_;
   }
 
  private:
-  static void registerServer(ThriftServer& server) {
-    ServerCollection::getInstance().addServer(server);
-  }
-
-  static void removeServer(ThriftServer& server) {
-    ServerCollection::getInstance().removeServer(server);
-  }
-
-  class ServerCollection {
-   private:
-    folly::Synchronized<std::set<ThriftServer*>> servers_;
-    ServerCollection() {}
-
-   public:
-    ServerCollection(ServerCollection const&) = delete;
-    void operator=(ServerCollection const&) = delete;
-    static ServerCollection& getInstance();
-
-    folly::Synchronized<std::set<ThriftServer*>>::ConstLockedPtr getServers()
-        const;
-    void addServer(ThriftServer& server);
-    void removeServer(ThriftServer& server);
-  };
+  std::string key_;
+  ThriftServer& server_;
 };
+
+void forAllTrackers(folly::FunctionRef<
+                    void(std::string_view, const std::set<ServerTracker*>&)>);
+
+size_t getServerCount(std::string_view key);
+
+void forEachServer(
+    std::string_view key,
+    folly::FunctionRef<void(ThriftServer&)>);
+
+} // namespace instrumentation
 } // namespace thrift
 } // namespace apache
