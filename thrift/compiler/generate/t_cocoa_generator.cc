@@ -480,7 +480,7 @@ void t_cocoa_generator::generate_enum(t_enum* tenum) {
 
   // fromString
 
-  if (tenum->annotations_.count("cocoa.enum_conversion") != 0) {
+  if (tenum->has_annotation("cocoa.enum_conversion")) {
     generate_enum_from_string_function(tenum);
   }
 }
@@ -3320,14 +3320,7 @@ string t_cocoa_generator::call_field_setter(t_field* tfield, string fieldName) {
 }
 
 string t_cocoa_generator::get_cocoa_property_name(t_field* tfield) {
-  const auto nameAnnotation = std::find_if(
-      std::begin(tfield->annotations_),
-      std::end(tfield->annotations_),
-      [](auto annotation) { return annotation.first == "cocoa.name"; });
-
-  return (nameAnnotation != std::end(tfield->annotations_))
-      ? nameAnnotation->second
-      : tfield->get_name();
+  return tfield->get_annotation("cocoa.name", &tfield->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(

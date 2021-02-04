@@ -295,7 +295,7 @@ class t_php_generator : public t_oop_generator {
   std::string render_string(std::string value);
 
   bool is_bitmask_enum(t_enum* tenum) {
-    return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
+    return tenum->has_annotation("bitmask");
   }
 
   std::string php_namespace(const t_program* p) {
@@ -1437,11 +1437,10 @@ void t_php_generator::generate_php_struct_reader(
   if (tstruct->is_xception()) {
     const char* annotations[] = {"message", "code"};
     for (auto& annotation : annotations) {
-      auto it = tstruct->annotations_.find(annotation);
-      if (it != tstruct->annotations_.end()) {
+      if (const auto* val = tstruct->get_annotation_or_null(annotation)) {
         // if annotation is also used as field, ignore annotation
         if (tstruct->has_field_named(annotation)) {
-          if (strcmp(annotation, it->second.c_str()) != 0) {
+          if (strcmp(annotation, val->c_str()) != 0) {
             fprintf(
                 stderr,
                 "Ignoring annotation '%s' in PHP generator because "
@@ -1453,7 +1452,7 @@ void t_php_generator::generate_php_struct_reader(
           continue;
         }
 
-        std::string msg = it->second;
+        std::string msg = *val;
         size_t idx = 0;
 
         // replace . with -> so annotation works in both C++ and php.

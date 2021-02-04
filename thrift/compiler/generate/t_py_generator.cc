@@ -1675,11 +1675,9 @@ void t_py_generator::generate_py_struct_definition(
   // #5882
   if (is_exception) {
     out << indent() << "def __str__(self):" << endl;
-    if (tstruct->annotations_.count("message")) {
-      out << indent() << "  if self." << tstruct->annotations_.at("message")
-          << ":" << endl
-          << indent() << "    return self."
-          << tstruct->annotations_.at("message") << endl
+    if (const auto* msg = tstruct->get_annotation_or_null("message")) {
+      out << indent() << "  if self." << *msg << ":" << endl
+          << indent() << "    return self." << *msg << endl
           << indent() << "  else:" << endl
           << indent() << "    return repr(self)" << endl;
     } else {
@@ -3564,8 +3562,8 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
 std::string t_py_generator::get_priority(
     const t_annotated* obj,
     std::string const& def) {
-  if (obj && obj->annotations_.count("priority")) {
-    return obj->annotations_.at("priority");
+  if (obj) {
+    return obj->get_annotation("priority", &def);
   }
   return def;
 }

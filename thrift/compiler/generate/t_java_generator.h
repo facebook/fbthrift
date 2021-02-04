@@ -336,8 +336,7 @@ class t_java_generator : public t_oop_generator {
   }
 
   bool is_field_sensitive(t_field* field) {
-    return field->annotations_.find("java.sensitive") !=
-        field->annotations_.end();
+    return field->has_annotation("java.sensitive");
   }
 
   std::string namespace_key_;

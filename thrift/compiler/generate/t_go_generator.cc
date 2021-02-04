@@ -434,7 +434,7 @@ bool t_go_generator::is_pointer_field(
     t_field* tfield,
     bool in_container_value) {
   (void)in_container_value;
-  if (tfield->annotations_.count("cpp.ref") != 0) {
+  if (tfield->has_annotation("cpp.ref")) {
     return true;
   }
   t_type* type = tfield->get_type()->get_true_type();
@@ -1422,19 +1422,18 @@ void t_go_generator::generate_go_struct_definition(
       t_type* fieldType = (*m_iter)->get_type();
       string goType =
           type_to_go_type_with_opt(fieldType, is_pointer_field(*m_iter));
-      string gotag = "db:\"" + escape_string((*m_iter)->get_name()) + "\" ";
-      if ((*m_iter)->get_req() == t_field::T_OPTIONAL) {
-        gotag +=
-            "json:\"" + escape_string((*m_iter)->get_name()) + ",omitempty\"";
-      } else {
-        gotag += "json:\"" + escape_string((*m_iter)->get_name()) + "\"";
-      }
-
+      string gotag;
       // Check for user override of db and json tags using "go.tag"
-      std::map<string, string>::iterator it =
-          (*m_iter)->annotations_.find("go.tag");
-      if (it != (*m_iter)->annotations_.end()) {
-        gotag = it->second;
+      if (const auto* val = (*m_iter)->get_annotation_or_null("go.tag")) {
+        gotag = *val;
+      } else {
+        gotag = "db:\"" + escape_string((*m_iter)->get_name()) + "\" ";
+        if ((*m_iter)->get_req() == t_field::T_OPTIONAL) {
+          gotag +=
+              "json:\"" + escape_string((*m_iter)->get_name()) + ",omitempty\"";
+        } else {
+          gotag += "json:\"" + escape_string((*m_iter)->get_name()) + "\"";
+        }
       }
       indent(out) << publicize((*m_iter)->get_name()) << " " << goType
                   << " `thrift:\"" << escape_string((*m_iter)->get_name())
