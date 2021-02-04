@@ -284,23 +284,14 @@ class mstch_cpp2_enum : public mstch_enum {
     return cpp_is_unscoped_();
   }
   mstch::node cpp_enum_type() {
-    if (enm_->annotations_.count("cpp.enum_type")) {
-      return enm_->annotations_.at("cpp.enum_type");
-    } else if (enm_->annotations_.count("cpp2.enum_type")) {
-      return enm_->annotations_.at("cpp2.enum_type");
-    }
-    if (!cpp_is_unscoped_().empty()) {
-      return std::string("int");
-    }
-    return std::string();
+    static std::string kInt = "int";
+    return enm_->get_annotation(
+        {"cpp.enum_type", "cpp2.enum_type"},
+        cpp_is_unscoped_().empty() ? nullptr : &kInt);
   }
   mstch::node cpp_declare_bitwise_ops() {
-    if (enm_->annotations_.count("cpp.declare_bitwise_ops")) {
-      return enm_->annotations_.at("cpp.declare_bitwise_ops");
-    } else if (enm_->annotations_.count("cpp2.declare_bitwise_ops")) {
-      return enm_->annotations_.at("cpp2.declare_bitwise_ops");
-    }
-    return std::string();
+    return enm_->get_annotation(
+        {"cpp.declare_bitwise_ops", "cpp2.declare_bitwise_ops"});
   }
   mstch::node has_zero() {
     auto* enm_value = enm_->find_value(0);
@@ -511,19 +502,19 @@ class mstch_cpp2_type : public mstch_type {
     return get_cpp_template(type_);
   }
   mstch::node cpp_indirection() {
-    return resolved_type_->annotations_.count("cpp.indirection") > 0;
+    return resolved_type_->has_annotation("cpp.indirection");
   }
   mstch::node cpp_declare_hash() {
-    return resolved_type_->annotations_.count("cpp.declare_hash") ||
-        resolved_type_->annotations_.count("cpp2.declare_hash");
+    return resolved_type_->has_annotation(
+        {"cpp.declare_hash", "cpp2.declare_hash"});
   }
   mstch::node cpp_declare_equal_to() {
-    return resolved_type_->annotations_.count("cpp.declare_equal_to") ||
-        resolved_type_->annotations_.count("cpp2.declare_equal_to");
+    return resolved_type_->has_annotation(
+        {"cpp.declare_equal_to", "cpp2.declare_equal_to"});
   }
   mstch::node cpp_use_allocator() {
-    return resolved_type_->annotations_.count("cpp.use_allocator") ||
-        type_->annotations_.count("cpp.use_allocator");
+    return resolved_type_->has_annotation("cpp.use_allocator") ||
+        type_->has_annotation("cpp.use_allocator");
   }
   mstch::node is_non_empty_struct() {
     if (resolved_type_->is_struct() || resolved_type_->is_xception()) {
@@ -615,10 +606,7 @@ class mstch_cpp2_field : public mstch_field {
         boost::get<bool>(cpp_ref_shared_const());
   }
   mstch::node cpp_noncopyable() {
-    auto type = field_->get_type();
-    return type->is_struct() &&
-        static_cast<const t_struct*>(type)->annotations_.count(
-            "cpp2.noncopyable") != 0;
+    return field_->get_type()->has_annotation("cpp2.noncopyable");
   }
   mstch::node enum_has_value() {
     if (field_->get_type()->is_enum()) {
@@ -788,7 +776,7 @@ class mstch_cpp2_struct : public mstch_struct {
 
   mstch::node is_struct_orderable() {
     return context_->is_orderable(*strct_) &&
-        !strct_->annotations_.count("no_default_comparators");
+        !strct_->has_annotation("no_default_comparators");
   }
   mstch::node has_cpp_ref_unique_either() {
     for (auto const* f : strct_->get_members()) {
@@ -799,64 +787,51 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node cpp_methods() {
-    if (strct_->annotations_.count("cpp.methods")) {
-      return strct_->annotations_.at("cpp.methods");
-    } else if (strct_->annotations_.count("cpp2.methods")) {
-      return strct_->annotations_.at("cpp2.methods");
-    }
-    return std::string();
+    return strct_->get_annotation({"cpp.methods", "cpp2.methods"});
   }
   mstch::node cpp_declare_hash() {
-    return strct_->annotations_.count("cpp.declare_hash") ||
-        strct_->annotations_.count("cpp2.declare_hash");
+    return strct_->has_annotation({"cpp.declare_hash", "cpp2.declare_hash"});
   }
   mstch::node cpp_declare_equal_to() {
-    return strct_->annotations_.count("cpp.declare_equal_to") ||
-        strct_->annotations_.count("cpp2.declare_equal_to");
+    return strct_->has_annotation(
+        {"cpp.declare_equal_to", "cpp2.declare_equal_to"});
   }
   mstch::node cpp_noncopyable() {
-    return bool(strct_->annotations_.count("cpp2.noncopyable"));
+    return strct_->has_annotation("cpp2.noncopyable");
   }
   mstch::node cpp_noncomparable() {
-    return bool(strct_->annotations_.count("cpp2.noncomparable"));
+    return strct_->has_annotation("cpp2.noncomparable");
   }
   mstch::node cpp_noexcept_move() {
-    return bool(strct_->annotations_.count("cpp.noexcept_move"));
+    return strct_->has_annotation("cpp.noexcept_move");
   }
   mstch::node cpp_noexcept_move_ctor() {
-    return strct_->annotations_.count("cpp.noexcept_move") ||
-        strct_->annotations_.count("cpp.noexcept_move_ctor") ||
-        strct_->annotations_.count("cpp2.noexcept_move_ctor");
+    return strct_->has_annotation(
+        {"cpp.noexcept_move",
+         "cpp.noexcept_move_ctor",
+         "cpp2.noexcept_move_ctor"});
   }
   mstch::node cpp_virtual() {
-    return strct_->annotations_.count("cpp.virtual") > 0 ||
-        strct_->annotations_.count("cpp2.virtual") > 0;
+    return strct_->has_annotation({"cpp.virtual", "cpp2.virtual"});
   }
   mstch::node message() {
-    if (strct_->annotations_.count("message")) {
-      return strct_->annotations_.at("message");
-    }
-    return std::string();
+    return strct_->get_annotation("message");
   }
   mstch::node cpp_allocator() {
-    if (strct_->annotations_.count("cpp.allocator")) {
-      return strct_->annotations_.at("cpp.allocator");
-    }
-    return std::string();
+    return strct_->get_annotation("cpp.allocator");
   }
   mstch::node cpp_data_method() {
-    return bool(
-        strct_->annotations_.count("cpp.internal.deprecated._data.method"));
+    return strct_->has_annotation("cpp.internal.deprecated._data.method");
   }
   mstch::node cpp_allocator_via() {
-    if (strct_->annotations_.count("cpp.allocator_via")) {
-      auto name = strct_->annotations_.at("cpp.allocator_via");
+    if (const auto* name =
+            strct_->get_annotation_or_null("cpp.allocator_via")) {
       for (const auto* field : strct_->get_members()) {
-        if (cpp2::get_name(field) == name) {
-          return name;
+        if (cpp2::get_name(field) == *name) {
+          return *name;
         }
       }
-      throw std::runtime_error("No cpp.allocator_via field \"" + name + "\"");
+      throw std::runtime_error("No cpp.allocator_via field \"" + *name + "\"");
     }
     return std::string();
   }
@@ -922,9 +897,7 @@ class mstch_cpp2_struct : public mstch_struct {
   // Computes the alignment of field on the target platform.
   // Returns 0 if cannot compute the alignment.
   static size_t compute_alignment(t_field const* field) {
-    auto const& annotations = field->annotations_;
-    if (annotations.find("cpp.ref_type") != annotations.end() ||
-        annotations.find("cpp2.ref_type") != annotations.end()) {
+    if (cpp2::is_ref(field)) {
       return 8;
     }
     t_type const* type = field->get_type();
@@ -977,8 +950,7 @@ class mstch_cpp2_struct : public mstch_struct {
   // cpp.minimize_padding annotation is specified.
   const std::vector<t_field*>& get_members_in_layout_order() {
     auto const& members = strct_->get_members();
-    if (strct_->annotations_.find("cpp.minimize_padding") ==
-        strct_->annotations_.end()) {
+    if (!strct_->has_annotation("cpp.minimize_padding")) {
       return members;
     }
 
@@ -1071,12 +1043,11 @@ class mstch_cpp2_function : public mstch_function {
         });
   }
   mstch::node coroutine() {
-    return bool(function_->annotations_.count("cpp.coroutine")) ||
+    return function_->has_annotation("cpp.coroutine") ||
         function_->is_interaction_member();
   }
   mstch::node event_based() {
-    return function_->annotations_.count("thread") &&
-        function_->annotations_.at("thread") == "eb";
+    return function_->get_annotation("thread") == "eb";
   }
   mstch::node cpp_name() {
     return cpp2::get_name(function_);
@@ -1272,7 +1243,7 @@ class mstch_cpp2_program : public mstch_program {
     std::vector<const t_typedef*> result;
     for (const t_typedef* i : program_->get_typedefs()) {
       const t_type* alias = i->get_type();
-      if (alias->is_typedef() && alias->annotations_.count("cpp.type")) {
+      if (alias->is_typedef() && alias->has_annotation("cpp.type")) {
         const t_type* ttype = i->get_type()->get_true_type();
         if (ttype->is_struct() || ttype->is_xception()) {
           result.push_back(i);
@@ -1363,15 +1334,15 @@ class mstch_cpp2_program : public mstch_program {
         program_->get_structs().begin(),
         program_->get_structs().end(),
         [](const auto* strct) {
-          return strct->annotations_.count("cpp.declare_hash") ||
-              strct->annotations_.count("cpp2.declare_hash");
+          return strct->has_annotation(
+              {"cpp.declare_hash", "cpp2.declare_hash"});
         });
     bool cpp_declare_in_typedefs = std::any_of(
         program_->get_typedefs().begin(),
         program_->get_typedefs().end(),
         [](const auto* typedf) {
-          return typedf->get_type()->annotations_.count("cpp.declare_hash") ||
-              typedf->get_type()->annotations_.count("cpp2.declare_hash");
+          return typedf->get_type()->has_annotation(
+              {"cpp.declare_hash", "cpp2.declare_hash"});
         });
     return cpp_declare_in_structs || cpp_declare_in_typedefs;
   }
@@ -2051,35 +2022,26 @@ class service_method_validator : public validator {
 };
 
 bool service_method_validator::visit(t_service* service) {
-  for (const auto func : service->get_functions()) {
-    auto suppress_key = "cpp.coroutine_stack_arguments_broken_suppress_error";
-    auto const& annots = func->annotations_;
-    bool suppressed = annots.count(suppress_key) != 0;
-    if (suppressed) {
-      continue;
-    }
-    bool is_coro = annots.count("cpp.coroutine") != 0;
-    if (!is_coro) {
-      continue;
-    }
-    bool is_sa = cpp2::is_stack_arguments(options_, *func);
-    if (!is_sa) {
-      continue;
-    }
-    // when cpp.coroutine and stack_arguments are both on, return failure if
-    // this function has complex types (including string and binary).
-    auto args = func->get_arglist()->get_members();
-    bool ok = std::all_of(args.begin(), args.end(), [](auto arg) {
-      auto type = arg->get_type()->get_true_type();
-      return type->is_base_type() && !type->is_string_or_binary();
-    });
+  auto suppress_key = "cpp.coroutine_stack_arguments_broken_suppress_error";
+  for (const auto* func : service->get_functions()) {
+    if (!func->has_annotation(suppress_key) &&
+        func->has_annotation("cpp.coroutine") &&
+        cpp2::is_stack_arguments(options_, *func)) {
+      // when cpp.coroutine and stack_arguments are both on, return failure if
+      // this function has complex types (including string and binary).
+      auto args = func->get_arglist()->get_members();
+      bool ok = std::all_of(args.begin(), args.end(), [](auto arg) {
+        auto type = arg->get_type()->get_true_type();
+        return type->is_base_type() && !type->is_string_or_binary();
+      });
 
-    if (!ok) {
-      add_error(
-          func->get_lineno(),
-          "`" + service->get_name() + "." + func->get_name() +
-              "` use of cpp.coroutine and stack_arguments together is "
-              "disallowed.");
+      if (!ok) {
+        add_error(
+            func->get_lineno(),
+            "`" + service->get_name() + "." + func->get_name() +
+                "` use of cpp.coroutine and stack_arguments together is "
+                "disallowed.");
+      }
     }
   }
   return true;
