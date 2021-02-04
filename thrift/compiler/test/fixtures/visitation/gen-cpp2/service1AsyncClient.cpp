@@ -171,9 +171,11 @@ void service1AsyncClient::sync_method1(apache::thrift::RpcOptions& rpcOptions) {
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       recv_method1(returnState);
   });
@@ -336,9 +338,11 @@ void service1AsyncClient::sync_method2(apache::thrift::RpcOptions& rpcOptions, i
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       recv_method2(returnState);
   });
@@ -501,9 +505,11 @@ int32_t service1AsyncClient::sync_method3(apache::thrift::RpcOptions& rpcOptions
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       return recv_method3(returnState);
   });
@@ -668,9 +674,11 @@ int32_t service1AsyncClient::sync_method4(apache::thrift::RpcOptions& rpcOptions
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       return recv_method4(returnState);
   });
@@ -835,9 +843,11 @@ void service1AsyncClient::sync_method5(apache::thrift::RpcOptions& rpcOptions,  
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       recv_method5(_return, returnState);
   });
@@ -1000,9 +1010,11 @@ void service1AsyncClient::sync_method6(apache::thrift::RpcOptions& rpcOptions,  
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       recv_method6(_return, returnState);
   });

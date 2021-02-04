@@ -106,9 +106,11 @@ void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOp
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       recv_ping(returnState);
   });
@@ -271,9 +273,11 @@ void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOp
   }
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-  if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-    rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
-  }
+  SCOPE_EXIT {
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
+    }
+  };
   return folly::fibers::runInMainContext([&] {
       recv_pong(returnState);
   });
