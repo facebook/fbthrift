@@ -66,22 +66,14 @@ std::string get_constants_class_name(const t_program& prog) {
     return java_class_name;
   }
 }
+
+template <typename Node>
+std::string get_java_swift_name(const Node* node) {
+  return node->get_annotation(
+      "java.swift.name", java::mangle_java_name(node->get_name(), false));
+}
+
 } // namespace
-
-template <typename Node>
-const std::string get_java_swift_name(const Node* node) {
-  auto name = node->annotations_.find("java.swift.name");
-  return name != node->annotations_.end()
-      ? name->second
-      : java::mangle_java_name(node->get_name(), false);
-}
-
-template <typename Node>
-const mstch::node get_java_annotation(const Node* node) {
-  auto jannots = node->annotations_.find("java.swift.annotations");
-  return jannots != node->annotations_.end() ? mstch::node(jannots->second)
-                                             : mstch::node();
-}
 
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
@@ -369,8 +361,7 @@ class mstch_swift_struct : public mstch_struct {
   }
   mstch::node is_as_bean() {
     if (!strct_->is_xception() && !strct_->is_union()) {
-      return strct_->annotations_.count("java.swift.mutable") &&
-          strct_->annotations_.at("java.swift.mutable") == "true";
+      return strct_->get_annotation("java.swift.mutable") == "true";
     } else {
       return false;
     }
@@ -386,14 +377,13 @@ class mstch_swift_struct : public mstch_struct {
     return java::mangle_java_name(strct_->get_name(), true);
   }
   mstch::node has_java_annotations() {
-    return strct_->annotations_.find("java.swift.annotations") !=
-        strct_->annotations_.end();
+    return strct_->has_annotation("java.swift.annotations");
   }
   mstch::node java_annotations() {
-    return get_java_annotation(strct_);
+    return strct_->get_annotation("java.swift.annotations");
   }
   mstch::node exception_message() {
-    auto field_name_to_use = strct_->annotations_.at("message");
+    auto field_name_to_use = strct_->get_annotation("message");
     auto field = std::find_if(
         strct_->get_members().begin(),
         strct_->get_members().end(),
@@ -412,7 +402,7 @@ class mstch_swift_struct : public mstch_struct {
   //  2 - there is no struct field named 'message'
   //      (since it will generate getMessage() as well)
   mstch::node needs_exception_message() {
-    return strct_->is_xception() && strct_->annotations_.count("message") &&
+    return strct_->is_xception() && strct_->has_annotation("message") &&
         std::find_if(
             strct_->get_members().begin(),
             strct_->get_members().end(),
@@ -420,8 +410,7 @@ class mstch_swift_struct : public mstch_struct {
         strct_->get_members().end();
   }
   mstch::node enable_is_set() {
-    return strct_->annotations_.find("java.swift.enable_is_set") !=
-        strct_->annotations_.end();
+    return strct_->has_annotation("java.swift.enable_is_set");
   }
 };
 
@@ -642,10 +631,8 @@ class mstch_swift_field : public mstch_field {
     return constant_name(field_->get_name()) + "_FIELD_DESC";
   }
   mstch::node java_capital_name() {
-    auto it = field_->annotations_.find("java.swift.name");
-    auto name =
-        it != field_->annotations_.end() ? it->second : field_->get_name();
-    return java::mangle_java_name(name, true);
+    return java::mangle_java_name(
+        field_->get_annotation("java.swift.name", &field_->get_name()), true);
   }
   mstch::node java_all_caps_name() {
     auto field_name = field_->get_name();
@@ -656,8 +643,7 @@ class mstch_swift_field : public mstch_field {
     return default_value_for_field(field_);
   }
   mstch::node is_recursive_reference() {
-    return field_->annotations_.count("swift.recursive_reference") &&
-        field_->annotations_.at("swift.recursive_reference") == "true";
+    return field_->get_annotation("swift.recursive_reference") == "true";
   }
   mstch::node is_negative_id() {
     return field_->get_key() < 0;
@@ -688,12 +674,10 @@ class mstch_swift_field : public mstch_field {
     }
   }
   mstch::node has_java_annotations() {
-    return field_->annotations_.find("java.swift.annotations") !=
-        field_->annotations_.end();
+    return field_->has_annotation("java.swift.annotations");
   }
   mstch::node is_sensitive() {
-    return field_->annotations_.find("java.sensitive") !=
-        field_->annotations_.end();
+    return field_->has_annotation("java.sensitive");
   }
   std::string constant_name(string name) {
     string constant_str;
@@ -713,7 +697,7 @@ class mstch_swift_field : public mstch_field {
     return constant_str;
   }
   mstch::node java_annotations() {
-    return get_java_annotation(field_);
+    return field_->get_annotation("java.swift.annotations");
   }
 };
 
@@ -741,7 +725,7 @@ class mstch_swift_enum : public mstch_enum {
     return java::mangle_java_name(enm_->get_name(), true);
   }
   mstch::node java_skip_enum_name_map() {
-    return enm_->annotations_.count("java.swift.skip_enum_name_map") != 0;
+    return enm_->has_annotation("java.swift.skip_enum_name_map");
   }
 };
 
@@ -806,22 +790,22 @@ class mstch_swift_const : public mstch_const {
     if (cnst_->get_type()->is_map()) {
       t_map* map = (t_map*)cnst_->get_type();
       if (map->get_key_type()->is_enum()) {
-        return map->get_key_type()->annotations_.count(
-                   "java.swift.skip_enum_name_map") != 0;
+        return map->get_key_type()->has_annotation(
+            "java.swift.skip_enum_name_map");
       }
     }
     if (cnst_->get_type()->is_list()) {
       t_list* list = (t_list*)cnst_->get_type();
       if (list->get_elem_type()->is_enum()) {
-        return list->get_elem_type()->annotations_.count(
-                   "java.swift.skip_enum_name_map") != 0;
+        return list->get_elem_type()->has_annotation(
+            "java.swift.skip_enum_name_map");
       }
     }
     if (cnst_->get_type()->is_set()) {
       t_set* set = (t_set*)cnst_->get_type();
       if (set->get_elem_type()->is_enum()) {
-        return set->get_elem_type()->annotations_.count(
-                   "java.swift.skip_enum_name_map") != 0;
+        return set->get_elem_type()->has_annotation(
+            "java.swift.skip_enum_name_map");
       }
     }
     return mstch::node();
@@ -926,10 +910,7 @@ class mstch_swift_type : public mstch_type {
         type_->is_double() || type_->is_float();
   }
   mstch::node java_type() {
-    if (type_->get_true_type()->annotations_.count("java.swift.type")) {
-      return type_->get_true_type()->annotations_.at("java.swift.type");
-    }
-    return mstch::node();
+    return type_->get_true_type()->get_annotation("java.swift.type");
   }
 };
 
