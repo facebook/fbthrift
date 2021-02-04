@@ -151,7 +151,7 @@ struct ServerAttributeObservable {
       folly::Optional<folly::observer::Observer<T>>>>
       rawValues_{folly::none, folly::none};
   folly::observer::Observer<T> default_;
-  folly::DelayedInit<folly::observer::Observer<T>> mergedObserver_;
+  mutable folly::DelayedInit<folly::observer::Observer<T>> mergedObserver_;
 };
 
 } // namespace detail
@@ -174,7 +174,8 @@ struct ServerAttributeAtomic
   }
 
  private:
-  folly::DelayedInit<folly::observer::AtomicObserver<T>> atomicObserver_;
+  mutable folly::DelayedInit<folly::observer::AtomicObserver<T>>
+      atomicObserver_;
 };
 
 template <typename T>
@@ -195,7 +196,7 @@ struct ServerAttributeThreadLocal
   }
 
  private:
-  folly::DelayedInit<folly::observer::TLObserver<T>> tlObserver_;
+  mutable folly::DelayedInit<folly::observer::TLObserver<T>> tlObserver_;
 };
 
 } // namespace thrift
