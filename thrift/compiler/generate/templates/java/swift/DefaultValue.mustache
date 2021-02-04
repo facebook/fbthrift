@@ -58,34 +58,34 @@
     Map constants
   }}{{#type:map?}}{{!
 
-      }}ImmutableMap.<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>builder()
+      }}{{#struct:asBean?}}com.google.common.collect.Maps.newHashMap({{/struct:asBean?}}ImmutableMap.<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>builder()
         {{#value:mapElements}}
         .put({{#element:key}}{{#type:keyType}}{{> DefaultValue}}{{/type:keyType}}{{/element:key}}, {{!
         }}{{#element:value}}{{#type:valueType}}{{> DefaultValue}}{{/type:valueType}}{{/element:value}})
         {{/value:mapElements}}
-        .build(){{!
+        .build(){{#struct:asBean?}}){{/struct:asBean?}}{{!
 
   }}{{/type:map?}}{{!
 
     List constants
   }}{{#type:list?}}{{!
 
-      }}ImmutableList.<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>builder()
+      }}{{#struct:asBean?}}com.google.common.collect.Lists.newArrayList({{/struct:asBean?}}ImmutableList.<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>builder()
         {{#value:listElements}}
         .add({{#type:listElemType}}{{> DefaultValue}}{{/type:listElemType}})
         {{/value:listElements}}
-        .build(){{!
+        .build(){{#struct:asBean?}}){{/struct:asBean?}}{{!
 
   }}{{/type:list?}}{{!
 
     Set constants
   }}{{#type:set?}}{{!
 
-      }}ImmutableSet.<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>builder()
+      }}{{#struct:asBean?}}com.google.common.collect.Sets.newHashSet({{/struct:asBean?}}ImmutableSet.<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>builder()
         {{#value:listElements}}
         .add({{#type:setElemType}}{{> DefaultValue}}{{/type:setElemType}})
         {{/value:listElements}}
-        .build(){{!
+        .build(){{#struct:asBean?}}){{/struct:asBean?}}{{!
 
   }}{{/type:set?}}{{!
 

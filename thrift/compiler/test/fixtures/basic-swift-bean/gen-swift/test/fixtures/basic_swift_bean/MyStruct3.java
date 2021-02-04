@@ -34,26 +34,30 @@ public final class MyStruct3 {
       this.myString = "foo";
       this.myBool = true;
       this.myDouble = (double)42.42;
-      this.mySet = ImmutableSet.<String>builder()
+      this.mySet = com.google.common.collect.Sets.newHashSet(ImmutableSet.<String>builder()
         .add("foo")
         .add("bar")
         .add("baz")
-        .build();
+        .build());
       this.myDataItem = new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build();
-      this.myList = ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+      this.myList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build();
-      this.myMapList = ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
-        .put(1, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+      this.myMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .put(1, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build())
-        .put(2, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build()))
+        .put(2, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(33).setField2(34).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(35).setField2(36).build())
-        .build())
-        .build();
+        .build()))
+        .build());
+      this.myEmptyList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+      this.myEmptyMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .build());
     }
     
     public static class Builder {
@@ -64,26 +68,30 @@ public final class MyStruct3 {
         private String myString = "foo";
         private boolean myBool = true;
         private double myDouble = (double)42.42;
-        private Set<String> mySet = ImmutableSet.<String>builder()
+        private Set<String> mySet = com.google.common.collect.Sets.newHashSet(ImmutableSet.<String>builder()
         .add("foo")
         .add("bar")
         .add("baz")
-        .build();
+        .build());
         private test.fixtures.basic_swift_bean.MyDataItem myDataItem = new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build();
-        private List<test.fixtures.basic_swift_bean.MyDataItem> myList = ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        private List<test.fixtures.basic_swift_bean.MyDataItem> myList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build();
-        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList = ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
-        .put(1, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .put(1, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build())
-        .put(2, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build()))
+        .put(2, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(33).setField2(34).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(35).setField2(36).build())
-        .build())
-        .build();
+        .build()))
+        .build());
+        private List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .build());
     
         @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
         public Builder setMyInt16(short myInt16) {
@@ -165,6 +173,22 @@ public final class MyStruct3 {
     
         public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
     
+            @com.facebook.swift.codec.ThriftField(value=11, name="myEmptyList", requiredness=Requiredness.NONE)
+        public Builder setMyEmptyList(List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList) {
+            this.myEmptyList = myEmptyList;
+            return this;
+        }
+    
+        public List<test.fixtures.basic_swift_bean.MyDataItem> getMyEmptyList() { return myEmptyList; }
+    
+            @com.facebook.swift.codec.ThriftField(value=12, name="myEmptyMapList", requiredness=Requiredness.NONE)
+        public Builder setMyEmptyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList) {
+            this.myEmptyMapList = myEmptyMapList;
+            return this;
+        }
+    
+        public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyEmptyMapList() { return myEmptyMapList; }
+    
         public Builder() { }
         public Builder(MyStruct3 other) {
             this.myInt16 = other.myInt16;
@@ -177,6 +201,8 @@ public final class MyStruct3 {
             this.myDataItem = other.myDataItem;
             this.myList = other.myList;
             this.myMapList = other.myMapList;
+            this.myEmptyList = other.myEmptyList;
+            this.myEmptyMapList = other.myEmptyMapList;
         }
     
         @ThriftConstructor
@@ -192,6 +218,8 @@ public final class MyStruct3 {
             result.myDataItem = this.myDataItem;
             result.myList = this.myList;
             result.myMapList = this.myMapList;
+            result.myEmptyList = this.myEmptyList;
+            result.myEmptyMapList = this.myEmptyMapList;
             return result;
         }
     }
@@ -229,6 +257,12 @@ public final class MyStruct3 {
     private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList;
     public static final int _MYMAPLIST = 10;
     private static final TField MY_MAP_LIST_FIELD_DESC = new TField("myMapList", TType.MAP, (short)10);
+    private List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList;
+    public static final int _MYEMPTYLIST = 11;
+    private static final TField MY_EMPTY_LIST_FIELD_DESC = new TField("myEmptyList", TType.LIST, (short)11);
+    private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList;
+    public static final int _MYEMPTYMAPLIST = 12;
+    private static final TField MY_EMPTY_MAP_LIST_FIELD_DESC = new TField("myEmptyMapList", TType.MAP, (short)12);
 static {
       NAMES_TO_IDS.put("myInt16", 1);
       FIELD_METADATA.put(1, MY_INT16_FIELD_DESC);
@@ -250,6 +284,10 @@ static {
       FIELD_METADATA.put(9, MY_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("myMapList", 10);
       FIELD_METADATA.put(10, MY_MAP_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("myEmptyList", 11);
+      FIELD_METADATA.put(11, MY_EMPTY_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("myEmptyMapList", 12);
+      FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
@@ -351,6 +389,26 @@ static {
         return this;
     }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=11, name="myEmptyList", requiredness=Requiredness.NONE)
+    public List<test.fixtures.basic_swift_bean.MyDataItem> getMyEmptyList() { return myEmptyList; }
+    
+    @com.facebook.swift.codec.ThriftField
+    public MyStruct3 setMyEmptyList(List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList) {
+        this.myEmptyList = myEmptyList;
+        return this;
+    }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=12, name="myEmptyMapList", requiredness=Requiredness.NONE)
+    public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyEmptyMapList() { return myEmptyMapList; }
+    
+    @com.facebook.swift.codec.ThriftField
+    public MyStruct3 setMyEmptyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList) {
+        this.myEmptyMapList = myEmptyMapList;
+        return this;
+    }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -364,6 +422,8 @@ static {
         helper.add("myDataItem", myDataItem);
         helper.add("myList", myList);
         helper.add("myMapList", myMapList);
+        helper.add("myEmptyList", myEmptyList);
+        helper.add("myEmptyMapList", myEmptyMapList);
         return helper.toString();
     }
     
@@ -389,6 +449,8 @@ static {
             Objects.equals(myDataItem, other.myDataItem) &&
             Objects.equals(myList, other.myList) &&
             Objects.equals(myMapList, other.myMapList) &&
+            Objects.equals(myEmptyList, other.myEmptyList) &&
+            Objects.equals(myEmptyMapList, other.myEmptyMapList) &&
             true;
     }
     
@@ -404,7 +466,9 @@ static {
             mySet,
             myDataItem,
             myList,
-            myMapList
+            myMapList,
+            myEmptyList,
+            myEmptyMapList
         });
     }
     
@@ -542,6 +606,57 @@ static {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _MYEMPTYLIST:
+          if (__field.type == TType.LIST) {
+            List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList;
+            {
+            TList _list = oprot.readListBegin();
+            myEmptyList = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                
+                test.fixtures.basic_swift_bean.MyDataItem _value1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                myEmptyList.add(_value1);
+            }
+            oprot.readListEnd();
+            }
+            builder.setMyEmptyList(myEmptyList);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYEMPTYMAPLIST:
+          if (__field.type == TType.MAP) {
+            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList;
+            {
+            TMap _map = oprot.readMapBegin();
+            myEmptyMapList = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                
+                int _key1 = oprot.readI32();
+                List<test.fixtures.basic_swift_bean.MyDataItem> _value1;
+                            {
+                            TList _list1 = oprot.readListBegin();
+                            _value1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                
+                                
+                                test.fixtures.basic_swift_bean.MyDataItem _value2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                
+                                
+                                _value1.add(_value2);
+                                
+                            }
+                            oprot.readListEnd();
+                            }
+                                myEmptyMapList.put(_key1, _value1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMyEmptyMapList(myEmptyMapList);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -602,6 +717,32 @@ static {
       if (this.myMapList != null) {
         oprot.writeFieldBegin(MY_MAP_LIST_FIELD_DESC);
         Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = this.myMapList;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
+        for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+          
+          oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
+        for (test.fixtures.basic_swift_bean.MyDataItem _iter2 : _iter1.getValue()) {
+          _iter2.write0(oprot);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.myEmptyList != null) {
+        oprot.writeFieldBegin(MY_EMPTY_LIST_FIELD_DESC);
+        List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = this.myEmptyList;
+        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
+        for (test.fixtures.basic_swift_bean.MyDataItem _iter1 : _iter0) {
+          _iter1.write0(oprot);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.myEmptyMapList != null) {
+        oprot.writeFieldBegin(MY_EMPTY_MAP_LIST_FIELD_DESC);
+        Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = this.myEmptyMapList;
         oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
         for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
           oprot.writeI32(_iter1.getKey());

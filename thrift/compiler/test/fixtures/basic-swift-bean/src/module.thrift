@@ -53,6 +53,8 @@ struct MyStruct3 {
     1: [{"field1": 29, "field2": 30}, {"field1": 31, "field2": 32}],
     2: [{"field1": 33, "field2": 34}, {"field1": 35, "field2": 36}],
   };
+  11: list<MyDataItem> myEmptyList = [];
+  12: map<i32, list<MyDataItem>> myEmptyMapList = {};
 } (java.swift.mutable = "true")
 
 struct MyDataItem {
