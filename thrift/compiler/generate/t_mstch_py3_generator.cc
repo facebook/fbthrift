@@ -42,16 +42,6 @@ mstch::array createStringArray(const std::vector<std::string>& values) {
   return a;
 }
 
-template <class T>
-std::string get_cppname(const T& elem) {
-  auto& annotation = elem.annotations_;
-  auto it = annotation.find("cpp.name");
-  if (it != annotation.end()) {
-    return it->second;
-  }
-  return elem.get_name();
-}
-
 std::vector<std::string> get_py3_namespace(const t_program* prog) {
   return split_namespace(prog->get_namespace("py3"));
 }
@@ -83,13 +73,9 @@ const t_type* get_map_val_type(const t_type& type) {
 }
 
 std::string get_cpp_template(const t_type& type) {
-  const auto& annotations = type.annotations_;
-  auto it = annotations.find("cpp.template");
-  if (it == annotations.end()) {
-    it = annotations.find("cpp2.template");
-  }
-  if (it != annotations.end()) {
-    return it->second;
+  if (const auto* val =
+          type.get_annotation_or_null({"cpp.template", "cpp2.template"})) {
+    return *val;
   } else if (type.is_list()) {
     return "std::vector";
   } else if (type.is_set()) {
@@ -716,7 +702,7 @@ class mstch_py3_function : public mstch_function {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
       : mstch_function(function, generators, cache, pos),
-        cppName_{get_cppname<t_function>(*function)} {
+        cppName_{cpp2::get_name(function)} {
     register_methods(
         this,
         {{"function:eb", &mstch_py3_function::event_based},
@@ -729,8 +715,7 @@ class mstch_py3_function : public mstch_function {
   }
 
   mstch::node event_based() {
-    return function_->annotations_.count("thread") &&
-        function_->annotations_.at("thread") == "eb";
+    return function_->get_annotation("thread") == "eb";
   }
 
   mstch::node stack_arguments() {
@@ -818,7 +803,7 @@ class mstch_py3_field : public mstch_field {
       int32_t index)
       : mstch_field(field, generators, cache, pos, index),
         pyName_{py3::get_py3_name(*field)},
-        cppName_{get_cppname<t_field>(*field)} {
+        cppName_{cpp2::get_name(field)} {
     register_methods(
         this,
         {
@@ -903,42 +888,25 @@ class mstch_py3_field : public mstch_field {
       return ref_type_;
     }
     ref_type_cached_ = true;
-    const std::map<std::string, std::string>& annotations =
-        field_->annotations_;
-
-    // backward compatibility with 'ref' annotation
-    if (annotations.find("cpp.ref") != annotations.end() ||
-        annotations.find("cpp2.ref") != annotations.end()) {
+    if (cpp2::is_unique_ref(field_)) {
       return ref_type_ = RefType::Unique;
     }
 
-    auto it = annotations.find("cpp.ref_type");
-    if (it == annotations.end()) {
-      it = annotations.find("cpp2.ref_type");
-    }
-
-    if (it == annotations.end() && field_->get_type() != nullptr) {
+    const std::string& reftype = cpp2::get_ref_type(field_);
+    if (reftype.empty() && field_->get_type() != nullptr) {
       const t_type* resolved_type = field_->get_type()->get_true_type();
       if (cpp2::get_type(resolved_type) == "std::unique_ptr<folly::IOBuf>") {
         return ref_type_ = RefType::IOBuf;
       }
       return ref_type_ = RefType::NotRef;
-    }
-
-    const std::string& reftype = it->second;
-
-    if (reftype == "unique" || reftype == "std::unique_ptr") {
-      return ref_type_ = RefType::Unique;
-    } else if (reftype == "shared" || reftype == "std::shared_ptr") {
+    } else if (reftype == "shared") {
       return ref_type_ = RefType::Shared;
     } else if (reftype == "shared_const") {
       return ref_type_ = RefType::SharedConst;
     } else {
       // It is legal to get here but hopefully nobody will in practice, since
       // we're not set up to handle other kinds of refs:
-      std::ostringstream err;
-      err << "Unhandled ref_type " << reftype;
-      throw std::runtime_error{err.str()};
+      throw std::runtime_error{"Unhandled ref_type " + reftype};
     }
   }
   bool is_optional() const {
@@ -984,8 +952,7 @@ class mstch_py3_struct : public mstch_struct {
 
   mstch::node isStructOrderable() {
     return cpp2::is_orderable(*strct_) &&
-        strct_->annotations_.find("no_default_comparators") ==
-        strct_->annotations_.end();
+        !strct_->has_annotation("no_default_comparators");
   }
 
   mstch::node isAlwaysSet() {
@@ -998,25 +965,19 @@ class mstch_py3_struct : public mstch_struct {
   }
 
   mstch::node cppNonComparable() {
-    return strct_->annotations_.find("cpp2.noncomparable") !=
-        strct_->annotations_.end();
+    return strct_->has_annotation("cpp2.noncomparable");
   }
 
   mstch::node cppNonCopyable() {
-    return strct_->annotations_.find("cpp2.noncopyable") !=
-        strct_->annotations_.end();
+    return strct_->has_annotation("cpp2.noncopyable");
   }
 
   mstch::node hasExceptionMessage() {
-    return strct_->annotations_.find("message") != strct_->annotations_.end();
+    return strct_->has_annotation("message");
   }
 
   mstch::node exceptionMessage() {
-    const auto it = strct_->annotations_.find("message");
-    if (it == strct_->annotations_.end()) {
-      return {};
-    }
-    return it->second;
+    return strct_->get_annotation("message");
   }
 };
 
@@ -1036,7 +997,7 @@ class mstch_py3_enum : public mstch_enum {
   }
 
   mstch::node hasFlags() {
-    return enm_->annotations_.find("py3.flags") != enm_->annotations_.end();
+    return enm_->has_annotation("py3.flags");
   }
 };
 
@@ -1062,7 +1023,7 @@ class mstch_py3_enum_value : public mstch_enum_value {
   }
 
   mstch::node cppName() {
-    return get_cppname<t_enum_value>(*enm_value_);
+    return cpp2::get_name(enm_value_);
   }
 
   mstch::node hasPyName() {
@@ -1336,9 +1297,7 @@ class enum_member_union_field_names_validator : virtual public validator {
 
  private:
   void validate(const t_annotated* node, const std::string& name) {
-    const auto found = node->annotations_.find("py3.name");
-    const auto& pyname =
-        found == node->annotations_.end() ? name : found->second;
+    const auto& pyname = node->get_annotation("py3.name", &name);
     if (pyname == "name" || pyname == "value") {
       std::ostringstream ss;
       ss << "'" << pyname
