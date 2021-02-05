@@ -209,7 +209,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
     RequestResponseFrame&& frame,
     RocketServerFrameContext&& context) {
   auto makeRequestResponse = [&](RequestRpcMetadata&& md,
-                                 std::unique_ptr<folly::IOBuf> debugPayload,
+                                 rocket::Payload&& debugPayload,
                                  std::shared_ptr<folly::RequestContext> ctx) {
     serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on the next
@@ -237,7 +237,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
     RequestFnfFrame&& frame,
     RocketServerFrameContext&& context) {
   auto makeRequestFnf = [&](RequestRpcMetadata&& md,
-                            std::unique_ptr<folly::IOBuf> debugPayload,
+                            rocket::Payload&& debugPayload,
                             std::shared_ptr<folly::RequestContext> ctx) {
     serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on a complex
@@ -263,7 +263,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
     RocketServerFrameContext&& context,
     RocketStreamClientCallback* clientCallback) {
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
-                               std::unique_ptr<folly::IOBuf> debugPayload,
+                               rocket::Payload&& debugPayload,
                                std::shared_ptr<folly::RequestContext> ctx) {
     serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestStream>(
@@ -288,7 +288,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
     RocketServerFrameContext&& context,
     RocketSinkClientCallback* clientCallback) {
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
-                             std::unique_ptr<folly::IOBuf> debugPayload,
+                             rocket::Payload&& debugPayload,
                              std::shared_ptr<folly::RequestContext> ctx) {
     serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestSink>(
@@ -336,6 +336,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   worker_->getServer()->touchRequestTimestamp();
 
+  rocket::Payload debugPayload = payload.clone();
   auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));
 
   if (requestPayloadTry.hasException()) {
@@ -347,8 +348,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto& data = requestPayloadTry->payload;
   auto& metadata = requestPayloadTry->metadata;
-
-  auto debugPayload = data->clone();
 
   if (!isMetadataValid(metadata)) {
     handleRequestWithBadMetadata(makeRequest(

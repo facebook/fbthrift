@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -45,13 +46,14 @@ using namespace apache::thrift::test;
 using namespace std::literals::chrono_literals;
 using namespace ::testing;
 
-class RequestPayload : public folly::RequestData {
+class InstrumentationRequestPayload : public folly::RequestData {
  public:
   static const folly::RequestToken& getRequestToken() {
-    static folly::RequestToken token("InstrumentationTest::RequestPayload");
+    static folly::RequestToken token(
+        "InstrumentationTest::InstrumentationRequestPayload");
     return token;
   }
-  explicit RequestPayload(std::unique_ptr<folly::IOBuf> buf)
+  explicit InstrumentationRequestPayload(std::unique_ptr<folly::IOBuf> buf)
       : buf_(std::move(buf)) {}
   bool hasCallback() override {
     return false;
@@ -82,8 +84,9 @@ class InstrumentationTestProcessor
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm) override {
     folly::RequestContext::get()->setContextData(
-        RequestPayload::getRequestToken(),
-        std::make_unique<RequestPayload>(serializedRequest.buffer->clone()));
+        InstrumentationRequestPayload::getRequestToken(),
+        std::make_unique<InstrumentationRequestPayload>(
+            serializedRequest.buffer->clone()));
     InstrumentationTestServiceAsyncProcessor::processSerializedRequest(
         std::move(req),
         std::move(serializedRequest),
@@ -127,9 +130,9 @@ class TestInterface : public InstrumentationTestServiceSvIf {
   folly::coro::Task<std::unique_ptr<::apache::thrift::test::IOBuf>>
   co_sendPayload(int32_t id, std::unique_ptr<::std::string> /*str*/) override {
     auto rg = requestGuard();
-    auto payload = dynamic_cast<RequestPayload*>(
+    auto payload = dynamic_cast<InstrumentationRequestPayload*>(
         folly::RequestContext::get()->getContextData(
-            RequestPayload::getRequestToken()));
+            InstrumentationRequestPayload::getRequestToken()));
     EXPECT_NE(payload, nullptr);
     co_await finished_;
     co_return payload->getPayload()->clone();
@@ -294,6 +297,15 @@ class RequestInstrumentationTest : public testing::Test {
           return apache::thrift::RocketClientChannel::newChannelWithMetadata(
               std::move(socket), std::move(meta));
         });
+  }
+
+  auto rpcOptionsFromHeaders(
+      const std::map<std::string, std::string>& headers) {
+    RpcOptions rpcOptions;
+    for (const auto& kv : headers) {
+      rpcOptions.setWriteHeader(kv.first, kv.second);
+    }
+    return rpcOptions;
   }
 
   struct Impl {
@@ -489,6 +501,47 @@ TEST_F(RequestInstrumentationTest, requestPayloadTest) {
   }
 }
 
+TEST_F(RequestInstrumentationTest, rocketSnapshotContainsMetadataHeadersTest) {
+  std::map<std::string, std::string> originalHeaders = {
+      {"header1", "value1"}, {"header2", "value2"}};
+  auto client = server().newClient<InstrumentationTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket));
+      });
+  auto rpcOptions = rpcOptionsFromHeaders(originalHeaders);
+
+  client->header_semifuture_sendRequest(rpcOptions);
+  handler()->waitForRequests(1);
+  auto reqs = getRequestSnapshots(1);
+  EXPECT_EQ(reqs.size(), 1);
+
+  auto snapshotHeaders = reqs[0].getHeaders();
+  EXPECT_EQ(snapshotHeaders.size(), originalHeaders.size());
+  for (const auto& kv : snapshotHeaders) {
+    auto original = folly::get_ptr(originalHeaders, kv.first);
+    EXPECT_TRUE(original != nullptr)
+        << "expected to find " << kv.first << " in the original headers";
+    EXPECT_EQ(kv.second, *original);
+  }
+}
+
+TEST_F(
+    RequestInstrumentationTest,
+    headerSnapshotDoesNotContainMetadataHeadersTest) {
+  auto client = makeHeaderClient();
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader("header", "value");
+  client->header_semifuture_sendRequest(rpcOptions);
+  handler()->waitForRequests(1);
+
+  auto reqs = getRequestSnapshots(1);
+  EXPECT_EQ(reqs.size(), 1);
+
+  auto snapshotHeaders = reqs[0].getHeaders();
+  EXPECT_EQ(snapshotHeaders.size(), 0);
+}
+
 class RequestInstrumentationTestWithFinishedDebugPayload
     : public RequestInstrumentationTest {
  protected:
@@ -656,7 +709,7 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
           mockReqCtx_,
           std::make_shared<folly::RequestContext>(0),
           apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL,
-          std::unique_ptr<folly::IOBuf>());
+          rocket::Payload());
     }
 
     auto registry() {

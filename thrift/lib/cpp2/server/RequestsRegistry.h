@@ -22,6 +22,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <chrono>
 
 namespace apache {
@@ -42,43 +43,6 @@ class ResponseChannelRequest;
  * corresponding registry belongs to, as a task.
  */
 class RequestsRegistry {
-  /**
-   * A wrapper class for request payload we are tracking, to encapsulate the
-   * details of processing and storing the real request buffer.
-   */
-  class DebugPayload {
-   public:
-    DebugPayload(std::unique_ptr<folly::IOBuf> data) : data_(std::move(data)) {}
-    DebugPayload(const DebugPayload&) = delete;
-    DebugPayload& operator=(const DebugPayload&) = delete;
-    bool hasData() const {
-      return data_ != nullptr;
-    }
-    std::unique_ptr<folly::IOBuf> cloneData() const {
-      if (!data_) {
-        return std::make_unique<folly::IOBuf>();
-      }
-      return data_->clone();
-    }
-    size_t dataSize() const {
-      if (!data_) {
-        return 0;
-      }
-      return data_->computeChainDataLength();
-    }
-    /**
-     * User must call hasData() to ensure the underlying buffer is present
-     * before releasing the buffer.
-     */
-    void releaseData() {
-      DCHECK(data_);
-      folly::IOBuf::destroy(std::move(data_));
-    }
-
-   private:
-    std::unique_ptr<folly::IOBuf> data_;
-  };
-
  public:
   /**
    * A small piece of information associated with those thrift requests that
@@ -104,12 +68,12 @@ class RequestsRegistry {
         const Cpp2RequestContext& reqContext,
         std::shared_ptr<folly::RequestContext> rctx,
         protocol::PROTOCOL_TYPES protoId,
-        std::unique_ptr<folly::IOBuf> payload)
+        rocket::Payload&& debugPayload)
         : req_(&req),
           reqContext_(&reqContext),
           rctx_(std::move(rctx)),
           protoId_(protoId),
-          payload_(std::move(payload)),
+          payload_(std::move(debugPayload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
           rootRequestContextId_(rctx_->getRootId()) {
@@ -161,8 +125,8 @@ class RequestsRegistry {
      * this should be called from the IO worker which also owns the same
      * RequestsRegistry.
      */
-    std::unique_ptr<folly::IOBuf> clonePayload() const {
-      return payload_.cloneData();
+    rocket::Payload clonePayload() const {
+      return payload_.clone();
     }
 
     protocol::PROTOCOL_TYPES getProtoId() const {
@@ -174,7 +138,7 @@ class RequestsRegistry {
       return payload_.dataSize();
     }
     void releasePayload() {
-      payload_.releaseData();
+      payload_ = rocket::Payload();
     }
 
     void prepareAsFinished();
@@ -188,7 +152,7 @@ class RequestsRegistry {
     const Cpp2RequestContext* reqContext_;
     std::shared_ptr<folly::RequestContext> rctx_;
     const protocol::PROTOCOL_TYPES protoId_;
-    DebugPayload payload_;
+    rocket::Payload payload_;
     std::chrono::steady_clock::time_point timestamp_;
     std::chrono::steady_clock::time_point finished_{
         std::chrono::steady_clock::duration::zero()};

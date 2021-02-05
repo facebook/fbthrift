@@ -33,7 +33,6 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
-#include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
@@ -405,7 +404,7 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     int32_t version)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
@@ -461,7 +460,7 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     folly::Function<void()> onComplete)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
@@ -508,7 +507,7 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     int32_t version,
     RocketStreamClientCallback* clientCallback,
@@ -621,7 +620,7 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     int32_t version,
     RocketSinkClientCallback* clientCallback,

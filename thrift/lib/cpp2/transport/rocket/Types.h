@@ -98,6 +98,13 @@ class Payload {
     return Payload(std::move(buffer), metadataSize);
   }
 
+  Payload clone() const {
+    if (!hasData()) {
+      return Payload();
+    }
+    return makeCombined(buffer_->clone(), metadataSize_);
+  }
+
   std::unique_ptr<folly::IOBuf> data() && {
     DCHECK(buffer_ != nullptr);
     DCHECK_LE(metadataSize_, metadataAndDataSize_);
@@ -149,6 +156,10 @@ class Payload {
   }
 
   void append(Payload&& other);
+
+  bool hasData() const {
+    return buffer_ != nullptr;
+  }
 
  private:
   std::unique_ptr<folly::IOBuf> buffer_;

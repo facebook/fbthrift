@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/acceptor/ManagedConnection.h>
 
@@ -164,7 +165,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
         std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
         std::shared_ptr<folly::RequestContext> rctx,
         std::shared_ptr<Cpp2Connection> con,
-        std::unique_ptr<folly::IOBuf> debugPayload);
+        rocket::Payload&& debugPayload);
 
     // Delegates to wrapped request.
     bool isActive() const override {

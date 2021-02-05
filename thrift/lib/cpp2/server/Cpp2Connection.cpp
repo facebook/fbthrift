@@ -487,7 +487,8 @@ void Cpp2Connection::requestReceived(
   // We keep a clone of the request payload buffer for debugging purposes, but
   // the lifetime of payload should not necessarily be the same as its request
   // object's.
-  auto debugPayload = serializedRequest.buffer->clone();
+  auto debugPayload =
+      rocket::Payload::makeCombined(serializedRequest.buffer->clone(), 0);
 
   std::chrono::milliseconds queueTimeout;
   std::chrono::milliseconds taskTimeout;
@@ -588,7 +589,7 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
     std::shared_ptr<folly::RequestContext> rctx,
     std::shared_ptr<Cpp2Connection> con,
-    std::unique_ptr<folly::IOBuf> debugPayload)
+    rocket::Payload&& debugPayload)
     : req_(std::move(req)),
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class

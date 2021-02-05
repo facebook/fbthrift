@@ -24,6 +24,7 @@
 
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 
 namespace folly {
@@ -55,7 +56,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       Cpp2ConnContext& connContext,
       std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
-      std::unique_ptr<folly::IOBuf> debugPayload,
+      rocket::Payload&& debugPayload,
       RocketServerFrameContext&& context,
       int32_t version);
 
@@ -96,7 +97,7 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
       Cpp2ConnContext& connContext,
       std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
-      std::unique_ptr<folly::IOBuf> debugPayload,
+      rocket::Payload&& debugPayload,
       RocketServerFrameContext&& context,
       folly::Function<void()> onComplete);
 
@@ -135,7 +136,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       Cpp2ConnContext& connContext,
       std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
-      std::unique_ptr<folly::IOBuf> debugPayload,
+      rocket::Payload&& debugPayload,
       RocketServerFrameContext&& context,
       int32_t version,
       RocketStreamClientCallback* clientCallback,
@@ -193,7 +194,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       Cpp2ConnContext& connContext,
       std::shared_ptr<folly::RequestContext> rctx,
       RequestsRegistry& reqRegistry,
-      std::unique_ptr<folly::IOBuf> debugPayload,
+      rocket::Payload&& debugPayload,
       RocketServerFrameContext&& context,
       int32_t version,
       RocketSinkClientCallback* clientCallback,

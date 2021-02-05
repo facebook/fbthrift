@@ -47,6 +47,9 @@
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 #include <wangle/acceptor/SharedSSLContextManager.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
@@ -803,11 +806,15 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           creationTimestamp_(stub.getTimestamp()),
           finishedTimestamp_(stub.getFinished()),
           protoId_(stub.getProtoId()),
-          payload_(std::move(*stub.clonePayload())),
           peerAddress_(*stub.getPeerAddress()),
           rootRequestContextId_(stub.getRootRequestContextId()),
           reqId_(RequestsRegistry::getRequestId(rootRequestContextId_)),
           reqDebugLog_(collectRequestDebugLog(stub)) {
+      auto requestPayload = rocket::unpack<RequestPayload>(stub.clonePayload());
+      payload_ = std::move(*requestPayload->payload);
+      if (requestPayload->metadata.otherMetadata_ref()) {
+        headers_ = std::move(*requestPayload->metadata.otherMetadata_ref());
+      }
       auto req = stub.getRequest();
       DCHECK(
           req != nullptr || finishedTimestamp_.time_since_epoch().count() != 0);
@@ -845,6 +852,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       return payload_;
     }
 
+    const std::map<std::string, std::string>& getHeaders() const {
+      return headers_;
+    }
+
     protocol::PROTOCOL_TYPES getProtoId() const {
       return protoId_;
     }
@@ -863,6 +874,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     const std::chrono::steady_clock::time_point finishedTimestamp_;
     const protocol::PROTOCOL_TYPES protoId_;
     folly::IOBuf payload_;
+    std::map<std::string, std::string> headers_;
     folly::SocketAddress peerAddress_;
     intptr_t rootRequestContextId_;
     const std::string reqId_;
