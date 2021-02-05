@@ -109,11 +109,14 @@ void ServerSinkBridge::consume() {
 folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&>
 ServerSinkBridge::makeGenerator() {
   uint64_t counter = 0;
+  auto cancelToken = co_await folly::coro::co_current_cancellation_token;
   while (true) {
     CoroConsumer consumer;
     if (serverWait(&consumer)) {
+      folly::CancellationCallback cb{cancelToken, [&]() { serverClose(); }};
       co_await consumer.wait();
     }
+    co_await folly::coro::co_safe_point;
     for (auto messages = serverGetMessages(); !messages.empty();
          messages.pop()) {
       auto& message = messages.front();

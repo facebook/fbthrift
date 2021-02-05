@@ -40,8 +40,8 @@ class CoroConsumer {
     baton_.post();
   }
 
-  [[noreturn]] void canceled() {
-    folly::assume_unreachable();
+  void canceled() {
+    baton_.post();
   }
 
   folly::coro::Task<void> wait() {

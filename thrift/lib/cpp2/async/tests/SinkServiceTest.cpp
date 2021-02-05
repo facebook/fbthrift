@@ -261,5 +261,23 @@ TEST_F(SinkServiceTest, SinkEarlyClose) {
   }
 }
 
+TEST_F(SinkServiceTest, SinkServerCancellation) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        // client sends values 0..100, server initiates cancellation at value 5
+        auto sink = co_await client.co_rangeCancelAt(0, 100, 5);
+        bool finalResponse =
+            co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+              // enter wait after 5 values, server should cancel
+              for (int i = 0; i <= 5; i++) {
+                co_yield std::move(i);
+              }
+              co_await neverStream();
+            }());
+        // server sends false as finalResponse after canceling sink
+        EXPECT_FALSE(finalResponse);
+      });
+}
+
 } // namespace thrift
 } // namespace apache

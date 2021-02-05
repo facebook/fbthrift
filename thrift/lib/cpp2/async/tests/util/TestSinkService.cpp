@@ -17,7 +17,7 @@
 #include "thrift/lib/cpp2/async/tests/util/TestSinkService.h"
 
 #include <folly/ScopeGuard.h>
-
+#include <folly/experimental/coro/Sleep.h>
 #include <folly/portability/GTest.h>
 
 namespace testutil {
@@ -208,6 +208,46 @@ apache::thrift::SinkConsumer<IOBuf, int32_t> TestSinkService::alignment(
           res = reinterpret_cast<std::uintptr_t>(buf->data()) % 4096u;
         }
         co_return res;
+      },
+      10 /* buffer size */
+  };
+}
+
+apache::thrift::SinkConsumer<int32_t, bool>
+TestSinkService::rangeCancelAt(int32_t from, int32_t to, int32_t cancelAt) {
+  return apache::thrift::SinkConsumer<int32_t, bool>{
+      [from, to, cancelAt](folly::coro::AsyncGenerator<int32_t&&> gen)
+          -> folly::coro::Task<bool> {
+        // create custom CancellationSource
+        folly::CancellationSource cancelSource;
+        folly::CancellationToken parentCt =
+            co_await folly::coro::co_current_cancellation_token;
+        folly::CancellationCallback cb{
+            std::move(parentCt), [&] { cancelSource.requestCancellation(); }};
+
+        // cancellation will be requested asynchronously
+        auto cancelTask = [&cancelSource]() -> folly::coro::Task<void> {
+          co_await folly::coro::sleep(std::chrono::milliseconds{200});
+          cancelSource.requestCancellation();
+        };
+
+        int32_t i = from;
+        try {
+          while (auto item = co_await folly::coro::co_withCancellation(
+                     cancelSource.getToken(), gen.next())) {
+            EXPECT_EQ(i++, *item);
+            if (i == cancelAt) {
+              cancelTask()
+                  .scheduleOn(co_await folly::coro::co_current_executor)
+                  .start();
+            }
+          }
+          EXPECT_EQ(i, to + 1);
+          co_return true;
+        } catch (const folly::OperationCancelled&) {
+          EXPECT_LE(i, to);
+          co_return false;
+        }
       },
       10 /* buffer size */
   };
