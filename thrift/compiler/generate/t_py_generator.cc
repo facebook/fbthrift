@@ -2027,12 +2027,8 @@ void t_py_generator::generate_service(t_service* tservice) {
   }
 
   if (gen_asyncio_) {
-    f_service_ << "if six.PY3:" << endl
-               << "  import asyncio" << endl
-               << "  from thrift.util.asyncio import call_as_future" << endl
-               << "else:" << endl
-               << "  import trollius as asyncio" << endl
-               << "  from thrift.util.trollius import call_as_future" << endl;
+    f_service_ << "import asyncio" << endl
+               << "from thrift.util.asyncio import call_as_future" << endl;
   }
   f_service_ << "from thrift.util.Decorators import (" << endl
              << "  future_process_main," << endl
