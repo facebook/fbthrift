@@ -34,8 +34,8 @@ folly::SemiFuture<<% > service_common/async_return_type %>> <%service:name%>SvIf
 
 folly::Future<<% > service_common/async_return_type %>> <%service:name%>SvIf::future_<%function:cpp_name%>(<% > service_common/function_param_list%>) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_<%function:cpp_name%>(<% > service_common/param_list_move%>), std::move(ka));
 }
 
@@ -88,10 +88,10 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
     callback->getThreadManager(), callback->getEventBase()};
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
-    auto pri = params.getRequestContext()->getRequestPriority();
+    auto scope = params.getRequestContext()->getRequestExecutionScope();
     apache::thrift::detail::si::async_tm_oneway_coro_start(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
-      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
+      params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
@@ -141,10 +141,10 @@ void <%service:parent_service_name%>SvIf::<%#service:interaction?%><%service:nam
     callback->getThreadManager(), callback->getEventBase()};
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
-    auto pri = params.getRequestContext()->getRequestPriority();
+    auto scope = params.getRequestContext()->getRequestExecutionScope();
     apache::thrift::detail::si::async_tm_coro_start(
       co_<%function:cpp_name%>(params<%function:comma%><% > service_common/param_list_move%>),
-      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
+      params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());

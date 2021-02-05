@@ -20,8 +20,8 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_ping(apache::thrift::Res
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::IMPORTANT);
-  ctx->setRequestPriority(pri);
+  auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::IMPORTANT);
+  ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioParentAsyncProcessor::process_ping<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -73,8 +73,8 @@ void MyServicePrioParentAsyncProcessor::setUpAndProcess_pong(apache::thrift::Res
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::HIGH_IMPORTANT);
-  ctx->setRequestPriority(pri);
+  auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::HIGH_IMPORTANT);
+  ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioParentAsyncProcessor::process_pong<ProtocolIn_, ProtocolOut_>, this);
 }
 

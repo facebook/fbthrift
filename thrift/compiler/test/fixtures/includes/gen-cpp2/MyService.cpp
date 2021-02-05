@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_query(std::unique_ptr< 
 
 folly::Future<folly::Unit> MyServiceSvIf::future_query(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_query(std::move(p_s), std::move(p_i)), std::move(ka));
 }
 
@@ -50,8 +50,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_has_arg_docs(std::uniqu
 
 folly::Future<folly::Unit> MyServiceSvIf::future_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> p_s, std::unique_ptr< ::cpp2::Included> p_i) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_has_arg_docs(std::move(p_s), std::move(p_i)), std::move(ka));
 }
 

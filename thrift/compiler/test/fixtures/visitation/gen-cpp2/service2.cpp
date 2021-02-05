@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> service2SvIf::semifuture_methodA() {
 
 folly::Future<folly::Unit> service2SvIf::future_methodA() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodA(), std::move(ka));
 }
 
@@ -50,8 +50,8 @@ folly::SemiFuture<folly::Unit> service2SvIf::semifuture_methodB(int32_t p_x, std
 
 folly::Future<folly::Unit> service2SvIf::future_methodB(int32_t p_x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodB(p_x, std::move(p_y), p_z), std::move(ka));
 }
 
@@ -73,8 +73,8 @@ folly::SemiFuture<int32_t> service2SvIf::semifuture_methodC() {
 
 folly::Future<int32_t> service2SvIf::future_methodC() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodC(), std::move(ka));
 }
 
@@ -96,8 +96,8 @@ folly::SemiFuture<int32_t> service2SvIf::semifuture_methodD(int32_t p_i, std::un
 
 folly::Future<int32_t> service2SvIf::future_methodD(int32_t p_i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodD(p_i, std::move(p_j), p_k), std::move(ka));
 }
 
@@ -117,8 +117,8 @@ folly::SemiFuture<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> servic
 
 folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service2SvIf::future_methodE() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodE(), std::move(ka));
 }
 
@@ -138,8 +138,8 @@ folly::SemiFuture<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> servic
 
 folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service2SvIf::future_methodF(int32_t p_l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_methodF(p_l, std::move(p_m), p_n), std::move(ka));
 }
 

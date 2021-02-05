@@ -25,8 +25,8 @@ folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::sem
 
 folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey0(std::unique_ptr<::std::string> p_key) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(p_key)), std::move(ka));
 }
 
@@ -46,8 +46,8 @@ folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::sem
 
 folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey1(std::unique_ptr<::std::string> p_key) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_getDataByKey1(std::move(p_key)), std::move(ka));
 }
 

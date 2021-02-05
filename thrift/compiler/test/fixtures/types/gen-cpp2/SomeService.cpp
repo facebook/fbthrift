@@ -25,8 +25,8 @@ folly::SemiFuture<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> 
 
 folly::Future<std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap>> SomeServiceSvIf::future_bounce_map(std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> p_m) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_bounce_map(std::move(p_m)), std::move(ka));
 }
 
@@ -46,8 +46,8 @@ folly::SemiFuture<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types:
 
 folly::Future<std::unique_ptr<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> SomeServiceSvIf::future_binary_keyed_map(std::unique_ptr<::std::vector<int64_t>> p_r) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_binary_keyed_map(std::move(p_r)), std::move(ka));
 }
 

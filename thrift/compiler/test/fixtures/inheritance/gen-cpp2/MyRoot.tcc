@@ -18,8 +18,8 @@ void MyRootAsyncProcessor::setUpAndProcess_do_root(apache::thrift::ResponseChann
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  ctx->setRequestPriority(pri);
+  auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyRootAsyncProcessor::process_do_root<ProtocolIn_, ProtocolOut_>, this);
 }
 

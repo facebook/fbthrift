@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
 
 folly::Future<folly::Unit> CSvIf::future_f() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_f(), std::move(ka));
 }
 

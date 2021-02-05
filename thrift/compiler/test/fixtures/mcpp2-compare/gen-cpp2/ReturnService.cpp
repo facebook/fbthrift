@@ -31,8 +31,8 @@ folly::SemiFuture<bool> ReturnServiceSvIf::semifuture_boolReturn() {
 
 folly::Future<bool> ReturnServiceSvIf::future_boolReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_boolReturn(), std::move(ka));
 }
 
@@ -54,8 +54,8 @@ folly::SemiFuture<int16_t> ReturnServiceSvIf::semifuture_i16Return() {
 
 folly::Future<int16_t> ReturnServiceSvIf::future_i16Return() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_i16Return(), std::move(ka));
 }
 
@@ -77,8 +77,8 @@ folly::SemiFuture<int32_t> ReturnServiceSvIf::semifuture_i32Return() {
 
 folly::Future<int32_t> ReturnServiceSvIf::future_i32Return() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_i32Return(), std::move(ka));
 }
 
@@ -100,8 +100,8 @@ folly::SemiFuture<int64_t> ReturnServiceSvIf::semifuture_i64Return() {
 
 folly::Future<int64_t> ReturnServiceSvIf::future_i64Return() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_i64Return(), std::move(ka));
 }
 
@@ -123,8 +123,8 @@ folly::SemiFuture<float> ReturnServiceSvIf::semifuture_floatReturn() {
 
 folly::Future<float> ReturnServiceSvIf::future_floatReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_floatReturn(), std::move(ka));
 }
 
@@ -146,8 +146,8 @@ folly::SemiFuture<double> ReturnServiceSvIf::semifuture_doubleReturn() {
 
 folly::Future<double> ReturnServiceSvIf::future_doubleReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_doubleReturn(), std::move(ka));
 }
 
@@ -171,8 +171,8 @@ folly::SemiFuture<std::unique_ptr<::std::string>> ReturnServiceSvIf::semifuture_
 
 folly::Future<std::unique_ptr<::std::string>> ReturnServiceSvIf::future_binaryReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_binaryReturn(), std::move(ka));
 }
 
@@ -192,8 +192,8 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::string, int64_t>>> ReturnSer
 
 folly::Future<std::unique_ptr<::std::map<::std::string, int64_t>>> ReturnServiceSvIf::future_mapReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_mapReturn(), std::move(ka));
 }
 
@@ -215,8 +215,8 @@ folly::SemiFuture< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::semifutu
 
 folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::future_simpleTypedefReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_simpleTypedefReturn(), std::move(ka));
 }
 
@@ -236,8 +236,8 @@ folly::SemiFuture<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>> Ret
 
 folly::Future<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::future_complexTypedefReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_complexTypedefReturn(), std::move(ka));
 }
 
@@ -257,8 +257,8 @@ folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexT
 
 folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::future_list_mostComplexTypedefReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_list_mostComplexTypedefReturn(), std::move(ka));
 }
 
@@ -286,8 +286,8 @@ folly::SemiFuture<std::unique_ptr< ::some::valid::ns::MyStruct>> ReturnServiceSv
 
 folly::Future<std::unique_ptr< ::some::valid::ns::MyStruct>> ReturnServiceSvIf::future_structReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_structReturn(), std::move(ka));
 }
 
@@ -307,8 +307,8 @@ folly::SemiFuture<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> Ret
 
 folly::Future<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> ReturnServiceSvIf::future_set_StructReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_set_StructReturn(), std::move(ka));
 }
 
@@ -332,8 +332,8 @@ folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion
 
 folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::future_list_UnionReturn() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_list_UnionReturn(), std::move(ka));
 }
 
@@ -357,8 +357,8 @@ folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSv
 
 folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(int64_t p_size) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_readData(p_size), std::move(ka));
 }
 

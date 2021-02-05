@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> MyNodeSvIf::semifuture_do_mid() {
 
 folly::Future<folly::Unit> MyNodeSvIf::future_do_mid() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_do_mid(), std::move(ka));
 }
 

@@ -36,8 +36,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_foo() {
 
 folly::Future<folly::Unit> MyServiceSvIf::future_foo() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_foo(), std::move(ka));
 }
 
@@ -78,10 +78,10 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
     callback->getThreadManager(), callback->getEventBase()};
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
-    auto pri = params.getRequestContext()->getRequestPriority();
+    auto scope = params.getRequestContext()->getRequestExecutionScope();
     apache::thrift::detail::si::async_tm_coro_start(
       co_frobnicate(params),
-      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
+      params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
@@ -119,10 +119,10 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
     callback->getThreadManager(), callback->getEventBase()};
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
-    auto pri = params.getRequestContext()->getRequestPriority();
+    auto scope = params.getRequestContext()->getRequestExecutionScope();
     apache::thrift::detail::si::async_tm_oneway_coro_start(
       co_ping(params),
-      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
+      params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
@@ -161,10 +161,10 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
     callback->getThreadManager(), callback->getEventBase()};
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
-    auto pri = params.getRequestContext()->getRequestPriority();
+    auto scope = params.getRequestContext()->getRequestExecutionScope();
     apache::thrift::detail::si::async_tm_coro_start(
       co_truthify(params),
-      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
+      params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
@@ -202,10 +202,10 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
     callback->getThreadManager(), callback->getEventBase()};
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
-    auto pri = params.getRequestContext()->getRequestPriority();
+    auto scope = params.getRequestContext()->getRequestExecutionScope();
     apache::thrift::detail::si::async_tm_coro_start(
       co_encode(params),
-      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
+      params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());
@@ -259,10 +259,10 @@ void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apa
     callback->getThreadManager(), callback->getEventBase()};
   try {
     using Source = apache::thrift::concurrency::ThreadManager::Source;
-    auto pri = params.getRequestContext()->getRequestPriority();
+    auto scope = params.getRequestContext()->getRequestExecutionScope();
     apache::thrift::detail::si::async_tm_coro_start(
       co_frobnicate(params),
-      params.getThreadManager()->getKeepAlive(pri, Source::INTERNAL),
+      params.getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL),
       std::move(callback));
   } catch (...) {
     callback->exception(std::current_exception());

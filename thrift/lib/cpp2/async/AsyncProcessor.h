@@ -340,8 +340,21 @@ class ServerInterface : public virtual AsyncProcessorFactory {
   virtual concurrency::PRIORITY getRequestPriority(
       Cpp2RequestContext* ctx,
       concurrency::PRIORITY prio);
+  // TODO: replace with getRequestExecutionScope.
   concurrency::PRIORITY getRequestPriority(Cpp2RequestContext* ctx) {
     return getRequestPriority(ctx, concurrency::NORMAL);
+  }
+
+  virtual concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
+      Cpp2RequestContext* ctx,
+      concurrency::PRIORITY defaultPriority) {
+    concurrency::ThreadManager::ExecutionScope es(
+        getRequestPriority(ctx, defaultPriority));
+    return es;
+  }
+  concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
+      Cpp2RequestContext* ctx) {
+    return getRequestExecutionScope(ctx, concurrency::NORMAL);
   }
 
  private:
@@ -731,7 +744,7 @@ void GeneratedAsyncProcessor::processInThread(
     tile->__fbthrift_acquireRef(*eb);
   }
 
-  auto pri = ctx->getRequestPriority();
+  auto scope = ctx->getRequestExecutionScope();
   auto task = makeEventTaskForRequest(
       std::move(req),
       std::move(serializedRequest),
@@ -756,7 +769,9 @@ void GeneratedAsyncProcessor::processInThread(
   auto source = tile && !ctx->getInteractionCreate()
       ? Source::EXISTING_INTERACTION
       : Source::UPSTREAM;
-  tm->getKeepAlive(pri, source)->add([task = std::move(task)] { task->run(); });
+  tm->getKeepAlive(std::move(scope), source)->add([task = std::move(task)] {
+    task->run();
+  });
 }
 
 template <class F>

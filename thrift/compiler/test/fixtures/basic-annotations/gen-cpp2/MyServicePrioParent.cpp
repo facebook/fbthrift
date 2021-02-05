@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_ping() {
 
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_ping() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_ping(), std::move(ka));
 }
 
@@ -50,8 +50,8 @@ folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_pong() {
 
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_pong() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_pong(), std::move(ka));
 }
 

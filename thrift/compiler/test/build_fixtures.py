@@ -24,7 +24,7 @@ import sys
 
 
 """
-* Invoke using `buck run`:
+* Invoke from the `/fbsource/fbcode/` directory using `buck run`:
 
     buck run thrift/compiler/test:build_fixtures
 

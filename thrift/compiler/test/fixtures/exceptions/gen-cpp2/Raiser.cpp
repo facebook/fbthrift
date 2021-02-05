@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doBland() {
 
 folly::Future<folly::Unit> RaiserSvIf::future_doBland() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_doBland(), std::move(ka));
 }
 
@@ -50,8 +50,8 @@ folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doRaise() {
 
 folly::Future<folly::Unit> RaiserSvIf::future_doRaise() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_doRaise(), std::move(ka));
 }
 
@@ -71,8 +71,8 @@ folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get200(
 
 folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get200() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_get200(), std::move(ka));
 }
 
@@ -92,8 +92,8 @@ folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get500(
 
 folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get500() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_get500(), std::move(ka));
 }
 

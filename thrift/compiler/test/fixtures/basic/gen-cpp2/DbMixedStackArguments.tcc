@@ -20,8 +20,8 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0(apache::
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  ctx->setRequestPriority(pri);
+  auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0<ProtocolIn_, ProtocolOut_>, this);
 }
 
@@ -77,8 +77,8 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1(apache::
   if (!setUpRequestProcessing(req, ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_)) {
     return;
   }
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  ctx->setRequestPriority(pri);
+  auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
+  ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1<ProtocolIn_, ProtocolOut_>, this);
 }
 

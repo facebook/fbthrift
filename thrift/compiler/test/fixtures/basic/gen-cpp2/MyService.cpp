@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_ping() {
 
 folly::Future<folly::Unit> MyServiceSvIf::future_ping() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_ping(), std::move(ka));
 }
 
@@ -48,8 +48,8 @@ folly::SemiFuture<std::unique_ptr<::std::string>> MyServiceSvIf::semifuture_getR
 
 folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getRandomData() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_getRandomData(), std::move(ka));
 }
 
@@ -71,8 +71,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_sink(int64_t p_sink) {
 
 folly::Future<folly::Unit> MyServiceSvIf::future_sink(int64_t p_sink) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_sink(p_sink), std::move(ka));
 }
 
@@ -94,8 +94,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t p_i
 
 folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_putDataById(p_id, std::move(p_data)), std::move(ka));
 }
 
@@ -117,8 +117,8 @@ folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t p_id) {
 
 folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_hasDataById(p_id), std::move(ka));
 }
 
@@ -138,8 +138,8 @@ folly::SemiFuture<std::unique_ptr<::std::string>> MyServiceSvIf::semifuture_getD
 
 folly::Future<std::unique_ptr<::std::string>> MyServiceSvIf::future_getDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_getDataById(p_id), std::move(ka));
 }
 
@@ -161,8 +161,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_deleteDataById(int64_t 
 
 folly::Future<folly::Unit> MyServiceSvIf::future_deleteDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_deleteDataById(p_id), std::move(ka));
 }
 
@@ -184,8 +184,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_lobDataById(int64_t p_i
 
 folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t p_id, std::unique_ptr<::std::string> p_data) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_lobDataById(p_id, std::move(p_data)), std::move(ka));
 }
 

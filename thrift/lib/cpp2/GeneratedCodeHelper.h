@@ -1243,7 +1243,7 @@ auto makeFutureWithAndMaybeReschedule(CallbackBase& callback, F&& f) {
   }
   auto tm = callback.getThreadManager();
   auto ka = tm->getKeepAlive(
-      callback.getRequestContext()->getRequestPriority(),
+      callback.getRequestContext()->getRequestExecutionScope(),
       apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   return std::move(fut).via(std::move(ka));
 }

@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> MyRootSvIf::semifuture_do_root() {
 
 folly::Future<folly::Unit> MyRootSvIf::future_do_root() {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_do_root(), std::move(ka));
 }
 

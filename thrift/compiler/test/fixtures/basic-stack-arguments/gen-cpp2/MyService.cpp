@@ -27,8 +27,8 @@ folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t p_id) {
 
 folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_hasDataById(p_id), std::move(ka));
 }
 
@@ -48,8 +48,8 @@ folly::SemiFuture<::std::string> MyServiceSvIf::semifuture_getDataById(int64_t p
 
 folly::Future<::std::string> MyServiceSvIf::future_getDataById(int64_t p_id) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_getDataById(p_id), std::move(ka));
 }
 
@@ -71,8 +71,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t p_i
 
 folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t p_id, const ::std::string& p_data) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_putDataById(p_id, p_data), std::move(ka));
 }
 
@@ -94,8 +94,8 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_lobDataById(int64_t p_i
 
 folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t p_id, const ::std::string& p_data) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_lobDataById(p_id, p_data), std::move(ka));
 }
 

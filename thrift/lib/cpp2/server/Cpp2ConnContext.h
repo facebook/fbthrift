@@ -462,12 +462,13 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return header_->getCallPriority();
   }
 
-  concurrency::PRIORITY getRequestPriority() const {
-    return priority_;
+  concurrency::ThreadManager::ExecutionScope getRequestExecutionScope() const {
+    return executionScope_;
   }
 
-  void setRequestPriority(concurrency::PRIORITY pri) {
-    priority_ = pri;
+  void setRequestExecutionScope(
+      concurrency::ThreadManager::ExecutionScope scope) {
+    executionScope_ = std::move(scope);
   }
 
   virtual std::vector<uint16_t>& getTransforms() {
@@ -577,7 +578,8 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   int64_t interactionId_{0};
   folly::Optional<InteractionCreate> interactionCreate_;
   Tile* tile_{nullptr};
-  concurrency::PRIORITY priority_{concurrency::PRIORITY::NORMAL};
+  concurrency::ThreadManager::ExecutionScope executionScope_{
+      concurrency::PRIORITY::NORMAL};
 };
 
 } // namespace thrift

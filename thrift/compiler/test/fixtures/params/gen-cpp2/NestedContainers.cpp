@@ -27,8 +27,8 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapList(std::uni
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<::std::map<int32_t, ::std::vector<int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_mapList(std::move(p_foo)), std::move(ka));
 }
 
@@ -50,8 +50,8 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_mapSet(std::uniq
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<::std::map<int32_t, ::std::set<int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_mapSet(std::move(p_foo)), std::move(ka));
 }
 
@@ -73,8 +73,8 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listMap(std::uni
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<::std::vector<::std::map<int32_t, int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_listMap(std::move(p_foo)), std::move(ka));
 }
 
@@ -96,8 +96,8 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_listSet(std::uni
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<::std::vector<::std::set<int32_t>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_listSet(std::move(p_foo)), std::move(ka));
 }
 
@@ -119,8 +119,8 @@ folly::SemiFuture<folly::Unit> NestedContainersSvIf::semifuture_turtles(std::uni
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>> p_foo) {
   using Source = apache::thrift::concurrency::ThreadManager::Source;
-  auto pri = getRequestContext()->getRequestPriority();
-  auto ka = getThreadManager()->getKeepAlive(pri, Source::INTERNAL);
+  auto scope = getRequestContext()->getRequestExecutionScope();
+  auto ka = getThreadManager()->getKeepAlive(std::move(scope), Source::INTERNAL);
   return apache::thrift::detail::si::future(semifuture_turtles(std::move(p_foo)), std::move(ka));
 }
 
