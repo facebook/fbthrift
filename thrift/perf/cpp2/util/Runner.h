@@ -71,7 +71,7 @@ class Runner {
 };
 
 template <typename AsyncClient>
-class LoadCallback : public RequestCallback {
+class LoadCallback : public RequestCallbackWithValidator {
  public:
   LoadCallback(
       Runner<AsyncClient>* runner,
@@ -91,6 +91,9 @@ class LoadCallback : public RequestCallback {
     }
   }
   void replyReceived(ClientReceiveState&& rstate) override {
+    if (validator) {
+      validator(rstate);
+    }
     ops_->asyncReceived(op_, std::move(rstate));
     runner_->finishCall();
   }
