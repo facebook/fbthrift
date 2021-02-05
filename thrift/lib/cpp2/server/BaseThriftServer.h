@@ -290,6 +290,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! The server's listening port
   int port_ = -1;
 
+  std::shared_ptr<server::TServerEventHandler> eventHandler_;
+
   /**
    * The thread manager used for sync calls.
    */
@@ -298,8 +300,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // If set, the thread factory that should be used to create worker threads.
   std::shared_ptr<concurrency::ThreadFactory> threadFactory_;
-
-  std::shared_ptr<server::TServerEventHandler> eventHandler_;
 
   // Notification of various server events. Note that once observer_ has been
   // set, it cannot be set again and will remain alive for (at least) the
