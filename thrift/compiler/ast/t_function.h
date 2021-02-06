@@ -18,7 +18,7 @@
 
 #include <string>
 
-#include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_sink.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
@@ -42,7 +42,7 @@ enum class t_function_qualifier {
  * struct.
  *
  */
-class t_function : public t_annotated {
+class t_function : public t_named {
  public:
   /**
    * Constructor for t_function
@@ -61,8 +61,8 @@ class t_function : public t_annotated {
       std::unique_ptr<t_struct> xceptions = nullptr,
       std::unique_ptr<t_struct> stream_xceptions = nullptr,
       t_function_qualifier qualifier = t_function_qualifier::None)
-      : returntype_(returntype),
-        name_(name),
+      : t_named(std::move(name)),
+        returntype_(returntype),
         arglist_(std::move(arglist)),
         xceptions_(std::move(xceptions)),
         stream_xceptions_(std::move(stream_xceptions)),
@@ -100,8 +100,8 @@ class t_function : public t_annotated {
       std::string name,
       std::unique_ptr<t_struct> arglist,
       std::unique_ptr<t_struct> xceptions)
-      : returntype_(returntype),
-        name_(name),
+      : t_named(std::move(name)),
+        returntype_(returntype),
         arglist_(std::move(arglist)),
         xceptions_(std::move(xceptions)),
         sink_xceptions_(
@@ -126,10 +126,6 @@ class t_function : public t_annotated {
    */
   t_type* get_returntype() const {
     return returntype_;
-  }
-
-  const std::string& get_name() const {
-    return name_;
   }
 
   t_struct* get_arglist() const {
@@ -179,7 +175,6 @@ class t_function : public t_annotated {
 
  private:
   t_type* returntype_;
-  std::string name_;
   std::unique_ptr<t_struct> arglist_;
   std::unique_ptr<t_struct> xceptions_;
   std::unique_ptr<t_struct> stream_xceptions_;

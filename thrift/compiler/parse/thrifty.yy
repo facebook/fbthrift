@@ -692,7 +692,9 @@ EnumValue:
         driver.failure("64-bit value supplied for enum %s will be truncated.", $1.c_str());
       }
       y_enum_val = $3;
-      $$ = new t_enum_value($1, y_enum_val);
+      $$ = new t_enum_value;
+      $$->set_name($1);
+      $$->set_value(y_enum_val);
       $$->set_lineno(driver.scanner->get_lineno());
     }
 |
@@ -702,10 +704,9 @@ EnumValue:
       if (y_enum_val == INT32_MAX) {
         driver.failure("enum value overflow at enum %s", $1.c_str());
       }
-      $$ = new t_enum_value($1);
-
-      ++y_enum_val;
-      $$->set_value(y_enum_val);
+      $$ = new t_enum_value;
+      $$->set_name($1);
+      $$->set_implicit_value(++y_enum_val);
       $$->set_lineno(driver.scanner->get_lineno());
     }
 

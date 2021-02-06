@@ -45,10 +45,6 @@ class t_struct : public t_type {
   t_struct(t_program* program, const std::string& name)
       : t_type(program, name) {}
 
-  void set_name(const std::string& name) override {
-    name_ = name;
-  }
-
   void set_xception(bool is_xception) {
     is_xception_ = is_xception;
   }

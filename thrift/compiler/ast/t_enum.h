@@ -35,10 +35,6 @@ class t_enum : public t_type {
  public:
   explicit t_enum(t_program* program) : t_type(program) {}
 
-  void set_name(const std::string& name) override {
-    name_ = name;
-  }
-
   void append(
       std::unique_ptr<t_enum_value> enum_value,
       std::unique_ptr<t_const> constant) {

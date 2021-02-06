@@ -20,8 +20,8 @@
 #include <sstream>
 #include <string>
 
-#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_const_value.h>
+#include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
@@ -37,7 +37,7 @@ class t_struct;
  * a symbolic name, and a numeric identifier.
  *
  */
-class t_field : public t_annotated {
+class t_field : public t_named {
  public:
   /**
    * Constructor for t_field
@@ -45,7 +45,7 @@ class t_field : public t_annotated {
    * @param type - A field based on thrift types
    * @param name - The symbolic name of the field
    */
-  t_field(t_type* type, std::string name) : type_(type), name_(name) {}
+  t_field(t_type* type, std::string name) : t_named(name), type_(type) {}
 
   /**
    * Constructor for t_field
@@ -55,7 +55,7 @@ class t_field : public t_annotated {
    * @param key  - The numeric identifier of the field
    */
   t_field(t_type* type, std::string name, int32_t key)
-      : type_(type), name_(name), key_(key) {}
+      : t_named(name), type_(type), key_(key) {}
 
   t_field(const t_field&) = delete;
   t_field& operator=(const t_field&) = delete;
@@ -93,10 +93,6 @@ class t_field : public t_annotated {
    */
   t_type* get_type() const {
     return type_;
-  }
-
-  const std::string& get_name() const {
-    return name_;
   }
 
   int32_t get_key() const {
@@ -139,7 +135,6 @@ class t_field : public t_annotated {
 
  private:
   t_type* type_;
-  std::string name_;
   int32_t key_{0};
   std::unique_ptr<t_const_value> value_{nullptr};
   t_field* next_{nullptr};

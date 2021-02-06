@@ -23,7 +23,7 @@
 #include <sstream>
 #include <string>
 
-#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_named.h>
 
 namespace apache {
 namespace thrift {
@@ -74,7 +74,7 @@ struct t_types {
  * various types.
  *
  */
-class t_type : public t_annotated {
+class t_type : public t_named {
  public:
   /**
    * Simplify access to thrift's TypeValues
@@ -188,20 +188,10 @@ class t_type : public t_annotated {
   }
 
   /**
-   * t_type setters
-   */
-  virtual void set_name(const std::string& name) {
-    name_ = name;
-  }
-
-  /**
    * t_type getters
    */
   const t_program* get_program() const {
     return program_;
-  }
-  const std::string& get_name() const {
-    return name_;
   }
 
  protected:
@@ -225,7 +215,7 @@ class t_type : public t_annotated {
    *
    * @param name - The symbolic name of the thrift type
    */
-  explicit t_type(std::string name) : name_(std::move(name)) {}
+  explicit t_type(std::string name) : t_named(std::move(name)) {}
 
   /**
    * Constructor for t_type
@@ -234,7 +224,7 @@ class t_type : public t_annotated {
    * @param name    - The symbolic name of the thrift type
    */
   t_type(t_program* program, std::string name)
-      : program_(program), name_(std::move(name)) {}
+      : t_named(std::move(name)), program_(program) {}
 
   /**
    * Returns a string in the format "prefix program_name.type_name"
@@ -244,7 +234,6 @@ class t_type : public t_annotated {
   std::string make_full_name(const char* prefix) const;
 
   t_program* program_{nullptr};
-  std::string name_;
 };
 
 } // namespace compiler

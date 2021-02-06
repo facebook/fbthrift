@@ -18,8 +18,8 @@
 
 #include <memory>
 
-#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_const_value.h>
+#include <thrift/compiler/ast/t_named.h>
 
 namespace apache {
 namespace thrift {
@@ -36,7 +36,7 @@ class t_program;
  * whole thing out.
  *
  */
-class t_const : public t_annotated {
+class t_const : public t_named {
  public:
   /**
    * Constructor for t_const
@@ -51,7 +51,10 @@ class t_const : public t_annotated {
       t_type* type,
       std::string name,
       std::unique_ptr<t_const_value> value)
-      : program_(program), type_(type), name_(name), value_(std::move(value)) {
+      : t_named(std::move(name)),
+        program_(program),
+        type_(type),
+        value_(std::move(value)) {
     // value->get_owner() is set when rhs is referencing another constant.
     if (value_ && value_->get_owner() == nullptr) {
       value_->set_owner(this);
@@ -69,10 +72,6 @@ class t_const : public t_annotated {
     return type_;
   }
 
-  std::string get_name() const {
-    return name_;
-  }
-
   t_const_value* get_value() const {
     return value_.get();
   }
@@ -80,8 +79,6 @@ class t_const : public t_annotated {
  private:
   t_program* program_;
   t_type* type_;
-  std::string name_;
-
   std::unique_ptr<t_const_value> value_;
 };
 

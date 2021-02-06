@@ -1629,46 +1629,46 @@ void t_hack_generator::append_to_t_enum(
     t_enum* tenum,
     t_program* program,
     ThriftPrimitiveType value) {
-  string str_value = "";
+  auto enum_value = std::make_unique<t_enum_value>();
+  enum_value->set_value(value);
   switch (value) {
     case ThriftPrimitiveType::THRIFT_BOOL_TYPE:
-      str_value = "THRIFT_BOOL_TYPE";
+      enum_value->set_name("THRIFT_BOOL_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_BYTE_TYPE:
-      str_value = "THRIFT_BYTE_TYPE";
+      enum_value->set_name("THRIFT_BYTE_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_I16_TYPE:
-      str_value = "THRIFT_I16_TYPE";
+      enum_value->set_name("THRIFT_I16_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_I32_TYPE:
-      str_value = "THRIFT_I32_TYPE";
+      enum_value->set_name("THRIFT_I32_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_I64_TYPE:
-      str_value = "THRIFT_I64_TYPE";
+      enum_value->set_name("THRIFT_I64_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_FLOAT_TYPE:
-      str_value = "THRIFT_FLOAT_TYPE";
+      enum_value->set_name("THRIFT_FLOAT_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_DOUBLE_TYPE:
-      str_value = "THRIFT_DOUBLE_TYPE";
+      enum_value->set_name("THRIFT_DOUBLE_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_BINARY_TYPE:
-      str_value = "THRIFT_BINARY_TYPE";
+      enum_value->set_name("THRIFT_BINARY_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_STRING_TYPE:
-      str_value = "THRIFT_STRING_TYPE";
+      enum_value->set_name("THRIFT_STRING_TYPE");
       break;
     case ThriftPrimitiveType::THRIFT_VOID_TYPE:
-      str_value = "THRIFT_VOID_TYPE";
+      enum_value->set_name("THRIFT_VOID_TYPE");
       break;
   }
-  tenum->append(
-      std::make_unique<t_enum_value>(str_value, value),
-      std::make_unique<t_const>(
-          program,
-          (t_type*)tenum,
-          str_value,
-          std::make_unique<t_const_value>(value)));
+  auto const_value = std::make_unique<t_const>(
+      program,
+      (t_type*)tenum,
+      enum_value->get_name(),
+      std::make_unique<t_const_value>(value));
+  tenum->append(std::move(enum_value), std::move(const_value));
 }
 
 t_type* t_hack_generator::tmeta_ThriftType_type() {

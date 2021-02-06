@@ -16,53 +16,40 @@
 
 #pragma once
 
+#include <map>
+#include <memory>
 #include <string>
+#include <vector>
 
-#include <thrift/compiler/ast/t_named.h>
+#include <thrift/compiler/ast/t_annotated.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 /**
- * class t_enum_value
+ * class t_named
  *
- * A constant. These are used inside of enum definitions. Constants are just
- * symbol identifiers that may or may not have an explicit value associated
- * with them.
- *
+ * Base class for any named AST node.
+ * Anything that is named, can be annotated.
  */
-class t_enum_value : public t_named {
+class t_named : public t_annotated {
  public:
-  t_enum_value() = default;
-
   /**
-   * t_enum_value setters
+   * t_type setters
    */
-  void set_value(int32_t value) {
-    value_ = value;
-    has_value_ = true;
+  void set_name(const std::string& name) {
+    name_ = name;
+  }
+  const std::string& get_name() const {
+    return name_;
   }
 
-  void set_implicit_value(int32_t value) {
-    value_ = value;
-    has_value_ = false;
-  }
+ protected:
+  t_named() = default;
+  explicit t_named(std::string name) : name_(std::move(name)) {}
 
-  /**
-   * t_enum_value getters
-   */
-  int32_t get_value() const {
-    return value_;
-  }
-
-  bool has_value() {
-    return has_value_;
-  }
-
- private:
-  int32_t value_{0};
-  bool has_value_{false};
+  std::string name_;
 };
 
 } // namespace compiler

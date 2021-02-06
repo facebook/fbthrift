@@ -30,6 +30,18 @@ namespace {
 
 class ValidatorTest : public testing::Test {};
 
+std::unique_ptr<t_enum_value> new_enum_value(std::string name) {
+  auto result = std::make_unique<t_enum_value>();
+  result->set_name(std::move(name));
+  return result;
+}
+
+std::unique_ptr<t_enum_value> new_enum_value(std::string name, int value) {
+  auto result = new_enum_value(std::move(name));
+  result->set_value(value);
+  return result;
+}
+
 } // namespace
 
 TEST_F(ValidatorTest, run_validator) {
@@ -133,15 +145,15 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
   t_program program("/path/to/file.thrift");
   program.add_enum(std::move(tenum));
 
-  tenum_ptr->append(std::make_unique<t_enum_value>("bar", 1), nullptr);
-  tenum_ptr->append(std::make_unique<t_enum_value>("not_bar", 2), nullptr);
+  tenum_ptr->append(new_enum_value("bar", 1), nullptr);
+  tenum_ptr->append(new_enum_value("not_bar", 2), nullptr);
 
   // No errors will be found
   auto errors = run_validator<enum_value_names_uniqueness_validator>(&program);
   EXPECT_TRUE(errors.empty());
 
   // Add enum with repeated value
-  auto enum_value_3 = std::make_unique<t_enum_value>("bar", 3);
+  auto enum_value_3 = new_enum_value("bar", 3);
   enum_value_3->set_lineno(1);
   tenum_ptr->append(std::move(enum_value_3), nullptr);
 
@@ -161,8 +173,8 @@ TEST_F(ValidatorTest, DuplicatedEnumValues) {
   t_program program("/path/to/file.thrift");
   program.add_enum(std::move(tenum));
 
-  auto enum_value_1 = std::make_unique<t_enum_value>("bar", 1);
-  auto enum_value_2 = std::make_unique<t_enum_value>("foo", 1);
+  auto enum_value_1 = new_enum_value("bar", 1);
+  auto enum_value_2 = new_enum_value("foo", 1);
   enum_value_2->set_lineno(1);
   tenum_ptr->append(std::move(enum_value_1), nullptr);
   tenum_ptr->append(std::move(enum_value_2), nullptr);
@@ -183,8 +195,8 @@ TEST_F(ValidatorTest, UnsetEnumValues) {
   t_program program("/path/to/file.thrift");
   program.add_enum(std::move(tenum));
 
-  auto enum_value_1 = std::make_unique<t_enum_value>("Bar");
-  auto enum_value_2 = std::make_unique<t_enum_value>("Baz");
+  auto enum_value_1 = new_enum_value("Bar");
+  auto enum_value_2 = new_enum_value("Baz");
   enum_value_1->set_lineno(2);
   enum_value_2->set_lineno(3);
   tenum_ptr->append(std::move(enum_value_1), nullptr);
