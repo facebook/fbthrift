@@ -120,52 +120,34 @@ void dump_docstrings(t_program* program) {
   if (!progdoc.empty()) {
     printf("Whole program doc:\n%s\n", progdoc.c_str());
   }
-  const std::vector<t_typedef*>& typedefs = program->get_typedefs();
-  std::vector<t_typedef*>::const_iterator t_iter;
-  for (t_iter = typedefs.begin(); t_iter != typedefs.end(); ++t_iter) {
-    t_typedef* td = *t_iter;
+  for (auto* td : program->get_typedefs()) {
     if (td->has_doc()) {
       printf(
           "typedef %s:\n%s\n", td->get_name().c_str(), td->get_doc().c_str());
     }
   }
-  const std::vector<t_enum*>& enums = program->get_enums();
-  std::vector<t_enum*>::const_iterator e_iter;
-  for (e_iter = enums.begin(); e_iter != enums.end(); ++e_iter) {
-    t_enum* en = *e_iter;
+  for (auto* en : program->get_enums()) {
     if (en->has_doc()) {
       printf("enum %s:\n%s\n", en->get_name().c_str(), en->get_doc().c_str());
     }
   }
-  const std::vector<t_const*>& consts = program->get_consts();
-  std::vector<t_const*>::const_iterator c_iter;
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    t_const* co = *c_iter;
+  for (auto* co : program->get_consts()) {
     if (co->has_doc()) {
       printf("const %s:\n%s\n", co->get_name().c_str(), co->get_doc().c_str());
     }
   }
-  const std::vector<t_struct*>& structs = program->get_structs();
-  std::vector<t_struct*>::const_iterator s_iter;
-  for (s_iter = structs.begin(); s_iter != structs.end(); ++s_iter) {
-    t_struct* st = *s_iter;
+  for (auto* st : program->get_structs()) {
     if (st->has_doc()) {
       printf("struct %s:\n%s\n", st->get_name().c_str(), st->get_doc().c_str());
     }
   }
-  const std::vector<t_struct*>& xceptions = program->get_xceptions();
-  std::vector<t_struct*>::const_iterator x_iter;
-  for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-    t_struct* xn = *x_iter;
+  for (auto* xn : program->get_xceptions()) {
     if (xn->has_doc()) {
       printf(
           "xception %s:\n%s\n", xn->get_name().c_str(), xn->get_doc().c_str());
     }
   }
-  const std::vector<t_service*>& services = program->get_services();
-  std::vector<t_service*>::const_iterator v_iter;
-  for (v_iter = services.begin(); v_iter != services.end(); ++v_iter) {
-    t_service* sv = *v_iter;
+  for (auto* sv : program->get_services()) {
     if (sv->has_doc()) {
       printf(
           "service %s:\n%s\n", sv->get_name().c_str(), sv->get_doc().c_str());

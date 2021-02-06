@@ -115,16 +115,10 @@ class t_type : public t_annotated {
   virtual bool is_i64() const {
     return false;
   }
-  virtual bool is_any_int() const {
-    return false;
-  }
   virtual bool is_float() const {
     return false;
   }
   virtual bool is_double() const {
-    return false;
-  }
-  virtual bool is_floating_point() const {
     return false;
   }
   virtual bool is_typedef() const {
@@ -166,8 +160,15 @@ class t_type : public t_annotated {
   virtual bool is_binary() const {
     return false;
   }
-  virtual bool is_string_or_binary() const {
-    return false;
+
+  bool is_string_or_binary() const {
+    return is_string() || is_binary();
+  }
+  bool is_any_int() const {
+    return is_i16() || is_i32() || is_i64();
+  }
+  bool is_floating_point() const {
+    return is_double() || is_float();
   }
 
   /**

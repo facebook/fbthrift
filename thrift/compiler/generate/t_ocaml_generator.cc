@@ -184,44 +184,33 @@ void t_ocaml_generator::generate_program() {
   init_generator();
 
   // Generate enums
-  vector<t_enum*> enums = program_->get_enums();
-  vector<t_enum*>::iterator en_iter;
-  for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
-    generate_enum(*en_iter);
+  for (auto* en : program_->get_enums()) {
+    generate_enum(en);
   }
 
   // Generate structs
-  vector<t_struct*> structs = program_->get_structs();
-  vector<t_struct*>::iterator st_iter;
-  for (st_iter = structs.begin(); st_iter != structs.end(); ++st_iter) {
-    generate_struct(*st_iter);
+  for (auto* st : program_->get_structs()) {
+    generate_struct(st);
   }
 
   // Generate xceptions
-  vector<t_struct*> xceptions = program_->get_xceptions();
-  vector<t_struct*>::iterator x_iter;
-  for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-    generate_xception(*x_iter);
+  for (auto* x : program_->get_xceptions()) {
+    generate_xception(x);
   }
 
   // Generate typedefs
-  vector<t_typedef*> typedefs = program_->get_typedefs();
-  vector<t_typedef*>::iterator td_iter;
-  for (td_iter = typedefs.begin(); td_iter != typedefs.end(); ++td_iter) {
-    generate_typedef(*td_iter);
+  for (auto td : program_->get_typedefs()) {
+    generate_typedef(td);
   }
 
   // Generate services
-  vector<t_service*> services = program_->get_services();
-  vector<t_service*>::iterator sv_iter;
-  for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
-    service_name_ = get_service_name(*sv_iter);
-    generate_service(*sv_iter);
+  for (auto* sv : program_->get_services()) {
+    service_name_ = get_service_name(sv);
+    generate_service(sv);
   }
 
   // Generate constants
-  vector<t_const*> consts = program_->get_consts();
-  generate_consts(consts);
+  generate_consts(program_->get_consts());
 
   // Close the generator
   close_generator();

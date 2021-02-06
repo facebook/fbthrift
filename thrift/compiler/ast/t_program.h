@@ -70,47 +70,47 @@ class t_program : public t_node {
    */
   void add_typedef(std::unique_ptr<t_typedef> td) {
     typedefs_.push_back(td.get());
-    elements_.push_back(std::move(td));
+    nodes_.push_back(std::move(td));
   }
   void add_enum(std::unique_ptr<t_enum> te) {
     enums_.push_back(te.get());
-    elements_.push_back(std::move(te));
+    nodes_.push_back(std::move(te));
   }
   void add_const(std::unique_ptr<t_const> tc) {
     consts_.push_back(tc.get());
-    elements_.push_back(std::move(tc));
+    nodes_.push_back(std::move(tc));
   }
   void add_struct(std::unique_ptr<t_struct> ts) {
     objects_.push_back(ts.get());
     structs_.push_back(ts.get());
-    elements_.push_back(std::move(ts));
+    nodes_.push_back(std::move(ts));
   }
   void add_xception(std::unique_ptr<t_struct> tx) {
     objects_.push_back(tx.get());
     xceptions_.push_back(tx.get());
-    elements_.push_back(std::move(tx));
+    nodes_.push_back(std::move(tx));
   }
   void add_service(std::unique_ptr<t_service> ts) {
     services_.push_back(ts.get());
-    elements_.push_back(std::move(ts));
+    nodes_.push_back(std::move(ts));
   }
   void add_interaction(std::unique_ptr<t_service> ti) {
     interactions_.push_back(ti.get());
-    elements_.push_back(std::move(ti));
+    nodes_.push_back(std::move(ti));
   }
 
   void add_placeholder_typedef(std::unique_ptr<t_typedef> ptd) {
     assert(!ptd->is_defined());
     placeholder_typedefs_.push_back(ptd.get());
-    elements_.push_back(std::move(ptd));
+    nodes_.push_back(std::move(ptd));
   }
 
   void add_unnamed_typedef(std::unique_ptr<t_typedef> td) {
-    elements_.push_back(std::move(td));
+    nodes_.push_back(std::move(td));
   }
 
   void add_unnamed_type(std::unique_ptr<t_type> ut) {
-    elements_.push_back(std::move(ut));
+    nodes_.push_back(std::move(ut));
   }
 
   /**
@@ -241,7 +241,7 @@ class t_program : public t_node {
 
   void add_include(std::unique_ptr<t_include> include) {
     includes_.push_back(include.get());
-    elements_.push_back(std::move(include));
+    nodes_.push_back(std::move(include));
   }
 
   /**
@@ -261,7 +261,7 @@ class t_program : public t_node {
 
  private:
   // All the elements owned by this program.
-  std::vector<std::unique_ptr<t_node>> elements_;
+  std::vector<std::unique_ptr<t_node>> nodes_;
 
   /**
    * Components to generate code for

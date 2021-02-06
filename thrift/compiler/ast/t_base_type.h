@@ -83,10 +83,6 @@ class t_base_type : public t_type {
     return base_ == TYPE_I64;
   }
 
-  bool is_any_int() const override {
-    return is_i16() || is_i32() || is_i64();
-  }
-
   bool is_float() const override {
     return base_ == TYPE_FLOAT;
   }
@@ -95,16 +91,8 @@ class t_base_type : public t_type {
     return base_ == TYPE_DOUBLE;
   }
 
-  bool is_floating_point() const override {
-    return base_ == TYPE_DOUBLE || base_ == TYPE_FLOAT;
-  }
-
   bool is_binary() const override {
     return base_ == TYPE_BINARY;
-  }
-
-  bool is_string_or_binary() const override {
-    return base_ == TYPE_STRING || base_ == TYPE_BINARY;
   }
 
   bool is_base_type() const override {

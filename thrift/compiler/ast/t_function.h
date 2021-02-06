@@ -121,8 +121,6 @@ class t_function : public t_annotated {
     }
   }
 
-  ~t_function() {}
-
   /**
    * t_function getters
    */
