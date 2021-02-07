@@ -150,7 +150,7 @@ TEST(RequiredFieldRefTest, HeterogeneousComparisons) {
 struct Tag {};
 
 namespace std {
-// @lint-ignore HOWTOEVEN CLANGTIDY
+// @lint-ignore CLANGTIDY
 template <>
 struct hash<Tag> {
   explicit hash(size_t i) : i(i) {}
@@ -162,7 +162,7 @@ struct hash<Tag> {
 } // namespace std
 
 namespace folly {
-// @lint-ignore HOWTOEVEN CLANGTIDY
+// @lint-ignore CLANGTIDY
 template <>
 struct hasher<Tag> {
   explicit hasher(size_t i) : i(i) {}
