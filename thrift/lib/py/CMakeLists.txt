@@ -27,7 +27,6 @@ set(
   "protocol/TProtocol.py"
   "protocol/TProtocolDecorator.py"
   "protocol/TSimpleJSONProtocol.py"
-  "server/TNonblockingServer.py"
   "server/TServer.py"
   "transport/THeaderTransport.py"
   "transport/TSSLSocket.py"
