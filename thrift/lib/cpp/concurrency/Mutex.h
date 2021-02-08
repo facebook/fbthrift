@@ -27,7 +27,6 @@ namespace apache {
 namespace thrift {
 namespace concurrency {
 class PthreadMutex;
-class PthreadRWMutex;
 
 /**
  * A simple mutex class
