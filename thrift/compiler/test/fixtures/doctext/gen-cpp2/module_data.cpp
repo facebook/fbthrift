@@ -7,13 +7,9 @@
 
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::cpp2::B>::size;
 const std::array<::cpp2::B, 1> TEnumDataStorage<::cpp2::B>::values = {{
   type::HELLO,
 }};
@@ -21,16 +17,13 @@ const std::array<folly::StringPiece, 1> TEnumDataStorage<::cpp2::B>::names = {{
   "HELLO",
 }};
 
-
-
-const std::size_t TStructDataStorage<::cpp2::A>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::A>::fields_names = {{
   "useless_field",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::A>::fields_ids = {{
   1,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::A>::fields_size> TStructDataStorage<::cpp2::A>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::A>::fields_types = {{
   TType::T_I32,
 }};
 

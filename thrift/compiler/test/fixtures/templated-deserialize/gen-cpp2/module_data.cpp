@@ -7,13 +7,9 @@
 
 #include "thrift/compiler/test/fixtures/templated-deserialize/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::cpp2::MyEnumA>::size;
 const std::array<::cpp2::MyEnumA, 3> TEnumDataStorage<::cpp2::MyEnumA>::values = {{
   type::fieldA,
   type::fieldB,
@@ -25,24 +21,20 @@ const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyEnumA>::names
   "fieldC",
 }};
 
-
-
-const std::size_t TStructDataStorage<::cpp2::SmallStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SmallStruct>::fields_size> TStructDataStorage<::cpp2::SmallStruct>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::SmallStruct>::fields_names = {{
   "small_A",
   "small_B",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::SmallStruct>::fields_size> TStructDataStorage<::cpp2::SmallStruct>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::SmallStruct>::fields_ids = {{
   1,
   2,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SmallStruct>::fields_size> TStructDataStorage<::cpp2::SmallStruct>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::SmallStruct>::fields_types = {{
   TType::T_BOOL,
   TType::T_I32,
 }};
 
-const std::size_t TStructDataStorage<::cpp2::containerStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::containerStruct>::fields_size> TStructDataStorage<::cpp2::containerStruct>::fields_names = {{
+const std::array<folly::StringPiece, 22> TStructDataStorage<::cpp2::containerStruct>::fields_names = {{
   "fieldA",
   "fieldB",
   "fieldC",
@@ -66,7 +58,7 @@ const std::array<folly::StringPiece, TStructDataStorage<::cpp2::containerStruct>
   "fieldU",
   "fieldX",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::containerStruct>::fields_size> TStructDataStorage<::cpp2::containerStruct>::fields_ids = {{
+const std::array<int16_t, 22> TStructDataStorage<::cpp2::containerStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -90,7 +82,7 @@ const std::array<int16_t, TStructDataStorage<::cpp2::containerStruct>::fields_si
   21,
   23,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::containerStruct>::fields_size> TStructDataStorage<::cpp2::containerStruct>::fields_types = {{
+const std::array<protocol::TType, 22> TStructDataStorage<::cpp2::containerStruct>::fields_types = {{
   TType::T_BOOL,
   TType::T_MAP,
   TType::T_SET,

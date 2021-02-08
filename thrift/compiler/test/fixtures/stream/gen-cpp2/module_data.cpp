@@ -7,19 +7,14 @@
 
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::cpp2::FooEx>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::FooEx>::fields_size> TStructDataStorage<::cpp2::FooEx>::fields_names = {{
+const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::FooEx>::fields_names = {{
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::FooEx>::fields_size> TStructDataStorage<::cpp2::FooEx>::fields_ids = {{
+const std::array<int16_t, 0> TStructDataStorage<::cpp2::FooEx>::fields_ids = {{
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::FooEx>::fields_size> TStructDataStorage<::cpp2::FooEx>::fields_types = {{
+const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::FooEx>::fields_types = {{
 }};
 
 } // namespace thrift

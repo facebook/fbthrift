@@ -7,23 +7,18 @@
 
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::some::ns::IncludedB>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::some::ns::IncludedB>::fields_size> TStructDataStorage<::some::ns::IncludedB>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::some::ns::IncludedB>::fields_names = {{
   "i32Field",
   "strField",
 }};
-const std::array<int16_t, TStructDataStorage<::some::ns::IncludedB>::fields_size> TStructDataStorage<::some::ns::IncludedB>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::some::ns::IncludedB>::fields_ids = {{
   1,
   2,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns::IncludedB>::fields_size> TStructDataStorage<::some::ns::IncludedB>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::some::ns::IncludedB>::fields_types = {{
   TType::T_I32,
   TType::T_STRING,
 }};

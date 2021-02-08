@@ -7,21 +7,16 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::matching_module_name::MyStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::matching_module_name::MyStruct>::fields_size> TStructDataStorage<::matching_module_name::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::matching_module_name::MyStruct>::fields_names = {{
   "OtherStructField",
 }};
-const std::array<int16_t, TStructDataStorage<::matching_module_name::MyStruct>::fields_size> TStructDataStorage<::matching_module_name::MyStruct>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::matching_module_name::MyStruct>::fields_ids = {{
   1,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::matching_module_name::MyStruct>::fields_size> TStructDataStorage<::matching_module_name::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::matching_module_name::MyStruct>::fields_types = {{
   TType::T_STRUCT,
 }};
 

@@ -7,21 +7,16 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::cpp2::ReflectionStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::ReflectionStruct>::fields_size> TStructDataStorage<::cpp2::ReflectionStruct>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::ReflectionStruct>::fields_names = {{
   "fieldA",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::ReflectionStruct>::fields_size> TStructDataStorage<::cpp2::ReflectionStruct>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::ReflectionStruct>::fields_ids = {{
   1,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::ReflectionStruct>::fields_size> TStructDataStorage<::cpp2::ReflectionStruct>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::ReflectionStruct>::fields_types = {{
   TType::T_I32,
 }};
 

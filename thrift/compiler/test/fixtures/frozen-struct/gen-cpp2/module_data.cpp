@@ -7,13 +7,9 @@
 
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::some::ns::EnumB>::size;
 const std::array<::some::ns::EnumB, 1> TEnumDataStorage<::some::ns::EnumB>::values = {{
   type::EMPTY,
 }};
@@ -21,10 +17,7 @@ const std::array<folly::StringPiece, 1> TEnumDataStorage<::some::ns::EnumB>::nam
   "EMPTY",
 }};
 
-
-
-const std::size_t TStructDataStorage<::some::ns::ModuleA>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_names = {{
+const std::array<folly::StringPiece, 6> TStructDataStorage<::some::ns::ModuleA>::fields_names = {{
   "i32Field",
   "strField",
   "listField",
@@ -32,7 +25,7 @@ const std::array<folly::StringPiece, TStructDataStorage<::some::ns::ModuleA>::fi
   "inclAField",
   "inclBField",
 }};
-const std::array<int16_t, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_ids = {{
+const std::array<int16_t, 6> TStructDataStorage<::some::ns::ModuleA>::fields_ids = {{
   1,
   2,
   3,
@@ -40,7 +33,7 @@ const std::array<int16_t, TStructDataStorage<::some::ns::ModuleA>::fields_size> 
   5,
   6,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_types = {{
+const std::array<protocol::TType, 6> TStructDataStorage<::some::ns::ModuleA>::fields_types = {{
   TType::T_I32,
   TType::T_STRING,
   TType::T_LIST,
@@ -49,16 +42,15 @@ const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns:
   TType::T_STRUCT,
 }};
 
-const std::size_t TStructDataStorage<::some::ns::ModuleB>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::some::ns::ModuleB>::fields_names = {{
   "i32Field",
   "inclEnumB",
 }};
-const std::array<int16_t, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::some::ns::ModuleB>::fields_ids = {{
   1,
   2,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::some::ns::ModuleB>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
 }};

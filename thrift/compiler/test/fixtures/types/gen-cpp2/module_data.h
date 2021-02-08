@@ -51,161 +51,161 @@ template <> struct TStructDataStorage<::apache::thrift::fixtures::types::decorat
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::ContainerStruct> {
   static constexpr const std::size_t fields_size = 8;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::CppTypeStruct> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::VirtualStruct> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::TrivialNumeric> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::TrivialNestedWithDefault> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::ComplexString> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::ComplexNestedWithDefault> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::MinPadding> {
   static constexpr const std::size_t fields_size = 5;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::MyDataItem> {
   static constexpr const std::size_t fields_size = 0;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::MyStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::Renaming> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::AnnotatedTypes> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageStruct> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageRoot> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::ForwardUsageByRef> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveEmpty> {
   static constexpr const std::size_t fields_size = 0;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct> {
   static constexpr const std::size_t fields_size = 9;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware> {
   static constexpr const std::size_t fields_size = 5;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::apache::thrift::fixtures::types::AllocatorAware2> {
   static constexpr const std::size_t fields_size = 1;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<apache::thrift::protocol::TType, fields_size> fields_types;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 }} // apache::thrift

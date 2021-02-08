@@ -7,23 +7,18 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::cpp2::Included>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Included>::fields_size> TStructDataStorage<::cpp2::Included>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::Included>::fields_names = {{
   "MyIntField",
   "MyTransitiveField",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::Included>::fields_size> TStructDataStorage<::cpp2::Included>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::Included>::fields_ids = {{
   1,
   2,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Included>::fields_size> TStructDataStorage<::cpp2::Included>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::Included>::fields_types = {{
   TType::T_I64,
   TType::T_STRUCT,
 }};

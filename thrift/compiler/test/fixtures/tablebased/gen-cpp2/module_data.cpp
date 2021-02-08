@@ -7,13 +7,9 @@
 
 #include "thrift/compiler/test/fixtures/tablebased/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::test::fixtures::tablebased::ExampleEnum>::size;
 const std::array<::test::fixtures::tablebased::ExampleEnum, 2> TEnumDataStorage<::test::fixtures::tablebased::ExampleEnum>::values = {{
   type::ZERO,
   type::NONZERO,
@@ -23,8 +19,6 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::table
   "NONZERO",
 }};
 
-
-const std::size_t TEnumDataStorage<::test::fixtures::tablebased::ExampleUnion::Type>::size;
 const std::array<::test::fixtures::tablebased::ExampleUnion::Type, 2> TEnumDataStorage<::test::fixtures::tablebased::ExampleUnion::Type>::values = {{
   type::fieldA,
   type::fieldB,
@@ -34,24 +28,21 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::table
   "fieldB",
 }};
 
-
-
-const std::size_t TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_names = {{
+const std::array<folly::StringPiece, 5> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_names = {{
   "fieldA",
   "fieldB",
   "fieldC",
   "fieldD",
   "fieldE",
 }};
-const std::array<int16_t, TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_ids = {{
+const std::array<int16_t, 5> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_ids = {{
   1,
   2,
   3,
   4,
   5,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_types = {{
+const std::array<protocol::TType, 5> TStructDataStorage<::test::fixtures::tablebased::TrivialTypesStruct>::fields_types = {{
   TType::T_I32,
   TType::T_STRING,
   TType::T_STRING,
@@ -59,8 +50,7 @@ const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fix
   TType::T_I32,
 }};
 
-const std::size_t TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_names = {{
+const std::array<folly::StringPiece, 8> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_names = {{
   "fieldA",
   "fieldB",
   "fieldC",
@@ -70,7 +60,7 @@ const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::tableb
   "fieldG",
   "fieldH",
 }};
-const std::array<int16_t, TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_ids = {{
+const std::array<int16_t, 8> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_ids = {{
   12,
   2,
   3,
@@ -80,7 +70,7 @@ const std::array<int16_t, TStructDataStorage<::test::fixtures::tablebased::Conta
   7,
   8,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_types = {{
+const std::array<protocol::TType, 8> TStructDataStorage<::test::fixtures::tablebased::ContainerStruct>::fields_types = {{
   TType::T_LIST,
   TType::T_LIST,
   TType::T_LIST,
@@ -91,16 +81,15 @@ const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fix
   TType::T_LIST,
 }};
 
-const std::size_t TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_names = {{
   "fieldA",
   "fieldB",
 }};
-const std::array<int16_t, TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_ids = {{
   1,
   2,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_size> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::tablebased::ExampleUnion>::fields_types = {{
   TType::T_STRUCT,
   TType::T_STRUCT,
 }};

@@ -7,15 +7,10 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::extra::svc::containerStruct2>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_names = {{
+const std::array<folly::StringPiece, 13> TStructDataStorage<::extra::svc::containerStruct2>::fields_names = {{
   "fieldA",
   "req_fieldA",
   "opt_fieldA",
@@ -30,7 +25,7 @@ const std::array<folly::StringPiece, TStructDataStorage<::extra::svc::containerS
   "req_fieldE",
   "opt_fieldE",
 }};
-const std::array<int16_t, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_ids = {{
+const std::array<int16_t, 13> TStructDataStorage<::extra::svc::containerStruct2>::fields_ids = {{
   1,
   101,
   201,
@@ -45,7 +40,7 @@ const std::array<int16_t, TStructDataStorage<::extra::svc::containerStruct2>::fi
   105,
   205,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_types = {{
+const std::array<protocol::TType, 13> TStructDataStorage<::extra::svc::containerStruct2>::fields_types = {{
   TType::T_BOOL,
   TType::T_BOOL,
   TType::T_BOOL,

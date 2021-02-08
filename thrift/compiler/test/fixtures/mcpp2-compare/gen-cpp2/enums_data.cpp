@@ -7,13 +7,9 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::size;
 const std::array<::facebook::ns::qwerty::AnEnumA, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::values = {{
   type::FIELDA,
 }};
@@ -21,8 +17,6 @@ const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty:
   "FIELDA",
 }};
 
-
-const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::size;
 const std::array<::facebook::ns::qwerty::AnEnumB, 2> TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::values = {{
   type::FIELDA,
   type::FIELDB,
@@ -32,8 +26,6 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::facebook::ns::qwerty:
   "FIELDB",
 }};
 
-
-const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::size;
 const std::array<::facebook::ns::qwerty::AnEnumC, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::values = {{
   type::FIELDC,
 }};
@@ -41,8 +33,6 @@ const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty:
   "FIELDC",
 }};
 
-
-const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::size;
 const std::array<::facebook::ns::qwerty::AnEnumD, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::values = {{
   type::FIELDD,
 }};
@@ -50,8 +40,6 @@ const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty:
   "FIELDD",
 }};
 
-
-const std::size_t TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::size;
 const std::array<::facebook::ns::qwerty::AnEnumE, 1> TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::values = {{
   type::FIELDA,
 }};
@@ -59,16 +47,13 @@ const std::array<folly::StringPiece, 1> TEnumDataStorage<::facebook::ns::qwerty:
   "FIELDA",
 }};
 
-
-
-const std::size_t TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_names = {{
   "fieldA",
 }};
-const std::array<int16_t, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_ids = {{
   1,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_size> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::facebook::ns::qwerty::SomeStruct>::fields_types = {{
   TType::T_I32,
 }};
 

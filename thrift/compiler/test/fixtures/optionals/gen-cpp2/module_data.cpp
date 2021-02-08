@@ -7,13 +7,9 @@
 
 #include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::cpp2::Animal>::size;
 const std::array<::cpp2::Animal, 3> TEnumDataStorage<::cpp2::Animal>::values = {{
   type::DOG,
   type::CAT,
@@ -25,44 +21,40 @@ const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::Animal>::names 
   "TARANTULA",
 }};
 
-
-
-const std::size_t TStructDataStorage<::cpp2::Color>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::Color>::fields_names = {{
   "red",
   "green",
   "blue",
   "alpha",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::Color>::fields_ids = {{
   1,
   2,
   3,
   4,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Color>::fields_size> TStructDataStorage<::cpp2::Color>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Color>::fields_types = {{
   TType::T_DOUBLE,
   TType::T_DOUBLE,
   TType::T_DOUBLE,
   TType::T_DOUBLE,
 }};
 
-const std::size_t TStructDataStorage<::cpp2::Vehicle>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_names = {{
+const std::array<folly::StringPiece, 5> TStructDataStorage<::cpp2::Vehicle>::fields_names = {{
   "color",
   "licensePlate",
   "description",
   "name",
   "hasAC",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_ids = {{
+const std::array<int16_t, 5> TStructDataStorage<::cpp2::Vehicle>::fields_ids = {{
   1,
   2,
   3,
   4,
   5,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Vehicle>::fields_size> TStructDataStorage<::cpp2::Vehicle>::fields_types = {{
+const std::array<protocol::TType, 5> TStructDataStorage<::cpp2::Vehicle>::fields_types = {{
   TType::T_STRUCT,
   TType::T_STRING,
   TType::T_STRING,
@@ -70,8 +62,7 @@ const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Veh
   TType::T_BOOL,
 }};
 
-const std::size_t TStructDataStorage<::cpp2::Person>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_names = {{
+const std::array<folly::StringPiece, 10> TStructDataStorage<::cpp2::Person>::fields_names = {{
   "id",
   "name",
   "age",
@@ -83,7 +74,7 @@ const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Person>::fields_
   "afraidOfAnimal",
   "vehicles",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_ids = {{
+const std::array<int16_t, 10> TStructDataStorage<::cpp2::Person>::fields_ids = {{
   1,
   2,
   3,
@@ -95,7 +86,7 @@ const std::array<int16_t, TStructDataStorage<::cpp2::Person>::fields_size> TStru
   9,
   10,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Person>::fields_size> TStructDataStorage<::cpp2::Person>::fields_types = {{
+const std::array<protocol::TType, 10> TStructDataStorage<::cpp2::Person>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_I16,

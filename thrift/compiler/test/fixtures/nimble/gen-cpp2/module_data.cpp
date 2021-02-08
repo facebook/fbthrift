@@ -7,27 +7,22 @@
 
 #include "thrift/compiler/test/fixtures/nimble/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::cpp2::BasicTypes>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::BasicTypes>::fields_size> TStructDataStorage<::cpp2::BasicTypes>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::BasicTypes>::fields_names = {{
   "first",
   "second",
   "third",
   "isTrue",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::BasicTypes>::fields_size> TStructDataStorage<::cpp2::BasicTypes>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::BasicTypes>::fields_ids = {{
   1,
   2,
   3,
   4,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::BasicTypes>::fields_size> TStructDataStorage<::cpp2::BasicTypes>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::BasicTypes>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_I64,

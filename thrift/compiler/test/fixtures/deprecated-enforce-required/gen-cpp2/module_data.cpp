@@ -7,21 +7,16 @@
 
 #include "thrift/compiler/test/fixtures/deprecated-enforce-required/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-
-const std::size_t TStructDataStorage<::cpp2::Foo>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::Foo>::fields_names = {{
   "bar",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
   1,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::Foo>::fields_size> TStructDataStorage<::cpp2::Foo>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::Foo>::fields_types = {{
   TType::T_I32,
 }};
 

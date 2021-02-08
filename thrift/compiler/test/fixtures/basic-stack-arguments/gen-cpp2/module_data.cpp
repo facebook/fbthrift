@@ -7,13 +7,9 @@
 
 #include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::cpp2::MyEnum>::size;
 const std::array<::cpp2::MyEnum, 2> TEnumDataStorage<::cpp2::MyEnum>::values = {{
   type::MyValue1,
   type::MyValue2,
@@ -23,18 +19,15 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names 
   "MyValue2",
 }};
 
-
-
-const std::size_t TStructDataStorage<::cpp2::MyStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
   "MyIntField",
   "MyStringField",
 }};
-const std::array<int16_t, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
   1,
   2,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
 }};

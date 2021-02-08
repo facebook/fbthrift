@@ -7,20 +7,14 @@
 
 #include "thrift/compiler/test/fixtures/basic-enum/gen-cpp2/module_data.h"
 
-#include <thrift/lib/cpp2/gen/module_data_cpp.h>
-
 namespace apache {
 namespace thrift {
 
-
-const std::size_t TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum>::size;
 const std::array<::test::fixtures::enumstrict::EmptyEnum, 0> TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum>::values = {{
 }};
 const std::array<folly::StringPiece, 0> TEnumDataStorage<::test::fixtures::enumstrict::EmptyEnum>::names = {{
 }};
 
-
-const std::size_t TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::size;
 const std::array<::test::fixtures::enumstrict::MyEnum, 2> TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::values = {{
   type::ONE,
   type::TWO,
@@ -30,8 +24,6 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::enums
   "TWO",
 }};
 
-
-const std::size_t TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::size;
 const std::array<::test::fixtures::enumstrict::MyBigEnum, 20> TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::values = {{
   type::UNKNOWN,
   type::ONE,
@@ -77,18 +69,15 @@ const std::array<folly::StringPiece, 20> TEnumDataStorage<::test::fixtures::enum
   "NINETEEN",
 }};
 
-
-
-const std::size_t TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size;
-const std::array<folly::StringPiece, TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_names = {{
   "myEnum",
   "myBigEnum",
 }};
-const std::array<int16_t, TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_ids = {{
   1,
   2,
 }};
-const std::array<apache::thrift::protocol::TType, TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_size> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::enumstrict::MyStruct>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
 }};
