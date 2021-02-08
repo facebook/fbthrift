@@ -75,7 +75,6 @@ class MyException1 extends \TException implements \IThriftStruct {
     return $this->code;  
   }
 
-  <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
@@ -83,12 +82,10 @@ class MyException1 extends \TException implements \IThriftStruct {
     $this->code = $code ?? MyEnum::MyValue1;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -160,7 +157,6 @@ class MyException2 extends \TException implements \IThriftStruct {
     return $this->code;  
   }
 
-  <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
@@ -168,12 +164,10 @@ class MyException2 extends \TException implements \IThriftStruct {
     $this->code = $code ?? MyEnum::MyValue1;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -245,7 +239,6 @@ class MyException3 extends \TException implements \IThriftStruct {
     return $this->code;  
   }
 
-  <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
@@ -253,12 +246,10 @@ class MyException3 extends \TException implements \IThriftStruct {
     $this->code = $code ?? MyEnum::MyValue1;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -330,7 +321,6 @@ class MyException4 extends \TException implements \IThriftStruct {
     return $this->code;  
   }
 
-  <<__Rx>>
   public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
@@ -338,12 +328,10 @@ class MyException4 extends \TException implements \IThriftStruct {
     $this->code = $code ?? MyEnum::MyValue2;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -404,19 +392,16 @@ class MyException5 extends \TException implements \IThriftStruct {
    */
   public int $code;
 
-  <<__Rx>>
   public function __construct(?string $message = null, ?int $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->code = $code ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),

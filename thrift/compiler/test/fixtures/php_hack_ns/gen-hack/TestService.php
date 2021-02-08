@@ -283,17 +283,14 @@ class TestService_ping_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 5542358918184482101;
   public string $str_arg;
 
-  <<__Rx>>
   public function __construct(?string $str_arg = null  )[] {
     $this->str_arg = $str_arg ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'str_arg'),
@@ -334,16 +331,13 @@ class TestService_ping_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?int $success;
 
-  <<__Rx>>
   public function __construct(?int $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),

@@ -494,17 +494,14 @@ class SomeService_bounce_map_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 1590329293490505564;
   public Map<int, string> $m;
 
-  <<__Rx>>
   public function __construct(?Map<int, string> $m = null  )[] {
     $this->m = $m ?? Map {};
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'm'),
@@ -573,16 +570,13 @@ class SomeService_bounce_map_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 390979496709511735;
   public ?Map<int, string> $success;
 
-  <<__Rx>>
   public function __construct(?Map<int, string> $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -647,17 +641,14 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 4817436577562933873;
   public Vector<int> $r;
 
-  <<__Rx>>
   public function __construct(?Vector<int> $r = null  )[] {
     $this->r = $r ?? Vector {};
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'r'),
@@ -726,16 +717,13 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?Map<string, int> $success;
 
-  <<__Rx>>
   public function __construct(?Map<string, int> $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),

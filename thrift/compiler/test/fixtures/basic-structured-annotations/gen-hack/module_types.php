@@ -84,18 +84,15 @@ class structured_annotation_inline implements \IThriftStruct {
    */
   public string $name;
 
-  <<__Rx>>
   public function __construct(?int $count = null, ?string $name = null  )[] {
     $this->count = $count ?? 0;
     $this->name = $name ?? "abacaba";
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'count'),
@@ -145,17 +142,14 @@ class structured_annotation_with_default implements \IThriftStruct {
    */
   public string $name;
 
-  <<__Rx>>
   public function __construct(?string $name = null  )[] {
     $this->name = $name ?? "abacabadabacaba";
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
@@ -228,19 +222,16 @@ class structured_annotation_recursive implements \IThriftStruct {
    */
   public ?structured_annotation_forward $forward;
 
-  <<__Rx>>
   public function __construct(?string $name = null, ?structured_annotation_recursive $recurse = null, ?structured_annotation_forward $forward = null  )[] {
     $this->name = $name ?? '';
     $this->recurse = $recurse;
     $this->forward = $forward;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
@@ -291,17 +282,14 @@ class structured_annotation_forward implements \IThriftStruct {
    */
   public int $count;
 
-  <<__Rx>>
   public function __construct(?int $count = null  )[] {
     $this->count = $count ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'count'),
@@ -362,18 +350,15 @@ class structured_annotation_nested implements \IThriftStruct {
    */
   public ?structured_annotation_with_default $nest;
 
-  <<__Rx>>
   public function __construct(?string $name = null, ?structured_annotation_with_default $nest = null  )[] {
     $this->name = $name ?? '';
     $this->nest = $nest;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
@@ -456,7 +441,6 @@ class MyStruct implements \IThriftStruct {
    */
   public int $annotated_nested;
 
-  <<__Rx>>
   public function __construct(?int $annotated_field = null, ?string $annotated_type = null, ?string $annotated_recursive = null, ?int $annotated_nested = null  )[] {
     $this->annotated_field = $annotated_field ?? 0;
     $this->annotated_type = $annotated_type ?? '';
@@ -464,12 +448,10 @@ class MyStruct implements \IThriftStruct {
     $this->annotated_nested = $annotated_nested ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'annotated_field'),
@@ -607,18 +589,15 @@ class MyException extends \TException implements \IThriftStruct {
    */
   public string $context;
 
-  <<__Rx>>
   public function __construct(?string $context = null  )[] {
     parent::__construct();
     $this->context = $context ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'context'),
@@ -702,7 +681,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   public ?int $second;
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
-  <<__Rx>>
   public function __construct(?string $first = null, ?int $second = null  )[] {
     $this->_type = MyUnionEnum::_EMPTY_;
     if ($first !== null) {
@@ -715,12 +693,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     }
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'first'),

@@ -681,17 +681,14 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
   const int STRUCTURAL_ID = 4222184892931375562;
   public string $key;
 
-  <<__Rx>>
   public function __construct(?string $key = null  )[] {
     $this->key = $key ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'key'),
@@ -710,14 +707,12 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftStruct, \IThri
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['key'],
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'key' => $this->key,
@@ -757,16 +752,13 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  <<__Rx>>
   public function __construct(?string $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -823,17 +815,14 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
   const int STRUCTURAL_ID = 4222184892931375562;
   public string $key;
 
-  <<__Rx>>
   public function __construct(?string $key = null  )[] {
     $this->key = $key ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'key'),
@@ -852,14 +841,12 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftStruct, \IThri
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['key'],
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'key' => $this->key,
@@ -899,16 +886,13 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  <<__Rx>>
   public function __construct(?string $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),

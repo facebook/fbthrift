@@ -23,17 +23,14 @@ class Banal extends \TException implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
     parent::__construct();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
@@ -81,18 +78,15 @@ class Fiery extends \TException implements \IThriftStruct {
    */
   public string $message;
 
-  <<__Rx>>
   public function __construct(?string $message = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -141,18 +135,15 @@ class Serious extends \TException implements \IThriftStruct {
    */
   public ?string $sonnet;
 
-  <<__Rx>>
   public function __construct(?string $sonnet = null  )[] {
     parent::__construct();
     $this->sonnet = $sonnet;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'sonnet'),
@@ -163,7 +154,7 @@ class Serious extends \TException implements \IThriftStruct {
     return 'Serious';
   }
 
-  <<__Override, __Rx, __MaybeMutable>>
+  <<__Override>>
   public function getMessage()[]: string {
     return $this->sonnet ?? '';
   }
@@ -217,19 +208,16 @@ class ComplexFieldNames extends \TException implements \IThriftStruct {
    */
   public string $internal_error_message;
 
-  <<__Rx>>
   public function __construct(?string $error_message = null, ?string $internal_error_message = null  )[] {
     parent::__construct();
     $this->error_message = $error_message ?? '';
     $this->internal_error_message = $internal_error_message ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'error_message'),
@@ -241,7 +229,7 @@ class ComplexFieldNames extends \TException implements \IThriftStruct {
     return 'ComplexFieldNames';
   }
 
-  <<__Override, __Rx, __MaybeMutable>>
+  <<__Override>>
   public function getMessage()[]: string {
     return $this->internal_error_message ?? '';
   }
@@ -295,19 +283,16 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
    */
   public string $internal_error_message;
 
-  <<__Rx>>
   public function __construct(?string $error_message = null, ?string $internal_error_message = null  )[] {
     parent::__construct();
     $this->error_message = $error_message ?? '';
     $this->internal_error_message = $internal_error_message ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'error_message'),
@@ -319,7 +304,7 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
     return 'CustomFieldNames';
   }
 
-  <<__Override, __Rx, __MaybeMutable>>
+  <<__Override>>
   public function getMessage()[]: string {
     return $this->internal_error_message ?? '';
   }

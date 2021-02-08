@@ -472,7 +472,6 @@ class Bar_baz_args implements \IThriftStruct {
   public ?Foo $d;
   public int $e;
 
-  <<__Rx>>
   public function __construct(?ConstSet<int> $a = null, ?ConstVector<ConstMap<int, ConstSet<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  )[] {
     $this->a = $a ?? Set {};
     $this->b = $b ?? Vector {};
@@ -481,12 +480,10 @@ class Bar_baz_args implements \IThriftStruct {
     $this->e = $e ?? 4;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -531,16 +528,13 @@ class Bar_baz_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  <<__Rx>>
   public function __construct(?string $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),

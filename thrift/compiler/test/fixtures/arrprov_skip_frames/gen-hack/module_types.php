@@ -97,7 +97,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?bool $d;
 
-  <<__Rx, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public function __construct(?varray<string> $a = null, ?darray<string, varray<darray<int, bool>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
     $this->a = $a ?? varray[];
     $this->b = $b;
@@ -105,12 +105,12 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     $this->d = $d;
   }
 
-  <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -132,7 +132,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['a'],
@@ -142,7 +142,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public function __toShape()[]: self::TShape {
     return shape(
       'a' => $this->a,
@@ -220,7 +220,7 @@ class Baz extends \TException implements \IThriftStruct {
    */
   public int $code;
 
-  <<__Rx, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public function __construct(?string $message = null, ?Foo $some_field = null, ?darray<string, bool> $some_container = null, ?int $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
@@ -229,12 +229,12 @@ class Baz extends \TException implements \IThriftStruct {
     $this->code = $code ?? 0;
   }
 
-  <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
@@ -286,18 +286,18 @@ class OptBaz extends \TException implements \IThriftStruct {
    */
   public string $message;
 
-  <<__Rx, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public function __construct(?string $message = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
 
-  <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn, __ProvenanceSkipFrame>>
+  <<__ProvenanceSkipFrame>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),

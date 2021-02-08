@@ -476,16 +476,13 @@ class MyService_first_args implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
@@ -525,16 +522,13 @@ class MyService_first_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 8648204672360810467;
   public ?string $success;
 
-  <<__Rx>>
   public function __construct(?string $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
@@ -590,17 +584,14 @@ class MyService_second_args implements \IThriftStruct {
   const int STRUCTURAL_ID = 6887469671700782815;
   public int $count;
 
-  <<__Rx>>
   public function __construct(?int $count = null  )[] {
     $this->count = $count ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'count'),
@@ -651,16 +642,13 @@ class MyService_second_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
-  <<__Rx>>
   public function __construct(?bool $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),

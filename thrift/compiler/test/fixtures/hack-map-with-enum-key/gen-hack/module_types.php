@@ -86,18 +86,15 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public Set<FooEnum> $s;
 
-  <<__Rx>>
   public function __construct(?Map<FooEnum, FooEnum> $e = null, ?Set<FooEnum> $s = null  )[] {
     $this->e = $e ?? Map {};
     $this->s = $s ?? Set {};
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'e'),
@@ -117,7 +114,6 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       (new Map($shape['e'])),
@@ -125,7 +121,6 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'e' => ThriftUtil::toDArray($this->e),

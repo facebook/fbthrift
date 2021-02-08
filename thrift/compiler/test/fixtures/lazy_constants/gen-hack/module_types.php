@@ -101,19 +101,16 @@ class Internship implements \IThriftStruct {
    */
   public ?\test\fixtures\lazy_constants\Company $employer;
 
-  <<__Rx>>
   public function __construct(?int $weeks = null, ?string $title = null, ?\test\fixtures\lazy_constants\Company $employer = null  )[] {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'weeks'),
@@ -175,18 +172,15 @@ class Range implements \IThriftStruct {
    */
   public int $max;
 
-  <<__Rx>>
   public function __construct(?int $min = null, ?int $max = null  )[] {
     $this->min = $min ?? 0;
     $this->max = $max ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'min'),

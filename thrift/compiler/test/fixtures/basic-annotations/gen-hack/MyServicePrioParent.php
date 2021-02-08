@@ -657,16 +657,13 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
@@ -684,13 +681,11 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
     );
@@ -719,16 +714,13 @@ class MyServicePrioParent_ping_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
@@ -773,16 +765,13 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
@@ -800,13 +789,11 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
     );
@@ -835,16 +822,13 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );

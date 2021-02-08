@@ -45,18 +45,15 @@ class Foo implements \IThriftStruct {
    */
   public string $b;
 
-  <<__Rx>>
   public function __construct(?int $a = null, ?string $b = null  )[] {
     $this->a = $a ?? 0;
     $this->b = $b ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -64,7 +61,6 @@ class Foo implements \IThriftStruct {
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromMap_DEPRECATED(<<__Soft>> KeyedContainer<string, mixed> $map)[]: this {
     return new static(
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */

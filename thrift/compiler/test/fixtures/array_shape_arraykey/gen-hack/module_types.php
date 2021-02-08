@@ -68,18 +68,15 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
    */
   public string $a;
 
-  <<__Rx>>
   public function __construct(?Enum $just_an_enum = null, ?string $a = null  )[] {
     $this->just_an_enum = $just_an_enum;
     $this->a = $a ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'just_an_enum'),
@@ -99,12 +96,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'just_an_enum') === null ? null : ($shape['just_an_enum']),
@@ -112,7 +107,6 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'just_an_enum' => $this->just_an_enum,
@@ -556,7 +550,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
    */
   public keyset<string> $set_of_string;
 
-  <<__Rx>>
   public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<int> $list_of_i32 = null, ?vec<B> $list_of_self = null, ?vec<vec<B>> $list_of_list_of_self = null, ?vec<keyset<int>> $list_of_set_of_i32 = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
     $this->map_of_string_to_string = $map_of_string_to_string ?? dict[];
     $this->map_of_string_to_i32 = $map_of_string_to_i32 ?? dict[];
@@ -578,12 +571,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $this->set_of_string = $set_of_string ?? keyset[];
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'map_of_string_to_string'),
@@ -619,12 +610,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       self::__stringifyMapKeys($shape['map_of_string_to_string']),
@@ -712,7 +701,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'map_of_string_to_string' => $this->map_of_string_to_string,
@@ -1271,7 +1259,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?keyset<string> $set_of_string;
 
-  <<__Rx>>
   public function __construct(?A $just_an_A = null, ?Enum $just_an_enum = null, ?C $optional_sef = null, ?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?dict<string, vec<int>> $map_of_string_to_list_of_i32 = null, ?dict<string, keyset<int>> $map_of_string_to_set_of_i32 = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<B> $list_of_self = null, ?vec<vec<B>> $list_of_list_of_self = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null, ?vec<int> $list_of_i32 = null, ?dict<string, vec<string>> $map_of_string_to_list_of_string = null, ?keyset<int> $set_of_i32 = null, ?keyset<string> $set_of_string = null  )[] {
     $this->just_an_A = $just_an_A;
     $this->just_an_enum = $just_an_enum;
@@ -1296,12 +1283,10 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $this->set_of_string = $set_of_string;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'just_an_A'),
@@ -1340,12 +1325,10 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'just_an_A') === null ? null : (A::__fromShape($shape['just_an_A'])),
@@ -1436,7 +1419,6 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),

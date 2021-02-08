@@ -114,17 +114,14 @@ class decorated_struct implements \IThriftStruct {
    */
   public string $field;
 
-  <<__Rx>>
   public function __construct(?string $field = null  )[] {
     $this->field = $field ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'field'),
@@ -310,7 +307,6 @@ class ContainerStruct implements \IThriftStruct {
    */
   public Map<int, string> $fieldH;
 
-  <<__Rx>>
   public function __construct(?Vector<int> $fieldA = null, ?Vector<int> $fieldB = null, ?Vector<int> $fieldC = null, ?Vector<int> $fieldD = null, ?Vector<int> $fieldE = null, ?Set<int> $fieldF = null, ?Map<int, string> $fieldG = null, ?Map<int, string> $fieldH = null  )[] {
     $this->fieldA = $fieldA ?? Vector {};
     $this->fieldB = $fieldB ?? Vector {};
@@ -322,12 +318,10 @@ class ContainerStruct implements \IThriftStruct {
     $this->fieldH = $fieldH ?? Map {};
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'fieldA'),
@@ -507,17 +501,14 @@ class CppTypeStruct implements \IThriftStruct {
    */
   public Vector<int> $fieldA;
 
-  <<__Rx>>
   public function __construct(?Vector<int> $fieldA = null  )[] {
     $this->fieldA = $fieldA ?? Vector {};
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'fieldA'),
@@ -590,17 +581,14 @@ class VirtualStruct implements \IThriftStruct {
    */
   public int $MyIntField;
 
-  <<__Rx>>
   public function __construct(?int $MyIntField = null  )[] {
     $this->MyIntField = $MyIntField ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
@@ -674,18 +662,15 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
    */
   public ?MyForwardRefEnum $b;
 
-  <<__Rx>>
   public function __construct(?MyForwardRefEnum $a = null, ?MyForwardRefEnum $b = null  )[] {
     $this->a = $a ?? MyForwardRefEnum::NONZERO;
     $this->b = $b ?? MyForwardRefEnum::NONZERO;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -759,18 +744,15 @@ class TrivialNumeric implements \IThriftStruct {
    */
   public bool $b;
 
-  <<__Rx>>
   public function __construct(?int $a = null, ?bool $b = null  )[] {
     $this->a = $a ?? 0;
     $this->b = $b ?? false;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -852,18 +834,15 @@ class TrivialNestedWithDefault implements \IThriftStruct {
    */
   public ?TrivialNumeric $n;
 
-  <<__Rx>>
   public function __construct(?int $z = null, ?TrivialNumeric $n = null  )[] {
     $this->z = $z ?? 4;
     $this->n = $n;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'z'),
@@ -956,18 +935,15 @@ class ComplexString implements \IThriftStruct {
    */
   public Map<string, int> $b;
 
-  <<__Rx>>
   public function __construct(?string $a = null, ?Map<string, int> $b = null  )[] {
     $this->a = $a ?? '';
     $this->b = $b ?? Map {};
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -1056,18 +1032,15 @@ class ComplexNestedWithDefault implements \IThriftStruct {
    */
   public ?ComplexString $n;
 
-  <<__Rx>>
   public function __construct(?string $z = null, ?ComplexString $n = null  )[] {
     $this->z = $z ?? "4";
     $this->n = $n;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'z'),
@@ -1179,7 +1152,6 @@ class MinPadding implements \IThriftStruct {
    */
   public int $tiny;
 
-  <<__Rx>>
   public function __construct(?int $small = null, ?int $big = null, ?int $medium = null, ?int $biggish = null, ?int $tiny = null  )[] {
     $this->small = $small ?? 0;
     $this->big = $big ?? 0;
@@ -1188,12 +1160,10 @@ class MinPadding implements \IThriftStruct {
     $this->tiny = $tiny ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'small'),
@@ -1334,7 +1304,6 @@ class MyStruct implements \IThriftStruct {
    */
   public ?MyDataItem $data;
 
-  <<__Rx>>
   public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $majorVer = null, ?MyDataItem $data = null  )[] {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
@@ -1342,12 +1311,10 @@ class MyStruct implements \IThriftStruct {
     $this->data = $data;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
@@ -1412,16 +1379,13 @@ class MyDataItem implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
@@ -1478,17 +1442,14 @@ class Renaming implements \IThriftStruct {
    */
   public int $foo;
 
-  <<__Rx>>
   public function __construct(?int $foo = null  )[] {
     $this->foo = $foo ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1574,18 +1535,15 @@ class AnnotatedTypes implements \IThriftStruct {
    */
   public Vector<Map<int, string>> $list_field;
 
-  <<__Rx>>
   public function __construct(?string $binary_field = null, ?Vector<Map<int, string>> $list_field = null  )[] {
     $this->binary_field = $binary_field ?? '';
     $this->list_field = $list_field ?? Vector {};
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'binary_field'),
@@ -1677,18 +1635,15 @@ class ForwardUsageRoot implements \IThriftStruct {
    */
   public ?ForwardUsageByRef $ForwardUsageByRef;
 
-  <<__Rx>>
   public function __construct(?ForwardUsageStruct $ForwardUsageStruct = null, ?ForwardUsageByRef $ForwardUsageByRef = null  )[] {
     $this->ForwardUsageStruct = $ForwardUsageStruct;
     $this->ForwardUsageByRef = $ForwardUsageByRef;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'ForwardUsageStruct'),
@@ -1760,17 +1715,14 @@ class ForwardUsageStruct implements \IThriftStruct {
    */
   public ?ForwardUsageRoot $foo;
 
-  <<__Rx>>
   public function __construct(?ForwardUsageRoot $foo = null  )[] {
     $this->foo = $foo;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1835,17 +1787,14 @@ class ForwardUsageByRef implements \IThriftStruct {
    */
   public ?ForwardUsageRoot $foo;
 
-  <<__Rx>>
   public function __construct(?ForwardUsageRoot $foo = null  )[] {
     $this->foo = $foo;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -1898,16 +1847,13 @@ class NoexceptMoveEmpty implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
   public function __construct(  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
@@ -1964,17 +1910,14 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
    */
   public int $boolField;
 
-  <<__Rx>>
   public function __construct(?int $boolField = null  )[] {
     $this->boolField = $boolField ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'boolField'),
@@ -2138,7 +2081,6 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
    */
   public Map<MyEnumA, string> $MyMapEnumAndInt;
 
-  <<__Rx>>
   public function __construct(?bool $MyBoolField = null, ?int $MyIntField = null, ?string $MyStringField = null, ?string $MyStringField2 = null, ?string $MyBinaryField = null, ?string $MyBinaryField2 = null, ?string $MyBinaryField3 = null, ?Vector<string> $MyBinaryListField4 = null, ?Map<MyEnumA, string> $MyMapEnumAndInt = null  )[] {
     $this->MyBoolField = $MyBoolField ?? false;
     $this->MyIntField = $MyIntField ?? 12;
@@ -2154,12 +2096,10 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     };
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'MyBoolField'),
@@ -2288,7 +2228,6 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
   public ?int $i32_field;
   protected NoExceptMoveUnionEnum $_type = NoExceptMoveUnionEnum::_EMPTY_;
 
-  <<__Rx>>
   public function __construct(?string $string_field = null, ?int $i32_field = null  )[] {
     $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
     if ($string_field !== null) {
@@ -2301,12 +2240,10 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     }
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'string_field'),
@@ -2492,7 +2429,6 @@ class AllocatorAware implements \IThriftStruct {
    */
   public int $not_a_container;
 
-  <<__Rx>>
   public function __construct(?Vector<int> $aa_list = null, ?Set<int> $aa_set = null, ?Map<int, int> $aa_map = null, ?string $aa_string = null, ?int $not_a_container = null  )[] {
     $this->aa_list = $aa_list ?? Vector {};
     $this->aa_set = $aa_set ?? Set {};
@@ -2501,12 +2437,10 @@ class AllocatorAware implements \IThriftStruct {
     $this->not_a_container = $not_a_container ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'aa_list'),
@@ -2624,17 +2558,14 @@ class AllocatorAware2 implements \IThriftStruct {
    */
   public int $not_a_container;
 
-  <<__Rx>>
   public function __construct(?int $not_a_container = null  )[] {
     $this->not_a_container = $not_a_container ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'not_a_container'),

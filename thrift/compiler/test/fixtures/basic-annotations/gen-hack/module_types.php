@@ -58,17 +58,14 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
    */
   public string $name;
 
-  <<__Rx>>
   public function __construct(?string $name = null  )[] {
     $this->name = $name ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
@@ -87,14 +84,12 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['name'],
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'name' => $this->name,
@@ -183,7 +178,6 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?MyStructNestedAnnotation $nest;
 
-  <<__Rx>>
   public function __construct(?int $count = null, ?string $name = null, ?string $extra = null, ?MyStructNestedAnnotation $nest = null  )[] {
     $this->count = $count ?? 0;
     $this->name = $name ?? '';
@@ -191,12 +185,10 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     $this->nest = $nest;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'count'),
@@ -218,7 +210,6 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['count'],
@@ -228,7 +219,6 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'count' => $this->count,
@@ -355,7 +345,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public string $empty_annotations;
 
-  <<__Rx>>
   public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null  )[] {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
@@ -365,12 +354,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $this->empty_annotations = $empty_annotations ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'major'),
@@ -394,7 +381,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['major'],
@@ -406,7 +392,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'major' => $this->major,
@@ -490,18 +475,15 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public string $password;
 
-  <<__Rx>>
   public function __construct(?int $id = null, ?string $password = null  )[] {
     $this->id = $id ?? 0;
     $this->password = $password ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'id'),
@@ -521,7 +503,6 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx, __MutableReturn>>
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['id'],
@@ -529,7 +510,6 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  <<__Rx>>
   public function __toShape()[]: self::TShape {
     return shape(
       'id' => $this->id,

@@ -91,7 +91,6 @@ class Foo implements \IThriftStruct {
    */
   public bool $d;
 
-  <<__Rx>>
   public function __construct(?ConstVector<string> $a = null, ?ConstMap<string, ConstVector<ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
     $this->a = $a ?? Vector {};
     $this->b = $b;
@@ -99,12 +98,10 @@ class Foo implements \IThriftStruct {
     $this->d = $d ?? false;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
@@ -156,18 +153,15 @@ class Baz extends \TException implements \IThriftStruct {
    */
   public string $message;
 
-  <<__Rx>>
   public function __construct(?string $message = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),

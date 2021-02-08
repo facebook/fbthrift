@@ -211,9 +211,6 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       t_struct* tstruct,
       bool asFunction);
-  void generate_php_struct_construction_attributes(
-      std::ofstream& out,
-      bool is_constructor = false);
 
   /**
    * Service-level generation functions
@@ -2217,7 +2214,6 @@ void t_hack_generator::generate_php_struct_shape_methods(
     } else {
       arg_return_type = "Map";
     }
-    indent(out) << "<<__Rx>>\n";
     indent(out) << "public static function __stringifyMapKeys<T>("
                 << arg_return_type << "<arraykey, T> $m)[]: " << arg_return_type
                 << "<string, T> {\n";
@@ -2240,7 +2236,8 @@ void t_hack_generator::generate_php_struct_shape_methods(
     indent(out) << "}\n\n";
   }
 
-  generate_php_struct_construction_attributes(out);
+  if (arrprov_skip_frames_)
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   indent(out)
       << "public static function __fromShape(self::TShape $shape)[]: this {\n";
   indent_up();
@@ -2399,11 +2396,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent(out) << "}\n";
   out << "\n";
 
-  indent(out) << "<<__Rx";
   if (arrprov_skip_frames_) {
-    out << ", __ProvenanceSkipFrame";
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   }
-  out << ">>\n";
   indent(out) << "public function __toShape()[]: self::TShape {\n";
   indent_up();
   indent(out) << "return shape(\n";
@@ -2524,22 +2519,6 @@ void t_hack_generator::generate_php_structural_id(
     indent(out) << "const int STRUCTURAL_ID = "
                 << generate_structural_id(tstruct->get_members()) << ";\n";
   }
-}
-
-void t_hack_generator::generate_php_struct_construction_attributes(
-    std::ofstream& out,
-    bool is_constructor) {
-  out << indent() << "<<__Rx";
-  if (!is_constructor) {
-    // Constructor-like methods can also give the ownership of the
-    // struct to the caller. Constructor has an implicit __MutableReturn.
-    // See https://fburl.com/wiki/iaru43mo for more details.
-    out << ", __MutableReturn";
-  }
-  if (arrprov_skip_frames_) {
-    out << ", __ProvenanceSkipFrame";
-  }
-  out << ">>\n";
 }
 
 void t_hack_generator::generate_php_struct_definition(
@@ -2871,7 +2850,8 @@ void t_hack_generator::_generate_php_struct_definition(
 
   out << "\n";
 
-  generate_php_struct_construction_attributes(out, /*is_constructor=*/true);
+  if (arrprov_skip_frames_)
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   out << indent() << "public function __construct(";
   bool first = true;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
@@ -2957,7 +2937,8 @@ void t_hack_generator::_generate_php_struct_definition(
   scope_down(out);
   out << "\n";
 
-  generate_php_struct_construction_attributes(out);
+  if (arrprov_skip_frames_)
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   indent(out) << "public static function withDefaultValues()[]: this {\n";
   indent_up();
   indent(out) << "return new static();\n";
@@ -2982,7 +2963,7 @@ void t_hack_generator::_generate_php_struct_definition(
     const auto& value = tstruct->get_annotation("message");
     if (tstruct->has_annotation("message") && value != "message") {
       auto message_field = tstruct->get_member(value);
-      out << indent() << "<<__Override, __Rx, __MaybeMutable>>\n"
+      out << indent() << "<<__Override>>\n"
           << indent() << "public function getMessage()[]: string {\n"
           << indent() << "  return $this->" << message_field->get_name();
       if (message_field->get_req() != t_field::T_REQUIRED) {
@@ -3040,7 +3021,8 @@ void t_hack_generator::_generate_php_struct_definition(
 void t_hack_generator::generate_php_struct_from_shape(
     ofstream& out,
     t_struct* tstruct) {
-  generate_php_struct_construction_attributes(out);
+  if (arrprov_skip_frames_)
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   out << indent() << "public static function fromShape"
       << "(self::TConstructorShape $shape)[]: this {\n";
   indent_up();
@@ -3061,7 +3043,8 @@ void t_hack_generator::generate_php_struct_from_shape(
 void t_hack_generator::generate_php_struct_from_map(
     ofstream& out,
     t_struct* tstruct) {
-  generate_php_struct_construction_attributes(out);
+  if (arrprov_skip_frames_)
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
   out << indent() << "public static function fromMap_DEPRECATED(";
   if (strict_types_) {
     // Generate constructor from Map

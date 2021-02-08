@@ -87,7 +87,6 @@ class Color implements \IThriftStruct {
    */
   public float $alpha;
 
-  <<__Rx>>
   public function __construct(?float $red = null, ?float $green = null, ?float $blue = null, ?float $alpha = null  )[] {
     $this->red = $red ?? 0.0;
     $this->green = $green ?? 0.0;
@@ -95,12 +94,10 @@ class Color implements \IThriftStruct {
     $this->alpha = $alpha ?? 0.0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'red'),
@@ -197,7 +194,6 @@ class Vehicle implements \IThriftStruct {
    */
   public bool $hasAC;
 
-  <<__Rx>>
   public function __construct(?Color $color = null, ?string $licensePlate = null, ?string $description = null, ?string $name = null, ?bool $hasAC = null  )[] {
     $this->color = $color;
     $this->licensePlate = $licensePlate;
@@ -206,12 +202,10 @@ class Vehicle implements \IThriftStruct {
     $this->hasAC = $hasAC ?? false;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'color'),
@@ -386,7 +380,6 @@ class Person implements \IThriftStruct {
    */
   public ?Vector<Vehicle> $vehicles;
 
-  <<__Rx>>
   public function __construct(?int $id = null, ?string $name = null, ?int $age = null, ?string $address = null, ?Color $favoriteColor = null, ?Set<int> $friends = null, ?int $bestFriend = null, ?Map<Animal, string> $petNames = null, ?Animal $afraidOfAnimal = null, ?Vector<Vehicle> $vehicles = null  )[] {
     $this->id = $id ?? 0;
     $this->name = $name ?? '';
@@ -400,12 +393,10 @@ class Person implements \IThriftStruct {
     $this->vehicles = $vehicles;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'id'),

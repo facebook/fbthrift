@@ -298,18 +298,15 @@ class Service_func_args implements \IThriftStruct {
   public \Adapter2::THackType $arg1;
   public ?Foo $arg2;
 
-  <<__Rx>>
   public function __construct(?\Adapter2::THackType $arg1 = null, ?Foo $arg2 = null  )[] {
     $this->arg1 = $arg1 ?? \Adapter2::fromThrift('');
     $this->arg2 = $arg2;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'arg1'),
@@ -356,16 +353,13 @@ class Service_func_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 3865318819874171525;
   public ?\Adapter1::THackType $success;
 
-  <<__Rx>>
   public function __construct(?\Adapter1::THackType $success = null  )[] {
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),

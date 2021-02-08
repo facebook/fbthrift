@@ -81,19 +81,16 @@ class MyThriftStruct implements \IThriftStruct {
    */
   public string $baz;
 
-  <<__Rx>>
   public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  )[] {
     $this->foo = $foo ?? '';
     $this->bar = $bar ?? '';
     $this->baz = $baz ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -168,19 +165,16 @@ class MySecondThriftStruct implements \IThriftStruct {
    */
   public int $baz;
 
-  <<__Rx>>
   public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null  )[] {
     $this->foo = $foo;
     $this->bar = $bar;
     $this->baz = $baz ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
@@ -252,7 +246,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   public ?int $bar;
   protected \test\fixtures\jsenum\UnionTestingEnum $_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
 
-  <<__Rx>>
   public function __construct(?string $foo = null, ?int $bar = null  )[] {
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
     if ($foo !== null) {
@@ -265,12 +258,10 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     }
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),

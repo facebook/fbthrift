@@ -34,17 +34,14 @@ class InitialResponse implements \IThriftStruct {
    */
   public string $content;
 
-  <<__Rx>>
   public function __construct(?string $content = null  )[] {
     $this->content = $content ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'content'),
@@ -93,17 +90,14 @@ class FinalResponse implements \IThriftStruct {
    */
   public string $content;
 
-  <<__Rx>>
   public function __construct(?string $content = null  )[] {
     $this->content = $content ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'content'),
@@ -152,17 +146,14 @@ class SinkPayload implements \IThriftStruct {
    */
   public string $content;
 
-  <<__Rx>>
   public function __construct(?string $content = null  )[] {
     $this->content = $content ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'content'),
@@ -211,17 +202,14 @@ class CompatibleWithKeywordSink implements \IThriftStruct {
    */
   public string $sink;
 
-  <<__Rx>>
   public function __construct(?string $sink = null  )[] {
     $this->sink = $sink ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'sink'),
@@ -270,18 +258,15 @@ class InitialException extends \TException implements \IThriftStruct {
    */
   public string $reason;
 
-  <<__Rx>>
   public function __construct(?string $reason = null  )[] {
     parent::__construct();
     $this->reason = $reason ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'reason'),
@@ -330,18 +315,15 @@ class SinkException1 extends \TException implements \IThriftStruct {
    */
   public string $reason;
 
-  <<__Rx>>
   public function __construct(?string $reason = null  )[] {
     parent::__construct();
     $this->reason = $reason ?? '';
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'reason'),
@@ -390,18 +372,15 @@ class SinkException2 extends \TException implements \IThriftStruct {
    */
   public int $reason;
 
-  <<__Rx>>
   public function __construct(?int $reason = null  )[] {
     parent::__construct();
     $this->reason = $reason ?? 0;
   }
 
-  <<__Rx, __MutableReturn>>
   public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __MutableReturn>>
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'reason'),
