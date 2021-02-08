@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/OptionalField.h>
-
 #include <folly/Portability.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/FieldRefHash.h>
