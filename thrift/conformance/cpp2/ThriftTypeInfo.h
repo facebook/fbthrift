@@ -44,7 +44,7 @@ template <typename C>
 ThriftTypeInfo createThriftTypeInfo(C&& uris, type_hash_size_t typeHashBytes) {
   ThriftTypeInfo type;
   if (typeHashBytes != kTypeHashBytesNotSpecified) {
-    type.set_typeHashBytes(typeHashBytes);
+    type.typeHashBytes_ref() = typeHashBytes;
   }
   auto itr = uris.begin();
   if (itr == uris.end()) {

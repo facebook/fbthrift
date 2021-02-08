@@ -55,7 +55,7 @@ class Primitive : public MetadataTypeInterface {
   Primitive(::apache::thrift::metadata::ThriftPrimitiveType base)
       : base_(base) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata&) override {
-    ty.set_t_primitive(base_);
+    ty.t_primitive_ref() = base_;
   }
 
  private:
@@ -70,7 +70,7 @@ class List : public MetadataTypeInterface {
     ::apache::thrift::metadata::ThriftListType tyList;
     tyList.valueType = ::std::make_unique<ThriftType>();
     elemType_->writeAndGenType(*tyList.valueType, metadata);
-    ty.set_t_list(::std::move(tyList));
+    ty.t_list_ref() = ::std::move(tyList);
   }
 
  private:
@@ -85,7 +85,7 @@ class Set : public MetadataTypeInterface {
     ::apache::thrift::metadata::ThriftSetType tySet;
     tySet.valueType = ::std::make_unique<ThriftType>();
     elemType_->writeAndGenType(*tySet.valueType, metadata);
-    ty.set_t_set(::std::move(tySet));
+    ty.t_set_ref() = ::std::move(tySet);
   }
 
  private:
@@ -103,7 +103,7 @@ class Map : public MetadataTypeInterface {
     keyType_->writeAndGenType(*tyMap.keyType, metadata);
     tyMap.valueType = ::std::make_unique<ThriftType>();
     valueType_->writeAndGenType(*tyMap.valueType, metadata);
-    ty.set_t_map(::std::move(tyMap));
+    ty.t_map_ref() = ::std::move(tyMap);
   }
 
  private:
@@ -119,7 +119,7 @@ class Enum : public MetadataTypeInterface {
     EnumMetadata<E>::gen(metadata);
     ::apache::thrift::metadata::ThriftEnumType tyEnum;
     tyEnum.name_ref() = name_;
-    ty.set_t_enum(::std::move(tyEnum));
+    ty.t_enum_ref() = ::std::move(tyEnum);
   }
 
  private:
@@ -134,7 +134,7 @@ class Struct : public MetadataTypeInterface {
     StructMetadata<S>::gen(metadata);
     ::apache::thrift::metadata::ThriftStructType tyStruct;
     tyStruct.name_ref() = name_;
-    ty.set_t_struct(::std::move(tyStruct));
+    ty.t_struct_ref() = ::std::move(tyStruct);
   }
 
  private:
@@ -149,7 +149,7 @@ class Union : public MetadataTypeInterface {
     StructMetadata<U>::gen(metadata);
     ::apache::thrift::metadata::ThriftUnionType tyUnion;
     tyUnion.name_ref() = name_;
-    ty.set_t_union(::std::move(tyUnion));
+    ty.t_union_ref() = ::std::move(tyUnion);
   }
 
  private:
@@ -167,7 +167,7 @@ class Typedef : public MetadataTypeInterface {
     tyTypedef.name_ref() = name_;
     tyTypedef.underlyingType = ::std::make_unique<ThriftType>();
     underlyingType_->writeAndGenType(*tyTypedef.underlyingType, metadata);
-    ty.set_t_typedef(::std::move(tyTypedef));
+    ty.t_typedef_ref() = ::std::move(tyTypedef);
   }
 
  private:
@@ -191,7 +191,7 @@ class Stream : public MetadataTypeInterface {
       initialResponseType_->writeAndGenType(
           *tyStream.initialResponseType, metadata);
     }
-    ty.set_t_stream(::std::move(tyStream));
+    ty.t_stream_ref() = ::std::move(tyStream);
   }
 
  private:
@@ -219,7 +219,7 @@ class Sink : public MetadataTypeInterface {
       initialResponseType_->writeAndGenType(
           *tySink.initialResponseType, metadata);
     }
-    ty.set_t_sink(::std::move(tySink));
+    ty.t_sink_ref() = ::std::move(tySink);
   }
 
  private:
