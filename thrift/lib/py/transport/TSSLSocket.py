@@ -73,7 +73,7 @@ if _is_legacy_ssl:
     def _warn_if_legacy():
         global _has_warned
         if not _has_warned:
-            logging.warn(
+            logging.warning(
                 'You are using an old version of Python (< 2.7.9) that is '
                 'limited to an old version of TLS (1.0) with known security '
                 'vulnerabilities. '
@@ -111,7 +111,7 @@ else:
             blacklist.append(ssl.PROTOCOL_TLSv1_1)
 
         if version in blacklist:
-            logging.warn(
+            logging.warning(
                 'You are constructing TSSLSocket and intentionally specifying '
                 'a weak, vulnerable ssl_version on a platform that has secure '
                 'versions available! Leave ssl_version unspecified and we will '
