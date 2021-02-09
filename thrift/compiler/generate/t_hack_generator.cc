@@ -175,7 +175,9 @@ class t_hack_generator : public t_oop_generator {
       bool is_xception = false,
       bool is_result = false,
       bool is_args = false);
-  void generate_php_function_helpers(t_function* tfunction);
+  void generate_php_function_helpers(
+      t_service* tservice,
+      t_function* tfunction);
 
   void generate_php_union_enum(std::ofstream& out, t_struct* tstruct);
   void generate_php_union_methods(std::ofstream& out, t_struct* tstruct);
@@ -231,6 +233,8 @@ class t_hack_generator : public t_oop_generator {
       bool mangle);
   void
   _generate_recvImpl(ofstream& out, t_service* tservice, t_function* tfunction);
+  void
+  _generate_sendImpl(ofstream& out, t_service* tservice, t_function* tfunction);
   void _generate_sendImpl_arg(
       ofstream& out,
       t_name_generator& namer,
@@ -3400,12 +3404,7 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << "// HELPER FUNCTIONS AND STRUCTURES\n\n";
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_paramlist();
-    string name = ts->get_name();
-    ts->set_name(service_name_ + "_" + name);
-    generate_php_struct_definition(f_service_, ts, false, false, true);
-    generate_php_function_helpers(*f_iter);
-    ts->set_name(name);
+    generate_php_function_helpers(tservice, *f_iter);
   }
 
   f_service_ << indent() << "class " << php_servicename_mangle(mangle, tservice)
@@ -3466,10 +3465,19 @@ void t_hack_generator::generate_service_helpers(
  *
  * @param tfunction The function
  */
-void t_hack_generator::generate_php_function_helpers(t_function* tfunction) {
+void t_hack_generator::generate_php_function_helpers(
+    t_service* tservice,
+    t_function* tfunction) {
+  t_struct* ts = tfunction->get_paramlist();
+  string name = ts->get_name();
+  string tservice_name = tservice->get_name();
+
+  ts->set_name(tservice_name + "_" + name);
+  generate_php_struct_definition(f_service_, ts, false, false, true);
+
   if (!tfunction->is_oneway()) {
     t_struct result(
-        program_, service_name_ + "_" + tfunction->get_name() + "_result");
+        program_, tservice_name + "_" + tfunction->get_name() + "_result");
     auto success =
         std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
     if (!tfunction->get_returntype()->is_void()) {
@@ -3485,6 +3493,8 @@ void t_hack_generator::generate_php_function_helpers(t_function* tfunction) {
 
     generate_php_struct_definition(f_service_, &result, false, true);
   }
+
+  ts->set_name(name);
 }
 
 /**
@@ -3979,124 +3989,7 @@ void t_hack_generator::_generate_service_client(
   vector<t_function*> functions = get_supported_functions(tservice);
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_paramlist();
-    const vector<t_field*>& fields = arg_struct->get_members();
-    vector<t_field*>::const_iterator fld_iter;
-    string funname = (*f_iter)->get_name();
-
-    if (nullable_everything_) {
-      indent(out) << "protected function sendImpl_" << funname << "("
-                  << argument_list(
-                         (*f_iter)->get_paramlist(), "", "", true, true)
-                  << "): int {\n";
-    } else {
-      indent(out) << "protected function sendImpl_"
-                  << function_signature(*f_iter, "", "", "int") << " {\n";
-    }
-    indent_up();
-
-    std::string argsname =
-        hack_name(tservice) + "_" + (*f_iter)->get_name() + "_args";
-
-    out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
-        << indent() << "$args = " << argsname;
-    if (!fields.empty()) {
-      out << "::fromShape(shape(\n";
-      indent_up();
-      // Loop through the fields and assign to the args struct
-      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-        indent(out);
-        string name = "$" + (*fld_iter)->get_name();
-        out << "'" << (*fld_iter)->get_name() << "' => ";
-        if (nullable_everything_) {
-          // just passthrough null
-          out << name << " === null ? null : ";
-        }
-        t_name_generator namer;
-        this->_generate_sendImpl_arg(out, namer, name, (*fld_iter)->get_type());
-        out << ",\n";
-      }
-      indent_down();
-      indent(out) << "));\n";
-    } else {
-      out << "::withDefaultValues();\n";
-    }
-    out << indent() << "try {\n";
-    indent_up();
-    out << indent() << "$this->eventHandler_->preSend('"
-        << (*f_iter)->get_name() << "', $args, $currentseqid);\n";
-    out << indent() << "if ($this->output_ is \\TBinaryProtocolAccelerated)\n";
-    scope_up(out);
-
-    out << indent() << "\\thrift_protocol_write_binary($this->output_, '"
-        << (*f_iter)->get_name() << "', "
-        << "\\TMessageType::CALL, $args, $currentseqid, "
-        << "$this->output_->isStrictWrite(), "
-        << ((*f_iter)->is_oneway() ? "true" : "false") << ");\n";
-
-    scope_down(out);
-    out << indent()
-        << "else if ($this->output_ is \\TCompactProtocolAccelerated)\n";
-    scope_up(out);
-
-    out << indent() << "\\thrift_protocol_write_compact($this->output_, '"
-        << (*f_iter)->get_name() << "', "
-        << "\\TMessageType::CALL, $args, $currentseqid, "
-        << ((*f_iter)->is_oneway() ? "true" : "false") << ");\n";
-
-    scope_down(out);
-    out << indent() << "else\n";
-    scope_up(out);
-
-    // Serialize the request header
-    out << indent() << "$this->output_->writeMessageBegin('"
-        << (*f_iter)->get_name()
-        << "', \\TMessageType::CALL, $currentseqid);\n";
-
-    // Write to the stream
-    out << indent() << "$args->write($this->output_);\n"
-        << indent() << "$this->output_->writeMessageEnd();\n";
-    if ((*f_iter)->is_oneway()) {
-      out << indent() << "$this->output_->getTransport()->onewayFlush();\n";
-    } else {
-      out << indent() << "$this->output_->getTransport()->flush();\n";
-    }
-
-    scope_down(out);
-
-    indent_down();
-    indent(out) << "} catch (\\THandlerShortCircuitException $ex) {\n";
-    indent_up();
-    out << indent() << "switch ($ex->resultType) {\n"
-        << indent()
-        << "  case \\THandlerShortCircuitException::R_EXPECTED_EX:\n"
-        << indent()
-        << "  case \\THandlerShortCircuitException::R_UNEXPECTED_EX:\n"
-        << indent() << "    $this->eventHandler_->sendError('"
-        << (*f_iter)->get_name() << "', $args, $currentseqid, $ex->result);"
-        << "\n"
-        << indent() << "    throw $ex->result;\n"
-        << indent() << "  case \\THandlerShortCircuitException::R_SUCCESS:\n"
-        << indent() << "  default:\n"
-        << indent() << "    $this->eventHandler_->postSend('"
-        << (*f_iter)->get_name() << "', $args, $currentseqid);\n"
-        << indent() << "    return $currentseqid;\n"
-        << indent() << "}\n";
-    indent_down();
-    indent(out) << "} catch (\\Exception $ex) {\n";
-    indent_up();
-    out << indent() << "$this->eventHandler_->sendError('"
-        << (*f_iter)->get_name() << "', $args, $currentseqid, $ex);\n"
-        << indent() << "throw $ex;\n";
-    indent_down();
-    indent(out) << "}\n";
-
-    out << indent() << "$this->eventHandler_->postSend('"
-        << (*f_iter)->get_name() << "', $args, $currentseqid);\n";
-
-    indent(out) << "return $currentseqid;\n";
-
-    scope_down(out);
+    _generate_sendImpl(out, tservice, *f_iter);
 
     if (!(*f_iter)->is_oneway()) {
       _generate_recvImpl(out, tservice, *f_iter);
@@ -4122,6 +4015,7 @@ void t_hack_generator::_generate_recvImpl(
     t_function* tfunction) {
   std::string resultname =
       hack_name(tservice) + "_" + tfunction->get_name() + "_result";
+  const string& rpc_function_name = tfunction->get_name();
 
   t_function recv_function(
       tfunction->get_returntype(),
@@ -4146,7 +4040,7 @@ void t_hack_generator::_generate_recvImpl(
   out << indent() << "try {\n";
   indent_up();
 
-  out << indent() << "$this->eventHandler_->preRecv('" << tfunction->get_name()
+  out << indent() << "$this->eventHandler_->preRecv('" << rpc_function_name
       << "', $expectedsequenceid);\n";
 
   out << indent() << "if ($this->input_ is \\TBinaryProtocolAccelerated) {\n";
@@ -4209,17 +4103,17 @@ void t_hack_generator::_generate_recvImpl(
   out << indent() << "switch ($ex->resultType) {\n"
       << indent() << "  case \\THandlerShortCircuitException::R_EXPECTED_EX:\n"
       << indent() << "    $this->eventHandler_->recvException('"
-      << tfunction->get_name() << "', $expectedsequenceid, $ex->result);\n"
+      << rpc_function_name << "', $expectedsequenceid, $ex->result);\n"
       << indent() << "    throw $ex->result;\n"
       << indent()
       << "  case \\THandlerShortCircuitException::R_UNEXPECTED_EX:\n"
       << indent() << "    $this->eventHandler_->recvError('"
-      << tfunction->get_name() << "', $expectedsequenceid, $ex->result);\n"
+      << rpc_function_name << "', $expectedsequenceid, $ex->result);\n"
       << indent() << "    throw $ex->result;\n"
       << indent() << "  case \\THandlerShortCircuitException::R_SUCCESS:\n"
       << indent() << "  default:\n"
-      << indent() << "    $this->eventHandler_->postRecv('"
-      << tfunction->get_name() << "', $expectedsequenceid, $ex->result);\n"
+      << indent() << "    $this->eventHandler_->postRecv('" << rpc_function_name
+      << "', $expectedsequenceid, $ex->result);\n"
       << indent() << "    return";
 
   if (!tfunction->get_returntype()->is_void()) {
@@ -4229,8 +4123,8 @@ void t_hack_generator::_generate_recvImpl(
   indent_down();
   out << indent() << "} catch (\\Exception $ex) {\n";
   indent_up();
-  out << indent() << "$this->eventHandler_->recvError('"
-      << tfunction->get_name() << "', $expectedsequenceid, $ex);\n"
+  out << indent() << "$this->eventHandler_->recvError('" << rpc_function_name
+      << "', $expectedsequenceid, $ex);\n"
       << indent() << "throw $ex;\n";
   indent_down();
   out << indent() << "}\n";
@@ -4239,8 +4133,8 @@ void t_hack_generator::_generate_recvImpl(
   if (!tfunction->get_returntype()->is_void()) {
     out << indent() << "if ($result->success !== null) {\n"
         << indent() << "  $success = $result->success;\n"
-        << indent() << "  $this->eventHandler_->postRecv('"
-        << tfunction->get_name() << "', $expectedsequenceid, $success);"
+        << indent() << "  $this->eventHandler_->postRecv('" << rpc_function_name
+        << "', $expectedsequenceid, $success);"
         << "\n"
         << indent() << "  return $success;\n"
         << indent() << "}\n";
@@ -4255,27 +4149,148 @@ void t_hack_generator::_generate_recvImpl(
         << indent() << "  $x = $result->" << (*x_iter)->get_name() << ";"
         << "\n"
         << indent() << "  $this->eventHandler_->recvException('"
-        << tfunction->get_name() << "', $expectedsequenceid, $x);\n"
+        << rpc_function_name << "', $expectedsequenceid, $x);\n"
         << indent() << "  throw $x;\n"
         << indent() << "}\n";
   }
 
   // Careful, only return _result if not a void function
   if (tfunction->get_returntype()->is_void()) {
-    out << indent() << "$this->eventHandler_->postRecv('"
-        << tfunction->get_name() << "', $expectedsequenceid, null);\n"
+    out << indent() << "$this->eventHandler_->postRecv('" << rpc_function_name
+        << "', $expectedsequenceid, null);\n"
         << indent() << "return;\n";
   } else {
     out << indent() << "$x = new \\TApplicationException(\""
         << tfunction->get_name() << " failed: unknown result\""
         << ", \\TApplicationException::MISSING_RESULT"
         << ");\n"
-        << indent() << "$this->eventHandler_->recvError('"
-        << tfunction->get_name() << "', $expectedsequenceid, $x);\n"
+        << indent() << "$this->eventHandler_->recvError('" << rpc_function_name
+        << "', $expectedsequenceid, $x);\n"
         << indent() << "throw $x;\n";
   }
 
   // Close function
+  scope_down(out);
+}
+
+void t_hack_generator::_generate_sendImpl(
+    ofstream& out,
+    t_service* tservice,
+    t_function* tfunction) {
+  t_struct* arg_struct = tfunction->get_paramlist();
+  const vector<t_field*>& fields = arg_struct->get_members();
+  string funname = tfunction->get_name();
+  const string& rpc_function_name = tfunction->get_name();
+
+  if (nullable_everything_) {
+    indent(out) << "protected function sendImpl_" << funname << "("
+                << argument_list(tfunction->get_paramlist(), "", "", true, true)
+                << "): int {\n";
+  } else {
+    indent(out) << "protected function sendImpl_"
+                << function_signature(tfunction, "", "", "int") << " {\n";
+  }
+  indent_up();
+
+  std::string argsname =
+      hack_name(tservice) + "_" + tfunction->get_name() + "_args";
+
+  out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
+      << indent() << "$args = " << argsname;
+  if (!fields.empty()) {
+    out << "::fromShape(shape(\n";
+    indent_up();
+    // Loop through the fields and assign to the args struct
+    for (const auto& field : fields) {
+      indent(out);
+      string name = "$" + field->get_name();
+      out << "'" << field->get_name() << "' => ";
+      if (nullable_everything_) {
+        // just passthrough null
+        out << name << " === null ? null : ";
+      }
+      t_name_generator namer;
+      this->_generate_sendImpl_arg(out, namer, name, field->get_type());
+      out << ",\n";
+    }
+    indent_down();
+    indent(out) << "));\n";
+  } else {
+    out << "::withDefaultValues();\n";
+  }
+  out << indent() << "try {\n";
+  indent_up();
+  out << indent() << "$this->eventHandler_->preSend('" << rpc_function_name
+      << "', $args, $currentseqid);\n";
+  out << indent() << "if ($this->output_ is \\TBinaryProtocolAccelerated)\n";
+  scope_up(out);
+
+  out << indent() << "\\thrift_protocol_write_binary($this->output_, '"
+      << rpc_function_name << "', "
+      << "\\TMessageType::CALL, $args, $currentseqid, "
+      << "$this->output_->isStrictWrite(), "
+      << (tfunction->is_oneway() ? "true" : "false") << ");\n";
+
+  scope_down(out);
+  out << indent()
+      << "else if ($this->output_ is \\TCompactProtocolAccelerated)\n";
+  scope_up(out);
+
+  out << indent() << "\\thrift_protocol_write_compact($this->output_, '"
+      << rpc_function_name << "', "
+      << "\\TMessageType::CALL, $args, $currentseqid, "
+      << (tfunction->is_oneway() ? "true" : "false") << ");\n";
+
+  scope_down(out);
+  out << indent() << "else\n";
+  scope_up(out);
+
+  // Serialize the request header
+  out << indent() << "$this->output_->writeMessageBegin('" << rpc_function_name
+      << "', \\TMessageType::CALL, $currentseqid);\n";
+
+  // Write to the stream
+  out << indent() << "$args->write($this->output_);\n"
+      << indent() << "$this->output_->writeMessageEnd();\n";
+  if (tfunction->is_oneway()) {
+    out << indent() << "$this->output_->getTransport()->onewayFlush();\n";
+  } else {
+    out << indent() << "$this->output_->getTransport()->flush();\n";
+  }
+
+  scope_down(out);
+
+  indent_down();
+  indent(out) << "} catch (\\THandlerShortCircuitException $ex) {\n";
+  indent_up();
+  out << indent() << "switch ($ex->resultType) {\n"
+      << indent() << "  case \\THandlerShortCircuitException::R_EXPECTED_EX:\n"
+      << indent()
+      << "  case \\THandlerShortCircuitException::R_UNEXPECTED_EX:\n"
+      << indent() << "    $this->eventHandler_->sendError('"
+      << rpc_function_name << "', $args, $currentseqid, $ex->result);"
+      << "\n"
+      << indent() << "    throw $ex->result;\n"
+      << indent() << "  case \\THandlerShortCircuitException::R_SUCCESS:\n"
+      << indent() << "  default:\n"
+      << indent() << "    $this->eventHandler_->postSend('" << rpc_function_name
+      << "', $args, $currentseqid);\n"
+      << indent() << "    return $currentseqid;\n"
+      << indent() << "}\n";
+  indent_down();
+  indent(out) << "} catch (\\Exception $ex) {\n";
+  indent_up();
+  out << indent() << "$this->eventHandler_->sendError('" << rpc_function_name
+      << "', $args, $currentseqid, $ex);\n"
+      << indent() << "throw $ex;\n";
+  indent_down();
+  indent(out) << "}\n";
+
+  out << indent() << "$this->eventHandler_->postSend('" << rpc_function_name
+      << "', $args, $currentseqid);\n";
+
+  indent(out) << "return $currentseqid;\n";
+
   scope_down(out);
 }
 
