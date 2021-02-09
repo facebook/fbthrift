@@ -315,8 +315,8 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_type*>          FunctionType
 %type<t_service*>       FunctionList
 
-%type<t_struct*>        ParamList
-%type<t_struct*>        EmptyParamList
+%type<t_paramlist*>     ParamList
+%type<t_paramlist*>     EmptyParamList
 %type<t_field*>         Param
 
 %type<t_struct*>        Throws
@@ -1134,21 +1134,21 @@ Function:
         "FunctionAnnotations CommaOrSemicolonOptional");
       $7->set_name(std::string($5) + "_args");
       auto* rettype = $4;
-      auto* arglist = $7;
+      auto* paramlist = $7;
       t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<t_stream_response*>(rettype)->get_throws_struct() : nullptr;
       t_function* func;
       if (rettype && rettype->is_sink()) {
         func = new t_function(
           static_cast<t_sink*>(rettype),
           $5,
-          std::unique_ptr<t_struct>(arglist),
+          std::unique_ptr<t_paramlist>(paramlist),
           std::unique_ptr<t_struct>($9)
         );
       } else {
         func = new t_function(
           rettype,
           $5,
-          std::unique_ptr<t_struct>(arglist),
+          std::unique_ptr<t_paramlist>(paramlist),
           std::unique_ptr<t_struct>($9),
           std::unique_ptr<t_struct>(streamthrows),
           $3
@@ -1176,7 +1176,7 @@ Function:
       $$ = new t_function(
         $2,
         $2 ? "create" + $2->get_name() : "<interaction placeholder>",
-        std::make_unique<t_struct>(driver.program)
+        std::make_unique<t_paramlist>(driver.program)
       );
       $$->set_lineno(driver.scanner->get_lineno());
       $$->set_is_interaction_constructor();
@@ -1200,9 +1200,7 @@ ParamList:
 EmptyParamList:
     {
       driver.debug("EmptyParamList -> nil");
-      t_struct* paramlist = new t_struct(driver.program);
-      paramlist->set_paramlist(true);
-      $$ = paramlist;
+      $$ = new t_paramlist(driver.program);
     }
 
 Param:

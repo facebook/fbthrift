@@ -446,7 +446,7 @@ class json_experimental_function : public mstch_function {
     return json_quote_ascii(function_->get_doc());
   }
   mstch::node has_args() {
-    return !function_->get_arglist()->get_members().empty();
+    return !function_->get_paramlist()->get_members().empty();
   }
 };
 

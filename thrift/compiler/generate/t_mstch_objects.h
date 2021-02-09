@@ -1116,7 +1116,7 @@ class mstch_function : public mstch_base {
                 .empty();
   }
   mstch::node has_args() {
-    if (!function_->get_arglist()->get_members().empty()) {
+    if (!function_->get_paramlist()->get_members().empty()) {
       return std::string(", ");
     }
     return std::string();

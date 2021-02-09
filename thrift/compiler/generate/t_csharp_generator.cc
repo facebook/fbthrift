@@ -827,7 +827,7 @@ void t_csharp_generator::generate_service_helpers(t_service* tservice) {
   vector<t_function*>::iterator f_iter;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     generate_csharp_struct_definition(f_service_, ts, false, true);
     generate_function_helpers(*f_iter);
   }
@@ -892,7 +892,7 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
     scope_up(f_service_);
     indent(f_service_) << "send_" << funname << "(";
 
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
 
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
@@ -920,7 +920,7 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
     t_function send_function(
         void_type(),
         string("send_") + (*f_iter)->get_name(),
-        (*f_iter)->get_arglist()->clone_DO_NOT_USE());
+        t_struct::clone_DO_NOT_USE((*f_iter)->get_paramlist()));
 
     string argsname = (*f_iter)->get_name() + "_args";
 
@@ -951,8 +951,8 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_),
-          (*f_iter)->get_xceptions()->clone_DO_NOT_USE(),
+          std::make_unique<t_paramlist>(program_),
+          t_struct::clone_DO_NOT_USE((*f_iter)->get_xceptions()),
           nullptr);
       indent(f_service_) << "public " << function_signature(&recv_function)
                          << endl;
@@ -1166,7 +1166,7 @@ void t_csharp_generator::generate_process_function(
     indent_up();
   }
 
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1713,7 +1713,7 @@ string t_csharp_generator::function_signature(
     string prefix) {
   t_type* ttype = tfunction->get_returntype();
   return type_name(ttype) + " " + prefix + tfunction->get_name() + "(" +
-      argument_list(tfunction->get_arglist()) + ")";
+      argument_list(tfunction->get_paramlist()) + ")";
 }
 
 string t_csharp_generator::argument_list(t_struct* tstruct) {

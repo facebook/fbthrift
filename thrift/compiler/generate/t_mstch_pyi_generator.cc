@@ -273,7 +273,7 @@ void t_mstch_pyi_generator::add_container_types(
 
   for (const auto service : program.get_services()) {
     for (const auto function : service->get_functions()) {
-      for (const auto field : function->get_arglist()->get_members()) {
+      for (const auto field : function->get_paramlist()->get_members()) {
         auto arg_type = field->get_type();
         load_container_type(container_types, visited_names, arg_type);
       }

@@ -285,7 +285,7 @@ class t_d_generator : public t_oop_generator {
     indent_up();
     bool first_fn = true;
     for (fn_iter = functions.begin(); fn_iter != functions.end(); ++fn_iter) {
-      if ((*fn_iter)->get_arglist()->get_members().empty() &&
+      if ((*fn_iter)->get_paramlist()->get_members().empty() &&
           (*fn_iter)->get_xceptions()->get_members().empty() &&
           !(*fn_iter)->is_oneway()) {
         continue;
@@ -304,7 +304,8 @@ class t_d_generator : public t_oop_generator {
       indent(meta) << "[";
 
       bool first_param = true;
-      const vector<t_field*>& params = (*fn_iter)->get_arglist()->get_members();
+      const vector<t_field*>& params =
+          (*fn_iter)->get_paramlist()->get_members();
       vector<t_field*>::const_iterator p_iter;
       for (p_iter = params.begin(); p_iter != params.end(); ++p_iter) {
         if (first_param) {
@@ -536,7 +537,7 @@ class t_d_generator : public t_oop_generator {
     out << render_type_name(fn->get_returntype()) << " " << fn->get_name()
         << "(";
 
-    const vector<t_field*>& fields = fn->get_arglist()->get_members();
+    const vector<t_field*>& fields = fn->get_paramlist()->get_members();
     vector<t_field*>::const_iterator f_iter;
     bool first = true;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {

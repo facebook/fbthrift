@@ -1067,7 +1067,7 @@ void t_hs_generator::generate_service_helpers(t_service* tservice) {
   indent(f_service_) << nl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     generate_hs_struct_definition(f_service_, ts, false);
     generate_hs_function_helpers(*f_iter);
   }
@@ -1274,7 +1274,7 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
 
   // Generate client method implementations
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
@@ -1337,7 +1337,7 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
       t_function recv_function(
           (*f_iter)->get_returntype(),
           recv_fn_name,
-          std::make_unique<t_struct>(program_));
+          std::make_unique<t_paramlist>(program_));
 
       // Open function
       indent(f_client_) << recv_fn_name << " ip =" << nl;
@@ -1435,7 +1435,7 @@ void t_hs_generator::generate_service_server(t_service* tservice) {
 }
 
 static bool hasNoArguments(t_function* func) {
-  return (func->get_arglist()->get_members().empty());
+  return (func->get_paramlist()->get_members().empty());
 }
 
 static bool isIntegralType(t_base_type::t_base tbase) {
@@ -1586,7 +1586,7 @@ void t_hs_generator::generate_service_fuzzer(t_service* tservice) {
 
   map<string, t_type*> used_types;
   for (f_iter = functions.begin(); f_iter != functions_end; ++f_iter) {
-    const vector<t_field*>& fields = (*f_iter)->get_arglist()->get_members();
+    const vector<t_field*>& fields = (*f_iter)->get_paramlist()->get_members();
     vector<t_field*>::const_iterator fld_iter;
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
       auto type = (*fld_iter)->get_type();
@@ -1619,7 +1619,7 @@ void t_hs_generator::generate_service_fuzzer(t_service* tservice) {
     // function
     f_service_fuzzer_ << funname << "_fuzzer opts = do" << nl;
     indent_up();
-    const vector<t_field*>& fields = (*f_iter)->get_arglist()->get_members();
+    const vector<t_field*>& fields = (*f_iter)->get_paramlist()->get_members();
     vector<t_field*>::const_iterator fld_iter;
     int varNum = 1;
     // random data sources
@@ -1729,7 +1729,7 @@ void t_hs_generator::generate_process_function(
   string resultname = capitalize(tfunction->get_name()) + "_result";
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -2034,7 +2034,7 @@ string t_hs_generator::function_type(
     bool method) {
   string result = "";
 
-  const vector<t_field*>& fields = tfunc->get_arglist()->get_members();
+  const vector<t_field*>& fields = tfunc->get_paramlist()->get_members();
   for (auto& f_iter : fields) {
     if (f_iter->get_req() == t_field::T_OPTIONAL ||
         ((t_type*)f_iter->get_type())->is_xception())

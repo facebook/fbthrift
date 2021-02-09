@@ -562,7 +562,7 @@ class mstch_py3_program : public mstch_program {
   void visit_types_for_services() {
     for (const auto service : program_->get_services()) {
       for (const auto function : service->get_functions()) {
-        for (const auto field : function->get_arglist()->get_members()) {
+        for (const auto field : function->get_paramlist()->get_members()) {
           visit_type(field->get_type());
         }
         for (const auto field :

@@ -1561,7 +1561,7 @@ std::unique_ptr<t_const_value> t_hack_generator::function_to_tmeta(
       std::make_unique<t_const_value>("return_type"),
       type_to_tmeta(function->get_returntype()));
 
-  vector<t_field*> arguments_fields = function->get_arglist()->get_members();
+  vector<t_field*> arguments_fields = function->get_paramlist()->get_members();
   if (!arguments_fields.empty()) {
     auto arguments = std::make_unique<t_const_value>();
     arguments->set_list();
@@ -3285,7 +3285,7 @@ void t_hack_generator::generate_process_function(
   indent_up();
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -3400,7 +3400,7 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << "// HELPER FUNCTIONS AND STRUCTURES\n\n";
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     string name = ts->get_name();
     ts->set_name(service_name_ + "_" + name);
     generate_php_struct_definition(f_service_, ts, false, false, true);
@@ -3549,7 +3549,7 @@ void t_hack_generator::generate_php_docstring(
   int start_pos = get_indent_size() + tfunction->get_name().size() + 1;
 
   // Parameters.
-  generate_php_docstring_args(out, start_pos, tfunction->get_arglist());
+  generate_php_docstring_args(out, start_pos, tfunction->get_paramlist());
   out << ")";
 
   // Exceptions.
@@ -3940,7 +3940,7 @@ void t_hack_generator::generate_service_interface(
       indent(f_service_)
           << "public function " << funname << "("
           << argument_list(
-                 (*f_iter)->get_arglist(), head_parameters, "", true, true)
+                 (*f_iter)->get_paramlist(), head_parameters, "", true, true)
           << "): " << return_typehint << ";\n";
     } else {
       indent(f_service_) << "public function "
@@ -3979,14 +3979,15 @@ void t_hack_generator::_generate_service_client(
   vector<t_function*> functions = get_supported_functions(tservice);
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
 
     if (nullable_everything_) {
       indent(out) << "protected function sendImpl_" << funname << "("
-                  << argument_list((*f_iter)->get_arglist(), "", "", true, true)
+                  << argument_list(
+                         (*f_iter)->get_paramlist(), "", "", true, true)
                   << "): int {\n";
     } else {
       indent(out) << "protected function sendImpl_"
@@ -4125,7 +4126,7 @@ void t_hack_generator::_generate_recvImpl(
   t_function recv_function(
       tfunction->get_returntype(),
       string("recvImpl_") + tfunction->get_name(),
-      std::make_unique<t_struct>(program_));
+      std::make_unique<t_paramlist>(program_));
   string return_typehint = type_to_typehint(tfunction->get_returntype());
   // Open function
   out << "\n";
@@ -4415,7 +4416,7 @@ void t_hack_generator::_generate_service_client_children(
     out << indent() << "/* send and recv functions */\n";
 
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-      t_struct* arg_struct = (*f_iter)->get_arglist();
+      t_struct* arg_struct = (*f_iter)->get_paramlist();
       const vector<t_field*>& fields = arg_struct->get_members();
       vector<t_field*>::const_iterator fld_iter;
       string funname = (*f_iter)->get_name();
@@ -4438,7 +4439,7 @@ void t_hack_generator::_generate_service_client_children(
         t_function recv_function(
             (*f_iter)->get_returntype(),
             string("recv_") + (*f_iter)->get_name(),
-            std::make_unique<t_struct>(program_));
+            std::make_unique<t_paramlist>(program_));
         // Open function
         if (arrprov_skip_frames_) {
           indent(out) << "<<__ProvenanceSkipFrame>>\n";
@@ -4468,7 +4469,7 @@ void t_hack_generator::_generate_service_client_child_fn(
     t_function* tfunction,
     bool rpc_options,
     bool legacy_arrays) {
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator fld_iter;
   string funname =
@@ -4485,7 +4486,7 @@ void t_hack_generator::_generate_service_client_child_fn(
   }
   indent(out) << "public async function " << funname << "("
               << argument_list(
-                     tfunction->get_arglist(),
+                     tfunction->get_paramlist(),
                      head_parameters,
                      "",
                      true,
@@ -4649,7 +4650,7 @@ string t_hack_generator::function_signature(
 
   return tfunction->get_name() + "(" +
       argument_list(
-             tfunction->get_arglist(),
+             tfunction->get_paramlist(),
              more_head_parameters,
              more_tail_parameters) +
       "): " + typehint;

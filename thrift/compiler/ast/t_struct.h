@@ -53,26 +53,6 @@ class t_struct : public t_type {
     is_union_ = is_union;
   }
 
-  t_field* get_stream_field() {
-    return stream_field_;
-  }
-  void set_stream_field(std::unique_ptr<t_field> stream_field) {
-    assert(is_paramlist_);
-    assert(!stream_field_);
-    assert(stream_field->get_type()->is_streamresponse());
-
-    stream_field_ = stream_field.get();
-    members_raw_.insert(members_raw_.begin(), stream_field_);
-    members_.insert(members_.begin(), std::move(stream_field));
-    members_in_id_order_.insert(members_in_id_order_.begin(), stream_field_);
-  }
-
-  void set_paramlist(bool is_paramlist) {
-    is_paramlist_ = is_paramlist;
-    assert(!is_xception_);
-    assert(!is_union_);
-  }
-
   bool append(std::unique_ptr<t_field> elem) {
     if (!members_.empty()) {
       members_.back()->set_next(elem.get());
@@ -109,10 +89,6 @@ class t_struct : public t_type {
 
   const std::vector<t_field*>& get_sorted_members() const {
     return members_in_id_order_;
-  }
-
-  bool is_paramlist() const {
-    return is_paramlist_;
   }
 
   const t_field* get_field_named(const char* name) const {
@@ -192,42 +168,35 @@ class t_struct : public t_type {
    * never be cloned. This method exists to grand-father specific uses in the
    * target language generators. Do NOT add any new usage of this method.
    */
-  std::unique_ptr<t_struct> clone_DO_NOT_USE() {
-    auto clone = std::make_unique<t_struct>(program_, name_);
-
-    clone->set_xception(is_xception_);
-    clone->set_union(is_union_);
-    clone->set_paramlist(is_paramlist_);
-
-    clone->set_view_parent(view_parent_);
-
-    for (auto const& field : members_) {
-      if (field.get() != stream_field_) {
-        clone->append(field->clone_DO_NOT_USE());
-      }
-    }
-
-    if (!!stream_field_) {
-      clone->set_stream_field(stream_field_->clone_DO_NOT_USE());
-    }
-
-    return clone;
+  template <typename S>
+  static std::unique_ptr<S> clone_DO_NOT_USE(const S* sval) {
+    return std::unique_ptr<S>(sval->clone_DO_NOT_USE());
   }
 
- private:
+ protected:
   std::vector<std::unique_ptr<t_field>> members_;
   std::vector<t_field*> members_raw_;
   std::vector<t_field*> members_in_id_order_;
-  // only if is_paramlist_
-  // not stored as a normal member, as it's not serialized like a normal
-  // field into the pargs struct
-  t_field* stream_field_ = nullptr;
 
   bool is_xception_{false};
   bool is_union_{false};
-  bool is_paramlist_{false};
 
   const t_struct* view_parent_ = nullptr;
+
+  virtual t_struct* clone_DO_NOT_USE() const {
+    auto clone = std::make_unique<t_struct>(program_, name_);
+    cloneStruct(clone.get());
+    return clone.release();
+  }
+
+  void cloneStruct(t_struct* clone) const {
+    clone->set_xception(is_xception_);
+    clone->set_union(is_union_);
+    clone->set_view_parent(view_parent_);
+    for (auto const& field : members_) {
+      clone->append(field->clone_DO_NOT_USE());
+    }
+  }
 };
 
 } // namespace compiler

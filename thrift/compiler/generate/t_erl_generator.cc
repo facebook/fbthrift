@@ -675,7 +675,7 @@ void t_erl_generator::generate_function_info(
   string name_atom = "'" + tfunction->get_name() + "'";
 
   t_struct* xs = tfunction->get_xceptions();
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
 
   // function_info(Function, params_type):
   indent(f_service_) << "function_info(" << name_atom << ", params_type) ->"
@@ -735,7 +735,7 @@ string t_erl_generator::function_signature(
     t_function* tfunction,
     string prefix) {
   return prefix + tfunction->get_name() + "(This" +
-      capitalize(argument_list(tfunction->get_arglist())) + ")";
+      capitalize(argument_list(tfunction->get_paramlist())) + ")";
 }
 
 /**
@@ -756,7 +756,7 @@ void t_erl_generator::export_types_function(
   export_types_string(
       prefix + tfunction->get_name(),
       1 // This
-          + ((tfunction->get_arglist())->get_members()).size());
+          + ((tfunction->get_paramlist())->get_members()).size());
 }
 
 void t_erl_generator::export_types_string(string name, int num) {
@@ -772,7 +772,7 @@ void t_erl_generator::export_function(t_function* tfunction, string prefix) {
   export_string(
       prefix + tfunction->get_name(),
       1 // This
-          + ((tfunction->get_arglist())->get_members()).size());
+          + ((tfunction->get_paramlist())->get_members()).size());
 }
 
 /**

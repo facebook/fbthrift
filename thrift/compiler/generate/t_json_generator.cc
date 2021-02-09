@@ -673,7 +673,7 @@ void t_json_generator::generate_service(t_service* tservice) {
     indent(f_out_) << "}," << endl;
 
     indent(f_out_) << "\"args\" : [";
-    vector<t_field*> args = (*fn_iter)->get_arglist()->get_members();
+    vector<t_field*> args = (*fn_iter)->get_paramlist()->get_members();
     vector<t_field*>::iterator arg_iter = args.begin();
     if (arg_iter != args.end()) {
       f_out_ << endl;

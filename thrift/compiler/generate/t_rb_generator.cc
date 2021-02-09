@@ -734,7 +734,7 @@ void t_rb_generator::generate_service_helpers(t_service* tservice) {
   indent(f_service_) << "# HELPER FUNCTIONS AND STRUCTURES" << endl << endl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     generate_rb_struct(f_service_, ts);
     generate_rb_function_helpers(*f_iter);
   }
@@ -784,7 +784,7 @@ void t_rb_generator::generate_service_client(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
@@ -839,7 +839,7 @@ void t_rb_generator::generate_service_client(t_service* tservice) {
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_));
+          std::make_unique<t_paramlist>(program_));
       // Open function
       f_service_ << endl
                  << indent() << "def " << function_signature(&recv_function)
@@ -954,7 +954,7 @@ void t_rb_generator::generate_process_function(
   }
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1017,7 +1017,7 @@ string t_rb_generator::function_signature(
     string prefix) {
   // TODO(mcslee): Nitpicky, no ',' if argument_list is empty
   return prefix + tfunction->get_name() + "(" +
-      argument_list(tfunction->get_arglist()) + ")";
+      argument_list(tfunction->get_paramlist()) + ")";
 }
 
 /**

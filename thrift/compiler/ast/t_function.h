@@ -19,6 +19,8 @@
 #include <string>
 
 #include <thrift/compiler/ast/t_named.h>
+#include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/ast/t_paramlist.h>
 #include <thrift/compiler/ast/t_sink.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
@@ -49,7 +51,7 @@ class t_function : public t_named {
    *
    * @param returntype       - The type of the value that will be returned
    * @param name             - The symbolic name of the function
-   * @param arglist          - The parameters that are passed to the functions
+   * @param paramlist        - The parameters that are passed to the functions
    * @param xceptions        - Declare the exceptions that function might throw
    * @param stream_xceptions - Exceptions to be sent via the stream
    * @param qualifier        - The qualifier of the function, if any.
@@ -57,13 +59,13 @@ class t_function : public t_named {
   t_function(
       t_type* returntype,
       std::string name,
-      std::unique_ptr<t_struct> arglist,
+      std::unique_ptr<t_paramlist> paramlist,
       std::unique_ptr<t_struct> xceptions = nullptr,
       std::unique_ptr<t_struct> stream_xceptions = nullptr,
       t_function_qualifier qualifier = t_function_qualifier::None)
       : t_named(std::move(name)),
         returntype_(returntype),
-        arglist_(std::move(arglist)),
+        paramlist_(std::move(paramlist)),
         xceptions_(std::move(xceptions)),
         stream_xceptions_(std::move(stream_xceptions)),
         qualifier_(qualifier) {
@@ -98,11 +100,11 @@ class t_function : public t_named {
   t_function(
       t_sink* returntype,
       std::string name,
-      std::unique_ptr<t_struct> arglist,
+      std::unique_ptr<t_paramlist> paramlist,
       std::unique_ptr<t_struct> xceptions)
       : t_named(std::move(name)),
         returntype_(returntype),
-        arglist_(std::move(arglist)),
+        paramlist_(std::move(paramlist)),
         xceptions_(std::move(xceptions)),
         sink_xceptions_(
             std::unique_ptr<t_struct>(returntype->get_sink_xceptions())),
@@ -128,8 +130,8 @@ class t_function : public t_named {
     return returntype_;
   }
 
-  t_struct* get_arglist() const {
-    return arglist_.get();
+  t_paramlist* get_paramlist() const {
+    return paramlist_.get();
   }
 
   t_struct* get_xceptions() const {
@@ -175,7 +177,7 @@ class t_function : public t_named {
 
  private:
   t_type* returntype_;
-  std::unique_ptr<t_struct> arglist_;
+  std::unique_ptr<t_paramlist> paramlist_;
   std::unique_ptr<t_struct> xceptions_;
   std::unique_ptr<t_struct> stream_xceptions_;
   std::unique_ptr<t_struct> sink_xceptions_;

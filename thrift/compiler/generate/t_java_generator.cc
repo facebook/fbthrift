@@ -2485,7 +2485,7 @@ void t_java_generator::generate_service_helpers(t_service* tservice) {
     if (!can_generate_method(*f_iter)) {
       continue;
     }
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     StructGenParams params;
     params.in_class = true;
     generate_java_struct_definition(f_service_, ts, params);
@@ -2573,7 +2573,7 @@ void t_java_generator::generate_service_client(t_service* tservice) {
                << indent() << "send_" << funname << "(";
 
     // Get the struct of function call params
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
 
     // Declare the function arguments
     const vector<t_field*>& fields = arg_struct->get_members();
@@ -2603,7 +2603,7 @@ void t_java_generator::generate_service_client(t_service* tservice) {
     t_function send_function(
         void_type(),
         string("send_") + (*f_iter)->get_name(),
-        (*f_iter)->get_arglist()->clone_DO_NOT_USE());
+        t_struct::clone_DO_NOT_USE((*f_iter)->get_paramlist()));
 
     string argsname = (*f_iter)->get_name() + "_args";
 
@@ -2648,8 +2648,8 @@ void t_java_generator::generate_service_client(t_service* tservice) {
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_),
-          (*f_iter)->get_xceptions()->clone_DO_NOT_USE(),
+          std::make_unique<t_paramlist>(program_),
+          t_struct::clone_DO_NOT_USE((*f_iter)->get_xceptions()),
           nullptr /* client exceptions */);
       // Open the recv function
       indent(f_service_) << "public " << function_signature(&recv_function)
@@ -2770,7 +2770,7 @@ void t_java_generator::generate_service_async_client(t_service* tservice) {
     }
     string funname = (*f_iter)->get_name();
     t_type* ret_type = (*f_iter)->get_returntype();
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     string funclassname = funname + "_call";
     const vector<t_field*>& fields = arg_struct->get_members();
     const std::vector<t_field*>& xceptions =
@@ -3121,7 +3121,7 @@ void t_java_generator::generate_process_function(
   }
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -3815,7 +3815,7 @@ string t_java_generator::function_signature(
     string prefix) {
   t_type* ttype = tfunction->get_returntype();
   std::string result = type_name(ttype) + " " + prefix + tfunction->get_name() +
-      "(" + argument_list(tfunction->get_arglist()) + ") throws ";
+      "(" + argument_list(tfunction->get_paramlist()) + ") throws ";
   t_struct* xs = tfunction->get_xceptions();
   const std::vector<t_field*>& xceptions = xs->get_members();
   vector<t_field*>::const_iterator x_iter;
@@ -3850,8 +3850,8 @@ string t_java_generator::async_function_call_arglist(
     bool /*use_base_method*/,
     bool include_types) {
   std::string arglist = "";
-  if (tfunc->get_arglist()->get_members().size() > 0) {
-    arglist = argument_list(tfunc->get_arglist(), include_types) + ", ";
+  if (tfunc->get_paramlist()->get_members().size() > 0) {
+    arglist = argument_list(tfunc->get_paramlist(), include_types) + ", ";
   }
 
   if (include_types) {
@@ -4021,7 +4021,7 @@ void t_java_generator::generate_java_doc(ofstream& out, t_function* tfunction) {
   if (tfunction->has_doc()) {
     stringstream ss;
     ss << tfunction->get_doc();
-    const vector<t_field*>& fields = tfunction->get_arglist()->get_members();
+    const vector<t_field*>& fields = tfunction->get_paramlist()->get_members();
     vector<t_field*>::const_iterator p_iter;
     for (p_iter = fields.begin(); p_iter != fields.end(); ++p_iter) {
       t_field* p = *p_iter;

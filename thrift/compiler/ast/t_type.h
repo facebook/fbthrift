@@ -160,6 +160,9 @@ class t_type : public t_named {
   virtual bool is_binary() const {
     return false;
   }
+  virtual bool is_paramlist() const {
+    return false;
+  }
 
   bool is_string_or_binary() const {
     return is_string() || is_binary();

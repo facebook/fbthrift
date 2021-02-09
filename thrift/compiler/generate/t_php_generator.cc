@@ -1872,7 +1872,7 @@ void t_php_generator::generate_process_function(
   indent_up();
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -2009,7 +2009,7 @@ void t_php_generator::generate_service_helpers(t_service* tservice) {
   f_service_ << "// HELPER FUNCTIONS AND STRUCTURES" << endl << endl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     string name = ts->get_name();
     ts->set_name(service_name_ + "_" + name);
     generate_php_struct_definition(f_service_, ts, false);
@@ -2106,7 +2106,7 @@ void t_php_generator::generate_php_docstring(
   int start_pos = get_indent_size() + tfunction->get_name().size() + 1;
 
   // Parameters.
-  generate_php_docstring_args(out, start_pos, tfunction->get_arglist());
+  generate_php_docstring_args(out, start_pos, tfunction->get_paramlist());
   out << ")";
 
   // Exceptions.
@@ -2225,7 +2225,7 @@ void t_php_generator::generate_service_rest(t_service* tservice, bool mangle) {
     indent(f_service_) << "public function " << (*f_iter)->get_name()
                        << "($request) {" << endl;
     indent_up();
-    const vector<t_field*>& args = (*f_iter)->get_arglist()->get_members();
+    const vector<t_field*>& args = (*f_iter)->get_paramlist()->get_members();
     vector<t_field*>::const_iterator a_iter;
     for (a_iter = args.begin(); a_iter != args.end(); ++a_iter) {
       t_type* atype = (*a_iter)->get_type()->get_true_type();
@@ -2258,7 +2258,7 @@ void t_php_generator::generate_service_rest(t_service* tservice, bool mangle) {
       }
     }
     f_service_ << indent() << "return $this->impl_->" << (*f_iter)->get_name()
-               << "(" << argument_list((*f_iter)->get_arglist()) << ");"
+               << "(" << argument_list((*f_iter)->get_paramlist()) << ");"
                << endl;
     indent_down();
     indent(f_service_) << "}" << endl << endl;
@@ -2377,7 +2377,7 @@ void t_php_generator::_generate_service_client(
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
@@ -2532,7 +2532,7 @@ void t_php_generator::_generate_service_client(
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_));
+          std::make_unique<t_paramlist>(program_));
       // Open function
       out << endl
           << indent() << "public function "
@@ -3368,7 +3368,7 @@ string t_php_generator::function_signature(
     string prefix,
     string moreparameters) {
   return prefix + tfunction->get_name() + "(" +
-      argument_list(tfunction->get_arglist(), moreparameters) + ")";
+      argument_list(tfunction->get_paramlist(), moreparameters) + ")";
 }
 
 /**

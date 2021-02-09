@@ -864,7 +864,7 @@ void t_perl_generator::generate_process_function(
   }
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -934,7 +934,7 @@ void t_perl_generator::generate_service_helpers(t_service* tservice) {
   f_service_ << "# HELPER FUNCTIONS AND STRUCTURES" << endl << endl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     string name = ts->get_name();
     ts->set_name(service_name_ + "_" + name);
     generate_perl_struct_definition(f_service_, ts, false);
@@ -1041,7 +1041,7 @@ void t_perl_generator::generate_service_rest(t_service* tservice) {
 
     f_service_ << indent() << "my ($self, $request) = @_;" << endl << endl;
 
-    const vector<t_field*>& args = (*f_iter)->get_arglist()->get_members();
+    const vector<t_field*>& args = (*f_iter)->get_paramlist()->get_members();
     vector<t_field*>::const_iterator a_iter;
     for (a_iter = args.begin(); a_iter != args.end(); ++a_iter) {
       string req = "$request->{'" + (*a_iter)->get_name() + "'}";
@@ -1049,7 +1049,7 @@ void t_perl_generator::generate_service_rest(t_service* tservice) {
                  << ") ? " << req << " : undef;" << endl;
     }
     f_service_ << indent() << "return $self->{impl}->" << (*f_iter)->get_name()
-               << "(" << argument_list((*f_iter)->get_arglist()) << ");"
+               << "(" << argument_list((*f_iter)->get_paramlist()) << ");"
                << endl;
     indent_down();
     indent(f_service_) << "}" << endl << endl;
@@ -1106,7 +1106,7 @@ void t_perl_generator::generate_service_client(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
@@ -1177,7 +1177,7 @@ void t_perl_generator::generate_service_client(t_service* tservice) {
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_));
+          std::make_unique<t_paramlist>(program_));
       // Open function
       f_service_ << endl
                  << "sub " << function_signature(&recv_function) << endl;
@@ -1710,7 +1710,7 @@ string t_perl_generator::function_signature(
   str += "  my $self = shift;\n";
 
   // Need to create perl function arg inputs
-  const vector<t_field*>& fields = tfunction->get_arglist()->get_members();
+  const vector<t_field*>& fields = tfunction->get_paramlist()->get_members();
   vector<t_field*>::const_iterator f_iter;
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {

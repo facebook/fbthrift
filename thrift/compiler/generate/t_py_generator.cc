@@ -2074,7 +2074,7 @@ void t_py_generator::generate_service_helpers(t_service* tservice) {
   f_service_ << "# HELPER FUNCTIONS AND STRUCTURES" << endl << endl;
 
   for (auto f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     generate_py_struct_definition(f_service_, ts, false);
     generate_py_thrift_spec(f_service_, ts, false);
     generate_py_function_helpers(*f_iter);
@@ -2158,7 +2158,7 @@ void t_py_generator::generate_service_interface(
         f_service_ << indent() << "fut.set_result(self."
                    << (*f_iter)->get_name() << "(";
         const vector<t_field*>& fields =
-            (*f_iter)->get_arglist()->get_members();
+            (*f_iter)->get_paramlist()->get_members();
         for (auto it = fields.begin(); it != fields.end(); ++it) {
           f_service_ << rename_reserved_keywords((*it)->get_name()) << ",";
         }
@@ -2244,7 +2244,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
   const auto& functions = get_functions(tservice);
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = rename_reserved_keywords((*f_iter)->get_name());
@@ -2331,7 +2331,7 @@ void t_py_generator::generate_service_client(t_service* tservice) {
         t_function recv_function(
             (*f_iter)->get_returntype(),
             string("recv_") + (*f_iter)->get_name(),
-            std::make_unique<t_struct>(program_));
+            std::make_unique<t_paramlist>(program_));
         f_service_ << indent() << "def " << function_signature(&recv_function)
                    << ":" << endl;
       }
@@ -2502,7 +2502,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
       }
 
       f_remote << "[";
-      const vector<t_field*>& args = fn->get_arglist()->get_members();
+      const vector<t_field*>& args = fn->get_paramlist()->get_members();
       bool first = true;
       for (vector<t_field*>::const_iterator it = args.begin(); it != args.end();
            ++it) {
@@ -2737,7 +2737,7 @@ void t_py_generator::generate_process_function(
   }
 
   if (gen_asyncio_) {
-    t_struct* arg_struct = tfunction->get_arglist();
+    t_struct* arg_struct = tfunction->get_paramlist();
     const std::vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator f_iter;
 
@@ -2798,7 +2798,7 @@ void t_py_generator::generate_process_function(
     indent_up();
 
     // Generate the function call
-    t_struct* arg_struct = tfunction->get_arglist();
+    t_struct* arg_struct = tfunction->get_paramlist();
     const std::vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator f_iter;
 
@@ -3316,7 +3316,7 @@ void t_py_generator::generate_python_docstring(
     ofstream& out,
     t_function* tfunction) {
   generate_python_docstring(
-      out, tfunction, tfunction->get_arglist(), "Parameters");
+      out, tfunction, tfunction->get_paramlist(), "Parameters");
 }
 
 /**
@@ -3411,7 +3411,7 @@ string t_py_generator::function_signature(
     string prefix) {
   // TODO(mcslee): Nitpicky, no ',' if argument_list is empty
   return prefix + rename_reserved_keywords(tfunction->get_name()) + "(self, " +
-      argument_list(tfunction->get_arglist()) + ")";
+      argument_list(tfunction->get_paramlist()) + ")";
 }
 
 /**
@@ -3431,7 +3431,7 @@ string t_py_generator::function_signature_if(
   if (with_context) {
     signature += "handler_ctx, ";
   }
-  signature += argument_list(tfunction->get_arglist()) + ")";
+  signature += argument_list(tfunction->get_paramlist()) + ")";
   return signature;
 }
 

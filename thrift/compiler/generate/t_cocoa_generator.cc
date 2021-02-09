@@ -1738,7 +1738,7 @@ void t_cocoa_generator::generate_cocoa_service_helpers(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     generate_cocoa_struct_interface(f_impl_, ts, false);
     generate_cocoa_struct_implementation(f_impl_, ts, false, false);
     generate_function_helpers(*f_iter);
@@ -1913,7 +1913,7 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
     t_function send_function(
         void_type(),
         string("send_") + (*f_iter)->get_name(),
-        (*f_iter)->get_arglist()->clone_DO_NOT_USE());
+        t_struct::clone_DO_NOT_USE((*f_iter)->get_paramlist()));
 
     string argsname = (*f_iter)->get_name() + "_args";
 
@@ -1931,7 +1931,7 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
         << "\"];" << endl;
 
     // write out function parameters
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
@@ -1969,8 +1969,8 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_),
-          (*f_iter)->get_xceptions()->clone_DO_NOT_USE(),
+          std::make_unique<t_paramlist>(program_),
+          t_struct::clone_DO_NOT_USE((*f_iter)->get_xceptions()),
           nullptr);
       // Open function
       indent(out) << "- " << function_signature(&recv_function) << endl;
@@ -2214,7 +2214,7 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(
     }
     out << "[mService " << funname;
     // supplying arguments
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     bool first = true;
@@ -3191,7 +3191,7 @@ string t_cocoa_generator::declare_property(t_field* tfield) {
 string t_cocoa_generator::function_signature(t_function* tfunction) {
   t_type* ttype = tfunction->get_returntype();
   std::string result = "(" + type_name(ttype) + ") " + tfunction->get_name() +
-      argument_list(tfunction->get_arglist());
+      argument_list(tfunction->get_paramlist());
   return result;
 }
 

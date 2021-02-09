@@ -884,7 +884,7 @@ string t_st_generator::read_val(t_type* t) {
 void t_st_generator::generate_send_method(t_function* function) {
   string funname = function->get_name();
   string signature = function_signature(function);
-  t_struct* arg_struct = function->get_arglist();
+  t_struct* arg_struct = function->get_paramlist();
   const vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator fld_iter;
 
@@ -958,7 +958,7 @@ void t_st_generator::generate_recv_method(t_function* function) {
 
 string t_st_generator::function_types_comment(t_function* fn) {
   std::ostringstream out;
-  const vector<t_field*>& fields = fn->get_arglist()->get_members();
+  const vector<t_field*>& fields = fn->get_paramlist()->get_members();
   vector<t_field*>::const_iterator f_iter;
 
   out << "\"";
@@ -1047,7 +1047,7 @@ string t_st_generator::sanitize(string s) {
  */
 string t_st_generator::function_signature(t_function* tfunction) {
   return tfunction->get_name() +
-      capitalize(argument_list(tfunction->get_arglist()));
+      capitalize(argument_list(tfunction->get_paramlist()));
 }
 
 /**

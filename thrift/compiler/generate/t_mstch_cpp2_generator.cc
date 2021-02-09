@@ -1432,7 +1432,7 @@ class mstch_cpp2_program : public mstch_program {
       for (const auto* f : service->get_functions()) {
         unique_names.emplace(
             get_fatal_string_short_id(f->get_name()), f->get_name());
-        for (const auto* p : f->get_arglist()->get_members()) {
+        for (const auto* p : f->get_paramlist()->get_members()) {
           unique_names.emplace(
               get_fatal_string_short_id(p->get_name()), p->get_name());
         }
@@ -2029,7 +2029,7 @@ bool service_method_validator::visit(t_service* service) {
         cpp2::is_stack_arguments(options_, *func)) {
       // when cpp.coroutine and stack_arguments are both on, return failure if
       // this function has complex types (including string and binary).
-      auto args = func->get_arglist()->get_members();
+      auto args = func->get_paramlist()->get_members();
       bool ok = std::all_of(args.begin(), args.end(), [](auto arg) {
         auto type = arg->get_type()->get_true_type();
         return type->is_base_type() && !type->is_string_or_binary();

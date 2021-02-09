@@ -595,7 +595,7 @@ void t_html_generator::generate_service(t_service* tservice) {
     bool first = true;
     f_out_ << " " << fn_name << "(";
     offset += fn_name.size() + 2;
-    vector<t_field*> args = (*fn_iter)->get_arglist()->get_members();
+    vector<t_field*> args = (*fn_iter)->get_paramlist()->get_members();
     vector<t_field*>::iterator arg_iter = args.begin();
     if (arg_iter != args.end()) {
       for (; arg_iter != args.end(); arg_iter++) {

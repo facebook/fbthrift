@@ -563,7 +563,7 @@ mstch::node mstch_function::sink_final_response_exceptions() {
 }
 
 mstch::node mstch_function::arg_list() {
-  return generate_fields(function_->get_arglist()->get_members());
+  return generate_fields(function_->get_paramlist()->get_members());
 }
 
 mstch::node mstch_function::returns_stream() {

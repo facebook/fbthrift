@@ -349,7 +349,7 @@ class mstch_rust_program : public mstch_program {
     }
     for (auto service : program_->get_services()) {
       for (auto function : service->get_functions()) {
-        for (auto arg : function->get_arglist()->get_members()) {
+        for (auto arg : function->get_paramlist()->get_members()) {
           f(arg->get_type());
         }
         f(function->get_returntype());
@@ -576,7 +576,7 @@ class mstch_rust_function : public mstch_function {
     return generate_fields(unique_exceptions);
   }
   mstch::node rust_args_by_name() {
-    std::vector<t_field*> args = function_->get_arglist()->get_members();
+    std::vector<t_field*> args = function_->get_paramlist()->get_members();
     std::sort(args.begin(), args.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });

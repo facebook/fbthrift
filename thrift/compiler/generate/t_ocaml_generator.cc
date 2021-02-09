@@ -755,7 +755,7 @@ void t_ocaml_generator::generate_service_helpers(t_service* tservice) {
   indent(f_service_) << "(* HELPER FUNCTIONS AND STRUCTURES *)" << endl << endl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* ts = (*f_iter)->get_arglist();
+    t_struct* ts = (*f_iter)->get_paramlist();
     generate_ocaml_struct_definition(f_service_, ts, false);
     generate_ocaml_function_helpers(*f_iter);
   }
@@ -844,7 +844,7 @@ void t_ocaml_generator::generate_service_client(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
+    t_struct* arg_struct = (*f_iter)->get_paramlist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
@@ -901,7 +901,7 @@ void t_ocaml_generator::generate_service_client(t_service* tservice) {
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          std::make_unique<t_struct>(program_));
+          std::make_unique<t_paramlist>(program_));
       // Open function
       f_service_ << indent() << "method private "
                  << function_signature(&recv_function) << " =" << endl;
@@ -1080,7 +1080,7 @@ void t_ocaml_generator::generate_process_function(
   string resultname = decapitalize(tfunction->get_name()) + "_result";
 
   // Generate the function call
-  t_struct* arg_struct = tfunction->get_arglist();
+  t_struct* arg_struct = tfunction->get_paramlist();
   const std::vector<t_field*>& fields = arg_struct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
@@ -1503,14 +1503,14 @@ string t_ocaml_generator::function_signature(
     t_function* tfunction,
     string prefix) {
   return prefix + decapitalize(tfunction->get_name()) + " " +
-      argument_list(tfunction->get_arglist());
+      argument_list(tfunction->get_paramlist());
 }
 
 string
 t_ocaml_generator::function_type(t_function* tfunc, bool method, bool options) {
   string result = "";
 
-  const vector<t_field*>& fields = tfunc->get_arglist()->get_members();
+  const vector<t_field*>& fields = tfunc->get_paramlist()->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     result += render_ocaml_type((*f_iter)->get_type());
