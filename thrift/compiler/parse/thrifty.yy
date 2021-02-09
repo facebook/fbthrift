@@ -54,6 +54,9 @@
 YY_DECL;
 #define yylex fbthrift_compiler_parse_lex
 
+namespace apache {
+namespace thrift {
+namespace compiler {
 namespace {
 
 /**
@@ -75,45 +78,13 @@ const int struct_is_struct = 0;
 const int struct_is_union = 1;
 const char* y_enum_name = nullptr;
 
-// Define an enum class for all types that have lineno embedded.
-enum class LineType {
-  kTypedef,
-  kEnum,
-  kEnumValue,
-  kConst,
-  kStruct,
-  kService,
-  kFunction,
-  kField,
-  kXception,
-  kAnnotationLastLineno,
-};
-
-// The LinenoStack class is used for keeping track of line number and automatic
-// type checking
-class LinenoStack {
- public:
-  void push(LineType type, int lineno) {
-    stack_.emplace(type, lineno);
-  }
-  int pop(LineType type) {
-    if (type != stack_.top().first) {
-      throw std::logic_error("Popping wrong type from line number stack");
-    }
-    int lineno = stack_.top().second;
-    stack_.pop();
-    return lineno;
-  }
- private:
-  std::stack<std::pair<LineType, int>> stack_;
-};
-LinenoStack lineno_stack;
+// Assume ownership of a pointer.
+template <typename T>
+std::unique_ptr<T> own(T*ptr) {
+  return std::unique_ptr<T>(ptr);
+}
 
 } // namespace
-
-namespace apache {
-namespace thrift {
-namespace compiler {
 
 t_annotation* const_struct_to_annotation(
     parsing_driver& driver,
@@ -557,7 +528,7 @@ TypeDefinition:
 Typedef:
   StructuredAnnotations tok_typedef
     {
-      lineno_stack.push(LineType::kTypedef, driver.scanner->get_lineno());
+      driver.start_node(LineType::Typedef);
     }
   FieldType Identifier TypeAnnotations
     {
@@ -565,16 +536,7 @@ Typedef:
         "Identifier TypeAnnotations");
       t_typedef *td = new t_typedef(driver.program, $4, $5, driver.scope_cache);
       $$ = td;
-      $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
-      if ($6) {
-        $$->annotations_ = std::move($6->annotations_);
-        $$->annotation_objects_ = std::move($6->annotation_objects_);
-        delete $6;
-      }
-      if ($1) {
-        $$->structured_annotations_ = std::move($1->structured_annotations_);
-        delete $1;
-      }
+      driver.finish_node($$, LineType::Typedef, own($6), own($1));
     }
 
 CommaOrSemicolon:
@@ -596,7 +558,7 @@ CommaOrSemicolonOptional:
 Enum:
   StructuredAnnotations tok_enum
     {
-      lineno_stack.push(LineType::kEnum, driver.scanner->get_lineno());
+      driver.start_node(LineType::Enum);
     }
   Identifier
     {
@@ -607,17 +569,7 @@ Enum:
     {
       driver.debug("Enum => StructuredAnnotations tok_enum Identifier { EnumDefList } TypeAnnotations");
       $$ = $7;
-      $$->set_name($4);
-      $$->set_lineno(lineno_stack.pop(LineType::kEnum));
-      if ($9) {
-        $$->annotations_ = std::move($9->annotations_);
-        $$->annotation_objects_ = std::move($9->annotation_objects_);
-        delete $9;
-      }
-      if ($1) {
-        $$->structured_annotations_ = std::move($1->structured_annotations_);
-        delete $1;
-      }
+      driver.finish_node($$, LineType::Enum, $4, own($9), own($1));
       y_enum_name = nullptr;
     }
 
@@ -713,23 +665,14 @@ EnumValue:
 Const:
   StructuredAnnotations tok_const
     {
-      lineno_stack.push(LineType::kConst, driver.scanner->get_lineno());
+      driver.start_node(LineType::Const);
     }
   FieldType Identifier "=" ConstValue TypeAnnotations CommaOrSemicolonOptional
     {
       driver.debug("StructuredAnnotations Const => tok_const FieldType Identifier = ConstValue");
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = new t_const(driver.program, $4, $5, std::unique_ptr<t_const_value>($7));
-        $$->set_lineno(lineno_stack.pop(LineType::kConst));
-        if ($8) {
-          $$->annotations_ = $8->annotations_;
-          $$->annotation_objects_ = $8->annotation_objects_;
-          delete $8;
-        }
-        if ($1) {
-          $$->structured_annotations_ = $1->structured_annotations_;
-          delete $1;
-        }
+        driver.finish_node($$, LineType::Const, own($8), own($1));
         driver.validate_const_type($$);
         driver.scope_cache->add_constant(driver.program->get_name() + "." + $5, $$);
       } else {
@@ -939,7 +882,7 @@ StructHead:
 Struct:
   StructuredAnnotations StructHead
     {
-      lineno_stack.push(LineType::kStruct, driver.scanner->get_lineno());
+      driver.start_node(LineType::Struct);
     }
   Identifier "{" FieldList "}" TypeAnnotations
     {
@@ -947,43 +890,22 @@ Struct:
         "{ FieldList } TypeAnnotations");
       $$ = $6;
       $$->set_union($2 == struct_is_union);
-      $$->set_name($4);
-      $$->set_lineno(lineno_stack.pop(LineType::kStruct));
-      if ($8) {
-        $$->annotations_ = std::move($8->annotations_);
-        $$->annotation_objects_ = std::move($8->annotation_objects_);
-        $$->annotation_last_lineno_ = $8->annotation_last_lineno_;
-        delete $8;
-      }
-      if ($1) {
-        $$->structured_annotations_ = std::move($1->structured_annotations_);
-        delete $1;
-      }
+      driver.finish_node($$, LineType::Struct, $4, own($8), own($1));
       y_field_val = -1;
     }
 
 Xception:
   StructuredAnnotations tok_xception
     {
-      lineno_stack.push(LineType::kXception, driver.scanner->get_lineno());
+      driver.start_node(LineType::Xception);
     }
   Identifier "{" FieldList "}" TypeAnnotations
     {
       driver.debug("Xception => StructuredAnnotations tok_xception "
         "Identifier { FieldList } TypeAnnotations");
       $$ = $6;
-      $$->set_name($4);
       $$->set_xception(true);
-      $$->set_lineno(lineno_stack.pop(LineType::kXception));
-      if ($8) {
-        $$->annotations_ = std::move($8->annotations_);
-        $$->annotation_objects_ = std::move($8->annotation_objects_);
-        delete $8;
-      }
-      if ($1) {
-        $$->structured_annotations_ = std::move($1->structured_annotations_);
-        delete $1;
-      }
+      driver.finish_node($$, LineType::Xception, $4, own($8), own($1));
 
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
@@ -1019,7 +941,7 @@ Xception:
 Service:
   StructuredAnnotations tok_service
     {
-      lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
+      driver.start_node(LineType::Service);
     }
   Identifier Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
     {
@@ -1027,18 +949,8 @@ Service:
         "Identifier Extends { FlagArgs FunctionList UnflagArgs } "
         "FunctionAnnotations");
       $$ = $8;
-      $$->set_name($4);
       $$->set_extends($5);
-      $$->set_lineno(lineno_stack.pop(LineType::kService));
-      if ($11) {
-        $$->annotations_ = std::move($11->annotations_);
-        $$->annotation_objects_ = std::move($11->annotation_objects_);
-        delete $11;
-      }
-      if ($1) {
-        $$->structured_annotations_ = std::move($1->structured_annotations_);
-        delete $1;
-      }
+      driver.finish_node($$, LineType::Service, $4, own($11), own($1));
     }
 
 FlagArgs:
@@ -1072,17 +984,18 @@ Extends:
     }
 
 Interaction:
+  // TODO(afuller): Allow structured annotations.
   tok_interaction
     {
-      lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
+      driver.start_node(LineType::Service);
     }
   Identifier "{" FlagArgs FunctionList UnflagArgs "}" TypeAnnotations
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = $6;
-      $$->set_name($3);
       $$->set_is_interaction();
-      $$->set_lineno(lineno_stack.pop(LineType::kService));
+      driver.finish_node($$, LineType::Service, $3, own($9), nullptr);
+
       for (auto* func : $$->get_functions()) {
         func->set_is_interaction_member();
         if (func->has_annotation("thread")) {
@@ -1090,26 +1003,15 @@ Interaction:
             "thread='eb'. Use process_in_event_base on the interaction instead.");
         }
       }
-
-      if ($9) {
-        bool eb_or_serial = false;
-        for (const auto& it : $9->annotations_) {
-          if (it.first == "process_in_event_base") {
-            for (auto* func : $$->get_functions()) {
-              func->annotations_["thread"] = "eb";
-            }
-            if (std::exchange(eb_or_serial, true)) {
-              driver.failure("EB interactions are already serial");
-            }
-          } else if (it.first == "serial") {
-            $$->set_is_serial_interaction();
-            if (std::exchange(eb_or_serial, true)) {
-              driver.failure("EB interactions are already serial");
-            }
-          } else {
-            driver.failure("Unknown interaction annotation '%s'", it.first.c_str());
-          }
+      if ($$->has_annotation("process_in_event_base")) {
+        if ($$->has_annotation("serial")) {
+          driver.failure("EB interactions are already serial");
         }
+        for (auto* func : $$->get_functions()) {
+          func->annotations_["thread"] = "eb";
+        }
+      } else if ($$->has_annotation("serial")) {
+        $$->set_is_serial_interaction();
       }
     }
 
@@ -1263,45 +1165,36 @@ FieldList:
     }
 
 Field:
-  CaptureDocText StructuredAnnotations FieldIdentifier FieldRequiredness FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
+  CaptureDocText StructuredAnnotations FieldIdentifier
+    {
+      driver.start_node(LineType::Field);
+    }
+  FieldRequiredness FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
       driver.debug("Field => CaptureDocText FieldIdentifier FieldRequiredness "
         "FieldType Identifier FieldValue TypeAnnotations "
         "StructuredAnnotations CommaOrSemicolonOptional");
       if ($3.auto_assigned) {
         driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts "
-          "or not be backwards compatible!", $6.c_str());
+          "or not be backwards compatible!", $7.c_str());
         if (driver.params.strict >= 192) {
           driver.failure("Implicit field keys are deprecated and not allowed with -strict");
         }
       }
 
-      $$ = new t_field($5, $6, $3.value);
-      $$->set_req($4);
-      $$->set_lineno(lineno_stack.pop(LineType::kField));
-      if ($7) {
-        driver.validate_field_value($$, $7);
-        $$->set_value(std::unique_ptr<t_const_value>($7));
-      }
+      $$ = new t_field($6, $7, $3.value);
       if ($1) {
         $$->set_doc(std::string{*$1});
       }
+      $$->set_req($5);
       if ($8) {
-        for (const auto& it : $8->annotations_) {
-          if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
-            if ($4 != t_field::T_OPTIONAL) {
-              driver.warning(1, "`cpp.ref` field must be optional if it is recursive.");
-            }
-            break;
-          }
-        }
-        $$->annotations_ = std::move($8->annotations_);
-        $$->annotation_objects_ = std::move($8->annotation_objects_);
-        delete $8;
+        driver.validate_field_value($$, $8);
+        $$->set_value(std::unique_ptr<t_const_value>($8));
       }
-      if ($2) {
-        $$->structured_annotations_ = std::move($2->structured_annotations_);
-        delete $2;
+      driver.finish_node($$, LineType::Field, own($9), own($2));
+
+      if ($5 != t_field::T_OPTIONAL && $$->has_annotation({"cpp.ref", "cpp2.ref"})) {
+        driver.warning(1, "`cpp.ref` field must be optional if it is recursive.");
       }
     }
 
@@ -1340,13 +1233,11 @@ FieldIdentifier:
         $$.value = $1;
         $$.auto_assigned = false;
       }
-      lineno_stack.push(LineType::kField, driver.scanner->get_lineno());
     }
 |
     {
       $$.value = y_field_val--;
       $$.auto_assigned = true;
-      lineno_stack.push(LineType::kField, driver.scanner->get_lineno());
     }
 
 FieldRequiredness:
@@ -1667,13 +1558,12 @@ ListType:
 TypeAnnotations:
   "(" TypeAnnotationList CommaOrSemicolonOptional
     {
-      lineno_stack.push(LineType::kAnnotationLastLineno, driver.scanner->get_lineno());
+      $2->annotation_last_lineno_ = driver.scanner->get_lineno();
     }
   ")"
     {
       driver.debug("TypeAnnotations => ( TypeAnnotationList CommaOrSemicolonOptional)");
       $$ = $2;
-      $$->annotation_last_lineno_ = lineno_stack.pop(LineType::kAnnotationLastLineno);
     }
 | "(" ")"
     {

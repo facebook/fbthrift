@@ -554,6 +554,54 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
   return false;
 }
 
+// Populate the annotation on the given node.
+void parsing_driver::set_annotations(
+    t_annotated* node,
+    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_annotated> struct_annotations) {
+  if (annotations != nullptr) {
+    node->annotations_ = std::move(annotations->annotations_);
+    node->annotation_objects_ = std::move(annotations->annotation_objects_);
+    node->annotation_last_lineno_ = annotations->annotation_last_lineno_;
+  }
+  if (struct_annotations != nullptr) {
+    node->structured_annotations_ =
+        std::move(struct_annotations->structured_annotations_);
+  }
+}
+
+void parsing_driver::start_node(LineType lineType) {
+  lineno_stack_.emplace(lineType, scanner->get_lineno());
+}
+
+int parsing_driver::pop_node(LineType lineType) {
+  if (lineType != lineno_stack_.top().first) {
+    throw std::logic_error("Popping wrong type from line number stack");
+  }
+  int lineno = lineno_stack_.top().second;
+  lineno_stack_.pop();
+  return lineno;
+}
+
+void parsing_driver::finish_node(
+    t_annotated* node,
+    LineType lineType,
+    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_annotated> struct_annotations) {
+  node->set_lineno(pop_node(lineType));
+  set_annotations(node, std::move(annotations), std::move(struct_annotations));
+}
+void parsing_driver::finish_node(
+    t_named* node,
+    LineType lineType,
+    std::string name,
+    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_annotated> struct_annotations) {
+  node->set_name(std::move(name));
+  finish_node(
+      node, lineType, std::move(annotations), std::move(struct_annotations));
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

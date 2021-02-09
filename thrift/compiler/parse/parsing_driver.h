@@ -19,16 +19,18 @@
 #include <array>
 #include <memory>
 #include <set>
+#include <stack>
 #include <string>
 #include <system_error>
 #include <unordered_set>
 
 #include <boost/optional.hpp>
 
+#include "thrift/compiler/ast/t_annotated.h"
+#include "thrift/compiler/ast/t_named.h"
 #include "thrift/compiler/ast/t_program.h"
 #include "thrift/compiler/ast/t_program_bundle.h"
 #include "thrift/compiler/ast/t_scope.h"
-
 #include "thrift/compiler/parse/yy_scanner.h"
 
 /**
@@ -53,6 +55,19 @@ enum class diagnostic_level {
   WARNING = 2,
   VERBOSE = 3,
   DBG = 4,
+};
+
+// Define an enum class for all types that have lineno embedded.
+enum class LineType {
+  Typedef,
+  Enum,
+  EnumValue,
+  Const,
+  Struct,
+  Service,
+  Function,
+  Field,
+  Xception,
 };
 
 struct diagnostic_message {
@@ -214,7 +229,6 @@ class parsing_driver {
     if (!params.debug) {
       return;
     }
-
     auto message = construct_diagnostic_message(
         diagnostic_level::DBG, fmt, std::forward<Arg>(arg)...);
     diagnostic_messages_.push_back(std::move(message));
@@ -225,7 +239,6 @@ class parsing_driver {
     if (!params.verbose) {
       return;
     }
-
     auto message = construct_diagnostic_message(
         diagnostic_level::VERBOSE, fmt, std::forward<Arg>(arg)...);
     diagnostic_messages_.push_back(std::move(message));
@@ -243,15 +256,11 @@ class parsing_driver {
     if (params.warn < level) {
       return;
     }
-
     auto message = construct_diagnostic_message(
         diagnostic_level::WARNING, fmt, std::forward<Arg>(arg)...);
     diagnostic_messages_.push_back(std::move(message));
   }
 
-  // clang-format off
-  // TODO: `clang-format` incorrectly indents the function after a [[noreturn]]
-  // function for 4 extra spaces.
   template <typename... Arg>
   [[noreturn]] void failure(const char* fmt, Arg&&... arg) {
     auto msg = construct_diagnostic_message(
@@ -261,7 +270,6 @@ class parsing_driver {
   }
 
   [[noreturn]] void end_parsing();
-  // clang-format on
 
   /**
    * Gets the directory path of a filename
@@ -318,6 +326,30 @@ class parsing_driver {
   // and returns false iff not.
   bool require_experimental_feature(const char* feature);
 
+  /**
+   * Hands a pointer to be deleted when the parsing driver itself destructs.
+   */
+  template <typename T>
+  void delete_at_the_end(T* ptr) {
+    deleters_.push_back(deleter{ptr});
+  }
+
+  // Record the line number for the start of the node.
+  void start_node(LineType lineType);
+
+  // Configures the node and set the starting line number.
+  void finish_node(
+      t_annotated* node,
+      LineType lineType,
+      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_annotated> struct_annotations);
+  void finish_node(
+      t_named* node,
+      LineType lineType,
+      std::string name,
+      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_annotated> struct_annotations);
+
  private:
   class deleter {
    public:
@@ -351,29 +383,28 @@ class parsing_driver {
     void (*delete_)(const void*);
   };
 
-  std::vector<deleter> deleters_;
-
- public:
-  /**
-   * Hands a pointer to be deleted when the parsing driver itself destructs.
-   */
-  template <typename T>
-  void delete_at_the_end(T* ptr) {
-    deleters_.push_back(deleter{ptr});
-  }
-
- private:
   std::set<std::string> already_parsed_paths_;
   std::set<std::string> circular_deps_;
 
   std::unique_ptr<yy::parser> parser_;
 
+  std::vector<deleter> deleters_;
+  std::stack<std::pair<LineType, int>> lineno_stack_;
   std::vector<diagnostic_message> diagnostic_messages_;
 
   /**
    * Parse a single .thrift file. The file to parse is stored in params.program.
    */
   void parse_file();
+
+  // Populate the annotation on the given node.
+  static void set_annotations(
+      t_annotated* node,
+      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_annotated> struct_annotations);
+
+  // Returns the starting line number.
+  int pop_node(LineType lineType);
 
   template <typename... Arg>
   diagnostic_message construct_diagnostic_message(
