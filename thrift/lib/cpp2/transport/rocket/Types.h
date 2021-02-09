@@ -100,7 +100,9 @@ class Payload {
 
   Payload clone() const {
     if (!hasData()) {
-      return Payload();
+      Payload p;
+      p.buffer_ = std::make_unique<folly::IOBuf>();
+      return p;
     }
     return makeCombined(buffer_->clone(), metadataSize_);
   }
