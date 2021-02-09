@@ -178,6 +178,10 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_function_helpers(
       t_service* tservice,
       t_function* tfunction);
+  void generate_php_interaction_function_helpers(
+      t_service* tservice,
+      t_service* interaction,
+      t_function* tfunction);
 
   void generate_php_union_enum(std::ofstream& out, t_struct* tstruct);
   void generate_php_union_methods(std::ofstream& out, t_struct* tstruct);
@@ -220,6 +224,7 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_service(t_service* tservice, bool mangle);
   void generate_service_helpers(t_service* tservice, bool mangle);
+  void generate_service_interactions(t_service* tservice, bool mangle);
   void generate_service_interface(
       t_service* tservice,
       bool mangle,
@@ -339,6 +344,13 @@ class t_hack_generator : public t_oop_generator {
       std::string more_tail_parameters = "",
       bool typehints = true,
       bool force_nullable = false);
+  std::string generate_rpc_function_name(
+      t_service* tservice,
+      t_function* tfunction) const;
+  std::string generate_function_helper_name(
+      t_service* tservice,
+      t_function* tfunction,
+      bool is_args);
   std::string type_to_cast(t_type* ttype);
   std::string type_to_enum(t_type* ttype);
   void generate_php_docstring(ofstream& out, t_node* tdoc);
@@ -516,6 +528,17 @@ class t_hack_generator : public t_oop_generator {
       }
     }
     return funcs;
+  }
+
+  std::vector<t_service*> get_interactions(t_service* tservice) const {
+    std::vector<t_service*> interactions;
+    for (const auto& func : tservice->get_functions()) {
+      if (func->get_returntype()->is_service()) {
+        interactions.push_back(
+            dynamic_cast<t_service*>(func->get_returntype()));
+      }
+    }
+    return interactions;
   }
   /**
    * File streams
@@ -3132,6 +3155,7 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
   generate_service_interface(
       tservice, mangle, /*async*/ true, /*rpc_options*/ true, /*client*/ false);
   generate_service_client(tservice, mangle);
+  generate_service_interactions(tservice, mangle);
   if (phps_) {
     generate_service_processor(tservice, mangle, /*async*/ true);
     generate_service_processor(tservice, mangle, /*async*/ false);
@@ -3244,8 +3268,10 @@ void t_hack_generator::generate_process_function(
   indent_up();
 
   string service_name = hack_name(tservice);
-  string argsname = service_name + "_" + tfunction->get_name() + "_args";
-  string resultname = service_name + "_" + tfunction->get_name() + "_result";
+  string argsname =
+      generate_function_helper_name(tservice, tfunction, /*is_args*/ true);
+  string resultname =
+      generate_function_helper_name(tservice, tfunction, /*is_args*/ false);
   const string& fn_name = tfunction->get_name();
 
   f_service_ << indent()
@@ -3407,6 +3433,14 @@ void t_hack_generator::generate_service_helpers(
     generate_php_function_helpers(tservice, *f_iter);
   }
 
+  const vector<t_service*>& interactions = get_interactions(tservice);
+  for (const auto& interaction : interactions) {
+    for (const auto& function : get_supported_functions(interaction)) {
+      generate_php_interaction_function_helpers(
+          tservice, interaction, function);
+    }
+  }
+
   f_service_ << indent() << "class " << php_servicename_mangle(mangle, tservice)
              << "StaticMetadata implements \\IThriftServiceStaticMetadata {\n";
   indent_up();
@@ -3460,6 +3494,67 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << indent() << "}\n\n";
 }
 
+void t_hack_generator::generate_service_interactions(
+    t_service* tservice,
+    bool mangle) {
+  const std::vector<t_service*>& interactions = get_interactions(tservice);
+  if (interactions.empty()) {
+    return;
+  }
+
+  f_service_ << "// INTERACTION HANDLERS\n\n";
+
+  const string& service_name = tservice->get_name();
+  for (const auto& interaction : interactions) {
+    const string interaction_name = interaction->get_name();
+    interaction->set_name(service_name + "_" + interaction_name);
+    f_service_ << indent() << "class "
+               << php_servicename_mangle(mangle, interaction)
+               << " extends \\ThriftClientBase {\n";
+    interaction->set_name(interaction_name);
+    indent_up();
+
+    f_service_ << indent() << "private \\InteractionId $interactionId;\n\n";
+
+    f_service_ << indent() << "public function __construct("
+               << "\\TProtocol $input, "
+               << "?\\TProtocol $output = null, "
+               << "?\\IThriftMigrationAsyncChannel $channel = null) {\n";
+    indent_up();
+    f_service_ << indent()
+               << "parent::__construct($input, $output, $channel);\n";
+    f_service_ << indent() << "if ($this->channel_ is nonnull) {\n";
+    indent_up();
+    f_service_ << indent()
+               << "$this->interactionId = $this->channel_->createInteraction("
+               << render_string(interaction_name) << ");\n";
+    indent_down();
+    f_service_ << indent() << "} else {\n";
+    indent_up();
+    f_service_ << indent() << "throw new \\Exception("
+               << render_string(
+                      "The channel must be nonnull to create interactions.")
+               << ");\n";
+    indent_down();
+    f_service_ << indent() << "}\n";
+    indent_down();
+    f_service_ << indent() << "}\n\n";
+
+    // Generate interaction method implementations
+    for (const auto& function : get_supported_functions(interaction)) {
+      _generate_service_client_child_fn(
+          f_service_, interaction, function, /*rpc_options*/ true);
+      _generate_sendImpl(f_service_, interaction, function);
+      if (!function->is_oneway()) {
+        _generate_recvImpl(f_service_, interaction, function);
+      }
+    }
+
+    indent_down();
+    f_service_ << indent() << "}\n\n";
+  }
+}
+
 /**
  * Generates a struct and helpers for a function.
  *
@@ -3478,6 +3573,41 @@ void t_hack_generator::generate_php_function_helpers(
   if (!tfunction->is_oneway()) {
     t_struct result(
         program_, tservice_name + "_" + tfunction->get_name() + "_result");
+    auto success =
+        std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
+    if (!tfunction->get_returntype()->is_void()) {
+      result.append(std::move(success));
+    }
+
+    t_struct* xs = tfunction->get_xceptions();
+    const vector<t_field*>& fields = xs->get_members();
+    vector<t_field*>::const_iterator f_iter;
+    for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+      result.append((*f_iter)->clone_DO_NOT_USE());
+    }
+
+    generate_php_struct_definition(f_service_, &result, false, true);
+  }
+
+  ts->set_name(name);
+}
+
+/**
+ * Generates a struct and helpers for an interaction function
+ */
+void t_hack_generator::generate_php_interaction_function_helpers(
+    t_service* tservice,
+    t_service* interaction,
+    t_function* tfunction) {
+  t_struct* ts = tfunction->get_paramlist();
+  const string name = ts->get_name();
+  const string& prefix = tservice->get_name() + "_" + interaction->get_name();
+
+  ts->set_name(prefix + "_" + name);
+  generate_php_struct_definition(f_service_, ts, false, false, true);
+
+  if (!tfunction->is_oneway()) {
+    t_struct result(program_, prefix + "_" + tfunction->get_name() + "_result");
     auto success =
         std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
     if (!tfunction->get_returntype()->is_void()) {
@@ -3998,6 +4128,32 @@ void t_hack_generator::_generate_service_client(
     out << "\n";
   }
 
+  // Generate factory method for interactions
+  const std::vector<t_service*>& interactions = get_interactions(tservice);
+  if (!interactions.empty()) {
+    out << indent() << "/* interaction handlers factory methods */\n";
+    const string& service_name = tservice->get_name();
+    for (const auto& interaction : interactions) {
+      const string interaction_name = interaction->get_name();
+      interaction->set_name(service_name + "_" + interaction_name);
+      const string& handle_name = php_servicename_mangle(mangle, interaction);
+      interaction->set_name(interaction_name);
+
+      out << indent() << "public function create" << interaction_name << "(): ";
+      out << handle_name << " {\n";
+      indent_up();
+
+      out << indent() << "$interaction = new " << handle_name
+          << "($this->input_, $this->output_, $this->channel_);\n";
+      out << indent() << "$interaction->setAsyncHandler($this->asyncHandler_)"
+          << "->setEventHandler($this->eventHandler_);\n";
+      out << indent() << "return $interaction;\n";
+
+      indent_down();
+      out << indent() << "}\n\n";
+    }
+  }
+
   scope_down(out);
   out << "\n";
 
@@ -4013,9 +4169,10 @@ void t_hack_generator::_generate_recvImpl(
     ofstream& out,
     t_service* tservice,
     t_function* tfunction) {
-  std::string resultname =
-      hack_name(tservice) + "_" + tfunction->get_name() + "_result";
-  const string& rpc_function_name = tfunction->get_name();
+  const string& resultname =
+      generate_function_helper_name(tservice, tfunction, /*is_args*/ false);
+  const string& rpc_function_name =
+      generate_rpc_function_name(tservice, tfunction);
 
   t_function recv_function(
       tfunction->get_returntype(),
@@ -4180,7 +4337,8 @@ void t_hack_generator::_generate_sendImpl(
   t_struct* arg_struct = tfunction->get_paramlist();
   const vector<t_field*>& fields = arg_struct->get_members();
   string funname = tfunction->get_name();
-  const string& rpc_function_name = tfunction->get_name();
+  const string& rpc_function_name =
+      generate_rpc_function_name(tservice, tfunction);
 
   if (nullable_everything_) {
     indent(out) << "protected function sendImpl_" << funname << "("
@@ -4192,8 +4350,8 @@ void t_hack_generator::_generate_sendImpl(
   }
   indent_up();
 
-  std::string argsname =
-      hack_name(tservice) + "_" + tfunction->get_name() + "_args";
+  const string& argsname =
+      generate_function_helper_name(tservice, tfunction, /*is_args*/ true);
 
   out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
       << indent() << "$args = " << argsname;
@@ -4489,7 +4647,8 @@ void t_hack_generator::_generate_service_client_child_fn(
   vector<t_field*>::const_iterator fld_iter;
   string funname =
       tfunction->get_name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
-  const string& tservice_name = tservice->get_name();
+  const string& tservice_name =
+      (tservice->is_interaction() ? service_name_ : tservice->get_name());
   string return_typehint = type_to_typehint(tfunction->get_returntype());
   string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
   string rpc_options_param =
@@ -4509,8 +4668,18 @@ void t_hack_generator::_generate_service_client_child_fn(
               << "): Awaitable<" + return_typehint + "> {\n";
 
   indent_up();
+
+  if (tservice->is_interaction()) {
+    if (!rpc_options) {
+      throw std::runtime_error("Interaction methods require rpc_options");
+    }
+    indent(out) << rpc_options_param << " = " << rpc_options_param
+                << "->setInteractionId($this->interactionId);\n";
+  }
+
   indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
-              << "\", \"" << tfunction->get_name() << "\");\n";
+              << "\", \"" << generate_rpc_function_name(tservice, tfunction)
+              << "\");\n";
   indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->get_name()
               << "(";
 
@@ -4720,6 +4889,37 @@ string t_hack_generator::argument_list(
     result += more_tail_parameters;
   }
   return result;
+}
+
+/**
+ * Renders the function name to be used in RPC
+ */
+string t_hack_generator::generate_rpc_function_name(
+    t_service* tservice,
+    t_function* tfunction) const {
+  const string& prefix =
+      tservice->is_interaction() ? tservice->get_name() + "." : "";
+  return prefix + tfunction->get_name();
+}
+
+/**
+ * Generate function's helper structures name
+ * @param is_args defines the suffix
+ *    true  : _args
+ *    false : _result
+ */
+string t_hack_generator::generate_function_helper_name(
+    t_service* tservice,
+    t_function* tfunction,
+    bool is_args) {
+  string prefix = "";
+  if (tservice->is_interaction()) {
+    prefix = hack_name(service_name_, program_) + "_" + tservice->get_name();
+  } else {
+    prefix = hack_name(tservice);
+  }
+  const string& suffix = is_args ? "args" : "result";
+  return prefix + "_" + tfunction->get_name() + "_" + suffix;
 }
 
 /**
