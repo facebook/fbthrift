@@ -99,6 +99,16 @@ class ScopedServerInterfaceThread {
   }
 };
 
+/**
+ * Creates a AsyncClientT for a given handler, backed by an internal
+ * ScopedServerInterfaceThread.
+ * This is more convenient but offers less control than managing
+ * your own ScopedServerInterfaceThread.
+ */
+template <class AsyncClientT>
+std::shared_ptr<AsyncClientT> makeTestClient(
+    std::shared_ptr<AsyncProcessorFactory> apf,
+    ScopedServerInterfaceThread::FaultInjectionFunc injectFault = nullptr);
 } // namespace thrift
 } // namespace apache
 

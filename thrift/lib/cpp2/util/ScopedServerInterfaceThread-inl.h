@@ -113,6 +113,15 @@ class FaultInjectionChannel : public RequestChannel {
   RequestChannel::Ptr client_;
   ScopedServerInterfaceThread::FaultInjectionFunc injectFault_;
 };
+
+template <class AsyncClientT>
+struct TestClientRunner {
+  ScopedServerInterfaceThread runner;
+  std::unique_ptr<AsyncClientT> client;
+
+  explicit TestClientRunner(std::shared_ptr<AsyncProcessorFactory> apf)
+      : runner(std::move(apf)) {}
+};
 } // namespace detail
 
 template <class AsyncClientT>
@@ -162,6 +171,21 @@ ScopedServerInterfaceThread::newClientWithFaultInjection(
                     new folly::AsyncSocket(&eb, address)));
               }),
           std::move(injectFault))));
+}
+
+template <class AsyncClientT>
+std::shared_ptr<AsyncClientT> makeTestClient(
+    std::shared_ptr<AsyncProcessorFactory> apf,
+    ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
+  auto runner =
+      std::make_shared<detail::TestClientRunner<AsyncClientT>>(std::move(apf));
+  runner->client = injectFault
+      ? runner->runner.template newClientWithFaultInjection<AsyncClientT>(
+            std::move(injectFault), nullptr, RocketClientChannel::newChannel)
+      : runner->runner.template newClient<AsyncClientT>(
+            nullptr, RocketClientChannel::newChannel);
+  auto* client = runner->client.get();
+  return {std::move(runner), client};
 }
 
 } // namespace thrift
