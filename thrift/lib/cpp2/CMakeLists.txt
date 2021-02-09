@@ -91,6 +91,9 @@ bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
 add_library(
   rocketupgrade
 
+  GeneratedCodeHelper.cpp
+  server/RequestsRegistry.cpp
+  util/Checksum.cpp
   ${RocketUpgrade-cpp2-SOURCES}
 )
 add_dependencies(rocketupgrade RocketUpgrade-cpp2-target)
@@ -235,7 +238,7 @@ install(
 
 if (BUILD_SHARED_LIBS)
   set_target_properties(rpcmetadata thriftmetadata thriftfrozen2 thriftprotocol
-    thriftcpp2
+    rocketupgrade thriftcpp2
     PROPERTIES VERSION ${PROJECT_VERSION}
     )
 endif()
