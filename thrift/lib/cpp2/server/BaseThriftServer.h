@@ -150,7 +150,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   static constexpr int DEFAULT_LISTEN_BACKLOG = 1024;
 
   //! Prefix for pool thread names
-  ServerAttribute<std::string> poolThreadName_{""};
+  ServerAttributeDynamic<std::string> poolThreadName_{""};
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
@@ -159,45 +159,45 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<MonitoringServerInterface> monitoringServiceHandler_;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
-  ServerAttribute<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
+  ServerAttributeDynamic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
   //! Number of SSL handshake worker threads (may be set)
-  ServerAttribute<size_t> nSSLHandshakeWorkers_{0};
+  ServerAttributeDynamic<size_t> nSSLHandshakeWorkers_{0};
 
   //! Number of CPU worker threads
-  ServerAttribute<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
+  ServerAttributeDynamic<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
-  ServerAttribute<bool> enableCodel_{false};
+  ServerAttributeDynamic<bool> enableCodel_{false};
 
   //! Milliseconds we'll wait for data to appear (0 = infinity)
-  ServerAttribute<std::chrono::milliseconds> timeout_{DEFAULT_TIMEOUT};
+  ServerAttributeDynamic<std::chrono::milliseconds> timeout_{DEFAULT_TIMEOUT};
 
   /**
    * The time in milliseconds before an unperformed task expires
    * (0 == infinite)
    */
-  ServerAttribute<std::chrono::milliseconds> taskExpireTime_{
+  ServerAttributeDynamic<std::chrono::milliseconds> taskExpireTime_{
       DEFAULT_TASK_EXPIRE_TIME};
 
   /**
    * The time in milliseconds before a stream starves of having no request.
    * (0 == infinite)
    */
-  ServerAttribute<std::chrono::milliseconds> streamExpireTime_{
+  ServerAttributeDynamic<std::chrono::milliseconds> streamExpireTime_{
       DEFAULT_STREAM_EXPIRE_TIME};
 
   /**
    * The time we'll allow a task to wait on the queue and still perform it
    * (0 == infinite)
    */
-  ServerAttribute<std::chrono::milliseconds> queueTimeout_{
+  ServerAttributeDynamic<std::chrono::milliseconds> queueTimeout_{
       DEFAULT_QUEUE_TIMEOUT};
 
   /**
    * The time we'll allow a new connection socket to wait on the queue before
    * closing the connection. See `folly::AsyncServerSocket::setQueueTimeout`.
    */
-  ServerAttribute<std::chrono::nanoseconds> socketQueueTimeout_{
+  ServerAttributeDynamic<std::chrono::nanoseconds> socketQueueTimeout_{
       folly::observer::makeObserver(
           [timeoutMs =
                THRIFT_FLAG_OBSERVE(server_default_socket_queue_timeout_ms)]()
@@ -216,36 +216,37 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * implementation, and it may be further limited or even ignored on some
    * systems. See manpage for listen(2) for details.
    */
-  ServerAttribute<int> listenBacklog_{DEFAULT_LISTEN_BACKLOG};
+  ServerAttributeDynamic<int> listenBacklog_{DEFAULT_LISTEN_BACKLOG};
 
   /**
    * The maximum number of pending connections each io worker thread can hold.
    */
-  ServerAttribute<uint32_t> maxNumPendingConnectionsPerWorker_{
+  ServerAttributeDynamic<uint32_t> maxNumPendingConnectionsPerWorker_{
       T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER};
 
   // Max number of active connections
-  ServerAttribute<uint32_t> maxConnections_{0};
+  ServerAttributeDynamic<uint32_t> maxConnections_{0};
 
   // Max active requests
-  ServerAttribute<uint32_t> maxRequests_{
+  ServerAttributeDynamic<uint32_t> maxRequests_{
       concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE};
 
   // If it is set true, server will check and use client timeout header
-  ServerAttribute<bool> useClientTimeout_{true};
+  ServerAttributeDynamic<bool> useClientTimeout_{true};
 
   // Max response size allowed. This is the size of the serialized and
   // transformed response, headers not included. 0 (default) means no limit.
-  ServerAttribute<uint64_t> maxResponseSize_{0};
+  ServerAttributeDynamic<uint64_t> maxResponseSize_{0};
 
   // Admission strategy use for accepting new requests
-  ServerAttribute<std::shared_ptr<AdmissionStrategy>> admissionStrategy_;
+  ServerAttributeDynamic<std::shared_ptr<AdmissionStrategy>> admissionStrategy_;
 
   /**
    * The maximum memory usage (in bytes) by each request debug payload.
    * Payloads larger than this value will be simply dropped by instrumentation.
    */
-  ServerAttribute<uint64_t> maxDebugPayloadMemoryPerRequest_{0x1000000}; // 16MB
+  ServerAttributeDynamic<uint64_t> maxDebugPayloadMemoryPerRequest_{
+      0x1000000}; // 16MB
 
   /**
    * The maximum memory usage by each worker to keep track of debug payload.
@@ -253,18 +254,19 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * whether it's using memory beyond this value and evict payloads based on
    * its policies.
    */
-  ServerAttribute<uint64_t> maxDebugPayloadMemoryPerWorker_{0x1000000}; // 16MB
+  ServerAttributeDynamic<uint64_t> maxDebugPayloadMemoryPerWorker_{
+      0x1000000}; // 16MB
 
   /**
    * The maximum number of debug payloads to track after request has finished.
    */
-  ServerAttribute<uint16_t> maxFinishedDebugPayloadsPerWorker_{10};
+  ServerAttributeDynamic<uint16_t> maxFinishedDebugPayloadsPerWorker_{10};
 
   /**
    * Batch all writes withing given time interval.
    * (0 == disabled)
    */
-  ServerAttribute<std::chrono::milliseconds> writeBatchingInterval_{
+  ServerAttributeDynamic<std::chrono::milliseconds> writeBatchingInterval_{
       std::chrono::milliseconds::zero()};
 
   /**
@@ -272,15 +274,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Ignored if write batching interval is not set.
    * (0 == disabled)
    */
-  ServerAttribute<size_t> writeBatchingSize_{0};
+  ServerAttributeDynamic<size_t> writeBatchingSize_{0};
 
   ServerAttributeThreadLocal<folly::sorted_vector_set<std::string>>
       methodsBypassMaxRequestsLimit_{{}};
 
   Metadata metadata_;
 
-  ServerAttribute<int64_t> ingressMemoryLimit_{0};
-  ServerAttribute<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
+  ServerAttributeDynamic<int64_t> ingressMemoryLimit_{0};
+  ServerAttributeDynamic<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
       512 * 1024};
 
  protected:

@@ -20,8 +20,8 @@
 
 using namespace apache::thrift;
 
-TEST(ServerAttributeTest, baselineFirst) {
-  ServerAttribute<int> a{0};
+TEST(ServerAttributeDynamic, BaselineFirst) {
+  ServerAttributeDynamic<int> a{0};
   EXPECT_EQ(a.get(), 0);
 
   a.set(1, AttributeSource::BASELINE);
@@ -37,8 +37,8 @@ TEST(ServerAttributeTest, baselineFirst) {
   EXPECT_EQ(a.get(), 0);
 }
 
-TEST(ServerAttributeTest, overrideFirst) {
-  ServerAttribute<int> a{0};
+TEST(ServerAttributeDynamic, OverrideFirst) {
+  ServerAttributeDynamic<int> a{0};
   EXPECT_EQ(a.get(), 0);
 
   a.set(2, AttributeSource::OVERRIDE);
@@ -56,8 +56,8 @@ TEST(ServerAttributeTest, overrideFirst) {
   EXPECT_EQ(a.get(), 0);
 }
 
-TEST(ServerAttributeTest, stringBaselineFirst) {
-  ServerAttribute<std::string> a{"a"};
+TEST(ServerAttributeDynamic, StringBaselineFirst) {
+  ServerAttributeDynamic<std::string> a{"a"};
   EXPECT_EQ(a.get(), "a");
 
   a.set("b", AttributeSource::BASELINE);
@@ -73,8 +73,8 @@ TEST(ServerAttributeTest, stringBaselineFirst) {
   EXPECT_EQ(a.get(), "a");
 }
 
-TEST(ServerAttributeTest, stringOverrideFirst) {
-  ServerAttribute<std::string> a{"a"};
+TEST(ServerAttributeDynamic, StringOverrideFirst) {
+  ServerAttributeDynamic<std::string> a{"a"};
   EXPECT_EQ(a.get(), "a");
 
   a.set("c", AttributeSource::OVERRIDE);
@@ -92,7 +92,7 @@ TEST(ServerAttributeTest, stringOverrideFirst) {
   EXPECT_EQ(a.get(), "a");
 }
 
-TEST(ServerAttribute, Observable) {
+TEST(ServerAttributeDynamic, Observable) {
   folly::observer::SimpleObservable<std::string> defaultObservable{"default"};
   folly::observer::SimpleObservable<std::string> baselineObservable{"baseline"};
   folly::observer::SimpleObservable<std::string> overrideObservable{"override"};
@@ -127,7 +127,7 @@ TEST(ServerAttribute, Observable) {
   EXPECT_EQ(**observer, "default 2");
 }
 
-TEST(ServerAttribute, Atomic) {
+TEST(ServerAttributeDynamic, Atomic) {
   ServerAttributeAtomic<int> attr{42};
   auto observer = attr.getAtomicObserver();
   EXPECT_EQ(*observer, 42);
@@ -143,7 +143,7 @@ TEST(ServerAttribute, Atomic) {
   EXPECT_EQ(*observer, 24);
 }
 
-TEST(ServerAttribute, ThreadLocal) {
+TEST(ServerAttributeDynamic, ThreadLocal) {
   ServerAttributeThreadLocal<int> attr{42};
   auto observer = attr.getTLObserver();
   EXPECT_EQ(**observer, 42);
@@ -157,4 +157,29 @@ TEST(ServerAttribute, ThreadLocal) {
 
   attr.unset(AttributeSource::OVERRIDE);
   EXPECT_EQ(**observer, 24);
+}
+
+TEST(ServerAttributeStatic, Basic) {
+  ServerAttributeStatic<std::string> attr{"default"};
+  EXPECT_EQ(attr.get(), "default");
+
+  attr.set("baseline", AttributeSource::BASELINE);
+  EXPECT_EQ(attr.get(), "baseline");
+  attr.set("override", AttributeSource::OVERRIDE);
+  EXPECT_EQ(attr.get(), "override");
+
+  attr.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(attr.get(), "baseline");
+  attr.unset(AttributeSource::BASELINE);
+  EXPECT_EQ(attr.get(), "default");
+
+  attr.set("override", AttributeSource::OVERRIDE);
+  EXPECT_EQ(attr.get(), "override");
+  attr.set("baseline", AttributeSource::BASELINE);
+  EXPECT_EQ(attr.get(), "override");
+  attr.unset(AttributeSource::BASELINE);
+  EXPECT_EQ(attr.get(), "override");
+
+  attr.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(attr.get(), "default");
 }

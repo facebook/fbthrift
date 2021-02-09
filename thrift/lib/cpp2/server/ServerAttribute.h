@@ -17,6 +17,7 @@
 #pragma once
 
 #include <atomic>
+#include <functional>
 #include <mutex>
 #include <type_traits>
 
@@ -46,27 +47,39 @@ enum class AttributeSource : uint32_t {
 };
 
 /**
- * A thread-safe ServerAttribute which uses folly::observer internally but reads
- * are cached via `folly::observer::AtomicObserver`.
+ * A thread-safe, dynamic ServerAttribute which uses folly::observer internally
+ * but reads are cached via `folly::observer::AtomicObserver`.
  */
 template <typename T>
 struct ServerAttributeAtomic;
 
 /**
- * A thread-safe ServerAttribute which uses folly::observer internally but reads
- * are cached via `folly::observer::TLObserver`.
+ * A thread-safe, dynamic ServerAttribute which uses folly::observer internally
+ * but reads are cached via `folly::observer::TLObserver`.
  */
 template <typename T>
 struct ServerAttributeThreadLocal;
 
 /**
- * A thread-safe ServerAttribute of suitable type.
+ * A thread-safe, dynamic ServerAttribute of suitable type. Dynamic
+ * ServerAttribute's can change after the server has already begun serving.
  */
 template <typename T>
-using ServerAttribute = std::conditional_t<
+using ServerAttributeDynamic = std::conditional_t<
     sizeof(T) <= sizeof(std::uint64_t) && std::is_trivially_copyable<T>::value,
     ServerAttributeAtomic<T>,
     ServerAttributeThreadLocal<T>>;
+
+/**
+ * A static ServerAttribute without thread-safety. Static ServerAttribute's
+ * cannot change after the server has started. This is suitable for properties
+ * which are hard to change at runtime (such as number of threads in a
+ * thread-pool).
+ * These attributes should be set in the main thread before the server starts.
+ * As such, there is no need for synchronization.
+ */
+template <typename T>
+struct ServerAttributeStatic;
 
 namespace detail {
 
@@ -197,6 +210,37 @@ struct ServerAttributeThreadLocal
 
  private:
   mutable folly::DelayedInit<folly::observer::TLObserver<T>> tlObserver_;
+};
+
+template <typename T>
+struct ServerAttributeStatic {
+  explicit ServerAttributeStatic(T defaultValue)
+      : default_{std::move(defaultValue)}, merged_{default_} {}
+
+  void set(T value, AttributeSource source) {
+    rawValues_.choose(source) = value;
+    updateMergedValue();
+  }
+  void unset(AttributeSource source) {
+    rawValues_.choose(source) = folly::none;
+    updateMergedValue();
+  }
+
+  const T& get() const {
+    return merged_.get();
+  }
+
+ protected:
+  void updateMergedValue() {
+    auto& merged = apache::thrift::detail::mergeServerAttributeRawValues(
+        rawValues_.override_, rawValues_.baseline_, default_);
+    merged_ = std::cref(merged);
+  }
+
+  apache::thrift::detail::ServerAttributeRawValues<folly::Optional<T>>
+      rawValues_{folly::none, folly::none};
+  T default_;
+  std::reference_wrapper<const T> merged_;
 };
 
 } // namespace thrift
