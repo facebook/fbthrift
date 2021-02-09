@@ -150,7 +150,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   static constexpr int DEFAULT_LISTEN_BACKLOG = 1024;
 
   //! Prefix for pool thread names
-  ServerAttributeDynamic<std::string> poolThreadName_{""};
+  ServerAttributeStatic<std::string> poolThreadName_{""};
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
@@ -159,18 +159,18 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<MonitoringServerInterface> monitoringServiceHandler_;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
-  ServerAttributeDynamic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
+  ServerAttributeStatic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
   //! Number of SSL handshake worker threads (may be set)
-  ServerAttributeDynamic<size_t> nSSLHandshakeWorkers_{0};
+  ServerAttributeStatic<size_t> nSSLHandshakeWorkers_{0};
 
   //! Number of CPU worker threads
-  ServerAttributeDynamic<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
+  ServerAttributeStatic<size_t> nPoolThreads_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
   ServerAttributeDynamic<bool> enableCodel_{false};
 
   //! Milliseconds we'll wait for data to appear (0 = infinity)
-  ServerAttributeDynamic<std::chrono::milliseconds> timeout_{DEFAULT_TIMEOUT};
+  ServerAttributeStatic<std::chrono::milliseconds> timeout_{DEFAULT_TIMEOUT};
 
   /**
    * The time in milliseconds before an unperformed task expires
@@ -216,12 +216,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * implementation, and it may be further limited or even ignored on some
    * systems. See manpage for listen(2) for details.
    */
-  ServerAttributeDynamic<int> listenBacklog_{DEFAULT_LISTEN_BACKLOG};
+  ServerAttributeStatic<int> listenBacklog_{DEFAULT_LISTEN_BACKLOG};
 
   /**
    * The maximum number of pending connections each io worker thread can hold.
    */
-  ServerAttributeDynamic<uint32_t> maxNumPendingConnectionsPerWorker_{
+  ServerAttributeStatic<uint32_t> maxNumPendingConnectionsPerWorker_{
       T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER};
 
   // Max number of active connections
@@ -245,7 +245,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * The maximum memory usage (in bytes) by each request debug payload.
    * Payloads larger than this value will be simply dropped by instrumentation.
    */
-  ServerAttributeDynamic<uint64_t> maxDebugPayloadMemoryPerRequest_{
+  ServerAttributeStatic<uint64_t> maxDebugPayloadMemoryPerRequest_{
       0x1000000}; // 16MB
 
   /**
@@ -254,13 +254,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * whether it's using memory beyond this value and evict payloads based on
    * its policies.
    */
-  ServerAttributeDynamic<uint64_t> maxDebugPayloadMemoryPerWorker_{
+  ServerAttributeStatic<uint64_t> maxDebugPayloadMemoryPerWorker_{
       0x1000000}; // 16MB
 
   /**
    * The maximum number of debug payloads to track after request has finished.
    */
-  ServerAttributeDynamic<uint16_t> maxFinishedDebugPayloadsPerWorker_{10};
+  ServerAttributeStatic<uint16_t> maxFinishedDebugPayloadsPerWorker_{10};
 
   /**
    * Batch all writes withing given time interval.
@@ -276,7 +276,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttributeDynamic<size_t> writeBatchingSize_{0};
 
-  ServerAttributeThreadLocal<folly::sorted_vector_set<std::string>>
+  ServerAttributeStatic<folly::sorted_vector_set<std::string>>
       methodsBypassMaxRequestsLimit_{{}};
 
   Metadata metadata_;
@@ -350,6 +350,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Flag indicating whether it is safe to mutate the server config through its
   // setters.
   std::atomic<bool> configMutable_{true};
+
+  template <typename T>
+  void setStaticAttribute(
+      ServerAttributeStatic<T>& staticAttribute,
+      T&& value,
+      AttributeSource source) {
+    CHECK(configMutable());
+    staticAttribute.set(std::move(value), source);
+  }
 
   BaseThriftServer();
   ~BaseThriftServer() override {}
@@ -428,7 +437,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setCPUWorkerThreadName(
       const std::string& cpuWorkerThreadName,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    poolThreadName_.set(cpuWorkerThreadName, source);
+    setStaticAttribute(
+        poolThreadName_, std::string{cpuWorkerThreadName}, source);
   }
 
   /**
@@ -635,8 +645,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setMaxNumPendingConnectionsPerWorker(
       uint32_t num,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    maxNumPendingConnectionsPerWorker_.set(num, source);
+    setStaticAttribute(
+        maxNumPendingConnectionsPerWorker_, std::move(num), source);
   }
 
   /**
@@ -660,8 +670,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setIdleTimeout(
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    timeout_.set(timeout, source);
+    setStaticAttribute(timeout_, std::move(timeout), source);
   }
 
   /**
@@ -672,8 +681,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setNumIOWorkerThreads(
       size_t numIOWorkerThreads,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    nWorkers_.set(numIOWorkerThreads, source);
+    setStaticAttribute(nWorkers_, std::move(numIOWorkerThreads), source);
   }
 
   /**
@@ -718,10 +726,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setNumCPUWorkerThreads(
       size_t numCPUWorkerThreads,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
     CHECK(!threadManager_);
-
-    nPoolThreads_.set(numCPUWorkerThreads, source);
+    setStaticAttribute(nPoolThreads_, std::move(numCPUWorkerThreads), source);
   }
 
   /**
@@ -763,8 +769,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setNumSSLHandshakeWorkerThreads(
       size_t nSSLHandshakeThreads,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    nSSLHandshakeWorkers_.set(nSSLHandshakeThreads, source);
+    setStaticAttribute(
+        nSSLHandshakeWorkers_, std::move(nSSLHandshakeThreads), source);
   }
 
   /**
@@ -962,8 +968,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setListenBacklog(
       int listenBacklog,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    listenBacklog_.set(listenBacklog, source);
+    setStaticAttribute(listenBacklog_, std::move(listenBacklog), source);
   }
 
   /**
@@ -986,8 +991,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setMethodsBypassMaxRequestsLimit(
       const std::vector<std::string>& methods,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    methodsBypassMaxRequestsLimit_.set(
+    setStaticAttribute(
+        methodsBypassMaxRequestsLimit_,
         folly::sorted_vector_set<std::string>{methods.begin(), methods.end()},
         source);
   }
@@ -1085,8 +1090,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setMaxDebugPayloadMemoryPerRequest(
       uint64_t limit,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    maxDebugPayloadMemoryPerRequest_.set(limit, source);
+    setStaticAttribute(
+        maxDebugPayloadMemoryPerRequest_, std::move(limit), source);
   }
 
   /**
@@ -1104,8 +1109,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setMaxDebugPayloadMemoryPerWorker(
       uint64_t limit,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    maxDebugPayloadMemoryPerWorker_.set(limit, source);
+    setStaticAttribute(
+        maxDebugPayloadMemoryPerWorker_, std::move(limit), source);
   }
 
   /**
@@ -1123,8 +1128,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setMaxFinishedDebugPayloadsPerWorker(
       uint16_t limit,
       AttributeSource source = AttributeSource::OVERRIDE) {
-    CHECK(configMutable());
-    maxFinishedDebugPayloadsPerWorker_.set(limit, source);
+    setStaticAttribute(
+        maxFinishedDebugPayloadsPerWorker_, std::move(limit), source);
   }
 
   /**
