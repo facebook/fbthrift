@@ -168,7 +168,7 @@ struct TestFixedSizeString {
   3: map<Fixed8, Fixed2> (
     cpp.template = "apache::thrift::frozen::VectorAsHashMap",
   ) aMapToFreeze;
-  4: map<Fixed8, Fixed2> aMap;
+  4: map<Fixed8, Fixed2> (cpp.template = "std::unordered_map") aMap;
 }
 
 struct Empty {

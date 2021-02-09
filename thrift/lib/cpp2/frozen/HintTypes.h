@@ -20,6 +20,7 @@
 #include <utility>
 #include <vector>
 
+#include <thrift/lib/cpp2/frozen/FixedSizeStringHash.h>
 #include <thrift/lib/cpp2/frozen/Traits.h>
 
 namespace apache {
@@ -84,3 +85,15 @@ class FixedSizeString : public std::string {
 } // namespace thrift
 } // namespace apache
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsString, apache::thrift::frozen::VectorUnpacked)
+
+namespace std {
+template <size_t kSize>
+struct hash<apache::thrift::frozen::FixedSizeString<kSize>> {
+  size_t operator()(
+      const apache::thrift::frozen::FixedSizeString<kSize>& value) const {
+    return apache::thrift::frozen::FixedSizeStringHash<
+        kSize,
+        apache::thrift::frozen::FixedSizeString<kSize>>::hash(value);
+  }
+};
+} // namespace std

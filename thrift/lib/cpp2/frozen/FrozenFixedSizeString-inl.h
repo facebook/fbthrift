@@ -73,11 +73,11 @@ struct FixedSizeStringLayout : public LayoutBase {
   }
 
   static size_t hash(const T& value) {
-    return folly::hash::fnv64_buf(value.data(), value.size());
+    return FixedSizeStringHash<T::kFixedSize, T>::hash(value);
   }
 
   static size_t hash(const View& value) {
-    return folly::hash::fnv64_buf(value.begin(), value.size());
+    return FixedSizeStringHash<T::kFixedSize, View>::hash(value);
   }
 };
 
