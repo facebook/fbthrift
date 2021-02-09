@@ -128,6 +128,19 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     std::optional<std::string> languageFramework;
   };
 
+  /**
+   * Tag type for ServerAttributeStatic setters. Setters marked with this tag
+   * type should only be called before the server has started processing
+   * requests.
+   */
+  struct StaticAttributeTag {};
+  /**
+   * Tag type for ServerAttributeStatic setters. Setters marked with this tag
+   * type can be called even after the server has started processing requests.
+   * The corresponding value will be dynamically updated.
+   */
+  struct DynamicAttributeTag {};
+
  private:
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
@@ -436,7 +449,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setCPUWorkerThreadName(
       const std::string& cpuWorkerThreadName,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         poolThreadName_, std::string{cpuWorkerThreadName}, source);
   }
@@ -449,8 +463,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param poolThreadName thread name prefix
    */
-  inline void setPoolThreadName(const std::string& poolThreadName) {
-    setCPUWorkerThreadName(poolThreadName);
+  inline void setPoolThreadName(
+      const std::string& poolThreadName,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
+    setCPUWorkerThreadName(poolThreadName, source);
   }
 
   /**
@@ -507,7 +524,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMaxConnections(
       uint32_t maxConnections,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     maxConnections_.set(maxConnections, source);
   }
 
@@ -527,7 +545,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMaxRequests(
       uint32_t maxRequests,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     maxRequests_.set(maxRequests, source);
   }
 
@@ -537,7 +556,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   void setMaxResponseSize(
       uint64_t size,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     maxResponseSize_.set(size, source);
   }
 
@@ -547,7 +567,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   void setUseClientTimeout(
       bool useClientTimeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     useClientTimeout_.set(useClientTimeout, source);
   }
 
@@ -644,7 +665,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMaxNumPendingConnectionsPerWorker(
       uint32_t num,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         maxNumPendingConnectionsPerWorker_, std::move(num), source);
   }
@@ -669,7 +691,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setIdleTimeout(
       std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(timeout_, std::move(timeout), source);
   }
 
@@ -680,7 +703,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setNumIOWorkerThreads(
       size_t numIOWorkerThreads,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(nWorkers_, std::move(numIOWorkerThreads), source);
   }
 
@@ -690,8 +714,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param number of IO worker threads
    */
-  inline void setNWorkerThreads(size_t nWorkers) {
-    setNumIOWorkerThreads(nWorkers);
+  inline void setNWorkerThreads(
+      size_t nWorkers,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
+    setNumIOWorkerThreads(nWorkers, source);
   }
 
   /**
@@ -725,7 +752,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setNumCPUWorkerThreads(
       size_t numCPUWorkerThreads,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     CHECK(!threadManager_);
     setStaticAttribute(nPoolThreads_, std::move(numCPUWorkerThreads), source);
   }
@@ -739,7 +767,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   inline void setNPoolThreads(
       size_t nPoolThreads,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setNumCPUWorkerThreads(nPoolThreads, source);
   }
 
@@ -768,7 +797,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setNumSSLHandshakeWorkerThreads(
       size_t nSSLHandshakeThreads,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         nSSLHandshakeWorkers_, std::move(nSSLHandshakeThreads), source);
   }
@@ -786,7 +816,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setEnableCodel(
       bool enableCodel,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     enableCodel_.set(enableCodel, source);
   }
 
@@ -841,7 +872,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setTaskExpireTime(
       std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     taskExpireTime_.set(timeout, source);
   }
 
@@ -860,7 +892,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setStreamExpireTime(
       std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     streamExpireTime_.set(timeout, source);
   }
 
@@ -882,7 +915,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setQueueTimeout(
       std::chrono::milliseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     queueTimeout_.set(timeout, source);
   }
 
@@ -902,12 +936,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setSocketQueueTimeout(
       folly::observer::Observer<std::chrono::nanoseconds> timeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     socketQueueTimeout_.set(timeout, source);
   }
   void setSocketQueueTimeout(
       folly::Optional<std::chrono::nanoseconds> timeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     if (timeout) {
       socketQueueTimeout_.set(*timeout, source);
     } else {
@@ -916,7 +952,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
   void setSocketQueueTimeout(
       std::chrono::nanoseconds timeout,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     socketQueueTimeout_.set(timeout, source);
   }
 
@@ -967,7 +1004,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setListenBacklog(
       int listenBacklog,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(listenBacklog_, std::move(listenBacklog), source);
   }
 
@@ -990,7 +1028,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   void setMethodsBypassMaxRequestsLimit(
       const std::vector<std::string>& methods,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         methodsBypassMaxRequestsLimit_,
         folly::sorted_vector_set<std::string>{methods.begin(), methods.end()},
@@ -1066,7 +1105,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setAdmissionStrategy(
       std::shared_ptr<AdmissionStrategy> admissionStrategy,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     admissionStrategy_.set(std::move(admissionStrategy), source);
   }
 
@@ -1089,7 +1129,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMaxDebugPayloadMemoryPerRequest(
       uint64_t limit,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         maxDebugPayloadMemoryPerRequest_, std::move(limit), source);
   }
@@ -1108,7 +1149,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMaxDebugPayloadMemoryPerWorker(
       uint64_t limit,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         maxDebugPayloadMemoryPerWorker_, std::move(limit), source);
   }
@@ -1127,7 +1169,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMaxFinishedDebugPayloadsPerWorker(
       uint16_t limit,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         maxFinishedDebugPayloadsPerWorker_, std::move(limit), source);
   }
@@ -1179,7 +1222,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setIngressMemoryLimit(
       int64_t ingressMemoryLimit,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     ingressMemoryLimit_.set(ingressMemoryLimit, source);
   }
 
@@ -1197,7 +1241,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMinPayloadSizeToEnforceIngressMemoryLimit(
       size_t minPayloadSizeToEnforceIngressMemoryLimit,
-      AttributeSource source = AttributeSource::OVERRIDE) {
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
     minPayloadSizeToEnforceIngressMemoryLimit_.set(
         minPayloadSizeToEnforceIngressMemoryLimit, source);
   }
