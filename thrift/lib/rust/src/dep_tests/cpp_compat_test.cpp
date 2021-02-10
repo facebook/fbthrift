@@ -83,7 +83,8 @@ TEST(JsonTest, skipComplex) {
       "{\"opt_def\":\"thing\","
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\","
       "\"extra\":[1, {\"thing\":\"thing2\"}],"
-      "\"extra_map\":{\"thing\":null,\"thing2\":2}}");
+      "\"extra_map\":{\"thing\":null,\"thing2\":2},"
+      "\"extra_bool\":true}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct);
   ASSERT_EQ(stru, outStruct);
