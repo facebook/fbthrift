@@ -351,6 +351,7 @@ enum CommaState {
     Trailing,
     NonTrailing,
     NoComma,
+    End,
 }
 
 impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
@@ -404,17 +405,21 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     }
 
     // Attempts to eat a comma, returns
-    // Ok(Trailing) if this a "trailing" comma, where trailing means its
+    // Trailing if this a "trailing" comma, where trailing means its
     //   trailed by the `trailing` byte
-    // Ok(NonTrailing) if its read a comma that isn't trailing
-    // Ok(NoComma) if it correctly found NoComma
+    // NonTrailing if its read a comma that isn't trailing
+    // NoComma if it found no comma in the middle of the container
+    // End if it correctly found no comma at the end of the container
     fn possibly_read_comma(&mut self, trailing: u8) -> CommaState {
         match self.eat(b",") {
             Ok(()) => match self.peek() {
                 Some(b) if b == trailing => CommaState::Trailing,
                 _ => CommaState::NonTrailing,
             },
-            _ => CommaState::NoComma,
+            _ => match self.peek() {
+                Some(b) if b == trailing => CommaState::End,
+                _ => CommaState::NoComma,
+            },
         }
     }
 
@@ -617,6 +622,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     fn read_field_end(&mut self) -> Result<()> {
         match self.possibly_read_comma(b'}') {
             CommaState::Trailing => bail!("Found trailing comma"),
+            CommaState::NoComma => bail!("Missing comma between fields"),
             _ => {}
         }
         Ok(())
@@ -649,6 +655,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     fn read_map_value_end(&mut self) -> Result<()> {
         match self.possibly_read_comma(b'}') {
             CommaState::Trailing => bail!("Found trailing comma"),
+            CommaState::NoComma => bail!("Missing comma between fields"),
             _ => {}
         }
         Ok(())
@@ -676,6 +683,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     fn read_list_value_end(&mut self) -> Result<()> {
         match self.possibly_read_comma(b']') {
             CommaState::Trailing => bail!("Found trailing comma"),
+            CommaState::NoComma => bail!("Missing comma between fields"),
             _ => {}
         }
         Ok(())

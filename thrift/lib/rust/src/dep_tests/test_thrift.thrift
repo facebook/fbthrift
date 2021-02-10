@@ -74,3 +74,8 @@ struct Basic {
   // skip a field id
   3: bool b2;
 }
+
+struct Containers {
+  1: map<string, string> m;
+  2: list<string> l;
+}

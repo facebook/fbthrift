@@ -16,7 +16,9 @@
 
 use anyhow::Result;
 use fbthrift::simplejson_protocol::{deserialize, serialize};
-use fbthrift_test_if::{Basic, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne};
+use fbthrift_test_if::{
+    Basic, Containers, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne,
+};
 use std::collections::BTreeMap;
 use std::default::Default;
 
@@ -174,7 +176,7 @@ fn test_skip_complex() -> Result<()> {
     let input = r#"{
         "opt_def":"thing",
         "req_def":"IAMREQ",
-        "bin":"MTIzNA"
+        "bin":"MTIzNA",
         "extra":[1,{"thing":"thing2"}],
         "extra_map":{"thing":null,"thing2":2},
         "extra_bool":true
@@ -183,6 +185,61 @@ fn test_skip_complex() -> Result<()> {
     .replace("\n", "");
     // Make sure everything is skipped properly
     assert_eq!(sub, deserialize(input).unwrap());
+
+    Ok(())
+}
+
+#[test]
+fn test_need_commas() -> Result<()> {
+    // See the `needCommas` test in cpp_compat_test
+
+    // Note the missing commas
+
+    let input = r#"{
+        "num":1
+        "two":2
+    }"#
+    .replace(" ", "")
+    .replace("\n", "");
+    assert!(deserialize::<Small, _>(input).is_err());
+
+    // even when skipping
+    let input2 = r#"{
+        "num":1,
+        "two":2,
+        "extra_map":{"thing":null,"thing2":2}
+        "extra_bool":true
+    }"#
+    .replace(" ", "")
+    .replace("\n", "");
+    assert!(deserialize::<Small, _>(input2).is_err());
+
+    Ok(())
+}
+
+#[test]
+fn test_need_commas_containers() -> Result<()> {
+    // See the `needCommasContainers` test in cpp_compat_test
+
+    let goodinput = r#"{
+        "m":{"m1":"m1","m2":"m2"}
+    }"#;
+    // Note the missing comma
+    let badinput = r#"{
+        "m":{"m1":"m1""m2":"m2"}
+    }"#;
+    assert!(deserialize::<Containers, _>(goodinput).is_ok());
+    assert!(deserialize::<Containers, _>(badinput).is_err());
+
+    let goodinput2 = r#"{
+        "l":["l1","l2"]
+    }"#;
+    // Note the missing comma
+    let badinput2 = r#"{
+        "l":["l1""l2"]
+    }"#;
+    assert!(deserialize::<Containers, _>(goodinput2).is_ok());
+    assert!(deserialize::<Containers, _>(badinput2).is_err());
 
     Ok(())
 }

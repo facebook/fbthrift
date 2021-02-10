@@ -90,6 +90,53 @@ TEST(JsonTest, skipComplex) {
   ASSERT_EQ(stru, outStruct);
 }
 
+TEST(JsonTest, needCommas) {
+  azw::Small outStruct;
+
+  // Note the missing commas
+
+  std::string input(
+      "{\"num\":1"
+      "\"two\":2}");
+
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct),
+      std::exception);
+
+  // even when skipping
+  std::string input2(
+      "{\"num\":1,"
+      "\"two\":2,"
+      "\"extra_map\":{\"thing\":null,\"thing2\":2}"
+      "\"extra_bool\":true}");
+
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(input2, outStruct),
+      std::exception);
+}
+
+TEST(JsonTest, needCommasContainers) {
+  azw::Containers outStruct;
+
+  std::string goodinput("{\"m\":{\"m1\":\"m1\",\"m2\":\"m2\"}}");
+  // Note the missing comma
+  std::string badinput("{\"m\":{\"m1\":\"m1\"\"m2\":\"m2\"}}");
+  // we can serialize the good input
+  apache::thrift::SimpleJSONSerializer::deserialize(goodinput, outStruct);
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(badinput, outStruct),
+      std::exception);
+
+  std::string goodinput2("{\"l\":[\"l1\",\"l2\"]}");
+  // Note the missing comma
+  std::string badinput2("{\"l\":[\"l1\"\"l2\"]}");
+  // we can serialize the good input
+  apache::thrift::SimpleJSONSerializer::deserialize(goodinput2, outStruct);
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(badinput2, outStruct),
+      std::exception);
+}
+
 TEST(JsonTest, nullStuff) {
   azw::SubStruct stru;
   stru.bin_ref() = "1234";
