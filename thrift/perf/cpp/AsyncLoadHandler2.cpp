@@ -73,11 +73,11 @@ void AsyncLoadHandler2::async_eb_onewaySleep(
 void AsyncLoadHandler2::sync_burn(int64_t microseconds) {
   // Slightly different from thrift1, this happens in a
   // thread pool.
-  int64_t start = Util::currentTimeUsec();
-  int64_t end = start + microseconds;
-  int64_t now;
+  auto start = std::chrono::steady_clock::now();
+  auto end = start + std::chrono::microseconds(microseconds);
+  auto now = start;
   do {
-    now = Util::currentTimeUsec();
+    now = std::chrono::steady_clock::now();
   } while (now < end);
 }
 

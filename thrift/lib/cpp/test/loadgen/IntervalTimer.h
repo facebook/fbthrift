@@ -23,6 +23,9 @@
 
 #include <folly/portability/Unistd.h>
 
+#include <chrono>
+#include <thread>
+
 namespace apache {
 namespace thrift {
 namespace loadgen {
@@ -50,18 +53,20 @@ class IntervalTimer {
    *                      timer goes too fast in order to catch up to the
    *                      average rate.
    */
-  IntervalTimer(
+  explicit IntervalTimer(
       uint64_t intervalNsec,
-      uint64_t maxBacklog = 3 * concurrency::Util::US_PER_S)
+      std::chrono::microseconds maxBacklog = std::chrono::seconds{3})
       : numTimes_(0),
         intervalNsec_(intervalNsec),
-        intervalStart_(0),
+        intervalStart_(),
         maxBacklog_(maxBacklog) {}
 
   void setIntervalNsec(uint64_t interval) {
     concurrency::Guard guard(mutex_);
     intervalNsec_ = interval;
-    intervalStart_ = intervalStart_ ? concurrency::Util::currentTimeUsec() : 0;
+    if (intervalStart_ > std::chrono::steady_clock::time_point{}) {
+      intervalStart_ = std::chrono::steady_clock::now();
+    }
     numTimes_ = 0;
   }
 
@@ -74,7 +79,9 @@ class IntervalTimer {
       intervalNsec_ = 0;
     else
       intervalNsec_ = concurrency::Util::NS_PER_S / rate;
-    intervalStart_ = intervalStart_ ? concurrency::Util::currentTimeUsec() : 0;
+    if (intervalStart_ > std::chrono::steady_clock::time_point{}) {
+      intervalStart_ = std::chrono::steady_clock::now();
+    }
     numTimes_ = 0;
   }
 
@@ -85,7 +92,7 @@ class IntervalTimer {
    */
   void start() {
     concurrency::Guard guard(mutex_);
-    intervalStart_ = concurrency::Util::currentTimeUsec();
+    intervalStart_ = std::chrono::steady_clock::now();
   }
 
   /**
@@ -100,7 +107,7 @@ class IntervalTimer {
       return true;
     }
 
-    uint64_t waitUntil, now;
+    std::chrono::steady_clock::time_point waitUntil, now;
     {
       concurrency::Guard guard(mutex_);
 
@@ -110,9 +117,10 @@ class IntervalTimer {
       //
       // Update it to be when the next interval is supposed to start
       numTimes_++;
-      now = concurrency::Util::currentTimeUsec();
+      now = std::chrono::steady_clock::now();
 
-      waitUntil = intervalStart_ + (intervalNsec_ * numTimes_) / 1000;
+      waitUntil =
+          intervalStart_ + std::chrono::nanoseconds(intervalNsec_ * numTimes_);
 
       if (now > waitUntil) {
         // If we can't keep up with the requested rate, we'll keep falling
@@ -122,7 +130,7 @@ class IntervalTimer {
         // the current time.  This way, if the operations eventually do speed up
         // and we are able to meet the requested rate, we won't exceed it for
         // too long trying to catch up.
-        uint64_t delta = now - waitUntil;
+        auto delta = now - waitUntil;
         if (delta > maxBacklog_) {
           intervalStart_ = now;
           numTimes_ = 0;
@@ -132,15 +140,16 @@ class IntervalTimer {
       }
     }
 
-    usleep(waitUntil - now);
+    std::this_thread::sleep_for(waitUntil - now);
+
     return true;
   }
 
  private:
   uint64_t numTimes_;
   uint64_t intervalNsec_;
-  uint64_t intervalStart_;
-  uint64_t maxBacklog_;
+  std::chrono::steady_clock::time_point intervalStart_;
+  std::chrono::microseconds maxBacklog_;
   concurrency::Mutex mutex_;
 };
 

@@ -17,6 +17,8 @@
 #ifndef THRIFT_TEST_LOADGEN_QPSMONITOR_H_
 #define THRIFT_TEST_LOADGEN_QPSMONITOR_H_ 1
 
+#include <chrono>
+
 #include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
 #include <thrift/lib/cpp/test/loadgen/QpsScoreBoard.h>
 #include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
@@ -58,7 +60,7 @@ class QpsMonitor : public TerminalMonitor {
 
   void computeAggregate(QpsScoreBoard* scoreboard);
 
-  int64_t initialTime_;
+  std::chrono::steady_clock::time_point initialTime_;
   uint64_t initialSum_;
 
   bool printAllTime_;
