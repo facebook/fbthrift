@@ -27,6 +27,7 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"weeks")] = __Internship_FieldsSetter._set_field_0
         __fbthrift_inst._setters[__cstring_view(<const char*>"title")] = __Internship_FieldsSetter._set_field_1
         __fbthrift_inst._setters[__cstring_view(<const char*>"employer")] = __Internship_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"compensation")] = __Internship_FieldsSetter._set_field_3
         return __fbthrift_inst
 
     cdef void set_field(__Internship_FieldsSetter self, const char* name, object value) except *:
@@ -65,6 +66,16 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'field employer value: {repr(__fbthrift_value)} is not of the enum type { _module_types.Company }.')
         deref(self._struct_cpp_obj).employer_ref().assign(<_module_types.cCompany><int>__fbthrift_value)
         deref(self._struct_cpp_obj).__isset.employer = True
+
+    cdef void _set_field_3(self, __fbthrift_value) except *:
+        # for field compensation
+        if __fbthrift_value is None:
+            __reset_field[_module_types.cInternship](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(__fbthrift_value, (float, int)):
+            raise TypeError(f'compensation is not a { float !r}.')
+        deref(self._struct_cpp_obj).compensation_ref().assign(__fbthrift_value)
+        deref(self._struct_cpp_obj).__isset.compensation = True
 
 
 @__cython.auto_pickle(False)

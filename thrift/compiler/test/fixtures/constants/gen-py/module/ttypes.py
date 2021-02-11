@@ -85,6 +85,7 @@ class Internship:
    - weeks
    - title
    - employer
+   - compensation
   """
 
   thrift_spec = None
@@ -122,6 +123,11 @@ class Internship:
           self.employer = iprot.readI32()
         else:
           iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.DOUBLE:
+          self.compensation = iprot.readDouble()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -147,6 +153,10 @@ class Internship:
       oprot.writeFieldBegin('employer', TType.I32, 3)
       oprot.writeI32(self.employer)
       oprot.writeFieldEnd()
+    if self.compensation != None:
+      oprot.writeFieldBegin('compensation', TType.DOUBLE, 4)
+      oprot.writeDouble(self.compensation)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -165,6 +175,10 @@ class Internship:
       value = pprint.pformat(self.employer, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    employer=%s' % (value))
+    if self.compensation is not None:
+      value = pprint.pformat(self.compensation, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    compensation=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -978,6 +992,7 @@ Internship.thrift_spec = (
   (1, TType.I32, 'weeks', None, None, 0, ), # 1
   (2, TType.STRING, 'title', True, None, 2, ), # 2
   (3, TType.I32, 'employer', Company, None, 1, ), # 3
+  (4, TType.DOUBLE, 'compensation', None, None, 1, ), # 4
 )
 
 Internship.thrift_struct_annotations = {
@@ -985,10 +1000,11 @@ Internship.thrift_struct_annotations = {
 Internship.thrift_field_annotations = {
 }
 
-def Internship__init__(self, weeks=None, title=None, employer=None,):
+def Internship__init__(self, weeks=None, title=None, employer=None, compensation=None,):
   self.weeks = weeks
   self.title = title
   self.employer = employer
+  self.compensation = compensation
 
 Internship.__init__ = Internship__init__
 
@@ -996,6 +1012,7 @@ def Internship__setstate__(self, state):
   state.setdefault('weeks', None)
   state.setdefault('title', None)
   state.setdefault('employer', None)
+  state.setdefault('compensation', None)
   self.__dict__ = state
 
 Internship.__getstate__ = lambda self: self.__dict__.copy()

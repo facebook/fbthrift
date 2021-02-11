@@ -59,6 +59,12 @@ public class ModuleLogger {
           oprot.writeFieldEnd();
         }
       
+        if (mMap.containsKey(Module.Internship_compensation) && mMap.get(Module.Internship_compensation) != null) {
+          writeFieldBegin(oprot, Module.Internship_compensation);
+          oprot.writeDouble((double) mMap.get(Module.Internship_compensation));
+          oprot.writeFieldEnd();
+        }
+      
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         break;

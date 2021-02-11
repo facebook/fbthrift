@@ -135,12 +135,14 @@ void TccStructTraits<::cpp2::Internship>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg) :
+Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg, double compensation__arg) :
     weeks(std::move(weeks__arg)),
     title(std::move(title__arg)),
-    employer(std::move(employer__arg)) {
+    employer(std::move(employer__arg)),
+    compensation(std::move(compensation__arg)) {
   __isset.title = true;
   __isset.employer = true;
+  __isset.compensation = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 void Internship::__clear() {
@@ -148,6 +150,7 @@ void Internship::__clear() {
   weeks = 0;
   title = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   employer =  ::cpp2::Company::FACEBOOK;
+  compensation = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -166,6 +169,9 @@ bool Internship::operator==(const Internship& rhs) const {
   if (lhs.employer_ref() != rhs.employer_ref()) {
     return false;
   }
+  if (lhs.compensation_ref() != rhs.compensation_ref()) {
+    return false;
+  }
   return true;
 }
 
@@ -182,6 +188,9 @@ bool Internship::operator<(const Internship& rhs) const {
   if (lhs.employer_ref() != rhs.employer_ref()) {
     return lhs.employer_ref() < rhs.employer_ref();
   }
+  if (lhs.compensation_ref() != rhs.compensation_ref()) {
+    return lhs.compensation_ref() < rhs.compensation_ref();
+  }
   return false;
 }
 
@@ -191,6 +200,7 @@ void swap(Internship& a, Internship& b) {
   swap(a.weeks_ref().value(), b.weeks_ref().value());
   swap(a.title_ref().value(), b.title_ref().value());
   swap(a.employer_ref().value_unchecked(), b.employer_ref().value_unchecked());
+  swap(a.compensation_ref().value_unchecked(), b.compensation_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

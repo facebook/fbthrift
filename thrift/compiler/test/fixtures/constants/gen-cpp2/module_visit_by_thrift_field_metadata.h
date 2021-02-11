@@ -24,6 +24,8 @@ struct VisitByThriftId<::cpp2::Internship> {
       return f(1, static_cast<T&&>(t).title_ref());
     case 3:
       return f(2, static_cast<T&&>(t).employer_ref());
+    case 4:
+      return f(3, static_cast<T&&>(t).compensation_ref());
     default:
       throwInvalidThriftId(id, "::cpp2::Internship");
     }

@@ -54,6 +54,7 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_0(self, __fbthrift_value) except *
     cdef void _set_field_1(self, __fbthrift_value) except *
     cdef void _set_field_2(self, __fbthrift_value) except *
+    cdef void _set_field_3(self, __fbthrift_value) except *
 
 
 ctypedef void (*__Range_FieldsSetterFunc)(__Range_FieldsSetter, object) except *

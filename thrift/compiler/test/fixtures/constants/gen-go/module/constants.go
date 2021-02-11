@@ -78,6 +78,9 @@ var EmptyIntIntMap map[int32]int32
 var EmptyIntStringMap map[int32]string
 var EmptyStringIntMap map[string]int32
 var EmptyStringStringMap map[string]string
+var const_lit_Instagram_compensation float64 = 1200
+var const_lit_InternList_0_compensation float64 = 1200
+var const_lit_InternList_1_compensation float64 = 1000
 var const_lit_Pod_4_b float64 = 0.333
 var const_lit_Pod_4_c int8 = 25
 var const_lit_U_1_1_i int32 = 97
@@ -114,6 +117,7 @@ Instagram = &Internship{
   Weeks: 12,
   Title: "Software Engineer",
   Employer:   3,
+  Compensation: &const_lit_Instagram_compensation,
 }
 
 PartialConst = &Internship{
@@ -137,11 +141,13 @@ InternList = []*Internship{
     Weeks: 12,
     Title: "Software Engineer",
     Employer:     3,
+    Compensation: &const_lit_InternList_0_compensation,
   },
   &Internship{
     Weeks: 10,
     Title: "Sales Intern",
     Employer:     0,
+    Compensation: &const_lit_InternList_1_compensation,
   },
 }
 

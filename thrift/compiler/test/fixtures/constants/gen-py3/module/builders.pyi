@@ -18,6 +18,7 @@ class Internship_Builder(thrift.py3.builder.StructBuilder):
     weeks: _typing.Optional[int]
     title: _typing.Optional[str]
     employer: _typing.Optional[_module_types.Company]
+    compensation: _typing.Optional[float]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

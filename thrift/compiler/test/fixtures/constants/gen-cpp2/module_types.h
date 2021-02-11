@@ -16,6 +16,7 @@ namespace tag {
 struct weeks;
 struct title;
 struct employer;
+struct compensation;
 struct min;
 struct max;
 struct a;
@@ -49,6 +50,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(title);
 #ifndef APACHE_THRIFT_ACCESSOR_employer
 #define APACHE_THRIFT_ACCESSOR_employer
 APACHE_THRIFT_DEFINE_ACCESSOR(employer);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_compensation
+#define APACHE_THRIFT_ACCESSOR_compensation
+APACHE_THRIFT_DEFINE_ACCESSOR(compensation);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_min
 #define APACHE_THRIFT_ACCESSOR_min
@@ -302,10 +307,11 @@ class Internship final  {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Internship() :
       weeks(0),
-      employer( ::cpp2::Company::FACEBOOK) {}
+      employer( ::cpp2::Company::FACEBOOK),
+      compensation(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg);
+  Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg, double compensation__arg);
 
   Internship(Internship&&) = default;
 
@@ -323,12 +329,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::string title;
  private:
    ::cpp2::Company employer;
+ private:
+  double compensation;
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool title;
     bool employer;
+    bool compensation;
   } __isset = {};
   bool operator==(const Internship& rhs) const;
 #ifndef SWIG
@@ -412,6 +421,28 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> compensation_ref() const& {
+    return {this->compensation, __isset.compensation};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> compensation_ref() const&& {
+    return {std::move(this->compensation), __isset.compensation};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> compensation_ref() & {
+    return {this->compensation, __isset.compensation};
+  }
+
+  template <typename..., typename T = double>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> compensation_ref() && {
+    return {std::move(this->compensation), __isset.compensation};
+  }
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   int32_t get_weeks() const {
     return weeks;
   }
@@ -453,6 +484,23 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.employer = true;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
     return employer;
+  }
+
+  const double* get_compensation() const& {
+    return compensation_ref() ? std::addressof(compensation) : nullptr;
+  }
+
+  double* get_compensation() & {
+    return compensation_ref() ? std::addressof(compensation) : nullptr;
+  }
+  double* get_compensation() && = delete;
+
+  double& set_compensation(double compensation_) {
+    compensation = compensation_;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    __isset.compensation = true;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+    return compensation;
   }
 
   template <class Protocol_>

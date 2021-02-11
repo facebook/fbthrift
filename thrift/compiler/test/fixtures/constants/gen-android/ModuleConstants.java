@@ -62,6 +62,7 @@ multi line string.
     instagram.addProperty(Module.Internship_weeks, 12);
     instagram.addProperty(Module.Internship_title, "Software Engineer");
     instagram.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
+    instagram.addProperty(Module.Internship_compensation, 1200);
   }
   public static final ModuleLogger partial_const = new ModuleLogger(Module.EventType.Internship);
   static {
@@ -86,11 +87,13 @@ multi line string.
     tmp4.addProperty(Module.Internship_weeks, 12);
     tmp4.addProperty(Module.Internship_title, "Software Engineer");
     tmp4.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
+    tmp4.addProperty(Module.Internship_compensation, 1200);
     internList.add(tmp4);
     ModuleLogger tmp5 = new ModuleLogger(Module.EventType.Internship);
     tmp5.addProperty(Module.Internship_weeks, 10);
     tmp5.addProperty(Module.Internship_title, "Sales Intern");
     tmp5.addProperty(Module.Internship_employer, ModuleEnum.Company_FACEBOOK);
+    tmp5.addProperty(Module.Internship_compensation, 1000);
     internList.add(tmp5);
   }
 

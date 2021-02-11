@@ -86,20 +86,26 @@ class Internship implements \IThriftStruct {
       'type' => \TType::I32,
       'enum' => Company::class,
     ),
+    4 => shape(
+      'var' => 'compensation',
+      'type' => \TType::DOUBLE,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'weeks' => 1,
     'title' => 2,
     'employer' => 3,
+    'compensation' => 4,
   ];
 
   const type TConstructorShape = shape(
     ?'weeks' => ?int,
     ?'title' => ?string,
     ?'employer' => ?Company,
+    ?'compensation' => ?float,
   );
 
-  const int STRUCTURAL_ID = 749038867953722654;
+  const int STRUCTURAL_ID = 1958641629526735979;
   /**
    * Original thrift field:-
    * 1: i32 weeks
@@ -115,11 +121,17 @@ class Internship implements \IThriftStruct {
    * 3: enum module.Company employer
    */
   public ?Company $employer;
+  /**
+   * Original thrift field:-
+   * 4: double compensation
+   */
+  public ?float $compensation;
 
-  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  )[] {
+  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null, ?float $compensation = null  )[] {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
+    $this->compensation = $compensation;
   }
 
   public static function withDefaultValues()[]: this {
@@ -131,6 +143,7 @@ class Internship implements \IThriftStruct {
       Shapes::idx($shape, 'weeks'),
       Shapes::idx($shape, 'title'),
       Shapes::idx($shape, 'employer'),
+      Shapes::idx($shape, 'compensation'),
     );
   }
 

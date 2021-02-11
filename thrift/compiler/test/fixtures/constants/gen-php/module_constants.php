@@ -134,6 +134,7 @@ multi line string.
         "weeks" => 12,
         "title" => "Software Engineer",
         "employer" =>         3,
+        "compensation" => 1200,
       ));
     }
     return self::$__instagram;
@@ -175,11 +176,13 @@ multi line string.
           "weeks" => 12,
           "title" => "Software Engineer",
           "employer" =>           3,
+          "compensation" => 1200,
         )),
         new Internship(array(
           "weeks" => 10,
           "title" => "Sales Intern",
           "employer" =>           0,
+          "compensation" => 1000,
         )),
       );
     }
@@ -690,6 +693,7 @@ multi line string.
           "weeks" => 12,
           "title" => "Software Engineer",
           "employer" =>           3,
+          "compensation" => 1200,
         )),
         "partial_const" => new Internship(array(
           "weeks" => 8,
@@ -710,11 +714,13 @@ multi line string.
             "weeks" => 12,
             "title" => "Software Engineer",
             "employer" =>             3,
+            "compensation" => 1200,
           )),
           new Internship(array(
             "weeks" => 10,
             "title" => "Sales Intern",
             "employer" =>             0,
+            "compensation" => 1000,
           )),
         ),
         "pod_0" => new struct1(array(

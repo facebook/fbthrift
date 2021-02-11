@@ -243,6 +243,7 @@ cdef class Internship(thrift.py3.types.Struct):
           "weeks": deref(self._cpp_obj).weeks_ref().has_value(),
           "title": deref(self._cpp_obj).title_ref().has_value(),
           "employer": deref(self._cpp_obj).employer_ref().has_value(),
+          "compensation": deref(self._cpp_obj).compensation_ref().has_value(),
         })
 
     @staticmethod
@@ -270,6 +271,13 @@ cdef class Internship(thrift.py3.types.Struct):
             self.__fbthrift_cached_employer = translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer_ref().value_unchecked()))
         return self.__fbthrift_cached_employer
 
+    @property
+    def compensation(self):
+        if not deref(self._cpp_obj).__isset.compensation:
+            return None
+
+        return deref(self._cpp_obj).compensation_ref().value_unchecked()
+
 
     def __hash__(Internship self):
         return  super().__hash__()
@@ -296,7 +304,7 @@ cdef class Internship(thrift.py3.types.Struct):
         return __get_field_name_by_index[cInternship](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 3
+        self.__fbthrift_struct_size = 4
 
     cdef __iobuf.IOBuf _serialize(Internship self, __Protocol proto):
         cdef unique_ptr[__iobuf.cIOBuf] data

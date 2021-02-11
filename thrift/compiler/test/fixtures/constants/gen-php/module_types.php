@@ -74,16 +74,22 @@ class Internship implements IThriftStruct {
       'type' => TType::I32,
       'enum' => 'Company',
       ),
+    4 => array(
+      'var' => 'compensation',
+      'type' => TType::DOUBLE,
+      ),
     );
   public static $_TFIELDMAP = array(
     'weeks' => 1,
     'title' => 2,
     'employer' => 3,
+    'compensation' => 4,
   );
-  const STRUCTURAL_ID = 749038867953722654;
+  const STRUCTURAL_ID = 1958641629526735979;
   public $weeks = null;
   public $title = null;
   public $employer = null;
+  public $compensation = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -95,6 +101,9 @@ class Internship implements IThriftStruct {
       }
       if (isset($vals['employer'])) {
         $this->employer = $vals['employer'];
+      }
+      if (isset($vals['compensation'])) {
+        $this->compensation = $vals['compensation'];
       }
     } else if ($vals) {
       throw new TProtocolException(
@@ -153,6 +162,13 @@ class Internship implements IThriftStruct {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 4:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->compensation);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -182,6 +198,11 @@ class Internship implements IThriftStruct {
     if (isset($this->employer) && $this->employer !== null) {
       $xfer += $output->writeFieldBegin('employer', TType::I32, 3);
       $xfer += $output->writeI32($this->employer);
+      $xfer += $output->writeFieldEnd();
+    }
+    if (isset($this->compensation) && $this->compensation !== null) {
+      $xfer += $output->writeFieldBegin('compensation', TType::DOUBLE, 4);
+      $xfer += $output->writeDouble($this->compensation);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

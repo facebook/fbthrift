@@ -71,6 +71,18 @@ cdef __StructSpec get_reflection__Internship():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec.create(
+            id=4,
+            name="compensation",
+            type=float,
+            kind=__NumberType.DOUBLE,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__Range():
     cdef _module_types.Range defaults = _module_types.Range.create(

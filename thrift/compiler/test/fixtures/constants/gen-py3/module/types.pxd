@@ -70,6 +70,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint weeks
         bint title
         bint employer
+        bint compensation
 
     cdef cppclass cInternship "::cpp2::Internship":
         cInternship() except +
@@ -86,6 +87,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string title
         __optional_field_ref[cCompany] employer_ref()
         cCompany employer
+        __optional_field_ref[double] compensation_ref()
+        double compensation
         cInternship__isset __isset
 
     cdef cppclass cRange__isset "::cpp2::Range::__isset":

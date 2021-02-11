@@ -57,6 +57,7 @@ struct Internship {
   1: required i32 weeks;
   2: string title;
   3: optional Company employer;
+  4: optional double compensation;
 }
 
 typedef string MyStringIdentifier
@@ -71,6 +72,7 @@ const Internship instagram = {
   "weeks": 12,
   "title": "Software Engineer",
   "employer": Company.INSTAGRAM,
+  "compensation": 1200.0,
 };
 
 const Internship partial_const = {"weeks": 8, "title": "Some Job"};
@@ -84,7 +86,12 @@ const list<Range> kRanges = [{"min": 1, "max": 2}, {"min": 5, "max": 6}];
 
 const list<Internship> internList = [
   instagram,
-  {"weeks": 10, "title": "Sales Intern", "employer": Company.FACEBOOK},
+  {
+    "weeks": 10,
+    "title": "Sales Intern",
+    "employer": Company.FACEBOOK,
+    "compensation": 1000.0,
+  },
 ];
 
 struct struct1 {

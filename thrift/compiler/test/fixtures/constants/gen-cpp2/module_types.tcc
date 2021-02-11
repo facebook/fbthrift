@@ -153,6 +153,21 @@ _readField_employer:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           3,
+          4,
+          apache::thrift::protocol::T_DOUBLE))) {
+    goto _loop;
+  }
+_readField_compensation:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->compensation, _readState);
+    THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+    this->__isset.compensation = true;
+    THRIFT_IGNORE_ISSET_USE_WARNING_END
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -197,6 +212,14 @@ _loop:
         goto _skip;
       }
     }
+    case 4:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE))) {
+        goto _readField_compensation;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -220,6 +243,10 @@ uint32_t Internship::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("employer", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Company>::serializedSize<false>(*prot_, this->employer);
   }
+  if (this->compensation_ref().has_value()) {
+    xfer += prot_->serializedFieldSize("compensation", apache::thrift::protocol::T_DOUBLE, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->compensation);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -235,6 +262,10 @@ uint32_t Internship::serializedSizeZC(Protocol_ const* prot_) const {
   if (this->employer_ref().has_value()) {
     xfer += prot_->serializedFieldSize("employer", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Company>::serializedSize<false>(*prot_, this->employer);
+  }
+  if (this->compensation_ref().has_value()) {
+    xfer += prot_->serializedFieldSize("compensation", apache::thrift::protocol::T_DOUBLE, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->compensation);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -253,6 +284,11 @@ uint32_t Internship::write(Protocol_* prot_) const {
   if (this->employer_ref().has_value()) {
     xfer += prot_->writeFieldBegin("employer", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Company>::write(*prot_, this->employer);
+    xfer += prot_->writeFieldEnd();
+  }
+  if (this->compensation_ref().has_value()) {
+    xfer += prot_->writeFieldBegin("compensation", apache::thrift::protocol::T_DOUBLE, 4);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::write(*prot_, this->compensation);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

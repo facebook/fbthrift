@@ -61,6 +61,7 @@ instagram = Internship(**{
   "weeks" : 12,
   "title" : "Software Engineer",
   "employer" :   3,
+  "compensation" : 1200.00,
 })
 
 partial_const = Internship(**{
@@ -84,11 +85,13 @@ internList = [
     "weeks" : 12,
     "title" : "Software Engineer",
     "employer" :     3,
+    "compensation" : 1200.00,
   }),
   Internship(**{
     "weeks" : 10,
     "title" : "Sales Intern",
     "employer" :     0,
+    "compensation" : 1000.00,
   }),
 ]
 

@@ -84,6 +84,9 @@ void reset_field<::cpp2::Internship>(
     case 2:
       obj.employer_ref().copy_from(default_inst<::cpp2::Internship>().employer_ref());
       return;
+    case 3:
+      obj.compensation_ref().copy_from(default_inst<::cpp2::Internship>().compensation_ref());
+      return;
   }
 }
 

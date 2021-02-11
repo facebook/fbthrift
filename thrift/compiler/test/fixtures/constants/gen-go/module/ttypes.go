@@ -177,10 +177,12 @@ func MyMapIdentifierPtr(v MyMapIdentifier) *MyMapIdentifier { return &v }
 //  - Weeks
 //  - Title
 //  - Employer
+//  - Compensation
 type Internship struct {
   Weeks int32 `thrift:"weeks,1,required" db:"weeks" json:"weeks"`
   Title string `thrift:"title,2" db:"title" json:"title"`
   Employer *Company `thrift:"employer,3" db:"employer" json:"employer,omitempty"`
+  Compensation *float64 `thrift:"compensation,4" db:"compensation" json:"compensation,omitempty"`
 }
 
 func NewInternship() *Internship {
@@ -202,8 +204,19 @@ func (p *Internship) GetEmployer() Company {
   }
 return *p.Employer
 }
+var Internship_Compensation_DEFAULT float64
+func (p *Internship) GetCompensation() float64 {
+  if !p.IsSetCompensation() {
+    return Internship_Compensation_DEFAULT
+  }
+return *p.Compensation
+}
 func (p *Internship) IsSetEmployer() bool {
   return p != nil && p.Employer != nil
+}
+
+func (p *Internship) IsSetCompensation() bool {
+  return p != nil && p.Compensation != nil
 }
 
 func (p *Internship) Read(iprot thrift.Protocol) error {
@@ -231,6 +244,10 @@ func (p *Internship) Read(iprot thrift.Protocol) error {
       }
     case 3:
       if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
         return err
       }
     default:
@@ -279,12 +296,22 @@ func (p *Internship)  ReadField3(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Internship)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadDouble(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.Compensation = &v
+}
+  return nil
+}
+
 func (p *Internship) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Internship"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -324,6 +351,18 @@ func (p *Internship) writeField3(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Internship) writeField4(oprot thrift.Protocol) (err error) {
+  if p.IsSetCompensation() {
+    if err := oprot.WriteFieldBegin("compensation", thrift.DOUBLE, 4); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:compensation: ", p), err) }
+    if err := oprot.WriteDouble(float64(*p.Compensation)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.compensation (4) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 4:compensation: ", p), err) }
+  }
+  return err
+}
+
 func (p *Internship) String() string {
   if p == nil {
     return "<nil>"
@@ -337,7 +376,13 @@ func (p *Internship) String() string {
   } else {
     employerVal = fmt.Sprintf("%v", *p.Employer)
   }
-  return fmt.Sprintf("Internship({Weeks:%s Title:%s Employer:%s})", weeksVal, titleVal, employerVal)
+  var compensationVal string
+  if p.Compensation == nil {
+    compensationVal = "<nil>"
+  } else {
+    compensationVal = fmt.Sprintf("%v", *p.Compensation)
+  }
+  return fmt.Sprintf("Internship({Weeks:%s Title:%s Employer:%s Compensation:%s})", weeksVal, titleVal, employerVal, compensationVal)
 }
 
 // Attributes:

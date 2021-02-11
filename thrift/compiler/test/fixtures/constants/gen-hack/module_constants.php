@@ -116,6 +116,7 @@ multi line string.
         "weeks" => 12,
         "title" => "Software Engineer",
         "employer" => Company::INSTAGRAM,
+        "compensation" => 1200.0,
       )
     );
   }
@@ -168,6 +169,7 @@ multi line string.
           "weeks" => 12,
           "title" => "Software Engineer",
           "employer" => Company::INSTAGRAM,
+          "compensation" => 1200.0,
         )
       ),
       Internship::fromShape(
@@ -175,6 +177,7 @@ multi line string.
           "weeks" => 10,
           "title" => "Sales Intern",
           "employer" => Company::FACEBOOK,
+          "compensation" => 1000.0,
         )
       ),
     };

@@ -61,6 +61,7 @@ pub mod consts {
             weeks: 12,
             title: "Software Engineer".to_owned(),
             employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
+            compensation: ::std::option::Option::Some(1200.0),
         };
     }
 
@@ -69,6 +70,7 @@ pub mod consts {
             weeks: 8,
             title: "Some Job".to_owned(),
             employer: ::std::default::Default::default(),
+            compensation: ::std::default::Default::default(),
         };
     }
 
@@ -91,11 +93,13 @@ pub mod consts {
                 weeks: 12,
                 title: "Software Engineer".to_owned(),
                 employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
+                compensation: ::std::option::Option::Some(1200.0),
             },
             crate::types::Internship {
                 weeks: 10,
                 title: "Sales Intern".to_owned(),
                 employer: ::std::option::Option::Some(crate::types::Company::FACEBOOK),
+                compensation: ::std::option::Option::Some(1000.0),
             },
         ];
     }
@@ -366,11 +370,12 @@ pub mod types {
 
     pub type MyMapIdentifier = ::std::collections::BTreeMap<::std::string::String, ::std::string::String>;
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, Debug, PartialEq)]
     pub struct Internship {
         pub weeks: ::std::primitive::i32,
         pub title: ::std::string::String,
         pub employer: ::std::option::Option<crate::types::Company>,
+        pub compensation: ::std::option::Option<::std::primitive::f64>,
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -775,6 +780,7 @@ pub mod types {
                 weeks: ::std::default::Default::default(),
                 title: ::std::default::Default::default(),
                 employer: ::std::option::Option::None,
+                compensation: ::std::option::Option::None,
             }
         }
     }
@@ -803,6 +809,11 @@ pub mod types {
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
+            if let ::std::option::Option::Some(some) = &self.compensation {
+                p.write_field_begin("compensation", ::fbthrift::TType::Double, 4);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -814,6 +825,7 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("compensation", ::fbthrift::TType::Double, 4),
                 ::fbthrift::Field::new("employer", ::fbthrift::TType::I32, 3),
                 ::fbthrift::Field::new("title", ::fbthrift::TType::String, 2),
                 ::fbthrift::Field::new("weeks", ::fbthrift::TType::I32, 1),
@@ -821,6 +833,7 @@ pub mod types {
             let mut field_weeks = ::std::option::Option::None;
             let mut field_title = ::std::option::Option::None;
             let mut field_employer = ::std::option::Option::None;
+            let mut field_compensation = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -829,6 +842,7 @@ pub mod types {
                     (::fbthrift::TType::I32, 1) => field_weeks = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 2) => field_title = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I32, 3) => field_employer = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Double, 4) => field_compensation = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -838,6 +852,7 @@ pub mod types {
                 weeks: field_weeks.unwrap_or_default(),
                 title: field_title.unwrap_or_default(),
                 employer: field_employer,
+                compensation: field_compensation,
             })
         }
     }

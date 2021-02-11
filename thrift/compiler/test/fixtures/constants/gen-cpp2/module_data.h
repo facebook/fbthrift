@@ -48,7 +48,7 @@ template <> struct TEnumDataStorage<::cpp2::union2::Type> {
 };
 
 template <> struct TStructDataStorage<::cpp2::Internship> {
-  static constexpr const std::size_t fields_size = 3;
+  static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;

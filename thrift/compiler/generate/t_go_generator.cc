@@ -1215,8 +1215,10 @@ string t_go_generator::render_const_value(
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
 
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+      auto idx = std::to_string(std::distance(val.begin(), v_iter));
       out << indent() << render_const_value(ktype, v_iter->first, name) << ": "
-          << render_const_value(vtype, v_iter->second, name) << "," << endl;
+          << render_const_value(vtype, v_iter->second, name + "_" + idx) << ","
+          << endl;
     }
 
     indent_down();
@@ -1229,8 +1231,9 @@ string t_go_generator::render_const_value(
     vector<t_const_value*>::const_iterator v_iter;
 
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      out << indent() << render_const_value(etype, *v_iter, name) << ","
-          << endl;
+      auto idx = std::to_string(std::distance(val.begin(), v_iter));
+      out << indent() << render_const_value(etype, *v_iter, name + "_" + idx)
+          << "," << endl;
     }
 
     indent_down();
@@ -1243,7 +1246,9 @@ string t_go_generator::render_const_value(
     vector<t_const_value*>::const_iterator v_iter;
 
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      out << indent() << render_const_value(etype, *v_iter, name) << ", ";
+      auto idx = std::to_string(std::distance(val.begin(), v_iter));
+      out << indent() << render_const_value(etype, *v_iter, name + "_" + idx)
+          << ", ";
     }
 
     indent_down();
