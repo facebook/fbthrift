@@ -216,28 +216,3 @@ class TServer:
 
     def serve(self):
         pass
-
-
-class TThreadedServer(TServer):
-
-    """Threaded server that spawns a new thread per each connection."""
-
-    def __init__(self, *args, **kwargs):
-        TServer.__init__(self, *args)
-        self.daemon = kwargs.get("daemon", False)
-
-    def serve(self):
-
-        self.serverTransport.listen()
-        for name in self.serverTransport.getSocketNames():
-            self.serverEventHandler.preServe(name)
-        while True:
-            try:
-                client = self.serverTransport.accept()
-                t = threading.Thread(target=self.handle, args=(client,))
-                t.daemon = self.daemon
-                t.start()
-            except KeyboardInterrupt:
-                raise
-            except Exception as x:
-                logging.exception(x)
