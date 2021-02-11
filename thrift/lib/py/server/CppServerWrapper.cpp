@@ -719,6 +719,11 @@ class CppServerWrapper : public ThriftServer {
         numIOWorkerThreads, AttributeSource::OVERRIDE);
   }
 
+  void setNWorkerThreads(size_t nWorkerThreads) {
+    BaseThriftServer::setNWorkerThreads(
+        nWorkerThreads, AttributeSource::OVERRIDE);
+  }
+
   void setListenBacklog(int listenBacklog) {
     BaseThriftServer::setListenBacklog(
         listenBacklog, AttributeSource::OVERRIDE);
