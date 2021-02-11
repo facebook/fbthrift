@@ -20,7 +20,6 @@
 
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/FieldRef.h>
-#include <thrift/lib/cpp2/OptionalField.h>
 
 #include <folly/portability/GTest.h>
 
@@ -388,36 +387,6 @@ TEST(optional_field_ref_test, move_from) {
   EXPECT_TRUE(s.opt_name().has_value());
   EXPECT_EQ(*s.opt_name(), "foo");
   EXPECT_TRUE(s2.opt_name().has_value());
-}
-
-TEST(optional_field_ref_test, copy_to_folly_optional) {
-  auto s = TestStruct();
-  s.opt_name() = "foo";
-  EXPECT_EQ(*s.opt_name(), "foo");
-  auto f = apache::thrift::copyToFollyOptional(s.opt_name());
-  EXPECT_EQ(*f, "foo");
-  EXPECT_EQ(*s.opt_name(), "foo");
-}
-
-TEST(optional_field_ref_test, move_to_folly_optional) {
-  auto s = TestStruct();
-  s.opt_uptr() = std::make_unique<int>(1);
-  EXPECT_EQ(**s.opt_uptr(), 1);
-  {
-    auto f = apache::thrift::moveToFollyOptional(s.opt_uptr());
-    EXPECT_EQ(**f, 1);
-    EXPECT_EQ(*s.opt_uptr(), nullptr);
-  }
-  s.opt_uptr() = std::make_unique<int>(2);
-  EXPECT_EQ(**s.opt_uptr(), 2);
-  {
-    static_assert(std::is_same_v<
-                  decltype(std::move(s).opt_uptr()),
-                  optional_field_ref<std::unique_ptr<int>&&>>);
-    auto f = apache::thrift::moveToFollyOptional(std::move(s).opt_uptr());
-    EXPECT_EQ(**f, 2);
-    EXPECT_EQ(*s.opt_uptr(), nullptr);
-  }
 }
 
 TEST(optional_field_ref_test, is_assignable) {
