@@ -70,6 +70,8 @@ enum class LineType {
   Xception,
 };
 
+using t_struct_annotations = std::vector<std::unique_ptr<t_const>>;
+
 struct diagnostic_message {
   diagnostic_level level;
   std::string filename;
@@ -342,13 +344,22 @@ class parsing_driver {
       t_annotated* node,
       LineType lineType,
       std::unique_ptr<t_annotated> annotations,
-      std::unique_ptr<t_annotated> struct_annotations);
+      std::unique_ptr<t_struct_annotations> struct_annotations);
   void finish_node(
       t_named* node,
       LineType lineType,
       std::string name,
       std::unique_ptr<t_annotated> annotations,
-      std::unique_ptr<t_annotated> struct_annotations);
+      std::unique_ptr<t_struct_annotations> struct_annotations);
+
+  // Populate the annotation on the given node.
+  static void set_annotations(
+      t_annotated* node,
+      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_struct_annotations> struct_annotations);
+
+  std::unique_ptr<t_const> new_struct_annotation(
+      std::unique_ptr<t_const_value> const_struct);
 
  private:
   class deleter {
@@ -396,12 +407,6 @@ class parsing_driver {
    * Parse a single .thrift file. The file to parse is stored in params.program.
    */
   void parse_file();
-
-  // Populate the annotation on the given node.
-  static void set_annotations(
-      t_annotated* node,
-      std::unique_ptr<t_annotated> annotations,
-      std::unique_ptr<t_annotated> struct_annotations);
 
   // Returns the starting line number.
   int pop_node(LineType lineType);

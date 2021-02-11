@@ -15,6 +15,7 @@
  */
 
 #include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_const.h>
 
 namespace apache {
 namespace thrift {
@@ -23,6 +24,9 @@ namespace compiler {
 namespace {
 const std::string kEmpty{};
 }
+
+// Must be defined here for t_const's destructor's defintion.
+t_annotated::~t_annotated() = default;
 
 bool t_annotated::has_annotation(
     std::initializer_list<std::string> names) const {
@@ -88,6 +92,11 @@ std::string t_annotated::get_annotation(
     return *value;
   }
   return default_value;
+}
+
+void t_annotated::add_structured_annotation(std::unique_ptr<t_const> annot) {
+  structured_annotations_raw_.emplace_back(annot.get());
+  structured_annotations_.emplace_back(std::move(annot));
 }
 
 } // namespace compiler

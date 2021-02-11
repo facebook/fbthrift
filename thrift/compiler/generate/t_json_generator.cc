@@ -79,7 +79,7 @@ class t_json_generator : public t_concat_generator {
  private:
   void print_annotations(const std::map<std::string, std::string>& annotations);
   void print_structured_annotations(
-      const std::vector<std::shared_ptr<t_const>>& annotations);
+      const std::vector<const t_const*>& annotations);
   void print_node_annotations(
       const t_annotated& node,
       bool add_heading_comma,
@@ -441,7 +441,7 @@ void t_json_generator::print_annotations(
 }
 
 void t_json_generator::print_structured_annotations(
-    const std::vector<std::shared_ptr<t_const>>& annotations) {
+    const std::vector<const t_const*>& annotations) {
   indent(f_out_) << "\"structured_annotations\" : {";
   indent_up();
   bool first = true;
@@ -465,20 +465,22 @@ void t_json_generator::print_node_annotations(
     bool add_trailing_comma) {
   if (annotate_) {
     if (add_heading_comma &&
-        (!node.annotations_.empty() || !node.structured_annotations_.empty())) {
+        (!node.annotations_.empty() ||
+         !node.structured_annotations().empty())) {
       f_out_ << "," << endl;
     }
     if (!node.annotations_.empty()) {
       print_annotations(node.annotations_);
     }
-    if (!node.structured_annotations_.empty()) {
+    if (!node.structured_annotations().empty()) {
       if (!node.annotations_.empty()) {
         f_out_ << "," << endl;
       }
-      print_structured_annotations(node.structured_annotations_);
+      print_structured_annotations(node.structured_annotations());
     }
     if (add_trailing_comma &&
-        (!node.annotations_.empty() || !node.structured_annotations_.empty())) {
+        (!node.annotations_.empty() ||
+         !node.structured_annotations().empty())) {
       f_out_ << "," << endl;
     }
   }

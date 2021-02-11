@@ -36,6 +36,13 @@ class t_const;
  */
 class t_annotated : public t_node {
  public:
+  // TODO(afuller): Make these private, and any shared state should be const.
+  std::map<std::string, std::string> annotations_;
+  std::map<std::string, std::shared_ptr<t_const>> annotation_objects_;
+  int annotation_last_lineno_ = -1;
+
+  ~t_annotated() override;
+
   // Returns true if there exists an annotation with the given name.
   bool has_annotation(const std::string& name) const {
     return annotations_.find(name) != annotations_.end();
@@ -66,13 +73,15 @@ class t_annotated : public t_node {
   const std::string* get_annotation_or_null(
       std::initializer_list<std::string> names) const;
 
-  std::map<std::string, std::string> annotations_;
-  // TODO (partisan): Try to use t_const without a pointer and rewrite the code
-  // relying on copies.
-  std::map<std::string, std::shared_ptr<t_const>> annotation_objects_;
-  std::vector<std::shared_ptr<t_const>> structured_annotations_;
+  void add_structured_annotation(std::unique_ptr<t_const> annot);
 
-  int annotation_last_lineno_ = -1;
+  const std::vector<const t_const*>& structured_annotations() const {
+    return structured_annotations_raw_;
+  }
+
+ private:
+  std::vector<std::shared_ptr<const t_const>> structured_annotations_;
+  std::vector<const t_const*> structured_annotations_raw_;
 };
 
 /**

@@ -137,7 +137,7 @@ class structured_annotation_generator {
   structured_annotation_generator() = default;
   virtual ~structured_annotation_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
-      const std::shared_ptr<t_const>& annotValue,
+      const t_const* annotValue,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
@@ -368,7 +368,7 @@ class mstch_base : public mstch::object {
 
   mstch::node structured_annotations(t_annotated const* annotated) {
     return generate_elements(
-        annotated->structured_annotations_,
+        annotated->structured_annotations(),
         generators_->structured_annotation_generator_.get());
   }
 

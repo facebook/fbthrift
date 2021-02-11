@@ -85,23 +85,6 @@ std::unique_ptr<T> own(T*ptr) {
 }
 
 } // namespace
-
-t_annotation* const_struct_to_annotation(
-    parsing_driver& driver,
-    std::unique_ptr<t_const_value> const_struct) {
-  auto result = new t_annotation;
-  result->object_val = std::make_shared<t_const>(
-    driver.program,
-    const_struct->get_ttype(),
-    "",
-    std::move(const_struct));
-  result->object_val->set_lineno(driver.scanner->get_lineno());
-  if (driver.mode == parsing_mode::PROGRAM) {
-    driver.validate_const_type(result->object_val.get());
-  }
-  return result;
-}
-
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
@@ -116,7 +99,6 @@ namespace thrift {
 namespace compiler {
 
 class parsing_driver;
-using t_structpair = std::pair<t_struct*, t_struct*>;
 using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 } // namespace compiler
@@ -239,14 +221,15 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 %type<t_typedef*>       Typedef
 
+%type<std::string>      TypeAnnotationValue
+%type<t_annotation*>    TypeAnnotation
 %type<t_annotated*>     TypeAnnotations
 %type<t_annotated*>     TypeAnnotationList
-%type<t_annotation*>    TypeAnnotation
-%type<std::string>      TypeAnnotationValue
 %type<t_annotated*>     FunctionAnnotations
-%type<t_annotated*>     StructuredAnnotations
-%type<t_annotated*>     NonEmptyStructuredAnnotationList
-%type<t_annotation*>    StructuredAnnotation
+
+%type<t_const*>              StructuredAnnotation
+%type<t_struct_annotations*> StructuredAnnotations
+%type<t_struct_annotations*> NonEmptyStructuredAnnotationList
 
 %type<t_field*>         Field
 %type<t_field_id>       FieldIdentifier
@@ -617,15 +600,7 @@ EnumDef:
       if ($1) {
         $$->set_doc(std::string{*$1});
       }
-      if ($4) {
-        $$->annotations_ = std::move($4->annotations_);
-        $$->annotation_objects_ = std::move($4->annotation_objects_);
-        delete $4;
-      }
-      if ($2) {
-        $$->structured_annotations_ = std::move($2->structured_annotations_);
-        delete $2;
-      }
+      driver.set_annotations($$, own($4), own($2));
     }
 
 EnumValue:
@@ -1056,16 +1031,8 @@ Function:
           $3
         );
       }
-      if ($10) {
-        func->annotations_ = std::move($10->annotations_);
-        func->annotation_objects_ = std::move($10->annotation_objects_);
-        delete $10;
-      }
-      if ($2) {
-        func->structured_annotations_ = std::move($2->structured_annotations_);
-        delete $2;
-      }
       $$ = func;
+      driver.set_annotations($$, own($10), own($2));
       if ($1) {
         $$->set_doc(std::string{*$1});
       }
@@ -1654,23 +1621,20 @@ NonEmptyStructuredAnnotationList:
     {
       driver.debug("NonEmptyStructuredAnnotationList => NonEmptyStructuredAnnotationList StructuredAnnotation");
       $$ = $1;
-      $$->structured_annotations_.push_back($2->object_val);
-      delete $2;
+      $$->emplace_back($2);
     }
 | StructuredAnnotation
     {
       driver.debug("NonEmptyStructuredAnnotationList =>");
-      $$ = new t_annotated();
-      $$->structured_annotations_.push_back($1->object_val);
-      delete $1;
+      $$ = new t_struct_annotations;
+      $$->emplace_back($1);
     }
 
 StructuredAnnotation:
   "@" ConstStruct
     {
       driver.debug("StructuredAnnotation => @ConstStruct");
-      $$ = const_struct_to_annotation(
-          driver, std::unique_ptr<t_const_value>($2));
+      $$ = driver.new_struct_annotation(own($2)).release();
     }
 | "@" ConstStructType
     {
@@ -1678,7 +1642,7 @@ StructuredAnnotation:
       auto value = std::make_unique<t_const_value>();
       value->set_map();
       value->set_ttype($2);
-      $$ = const_struct_to_annotation(driver, std::move(value));
+      $$ = driver.new_struct_annotation(std::move(value)).release();
     }
 
 FunctionAnnotations:

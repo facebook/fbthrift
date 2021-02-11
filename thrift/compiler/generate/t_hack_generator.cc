@@ -484,7 +484,7 @@ class t_hack_generator : public t_oop_generator {
   bool is_base_exception_property(const t_field*);
 
   std::string render_structured_annotations(
-      const std::vector<std::shared_ptr<t_const>>& annotations);
+      const std::vector<const t_const*>& annotations);
 
  private:
   /**
@@ -1007,12 +1007,12 @@ void t_hack_generator::close_generator() {
     f_consts_ << indent() << "return dict[\n";
     indent_up();
     for (const auto& tconst : program_->get_consts()) {
-      if (tconst->structured_annotations_.empty()) {
+      if (tconst->structured_annotations().empty()) {
         continue;
       }
       f_consts_ << indent() << "'" << tconst->get_name() << "' => "
                 << render_structured_annotations(
-                       tconst->structured_annotations_)
+                       tconst->structured_annotations())
                 << ",\n";
     }
     indent_down();
@@ -1091,16 +1091,17 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
   f_types_ << indent() << "return shape(\n";
   indent_up();
   f_types_ << indent() << "'enum' => "
-           << render_structured_annotations(tenum->structured_annotations_)
+           << render_structured_annotations(tenum->structured_annotations())
            << ",\n";
   f_types_ << indent() << "'constants' => dict[\n";
   indent_up();
   for (const auto& constant : constants) {
-    if (constant->structured_annotations_.empty()) {
+    if (constant->structured_annotations().empty()) {
       continue;
     }
     f_types_ << indent() << "'" << constant->get_name() << "' => "
-             << render_structured_annotations(constant->structured_annotations_)
+             << render_structured_annotations(
+                    constant->structured_annotations())
              << ",\n";
   }
   indent_down();
@@ -2660,7 +2661,7 @@ bool t_hack_generator::is_base_exception_property(const t_field* field) {
 }
 
 std::string t_hack_generator::render_structured_annotations(
-    const std::vector<std::shared_ptr<t_const>>& annotations) {
+    const std::vector<const t_const*>& annotations) {
   std::ostringstream out;
   out << "dict[";
   if (!annotations.empty()) {
@@ -3007,23 +3008,25 @@ void t_hack_generator::_generate_php_struct_definition(
   indent(out) << "return shape(\n";
   indent_up();
   indent(out) << "'struct' => "
-              << render_structured_annotations(tstruct->structured_annotations_)
+              << render_structured_annotations(
+                     tstruct->structured_annotations())
               << ",\n";
   indent(out) << "'fields' => dict[\n";
   indent_up();
   for (const auto& field : tstruct->get_members()) {
-    if (field->structured_annotations_.empty() &&
-        field->get_type()->structured_annotations_.empty()) {
+    if (field->structured_annotations().empty() &&
+        field->get_type()->structured_annotations().empty()) {
       continue;
     }
     indent(out) << "'" << field->get_name() << "' => shape(\n";
     indent_up();
     indent(out) << "'field' => "
-                << render_structured_annotations(field->structured_annotations_)
+                << render_structured_annotations(
+                       field->structured_annotations())
                 << ",\n";
     indent(out) << "'type' => "
                 << render_structured_annotations(
-                       field->get_type()->structured_annotations_)
+                       field->get_type()->structured_annotations())
                 << ",\n";
     indent_down();
     indent(out) << "),\n";
@@ -3470,17 +3473,18 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << indent() << "return shape(\n";
   indent_up();
   f_service_ << indent() << "'service' => "
-             << render_structured_annotations(tservice->structured_annotations_)
+             << render_structured_annotations(
+                    tservice->structured_annotations())
              << ",\n";
   f_service_ << indent() << "'functions' => dict[\n";
   indent_up();
   for (const auto& function : functions) {
-    if (function->structured_annotations_.empty()) {
+    if (function->structured_annotations().empty()) {
       continue;
     }
     f_service_ << indent() << "'" << function->get_name() << "' => "
                << render_structured_annotations(
-                      function->structured_annotations_)
+                      function->structured_annotations())
                << ",\n";
   }
   indent_down();

@@ -436,7 +436,7 @@ void structured_annotations_uniqueness_validator::validate_annotations(
     const std::string& tannotated_name) {
   std::unordered_set<std::string> full_names;
   std::string name;
-  for (const auto& it : tannotated->structured_annotations_) {
+  for (const auto& it : tannotated->structured_annotations()) {
     name = it->get_type()->get_full_name();
     if (full_names.count(name) != 0) {
       add_error(

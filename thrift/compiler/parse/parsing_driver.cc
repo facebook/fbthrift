@@ -554,19 +554,19 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
   return false;
 }
 
-// Populate the annotation on the given node.
 void parsing_driver::set_annotations(
     t_annotated* node,
     std::unique_ptr<t_annotated> annotations,
-    std::unique_ptr<t_annotated> struct_annotations) {
+    std::unique_ptr<t_struct_annotations> struct_annotations) {
   if (annotations != nullptr) {
     node->annotations_ = std::move(annotations->annotations_);
     node->annotation_objects_ = std::move(annotations->annotation_objects_);
     node->annotation_last_lineno_ = annotations->annotation_last_lineno_;
   }
   if (struct_annotations != nullptr) {
-    node->structured_annotations_ =
-        std::move(struct_annotations->structured_annotations_);
+    for (auto& an : *struct_annotations) {
+      node->add_structured_annotation(std::move(an));
+    }
   }
 }
 
@@ -587,7 +587,7 @@ void parsing_driver::finish_node(
     t_annotated* node,
     LineType lineType,
     std::unique_ptr<t_annotated> annotations,
-    std::unique_ptr<t_annotated> struct_annotations) {
+    std::unique_ptr<t_struct_annotations> struct_annotations) {
   node->set_lineno(pop_node(lineType));
   set_annotations(node, std::move(annotations), std::move(struct_annotations));
 }
@@ -596,10 +596,22 @@ void parsing_driver::finish_node(
     LineType lineType,
     std::string name,
     std::unique_ptr<t_annotated> annotations,
-    std::unique_ptr<t_annotated> struct_annotations) {
+    std::unique_ptr<t_struct_annotations> struct_annotations) {
   node->set_name(std::move(name));
   finish_node(
       node, lineType, std::move(annotations), std::move(struct_annotations));
+}
+
+std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
+    std::unique_ptr<t_const_value> const_struct) {
+  auto* ttype = const_struct->get_ttype();
+  auto result =
+      std::make_unique<t_const>(program, ttype, "", std::move(const_struct));
+  result->set_lineno(scanner->get_lineno());
+  if (mode == parsing_mode::PROGRAM) {
+    validate_const_type(result.get());
+  }
+  return result;
 }
 
 } // namespace compiler
