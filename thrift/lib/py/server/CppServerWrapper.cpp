@@ -719,11 +719,6 @@ class CppServerWrapper : public ThriftServer {
         numIOWorkerThreads, AttributeSource::OVERRIDE);
   }
 
-  void setNWorkerThreads(size_t nWorkerThreads) {
-    BaseThriftServer::setNWorkerThreads(
-        nWorkerThreads, AttributeSource::OVERRIDE);
-  }
-
   void setListenBacklog(int listenBacklog) {
     BaseThriftServer::setListenBacklog(
         listenBacklog, AttributeSource::OVERRIDE);
@@ -737,10 +732,6 @@ class CppServerWrapper : public ThriftServer {
   void setNumCPUWorkerThreads(size_t numCPUWorkerThreads) {
     BaseThriftServer::setNumCPUWorkerThreads(
         numCPUWorkerThreads, AttributeSource::OVERRIDE);
-  }
-
-  void setNPoolThreads(size_t nPoolThreads) {
-    BaseThriftServer::setNPoolThreads(nPoolThreads, AttributeSource::OVERRIDE);
   }
 
   void setNumSSLHandshakeWorkerThreads(size_t nSSLHandshakeThreads) {
@@ -826,8 +817,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
 
       // methods directly passed to the C++ impl
       .def("setup", &CppServerWrapper::setup)
-      .def("setNPoolThreads", &CppServerWrapper::setNPoolThreads)
-      .def("setNWorkerThreads", &CppServerWrapper::setNWorkerThreads)
       .def("setNumCPUWorkerThreads", &CppServerWrapper::setNumCPUWorkerThreads)
       .def("setNumIOWorkerThreads", &CppServerWrapper::setNumIOWorkerThreads)
       .def("setListenBacklog", &CppServerWrapper::setListenBacklog)

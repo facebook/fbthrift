@@ -431,16 +431,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * DEPRECATED: Get the prefix for naming the CPU (pool) threads.
-   * Use getCPUWorkerThreadName instead.
-   *
-   * @return current setting.
-   */
-  std::string getPoolThreadName() const {
-    return getCPUWorkerThreadName();
-  }
-
-  /**
    * Set the prefix for naming the CPU (pool) threads. Not set by default.
    * must be called before serve() for it to take effect
    * ignored if setThreadManager() is called.
@@ -453,21 +443,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       StaticAttributeTag = StaticAttributeTag{}) {
     setStaticAttribute(
         poolThreadName_, std::string{cpuWorkerThreadName}, source);
-  }
-
-  /**
-   * DEPRECATED: Set the prefix for naming the CPU (pool) threads. Not set by
-   * default. Must be called before serve() for it to take effect
-   * ignored if setThreadManager() is called.
-   * Use setCPUWorkerThreadName instead.
-   *
-   * @param poolThreadName thread name prefix
-   */
-  inline void setPoolThreadName(
-      const std::string& poolThreadName,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{}) {
-    setCPUWorkerThreadName(poolThreadName, source);
   }
 
   /**
@@ -709,35 +684,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * DEPRECATED: Set the number of IO worker threads
-   * Use setNumIOWorkerThreads instead.
-   *
-   * @param number of IO worker threads
-   */
-  inline void setNWorkerThreads(
-      size_t nWorkers,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{}) {
-    setNumIOWorkerThreads(nWorkers, source);
-  }
-
-  /**
    * Get the number of IO worker threads
    *
    * @return number of IO worker threads
    */
   size_t getNumIOWorkerThreads() const final {
     return nWorkers_.get();
-  }
-
-  /**
-   * DEPRECATED: Get the number of IO worker threads
-   * Use getNumIOWorkerThreads instead.
-   *
-   * @return number of IO worker threads
-   */
-  inline size_t getNWorkerThreads() {
-    return getNumIOWorkerThreads();
   }
 
   /**
@@ -759,20 +711,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * DEPRECATED: Set the number of CPU (pool) threads
-   * Only valid if you do not also set a threadmanager.
-   * Use setNumCPUWorkerThreads instead.
-   *
-   * @param number of CPU (pool) threads
-   */
-  inline void setNPoolThreads(
-      size_t nPoolThreads,
-      AttributeSource source = AttributeSource::OVERRIDE,
-      StaticAttributeTag = StaticAttributeTag{}) {
-    setNumCPUWorkerThreads(nPoolThreads, source);
-  }
-
-  /**
    * Get the number of CPU (pool) threads
    *
    * @return number of CPU (pool) threads
@@ -780,16 +718,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   size_t getNumCPUWorkerThreads() const {
     auto nCPUWorkers = nPoolThreads_.get();
     return nCPUWorkers ? nCPUWorkers : T_ASYNC_DEFAULT_WORKER_THREADS;
-  }
-
-  /**
-   * DEPRECATED: Get the number of CPU (pool) threads
-   * Use getNumCPUWorkerThreads instead.
-   *
-   * @return number of CPU (pool) threads
-   */
-  inline size_t getNPoolThreads() {
-    return getNumCPUWorkerThreads();
   }
 
   /**
