@@ -178,7 +178,8 @@ std::shared_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
   auto runner =
-      std::make_shared<detail::TestClientRunner<AsyncClientT>>(std::move(apf));
+      std::make_shared<apache::thrift::detail::TestClientRunner<AsyncClientT>>(
+          std::move(apf));
   runner->client = injectFault
       ? runner->runner.template newClientWithFaultInjection<AsyncClientT>(
             std::move(injectFault), nullptr, RocketClientChannel::newChannel)

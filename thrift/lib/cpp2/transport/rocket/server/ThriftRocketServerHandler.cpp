@@ -48,6 +48,8 @@
 
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);
 
+THRIFT_FLAG_DEFINE_int64(monitoring_over_user_logging_sample_rate, 0);
+
 namespace apache {
 namespace thrift {
 namespace rocket {
@@ -57,6 +59,23 @@ thread_local uint32_t ThriftRocketServerHandler::sample_{0};
 namespace {
 bool isMetadataValid(const RequestRpcMetadata& metadata) {
   return metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref();
+}
+
+bool isMonitoringMethod(std::string_view methodName) {
+  static const folly::sorted_vector_set<std::string_view>&
+      monitoringMethodNames = *new folly::sorted_vector_set<std::string_view>{
+          "getCounters",
+          "getRegexCounters",
+          "getSelectedCounters",
+          "getCounter",
+          "getExportedValues",
+          "getSelectedExportedValues",
+          "getRegexExportedValues",
+          "getExportedValue",
+          "getRegexCountersCompressed",
+          "getCountersCompressed",
+      };
+  return monitoringMethodNames.count(methodName) > 0;
 }
 } // namespace
 
@@ -407,6 +426,19 @@ void ThriftRocketServerHandler::handleRequestCommon(
   if (UNLIKELY(samplingStatus.isEnabled())) {
     timestamps.readEnd = readEnd;
     timestamps.processBegin = std::chrono::steady_clock::now();
+  }
+
+  // Log monitoring methods that are called over non-monitoring interface so
+  // that they can be migrated.
+  LoggingSampler monitoringLogSampler{
+      THRIFT_FLAG(monitoring_over_user_logging_sample_rate)};
+  if (UNLIKELY(monitoringLogSampler.isSampled())) {
+    if (LIKELY(connContext_.getInterfaceKind() != InterfaceKind::MONITORING)) {
+      if (UNLIKELY(isMonitoringMethod(request->getMethodName()))) {
+        THRIFT_CONNECTION_EVENT(monitoring_over_user)
+            .logSampled(connContext_, monitoringLogSampler);
+      }
+    }
   }
 
   if (serverConfigs_) {
