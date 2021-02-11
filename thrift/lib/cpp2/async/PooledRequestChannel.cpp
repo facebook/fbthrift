@@ -244,7 +244,7 @@ void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
             implPtr = impl_](auto&& keepAlive) mutable {
         auto* channel = implPtr->get(*keepAlive);
         if (channel) {
-          channel->terminateInteraction(std::move(id));
+          (*channel)->terminateInteraction(std::move(id));
         } else {
           // channel is only null if nothing was ever sent on that evb,
           // in which case server doesn't know about this interaction
@@ -256,7 +256,11 @@ void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {
   DCHECK(evb.inRunningEventBaseThread());
 
-  return impl_->getOrCreateFn(evb, [this, &evb] { return implCreator_(evb); });
+  return *impl_->getOrCreateFn(evb, [this, &evb] {
+    auto ptr = implCreator_(evb);
+    DCHECK(!!ptr);
+    return ptr;
+  });
 }
 } // namespace thrift
 } // namespace apache
