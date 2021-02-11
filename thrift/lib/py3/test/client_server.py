@@ -57,6 +57,10 @@ class Handler(TestingServiceInterface):
             ctx.set_header("contextvar", "true")
         return "Testing"
 
+    async def getMethodName(self) -> str:
+        ctx = get_context()
+        return ctx.method_name
+
     async def shutdown(self) -> None:
         pass
 
@@ -136,6 +140,10 @@ class ClientServerTests(unittest.TestCase):
                         "Testing", await client.getName(rpc_options=options)
                     )
                     self.assertEqual("true", options.read_headers["contextvar"])
+                    self.assertEqual(
+                        "getMethodName",
+                        await client.getMethodName(),
+                    )
 
         loop.run_until_complete(inner_test())
 

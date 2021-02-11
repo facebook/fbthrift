@@ -44,6 +44,9 @@ class Handler(TestingServiceInterface):
     async def getName(self) -> str:
         return "Testing"
 
+    async def getMethodName(self) -> str:
+        return "Testing"
+
     async def shutdown(self) -> None:
         pass
 

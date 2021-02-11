@@ -283,6 +283,7 @@ struct ComplexRef {
 
 service TestingService {
   string getName();
+  string getMethodName();
   oneway void shutdown();
   bool invert(1: bool value);
   i32 complex_action(

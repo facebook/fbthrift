@@ -356,3 +356,7 @@ cdef class RequestContext:
 
     def set_header(self, str key not None, str value not None):
         self._ctx.getHeader().setHeader(key.encode('utf-8'), value.encode('utf-8'))
+
+    @property
+    def method_name(ConnectionContext self):
+        return self._ctx.getMethodName().decode('utf-8')

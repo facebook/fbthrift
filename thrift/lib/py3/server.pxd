@@ -149,6 +149,7 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         Cpp2ConnContext* getConnectionContext()
         cPriority getCallPriority()
         THeader* getHeader()
+        string getMethodName()
 
 cdef class AsyncProcessorFactory:
     cdef shared_ptr[cAsyncProcessorFactory] _cpp_obj
