@@ -144,7 +144,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   struct StaticAttributeTag {};
   /**
-   * Tag type for ServerAttributeStatic setters. Setters marked with this tag
+   * Tag type for ServerAttributeDynamic setters. Setters marked with this tag
    * type can be called even after the server has started processing requests.
    * The corresponding value will be dynamically updated.
    */
