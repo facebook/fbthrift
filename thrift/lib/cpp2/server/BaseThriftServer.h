@@ -126,6 +126,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     std::optional<std::string> serviceFramework;
     std::optional<std::string> wrapper;
     std::optional<std::string> languageFramework;
+    std::optional<std::set<std::string>> modules;
+
+    void addModule(std::string_view name) {
+      if (!modules) {
+        modules.emplace();
+      }
+
+      modules->emplace(name);
+    }
   };
 
   /**
