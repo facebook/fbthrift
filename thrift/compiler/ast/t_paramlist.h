@@ -31,33 +31,18 @@ class t_paramlist : public t_struct {
   }
 
   t_field* get_stream_field() {
-    return has_stream_field ? members_[0].get() : nullptr;
+    return has_stream_field_ ? members_[0].get() : nullptr;
   }
 
-  void set_stream_field(std::unique_ptr<t_field> stream_field) {
-    assert(!has_stream_field);
-    assert(stream_field->get_type()->is_streamresponse());
-
-    // Add as the first member.
-    members_raw_.insert(members_raw_.begin(), stream_field.get());
-    members_in_id_order_.insert(
-        members_in_id_order_.begin(), stream_field.get());
-    members_.insert(members_.begin(), std::move(stream_field));
-    has_stream_field = true;
-  }
+  void set_stream_field(std::unique_ptr<t_field> stream_field);
 
  private:
   // not stored as a normal member, as it's not serialized like a normal
   // field into the pargs struct
-  bool has_stream_field = false;
+  bool has_stream_field_ = false;
 
   friend class t_struct;
-  t_paramlist* clone_DO_NOT_USE() const override {
-    auto clone = std::make_unique<t_paramlist>(program_, name_);
-    cloneStruct(clone.get());
-    clone->has_stream_field = has_stream_field;
-    return clone.release();
-  }
+  t_paramlist* clone_DO_NOT_USE() const override;
 };
 
 } // namespace compiler

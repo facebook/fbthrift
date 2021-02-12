@@ -228,12 +228,12 @@ TEST_F(ValidatorTest, QualifiedInUnion) {
 
   struct_union->append(std::move(field));
 
-  field = std::make_unique<t_field>(&i64type, "baz", 1);
+  field = std::make_unique<t_field>(&i64type, "baz", 2);
   field->set_lineno(6);
   field->set_req(t_field::T_OPTIONAL);
   struct_union->append(std::move(field));
 
-  field = std::make_unique<t_field>(&i64type, "qux", 1);
+  field = std::make_unique<t_field>(&i64type, "qux", 3);
   field->set_lineno(7);
   struct_union->append(std::move(field));
 

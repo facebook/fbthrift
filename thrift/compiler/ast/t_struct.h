@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -53,27 +54,10 @@ class t_struct : public t_type {
     is_union_ = is_union;
   }
 
-  bool append(std::unique_ptr<t_field> elem) {
-    if (!members_.empty()) {
-      members_.back()->set_next(elem.get());
-    }
-    members_raw_.push_back(elem.get());
-    members_.push_back(std::move(elem));
-
-    auto bounds = std::equal_range(
-        members_in_id_order_.begin(),
-        members_in_id_order_.end(),
-        members_.back().get(),
-        // Comparator to sort fields in ascending order by key.
-        [](const t_field* a, const t_field* b) {
-          return a->get_key() < b->get_key();
-        });
-    if (bounds.first != bounds.second) {
-      return false;
-    }
-    members_in_id_order_.insert(bounds.second, members_.back().get());
-    return true;
-  }
+  // Tries to append the given field, the argument is not untouched on failure.
+  bool try_append(std::unique_ptr<t_field>&& elem);
+  // Tries to append the gieven field, throwing an exception on failure.
+  void append(std::unique_ptr<t_field> elem);
 
   const std::vector<t_field*>& get_members() const {
     return members_raw_;
@@ -120,11 +104,7 @@ class t_struct : public t_type {
   }
 
   const t_struct* get_view_parent() const {
-    if (view_parent_ != nullptr) {
-      return view_parent_->get_view_parent();
-    } else {
-      return this;
-    }
+    return view_parent_ != nullptr ? view_parent_->get_view_parent() : this;
   }
 
   bool is_view() const {

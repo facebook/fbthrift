@@ -429,7 +429,7 @@ Definition:
     {
       driver.debug("Definition -> Const");
       if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_const(std::unique_ptr<t_const>($1));
+        driver.program->add_const(own($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -448,7 +448,7 @@ Definition:
       driver.debug("Definition -> Service");
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.scope_cache->add_service(driver.program->get_name() + "." + $1->get_name(), $1);
-        driver.program->add_service(std::unique_ptr<t_service>($1));
+        driver.program->add_service(own($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -459,7 +459,7 @@ Definition:
       driver.debug("Definition -> Interaction");
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.scope_cache->add_interaction(driver.program->get_name() + "." + $1->get_name(), $1);
-        driver.program->add_interaction(std::unique_ptr<t_service>($1));
+        driver.program->add_interaction(own($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -471,7 +471,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Typedef");
       if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_typedef(std::unique_ptr<t_typedef>($1));
+        driver.program->add_typedef(own($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -481,7 +481,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Enum");
       if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_enum(std::unique_ptr<t_enum>($1));
+        driver.program->add_enum(own($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -491,7 +491,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Struct");
       if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_struct(std::unique_ptr<t_struct>($1));
+        driver.program->add_struct(own($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -501,7 +501,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Xception");
       if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->add_xception(std::unique_ptr<t_struct>($1));
+        driver.program->add_xception(own($1));
       } else {
         driver.delete_at_the_end($1);
       }
@@ -579,7 +579,7 @@ EnumDefList:
         driver.scope_cache->add_constant(
             driver.program->get_name() + "." + type_prefix + $2->get_name(), tconst.get());
 
-        $$->append(std::unique_ptr<t_enum_value>($2), std::move(tconst));
+        $$->append(own($2), std::move(tconst));
       } else {
         driver.delete_at_the_end($2);
       }
@@ -646,7 +646,7 @@ Const:
     {
       driver.debug("StructuredAnnotations Const => tok_const FieldType Identifier = ConstValue");
       if (driver.mode == parsing_mode::PROGRAM) {
-        $$ = new t_const(driver.program, $4, $5, std::unique_ptr<t_const_value>($7));
+        $$ = new t_const(driver.program, $4, $5, own($7));
         driver.finish_node($$, LineType::Const, own($8), own($1));
         driver.validate_const_type($$);
         driver.scope_cache->add_constant(driver.program->get_name() + "." + $5, $$);
@@ -749,14 +749,14 @@ ConstListContents:
     {
       driver.debug("ConstListContents => ConstListContents CommaOrSemicolon ConstValue");
       $$ = $1;
-      $$->add_list(std::unique_ptr<t_const_value>($3));
+      $$->add_list(own($3));
     }
 | ConstValue
     {
       driver.debug("ConstListContents => ConstValue");
       $$ = new t_const_value();
       $$->set_list();
-      $$->add_list(std::unique_ptr<t_const_value>($1));
+      $$->add_list(own($1));
     }
 
 ConstMap:
@@ -778,14 +778,14 @@ ConstMapContents:
     {
       driver.debug("ConstMapContents => ConstMapContents CommaOrSemicolon ConstValue : ConstValue");
       $$ = $1;
-      $$->add_map(std::unique_ptr<t_const_value>($3), std::unique_ptr<t_const_value>($5));
+      $$->add_map(own($3), own($5));
     }
 | ConstValue ":" ConstValue
     {
       driver.debug("ConstMapContents => ConstValue : ConstValue");
       $$ = new t_const_value();
       $$->set_map();
-      $$->add_map(std::unique_ptr<t_const_value>($1), std::unique_ptr<t_const_value>($3));
+      $$->add_map(own($1), own($3));
     }
 
 ConstStruct:
@@ -834,14 +834,14 @@ ConstStructContents:
     {
       driver.debug("ConstStructContents => ConstStructContents CommaOrSemicolon Identifier = ConstValue");
       $$ = $1;
-      $$->add_map(std::make_unique<t_const_value>($3), std::unique_ptr<t_const_value>($5));
+      $$->add_map(std::make_unique<t_const_value>($3), own($5));
     }
 | Identifier "=" ConstValue
     {
       driver.debug("ConstStructContents => Identifier = ConstValue");
       $$ = new t_const_value();
       $$->set_map();
-      $$->add_map(std::make_unique<t_const_value>($1), std::unique_ptr<t_const_value>($3));
+      $$->add_map(std::make_unique<t_const_value>($1), own($3));
     }
 
 StructHead:
@@ -995,7 +995,7 @@ FunctionList:
     {
       driver.debug("FunctionList -> FunctionList Function");
       $$ = $1;
-      $1->add_function(std::unique_ptr<t_function>($2));
+      $1->add_function(own($2));
     }
 |
     {
@@ -1018,16 +1018,16 @@ Function:
         func = new t_function(
           static_cast<t_sink*>(rettype),
           $5,
-          std::unique_ptr<t_paramlist>(paramlist),
-          std::unique_ptr<t_struct>($9)
+          own(paramlist),
+          own($9)
         );
       } else {
         func = new t_function(
           rettype,
           $5,
-          std::unique_ptr<t_paramlist>(paramlist),
-          std::unique_ptr<t_struct>($9),
-          std::unique_ptr<t_struct>(streamthrows),
+          own(paramlist),
+          own($9),
+          own(streamthrows),
           $3
         );
       }
@@ -1056,9 +1056,10 @@ ParamList:
     {
       driver.debug("ParamList -> ParamList , Param");
       $$ = $1;
-      if (!($$->append(std::unique_ptr<t_field>($2)))) {
+      auto param = own($2);
+      if (!$$->try_append(std::move(param))) {
         driver.failure("Parameter identifier %d for \"%s\" has already been used",
-                       $2->get_key(), $2->get_name().c_str());
+                       param->get_key(), param->get_name().c_str());
       }
     }
 | EmptyParamList
@@ -1120,9 +1121,10 @@ FieldList:
     {
       driver.debug("FieldList -> FieldList , Field");
       $$ = $1;
-      if (!($$->append(std::unique_ptr<t_field>($2)))) {
+      auto field = own($2);
+      if (!$$->try_append(std::move(field))) {
         driver.failure("Field identifier %d for \"%s\" has already been used",
-                       $2->get_key(), $2->get_name().c_str());
+                       field->get_key(), field->get_name().c_str());
       }
     }
 |
@@ -1156,7 +1158,7 @@ Field:
       $$->set_req($5);
       if ($8) {
         driver.validate_field_value($$, $8);
-        $$->set_value(std::unique_ptr<t_const_value>($8));
+        $$->set_value(own($8));
       }
       driver.finish_node($$, LineType::Field, own($9), own($2));
 
@@ -1295,7 +1297,7 @@ StreamReturnType:
     if (driver.mode == parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);
     } else {
-      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+      driver.program->add_unnamed_type(own($$));
     }
   }
 | tok_stream "<" FieldType Throws ">"
@@ -1307,7 +1309,7 @@ StreamReturnType:
     if (driver.mode == parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);
     } else {
-      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+      driver.program->add_unnamed_type(own($$));
     }
   }
 
@@ -1332,7 +1334,7 @@ SinkReturnType:
       if (driver.mode == parsing_mode::INCLUDES) {
         driver.delete_at_the_end($$);
       } else {
-        driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+        driver.program->add_unnamed_type(own($$));
       }
     }
 SinkFieldType:
@@ -1373,7 +1375,7 @@ FieldType:
           td->annotation_objects_ = std::move($2->annotation_objects_);
           delete $2;
           $$ = td;
-          driver.program->add_unnamed_typedef(std::unique_ptr<t_typedef>{td});
+          driver.program->add_unnamed_typedef(own(td));
         }
         if (!$$) {
           /*
@@ -1383,7 +1385,7 @@ FieldType:
            */
           auto td = new t_typedef(driver.program, $1, driver.scope_cache);
           $$ = td;
-          driver.program->add_placeholder_typedef(std::unique_ptr<t_typedef>{td});
+          driver.program->add_placeholder_typedef(own(td));
           if ($2) {
             $$->annotations_ = std::move($2->annotations_);
             $$->annotation_objects_ = std::move($2->annotation_objects_);
@@ -1404,7 +1406,7 @@ FieldType:
       if (driver.mode == parsing_mode::INCLUDES) {
         driver.delete_at_the_end($$);
       } else {
-        driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+        driver.program->add_unnamed_type(own($$));
       }
     }
 
@@ -1419,7 +1421,7 @@ BaseType: SimpleBaseType TypeAnnotations
         if (driver.mode == parsing_mode::INCLUDES) {
           driver.delete_at_the_end($$);
         } else {
-          driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+          driver.program->add_unnamed_type(own($$));
         }
       } else {
         $$ = $1;
@@ -1578,7 +1580,7 @@ TypeAnnotation:
         driver.program,
         $3,
         $1,
-        std::unique_ptr<t_const_value>($4)
+        own($4)
       );
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.validate_const_type($$->object_val.get());

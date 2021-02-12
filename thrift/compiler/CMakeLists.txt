@@ -34,12 +34,14 @@ ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 add_library(
   compiler_ast
 
+  ast/base_types.cc
   ast/t_annotated.cc
+  ast/t_paramlist.cc
   ast/t_program.cc
+  ast/t_scope.cc
+  ast/t_struct.cc
   ast/t_type.cc
   ast/t_typedef.cc
-  ast/base_types.cc
-  ast/t_scope.cc
   ast/visitor.cc
 )
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES})
