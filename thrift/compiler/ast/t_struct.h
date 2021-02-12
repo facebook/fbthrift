@@ -54,37 +54,29 @@ class t_struct : public t_type {
     is_union_ = is_union;
   }
 
-  // Tries to append the given field, the argument is not untouched on failure.
-  bool try_append(std::unique_ptr<t_field>&& elem);
-  // Tries to append the gieven field, throwing an exception on failure.
-  void append(std::unique_ptr<t_field> elem);
+  // Tries to append the given field, the argument is untouched on failure.
+  bool try_append_field(std::unique_ptr<t_field>&& elem);
 
-  const std::vector<t_field*>& get_members() const {
-    return members_raw_;
+  // Get the fields, in the order they were added.
+  const std::vector<const t_field*>& fields() const {
+    return fields_ordinal_order_;
+  }
+  // Get the fields, ordered by id.
+  const std::vector<const t_field*>& fields_id_order() const {
+    return fields_id_order_;
   }
 
-  const t_field* get_member(const std::string& name) const {
-    auto const result =
-        std::find_if(members_.begin(), members_.end(), [&name](auto const& m) {
-          return m->get_name() == name;
-        });
-    return result == members_.end() ? nullptr : result->get();
+  // Access the field by index, id, or name.
+  t_field* get_field(size_t index) {
+    return fields_.at(index).get();
   }
-
-  const std::vector<t_field*>& get_sorted_members() const {
-    return members_in_id_order_;
+  const t_field* get_field(size_t index) const {
+    return fields_.at(index).get();
   }
-
-  const t_field* get_field_named(const char* name) const {
-    assert(has_field_named(name));
-    for (auto& member : members_) {
-      if (member->get_name() == name) {
-        return member.get();
-      }
-    }
-
-    assert(false);
-    return nullptr;
+  const t_field* get_field_by_id(int32_t id) const;
+  const t_field* get_field_by_name(const std::string& name) const {
+    auto itr = fields_by_name_.find(name);
+    return itr == fields_by_name_.end() ? nullptr : itr->second;
   }
 
   bool is_struct() const override {
@@ -111,26 +103,6 @@ class t_struct : public t_type {
     return view_parent_ != nullptr;
   }
 
-  bool has_field_named(const char* name) const {
-    for (auto const& member : members_) {
-      if (member->get_name() == name) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  bool validate_field(t_field* field) {
-    int key = field->get_key();
-    for (auto const& member : members_) {
-      if (member->get_key() == key) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   std::string get_full_name() const override {
     return make_full_name("struct");
   }
@@ -143,6 +115,21 @@ class t_struct : public t_type {
     return TypeValue::TYPE_STRUCT;
   }
 
+ protected:
+  std::vector<std::unique_ptr<t_field>> fields_;
+  std::vector<const t_field*> fields_ordinal_order_;
+  std::vector<const t_field*> fields_id_order_;
+  std::map<std::string, const t_field*> fields_by_name_;
+
+  bool is_xception_{false};
+  bool is_union_{false};
+
+  const t_struct* view_parent_ = nullptr;
+
+  ////
+  // Everyting below here is for backwards compatiblity, and will be removed.
+  ////
+ public:
   /**
    * Thrift AST nodes are meant to be non-copyable and non-movable, and should
    * never be cloned. This method exists to grand-father specific uses in the
@@ -153,15 +140,38 @@ class t_struct : public t_type {
     return std::unique_ptr<S>(sval->clone_DO_NOT_USE());
   }
 
+  // Tries to append the gieven field, throwing an exception on failure.
+  void append(std::unique_ptr<t_field> elem);
+
+  const t_field* get_field_named(const std::string& name) const {
+    const auto* result = get_field_by_name(name);
+    assert(result != nullptr);
+    return result;
+  }
+
+  const std::vector<t_field*>& get_members() const {
+    return fields_raw_;
+  }
+
+  const std::vector<t_field*>& get_sorted_members() const {
+    return fields_raw_id_order_;
+  }
+
+  const t_field* get_member(const std::string& name) const {
+    return get_field_by_name(name);
+  }
+
+  bool has_field_named(const std::string& name) const {
+    return get_field_by_name(name) != nullptr;
+  }
+
+  bool validate_field(t_field* field) {
+    return get_field_by_id(field->get_key()) == nullptr;
+  }
+
  protected:
-  std::vector<std::unique_ptr<t_field>> members_;
-  std::vector<t_field*> members_raw_;
-  std::vector<t_field*> members_in_id_order_;
-
-  bool is_xception_{false};
-  bool is_union_{false};
-
-  const t_struct* view_parent_ = nullptr;
+  std::vector<t_field*> fields_raw_;
+  std::vector<t_field*> fields_raw_id_order_;
 
   virtual t_struct* clone_DO_NOT_USE() const {
     auto clone = std::make_unique<t_struct>(program_, name_);
@@ -173,7 +183,7 @@ class t_struct : public t_type {
     clone->set_xception(is_xception_);
     clone->set_union(is_union_);
     clone->set_view_parent(view_parent_);
-    for (auto const& field : members_) {
+    for (auto const& field : fields_) {
       clone->append(field->clone_DO_NOT_USE());
     }
   }

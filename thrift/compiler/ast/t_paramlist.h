@@ -31,7 +31,7 @@ class t_paramlist : public t_struct {
   }
 
   t_field* get_stream_field() {
-    return has_stream_field_ ? members_[0].get() : nullptr;
+    return has_stream_field_ ? fields_[0].get() : nullptr;
   }
 
   void set_stream_field(std::unique_ptr<t_field> stream_field);

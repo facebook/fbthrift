@@ -28,20 +28,27 @@ void t_paramlist::set_stream_field(std::unique_ptr<t_field> stream_field) {
 
   // Inject as the first member.
   // TODO(afuller): Don't modify struct's private data.
-  members_raw_.insert(members_raw_.begin(), stream_field.get());
-  members_in_id_order_.insert(members_in_id_order_.begin(), stream_field.get());
-  members_.insert(members_.begin(), std::move(stream_field));
+  fields_raw_.insert(fields_raw_.begin(), stream_field.get());
+  fields_raw_id_order_.insert(fields_raw_id_order_.begin(), stream_field.get());
+
+  if (!stream_field->get_name().empty()) {
+    fields_by_name_.emplace(stream_field->get_name(), stream_field.get());
+  }
+  fields_ordinal_order_.emplace(
+      fields_ordinal_order_.begin(), stream_field.get());
+  fields_id_order_.insert(fields_id_order_.begin(), stream_field.get());
+  fields_.insert(fields_.begin(), std::move(stream_field));
   has_stream_field_ = true;
 }
 
 t_paramlist* t_paramlist::clone_DO_NOT_USE() const {
   auto clone = std::make_unique<t_paramlist>(program_, name_);
-  auto itr = members_.begin();
+  auto itr = fields_.begin();
   std::unique_ptr<t_field> stream_field;
   if (has_stream_field_) {
     stream_field = (*itr++)->clone_DO_NOT_USE();
   }
-  for (; itr != members_.end(); ++itr) {
+  for (; itr != fields_.end(); ++itr) {
     clone->append((*itr)->clone_DO_NOT_USE());
   }
   if (has_stream_field_) {

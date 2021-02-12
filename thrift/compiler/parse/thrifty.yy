@@ -1057,7 +1057,7 @@ ParamList:
       driver.debug("ParamList -> ParamList , Param");
       $$ = $1;
       auto param = own($2);
-      if (!$$->try_append(std::move(param))) {
+      if (!$$->try_append_field(std::move(param))) {
         driver.failure("Parameter identifier %d for \"%s\" has already been used",
                        param->get_key(), param->get_name().c_str());
       }
@@ -1122,7 +1122,7 @@ FieldList:
       driver.debug("FieldList -> FieldList , Field");
       $$ = $1;
       auto field = own($2);
-      if (!$$->try_append(std::move(field))) {
+      if (!$$->try_append_field(std::move(field))) {
         driver.failure("Field identifier %d for \"%s\" has already been used",
                        field->get_key(), field->get_name().c_str());
       }
