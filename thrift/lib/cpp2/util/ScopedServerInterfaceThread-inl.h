@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
+#pragma once
+
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 namespace apache {
 namespace thrift {
 namespace detail {
+
 class FaultInjectionChannel : public RequestChannel {
  public:
   FaultInjectionChannel(
@@ -161,7 +165,7 @@ ScopedServerInterfaceThread::newClientWithFaultInjection(
     folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
   return std::make_unique<AsyncClientT>(
-      RequestChannel::Ptr(new apache::thrift::detail::FaultInjectionChannel(
+      RequestChannel::Ptr(new ::apache::thrift::detail::FaultInjectionChannel(
           PooledRequestChannel::newChannel(
               callbackExecutor,
               folly::getIOExecutor(),
@@ -177,9 +181,8 @@ template <class AsyncClientT>
 std::shared_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
-  auto runner =
-      std::make_shared<apache::thrift::detail::TestClientRunner<AsyncClientT>>(
-          std::move(apf));
+  auto runner = std::make_shared<
+      ::apache::thrift::detail::TestClientRunner<AsyncClientT>>(std::move(apf));
   runner->client = injectFault
       ? runner->runner.template newClientWithFaultInjection<AsyncClientT>(
             std::move(injectFault), nullptr, RocketClientChannel::newChannel)
