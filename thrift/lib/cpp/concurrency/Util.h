@@ -116,13 +116,6 @@ class Util {
   static int64_t currentTime() {
     return currentTimeTicks(MS_PER_S);
   }
-
-  /**
-   * Get current time as micros from epoch
-   */
-  static int64_t currentTimeUsec() {
-    return currentTimeTicks(US_PER_S);
-  }
 };
 
 } // namespace concurrency
