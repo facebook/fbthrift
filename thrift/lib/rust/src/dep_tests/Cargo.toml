@@ -5,7 +5,6 @@ edition = "2018"
 version = "0.0.1+unstable"
 authors = ['Facebook', 'Daniel Xu <dlxu@fb.com>']
 license = "Apache-2.0"
-include = ["*.rs"]
 
 [[test]]
 name = "fbthrift_test"
