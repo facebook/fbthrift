@@ -363,7 +363,8 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
         self.buffer
     }
 
-    fn peek_bytes(&self, len: usize) -> Option<&[u8]> {
+    // TODO(azw): codify this (number of bytes left) in the Deserializer API
+    pub fn peek_bytes(&self, len: usize) -> Option<&[u8]> {
         if self.buffer.bytes().len() >= len {
             Some(&self.buffer.bytes()[..len])
         } else {
