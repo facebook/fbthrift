@@ -24,7 +24,7 @@ class AnEnumA_enum_traits {
 
  private:
   struct __fbthrift_value_FIELDA {
-    using name = __fbthrift_strings_enums::FIELDA;
+    using name = __fbthrift_strings_enums::__fbthrift_hash_add540b98778029e7e62e524687274b838fd038b831b1885b93d5ab01ef056e6;
     using value = std::integral_constant<type, type::FIELDA>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -56,13 +56,13 @@ class AnEnumB_enum_traits {
 
  private:
   struct __fbthrift_value_FIELDA {
-    using name = __fbthrift_strings_enums::FIELDA;
+    using name = __fbthrift_strings_enums::__fbthrift_hash_add540b98778029e7e62e524687274b838fd038b831b1885b93d5ab01ef056e6;
     using value = std::integral_constant<type, type::FIELDA>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_FIELDB {
-    using name = __fbthrift_strings_enums::FIELDB;
+    using name = __fbthrift_strings_enums::__fbthrift_hash_148e782df34993fa930a9b389d5a4e2e92f13610cf6adbeab2abf6e095f5ef89;
     using value = std::integral_constant<type, type::FIELDB>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -97,7 +97,7 @@ class AnEnumC_enum_traits {
 
  private:
   struct __fbthrift_value_FIELDC {
-    using name = __fbthrift_strings_enums::FIELDC;
+    using name = __fbthrift_strings_enums::__fbthrift_hash_c907b51dbf720f8a71d2fe895168681ecaffaeebee9402b24e9da11816eda10e;
     using value = std::integral_constant<type, type::FIELDC>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -129,7 +129,7 @@ class AnEnumD_enum_traits {
 
  private:
   struct __fbthrift_value_FIELDD {
-    using name = __fbthrift_strings_enums::FIELDD;
+    using name = __fbthrift_strings_enums::__fbthrift_hash_40d9038a74e2f4da3d23c9054a5c003163af248d9a0c6133ac130acfc5d4122d;
     using value = std::integral_constant<type, type::FIELDD>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -161,7 +161,7 @@ class AnEnumE_enum_traits {
 
  private:
   struct __fbthrift_value_FIELDA {
-    using name = __fbthrift_strings_enums::FIELDA;
+    using name = __fbthrift_strings_enums::__fbthrift_hash_add540b98778029e7e62e524687274b838fd038b831b1885b93d5ab01ef056e6;
     using value = std::integral_constant<type, type::FIELDA>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };

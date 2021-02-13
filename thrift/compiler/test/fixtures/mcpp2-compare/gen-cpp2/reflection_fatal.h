@@ -19,6 +19,8 @@ namespace __fbthrift_refl {
 
 struct __fbthrift_strings_reflection {
   using ReflectionStruct = ::fatal::sequence<char, 'R', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n', 'S', 't', 'r', 'u', 'c', 't'>;
+  using __fbthrift_hash_3771bb4a30ec558c9eb3f50ad099ccd5f3d96bb1c90530f7a87815bcda2fb15b = ::fatal::sequence<char, 'R', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n', 'S', 't', 'r', 'u', 'c', 't'>;
+  using __fbthrift_hash_a003c1938a10c7729197e235918bdad7bc795ec24b19f24c66e4f24374526ad8 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
   using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
   using reflection = ::fatal::sequence<char, 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
 };

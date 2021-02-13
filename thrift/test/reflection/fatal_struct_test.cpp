@@ -629,5 +629,12 @@ TEST(fatal_struct, field_ref_getter) {
       std::is_same<std::unique_ptr<structA>&, decltype(ref(a))>::value, "");
 }
 
+TEST(fatal_struct, renamed_field) {
+  using meta = apache::thrift::reflect_struct<struct_with_renamed_field>;
+  using fmeta = meta::member::boring_cxx_name;
+  auto fname = fatal::to_instance<std::string, fmeta::name>();
+  EXPECT_EQ("fancy.idl.name", fname);
+}
+
 } // namespace cpp_reflection
 } // namespace test_cpp2

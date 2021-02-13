@@ -16,6 +16,8 @@
 
 #include <algorithm>
 
+#include <openssl/sha.h>
+
 #include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/util.h>
 
@@ -278,6 +280,26 @@ std::string get_gen_type_class_with_indirection(t_type const& type) {
   get_gen_type_class_options opts;
   opts.gen_indirection = true;
   return get_gen_type_class_(type, opts);
+}
+
+std::string sha256_hex(std::string const& in) {
+  std::uint8_t mid[SHA256_DIGEST_LENGTH];
+  SHA256_CTX hasher;
+  SHA256_Init(&hasher);
+  SHA256_Update(&hasher, in.data(), in.size());
+  SHA256_Final(mid, &hasher);
+
+  constexpr auto alpha = "0123456789abcdef";
+
+  std::string out;
+  for (size_t i = 0; i < SHA256_DIGEST_LENGTH; ++i) {
+    constexpr auto mask = std::uint8_t(std::uint8_t(~std::uint8_t(0)) >> 4);
+    auto hi = (mid[i] >> 4) & mask;
+    auto lo = (mid[i] >> 0) & mask;
+    out.push_back(alpha[hi]);
+    out.push_back(alpha[lo]);
+  }
+  return out;
 }
 
 } // namespace cpp2

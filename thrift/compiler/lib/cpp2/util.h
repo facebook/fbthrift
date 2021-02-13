@@ -121,6 +121,8 @@ std::vector<mixin_member> get_mixins_and_members(const t_struct& strct);
 std::string get_gen_type_class(t_type const& type);
 std::string get_gen_type_class_with_indirection(t_type const& type);
 
+std::string sha256_hex(std::string const& in);
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

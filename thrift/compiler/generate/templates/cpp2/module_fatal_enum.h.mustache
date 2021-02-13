@@ -38,7 +38,7 @@ class <%enum:name%>_enum_traits {
  private:
   <%#enum:values%>
   struct __fbthrift_value_<%enumValue:cpp_name%> {
-    using name = __fbthrift_strings_<%program:name%>::<%enumValue:cpp_name%>;
+    using name = __fbthrift_strings_<%program:name%>::<%enumValue:name_hash%>;
     using value = std::integral_constant<type, type::<%enumValue:cpp_name%>>;
     <%#enumValue:fatal_annotations?%>
     class annotations {

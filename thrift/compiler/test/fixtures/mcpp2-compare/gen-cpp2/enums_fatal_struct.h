@@ -32,7 +32,7 @@ class SomeStruct_struct_traits {
 
   struct __fbthrift_member_fieldA {
     using owner = ::facebook::ns::qwerty::SomeStruct;
-    using name = __fbthrift_strings_enums::fieldA;
+    using name = __fbthrift_strings_enums::__fbthrift_hash_a003c1938a10c7729197e235918bdad7bc795ec24b19f24c66e4f24374526ad8;
     using type = int32_t;
     static constexpr ::apache::thrift::field_id_t id = 1;
     static constexpr auto optional = ::apache::thrift::optionality::required_of_writer;

@@ -26,13 +26,13 @@ class NoExceptMoveUnion_tenum_traits {
 
  private:
   struct __fbthrift_value_string_field {
-    using name = __fbthrift_strings_module::string_field;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d7c1fe391a8c7ceef0c2058b8163eae35e230e7ecf528cd41a09100a7aaa4fce;
     using value = std::integral_constant<type, type::string_field>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_i32_field {
-    using name = __fbthrift_strings_module::i32_field;
+    using name = __fbthrift_strings_module::__fbthrift_hash_463a2e2458322db48dcc738e6792afe31f8fb1883cd29f0ecae7719e93de0818;
     using value = std::integral_constant<type, type::i32_field>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -69,7 +69,7 @@ class NoExceptMoveUnion_variant_traits {
   };
 
   struct __fbthrift_member_string_field {
-    using name = __fbthrift_strings_module::string_field;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d7c1fe391a8c7ceef0c2058b8163eae35e230e7ecf528cd41a09100a7aaa4fce;
     static constexpr ::apache::thrift::field_id_t id = 1;
     using type_class = ::apache::thrift::type_class::string;
     struct setter {
@@ -91,7 +91,7 @@ class NoExceptMoveUnion_variant_traits {
     };
   };
   struct __fbthrift_member_i32_field {
-    using name = __fbthrift_strings_module::i32_field;
+    using name = __fbthrift_strings_module::__fbthrift_hash_463a2e2458322db48dcc738e6792afe31f8fb1883cd29f0ecae7719e93de0818;
     static constexpr ::apache::thrift::field_id_t id = 2;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {

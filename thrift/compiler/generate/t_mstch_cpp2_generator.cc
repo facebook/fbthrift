@@ -323,12 +323,16 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
     register_methods(
         this,
         {
+            {"enumValue:name_hash", &mstch_cpp2_enum_value::name_hash},
             {"enumValue:cpp_name", &mstch_cpp2_enum_value::cpp_name},
             {"enumValue:fatal_annotations?",
              &mstch_cpp2_enum_value::has_fatal_annotations},
             {"enumValue:fatal_annotations",
              &mstch_cpp2_enum_value::fatal_annotations},
         });
+  }
+  mstch::node name_hash() {
+    return "__fbthrift_hash_" + cpp2::sha256_hex(enm_value_->get_name());
   }
   mstch::node cpp_name() {
     return cpp2::get_name(enm_value_);
@@ -553,6 +557,7 @@ class mstch_cpp2_field : public mstch_field {
     register_methods(
         this,
         {
+            {"field:name_hash", &mstch_cpp2_field::name_hash},
             {"field:index_plus_one", &mstch_cpp2_field::index_plus_one},
             {"field:has_isset?", &mstch_cpp2_field::has_isset},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
@@ -578,6 +583,9 @@ class mstch_cpp2_field : public mstch_field {
             {"field:visibility", &mstch_cpp2_field::visibility},
             {"field:metadata_name", &mstch_cpp2_field::metadata_name},
         });
+  }
+  mstch::node name_hash() {
+    return "__fbthrift_hash_" + cpp2::sha256_hex(field_->get_name());
   }
   mstch::node index_plus_one() {
     return std::to_string(index_ + 1);
@@ -1259,6 +1267,8 @@ class mstch_cpp2_program : public mstch_program {
     // TODO: extra copy
     auto cpp_name = cpp2::get_name(node);
     fatal_strings.emplace(get_fatal_string_short_id(cpp_name), cpp_name);
+    auto hash = cpp2::sha256_hex(node->get_name());
+    fatal_strings.emplace("__fbthrift_hash_" + hash, node->get_name());
     for (const auto& a : node->annotations_) {
       if (!is_annotation_blacklisted_in_fatal(a.first)) {
         fatal_strings.emplace(get_fatal_string_short_id(a.first), a.first);

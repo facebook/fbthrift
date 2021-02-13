@@ -42,7 +42,7 @@ class <%struct:name%>_tenum_traits {
  private:
   <%#struct:fields%>
   struct __fbthrift_value_<%field:cpp_name%> {
-    using name = __fbthrift_strings_<%program:name%>::<%field:cpp_name%>;
+    using name = __fbthrift_strings_<%program:name%>::<%field:name_hash%>;
     using value = std::integral_constant<type, type::<%field:cpp_name%>>;
     <%#field:fatal_annotations?%>
     class annotations {
@@ -111,7 +111,7 @@ class <%struct:name%>_variant_traits {
 
   <%#struct:fields%>
   struct __fbthrift_member_<%field:cpp_name%> {
-    using name = __fbthrift_strings_<%program:name%>::<%field:cpp_name%>;
+    using name = __fbthrift_strings_<%program:name%>::<%field:name_hash%>;
     static constexpr ::apache::thrift::field_id_t id = <%field:key%>;
     using type_class = <%#field:type%><%type:type_class%><%/field:type%>;
     struct setter {

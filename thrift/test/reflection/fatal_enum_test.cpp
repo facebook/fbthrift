@@ -200,5 +200,12 @@ TEST(fatal_enum, field_annotations) {
       field2::map>();
 }
 
+TEST(fatal_struct, renamed_value) {
+  using meta = fatal::enum_traits<enum_with_renamed_value>;
+  using vmeta = meta::member::boring_cxx_name;
+  auto vname = fatal::to_instance<std::string, vmeta::name>();
+  EXPECT_EQ("fancy.idl.name", vname);
+}
+
 } // namespace cpp_reflection
 } // namespace test_cpp2

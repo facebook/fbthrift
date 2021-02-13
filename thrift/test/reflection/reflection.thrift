@@ -58,6 +58,10 @@ enum enum3 {
   _now.with.an.underscore = "_now.with.an.underscore",
 )
 
+enum enum_with_renamed_value {
+  fancy.idl.name = 7 (cpp.name = "boring_cxx_name"),
+}
+
 union union1 {
   1: i32 ui;
   2: double ud;
@@ -471,4 +475,12 @@ struct hasRefSharedConst {
 
 struct StructWithIOBuf {
   1: binary (cpp.type = "std::unique_ptr<folly::IOBuf>") buf;
+}
+
+struct struct_with_renamed_field {
+  1: string fancy.idl.name (cpp.name = "boring_cxx_name");
+}
+
+union union_with_renamed_field {
+  1: string fancy.idl.name (cpp.name = "boring_cxx_name");
 }

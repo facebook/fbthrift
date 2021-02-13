@@ -41,11 +41,13 @@ FATAL_S(python_ns, "test_py.cpp_reflection");
 FATAL_S(enum1s, "enum1");
 FATAL_S(enum2s, "enum2");
 FATAL_S(enum3s, "enum3");
+FATAL_S(enum_with_renamed_values, "enum_with_renamed_value");
 
 FATAL_S(union1s, "union1");
 FATAL_S(union2s, "union2");
 FATAL_S(union3s, "union3");
 FATAL_S(unionAs, "unionA");
+FATAL_S(union_with_renamed_fields, "union_with_renamed_field");
 
 FATAL_S(structAs, "structA");
 FATAL_S(structBs, "structB");
@@ -63,6 +65,7 @@ FATAL_S(hasRefUnique_name, "hasRefUnique");
 FATAL_S(hasRefShared_name, "hasRefShared");
 FATAL_S(hasRefSharedConst_name, "hasRefSharedConst");
 FATAL_S(StructWithIOBufs, "StructWithIOBuf");
+FATAL_S(struct_with_renamed_fields, "struct_with_renamed_field");
 
 FATAL_S(constant1s, "constant1");
 FATAL_S(constant2s, "constant2");
@@ -154,6 +157,7 @@ TEST(fatal, metadata) {
           fatal::pair<enum1, enum1s>,
           fatal::pair<enum2, enum2s>,
           fatal::pair<enum3, enum3s>,
+          fatal::pair<enum_with_renamed_value, enum_with_renamed_values>,
           fatal::pair<enum_with_special_names, enum_with_special_namess>>,
       info::enums>();
 
@@ -164,7 +168,8 @@ TEST(fatal, metadata) {
           fatal::pair<union3, union3s>,
           fatal::pair<unionA, unionAs>,
           fatal::pair<union_with_special_names, union_with_special_namess>,
-          fatal::pair<variantHasRefUnique, variantHasRefUniques>>,
+          fatal::pair<variantHasRefUnique, variantHasRefUniques>,
+          fatal::pair<union_with_renamed_field, union_with_renamed_fields>>,
       info::unions>();
 
   EXPECT_SAME<
@@ -185,6 +190,7 @@ TEST(fatal, metadata) {
           fatal::pair<hasRefShared, hasRefShared_name>,
           fatal::pair<hasRefSharedConst, hasRefSharedConst_name>,
           fatal::pair<StructWithIOBuf, StructWithIOBufs>,
+          fatal::pair<struct_with_renamed_field, struct_with_renamed_fields>,
           fatal::pair<my_structA, my_structAs>>,
       info::structs>();
 

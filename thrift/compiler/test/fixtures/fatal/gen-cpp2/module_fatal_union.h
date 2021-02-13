@@ -27,25 +27,25 @@ class union1_tenum_traits {
 
  private:
   struct __fbthrift_value_ui {
-    using name = __fbthrift_strings_module::ui;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d3ef7de562f9a4a34a9a0b05a112955fdecdd0102c3faae5eeb03a195091a5e4;
     using value = std::integral_constant<type, type::ui>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ud {
-    using name = __fbthrift_strings_module::ud;
+    using name = __fbthrift_strings_module::__fbthrift_hash_f0a85e81a4cdc5b0ffa6b6bae7015c00d3cc730d040c955859d3b797aaba3ce9;
     using value = std::integral_constant<type, type::ud>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_us {
-    using name = __fbthrift_strings_module::us;
+    using name = __fbthrift_strings_module::__fbthrift_hash_79adb2a2fce5c6ba215fe5f27f532d4e7edbac4b6a5e09e1ef3a08084a904621;
     using value = std::integral_constant<type, type::us>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ue {
-    using name = __fbthrift_strings_module::ue;
+    using name = __fbthrift_strings_module::__fbthrift_hash_85acc813ca3f42681de514657891e97b6ebd7aa4bd2673d2b5f82694b40c6c8f;
     using value = std::integral_constant<type, type::ue>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -90,7 +90,7 @@ class union1_variant_traits {
   };
 
   struct __fbthrift_member_ui {
-    using name = __fbthrift_strings_module::ui;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d3ef7de562f9a4a34a9a0b05a112955fdecdd0102c3faae5eeb03a195091a5e4;
     static constexpr ::apache::thrift::field_id_t id = 1;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -112,7 +112,7 @@ class union1_variant_traits {
     };
   };
   struct __fbthrift_member_ud {
-    using name = __fbthrift_strings_module::ud;
+    using name = __fbthrift_strings_module::__fbthrift_hash_f0a85e81a4cdc5b0ffa6b6bae7015c00d3cc730d040c955859d3b797aaba3ce9;
     static constexpr ::apache::thrift::field_id_t id = 3;
     using type_class = ::apache::thrift::type_class::floating_point;
     struct setter {
@@ -134,7 +134,7 @@ class union1_variant_traits {
     };
   };
   struct __fbthrift_member_us {
-    using name = __fbthrift_strings_module::us;
+    using name = __fbthrift_strings_module::__fbthrift_hash_79adb2a2fce5c6ba215fe5f27f532d4e7edbac4b6a5e09e1ef3a08084a904621;
     static constexpr ::apache::thrift::field_id_t id = 5;
     using type_class = ::apache::thrift::type_class::string;
     struct setter {
@@ -156,7 +156,7 @@ class union1_variant_traits {
     };
   };
   struct __fbthrift_member_ue {
-    using name = __fbthrift_strings_module::ue;
+    using name = __fbthrift_strings_module::__fbthrift_hash_85acc813ca3f42681de514657891e97b6ebd7aa4bd2673d2b5f82694b40c6c8f;
     static constexpr ::apache::thrift::field_id_t id = 7;
     using type_class = ::apache::thrift::type_class::enumeration;
     struct setter {
@@ -230,25 +230,25 @@ class union2_tenum_traits {
 
  private:
   struct __fbthrift_value_ui_2 {
-    using name = __fbthrift_strings_module::ui_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_497628310b36454ee3c06bb4744bfbf5c3cebf94d600e9a1620d67fd4b61d850;
     using value = std::integral_constant<type, type::ui_2>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ud_2 {
-    using name = __fbthrift_strings_module::ud_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_4cb122443fdcc93ce02d0854f1bcf045042abde666a2a2cb80ca70374f4a0930;
     using value = std::integral_constant<type, type::ud_2>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_us_2 {
-    using name = __fbthrift_strings_module::us_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_80bd95dcdc13bec67066fba5d2acd08024cc8ffd55f03138a4951bb85f354248;
     using value = std::integral_constant<type, type::us_2>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ue_2 {
-    using name = __fbthrift_strings_module::ue_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_13009491225878db05f406520b14390fe348bed9c4c2f8de4ef0a6f2932b6b74;
     using value = std::integral_constant<type, type::ue_2>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -293,7 +293,7 @@ class union2_variant_traits {
   };
 
   struct __fbthrift_member_ui_2 {
-    using name = __fbthrift_strings_module::ui_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_497628310b36454ee3c06bb4744bfbf5c3cebf94d600e9a1620d67fd4b61d850;
     static constexpr ::apache::thrift::field_id_t id = 1;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -315,7 +315,7 @@ class union2_variant_traits {
     };
   };
   struct __fbthrift_member_ud_2 {
-    using name = __fbthrift_strings_module::ud_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_4cb122443fdcc93ce02d0854f1bcf045042abde666a2a2cb80ca70374f4a0930;
     static constexpr ::apache::thrift::field_id_t id = 2;
     using type_class = ::apache::thrift::type_class::floating_point;
     struct setter {
@@ -337,7 +337,7 @@ class union2_variant_traits {
     };
   };
   struct __fbthrift_member_us_2 {
-    using name = __fbthrift_strings_module::us_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_80bd95dcdc13bec67066fba5d2acd08024cc8ffd55f03138a4951bb85f354248;
     static constexpr ::apache::thrift::field_id_t id = 3;
     using type_class = ::apache::thrift::type_class::string;
     struct setter {
@@ -359,7 +359,7 @@ class union2_variant_traits {
     };
   };
   struct __fbthrift_member_ue_2 {
-    using name = __fbthrift_strings_module::ue_2;
+    using name = __fbthrift_strings_module::__fbthrift_hash_13009491225878db05f406520b14390fe348bed9c4c2f8de4ef0a6f2932b6b74;
     static constexpr ::apache::thrift::field_id_t id = 4;
     using type_class = ::apache::thrift::type_class::enumeration;
     struct setter {
@@ -433,25 +433,25 @@ class union3_tenum_traits {
 
  private:
   struct __fbthrift_value_ui_3 {
-    using name = __fbthrift_strings_module::ui_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d41376c43861639db2ca279ddb2f7954772a666a9606ce6eac17a6b243dd4876;
     using value = std::integral_constant<type, type::ui_3>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ud_3 {
-    using name = __fbthrift_strings_module::ud_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_7829368593e3b9447417533a3a4e6889f618e7f0b9d7d36f5757bd8a6f0197ed;
     using value = std::integral_constant<type, type::ud_3>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_us_3 {
-    using name = __fbthrift_strings_module::us_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_c33849b4e01fee9484569654c522b031dd13986d15225cd70e29ec883629fc30;
     using value = std::integral_constant<type, type::us_3>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ue_3 {
-    using name = __fbthrift_strings_module::ue_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_e5fec08b647c2ff2233c3b2beac96b38cd76a6d9baba07a35c27786104a69b58;
     using value = std::integral_constant<type, type::ue_3>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -496,7 +496,7 @@ class union3_variant_traits {
   };
 
   struct __fbthrift_member_ui_3 {
-    using name = __fbthrift_strings_module::ui_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d41376c43861639db2ca279ddb2f7954772a666a9606ce6eac17a6b243dd4876;
     static constexpr ::apache::thrift::field_id_t id = 1;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -518,7 +518,7 @@ class union3_variant_traits {
     };
   };
   struct __fbthrift_member_ud_3 {
-    using name = __fbthrift_strings_module::ud_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_7829368593e3b9447417533a3a4e6889f618e7f0b9d7d36f5757bd8a6f0197ed;
     static constexpr ::apache::thrift::field_id_t id = 2;
     using type_class = ::apache::thrift::type_class::floating_point;
     struct setter {
@@ -540,7 +540,7 @@ class union3_variant_traits {
     };
   };
   struct __fbthrift_member_us_3 {
-    using name = __fbthrift_strings_module::us_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_c33849b4e01fee9484569654c522b031dd13986d15225cd70e29ec883629fc30;
     static constexpr ::apache::thrift::field_id_t id = 3;
     using type_class = ::apache::thrift::type_class::string;
     struct setter {
@@ -562,7 +562,7 @@ class union3_variant_traits {
     };
   };
   struct __fbthrift_member_ue_3 {
-    using name = __fbthrift_strings_module::ue_3;
+    using name = __fbthrift_strings_module::__fbthrift_hash_e5fec08b647c2ff2233c3b2beac96b38cd76a6d9baba07a35c27786104a69b58;
     static constexpr ::apache::thrift::field_id_t id = 4;
     using type_class = ::apache::thrift::type_class::enumeration;
     struct setter {
@@ -636,31 +636,31 @@ class unionA_tenum_traits {
 
  private:
   struct __fbthrift_value_i {
-    using name = __fbthrift_strings_module::i;
+    using name = __fbthrift_strings_module::__fbthrift_hash_de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7;
     using value = std::integral_constant<type, type::i>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_d {
-    using name = __fbthrift_strings_module::d;
+    using name = __fbthrift_strings_module::__fbthrift_hash_18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4;
     using value = std::integral_constant<type, type::d>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_s {
-    using name = __fbthrift_strings_module::s;
+    using name = __fbthrift_strings_module::__fbthrift_hash_043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89;
     using value = std::integral_constant<type, type::s>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_e {
-    using name = __fbthrift_strings_module::e;
+    using name = __fbthrift_strings_module::__fbthrift_hash_3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea;
     using value = std::integral_constant<type, type::e>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_a {
-    using name = __fbthrift_strings_module::a;
+    using name = __fbthrift_strings_module::__fbthrift_hash_ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb;
     using value = std::integral_constant<type, type::a>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -709,7 +709,7 @@ class unionA_variant_traits {
   };
 
   struct __fbthrift_member_i {
-    using name = __fbthrift_strings_module::i;
+    using name = __fbthrift_strings_module::__fbthrift_hash_de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7;
     static constexpr ::apache::thrift::field_id_t id = 1;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -731,7 +731,7 @@ class unionA_variant_traits {
     };
   };
   struct __fbthrift_member_d {
-    using name = __fbthrift_strings_module::d;
+    using name = __fbthrift_strings_module::__fbthrift_hash_18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4;
     static constexpr ::apache::thrift::field_id_t id = 2;
     using type_class = ::apache::thrift::type_class::floating_point;
     struct setter {
@@ -753,7 +753,7 @@ class unionA_variant_traits {
     };
   };
   struct __fbthrift_member_s {
-    using name = __fbthrift_strings_module::s;
+    using name = __fbthrift_strings_module::__fbthrift_hash_043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89;
     static constexpr ::apache::thrift::field_id_t id = 3;
     using type_class = ::apache::thrift::type_class::string;
     struct setter {
@@ -775,7 +775,7 @@ class unionA_variant_traits {
     };
   };
   struct __fbthrift_member_e {
-    using name = __fbthrift_strings_module::e;
+    using name = __fbthrift_strings_module::__fbthrift_hash_3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea;
     static constexpr ::apache::thrift::field_id_t id = 4;
     using type_class = ::apache::thrift::type_class::enumeration;
     struct setter {
@@ -797,7 +797,7 @@ class unionA_variant_traits {
     };
   };
   struct __fbthrift_member_a {
-    using name = __fbthrift_strings_module::a;
+    using name = __fbthrift_strings_module::__fbthrift_hash_ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb;
     static constexpr ::apache::thrift::field_id_t id = 5;
     using type_class = ::apache::thrift::type_class::structure;
     struct setter {
@@ -895,169 +895,169 @@ class union_with_special_names_tenum_traits {
 
  private:
   struct __fbthrift_value_get {
-    using name = __fbthrift_strings_module::get;
+    using name = __fbthrift_strings_module::__fbthrift_hash_2998b3232d29e8dc5a78d97a32ce83f556f3ed31b057077503df05641dd79158;
     using value = std::integral_constant<type, type::get>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_getter {
-    using name = __fbthrift_strings_module::getter;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d665a09c95ebbc703485c7ba5384857536ca16f6c11fdd054e61c7dd81780731;
     using value = std::integral_constant<type, type::getter>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_lists {
-    using name = __fbthrift_strings_module::lists;
+    using name = __fbthrift_strings_module::__fbthrift_hash_4c14c4a453f98de4bd1c972fea7850adb52822c5823e5da287085165afcf2020;
     using value = std::integral_constant<type, type::lists>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_maps {
-    using name = __fbthrift_strings_module::maps;
+    using name = __fbthrift_strings_module::__fbthrift_hash_325392e8dd2826a53a9a35b7a7f8d71683cd27ebc2c73fee85dab673bc909b67;
     using value = std::integral_constant<type, type::maps>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_name {
-    using name = __fbthrift_strings_module::name;
+    using name = __fbthrift_strings_module::__fbthrift_hash_82a3537ff0dbce7eec35d69edc3a189ee6f17d82f353a553f9aa96cb0be3ce89;
     using value = std::integral_constant<type, type::name>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_name_to_value {
-    using name = __fbthrift_strings_module::name_to_value;
+    using name = __fbthrift_strings_module::__fbthrift_hash_f1fe8005943a7730e9a95f7262952d9717a6f43a21d1b55daeb44de82fe4aac6;
     using value = std::integral_constant<type, type::name_to_value>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_names {
-    using name = __fbthrift_strings_module::names;
+    using name = __fbthrift_strings_module::__fbthrift_hash_aeb24056810d3d1f1e8afee61a0bc0028556eb0fb49a215ae5eb1b970cad0315;
     using value = std::integral_constant<type, type::names>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_prefix_tree {
-    using name = __fbthrift_strings_module::prefix_tree;
+    using name = __fbthrift_strings_module::__fbthrift_hash_73e6f38f012472999e156878234ad5221469eb764ff0d39af613e045fdfe8c1e;
     using value = std::integral_constant<type, type::prefix_tree>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_sets {
-    using name = __fbthrift_strings_module::sets;
+    using name = __fbthrift_strings_module::__fbthrift_hash_82c6db3dbf4ab47132dfd1d9d1bf8525edccb48512c8647b7a2067e0417537c0;
     using value = std::integral_constant<type, type::sets>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_setter {
-    using name = __fbthrift_strings_module::setter;
+    using name = __fbthrift_strings_module::__fbthrift_hash_bab6f4cdfe399488eecf37176422c2f336b814c3b5f3d174987098ebb289f1fc;
     using value = std::integral_constant<type, type::setter>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_str {
-    using name = __fbthrift_strings_module::str;
+    using name = __fbthrift_strings_module::__fbthrift_hash_8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a;
     using value = std::integral_constant<type, type::str>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_strings {
-    using name = __fbthrift_strings_module::strings;
+    using name = __fbthrift_strings_module::__fbthrift_hash_e967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6;
     using value = std::integral_constant<type, type::strings>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_type {
-    using name = __fbthrift_strings_module::type;
+    using name = __fbthrift_strings_module::__fbthrift_hash_1303c06b0b014d0ce7b988ab173a13f31227d417058ff4bbe6f8c222b4ad913c;
     using value = std::integral_constant<type, type::type>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_value {
-    using name = __fbthrift_strings_module::value;
+    using name = __fbthrift_strings_module::__fbthrift_hash_cd42404d52ad55ccfa9aca4adc828aa5800ad9d385a0671fbcbf724118320619;
     using value = std::integral_constant<type, type::value>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_value_to_name {
-    using name = __fbthrift_strings_module::value_to_name;
+    using name = __fbthrift_strings_module::__fbthrift_hash_144043bd95cdcc1f080ed3a117286f0b33b4738179cbcd0384c6ba14f086965e;
     using value = std::integral_constant<type, type::value_to_name>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_values {
-    using name = __fbthrift_strings_module::values;
+    using name = __fbthrift_strings_module::__fbthrift_hash_89445ea08b55421faa49919a5fd272e9a520f701b479d6084847e161ca5b7711;
     using value = std::integral_constant<type, type::values>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_id {
-    using name = __fbthrift_strings_module::id;
+    using name = __fbthrift_strings_module::__fbthrift_hash_a56145270ce6b3bebd1dd012b73948677dd618d496488bc608a3cb43ce3547dd;
     using value = std::integral_constant<type, type::id>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_ids {
-    using name = __fbthrift_strings_module::ids;
+    using name = __fbthrift_strings_module::__fbthrift_hash_23466067f626bf8a3ae1a39cdf81f31303220b331b5064c6e00662dcc34deaaf;
     using value = std::integral_constant<type, type::ids>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_descriptor {
-    using name = __fbthrift_strings_module::descriptor;
+    using name = __fbthrift_strings_module::__fbthrift_hash_194b520dc30384b3fc233e123778835e2adc362d91c6e33015ed3db2379d7ea1;
     using value = std::integral_constant<type, type::descriptor>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_descriptors {
-    using name = __fbthrift_strings_module::descriptors;
+    using name = __fbthrift_strings_module::__fbthrift_hash_12b2fdc0a0ffd6ce4b7d74d080cd8dcb1c60b6e8f365fb46ac511c46cc31f1c1;
     using value = std::integral_constant<type, type::descriptors>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_key {
-    using name = __fbthrift_strings_module::key;
+    using name = __fbthrift_strings_module::__fbthrift_hash_2c70e12b7a0646f92279f427c7b38e7334d8e5389cff167a1dc30e73f826b683;
     using value = std::integral_constant<type, type::key>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_keys {
-    using name = __fbthrift_strings_module::keys;
+    using name = __fbthrift_strings_module::__fbthrift_hash_48a53f0774c8ceff574a1fdcb0d470dbd382b3db273cff4344b6d39d5379c923;
     using value = std::integral_constant<type, type::keys>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_annotation {
-    using name = __fbthrift_strings_module::annotation;
+    using name = __fbthrift_strings_module::__fbthrift_hash_82264186375a8f31cd4bf73c2862777622f7616b039abfb62fb7c7eea19f9d07;
     using value = std::integral_constant<type, type::annotation>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_annotations {
-    using name = __fbthrift_strings_module::annotations;
+    using name = __fbthrift_strings_module::__fbthrift_hash_295df243c6a33994c30b6e16aea7ce6155a24b44514ec956d7a09ae0a4cb0411;
     using value = std::integral_constant<type, type::annotations>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_member {
-    using name = __fbthrift_strings_module::member;
+    using name = __fbthrift_strings_module::__fbthrift_hash_e31ab643c44f7a0ec824b59d1194d60dac334200d845e61d2d289daa0f087ea4;
     using value = std::integral_constant<type, type::member>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_members {
-    using name = __fbthrift_strings_module::members;
+    using name = __fbthrift_strings_module::__fbthrift_hash_17373ca1c7634a4be4a13861a891abd975ec916caab8f3dcf5142fa4997d0b96;
     using value = std::integral_constant<type, type::members>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_field {
-    using name = __fbthrift_strings_module::field;
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
     using value = std::integral_constant<type, type::field>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_fields {
-    using name = __fbthrift_strings_module::fields;
+    using name = __fbthrift_strings_module::__fbthrift_hash_bfe5d697162d90298c67c1933908741be8395838aa230408e04710909c576806;
     using value = std::integral_constant<type, type::fields>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -1198,7 +1198,7 @@ class union_with_special_names_variant_traits {
   };
 
   struct __fbthrift_member_get {
-    using name = __fbthrift_strings_module::get;
+    using name = __fbthrift_strings_module::__fbthrift_hash_2998b3232d29e8dc5a78d97a32ce83f556f3ed31b057077503df05641dd79158;
     static constexpr ::apache::thrift::field_id_t id = 1;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1220,7 +1220,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_getter {
-    using name = __fbthrift_strings_module::getter;
+    using name = __fbthrift_strings_module::__fbthrift_hash_d665a09c95ebbc703485c7ba5384857536ca16f6c11fdd054e61c7dd81780731;
     static constexpr ::apache::thrift::field_id_t id = 2;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1242,7 +1242,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_lists {
-    using name = __fbthrift_strings_module::lists;
+    using name = __fbthrift_strings_module::__fbthrift_hash_4c14c4a453f98de4bd1c972fea7850adb52822c5823e5da287085165afcf2020;
     static constexpr ::apache::thrift::field_id_t id = 3;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1264,7 +1264,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_maps {
-    using name = __fbthrift_strings_module::maps;
+    using name = __fbthrift_strings_module::__fbthrift_hash_325392e8dd2826a53a9a35b7a7f8d71683cd27ebc2c73fee85dab673bc909b67;
     static constexpr ::apache::thrift::field_id_t id = 4;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1286,7 +1286,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_name {
-    using name = __fbthrift_strings_module::name;
+    using name = __fbthrift_strings_module::__fbthrift_hash_82a3537ff0dbce7eec35d69edc3a189ee6f17d82f353a553f9aa96cb0be3ce89;
     static constexpr ::apache::thrift::field_id_t id = 5;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1308,7 +1308,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_name_to_value {
-    using name = __fbthrift_strings_module::name_to_value;
+    using name = __fbthrift_strings_module::__fbthrift_hash_f1fe8005943a7730e9a95f7262952d9717a6f43a21d1b55daeb44de82fe4aac6;
     static constexpr ::apache::thrift::field_id_t id = 6;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1330,7 +1330,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_names {
-    using name = __fbthrift_strings_module::names;
+    using name = __fbthrift_strings_module::__fbthrift_hash_aeb24056810d3d1f1e8afee61a0bc0028556eb0fb49a215ae5eb1b970cad0315;
     static constexpr ::apache::thrift::field_id_t id = 7;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1352,7 +1352,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_prefix_tree {
-    using name = __fbthrift_strings_module::prefix_tree;
+    using name = __fbthrift_strings_module::__fbthrift_hash_73e6f38f012472999e156878234ad5221469eb764ff0d39af613e045fdfe8c1e;
     static constexpr ::apache::thrift::field_id_t id = 8;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1374,7 +1374,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_sets {
-    using name = __fbthrift_strings_module::sets;
+    using name = __fbthrift_strings_module::__fbthrift_hash_82c6db3dbf4ab47132dfd1d9d1bf8525edccb48512c8647b7a2067e0417537c0;
     static constexpr ::apache::thrift::field_id_t id = 9;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1396,7 +1396,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_setter {
-    using name = __fbthrift_strings_module::setter;
+    using name = __fbthrift_strings_module::__fbthrift_hash_bab6f4cdfe399488eecf37176422c2f336b814c3b5f3d174987098ebb289f1fc;
     static constexpr ::apache::thrift::field_id_t id = 10;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1418,7 +1418,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_str {
-    using name = __fbthrift_strings_module::str;
+    using name = __fbthrift_strings_module::__fbthrift_hash_8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a;
     static constexpr ::apache::thrift::field_id_t id = 11;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1440,7 +1440,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_strings {
-    using name = __fbthrift_strings_module::strings;
+    using name = __fbthrift_strings_module::__fbthrift_hash_e967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6;
     static constexpr ::apache::thrift::field_id_t id = 12;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1462,7 +1462,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_type {
-    using name = __fbthrift_strings_module::type;
+    using name = __fbthrift_strings_module::__fbthrift_hash_1303c06b0b014d0ce7b988ab173a13f31227d417058ff4bbe6f8c222b4ad913c;
     static constexpr ::apache::thrift::field_id_t id = 13;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1484,7 +1484,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_value {
-    using name = __fbthrift_strings_module::value;
+    using name = __fbthrift_strings_module::__fbthrift_hash_cd42404d52ad55ccfa9aca4adc828aa5800ad9d385a0671fbcbf724118320619;
     static constexpr ::apache::thrift::field_id_t id = 14;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1506,7 +1506,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_value_to_name {
-    using name = __fbthrift_strings_module::value_to_name;
+    using name = __fbthrift_strings_module::__fbthrift_hash_144043bd95cdcc1f080ed3a117286f0b33b4738179cbcd0384c6ba14f086965e;
     static constexpr ::apache::thrift::field_id_t id = 15;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1528,7 +1528,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_values {
-    using name = __fbthrift_strings_module::values;
+    using name = __fbthrift_strings_module::__fbthrift_hash_89445ea08b55421faa49919a5fd272e9a520f701b479d6084847e161ca5b7711;
     static constexpr ::apache::thrift::field_id_t id = 16;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1550,7 +1550,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_id {
-    using name = __fbthrift_strings_module::id;
+    using name = __fbthrift_strings_module::__fbthrift_hash_a56145270ce6b3bebd1dd012b73948677dd618d496488bc608a3cb43ce3547dd;
     static constexpr ::apache::thrift::field_id_t id = 17;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1572,7 +1572,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_ids {
-    using name = __fbthrift_strings_module::ids;
+    using name = __fbthrift_strings_module::__fbthrift_hash_23466067f626bf8a3ae1a39cdf81f31303220b331b5064c6e00662dcc34deaaf;
     static constexpr ::apache::thrift::field_id_t id = 18;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1594,7 +1594,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_descriptor {
-    using name = __fbthrift_strings_module::descriptor;
+    using name = __fbthrift_strings_module::__fbthrift_hash_194b520dc30384b3fc233e123778835e2adc362d91c6e33015ed3db2379d7ea1;
     static constexpr ::apache::thrift::field_id_t id = 19;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1616,7 +1616,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_descriptors {
-    using name = __fbthrift_strings_module::descriptors;
+    using name = __fbthrift_strings_module::__fbthrift_hash_12b2fdc0a0ffd6ce4b7d74d080cd8dcb1c60b6e8f365fb46ac511c46cc31f1c1;
     static constexpr ::apache::thrift::field_id_t id = 20;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1638,7 +1638,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_key {
-    using name = __fbthrift_strings_module::key;
+    using name = __fbthrift_strings_module::__fbthrift_hash_2c70e12b7a0646f92279f427c7b38e7334d8e5389cff167a1dc30e73f826b683;
     static constexpr ::apache::thrift::field_id_t id = 21;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1660,7 +1660,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_keys {
-    using name = __fbthrift_strings_module::keys;
+    using name = __fbthrift_strings_module::__fbthrift_hash_48a53f0774c8ceff574a1fdcb0d470dbd382b3db273cff4344b6d39d5379c923;
     static constexpr ::apache::thrift::field_id_t id = 22;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1682,7 +1682,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_annotation {
-    using name = __fbthrift_strings_module::annotation;
+    using name = __fbthrift_strings_module::__fbthrift_hash_82264186375a8f31cd4bf73c2862777622f7616b039abfb62fb7c7eea19f9d07;
     static constexpr ::apache::thrift::field_id_t id = 23;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1704,7 +1704,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_annotations {
-    using name = __fbthrift_strings_module::annotations;
+    using name = __fbthrift_strings_module::__fbthrift_hash_295df243c6a33994c30b6e16aea7ce6155a24b44514ec956d7a09ae0a4cb0411;
     static constexpr ::apache::thrift::field_id_t id = 24;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1726,7 +1726,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_member {
-    using name = __fbthrift_strings_module::member;
+    using name = __fbthrift_strings_module::__fbthrift_hash_e31ab643c44f7a0ec824b59d1194d60dac334200d845e61d2d289daa0f087ea4;
     static constexpr ::apache::thrift::field_id_t id = 25;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1748,7 +1748,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_members {
-    using name = __fbthrift_strings_module::members;
+    using name = __fbthrift_strings_module::__fbthrift_hash_17373ca1c7634a4be4a13861a891abd975ec916caab8f3dcf5142fa4997d0b96;
     static constexpr ::apache::thrift::field_id_t id = 26;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1770,7 +1770,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_field {
-    using name = __fbthrift_strings_module::field;
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
     static constexpr ::apache::thrift::field_id_t id = 27;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {
@@ -1792,7 +1792,7 @@ class union_with_special_names_variant_traits {
     };
   };
   struct __fbthrift_member_fields {
-    using name = __fbthrift_strings_module::fields;
+    using name = __fbthrift_strings_module::__fbthrift_hash_bfe5d697162d90298c67c1933908741be8395838aa230408e04710909c576806;
     static constexpr ::apache::thrift::field_id_t id = 28;
     using type_class = ::apache::thrift::type_class::integral;
     struct setter {

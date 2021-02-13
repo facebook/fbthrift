@@ -24,31 +24,31 @@ class has_bitwise_ops_enum_traits {
 
  private:
   struct __fbthrift_value_none {
-    using name = __fbthrift_strings_module::none;
+    using name = __fbthrift_strings_module::__fbthrift_hash_140bedbf9c3f6d56a9846d2ba7088798683f4da0c248231336e6a05679e4fdfe;
     using value = std::integral_constant<type, type::none>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_zero {
-    using name = __fbthrift_strings_module::zero;
+    using name = __fbthrift_strings_module::__fbthrift_hash_f9194e73f9e9459e3450ea10a179cdf77aafa695beecd3b9344a98d111622243;
     using value = std::integral_constant<type, type::zero>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_one {
-    using name = __fbthrift_strings_module::one;
+    using name = __fbthrift_strings_module::__fbthrift_hash_7692c3ad3540bb803c020b3aee66cd8887123234ea0c6e7143c0add73ff431ed;
     using value = std::integral_constant<type, type::one>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_two {
-    using name = __fbthrift_strings_module::two;
+    using name = __fbthrift_strings_module::__fbthrift_hash_3fc4ccfe745870e2c0d99f71f30ff0656c8dedd41cc1d7d3d376b0dbe685e2f3;
     using value = std::integral_constant<type, type::two>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_three {
-    using name = __fbthrift_strings_module::three;
+    using name = __fbthrift_strings_module::__fbthrift_hash_8b5b9db0c13db24256c829aa364aa90c6d2eba318b9232a4ab9313b954d3555f;
     using value = std::integral_constant<type, type::three>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -107,13 +107,13 @@ class is_unscoped_enum_traits {
 
  private:
   struct __fbthrift_value_hello {
-    using name = __fbthrift_strings_module::hello;
+    using name = __fbthrift_strings_module::__fbthrift_hash_2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824;
     using value = std::integral_constant<type, type::hello>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_world {
-    using name = __fbthrift_strings_module::world;
+    using name = __fbthrift_strings_module::__fbthrift_hash_486ea46224d1bb4fb680f34f7c9ad96a8f24ec88be73ea8e5a6c65260e9cb8a7;
     using value = std::integral_constant<type, type::world>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -163,13 +163,13 @@ class MyForwardRefEnum_enum_traits {
 
  private:
   struct __fbthrift_value_ZERO {
-    using name = __fbthrift_strings_module::ZERO;
+    using name = __fbthrift_strings_module::__fbthrift_hash_2bf193b40158e8c527d83d622099b9e835d4eb8350c9fb51344aef93d5068fb4;
     using value = std::integral_constant<type, type::ZERO>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_NONZERO {
-    using name = __fbthrift_strings_module::NONZERO;
+    using name = __fbthrift_strings_module::__fbthrift_hash_ce341f28cce92dd4aef1789ba556e94d03c552eb381fa789efc112a2a7b95913;
     using value = std::integral_constant<type, type::NONZERO>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
@@ -204,19 +204,19 @@ class MyEnumA_enum_traits {
 
  private:
   struct __fbthrift_value_fieldA {
-    using name = __fbthrift_strings_module::fieldA;
+    using name = __fbthrift_strings_module::__fbthrift_hash_a003c1938a10c7729197e235918bdad7bc795ec24b19f24c66e4f24374526ad8;
     using value = std::integral_constant<type, type::fieldA>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldB {
-    using name = __fbthrift_strings_module::fieldB;
+    using name = __fbthrift_strings_module::__fbthrift_hash_c7e10d053d5c1a0a0743c1dfc0a38c439cd181cc30829f18cc684e286d0baf27;
     using value = std::integral_constant<type, type::fieldB>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
   struct __fbthrift_value_fieldC {
-    using name = __fbthrift_strings_module::fieldC;
+    using name = __fbthrift_strings_module::__fbthrift_hash_7a60aa9f6a5416b61206a441ce84695a835326c0edc0c9b86b92b618f29eb9ed;
     using value = std::integral_constant<type, type::fieldC>;
     using annotations = __fbthrift_refl_impl::no_annotations;
   };
