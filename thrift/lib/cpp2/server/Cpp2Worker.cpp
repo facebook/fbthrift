@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <vector>
 
 #include <glog/logging.h>
 
@@ -45,7 +46,7 @@ using std::shared_ptr;
 
 namespace {
 folly::LeakySingleton<folly::EventBaseLocal<RequestsRegistry>> registry;
-}
+} // namespace
 
 void Cpp2Worker::initRequestsRegistry() {
   auto* evb = getEventBase();

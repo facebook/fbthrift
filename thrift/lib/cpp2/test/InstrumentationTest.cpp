@@ -228,11 +228,19 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
 };
 
 namespace {
+static uint32_t getCurrentServerTickCallCount = 0;
+static uint64_t currentTick = 0;
+
 THRIFT_PLUGGABLE_FUNC_SET(
     std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
     createRocketDebugSetupFrameHandler,
     apache::thrift::ThriftServer& thriftServer) {
   return std::make_unique<DebuggingFrameHandler>(thriftServer);
+}
+
+THRIFT_PLUGGABLE_FUNC_SET(uint64_t, getCurrentServerTick) {
+  ++getCurrentServerTickCallCount;
+  return currentTick;
 }
 } // namespace
 
@@ -254,6 +262,10 @@ class RequestInstrumentationTest : public testing::Test {
     return impl_->thriftServer_;
   }
 
+  ThriftServer::ServerSnapshot getServerSnapshot() {
+    return thriftServer()->getServerSnapshot().get();
+  }
+
   std::vector<ThriftServer::RequestSnapshot> getRequestSnapshots(
       size_t reqNum) {
     SCOPE_EXIT {
@@ -261,7 +273,7 @@ class RequestInstrumentationTest : public testing::Test {
     };
     handler()->waitForRequests(reqNum);
 
-    auto serverReqSnapshots = thriftServer()->snapshotActiveRequests().get();
+    auto serverReqSnapshots = std::move(getServerSnapshot().second);
 
     EXPECT_EQ(serverReqSnapshots.size(), reqNum);
     return serverReqSnapshots;
@@ -542,6 +554,29 @@ TEST_F(
   EXPECT_EQ(snapshotHeaders.size(), 0);
 }
 
+TEST_F(RequestInstrumentationTest, snapshotRecentRequestCountsTest) {
+  currentTick = 0;
+  getCurrentServerTickCallCount = 0;
+  folly::Baton baton;
+  handler()->setCallback([&](TestInterface*) { baton.post(); });
+
+  // Make a header request
+  auto headerClient = makeHeaderClient();
+  auto req1 = headerClient->semifuture_runCallback();
+  baton.wait();
+  baton.reset();
+
+  // Make a rocket request
+  auto rocketClient = makeRocketClient();
+  currentTick = 100;
+  auto req2 = rocketClient->semifuture_runCallback();
+  baton.wait();
+
+  auto snapshot = getServerSnapshot();
+  EXPECT_EQ(snapshot.first[0], 1);
+  EXPECT_EQ(snapshot.first[100], 1);
+}
+
 class RequestInstrumentationTestWithFinishedDebugPayload
     : public RequestInstrumentationTest {
  protected:
@@ -581,7 +616,7 @@ TEST_F(
   }
 
   // record and sort snapshots
-  auto reqSnapshots = thriftServer()->snapshotActiveRequests().get();
+  auto reqSnapshots = getServerSnapshot().second;
   baton3.post();
   std::vector<int> idxs;
   idxs.resize(reqSnapshots.size());
@@ -654,14 +689,16 @@ TEST_P(RequestInstrumentationTestP, FinishedRequests) {
     size_t expected = std::min(reqNum, finishedRequestsLimit);
     int i = 0;
     while (i < 5 &&
-           thriftServer()->snapshotActiveRequests().get().size() != expected) {
+           thriftServer()->getServerSnapshot().get().second.size() !=
+               expected) {
       sleep(1);
       i++;
     }
     EXPECT_LT(i, 5);
   }
 
-  auto serverReqSnapshots = thriftServer()->snapshotActiveRequests().get();
+  auto serverSnapshot = thriftServer()->getServerSnapshot().get();
+  auto serverReqSnapshots = serverSnapshot.second;
   EXPECT_EQ(serverReqSnapshots.size(), std::min(reqNum, finishedRequestsLimit));
   for (auto& req : serverReqSnapshots) {
     EXPECT_EQ(req.getMethodName(), "sendRequest");

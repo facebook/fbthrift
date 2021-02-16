@@ -17,12 +17,14 @@
 #ifndef THRIFT_SERVER_H_
 #define THRIFT_SERVER_H_ 1
 
+#include <array>
 #include <atomic>
 #include <chrono>
 #include <cstdlib>
 #include <map>
 #include <mutex>
 #include <optional>
+#include <utility>
 #include <vector>
 
 #include <folly/Memory.h>
@@ -881,7 +883,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     const std::vector<std::string> reqDebugLog_;
     bool startedProcessing_;
   };
-  folly::SemiFuture<std::vector<RequestSnapshot>> snapshotActiveRequests();
+
+  using ServerSnapshot =
+      std::pair<RecentRequestCounter::Values, std::vector<RequestSnapshot>>;
+
+  folly::SemiFuture<ServerSnapshot> getServerSnapshot();
 };
 
 template <typename AcceptorClass, typename SharedSSLContextManagerClass>

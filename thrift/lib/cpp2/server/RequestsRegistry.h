@@ -23,6 +23,7 @@
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
+#include <array>
 #include <chrono>
 
 namespace apache {
@@ -30,6 +31,23 @@ namespace thrift {
 
 class Cpp2RequestContext;
 class ResponseChannelRequest;
+
+// Helper class to track recently received request counts
+class RecentRequestCounter {
+ public:
+  static inline constexpr uint64_t kBuckets = 512ul;
+  using Values = std::array<int32_t, kBuckets>;
+
+  void increment();
+  Values get() const;
+
+ private:
+  uint64_t getCurrentBucket() const;
+
+  mutable uint64_t currentBucket_{};
+  mutable uint64_t lastTick_{};
+  mutable Values counts_{};
+};
 
 /**
  * Stores a list of request stubs in memory.
@@ -226,6 +244,7 @@ class RequestsRegistry {
   }
 
   void registerStub(DebugStub& req) {
+    requestCounter_.increment();
     uint64_t payloadSize = req.getPayloadSize();
     reqActiveList_.push_back(req);
     if (payloadSize > payloadMemoryLimitPerRequest_) {
@@ -235,6 +254,10 @@ class RequestsRegistry {
     reqPayloadList_.push_back(req);
     payloadMemoryUsage_ += payloadSize;
     evictStubPayloads();
+  }
+
+  const RecentRequestCounter& getRequestCounter() const {
+    return requestCounter_;
   }
 
  private:
@@ -267,6 +290,7 @@ class RequestsRegistry {
   ActiveRequestDebugStubList reqFinishedList_;
   uint16_t finishedRequestsCount_{0};
   uint16_t finishedRequestsLimit_;
+  RecentRequestCounter requestCounter_;
 };
 
 } // namespace thrift

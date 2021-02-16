@@ -739,9 +739,11 @@ void ThriftServer::replaceShutdownSocketSet(
   wShutdownSocketSet_ = newSSS;
 }
 
-folly::SemiFuture<std::vector<RequestSnapshot>>
-ThriftServer::snapshotActiveRequests() {
-  std::vector<folly::SemiFuture<std::vector<RequestSnapshot>>> tasks;
+folly::SemiFuture<ThriftServer::ServerSnapshot>
+ThriftServer::getServerSnapshot() {
+  using WorkerSnapshot =
+      std::pair<RecentRequestCounter::Values, std::vector<RequestSnapshot>>;
+  std::vector<folly::SemiFuture<WorkerSnapshot>> tasks;
 
   forEachWorker([&tasks](wangle::Acceptor* acceptor) {
     auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
@@ -749,30 +751,49 @@ ThriftServer::snapshotActiveRequests() {
       return;
     }
     auto fut = folly::via(worker->getEventBase(), [worker]() {
-      std::vector<RequestSnapshot> reqSnapshots;
       auto reqRegistry = worker->getRequestsRegistry();
       DCHECK(reqRegistry);
+      std::vector<RequestSnapshot> requestSnapshots;
       if (reqRegistry != nullptr) {
         for (const auto& stub : reqRegistry->getActive()) {
-          reqSnapshots.emplace_back(stub);
+          requestSnapshots.emplace_back(stub);
         }
         for (const auto& stub : reqRegistry->getFinished()) {
-          reqSnapshots.emplace_back(stub);
+          requestSnapshots.emplace_back(stub);
         }
       }
-      return reqSnapshots;
+      return std::make_pair(
+          worker->getRequestsRegistry()->getRequestCounter().get(),
+          std::move(requestSnapshots));
     });
     tasks.emplace_back(std::move(fut));
   });
 
   return folly::collect(tasks.begin(), tasks.end())
-      .deferValue([](std::vector<std::vector<RequestSnapshot>> results) {
-        std::vector<RequestSnapshot> flat_result;
-        for (auto& vec : results) {
-          std::move(vec.begin(), vec.end(), std::back_inserter(flat_result));
-        }
-        return flat_result;
-      });
+      .deferValue(
+          [](std::vector<WorkerSnapshot> workerSnapshots) -> ServerSnapshot {
+            ServerSnapshot ret{};
+
+            // Sum all request counts
+            size_t numRequests = 0;
+            for (const auto& workerSnapshot : workerSnapshots) {
+              for (uint64_t i = 0; i < ret.first.size(); ++i) {
+                ret.first[i] += workerSnapshot.first[i];
+              }
+              numRequests += workerSnapshot.second.size();
+            }
+
+            // Move all RequestSnapshots to ServerSnapshot
+            ret.second.reserve(numRequests);
+            for (auto& workerSnapshot : workerSnapshots) {
+              auto& requests = workerSnapshot.second;
+              std::move(
+                  requests.begin(),
+                  requests.end(),
+                  std::back_inserter(ret.second));
+            }
+            return ret;
+          });
 }
 
 folly::observer::Observer<std::list<std::string>>

@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 
 #include <fmt/format.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <atomic>
 
@@ -69,7 +70,47 @@ folly::Synchronized<RegistryIdManager>& registryIdManager() {
   return *registryIdManagerPtr;
 }
 
+THRIFT_PLUGGABLE_FUNC_REGISTER(uint64_t, getCurrentServerTick) {
+  // Returns the current "tick" of the Thrift server -- a monotonically
+  // increasing counter that effectively determines the size of the time
+  // interval for each bucket in the RecentRequestCounter.
+  return 0;
+}
 } // namespace
+
+void RecentRequestCounter::increment() {
+  counts_[getCurrentBucket()] += 1;
+}
+
+RecentRequestCounter::Values RecentRequestCounter::get() const {
+  Values ret;
+  uint64_t currentBucket = getCurrentBucket();
+  uint64_t i = currentBucket + kBuckets;
+
+  for (auto& val : ret) {
+    val = counts_[i-- % kBuckets];
+  }
+
+  return ret;
+}
+
+uint64_t RecentRequestCounter::getCurrentBucket() const {
+  // Remove old request counts from counts_ and update lastTick_
+  uint64_t currentTick = THRIFT_PLUGGABLE_FUNC(getCurrentServerTick)();
+
+  if (lastTick_ < currentTick) {
+    uint64_t tickDiff = currentTick - lastTick_;
+    uint64_t ticksToClear = tickDiff < kBuckets ? tickDiff : kBuckets;
+
+    while (ticksToClear) {
+      counts_[(lastTick_ + ticksToClear--) % kBuckets] = 0;
+    }
+    lastTick_ = currentTick;
+    currentBucket_ = lastTick_ % kBuckets;
+  }
+
+  return currentBucket_;
+}
 
 RequestsRegistry::RequestsRegistry(
     uint64_t requestPayloadMem,
