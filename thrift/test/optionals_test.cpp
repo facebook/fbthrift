@@ -330,50 +330,6 @@ TEST(OptionalsTest, emplace) {
       });
 }
 
-TEST(OptionalsTest, FollyOptionalConversion) {
-  cpp2::HasOptionals obj;
-
-  obj.int64Opt_ref() = 1;
-  EXPECT_TRUE(obj.int64Opt_ref().has_value());
-  EXPECT_EQ(obj.int64Opt_ref().value(), 1);
-
-  folly::Optional<int64_t> f;
-  fromFollyOptional(obj.int64Opt_ref(), f);
-  EXPECT_FALSE(obj.int64Opt_ref().has_value());
-  EXPECT_EQ(copyToFollyOptional(obj.int64Opt_ref()), f);
-
-  fromFollyOptional(obj.int64Opt_ref(), f = 2);
-  EXPECT_EQ(obj.int64Opt_ref().value(), 2);
-  EXPECT_EQ(copyToFollyOptional(obj.int64Opt_ref()), f);
-
-  auto foo = [](const folly::Optional<int64_t>& opt) { return opt; };
-  EXPECT_EQ(foo(copyToFollyOptional(std::as_const(obj).int64Opt_ref())), f);
-
-  fromFollyOptional(obj.int64Opt_ref(), folly::Optional<int64_t>{3});
-  EXPECT_EQ(obj.int64Opt_ref().value(), 3);
-
-  static_assert(std::is_same_v<
-                decltype(obj.int64Opt_ref()),
-                apache::thrift::optional_field_ref<int64_t&>>);
-  static_assert(std::is_same_v<
-                decltype(copyToFollyOptional(obj.int64Opt_ref())),
-                folly::Optional<int64_t>>);
-  static_assert(std::is_same_v<
-                decltype(moveToFollyOptional(obj.int64Opt_ref())),
-                folly::Optional<int64_t>>);
-  static_assert(
-      std::is_same_v<
-          decltype(copyToFollyOptional(std::as_const(obj).int64Opt_ref())),
-          folly::Optional<int64_t>>);
-
-  static_assert(!std::is_constructible_v<
-                apache::thrift::optional_field_ref<int&>,
-                folly::Optional<int>>);
-  static_assert(!std::is_convertible_v<
-                folly::Optional<int>,
-                apache::thrift::optional_field_ref<int&>>);
-}
-
 TEST(DeprecatedOptionalField, NulloptComparisons) {
   cpp2::HasOptionals obj;
 
