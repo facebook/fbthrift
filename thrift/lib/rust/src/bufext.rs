@@ -30,12 +30,6 @@ impl BufExt for Cursor<Bytes> {
     }
 }
 
-impl BufExt for Cursor<bytes_old::Bytes> {
-    fn reset(self) -> Self {
-        Cursor::new(self.into_inner())
-    }
-}
-
 pub trait BufMutExt: BufMut {
     type Final: Send + 'static;
 
