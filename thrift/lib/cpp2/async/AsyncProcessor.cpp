@@ -87,7 +87,7 @@ void AsyncProcessor::destroyAllInteractions(
 bool GeneratedAsyncProcessor::createInteraction(
     ResponseChannelRequest::UniquePtr& req,
     int64_t id,
-    const std::string& name,
+    std::string&& name,
     Cpp2RequestContext& ctx,
     concurrency::ThreadManager* tm,
     folly::EventBase& eb,
@@ -130,7 +130,7 @@ bool GeneratedAsyncProcessor::createInteraction(
 
   folly::via(
       tm,
-      [=, eb = &eb, ctx = &ctx] {
+      [=, eb = &eb, ctx = &ctx, name = std::move(name)] {
         si->setEventBase(eb);
         si->setThreadManager(tm);
         si->setRequestContext(ctx);
@@ -267,7 +267,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
       } else if (!createInteraction(
                      req,
                      interactionId,
-                     *interactionCreate->interactionName_ref(),
+                     std::move(*interactionCreate->interactionName_ref()),
                      *ctx,
                      tm,
                      *eb,

@@ -225,7 +225,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   bool createInteraction(
       ResponseChannelRequest::UniquePtr& req,
       int64_t id,
-      const std::string& name,
+      std::string&& name,
       Cpp2RequestContext& ctx,
       concurrency::ThreadManager* tm,
       folly::EventBase& eb,
