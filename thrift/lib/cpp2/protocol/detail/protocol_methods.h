@@ -632,7 +632,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         protocol.kSortKeys()) {
       std::vector<typename Type::const_iterator> iters;
       iters.reserve(out.size());
-      for (auto it = out.begin(); it != out.end(); ++it) {
+      for (auto it = out.begin(), end = out.end(); it != end; ++it) {
         iters.push_back(it);
       }
       std::sort(
@@ -748,7 +748,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
         protocol.kSortKeys()) {
       std::vector<typename Type::const_iterator> iters;
       iters.reserve(out.size());
-      for (auto it = out.begin(); it != out.end(); ++it) {
+      for (auto it = out.begin(), end = out.end(); it != end; ++it) {
         iters.push_back(it);
       }
       std::sort(iters.begin(), iters.end(), [](auto a, auto b) {
