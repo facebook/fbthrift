@@ -396,21 +396,15 @@ struct populator_methods<type_class::structure, Struct> {
 
   template <
       typename Member,
-      typename TypeClass,
       typename MemberType,
       typename Methods,
       typename Enable = void>
   struct field_populator;
 
   // generic field writer
-  template <
-      typename Member,
-      typename TypeClass,
-      typename MemberType,
-      typename Methods>
+  template <typename Member, typename MemberType, typename Methods>
   struct field_populator<
       Member,
-      TypeClass,
       MemberType,
       Methods,
       detail::disable_if_smart_pointer<MemberType>> {
@@ -425,20 +419,15 @@ struct populator_methods<type_class::structure, Struct> {
   template <typename Member, typename PtrType, typename Methods>
   struct field_populator<
       Member,
-      type_class::structure,
       PtrType,
       Methods,
       detail::enable_if_smart_pointer<PtrType>> {
-    using struct_type = typename PtrType::element_type;
+    using element_type = typename PtrType::element_type;
 
     template <typename Rng>
     static void populate(Rng& rng, populator_opts const& opts, PtrType& out) {
-      // `in` is a pointer to a struct.
-      // if not present, and this isn't an optional field,
-      // populate out an empty struct
-      // TODO: always populate this field
-      field_populator<Member, type_class::structure, struct_type, Methods>::
-          populate(rng, opts, detail::deref<PtrType>::clear_and_get(out));
+      field_populator<Member, element_type, Methods>::populate(
+          rng, opts, detail::deref<PtrType>::clear_and_get(out));
     }
   };
 
@@ -468,11 +457,7 @@ struct populator_methods<type_class::structure, Struct> {
 
       Member::mark_set(out, true);
 
-      field_populator<
-          Member,
-          typename Member::type_class,
-          member_type,
-          methods>::populate(rng, opts, got);
+      field_populator<Member, member_type, methods>::populate(rng, opts, got);
     }
   };
 

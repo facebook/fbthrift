@@ -889,7 +889,6 @@ struct protocol_methods<type_class::structure, Struct> {
   template <
       typename Protocol,
       field_id_t MemberFid,
-      typename TypeClass,
       typename MemberType,
       typename Methods,
       std::underlying_type<optionality>::type Optional,
@@ -900,14 +899,12 @@ struct protocol_methods<type_class::structure, Struct> {
   template <
       typename Protocol,
       field_id_t MemberFid,
-      typename TypeClass,
       typename MemberType,
       typename Methods,
       std::underlying_type<optionality>::type Optional>
   struct field_writer<
       Protocol,
       MemberFid,
-      TypeClass,
       MemberType,
       Methods,
       Optional,
@@ -941,12 +938,11 @@ struct protocol_methods<type_class::structure, Struct> {
   struct field_writer<
       Protocol,
       MemberFid,
-      type_class::structure,
       PtrType,
       Methods,
       Optional,
       apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
-    using struct_type =
+    using element_type =
         typename std::remove_const<typename PtrType::element_type>::type;
     using Member = fatal::get<
         typename traits::members,
@@ -955,31 +951,9 @@ struct protocol_methods<type_class::structure, Struct> {
 
     static std::size_t write(Protocol& protocol, PtrType const& in) {
       std::size_t xfer = 0;
-      // `in` is a pointer to a struct.
-      // if not present, and this isn't an optional field,
-      // write out an empty struct
-      if (in) {
-        xfer += field_writer<
-            Protocol,
-            MemberFid,
-            type_class::structure,
-            struct_type,
-            Methods,
-            Optional>::write(protocol, *in);
-      } else {
-        using field_traits = reflect_struct<struct_type>;
-        DVLOG(3) << "empty ref struct, writing blank struct! "
-                 << fatal::z_data<typename field_traits::name>();
-        xfer += protocol.writeFieldBegin(
-            fatal::z_data<typename Member::name>(),
-            protocol_type_of_v<Member>,
-            Member::id::value);
-        xfer += protocol.writeStructBegin(
-            fatal::z_data<typename field_traits::name>());
-        xfer += protocol.writeFieldStop();
-        xfer += protocol.writeStructEnd();
-        xfer += protocol.writeFieldEnd();
-      }
+      xfer +=
+          field_writer<Protocol, MemberFid, element_type, Methods, Optional>::
+              write(protocol, in ? *in : element_type{});
 
       return xfer;
     }
@@ -994,7 +968,6 @@ struct protocol_methods<type_class::structure, Struct> {
   struct field_writer<
       Protocol,
       MemberFid,
-      type_class::structure,
       PtrType,
       Methods,
       static_cast<std::underlying_type<optionality>::type>(
@@ -1005,7 +978,6 @@ struct protocol_methods<type_class::structure, Struct> {
         return field_writer<
             Protocol,
             MemberFid,
-            type_class::structure,
             PtrType,
             Methods,
             static_cast<std::underlying_type<optionality>::type>(
@@ -1039,7 +1011,6 @@ struct protocol_methods<type_class::structure, Struct> {
         xfer += field_writer<
             Protocol,
             Member::id::value,
-            typename Member::type_class,
             member_type,
             methods,
             static_cast<std::underlying_type<optionality>::type>(
@@ -1052,7 +1023,6 @@ struct protocol_methods<type_class::structure, Struct> {
       bool ZeroCopy,
       typename Protocol,
       field_id_t MemberFid,
-      typename TypeClass,
       typename MemberType,
       typename Methods,
       std::underlying_type<optionality>::type,
@@ -1064,7 +1034,6 @@ struct protocol_methods<type_class::structure, Struct> {
       bool ZeroCopy,
       typename Protocol,
       field_id_t MemberFid,
-      typename TypeClass,
       typename MemberType,
       typename Methods,
       std::underlying_type<optionality>::type Optional>
@@ -1072,7 +1041,6 @@ struct protocol_methods<type_class::structure, Struct> {
       ZeroCopy,
       Protocol,
       MemberFid,
-      TypeClass,
       MemberType,
       Methods,
       Optional,
@@ -1106,12 +1074,11 @@ struct protocol_methods<type_class::structure, Struct> {
       ZeroCopy,
       Protocol,
       MemberFid,
-      type_class::structure,
       PtrType,
       Methods,
       Optional,
       apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
-    using struct_type =
+    using element_type =
         typename std::remove_const<typename PtrType::element_type>::type;
     using Member = fatal::get<
         typename traits::members,
@@ -1120,27 +1087,13 @@ struct protocol_methods<type_class::structure, Struct> {
 
     static std::size_t size(Protocol& protocol, PtrType const& in) {
       std::size_t xfer = 0;
-      if (in) {
-        xfer += field_size<
-            ZeroCopy,
-            Protocol,
-            MemberFid,
-            type_class::structure,
-            struct_type,
-            Methods,
-            Optional>::size(protocol, *in);
-      } else {
-        using field_traits = reflect_struct<struct_type>;
-        DVLOG(3) << "empty ref struct, sizing blank struct! "
-                 << fatal::z_data<typename field_traits::name>();
-        xfer += protocol.serializedFieldSize(
-            fatal::z_data<typename Member::name>(),
-            protocol_type_of_v<Member>,
-            Member::id::value);
-        xfer += protocol.serializedStructSize(
-            fatal::z_data<typename field_traits::name>());
-        xfer += protocol.serializedSizeStop();
-      }
+      xfer += field_size<
+          ZeroCopy,
+          Protocol,
+          MemberFid,
+          element_type,
+          Methods,
+          Optional>::size(protocol, in ? *in : element_type{});
 
       return xfer;
     }
@@ -1157,7 +1110,6 @@ struct protocol_methods<type_class::structure, Struct> {
       ZeroCopy,
       Protocol,
       MemberFid,
-      type_class::structure,
       PtrType,
       Methods,
       static_cast<std::underlying_type<optionality>::type>(
@@ -1169,7 +1121,6 @@ struct protocol_methods<type_class::structure, Struct> {
             ZeroCopy,
             Protocol,
             MemberFid,
-            type_class::structure,
             PtrType,
             Methods,
             static_cast<std::underlying_type<optionality>::type>(
@@ -1198,7 +1149,6 @@ struct protocol_methods<type_class::structure, Struct> {
           ZeroCopy,
           Protocol,
           Member::id::value,
-          typename Member::type_class,
           member_type,
           methods,
           static_cast<std::underlying_type<optionality>::type>(

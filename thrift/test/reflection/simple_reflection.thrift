@@ -122,6 +122,7 @@ struct struct7 {
   13: optional smallstruct field13 (cpp2.ref = "true");
   14: required smallstruct field14 (cpp2.ref = "true");
   15: smallstruct field15 (cpp2.ref = "true");
+  16: optional map<i32, string> field16 (cpp.ref);
 }
 
 struct struct8 {
