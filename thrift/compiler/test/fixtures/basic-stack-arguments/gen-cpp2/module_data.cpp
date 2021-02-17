@@ -7,6 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_data.h"
 
+#include <thrift/lib/cpp2/gen/module_data_cpp.h>
+
 namespace apache {
 namespace thrift {
 

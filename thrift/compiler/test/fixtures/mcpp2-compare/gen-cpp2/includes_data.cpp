@@ -7,6 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_data.h"
 
+#include <thrift/lib/cpp2/gen/module_data_cpp.h>
+
 namespace apache {
 namespace thrift {
 
