@@ -43,7 +43,7 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
 <%/function:oneway?%>
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = <%function:cpp_name%>Ctx(rpcOptions);
+  auto ctx = <%function:cpp_name%>Ctx(&rpcOptions);
 <%^function:returns_stream?%>
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
 <%/function:returns_stream?%><%#function:returns_stream?%>
@@ -87,7 +87,7 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
 <%service:name%>AsyncClient::sync_complete_<%function:cpp_name%>(
     apache::thrift::RpcOptions& rpcOptions<%function:comma%> <% > service_common/function_param_list_const%>) {
   apache::thrift::ClientReceiveState returnState;
-  auto ctx = <%function:cpp_name%>Ctx(rpcOptions);
+  auto ctx = <%function:cpp_name%>Ctx(&rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();

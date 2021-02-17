@@ -94,7 +94,7 @@ void NestedContainersAsyncClient::mapList(std::unique_ptr<apache::thrift::Reques
 }
 
 void NestedContainersAsyncClient::mapList(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::vector<int32_t>>& p_foo) {
-  auto ctx = mapListCtx(rpcOptions);
+  auto ctx = mapListCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -124,10 +124,10 @@ void NestedContainersAsyncClient::mapListImpl(const apache::thrift::RpcOptions& 
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::mapListCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::mapListCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "NestedContainers.mapList");
@@ -143,7 +143,7 @@ void NestedContainersAsyncClient::sync_mapList(apache::thrift::RpcOptions& rpcOp
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = mapListCtx(rpcOptions);
+  auto ctx = mapListCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   mapListImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);
@@ -261,7 +261,7 @@ void NestedContainersAsyncClient::mapSet(std::unique_ptr<apache::thrift::Request
 }
 
 void NestedContainersAsyncClient::mapSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<int32_t, ::std::set<int32_t>>& p_foo) {
-  auto ctx = mapSetCtx(rpcOptions);
+  auto ctx = mapSetCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -291,10 +291,10 @@ void NestedContainersAsyncClient::mapSetImpl(const apache::thrift::RpcOptions& r
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::mapSetCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::mapSetCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "NestedContainers.mapSet");
@@ -310,7 +310,7 @@ void NestedContainersAsyncClient::sync_mapSet(apache::thrift::RpcOptions& rpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = mapSetCtx(rpcOptions);
+  auto ctx = mapSetCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   mapSetImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);
@@ -428,7 +428,7 @@ void NestedContainersAsyncClient::listMap(std::unique_ptr<apache::thrift::Reques
 }
 
 void NestedContainersAsyncClient::listMap(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<int32_t, int32_t>>& p_foo) {
-  auto ctx = listMapCtx(rpcOptions);
+  auto ctx = listMapCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -458,10 +458,10 @@ void NestedContainersAsyncClient::listMapImpl(const apache::thrift::RpcOptions& 
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::listMapCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::listMapCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "NestedContainers.listMap");
@@ -477,7 +477,7 @@ void NestedContainersAsyncClient::sync_listMap(apache::thrift::RpcOptions& rpcOp
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = listMapCtx(rpcOptions);
+  auto ctx = listMapCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   listMapImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);
@@ -595,7 +595,7 @@ void NestedContainersAsyncClient::listSet(std::unique_ptr<apache::thrift::Reques
 }
 
 void NestedContainersAsyncClient::listSet(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<int32_t>>& p_foo) {
-  auto ctx = listSetCtx(rpcOptions);
+  auto ctx = listSetCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -625,10 +625,10 @@ void NestedContainersAsyncClient::listSetImpl(const apache::thrift::RpcOptions& 
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::listSetCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::listSetCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "NestedContainers.listSet");
@@ -644,7 +644,7 @@ void NestedContainersAsyncClient::sync_listSet(apache::thrift::RpcOptions& rpcOp
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = listSetCtx(rpcOptions);
+  auto ctx = listSetCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   listSetImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);
@@ -762,7 +762,7 @@ void NestedContainersAsyncClient::turtles(std::unique_ptr<apache::thrift::Reques
 }
 
 void NestedContainersAsyncClient::turtles(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& p_foo) {
-  auto ctx = turtlesCtx(rpcOptions);
+  auto ctx = turtlesCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -792,10 +792,10 @@ void NestedContainersAsyncClient::turtlesImpl(const apache::thrift::RpcOptions& 
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::turtlesCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> NestedContainersAsyncClient::turtlesCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "NestedContainers.turtles");
@@ -811,7 +811,7 @@ void NestedContainersAsyncClient::sync_turtles(apache::thrift::RpcOptions& rpcOp
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = turtlesCtx(rpcOptions);
+  auto ctx = turtlesCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   turtlesImpl(rpcOptions, ctx, std::move(wrappedCallback), p_foo);
   callback.waitUntilDone(evb);

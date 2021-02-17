@@ -33,7 +33,7 @@ void MyServicePrioChildAsyncClient::pang(std::unique_ptr<apache::thrift::Request
 }
 
 void MyServicePrioChildAsyncClient::pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = pangCtx(rpcOptions);
+  auto ctx = pangCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -63,10 +63,10 @@ void MyServicePrioChildAsyncClient::pangImpl(const apache::thrift::RpcOptions& r
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServicePrioChildAsyncClient::pangCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServicePrioChildAsyncClient::pangCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "MyServicePrioChild.pang");
@@ -82,7 +82,7 @@ void MyServicePrioChildAsyncClient::sync_pang(apache::thrift::RpcOptions& rpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = pangCtx(rpcOptions);
+  auto ctx = pangCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   pangImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);

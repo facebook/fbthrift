@@ -592,6 +592,36 @@ TEST_F(CoroutineClientTest, takesRequestParamsCoroClient) {
       .getVia(&eventBase_);
 }
 
+TEST_F(CoroutineClientTest, rpcOptionsCoroClient) {
+  apache::thrift::RpcOptions opts;
+  client_->co_computeSumPrimitive(opts, 12, 408)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, rpcOptionsCancellableCoroClient) {
+  folly::CancellationSource source;
+  apache::thrift::RpcOptions opts;
+  folly::coro::co_withCancellation(
+      source.getToken(), client_->co_computeSumPrimitive(opts, 12, 408))
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, cancellableCoroClient) {
+  folly::CancellationSource source;
+  folly::coro::co_withCancellation(
+      source.getToken(), client_->co_computeSumPrimitive(12, 408))
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
+      .getVia(&eventBase_);
+}
+
 TEST_F(CoroutineClientTest, cancelCoroClient) {
   folly::CancellationSource source;
   source.requestCancellation();
@@ -686,11 +716,11 @@ TEST(CoroutineHeaderTest, customHeaderTest) {
   SumRequest sumRequest;
   sumRequest.x_ref() = 42;
   sumRequest.y_ref() = 123;
-  auto result = folly::coro::blockingWait(
-      client->header_co_computeSum(rpcOptions, sumRequest));
-  auto ptr = folly::get_ptr(result.second->getHeaders(), "header_from_server");
+  auto result =
+      folly::coro::blockingWait(client->co_computeSum(rpcOptions, sumRequest));
+  auto ptr = folly::get_ptr(rpcOptions.getReadHeaders(), "header_from_server");
   EXPECT_NE(nullptr, ptr);
   EXPECT_EQ("1", *ptr);
-  EXPECT_EQ(165, *result.first.sum_ref());
+  EXPECT_EQ(165, *result.sum_ref());
 }
 #endif

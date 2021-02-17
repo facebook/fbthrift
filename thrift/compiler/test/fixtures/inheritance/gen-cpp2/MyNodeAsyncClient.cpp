@@ -33,7 +33,7 @@ void MyNodeAsyncClient::do_mid(std::unique_ptr<apache::thrift::RequestCallback> 
 }
 
 void MyNodeAsyncClient::do_mid(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = do_midCtx(rpcOptions);
+  auto ctx = do_midCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -63,10 +63,10 @@ void MyNodeAsyncClient::do_midImpl(const apache::thrift::RpcOptions& rpcOptions,
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyNodeAsyncClient::do_midCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyNodeAsyncClient::do_midCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "MyNode.do_mid");
@@ -82,7 +82,7 @@ void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = do_midCtx(rpcOptions);
+  auto ctx = do_midCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   do_midImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);

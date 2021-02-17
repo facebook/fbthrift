@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/CancellationToken.h>
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
@@ -367,5 +368,65 @@ makeOneWaySemiFutureCallback(
           std::move(promise), std::move(channel)),
       std::move(future)};
 }
+
+// Does not call onRequestSent for non-oneway methods.
+template <bool oneWay>
+class CancellableRequestClientCallback : public RequestClientCallback {
+  CancellableRequestClientCallback(
+      RequestClientCallback* wrapped,
+      std::shared_ptr<RequestChannel> channel)
+      : callback_(wrapped), channel_(std::move(channel)) {
+    DCHECK(wrapped->isInlineSafe());
+  }
+
+ public:
+  static std::unique_ptr<CancellableRequestClientCallback> create(
+      RequestClientCallback* wrapped,
+      std::shared_ptr<RequestChannel> channel) {
+    return std::unique_ptr<CancellableRequestClientCallback>(
+        new CancellableRequestClientCallback(wrapped, std::move(channel)));
+  }
+
+  static void cancel(std::unique_ptr<CancellableRequestClientCallback> cb) {
+    cb.release()->onResponseError(
+        folly::make_exception_wrapper<folly::OperationCancelled>());
+  }
+
+  void onRequestSent() noexcept override {
+    if (oneWay) {
+      if (auto callback =
+              callback_.exchange(nullptr, std::memory_order_relaxed)) {
+        callback->onRequestSent();
+      } else {
+        delete this;
+      }
+    }
+  }
+  void onResponse(ClientReceiveState&& state) noexcept override {
+    CHECK(!oneWay);
+    if (auto callback =
+            callback_.exchange(nullptr, std::memory_order_relaxed)) {
+      callback->onResponse(std::move(state));
+    } else {
+      delete this;
+    }
+  }
+  void onResponseError(folly::exception_wrapper ew) noexcept override {
+    if (auto callback =
+            callback_.exchange(nullptr, std::memory_order_relaxed)) {
+      callback->onResponseError(std::move(ew));
+    } else {
+      delete this;
+    }
+  }
+
+  bool isInlineSafe() const override {
+    return true;
+  }
+
+ private:
+  std::atomic<RequestClientCallback*> callback_;
+  std::shared_ptr<RequestChannel> channel_;
+};
 } // namespace thrift
 } // namespace apache

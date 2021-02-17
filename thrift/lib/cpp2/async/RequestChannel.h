@@ -216,6 +216,11 @@ class ClientSyncCallback : public RequestClientCallback {
     doneBaton_.wait();
   }
 
+  // This approach avoids an inner coroutine frame
+  folly::fibers::Baton& co_waitUntilDone() {
+    return doneBaton_;
+  }
+
   void onRequestSent() noexcept override {
     if (oneWay) {
       doneBaton_.post();

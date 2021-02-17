@@ -169,5 +169,8 @@ void RequestChannel::releaseInteractionId(InteractionId&& id) {
   id.release();
 }
 
+template class ClientSyncCallback<true>;
+template class ClientSyncCallback<false>;
+
 } // namespace thrift
 } // namespace apache

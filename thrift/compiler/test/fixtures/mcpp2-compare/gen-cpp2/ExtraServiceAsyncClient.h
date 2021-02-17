@@ -48,37 +48,54 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<bool> co_simple_function() {
-    auto task = semifuture_simple_function();
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_simple_function<false>(nullptr);
   }
   template <int = 0>
   folly::coro::Task<bool> co_simple_function(apache::thrift::RpcOptions& rpcOptions) {
-    auto task = semifuture_simple_function(rpcOptions);
+    return co_simple_function<true>(&rpcOptions);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<bool> co_simple_function(apache::thrift::RpcOptions* rpcOptions) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto ctx = simple_functionCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      simple_functionImpl(*rpcOptions, ctx, std::move(wrappedCallback));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      simple_functionImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
     }
-  }
-  template <int = 0>
-  folly::coro::Task<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_co_simple_function(apache::thrift::RpcOptions& rpcOptions) {
-    auto task = header_semifuture_simple_function(rpcOptions);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      co_await callback.co_waitUntilDone();
     }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
+        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      }
+    };
+    bool _return;
+    if (auto ew = recv_wrapped_simple_function(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void simple_function(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -92,7 +109,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void simple_functionT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> simple_functionCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> simple_functionCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void throws_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void throws_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -113,26 +130,52 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_throws_function() {
-    auto task = semifuture_throws_function();
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_throws_function<false>(nullptr);
   }
   template <int = 0>
   folly::coro::Task<void> co_throws_function(apache::thrift::RpcOptions& rpcOptions) {
-    auto task = semifuture_throws_function(rpcOptions);
+    return co_throws_function<true>(&rpcOptions);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_throws_function(apache::thrift::RpcOptions* rpcOptions) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto ctx = throws_functionCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      throws_functionImpl(*rpcOptions, ctx, std::move(wrappedCallback));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      throws_functionImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
+        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      }
+    };
+    if (auto ew = recv_wrapped_throws_function(returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
     }
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void throws_function(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -146,7 +189,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void throws_functionT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> throws_functionCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> throws_functionCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void throws_function2(std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_param1);
   virtual void throws_function2(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_param1);
@@ -167,37 +210,54 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<bool> co_throws_function2(bool p_param1) {
-    auto task = semifuture_throws_function2(p_param1);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_throws_function2<false>(nullptr, p_param1);
   }
   template <int = 0>
   folly::coro::Task<bool> co_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool p_param1) {
-    auto task = semifuture_throws_function2(rpcOptions, p_param1);
+    return co_throws_function2<true>(&rpcOptions, p_param1);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<bool> co_throws_function2(apache::thrift::RpcOptions* rpcOptions, bool p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto ctx = throws_function2Ctx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      throws_function2Impl(*rpcOptions, ctx, std::move(wrappedCallback), p_param1);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      throws_function2Impl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_param1);
     }
-  }
-  template <int = 0>
-  folly::coro::Task<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_co_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool p_param1) {
-    auto task = header_semifuture_throws_function2(rpcOptions, p_param1);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      co_await callback.co_waitUntilDone();
     }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
+        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      }
+    };
+    bool _return;
+    if (auto ew = recv_wrapped_throws_function2(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void throws_function2(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool p_param1);
@@ -211,7 +271,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void throws_function2T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool p_param1);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> throws_function2Ctx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> throws_function2Ctx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void throws_function3(std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_param1, const ::std::string& p_param2);
   virtual void throws_function3(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_param1, const ::std::string& p_param2);
@@ -232,37 +292,54 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<::std::map<int32_t, ::std::string>> co_throws_function3(bool p_param1, const ::std::string& p_param2) {
-    auto task = semifuture_throws_function3(p_param1, p_param2);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_throws_function3<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
   folly::coro::Task<::std::map<int32_t, ::std::string>> co_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool p_param1, const ::std::string& p_param2) {
-    auto task = semifuture_throws_function3(rpcOptions, p_param1, p_param2);
+    return co_throws_function3<true>(&rpcOptions, p_param1, p_param2);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<::std::map<int32_t, ::std::string>> co_throws_function3(apache::thrift::RpcOptions* rpcOptions, bool p_param1, const ::std::string& p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto ctx = throws_function3Ctx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      throws_function3Impl(*rpcOptions, ctx, std::move(wrappedCallback), p_param1, p_param2);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      throws_function3Impl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_param1, p_param2);
     }
-  }
-  template <int = 0>
-  folly::coro::Task<std::pair<::std::map<int32_t, ::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> header_co_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool p_param1, const ::std::string& p_param2) {
-    auto task = header_semifuture_throws_function3(rpcOptions, p_param1, p_param2);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      co_await callback.co_waitUntilDone();
     }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
+        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      }
+    };
+    ::std::map<int32_t, ::std::string> _return;
+    if (auto ew = recv_wrapped_throws_function3(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void throws_function3(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool p_param1, const ::std::string& p_param2);
@@ -276,7 +353,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void throws_function3T(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool p_param1, const ::std::string& p_param2);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> throws_function3Ctx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> throws_function3Ctx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void oneway_void_ret(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void oneway_void_ret(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
@@ -295,26 +372,41 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret() {
-    auto task = semifuture_oneway_void_ret();
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_oneway_void_ret<false>(nullptr);
   }
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions) {
-    auto task = semifuture_oneway_void_ret(rpcOptions);
+    return co_oneway_void_ret<true>(&rpcOptions);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_oneway_void_ret(apache::thrift::RpcOptions* rpcOptions) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<true> callback(&returnState);
+    auto ctx = oneway_void_retCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<true>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      oneway_void_retImpl(*rpcOptions, ctx, std::move(wrappedCallback));
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      oneway_void_retImpl(defaultRpcOptions, ctx, std::move(wrappedCallback));
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void oneway_void_ret(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -323,7 +415,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void oneway_void_retT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_retCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_retCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
@@ -342,26 +434,41 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) {
-    auto task = semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(p_param1, p_param2, p_param3, p_param4, p_param5);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_oneway_void_ret_i32_i32_i32_i32_i32_param<false>(nullptr, p_param1, p_param2, p_param3, p_param4, p_param5);
   }
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) {
-    auto task = semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(rpcOptions, p_param1, p_param2, p_param3, p_param4, p_param5);
+    return co_oneway_void_ret_i32_i32_i32_i32_i32_param<true>(&rpcOptions, p_param1, p_param2, p_param3, p_param4, p_param5);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions* rpcOptions, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<true> callback(&returnState);
+    auto ctx = oneway_void_ret_i32_i32_i32_i32_i32_paramCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<true>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_param1, p_param2, p_param3, p_param4, p_param5);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_param1, p_param2, p_param3, p_param4, p_param5);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
@@ -370,7 +477,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t p_param1, int32_t p_param2, int32_t p_param3, int32_t p_param4, int32_t p_param5);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_i32_i32_i32_i32_i32_paramCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_i32_i32_i32_i32_i32_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
   virtual void oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
@@ -389,26 +496,41 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
-    auto task = semifuture_oneway_void_ret_map_setlist_param(p_param1, p_param2);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_oneway_void_ret_map_setlist_param<false>(nullptr, p_param1, p_param2);
   }
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
-    auto task = semifuture_oneway_void_ret_map_setlist_param(rpcOptions, p_param1, p_param2);
+    return co_oneway_void_ret_map_setlist_param<true>(&rpcOptions, p_param1, p_param2);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions* rpcOptions, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<true> callback(&returnState);
+    auto ctx = oneway_void_ret_map_setlist_paramCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<true>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      oneway_void_ret_map_setlist_paramImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_param1, p_param2);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      oneway_void_ret_map_setlist_paramImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_param1, p_param2);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void oneway_void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
@@ -417,7 +539,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void oneway_void_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& p_param1, const ::std::set<::std::vector<::std::string>>& p_param2);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_map_setlist_paramCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_map_setlist_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& p_param1);
   virtual void oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& p_param1);
@@ -436,26 +558,41 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& p_param1) {
-    auto task = semifuture_oneway_void_ret_struct_param(p_param1);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_oneway_void_ret_struct_param<false>(nullptr, p_param1);
   }
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& p_param1) {
-    auto task = semifuture_oneway_void_ret_struct_param(rpcOptions, p_param1);
+    return co_oneway_void_ret_struct_param<true>(&rpcOptions, p_param1);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_oneway_void_ret_struct_param(apache::thrift::RpcOptions* rpcOptions, const  ::some::valid::ns::MyStruct& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<true> callback(&returnState);
+    auto ctx = oneway_void_ret_struct_paramCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<true>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      oneway_void_ret_struct_paramImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_param1);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      oneway_void_ret_struct_paramImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_param1);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void oneway_void_ret_struct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::valid::ns::MyStruct& p_param1);
@@ -464,7 +601,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void oneway_void_ret_struct_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::MyStruct& p_param1);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_struct_paramCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_struct_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
   virtual void oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
@@ -483,26 +620,41 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1) {
-    auto task = semifuture_oneway_void_ret_listunion_param(p_param1);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_oneway_void_ret_listunion_param<false>(nullptr, p_param1);
   }
   template <int = 0>
   folly::coro::Task<void> co_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1) {
-    auto task = semifuture_oneway_void_ret_listunion_param(rpcOptions, p_param1);
+    return co_oneway_void_ret_listunion_param<true>(&rpcOptions, p_param1);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_oneway_void_ret_listunion_param(apache::thrift::RpcOptions* rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<true> callback(&returnState);
+    auto ctx = oneway_void_ret_listunion_paramCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<true>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      oneway_void_ret_listunion_paramImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_param1);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      oneway_void_ret_listunion_paramImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_param1);
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
     }
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void oneway_void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
@@ -511,7 +663,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  private:
   template <typename Protocol_>
   void oneway_void_ret_listunion_paramT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& p_param1);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_listunion_paramCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> oneway_void_ret_listunion_paramCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };
 

@@ -51,7 +51,7 @@ void MyServiceAsyncClient::query(std::unique_ptr<apache::thrift::RequestCallback
 }
 
 void MyServiceAsyncClient::query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
-  auto ctx = queryCtx(rpcOptions);
+  auto ctx = queryCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -81,10 +81,10 @@ void MyServiceAsyncClient::queryImpl(const apache::thrift::RpcOptions& rpcOption
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::queryCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::queryCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "MyService.query");
@@ -100,7 +100,7 @@ void MyServiceAsyncClient::sync_query(apache::thrift::RpcOptions& rpcOptions, co
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = queryCtx(rpcOptions);
+  auto ctx = queryCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   queryImpl(rpcOptions, ctx, std::move(wrappedCallback), p_s, p_i);
   callback.waitUntilDone(evb);
@@ -218,7 +218,7 @@ void MyServiceAsyncClient::has_arg_docs(std::unique_ptr<apache::thrift::RequestC
 }
 
 void MyServiceAsyncClient::has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& p_s, const  ::cpp2::Included& p_i) {
-  auto ctx = has_arg_docsCtx(rpcOptions);
+  auto ctx = has_arg_docsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -248,10 +248,10 @@ void MyServiceAsyncClient::has_arg_docsImpl(const apache::thrift::RpcOptions& rp
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::has_arg_docsCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::has_arg_docsCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "MyService.has_arg_docs");
@@ -267,7 +267,7 @@ void MyServiceAsyncClient::sync_has_arg_docs(apache::thrift::RpcOptions& rpcOpti
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = has_arg_docsCtx(rpcOptions);
+  auto ctx = has_arg_docsCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   has_arg_docsImpl(rpcOptions, ctx, std::move(wrappedCallback), p_s, p_i);
   callback.waitUntilDone(evb);

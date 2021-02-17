@@ -47,37 +47,54 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
-    auto task = semifuture_bounce_map(p_m);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_bounce_map<false>(nullptr, p_m);
   }
   template <int = 0>
   folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
-    auto task = semifuture_bounce_map(rpcOptions, p_m);
+    return co_bounce_map<true>(&rpcOptions, p_m);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(apache::thrift::RpcOptions* rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto ctx = bounce_mapCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      bounce_mapImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_m);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      bounce_mapImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_m);
     }
-  }
-  template <int = 0>
-  folly::coro::Task<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> header_co_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& p_m) {
-    auto task = header_semifuture_bounce_map(rpcOptions, p_m);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      co_await callback.co_waitUntilDone();
     }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
+        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      }
+    };
+     ::apache::thrift::fixtures::types::SomeMap _return;
+    if (auto ew = recv_wrapped_bounce_map(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m);
@@ -91,7 +108,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void bounce_mapT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& p_m);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> bounce_mapCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> bounce_mapCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
   virtual void binary_keyed_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& p_r);
   virtual void binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<int64_t>& p_r);
@@ -112,37 +129,54 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(const ::std::vector<int64_t>& p_r) {
-    auto task = semifuture_binary_keyed_map(p_r);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
-    } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
-    }
+    return co_binary_keyed_map<false>(nullptr, p_r);
   }
   template <int = 0>
   folly::coro::Task<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& p_r) {
-    auto task = semifuture_binary_keyed_map(rpcOptions, p_r);
+    return co_binary_keyed_map<true>(&rpcOptions, p_r);
+  }
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(apache::thrift::RpcOptions* rpcOptions, const ::std::vector<int64_t>& p_r) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto ctx = binary_keyed_mapCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static const apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      binary_keyed_mapImpl(*rpcOptions, ctx, std::move(wrappedCallback), p_r);
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      binary_keyed_mapImpl(defaultRpcOptions, ctx, std::move(wrappedCallback), p_r);
     }
-  }
-  template <int = 0>
-  folly::coro::Task<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_co_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& p_r) {
-    auto task = header_semifuture_binary_keyed_map(rpcOptions, p_r);
-    const folly::CancellationToken& cancelToken =
-        co_await folly::coro::co_current_cancellation_token;
-    if (cancelToken.canBeCancelled()) {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(folly::coro::detachOnCancel(std::move(task))));
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
     } else {
-      co_yield folly::coro::co_result(co_await folly::coro::co_awaitTry(std::move(task)));
+      co_await callback.co_waitUntilDone();
     }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
+        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      }
+    };
+    ::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t> _return;
+    if (auto ew = recv_wrapped_binary_keyed_map(_return, returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+    co_return _return;
   }
+ public:
 #endif // FOLLY_HAS_COROUTINES
 
   virtual void binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<int64_t>& p_r);
@@ -156,7 +190,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   template <typename Protocol_>
   void binary_keyed_mapT(Protocol_* prot, apache::thrift::RpcOptions rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<int64_t>& p_r);
-  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> binary_keyed_mapCtx(apache::thrift::RpcOptions& rpcOptions);
+  std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> binary_keyed_mapCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
 };
 

@@ -23,7 +23,7 @@ folly::coro::Task<<% > types/semi_type%>> <% > service_common/client_class_name%
 }
 folly::coro::Task<<% > types/semi_type%>> <% > service_common/client_class_name%>::co_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto ctx = <%function:cpp_name%>Ctx(rpcOptions);
+  auto ctx = <%function:cpp_name%>Ctx(&rpcOptions);
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
   <%function:cpp_name%>Impl(rpcOptions, ctx, callback.get()<%function:comma%><% > service_common/param_list%>);
   auto firstPayload = co_await callback->getFirstThriftResponse();

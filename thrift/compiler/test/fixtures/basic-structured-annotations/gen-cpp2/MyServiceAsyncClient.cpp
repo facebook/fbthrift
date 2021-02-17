@@ -48,7 +48,7 @@ void MyServiceAsyncClient::first(std::unique_ptr<apache::thrift::RequestCallback
 }
 
 void MyServiceAsyncClient::first(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = firstCtx(rpcOptions);
+  auto ctx = firstCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -78,10 +78,10 @@ void MyServiceAsyncClient::firstImpl(const apache::thrift::RpcOptions& rpcOption
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::firstCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::firstCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "MyService.first");
@@ -97,7 +97,7 @@ void MyServiceAsyncClient::sync_first(apache::thrift::RpcOptions& rpcOptions,  :
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = firstCtx(rpcOptions);
+  auto ctx = firstCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   firstImpl(rpcOptions, ctx, std::move(wrappedCallback));
   callback.waitUntilDone(evb);
@@ -215,7 +215,7 @@ void MyServiceAsyncClient::second(std::unique_ptr<apache::thrift::RequestCallbac
 }
 
 void MyServiceAsyncClient::second(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t p_count) {
-  auto ctx = secondCtx(rpcOptions);
+  auto ctx = secondCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
       apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -245,10 +245,10 @@ void MyServiceAsyncClient::secondImpl(const apache::thrift::RpcOptions& rpcOptio
   }
 }
 
-std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::secondCtx(apache::thrift::RpcOptions& rpcOptions) {
+std::shared_ptr<::apache::thrift::detail::ac::ClientRequestContext> MyServiceAsyncClient::secondCtx(apache::thrift::RpcOptions* rpcOptions) {
   return std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       channel_->getProtocolId(),
-      rpcOptions.releaseWriteHeaders(),
+      rpcOptions ? rpcOptions->releaseWriteHeaders() : std::map<std::string, std::string>{},
       handlers_,
       getServiceName(),
       "MyService.second");
@@ -264,7 +264,7 @@ bool MyServiceAsyncClient::sync_second(apache::thrift::RpcOptions& rpcOptions, i
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = secondCtx(rpcOptions);
+  auto ctx = secondCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
   secondImpl(rpcOptions, ctx, std::move(wrappedCallback), p_count);
   callback.waitUntilDone(evb);
