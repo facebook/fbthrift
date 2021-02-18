@@ -32,7 +32,7 @@ pub mod types {
         P: ::fbthrift::ProtocolWriter,
     {
         fn write(&self, p: &mut P) {
-            crate::r#impl::write(&self.0, p)
+            super::r#impl::write(&self.0, p)
         }
     }
 
@@ -41,7 +41,7 @@ pub mod types {
         P: ::fbthrift::ProtocolReader,
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
-            crate::r#impl::read(p).map(MapType)
+            super::r#impl::read(p).map(MapType)
         }
     }
 
@@ -55,7 +55,7 @@ pub mod types {
         P: ::fbthrift::ProtocolWriter,
     {
         fn write(&self, p: &mut P) {
-            crate::r#impl::write(&self.0, p)
+            super::r#impl::write(&self.0, p)
         }
     }
 
@@ -64,7 +64,7 @@ pub mod types {
         P: ::fbthrift::ProtocolReader,
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
-            crate::r#impl::read(p).map(BinType)
+            super::r#impl::read(p).map(BinType)
         }
     }
 
@@ -99,7 +99,7 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.the_bin, p);
             p.write_field_end();
             p.write_field_begin("inline_bin", ::fbthrift::TType::String, 3);
-            crate::r#impl::write(&self.inline_bin, p);
+            super::r#impl::write(&self.inline_bin, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
@@ -126,7 +126,7 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Map, 1) => field_the_map = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 2) => field_the_bin = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 3) => field_inline_bin = ::std::option::Option::Some(crate::r#impl::read(p)?),
+                    (::fbthrift::TType::String, 3) => field_inline_bin = ::std::option::Option::Some(super::r#impl::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;

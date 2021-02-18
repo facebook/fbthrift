@@ -725,10 +725,10 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.fieldE, p);
             p.write_field_end();
             p.write_field_begin("fieldF", ::fbthrift::TType::Set, 6);
-            crate::r#impl::write(&self.fieldF, p);
+            super::r#impl::write(&self.fieldF, p);
             p.write_field_end();
             p.write_field_begin("fieldG", ::fbthrift::TType::Map, 7);
-            crate::r#impl::write(&self.fieldG, p);
+            super::r#impl::write(&self.fieldG, p);
             p.write_field_end();
             p.write_field_begin("fieldH", ::fbthrift::TType::Map, 8);
             ::fbthrift::Serialize::write(&self.fieldH, p);
@@ -771,8 +771,8 @@ pub mod types {
                     (::fbthrift::TType::List, 3) => field_fieldC = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::List, 4) => field_fieldD = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::List, 5) => field_fieldE = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Set, 6) => field_fieldF = ::std::option::Option::Some(crate::r#impl::read(p)?),
-                    (::fbthrift::TType::Map, 7) => field_fieldG = ::std::option::Option::Some(crate::r#impl::read(p)?),
+                    (::fbthrift::TType::Set, 6) => field_fieldF = ::std::option::Option::Some(super::r#impl::read(p)?),
+                    (::fbthrift::TType::Map, 7) => field_fieldG = ::std::option::Option::Some(super::r#impl::read(p)?),
                     (::fbthrift::TType::Map, 8) => field_fieldH = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }

@@ -27,7 +27,7 @@
         P: ::fbthrift::ProtocolWriter,
     {
         fn write(&self, p: &mut P) {
-            crate::r#impl::write(&self.0, p)
+            super::r#impl::write(&self.0, p)
         }
     }
 
@@ -36,7 +36,7 @@
         P: ::fbthrift::ProtocolReader,
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
-            crate::r#impl::read(p).map({{typedef:rust_name}})
+            super::r#impl::read(p).map({{typedef:rust_name}})
         }
     }
 
