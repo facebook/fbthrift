@@ -42,7 +42,7 @@
 }}{{#program:nonstandardTypes}}{{!
     }}{{#type:set?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
@@ -59,7 +59,7 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -94,7 +94,7 @@
 
     }}{{#type:map?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
@@ -114,7 +114,7 @@
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolReader,
     {

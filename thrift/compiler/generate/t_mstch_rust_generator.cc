@@ -355,6 +355,9 @@ class mstch_rust_program : public mstch_program {
         f(function->get_returntype());
       }
     }
+    for (auto typedf : program_->get_typedefs()) {
+      f(typedf);
+    }
   }
   mstch::node rust_has_nonstandard_types() {
     bool has_nonstandard_types = false;
@@ -691,7 +694,8 @@ class mstch_rust_type : public mstch_type {
     return rust_type;
   }
   mstch::node rust_nonstandard() {
-    return has_nonstandard_type_annotation(type_);
+    return has_nonstandard_type_annotation(type_) &&
+        !(type_->is_typedef() && type_->has_annotation("rust.newtype"));
   }
 
  private:
@@ -1234,6 +1238,8 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:newtype?", &mstch_rust_typedef::rust_newtype},
             {"typedef:ord?", &mstch_rust_typedef::rust_ord},
             {"typedef:copy?", &mstch_rust_typedef::rust_copy},
+            {"typedef:rust_type", &mstch_rust_typedef::rust_type},
+            {"typedef:nonstandard?", &mstch_rust_typedef::rust_nonstandard},
         });
   }
   mstch::node rust_name() {
@@ -1241,6 +1247,13 @@ class mstch_rust_typedef : public mstch_typedef {
   }
   mstch::node rust_newtype() {
     return typedf_->has_annotation("rust.newtype");
+  }
+  mstch::node rust_type() {
+    auto rust_type = typedf_->annotations_.find("rust.type");
+    if (rust_type != typedf_->annotations_.end()) {
+      return rust_type->second;
+    }
+    return nullptr;
   }
   mstch::node rust_ord() {
     return typedf_->has_annotation("rust.ord") ||
@@ -1257,6 +1270,9 @@ class mstch_rust_typedef : public mstch_typedef {
       return true;
     }
     return false;
+  }
+  mstch::node rust_nonstandard() {
+    return typedf_->get_annotation("rust.type").find("::") != string::npos;
   }
 };
 

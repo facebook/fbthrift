@@ -18,55 +18,6 @@
     }}{{type:package}}::types::{{type:rust_name}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
-    ====
-    If we ever add a type here which may not have a Send or Sync impl, the
-    unsafe impls in structimpl.mustache need to be revisited.
-    ====
-}}{{#type:void?}}(){{/type:void?}}{{!
-}}{{#type:string?}}::std::string::String{{/type:string?}}{{!
-}}{{#type:binary?}}::std::vec::Vec<::std::primitive::u8>{{/type:binary?}}{{!
-}}{{#type:bool?}}::std::primitive::bool{{/type:bool?}}{{!
-}}{{#type:byte?}}::std::primitive::i8{{/type:byte?}}{{!
-}}{{#type:i16?}}::std::primitive::i16{{/type:i16?}}{{!
-}}{{#type:i32?}}::std::primitive::i32{{/type:i32?}}{{!
-}}{{#type:i64?}}::std::primitive::i64{{/type:i64?}}{{!
-}}{{#type:double?}}::std::primitive::f64{{/type:double?}}{{!
-}}{{#type:float?}}::std::primitive::f32{{/type:float?}}{{!
-}}{{#type:struct}}{{!
-    }}{{struct:package}}::types::{{struct:rust_name}}{{!
-}}{{/type:struct}}{{!
-}}{{#type:enum}}{{!
-    }}{{enum:package}}::types::{{enum:rust_name}}{{!
-}}{{/type:enum}}{{!
-}}{{#type:list?}}{{!
-    }}::std::vec::Vec<{{#type:listElemType}}{{>lib/type}}{{/type:listElemType}}>{{!
-}}{{/type:list?}}{{!
-}}{{#type:stream?}}{{!
-    }}compile_error!("Thrift streaming in Rust is not implemented"){{!
-}}{{/type:stream?}}{{!
-}}{{#type:streamresponse?}}{{!
-    }}compile_error!("Thrift streaming in Rust is not implemented"){{!
-}}{{/type:streamresponse?}}{{!
-}}{{#type:set?}}{{!
-    }}{{#type:rust}}::{{type:rust}}{{/type:rust}}{{!
-    }}{{^type:rust}}::std::collections::BTreeSet{{/type:rust}}{{!
-    }}<{{!
-        }}{{#type:setElemType}}{{!
-        }}{{#type:floating_point?}}::fbthrift::export::OrderedFloat<{{>lib/type}}>{{/type:floating_point?}}{{!
-        }}{{^type:floating_point?}}{{>lib/type}}{{/type:floating_point?}}{{!
-        }}{{/type:setElemType}}{{!
-    }}>{{!
-}}{{/type:set?}}{{!
-}}{{#type:map?}}{{!
-    }}{{#type:rust}}::{{type:rust}}{{/type:rust}}{{!
-    }}{{^type:rust}}::std::collections::BTreeMap{{/type:rust}}{{!
-    }}<{{!
-        }}{{#type:keyType}}{{!
-        }}{{#type:floating_point?}}::fbthrift::export::OrderedFloat<{{>lib/type}}>{{/type:floating_point?}}{{!
-        }}{{^type:floating_point?}}{{>lib/type}}{{/type:floating_point?}}{{!
-        }}{{/type:keyType}}, {{!
-        }}{{#type:valueType}}{{>lib/type}}{{/type:valueType}}{{!
-    }}>{{!
-}}{{/type:map?}}{{!
+}}{{>lib/rawtype}}{{!
 }}{{/type:typedef?}}{{!
 }}
