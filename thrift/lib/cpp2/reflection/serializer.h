@@ -454,19 +454,19 @@ struct is_required_field {
 // marks isset either on the required field array,
 // or the appropriate member within the Struct being read
 template <
-    std::underlying_type<optionality>::type Optional,
+    optionality Optional,
     typename,
     typename MemberInfo,
     typename isset_array,
     typename Struct>
-typename std::enable_if<
-    static_cast<optionality>(Optional) != optionality::required>::type
-mark_isset(isset_array& /*isset*/, Struct& obj) {
+typename std::enable_if<Optional != optionality::required>::type mark_isset(
+    isset_array& /*isset*/,
+    Struct& obj) {
   MemberInfo::mark_set(obj, true);
 }
 
 template <
-    std::underlying_type<optionality>::type Optional,
+    optionality Optional,
     typename required_fields,
     typename MemberInfo,
     typename isset_array,
@@ -815,10 +815,9 @@ struct protocol_methods<type_class::structure, Struct> {
       using member_type = folly::remove_cvref_t<decltype(getter{}(obj))>;
 
       if (ftype == protocol_type_of_v<member>) {
-        apache::thrift::detail::mark_isset<
-            folly::to_underlying(member::optional::value),
-            required_fields,
-            member>(required_isset, obj);
+        apache::thrift::detail::
+            mark_isset<member::optional::value, required_fields, member>(
+                required_isset, obj);
         protocol_method::read(
             protocol,
             apache::thrift::detail::deref<member_type>::clear_and_get(
@@ -891,7 +890,7 @@ struct protocol_methods<type_class::structure, Struct> {
       field_id_t MemberFid,
       typename MemberType,
       typename Methods,
-      std::underlying_type<optionality>::type Optional,
+      optionality Optional,
       typename Enable = void>
   struct field_writer;
 
@@ -901,7 +900,7 @@ struct protocol_methods<type_class::structure, Struct> {
       field_id_t MemberFid,
       typename MemberType,
       typename Methods,
-      std::underlying_type<optionality>::type Optional>
+      optionality Optional>
   struct field_writer<
       Protocol,
       MemberFid,
@@ -934,7 +933,7 @@ struct protocol_methods<type_class::structure, Struct> {
       field_id_t MemberFid,
       typename PtrType,
       typename Methods,
-      std::underlying_type<optionality>::type Optional>
+      optionality Optional>
   struct field_writer<
       Protocol,
       MemberFid,
@@ -970,8 +969,7 @@ struct protocol_methods<type_class::structure, Struct> {
       MemberFid,
       PtrType,
       Methods,
-      static_cast<std::underlying_type<optionality>::type>(
-          optionality::optional),
+      optionality::optional,
       apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
     static std::size_t write(Protocol& protocol, PtrType const& in) {
       if (in) {
@@ -980,8 +978,7 @@ struct protocol_methods<type_class::structure, Struct> {
             MemberFid,
             PtrType,
             Methods,
-            static_cast<std::underlying_type<optionality>::type>(
-                optionality::required)>::write(protocol, in);
+            optionality::required>::write(protocol, in);
       } else {
         return 0;
       }
@@ -1013,8 +1010,7 @@ struct protocol_methods<type_class::structure, Struct> {
             Member::id::value,
             member_type,
             methods,
-            static_cast<std::underlying_type<optionality>::type>(
-                Member::optional::value)>::write(protocol, got);
+            Member::optional::value>::write(protocol, got);
       }
     }
   };
@@ -1025,7 +1021,7 @@ struct protocol_methods<type_class::structure, Struct> {
       field_id_t MemberFid,
       typename MemberType,
       typename Methods,
-      std::underlying_type<optionality>::type,
+      optionality,
       typename Enable = void>
   struct field_size;
 
@@ -1036,7 +1032,7 @@ struct protocol_methods<type_class::structure, Struct> {
       field_id_t MemberFid,
       typename MemberType,
       typename Methods,
-      std::underlying_type<optionality>::type Optional>
+      optionality Optional>
   struct field_size<
       ZeroCopy,
       Protocol,
@@ -1069,7 +1065,7 @@ struct protocol_methods<type_class::structure, Struct> {
       field_id_t MemberFid,
       typename PtrType,
       typename Methods,
-      std::underlying_type<optionality>::type Optional>
+      optionality Optional>
   struct field_size<
       ZeroCopy,
       Protocol,
@@ -1112,8 +1108,7 @@ struct protocol_methods<type_class::structure, Struct> {
       MemberFid,
       PtrType,
       Methods,
-      static_cast<std::underlying_type<optionality>::type>(
-          optionality::optional),
+      optionality::optional,
       apache::thrift::detail::enable_if_smart_pointer<PtrType>> {
     static std::size_t size(Protocol& protocol, PtrType const& in) {
       if (in) {
@@ -1123,8 +1118,7 @@ struct protocol_methods<type_class::structure, Struct> {
             MemberFid,
             PtrType,
             Methods,
-            static_cast<std::underlying_type<optionality>::type>(
-                optionality::required)>::size(protocol, in);
+            optionality::required>::size(protocol, in);
       } else {
         return 0;
       }
@@ -1151,8 +1145,7 @@ struct protocol_methods<type_class::structure, Struct> {
           Member::id::value,
           member_type,
           methods,
-          static_cast<std::underlying_type<optionality>::type>(
-              Member::optional::value)>::size(protocol, got);
+          Member::optional::value>::size(protocol, got);
     }
   };
 
