@@ -39,7 +39,7 @@
         Ok(value.0)
     }{{!
 
-}}{{#program:nonstandardCollections}}{{!
+}}{{#program:nonstandardTypes}}{{!
     }}{{#type:set?}}
 
     impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/type}}>
@@ -148,5 +148,5 @@
         }
     }{{!
     }}{{/type:map?}}{{!
-}}{{/program:nonstandardCollections}}
+}}{{/program:nonstandardTypes}}
 {{!newline}}

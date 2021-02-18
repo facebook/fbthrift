@@ -292,10 +292,10 @@ class mstch_rust_program : public mstch_program {
             {"program:includes", &mstch_rust_program::rust_includes},
             {"program:anyServiceWithoutParent?",
              &mstch_rust_program::rust_any_service_without_parent},
-            {"program:nonstandardCollections?",
-             &mstch_rust_program::rust_has_nonstandard_collections},
-            {"program:nonstandardCollections",
-             &mstch_rust_program::rust_nonstandard_collections},
+            {"program:nonstandardTypes?",
+             &mstch_rust_program::rust_has_nonstandard_types},
+            {"program:nonstandardTypes",
+             &mstch_rust_program::rust_nonstandard_types},
         });
   }
   mstch::node rust_has_types() {
@@ -356,16 +356,16 @@ class mstch_rust_program : public mstch_program {
       }
     }
   }
-  mstch::node rust_has_nonstandard_collections() {
-    bool has_nonstandard_collection = false;
+  mstch::node rust_has_nonstandard_types() {
+    bool has_nonstandard_types = false;
     foreach_type([&](t_type* type) {
       if (has_nonstandard_type_annotation(type)) {
-        has_nonstandard_collection = true;
+        has_nonstandard_types = true;
       }
     });
-    return has_nonstandard_collection;
+    return has_nonstandard_types;
   }
-  mstch::node rust_nonstandard_collections() {
+  mstch::node rust_nonstandard_types() {
     // Sort/deduplicate by value of `rust.type` annotation.
     struct rust_type_less {
       bool operator()(const t_type* lhs, const t_type* rhs) const {
@@ -377,14 +377,14 @@ class mstch_rust_program : public mstch_program {
         return lhs->get_full_name() < rhs->get_full_name();
       }
     };
-    std::set<const t_type*, rust_type_less> nonstandard_collections;
+    std::set<const t_type*, rust_type_less> nonstandard_types;
     foreach_type([&](t_type* type) {
       if (has_nonstandard_type_annotation(type)) {
-        nonstandard_collections.insert(type);
+        nonstandard_types.insert(type);
       }
     });
     std::vector<const t_type*> elements(
-        nonstandard_collections.begin(), nonstandard_collections.end());
+        nonstandard_types.begin(), nonstandard_types.end());
     return generate_types(elements);
   }
 
@@ -674,8 +674,7 @@ class mstch_rust_type : public mstch_type {
             {"type:rust_name", &mstch_rust_type::rust_name},
             {"type:package", &mstch_rust_type::rust_package},
             {"type:rust", &mstch_rust_type::rust_type},
-            {"type:nonstandardCollection?",
-             &mstch_rust_type::rust_nonstandard_collection},
+            {"type:nonstandard?", &mstch_rust_type::rust_nonstandard},
         });
   }
   mstch::node rust_name() {
@@ -691,7 +690,7 @@ class mstch_rust_type : public mstch_type {
     }
     return rust_type;
   }
-  mstch::node rust_nonstandard_collection() {
+  mstch::node rust_nonstandard() {
     return has_nonstandard_type_annotation(type_);
   }
 
