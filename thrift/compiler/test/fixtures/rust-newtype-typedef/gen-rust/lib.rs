@@ -152,6 +152,7 @@ mod r#impl {
     #[repr(transparent)]
     pub(crate) struct LocalImpl<T>(T);
 
+    #[allow(unused)]
     pub(crate) fn write<T, P>(value: &T, p: &mut P)
     where
         LocalImpl<T>: ::fbthrift::Serialize<P>,
@@ -160,6 +161,7 @@ mod r#impl {
         ::fbthrift::Serialize::write(LocalImpl::ref_cast(value), p);
     }
 
+    #[allow(unused)]
     pub(crate) fn read<T, P>(p: &mut P) -> ::anyhow::Result<T>
     where
         LocalImpl<T>: ::fbthrift::Deserialize<P>,
