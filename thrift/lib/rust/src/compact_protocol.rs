@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::binary_type::BinaryType;
 use crate::bufext::BufMutExt;
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
@@ -516,7 +517,7 @@ impl<B: Buf> CompactProtocolDeserializer<B> {
         }
     }
 
-    fn read_bytes_into<'a>(&mut self, len: usize, result: &'a mut Vec<u8>) -> Result<()> {
+    fn read_bytes_into<V: BinaryType>(&mut self, len: usize, result: &mut V) -> Result<()> {
         ensure_err!(
             self.buffer.remaining() >= len,
             ProtocolError::InvalidDataLength
@@ -775,12 +776,12 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
     }
 
     fn read_string(&mut self) -> Result<String> {
-        let vec = self.read_binary()?;
+        let vec = self.read_binary::<Vec<u8>>()?;
 
         Ok(String::from_utf8(vec)?)
     }
 
-    fn read_binary(&mut self) -> Result<Vec<u8>> {
+    fn read_binary<V: BinaryType>(&mut self) -> Result<V> {
         let received_len = self.read_varint_u64()? as usize;
         ensure_err!(
             self.string_limit.map_or(true, |lim| received_len < lim),
@@ -788,7 +789,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         );
         ensure_err!(self.buffer.remaining() >= received_len, ProtocolError::EOF);
 
-        let mut bytes = Vec::with_capacity(received_len);
+        let mut bytes = V::with_capacity(received_len);
 
         self.read_bytes_into(received_len, &mut bytes)?;
 

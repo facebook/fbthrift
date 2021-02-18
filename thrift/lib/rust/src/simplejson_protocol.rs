@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::binary_type::BinaryType;
 use crate::bufext::BufMutExt;
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
@@ -526,7 +527,7 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
                 self.read_string()?;
             }
             TType::String => {
-                self.read_binary()?;
+                self.read_binary::<Vec<u8>>()?;
             }
             TType::Stream => bail_err!(ProtocolError::StreamUnsupported),
             TType::Stop => bail_err!(ProtocolError::UnexpectedStopInSkip),
@@ -791,7 +792,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
         }
     }
 
-    fn read_binary(&mut self) -> Result<Vec<u8>> {
+    fn read_binary<V: BinaryType>(&mut self) -> Result<V> {
         self.eat(b"\"")?;
         let mut ret = Vec::new();
         loop {
@@ -807,7 +808,8 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
                 None => bail!("Expected some char"),
             }
         }
-        Ok(base64::decode_config(&ret, base64::STANDARD_NO_PAD)?)
+        let bin = base64::decode_config(&ret, base64::STANDARD_NO_PAD)?;
+        Ok(V::from(bin))
     }
 
     /// Override the default skip impl to handle random JSON noise

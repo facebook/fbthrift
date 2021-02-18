@@ -19,6 +19,13 @@ typedef map<i32, i32> MapType (
   rust.type = "sorted_vector_map::SortedVectorMap",
 )
 
+typedef binary BinType (
+  rust.newtype,
+  rust.type = "smallvec::SmallVec<[u8; 16]>",
+)
+
 struct MyStruct {
   1: MapType the_map;
+  2: BinType the_bin;
+  3: binary (rust.type = "smallvec::SmallVec<[u8; 32]>") inline_bin;
 }

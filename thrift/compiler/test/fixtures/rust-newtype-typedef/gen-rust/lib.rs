@@ -13,9 +13,14 @@ pub mod types {
     #[derive(Default, Clone, Debug, PartialEq)]
     pub struct MapType(pub ::sorted_vector_map::SortedVectorMap);
 
+    #[derive(Default, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct BinType(pub ::smallvec::SmallVec<[u8; 16]>);
+
     #[derive(Clone, Debug, PartialEq)]
     pub struct MyStruct {
         pub the_map: crate::types::MapType,
+        pub the_bin: crate::types::BinType,
+        pub inline_bin: ::smallvec::SmallVec<[u8; 32]>,
     }
 
     impl ::fbthrift::GetTType for MapType {
@@ -41,10 +46,35 @@ pub mod types {
     }
 
 
+    impl ::fbthrift::GetTType for BinType {
+        const TTYPE: ::fbthrift::TType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::TTYPE;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for BinType
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            crate::r#impl::write(&self.0, p)
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for BinType
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            crate::r#impl::read(p).map(BinType)
+        }
+    }
+
+
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
                 the_map: ::std::default::Default::default(),
+                the_bin: ::std::default::Default::default(),
+                inline_bin: ::std::default::Default::default(),
             }
         }
     }
@@ -65,6 +95,12 @@ pub mod types {
             p.write_field_begin("the_map", ::fbthrift::TType::Map, 1);
             ::fbthrift::Serialize::write(&self.the_map, p);
             p.write_field_end();
+            p.write_field_begin("the_bin", ::fbthrift::TType::String, 2);
+            ::fbthrift::Serialize::write(&self.the_bin, p);
+            p.write_field_end();
+            p.write_field_begin("inline_bin", ::fbthrift::TType::String, 3);
+            crate::r#impl::write(&self.inline_bin, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -76,15 +112,21 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("inline_bin", ::fbthrift::TType::String, 3),
+                ::fbthrift::Field::new("the_bin", ::fbthrift::TType::String, 2),
                 ::fbthrift::Field::new("the_map", ::fbthrift::TType::Map, 1),
             ];
             let mut field_the_map = ::std::option::Option::None;
+            let mut field_the_bin = ::std::option::Option::None;
+            let mut field_inline_bin = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Map, 1) => field_the_map = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_the_bin = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 3) => field_inline_bin = ::std::option::Option::Some(crate::r#impl::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -92,6 +134,8 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 the_map: field_the_map.unwrap_or_default(),
+                the_bin: field_the_bin.unwrap_or_default(),
+                inline_bin: field_inline_bin.unwrap_or_default(),
             })
         }
     }
@@ -123,6 +167,72 @@ mod r#impl {
     {
         let value: LocalImpl<T> = ::fbthrift::Deserialize::read(p)?;
         Ok(value.0)
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<::smallvec::SmallVec<[u8; 16]>>
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            self.0.as_slice().write(p)
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<::smallvec::SmallVec<[u8; 16]>>
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            p.read_binary()
+        }
+    }
+
+    impl ::std::convert::From<::std::vec::Vec<u8>> for LocalImpl<::smallvec::SmallVec<[u8; 16]>> {
+        fn from(v: ::std::vec::Vec<u8>) -> Self {
+            LocalImpl(v.into())
+        }
+    }
+
+    impl ::fbthrift::binary_type::BinaryType for LocalImpl<::smallvec::SmallVec<[u8; 16]>> {
+        fn with_capacity(capacity: usize) -> Self {
+            LocalImpl(<::smallvec::SmallVec<[u8; 16]>>::with_capacity(capacity))
+        }
+        fn extend_from_slice(&mut self, other: &[u8]) {
+            self.0.extend_from_slice(other)
+        }
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<::smallvec::SmallVec<[u8; 32]>>
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            self.0.as_slice().write(p)
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<::smallvec::SmallVec<[u8; 32]>>
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            p.read_binary()
+        }
+    }
+
+    impl ::std::convert::From<::std::vec::Vec<u8>> for LocalImpl<::smallvec::SmallVec<[u8; 32]>> {
+        fn from(v: ::std::vec::Vec<u8>) -> Self {
+            LocalImpl(v.into())
+        }
+    }
+
+    impl ::fbthrift::binary_type::BinaryType for LocalImpl<::smallvec::SmallVec<[u8; 32]>> {
+        fn with_capacity(capacity: usize) -> Self {
+            LocalImpl(<::smallvec::SmallVec<[u8; 32]>>::with_capacity(capacity))
+        }
+        fn extend_from_slice(&mut self, other: &[u8]) {
+            self.0.extend_from_slice(other)
+        }
     }
 
     impl<P> ::fbthrift::Serialize<P> for LocalImpl<::sorted_vector_map::SortedVectorMap<::std::primitive::i32, ::std::primitive::i32>>

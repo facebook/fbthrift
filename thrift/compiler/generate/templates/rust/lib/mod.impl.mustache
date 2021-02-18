@@ -148,5 +148,41 @@
         }
     }{{!
     }}{{/type:map?}}{{!
+
+    }}{{#type:binary?}}
+
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/rawtype}}>
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            self.0.as_slice().write(p)
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/rawtype}}>
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            p.read_binary()
+        }
+    }
+
+    impl ::std::convert::From<::std::vec::Vec<u8>> for LocalImpl<{{>lib/rawtype}}> {
+        fn from(v: ::std::vec::Vec<u8>) -> Self {
+            LocalImpl(v.into())
+        }
+    }
+
+    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{>lib/rawtype}}> {
+        fn with_capacity(capacity: usize) -> Self {
+            LocalImpl(<{{>lib/rawtype}}>::with_capacity(capacity))
+        }
+        fn extend_from_slice(&mut self, other: &[u8]) {
+            self.0.extend_from_slice(other)
+        }
+    }{{!
+    }}{{/type:binary?}}{{!
 }}{{/program:nonstandardTypes}}
 {{!newline}}

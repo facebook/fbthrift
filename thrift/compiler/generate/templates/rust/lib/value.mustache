@@ -28,8 +28,11 @@
     }}{{^value:empty?}}{{value:quoted}}.to_owned(){{/value:empty?}}{{!
 }}{{/value:string?}}{{!
 }}{{#value:binary?}}{{!
-    }}{{#value:empty?}}::std::vec::Vec::new(){{/value:empty?}}{{!
-    }}{{^value:empty?}}{{value:quoted}}.as_bytes().to_owned(){{/value:empty?}}{{!
+    }}{{#value:empty?}}{{!
+        }}{{#type:rust}}<::{{type:rust}}>::new(){{/type:rust}}{{!
+        }}{{^type:rust}}::std::vec::Vec::new(){{/type:rust}}{{!
+    }}{{/value:empty?}}{{!
+    }}{{^value:empty?}}{{value:quoted}}.as_bytes().into(){{/value:empty?}}{{!
 }}{{/value:binary?}}{{!
 }}{{#value:list?}}{{!
     }}{{#value:empty?}}::std::vec::Vec::new(){{/value:empty?}}{{!
