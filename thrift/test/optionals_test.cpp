@@ -349,30 +349,6 @@ TEST(DeprecatedOptionalField, NulloptComparisons) {
   EXPECT_TRUE(std::nullopt != obj.int64Opt_ref());
 }
 
-TEST(TestWithFollyOptionals, equalToFollyOptional) {
-  cpp2::HasOptionals obj;
-  folly::Optional<int64_t> opt;
-  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
-
-  obj.int64Opt_ref() = 1;
-  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt_ref(), opt));
-
-  opt = 1;
-  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
-
-  opt = 2;
-  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt_ref(), opt));
-
-  obj.int64Opt_ref() = 2;
-  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
-
-  obj.int64Opt_ref().reset();
-  EXPECT_FALSE(equalToFollyOptional(obj.int64Opt_ref(), opt));
-
-  opt.reset();
-  EXPECT_TRUE(equalToFollyOptional(obj.int64Opt_ref(), opt));
-}
-
 TEST(OptionalsTest, Equality) {
   cpp2::HasOptionals obj;
   obj.int64Opt_ref() = 1;
