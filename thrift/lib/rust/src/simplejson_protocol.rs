@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::binary_type::BinaryType;
+use crate::binary_type::CopyFromBuf;
 use crate::bufext::BufMutExt;
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
@@ -792,7 +792,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
         }
     }
 
-    fn read_binary<V: BinaryType>(&mut self) -> Result<V> {
+    fn read_binary<V: CopyFromBuf + From<Vec<u8>>>(&mut self) -> Result<V> {
         self.eat(b"\"")?;
         let mut ret = Vec::new();
         loop {

@@ -14,22 +14,7 @@
  * limitations under the License.
  */
 
-typedef map<i32, i32> MapType (
-  rust.newtype,
-  rust.type = "sorted_vector_map::SortedVectorMap",
-)
+// Types that are available by default in `rust.type` annotations.
 
-typedef binary BinType (
-  rust.newtype,
-  rust.type = "smallvec::SmallVec<[u8; 16]>",
-)
-
-typedef binary BytesType (rust.newtype, rust.type = "Bytes")
-
-struct MyStruct {
-  1: MapType the_map;
-  2: BinType the_bin;
-  3: binary (rust.type = "smallvec::SmallVec<[u8; 32]>") inline_bin;
-  4: BytesType the_bytes;
-  5: binary (rust.type = "Bytes") inline_bytes;
-}
+pub use bytes::Bytes;
+pub use std::collections::*;

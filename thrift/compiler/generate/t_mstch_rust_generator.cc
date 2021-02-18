@@ -689,7 +689,7 @@ class mstch_rust_type : public mstch_type {
   mstch::node rust_type() {
     const std::string& rust_type = type_->get_annotation("rust.type");
     if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
-      return "std::collections::" + rust_type;
+      return "fbthrift::builtin_types::" + rust_type;
     }
     return rust_type;
   }
@@ -1249,11 +1249,11 @@ class mstch_rust_typedef : public mstch_typedef {
     return typedf_->has_annotation("rust.newtype");
   }
   mstch::node rust_type() {
-    auto rust_type = typedf_->annotations_.find("rust.type");
-    if (rust_type != typedf_->annotations_.end()) {
-      return rust_type->second;
+    const std::string& rust_type = typedf_->get_annotation("rust.type");
+    if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
+      return "fbthrift::builtin_types::" + rust_type;
     }
-    return nullptr;
+    return rust_type;
   }
   mstch::node rust_ord() {
     return typedf_->has_annotation("rust.ord") ||

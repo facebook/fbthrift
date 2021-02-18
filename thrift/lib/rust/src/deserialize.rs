@@ -169,7 +169,7 @@ where
 {
     #[inline]
     fn read(p: &mut P) -> Result<Self> {
-        p.read_binary::<Vec<u8>>().map(Bytes::from)
+        p.read_binary()
     }
 }
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-use crate::binary_type::BinaryType;
-use crate::bufext::BufMutExt;
+use crate::binary_type::CopyFromBuf;
+use crate::bufext::{BufExt, BufMutExt};
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
@@ -26,9 +26,9 @@ use crate::ttype::TType;
 use crate::varint;
 use crate::Result;
 use bufsize::SizeCounter;
-use bytes::{Buf, Bytes, BytesMut};
+use bytes::{Bytes, BytesMut};
 use ghost::phantom;
-use std::{cmp, convert::TryFrom, io::Cursor};
+use std::{convert::TryFrom, io::Cursor};
 
 const COMPACT_PROTOCOL_VERSION: u8 = 0x02;
 const PROTOCOL_ID: u8 = 0x82;
@@ -494,7 +494,7 @@ impl<B: BufMutExt> ProtocolWriter for CompactProtocolSerializer<B> {
     }
 }
 
-impl<B: Buf> CompactProtocolDeserializer<B> {
+impl<B: BufExt> CompactProtocolDeserializer<B> {
     pub fn new(buffer: B) -> Self {
         CompactProtocolDeserializer {
             state: EncState::new(),
@@ -517,29 +517,6 @@ impl<B: Buf> CompactProtocolDeserializer<B> {
         }
     }
 
-    fn read_bytes_into<V: BinaryType>(&mut self, len: usize, result: &mut V) -> Result<()> {
-        ensure_err!(
-            self.buffer.remaining() >= len,
-            ProtocolError::InvalidDataLength
-        );
-
-        let mut remaining = len;
-
-        while remaining > 0 {
-            let length = {
-                let buffer = self.buffer.bytes();
-                let length = cmp::min(remaining, buffer.len());
-                result.extend_from_slice(&buffer[..length]);
-                length
-            };
-
-            remaining -= length;
-            self.buffer.advance(length);
-        }
-
-        Ok(())
-    }
-
     fn read_varint_u64(&mut self) -> Result<u64> {
         varint::read_u64(&mut self.buffer)
     }
@@ -559,7 +536,7 @@ impl<B: Buf> CompactProtocolDeserializer<B> {
     }
 }
 
-impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
+impl<B: BufExt> ProtocolReader for CompactProtocolDeserializer<B> {
     fn read_message_begin<F, T>(&mut self, msgfn: F) -> Result<(T, MessageType, u32)>
     where
         F: FnOnce(&[u8]) -> T,
@@ -585,8 +562,11 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
                     let namebuf = self.peek_bytes(len).unwrap();
                     (namebuf.len(), msgfn(namebuf))
                 } else {
-                    let mut namebuf = Vec::new();
-                    self.read_bytes_into(len, &mut namebuf)?;
+                    ensure_err!(
+                        self.buffer.remaining() >= len,
+                        ProtocolError::InvalidDataLength
+                    );
+                    let namebuf: Vec<u8> = Vec::copy_from_buf(&mut self.buffer, len);
                     (0, msgfn(namebuf.as_slice()))
                 }
             };
@@ -781,7 +761,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         Ok(String::from_utf8(vec)?)
     }
 
-    fn read_binary<V: BinaryType>(&mut self) -> Result<V> {
+    fn read_binary<V: CopyFromBuf + From<Vec<u8>>>(&mut self) -> Result<V> {
         let received_len = self.read_varint_u64()? as usize;
         ensure_err!(
             self.string_limit.map_or(true, |lim| received_len < lim),
@@ -789,11 +769,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         );
         ensure_err!(self.buffer.remaining() >= received_len, ProtocolError::EOF);
 
-        let mut bytes = V::with_capacity(received_len);
-
-        self.read_bytes_into(received_len, &mut bytes)?;
-
-        Ok(bytes)
+        Ok(V::copy_from_buf(&mut self.buffer, received_len))
     }
 }
 

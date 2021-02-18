@@ -16,11 +16,16 @@ pub mod types {
     #[derive(Default, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct BinType(pub ::smallvec::SmallVec<[u8; 16]>);
 
+    #[derive(Default, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct BytesType(pub ::fbthrift::builtin_types::Bytes);
+
     #[derive(Clone, Debug, PartialEq)]
     pub struct MyStruct {
         pub the_map: crate::types::MapType,
         pub the_bin: crate::types::BinType,
         pub inline_bin: ::smallvec::SmallVec<[u8; 32]>,
+        pub the_bytes: crate::types::BytesType,
+        pub inline_bytes: ::fbthrift::builtin_types::Bytes,
     }
 
     impl ::fbthrift::GetTType for MapType {
@@ -69,12 +74,37 @@ pub mod types {
     }
 
 
+    impl ::fbthrift::GetTType for BytesType {
+        const TTYPE: ::fbthrift::TType = <::std::vec::Vec<::std::primitive::u8> as ::fbthrift::GetTType>::TTYPE;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for BytesType
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            self.0.write(p)
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for BytesType
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            ::fbthrift::Deserialize::read(p).map(BytesType)
+        }
+    }
+
+
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
                 the_map: ::std::default::Default::default(),
                 the_bin: ::std::default::Default::default(),
                 inline_bin: ::std::default::Default::default(),
+                the_bytes: ::std::default::Default::default(),
+                inline_bytes: ::std::default::Default::default(),
             }
         }
     }
@@ -101,6 +131,12 @@ pub mod types {
             p.write_field_begin("inline_bin", ::fbthrift::TType::String, 3);
             super::r#impl::write(&self.inline_bin, p);
             p.write_field_end();
+            p.write_field_begin("the_bytes", ::fbthrift::TType::String, 4);
+            ::fbthrift::Serialize::write(&self.the_bytes, p);
+            p.write_field_end();
+            p.write_field_begin("inline_bytes", ::fbthrift::TType::String, 5);
+            ::fbthrift::Serialize::write(&self.inline_bytes, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -113,12 +149,16 @@ pub mod types {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("inline_bin", ::fbthrift::TType::String, 3),
+                ::fbthrift::Field::new("inline_bytes", ::fbthrift::TType::String, 5),
                 ::fbthrift::Field::new("the_bin", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("the_bytes", ::fbthrift::TType::String, 4),
                 ::fbthrift::Field::new("the_map", ::fbthrift::TType::Map, 1),
             ];
             let mut field_the_map = ::std::option::Option::None;
             let mut field_the_bin = ::std::option::Option::None;
             let mut field_inline_bin = ::std::option::Option::None;
+            let mut field_the_bytes = ::std::option::Option::None;
+            let mut field_inline_bytes = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -127,6 +167,8 @@ pub mod types {
                     (::fbthrift::TType::Map, 1) => field_the_map = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 2) => field_the_bin = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 3) => field_inline_bin = ::std::option::Option::Some(super::r#impl::read(p)?),
+                    (::fbthrift::TType::String, 4) => field_the_bytes = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 5) => field_inline_bytes = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -136,6 +178,8 @@ pub mod types {
                 the_map: field_the_map.unwrap_or_default(),
                 the_bin: field_the_bin.unwrap_or_default(),
                 inline_bin: field_inline_bin.unwrap_or_default(),
+                the_bytes: field_the_bytes.unwrap_or_default(),
+                inline_bytes: field_inline_bytes.unwrap_or_default(),
             })
         }
     }

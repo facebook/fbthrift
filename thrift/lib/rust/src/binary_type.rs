@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
-pub trait BinaryType: From<Vec<u8>> {
+use crate::bufext::BufExt;
+use bytes::Bytes;
+
+/// Trait implemented on types that can be used as `binary` types in
+/// thrift.  These types copy data from the Thrift buffer.
+pub trait BinaryType {
     fn with_capacity(capacity: usize) -> Self;
     fn extend_from_slice(&mut self, other: &[u8]);
+}
+
+/// Trait for copying from the Thrift buffer.  Special implementations
+/// may do this without actually copying.
+pub trait CopyFromBuf {
+    fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self;
 }
 
 impl BinaryType for Vec<u8> {
@@ -28,17 +39,41 @@ impl BinaryType for Vec<u8> {
     }
 }
 
+impl<T: BinaryType> CopyFromBuf for T {
+    fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self {
+        assert!(buffer.remaining() >= len);
+        let mut result = T::with_capacity(len);
+        let mut remaining = len;
+
+        while remaining > 0 {
+            let part = buffer.bytes();
+            let part_len = part.len().min(remaining);
+            result.extend_from_slice(&part[..part_len]);
+            remaining -= part_len;
+            buffer.advance(part_len);
+        }
+
+        result
+    }
+}
+
 pub(crate) struct Discard;
 
 impl From<Vec<u8>> for Discard {
-    fn from(_v: Vec<u8>) -> Self {
+    fn from(_v: Vec<u8>) -> Discard {
         Discard
     }
 }
 
-impl BinaryType for Discard {
-    fn with_capacity(_capacity: usize) -> Self {
+impl CopyFromBuf for Discard {
+    fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self {
+        buffer.advance(len);
         Discard
     }
-    fn extend_from_slice(&mut self, _other: &[u8]) {}
+}
+
+impl CopyFromBuf for Bytes {
+    fn copy_from_buf<B: BufExt>(buffer: &mut B, len: usize) -> Self {
+        buffer.copy_to_bytes(len)
+    }
 }

@@ -28,6 +28,9 @@ struct NonstandardCollectionTypes {
   23: map<string, string> (rust.type = "indexmap::IndexMap") indexmap_a;
   24: map<string, string> (rust.type = "indexmap::IndexMap") indexmap_b;
   25: map<string, i64> (rust.type = "indexmap::IndexMap") indexmap_c;
+
+  30: binary (rust.type = "smallvec::SmallVec<[u8; 32]>") bin_smallvec;
+  31: binary (rust.type = "Bytes") bin_bytes;
 }
 
 enum TestEnum {
@@ -46,4 +49,8 @@ struct TestSkipV2 {
   1: list<string> l;
   2: set<string> s;
   3: map<string, string> m;
+}
+
+struct TestBytesShared {
+  1: binary (rust.type = "Bytes") b;
 }

@@ -16,17 +16,78 @@
 
 use crate::varint;
 use bufsize::SizeCounter;
+use bytes::buf::ext::Chain;
 use bytes::{Buf, BufMut, Bytes, BytesMut};
 use std::io::Cursor;
 
 pub trait BufExt: Buf {
     /// Reset buffer back to the beginning.
     fn reset(self) -> Self;
+
+    fn copy_to_bytes(&mut self, len: usize) -> Bytes;
 }
 
 impl BufExt for Cursor<Bytes> {
     fn reset(self) -> Self {
         Cursor::new(self.into_inner())
+    }
+
+    fn copy_to_bytes(&mut self, len: usize) -> Bytes {
+        // This is available as standard in Bytes 1.0
+        let pos = self.position() as usize;
+        let end = pos + len;
+        // Panics if len is too large (same as Bytes 1.0)
+        let bytes = self.get_ref().slice(pos..end);
+        self.set_position(end as u64);
+        bytes
+    }
+}
+
+impl<T: AsRef<[u8]> + ?Sized> BufExt for Cursor<&T> {
+    fn reset(self) -> Self {
+        Cursor::new(self.into_inner())
+    }
+
+    fn copy_to_bytes(&mut self, len: usize) -> Bytes {
+        // This is available as standard in Bytes 1.0
+        let pos = self.position() as usize;
+        let end = pos + len;
+        // Panics if len is too large (same as Bytes 1.0)
+        let all = self.get_ref().as_ref();
+        let bytes = Bytes::copy_from_slice(&all[pos..end]);
+        self.set_position(end as u64);
+        bytes
+    }
+}
+
+impl<T: BufExt, U: BufExt> BufExt for Chain<T, U> {
+    fn reset(self) -> Self {
+        let (a, b) = self.into_inner();
+        Chain::new(a.reset(), b.reset())
+    }
+
+    fn copy_to_bytes(&mut self, len: usize) -> Bytes {
+        let a = self.first_mut();
+        if a.has_remaining() {
+            if a.remaining() >= len {
+                a.copy_to_bytes(len)
+            } else {
+                // data is split across the two buffers
+                assert!(self.remaining() >= len);
+                let mut out = BytesMut::with_capacity(len);
+                let mut remaining = len;
+                while remaining > 0 {
+                    let part = self.bytes();
+                    let part_len = part.len().min(remaining);
+                    out.copy_from_slice(&part[..part_len]);
+                    self.advance(part_len);
+                    remaining -= part_len;
+                }
+                out.freeze()
+            }
+        } else {
+            self.last_mut().copy_to_bytes(len)
+        }
     }
 }
 
