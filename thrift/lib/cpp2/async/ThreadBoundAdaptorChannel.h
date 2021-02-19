@@ -71,6 +71,10 @@ class ThreadBoundAdaptorChannel : public apache::thrift::RequestChannel {
   apache::thrift::InteractionId createInteraction(
       ManagedStringView&& name) override;
 
+  apache::thrift::RequestChannel* getChannel() const {
+    return threadSafeChannel_.get();
+  }
+
  private:
   std::shared_ptr<apache::thrift::RequestChannel> threadSafeChannel_;
   folly::EventBase* evb_;
