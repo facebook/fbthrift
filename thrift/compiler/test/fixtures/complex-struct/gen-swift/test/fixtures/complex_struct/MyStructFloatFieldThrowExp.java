@@ -257,4 +257,9 @@ public final class MyStructFloatFieldThrowExp {
       oprot.writeStructEnd();
     }
     
+    private static final MyStructFloatFieldThrowExp _DEFAULT = new MyStructFloatFieldThrowExp.Builder().build();
+    
+    public static MyStructFloatFieldThrowExp defaultInstance() {
+        return _DEFAULT;
+    }
 }

@@ -302,4 +302,9 @@ public final class Vehicle {
       oprot.writeStructEnd();
     }
     
+    private static final Vehicle _DEFAULT = new Vehicle.Builder().build();
+    
+    public static Vehicle defaultInstance() {
+        return _DEFAULT;
+    }
 }

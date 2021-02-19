@@ -2319,4 +2319,9 @@ public final class B {
       oprot.writeStructEnd();
     }
     
+    private static final B _DEFAULT = new B.Builder().build();
+    
+    public static B defaultInstance() {
+        return _DEFAULT;
+    }
 }

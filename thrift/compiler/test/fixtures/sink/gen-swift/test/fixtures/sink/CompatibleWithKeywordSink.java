@@ -146,4 +146,9 @@ public final class CompatibleWithKeywordSink {
       oprot.writeStructEnd();
     }
     
+    private static final CompatibleWithKeywordSink _DEFAULT = new CompatibleWithKeywordSink.Builder().build();
+    
+    public static CompatibleWithKeywordSink defaultInstance() {
+        return _DEFAULT;
+    }
 }

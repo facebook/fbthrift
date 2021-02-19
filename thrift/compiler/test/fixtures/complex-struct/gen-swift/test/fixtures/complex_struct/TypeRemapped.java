@@ -319,4 +319,9 @@ public final class TypeRemapped {
       oprot.writeStructEnd();
     }
     
+    private static final TypeRemapped _DEFAULT = new TypeRemapped.Builder().build();
+    
+    public static TypeRemapped defaultInstance() {
+        return _DEFAULT;
+    }
 }

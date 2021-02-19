@@ -222,4 +222,9 @@ public final class Struct3 {
       oprot.writeStructEnd();
     }
     
+    private static final Struct3 _DEFAULT = new Struct3.Builder().build();
+    
+    public static Struct3 defaultInstance() {
+        return _DEFAULT;
+    }
 }

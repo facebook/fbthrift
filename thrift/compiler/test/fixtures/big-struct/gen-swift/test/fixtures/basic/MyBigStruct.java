@@ -9568,4 +9568,9 @@ public final class MyBigStruct {
       oprot.writeStructEnd();
     }
     
+    private static final MyBigStruct _DEFAULT = new MyBigStruct.Builder().build();
+    
+    public static MyBigStruct defaultInstance() {
+        return _DEFAULT;
+    }
 }

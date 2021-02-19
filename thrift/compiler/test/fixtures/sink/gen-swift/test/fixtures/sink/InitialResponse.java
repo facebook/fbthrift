@@ -146,4 +146,9 @@ public final class InitialResponse {
       oprot.writeStructEnd();
     }
     
+    private static final InitialResponse _DEFAULT = new InitialResponse.Builder().build();
+    
+    public static InitialResponse defaultInstance() {
+        return _DEFAULT;
+    }
 }

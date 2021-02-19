@@ -144,4 +144,9 @@ public final class Foo {
       oprot.writeStructEnd();
     }
     
+    private static final Foo _DEFAULT = new Foo.Builder().build();
+    
+    public static Foo defaultInstance() {
+        return _DEFAULT;
+    }
 }

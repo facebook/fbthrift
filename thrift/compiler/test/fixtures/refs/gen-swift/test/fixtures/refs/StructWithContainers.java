@@ -433,4 +433,9 @@ public final class StructWithContainers {
       oprot.writeStructEnd();
     }
     
+    private static final StructWithContainers _DEFAULT = new StructWithContainers.Builder().build();
+    
+    public static StructWithContainers defaultInstance() {
+        return _DEFAULT;
+    }
 }

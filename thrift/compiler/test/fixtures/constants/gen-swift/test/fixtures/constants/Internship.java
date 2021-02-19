@@ -261,4 +261,9 @@ public final class Internship {
       oprot.writeStructEnd();
     }
     
+    private static final Internship _DEFAULT = new Internship.Builder().build();
+    
+    public static Internship defaultInstance() {
+        return _DEFAULT;
+    }
 }

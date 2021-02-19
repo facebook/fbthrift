@@ -146,4 +146,9 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
       oprot.writeStructEnd();
     }
     
+    private static final StructWithRefAndAnnotCppNoexceptMoveCtor _DEFAULT = new StructWithRefAndAnnotCppNoexceptMoveCtor.Builder().build();
+    
+    public static StructWithRefAndAnnotCppNoexceptMoveCtor defaultInstance() {
+        return _DEFAULT;
+    }
 }

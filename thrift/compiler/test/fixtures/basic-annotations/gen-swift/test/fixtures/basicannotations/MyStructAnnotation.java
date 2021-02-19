@@ -261,4 +261,9 @@ public final class MyStructAnnotation {
       oprot.writeStructEnd();
     }
     
+    private static final MyStructAnnotation _DEFAULT = new MyStructAnnotation.Builder().build();
+    
+    public static MyStructAnnotation defaultInstance() {
+        return _DEFAULT;
+    }
 }

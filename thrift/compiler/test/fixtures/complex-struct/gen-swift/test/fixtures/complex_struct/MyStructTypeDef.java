@@ -571,4 +571,9 @@ public final class MyStructTypeDef {
       oprot.writeStructEnd();
     }
     
+    private static final MyStructTypeDef _DEFAULT = new MyStructTypeDef.Builder().build();
+    
+    public static MyStructTypeDef defaultInstance() {
+        return _DEFAULT;
+    }
 }

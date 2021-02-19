@@ -224,4 +224,9 @@ public final class StructWithRefTypeUnique {
       oprot.writeStructEnd();
     }
     
+    private static final StructWithRefTypeUnique _DEFAULT = new StructWithRefTypeUnique.Builder().build();
+    
+    public static StructWithRefTypeUnique defaultInstance() {
+        return _DEFAULT;
+    }
 }

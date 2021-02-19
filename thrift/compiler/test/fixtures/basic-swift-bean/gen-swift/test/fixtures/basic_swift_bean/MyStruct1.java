@@ -259,4 +259,9 @@ public final class MyStruct1 {
       oprot.writeStructEnd();
     }
     
+    private static final MyStruct1 _DEFAULT = new MyStruct1.Builder().build();
+    
+    public static MyStruct1 defaultInstance() {
+        return _DEFAULT;
+    }
 }

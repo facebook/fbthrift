@@ -144,4 +144,9 @@ public final class NonCopyableStruct {
       oprot.writeStructEnd();
     }
     
+    private static final NonCopyableStruct _DEFAULT = new NonCopyableStruct.Builder().build();
+    
+    public static NonCopyableStruct defaultInstance() {
+        return _DEFAULT;
+    }
 }

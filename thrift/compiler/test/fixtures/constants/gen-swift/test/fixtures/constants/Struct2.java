@@ -276,4 +276,9 @@ public final class Struct2 {
       oprot.writeStructEnd();
     }
     
+    private static final Struct2 _DEFAULT = new Struct2.Builder().build();
+    
+    public static Struct2 defaultInstance() {
+        return _DEFAULT;
+    }
 }

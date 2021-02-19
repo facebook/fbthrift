@@ -222,4 +222,9 @@ public final class StructWithUnion {
       oprot.writeStructEnd();
     }
     
+    private static final StructWithUnion _DEFAULT = new StructWithUnion.Builder().build();
+    
+    public static StructWithUnion defaultInstance() {
+        return _DEFAULT;
+    }
 }

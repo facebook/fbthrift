@@ -274,4 +274,9 @@ public final class SomeStruct {
       oprot.writeStructEnd();
     }
     
+    private static final SomeStruct _DEFAULT = new SomeStruct.Builder().build();
+    
+    public static SomeStruct defaultInstance() {
+        return _DEFAULT;
+    }
 }

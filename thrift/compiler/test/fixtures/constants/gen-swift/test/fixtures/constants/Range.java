@@ -181,4 +181,9 @@ public final class Range {
       oprot.writeStructEnd();
     }
     
+    private static final Range _DEFAULT = new Range.Builder().build();
+    
+    public static Range defaultInstance() {
+        return _DEFAULT;
+    }
 }

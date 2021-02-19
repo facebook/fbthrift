@@ -104,4 +104,8 @@ public final class {{struct:javaCapitalName}} {
 
     {{> struct/StructWrite}}
 
+    {{^struct:asBean?}}
+    {{> Default}}
+    {{/struct:asBean?}}
+
 }

@@ -542,4 +542,9 @@ public final class Person {
       oprot.writeStructEnd();
     }
     
+    private static final Person _DEFAULT = new Person.Builder().build();
+    
+    public static Person defaultInstance() {
+        return _DEFAULT;
+    }
 }

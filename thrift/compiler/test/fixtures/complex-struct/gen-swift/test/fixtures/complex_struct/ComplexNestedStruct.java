@@ -1683,4 +1683,9 @@ oprot.writeI32(_iter1 == null ? 0 : _iter1.getValue().getValue());
       oprot.writeStructEnd();
     }
     
+    private static final ComplexNestedStruct _DEFAULT = new ComplexNestedStruct.Builder().build();
+    
+    public static ComplexNestedStruct defaultInstance() {
+        return _DEFAULT;
+    }
 }

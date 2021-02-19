@@ -183,4 +183,9 @@ public final class SimpleStruct {
       oprot.writeStructEnd();
     }
     
+    private static final SimpleStruct _DEFAULT = new SimpleStruct.Builder().build();
+    
+    public static SimpleStruct defaultInstance() {
+        return _DEFAULT;
+    }
 }

@@ -183,4 +183,9 @@ public final class Struct {
       oprot.writeStructEnd();
     }
     
+    private static final Struct _DEFAULT = new Struct.Builder().build();
+    
+    public static Struct defaultInstance() {
+        return _DEFAULT;
+    }
 }

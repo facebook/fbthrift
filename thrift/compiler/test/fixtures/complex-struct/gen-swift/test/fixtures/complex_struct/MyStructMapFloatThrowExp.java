@@ -236,4 +236,9 @@ public final class MyStructMapFloatThrowExp {
       oprot.writeStructEnd();
     }
     
+    private static final MyStructMapFloatThrowExp _DEFAULT = new MyStructMapFloatThrowExp.Builder().build();
+    
+    public static MyStructMapFloatThrowExp defaultInstance() {
+        return _DEFAULT;
+    }
 }

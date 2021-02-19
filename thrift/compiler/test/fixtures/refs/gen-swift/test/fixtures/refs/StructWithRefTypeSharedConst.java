@@ -224,4 +224,9 @@ public final class StructWithRefTypeSharedConst {
       oprot.writeStructEnd();
     }
     
+    private static final StructWithRefTypeSharedConst _DEFAULT = new StructWithRefTypeSharedConst.Builder().build();
+    
+    public static StructWithRefTypeSharedConst defaultInstance() {
+        return _DEFAULT;
+    }
 }

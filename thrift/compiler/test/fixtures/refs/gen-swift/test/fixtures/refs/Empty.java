@@ -105,4 +105,9 @@ static {
       oprot.writeStructEnd();
     }
     
+    private static final Empty _DEFAULT = new Empty.Builder().build();
+    
+    public static Empty defaultInstance() {
+        return _DEFAULT;
+    }
 }
