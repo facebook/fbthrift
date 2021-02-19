@@ -25,6 +25,7 @@
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_include.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
@@ -85,7 +86,7 @@ class t_program : public t_node {
     structs_.push_back(ts.get());
     nodes_.push_back(std::move(ts));
   }
-  void add_xception(std::unique_ptr<t_struct> tx) {
+  void add_xception(std::unique_ptr<t_exception> tx) {
     objects_.push_back(tx.get());
     xceptions_.push_back(tx.get());
     nodes_.push_back(std::move(tx));
@@ -128,7 +129,7 @@ class t_program : public t_node {
   const std::vector<t_struct*>& get_structs() const {
     return structs_;
   }
-  const std::vector<t_struct*>& get_xceptions() const {
+  const std::vector<t_exception*>& get_xceptions() const {
     return xceptions_;
   }
   const std::vector<t_struct*>& get_objects() const {
@@ -270,7 +271,7 @@ class t_program : public t_node {
   std::vector<t_enum*> enums_;
   std::vector<t_const*> consts_;
   std::vector<t_struct*> structs_;
-  std::vector<t_struct*> xceptions_;
+  std::vector<t_exception*> xceptions_;
   std::vector<t_service*> services_;
   std::vector<t_include*> includes_;
   std::vector<t_service*> interactions_;

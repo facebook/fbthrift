@@ -46,10 +46,6 @@ class t_struct : public t_type {
   t_struct(t_program* program, const std::string& name)
       : t_type(program, name) {}
 
-  void set_xception(bool is_xception) {
-    is_xception_ = is_xception;
-  }
-
   // Tries to append the given field, the argument is untouched on failure.
   bool try_append_field(std::unique_ptr<t_field>&& elem);
 
@@ -76,11 +72,7 @@ class t_struct : public t_type {
   }
 
   bool is_struct() const override {
-    return !is_xception_;
-  }
-
-  bool is_xception() const override {
-    return is_xception_;
+    return !is_xception();
   }
 
   void set_view_parent(const t_struct* p) {
@@ -112,8 +104,6 @@ class t_struct : public t_type {
   std::vector<const t_field*> fields_ordinal_order_;
   std::vector<const t_field*> fields_id_order_;
   std::map<std::string, const t_field*> fields_by_name_;
-
-  bool is_xception_{false};
 
   const t_struct* view_parent_ = nullptr;
 
@@ -171,7 +161,6 @@ class t_struct : public t_type {
   }
 
   void cloneStruct(t_struct* clone) const {
-    clone->set_xception(is_xception_);
     clone->set_view_parent(view_parent_);
     for (auto const& field : fields_) {
       clone->append(field->clone_DO_NOT_USE());

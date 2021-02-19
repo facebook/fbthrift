@@ -21,6 +21,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
+#include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_union.h>
@@ -256,8 +257,7 @@ TEST_F(ValidatorTest, DuplicatedStructNames) {
 
   program.add_struct(std::make_unique<t_struct>(&program, "Foo"));
   program.add_struct(std::make_unique<t_struct>(&program, "Bar"));
-  auto ex = std::make_unique<t_struct>(&program, "Foo");
-  ex->set_xception(true);
+  auto ex = std::make_unique<t_exception>(&program, "Foo");
   ex->set_lineno(42);
   program.add_xception(std::move(ex));
 

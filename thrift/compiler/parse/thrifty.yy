@@ -258,7 +258,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 %type<t_struct*>        Struct
 %type<t_union*>         Union
-%type<t_struct*>        Xception
+%type<t_exception*>     Xception
 
 %type<t_service*>       Service
 %type<t_service*>       Interaction
@@ -889,8 +889,7 @@ Xception:
     {
       driver.debug("Xception => StructuredAnnotations tok_xception "
         "Identifier { FieldList } TypeAnnotations");
-      $$ = new t_struct(driver.program);
-      $$->set_xception(true);
+      $$ = new t_exception(driver.program);
       driver.finish_node($$, LineType::Xception, $4, own($6), own($8), own($1));
 
       const char* annotations[] = {"message", "code"};
