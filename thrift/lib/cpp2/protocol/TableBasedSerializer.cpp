@@ -186,9 +186,11 @@ const FieldInfo* FOLLY_NULLABLE findFieldInfo(
   return nullptr;
 }
 
-const FieldID& activeUnionMemberId(const void* object, ptrdiff_t offset) {
-  return *reinterpret_cast<const FieldID*>(
-      offset + static_cast<const char*>(object));
+// Returns a reference to the data member that holds the active field id for a
+// Thrift union object.
+const int& getActiveId(const void* object, const StructInfo& info) {
+  return *reinterpret_cast<const int*>(
+      static_cast<const char*>(object) + info.unionExt->unionTypeOffset);
 }
 
 const bool& fieldIsSet(const void* object, ptrdiff_t offset) {
@@ -591,16 +593,15 @@ void read(Protocol_* iprot, const StructInfo& structInfo, void* object) {
       readState.readStructEnd(iprot);
       return;
     }
-    const auto* fieldInfo = findFieldInfo(iprot, readState, structInfo);
-    // Found it.
-    if (fieldInfo) {
-      void* unionVal = getMember(*fieldInfo, object);
-      // Default construct and placement new into the member union.
-      structInfo.unionExt->initMember[fieldInfo - structInfo.fieldInfos](
-          unionVal);
-      read(iprot, *fieldInfo->typeInfo, readState, unionVal);
-      const_cast<FieldID&>(activeUnionMemberId(
-          object, structInfo.unionExt->unionTypeOffset)) = fieldInfo->id;
+    if (const auto* fieldInfo = findFieldInfo(iprot, readState, structInfo)) {
+      auto& activeId = const_cast<int&>(getActiveId(object, structInfo));
+      if (activeId != 0) {
+        structInfo.unionExt->clear(object);
+      }
+      void* value = getMember(*fieldInfo, object);
+      structInfo.unionExt->initMember[fieldInfo - structInfo.fieldInfos](value);
+      read(iprot, *fieldInfo->typeInfo, readState, value);
+      activeId = fieldInfo->id;
     } else {
       skip(iprot, readState);
     }
@@ -671,14 +672,13 @@ write(Protocol_* iprot, const StructInfo& structInfo, const void* object) {
   size_t written = iprot->writeStructBegin(structInfo.name);
   if (UNLIKELY(structInfo.unionExt != nullptr)) {
     const FieldInfo* end = structInfo.fieldInfos + structInfo.numFields;
-    const auto& unionId =
-        activeUnionMemberId(object, structInfo.unionExt->unionTypeOffset);
+    const auto& activeId = getActiveId(object, structInfo);
     const FieldInfo* found = std::lower_bound(
         structInfo.fieldInfos,
         end,
-        unionId,
+        activeId,
         [](const FieldInfo& lhs, FieldID rhs) { return lhs.id < rhs; });
-    if (found < end && found->id == unionId) {
+    if (found < end && found->id == activeId) {
       const OptionalThriftValue value = getValue(*found->typeInfo, object);
       if (value.hasValue()) {
         written += writeField(iprot, *found, value.value());

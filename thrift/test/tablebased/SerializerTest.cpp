@@ -356,3 +356,25 @@ TEST(SerializerTest, UnionValueOffsetIsZero) {
   u.set_fieldB({});
   EXPECT_EQ(static_cast<void*>(&u), &*u.fieldB_ref());
 }
+
+TEST(SerializerTest, DuplicateUnionData) {
+  // Test that we can handle invalid serialized input with duplicate and
+  // incomplete union data.
+  const char data[] =
+      "\x0c" // type = TType::T_STRUCT
+      "\x00\x01" // fieldId = 1 (unionField)
+      "\x0b" // type = TType::T_STRING
+      "\x00\x01" // fieldId = 1 (stringField)
+      "\x00\x00\x00\x00" // size = 0
+      "\x00" // end of unionField
+
+      "\x0c" // type = TType::T_STRUCT
+      "\x00\x01" // fieldId = 1 (unionField)
+      "\x13" // type = TType::T_FLOAT
+      "\x00\x02"; // fieldId = 2 (floatField), value is missing
+
+  EXPECT_THROW(
+      BinarySerializer::deserialize<tablebased::TestStructWithUnion>(
+          folly::StringPiece(data, sizeof(data))),
+      std::out_of_range);
+}

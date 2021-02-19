@@ -79,3 +79,12 @@ union UnionWithRef {
   3: StructA fieldC (cpp2.ref_type = "shared_const");
   4: StructA fieldD (cpp2.ref_type = "shared");
 }
+
+union TestUnion {
+  1: string stringField;
+  2: float floatField;
+}
+
+struct TestStructWithUnion {
+  1: TestUnion unionField;
+}
