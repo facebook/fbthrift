@@ -98,10 +98,9 @@ mstch::map t_mstch_generator::dump(const t_program& program) {
 mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) {
   mstch::map result{
       {"name", strct.get_name()},
-      {"fields?", !strct.get_members().empty()},
+      {"fields?", strct.has_fields()},
       {"fields",
-       shallow ? static_cast<mstch::node>(false)
-               : dump_elems(strct.get_members())},
+       shallow ? static_cast<mstch::node>(false) : dump_elems(strct.fields())},
       {"exception?", strct.is_xception()},
       {"union?", strct.is_union()},
       {"plain?", !strct.is_xception() && !strct.is_union()},
@@ -241,10 +240,10 @@ mstch::map t_mstch_generator::dump(const t_function& function) {
       {"name", function.get_name()},
       {"oneway?", function.is_oneway()},
       {"returnType", dump(*function.get_returntype())},
-      {"exceptions", dump_elems(function.get_xceptions()->get_members())},
-      {"exceptions?", !function.get_xceptions()->get_members().empty()},
+      {"exceptions", dump_elems(function.get_xceptions()->fields())},
+      {"exceptions?", function.get_xceptions()->has_fields()},
       {"annotations", dump_elems(function.annotations_)},
-      {"args", dump_elems(function.get_paramlist()->get_members())},
+      {"args", dump_elems(function.get_paramlist()->fields())},
   };
 
   mstch::map extension = extend_function(function);

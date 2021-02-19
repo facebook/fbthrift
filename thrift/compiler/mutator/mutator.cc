@@ -103,7 +103,7 @@ static void match_type_with_const_value(
   if (type->is_struct()) {
     auto* struct_type = dynamic_cast<const t_struct*>(type);
     for (auto map_val : value->get_map()) {
-      auto tfield = struct_type->get_member(map_val.first->get_string());
+      auto tfield = struct_type->get_field_by_name(map_val.first->get_string());
       match_type_with_const_value(program, tfield->get_type(), map_val.second);
     }
   }

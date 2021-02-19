@@ -496,7 +496,8 @@ mstch::node mstch_const_value::const_struct() {
     auto const* strct =
         dynamic_cast<t_struct const*>(const_value_->get_ttype());
     for (auto member : const_value_->get_map()) {
-      auto const field = strct->get_member(member.first->get_string());
+      auto const* field = strct->get_field_by_name(member.first->get_string());
+      assert(field != nullptr);
       constants.push_back(new t_const(
           nullptr,
           field->get_type(),
@@ -533,7 +534,7 @@ mstch::node mstch_field::type() {
 }
 
 mstch::node mstch_struct::fields() {
-  return generate_fields(strct_->get_members());
+  return generate_fields(strct_->fields());
 }
 
 mstch::node mstch_struct::thrift_uri() {
@@ -546,24 +547,24 @@ mstch::node mstch_function::return_type() {
 }
 
 mstch::node mstch_function::exceptions() {
-  return generate_fields(function_->get_xceptions()->get_members());
+  return generate_fields(function_->get_xceptions()->fields());
 }
 
 mstch::node mstch_function::stream_exceptions() {
-  return generate_fields(function_->get_stream_xceptions()->get_members());
+  return generate_fields(function_->get_stream_xceptions()->fields());
 }
 
 mstch::node mstch_function::sink_exceptions() {
-  return generate_fields(function_->get_sink_xceptions()->get_members());
+  return generate_fields(function_->get_sink_xceptions()->fields());
 }
 
 mstch::node mstch_function::sink_final_response_exceptions() {
   return generate_fields(
-      function_->get_sink_final_response_xceptions()->get_members());
+      function_->get_sink_final_response_xceptions()->fields());
 }
 
 mstch::node mstch_function::arg_list() {
-  return generate_fields(function_->get_paramlist()->get_members());
+  return generate_fields(function_->get_paramlist()->fields());
 }
 
 mstch::node mstch_function::returns_stream() {

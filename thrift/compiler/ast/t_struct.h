@@ -58,6 +58,11 @@ class t_struct : public t_type {
     return fields_id_order_;
   }
 
+  // If this struct has any fields.
+  bool has_fields() const {
+    return !fields_.empty();
+  }
+
   // Access the field by index, id, or name.
   t_field* get_field(size_t index) {
     return fields_.at(index).get();

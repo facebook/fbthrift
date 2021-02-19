@@ -252,14 +252,11 @@ bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
  */
 /* static */ bool exception_list_is_all_exceptions_validator::validate_throws(
     t_struct* throws) {
-  if (!throws) {
+  if (throws == nullptr) {
     return true;
   }
-
-  const std::vector<t_field*>& members = throws->get_members();
-  std::vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    if (!(*m_iter)->get_type()->get_true_type()->is_xception()) {
+  for (const auto* ex : throws->fields()) {
+    if (!ex->get_type()->get_true_type()->is_xception()) {
       return false;
     }
   }
@@ -271,7 +268,7 @@ bool union_no_qualified_fields_validator::visit(t_struct* s) {
     return true;
   }
 
-  for (const auto* field : s->get_members()) {
+  for (const auto* field : s->fields()) {
     if (field->get_req() != t_field::T_OPT_IN_REQ_OUT) {
       add_error(
           field->get_lineno(),
@@ -285,10 +282,10 @@ bool union_no_qualified_fields_validator::visit(t_struct* s) {
 }
 
 bool mixin_type_correctness_validator::visit(t_struct* s) {
-  for (auto* member : s->get_members()) {
-    if (cpp2::is_mixin(*member)) {
-      auto* member_type = member->get_type()->get_true_type();
-      const auto& name = member->get_name();
+  for (auto* field : s->fields()) {
+    if (cpp2::is_mixin(*field)) {
+      auto* member_type = field->get_type()->get_true_type();
+      const auto& name = field->get_name();
       if (s->is_union()) {
         add_error(
             s->get_lineno(),
@@ -296,16 +293,16 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
                 "`.");
       } else if (!member_type->is_struct()) {
         add_error(
-            member->get_lineno(),
+            field->get_lineno(),
             "Mixin field `" + name + "` is not a struct but `" +
-                member->get_type()->get_name() + "`.");
-      } else if (member->get_req() == t_field::T_OPTIONAL) {
+                field->get_type()->get_name() + "`.");
+      } else if (field->get_req() == t_field::T_OPTIONAL) {
         // Nothing technically stops us from marking optional field mixin.
         // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
         // might throw `bad_field_access` if `bar` is inside optional mixin
         // field.
         add_error(
-            member->get_lineno(),
+            field->get_lineno(),
             "Mixin field `" + name + "` can not be optional.");
       }
     }
@@ -314,20 +311,20 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
 }
 
 bool field_names_uniqueness_validator::visit(t_struct* s) {
-  // If member is not struct, we couldn't extract field from mixin
-  for (auto* member : s->get_members()) {
-    if (cpp2::is_mixin(*member) &&
-        !member->get_type()->get_true_type()->is_struct()) {
+  // If field is not struct, we couldn't extract field from mixin
+  for (auto* field : s->fields()) {
+    if (cpp2::is_mixin(*field) &&
+        !field->get_type()->get_true_type()->is_struct()) {
       return true;
     }
   }
 
   std::map<std::string, std::string> memberToParent;
-  for (auto* member : s->get_members()) {
-    if (!memberToParent.emplace(member->get_name(), s->get_name()).second) {
+  for (auto* field : s->fields()) {
+    if (!memberToParent.emplace(field->get_name(), s->get_name()).second) {
       add_error(
-          member->get_lineno(),
-          "Field `" + member->get_name() + "` is not unique in struct `" +
+          field->get_lineno(),
+          "Field `" + field->get_name() + "` is not unique in struct `" +
               s->get_name() + "`.");
     }
   }
@@ -450,11 +447,9 @@ void structured_annotations_uniqueness_validator::validate_annotations(
 }
 
 bool reserved_field_id_validator::visit(t_struct* s) {
-  for (auto* member : s->get_members()) {
-    if (member->get_key() == -32768) {
-      add_error(
-          member->get_lineno(), "Too many fields in `" + s->get_name() + "`");
-    }
+  if (const auto* field = s->get_field_by_id(-32768)) {
+    add_error(
+        field->get_lineno(), "Too many fields in `" + s->get_name() + "`");
   }
   return true;
 }

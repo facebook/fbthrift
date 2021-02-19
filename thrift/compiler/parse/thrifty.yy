@@ -895,7 +895,7 @@ Xception:
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
         if (driver.mode == parsing_mode::PROGRAM
-            && $$->has_field_named(annotation)
+            && $$->get_field_by_name(annotation) != nullptr
             && $$->has_annotation(annotation)
             && strcmp(annotation, $$->get_annotation(annotation).c_str()) != 0) {
           driver.warning(1, "Some generators (e.g. PHP) will ignore annotation '%s' "
@@ -908,12 +908,12 @@ Xception:
       // - of type STRING
       if (driver.mode == parsing_mode::PROGRAM && $$->has_annotation("message")) {
         const std::string& v = $$->get_annotation("message");
-        if (!$$->has_field_named(v.c_str())) {
+        const auto* field = $$->get_field_by_name(v);
+        if (field == nullptr) {
           driver.failure("member specified as exception 'message' should be a valid"
                          " struct member, '%s' in '%s' is not", v.c_str(), $4.c_str());
         }
 
-        auto field = $$->get_field_named(v.c_str());
         if (!field->get_type()->is_string_or_binary()) {
           driver.failure("member specified as exception 'message' should be of type "
                          "STRING, '%s' in '%s' is not", v.c_str(), $4.c_str());

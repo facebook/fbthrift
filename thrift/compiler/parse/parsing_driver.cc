@@ -321,7 +321,7 @@ void parsing_driver::validate_const_rec(
             "names must be a string.");
       }
       auto const& member_name = map.front().first->get_string();
-      auto const& member = as_struct->get_member(member_name);
+      auto const* member = as_struct->get_field_by_name(member_name);
       if (!member) {
         throw std::string(
             "type error: no member named `" + member_name +
@@ -336,32 +336,25 @@ void parsing_driver::validate_const_rec(
           "type error: const `" + name + "` was declared as " +
           "struct/exception.");
     }
-    const std::vector<t_field*>& fields = ((t_struct*)type)->get_members();
-    std::vector<t_field*>::const_iterator f_iter;
-
-    const std::vector<std::pair<t_const_value*, t_const_value*>>& val =
-        value->get_map();
-    std::vector<std::pair<t_const_value*, t_const_value*>>::const_iterator
-        v_iter;
-    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      if (v_iter->first->get_type() != t_const_value::CV_STRING) {
+    const auto as_struct = static_cast<const t_struct*>(type);
+    for (const auto& entry : value->get_map()) {
+      if (entry.first->get_type() != t_const_value::CV_STRING) {
         throw std::string(
             "type error: `" + name + "` struct key must be string.");
       }
       t_type* field_type = nullptr;
-      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-        if ((*f_iter)->get_name() == v_iter->first->get_string()) {
-          field_type = (*f_iter)->get_type();
-        }
+      if (const auto* field =
+              as_struct->get_field_by_name(entry.first->get_string())) {
+        field_type = field->get_type();
       }
       if (field_type == nullptr) {
         throw std::string(
             "type error: `" + type->get_name() + "` has no field `" +
-            v_iter->first->get_string() + "`.");
+            entry.first->get_string() + "`.");
       }
 
       validate_const_rec(
-          name + "." + v_iter->first->get_string(), field_type, v_iter->second);
+          name + "." + entry.first->get_string(), field_type, entry.second);
     }
   } else if (type->is_map()) {
     t_type* k_type = ((t_map*)type)->get_key_type();

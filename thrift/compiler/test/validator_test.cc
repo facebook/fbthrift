@@ -24,6 +24,7 @@
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/test/parser_test_helpers.h>
 #include <thrift/compiler/validator/validator.h>

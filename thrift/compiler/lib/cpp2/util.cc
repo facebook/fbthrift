@@ -98,10 +98,13 @@ bool is_orderable(
          !has_disqualifying_annotation);
   }
   if (type.is_struct() || type.is_xception()) {
-    auto& members = dynamic_cast<t_struct const&>(type).get_members();
-    return result = std::all_of(members.begin(), members.end(), [&](auto f) {
-             return is_orderable(seen, memo, *(f->get_type()));
-           });
+    const auto& as_sturct = static_cast<t_struct const&>(type);
+    return result = std::all_of(
+               as_sturct.fields().begin(),
+               as_sturct.fields().end(),
+               [&](auto f) {
+                 return is_orderable(seen, memo, *(f->get_type()));
+               });
   }
   if (type.is_list()) {
     return result = is_orderable(
@@ -180,9 +183,9 @@ bool is_mixin(const t_field& field) {
 
 static void get_mixins_and_members_impl(
     const t_struct& strct,
-    t_field* top_level_mixin,
+    const t_field* top_level_mixin,
     std::vector<mixin_member>& out) {
-  for (auto* member : strct.get_members()) {
+  for (const auto* member : strct.fields()) {
     if (is_mixin(*member)) {
       assert(member->get_type()->get_true_type()->is_struct());
       auto mixin_struct =
@@ -190,7 +193,7 @@ static void get_mixins_and_members_impl(
       auto mixin = top_level_mixin ? top_level_mixin : member;
 
       // import members from mixin field
-      for (auto* member_from_mixin : mixin_struct->get_members()) {
+      for (const auto* member_from_mixin : mixin_struct->fields()) {
         out.push_back({mixin, member_from_mixin});
       }
 

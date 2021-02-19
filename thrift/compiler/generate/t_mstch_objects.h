@@ -1032,7 +1032,7 @@ class mstch_struct : public mstch_base {
     return strct_->get_name();
   }
   mstch::node has_fields() {
-    return !strct_->get_members().empty();
+    return strct_->has_fields();
   }
   mstch::node fields();
   mstch::node is_exception() {
@@ -1102,21 +1102,19 @@ class mstch_function : public mstch_base {
     return function_->is_oneway();
   }
   mstch::node has_exceptions() {
-    return !function_->get_xceptions()->get_members().empty();
+    return function_->get_xceptions()->has_fields();
   }
   mstch::node has_streamexceptions() {
-    return !function_->get_stream_xceptions()->get_members().empty();
+    return function_->get_stream_xceptions()->has_fields();
   }
   mstch::node has_sinkexceptions() {
-    return !function_->get_sink_xceptions()->get_members().empty();
+    return function_->get_sink_xceptions()->has_fields();
   }
   mstch::node has_sink_final_response_exceptions() {
-    return !function_->get_sink_final_response_xceptions()
-                ->get_members()
-                .empty();
+    return function_->get_sink_final_response_xceptions()->has_fields();
   }
   mstch::node has_args() {
-    if (!function_->get_paramlist()->get_members().empty()) {
+    if (function_->get_paramlist()->has_fields()) {
       return std::string(", ");
     }
     return std::string();
