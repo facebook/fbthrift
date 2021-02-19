@@ -627,3 +627,30 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
         self.assertEqual(err, expected_error)
+
+    def test_unordered_minimize_padding(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct A {
+                    1: B field
+                } (cpp.minimize_padding)
+                struct B {
+                1: i32 x
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift] cpp.minimize_padding requires struct "
+                + "definitions to be topologically sorted. Move definition of "
+                + "`B` before its use in field `field`.\n"
+            ),
+        )

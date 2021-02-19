@@ -930,7 +930,14 @@ class mstch_cpp2_struct : public mstch_struct {
       case t_types::TypeValue::TYPE_STRUCT: {
         size_t align = 1;
         const size_t kMaxAlign = 8;
-        t_struct const* strct = static_cast<t_struct const*>(type);
+        t_struct const* strct = dynamic_cast<t_struct const*>(type);
+        if (!strct) {
+          throw std::runtime_error(
+              "cpp.minimize_padding requires struct definitions to be "
+              "topologically sorted. Move definition of `" +
+              type->get_name() + "` before its use in field `" +
+              field->get_name() + "`.");
+        }
         for (auto const* member : strct->get_members()) {
           size_t member_align = compute_alignment(member);
           if (member_align == 0) {
