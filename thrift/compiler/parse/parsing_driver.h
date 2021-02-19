@@ -31,6 +31,7 @@
 #include "thrift/compiler/ast/t_program.h"
 #include "thrift/compiler/ast/t_program_bundle.h"
 #include "thrift/compiler/ast/t_scope.h"
+#include "thrift/compiler/ast/t_union.h"
 #include "thrift/compiler/parse/yy_scanner.h"
 
 /**
@@ -68,9 +69,11 @@ enum class LineType {
   Function,
   Field,
   Xception,
+  Union,
 };
 
 using t_struct_annotations = std::vector<std::unique_ptr<t_const>>;
+using t_field_list = std::vector<std::unique_ptr<t_field>>;
 
 struct diagnostic_message {
   diagnostic_level level;
@@ -351,6 +354,13 @@ class parsing_driver {
       std::string name,
       std::unique_ptr<t_annotated> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
+  void finish_node(
+      t_struct* node,
+      LineType lineType,
+      std::string name,
+      std::unique_ptr<t_field_list> fields,
+      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_struct_annotations> struct_annotations);
 
   // Populate the annotation on the given node.
   static void set_annotations(
@@ -360,6 +370,9 @@ class parsing_driver {
 
   std::unique_ptr<t_const> new_struct_annotation(
       std::unique_ptr<t_const_value> const_struct);
+
+  std::unique_ptr<t_struct> new_throws(
+      std::unique_ptr<t_field_list> exceptions = nullptr);
 
  private:
   class deleter {
@@ -410,6 +423,8 @@ class parsing_driver {
 
   // Returns the starting line number.
   int pop_node(LineType lineType);
+
+  void append_fields(t_struct& tstruct, t_field_list&& fields);
 
   template <typename... Arg>
   diagnostic_message construct_diagnostic_message(

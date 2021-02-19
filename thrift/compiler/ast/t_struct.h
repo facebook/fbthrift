@@ -50,10 +50,6 @@ class t_struct : public t_type {
     is_xception_ = is_xception;
   }
 
-  void set_union(bool is_union) {
-    is_union_ = is_union;
-  }
-
   // Tries to append the given field, the argument is untouched on failure.
   bool try_append_field(std::unique_ptr<t_field>&& elem);
 
@@ -81,10 +77,6 @@ class t_struct : public t_type {
 
   bool is_struct() const override {
     return !is_xception_;
-  }
-
-  bool is_union() const override {
-    return is_union_;
   }
 
   bool is_xception() const override {
@@ -122,7 +114,6 @@ class t_struct : public t_type {
   std::map<std::string, const t_field*> fields_by_name_;
 
   bool is_xception_{false};
-  bool is_union_{false};
 
   const t_struct* view_parent_ = nullptr;
 
@@ -181,7 +172,6 @@ class t_struct : public t_type {
 
   void cloneStruct(t_struct* clone) const {
     clone->set_xception(is_xception_);
-    clone->set_union(is_union_);
     clone->set_view_parent(view_parent_);
     for (auto const& field : fields_) {
       clone->append(field->clone_DO_NOT_USE());

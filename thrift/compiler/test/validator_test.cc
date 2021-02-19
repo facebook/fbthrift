@@ -23,6 +23,7 @@
 
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/test/parser_test_helpers.h>
 #include <thrift/compiler/validator/validator.h>
 
@@ -223,8 +224,7 @@ TEST_F(ValidatorTest, QualifiedInUnion) {
   field->set_lineno(5);
   field->set_req(t_field::T_REQUIRED);
 
-  auto struct_union = std::make_unique<t_struct>(&program, "Bar");
-  struct_union->set_union(true);
+  auto struct_union = std::make_unique<t_union>(&program, "Bar");
 
   struct_union->append(std::move(field));
 

@@ -602,6 +602,22 @@ void parsing_driver::finish_node(
       node, lineType, std::move(annotations), std::move(struct_annotations));
 }
 
+void parsing_driver::finish_node(
+    t_struct* node,
+    LineType lineType,
+    std::string name,
+    std::unique_ptr<t_field_list> fields,
+    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_struct_annotations> struct_annotations) {
+  append_fields(*node, std::move(*fields));
+  finish_node(
+      node,
+      lineType,
+      std::move(name),
+      std::move(annotations),
+      std::move(struct_annotations));
+}
+
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
     std::unique_ptr<t_const_value> const_struct) {
   auto* ttype = const_struct->get_ttype();
@@ -612,6 +628,27 @@ std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
     validate_const_type(result.get());
   }
   return result;
+}
+
+std::unique_ptr<t_struct> parsing_driver::new_throws(
+    std::unique_ptr<t_field_list> exceptions) {
+  auto result = std::make_unique<t_struct>(program);
+  if (exceptions != nullptr) {
+    append_fields(*result, std::move(*exceptions));
+  }
+  return result;
+}
+
+void parsing_driver::append_fields(t_struct& tstruct, t_field_list&& fields) {
+  for (auto& field : fields) {
+    if (!tstruct.try_append_field(std::move(field))) {
+      failure(
+          "Field identifier %d for \"%s\" has already been used",
+          field->get_key(),
+          field->get_name().c_str());
+      break;
+    }
+  }
 }
 
 } // namespace compiler

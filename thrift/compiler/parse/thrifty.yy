@@ -36,9 +36,10 @@
 
 #include <boost/optional.hpp>
 
+#include "thrift/compiler/ast/base_types.h"
 #include "thrift/compiler/ast/t_annotated.h"
 #include "thrift/compiler/ast/t_scope.h"
-#include "thrift/compiler/ast/base_types.h"
+#include "thrift/compiler/ast/t_union.h"
 
 #include "thrift/compiler/parse/parsing_driver.h"
 
@@ -74,8 +75,6 @@ int y_field_val = -1;
  */
 int32_t y_enum_val = -1;
 int g_arglist = 0;
-const int struct_is_struct = 0;
-const int struct_is_union = 1;
 const char* y_enum_name = nullptr;
 
 // Assume ownership of a pointer.
@@ -97,8 +96,6 @@ std::unique_ptr<T> own(T*ptr) {
 namespace apache {
 namespace thrift {
 namespace compiler {
-
-class parsing_driver;
 using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 } // namespace compiler
@@ -242,7 +239,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_sink*>          SinkReturnType
 %type<t_typestructpair> SinkFieldType
 %type<t_const_value*>   FieldValue
-%type<t_struct*>        FieldList
+%type<t_field_list*>    FieldList
 
 %type<t_enum*>          Enum
 %type<t_enum*>          EnumDefList
@@ -259,9 +256,10 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_type*>          ConstStructType
 %type<t_const_value*>   ConstStructContents
 
-%type<int64_t>          StructHead
 %type<t_struct*>        Struct
+%type<t_union*>         Union
 %type<t_struct*>        Xception
+
 %type<t_service*>       Service
 %type<t_service*>       Interaction
 
@@ -490,6 +488,16 @@ TypeDefinition:
 | Struct
     {
       driver.debug("TypeDefinition -> Struct");
+      if (driver.mode == parsing_mode::PROGRAM) {
+        driver.program->add_struct(own($1));
+      } else {
+        driver.delete_at_the_end($1);
+      }
+      $$ = $1;
+    }
+| Union
+    {
+      driver.debug("TypeDefinition -> Union");
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->add_struct(own($1));
       } else {
@@ -844,28 +852,31 @@ ConstStructContents:
       $$->add_map(std::make_unique<t_const_value>($1), own($3));
     }
 
-StructHead:
-  tok_struct
-    {
-      $$ = struct_is_struct;
-    }
-| tok_union
-    {
-      $$ = struct_is_union;
-    }
-
 Struct:
-  StructuredAnnotations StructHead
+  StructuredAnnotations tok_struct
     {
       driver.start_node(LineType::Struct);
     }
   Identifier "{" FieldList "}" TypeAnnotations
     {
-      driver.debug("Struct => StructuredAnnotations StructHead Identifier "
+      driver.debug("Struct => StructuredAnnotations tok_struct Identifier "
         "{ FieldList } TypeAnnotations");
-      $$ = $6;
-      $$->set_union($2 == struct_is_union);
-      driver.finish_node($$, LineType::Struct, $4, own($8), own($1));
+      $$ = new t_struct(driver.program);
+      driver.finish_node($$, LineType::Struct, $4, own($6), own($8), own($1));
+      y_field_val = -1;
+    }
+
+Union:
+  StructuredAnnotations tok_union
+    {
+      driver.start_node(LineType::Union);
+    }
+  Identifier "{" FieldList "}" TypeAnnotations
+    {
+      driver.debug("Union => StructuredAnnotations tok_union Identifier "
+        "{ FieldList } TypeAnnotations");
+      $$ = new t_union(driver.program);
+      driver.finish_node($$, LineType::Union, $4, own($6), own($8), own($1));
       y_field_val = -1;
     }
 
@@ -878,9 +889,9 @@ Xception:
     {
       driver.debug("Xception => StructuredAnnotations tok_xception "
         "Identifier { FieldList } TypeAnnotations");
-      $$ = $6;
+      $$ = new t_struct(driver.program);
       $$->set_xception(true);
-      driver.finish_node($$, LineType::Xception, $4, own($8), own($1));
+      driver.finish_node($$, LineType::Xception, $4, own($6), own($8), own($1));
 
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
@@ -1105,7 +1116,7 @@ Throws:
   tok_throws "(" FieldList ")"
     {
       driver.debug("Throws -> tok_throws ( FieldList )");
-      $$ = $3;
+      $$ = driver.new_throws(own($3)).release();
     }
 MaybeThrows:
   Throws
@@ -1113,24 +1124,20 @@ MaybeThrows:
 			$$ = $1;
 		}
 |   {
-			$$ = new t_struct(driver.program);
+      $$ = driver.new_throws().release();
 		}
 
 FieldList:
   FieldList Field
     {
-      driver.debug("FieldList -> FieldList , Field");
+      driver.debug("FieldList -> FieldList Field");
       $$ = $1;
-      auto field = own($2);
-      if (!$$->try_append_field(std::move(field))) {
-        driver.failure("Field identifier %d for \"%s\" has already been used",
-                       field->get_key(), field->get_name().c_str());
-      }
+      $$->emplace_back($2);
     }
 |
     {
       driver.debug("FieldList -> ");
-      $$ = new t_struct(driver.program);
+      $$ = new t_field_list;
     }
 
 Field:

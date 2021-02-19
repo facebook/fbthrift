@@ -27,6 +27,7 @@
 #include <vector>
 
 #include <thrift/compiler/ast/base_types.h>
+#include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 
 using namespace std;
@@ -1698,7 +1699,7 @@ void t_hack_generator::append_to_t_enum(
 
 t_type* t_hack_generator::tmeta_ThriftType_type() {
   static t_program empty_program("");
-  static t_struct type(&empty_program, "tmeta_ThriftType");
+  static t_union type(&empty_program, "tmeta_ThriftType");
   static t_enum primitive_type(&empty_program);
   static t_struct list_type(&empty_program, "tmeta_ThriftListType");
   static t_struct set_type(&empty_program, "tmeta_ThriftSetType");
@@ -1754,7 +1755,6 @@ t_type* t_hack_generator::tmeta_ThriftType_type() {
   sink_type.append(
       std::make_unique<t_field>((t_type*)&type, "initialResponseType"));
 
-  type.set_union(true);
   type.append(
       std::make_unique<t_field>((t_type*)&primitive_type, "t_primitive"));
   type.append(std::make_unique<t_field>((t_type*)&list_type, "t_list"));
