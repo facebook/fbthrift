@@ -260,7 +260,8 @@ string t_json_generator::type_to_string(t_type* type) {
     return "TYPEDEF";
   }
 
-  throw "INVALID TYPE IN type_to_string: " + type->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN type_to_string: " + type->get_name());
 }
 
 /**
@@ -308,7 +309,8 @@ string t_json_generator::type_to_spec_args(t_type* ttype) {
         type_to_spec_args(((t_list*)ttype)->get_elem_type()) + "} ";
   }
 
-  throw "INVALID TYPE IN type_to_spec_args: " + ttype->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN type_to_spec_args: " + ttype->get_name());
 }
 
 /**

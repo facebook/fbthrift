@@ -67,7 +67,7 @@ class t_php_generator : public t_oop_generator {
         !option_is_specified(parsed_options, "no-global-constants");
 
     if (oop_ && binary_inline_) {
-      throw "oop and inlined are mutually exclusive.";
+      throw std::runtime_error("oop and inlined are mutually exclusive.");
     }
 
     out_dir_base_ = (binary_inline_ ? "gen-phpi" : "gen-php");
@@ -462,8 +462,9 @@ void t_php_generator::generate_json_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT READ JSON FIELD WITH void TYPE: " + prefix_thrift +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT READ JSON FIELD WITH void TYPE: " + prefix_thrift +
+        tfield->get_name());
   }
 
   string name = prefix_thrift + tfield->get_name() + suffix_thrift;
@@ -501,8 +502,9 @@ void t_php_generator::generate_json_field(
         typeConversionString = "(int)";
         break;
       default:
-        throw "compiler error: no PHP reader for base type " +
-            t_base_type::t_base_name(tbase) + name;
+        throw std::runtime_error(
+            "compiler error: no PHP reader for base type " +
+            t_base_type::t_base_name(tbase) + name);
     }
 
     if (number_limit.empty()) {
@@ -552,7 +554,7 @@ void t_php_generator::generate_json_container(
     generate_json_map_element(
         out, namer, (t_map*)ttype, key, value, prefix_thrift);
   } else {
-    throw "compiler error: no PHP reader for this type.";
+    throw std::runtime_error("compiler error: no PHP reader for this type.");
   }
   indent_down();
   indent(out) << "}" << endl;
@@ -995,8 +997,9 @@ string t_php_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     indent(out) << value->get_integer();
@@ -1016,8 +1019,9 @@ string t_php_generator::render_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       out << indent();
       out << render_const_value(string_type(), v_iter->first);
@@ -1138,7 +1142,8 @@ void t_php_generator::generate_php_type_spec(ofstream& out, t_type* t) {
     indent(out) << "'format' => 'array'," << endl;
     indent_down();
   } else {
-    throw "compiler error: no type for php struct spec field";
+    throw std::runtime_error(
+        "compiler error: no type for php struct spec field");
   }
 }
 
@@ -1247,8 +1252,9 @@ void t_php_generator::_generate_php_struct_definition(
     t_type* t = (*m_iter)->get_type()->get_true_type();
 
     if (t->is_enum() && is_bitmask_enum((t_enum*)t)) {
-      throw "Enum " + (((t_enum*)t)->get_name()) +
-          "is actually a bitmask, cannot generate a field of this enum type";
+      throw std::runtime_error(
+          "Enum " + (((t_enum*)t)->get_name()) +
+          "is actually a bitmask, cannot generate a field of this enum type");
     }
 
     if ((*m_iter)->get_value() != nullptr &&
@@ -1610,8 +1616,9 @@ void t_php_generator::generate_service(t_service* tservice) {
 
   if (mangled_services_) {
     if (php_namespace(tservice).empty()) {
-      throw "cannot generate mangled services for " + tservice->get_name() +
-          "; no php namespace found";
+      throw std::runtime_error(
+          "cannot generate mangled services for " + tservice->get_name() +
+          "; no php namespace found");
     }
     // generate new files for mangled services, if requested
     generate_service(tservice, true);
@@ -2707,8 +2714,9 @@ void t_php_generator::generate_deserialize_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   string name = prefix + tfield->get_name();
@@ -2726,8 +2734,9 @@ void t_php_generator::generate_deserialize_field(
           t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
           switch (tbase) {
             case t_base_type::TYPE_VOID:
-              throw "compiler error: cannot serialize void field in a struct: " +
-                  name;
+              throw std::runtime_error(
+                  "compiler error: cannot serialize void field in a struct: " +
+                  name);
             case t_base_type::TYPE_STRING:
             case t_base_type::TYPE_BINARY:
               out << indent() << "$len = unpack('N', " << itrans
@@ -2795,8 +2804,9 @@ void t_php_generator::generate_deserialize_field(
                   << indent() << "$" << name << " = $arr[1];" << endl;
               break;
             default:
-              throw "compiler error: no PHP name for base type " +
-                  t_base_type::t_base_name(tbase) + tfield->get_name();
+              throw std::runtime_error(
+                  "compiler error: no PHP name for base type " +
+                  t_base_type::t_base_name(tbase) + tfield->get_name());
           }
         } else if (type->is_enum()) {
           out << indent() << "$val = unpack('N', " << itrans << "->readAll(4));"
@@ -2814,8 +2824,9 @@ void t_php_generator::generate_deserialize_field(
           t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
           switch (tbase) {
             case t_base_type::TYPE_VOID:
-              throw "compiler error: cannot serialize void field in a struct: " +
-                  name;
+              throw std::runtime_error(
+                  "compiler error: cannot serialize void field in a struct: " +
+                  name);
             case t_base_type::TYPE_STRING:
             case t_base_type::TYPE_BINARY:
               out << "readString($" << name << ");";
@@ -2842,8 +2853,9 @@ void t_php_generator::generate_deserialize_field(
               out << "readFloat($" << name << ");";
               break;
             default:
-              throw "compiler error: no PHP name for base type " +
-                  t_base_type::t_base_name(tbase);
+              throw std::runtime_error(
+                  "compiler error: no PHP name for base type " +
+                  t_base_type::t_base_name(tbase));
           }
         } else if (type->is_enum()) {
           out << "readI32($" << name << ");";
@@ -3039,8 +3051,9 @@ void t_php_generator::generate_serialize_field(
 
   // Do nothing for void types
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -3056,8 +3069,9 @@ void t_php_generator::generate_serialize_field(
         t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
         switch (tbase) {
           case t_base_type::TYPE_VOID:
-            throw "compiler error: cannot serialize void field in a struct: " +
-                name;
+            throw std::runtime_error(
+                "compiler error: cannot serialize void field in a struct: " +
+                name);
           case t_base_type::TYPE_STRING:
           case t_base_type::TYPE_BINARY:
             out << indent() << "$output .= pack('N', strlen($" << name << "));"
@@ -3090,8 +3104,9 @@ void t_php_generator::generate_serialize_field(
                 << endl;
             break;
           default:
-            throw "compiler error: no PHP name for base type " +
-                t_base_type::t_base_name(tbase);
+            throw std::runtime_error(
+                "compiler error: no PHP name for base type " +
+                t_base_type::t_base_name(tbase));
         }
       } else if (type->is_enum()) {
         out << indent() << "$output .= pack('N', $" << name << ");" << endl;
@@ -3103,8 +3118,9 @@ void t_php_generator::generate_serialize_field(
         t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
         switch (tbase) {
           case t_base_type::TYPE_VOID:
-            throw "compiler error: cannot serialize void field in a struct: " +
-                name;
+            throw std::runtime_error(
+                "compiler error: cannot serialize void field in a struct: " +
+                name);
           case t_base_type::TYPE_STRING:
           case t_base_type::TYPE_BINARY:
             out << "writeString($" << name << ");";
@@ -3131,8 +3147,9 @@ void t_php_generator::generate_serialize_field(
             out << "writeFloat($" << name << ");";
             break;
           default:
-            throw "compiler error: no PHP name for base type " +
-                t_base_type::t_base_name(tbase);
+            throw std::runtime_error(
+                "compiler error: no PHP name for base type " +
+                t_base_type::t_base_name(tbase));
         }
       } else if (type->is_enum()) {
         out << "writeI32($" << name << ");";
@@ -3332,8 +3349,9 @@ string t_php_generator::declare_field(
           result += " = 0.0";
           break;
         default:
-          throw "compiler error: no PHP initializer for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no PHP initializer for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       result += " = 0";
@@ -3439,7 +3457,7 @@ string t_php_generator ::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "TType::STRING";
@@ -3470,7 +3488,7 @@ string t_php_generator ::type_to_enum(t_type* type) {
     return "TType::LST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(

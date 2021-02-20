@@ -146,7 +146,7 @@ std::string quote(const std::string& data) {
     } else if (ch < '\x7f') {
       quoted << ch;
     } else {
-      throw "Non-ASCII string literal not implemented";
+      throw std::runtime_error("Non-ASCII string literal not implemented");
     }
   }
 

@@ -592,8 +592,9 @@ class t_d_generator : public t_oop_generator {
           }
           break;
         default:
-          throw "Compiler error: No const of base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "Compiler error: No const of base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "cast(" << render_type_name(type) << ")" << value->get_integer();
@@ -619,8 +620,9 @@ class t_d_generator : public t_oop_generator {
             }
           }
           if (field_type == nullptr) {
-            throw "Type error: " + type->get_name() + " has no field " +
-                v_iter->first->get_string();
+            throw std::runtime_error(
+                "Type error: " + type->get_name() + " has no field " +
+                v_iter->first->get_string());
           }
           string val = render_const_value(field_type, v_iter->second);
           indent(out) << "v.set!`" << v_iter->first->get_string() << "`(" << val
@@ -658,8 +660,9 @@ class t_d_generator : public t_oop_generator {
           indent(out) << "v ~= " << val << ";" << endl;
         }
       } else {
-        throw "Compiler error: Invalid type in render_const_value: " +
-            type->get_name();
+        throw std::runtime_error(
+            "Compiler error: Invalid type in render_const_value: " +
+            type->get_name());
       }
       indent(out) << "return v;" << endl;
 
@@ -709,8 +712,9 @@ class t_d_generator : public t_oop_generator {
         case t_base_type::TYPE_DOUBLE:
           return "double";
         default:
-          throw "Compiler error: No D type name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "Compiler error: No D type name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     }
 
@@ -774,8 +778,9 @@ class t_d_generator : public t_oop_generator {
       case t_field::T_REQUIRED:
         return "TReq.REQUIRED";
       default:
-        throw "Compiler error: Invalid requirement level: " +
-            std::to_string(req);
+        throw std::runtime_error(
+            "Compiler error: Invalid requirement level: " +
+            std::to_string(req));
     }
   }
 

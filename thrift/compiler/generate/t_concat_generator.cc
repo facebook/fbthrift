@@ -184,8 +184,9 @@ void t_concat_generator::validate_union_members(const t_struct* tstruct) {
   for (const auto& mem : tstruct->get_members()) {
     if (mem->get_req() == t_field::T_REQUIRED ||
         mem->get_req() == t_field::T_OPTIONAL) {
-      throw "compiler error: Union field " + tstruct->get_name() + "." +
-          mem->get_name() + " cannot be required or optional";
+      throw std::runtime_error(
+          "compiler error: Union field " + tstruct->get_name() + "." +
+          mem->get_name() + " cannot be required or optional");
     }
   }
 }

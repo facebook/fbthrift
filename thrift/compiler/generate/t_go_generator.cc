@@ -391,7 +391,7 @@ bool t_go_generator::omit_initialization(t_field* tfield) {
 
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "";
+        throw std::runtime_error("Unsupported type: void");
 
       case t_base_type::TYPE_STRING:
         // strings are pointers if has no default
@@ -452,7 +452,7 @@ bool t_go_generator::is_pointer_field(
 
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "";
+        throw std::runtime_error("Unsupported type: void");
 
       case t_base_type::TYPE_STRING:
         // strings are pointers if has no default
@@ -485,7 +485,8 @@ bool t_go_generator::is_pointer_field(
     return has_default;
   }
 
-  throw "INVALID TYPE IN type_to_go_type: " + type->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN type_to_go_type: " + type->get_name());
 }
 
 std::string t_go_generator::camelcase(const std::string& value) const {
@@ -1158,8 +1159,9 @@ string t_go_generator::render_const_value(
       }
 
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     indent(out) << value->get_integer();
@@ -1193,8 +1195,9 @@ string t_go_generator::render_const_value(
       }
 
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
 
       out << indent() << publicize(v_iter->first->get_string()) << ": "
@@ -1254,7 +1257,8 @@ string t_go_generator::render_const_value(
     indent_down();
     out << indent() << "}";
   } else {
-    throw "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name());
   }
 
   return out.str();
@@ -3354,7 +3358,8 @@ void t_go_generator::generate_deserialize_field(
   string name(prefix + publicize(tfield->get_name()));
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + name;
+    throw std::runtime_error(
+        "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + name);
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -3382,8 +3387,9 @@ void t_go_generator::generate_deserialize_field(
 
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
 
         case t_base_type::TYPE_STRING:
           out << "ReadString()";
@@ -3426,8 +3432,9 @@ void t_go_generator::generate_deserialize_field(
           break;
 
         default:
-          throw "compiler error: no Go name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no Go name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "ReadI32()";
@@ -3458,8 +3465,9 @@ void t_go_generator::generate_deserialize_field(
 
     out << "}" << endl;
   } else {
-    throw "INVALID TYPE IN generate_deserialize_field '" + type->get_name() +
-        "' for field '" + tfield->get_name() + "'";
+    throw std::runtime_error(
+        "INVALID TYPE IN generate_deserialize_field '" + type->get_name() +
+        "' for field '" + tfield->get_name() + "'");
   }
 }
 
@@ -3542,8 +3550,9 @@ void t_go_generator::generate_deserialize_container(
     out << indent() << prefix << eq << " " << (pointer_field ? "&" : "")
         << "tSlice" << endl;
   } else {
-    throw "INVALID TYPE IN generate_deserialize_container '" +
-        ttype->get_name() + "' for prefix '" + prefix + "'";
+    throw std::runtime_error(
+        "INVALID TYPE IN generate_deserialize_container '" + ttype->get_name() +
+        "' for prefix '" + prefix + "'");
   }
 
   // For loop iterates over elements
@@ -3658,7 +3667,8 @@ void t_go_generator::generate_serialize_field(
 
   // Do nothing for void types
   if (type->is_void()) {
-    throw "compiler error: cannot generate serialize for void type: " + name;
+    throw std::runtime_error(
+        "compiler error: cannot generate serialize for void type: " + name);
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -3677,8 +3687,9 @@ void t_go_generator::generate_serialize_field(
 
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
 
         case t_base_type::TYPE_STRING:
           out << "WriteString(string(" << name << "))";
@@ -3721,8 +3732,9 @@ void t_go_generator::generate_serialize_field(
           break;
 
         default:
-          throw "compiler error: no Go name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no Go name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "WriteI32(int32(" << name << "))";
@@ -3733,8 +3745,9 @@ void t_go_generator::generate_serialize_field(
         << escape_string(tfield->get_name()) << " (" << tfield->get_key()
         << ") field write error: \", p), err) }" << endl;
   } else {
-    throw "compiler error: Invalid type in generate_serialize_field '" +
-        type->get_name() + "' for field '" + name + "'";
+    throw std::runtime_error(
+        "compiler error: Invalid type in generate_serialize_field '" +
+        type->get_name() + "' for field '" + name + "'");
   }
 }
 
@@ -3791,8 +3804,9 @@ void t_go_generator::generate_serialize_container(
         << endl;
     out << indent() << "}" << endl;
   } else {
-    throw "compiler error: Invalid type in generate_serialize_container '" +
-        ttype->get_name() + "' for prefix '" + prefix + "'";
+    throw std::runtime_error(
+        "compiler error: Invalid type in generate_serialize_container '" +
+        ttype->get_name() + "' for prefix '" + prefix + "'");
   }
 
   if (ttype->is_map()) {
@@ -4092,7 +4106,7 @@ string t_go_generator::type_to_enum(t_type* type) {
 
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
 
       case t_base_type::TYPE_STRING:
         return "thrift.STRING";
@@ -4134,7 +4148,7 @@ string t_go_generator::type_to_enum(t_type* type) {
     return "thrift.LIST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 string strip_type_pointer(string tname) {
@@ -4156,8 +4170,9 @@ string t_go_generator::type_to_go_key_type(t_type* type) {
 
   if (resolved_type->is_map() || resolved_type->is_list() ||
       resolved_type->is_set()) {
-    throw "Cannot produce a valid type for a Go map key: " +
-        type_to_go_type(type) + " - aborting.";
+    throw std::runtime_error(
+        "Cannot produce a valid type for a Go map key: " +
+        type_to_go_type(type) + " - aborting.");
   }
 
   if (resolved_type->is_binary()) {
@@ -4193,7 +4208,7 @@ string t_go_generator::type_to_go_type_with_opt(
 
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "";
+        throw std::runtime_error("Unsupported type: void");
 
       case t_base_type::TYPE_STRING:
         return maybe_pointer + "string";
@@ -4250,7 +4265,8 @@ string t_go_generator::type_to_go_type_with_opt(
     return maybe_pointer + publicize(type_name(type));
   }
 
-  throw "INVALID TYPE IN type_to_go_type: " + type->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN type_to_go_type: " + type->get_name());
 }
 
 /** See the comment inside generate_go_struct_definition for what this is. */
@@ -4276,7 +4292,8 @@ string t_go_generator::type_to_spec_args(t_type* ttype) {
         type_to_spec_args(((t_list*)ttype)->get_elem_type()) + ")";
   }
 
-  throw "INVALID TYPE IN type_to_spec_args: " + ttype->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN type_to_spec_args: " + ttype->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(

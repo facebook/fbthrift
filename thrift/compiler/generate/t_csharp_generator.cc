@@ -310,8 +310,9 @@ void t_csharp_generator::print_const_def_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       string val = render_const_value(out, name, field_type, v_iter->second);
       indent(out) << name << "." << v_iter->first->get_string() << " = " << val
@@ -1234,8 +1235,9 @@ void t_csharp_generator::generate_deserialize_field(
   }
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   string name = prefix + tfield->get_name();
@@ -1257,8 +1259,9 @@ void t_csharp_generator::generate_deserialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
         case t_base_type::TYPE_STRING:
           out << "ReadString();";
           break;
@@ -1417,8 +1420,9 @@ void t_csharp_generator::generate_serialize_field(
   }
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -1435,8 +1439,9 @@ void t_csharp_generator::generate_serialize_field(
 
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
         case t_base_type::TYPE_STRING:
           out << "WriteString(";
           out << name << ");";
@@ -1676,7 +1681,7 @@ string t_csharp_generator::declare_field(t_field* tfield, bool init) {
       t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "NO T_VOID CONSTRUCT";
+          throw std::runtime_error("NO T_VOID CONSTRUCT");
         case t_base_type::TYPE_STRING:
         case t_base_type::TYPE_BINARY:
           result += " = null";
@@ -1741,7 +1746,7 @@ string t_csharp_generator::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "TType.String";
@@ -1772,7 +1777,7 @@ string t_csharp_generator::type_to_enum(t_type* type) {
     return "TType.List";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(csharp, "C#", "");

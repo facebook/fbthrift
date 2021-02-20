@@ -409,8 +409,9 @@ string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     indent(out) << value->get_integer();
@@ -431,8 +432,9 @@ string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
 
       out << indent() << v_iter->first->get_string() << ": "
@@ -484,7 +486,8 @@ string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
     indent_down();
     indent_down();
   } else {
-    throw "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name());
   }
   return out.str();
 }
@@ -857,7 +860,8 @@ string t_st_generator::write_val(t_type* t, string fname) {
   } else if (t->is_enum()) {
     return "iprot writeI32: " + fname;
   } else {
-    throw "Sorry, I don't know how to write this: " + type_name(t);
+    throw std::runtime_error(
+        "Sorry, I don't know how to write this: " + type_name(t));
   }
 }
 
@@ -877,7 +881,8 @@ string t_st_generator::read_val(t_type* t) {
   } else if (t->is_enum()) {
     return "iprot readI32";
   } else {
-    throw "Sorry, I don't know how to read this: " + type_name(t);
+    throw std::runtime_error(
+        "Sorry, I don't know how to read this: " + type_name(t));
   }
 }
 
@@ -1095,7 +1100,7 @@ string t_st_generator::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "TType string";
@@ -1126,7 +1131,7 @@ string t_st_generator::type_to_enum(t_type* type) {
     return "TType list";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(st, "Smalltalk", "");

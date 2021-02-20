@@ -631,7 +631,7 @@ void t_android_lite_generator::output_write(
     output_write((t_enum*)ttype, value, depth, needs_cast, stream);
 
   } else {
-    throw "Compiler error: unhandled type.";
+    throw std::runtime_error("Compiler error: unhandled type.");
   }
 }
 
@@ -876,8 +876,9 @@ void t_android_lite_generator::print_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       string val = render_const_value(out, name, field_type, v_iter->second);
       indent(out) << name << ".addProperty("
@@ -905,11 +906,13 @@ void t_android_lite_generator::generate_enum(t_enum* tenum) {
 }
 
 void t_android_lite_generator::generate_service(t_service* /*tservice*/) {
-  throw "Services are not yet supported for Thrift on Android.";
+  throw std::runtime_error(
+      "Services are not yet supported for Thrift on Android.");
 }
 
 void t_android_lite_generator::generate_xception(t_struct* /*txception*/) {
-  throw "Exceptions are not yet supported for Thrift on Android.";
+  throw std::runtime_error(
+      "Exceptions are not yet supported for Thrift on Android.");
 }
 
 THRIFT_REGISTER_GENERATOR(

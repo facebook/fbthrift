@@ -385,8 +385,9 @@ string t_ocaml_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     t_enum* tenum = (t_enum*)type;
@@ -419,8 +420,9 @@ string t_ocaml_generator::render_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       string fname = v_iter->first->get_string();
       out << indent();
@@ -480,7 +482,8 @@ string t_ocaml_generator::render_const_value(
     indent_down();
     out << endl;
   } else {
-    throw "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name());
   }
   return out.str();
 }
@@ -1186,7 +1189,7 @@ void t_ocaml_generator::generate_deserialize_type(ofstream& out, t_type* type) {
   type = type->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE";
+    throw std::runtime_error("CANNOT GENERATE DESERIALIZE CODE FOR void TYPE");
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -1198,7 +1201,8 @@ void t_ocaml_generator::generate_deserialize_type(ofstream& out, t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "compiler error: cannot serialize void field in a struct";
+        throw std::runtime_error(
+            "compiler error: cannot serialize void field in a struct");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         out << "readString";
@@ -1222,8 +1226,9 @@ void t_ocaml_generator::generate_deserialize_type(ofstream& out, t_type* type) {
         out << "readDouble";
         break;
       default:
-        throw "compiler error: no PHP name for base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no PHP name for base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     string ename = capitalize(type->get_name());
@@ -1329,7 +1334,8 @@ void t_ocaml_generator::generate_serialize_field(
 
   // Do nothing for void types
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + tfield->get_name());
   }
 
   if (name.length() == 0) {
@@ -1347,8 +1353,9 @@ void t_ocaml_generator::generate_serialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
         case t_base_type::TYPE_STRING:
         case t_base_type::TYPE_BINARY:
           out << "writeString(" << name << ")";
@@ -1372,8 +1379,9 @@ void t_ocaml_generator::generate_serialize_field(
           out << "writeDouble(" << name << ")";
           break;
         default:
-          throw "compiler error: no ocaml name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no ocaml name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       string ename = capitalize(type->get_name());
@@ -1604,7 +1612,7 @@ string t_ocaml_generator::type_to_enum(t_type* type) {
     return "Protocol.T_LIST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 /**
@@ -1652,7 +1660,7 @@ string t_ocaml_generator::render_ocaml_type(t_type* type) {
     return render_ocaml_type(etype) + " list";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(ocaml, "OCaml", "");

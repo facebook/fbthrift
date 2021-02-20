@@ -849,8 +849,9 @@ void t_cocoa_generator::generate_cocoa_struct_init_with_coder_method(
               << "\"];" << endl;
           break;
         default:
-          throw "compiler error: don't know how to decode thrift type: " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: don't know how to decode thrift type: " +
+              t_base_type::t_base_name(tbase));
       }
     }
     out << indent() << kFieldPrefix << (*m_iter)->get_name() << kSetPostfix
@@ -929,8 +930,9 @@ void t_cocoa_generator::generate_cocoa_struct_encode_with_coder_method(
               << (*m_iter)->get_name() << "\"];" << endl;
           break;
         default:
-          throw "compiler error: don't know how to encode thrift type: " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: don't know how to encode thrift type: " +
+              t_base_type::t_base_name(tbase));
       }
     }
     scope_down(out);
@@ -2280,8 +2282,9 @@ void t_cocoa_generator::generate_deserialize_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " +
+        tfield->get_name());
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -2295,8 +2298,9 @@ void t_cocoa_generator::generate_deserialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              tfield->get_name();
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              tfield->get_name());
         case t_base_type::TYPE_STRING:
           out << "readString];";
           break;
@@ -2322,8 +2326,9 @@ void t_cocoa_generator::generate_deserialize_field(
           out << "readDouble];";
           break;
         default:
-          throw "compiler error: no Objective-C name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no Objective-C name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "readI32];";
@@ -2428,7 +2433,7 @@ string t_cocoa_generator::containerize(t_type* ttype, string fieldName) {
     t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "can't containerize void";
+        throw std::runtime_error("can't containerize void");
       case t_base_type::TYPE_BOOL:
         return "[NSNumber numberWithBool: " + fieldName + "]";
       case t_base_type::TYPE_BYTE:
@@ -2549,7 +2554,8 @@ void t_cocoa_generator::generate_serialize_field(
 
   // Do nothing for void types
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + tfield->get_name());
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -2563,8 +2569,9 @@ void t_cocoa_generator::generate_serialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              fieldName;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              fieldName);
         case t_base_type::TYPE_STRING:
           out << "writeString: " << fieldName << "];";
           break;
@@ -2590,8 +2597,9 @@ void t_cocoa_generator::generate_serialize_field(
           out << "writeDouble: " << fieldName << "];";
           break;
         default:
-          throw "compiler error: no Objective-C name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no Objective-C name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "writeI32: " << fieldName << "];";
@@ -2705,7 +2713,7 @@ string t_cocoa_generator::decontainerize(t_field* tfield, string fieldName) {
     t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "can't decontainerize void";
+        throw std::runtime_error("can't decontainerize void");
       case t_base_type::TYPE_BOOL:
         return "[" + fieldName + " boolValue]";
       case t_base_type::TYPE_BYTE:
@@ -2833,8 +2841,9 @@ string t_cocoa_generator::base_type_name(t_base_type* type) {
     case t_base_type::TYPE_DOUBLE:
       return "double";
     default:
-      throw "compiler error: no Objective-C name for base type " +
-          t_base_type::t_base_name(tbase);
+      throw std::runtime_error(
+          "compiler error: no Objective-C name for base type " +
+          t_base_type::t_base_name(tbase));
   }
 }
 
@@ -2884,8 +2893,9 @@ void t_cocoa_generator::print_const_value(
         }
       }
       if (field_type == NULL) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       string val = render_const_value(out, field_type, v_iter->second);
       std::string cap_name = capitalize(v_iter->first->get_string());
@@ -2952,7 +2962,8 @@ void t_cocoa_generator::print_const_value(
     }
     out << endl;
   } else {
-    throw "compiler error: no const of type " + type->get_name();
+    throw std::runtime_error(
+        "compiler error: no const of type " + type->get_name());
   }
 }
 
@@ -2990,8 +3001,9 @@ string t_cocoa_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     render << value->get_integer();
@@ -3042,7 +3054,7 @@ string t_cocoa_generator::render_const_value(string name,
       }
       break;
     default:
-      throw "compiler error: no const of base type " + t_base_type::t_base_name(tbase);
+      throw std::runtime_error("compiler error: no const of base type " + t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     render << value->get_integer();
@@ -3067,7 +3079,7 @@ string t_cocoa_generator::render_const_value(string name,
         }
       }
       if (field_type == NULL) {
-        throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
+        throw std::runtime_error("type error: " + type->get_name() + " has no field " + v_iter->first->get_string());
       }
       if (first) {
         render << capitalize(v_iter->first->get_string());
@@ -3136,7 +3148,7 @@ string t_cocoa_generator::render_const_value(string name,
     else
       render << ", nil]";
   } else {
-    throw "don't know how to render constant for type: " + type->get_name();
+    throw std::runtime_error("don't know how to render constant for type: " + type->get_name());
   }
 
   if (containerize_it) {
@@ -3229,7 +3241,7 @@ string t_cocoa_generator::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "TType_STRING";
@@ -3260,7 +3272,7 @@ string t_cocoa_generator::type_to_enum(t_type* type) {
     return "TType_LIST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 /**
@@ -3273,7 +3285,7 @@ string t_cocoa_generator::format_string_for_type(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "\\\"%@\\\"";
@@ -3304,7 +3316,8 @@ string t_cocoa_generator::format_string_for_type(t_type* type) {
     return "%@";
   }
 
-  throw "INVALID TYPE IN format_string_for_type: " + type->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN format_string_for_type: " + type->get_name());
 }
 
 /**

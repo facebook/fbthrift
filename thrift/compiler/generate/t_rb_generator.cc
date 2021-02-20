@@ -401,8 +401,9 @@ string t_rb_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     indent(out) << value->get_integer();
@@ -421,8 +422,9 @@ string t_rb_generator::render_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       out << indent();
       out << render_const_value(string_type(), v_iter->first);
@@ -475,7 +477,8 @@ string t_rb_generator::render_const_value(
       indent(out) << "]";
     }
   } else {
-    throw "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name());
   }
   return out.str();
 }
@@ -1072,7 +1075,7 @@ string t_rb_generator::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "::Thrift::Types::STRING";
@@ -1089,7 +1092,7 @@ string t_rb_generator::type_to_enum(t_type* type) {
       case t_base_type::TYPE_DOUBLE:
         return "::Thrift::Types::DOUBLE";
       case t_base_type::TYPE_FLOAT:
-        throw "Float type is not supported";
+        throw std::runtime_error("Float type is not supported");
     }
   } else if (type->is_enum()) {
     return "::Thrift::Types::I32";
@@ -1103,7 +1106,7 @@ string t_rb_generator::type_to_enum(t_type* type) {
     return "::Thrift::Types::LIST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 void t_rb_generator::generate_rdoc(std::ofstream& out, t_node* tdoc) {

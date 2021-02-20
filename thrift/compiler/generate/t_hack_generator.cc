@@ -708,8 +708,9 @@ void t_hack_generator::generate_json_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT READ JSON FIELD WITH void TYPE: " + prefix_thrift +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT READ JSON FIELD WITH void TYPE: " + prefix_thrift +
+        tfield->get_name());
   }
 
   string name = prefix_thrift + tfield->get_name() + suffix_thrift;
@@ -747,8 +748,9 @@ void t_hack_generator::generate_json_field(
         typeConversionString = "(int)";
         break;
       default:
-        throw "compiler error: no PHP reader for base type " +
-            t_base_type::t_base_name(tbase) + name;
+        throw std::runtime_error(
+            "compiler error: no PHP reader for base type " +
+            t_base_type::t_base_name(tbase) + name);
     }
 
     if (number_limit.empty()) {
@@ -820,7 +822,7 @@ void t_hack_generator::generate_json_container(
   } else if (ttype->is_map()) {
     generate_json_map_element(out, namer, (t_map*)ttype, key, value, container);
   } else {
-    throw "compiler error: no PHP reader for this type.";
+    throw std::runtime_error("compiler error: no PHP reader for this type.");
   }
   indent_down();
   indent(out) << "}\n";
@@ -1223,8 +1225,9 @@ string t_hack_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     t_enum* tenum = (t_enum*)type;
@@ -1252,8 +1255,9 @@ string t_hack_generator::render_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
     }
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -1385,8 +1389,9 @@ string t_hack_generator::render_default_value(t_type* type) {
         dval = "0.0";
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     dval = "null";
@@ -1915,7 +1920,8 @@ void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
       indent(out) << "'format' => 'collection',\n";
     }
   } else {
-    throw "compiler error: no type for php struct spec field";
+    throw std::runtime_error(
+        "compiler error: no type for php struct spec field");
   }
 }
 
@@ -2798,8 +2804,9 @@ void t_hack_generator::_generate_php_struct_definition(
     t = t->get_true_type();
 
     if (t->is_enum() && is_bitmask_enum((t_enum*)t)) {
-      throw "Enum " + (((t_enum*)t)->get_name()) +
-          "is actually a bitmask, cannot generate a field of this enum type";
+      throw std::runtime_error(
+          "Enum " + (((t_enum*)t)->get_name()) +
+          "is actually a bitmask, cannot generate a field of this enum type");
     }
 
     string dval = "";
@@ -2835,9 +2842,9 @@ void t_hack_generator::_generate_php_struct_definition(
             "::code defined to be a non-integral type. " +
             "code fields for Exception classes must be integral";
       } else if (t->is_enum() && ((t_enum*)t)->get_enum_values().empty()) {
-        throw "Enum " + t->get_name() +
-            " is the type for the code property of " + tstruct->get_name() +
-            ", but it has no values.";
+        throw std::runtime_error(
+            "Enum " + t->get_name() + " is the type for the code property of " +
+            tstruct->get_name() + ", but it has no values.");
       }
       if (t->is_enum()) {
         typehint = "/* Originally defined as " + typehint + " */ int";
@@ -3107,8 +3114,9 @@ void t_hack_generator::generate_php_struct_from_map(
 void t_hack_generator::generate_service(t_service* tservice) {
   if (mangled_services_) {
     if (php_namespace(tservice).empty()) {
-      throw "cannot generate mangled services for " + tservice->get_name() +
-          "; no php namespace found";
+      throw std::runtime_error(
+          "cannot generate mangled services for " + tservice->get_name() +
+          "; no php namespace found");
     }
     // Note: Because calling generate_service again "uses up" tmp variables,
     //   generating a mangled service has the effect of changing the files of
@@ -4781,8 +4789,9 @@ string t_hack_generator::declare_field(
           result += " = 0.0";
           break;
         default:
-          throw "compiler error: no Hack initializer for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no Hack initializer for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       result += " = null";
@@ -4965,7 +4974,7 @@ string t_hack_generator::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "\\TType::STRING";
@@ -4996,7 +5005,7 @@ string t_hack_generator::type_to_enum(t_type* type) {
     return "\\TType::LST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(

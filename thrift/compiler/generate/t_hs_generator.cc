@@ -235,7 +235,8 @@ void t_hs_generator::init_generator() {
     vector<string> components = split_namespace(hs_namespace);
     for (const auto& component : components) {
       if (component.empty() || !std::isupper(component[0])) {
-        throw "compiler error: Invalid Haskell Module " + hs_namespace;
+        throw std::runtime_error(
+            "compiler error: Invalid Haskell Module " + hs_namespace);
       }
       package_dir_ += component;
       package_dir_.push_back('/');
@@ -535,8 +536,9 @@ string t_hs_generator::render_const_value(
         break;
 
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
 
   } else if (type->is_enum()) {
@@ -570,8 +572,9 @@ string t_hs_generator::render_const_value(
           field = f_iter;
 
       if (field == nullptr)
-        throw "type error: " + cname + " has no field " +
-            v_iter.first->get_string();
+        throw std::runtime_error(
+            "type error: " + cname + " has no field " +
+            v_iter.first->get_string());
 
       string fname = v_iter.first->get_string();
       string const_value = render_const_value(field->get_type(), v_iter.second);
@@ -629,7 +632,8 @@ string t_hs_generator::render_const_value(
     out << "])";
 
   } else {
-    throw "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name());
   }
 
   return out.str();
@@ -1863,7 +1867,7 @@ void t_hs_generator::generate_deserialize_type(
       << " -> ";
 
   if (type->is_void())
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE";
+    throw std::runtime_error("CANNOT GENERATE DESERIALIZE CODE FOR void TYPE");
 
   if (type->is_struct() || type->is_xception()) {
     generate_deserialize_struct(out, (t_struct*)type, val);
@@ -1887,7 +1891,8 @@ void t_hs_generator::generate_deserialize_type(
     out << "toEnum $ fromIntegral " << val;
 
   } else {
-    throw "DO NOT KNOW HOW TO DESERIALIZE TYPE " + type->get_name();
+    throw std::runtime_error(
+        "DO NOT KNOW HOW TO DESERIALIZE TYPE " + type->get_name());
   }
   out << "; _ -> error \"wrong type\"})";
 }
@@ -1951,7 +1956,7 @@ void t_hs_generator::generate_serialize_type(
   type = type->get_true_type();
   // Do nothing for void types
   if (type->is_void())
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE";
+    throw std::runtime_error("CANNOT GENERATE SERIALIZE CODE FOR void TYPE");
 
   if (type->is_struct() || type->is_xception()) {
     generate_serialize_struct(out, (t_struct*)type, name);
@@ -1979,7 +1984,8 @@ void t_hs_generator::generate_serialize_type(
     }
 
   } else {
-    throw "DO NOT KNOW HOW TO SERIALIZE FIELD OF TYPE " + type->get_name();
+    throw std::runtime_error(
+        "DO NOT KNOW HOW TO SERIALIZE FIELD OF TYPE " + type->get_name());
   }
 }
 
@@ -2177,7 +2183,7 @@ string t_hs_generator::type_to_enum(t_type* type) {
         ")";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 /**
@@ -2223,7 +2229,8 @@ string t_hs_generator::type_to_default(t_type* type) {
     return "Vector.empty";
   }
 
-  throw "INVALID TYPE IN type_to_default: " + type->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN type_to_default: " + type->get_name());
 }
 
 /**
@@ -2289,7 +2296,8 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
       type_repr = "Vector.Vector " + inner_type;
 
   } else {
-    throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+    throw std::runtime_error(
+        "INVALID TYPE IN type_to_enum: " + type->get_name());
   }
 
   return needs_parens ? "(" + type_repr + ")" : type_repr;
@@ -2340,7 +2348,7 @@ string t_hs_generator::type_to_constructor(t_type* type) {
   } else if (type->is_list()) {
     return "Types.TList _";
   }
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(hs, "Haskell", "");

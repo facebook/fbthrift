@@ -379,8 +379,9 @@ string t_perl_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     out << value->get_integer();
@@ -400,8 +401,9 @@ string t_perl_generator::render_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       out << render_const_value(string_type(), v_iter->first);
       out << " => ";
@@ -1251,8 +1253,9 @@ void t_perl_generator::generate_deserialize_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   string name = tfield->get_name();
@@ -1273,8 +1276,9 @@ void t_perl_generator::generate_deserialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
         case t_base_type::TYPE_STRING:
         case t_base_type::TYPE_BINARY:
           out << "readString(\\$" << name << ");";
@@ -1298,8 +1302,9 @@ void t_perl_generator::generate_deserialize_field(
           out << "readDouble(\\$" << name << ");";
           break;
         default:
-          throw "compiler error: no PERL name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no PERL name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "readI32(\\$" << name << ");";
@@ -1464,8 +1469,9 @@ void t_perl_generator::generate_serialize_field(
 
   // Do nothing for void types
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -1487,8 +1493,9 @@ void t_perl_generator::generate_serialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
         case t_base_type::TYPE_STRING:
         case t_base_type::TYPE_BINARY:
           out << "writeString($" << name << ");";
@@ -1512,8 +1519,9 @@ void t_perl_generator::generate_serialize_field(
           out << "writeDouble($" << name << ");";
           break;
         default:
-          throw "compiler error: no PERL name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no PERL name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "writeI32($" << name << ");";
@@ -1676,8 +1684,9 @@ string t_perl_generator::declare_field(t_field* tfield, bool init, bool obj) {
           result += " = 0.0";
           break;
         default:
-          throw "compiler error: no PERL initializer for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no PERL initializer for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       result += " = 0";
@@ -1750,7 +1759,7 @@ string t_perl_generator ::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "TType::STRING";
@@ -1767,7 +1776,7 @@ string t_perl_generator ::type_to_enum(t_type* type) {
       case t_base_type::TYPE_DOUBLE:
         return "TType::DOUBLE";
       case t_base_type::TYPE_FLOAT:
-        throw "Float type is not supported";
+        throw std::runtime_error("Float type is not supported");
     }
   } else if (type->is_enum()) {
     return "TType::I32";
@@ -1781,7 +1790,7 @@ string t_perl_generator ::type_to_enum(t_type* type) {
     return "TType::LIST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 THRIFT_REGISTER_GENERATOR(perl, "Perl", "");

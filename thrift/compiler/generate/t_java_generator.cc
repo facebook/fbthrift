@@ -342,8 +342,9 @@ void t_java_generator::print_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       string val = render_const_value(out, name, field_type, v_iter->second);
       indent(out) << name << ".";
@@ -399,7 +400,8 @@ void t_java_generator::print_const_value(
     }
     out << endl;
   } else {
-    throw "compiler error: no const of type " + type->get_name();
+    throw std::runtime_error(
+        "compiler error: no const of type " + type->get_name());
   }
 }
 
@@ -500,8 +502,9 @@ string t_java_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     std::string namespace_prefix =
@@ -3242,8 +3245,9 @@ void t_java_generator::generate_deserialize_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   string name = prefix + tfield->get_name();
@@ -3261,8 +3265,8 @@ void t_java_generator::generate_deserialize_field(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "compiler error: cannot serialize void field in a struct: " +
-            name;
+        throw std::runtime_error(
+            "compiler error: cannot serialize void field in a struct: " + name);
       case t_base_type::TYPE_STRING:
         out << "readString();";
         break;
@@ -3291,8 +3295,9 @@ void t_java_generator::generate_deserialize_field(
         out << "readFloat();";
         break;
       default:
-        throw "compiler error: no Java name for base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no Java name for base type " +
+            t_base_type::t_base_name(tbase));
     }
     out << endl;
   } else {
@@ -3300,7 +3305,7 @@ void t_java_generator::generate_deserialize_field(
         "DO NOT KNOW HOW TO DESERIALIZE FIELD '%s' TYPE '%s'\n",
         tfield->get_name().c_str(),
         type_name(type).c_str());
-    throw "compiler error";
+    throw std::runtime_error("compiler error");
   }
 }
 
@@ -3473,8 +3478,9 @@ void t_java_generator::generate_serialize_field(
 
   // Do nothing for void types
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -3493,8 +3499,8 @@ void t_java_generator::generate_serialize_field(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "compiler error: cannot serialize void field in a struct: " +
-            name;
+        throw std::runtime_error(
+            "compiler error: cannot serialize void field in a struct: " + name);
       case t_base_type::TYPE_STRING:
         out << "writeString(" << name << ");";
         break;
@@ -3523,8 +3529,9 @@ void t_java_generator::generate_serialize_field(
         out << "writeFloat(" << name << ");";
         break;
       default:
-        throw "compiler error: no Java name for base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no Java name for base type " +
+            t_base_type::t_base_name(tbase));
     }
     out << endl;
   } else {
@@ -3533,7 +3540,7 @@ void t_java_generator::generate_serialize_field(
         prefix.c_str(),
         tfield->get_name().c_str(),
         type_name(type).c_str());
-    throw "compiler error";
+    throw std::runtime_error("compiler error");
   }
 }
 
@@ -3746,8 +3753,9 @@ string t_java_generator::base_type_name(t_base_type* type, bool in_container) {
     case t_base_type::TYPE_FLOAT:
       return (boxedPrimitive ? "Float" : "float");
     default:
-      throw "compiler error: no C++ name for base type " +
-          t_base_type::t_base_name(tbase);
+      throw std::runtime_error(
+          "compiler error: no C++ name for base type " +
+          t_base_type::t_base_name(tbase));
   }
 }
 
@@ -3770,7 +3778,7 @@ string t_java_generator::declare_field(t_field* tfield, bool init) {
       t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "NO T_VOID CONSTRUCT";
+          throw std::runtime_error("NO T_VOID CONSTRUCT");
         case t_base_type::TYPE_STRING:
         case t_base_type::TYPE_BINARY:
           result += " = null";
@@ -3925,7 +3933,7 @@ string t_java_generator::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "TType.STRING";
@@ -3956,7 +3964,7 @@ string t_java_generator::type_to_enum(t_type* type) {
     return "TType.LIST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 /**
@@ -4145,7 +4153,7 @@ bool t_java_generator::is_comparable(t_type* type, vector<t_type*>* enclosing) {
   } else if (type->is_list()) {
     return is_comparable(((t_list*)type)->get_elem_type(), enclosing);
   } else {
-    throw "Don't know how to handle this ttype";
+    throw std::runtime_error("Don't know how to handle this ttype");
   }
 }
 
@@ -4180,7 +4188,7 @@ bool t_java_generator::type_has_naked_binary(t_type* type) {
   } else if (type->is_list()) {
     return type_has_naked_binary(((t_list*)type)->get_elem_type());
   } else {
-    throw "Don't know how to handle this ttype";
+    throw std::runtime_error("Don't know how to handle this ttype");
   }
 }
 

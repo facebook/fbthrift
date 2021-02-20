@@ -389,8 +389,9 @@ void t_py_generator::generate_json_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT READ JSON FIELD WITH void TYPE: " + prefix_thrift +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT READ JSON FIELD WITH void TYPE: " + prefix_thrift +
+        tfield->get_name());
   }
 
   string name = prefix_thrift + rename_reserved_keywords(tfield->get_name()) +
@@ -433,8 +434,9 @@ void t_py_generator::generate_json_field(
         conversion_function = "float";
         break;
       default:
-        throw "compiler error: no python reader for base type " +
-            t_base_type::t_base_name(tbase) + name;
+        throw std::runtime_error(
+            "compiler error: no python reader for base type " +
+            t_base_type::t_base_name(tbase) + name);
     }
 
     string value = prefix_json;
@@ -455,7 +457,7 @@ void t_py_generator::generate_json_field(
       indent_down();
     }
   } else {
-    throw "Compiler did not generate_json_field reader";
+    throw std::runtime_error("Compiler did not generate_json_field reader");
   }
 }
 
@@ -655,8 +657,9 @@ void t_py_generator::generate_json_map_key(
         conversion_function = "float";
         break;
       default:
-        throw "compiler error: no C++ reader for base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no C++ reader for base type " +
+            t_base_type::t_base_name(tbase));
     }
 
     string value = raw_key;
@@ -1087,8 +1090,9 @@ string t_py_generator::render_const_value(
         }
         break;
       default:
-        throw "compiler error: no const of base type " +
-            t_base_type::t_base_name(tbase);
+        throw std::runtime_error(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
     indent(out) << value->get_integer();
@@ -1107,8 +1111,9 @@ string t_py_generator::render_const_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " +
-            v_iter->first->get_string();
+        throw std::runtime_error(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
       }
       out << indent();
       out << render_const_value(string_type(), v_iter->first);
@@ -1159,7 +1164,8 @@ string t_py_generator::render_const_value(
       out << ")";
     }
   } else {
-    throw "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE CONSTANT FOR TYPE: " + type->get_name());
   }
 
   return out.str();
@@ -2891,8 +2897,9 @@ void t_py_generator::generate_deserialize_field(
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   string name = prefix + rename_reserved_keywords(tfield->get_name());
@@ -2908,8 +2915,9 @@ void t_py_generator::generate_deserialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
         case t_base_type::TYPE_STRING:
           out << "readString().decode('utf-8') "
               << "if UTF8STRINGS else iprot.readString()";
@@ -2939,8 +2947,9 @@ void t_py_generator::generate_deserialize_field(
           out << "readFloat()";
           break;
         default:
-          throw "compiler error: no Python name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no Python name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "readI32()";
@@ -3116,8 +3125,9 @@ void t_py_generator::generate_serialize_field(
 
   // Do nothing for void types
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
-        tfield->get_name();
+    throw std::runtime_error(
+        "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name());
   }
 
   if (type->is_struct() || type->is_xception()) {
@@ -3137,8 +3147,9 @@ void t_py_generator::generate_serialize_field(
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
+          throw std::runtime_error(
+              "compiler error: cannot serialize void field in a struct: " +
+              name);
         case t_base_type::TYPE_STRING:
           out << "writeString(" << name << ".encode('utf-8')) "
               << "if UTF8STRINGS and not isinstance(" << name << ", bytes) "
@@ -3169,8 +3180,9 @@ void t_py_generator::generate_serialize_field(
           out << "writeFloat(" << name << ")";
           break;
         default:
-          throw "compiler error: no Python name for base type " +
-              t_base_type::t_base_name(tbase);
+          throw std::runtime_error(
+              "compiler error: no Python name for base type " +
+              t_base_type::t_base_name(tbase));
       }
     } else if (type->is_enum()) {
       out << "writeI32(" << name << ")";
@@ -3479,7 +3491,7 @@ string t_py_generator::type_to_enum(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        throw "NO T_VOID CONSTRUCT";
+        throw std::runtime_error("NO T_VOID CONSTRUCT");
       case t_base_type::TYPE_STRING:
       case t_base_type::TYPE_BINARY:
         return "TType.STRING";
@@ -3510,7 +3522,7 @@ string t_py_generator::type_to_enum(t_type* type) {
     return "TType.LIST";
   }
 
-  throw "INVALID TYPE IN type_to_enum: " + type->get_name();
+  throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
 /** See the comment inside generate_py_struct_definition for what this is. */
@@ -3549,7 +3561,8 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
         type_to_spec_args(((t_list*)ttype)->get_elem_type()) + ")";
   }
 
-  throw "INVALID TYPE IN type_to_spec_args: " + ttype->get_name();
+  throw std::runtime_error(
+      "INVALID TYPE IN type_to_spec_args: " + ttype->get_name());
 }
 
 /**
