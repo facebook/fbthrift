@@ -584,7 +584,11 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
         if (FLAGS_thrift_abort_if_exceeds_shutdown_deadline) {
           LOG(FATAL)
               << "Could not drain active requests within allotted deadline. "
-              << "Abort because undefined behavior is possible.";
+              << "Deadline value: " << workersJoinTimeout_.count() << " secs. "
+              << "Abort because undefined behavior is possible. "
+              << "Underlying reasons could be either requests that have never"
+                 " terminated, long running requests, or long queues that could"
+                 " not be fully processed.";
         }
       }
     }
