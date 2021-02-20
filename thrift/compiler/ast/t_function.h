@@ -30,10 +30,10 @@ namespace thrift {
 namespace compiler {
 
 enum class t_function_qualifier {
-  None = 0,
-  Oneway,
-  Idempotent,
-  Readonly,
+  none = 0,
+  one_way,
+  idempotent,
+  read_only,
 };
 
 /**
@@ -62,7 +62,7 @@ class t_function : public t_named {
       std::unique_ptr<t_paramlist> paramlist,
       std::unique_ptr<t_struct> xceptions = nullptr,
       std::unique_ptr<t_struct> stream_xceptions = nullptr,
-      t_function_qualifier qualifier = t_function_qualifier::None)
+      t_function_qualifier qualifier = t_function_qualifier::none)
       : t_named(std::move(name)),
         returntype_(returntype),
         paramlist_(std::move(paramlist)),
@@ -110,7 +110,7 @@ class t_function : public t_named {
             std::unique_ptr<t_struct>(returntype->get_sink_xceptions())),
         sink_final_response_xceptions_(std::unique_ptr<t_struct>(
             returntype->get_final_response_xceptions())),
-        qualifier_(t_function_qualifier::None) {
+        qualifier_(t_function_qualifier::none) {
     if (!xceptions_) {
       xceptions_ = std::make_unique<t_struct>(nullptr);
     }
@@ -151,7 +151,7 @@ class t_function : public t_named {
   }
 
   bool is_oneway() const {
-    return qualifier_ == t_function_qualifier::Oneway;
+    return qualifier_ == t_function_qualifier::one_way;
   }
 
   bool returns_stream() const {

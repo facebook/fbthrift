@@ -1093,21 +1093,21 @@ Param:
 FunctionQualifier:
   tok_oneway
     {
-      $$ = t_function_qualifier::Oneway;
+      $$ = t_function_qualifier::one_way;
     }
 | tok_idempotent
     {
       driver.require_experimental_feature("idempotent");
-      $$ = t_function_qualifier::Idempotent;
+      $$ = t_function_qualifier::idempotent;
     }
 | tok_readonly
     {
       driver.require_experimental_feature("readonly");
-      $$ = t_function_qualifier::Readonly;
+      $$ = t_function_qualifier::read_only;
     }
 |
     {
-      $$ = t_function_qualifier::None;
+      $$ = t_function_qualifier::none;
     }
 
 
