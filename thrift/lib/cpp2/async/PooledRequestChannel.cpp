@@ -256,7 +256,7 @@ void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {
   DCHECK(evb.inRunningEventBaseThread());
 
-  return *impl_->getOrCreateFn(evb, [this, &evb] {
+  return *impl_->try_emplace_with(evb, [this, &evb] {
     auto ptr = implCreator_(evb);
     DCHECK(!!ptr);
     return ptr;
