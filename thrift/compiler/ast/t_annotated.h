@@ -36,10 +36,9 @@ class t_const;
  */
 class t_annotated : public t_node {
  public:
-  // TODO(afuller): Make these private, and any shared state should be const.
-  std::map<std::string, std::string> annotations_;
-  std::map<std::string, std::shared_ptr<t_const>> annotation_objects_;
-  int annotation_last_lineno_ = -1;
+  // TODO(afuller): Make this private.
+  // Though, it looks like no one is using this, so consider removing instead.
+  std::map<std::string, std::shared_ptr<const t_const>> annotation_objects_;
 
   ~t_annotated() override;
 
@@ -73,13 +72,40 @@ class t_annotated : public t_node {
   const std::string* get_annotation_or_null(
       std::initializer_list<std::string> names) const;
 
-  void add_structured_annotation(std::unique_ptr<t_const> annot);
+  const std::map<std::string, std::string>& annotations() const {
+    return annotations_;
+  }
+
+  void reset_annotations(
+      std::map<std::string, std::string> annotations,
+      int last_lineno) {
+    annotations_ = std::move(annotations);
+    last_annotation_lineno_ = last_lineno;
+  }
+
+  void set_annotation(const std::string& key, std::string value) {
+    annotations_[key] = std::move(value);
+  }
+  void set_annotation(const std::string& key, std::unique_ptr<t_const> value);
 
   const std::vector<const t_const*>& structured_annotations() const {
     return structured_annotations_raw_;
   }
+  void add_structured_annotation(std::unique_ptr<t_const> annot);
+
+  int last_annotation_lineno() const {
+    return last_annotation_lineno_;
+  }
+
+ protected:
+  // t_annotated is abstract.
+  t_annotated() = default;
 
  private:
+  std::map<std::string, std::string> annotations_;
+  // TODO(afuller): Looks like only this is only used by t_json_generator.
+  // Consider removing.
+  int last_annotation_lineno_ = -1;
   std::vector<std::shared_ptr<const t_const>> structured_annotations_;
   std::vector<const t_const*> structured_annotations_raw_;
 };
@@ -88,14 +114,11 @@ class t_annotated : public t_node {
  * Placeholder struct to return key and value of an annotation during parsing.
  */
 struct t_annotation {
-  t_annotation() = default;
-  t_annotation(const std::string& key_, const std::string& val_)
-      : key(key_), val(val_) {}
   std::string key;
-  std::string val;
+  std::string val{};
   // TODO (partisan): Try to use unique_ptr and rewrite the code relying on
   // copies.
-  std::shared_ptr<t_const> object_val;
+  std::shared_ptr<t_const> object_val{};
 };
 
 } // namespace compiler

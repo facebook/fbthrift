@@ -72,8 +72,14 @@ enum class LineType {
   Union,
 };
 
+// Parsing only representations.
 using t_struct_annotations = std::vector<std::unique_ptr<t_const>>;
 using t_field_list = std::vector<std::unique_ptr<t_field>>;
+struct t_annotations {
+  std::map<std::string, std::string> strings;
+  std::map<std::string, std::shared_ptr<const t_const>> objects;
+  int last_lineno;
+};
 
 struct diagnostic_message {
   diagnostic_level level;
@@ -346,26 +352,26 @@ class parsing_driver {
   void finish_node(
       t_annotated* node,
       LineType lineType,
-      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_annotations> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
   void finish_node(
       t_named* node,
       LineType lineType,
       std::string name,
-      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_annotations> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
   void finish_node(
       t_struct* node,
       LineType lineType,
       std::string name,
       std::unique_ptr<t_field_list> fields,
-      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_annotations> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
 
   // Populate the annotation on the given node.
   static void set_annotations(
       t_annotated* node,
-      std::unique_ptr<t_annotated> annotations,
+      std::unique_ptr<t_annotations> annotations,
       std::unique_ptr<t_struct_annotations> struct_annotations);
 
   std::unique_ptr<t_const> new_struct_annotation(

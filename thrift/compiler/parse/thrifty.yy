@@ -220,9 +220,9 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 %type<std::string>      TypeAnnotationValue
 %type<t_annotation*>    TypeAnnotation
-%type<t_annotated*>     TypeAnnotations
-%type<t_annotated*>     TypeAnnotationList
-%type<t_annotated*>     FunctionAnnotations
+%type<t_annotations*>   TypeAnnotations
+%type<t_annotations*>   TypeAnnotationList
+%type<t_annotations*>   FunctionAnnotations
 
 %type<t_const*>              StructuredAnnotation
 %type<t_struct_annotations*> StructuredAnnotations
@@ -993,7 +993,7 @@ Interaction:
           driver.failure("EB interactions are already serial");
         }
         for (auto* func : $$->get_functions()) {
-          func->annotations_["thread"] = "eb";
+          func->set_annotation("thread", "eb");
         }
       } else if ($$->has_annotation("serial")) {
         $$->set_is_serial_interaction();
@@ -1377,8 +1377,8 @@ FieldType:
         if ($$ && $2) {
           auto td = new t_typedef(
               const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
-          td->annotations_ = std::move($2->annotations_);
-          td->annotation_objects_ = std::move($2->annotation_objects_);
+          td->reset_annotations($2->strings, $2->last_lineno);
+          td->annotation_objects_ = std::move($2->objects);
           delete $2;
           $$ = td;
           driver.program->add_unnamed_typedef(own(td));
@@ -1393,8 +1393,8 @@ FieldType:
           $$ = td;
           driver.program->add_placeholder_typedef(own(td));
           if ($2) {
-            $$->annotations_ = std::move($2->annotations_);
-            $$->annotation_objects_ = std::move($2->annotation_objects_);
+            $$->reset_annotations($2->strings, $2->last_lineno);
+            td->annotation_objects_ = std::move($2->objects);
             delete $2;
           }
         }
@@ -1421,8 +1421,8 @@ BaseType: SimpleBaseType TypeAnnotations
       driver.debug("BaseType => SimpleBaseType TypeAnnotations");
       if ($2) {
         $$ = new t_base_type(*static_cast<t_base_type*>($1));
-        $$->annotations_ = std::move($2->annotations_);
-        $$->annotation_objects_ = std::move($2->annotation_objects_);
+        $$->reset_annotations($2->strings, $2->last_lineno);
+        $$->annotation_objects_ = std::move($2->objects);
         delete $2;
         if (driver.mode == parsing_mode::INCLUDES) {
           driver.delete_at_the_end($$);
@@ -1486,8 +1486,8 @@ ContainerType: SimpleContainerType TypeAnnotations
       driver.debug("ContainerType => SimpleContainerType TypeAnnotations");
       $$ = $1;
       if ($2) {
-        $$->annotations_ = std::move($2->annotations_);
-        $$->annotation_objects_ = std::move($2->annotation_objects_);
+        $$->reset_annotations($2->strings, $2->last_lineno);
+        $$->annotation_objects_ = std::move($2->objects);
         delete $2;
       }
     }
@@ -1533,7 +1533,7 @@ ListType:
 TypeAnnotations:
   "(" TypeAnnotationList CommaOrSemicolonOptional
     {
-      $2->annotation_last_lineno_ = driver.scanner->get_lineno();
+      $2->last_lineno = driver.scanner->get_lineno();
     }
   ")"
     {
@@ -1557,9 +1557,9 @@ TypeAnnotationList:
       driver.debug("TypeAnnotationList => TypeAnnotationList CommaOrSemicolon TypeAnnotation");
       $$ = $1;
       if (!$3->object_val) {
-        $$->annotations_[$3->key] = $3->val;
+        $$->strings[$3->key] = std::move($3->val);
       } else {
-        $$->annotation_objects_[$3->key] = $3->object_val;
+        $$->objects[$3->key] = std::move($3->object_val);
       }
       delete $3;
     }
@@ -1567,11 +1567,11 @@ TypeAnnotationList:
     {
       driver.debug("TypeAnnotationList => TypeAnnotation");
       /* Just use a dummy structure to hold the annotations. */
-      $$ = new t_annotated();
+      $$ = new t_annotations();
       if (!$1->object_val) {
-        $$->annotations_[$1->key] = $1->val;
+        $$->strings[$1->key] = std::move($1->val);
       } else {
-        $$->annotation_objects_[$1->key] = $1->object_val;
+        $$->objects[$1->key] = std::move($1->object_val);
       }
       delete $1;
     }
@@ -1662,10 +1662,11 @@ FunctionAnnotations:
         break;
       }
       $$ = $1;
-      if (!$$->has_annotation("priority")) {
+      auto priority = $$->strings.find("priority");
+      if (priority == $$->strings.end()) {
         break;
       }
-      const std::string& prio = $$->get_annotation("priority");
+      const std::string& prio = priority->second;
       const std::string prio_list[] = {"HIGH_IMPORTANT", "HIGH", "IMPORTANT",
                                        "NORMAL", "BEST_EFFORT"};
       const auto end = prio_list + sizeof(prio_list)/sizeof(prio_list[0]);

@@ -467,21 +467,21 @@ void t_json_generator::print_node_annotations(
     bool add_trailing_comma) {
   if (annotate_) {
     if (add_heading_comma &&
-        (!node.annotations_.empty() ||
+        (!node.annotations().empty() ||
          !node.structured_annotations().empty())) {
       f_out_ << "," << endl;
     }
-    if (!node.annotations_.empty()) {
-      print_annotations(node.annotations_);
+    if (!node.annotations().empty()) {
+      print_annotations(node.annotations());
     }
     if (!node.structured_annotations().empty()) {
-      if (!node.annotations_.empty()) {
+      if (!node.annotations().empty()) {
         f_out_ << "," << endl;
       }
       print_structured_annotations(node.structured_annotations());
     }
     if (add_trailing_comma &&
-        (!node.annotations_.empty() ||
+        (!node.annotations().empty() ||
          !node.structured_annotations().empty())) {
       f_out_ << "," << endl;
     }
@@ -617,7 +617,7 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
   indent_down();
   indent(f_out_) << "}," << endl;
   indent(f_out_) << "\"annotation_last_lineno\" : "
-                 << tstruct->annotation_last_lineno_ << endl;
+                 << tstruct->last_annotation_lineno() << endl;
   indent_down();
   indent(f_out_) << "}";
 }

@@ -33,6 +33,6 @@ TEST_F(UtilTest, get_py3_name) {
   EXPECT_EQ("cpdef_", py3::get_py3_name(t_field(nullptr, "cpdef")));
 
   t_field f(nullptr, "foo");
-  f.annotations_["py3.name"] = "bar";
+  f.set_annotation("py3.name", "bar");
   EXPECT_EQ("bar", py3::get_py3_name(f));
 }

@@ -360,8 +360,8 @@ class mstch_base : public mstch::object {
 
   mstch::node annotations(t_annotated const* annotated) {
     std::vector<t_annotation> annotations;
-    for (const auto& annotation : annotated->annotations_) {
-      annotations.emplace_back(annotation.first, annotation.second);
+    for (const auto& annotation : annotated->annotations()) {
+      annotations.push_back({annotation.first, annotation.second});
     }
     return generate_annotations(annotations);
   }

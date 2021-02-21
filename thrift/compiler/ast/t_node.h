@@ -53,6 +53,10 @@ class t_node {
     return lineno_;
   }
 
+ protected:
+  // t_node is abstract.
+  t_node() = default;
+
  private:
   std::string doc_;
   bool has_doc_{false};

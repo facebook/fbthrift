@@ -1579,7 +1579,7 @@ void t_py_generator::generate_py_annotations(
 
   indent(out) << rename_reserved_keywords(tstruct->get_name())
               << ".thrift_struct_annotations = {" << endl;
-  generate_py_string_dict(out, tstruct->annotations_);
+  generate_py_string_dict(out, tstruct->annotations());
   indent(out) << "}" << endl;
 
   indent(out) << rename_reserved_keywords(tstruct->get_name())
@@ -1589,11 +1589,11 @@ void t_py_generator::generate_py_annotations(
   for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
        ++m_iter) {
     const t_field* field = *m_iter;
-    if (field->annotations_.empty()) {
+    if (field->annotations().empty()) {
       continue;
     }
     indent(out) << field->get_key() << ": {" << endl;
-    generate_py_string_dict(out, field->annotations_);
+    generate_py_string_dict(out, field->annotations());
     indent(out) << "}," << endl;
   }
   indent_down();
@@ -2135,9 +2135,9 @@ void t_py_generator::generate_service_interface(
              << endl;
   indent_up();
   generate_python_docstring(f_service_, tservice);
-  if (!tservice->annotations_.empty()) {
+  if (!tservice->annotations().empty()) {
     f_service_ << indent() << "annotations = {" << endl;
-    generate_py_string_dict(f_service_, tservice->annotations_);
+    generate_py_string_dict(f_service_, tservice->annotations());
     f_service_ << indent() << "}" << endl << endl;
   }
   std::string service_priority = get_priority(tservice);

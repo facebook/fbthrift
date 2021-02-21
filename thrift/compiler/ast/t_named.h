@@ -46,9 +46,12 @@ class t_named : public t_annotated {
   }
 
  protected:
+  // t_named is abstract.
   t_named() = default;
+
   explicit t_named(std::string name) : name_(std::move(name)) {}
 
+  // TODO(afuller): make private.
   std::string name_;
 };
 

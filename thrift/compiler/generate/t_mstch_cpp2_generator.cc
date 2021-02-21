@@ -109,7 +109,7 @@ std::vector<t_annotation> get_fatal_annotations(
     if (is_annotation_blacklisted_in_fatal(iter.first)) {
       continue;
     }
-    fatal_annotations.emplace_back(iter.first, iter.second);
+    fatal_annotations.push_back({iter.first, iter.second});
   }
 
   return fatal_annotations;
@@ -302,10 +302,10 @@ class mstch_cpp2_enum : public mstch_enum {
     return mstch::node();
   }
   mstch::node has_fatal_annotations() {
-    return get_fatal_annotations(enm_->annotations_).size() > 0;
+    return get_fatal_annotations(enm_->annotations()).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_annotations(get_fatal_annotations(enm_->annotations_));
+    return generate_annotations(get_fatal_annotations(enm_->annotations()));
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(enm_->get_type_id());
@@ -338,11 +338,11 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
     return cpp2::get_name(enm_value_);
   }
   mstch::node has_fatal_annotations() {
-    return get_fatal_annotations(enm_value_->annotations_).size() > 0;
+    return get_fatal_annotations(enm_value_->annotations()).size() > 0;
   }
   mstch::node fatal_annotations() {
     return generate_annotations(
-        get_fatal_annotations(enm_value_->annotations_));
+        get_fatal_annotations(enm_value_->annotations()));
   }
 };
 
@@ -651,13 +651,13 @@ class mstch_cpp2_field : public mstch_field {
          (!t->is_struct() && !t->is_xception()));
   }
   mstch::node has_fatal_annotations() {
-    return get_fatal_annotations(field_->annotations_).size() > 0;
+    return get_fatal_annotations(field_->annotations()).size() > 0;
   }
   mstch::node has_isset() {
     return field_has_isset(field_);
   }
   mstch::node fatal_annotations() {
-    return generate_annotations(get_fatal_annotations(field_->annotations_));
+    return generate_annotations(get_fatal_annotations(field_->annotations()));
   }
   mstch::node fatal_required_qualifier() {
     switch (field_->get_req()) {
@@ -882,10 +882,10 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node has_fatal_annotations() {
-    return get_fatal_annotations(strct_->annotations_).size() > 0;
+    return get_fatal_annotations(strct_->annotations()).size() > 0;
   }
   mstch::node fatal_annotations() {
-    return generate_annotations(get_fatal_annotations(strct_->annotations_));
+    return generate_annotations(get_fatal_annotations(strct_->annotations()));
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(strct_->get_type_id());
@@ -1276,7 +1276,7 @@ class mstch_cpp2_program : public mstch_program {
     fatal_strings.emplace(get_fatal_string_short_id(cpp_name), cpp_name);
     auto hash = cpp2::sha256_hex(node->get_name());
     fatal_strings.emplace("__fbthrift_hash_" + hash, node->get_name());
-    for (const auto& a : node->annotations_) {
+    for (const auto& a : node->annotations()) {
       if (!is_annotation_blacklisted_in_fatal(a.first)) {
         fatal_strings.emplace(get_fatal_string_short_id(a.first), a.first);
       }

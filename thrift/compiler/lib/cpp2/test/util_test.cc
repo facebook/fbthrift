@@ -73,7 +73,7 @@ TEST_F(UtilTest, get_gen_namespace_none) {
 TEST_F(UtilTest, is_orderable_set_template) {
   t_base_type e("element", t_base_type::TYPE_DOUBLE);
   t_set t(&e);
-  t.annotations_["cpp2.template"] = "blah";
+  t.set_annotation("cpp2.template", "blah");
   t_program p("path/to/program.thrift");
   t_struct s(&p, "struct_name");
   s.append(std::make_unique<t_field>(&t, "set_field", 1));

@@ -549,12 +549,11 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
 
 void parsing_driver::set_annotations(
     t_annotated* node,
-    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_annotations> annotations,
     std::unique_ptr<t_struct_annotations> struct_annotations) {
   if (annotations != nullptr) {
-    node->annotations_ = std::move(annotations->annotations_);
-    node->annotation_objects_ = std::move(annotations->annotation_objects_);
-    node->annotation_last_lineno_ = annotations->annotation_last_lineno_;
+    node->reset_annotations(annotations->strings, annotations->last_lineno);
+    node->annotation_objects_ = std::move(annotations->objects);
   }
   if (struct_annotations != nullptr) {
     for (auto& an : *struct_annotations) {
@@ -579,7 +578,7 @@ int parsing_driver::pop_node(LineType lineType) {
 void parsing_driver::finish_node(
     t_annotated* node,
     LineType lineType,
-    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_annotations> annotations,
     std::unique_ptr<t_struct_annotations> struct_annotations) {
   node->set_lineno(pop_node(lineType));
   set_annotations(node, std::move(annotations), std::move(struct_annotations));
@@ -588,7 +587,7 @@ void parsing_driver::finish_node(
     t_named* node,
     LineType lineType,
     std::string name,
-    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_annotations> annotations,
     std::unique_ptr<t_struct_annotations> struct_annotations) {
   node->set_name(std::move(name));
   finish_node(
@@ -600,7 +599,7 @@ void parsing_driver::finish_node(
     LineType lineType,
     std::string name,
     std::unique_ptr<t_field_list> fields,
-    std::unique_ptr<t_annotated> annotations,
+    std::unique_ptr<t_annotations> annotations,
     std::unique_ptr<t_struct_annotations> struct_annotations) {
   append_fields(*node, std::move(*fields));
   finish_node(
