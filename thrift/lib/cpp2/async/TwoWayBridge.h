@@ -113,6 +113,9 @@ class QueueWithTailPtr : public Queue<T> {
   }
 
   void append(QueueWithTailPtr&& other) {
+    if (!other.head_) {
+      return;
+    }
     if (!Queue<T>::head_) {
       Queue<T>::head_ = std::exchange(other.head_, nullptr);
     } else {
