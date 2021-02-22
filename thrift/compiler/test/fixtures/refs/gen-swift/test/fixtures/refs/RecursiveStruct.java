@@ -161,9 +161,11 @@ public final class RecursiveStruct {
       oprot.writeStructEnd();
     }
     
-    private static final RecursiveStruct _DEFAULT = new RecursiveStruct.Builder().build();
+    private static class _RecursiveStructLazy {
+        private static final RecursiveStruct _DEFAULT = new RecursiveStruct.Builder().build();
+    }
     
     public static RecursiveStruct defaultInstance() {
-        return _DEFAULT;
+        return  _RecursiveStructLazy._DEFAULT;
     }
 }

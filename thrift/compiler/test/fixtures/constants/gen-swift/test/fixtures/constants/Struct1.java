@@ -183,9 +183,11 @@ public final class Struct1 {
       oprot.writeStructEnd();
     }
     
-    private static final Struct1 _DEFAULT = new Struct1.Builder().build();
+    private static class _Struct1Lazy {
+        private static final Struct1 _DEFAULT = new Struct1.Builder().build();
+    }
     
     public static Struct1 defaultInstance() {
-        return _DEFAULT;
+        return  _Struct1Lazy._DEFAULT;
     }
 }

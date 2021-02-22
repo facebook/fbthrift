@@ -1235,9 +1235,11 @@ public final class MyNomralStruct {
       oprot.writeStructEnd();
     }
     
-    private static final MyNomralStruct _DEFAULT = new MyNomralStruct.Builder().build();
+    private static class _MyNomralStructLazy {
+        private static final MyNomralStruct _DEFAULT = new MyNomralStruct.Builder().build();
+    }
     
     public static MyNomralStruct defaultInstance() {
-        return _DEFAULT;
+        return  _MyNomralStructLazy._DEFAULT;
     }
 }

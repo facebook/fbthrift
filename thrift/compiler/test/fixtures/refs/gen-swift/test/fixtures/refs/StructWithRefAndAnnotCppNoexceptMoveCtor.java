@@ -146,9 +146,11 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
       oprot.writeStructEnd();
     }
     
-    private static final StructWithRefAndAnnotCppNoexceptMoveCtor _DEFAULT = new StructWithRefAndAnnotCppNoexceptMoveCtor.Builder().build();
+    private static class _StructWithRefAndAnnotCppNoexceptMoveCtorLazy {
+        private static final StructWithRefAndAnnotCppNoexceptMoveCtor _DEFAULT = new StructWithRefAndAnnotCppNoexceptMoveCtor.Builder().build();
+    }
     
     public static StructWithRefAndAnnotCppNoexceptMoveCtor defaultInstance() {
-        return _DEFAULT;
+        return  _StructWithRefAndAnnotCppNoexceptMoveCtorLazy._DEFAULT;
     }
 }

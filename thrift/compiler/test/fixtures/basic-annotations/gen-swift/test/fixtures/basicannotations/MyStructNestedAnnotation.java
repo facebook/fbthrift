@@ -146,9 +146,11 @@ public final class MyStructNestedAnnotation {
       oprot.writeStructEnd();
     }
     
-    private static final MyStructNestedAnnotation _DEFAULT = new MyStructNestedAnnotation.Builder().build();
+    private static class _MyStructNestedAnnotationLazy {
+        private static final MyStructNestedAnnotation _DEFAULT = new MyStructNestedAnnotation.Builder().build();
+    }
     
     public static MyStructNestedAnnotation defaultInstance() {
-        return _DEFAULT;
+        return  _MyStructNestedAnnotationLazy._DEFAULT;
     }
 }

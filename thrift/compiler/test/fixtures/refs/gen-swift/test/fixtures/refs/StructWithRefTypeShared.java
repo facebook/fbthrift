@@ -224,9 +224,11 @@ public final class StructWithRefTypeShared {
       oprot.writeStructEnd();
     }
     
-    private static final StructWithRefTypeShared _DEFAULT = new StructWithRefTypeShared.Builder().build();
+    private static class _StructWithRefTypeSharedLazy {
+        private static final StructWithRefTypeShared _DEFAULT = new StructWithRefTypeShared.Builder().build();
+    }
     
     public static StructWithRefTypeShared defaultInstance() {
-        return _DEFAULT;
+        return  _StructWithRefTypeSharedLazy._DEFAULT;
     }
 }

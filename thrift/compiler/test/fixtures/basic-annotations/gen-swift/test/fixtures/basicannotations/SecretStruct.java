@@ -185,9 +185,11 @@ public final class SecretStruct {
       oprot.writeStructEnd();
     }
     
-    private static final SecretStruct _DEFAULT = new SecretStruct.Builder().build();
+    private static class _SecretStructLazy {
+        private static final SecretStruct _DEFAULT = new SecretStruct.Builder().build();
+    }
     
     public static SecretStruct defaultInstance() {
-        return _DEFAULT;
+        return  _SecretStructLazy._DEFAULT;
     }
 }

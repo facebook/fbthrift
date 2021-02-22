@@ -9568,9 +9568,11 @@ public final class MyBigStruct {
       oprot.writeStructEnd();
     }
     
-    private static final MyBigStruct _DEFAULT = new MyBigStruct.Builder().build();
+    private static class _MyBigStructLazy {
+        private static final MyBigStruct _DEFAULT = new MyBigStruct.Builder().build();
+    }
     
     public static MyBigStruct defaultInstance() {
-        return _DEFAULT;
+        return  _MyBigStructLazy._DEFAULT;
     }
 }

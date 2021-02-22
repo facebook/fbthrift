@@ -1231,9 +1231,11 @@ public final class DefaultStruct {
       oprot.writeStructEnd();
     }
     
-    private static final DefaultStruct _DEFAULT = new DefaultStruct.Builder().build();
+    private static class _DefaultStructLazy {
+        private static final DefaultStruct _DEFAULT = new DefaultStruct.Builder().build();
+    }
     
     public static DefaultStruct defaultInstance() {
-        return _DEFAULT;
+        return  _DefaultStructLazy._DEFAULT;
     }
 }

@@ -2319,9 +2319,11 @@ public final class B {
       oprot.writeStructEnd();
     }
     
-    private static final B _DEFAULT = new B.Builder().build();
+    private static class _BLazy {
+        private static final B _DEFAULT = new B.Builder().build();
+    }
     
     public static B defaultInstance() {
-        return _DEFAULT;
+        return  _BLazy._DEFAULT;
     }
 }

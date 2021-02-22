@@ -222,9 +222,11 @@ public final class Internship {
       oprot.writeStructEnd();
     }
     
-    private static final Internship _DEFAULT = new Internship.Builder().build();
+    private static class _InternshipLazy {
+        private static final Internship _DEFAULT = new Internship.Builder().build();
+    }
     
     public static Internship defaultInstance() {
-        return _DEFAULT;
+        return  _InternshipLazy._DEFAULT;
     }
 }

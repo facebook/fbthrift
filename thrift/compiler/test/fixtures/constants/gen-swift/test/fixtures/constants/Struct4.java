@@ -222,9 +222,11 @@ public final class Struct4 {
       oprot.writeStructEnd();
     }
     
-    private static final Struct4 _DEFAULT = new Struct4.Builder().build();
+    private static class _Struct4Lazy {
+        private static final Struct4 _DEFAULT = new Struct4.Builder().build();
+    }
     
     public static Struct4 defaultInstance() {
-        return _DEFAULT;
+        return  _Struct4Lazy._DEFAULT;
     }
 }

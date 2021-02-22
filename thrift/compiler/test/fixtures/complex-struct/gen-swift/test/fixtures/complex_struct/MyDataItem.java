@@ -105,9 +105,11 @@ static {
       oprot.writeStructEnd();
     }
     
-    private static final MyDataItem _DEFAULT = new MyDataItem.Builder().build();
+    private static class _MyDataItemLazy {
+        private static final MyDataItem _DEFAULT = new MyDataItem.Builder().build();
+    }
     
     public static MyDataItem defaultInstance() {
-        return _DEFAULT;
+        return  _MyDataItemLazy._DEFAULT;
     }
 }

@@ -274,9 +274,11 @@ public final class SomeStruct {
       oprot.writeStructEnd();
     }
     
-    private static final SomeStruct _DEFAULT = new SomeStruct.Builder().build();
+    private static class _SomeStructLazy {
+        private static final SomeStruct _DEFAULT = new SomeStruct.Builder().build();
+    }
     
     public static SomeStruct defaultInstance() {
-        return _DEFAULT;
+        return  _SomeStructLazy._DEFAULT;
     }
 }

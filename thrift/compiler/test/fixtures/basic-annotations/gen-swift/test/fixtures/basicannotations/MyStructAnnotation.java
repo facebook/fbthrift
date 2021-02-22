@@ -261,9 +261,11 @@ public final class MyStructAnnotation {
       oprot.writeStructEnd();
     }
     
-    private static final MyStructAnnotation _DEFAULT = new MyStructAnnotation.Builder().build();
+    private static class _MyStructAnnotationLazy {
+        private static final MyStructAnnotation _DEFAULT = new MyStructAnnotation.Builder().build();
+    }
     
     public static MyStructAnnotation defaultInstance() {
-        return _DEFAULT;
+        return  _MyStructAnnotationLazy._DEFAULT;
     }
 }

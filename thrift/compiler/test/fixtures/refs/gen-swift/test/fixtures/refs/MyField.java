@@ -220,9 +220,11 @@ public final class MyField {
       oprot.writeStructEnd();
     }
     
-    private static final MyField _DEFAULT = new MyField.Builder().build();
+    private static class _MyFieldLazy {
+        private static final MyField _DEFAULT = new MyField.Builder().build();
+    }
     
     public static MyField defaultInstance() {
-        return _DEFAULT;
+        return  _MyFieldLazy._DEFAULT;
     }
 }

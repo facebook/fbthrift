@@ -255,9 +255,11 @@ public final class Color {
       oprot.writeStructEnd();
     }
     
-    private static final Color _DEFAULT = new Color.Builder().build();
+    private static class _ColorLazy {
+        private static final Color _DEFAULT = new Color.Builder().build();
+    }
     
     public static Color defaultInstance() {
-        return _DEFAULT;
+        return  _ColorLazy._DEFAULT;
     }
 }

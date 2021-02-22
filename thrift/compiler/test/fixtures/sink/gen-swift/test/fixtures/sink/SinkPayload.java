@@ -146,9 +146,11 @@ public final class SinkPayload {
       oprot.writeStructEnd();
     }
     
-    private static final SinkPayload _DEFAULT = new SinkPayload.Builder().build();
+    private static class _SinkPayloadLazy {
+        private static final SinkPayload _DEFAULT = new SinkPayload.Builder().build();
+    }
     
     public static SinkPayload defaultInstance() {
-        return _DEFAULT;
+        return  _SinkPayloadLazy._DEFAULT;
     }
 }

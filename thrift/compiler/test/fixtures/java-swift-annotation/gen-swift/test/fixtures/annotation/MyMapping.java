@@ -243,9 +243,11 @@ public final class MyMapping {
       oprot.writeStructEnd();
     }
     
-    private static final MyMapping _DEFAULT = new MyMapping.Builder().build();
+    private static class _MyMappingLazy {
+        private static final MyMapping _DEFAULT = new MyMapping.Builder().build();
+    }
     
     public static MyMapping defaultInstance() {
-        return _DEFAULT;
+        return  _MyMappingLazy._DEFAULT;
     }
 }

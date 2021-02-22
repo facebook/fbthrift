@@ -181,9 +181,11 @@ public final class Range {
       oprot.writeStructEnd();
     }
     
-    private static final Range _DEFAULT = new Range.Builder().build();
+    private static class _RangeLazy {
+        private static final Range _DEFAULT = new Range.Builder().build();
+    }
     
     public static Range defaultInstance() {
-        return _DEFAULT;
+        return  _RangeLazy._DEFAULT;
     }
 }

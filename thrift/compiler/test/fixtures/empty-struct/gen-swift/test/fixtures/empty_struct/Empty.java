@@ -105,9 +105,11 @@ static {
       oprot.writeStructEnd();
     }
     
-    private static final Empty _DEFAULT = new Empty.Builder().build();
+    private static class _EmptyLazy {
+        private static final Empty _DEFAULT = new Empty.Builder().build();
+    }
     
     public static Empty defaultInstance() {
-        return _DEFAULT;
+        return  _EmptyLazy._DEFAULT;
     }
 }

@@ -239,9 +239,11 @@ public final class Val {
       oprot.writeStructEnd();
     }
     
-    private static final Val _DEFAULT = new Val.Builder().build();
+    private static class _ValLazy {
+        private static final Val _DEFAULT = new Val.Builder().build();
+    }
     
     public static Val defaultInstance() {
-        return _DEFAULT;
+        return  _ValLazy._DEFAULT;
     }
 }

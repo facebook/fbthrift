@@ -224,9 +224,11 @@ public final class StructWithRef {
       oprot.writeStructEnd();
     }
     
-    private static final StructWithRef _DEFAULT = new StructWithRef.Builder().build();
+    private static class _StructWithRefLazy {
+        private static final StructWithRef _DEFAULT = new StructWithRef.Builder().build();
+    }
     
     public static StructWithRef defaultInstance() {
-        return _DEFAULT;
+        return  _StructWithRefLazy._DEFAULT;
     }
 }

@@ -224,9 +224,11 @@ public final class MyStruct {
       oprot.writeStructEnd();
     }
     
-    private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
+    private static class _MyStructLazy {
+        private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
+    }
     
     public static MyStruct defaultInstance() {
-        return _DEFAULT;
+        return  _MyStructLazy._DEFAULT;
     }
 }

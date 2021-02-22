@@ -224,9 +224,11 @@ public final class StructWithRefTypeUnique {
       oprot.writeStructEnd();
     }
     
-    private static final StructWithRefTypeUnique _DEFAULT = new StructWithRefTypeUnique.Builder().build();
+    private static class _StructWithRefTypeUniqueLazy {
+        private static final StructWithRefTypeUnique _DEFAULT = new StructWithRefTypeUnique.Builder().build();
+    }
     
     public static StructWithRefTypeUnique defaultInstance() {
-        return _DEFAULT;
+        return  _StructWithRefTypeUniqueLazy._DEFAULT;
     }
 }

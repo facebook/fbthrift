@@ -291,9 +291,11 @@ public final class Foo {
       oprot.writeStructEnd();
     }
     
-    private static final Foo _DEFAULT = new Foo.Builder().build();
+    private static class _FooLazy {
+        private static final Foo _DEFAULT = new Foo.Builder().build();
+    }
     
     public static Foo defaultInstance() {
-        return _DEFAULT;
+        return  _FooLazy._DEFAULT;
     }
 }

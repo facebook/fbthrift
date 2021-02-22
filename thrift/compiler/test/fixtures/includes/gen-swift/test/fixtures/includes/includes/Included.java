@@ -183,9 +183,11 @@ public final class Included {
       oprot.writeStructEnd();
     }
     
-    private static final Included _DEFAULT = new Included.Builder().build();
+    private static class _IncludedLazy {
+        private static final Included _DEFAULT = new Included.Builder().build();
+    }
     
     public static Included defaultInstance() {
-        return _DEFAULT;
+        return  _IncludedLazy._DEFAULT;
     }
 }

@@ -183,9 +183,11 @@ public final class BigStruct {
       oprot.writeStructEnd();
     }
     
-    private static final BigStruct _DEFAULT = new BigStruct.Builder().build();
+    private static class _BigStructLazy {
+        private static final BigStruct _DEFAULT = new BigStruct.Builder().build();
+    }
     
     public static BigStruct defaultInstance() {
-        return _DEFAULT;
+        return  _BigStructLazy._DEFAULT;
     }
 }
