@@ -153,7 +153,6 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):
     def __get_reflection__():
         return _types_reflection.get_reflection__std_unordered_map__Map__i32_string()
 
-
 Mapping.register(std_unordered_map__Map__i32_string)
 
 @__cython.auto_pickle(False)

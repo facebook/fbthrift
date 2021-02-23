@@ -108,6 +108,12 @@ cdef class Client:
         badfuture.exception()
         self._connect_future = badfuture
 
+    cdef cThriftMetadata __get_metadata__(self) except *:
+        raise NotImplementedError()
+
+    cdef str __get_thrift_name__(self):
+        raise NotImplementedError()
+
 
 async def _no_op():
     pass

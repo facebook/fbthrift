@@ -372,6 +372,25 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__{{struct:name}}()
 
+    {{#struct:exception?}}
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[c{{struct:name}}].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "{{program:name}}.{{struct:name}}"
+    {{/struct:exception?}}
+    {{^struct:exception?}}
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[c{{struct:name}}].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "{{program:name}}.{{struct:name}}"
+    {{/struct:exception?}}
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[c{{struct:name}}](idx)
 
@@ -744,7 +763,6 @@ Set.register({{> types/CythonPythonType}})
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__{{> types/CythonPythonType}}()
-
 
 Mapping.register({{> types/CythonPythonType}})
 {{/type:map?}}

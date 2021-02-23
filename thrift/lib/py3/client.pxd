@@ -32,7 +32,7 @@ from libcpp cimport bool
 
 # This is just here to make the cython compile happy.
 from asyncio import InvalidStateError as asyncio_InvalidStateError
-from thrift.py3.common cimport Protocol as cProtocol
+from thrift.py3.common cimport Protocol as cProtocol, cThriftMetadata
 from folly.executor cimport AsyncioExecutor
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h":
@@ -105,6 +105,8 @@ cdef class Client:
     cdef const type_info* _typeid(self)
     cdef bind_client(self, cRequestChannel_ptr&& channel)
     cdef add_event_handler(self, const shared_ptr[cTProcessorEventHandler]& handler)
+    cdef cThriftMetadata __get_metadata__(self) except *
+    cdef str __get_thrift_name__(self)
 
 cdef void requestchannel_callback(
         cFollyTry[cRequestChannel_ptr]&& result,

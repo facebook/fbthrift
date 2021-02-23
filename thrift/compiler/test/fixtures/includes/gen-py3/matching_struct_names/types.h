@@ -13,6 +13,7 @@
 #include <thrift/lib/py3/enums.h>
 #include "src/gen-cpp2/matching_struct_names_data.h"
 #include "src/gen-cpp2/matching_struct_names_types.h"
+#include "src/gen-cpp2/matching_struct_names_metadata.h"
 namespace thrift {
 namespace py3 {
 

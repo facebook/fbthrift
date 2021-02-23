@@ -102,6 +102,14 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__Banal()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cBanal].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.Banal"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cBanal](idx)
 
@@ -164,6 +172,14 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Fiery()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cFiery].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.Fiery"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cFiery](idx)
@@ -229,6 +245,14 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Serious()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cSerious].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.Serious"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cSerious](idx)
@@ -299,6 +323,14 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     def __get_reflection__():
         return _types_reflection.get_reflection__ComplexFieldNames()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cComplexFieldNames].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ComplexFieldNames"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cComplexFieldNames](idx)
 
@@ -367,6 +399,14 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__CustomFieldNames()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cCustomFieldNames].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.CustomFieldNames"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cCustomFieldNames](idx)

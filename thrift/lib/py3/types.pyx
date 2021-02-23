@@ -154,6 +154,12 @@ cdef class Struct:
             return NotImplemented
         # otherwise returns None
 
+    cdef cThriftMetadata __get_metadata__(self) except *:
+        raise NotImplementedError()
+
+    cdef str __get_thrift_name__(self):
+        raise NotImplementedError()
+
 
 SetMetaClass(<PyTypeObject*> Struct, <PyTypeObject*> StructMeta)
 
@@ -619,6 +625,14 @@ cdef class CompiledEnum:
             warnings.warn(f"comparison not supported between instances of { type(self) } and {type(other)}", RuntimeWarning, stacklevel=2)
             return False
         return self is other
+
+    cdef cThriftMetadata __get_metadata__(self) except *:
+        raise NotImplementedError()
+
+    cdef str __get_thrift_name__(self):
+        raise NotImplementedError()
+
+
 
 Enum = CompiledEnum
 # I wanted to call the base class Enum, but there is a cython bug

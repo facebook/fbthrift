@@ -233,7 +233,6 @@ cdef class Map__i32_List__i32(thrift.py3.types.Map):
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__i32_List__i32()
 
-
 Mapping.register(Map__i32_List__i32)
 
 @__cython.auto_pickle(False)
@@ -413,7 +412,6 @@ cdef class Map__i32_Set__i32(thrift.py3.types.Map):
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__i32_Set__i32()
 
-
 Mapping.register(Map__i32_Set__i32)
 
 @__cython.auto_pickle(False)
@@ -510,7 +508,6 @@ cdef class Map__i32_i32(thrift.py3.types.Map):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__i32_i32()
-
 
 Mapping.register(Map__i32_i32)
 
@@ -775,7 +772,6 @@ cdef class Map__i32_Map__i32_Set__i32(thrift.py3.types.Map):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__i32_Map__i32_Set__i32()
-
 
 Mapping.register(Map__i32_Map__i32_Set__i32)
 

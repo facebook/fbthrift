@@ -84,3 +84,16 @@ cdef class WriteHeaders(Headers):
     cdef RpcOptions _parent
     @staticmethod
     cdef create(RpcOptions rpc_options)
+
+cdef extern from "thrift/lib/cpp2/gen/module_metadata_h.h" namespace "::apache::thrift::metadata":
+    cdef cppclass cThriftServiceContext "::apache::thrift::metadata::ThriftServiceContext":
+        cThriftServiceContext()
+    cdef cppclass cThriftMetadata "::apache::thrift::metadata::ThriftMetadata":
+        cThriftMetadata()
+    cdef cppclass ServiceMetadata "::apache::thrift::detail::md::ServiceMetadata"[T]:
+        @staticmethod
+        void gen(cThriftMetadata &metadata, cThriftServiceContext& context)
+
+
+cdef extern from "<thrift/lib/py3/metadata.h>" namespace "::thrift::py3":
+    cdef void extractMetadataFromServiceContext(cThriftMetadata& metadata, cThriftServiceContext& context)

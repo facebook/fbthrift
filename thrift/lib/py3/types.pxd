@@ -24,7 +24,7 @@ from libcpp.vector cimport vector
 from libcpp.pair cimport pair
 
 from thrift.py3.std_libcpp cimport string_view, optional, sv_to_str
-from thrift.py3.common cimport Protocol
+from thrift.py3.common cimport Protocol, cThriftMetadata
 
 cdef extern from *:
     """
@@ -145,6 +145,8 @@ cdef class Struct:
     cdef object __cmp_sametype(self, other, int op)
     cdef void __fbthrift_set_field(self, str name, object value) except *
     cdef string_view __fbthrift_get_field_name_by_index(self, size_t idx)
+    cdef cThriftMetadata __get_metadata__(self) except *
+    cdef str __get_thrift_name__(self)
 
 
 cdef class Union(Struct):
@@ -179,6 +181,8 @@ cdef class CompiledEnum:
     cdef object __str
     cdef object __repr
     cdef get_by_name(self, str name)
+    cdef cThriftMetadata __get_metadata__(self) except *
+    cdef str __get_thrift_name__(self)
 
 
 cdef class Flag(CompiledEnum):
@@ -216,7 +220,6 @@ cdef inline string bytes_to_string(bytes b) except*:
     cdef char* data
     PyBytes_AsStringAndSize(b, &data, &length)
     return move(string(data, length))  # there is a temp because string can raise
-
 
 
 cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift" nogil:

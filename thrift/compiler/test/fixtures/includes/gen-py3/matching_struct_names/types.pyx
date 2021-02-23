@@ -119,6 +119,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "matching_struct_names.MyStruct"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyStruct](idx)
 
@@ -222,6 +230,14 @@ cdef class Combo(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Combo()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cCombo].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "matching_struct_names.Combo"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cCombo](idx)

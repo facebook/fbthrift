@@ -11,3 +11,7 @@ from thrift.py3.reflection cimport (
 
 
 cdef __InterfaceSpec get_reflection__ExtendTestService(bint for_clients)
+
+cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "::cpp2":
+    cdef cppclass cExtendTestServiceSvIf "::cpp2::ExtendTestServiceSvIf":
+        pass

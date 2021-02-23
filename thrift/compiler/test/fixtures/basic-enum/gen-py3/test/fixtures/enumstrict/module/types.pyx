@@ -85,6 +85,14 @@ cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
         return __EmptyEnum_enum_data.get_by_name(name)
 
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cEmptyEnum].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.EmptyEnum"
+
 
 __SetMetaClass(<PyTypeObject*> EmptyEnum, <PyTypeObject*> __EmptyEnumMeta)
 
@@ -116,6 +124,14 @@ cdef class MyEnum(thrift.py3.types.CompiledEnum):
         return __MyEnum_enum_data.get_by_name(name)
 
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyEnum"
+
 
 __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
 
@@ -146,6 +162,14 @@ cdef class MyBigEnum(thrift.py3.types.CompiledEnum):
     cdef get_by_name(self, str name):
         return __MyBigEnum_enum_data.get_by_name(name)
 
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyBigEnum].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyBigEnum"
 
 
 __SetMetaClass(<PyTypeObject*> MyBigEnum, <PyTypeObject*> __MyBigEnumMeta)
@@ -219,6 +243,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyStruct](idx)

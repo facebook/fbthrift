@@ -29,7 +29,13 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
-from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -726,6 +732,16 @@ cdef class EmptyService(thrift.py3.client.Client):
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__EmptyService(for_clients=True)
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cEmptyServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.EmptyService"
+
 cdef object _ReturnService_annotations = _py_types.MappingProxyType({
 })
 
@@ -1178,6 +1194,16 @@ cdef class ReturnService(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__ReturnService(for_clients=True)
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cReturnServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ReturnService"
 
 cdef object _ParamService_annotations = _py_types.MappingProxyType({
 })
@@ -1947,4 +1973,14 @@ cdef class ParamService(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__ParamService(for_clients=True)
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cParamServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ParamService"
 

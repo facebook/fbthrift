@@ -21,7 +21,7 @@ from folly.iobuf cimport cIOBuf
 from folly.range cimport StringPiece
 from folly cimport cFollyExecutor
 from cpython.ref cimport PyObject
-from thrift.py3.common cimport cPriority, Priority_to_cpp, Headers
+from thrift.py3.common cimport cPriority, Priority_to_cpp, Headers, cThriftMetadata
 from thrift.py3.std_libcpp cimport milliseconds, seconds
 
 
@@ -156,7 +156,8 @@ cdef class AsyncProcessorFactory:
 
 
 cdef class ServiceInterface(AsyncProcessorFactory):
-    pass
+    cdef cThriftMetadata __get_metadata__(self) except *
+    cdef str __get_thrift_name__(self)
 
 
 cdef class ThriftServer:

@@ -57,6 +57,14 @@ cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:fl
         return __{{enum:name}}_enum_data.get_invert(self.value)
     {{/enum:flags?}}
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[c{{enum:name}}].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "{{program:name}}.{{enum:name}}"
+
 
 __SetMetaClass(<PyTypeObject*> {{enum:name}}, <PyTypeObject*> __{{enum:name}}Meta)
 

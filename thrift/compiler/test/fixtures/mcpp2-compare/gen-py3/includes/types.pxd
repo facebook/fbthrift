@@ -24,13 +24,17 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
+)
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
 )
 from folly.optional cimport cOptional as __cOptional
 
@@ -42,6 +46,10 @@ cdef extern from "gen-py3/includes/types.h":
 cdef extern from "folly/sorted_vector_types.h":
   pass
 
+cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
     cdef cppclass cAnEnum "::a::different::ns::AnEnum":
         pass
@@ -53,6 +61,14 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
 cdef class AnEnum(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::different::ns":
     cdef cppclass cAStruct__isset "::a::different::ns::AStruct::__isset":
         bint FieldA

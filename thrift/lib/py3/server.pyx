@@ -92,6 +92,12 @@ cdef class ServiceInterface(AsyncProcessorFactory):
         # Same as above, but allow end users to define things to be cleaned up
         pass
 
+    cdef cThriftMetadata __get_metadata__(self) except *:
+        raise NotImplementedError()
+
+    cdef str __get_thrift_name__(self):
+        raise NotImplementedError()
+
 
 def getServiceName(ServiceInterface svc not None):
     processor = deref(svc._cpp_obj).getProcessor()

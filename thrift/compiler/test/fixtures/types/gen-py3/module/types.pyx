@@ -87,6 +87,14 @@ cdef class has_bitwise_ops(thrift.py3.types.CompiledEnum):
         return __has_bitwise_ops_enum_data.get_by_name(name)
 
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[chas_bitwise_ops].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.has_bitwise_ops"
+
 
 __SetMetaClass(<PyTypeObject*> has_bitwise_ops, <PyTypeObject*> __has_bitwise_opsMeta)
 
@@ -117,6 +125,14 @@ cdef class is_unscoped(thrift.py3.types.CompiledEnum):
     cdef get_by_name(self, str name):
         return __is_unscoped_enum_data.get_by_name(name)
 
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cis_unscoped].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.is_unscoped"
 
 
 __SetMetaClass(<PyTypeObject*> is_unscoped, <PyTypeObject*> __is_unscopedMeta)
@@ -149,6 +165,14 @@ cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
         return __MyForwardRefEnum_enum_data.get_by_name(name)
 
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyForwardRefEnum].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyForwardRefEnum"
+
 
 __SetMetaClass(<PyTypeObject*> MyForwardRefEnum, <PyTypeObject*> __MyForwardRefEnumMeta)
 
@@ -179,6 +203,14 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     cdef get_by_name(self, str name):
         return __MyEnumA_enum_data.get_by_name(name)
 
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnumA].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyEnumA"
 
 
 __SetMetaClass(<PyTypeObject*> MyEnumA, <PyTypeObject*> __MyEnumAMeta)
@@ -275,6 +307,14 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__decorated_struct()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cdecorated_struct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.decorated_struct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cdecorated_struct](idx)
@@ -414,6 +454,14 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__ContainerStruct()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cContainerStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ContainerStruct"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cContainerStruct](idx)
 
@@ -494,6 +542,14 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__CppTypeStruct()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cCppTypeStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.CppTypeStruct"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cCppTypeStruct](idx)
 
@@ -571,6 +627,14 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__VirtualStruct()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cVirtualStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.VirtualStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cVirtualStruct](idx)
@@ -660,6 +724,14 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStructWithForwardRefEnum()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStructWithForwardRefEnum].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyStructWithForwardRefEnum"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyStructWithForwardRefEnum](idx)
 
@@ -743,6 +815,14 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__TrivialNumeric()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cTrivialNumeric].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.TrivialNumeric"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cTrivialNumeric](idx)
@@ -830,6 +910,14 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__TrivialNestedWithDefault()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cTrivialNestedWithDefault].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.TrivialNestedWithDefault"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cTrivialNestedWithDefault](idx)
 
@@ -916,6 +1004,14 @@ cdef class ComplexString(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__ComplexString()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cComplexString].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ComplexString"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cComplexString](idx)
 
@@ -1001,6 +1097,14 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__ComplexNestedWithDefault()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cComplexNestedWithDefault].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ComplexNestedWithDefault"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cComplexNestedWithDefault](idx)
@@ -1104,6 +1208,14 @@ cdef class MinPadding(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MinPadding()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMinPadding].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MinPadding"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMinPadding](idx)
 
@@ -1197,6 +1309,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyStruct"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyStruct](idx)
 
@@ -1256,6 +1376,14 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__MyDataItem()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyDataItem].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyDataItem"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyDataItem](idx)
@@ -1334,6 +1462,14 @@ cdef class Renaming(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Renaming()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cRenaming].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.Renaming"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cRenaming](idx)
@@ -1422,6 +1558,14 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__AnnotatedTypes()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cAnnotatedTypes].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.AnnotatedTypes"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cAnnotatedTypes](idx)
@@ -1514,6 +1658,14 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__ForwardUsageRoot()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cForwardUsageRoot].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ForwardUsageRoot"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cForwardUsageRoot](idx)
 
@@ -1595,6 +1747,14 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__ForwardUsageStruct()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cForwardUsageStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ForwardUsageStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cForwardUsageStruct](idx)
@@ -1678,6 +1838,14 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__ForwardUsageByRef()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cForwardUsageByRef].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ForwardUsageByRef"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cForwardUsageByRef](idx)
 
@@ -1742,6 +1910,14 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__NoexceptMoveEmpty()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cNoexceptMoveEmpty].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.NoexceptMoveEmpty"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNoexceptMoveEmpty](idx)
@@ -1820,6 +1996,14 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__NoexceptMoveSimpleStruct()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cNoexceptMoveSimpleStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.NoexceptMoveSimpleStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNoexceptMoveSimpleStruct](idx)
@@ -1953,6 +2137,14 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__NoexceptMoveComplexStruct()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cNoexceptMoveComplexStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.NoexceptMoveComplexStruct"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNoexceptMoveComplexStruct](idx)
 
@@ -2084,6 +2276,14 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__NoExceptMoveUnion()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cNoExceptMoveUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.NoExceptMoveUnion"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNoExceptMoveUnion](idx)
 
@@ -2194,6 +2394,14 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__AllocatorAware()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cAllocatorAware].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.AllocatorAware"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cAllocatorAware](idx)
 
@@ -2271,6 +2479,14 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__AllocatorAware2()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cAllocatorAware2].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.AllocatorAware2"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cAllocatorAware2](idx)
@@ -2385,7 +2601,6 @@ cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__std_unordered_map__Map__i32_string()
-
 
 Mapping.register(std_unordered_map__Map__i32_string)
 
@@ -2560,7 +2775,6 @@ cdef class Map__binary_i64(thrift.py3.types.Map):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__binary_i64()
-
 
 Mapping.register(Map__binary_i64)
 
@@ -3129,7 +3343,6 @@ cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Map):
     def __get_reflection__():
         return _types_reflection.get_reflection__folly_sorted_vector_map__Map__i32_string()
 
-
 Mapping.register(folly_sorted_vector_map__Map__i32_string)
 
 @__cython.auto_pickle(False)
@@ -3303,7 +3516,6 @@ cdef class Map__string_i32(thrift.py3.types.Map):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__string_i32()
-
 
 Mapping.register(Map__string_i32)
 
@@ -3562,7 +3774,6 @@ cdef class Map__MyEnumA_string(thrift.py3.types.Map):
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__MyEnumA_string()
 
-
 Mapping.register(Map__MyEnumA_string)
 
 @__cython.auto_pickle(False)
@@ -3740,7 +3951,6 @@ cdef class Map__i32_i32(thrift.py3.types.Map):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__i32_i32()
-
 
 Mapping.register(Map__i32_i32)
 

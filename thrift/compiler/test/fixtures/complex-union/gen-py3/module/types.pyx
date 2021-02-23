@@ -443,6 +443,14 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__ComplexUnion()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cComplexUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ComplexUnion"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cComplexUnion](idx)
 
@@ -565,6 +573,14 @@ cdef class ListUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__ListUnion()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cListUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ListUnion"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cListUnion](idx)
@@ -689,6 +705,14 @@ cdef class DataUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__DataUnion()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cDataUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.DataUnion"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cDataUnion](idx)
 
@@ -782,6 +806,14 @@ cdef class Val(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Val()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cVal].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.Val"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cVal](idx)
@@ -903,6 +935,14 @@ cdef class ValUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__ValUnion()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cValUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.ValUnion"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cValUnion](idx)
@@ -1027,6 +1067,14 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     def __get_reflection__():
         return _types_reflection.get_reflection__VirtualComplexUnion()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cVirtualComplexUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.VirtualComplexUnion"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cVirtualComplexUnion](idx)
 
@@ -1093,6 +1141,14 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__NonCopyableStruct()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cNonCopyableStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.NonCopyableStruct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNonCopyableStruct](idx)
@@ -1193,6 +1249,14 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__NonCopyableUnion()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cNonCopyableUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.NonCopyableUnion"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cNonCopyableUnion](idx)
@@ -1466,7 +1530,6 @@ cdef class Map__i16_string(thrift.py3.types.Map):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__i16_string()
-
 
 Mapping.register(Map__i16_string)
 

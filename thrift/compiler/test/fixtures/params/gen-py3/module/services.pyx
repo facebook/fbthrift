@@ -35,6 +35,12 @@ from folly cimport (
   c_unit,
 
 )
+from thrift.py3.common cimport (
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+)
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
     from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
@@ -135,6 +141,16 @@ cdef class NestedContainersInterface(
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__NestedContainers(for_clients=False)
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cNestedContainersSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.NestedContainers"
 
 
 

@@ -17,26 +17,39 @@ import unittest
 
 import testing.metadata
 from apache.thrift.metadata.types import ThriftPrimitiveType
+from testing.clients import TestingService
+from testing.services import TestingServiceInterface
+from testing.types import hard, HardError, Perm
+from thrift.py3.metadata import gen_metadata
 
 
 class MetadataTests(unittest.TestCase):
     def test_metadata_enums(self) -> None:
-        meta = testing.metadata.getThriftModuleMetadata()
+        meta = gen_metadata(testing.metadata)
         enumName = "testing.Perm"
         self.assertIsNotNone(meta)
-        self.assertEqual(meta.enums[enumName].name, enumName)
-        self.assertEqual(meta.enums[enumName].elements[1], "execute")
-        self.assertEqual(meta.enums[enumName].elements[4], "read")
-        self.assertEqual(len(meta.enums[enumName].elements), 3)
+        permEnum = meta.enums[enumName]
+        self.assertEqual(permEnum.name, enumName)
+        self.assertEqual(permEnum.elements[1], "execute")
+        self.assertEqual(permEnum.elements[4], "read")
+        self.assertEqual(len(permEnum.elements), 3)
+        self.assertEqual(permEnum, gen_metadata(Perm))
+        self.assertEqual(permEnum, gen_metadata(Perm(1)))
 
     def test_metadata_structs(self) -> None:
-        meta = testing.metadata.getThriftModuleMetadata()
+        meta = gen_metadata(testing.metadata)
         structName = "testing.hard"
         self.assertIsNotNone(meta)
         hardStruct = meta.structs[structName]
+
         self.assertFalse(hardStruct.is_union)
         self.assertEqual(hardStruct.name, structName)
         self.assertEqual(len(hardStruct.fields), 5)
+
+        self.assertEqual(hardStruct, gen_metadata(hard))
+        self.assertEqual(
+            hardStruct, gen_metadata(hard(val=1, val_list=[1, 2], name="name"))
+        )
 
         field = hardStruct.fields[2]
         self.assertEqual(field.name, "name")
@@ -46,12 +59,15 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(meta.structs["testing.EmptyUnion"].is_union, True)
 
     def test_metadata_exceptions(self) -> None:
-        meta = testing.metadata.getThriftModuleMetadata()
+        meta = gen_metadata(testing.metadata)
         errorName = "testing.HardError"
         self.assertIsNotNone(meta)
         hardError = meta.exceptions[errorName]
         self.assertEqual(hardError.name, errorName)
         self.assertEqual(len(hardError.fields), 2)
+
+        self.assertEqual(hardError, gen_metadata(HardError))
+        self.assertEqual(hardError, gen_metadata(HardError(code=1)))
 
         field = hardError.fields[1]
         self.assertEqual(field.name, "code")
@@ -59,10 +75,12 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(field.type.value, ThriftPrimitiveType.THRIFT_I32_TYPE)
 
     def test_metadata_services(self) -> None:
-        meta = testing.metadata.getThriftModuleMetadata()
+        meta = gen_metadata(testing.metadata)
         serviceName = "testing.TestingService"
         self.assertIsNotNone(meta)
         testingService = meta.services[serviceName]
+        self.assertEqual(testingService, gen_metadata(TestingService))
+        self.assertEqual(testingService, gen_metadata(TestingServiceInterface))
         self.assertEqual(testingService.name, serviceName)
         self.assertEqual(testingService.parent, None)
         self.assertEqual(len(testingService.functions), 11)

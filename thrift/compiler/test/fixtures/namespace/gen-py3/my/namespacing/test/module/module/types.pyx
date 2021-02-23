@@ -117,6 +117,14 @@ cdef class Foo(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__Foo()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cFoo].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.Foo"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cFoo](idx)
 

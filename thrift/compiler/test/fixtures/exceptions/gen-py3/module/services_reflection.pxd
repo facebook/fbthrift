@@ -11,3 +11,7 @@ from thrift.py3.reflection cimport (
 
 
 cdef __InterfaceSpec get_reflection__Raiser(bint for_clients)
+
+cdef extern from "src/gen-cpp2/Raiser.h" namespace "::cpp2":
+    cdef cppclass cRaiserSvIf "::cpp2::RaiserSvIf":
+        pass

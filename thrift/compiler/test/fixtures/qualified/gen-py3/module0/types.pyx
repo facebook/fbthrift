@@ -85,6 +85,14 @@ cdef class Enum(thrift.py3.types.CompiledEnum):
         return __Enum_enum_data.get_by_name(name)
 
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cEnum].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module0.Enum"
+
 
 __SetMetaClass(<PyTypeObject*> Enum, <PyTypeObject*> __EnumMeta)
 
@@ -153,6 +161,14 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__Struct()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module0.Struct"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cStruct](idx)

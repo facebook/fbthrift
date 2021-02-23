@@ -85,6 +85,14 @@ cdef class MyEnum(thrift.py3.types.CompiledEnum):
         return __MyEnum_enum_data.get_by_name(name)
 
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyEnum"
+
 
 __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
 
@@ -221,6 +229,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
 
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStruct].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyStruct"
+
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyStruct](idx)
 
@@ -285,6 +301,14 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__MyDataItem()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyDataItem].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyDataItem"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyDataItem](idx)
@@ -424,6 +448,14 @@ cdef class MyUnion(thrift.py3.types.Union):
     @staticmethod
     def __get_reflection__():
         return _types_reflection.get_reflection__MyUnion()
+
+    cdef __fbthrift_cThriftMetadata __get_metadata__(self) except *:
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyUnion].gen(meta)
+        return meta
+
+    cdef str __get_thrift_name__(self):
+        return "module.MyUnion"
 
     cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyUnion](idx)

@@ -234,7 +234,6 @@ cdef class Map__i64_List__string(thrift.py3.types.Map):
     def __get_reflection__():
         return _types_reflection.get_reflection__Map__i64_List__string()
 
-
 Mapping.register(Map__i64_List__string)
 
 TEST_MAP = Map__i64_List__string.create(constant_shared_ptr(cTEST_MAP()))

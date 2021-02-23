@@ -135,6 +135,12 @@ cdef class GeneratedError(Error):
         for name in self.__iter_names():
             yield name, getattr(self, name)
 
+    cdef cThriftMetadata __get_metadata__(self) except *:
+        raise NotImplementedError()
+
+    cdef str __get_thrift_name__(self):
+        raise NotImplementedError()
+
 
 cdef class ApplicationError(Error):
     """All Application Level Errors (TApplicationException)"""
