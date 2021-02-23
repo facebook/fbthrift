@@ -98,16 +98,15 @@ class TilePromise final : public Tile {
     DCHECK(!continuations_.empty());
 
     bool isSerial = dynamic_cast<SerialInteractionTile*>(this), first = true;
+    auto ka = tm.getKeepAlive(
+        concurrency::PRIORITY::NORMAL,
+        concurrency::ThreadManager::Source::EXISTING_INTERACTION);
     for (auto& task : continuations_) {
       if (!isSerial || std::exchange(first, false)) {
         tile.__fbthrift_acquireRef(eb);
         dynamic_cast<InteractionEventTask&>(*task).setTile(tile);
         --refCount_;
-        tm.add(
-            std::move(task),
-            0, // timeout
-            0, // expiration
-            concurrency::ThreadManager::Source::EXISTING_INTERACTION);
+        ka->add([task = std::move(task)]() mutable { task->run(); });
       } else {
         static_cast<SerialInteractionTile&>(tile).taskQueue_.push(
             std::move(task));

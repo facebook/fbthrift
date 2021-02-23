@@ -28,11 +28,10 @@ void Tile::__fbthrift_releaseRef(folly::EventBase& eb) {
     if (!queue.empty()) {
       DCHECK_GT(refCount_, queue.size());
       dynamic_cast<concurrency::ThreadManager&>(*destructionExecutor_)
-          .add(
-              std::move(queue.front()),
-              0, // timeout
-              0, // expiration
-              false); // upstream
+          .getKeepAlive(
+              concurrency::PRIORITY::NORMAL,
+              concurrency::ThreadManager::Source::INTERNAL)
+          ->add([task = std::move(queue.front())]() mutable { task->run(); });
       queue.pop();
     }
   }
