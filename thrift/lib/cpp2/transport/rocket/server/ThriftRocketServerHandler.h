@@ -116,7 +116,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   uint32_t sampleRate_{0};
   static thread_local uint32_t sample_;
 
-  int32_t version_{6};
+  int32_t version_;
 
   folly::once_flag setupLoggingFlag_;
 

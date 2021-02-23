@@ -46,7 +46,12 @@
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 
+namespace {
+const int64_t kRocketServerMaxVersion = 6;
+}
+
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);
+THRIFT_FLAG_DEFINE_int64(rocket_server_max_version, kRocketServerMaxVersion);
 
 THRIFT_FLAG_DEFINE_int64(monitoring_over_user_logging_sample_rate, 0);
 
@@ -95,7 +100,10 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           nullptr, /* x509PeerCert */
           worker_->getServer()->getClientIdentityHook(),
           worker_.get()),
-      setupFrameHandlers_(handlers) {
+      setupFrameHandlers_(handlers),
+      version_(static_cast<int32_t>(std::min(
+          kRocketServerMaxVersion,
+          THRIFT_FLAG(rocket_server_max_version)))) {
   connContext_.setTransportType(Cpp2ConnContext::TransportType::ROCKET);
   if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
     handler->newConnection(&connContext_);
