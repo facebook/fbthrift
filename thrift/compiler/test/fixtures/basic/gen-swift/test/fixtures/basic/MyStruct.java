@@ -50,7 +50,7 @@ public final class MyStruct {
       this.myIntField = 0L;
       this.myStringField = null;
       this.myDataField = null;
-      this.myEnum = null;
+      this.myEnum = test.fixtures.basic.MyEnum.fromInteger(0);
       this.oneway = false;
       this.readonly = false;
       this.idempotent = false;
@@ -61,7 +61,7 @@ public final class MyStruct {
         private long myIntField = 0L;
         private String myStringField = null;
         private test.fixtures.basic.MyDataItem myDataField = null;
-        private test.fixtures.basic.MyEnum myEnum = null;
+        private test.fixtures.basic.MyEnum myEnum = test.fixtures.basic.MyEnum.fromInteger(0);
         private boolean oneway = false;
         private boolean readonly = false;
         private boolean idempotent = false;

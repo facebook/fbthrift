@@ -125,7 +125,7 @@ public final class B {
       this.listOfMapOfStringToA = null;
       this.listOfSelf = null;
       this.mapOfStringToSelf = null;
-      this.justAnEnum = null;
+      this.justAnEnum = test.fixtures.shapes.Enum.fromInteger(0);
       this.justAUnion = null;
       this.optionalJustAnA = null;
       this.optionalSetOfI32 = null;
@@ -188,7 +188,7 @@ public final class B {
         private List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA = null;
         private List<test.fixtures.shapes.B> listOfSelf = null;
         private Map<String, test.fixtures.shapes.B> mapOfStringToSelf = null;
-        private test.fixtures.shapes.Enum justAnEnum = null;
+        private test.fixtures.shapes.Enum justAnEnum = test.fixtures.shapes.Enum.fromInteger(0);
         private test.fixtures.shapes.Union justAUnion = null;
         private test.fixtures.shapes.A optionalJustAnA = null;
         private Set<Integer> optionalSetOfI32 = null;

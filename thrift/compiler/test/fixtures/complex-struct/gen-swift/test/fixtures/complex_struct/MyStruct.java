@@ -92,7 +92,7 @@ public final class MyStruct {
       this.myIntField = 0L;
       this.myStringField = null;
       this.myDataField = null;
-      this.myEnum = null;
+      this.myEnum = test.fixtures.complex_struct.MyEnum.fromInteger(0);
       this.myBoolField = false;
       this.myByteField = 0;
       this.myShortField = 0;
@@ -124,7 +124,7 @@ public final class MyStruct {
         private long myIntField = 0L;
         private String myStringField = null;
         private test.fixtures.complex_struct.MyDataItem myDataField = null;
-        private test.fixtures.complex_struct.MyEnum myEnum = null;
+        private test.fixtures.complex_struct.MyEnum myEnum = test.fixtures.complex_struct.MyEnum.fromInteger(0);
         private boolean myBoolField = false;
         private byte myByteField = 0;
         private short myShortField = 0;

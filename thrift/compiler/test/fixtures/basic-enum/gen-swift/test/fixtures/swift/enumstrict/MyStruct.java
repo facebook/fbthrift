@@ -37,13 +37,13 @@ public final class MyStruct {
     
     @ThriftConstructor
     protected MyStruct() {
-      this.myEnum = null;
+      this.myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
       this.myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
     }
     
     public static class Builder {
     
-        private test.fixtures.swift.enumstrict.MyEnum myEnum = null;
+        private test.fixtures.swift.enumstrict.MyEnum myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
