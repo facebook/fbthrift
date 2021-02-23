@@ -342,15 +342,15 @@ class mstch_rust_program : public mstch_program {
   }
   template <typename F>
   void foreach_type(F&& f) const {
-    for (auto strct : program_->get_structs()) {
-      for (auto field : strct->get_members()) {
+    for (const auto* strct : program_->get_structs()) {
+      for (const auto* field : strct->fields()) {
         f(field->get_type());
       }
     }
-    for (auto service : program_->get_services()) {
-      for (auto function : service->get_functions()) {
-        for (auto arg : function->get_paramlist()->get_members()) {
-          f(arg->get_type());
+    for (const auto* service : program_->get_services()) {
+      for (const auto* function : service->get_functions()) {
+        for (const auto* param : function->get_paramlist()->fields()) {
+          f(param->get_type());
         }
         f(function->get_returntype());
       }
@@ -424,8 +424,8 @@ class mstch_rust_struct : public mstch_struct {
     if (strct_->has_annotation("rust.ord")) {
       return true;
     }
-    for (const auto& member : strct_->get_members()) {
-      if (!can_derive_ord(member->get_type())) {
+    for (const auto* field : strct_->fields()) {
+      if (!can_derive_ord(field->get_type())) {
         return false;
       }
     }
@@ -435,7 +435,7 @@ class mstch_rust_struct : public mstch_struct {
     return strct_->has_annotation("rust.copy");
   }
   mstch::node rust_fields_by_name() {
-    std::vector<t_field*> fields = strct_->get_members();
+    auto fields = strct_->fields();
     std::sort(fields.begin(), fields.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
@@ -561,16 +561,16 @@ class mstch_rust_function : public mstch_function {
     // where more than one variant contains the same type of exception. Find
     // only those exceptions that map uniquely to a variant.
 
+    const auto& exceptions = function_->get_xceptions()->fields();
     std::map<t_type*, unsigned> type_count;
-    for (const auto& field : function_->get_xceptions()->get_members()) {
-      type_count[field->get_type()] += 1;
+    for (const auto* x : exceptions) {
+      type_count[x->get_type()] += 1;
     }
 
-    std::vector<t_field*> unique_exceptions;
-    const auto& fields = function_->get_xceptions()->get_members();
+    std::vector<const t_field*> unique_exceptions;
     std::copy_if(
-        fields.cbegin(),
-        fields.cend(),
+        exceptions.cbegin(),
+        exceptions.cend(),
         std::back_inserter(unique_exceptions),
         [&type_count](const auto& field) {
           return type_count.at(field->get_type()) == 1;
@@ -579,14 +579,14 @@ class mstch_rust_function : public mstch_function {
     return generate_fields(unique_exceptions);
   }
   mstch::node rust_args_by_name() {
-    std::vector<t_field*> args = function_->get_paramlist()->get_members();
-    std::sort(args.begin(), args.end(), [](auto a, auto b) {
+    auto params = function_->get_paramlist()->fields();
+    std::sort(params.begin(), params.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_fields(args);
+    return generate_fields(params);
   }
   mstch::node rust_returns_by_name() {
-    std::vector<t_field*> returns = function_->get_xceptions()->get_members();
+    auto returns = function_->get_xceptions()->fields();
     returns.push_back(&success_return);
     std::sort(returns.begin(), returns.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
@@ -902,11 +902,11 @@ class mstch_rust_value : public mstch_base {
     auto variant = entry.first->get_string();
     auto content = entry.second;
 
-    for (const auto& member : struct_type->get_members()) {
-      if (member->get_name() == variant) {
+    for (const auto& field : struct_type->fields()) {
+      if (field->get_name() == variant) {
         return std::make_shared<mstch_rust_value>(
             content,
-            member->get_type(),
+            field->get_type(),
             depth_ + 1,
             generators_,
             cache_,
@@ -1106,13 +1106,13 @@ mstch::node mstch_rust_value::struct_fields() {
   }
 
   mstch::array fields;
-  for (const auto& member : struct_type->get_members()) {
-    auto value = map_entries[member->get_name()];
+  for (const auto& field : struct_type->fields()) {
+    auto value = map_entries[field->get_name()];
     if (!value) {
-      value = member->get_value();
+      value = field->get_value();
     }
     fields.push_back(std::make_shared<mstch_rust_struct_field>(
-        member, value, depth_ + 1, generators_, cache_, pos_, options_));
+        field, value, depth_ + 1, generators_, cache_, pos_, options_));
   }
   return fields;
 }
@@ -1605,14 +1605,13 @@ class annotation_validator : public validator {
 };
 
 bool annotation_validator::visit(t_struct* s) {
-  for (auto* member : s->get_members()) {
-    bool box = member->has_annotation("rust.box");
-    bool arc = member->has_annotation("rust.arc");
+  for (auto* field : s->fields()) {
+    bool box = field->has_annotation("rust.box");
+    bool arc = field->has_annotation("rust.arc");
     if (box && arc) {
       add_error(
-          member->get_lineno(),
-          "Field `" + member->get_name() +
-              "` cannot be both Box'ed and Arc'ed");
+          field->get_lineno(),
+          "Field `" + field->get_name() + "` cannot be both Box'ed and Arc'ed");
     }
   }
   return true;

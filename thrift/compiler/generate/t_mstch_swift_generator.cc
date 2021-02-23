@@ -348,7 +348,7 @@ class mstch_swift_struct : public mstch_struct {
   }
   mstch::node is_union_field_type_unique() {
     std::set<std::string> field_types;
-    for (const auto* field : strct_->get_members()) {
+    for (const auto* field : strct_->fields()) {
       auto type_name = field->get_type()->get_full_name();
       std::string type_with_erasure = type_name.substr(0, type_name.find('<'));
       if (field_types.find(type_with_erasure) != field_types.end()) {
@@ -369,8 +369,7 @@ class mstch_swift_struct : public mstch_struct {
 
   mstch::node is_BigStruct() {
     return (
-        strct_->is_struct() &&
-        strct_->get_members().size() > bigStructThreshold);
+        strct_->is_struct() && strct_->fields().size() > bigStructThreshold);
   }
 
   mstch::node java_capital_name() {
@@ -383,14 +382,9 @@ class mstch_swift_struct : public mstch_struct {
     return strct_->get_annotation("java.swift.annotations");
   }
   mstch::node exception_message() {
-    auto field_name_to_use = strct_->get_annotation("message");
-    auto field = std::find_if(
-        strct_->get_members().begin(),
-        strct_->get_members().end(),
-        [&](auto const& m) { return m->get_name() == field_name_to_use; });
-
-    if (field != strct_->get_members().end()) {
-      return get_java_swift_name(*field);
+    const auto& field_name_to_use = strct_->get_annotation("message");
+    if (const auto* field = strct_->get_field_by_name(field_name_to_use)) {
+      return get_java_swift_name(field);
     }
 
     throw std::runtime_error{
@@ -403,11 +397,7 @@ class mstch_swift_struct : public mstch_struct {
   //      (since it will generate getMessage() as well)
   mstch::node needs_exception_message() {
     return strct_->is_xception() && strct_->has_annotation("message") &&
-        std::find_if(
-            strct_->get_members().begin(),
-            strct_->get_members().end(),
-            [](auto const& m) { return m->get_name() == "message"; }) ==
-        strct_->get_members().end();
+        strct_->get_field_by_name("message") == nullptr;
   }
   mstch::node enable_is_set() {
     return strct_->has_annotation("java.swift.enable_is_set");

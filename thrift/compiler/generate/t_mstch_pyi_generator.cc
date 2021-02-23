@@ -273,16 +273,15 @@ void t_mstch_pyi_generator::add_container_types(
 
   for (const auto service : program.get_services()) {
     for (const auto function : service->get_functions()) {
-      for (const auto field : function->get_paramlist()->get_members()) {
-        auto arg_type = field->get_type();
-        load_container_type(container_types, visited_names, arg_type);
+      for (const auto param : function->get_paramlist()->fields()) {
+        load_container_type(container_types, visited_names, param->get_type());
       }
       auto return_type = function->get_returntype();
       load_container_type(container_types, visited_names, return_type);
     }
   }
   for (const auto object : program.get_objects()) {
-    for (const auto field : object->get_members()) {
+    for (const auto field : object->fields()) {
       auto ref_type = field->get_type();
       load_container_type(container_types, visited_names, ref_type);
     }

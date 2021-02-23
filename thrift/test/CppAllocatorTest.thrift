@@ -43,8 +43,8 @@ struct NoAllocatorVia {
 } (cpp.allocator = "::ScopedStatefulAlloc")
 
 struct YesAllocatorVia {
-  1: AAStruct (cpp.use_allocator) foo;
-} (cpp.allocator = "::ScopedStatefulAlloc", cpp.allocator_via = "foo")
+  1: AAStruct (cpp.use_allocator) foo (cpp.name = "bar");
+} (cpp.allocator = "::ScopedStatefulAlloc", cpp.allocator_via = "bar")
 
 struct HasContainerFields {
   1: list<i32> (

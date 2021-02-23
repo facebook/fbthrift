@@ -560,13 +560,12 @@ class mstch_py3_program : public mstch_program {
   }
 
   void visit_types_for_services() {
-    for (const auto service : program_->get_services()) {
-      for (const auto function : service->get_functions()) {
-        for (const auto field : function->get_paramlist()->get_members()) {
+    for (const auto* service : program_->get_services()) {
+      for (const auto* function : service->get_functions()) {
+        for (const auto* field : function->get_paramlist()->fields()) {
           visit_type(field->get_type());
         }
-        for (const auto field :
-             function->get_stream_xceptions()->get_members()) {
+        for (const auto* field : function->get_stream_xceptions()->fields()) {
           const t_type* exType = field->get_type();
           streamExceptions_.emplace(visit_type(field->get_type()), exType);
         }
@@ -580,7 +579,7 @@ class mstch_py3_program : public mstch_program {
 
   void visit_types_for_objects() {
     for (const auto& object : program_->get_objects()) {
-      for (const auto& field : object->get_members()) {
+      for (const auto& field : object->fields()) {
         visit_type(field->get_type());
       }
     }
@@ -947,7 +946,7 @@ class mstch_py3_struct : public mstch_struct {
   }
 
   mstch::node getSize() {
-    return std::to_string(strct_->get_members().size());
+    return std::to_string(strct_->fields().size());
   }
 
   mstch::node isStructOrderable() {
@@ -956,7 +955,7 @@ class mstch_py3_struct : public mstch_struct {
   }
 
   mstch::node isAlwaysSet() {
-    const std::vector<t_field*>& members = strct_->get_members();
+    const auto& members = strct_->fields();
     return std::any_of(
         members.begin(), members.end(), [this](const auto* field) {
           mstch_py3_field f{field, generators_, cache_, pos_, 0};
@@ -1289,7 +1288,7 @@ class enum_member_union_field_names_validator : virtual public validator {
     if (!s->is_union()) {
       return false;
     }
-    for (const t_field* f : s->get_members()) {
+    for (const t_field* f : s->fields()) {
       validate(f, f->get_name());
     }
     return true;
