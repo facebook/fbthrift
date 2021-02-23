@@ -28,6 +28,7 @@
 #include <folly/Optional.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
+#include <folly/container/View.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -353,8 +354,8 @@ size_t writeSet(
     }
   } else {
     // Support containers with defined but non-FIFO iteration order.
-    using folly::order_preserving_reinsertion_view;
-    for (auto& elem : order_preserving_reinsertion_view(out)) {
+    auto get_view = folly::order_preserving_reinsertion_view_or_default;
+    for (auto const& elem : get_view(out)) {
       written += writer(context, &elem);
     }
   }
@@ -389,8 +390,8 @@ size_t writeMap(
     }
   } else {
     // Support containers with defined but non-FIFO iteration order.
-    using folly::order_preserving_reinsertion_view;
-    for (auto& elem_pair : order_preserving_reinsertion_view(out)) {
+    auto get_view = folly::order_preserving_reinsertion_view_or_default;
+    for (auto& elem_pair : get_view(out)) {
       written += writer(context, &elem_pair.first, &elem_pair.second);
     }
   }
