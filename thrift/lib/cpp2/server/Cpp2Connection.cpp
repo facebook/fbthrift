@@ -556,9 +556,9 @@ void Cpp2Connection::requestReceived(
       return;
     }
 
-    processor_->processSerializedRequest(
+    processor_->processSerializedCompressedRequest(
         std::move(req),
-        std::move(serializedRequest),
+        SerializedCompressedRequest(std::move(serializedRequest)),
         protoId,
         reqContext,
         worker_->getEventBase(),

@@ -84,6 +84,22 @@ void AsyncProcessor::destroyAllInteractions(
     Cpp2ConnContext&,
     folly::EventBase&) noexcept {}
 
+void AsyncProcessor::processSerializedCompressedRequest(
+    ResponseChannelRequest::UniquePtr req,
+    SerializedCompressedRequest&& serializedRequest,
+    protocol::PROTOCOL_TYPES prot_type,
+    Cpp2RequestContext* context,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  processSerializedRequest(
+      std::move(req),
+      std::move(serializedRequest).uncompress(),
+      prot_type,
+      context,
+      eb,
+      tm);
+}
+
 bool GeneratedAsyncProcessor::createInteraction(
     ResponseChannelRequest::UniquePtr& req,
     int64_t id,

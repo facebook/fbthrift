@@ -473,9 +473,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
     cpp2ReqCtx->setInteractionId(*interactionCreate->interactionId_ref());
   }
   try {
-    cpp2Processor_->processSerializedRequest(
+    cpp2Processor_->processSerializedCompressedRequest(
         std::move(request),
-        SerializedRequest(std::move(data)),
+        SerializedCompressedRequest(std::move(data)),
         protocolId,
         cpp2ReqCtx,
         eventBase_,

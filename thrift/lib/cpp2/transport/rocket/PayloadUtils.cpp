@@ -156,6 +156,17 @@ folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
   }
 }
 } // namespace detail
+std::unique_ptr<folly::IOBuf> uncompressBuffer(
+    std::unique_ptr<folly::IOBuf>&& buffer,
+    CompressionAlgorithm compression) {
+  auto result = detail::uncompressPayload(compression, std::move(buffer));
+  if (!result) {
+    folly::throw_exception<TApplicationException>(
+        TApplicationException::INVALID_TRANSFORM,
+        fmt::format("decompression failure: {}", std::move(result.error())));
+  }
+  return std::move(result.value());
+}
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

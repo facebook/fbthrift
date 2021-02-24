@@ -810,7 +810,7 @@ process_missing(
     Processor*,
     const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&&,
+    apache::thrift::SerializedCompressedRequest&&,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager*,
@@ -828,13 +828,13 @@ process_missing(
     Processor* processor,
     const std::string& /*fname*/,
     ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&& serializedRequest,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     int32_t /*protoSeqId*/) {
   auto protType = ProtocolReader::protocolType();
-  processor->Processor::BaseAsyncProcessor::processSerializedRequest(
+  processor->Processor::BaseAsyncProcessor::processSerializedCompressedRequest(
       std::move(req), std::move(serializedRequest), protType, ctx, eb, tm);
 }
 
@@ -869,7 +869,7 @@ void process_pmap(
     const typename GeneratedAsyncProcessor::ProcessMap<
         GeneratedAsyncProcessor::ProcessFunc<Processor>>& pmap,
     ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&& serializedRequest,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
@@ -897,7 +897,7 @@ template <class Processor>
 void process(
     Processor* processor,
     ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&& serializedRequest,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
     protocol::PROTOCOL_TYPES protType,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,

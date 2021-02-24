@@ -127,6 +127,14 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase*,
       concurrency::ThreadManager*) = 0;
 
+  virtual void processSerializedCompressedRequest(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm);
+
   virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
     return nullptr;
   }
@@ -151,7 +159,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename Derived>
   using ProcessFunc = void (Derived::*)(
       ResponseChannelRequest::UniquePtr,
-      SerializedRequest&&,
+      SerializedCompressedRequest&&,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm);
@@ -163,6 +171,30 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename InteractionConstructor>
   using InteractionConstructorMap =
       folly::F14ValueMap<std::string, InteractionConstructor>;
+
+  void processSerializedRequest(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedRequest&& serializedRequest,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm) override final {
+    processSerializedCompressedRequest(
+        std::move(req),
+        SerializedCompressedRequest(std::move(serializedRequest)),
+        prot_type,
+        context,
+        eb,
+        tm);
+  }
+
+  void processSerializedCompressedRequest(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm) override = 0;
 
  protected:
   template <typename ProtocolIn, typename Args>
@@ -200,7 +232,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename ChildType>
   static void processInThread(
       ResponseChannelRequest::UniquePtr req,
-      SerializedRequest&& serializedRequest,
+      SerializedCompressedRequest&& serializedRequest,
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
@@ -212,7 +244,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename ChildType>
   static std::shared_ptr<EventTask> makeEventTaskForRequest(
       ResponseChannelRequest::UniquePtr req,
-      SerializedRequest&& serializedRequest,
+      SerializedCompressedRequest&& serializedRequest,
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
@@ -671,7 +703,7 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
 template <typename ChildType>
 std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
     ResponseChannelRequest::UniquePtr req,
-    SerializedRequest&& serializedRequest,
+    SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
@@ -722,7 +754,7 @@ std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
 template <typename ChildType>
 void GeneratedAsyncProcessor::processInThread(
     ResponseChannelRequest::UniquePtr req,
-    SerializedRequest&& serializedRequest,
+    SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,

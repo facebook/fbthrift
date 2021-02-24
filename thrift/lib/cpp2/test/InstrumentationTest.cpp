@@ -76,9 +76,9 @@ class InstrumentationTestProcessor
    * Intercepts and clones incoming payload buffers, then passes them down to
    * method handlers.
    */
-  void processSerializedRequest(
+  void processSerializedCompressedRequest(
       ResponseChannelRequest::UniquePtr req,
-      apache::thrift::SerializedRequest&& serializedRequest,
+      apache::thrift::SerializedCompressedRequest&& serializedRequest,
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       apache::thrift::Cpp2RequestContext* context,
       folly::EventBase* eb,
@@ -86,14 +86,15 @@ class InstrumentationTestProcessor
     folly::RequestContext::get()->setContextData(
         InstrumentationRequestPayload::getRequestToken(),
         std::make_unique<InstrumentationRequestPayload>(
-            serializedRequest.buffer->clone()));
-    InstrumentationTestServiceAsyncProcessor::processSerializedRequest(
-        std::move(req),
-        std::move(serializedRequest),
-        protType,
-        context,
-        eb,
-        tm);
+            serializedRequest.clone().uncompress().buffer));
+    InstrumentationTestServiceAsyncProcessor::
+        processSerializedCompressedRequest(
+            std::move(req),
+            std::move(serializedRequest),
+            protType,
+            context,
+            eb,
+            tm);
   }
 };
 

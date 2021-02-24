@@ -111,6 +111,10 @@ inline size_t unpackCompact(
   return 0;
 }
 
+std::unique_ptr<folly::IOBuf> uncompressBuffer(
+    std::unique_ptr<folly::IOBuf>&& buffer,
+    CompressionAlgorithm compression);
+
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
   return folly::makeTryWith([&] {
@@ -125,15 +129,7 @@ folly::Try<T> unpack(rocket::Payload&& payload) {
     auto data = std::move(payload).data();
     // uncompress the payload if needed
     if (auto compress = t.metadata.compression_ref()) {
-      auto result = apache::thrift::rocket::detail::uncompressPayload(
-          *compress, std::move(data));
-      if (!result) {
-        folly::throw_exception<TApplicationException>(
-            TApplicationException::INVALID_TRANSFORM,
-            fmt::format(
-                "decompression failure: {}", std::move(result.error())));
-      }
-      data = std::move(result.value());
+      data = uncompressBuffer(std::move(data), *compress);
     }
 
     unpackCompact(t.payload, std::move(data));

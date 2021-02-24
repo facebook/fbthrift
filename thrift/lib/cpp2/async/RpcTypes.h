@@ -19,6 +19,7 @@
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -28,6 +29,26 @@ struct SerializedRequest {
       : buffer(std::move(buffer_)) {}
 
   std::unique_ptr<folly::IOBuf> buffer;
+};
+
+class SerializedCompressedRequest {
+ public:
+  explicit SerializedCompressedRequest(
+      std::unique_ptr<folly::IOBuf> buffer,
+      CompressionAlgorithm compression = CompressionAlgorithm::NONE)
+      : buffer_(std::move(buffer)), compression_(compression) {}
+
+  explicit SerializedCompressedRequest(SerializedRequest&& request)
+      : buffer_(std::move(request.buffer)),
+        compression_(CompressionAlgorithm::NONE) {}
+
+  SerializedRequest uncompress() &&;
+
+  SerializedCompressedRequest clone() const;
+
+ private:
+  std::unique_ptr<folly::IOBuf> buffer_;
+  CompressionAlgorithm compression_;
 };
 
 struct LegacySerializedRequest {
