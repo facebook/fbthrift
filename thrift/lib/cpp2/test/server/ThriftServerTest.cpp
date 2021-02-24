@@ -2329,3 +2329,12 @@ TEST(ThriftServer, SocketQueueTimeout) {
   folly::observer_detail::ObserverManager::waitForAllUpdates();
   checkSocketQueueTimeout(kDefaultTimeout);
 }
+
+TEST(ThriftServer, setMaxReuqestsToOne) {
+  ScopedServerInterfaceThread server(
+      std::make_shared<TestInterface>(), "::1", 0, [](auto&& server) {
+        server.setMaxRequests(1);
+      });
+  auto client = server.newClient<TestServiceAsyncClient>();
+  EXPECT_EQ(client->semifuture_sendResponse(42).get(), "test42");
+}

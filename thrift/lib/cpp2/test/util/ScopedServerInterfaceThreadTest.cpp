@@ -840,7 +840,7 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, SetMaxRequestsJoinWrites) {
 
   ScopedServerInterfaceThread ssit(
       serviceImpl, "::1", 0, [](auto& thriftServer) {
-        thriftServer.setMaxRequests(2);
+        thriftServer.setMaxRequests(1);
       });
 
   folly::ScopedEventBaseThread evbThread1, evbThread2;

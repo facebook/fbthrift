@@ -238,7 +238,6 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
   auto makeRequestResponse = [&](RequestRpcMetadata&& md,
                                  rocket::Payload&& debugPayload,
                                  std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on the next
     // chain of ownership to keep it alive: ThriftServerRequestResponse
     // stores RocketServerFrameContext, which keeps refcount on
@@ -266,7 +265,6 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
   auto makeRequestFnf = [&](RequestRpcMetadata&& md,
                             rocket::Payload&& debugPayload,
                             std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on a complex
     // chain of ownership (see handleRequestResponseFrame for detailed
     // explanation).
@@ -292,7 +290,6 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
                                rocket::Payload&& debugPayload,
                                std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestStream>(
         *eventBase_,
         *serverConfigs_,
@@ -317,7 +314,6 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
                              rocket::Payload&& debugPayload,
                              std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestSink>(
         *eventBase_,
         *serverConfigs_,
@@ -366,9 +362,15 @@ void ThriftRocketServerHandler::handleRequestCommon(
   rocket::Payload debugPayload = payload.clone();
   auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));
 
+  auto makeActiveRequest = [&](auto&& md, auto&& payload, auto&& reqCtx) {
+    serverConfigs_->incActiveRequests();
+    return makeRequest(std::move(md), std::move(payload), std::move(reqCtx));
+  };
+
   if (requestPayloadTry.hasException()) {
     handleDecompressionFailure(
-        makeRequest(RequestRpcMetadata(), {}, std::move(reqCtx)),
+        makeActiveRequest(
+            RequestRpcMetadata(), rocket::Payload{}, std::move(reqCtx)),
         requestPayloadTry.exception().what().toStdString());
     return;
   }
@@ -377,13 +379,13 @@ void ThriftRocketServerHandler::handleRequestCommon(
   auto& metadata = requestPayloadTry->metadata;
 
   if (!isMetadataValid(metadata)) {
-    handleRequestWithBadMetadata(makeRequest(
+    handleRequestWithBadMetadata(makeActiveRequest(
         std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
     return;
   }
 
   if (worker_->isStopping()) {
-    handleServerShutdown(makeRequest(
+    handleServerShutdown(makeActiveRequest(
         std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
     return;
   }
@@ -393,11 +395,12 @@ void ThriftRocketServerHandler::handleRequestCommon(
       (*metadata.crc32c_ref() != checksum::crc32c(*data));
 
   if (badChecksum) {
-    handleRequestWithBadChecksum(makeRequest(
+    handleRequestWithBadChecksum(makeActiveRequest(
         std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
     return;
   }
 
+  // A request should not be active until the overload checking is done.
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
 
@@ -405,10 +408,12 @@ void ThriftRocketServerHandler::handleRequestCommon(
   const auto& headers = request->getTHeader().getHeaders();
   const auto& name = request->getMethodName();
   auto errorCode = serverConfigs_->checkOverload(&headers, &name);
+  serverConfigs_->incActiveRequests();
   if (UNLIKELY(errorCode.has_value())) {
     handleRequestOverloadedServer(std::move(request), errorCode.value());
     return;
   }
+
   auto preprocessResult =
       serverConfigs_->preprocess({headers, name, connContext_});
   if (UNLIKELY(preprocessResult.has_value())) {
