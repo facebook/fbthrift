@@ -48,7 +48,7 @@ class t_list : public t_container {
   }
 
   type get_type_value() const override {
-    return type::TYPE_LIST;
+    return type::t_list;
   }
 
  private:

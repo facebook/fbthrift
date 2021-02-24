@@ -50,27 +50,26 @@ class t_type : public t_named {
    * @kTypeMask - TODO: add description
    */
   enum class type {
-    TYPE_VOID,
-    TYPE_STRING,
-    TYPE_BOOL,
-    TYPE_BYTE,
-    TYPE_I16,
-    TYPE_I32,
-    TYPE_I64,
-    TYPE_DOUBLE,
-    TYPE_ENUM,
-    TYPE_LIST,
-    TYPE_SET,
-    TYPE_MAP,
-    TYPE_STRUCT,
-    TYPE_SERVICE,
-    TYPE_PROGRAM,
-    TYPE_FLOAT,
-    TYPE_SINK,
-    TYPE_STREAM,
-    TYPE_BINARY,
+    t_void,
+    t_string,
+    t_bool,
+    t_byte,
+    t_i16,
+    t_i32,
+    t_i64,
+    t_double,
+    t_enum,
+    t_list,
+    t_set,
+    t_map,
+    t_struct,
+    t_service,
+    t_program,
+    t_float,
+    t_sink,
+    t_stream,
+    t_binary,
   };
-
   static constexpr size_t kTypeBits = 5;
   static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
 

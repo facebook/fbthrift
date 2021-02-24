@@ -58,7 +58,7 @@ class t_map : public t_container {
   }
 
   type get_type_value() const override {
-    return type::TYPE_MAP;
+    return type::t_map;
   }
 
  private:

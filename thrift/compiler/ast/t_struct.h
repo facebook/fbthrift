@@ -101,7 +101,7 @@ class t_struct : public t_type {
   }
 
   type get_type_value() const override {
-    return type::TYPE_STRUCT;
+    return type::t_struct;
   }
 
  protected:

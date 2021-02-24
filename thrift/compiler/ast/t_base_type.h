@@ -37,16 +37,16 @@ class t_base_type : public t_type {
    * Enumeration of thrift base types
    */
   enum t_base {
-    TYPE_VOID = int(type::TYPE_VOID),
-    TYPE_STRING = int(type::TYPE_STRING),
-    TYPE_BOOL = int(type::TYPE_BOOL),
-    TYPE_BYTE = int(type::TYPE_BYTE),
-    TYPE_I16 = int(type::TYPE_I16),
-    TYPE_I32 = int(type::TYPE_I32),
-    TYPE_I64 = int(type::TYPE_I64),
-    TYPE_DOUBLE = int(type::TYPE_DOUBLE),
-    TYPE_FLOAT = int(type::TYPE_FLOAT),
-    TYPE_BINARY = int(type::TYPE_BINARY),
+    TYPE_VOID = int(type::t_void),
+    TYPE_STRING = int(type::t_string),
+    TYPE_BOOL = int(type::t_bool),
+    TYPE_BYTE = int(type::t_byte),
+    TYPE_I16 = int(type::t_i16),
+    TYPE_I32 = int(type::t_i32),
+    TYPE_I64 = int(type::t_i64),
+    TYPE_DOUBLE = int(type::t_double),
+    TYPE_FLOAT = int(type::t_float),
+    TYPE_BINARY = int(type::t_binary),
   };
 
   t_base_type(std::string name, t_base base) : t_type(name), base_(base) {}

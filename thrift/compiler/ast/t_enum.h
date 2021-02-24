@@ -70,7 +70,7 @@ class t_enum : public t_type {
   }
 
   type get_type_value() const override {
-    return type::TYPE_ENUM;
+    return type::t_enum;
   }
 
  private:

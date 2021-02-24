@@ -48,7 +48,7 @@ class t_set : public t_container {
   }
 
   type get_type_value() const override {
-    return type::TYPE_SET;
+    return type::t_set;
   }
 
  private:

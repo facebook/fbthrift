@@ -66,7 +66,7 @@ class t_stream_response : public t_type {
   }
 
   type get_type_value() const override {
-    return type::TYPE_STREAM;
+    return type::t_stream;
   }
 
   t_struct* get_throws_struct() const {
