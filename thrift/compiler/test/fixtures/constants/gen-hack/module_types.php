@@ -659,6 +659,10 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
 }
 
   public function set_i(int $i): this {
+    return $this->setx_i($i);
+   }
+
+  public function setx_i(int $i): this {
     $this->reset();
     $this->_type = union1Enum::i;
     $this->i = $i;
@@ -666,6 +670,10 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   }
 
   public function get_i(): int {
+    return $this->getx_i();
+  }
+
+  public function getx_i(): int {
     invariant(
       $this->_type === union1Enum::i,
       'get_i called on an instance of union1 whose current type is %s',
@@ -675,6 +683,10 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   }
 
   public function set_d(float $d): this {
+    return $this->setx_d($d);
+   }
+
+  public function setx_d(float $d): this {
     $this->reset();
     $this->_type = union1Enum::d;
     $this->d = $d;
@@ -682,6 +694,10 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   }
 
   public function get_d(): float {
+    return $this->getx_d();
+  }
+
+  public function getx_d(): float {
     invariant(
       $this->_type === union1Enum::d,
       'get_d called on an instance of union1 whose current type is %s',
@@ -838,6 +854,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
 }
 
   public function set_i(int $i): this {
+    return $this->setx_i($i);
+   }
+
+  public function setx_i(int $i): this {
     $this->reset();
     $this->_type = union2Enum::i;
     $this->i = $i;
@@ -845,6 +865,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function get_i(): int {
+    return $this->getx_i();
+  }
+
+  public function getx_i(): int {
     invariant(
       $this->_type === union2Enum::i,
       'get_i called on an instance of union2 whose current type is %s',
@@ -854,6 +878,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_d(float $d): this {
+    return $this->setx_d($d);
+   }
+
+  public function setx_d(float $d): this {
     $this->reset();
     $this->_type = union2Enum::d;
     $this->d = $d;
@@ -861,6 +889,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function get_d(): float {
+    return $this->getx_d();
+  }
+
+  public function getx_d(): float {
     invariant(
       $this->_type === union2Enum::d,
       'get_d called on an instance of union2 whose current type is %s',
@@ -870,6 +902,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_s(struct1 $s): this {
+    return $this->setx_s($s);
+   }
+
+  public function setx_s(struct1 $s): this {
     $this->reset();
     $this->_type = union2Enum::s;
     $this->s = $s;
@@ -877,6 +913,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function get_s(): struct1 {
+    return $this->getx_s();
+  }
+
+  public function getx_s(): struct1 {
     invariant(
       $this->_type === union2Enum::s,
       'get_s called on an instance of union2 whose current type is %s',
@@ -886,6 +926,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_u(union1 $u): this {
+    return $this->setx_u($u);
+   }
+
+  public function setx_u(union1 $u): this {
     $this->reset();
     $this->_type = union2Enum::u;
     $this->u = $u;
@@ -893,6 +937,10 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function get_u(): union1 {
+    return $this->getx_u();
+  }
+
+  public function getx_u(): union1 {
     invariant(
       $this->_type === union2Enum::u,
       'get_u called on an instance of union2 whose current type is %s',

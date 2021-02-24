@@ -125,6 +125,10 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
 }
 
   public function set_intValue(int $intValue): this {
+    return $this->setx_intValue($intValue);
+   }
+
+  public function setx_intValue(int $intValue): this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::intValue;
     $this->intValue = $intValue;
@@ -132,6 +136,10 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
   }
 
   public function get_intValue(): int {
+    return $this->getx_intValue();
+  }
+
+  public function getx_intValue(): int {
     invariant(
       $this->_type === \test\fixtures\UnionEnum::intValue,
       'get_intValue called on an instance of Union whose current type is %s',
@@ -141,6 +149,10 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
   }
 
   public function set_stringValue(string $stringValue): this {
+    return $this->setx_stringValue($stringValue);
+   }
+
+  public function setx_stringValue(string $stringValue): this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::stringValue;
     $this->stringValue = $stringValue;
@@ -148,6 +160,10 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
   }
 
   public function get_stringValue(): string {
+    return $this->getx_stringValue();
+  }
+
+  public function getx_stringValue(): string {
     invariant(
       $this->_type === \test\fixtures\UnionEnum::stringValue,
       'get_stringValue called on an instance of Union whose current type is %s',

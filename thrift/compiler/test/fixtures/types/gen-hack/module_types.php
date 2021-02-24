@@ -2274,6 +2274,10 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
 }
 
   public function set_string_field(string $string_field): this {
+    return $this->setx_string_field($string_field);
+   }
+
+  public function setx_string_field(string $string_field): this {
     $this->reset();
     $this->_type = NoExceptMoveUnionEnum::string_field;
     $this->string_field = $string_field;
@@ -2281,6 +2285,10 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
   }
 
   public function get_string_field(): string {
+    return $this->getx_string_field();
+  }
+
+  public function getx_string_field(): string {
     invariant(
       $this->_type === NoExceptMoveUnionEnum::string_field,
       'get_string_field called on an instance of NoExceptMoveUnion whose current type is %s',
@@ -2290,6 +2298,10 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
   }
 
   public function set_i32_field(int $i32_field): this {
+    return $this->setx_i32_field($i32_field);
+   }
+
+  public function setx_i32_field(int $i32_field): this {
     $this->reset();
     $this->_type = NoExceptMoveUnionEnum::i32_field;
     $this->i32_field = $i32_field;
@@ -2297,6 +2309,10 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
   }
 
   public function get_i32_field(): int {
+    return $this->getx_i32_field();
+  }
+
+  public function getx_i32_field(): int {
     invariant(
       $this->_type === NoExceptMoveUnionEnum::i32_field,
       'get_i32_field called on an instance of NoExceptMoveUnion whose current type is %s',

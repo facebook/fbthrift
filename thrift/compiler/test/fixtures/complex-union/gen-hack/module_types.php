@@ -203,6 +203,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
 }
 
   public function set_intValue(int $intValue): this {
+    return $this->setx_intValue($intValue);
+   }
+
+  public function setx_intValue(int $intValue): this {
     $this->reset();
     $this->_type = ComplexUnionEnum::intValue;
     $this->intValue = $intValue;
@@ -210,6 +214,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_intValue(): int {
+    return $this->getx_intValue();
+  }
+
+  public function getx_intValue(): int {
     invariant(
       $this->_type === ComplexUnionEnum::intValue,
       'get_intValue called on an instance of ComplexUnion whose current type is %s',
@@ -219,6 +227,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringValue(string $stringValue): this {
+    return $this->setx_stringValue($stringValue);
+   }
+
+  public function setx_stringValue(string $stringValue): this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringValue;
     $this->stringValue = $stringValue;
@@ -226,6 +238,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_stringValue(): string {
+    return $this->getx_stringValue();
+  }
+
+  public function getx_stringValue(): string {
     invariant(
       $this->_type === ComplexUnionEnum::stringValue,
       'get_stringValue called on an instance of ComplexUnion whose current type is %s',
@@ -235,6 +251,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_intListValue(Vector<int> $intListValue): this {
+    return $this->setx_intListValue($intListValue);
+   }
+
+  public function setx_intListValue(Vector<int> $intListValue): this {
     $this->reset();
     $this->_type = ComplexUnionEnum::intListValue;
     $this->intListValue = $intListValue;
@@ -242,6 +262,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_intListValue(): Vector<int> {
+    return $this->getx_intListValue();
+  }
+
+  public function getx_intListValue(): Vector<int> {
     invariant(
       $this->_type === ComplexUnionEnum::intListValue,
       'get_intListValue called on an instance of ComplexUnion whose current type is %s',
@@ -251,6 +275,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringListValue(Vector<string> $stringListValue): this {
+    return $this->setx_stringListValue($stringListValue);
+   }
+
+  public function setx_stringListValue(Vector<string> $stringListValue): this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
@@ -258,6 +286,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_stringListValue(): Vector<string> {
+    return $this->getx_stringListValue();
+  }
+
+  public function getx_stringListValue(): Vector<string> {
     invariant(
       $this->_type === ComplexUnionEnum::stringListValue,
       'get_stringListValue called on an instance of ComplexUnion whose current type is %s',
@@ -267,6 +299,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_typedefValue(Map<int, string> $typedefValue): this {
+    return $this->setx_typedefValue($typedefValue);
+   }
+
+  public function setx_typedefValue(Map<int, string> $typedefValue): this {
     $this->reset();
     $this->_type = ComplexUnionEnum::typedefValue;
     $this->typedefValue = $typedefValue;
@@ -274,6 +310,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_typedefValue(): Map<int, string> {
+    return $this->getx_typedefValue();
+  }
+
+  public function getx_typedefValue(): Map<int, string> {
     invariant(
       $this->_type === ComplexUnionEnum::typedefValue,
       'get_typedefValue called on an instance of ComplexUnion whose current type is %s',
@@ -283,6 +323,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringRef(string $stringRef): this {
+    return $this->setx_stringRef($stringRef);
+   }
+
+  public function setx_stringRef(string $stringRef): this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringRef;
     $this->stringRef = $stringRef;
@@ -290,6 +334,10 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_stringRef(): string {
+    return $this->getx_stringRef();
+  }
+
+  public function getx_stringRef(): string {
     invariant(
       $this->_type === ComplexUnionEnum::stringRef,
       'get_stringRef called on an instance of ComplexUnion whose current type is %s',
@@ -467,6 +515,10 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
 }
 
   public function set_intListValue(Vector<int> $intListValue): this {
+    return $this->setx_intListValue($intListValue);
+   }
+
+  public function setx_intListValue(Vector<int> $intListValue): this {
     $this->reset();
     $this->_type = ListUnionEnum::intListValue;
     $this->intListValue = $intListValue;
@@ -474,6 +526,10 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   }
 
   public function get_intListValue(): Vector<int> {
+    return $this->getx_intListValue();
+  }
+
+  public function getx_intListValue(): Vector<int> {
     invariant(
       $this->_type === ListUnionEnum::intListValue,
       'get_intListValue called on an instance of ListUnion whose current type is %s',
@@ -483,6 +539,10 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   }
 
   public function set_stringListValue(Vector<string> $stringListValue): this {
+    return $this->setx_stringListValue($stringListValue);
+   }
+
+  public function setx_stringListValue(Vector<string> $stringListValue): this {
     $this->reset();
     $this->_type = ListUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
@@ -490,6 +550,10 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   }
 
   public function get_stringListValue(): Vector<string> {
+    return $this->getx_stringListValue();
+  }
+
+  public function getx_stringListValue(): Vector<string> {
     invariant(
       $this->_type === ListUnionEnum::stringListValue,
       'get_stringListValue called on an instance of ListUnion whose current type is %s',
@@ -634,6 +698,10 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
 }
 
   public function set_binaryData(string $binaryData): this {
+    return $this->setx_binaryData($binaryData);
+   }
+
+  public function setx_binaryData(string $binaryData): this {
     $this->reset();
     $this->_type = DataUnionEnum::binaryData;
     $this->binaryData = $binaryData;
@@ -641,6 +709,10 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   }
 
   public function get_binaryData(): string {
+    return $this->getx_binaryData();
+  }
+
+  public function getx_binaryData(): string {
     invariant(
       $this->_type === DataUnionEnum::binaryData,
       'get_binaryData called on an instance of DataUnion whose current type is %s',
@@ -650,6 +722,10 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   }
 
   public function set_stringData(string $stringData): this {
+    return $this->setx_stringData($stringData);
+   }
+
+  public function setx_stringData(string $stringData): this {
     $this->reset();
     $this->_type = DataUnionEnum::stringData;
     $this->stringData = $stringData;
@@ -657,6 +733,10 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   }
 
   public function get_stringData(): string {
+    return $this->getx_stringData();
+  }
+
+  public function getx_stringData(): string {
     invariant(
       $this->_type === DataUnionEnum::stringData,
       'get_stringData called on an instance of DataUnion whose current type is %s',
@@ -910,6 +990,10 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
 }
 
   public function set_v1(Val $v1): this {
+    return $this->setx_v1($v1);
+   }
+
+  public function setx_v1(Val $v1): this {
     $this->reset();
     $this->_type = ValUnionEnum::v1;
     $this->v1 = $v1;
@@ -917,6 +1001,10 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   }
 
   public function get_v1(): Val {
+    return $this->getx_v1();
+  }
+
+  public function getx_v1(): Val {
     invariant(
       $this->_type === ValUnionEnum::v1,
       'get_v1 called on an instance of ValUnion whose current type is %s',
@@ -926,6 +1014,10 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   }
 
   public function set_v2(Val $v2): this {
+    return $this->setx_v2($v2);
+   }
+
+  public function setx_v2(Val $v2): this {
     $this->reset();
     $this->_type = ValUnionEnum::v2;
     $this->v2 = $v2;
@@ -933,6 +1025,10 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   }
 
   public function get_v2(): Val {
+    return $this->getx_v2();
+  }
+
+  public function getx_v2(): Val {
     invariant(
       $this->_type === ValUnionEnum::v2,
       'get_v2 called on an instance of ValUnion whose current type is %s',
@@ -1069,6 +1165,10 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
 }
 
   public function set_thingOne(string $thingOne): this {
+    return $this->setx_thingOne($thingOne);
+   }
+
+  public function setx_thingOne(string $thingOne): this {
     $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingOne;
     $this->thingOne = $thingOne;
@@ -1076,6 +1176,10 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   public function get_thingOne(): string {
+    return $this->getx_thingOne();
+  }
+
+  public function getx_thingOne(): string {
     invariant(
       $this->_type === VirtualComplexUnionEnum::thingOne,
       'get_thingOne called on an instance of VirtualComplexUnion whose current type is %s',
@@ -1085,6 +1189,10 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   public function set_thingTwo(string $thingTwo): this {
+    return $this->setx_thingTwo($thingTwo);
+   }
+
+  public function setx_thingTwo(string $thingTwo): this {
     $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingTwo;
     $this->thingTwo = $thingTwo;
@@ -1092,6 +1200,10 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   public function get_thingTwo(): string {
+    return $this->getx_thingTwo();
+  }
+
+  public function getx_thingTwo(): string {
     invariant(
       $this->_type === VirtualComplexUnionEnum::thingTwo,
       'get_thingTwo called on an instance of VirtualComplexUnion whose current type is %s',
@@ -1270,6 +1382,10 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
 }
 
   public function set_s(NonCopyableStruct $s): this {
+    return $this->setx_s($s);
+   }
+
+  public function setx_s(NonCopyableStruct $s): this {
     $this->reset();
     $this->_type = NonCopyableUnionEnum::s;
     $this->s = $s;
@@ -1277,6 +1393,10 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
   }
 
   public function get_s(): NonCopyableStruct {
+    return $this->getx_s();
+  }
+
+  public function getx_s(): NonCopyableStruct {
     invariant(
       $this->_type === NonCopyableUnionEnum::s,
       'get_s called on an instance of NonCopyableUnion whose current type is %s',

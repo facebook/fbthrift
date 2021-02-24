@@ -727,6 +727,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
 }
 
   public function set_first(string $first): this {
+    return $this->setx_first($first);
+   }
+
+  public function setx_first(string $first): this {
     $this->reset();
     $this->_type = MyUnionEnum::first;
     $this->first = $first;
@@ -734,6 +738,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   }
 
   public function get_first(): string {
+    return $this->getx_first();
+  }
+
+  public function getx_first(): string {
     invariant(
       $this->_type === MyUnionEnum::first,
       'get_first called on an instance of MyUnion whose current type is %s',
@@ -743,6 +751,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   }
 
   public function set_second(int $second): this {
+    return $this->setx_second($second);
+   }
+
+  public function setx_second(int $second): this {
     $this->reset();
     $this->_type = MyUnionEnum::second;
     $this->second = $second;
@@ -750,6 +762,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   }
 
   public function get_second(): int {
+    return $this->getx_second();
+  }
+
+  public function getx_second(): int {
     invariant(
       $this->_type === MyUnionEnum::second,
       'get_second called on an instance of MyUnion whose current type is %s',

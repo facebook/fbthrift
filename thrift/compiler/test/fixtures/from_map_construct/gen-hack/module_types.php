@@ -309,6 +309,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
 }
 
   public function set_string_field(string $string_field): this {
+    return $this->setx_string_field($string_field);
+   }
+
+  public function setx_string_field(string $string_field): this {
     $this->reset();
     $this->_type = TestUnionEnum::string_field;
     $this->string_field = $string_field;
@@ -316,6 +320,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function get_string_field(): string {
+    return $this->getx_string_field();
+  }
+
+  public function getx_string_field(): string {
     invariant(
       $this->_type === TestUnionEnum::string_field,
       'get_string_field called on an instance of TestUnion whose current type is %s',
@@ -325,6 +333,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_int_field(int $int_field): this {
+    return $this->setx_int_field($int_field);
+   }
+
+  public function setx_int_field(int $int_field): this {
     $this->reset();
     $this->_type = TestUnionEnum::int_field;
     $this->int_field = $int_field;
@@ -332,6 +344,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function get_int_field(): int {
+    return $this->getx_int_field();
+  }
+
+  public function getx_int_field(): int {
     invariant(
       $this->_type === TestUnionEnum::int_field,
       'get_int_field called on an instance of TestUnion whose current type is %s',
@@ -341,6 +357,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_enum_field(TestEnum $enum_field): this {
+    return $this->setx_enum_field($enum_field);
+   }
+
+  public function setx_enum_field(TestEnum $enum_field): this {
     $this->reset();
     $this->_type = TestUnionEnum::enum_field;
     $this->enum_field = $enum_field;
@@ -348,6 +368,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function get_enum_field(): TestEnum {
+    return $this->getx_enum_field();
+  }
+
+  public function getx_enum_field(): TestEnum {
     invariant(
       $this->_type === TestUnionEnum::enum_field,
       'get_enum_field called on an instance of TestUnion whose current type is %s',
@@ -357,6 +381,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_foo_struct(Foo $foo_struct): this {
+    return $this->setx_foo_struct($foo_struct);
+   }
+
+  public function setx_foo_struct(Foo $foo_struct): this {
     $this->reset();
     $this->_type = TestUnionEnum::foo_struct;
     $this->foo_struct = $foo_struct;
@@ -364,6 +392,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function get_foo_struct(): Foo {
+    return $this->getx_foo_struct();
+  }
+
+  public function getx_foo_struct(): Foo {
     invariant(
       $this->_type === TestUnionEnum::foo_struct,
       'get_foo_struct called on an instance of TestUnion whose current type is %s',

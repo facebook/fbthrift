@@ -292,6 +292,10 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
 }
 
   public function set_foo(string $foo): this {
+    return $this->setx_foo($foo);
+   }
+
+  public function setx_foo(string $foo): this {
     $this->reset();
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::foo;
     $this->foo = $foo;
@@ -299,6 +303,10 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   }
 
   public function get_foo(): string {
+    return $this->getx_foo();
+  }
+
+  public function getx_foo(): string {
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::foo,
       'get_foo called on an instance of UnionTesting whose current type is %s',
@@ -308,6 +316,10 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   }
 
   public function set_bar(int $bar): this {
+    return $this->setx_bar($bar);
+   }
+
+  public function setx_bar(int $bar): this {
     $this->reset();
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::bar;
     $this->bar = $bar;
@@ -315,6 +327,10 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   }
 
   public function get_bar(): int {
+    return $this->getx_bar();
+  }
+
+  public function getx_bar(): int {
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::bar,
       'get_bar called on an instance of UnionTesting whose current type is %s',

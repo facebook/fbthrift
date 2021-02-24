@@ -226,6 +226,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
 }
 
   public function set_int_value(int $int_value): this {
+    return $this->setx_int_value($int_value);
+   }
+
+  public function setx_int_value(int $int_value): this {
     $this->reset();
     $this->_type = TestUnionEnum::int_value;
     $this->int_value = $int_value;
@@ -233,6 +237,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function get_int_value(): int {
+    return $this->getx_int_value();
+  }
+
+  public function getx_int_value(): int {
     invariant(
       $this->_type === TestUnionEnum::int_value,
       'get_int_value called on an instance of TestUnion whose current type is %s',
@@ -242,6 +250,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_str_value(string $str_value): this {
+    return $this->setx_str_value($str_value);
+   }
+
+  public function setx_str_value(string $str_value): this {
     $this->reset();
     $this->_type = TestUnionEnum::str_value;
     $this->str_value = $str_value;
@@ -249,6 +261,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function get_str_value(): string {
+    return $this->getx_str_value();
+  }
+
+  public function getx_str_value(): string {
     invariant(
       $this->_type === TestUnionEnum::str_value,
       'get_str_value called on an instance of TestUnion whose current type is %s',
@@ -258,6 +274,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_double_value(float $double_value): this {
+    return $this->setx_double_value($double_value);
+   }
+
+  public function setx_double_value(float $double_value): this {
     $this->reset();
     $this->_type = TestUnionEnum::double_value;
     $this->double_value = $double_value;
@@ -265,6 +285,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function get_double_value(): float {
+    return $this->getx_double_value();
+  }
+
+  public function getx_double_value(): float {
     invariant(
       $this->_type === TestUnionEnum::double_value,
       'get_double_value called on an instance of TestUnion whose current type is %s',
@@ -274,6 +298,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_list_of_strings(varray<string> $list_of_strings): this {
+    return $this->setx_list_of_strings($list_of_strings);
+   }
+
+  public function setx_list_of_strings(varray<string> $list_of_strings): this {
     $this->reset();
     $this->_type = TestUnionEnum::list_of_strings;
     $this->list_of_strings = $list_of_strings;
@@ -281,6 +309,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function get_list_of_strings(): varray<string> {
+    return $this->getx_list_of_strings();
+  }
+
+  public function getx_list_of_strings(): varray<string> {
     invariant(
       $this->_type === TestUnionEnum::list_of_strings,
       'get_list_of_strings called on an instance of TestUnion whose current type is %s',
@@ -290,6 +322,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints): this {
+    return $this->setx_map_of_string_to_ints($map_of_string_to_ints);
+   }
+
+  public function setx_map_of_string_to_ints(darray<string, int> $map_of_string_to_ints): this {
     $this->reset();
     $this->_type = TestUnionEnum::map_of_string_to_ints;
     $this->map_of_string_to_ints = $map_of_string_to_ints;
@@ -297,6 +333,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function get_map_of_string_to_ints(): darray<string, int> {
+    return $this->getx_map_of_string_to_ints();
+  }
+
+  public function getx_map_of_string_to_ints(): darray<string, int> {
     invariant(
       $this->_type === TestUnionEnum::map_of_string_to_ints,
       'get_map_of_string_to_ints called on an instance of TestUnion whose current type is %s',
@@ -306,6 +346,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function set_struct_foo(Foo $struct_foo): this {
+    return $this->setx_struct_foo($struct_foo);
+   }
+
+  public function setx_struct_foo(Foo $struct_foo): this {
     $this->reset();
     $this->_type = TestUnionEnum::struct_foo;
     $this->struct_foo = $struct_foo;
@@ -313,6 +357,10 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum>, \IThrif
   }
 
   public function get_struct_foo(): Foo {
+    return $this->getx_struct_foo();
+  }
+
+  public function getx_struct_foo(): Foo {
     invariant(
       $this->_type === TestUnionEnum::struct_foo,
       'get_struct_foo called on an instance of TestUnion whose current type is %s',

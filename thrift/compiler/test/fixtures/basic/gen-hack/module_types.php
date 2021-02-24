@@ -414,6 +414,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
 }
 
   public function set_myEnum(MyEnum $myEnum): this {
+    return $this->setx_myEnum($myEnum);
+   }
+
+  public function setx_myEnum(MyEnum $myEnum): this {
     $this->reset();
     $this->_type = MyUnionEnum::myEnum;
     $this->myEnum = $myEnum;
@@ -421,6 +425,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   public function get_myEnum(): MyEnum {
+    return $this->getx_myEnum();
+  }
+
+  public function getx_myEnum(): MyEnum {
     invariant(
       $this->_type === MyUnionEnum::myEnum,
       'get_myEnum called on an instance of MyUnion whose current type is %s',
@@ -430,6 +438,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   public function set_myStruct(MyStruct $myStruct): this {
+    return $this->setx_myStruct($myStruct);
+   }
+
+  public function setx_myStruct(MyStruct $myStruct): this {
     $this->reset();
     $this->_type = MyUnionEnum::myStruct;
     $this->myStruct = $myStruct;
@@ -437,6 +449,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   public function get_myStruct(): MyStruct {
+    return $this->getx_myStruct();
+  }
+
+  public function getx_myStruct(): MyStruct {
     invariant(
       $this->_type === MyUnionEnum::myStruct,
       'get_myStruct called on an instance of MyUnion whose current type is %s',
@@ -446,6 +462,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   public function set_myDataItem(MyDataItem $myDataItem): this {
+    return $this->setx_myDataItem($myDataItem);
+   }
+
+  public function setx_myDataItem(MyDataItem $myDataItem): this {
     $this->reset();
     $this->_type = MyUnionEnum::myDataItem;
     $this->myDataItem = $myDataItem;
@@ -453,6 +473,10 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   public function get_myDataItem(): MyDataItem {
+    return $this->getx_myDataItem();
+  }
+
+  public function getx_myDataItem(): MyDataItem {
     invariant(
       $this->_type === MyUnionEnum::myDataItem,
       'get_myDataItem called on an instance of MyUnion whose current type is %s',
