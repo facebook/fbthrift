@@ -652,7 +652,7 @@ void t_php_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
         "$parsed[" + render_string(tf->get_name()) + "]");
     indent_down();
     indent(out) << "}";
-    if (tf->get_req() == t_field::T_REQUIRED) {
+    if (tf->get_req() == t_field::e_req::required) {
       out << " else {" << endl;
       indent_up();
       indent(out) << "throw new TProtocolException(\"Required field "
@@ -1473,7 +1473,7 @@ void t_php_generator::generate_php_struct_reader(
 
   // The code that checks for the require field
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
+    if ((*f_iter)->get_req() == t_field::e_req::required) {
       indent(out) << "if (!isset($this->" << (*f_iter)->get_name() << ")) {"
                   << endl;
       indent_up();
@@ -1534,7 +1534,7 @@ void t_php_generator::generate_php_struct_writer(
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     // Optional check
-    bool optional = (*f_iter)->get_req() == t_field::T_OPTIONAL;
+    bool optional = (*f_iter)->get_req() == t_field::e_req::optional;
     if (optional) {
       indent(out) << "if (isset($this->" << (*f_iter)->get_name() << ") && "
                   << "$this->" << (*f_iter)->get_name() << " !== null) {";

@@ -67,7 +67,13 @@ class t_field : public t_named {
   /**
    * Determines if the field is required in the thrift object
    */
-  enum e_req {
+  enum class e_req {
+    required = 0,
+    optional = 1,
+    opt_in_req_out = 2,
+
+    // TODO(saintlou) the values below are just temporary for backward
+    // compatibility whhile working on T84798809
     T_REQUIRED = 0,
     T_OPTIONAL = 1,
     T_OPT_IN_REQ_OUT = 2,
@@ -139,7 +145,7 @@ class t_field : public t_named {
   std::unique_ptr<t_const_value> value_{nullptr};
   t_field* next_{nullptr};
 
-  e_req req_{T_OPT_IN_REQ_OUT};
+  e_req req_{e_req::opt_in_req_out};
 };
 
 /**

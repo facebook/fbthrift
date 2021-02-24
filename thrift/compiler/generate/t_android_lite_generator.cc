@@ -643,7 +643,7 @@ void t_android_lite_generator::output_property(
     t_field* tfield,
     const string parent_name) {
   if (annotate_) {
-    indent(class_defns_) << ((tfield->get_req() == t_field::T_REQUIRED)
+    indent(class_defns_) << ((tfield->get_req() == t_field::e_req::required)
                                  ? "@TRequired(\""
                                  : "@TOptional(\"")
                          << parent_name << "\")" << endl;
@@ -685,7 +685,7 @@ void t_android_lite_generator::output_case_body_struct(t_struct* tstruct) {
     indent(switch_stmts_) << "oprot.writeFieldEnd();" << endl;
     indent_down();
 
-    if (tfield->get_req() == t_field::T_REQUIRED &&
+    if (tfield->get_req() == t_field::e_req::required &&
         tfield->get_value() == nullptr) {
       indent(switch_stmts_) << "} else {" << endl;
       indent_up();

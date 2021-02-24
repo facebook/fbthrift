@@ -1444,7 +1444,7 @@ void t_py_generator::generate_py_thrift_spec(
                 << "'" << rename_reserved_keywords((*m_iter)->get_name()) << "'"
                 << ", " << type_to_spec_args((*m_iter)->get_type()) << ", "
                 << render_field_default_value(*m_iter) << ", "
-                << (*m_iter)->get_req() << ", ),"
+                << static_cast<int>((*m_iter)->get_req()) << ", ),"
                 << " # " << sorted_keys_pos << endl;
 
     sorted_keys_pos++;
@@ -1965,7 +1965,7 @@ void t_py_generator::generate_py_struct_writer(
     // Write field header
     indent(out) << "if self." << rename_reserved_keywords((*f_iter)->get_name())
                 << " != None";
-    if ((*f_iter)->get_req() == t_field::T_OPTIONAL &&
+    if ((*f_iter)->get_req() == t_field::e_req::optional &&
         (*f_iter)->get_value() != nullptr) {
       // An optional field with a value set should not be serialized if
       // the value equals the default value

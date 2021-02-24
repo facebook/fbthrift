@@ -119,8 +119,8 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
 
 mstch::map t_mstch_pyi_generator::extend_field(const t_field& field) {
   auto req = field.get_req();
-  const auto required = req == t_field::e_req::T_REQUIRED;
-  const auto optional = req == t_field::e_req::T_OPTIONAL;
+  const auto required = req == t_field::e_req::required;
+  const auto optional = req == t_field::e_req::optional;
   const auto unqualified = !required && !optional;
   const auto hasValue = field.get_value() != nullptr;
   const auto hasDefaultValue = hasValue || unqualified;

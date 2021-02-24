@@ -1320,10 +1320,10 @@ void t_java_generator::generate_java_struct_definition(
   vector<t_field*> required_members;
   vector<t_field*> non_optional_members;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    if ((*m_iter)->get_req() == t_field::T_REQUIRED) {
+    if ((*m_iter)->get_req() == t_field::e_req::required) {
       required_members.push_back(*m_iter);
     }
-    if ((*m_iter)->get_req() != t_field::T_OPTIONAL) {
+    if ((*m_iter)->get_req() != t_field::e_req::optional) {
       non_optional_members.push_back(*m_iter);
     }
   }
@@ -1497,7 +1497,7 @@ void t_java_generator::generate_java_struct_equality(
     t_type* t = (*m_iter)->get_type()->get_true_type();
     // Most existing Thrift code does not use isset or optional/required,
     // so we treat "default" fields as required.
-    bool is_optional = (*m_iter)->get_req() == t_field::T_OPTIONAL;
+    bool is_optional = (*m_iter)->get_req() == t_field::e_req::optional;
     bool can_be_null = type_can_be_null(t);
     string name = (*m_iter)->get_name();
     string equalMethodName = "equalsNobinary";
@@ -1718,7 +1718,7 @@ void t_java_generator::generate_java_struct_reader(
         << "// check for required fields of primitive type, which can't be checked in the validate method"
         << endl;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-      if ((*f_iter)->get_req() == t_field::T_REQUIRED &&
+      if ((*f_iter)->get_req() == t_field::e_req::required &&
           !type_can_be_null((*f_iter)->get_type())) {
         out << indent() << "if (!" << generate_isset_check(*f_iter) << ") {"
             << endl
@@ -1751,7 +1751,7 @@ void t_java_generator::generate_java_validator(
 
   out << indent() << "// check for required fields" << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
+    if ((*f_iter)->get_req() == t_field::e_req::required) {
       if (type_can_be_null((*f_iter)->get_type())) {
         indent(out) << "if (" << (*f_iter)->get_name() << " == null) {" << endl;
         indent(out) << "  throw new TProtocolException("
@@ -1798,7 +1798,7 @@ void t_java_generator::generate_java_struct_writer(
           << endl;
       indent_up();
     }
-    bool optional = (*f_iter)->get_req() == t_field::T_OPTIONAL;
+    bool optional = (*f_iter)->get_req() == t_field::e_req::optional;
     if (optional) {
       indent(out) << "if (" << generate_isset_check((*f_iter)) << ") {" << endl;
       indent_up();
@@ -2161,7 +2161,7 @@ void t_java_generator::generate_java_struct_tostring(
         scope_up(out);
       }
 
-      bool could_be_unset = field->get_req() == t_field::T_OPTIONAL;
+      bool could_be_unset = field->get_req() == t_field::e_req::optional;
       if (could_be_unset) {
         indent(out) << "if (" << generate_isset_check(field) << ")" << endl;
         scope_up(out);
@@ -2276,9 +2276,9 @@ void t_java_generator::generate_java_meta_data_map(
                 << ", new FieldMetaData(\"" << field_name << "\", ";
 
     // Set field requirement type (required, optional, etc.)
-    if (field->get_req() == t_field::T_REQUIRED) {
+    if (field->get_req() == t_field::e_req::required) {
       out << "TFieldRequirementType.REQUIRED, ";
-    } else if (field->get_req() == t_field::T_OPTIONAL) {
+    } else if (field->get_req() == t_field::e_req::optional) {
       out << "TFieldRequirementType.OPTIONAL, ";
     } else {
       out << "TFieldRequirementType.DEFAULT, ";

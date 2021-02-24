@@ -750,7 +750,7 @@ string t_st_generator::struct_writer(t_struct* tstruct, string sname) {
   indent_up();
 
   for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-    bool optional = (*fld_iter)->get_req() == t_field::T_OPTIONAL;
+    bool optional = (*fld_iter)->get_req() == t_field::e_req::optional;
     string fname = (*fld_iter)->get_name();
     string accessor = sname + " " + sanitize(fname);
 

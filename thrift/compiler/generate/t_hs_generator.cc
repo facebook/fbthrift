@@ -581,7 +581,7 @@ string t_hs_generator::render_const_value(
 
       out << (first ? "" : ", ");
       out << field_name(cname, fname) << " = ";
-      if (field->get_req() == t_field::T_OPTIONAL ||
+      if (field->get_req() == t_field::e_req::optional ||
           ((t_type*)field->get_type())->is_xception()) {
         out << "Just ";
       }
@@ -695,7 +695,7 @@ void t_hs_generator::generate_hs_struct_definition(
       }
       const string& mname = m_iter->get_name();
       out << field_name(tname, mname) << " :: ";
-      if (m_iter->get_req() == t_field::T_OPTIONAL ||
+      if (m_iter->get_req() == t_field::e_req::optional ||
           ((t_type*)m_iter->get_type())->is_xception()) {
         out << "Maybe ";
       }
@@ -775,7 +775,7 @@ void t_hs_generator::generate_hs_struct_arbitrary(
         indent(out) << "`Monad.ap`";
       }
       out << "(";
-      if (m_iter->get_req() == t_field::T_OPTIONAL ||
+      if (m_iter->get_req() == t_field::e_req::optional ||
           ((t_type*)m_iter->get_type())->is_xception()) {
         out << "Monad.liftM Just ";
       }
@@ -850,10 +850,10 @@ void t_hs_generator::generate_hs_struct_reader(
     indent(out) << field_name(sname, fname) << " = ";
 
     out << "maybe (";
-    if (f_iter->get_req() == t_field::T_REQUIRED) {
+    if (f_iter->get_req() == t_field::e_req::required) {
       out << "error \"Missing required field: " << fname << "\"";
     } else {
-      if ((f_iter->get_req() == t_field::T_OPTIONAL ||
+      if ((f_iter->get_req() == t_field::e_req::optional ||
            ((t_type*)f_iter->get_type())->is_xception()) &&
           f_iter->get_value() == nullptr) {
         out << "Nothing";
@@ -864,9 +864,10 @@ void t_hs_generator::generate_hs_struct_reader(
     out << ") ";
 
     out << "(\\(_," << val << ") -> ";
-    if (f_iter->get_req() == t_field::T_OPTIONAL ||
-        ((t_type*)f_iter->get_type())->is_xception())
+    if (f_iter->get_req() == t_field::e_req::optional ||
+        ((t_type*)f_iter->get_type())->is_xception()) {
       out << "Just ";
+    }
     generate_deserialize_field(out, f_iter, val);
     out << ")";
 
@@ -968,14 +969,14 @@ void t_hs_generator::generate_hs_struct_writer(
     int32_t key = f_iter->get_key();
     out << "(\\";
     out << v << " -> ";
-    if (f_iter->get_req() != t_field::T_OPTIONAL &&
+    if (f_iter->get_req() != t_field::e_req::optional &&
         !((t_type*)f_iter->get_type())->is_xception()) {
       out << "Just ";
     }
     out << "(" << key << ", (\"" << mname << "\",";
     generate_serialize_type(out, f_iter->get_type(), v);
     out << "))) ";
-    if (f_iter->get_req() != t_field::T_OPTIONAL &&
+    if (f_iter->get_req() != t_field::e_req::optional &&
         !((t_type*)f_iter->get_type())->is_xception()) {
       out << "$";
     } else {
@@ -1151,7 +1152,7 @@ void t_hs_generator::generate_hs_default(ofstream& out, t_struct* tstruct) {
     t_type* type = f_iter->get_type()->get_true_type();
     const t_const_value* value = f_iter->get_value();
     indent(out) << field_name(name, mname) << " = ";
-    if (f_iter->get_req() == t_field::T_OPTIONAL ||
+    if (f_iter->get_req() == t_field::e_req::optional ||
         ((t_type*)f_iter->get_type())->is_xception()) {
       if (value == nullptr) {
         out << "Nothing";
@@ -1321,9 +1322,10 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
       const string& fieldname = fld_iter->get_name();
       f_client_ << (first ? "" : ",");
       f_client_ << qualifier << field_name(argsname, fieldname) << "=";
-      if (fld_iter->get_req() == t_field::T_OPTIONAL ||
-          ((t_type*)fld_iter->get_type())->is_xception())
+      if (fld_iter->get_req() == t_field::e_req::optional ||
+          ((t_type*)fld_iter->get_type())->is_xception()) {
         f_client_ << "Just ";
+      }
       f_client_ << "arg_" << fieldname;
       first = false;
     }
@@ -2042,9 +2044,10 @@ string t_hs_generator::function_type(
 
   const vector<t_field*>& fields = tfunc->get_paramlist()->get_members();
   for (auto& f_iter : fields) {
-    if (f_iter->get_req() == t_field::T_OPTIONAL ||
-        ((t_type*)f_iter->get_type())->is_xception())
+    if (f_iter->get_req() == t_field::e_req::optional ||
+        ((t_type*)f_iter->get_type())->is_xception()) {
       result += "Maybe ";
+    }
     result += render_hs_type(f_iter->get_type(), options);
     result += " -> ";
   }

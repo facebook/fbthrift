@@ -442,7 +442,7 @@ bool t_go_generator::is_pointer_field(
   if (type->is_struct() || type->is_xception()) {
     return true;
   }
-  if (!(tfield->get_req() == t_field::T_OPTIONAL)) {
+  if (!(tfield->get_req() == t_field::e_req::optional)) {
     return false;
   }
 
@@ -1176,7 +1176,7 @@ string t_go_generator::render_const_value(
 
     if (((t_struct*)type)->is_union()) {
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-        (*f_iter)->set_req(t_field::T_OPTIONAL);
+        (*f_iter)->set_req(t_field::e_req::optional);
       }
     }
 
@@ -1189,7 +1189,8 @@ string t_go_generator::render_const_value(
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_name = name + "_" + (*f_iter)->get_name();
           field_type = (*f_iter)->get_type();
-          is_field_optional = ((*f_iter)->get_req() == t_field::T_OPTIONAL);
+          is_field_optional =
+              ((*f_iter)->get_req() == t_field::e_req::optional);
           break;
         }
       }
@@ -1334,7 +1335,8 @@ void t_go_generator::generate_go_struct_initializer(
                  *m_iter, (*m_iter)->get_name(), pointer_field)
           << "," << endl;
       member_has_been_initialized = true;
-    } else if (struct_field && (*m_iter)->get_req() != t_field::T_OPTIONAL) {
+    } else if (
+        struct_field && (*m_iter)->get_req() != t_field::e_req::optional) {
       if (!member_has_been_initialized) {
         out << endl;
       }
@@ -1413,7 +1415,7 @@ void t_go_generator::generate_go_struct_definition(
       // Set field to optional if field is union, this is so we can get a
       // pointer to the field.
       if (tstruct->is_union())
-        (*m_iter)->set_req(t_field::T_OPTIONAL);
+        (*m_iter)->set_req(t_field::e_req::optional);
       if (sorted_keys_pos != (*m_iter)->get_key()) {
         int first_unused = std::max(1, sorted_keys_pos++);
         while (sorted_keys_pos != (*m_iter)->get_key()) {
@@ -1437,7 +1439,7 @@ void t_go_generator::generate_go_struct_definition(
         gotag = *val;
       } else {
         gotag = "db:\"" + escape_string((*m_iter)->get_name()) + "\" ";
-        if ((*m_iter)->get_req() == t_field::T_OPTIONAL) {
+        if ((*m_iter)->get_req() == t_field::e_req::optional) {
           gotag +=
               "json:\"" + escape_string((*m_iter)->get_name()) + ",omitempty\"";
         } else {
@@ -1448,7 +1450,7 @@ void t_go_generator::generate_go_struct_definition(
                   << " `thrift:\"" << escape_string((*m_iter)->get_name())
                   << "," << sorted_keys_pos;
 
-      if ((*m_iter)->get_req() == t_field::T_REQUIRED) {
+      if ((*m_iter)->get_req() == t_field::e_req::required) {
         out << ",required";
       }
 
@@ -1480,7 +1482,7 @@ void t_go_generator::generate_go_struct_definition(
     t_type* fieldType = (*m_iter)->get_type();
     string goType = type_to_go_type_with_opt(fieldType, false);
     string def_var_name = tstruct_name + "_" + publicized_name + "_DEFAULT";
-    if ((*m_iter)->get_req() == t_field::T_OPTIONAL ||
+    if ((*m_iter)->get_req() == t_field::e_req::optional ||
         is_pointer_field(*m_iter)) {
       out << indent() << "var " << def_var_name << " " << goType;
       if (def_value != nullptr) {
@@ -1585,7 +1587,7 @@ void t_go_generator::generate_isset_helpers(
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     const string field_name(publicize(escape_string((*f_iter)->get_name())));
-    if ((*f_iter)->get_req() == t_field::T_OPTIONAL ||
+    if ((*f_iter)->get_req() == t_field::e_req::optional ||
         is_pointer_field(*f_iter)) {
       out << indent() << "func (p *" << tstruct_name << ") IsSet" << field_name
           << "() bool {" << endl;
@@ -1631,7 +1633,7 @@ void t_go_generator::generate_countsetfields_helper(
   indent_up();
   out << indent() << "count := 0" << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() != t_field::T_OPTIONAL &&
+    if ((*f_iter)->get_req() != t_field::e_req::optional &&
         !is_pointer_field(*f_iter)) {
       continue;
     }
@@ -1675,7 +1677,7 @@ void t_go_generator::generate_go_struct_reader(
   // Required variables does not have IsSet functions, so we need tmp vars to
   // check them.
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
+    if ((*f_iter)->get_req() == t_field::e_req::required) {
       const string field_name(publicize(escape_string((*f_iter)->get_name())));
       indent(out) << "var isset" << field_name << " bool = false;" << endl;
     }
@@ -1737,7 +1739,7 @@ void t_go_generator::generate_go_struct_reader(
     out << indent() << "}" << endl;
 
     // Mark required field as read
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
+    if ((*f_iter)->get_req() == t_field::e_req::required) {
       const string field_name(publicize(escape_string((*f_iter)->get_name())));
       out << indent() << "isset" << field_name << " = true" << endl;
     }
@@ -1777,7 +1779,7 @@ void t_go_generator::generate_go_struct_reader(
 
   // Return error if any required fields are missing.
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
+    if ((*f_iter)->get_req() == t_field::e_req::required) {
       const string field_name(publicize(escape_string((*f_iter)->get_name())));
       out << indent() << "if !isset" << field_name << "{" << endl;
       out << indent()
@@ -1880,7 +1882,7 @@ void t_go_generator::generate_go_struct_writer(
         << "(oprot thrift.Protocol) (err error) {" << endl;
     indent_up();
 
-    if (field_required == t_field::T_OPTIONAL) {
+    if (field_required == t_field::e_req::optional) {
       out << indent() << "if p.IsSet" << publicize(field_name) << "() {"
           << endl;
       indent_up();
@@ -1902,7 +1904,7 @@ void t_go_generator::generate_go_struct_writer(
         << "  return thrift.PrependError(fmt.Sprintf(\"%T write field end error "
         << field_id << ":" << escape_field_name << ": \", p), err) }" << endl;
 
-    if (field_required == t_field::T_OPTIONAL) {
+    if (field_required == t_field::e_req::optional) {
       indent_down();
       out << indent() << "}" << endl;
     }
@@ -1976,7 +1978,7 @@ void t_go_generator::generate_go_function_helpers(t_function* tfunction) {
     t_struct result(program_, tfunction->get_name() + "_result");
     auto success =
         std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
-    success->set_req(t_field::T_OPTIONAL);
+    success->set_req(t_field::e_req::optional);
 
     if (!tfunction->get_returntype()->is_void()) {
       result.append(std::move(success));
@@ -1988,7 +1990,7 @@ void t_go_generator::generate_go_function_helpers(t_function* tfunction) {
 
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       auto new_f = (*f_iter)->clone_DO_NOT_USE();
-      new_f->set_req(t_field::T_OPTIONAL);
+      new_f->set_req(t_field::e_req::optional);
       result.append(std::move(new_f));
     }
 
@@ -3610,8 +3612,8 @@ void t_go_generator::generate_deserialize_map_element(
   t_field fkey(tmap->get_key_type(), key);
   t_field fval(tmap->get_val_type(), val);
   string derefs = is_pointer_field(&fkey) ? "*" : "";
-  fkey.set_req(t_field::T_OPT_IN_REQ_OUT);
-  fval.set_req(t_field::T_OPT_IN_REQ_OUT);
+  fkey.set_req(t_field::e_req::opt_in_req_out);
+  fval.set_req(t_field::e_req::opt_in_req_out);
   generate_deserialize_field(out, &fkey, true, "", false, false, true);
   generate_deserialize_field(out, &fval, true, "", false, false, false, true);
   indent(out) << prefix << "[" << derefs << key << "] = " << val << endl;
@@ -3628,7 +3630,7 @@ void t_go_generator::generate_deserialize_set_element(
   (void)declare;
   string elem = tmp("_elem");
   t_field felem(tset->get_elem_type(), elem);
-  felem.set_req(t_field::T_OPT_IN_REQ_OUT);
+  felem.set_req(t_field::e_req::opt_in_req_out);
   generate_deserialize_field(out, &felem, true, "", false, false, false, true);
   indent(out) << prefix << " = append(" << prefix << ", " << elem << ")"
               << endl;
@@ -3645,7 +3647,7 @@ void t_go_generator::generate_deserialize_list_element(
   (void)declare;
   string elem = tmp("_elem");
   t_field felem(((t_list*)tlist)->get_elem_type(), elem);
-  felem.set_req(t_field::T_OPT_IN_REQ_OUT);
+  felem.set_req(t_field::e_req::opt_in_req_out);
   generate_deserialize_field(out, &felem, true, "", false, false, false, true);
   indent(out) << prefix << " = append(" << prefix << ", " << elem << ")"
               << endl;
@@ -3876,8 +3878,8 @@ void t_go_generator::generate_serialize_map_element(
     string viter) {
   t_field kfield(tmap->get_key_type(), "");
   t_field vfield(tmap->get_val_type(), "");
-  kfield.set_req(t_field::T_OPT_IN_REQ_OUT);
-  vfield.set_req(t_field::T_OPT_IN_REQ_OUT);
+  kfield.set_req(t_field::e_req::opt_in_req_out);
+  vfield.set_req(t_field::e_req::opt_in_req_out);
   generate_serialize_field(out, &kfield, kiter, true);
   generate_serialize_field(out, &vfield, viter);
 }
@@ -3890,7 +3892,7 @@ void t_go_generator::generate_serialize_set_element(
     t_set* tset,
     string prefix) {
   t_field efield(tset->get_elem_type(), "");
-  efield.set_req(t_field::T_OPT_IN_REQ_OUT);
+  efield.set_req(t_field::e_req::opt_in_req_out);
   generate_serialize_field(out, &efield, prefix);
 }
 
@@ -3902,7 +3904,7 @@ void t_go_generator::generate_serialize_list_element(
     t_list* tlist,
     string prefix) {
   t_field efield(tlist->get_elem_type(), "");
-  efield.set_req(t_field::T_OPT_IN_REQ_OUT);
+  efield.set_req(t_field::e_req::opt_in_req_out);
   generate_serialize_field(out, &efield, prefix);
 }
 

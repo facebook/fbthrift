@@ -1168,7 +1168,7 @@ Field:
       }
       driver.finish_node($$, LineType::Field, own($9), own($2));
 
-      if ($5 != t_field::T_OPTIONAL && $$->has_annotation({"cpp.ref", "cpp2.ref"})) {
+      if ($5 != t_field::e_req::optional && $$->has_annotation({"cpp.ref", "cpp2.ref"})) {
         driver.warning(1, "`cpp.ref` field must be optional if it is recursive.");
       }
     }
@@ -1222,9 +1222,9 @@ FieldRequiredness:
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning(1, "required keyword is ignored in argument lists.");
         }
-        $$ = t_field::T_OPT_IN_REQ_OUT;
+        $$ = t_field::e_req::opt_in_req_out;
       } else {
-        $$ = t_field::T_REQUIRED;
+        $$ = t_field::e_req::required;
       }
     }
 | tok_optional
@@ -1233,14 +1233,14 @@ FieldRequiredness:
         if (driver.mode == parsing_mode::PROGRAM) {
           driver.warning(1, "optional keyword is ignored in argument lists.");
         }
-        $$ = t_field::T_OPT_IN_REQ_OUT;
+        $$ = t_field::e_req::opt_in_req_out;
       } else {
-        $$ = t_field::T_OPTIONAL;
+        $$ = t_field::e_req::optional;
       }
     }
 |
     {
-      $$ = t_field::T_OPT_IN_REQ_OUT;
+      $$ = t_field::e_req::opt_in_req_out;
     }
 
 FieldValue:

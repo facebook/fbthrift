@@ -743,8 +743,8 @@ void t_cocoa_generator::generate_cocoa_struct_initializer_signature(
     out << ": (";
     if (nullability_ && type_can_be_null(((*m_iter)->get_type()))) {
       out
-          << ((*m_iter)->get_req() == t_field::T_REQUIRED ? "nonnull "
-                                                          : "nullable ");
+          << ((*m_iter)->get_req() == t_field::e_req::required ? "nonnull "
+                                                               : "nullable ");
     }
     out << type_name((*m_iter)->get_type()) << ") " << (*m_iter)->get_name();
     ++m_iter;
@@ -1377,7 +1377,7 @@ void t_cocoa_generator::generate_cocoa_struct_validator(
   out << indent() << "// check for required fields" << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = (*f_iter);
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
+    if ((*f_iter)->get_req() == t_field::e_req::required) {
       out << indent() << "if (!" << kFieldPrefix << field->get_name()
           << kSetPostfix << ") {" << endl
           << indent()
@@ -3181,8 +3181,8 @@ string t_cocoa_generator::declare_property(t_field* tfield) {
     render << ", retain";
     if (nullability_) {
       render
-          << (tfield->get_req() == t_field::T_REQUIRED ? ", nonnull"
-                                                       : ", nullable");
+          << (tfield->get_req() == t_field::e_req::required ? ", nonnull"
+                                                            : ", nullable");
     }
   }
   render

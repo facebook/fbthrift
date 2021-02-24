@@ -33,7 +33,7 @@ namespace compiler {
 
 namespace {
 bool field_has_isset(const t_field* field) {
-  return field->get_req() != t_field::e_req::T_REQUIRED &&
+  return field->get_req() != t_field::e_req::required &&
       !cpp2::is_explicit_ref(field);
 }
 
@@ -645,8 +645,8 @@ class mstch_cpp2_field : public mstch_field {
     // (e.g. i32/i64, empty strings/list/map)
     auto t = field_->get_type()->get_true_type();
     return has_option("terse_writes") &&
-        field_->get_req() != t_field::e_req::T_OPTIONAL &&
-        field_->get_req() != t_field::e_req::T_REQUIRED &&
+        field_->get_req() != t_field::e_req::optional &&
+        field_->get_req() != t_field::e_req::required &&
         (is_cpp_ref_unique_either(field_) ||
          (!t->is_struct() && !t->is_xception()));
   }
@@ -661,11 +661,11 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node fatal_required_qualifier() {
     switch (field_->get_req()) {
-      case t_field::e_req::T_REQUIRED:
+      case t_field::e_req::required:
         return std::string("required");
-      case t_field::e_req::T_OPTIONAL:
+      case t_field::e_req::optional:
         return std::string("optional");
-      case t_field::e_req::T_OPT_IN_REQ_OUT:
+      case t_field::e_req::opt_in_req_out:
         return std::string("required_of_writer");
       default:
         throw std::runtime_error("unknown required qualifier");
@@ -674,11 +674,11 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node visibility() {
     auto req = field_->get_req();
     bool isPrivate = true;
-    if (cpp2::is_ref(field_) || req == t_field::e_req::T_REQUIRED) {
+    if (cpp2::is_ref(field_) || req == t_field::e_req::required) {
       isPrivate = false;
-    } else if (req == t_field::e_req::T_OPTIONAL) {
+    } else if (req == t_field::e_req::optional) {
       // Optional fields are always private.
-    } else if (req == t_field::e_req::T_OPT_IN_REQ_OUT) {
+    } else if (req == t_field::e_req::opt_in_req_out) {
       isPrivate = !has_option("deprecated_public_fields");
     }
     return std::string(isPrivate ? "private" : "public");
@@ -763,9 +763,9 @@ class mstch_cpp2_struct : public mstch_struct {
            (strct_ != dynamic_cast<t_struct const*>(type)) &&
            ((field->get_value() && !field->get_value()->is_empty()) ||
             (cpp2::is_explicit_ref(field) &&
-             field->get_req() != t_field::e_req::T_OPTIONAL))) ||
+             field->get_req() != t_field::e_req::optional))) ||
           (type->is_container() && cpp2::is_explicit_ref(field) &&
-           field->get_req() != t_field::e_req::T_OPTIONAL)) {
+           field->get_req() != t_field::e_req::optional)) {
         filtered_fields.push_back(field);
       }
     }

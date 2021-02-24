@@ -1038,7 +1038,7 @@ class mstch_rust_struct_field : public mstch_base {
     return mangle(field_->get_name());
   }
   mstch::node is_optional() {
-    return field_->get_req() == t_field::e_req::T_OPTIONAL;
+    return field_->get_req() == t_field::e_req::optional;
   }
   mstch::node value() {
     if (value_) {

@@ -922,13 +922,13 @@ class mstch_field : public mstch_base {
     return std::to_string(index_);
   }
   mstch::node is_required() {
-    return field_->get_req() == t_field::e_req::T_REQUIRED;
+    return field_->get_req() == t_field::e_req::required;
   }
   mstch::node is_optional() {
-    return field_->get_req() == t_field::e_req::T_OPTIONAL;
+    return field_->get_req() == t_field::e_req::optional;
   }
   mstch::node is_optInReqOut() {
-    return field_->get_req() == t_field::e_req::T_OPT_IN_REQ_OUT;
+    return field_->get_req() == t_field::e_req::opt_in_req_out;
   }
   mstch::node annotations() {
     return mstch_base::annotations(field_);

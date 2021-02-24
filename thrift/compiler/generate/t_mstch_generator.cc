@@ -120,9 +120,9 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
       {"type", dump(*field.get_type())},
       {"index", std::to_string(index)},
       {"index_plus_one", std::to_string(index + 1)},
-      {"required?", req == t_field::e_req::T_REQUIRED},
-      {"optional?", req == t_field::e_req::T_OPTIONAL},
-      {"optInReqOut?", req == t_field::e_req::T_OPT_IN_REQ_OUT},
+      {"required?", req == t_field::e_req::required},
+      {"optional?", req == t_field::e_req::optional},
+      {"optInReqOut?", req == t_field::e_req::opt_in_req_out},
       {"annotations", dump_elems(field.annotations())},
   };
 

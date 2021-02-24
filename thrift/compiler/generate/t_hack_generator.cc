@@ -935,7 +935,7 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
     }
     indent_down();
     indent(out) << "}";
-    if (tf->get_req() == t_field::T_REQUIRED) {
+    if (tf->get_req() == t_field::e_req::required) {
       out << " else {\n";
       indent_up();
       indent(out) << "throw new \\TProtocolException(\"Required field "
@@ -1573,7 +1573,7 @@ std::unique_ptr<t_const_value> t_hack_generator::field_to_tmeta(
       std::make_unique<t_const_value>("name"),
       std::make_unique<t_const_value>(field->get_name()));
 
-  if (field->get_req() == t_field::T_OPTIONAL) {
+  if (field->get_req() == t_field::e_req::optional) {
     auto is_optional = std::make_unique<t_const_value>();
     is_optional->set_bool(true);
     tmeta_ThriftField->add_map(
@@ -2229,9 +2229,9 @@ bool t_hack_generator::field_is_nullable(
     string dval) {
   t_type* t = field->get_type()->get_true_type();
   return (dval == "null") || tstruct->is_union() ||
-      (field->get_req() == t_field::T_OPTIONAL &&
+      (field->get_req() == t_field::e_req::optional &&
        field->get_value() == nullptr) ||
-      (t->is_enum() && field->get_req() != t_field::T_REQUIRED);
+      (t->is_enum() && field->get_req() != t_field::e_req::required);
 }
 
 void t_hack_generator::generate_php_struct_shape_methods(
@@ -2947,7 +2947,7 @@ void t_hack_generator::_generate_php_struct_definition(
     // TODO(ckwalsh) Extract this logic into a helper function
     bool nullable = !(is_exception && is_base_exception_property(*m_iter)) &&
         (dval == "null" || is_result ||
-         ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
+         ((*m_iter)->get_req() == t_field::e_req::optional &&
           (*m_iter)->get_value() == nullptr));
     string name = (*m_iter)->get_name();
     bool need_enum_code_fixme = is_exception && name == "code" &&
@@ -3001,7 +3001,7 @@ void t_hack_generator::_generate_php_struct_definition(
       out << indent() << "<<__Override>>\n"
           << indent() << "public function getMessage()[]: string {\n"
           << indent() << "  return $this->" << message_field->get_name();
-      if (message_field->get_req() != t_field::T_REQUIRED) {
+      if (message_field->get_req() != t_field::e_req::required) {
         out << " ?? ''";
       }
       out << ";\n" << indent() << "}\n\n";
@@ -4885,7 +4885,7 @@ string t_hack_generator::argument_list(
       bool nullable = !no_nullables_ ||
           (ftype->is_enum() &&
            ((*f_iter)->get_value() == nullptr ||
-            (*f_iter)->get_req() != t_field::T_REQUIRED));
+            (*f_iter)->get_req() != t_field::e_req::required));
       if (force_nullable &&
           !field_is_nullable(tstruct, *f_iter, render_default_value(ftype))) {
         result += "?";

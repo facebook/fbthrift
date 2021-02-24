@@ -541,7 +541,7 @@ void t_html_generator::generate_struct(t_struct* tstruct) {
     f_out_ << "<tr><td>" << (*mem_iter)->get_name() << "</td><td>";
     print_type((*mem_iter)->get_type());
     f_out_ << "</td><td>";
-    if ((*mem_iter)->get_req() != t_field::T_OPTIONAL) {
+    if ((*mem_iter)->get_req() != t_field::e_req::optional) {
       f_out_ << "yes";
     } else {
       f_out_ << "no";

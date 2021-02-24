@@ -607,7 +607,7 @@ void t_rb_generator::generate_field_defns(
         (*f_iter)->get_type(),
         (*f_iter)->get_name(),
         (*f_iter)->get_value(),
-        (*f_iter)->get_req() == t_field::T_OPTIONAL);
+        (*f_iter)->get_req() == t_field::e_req::optional);
   }
   indent_down();
   out << endl;
@@ -1126,7 +1126,7 @@ void t_rb_generator::generate_rb_struct_required_validator(
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = (*f_iter);
-    if (field->get_req() == t_field::T_REQUIRED) {
+    if (field->get_req() == t_field::e_req::required) {
       indent(out) << "raise ::Thrift::ProtocolException.new("
                   << "::Thrift::ProtocolException::MISSING_REQUIRED_FIELD, "
                   << "'Required field " << field->get_name() << " is unset!')";

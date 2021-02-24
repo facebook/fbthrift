@@ -858,7 +858,7 @@ class mstch_py3_field : public mstch_field {
   mstch::node isSet() {
     auto ref_type = get_ref_type();
     return (ref_type == RefType::NotRef || ref_type == RefType::IOBuf) &&
-        field_->get_req() != t_field::e_req::T_REQUIRED;
+        field_->get_req() != t_field::e_req::required;
   }
 
   mstch::node pyName() {
@@ -909,7 +909,7 @@ class mstch_py3_field : public mstch_field {
     }
   }
   bool is_optional() const {
-    return field_->get_req() == t_field::e_req::T_OPTIONAL;
+    return field_->get_req() == t_field::e_req::optional;
   }
 
   bool is_ref() {

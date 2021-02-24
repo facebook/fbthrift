@@ -269,12 +269,12 @@ bool union_no_qualified_fields_validator::visit(t_struct* s) {
   }
 
   for (const auto* field : s->fields()) {
-    if (field->get_req() != t_field::T_OPT_IN_REQ_OUT) {
+    if (field->get_req() != t_field::e_req::opt_in_req_out) {
       add_error(
           field->get_lineno(),
           std::string("Unions cannot contain qualified fields. Remove ") +
-              (field->get_req() == t_field::T_REQUIRED ? "required"
-                                                       : "optional") +
+              (field->get_req() == t_field::e_req::required ? "required"
+                                                            : "optional") +
               " qualifier from field `" + field->get_name() + "`.");
     }
   }
@@ -296,7 +296,7 @@ bool mixin_type_correctness_validator::visit(t_struct* s) {
             field->get_lineno(),
             "Mixin field `" + name + "` is not a struct but `" +
                 field->get_type()->get_name() + "`.");
-      } else if (field->get_req() == t_field::T_OPTIONAL) {
+      } else if (field->get_req() == t_field::e_req::optional) {
         // Nothing technically stops us from marking optional field mixin.
         // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
         // might throw `bad_field_access` if `bar` is inside optional mixin

@@ -556,7 +556,7 @@ class mstch_swift_field : public mstch_field {
   bool isNestedContainerFlag = false;
 
   mstch::node has_initial_value() {
-    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+    if (field_->get_req() == t_field::e_req::optional) {
       // default values are ignored for optional fields
       return false;
     }
@@ -594,7 +594,7 @@ class mstch_swift_field : public mstch_field {
   }
 
   mstch::node is_nullable_or_optional_not_enum() {
-    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+    if (field_->get_req() == t_field::e_req::optional) {
       return true;
     }
     const t_type* field_type = field_->get_type()->get_true_type();
@@ -639,7 +639,7 @@ class mstch_swift_field : public mstch_field {
     return field_->get_key() < 0;
   }
   std::string default_value_for_field(const t_field* field) {
-    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+    if (field_->get_req() == t_field::e_req::optional) {
       return "null";
     }
     return default_value_for_type(field->get_type());

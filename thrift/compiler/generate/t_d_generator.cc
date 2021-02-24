@@ -771,16 +771,16 @@ class t_d_generator : public t_oop_generator {
    */
   string render_req(t_field::e_req req) const {
     switch (req) {
-      case t_field::T_OPT_IN_REQ_OUT:
+      case t_field::e_req::opt_in_req_out:
         return "TReq.OPT_IN_REQ_OUT";
-      case t_field::T_OPTIONAL:
+      case t_field::e_req::optional:
         return "TReq.OPTIONAL";
-      case t_field::T_REQUIRED:
+      case t_field::e_req::required:
         return "TReq.REQUIRED";
       default:
         throw std::runtime_error(
             "Compiler error: Invalid requirement level: " +
-            std::to_string(req));
+            std::to_string(static_cast<int>(req)));
     }
   }
 

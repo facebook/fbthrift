@@ -224,7 +224,7 @@ TEST_F(ValidatorTest, QualifiedInUnion) {
 
   auto field = std::make_unique<t_field>(&i64type, "foo", 1);
   field->set_lineno(5);
-  field->set_req(t_field::T_REQUIRED);
+  field->set_req(t_field::e_req::required);
 
   auto struct_union = std::make_unique<t_union>(&program, "Bar");
 
@@ -232,7 +232,7 @@ TEST_F(ValidatorTest, QualifiedInUnion) {
 
   field = std::make_unique<t_field>(&i64type, "baz", 2);
   field->set_lineno(6);
-  field->set_req(t_field::T_OPTIONAL);
+  field->set_req(t_field::e_req::optional);
   struct_union->append(std::move(field));
 
   field = std::make_unique<t_field>(&i64type, "qux", 3);
