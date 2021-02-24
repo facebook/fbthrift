@@ -33,7 +33,6 @@ using std::string;
 using std::unordered_map;
 
 ChannelTestFixture::ChannelTestFixture() {
-  eventBase_ = std::make_unique<EventBase>();
   EventBaseManager::get()->setEventBase(eventBase_.get(), true);
   responseHandler_ = std::make_unique<FakeResponseHandler>(eventBase_.get());
 }
@@ -47,7 +46,7 @@ void ChannelTestFixture::sendAndReceiveStream(
     IOBuf*& outputPayload,
     bool omitEnvelope) {
   auto channel = std::make_shared<SingleRpcChannel>(
-      responseHandler_->getTransaction(), processor);
+      responseHandler_->getTransaction(), processor, worker_);
   string payload;
   if (omitEnvelope) {
     payload = inputPayload;

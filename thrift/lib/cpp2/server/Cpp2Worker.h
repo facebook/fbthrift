@@ -79,6 +79,14 @@ class Cpp2Worker : public wangle::Acceptor,
     return worker;
   }
 
+  static std::shared_ptr<Cpp2Worker> createDummy(
+      ThriftServer* server,
+      folly::EventBase* eventBase) {
+    std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(server, {}));
+    worker->Acceptor::init(nullptr, eventBase);
+    return worker;
+  }
+
   void init(
       folly::AsyncServerSocket* serverSocket,
       folly::EventBase* eventBase,

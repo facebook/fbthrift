@@ -28,11 +28,14 @@
 namespace apache {
 namespace thrift {
 
+class Cpp2Worker;
+
 class SingleRpcChannel : public H2Channel {
  public:
   SingleRpcChannel(
       proxygen::HTTPTransaction* toHttp2,
-      ThriftProcessor* processor);
+      ThriftProcessor* processor,
+      std::shared_ptr<Cpp2Worker> worker);
 
   SingleRpcChannel(
       folly::EventBase& evb,
@@ -85,6 +88,8 @@ class SingleRpcChannel : public H2Channel {
   // The thrift processor used to execute RPCs (server side only).
   // Owned by H2ThriftServer.
   ThriftProcessor* processor_{nullptr};
+
+  std::shared_ptr<Cpp2Worker> worker_;
 
   // Event base on which all methods in this object must be invoked.
   folly::EventBase* evb_{nullptr};

@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
@@ -57,8 +58,9 @@ static constexpr folly::StringPiece kThriftContentType = "application/x-thrift";
 
 SingleRpcChannel::SingleRpcChannel(
     HTTPTransaction* txn,
-    ThriftProcessor* processor)
-    : processor_(processor), httpTransaction_(txn) {
+    ThriftProcessor* processor,
+    std::shared_ptr<Cpp2Worker> worker)
+    : processor_(processor), worker_(std::move(worker)), httpTransaction_(txn) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
@@ -303,8 +305,16 @@ void SingleRpcChannel::onThriftRequest() noexcept {
   const folly::AsyncTransport* transport = httpTransaction_
       ? httpTransaction_->getTransport().getUnderlyingTransport()
       : nullptr;
+  DCHECK(worker_);
+  DCHECK(worker_->getEventBase()->inRunningEventBaseThread());
   auto connContext = std::make_unique<Cpp2ConnContext>(
-      &headers_->getClientAddress(), transport);
+      &headers_->getClientAddress(),
+      transport,
+      nullptr,
+      nullptr,
+      nullptr,
+      nullptr,
+      worker_.get());
   processor_->onThriftRequest(
       std::move(metadata),
       std::move(contents_),

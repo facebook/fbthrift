@@ -46,11 +46,13 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
  public:
   explicit HTTP2RoutingSessionManager(
       ThriftProcessor* processor,
-      const server::ServerConfigs& serverConfigs)
+      const server::ServerConfigs& serverConfigs,
+      std::shared_ptr<Cpp2Worker> worker)
       : proxygen::HTTPSession::InfoCallback(),
         proxygen::SimpleController(/*acceptor=*/nullptr),
         processor_(processor),
-        serverConfigs_(serverConfigs) {}
+        serverConfigs_(serverConfigs),
+        worker_(std::move(worker)) {}
 
   ~HTTP2RoutingSessionManager() override = default;
 
@@ -100,7 +102,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
     msg->setClientAddress(clientAddr);
     msg->setDstAddress(vipAddr);
 
-    return new ThriftRequestHandler(processor_);
+    return new ThriftRequestHandler(processor_, worker_);
   }
 
   void detachSession(const proxygen::HTTPSessionBase*) override {
@@ -117,6 +119,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
  private:
   ThriftProcessor* processor_;
   const server::ServerConfigs& serverConfigs_;
+  std::shared_ptr<Cpp2Worker> worker_;
 };
 
 } // anonymous namespace
@@ -160,10 +163,10 @@ void HTTP2RoutingHandler::handleConnection(
     folly::AsyncTransport::UniquePtr sock,
     folly::SocketAddress const* peerAddress,
     wangle::TransportInfo const& tinfo,
-    std::shared_ptr<Cpp2Worker>) {
+    std::shared_ptr<Cpp2Worker> worker) {
   // Create the DownstreamSession manager.
-  auto sessionManager =
-      new HTTP2RoutingSessionManager(processor_, serverConfigs_);
+  auto sessionManager = new HTTP2RoutingSessionManager(
+      processor_, serverConfigs_, std::move(worker));
   // Create the DownstreamSession
   // A const_cast is needed to match wangle and proxygen APIs
   auto h2codec = std::make_unique<proxygen::HTTP2Codec>(
