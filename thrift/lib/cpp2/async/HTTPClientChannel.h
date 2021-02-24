@@ -49,11 +49,6 @@ class HTTPClientChannel : public ClientChannel,
   using Ptr =
       std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor>;
 
-  static HTTPClientChannel::Ptr newHTTP1xChannel(
-      folly::AsyncTransport::UniquePtr transport,
-      const std::string& httpHost,
-      const std::string& httpUrl);
-
   static HTTPClientChannel::Ptr newHTTP2Channel(
       folly::AsyncTransport::UniquePtr transport);
 

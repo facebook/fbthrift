@@ -48,19 +48,6 @@ namespace thrift {
 const std::chrono::milliseconds HTTPClientChannel::kDefaultTransactionTimeout =
     std::chrono::milliseconds(500);
 
-HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
-    folly::AsyncTransport::UniquePtr transport,
-    const std::string& httpHost,
-    const std::string& httpUrl) {
-  HTTPClientChannel::Ptr channel(new HTTPClientChannel(
-      std::move(transport),
-      std::make_unique<proxygen::HTTP1xCodec>(
-          proxygen::TransportDirection::UPSTREAM)));
-  channel->setHTTPHost(httpHost);
-  channel->setHTTPUrl(httpUrl);
-  return channel;
-}
-
 HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
     folly::AsyncTransport::UniquePtr transport) {
   return HTTPClientChannel::Ptr(new HTTPClientChannel(

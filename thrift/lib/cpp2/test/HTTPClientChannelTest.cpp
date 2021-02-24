@@ -22,8 +22,9 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <proxygen/httpserver/HTTPServer.h>
 #include <proxygen/httpserver/ResponseBuilder.h>
-#include <thrift/lib/cpp2/server/proxygen/ProxygenThriftServer.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
 #include <wangle/channel/AsyncSocketHandler.h>
@@ -49,225 +50,45 @@ class TestServiceHandler : public TestServiceSvIf {
 
     _return = "test" + boost::lexical_cast<std::string>(size);
   }
-
-  void noResponse(int64_t size) override {
-    usleep(size);
-  }
-
-  void echoRequest(string& _return, std::unique_ptr<string> req) override {
-    _return = *req + "ccccccccccccccccccccccccccccccccccccccccccccc";
-  }
-
-  void serializationTest(string& _return, bool /* inEventBase */) override {
-    _return = string(4096, 'a');
-  }
-
-  void async_eb_eventBaseAsync(
-      std::unique_ptr<
-          apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>
-          callback) override {
-    callback->result(std::make_unique<std::string>("hello world"));
-  }
-
-  void notCalledBack() override {}
-  void voidResponse() override {}
-  int32_t processHeader() override {
-    return 1;
-  }
-  void echoIOBuf(
-      std::unique_ptr<folly::IOBuf>& /*_return*/,
-      std::unique_ptr<folly::IOBuf> /*buf*/) override {}
 };
 
-/**
- * This class implements a scoped server that immediately responds with
- * specified response upon receiving the first byte, then closes the
- * connection. It can be used for crafting invalid responses and testing
- * behavior.
- **/
-class ScopedPresetResponseServer {
- public:
-  explicit ScopedPresetResponseServer(std::unique_ptr<folly::IOBuf> resp)
-      : resp_(std::move(resp)) {
-    server_.childPipeline(std::make_shared<PipelineFactory>(resp_.get()));
-    server_.bind(0);
-    serverThread_ = std::thread([this]() { server_.waitForStop(); });
-  }
-
-  ~ScopedPresetResponseServer() {
-    server_.stop();
-    server_.join();
-    serverThread_.join();
-  }
-
-  void getAddress(folly::SocketAddress* addr) {
-    return server_.getSockets().at(0)->getAddress(addr);
-  }
-
- private:
-  using BytesPipeline =
-      wangle::Pipeline<folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>>;
-
-  class Handler : public wangle::BytesToBytesHandler {
-   public:
-    explicit Handler(folly::IOBuf* resp)
-        : wangle::BytesToBytesHandler(), resp_(resp) {}
-
-    void read(Context* ctx, folly::IOBufQueue& /* msg */) override {
-      write(ctx, resp_->clone()).thenValue([=](auto&&) { close(ctx); });
-    }
-
-   private:
-    folly::IOBuf* resp_;
-  };
-
-  class PipelineFactory : public wangle::PipelineFactory<BytesPipeline> {
-   public:
-    explicit PipelineFactory(folly::IOBuf* resp)
-        : wangle::PipelineFactory<BytesPipeline>(), resp_(resp) {}
-
-    BytesPipeline::Ptr newPipeline(
-        std::shared_ptr<folly::AsyncTransport> sock) override {
-      auto pipeline = BytesPipeline::create();
-      pipeline->addBack(wangle::AsyncSocketHandler(sock));
-      pipeline->addBack(Handler(resp_));
-      pipeline->finalize();
-      return pipeline;
-    }
-
-   private:
-    folly::IOBuf* resp_;
-  };
-
-  wangle::ServerBootstrap<BytesPipeline> server_;
-  std::thread serverThread_;
-  std::unique_ptr<folly::IOBuf> resp_;
-};
+std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
+    ThriftServer& server) {
+  auto h2_options = std::make_unique<proxygen::HTTPServerOptions>();
+  h2_options->threads = static_cast<size_t>(server.getNumIOWorkerThreads());
+  h2_options->idleTimeout = server.getIdleTimeout();
+  h2_options->shutdownOn = {SIGINT, SIGTERM};
+  return std::make_unique<HTTP2RoutingHandler>(
+      std::move(h2_options), server.getThriftProcessor(), server);
+}
 
 std::shared_ptr<BaseThriftServer> createHttpServer() {
   auto handler = std::make_shared<TestServiceHandler>();
   auto tm = ThreadManager::newSimpleThreadManager(1, false);
   tm->threadFactory(std::make_shared<PosixThreadFactory>());
   tm->start();
-  auto server = std::make_shared<ProxygenThriftServer>();
+  auto server = std::make_shared<ThriftServer>();
   server->setAddress({"::1", 0});
-  server->setHTTPServerProtocol(proxygen::HTTPServer::Protocol::HTTP);
   server->setInterface(handler);
   server->setNumIOWorkerThreads(1);
   server->setThreadManager(tm);
+  server->addRoutingHandler(createHTTP2RoutingHandler(*server));
   return server;
 }
 
-TEST(HTTPClientChannelTest, SimpleTestAsync) {
+TEST(HTTPClientChannelTest, Basic) {
   ScopedServerInterfaceThread runner(createHttpServer());
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
   folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
-  auto channel = HTTPClientChannel::newHTTP1xChannel(
-      std::move(socket), "127.0.0.1", "/foobar");
-  TestServiceAsyncClient client(std::move(channel));
-  client.sendResponse(
-      [&eb](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_FALSE(state.exception()) << state.exception();
-        std::string res;
-        TestServiceAsyncClient::recv_sendResponse(res, state);
-        EXPECT_EQ(res, "test24");
-        eb.terminateLoopSoon();
-      },
-      24);
-  eb.loop();
 
-  client.eventBaseAsync([&eb](apache::thrift::ClientReceiveState&& state) {
-    EXPECT_FALSE(state.exception()) << state.exception();
-    std::string res;
-    TestServiceAsyncClient::recv_eventBaseAsync(res, state);
-    EXPECT_EQ(res, "hello world");
-    eb.terminateLoopSoon();
-  });
-  eb.loop();
-}
+  TestServiceAsyncClient client(
+      HTTPClientChannel::newHTTP2Channel(std::move(socket)));
 
-TEST(HTTPClientChannelTest, SimpleTestSync) {
-  ScopedServerInterfaceThread runner(createHttpServer());
-  auto const addr = runner.getAddress();
-
-  folly::EventBase eb;
-  folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
-  auto channel = HTTPClientChannel::newHTTP1xChannel(
-      std::move(socket), "127.0.0.1", "/foobar");
-  TestServiceAsyncClient client(std::move(channel));
-  std::string res;
-  client.sync_sendResponse(res, 24);
-  EXPECT_EQ(res, "test24");
-
-  client.sync_eventBaseAsync(res);
-  EXPECT_EQ(res, "hello world");
-}
-
-TEST(HTTPClientChannelTest, LongResponse) {
-  ScopedServerInterfaceThread runner(createHttpServer());
-  auto const addr = runner.getAddress();
-
-  folly::EventBase eb;
-  folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
-  auto channel = HTTPClientChannel::newHTTP1xChannel(
-      std::move(socket), "127.0.0.1", "/foobar");
-  TestServiceAsyncClient client(std::move(channel));
-
-  client.serializationTest(
-      [&eb](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_FALSE(state.exception()) << state.exception();
-        std::string res;
-        TestServiceAsyncClient::recv_serializationTest(res, state);
-        EXPECT_EQ(res, string(4096, 'a'));
-        eb.terminateLoopSoon();
-      },
-      true);
-  eb.loop();
-}
-
-TEST(HTTPClientChannelTest, ClientTimeout) {
-  ScopedServerInterfaceThread runner(createHttpServer());
-  auto const addr = runner.getAddress();
-
-  folly::EventBase eb;
-  folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
-  auto channel = HTTPClientChannel::newHTTP1xChannel(
-      std::move(socket), "127.0.0.1", "/foobar");
-  channel->setTimeout(1);
-  channel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
-  TestServiceAsyncClient client(std::move(channel));
-  client.sendResponse(
-      [&](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_TRUE(state.exception());
-        auto ex = state.exception().get_exception();
-        auto& e = dynamic_cast<TTransportException const&>(*ex);
-        EXPECT_EQ(TTransportException::TIMED_OUT, e.getType());
-        eb.terminateLoopSoon();
-      },
-      99999);
-  eb.loop();
-}
-
-TEST(HTTPClientChannelTest, NoBodyResponse) {
-  std::string resp = "HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\n\r\n";
-  ScopedPresetResponseServer server(folly::IOBuf::copyBuffer(resp));
-
-  folly::EventBase eb;
-  folly::SocketAddress addr;
-  server.getAddress(&addr);
-  folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
-  auto channel = HTTPClientChannel::newHTTP1xChannel(
-      std::move(socket), "127.0.0.1", "/foobar");
-  TestServiceAsyncClient client(std::move(channel));
-  auto result = client.future_sendResponse(99999).waitVia(&eb).result();
-  ASSERT_TRUE(result.hasException());
-  folly::exception_wrapper ex = std::move(result.exception());
-  EXPECT_TRUE(ex.is_compatible_with<TTransportException>());
-  ex.with_exception([&](TTransportException const& e) {
-    EXPECT_STREQ("Empty HTTP response, 400, Bad Request", e.what());
-  });
+  std::string ret;
+  client.sync_sendResponse(ret, 42);
+  EXPECT_EQ(ret, "test42");
 }
 
 TEST(HTTPClientChannelTest, NoGoodChannel) {
@@ -284,39 +105,4 @@ TEST(HTTPClientChannelTest, NoGoodChannel) {
   channel->getTransport()->close();
 
   EXPECT_FALSE(channel->good());
-}
-
-TEST(HTTPClientChannelTest, NoGoodChannel2) {
-  ScopedServerInterfaceThread runner(createHttpServer());
-  auto const addr = runner.getAddress();
-
-  folly::EventBase eb;
-  folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
-
-  auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
-
-  EXPECT_TRUE(channel->good());
-
-  channel->closeNow();
-
-  EXPECT_FALSE(channel->good());
-}
-
-TEST(HTTPClientChannelTest, EarlyShutdown) {
-  ScopedServerInterfaceThread runner(createHttpServer());
-  auto const addr = runner.getAddress();
-
-  // send 2 requests on the channel, both will hang for a little while,
-  // then we destruct the client / channel object, we are expecting a
-  // smooth shutdown
-  {
-    folly::EventBase eb;
-    folly::AsyncTransport::UniquePtr socket(new folly::AsyncSocket(&eb, addr));
-    auto channel = HTTPClientChannel::newHTTP1xChannel(
-        std::move(socket), "127.0.0.1", "/foobar");
-    TestServiceAsyncClient client(std::move(channel));
-
-    auto f = client.future_noResponse(1000);
-    auto f2 = client.future_sendResponse(1000);
-  }
 }
