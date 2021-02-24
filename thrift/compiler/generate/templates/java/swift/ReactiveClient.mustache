@@ -122,5 +122,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   }
 
   {{/service:supportedFunctions}}
+  {{#service:streamingFunctions}}
+  @java.lang.Override
+  public {{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+    throw new UnsupportedOperationException();
+  }
+
+  {{/service:streamingFunctions}}
 
 }

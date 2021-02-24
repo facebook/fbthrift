@@ -27,5 +27,36 @@ public interface PubSubStreamingService extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
+        reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To);
+
+        default reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Flux<Integer> streamthrows(final int foo);
+
+        default reactor.core.publisher.Flux<Integer> streamthrows(final int foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Flux<Integer> boththrows(final int foo);
+
+        default reactor.core.publisher.Flux<Integer> boththrows(final int foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo);
+
+        default reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To);
+
+        default reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

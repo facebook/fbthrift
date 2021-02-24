@@ -27,5 +27,6 @@ public interface SinkService extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
     }
 }

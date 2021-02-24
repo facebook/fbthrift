@@ -420,6 +420,8 @@ class mstch_swift_service : public mstch_service {
              &mstch_swift_service::java_capital_name},
             {"service:supportedFunctions",
              &mstch_swift_service::get_supported_functions},
+            {"service:streamingFunctions",
+             &mstch_swift_service::get_streaming_functions},
         });
   }
   mstch::node java_package() {
@@ -433,6 +435,16 @@ class mstch_swift_service : public mstch_service {
     for (auto func : service_->get_functions()) {
       if (!func->returns_stream() && !func->returns_sink() &&
           !func->get_returntype()->is_service()) {
+        funcs.push_back(func);
+      }
+    }
+    return generate_functions(funcs);
+  }
+
+  mstch::node get_streaming_functions() {
+    std::vector<t_function*> funcs;
+    for (auto func : service_->get_functions()) {
+      if (func->returns_stream()) {
         funcs.push_back(func);
       }
     }

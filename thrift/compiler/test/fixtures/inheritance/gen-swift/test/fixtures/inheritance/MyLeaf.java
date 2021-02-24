@@ -52,6 +52,12 @@ public interface MyLeaf extends java.io.Closeable, test.fixtures.inheritance.MyN
 
     interface Reactive extends Closeable, test.fixtures.inheritance.MyNode.Reactive {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> doLeaf();
+
+        default reactor.core.publisher.Mono<Void> doLeaf(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

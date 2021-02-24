@@ -90,7 +90,18 @@ public interface DbMixedStackArguments extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key);
+
+        default reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key);
+
+        default reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

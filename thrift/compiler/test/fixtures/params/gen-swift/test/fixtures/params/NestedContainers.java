@@ -186,10 +186,36 @@ public interface NestedContainers extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo);
+
+        default reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo);
+
+        default reactor.core.publisher.Mono<Void> mapSet(final Map<Integer, Set<Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> listMap(final List<Map<Integer, Integer>> foo);
+
+        default reactor.core.publisher.Mono<Void> listMap(final List<Map<Integer, Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo);
+
+        default reactor.core.publisher.Mono<Void> listSet(final List<Set<Integer>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
+
+        default reactor.core.publisher.Mono<Void> turtles(final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

@@ -246,12 +246,48 @@ public interface MyService extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> ping();
+
+        default reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<String> getRandomData();
+
+        default reactor.core.publisher.Mono<String> getRandomData(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Boolean> hasDataById(final long id);
+
+        default reactor.core.publisher.Mono<Boolean> hasDataById(final long id, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<String> getDataById(final long id);
+
+        default reactor.core.publisher.Mono<String> getDataById(final long id, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> putDataById(final long id, final String data);
+
+        default reactor.core.publisher.Mono<Void> putDataById(final long id, final String data, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data);
+
+        default reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data, RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> doNothing();
+
+        default reactor.core.publisher.Mono<Void> doNothing(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

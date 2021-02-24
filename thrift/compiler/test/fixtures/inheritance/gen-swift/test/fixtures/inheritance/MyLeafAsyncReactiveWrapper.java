@@ -27,5 +27,5 @@ public class MyLeafAsyncReactiveWrapper  extends test.fixtures.inheritance.MyNod
     public reactor.core.publisher.Mono<Void> doLeaf() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.doLeaf());
     }
-    
+
 }

@@ -150,9 +150,30 @@ public interface Raiser extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> doBland();
+
+        default reactor.core.publisher.Mono<Void> doBland(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> doRaise();
+
+        default reactor.core.publisher.Mono<Void> doRaise(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<String> get200();
+
+        default reactor.core.publisher.Mono<String> get200(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<String> get500();
+
+        default reactor.core.publisher.Mono<String> get500(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

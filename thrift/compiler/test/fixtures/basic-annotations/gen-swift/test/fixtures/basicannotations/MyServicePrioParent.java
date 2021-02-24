@@ -78,7 +78,18 @@ public interface MyServicePrioParent extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> ping();
+
+        default reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
         reactor.core.publisher.Mono<Void> pong();
+
+        default reactor.core.publisher.Mono<Void> pong(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

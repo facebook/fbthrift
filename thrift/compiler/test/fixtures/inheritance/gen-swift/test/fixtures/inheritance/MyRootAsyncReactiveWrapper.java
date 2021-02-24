@@ -27,5 +27,5 @@ public class MyRootAsyncReactiveWrapper
     public reactor.core.publisher.Mono<Void> doRoot() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.doRoot());
     }
-    
+
 }

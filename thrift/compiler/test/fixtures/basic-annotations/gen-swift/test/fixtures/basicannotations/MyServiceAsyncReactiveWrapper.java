@@ -27,35 +27,35 @@ public class MyServiceAsyncReactiveWrapper
     public reactor.core.publisher.Mono<Void> ping() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.ping());
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<String> getRandomData() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.getRandomData());
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<Boolean> hasDataById(final long id) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.hasDataById(id));
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<String> getDataById(final long id) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.getDataById(id));
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.putDataById(id, data));
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.lobDataById(id, data));
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> doNothing() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.doNothing());
     }
-    
+
 }

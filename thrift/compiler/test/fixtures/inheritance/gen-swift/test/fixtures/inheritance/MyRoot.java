@@ -52,6 +52,12 @@ public interface MyRoot extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> doRoot();
+
+        default reactor.core.publisher.Mono<Void> doRoot(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

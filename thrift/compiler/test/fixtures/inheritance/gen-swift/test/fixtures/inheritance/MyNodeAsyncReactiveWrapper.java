@@ -27,5 +27,5 @@ public class MyNodeAsyncReactiveWrapper  extends test.fixtures.inheritance.MyRoo
     public reactor.core.publisher.Mono<Void> doMid() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.doMid());
     }
-    
+
 }

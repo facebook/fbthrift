@@ -27,5 +27,5 @@ public class LegacyServiceAsyncReactiveWrapper
     public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.getPoints(key, legacyStuff));
     }
-    
+
 }

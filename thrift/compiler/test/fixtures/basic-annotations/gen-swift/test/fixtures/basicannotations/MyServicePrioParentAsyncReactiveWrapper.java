@@ -27,10 +27,10 @@ public class MyServicePrioParentAsyncReactiveWrapper
     public reactor.core.publisher.Mono<Void> ping() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.ping());
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> pong() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.pong());
     }
-    
+
 }

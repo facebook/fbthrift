@@ -23,4 +23,29 @@ public class PubSubStreamingServiceAsyncReactiveWrapper
         _delegate.close();
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To) {
+        throw new UnsupportedOperationException();
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> streamthrows(final int foo) {
+        throw new UnsupportedOperationException();
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> boththrows(final int foo) {
+        throw new UnsupportedOperationException();
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo) {
+        throw new UnsupportedOperationException();
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To) {
+        throw new UnsupportedOperationException();
+    }
+
 }

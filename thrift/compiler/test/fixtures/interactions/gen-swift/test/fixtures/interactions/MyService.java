@@ -52,6 +52,12 @@ public interface MyService extends java.io.Closeable {
 
     interface Reactive extends Closeable {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> foo();
+
+        default reactor.core.publisher.Mono<Void> foo(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

@@ -40,6 +40,13 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
     public reactor.core.publisher.Mono<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}));
     }
-    
+
     {{/service:supportedFunctions}}
+    {{#service:streamingFunctions}}
+    @java.lang.Override
+    public {{#function:returnType}}{{> StreamReturnType}}{{/function:returnType}} {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+        throw new UnsupportedOperationException();
+    }
+
+    {{/service:streamingFunctions}}
 }

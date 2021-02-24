@@ -52,6 +52,12 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
 
     interface Reactive extends Closeable, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> pang();
+
+        default reactor.core.publisher.Mono<Void> pang(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

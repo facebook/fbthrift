@@ -52,6 +52,12 @@ public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyR
 
     interface Reactive extends Closeable, test.fixtures.inheritance.MyRoot.Reactive {
         @java.lang.Override void close();
+
         reactor.core.publisher.Mono<Void> doMid();
+
+        default reactor.core.publisher.Mono<Void> doMid(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }

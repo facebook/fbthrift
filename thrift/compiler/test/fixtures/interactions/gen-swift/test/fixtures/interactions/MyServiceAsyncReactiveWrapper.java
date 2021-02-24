@@ -27,5 +27,5 @@ public class MyServiceAsyncReactiveWrapper
     public reactor.core.publisher.Mono<Void> foo() {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.foo());
     }
-    
+
 }

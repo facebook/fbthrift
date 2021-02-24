@@ -27,10 +27,10 @@ public class DbMixedStackArgumentsAsyncReactiveWrapper
     public reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.getDataByKey0(key));
     }
-    
+
     @java.lang.Override
     public reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key) {
         return com.facebook.swift.transport.util.FutureUtil.toMono(_delegate.getDataByKey1(key));
     }
-    
+
 }
