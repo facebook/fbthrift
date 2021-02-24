@@ -45,7 +45,7 @@ class t_type_fake : public t_type {
     return {};
   }
 
-  TypeValue get_type_value() const override {
+  type get_type_value() const override {
     return {};
   }
 

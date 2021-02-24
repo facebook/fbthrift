@@ -37,16 +37,16 @@ class t_base_type : public t_type {
    * Enumeration of thrift base types
    */
   enum t_base {
-    TYPE_VOID = int(TypeValue::TYPE_VOID),
-    TYPE_STRING = int(TypeValue::TYPE_STRING),
-    TYPE_BOOL = int(TypeValue::TYPE_BOOL),
-    TYPE_BYTE = int(TypeValue::TYPE_BYTE),
-    TYPE_I16 = int(TypeValue::TYPE_I16),
-    TYPE_I32 = int(TypeValue::TYPE_I32),
-    TYPE_I64 = int(TypeValue::TYPE_I64),
-    TYPE_DOUBLE = int(TypeValue::TYPE_DOUBLE),
-    TYPE_FLOAT = int(TypeValue::TYPE_FLOAT),
-    TYPE_BINARY = int(TypeValue::TYPE_BINARY),
+    TYPE_VOID = int(type::TYPE_VOID),
+    TYPE_STRING = int(type::TYPE_STRING),
+    TYPE_BOOL = int(type::TYPE_BOOL),
+    TYPE_BYTE = int(type::TYPE_BYTE),
+    TYPE_I16 = int(type::TYPE_I16),
+    TYPE_I32 = int(type::TYPE_I32),
+    TYPE_I64 = int(type::TYPE_I64),
+    TYPE_DOUBLE = int(type::TYPE_DOUBLE),
+    TYPE_FLOAT = int(type::TYPE_FLOAT),
+    TYPE_BINARY = int(type::TYPE_BINARY),
   };
 
   t_base_type(std::string name, t_base base) : t_type(name), base_(base) {}
@@ -134,8 +134,8 @@ class t_base_type : public t_type {
     return t_base_name(base_);
   }
 
-  TypeValue get_type_value() const override {
-    return static_cast<TypeValue>(base_);
+  type get_type_value() const override {
+    return static_cast<type>(base_);
   }
 
   uint64_t get_type_id() const override {

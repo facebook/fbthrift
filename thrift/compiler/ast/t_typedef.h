@@ -83,7 +83,7 @@ class t_typedef : public t_type {
     return get_type()->get_impl_full_name();
   }
 
-  TypeValue get_type_value() const override {
+  type get_type_value() const override {
     return get_type()->get_type_value();
   }
 

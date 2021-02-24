@@ -47,8 +47,8 @@ class t_list : public t_container {
     return "list<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_LIST;
+  type get_type_value() const override {
+    return type::TYPE_LIST;
   }
 
  private:

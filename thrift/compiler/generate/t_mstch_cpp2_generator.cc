@@ -81,17 +81,17 @@ bool same_types(const t_type* a, const t_type* b) {
   }
 
   switch (resolved_a->get_type_value()) {
-    case t_types::TypeValue::TYPE_LIST: {
+    case t_type::type::TYPE_LIST: {
       const auto* list_a = dynamic_cast<const t_list*>(resolved_a);
       const auto* list_b = dynamic_cast<const t_list*>(resolved_b);
       return same_types(list_a->get_elem_type(), list_b->get_elem_type());
     }
-    case t_types::TypeValue::TYPE_SET: {
+    case t_type::type::TYPE_SET: {
       const auto* set_a = dynamic_cast<const t_set*>(resolved_a);
       const auto* set_b = dynamic_cast<const t_set*>(resolved_b);
       return same_types(set_a->get_elem_type(), set_b->get_elem_type());
     }
-    case t_types::TypeValue::TYPE_MAP: {
+    case t_type::type::TYPE_MAP: {
       const auto* map_a = dynamic_cast<const t_map*>(resolved_a);
       const auto* map_b = dynamic_cast<const t_map*>(resolved_b);
       return same_types(map_a->get_key_type(), map_b->get_key_type()) &&
@@ -910,24 +910,24 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     t_type const* type = field->get_type();
     switch (type->get_type_value()) {
-      case t_types::TypeValue::TYPE_BOOL:
-      case t_types::TypeValue::TYPE_BYTE:
+      case t_type::type::TYPE_BOOL:
+      case t_type::type::TYPE_BYTE:
         return 1;
-      case t_types::TypeValue::TYPE_I16:
+      case t_type::type::TYPE_I16:
         return 2;
-      case t_types::TypeValue::TYPE_I32:
-      case t_types::TypeValue::TYPE_FLOAT:
-      case t_types::TypeValue::TYPE_ENUM:
+      case t_type::type::TYPE_I32:
+      case t_type::type::TYPE_FLOAT:
+      case t_type::type::TYPE_ENUM:
         return 4;
-      case t_types::TypeValue::TYPE_I64:
-      case t_types::TypeValue::TYPE_DOUBLE:
-      case t_types::TypeValue::TYPE_STRING:
-      case t_types::TypeValue::TYPE_BINARY:
-      case t_types::TypeValue::TYPE_LIST:
-      case t_types::TypeValue::TYPE_SET:
-      case t_types::TypeValue::TYPE_MAP:
+      case t_type::type::TYPE_I64:
+      case t_type::type::TYPE_DOUBLE:
+      case t_type::type::TYPE_STRING:
+      case t_type::type::TYPE_BINARY:
+      case t_type::type::TYPE_LIST:
+      case t_type::type::TYPE_SET:
+      case t_type::type::TYPE_MAP:
         return 8;
-      case t_types::TypeValue::TYPE_STRUCT: {
+      case t_type::type::TYPE_STRUCT: {
         size_t align = 1;
         const size_t kMaxAlign = 8;
         t_struct const* strct = dynamic_cast<t_struct const*>(type);

@@ -31,14 +31,25 @@ namespace compiler {
 
 class t_program;
 
-/*
- * All the thrift supported types
+/**
+ * class t_type
  *
- * @kTypeBits - TODO: add description
- * @kTypeMask - TODO: add description
+ * Generic representation of a thrift type. These objects are used by the
+ * parser module to build up a tree of object that are all explicitly typed.
+ * The generic t_type class exports a variety of useful methods that are
+ * used by the code generator to branch based upon different handling for the
+ * various types.
+ *
  */
-struct t_types {
-  enum struct TypeValue {
+class t_type : public t_named {
+ public:
+  /*
+   * All the thrift supported types
+   *
+   * @kTypeBits - TODO: add description
+   * @kTypeMask - TODO: add description
+   */
+  enum class type {
     TYPE_VOID,
     TYPE_STRING,
     TYPE_BOOL,
@@ -62,31 +73,18 @@ struct t_types {
 
   static constexpr size_t kTypeBits = 5;
   static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
-};
 
-/**
- * class t_type
- *
- * Generic representation of a thrift type. These objects are used by the
- * parser module to build up a tree of object that are all explicitly typed.
- * The generic t_type class exports a variety of useful methods that are
- * used by the code generator to branch based upon different handling for the
- * various types.
- *
- */
-class t_type : public t_named {
- public:
-  /**
-   * Simplify access to thrift's TypeValues
-   */
-  using TypeValue = t_types::TypeValue;
+  // TODO(saintlou): temporary definition while working on T84798809,
+  // where we will rename the above UUPER_CASE enums to snake_case
+  using TypeValue = type;
 
   /**
    * t_type abstract methods
    */
   virtual std::string get_full_name() const = 0;
   virtual std::string get_impl_full_name() const = 0;
-  virtual TypeValue get_type_value() const = 0;
+  // @get_type_value() - TODO: Renanme function
+  virtual type get_type_value() const = 0;
 
   /**
    * Default returns for every thrift type

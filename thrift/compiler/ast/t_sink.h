@@ -90,8 +90,8 @@ class t_sink : public t_type {
              : "");
   }
 
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_SINK;
+  type get_type_value() const override {
+    return type::TYPE_SINK;
   }
 
  private:

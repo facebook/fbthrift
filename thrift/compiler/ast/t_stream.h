@@ -65,8 +65,8 @@ class t_stream_response : public t_type {
     return "stream<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_STREAM;
+  type get_type_value() const override {
+    return type::TYPE_STREAM;
   }
 
   t_struct* get_throws_struct() const {

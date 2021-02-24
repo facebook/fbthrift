@@ -29,8 +29,8 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-constexpr size_t t_types::kTypeBits;
-constexpr uint64_t t_types::kTypeMask;
+constexpr size_t t_type::kTypeBits;
+constexpr uint64_t t_type::kTypeMask;
 
 uint64_t t_type::get_type_id() const {
   // This union allows the conversion of the SHA char buffer to a 64bit uint
@@ -43,9 +43,9 @@ uint64_t t_type::get_type_id() const {
   SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(), u.buf);
   const auto hash =
       apache::thrift::compiler::bswap_host_to_little_endian(u.val);
-  TypeValue tv = get_type_value();
+  type tv = get_type_value();
 
-  return (hash & ~t_types::kTypeMask) | int(tv);
+  return (hash & ~t_type::kTypeMask) | int(tv);
 }
 
 std::string t_type::make_full_name(const char* prefix) const {

@@ -100,8 +100,8 @@ class t_struct : public t_type {
     return get_view_parent()->get_full_name();
   }
 
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_STRUCT;
+  type get_type_value() const override {
+    return type::TYPE_STRUCT;
   }
 
  protected:

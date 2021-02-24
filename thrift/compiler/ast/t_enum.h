@@ -69,8 +69,8 @@ class t_enum : public t_type {
     return make_full_name("enum");
   }
 
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_ENUM;
+  type get_type_value() const override {
+    return type::TYPE_ENUM;
   }
 
  private:
