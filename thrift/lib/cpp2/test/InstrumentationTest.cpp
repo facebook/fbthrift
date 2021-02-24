@@ -481,10 +481,25 @@ TEST_F(RequestInstrumentationTest, simpleHeaderRequestTest) {
   }
 }
 
-TEST_F(RequestInstrumentationTest, requestPayloadTest) {
+class RequestInstrumentationTestP
+    : public RequestInstrumentationTest,
+      public ::testing::WithParamInterface<std::tuple<int, int, bool>> {
+ protected:
+  size_t finishedRequestsLimit;
+  size_t reqNum;
+  bool rocket;
+  void SetUp() override {
+    std::tie(finishedRequestsLimit, reqNum, rocket) = GetParam();
+    impl_ = std::make_unique<Impl>([&](auto& ts) {
+      ts.setMaxFinishedDebugPayloadsPerWorker(finishedRequestsLimit);
+    });
+  }
+};
+
+TEST_P(RequestInstrumentationTestP, requestPayloadTest) {
   std::array<std::string, 4> strList = {
       "apache", "thrift", "test", "InstrumentationTest"};
-  auto client = makeHeaderClient();
+  auto client = rocket ? makeRocketClient() : makeHeaderClient();
 
   std::vector<folly::SemiFuture<folly::IOBuf>> tasks;
   int32_t reqId = 0;
@@ -658,21 +673,6 @@ TEST_F(ServerInstrumentationTest, simpleServerTest) {
       instrumentation::getServerCount(instrumentation::kThriftServerTrackerKey),
       1);
 }
-
-class RequestInstrumentationTestP
-    : public RequestInstrumentationTest,
-      public ::testing::WithParamInterface<std::tuple<int, int, bool>> {
- protected:
-  size_t finishedRequestsLimit;
-  size_t reqNum;
-  bool rocket;
-  void SetUp() override {
-    std::tie(finishedRequestsLimit, reqNum, rocket) = GetParam();
-    impl_ = std::make_unique<Impl>([&](auto& ts) {
-      ts.setMaxFinishedDebugPayloadsPerWorker(finishedRequestsLimit);
-    });
-  }
-};
 
 TEST_P(RequestInstrumentationTestP, FinishedRequests) {
   auto client = rocket ? makeRocketClient() : makeHeaderClient();
