@@ -220,7 +220,11 @@ class HeaderClientChannel : public ClientChannel,
 
   uint16_t getProtocolId() override;
   void setProtocolId(uint16_t protocolId) {
-    protocolId_ = protocolId;
+    if (isUpgradedToRocket()) {
+      rocketChannel_->setProtocolId(protocolId);
+    } else {
+      protocolId_ = protocolId;
+    }
   }
 
   bool expireCallback(uint32_t seqId);

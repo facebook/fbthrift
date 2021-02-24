@@ -191,11 +191,8 @@ class HeaderClientChannel::RocketUpgradeCallback
                 std::move(rocketTransport),
                 std::move(*headerClientChannel_->rocketRequestSetupMetadata_))
           : RocketClientChannel::newChannel(std::move(rocketTransport));
-      // make sure to set closeCallback
-      if (headerClientChannel_->closeCallback_) {
-        headerClientChannel_->rocketChannel_->setCloseCallback(
-            headerClientChannel_->closeCallback_);
-      }
+      copyConfigurationToRocketChannel(
+          *headerClientChannel_->rocketChannel_, *headerClientChannel_);
     }
 
     auto oldState = headerClientChannel_->upgradeState_.exchange(
@@ -242,6 +239,15 @@ class HeaderClientChannel::RocketUpgradeCallback
       }
       headerClientChannel_->pendingRequests_.pop_front();
     }
+  }
+
+  static void copyConfigurationToRocketChannel(
+      RocketClientChannel& rocketChannel,
+      const HeaderClientChannel& headerChannel) {
+    if (headerChannel.closeCallback_) {
+      rocketChannel.setCloseCallback(headerChannel.closeCallback_);
+    }
+    rocketChannel.setProtocolId(headerChannel.protocolId_);
   }
 
   apache::thrift::HeaderClientChannel* headerClientChannel_;

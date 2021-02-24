@@ -74,7 +74,10 @@ class TransportUpgradeTest : public TestSetup {
     }
   }
 
-  void testRawClientRocketUpgradeSync(bool serverUpgradeEnabled) {
+  template <typename F>
+  void testRawClientRocketUpgradeSync(
+      bool serverUpgradeEnabled,
+      F configureHeaderChannel) {
     // enable raw client transport upgrade to rocket
     THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, serverUpgradeEnabled);
@@ -82,6 +85,7 @@ class TransportUpgradeTest : public TestSetup {
     folly::EventBase evb;
     auto socket = folly::AsyncSocket::newSocket(&evb, "::1", port_);
     auto channel = HeaderClientChannel::newChannel(std::move(socket));
+    configureHeaderChannel(*channel);
 
     auto client =
         std::make_unique<TransportUpgradeAsyncClient>(std::move(channel));
@@ -97,8 +101,14 @@ class TransportUpgradeTest : public TestSetup {
       ASSERT_EQ(nullptr, headerChannel->rocketChannel_);
     }
   }
+  void testRawClientRocketUpgradeSync(bool serverUpgradeEnabled) {
+    testRawClientRocketUpgradeSync(serverUpgradeEnabled, [](auto&&) {});
+  }
 
-  void testRawClientRocketUpgradeAsync(bool serverUpgradeEnabled) {
+  template <typename F>
+  void testRawClientRocketUpgradeAsync(
+      bool serverUpgradeEnabled,
+      F configureHeaderChannel) {
     // enable raw client transport upgrade to rocket
     THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, serverUpgradeEnabled);
@@ -108,6 +118,7 @@ class TransportUpgradeTest : public TestSetup {
 
     auto channel = HeaderClientChannel::newChannel(
         folly::AsyncSocket::newSocket(&evb, "::1", port_));
+    configureHeaderChannel(*channel);
     auto client =
         std::make_unique<TransportUpgradeAsyncClient>(std::move(channel));
     auto f1 = client->semifuture_addTwoNumbers(1, 2).via(&evb).thenTry(
@@ -154,6 +165,9 @@ class TransportUpgradeTest : public TestSetup {
       ASSERT_EQ(nullptr, headerChannel->rocketChannel_);
     }
   }
+  void testRawClientRocketUpgradeAsync(bool serverUpgradeEnabled) {
+    testRawClientRocketUpgradeAsync(serverUpgradeEnabled, [](auto&&) {});
+  }
 
  protected:
   std::unique_ptr<ThriftServer> server_;
@@ -175,6 +189,38 @@ TEST_F(TransportUpgradeTest, RawClientRocketUpgradeAsyncEnabled) {
 
 TEST_F(TransportUpgradeTest, RawClientRocketUpgradeAsyncDisabled) {
   testRawClientRocketUpgradeAsync(false /*serverUpgradeEnabled*/);
+}
+
+namespace {
+void useBinaryProtocol(HeaderClientChannel& channel) {
+  channel.setProtocolId(protocol::T_BINARY_PROTOCOL);
+}
+} // namespace
+
+TEST_F(TransportUpgradeTest, RawClientRocketUpgradeSyncEnabled_BinaryProtocol) {
+  testRawClientRocketUpgradeSync(
+      true /*serverUpgradeEnabled*/, useBinaryProtocol);
+}
+
+TEST_F(
+    TransportUpgradeTest,
+    RawClientRocketUpgradeSyncDisabled_BinaryProtocol) {
+  testRawClientRocketUpgradeSync(
+      false /*serverUpgradeEnabled*/, useBinaryProtocol);
+}
+
+TEST_F(
+    TransportUpgradeTest,
+    RawClientRocketUpgradeAsyncEnabled_BinaryProtocol) {
+  testRawClientRocketUpgradeAsync(
+      true /*serverUpgradeEnabled*/, useBinaryProtocol);
+}
+
+TEST_F(
+    TransportUpgradeTest,
+    RawClientRocketUpgradeAsyncDisabled_BinaryProtocol) {
+  testRawClientRocketUpgradeAsync(
+      false /*serverUpgradeEnabled*/, useBinaryProtocol);
 }
 
 TEST_F(TransportUpgradeTest, RawClientRocketUpgradeOneway) {
