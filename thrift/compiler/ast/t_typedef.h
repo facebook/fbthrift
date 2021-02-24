@@ -57,15 +57,14 @@ class t_typedef : public t_type {
         scope_(scope),
         defined_(false) {}
 
-  ~t_typedef() override {}
-
   /**
    * For placeholder typedef only, resolve and find the actual type that the
    * symbolic name refers to. Return true iff the type exists in the scope.
    */
-  bool resolve_placeholder() const;
+  bool resolve_placeholder();
 
-  t_type* get_type() const;
+  const t_type* get_type() const;
+  t_type* get_type();
 
   const std::string& get_symbolic() const {
     return symbolic_;
@@ -96,7 +95,7 @@ class t_typedef : public t_type {
   }
 
  private:
-  mutable t_type* type_;
+  t_type* type_;
   std::string symbolic_;
   t_scope* scope_;
   bool defined_{true};

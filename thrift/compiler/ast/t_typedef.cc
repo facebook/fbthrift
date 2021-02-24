@@ -22,17 +22,20 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-bool t_typedef::resolve_placeholder() const {
-  assert(!type_);
+bool t_typedef::resolve_placeholder() {
+  assert(type_ == nullptr);
   assert(!defined_);
-
   type_ = scope_->get_type(get_program()->get_name() + "." + symbolic_);
-
-  return !!type_;
+  return type_ != nullptr;
 }
 
-t_type* t_typedef::get_type() const {
-  assert(!!type_);
+const t_type* t_typedef::get_type() const {
+  assert(type_ != nullptr);
+  return type_;
+}
+
+t_type* t_typedef::get_type() {
+  assert(type_ != nullptr);
   return type_;
 }
 
