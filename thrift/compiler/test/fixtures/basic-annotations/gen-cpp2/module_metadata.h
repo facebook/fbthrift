@@ -35,11 +35,6 @@ class StructMetadata<::cpp2::MyStructNestedAnnotation> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStructAnnotation> {
- public:
-  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
-};
-template <>
 class StructMetadata<::cpp2::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);

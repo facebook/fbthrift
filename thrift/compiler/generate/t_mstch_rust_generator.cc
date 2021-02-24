@@ -1285,8 +1285,8 @@ class mstch_rust_annotation : public mstch_annotation {
       ELEMENT_POSITION pos,
       int32_t index)
       : mstch_annotation(
-            annotation.key,
-            annotation.val,
+            annotation.first,
+            annotation.second,
             generators,
             cache,
             pos,

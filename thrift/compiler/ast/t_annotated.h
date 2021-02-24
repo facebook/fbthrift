@@ -36,10 +36,6 @@ class t_const;
  */
 class t_annotated : public t_node {
  public:
-  // TODO(afuller): Make this private.
-  // Though, it looks like no one is using this, so consider removing instead.
-  std::map<std::string, std::shared_ptr<const t_const>> annotation_objects_;
-
   ~t_annotated() override;
 
   // Returns true if there exists an annotation with the given name.
@@ -86,7 +82,6 @@ class t_annotated : public t_node {
   void set_annotation(const std::string& key, std::string value) {
     annotations_[key] = std::move(value);
   }
-  void set_annotation(const std::string& key, std::unique_ptr<t_const> value);
 
   const std::vector<const t_const*>& structured_annotations() const {
     return structured_annotations_raw_;
@@ -110,16 +105,7 @@ class t_annotated : public t_node {
   std::vector<const t_const*> structured_annotations_raw_;
 };
 
-/**
- * Placeholder struct to return key and value of an annotation during parsing.
- */
-struct t_annotation {
-  std::string key;
-  std::string val{};
-  // TODO (partisan): Try to use unique_ptr and rewrite the code relying on
-  // copies.
-  std::shared_ptr<t_const> object_val{};
-};
+using t_annotation = std::map<std::string, std::string>::value_type;
 
 } // namespace compiler
 } // namespace thrift

@@ -41,25 +41,6 @@ void reset_field<::cpp2::MyStructNestedAnnotation>(
 }
 
 template<>
-void reset_field<::cpp2::MyStructAnnotation>(
-    ::cpp2::MyStructAnnotation& obj, uint16_t index) {
-  switch (index) {
-    case 0:
-      obj.count_ref().copy_from(default_inst<::cpp2::MyStructAnnotation>().count_ref());
-      return;
-    case 1:
-      obj.name_ref().copy_from(default_inst<::cpp2::MyStructAnnotation>().name_ref());
-      return;
-    case 2:
-      obj.extra_ref().copy_from(default_inst<::cpp2::MyStructAnnotation>().extra_ref());
-      return;
-    case 3:
-      obj.nest_ref().copy_from(default_inst<::cpp2::MyStructAnnotation>().nest_ref());
-      return;
-  }
-}
-
-template<>
 void reset_field<::cpp2::MyStruct>(
     ::cpp2::MyStruct& obj, uint16_t index) {
   switch (index) {
@@ -100,16 +81,6 @@ void reset_field<::cpp2::SecretStruct>(
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::MyStructNestedAnnotation>::namesmap() {
-  static const folly::Indestructible<NamesMap> map {
-    {
-    }
-  };
-  return *map;
-}
-
-template<>
-const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStructAnnotation>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

@@ -51,47 +51,6 @@ class MyStructNestedAnnotation(thrift.py3.types.Struct, _typing.Hashable, _typin
     def __ge__(self, other: 'MyStructNestedAnnotation') -> bool: ...
 
 
-class MyStructAnnotation(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
-    class __fbthrift_IsSet:
-        count: bool
-        name: bool
-        extra: bool
-        nest: bool
-        pass
-
-    count: Final[int] = ...
-
-    name: Final[str] = ...
-
-    extra: Final[_typing.Optional[str]] = ...
-
-    nest: Final['MyStructNestedAnnotation'] = ...
-
-    def __init__(
-        self, *,
-        count: _typing.Optional[int]=None,
-        name: _typing.Optional[str]=None,
-        extra: _typing.Optional[str]=None,
-        nest: _typing.Optional['MyStructNestedAnnotation']=None
-    ) -> None: ...
-
-    def __call__(
-        self, *,
-        count: _typing.Union[int, __NotSet, None]=NOTSET,
-        name: _typing.Union[str, __NotSet, None]=NOTSET,
-        extra: _typing.Union[str, __NotSet, None]=NOTSET,
-        nest: _typing.Union['MyStructNestedAnnotation', __NotSet, None]=NOTSET
-    ) -> MyStructAnnotation: ...
-
-    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStructAnnotation'], bytes]]: ...
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-    def __hash__(self) -> int: ...
-    def __lt__(self, other: 'MyStructAnnotation') -> bool: ...
-    def __gt__(self, other: 'MyStructAnnotation') -> bool: ...
-    def __le__(self, other: 'MyStructAnnotation') -> bool: ...
-    def __ge__(self, other: 'MyStructAnnotation') -> bool: ...
-
-
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     class __fbthrift_IsSet:
         major: bool

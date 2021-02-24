@@ -1697,7 +1697,7 @@ class annotation_cpp2_generator : public annotation_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0) const override {
     return std::make_shared<mstch_cpp2_annotation>(
-        keyval.key, keyval.val, generators, cache, pos, index);
+        keyval.first, keyval.second, generators, cache, pos, index);
   }
 };
 

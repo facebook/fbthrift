@@ -17,13 +17,6 @@ cdef class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
     cdef public str name
 
 
-cdef class MyStructAnnotation_Builder(thrift.py3.builder.StructBuilder):
-    cdef public pint count
-    cdef public str name
-    cdef public str extra
-    cdef public object nest
-
-
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint major
     cdef public str package

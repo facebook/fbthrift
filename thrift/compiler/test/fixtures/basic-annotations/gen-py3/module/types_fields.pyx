@@ -46,68 +46,6 @@ cdef class __MyStructNestedAnnotation_FieldsSetter(__StructFieldsSetter):
 
 
 @__cython.auto_pickle(False)
-cdef class __MyStructAnnotation_FieldsSetter(__StructFieldsSetter):
-
-    @staticmethod
-    cdef __MyStructAnnotation_FieldsSetter create(_module_types.cMyStructAnnotation* struct_cpp_obj):
-        cdef __MyStructAnnotation_FieldsSetter __fbthrift_inst = __MyStructAnnotation_FieldsSetter.__new__(__MyStructAnnotation_FieldsSetter)
-        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
-        __fbthrift_inst._setters[__cstring_view(<const char*>"count")] = __MyStructAnnotation_FieldsSetter._set_field_0
-        __fbthrift_inst._setters[__cstring_view(<const char*>"name")] = __MyStructAnnotation_FieldsSetter._set_field_1
-        __fbthrift_inst._setters[__cstring_view(<const char*>"extra")] = __MyStructAnnotation_FieldsSetter._set_field_2
-        __fbthrift_inst._setters[__cstring_view(<const char*>"nest")] = __MyStructAnnotation_FieldsSetter._set_field_3
-        return __fbthrift_inst
-
-    cdef void set_field(__MyStructAnnotation_FieldsSetter self, const char* name, object value) except *:
-        cdef __cstring_view cname = __cstring_view(name)
-        cdef cumap[__cstring_view, __MyStructAnnotation_FieldsSetterFunc].iterator found = self._setters.find(cname)
-        if found == self._setters.end():
-            raise TypeError(f"invalid field name {name.decode('utf-8')}")
-        deref(found).second(self, value)
-
-    cdef void _set_field_0(self, __fbthrift_value) except *:
-        # for field count
-        if __fbthrift_value is None:
-            __reset_field[_module_types.cMyStructAnnotation](deref(self._struct_cpp_obj), 0)
-            return
-        if not isinstance(__fbthrift_value, int):
-            raise TypeError(f'count is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).count_ref().assign(__fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.count = True
-
-    cdef void _set_field_1(self, __fbthrift_value) except *:
-        # for field name
-        if __fbthrift_value is None:
-            __reset_field[_module_types.cMyStructAnnotation](deref(self._struct_cpp_obj), 1)
-            return
-        if not isinstance(__fbthrift_value, str):
-            raise TypeError(f'name is not a { str !r}.')
-        deref(self._struct_cpp_obj).name_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.name = True
-
-    cdef void _set_field_2(self, __fbthrift_value) except *:
-        # for field extra
-        if __fbthrift_value is None:
-            __reset_field[_module_types.cMyStructAnnotation](deref(self._struct_cpp_obj), 2)
-            return
-        if not isinstance(__fbthrift_value, str):
-            raise TypeError(f'extra is not a { str !r}.')
-        deref(self._struct_cpp_obj).extra_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.extra = True
-
-    cdef void _set_field_3(self, __fbthrift_value) except *:
-        # for field nest
-        if __fbthrift_value is None:
-            __reset_field[_module_types.cMyStructAnnotation](deref(self._struct_cpp_obj), 3)
-            return
-        if not isinstance(__fbthrift_value, _module_types.MyStructNestedAnnotation):
-            raise TypeError(f'nest is not a { _module_types.MyStructNestedAnnotation !r}.')
-        deref(self._struct_cpp_obj).nest_ref().assign(deref((<_module_types.MyStructNestedAnnotation?> __fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.nest = True
-
-
-@__cython.auto_pickle(False)
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod

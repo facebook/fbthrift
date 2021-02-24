@@ -27,13 +27,6 @@ struct MyStructNestedAnnotation {
   1: string name;
 }
 
-struct MyStructAnnotation {
-  1: i64 count;
-  2: string name;
-  3: optional string extra;
-  4: MyStructNestedAnnotation nest;
-}
-
 struct MyStruct {
   # glibc has macros with this name, Thrift should be able to prevent collisions
   1: i64 major (cpp.name = 'majorVer');
@@ -44,15 +37,7 @@ struct MyStruct {
   4: string class_ (java.swift.name = 'class_');
   5: string annotation_with_trailing_comma (custom = 'test');
   6: string empty_annotations ();
-} (
-  android.generate_builder,
-  struct_annotation = MyStructAnnotation {
-    'count' : 123,
-    'name' : '"structy"',
-    'nest' : {'name': "'nesty'"},
-  },
-  cpp.internal.deprecated._data.method,
-)
+} (android.generate_builder, cpp.internal.deprecated._data.method)
 
 service MyService {
   void ping();

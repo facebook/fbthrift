@@ -15,14 +15,6 @@ pub mod types {
         pub name: ::std::string::String,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
-    pub struct MyStructAnnotation {
-        pub count: ::std::primitive::i64,
-        pub name: ::std::string::String,
-        pub extra: ::std::option::Option<::std::string::String>,
-        pub nest: crate::types::MyStructNestedAnnotation,
-    }
-
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStruct {
         pub major: ::std::primitive::i64,
@@ -206,88 +198,6 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 name: field_name.unwrap_or_default(),
-            })
-        }
-    }
-
-
-    impl ::std::default::Default for self::MyStructAnnotation {
-        fn default() -> Self {
-            Self {
-                count: ::std::default::Default::default(),
-                name: ::std::default::Default::default(),
-                extra: ::std::option::Option::None,
-                nest: ::std::default::Default::default(),
-            }
-        }
-    }
-
-    unsafe impl ::std::marker::Send for self::MyStructAnnotation {}
-    unsafe impl ::std::marker::Sync for self::MyStructAnnotation {}
-
-    impl ::fbthrift::GetTType for self::MyStructAnnotation {
-        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
-    }
-
-    impl<P> ::fbthrift::Serialize<P> for self::MyStructAnnotation
-    where
-        P: ::fbthrift::ProtocolWriter,
-    {
-        fn write(&self, p: &mut P) {
-            p.write_struct_begin("MyStructAnnotation");
-            p.write_field_begin("count", ::fbthrift::TType::I64, 1);
-            ::fbthrift::Serialize::write(&self.count, p);
-            p.write_field_end();
-            p.write_field_begin("name", ::fbthrift::TType::String, 2);
-            ::fbthrift::Serialize::write(&self.name, p);
-            p.write_field_end();
-            if let ::std::option::Option::Some(some) = &self.extra {
-                p.write_field_begin("extra", ::fbthrift::TType::String, 3);
-                ::fbthrift::Serialize::write(some, p);
-                p.write_field_end();
-            }
-            p.write_field_begin("nest", ::fbthrift::TType::Struct, 4);
-            ::fbthrift::Serialize::write(&self.nest, p);
-            p.write_field_end();
-            p.write_field_stop();
-            p.write_struct_end();
-        }
-    }
-
-    impl<P> ::fbthrift::Deserialize<P> for self::MyStructAnnotation
-    where
-        P: ::fbthrift::ProtocolReader,
-    {
-        fn read(p: &mut P) -> ::anyhow::Result<Self> {
-            static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("count", ::fbthrift::TType::I64, 1),
-                ::fbthrift::Field::new("extra", ::fbthrift::TType::String, 3),
-                ::fbthrift::Field::new("name", ::fbthrift::TType::String, 2),
-                ::fbthrift::Field::new("nest", ::fbthrift::TType::Struct, 4),
-            ];
-            let mut field_count = ::std::option::Option::None;
-            let mut field_name = ::std::option::Option::None;
-            let mut field_extra = ::std::option::Option::None;
-            let mut field_nest = ::std::option::Option::None;
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (::fbthrift::TType::I64, 1) => field_count = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 2) => field_name = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 3) => field_extra = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 4) => field_nest = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
-                }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
-            ::std::result::Result::Ok(Self {
-                count: field_count.unwrap_or_default(),
-                name: field_name.unwrap_or_default(),
-                extra: field_extra,
-                nest: field_nest.unwrap_or_default(),
             })
         }
     }

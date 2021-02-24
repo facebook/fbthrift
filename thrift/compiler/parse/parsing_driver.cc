@@ -553,7 +553,6 @@ void parsing_driver::set_annotations(
     std::unique_ptr<t_struct_annotations> struct_annotations) {
   if (annotations != nullptr) {
     node->reset_annotations(annotations->strings, annotations->last_lineno);
-    node->annotation_objects_ = std::move(annotations->objects);
   }
   if (struct_annotations != nullptr) {
     for (auto& an : *struct_annotations) {

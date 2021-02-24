@@ -359,11 +359,7 @@ class mstch_base : public mstch::object {
   }
 
   mstch::node annotations(t_annotated const* annotated) {
-    std::vector<t_annotation> annotations;
-    for (const auto& annotation : annotated->annotations()) {
-      annotations.push_back({annotation.first, annotation.second});
-    }
-    return generate_annotations(annotations);
+    return generate_annotations(annotated->annotations());
   }
 
   mstch::node structured_annotations(t_annotated const* annotated) {
@@ -392,10 +388,12 @@ class mstch_base : public mstch::object {
       Generator const* generator,
       Args const&... args) {
     mstch::array a;
-    for (size_t i = 0; i < container.size(); ++i) {
+    size_t i = 0;
+    for (auto& element : container) {
       auto pos = element_position(i, container.size());
-      a.push_back(generator->generate(
-          container[i], generators_, cache_, pos, i, args...));
+      a.push_back(
+          generator->generate(element, generators_, cache_, pos, i, args...));
+      ++i;
     }
     return a;
   }

@@ -84,31 +84,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         string name
         cMyStructNestedAnnotation__isset __isset
 
-    cdef cppclass cMyStructAnnotation__isset "::cpp2::MyStructAnnotation::__isset":
-        bint count
-        bint name
-        bint extra
-        bint nest
-
-    cdef cppclass cMyStructAnnotation "::cpp2::MyStructAnnotation":
-        cMyStructAnnotation() except +
-        cMyStructAnnotation(const cMyStructAnnotation&) except +
-        bint operator==(cMyStructAnnotation&)
-        bint operator!=(cMyStructAnnotation&)
-        bint operator<(cMyStructAnnotation&)
-        bint operator>(cMyStructAnnotation&)
-        bint operator<=(cMyStructAnnotation&)
-        bint operator>=(cMyStructAnnotation&)
-        __field_ref[cint64_t] count_ref()
-        cint64_t count
-        __field_ref[string] name_ref()
-        string name
-        __optional_field_ref[string] extra_ref()
-        string extra
-        __field_ref[cMyStructNestedAnnotation] nest_ref()
-        cMyStructNestedAnnotation nest
-        cMyStructAnnotation__isset __isset
-
     cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint major "majorVer"
         bint package
@@ -168,16 +143,6 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyStructNestedAnnotation])
-
-
-
-cdef class MyStructAnnotation(thrift.py3.types.Struct):
-    cdef shared_ptr[cMyStructAnnotation] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStructAnnotation_FieldsSetter _fields_setter
-    cdef MyStructNestedAnnotation __fbthrift_cached_nest
-
-    @staticmethod
-    cdef create(shared_ptr[cMyStructAnnotation])
 
 
 

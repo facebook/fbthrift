@@ -15,7 +15,6 @@ namespace cpp2 {
   ::apache::thrift::metadata::ThriftServiceContext serviceContext;
   ::apache::thrift::detail::md::EnumMetadata<MyEnum>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructNestedAnnotation>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<MyStructAnnotation>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SecretStruct>::gen(metadata);
   ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(metadata, serviceContext);

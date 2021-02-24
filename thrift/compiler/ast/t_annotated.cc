@@ -94,12 +94,6 @@ std::string t_annotated::get_annotation(
   return default_value;
 }
 
-void t_annotated::set_annotation(
-    const std::string& key,
-    std::unique_ptr<t_const> value) {
-  annotation_objects_[key] = std::move(value);
-}
-
 void t_annotated::add_structured_annotation(std::unique_ptr<t_const> annot) {
   structured_annotations_raw_.emplace_back(annot.get());
   structured_annotations_.emplace_back(std::move(annot));

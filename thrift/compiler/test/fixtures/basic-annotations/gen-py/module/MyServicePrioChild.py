@@ -18,7 +18,7 @@ if sys.version_info[0] >= 3:
   long = int
 
 import module.MyServicePrioParent
-from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyStructAnnotation, MyStruct, SecretStruct
+from .ttypes import UTF8STRINGS, MyEnum, MyStructNestedAnnotation, MyStruct, SecretStruct
 from thrift.Thrift import TProcessor
 import pprint
 import warnings

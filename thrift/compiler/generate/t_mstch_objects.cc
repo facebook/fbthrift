@@ -106,7 +106,7 @@ std::shared_ptr<mstch_base> annotation_generator::generate(
     ELEMENT_POSITION pos,
     int32_t index) const {
   return std::make_shared<mstch_annotation>(
-      annotation.key, annotation.val, generators, cache, pos, index);
+      annotation.first, annotation.second, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> structured_annotation_generator::generate(

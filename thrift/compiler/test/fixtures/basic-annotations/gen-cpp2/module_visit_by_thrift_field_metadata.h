@@ -27,25 +27,6 @@ struct VisitByThriftId<::cpp2::MyStructNestedAnnotation> {
 };
 
 template <>
-struct VisitByThriftId<::cpp2::MyStructAnnotation> {
-  template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
-    case 1:
-      return f(0, static_cast<T&&>(t).count_ref());
-    case 2:
-      return f(1, static_cast<T&&>(t).name_ref());
-    case 3:
-      return f(2, static_cast<T&&>(t).extra_ref());
-    case 4:
-      return f(3, static_cast<T&&>(t).nest_ref());
-    default:
-      throwInvalidThriftId(id, "::cpp2::MyStructAnnotation");
-    }
-  }
-};
-
-template <>
 struct VisitByThriftId<::cpp2::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {

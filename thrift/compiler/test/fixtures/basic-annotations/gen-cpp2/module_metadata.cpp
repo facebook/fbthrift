@@ -56,33 +56,6 @@ StructMetadata<::cpp2::MyStructNestedAnnotation>::gen(ThriftMetadata& metadata) 
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::MyStructAnnotation>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.MyStructAnnotation", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return res.first->second;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_MyStructAnnotation = res.first->second;
-  module_MyStructAnnotation.name_ref() = "module.MyStructAnnotation";
-  module_MyStructAnnotation.is_union_ref() = false;
-  static const EncodedThriftField
-  module_MyStructAnnotation_fields[] = {
-    std::make_tuple(1, "count", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(3, "extra", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(4, "nest", false, std::make_unique<Struct< ::cpp2::MyStructNestedAnnotation>>("module.MyStructNestedAnnotation"), std::vector<ThriftConstStruct>{}),
-  };
-  for (const auto& f : module_MyStructAnnotation_fields) {
-    ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
-    module_MyStructAnnotation.fields_ref()->push_back(std::move(field));
-  }
-  return res.first->second;
-}
-const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs_ref()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {

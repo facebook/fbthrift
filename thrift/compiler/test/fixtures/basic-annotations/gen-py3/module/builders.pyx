@@ -10,15 +10,6 @@ cdef class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         yield "name", self.name
 
-cdef class MyStructAnnotation_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _module_types.MyStructAnnotation
-
-    def __iter__(self):
-        yield "count", self.count
-        yield "name", self.name
-        yield "extra", self.extra
-        yield "nest", self.nest
-
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyStruct
 

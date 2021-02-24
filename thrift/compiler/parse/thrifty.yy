@@ -218,7 +218,6 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 %type<t_typedef*>       Typedef
 
-%type<std::string>      TypeAnnotationValue
 %type<t_annotation*>    TypeAnnotation
 %type<t_annotations*>   TypeAnnotations
 %type<t_annotations*>   TypeAnnotationList
@@ -1378,7 +1377,6 @@ FieldType:
           auto td = new t_typedef(
               const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
           td->reset_annotations($2->strings, $2->last_lineno);
-          td->annotation_objects_ = std::move($2->objects);
           delete $2;
           $$ = td;
           driver.program->add_unnamed_typedef(own(td));
@@ -1394,7 +1392,6 @@ FieldType:
           driver.program->add_placeholder_typedef(own(td));
           if ($2) {
             $$->reset_annotations($2->strings, $2->last_lineno);
-            td->annotation_objects_ = std::move($2->objects);
             delete $2;
           }
         }
@@ -1422,7 +1419,6 @@ BaseType: SimpleBaseType TypeAnnotations
       if ($2) {
         $$ = new t_base_type(*static_cast<t_base_type*>($1));
         $$->reset_annotations($2->strings, $2->last_lineno);
-        $$->annotation_objects_ = std::move($2->objects);
         delete $2;
         if (driver.mode == parsing_mode::INCLUDES) {
           driver.delete_at_the_end($$);
@@ -1487,7 +1483,6 @@ ContainerType: SimpleContainerType TypeAnnotations
       $$ = $1;
       if ($2) {
         $$->reset_annotations($2->strings, $2->last_lineno);
-        $$->annotation_objects_ = std::move($2->objects);
         delete $2;
       }
     }
@@ -1556,11 +1551,7 @@ TypeAnnotationList:
     {
       driver.debug("TypeAnnotationList => TypeAnnotationList CommaOrSemicolon TypeAnnotation");
       $$ = $1;
-      if (!$3->object_val) {
-        $$->strings[$3->key] = std::move($3->val);
-      } else {
-        $$->objects[$3->key] = std::move($3->object_val);
-      }
+      $$->strings[$3->first] = std::move($3->second);
       delete $3;
     }
 | TypeAnnotation
@@ -1568,72 +1559,44 @@ TypeAnnotationList:
       driver.debug("TypeAnnotationList => TypeAnnotation");
       /* Just use a dummy structure to hold the annotations. */
       $$ = new t_annotations();
-      if (!$1->object_val) {
-        $$->strings[$1->key] = std::move($1->val);
-      } else {
-        $$->objects[$1->key] = std::move($1->object_val);
-      }
+      $$->strings[$1->first] = std::move($1->second);
       delete $1;
     }
 
 TypeAnnotation:
-  Identifier "=" FieldType ConstMap
+  Identifier "=" IntOrLiteral
     {
-      driver.debug("TypeAnnotation TypeAnnotationValueObject");
-      $$ = new t_annotation;
-      $$->key = $1;
-      $$->object_val = std::make_shared<t_const>(
-        driver.program,
-        $3,
-        $1,
-        own($4)
-      );
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.validate_const_type($$->object_val.get());
-      }
+      driver.debug("TypeAnnotation -> Identifier = IntOrLiteral");
+      $$ = new t_annotation{$1, $3};
     }
-| Identifier TypeAnnotationValue
+  | Identifier
     {
-      driver.debug("TypeAnnotation TypeAnnotationValue");
-      $$ = new t_annotation;
-      $$->key = $1;
-      $$->val = $2;
-    }
-
-TypeAnnotationValue:
-  "=" IntOrLiteral
-    {
-      driver.debug("TypeAnnotationValue -> = IntOrLiteral");
-      $$ = $2;
-    }
-|
-    {
-      driver.debug("TypeAnnotationValue ->");
-      $$ = "1";
+      driver.debug("TypeAnnotation -> Identifier");
+      $$ = new t_annotation{$1, "1"};
     }
 
 StructuredAnnotations:
   NonEmptyStructuredAnnotationList
     {
-      driver.debug("StructuredAnnotations => NonEmptyStructuredAnnotationList");
+      driver.debug("StructuredAnnotations -> NonEmptyStructuredAnnotationList");
       $$ = $1;
     }
 |
     {
-      driver.debug("StructuredAnnotations =>");
+      driver.debug("StructuredAnnotations ->");
       $$ = nullptr;
     }
 
 NonEmptyStructuredAnnotationList:
   NonEmptyStructuredAnnotationList StructuredAnnotation
     {
-      driver.debug("NonEmptyStructuredAnnotationList => NonEmptyStructuredAnnotationList StructuredAnnotation");
+      driver.debug("NonEmptyStructuredAnnotationList -> NonEmptyStructuredAnnotationList StructuredAnnotation");
       $$ = $1;
       $$->emplace_back($2);
     }
 | StructuredAnnotation
     {
-      driver.debug("NonEmptyStructuredAnnotationList =>");
+      driver.debug("NonEmptyStructuredAnnotationList ->");
       $$ = new t_struct_annotations;
       $$->emplace_back($1);
     }

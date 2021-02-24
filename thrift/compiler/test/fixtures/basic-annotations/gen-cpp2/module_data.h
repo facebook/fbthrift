@@ -26,13 +26,6 @@ template <> struct TStructDataStorage<::cpp2::MyStructNestedAnnotation> {
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructAnnotation> {
-  static constexpr const std::size_t fields_size = 4;
-  static const std::array<folly::StringPiece, fields_size> fields_names;
-  static const std::array<int16_t, fields_size> fields_ids;
-  static const std::array<protocol::TType, fields_size> fields_types;
-};
-
 template <> struct TStructDataStorage<::cpp2::MyStruct> {
   static constexpr const std::size_t fields_size = 6;
   static const std::array<folly::StringPiece, fields_size> fields_names;

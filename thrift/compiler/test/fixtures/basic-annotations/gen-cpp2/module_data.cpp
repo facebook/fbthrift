@@ -33,25 +33,6 @@ const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyStructNestedAn
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyStructAnnotation>::fields_names = {{
-  "count",
-  "name",
-  "extra",
-  "nest",
-}};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyStructAnnotation>::fields_ids = {{
-  1,
-  2,
-  3,
-  4,
-}};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyStructAnnotation>::fields_types = {{
-  TType::T_I64,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_STRUCT,
-}};
-
 const std::array<folly::StringPiece, 6> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
   "major",
   "package",

@@ -54,20 +54,6 @@ cdef class __MyStructNestedAnnotation_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_0(self, __fbthrift_value) except *
 
 
-ctypedef void (*__MyStructAnnotation_FieldsSetterFunc)(__MyStructAnnotation_FieldsSetter, object) except *
-
-cdef class __MyStructAnnotation_FieldsSetter(__StructFieldsSetter):
-    cdef _module_types.cMyStructAnnotation* _struct_cpp_obj
-    cdef cumap[__cstring_view, __MyStructAnnotation_FieldsSetterFunc] _setters
-
-    @staticmethod
-    cdef __MyStructAnnotation_FieldsSetter create(_module_types.cMyStructAnnotation* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
-
-
 ctypedef void (*__MyStruct_FieldsSetterFunc)(__MyStruct_FieldsSetter, object) except *
 
 cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):

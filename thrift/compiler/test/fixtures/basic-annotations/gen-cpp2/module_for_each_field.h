@@ -22,17 +22,6 @@ struct ForEachField<::cpp2::MyStructNestedAnnotation> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStructAnnotation> {
-  template <typename F, typename... T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    f(0, static_cast<T&&>(t).count_ref()...);
-    f(1, static_cast<T&&>(t).name_ref()...);
-    f(2, static_cast<T&&>(t).extra_ref()...);
-    f(3, static_cast<T&&>(t).nest_ref()...);
-  }
-};
-
-template <>
 struct ForEachField<::cpp2::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
