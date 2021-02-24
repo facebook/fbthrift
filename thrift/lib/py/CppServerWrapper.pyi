@@ -44,10 +44,10 @@ class SSLPolicy(int):
     REQUIRED: __typing.ClassVar[SSLPolicy]
 
 
-class SSLVerifyPeerEnum(int):
-    VERIFY: __typing.ClassVar[SSLVerifyPeerEnum]
-    VERIFY_REQ: __typing.ClassVar[SSLVerifyPeerEnum]
-    NO_VERIFY: __typing.ClassVar[SSLVerifyPeerEnum]
+class VerifyClientCertificate(int):
+  IF_PRESENTED: __typing.ClassVar[VerifyClientCertificate]
+  ALWAYS_VERIFY: __typing.ClassVar[VerifyClientCertificate]
+  NONE_DO_NOT_REQUEST: __typing.ClassVar[VerifyClientCertificate]
 
 
 class SSLVersion(int):

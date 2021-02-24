@@ -554,7 +554,7 @@ class CppServerWrapper : public ThriftServer {
       cfg->setCertificate(certPath, keyPath, keyPwPath);
     }
     cfg->clientVerification =
-        extract<SSLContext::SSLVerifyPeerEnum>(sslConfig.attr("verify"));
+        extract<SSLContext::VerifyClientCertificate>(sslConfig.attr("verify"));
     auto eccCurve = getStringAttrSafe(sslConfig, "ecc_curve_name");
     if (!eccCurve.empty()) {
       cfg->eccCurveName = eccCurve;
@@ -861,12 +861,15 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .value("PERMITTED", SSLPolicy::PERMITTED)
       .value("REQUIRED", SSLPolicy::REQUIRED);
 
-  enum_<folly::SSLContext::SSLVerifyPeerEnum>("SSLVerifyPeerEnum")
-      .value("VERIFY", folly::SSLContext::SSLVerifyPeerEnum::VERIFY)
+  enum_<folly::SSLContext::VerifyClientCertificate>("VerifyClientCertificate")
       .value(
-          "VERIFY_REQ",
-          folly::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT)
-      .value("NO_VERIFY", folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
+          "IF_PRESENTED",
+          folly::SSLContext::VerifyClientCertificate::IF_PRESENTED)
+      .value(
+          "ALWAYS_VERIFY", folly::SSLContext::VerifyClientCertificate::ALWAYS)
+      .value(
+          "NONE_DO_NOT_REQUEST",
+          folly::SSLContext::VerifyClientCertificate::DO_NOT_REQUEST);
 
   enum_<folly::SSLContext::SSLVersion>("SSLVersion")
       .value("TLSv1_2", folly::SSLContext::SSLVersion::TLSv1_2);

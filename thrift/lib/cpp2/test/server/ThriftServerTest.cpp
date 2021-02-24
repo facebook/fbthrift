@@ -2035,7 +2035,7 @@ TEST(ThriftServer, StopTLSDowngrade) {
   sslConfig->setNextProtocols({"rs"});
   sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
   sslConfig->clientVerification =
-      folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY;
+      folly::SSLContext::VerifyClientCertificate::DO_NOT_REQUEST;
   server->setSSLConfig(std::move(sslConfig));
   ThriftTlsConfig thriftConfig;
   thriftConfig.enableThriftParamsNegotiation = true;
