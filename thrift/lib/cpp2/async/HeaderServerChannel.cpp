@@ -191,7 +191,6 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
     const SamplingStatus& samplingStatus)
     : channel_(channel),
       header_(std::move(header)),
-      active_(true),
       samplingStatus_(samplingStatus) {
   this->buf_ = std::move(buf);
 }
@@ -210,9 +209,8 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     unique_ptr<IOBuf>&& buf,
     MessageChannel::SendCallback* cb,
     folly::Optional<uint32_t>) {
-  // This method is only called and active_ is only touched in evb, so
-  // it is safe to use this flag from both timeout and normal responses.
-  auto& header = active_ ? header_ : timeoutHeader_;
+  // timeoutHeader_ is set in ::sendTimeoutResponse below
+  auto& header = timeoutHeader_ ? timeoutHeader_ : header_;
   if (!channel_->outOfOrder_.value()) {
     // In order processing, make sure the ordering is correct.
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {

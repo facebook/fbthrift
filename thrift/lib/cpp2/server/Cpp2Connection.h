@@ -169,10 +169,10 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
     // Delegates to wrapped request.
     bool isActive() const override {
-      return req_->isActive();
+      return active_;
     }
     void cancel() override {
-      req_->cancel();
+      active_ = false;
     }
 
     bool isOneway() const override {
@@ -223,6 +223,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
     QueueTimeout queueTimeout_;
     TaskTimeout taskTimeout_;
+
+    std::atomic<bool> active_{true};
 
     Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 

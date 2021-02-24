@@ -626,7 +626,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf,
     MessageChannel::SendCallback* sendCallback,
     folly::Optional<uint32_t>) {
-  if (req_->isActive()) {
+  if (isActive()) {
     connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
@@ -656,7 +656,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
 void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     folly::exception_wrapper ew,
     std::string exCode) {
-  if (req_->isActive()) {
+  if (isActive()) {
     connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
@@ -686,7 +686,7 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
 }
 
 void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
-  request_->req_->cancel();
+  request_->cancel();
   request_->sendTimeoutResponse(
       HeaderServerChannel::HeaderRequest::TimeoutResponseType::TASK);
   request_->connection_->requestTimeoutExpired();
@@ -694,7 +694,7 @@ void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
   if (!request_->getStartedProcessing()) {
-    request_->req_->cancel();
+    request_->cancel();
     request_->sendTimeoutResponse(
         HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
     request_->connection_->queueTimeoutExpired();
@@ -749,7 +749,7 @@ Cpp2Connection::Cpp2Request::~Cpp2Request() {
 // Cancel request is usually called from a different thread than sendReply.
 void Cpp2Connection::Cpp2Request::cancelRequest() {
   cancelTimeout();
-  req_->cancel();
+  cancel();
 }
 
 Cpp2Connection::Cpp2Sample::Cpp2Sample(

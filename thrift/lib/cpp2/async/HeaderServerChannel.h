@@ -109,10 +109,11 @@ class HeaderServerChannel : public ServerChannel,
         const server::TServerObserver::SamplingStatus& samplingStatus);
 
     bool isActive() const override {
-      return active_;
+      DCHECK(false);
+      return true;
     }
     void cancel() override {
-      active_ = false;
+      DCHECK(false);
     }
 
     bool isOneway() const override {
@@ -173,7 +174,6 @@ class HeaderServerChannel : public ServerChannel,
     std::unique_ptr<apache::thrift::transport::THeader> header_;
     std::unique_ptr<apache::thrift::transport::THeader> timeoutHeader_;
     uint32_t InOrderRecvSeqId_{0}; // Used internally for in-order requests
-    std::atomic<bool> active_;
     SamplingStatus samplingStatus_;
   };
 
