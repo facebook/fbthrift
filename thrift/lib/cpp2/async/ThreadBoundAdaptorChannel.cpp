@@ -187,9 +187,11 @@ class EvbStreamCallback final : public StreamClientCallback,
       folly::Executor::KeepAlive<folly::EventBase> runEvb,
       F&& fn) {
     incRef();
+    // cannot call folly::makeGuard inside the lambda captures below, because it
+    // triggers a GCC 8 bug (https://fburl.com/e0kv48hu)
+    auto guard = folly::makeGuard([&] { decRef(); });
     runEvb->runInEventBaseThread(
-        [f = std::forward<F>(fn),
-         g = folly::makeGuard([&] { decRef(); })]() mutable { f(); });
+        [f = std::forward<F>(fn), g = std::move(guard)]() mutable { f(); });
   }
 
   void setServerCallback(StreamServerCallback* serverCallback) {
