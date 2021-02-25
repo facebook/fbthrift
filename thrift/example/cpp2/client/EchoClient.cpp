@@ -19,7 +19,6 @@
 #include <folly/io/async/EventBase.h>
 #include <thrift/example/cpp2/server/EchoService.h>
 #include <thrift/example/if/gen-cpp2/Echo.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/perf/cpp2/util/Util.h>
 
 DEFINE_string(host, "::1", "EchoServer host");
@@ -47,14 +46,6 @@ int main(int argc, char* argv[]) {
   // For header transport
   if (FLAGS_transport == "header") {
     client = newHeaderClient<EchoAsyncClient>(&evb, addr);
-  }
-
-  // For inmemory transport
-  auto handler = std::make_shared<EchoHandler>();
-  ServerConfigsMock serverConfigs;
-  if (FLAGS_transport == "inmemory") {
-    client = newInMemoryClient<EchoAsyncClient, EchoHandler>(
-        &evb, handler, serverConfigs);
   }
 
   // Prepare thrift request

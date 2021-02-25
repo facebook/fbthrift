@@ -180,14 +180,17 @@ ScopedServerInterfaceThread::newClientWithFaultInjection(
 template <class AsyncClientT>
 std::shared_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,
+    folly::Executor* callbackExecutor,
     ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
   auto runner = std::make_shared<
       ::apache::thrift::detail::TestClientRunner<AsyncClientT>>(std::move(apf));
   runner->client = injectFault
       ? runner->runner.template newClientWithFaultInjection<AsyncClientT>(
-            std::move(injectFault), nullptr, RocketClientChannel::newChannel)
+            std::move(injectFault),
+            callbackExecutor,
+            RocketClientChannel::newChannel)
       : runner->runner.template newClient<AsyncClientT>(
-            nullptr, RocketClientChannel::newChannel);
+            callbackExecutor, RocketClientChannel::newChannel);
   auto* client = runner->client.get();
   return {std::move(runner), client};
 }

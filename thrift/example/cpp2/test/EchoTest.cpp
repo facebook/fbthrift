@@ -17,11 +17,11 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/futures/Future.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/example/cpp2/server/EchoService.h>
 #include <thrift/example/if/gen-cpp2/Echo.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
-#include <thrift/perf/cpp2/util/Util.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using example::chatroom::EchoAsyncClient;
 using example::chatroom::EchoHandler;
@@ -55,15 +55,13 @@ class EchoTest : public testing::Test {
  public:
   EchoTest() {
     handler_ = std::make_shared<EchoHandler>();
-    client_ = newInMemoryClient<EchoAsyncClient, EchoHandler>(
-        runner_.getEventBase(), handler_, serverConfigs_);
+    client_ = makeTestClient<EchoAsyncClient>(handler_, runner_.getEventBase());
   }
 
-  std::unique_ptr<EchoAsyncClient> client_;
+  std::shared_ptr<EchoAsyncClient> client_;
 
  private:
   folly::ScopedEventBaseThread runner_;
-  ServerConfigsMock serverConfigs_;
   std::shared_ptr<EchoHandler> handler_;
 };
 

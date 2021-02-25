@@ -21,8 +21,7 @@
 #include <folly/synchronization/Baton.h>
 #include <thrift/example/cpp2/server/ChatRoomService.h>
 #include <thrift/example/if/gen-cpp2/ChatRoomService.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
-#include <thrift/perf/cpp2/util/Util.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using example::chatroom::ChatRoomServiceAsyncClient;
 using example::chatroom::ChatRoomServiceHandler;
@@ -59,16 +58,14 @@ class ChatRoomTest : public testing::Test {
  public:
   ChatRoomTest() {
     handler_ = std::make_shared<ChatRoomServiceHandler>();
-    client_ =
-        newInMemoryClient<ChatRoomServiceAsyncClient, ChatRoomServiceHandler>(
-            runner_.getEventBase(), handler_, serverConfigs_);
+    client_ = makeTestClient<ChatRoomServiceAsyncClient>(
+        handler_, runner_.getEventBase());
   }
 
-  std::unique_ptr<ChatRoomServiceAsyncClient> client_;
+  std::shared_ptr<ChatRoomServiceAsyncClient> client_;
 
  private:
   folly::ScopedEventBaseThread runner_;
-  ServerConfigsMock serverConfigs_;
   std::shared_ptr<ChatRoomServiceHandler> handler_;
 };
 
