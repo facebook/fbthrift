@@ -29,7 +29,6 @@
 
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 
-#include <thrift/lib/cpp2/test/util/TestProxygenThriftServerFactory.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
 #include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
@@ -60,7 +59,6 @@ namespace {
 
 enum ThriftServerTypes {
   THRIFT_SERVER,
-  PROXYGEN,
 };
 
 enum ClientChannelTypes {
@@ -81,11 +79,6 @@ class SharedServerTests
       case THRIFT_SERVER: {
         auto f = std::make_unique<TestThriftServerFactory<TestInterface>>();
         serverFactory = std::move(f);
-        break;
-      }
-      case PROXYGEN: {
-        serverFactory =
-            std::make_unique<TestProxygenThriftServerFactory<TestInterface>>();
         break;
       }
       default:
@@ -449,12 +442,4 @@ INSTANTIATE_TEST_CASE_P(
     Combine(
         Values(ThriftServerTypes::THRIFT_SERVER),
         Values(ClientChannelTypes::HEADER),
-        Values(protocol::T_BINARY_PROTOCOL, protocol::T_COMPACT_PROTOCOL)));
-
-INSTANTIATE_TEST_CASE_P(
-    ProxygenThriftServerTests,
-    SharedServerTests,
-    Combine(
-        Values(ThriftServerTypes::PROXYGEN),
-        Values(ClientChannelTypes::HTTP2),
         Values(protocol::T_BINARY_PROTOCOL, protocol::T_COMPACT_PROTOCOL)));
