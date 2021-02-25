@@ -223,13 +223,13 @@ std::string parsing_driver::include_file(const std::string& filename) {
 
 void parsing_driver::validate_const_rec(
     std::string name,
-    t_type* type,
+    const t_type* type,
     t_const_value* value) {
   if (type->is_void()) {
     throw std::string("type error: cannot declare a void const: " + name);
   }
 
-  auto as_struct = dynamic_cast<t_struct*>(type);
+  auto as_struct = dynamic_cast<const t_struct*>(type);
   assert((as_struct != nullptr) == type->is_struct());
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -290,7 +290,7 @@ void parsing_driver::validate_const_rec(
       throw std::string(
           "type error: const `" + name + "` was declared as enum.");
     }
-    const auto as_enum = dynamic_cast<t_enum*>(type);
+    const auto as_enum = dynamic_cast<const t_enum*>(type);
     assert(as_enum != nullptr);
     const auto enum_val = as_enum->find_value(value->get_integer());
     if (enum_val == nullptr) {
@@ -342,7 +342,7 @@ void parsing_driver::validate_const_rec(
         throw std::string(
             "type error: `" + name + "` struct key must be string.");
       }
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       if (const auto* field =
               as_struct->get_field_by_name(entry.first->get_string())) {
         field_type = field->get_type();
@@ -357,8 +357,8 @@ void parsing_driver::validate_const_rec(
           name + "." + entry.first->get_string(), field_type, entry.second);
     }
   } else if (type->is_map()) {
-    t_type* k_type = ((t_map*)type)->get_key_type();
-    t_type* v_type = ((t_map*)type)->get_val_type();
+    const t_type* k_type = ((t_map*)type)->get_key_type();
+    const t_type* v_type = ((t_map*)type)->get_val_type();
     const std::vector<std::pair<t_const_value*, t_const_value*>>& val =
         value->get_map();
     std::vector<std::pair<t_const_value*, t_const_value*>>::const_iterator
@@ -368,7 +368,7 @@ void parsing_driver::validate_const_rec(
       validate_const_rec(name + "<val>", v_type, v_iter->second);
     }
   } else if (type->is_list() || type->is_set()) {
-    t_type* e_type;
+    const t_type* e_type;
     if (type->is_list()) {
       e_type = ((t_list*)type)->get_elem_type();
     } else {

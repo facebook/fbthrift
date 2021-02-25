@@ -105,13 +105,13 @@ class t_cocoa_generator : public t_oop_generator {
   void print_const_value(
       std::ofstream& out,
       std::string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value,
       bool defval = false,
       bool is_property = false);
   std::string render_const_value(
       ofstream& out,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value,
       bool containerize_it = false);
 
@@ -209,7 +209,7 @@ class t_cocoa_generator : public t_oop_generator {
 
   void generate_deserialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_deserialize_set_element(
@@ -239,7 +239,7 @@ class t_cocoa_generator : public t_oop_generator {
 
   void generate_serialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_serialize_map_element(
@@ -267,20 +267,20 @@ class t_cocoa_generator : public t_oop_generator {
   std::string cocoa_imports();
   std::string cocoa_thrift_imports();
   std::string custom_thrift_marker();
-  std::string type_name(t_type* ttype, bool class_ref = false);
+  std::string type_name(const t_type* ttype, bool class_ref = false);
   std::string base_type_name(t_base_type* tbase);
   std::string declare_field(t_field* tfield);
   std::string declare_property(t_field* tfield);
   std::string function_signature(t_function* tfunction);
   std::string argument_list(t_struct* tstruct);
-  std::string type_to_enum(t_type* ttype);
-  std::string format_string_for_type(t_type* type);
+  std::string type_to_enum(const t_type* ttype);
+  std::string format_string_for_type(const t_type* type);
   std::string call_field_setter(t_field* tfield, std::string fieldName);
-  std::string containerize(t_type* ttype, std::string fieldName);
+  std::string containerize(const t_type* ttype, std::string fieldName);
   std::string decontainerize(t_field* tfield, std::string fieldName);
   std::string get_cocoa_property_name(t_field* tfield);
 
-  bool type_can_be_null(t_type* ttype) {
+  bool type_can_be_null(const t_type* ttype) {
     ttype = ttype->get_true_type();
 
     return ttype->is_container() || ttype->is_struct() ||
@@ -558,7 +558,7 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   vector<t_const*>::iterator c_iter;
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
     string name = (*c_iter)->get_name();
-    t_type* type = (*c_iter)->get_type();
+    const t_type* type = (*c_iter)->get_type();
     const_interface << "+ (" << type_name(type) << ") " << name << ";" << endl;
   }
 
@@ -570,7 +570,7 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   // static variables in the .m hold all constant values
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
     string name = (*c_iter)->get_name();
-    t_type* type = (*c_iter)->get_type();
+    const t_type* type = (*c_iter)->get_type();
     f_impl_ << "static " << type_name(type) << " " << cocoa_prefix_ << name;
     if (!type->is_container() && !type->is_struct()) {
       f_impl_ << " = "
@@ -611,7 +611,7 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
   // getter method for each constant
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
     string name = (*c_iter)->get_name();
-    t_type* type = (*c_iter)->get_type();
+    const t_type* type = (*c_iter)->get_type();
     f_impl_ << "+ (" << type_name(type) << ") " << name;
     scope_up(f_impl_);
     indent(f_impl_) << "return " << cocoa_prefix_ << name << ";" << endl;
@@ -810,7 +810,7 @@ void t_cocoa_generator::generate_cocoa_struct_init_with_coder_method(
   vector<t_field*>::const_iterator m_iter;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    const t_type* t = (*m_iter)->get_type()->get_true_type();
     out << indent() << "if ([decoder containsValueForKey: @\""
         << (*m_iter)->get_name() << "\"])" << endl;
     scope_up(out);
@@ -883,7 +883,7 @@ void t_cocoa_generator::generate_cocoa_struct_encode_with_coder_method(
   vector<t_field*>::const_iterator m_iter;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    const t_type* t = (*m_iter)->get_type()->get_true_type();
     out << indent() << "if (" << kFieldPrefix << (*m_iter)->get_name()
         << kSetPostfix << ")" << endl;
     scope_up(out);
@@ -1038,7 +1038,7 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(
       // out << "#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >=
       // MAC_OS_X_VERSION_10_5)" << endl;
       for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-        t_type* t = (*m_iter)->get_type()->get_true_type();
+        const t_type* t = (*m_iter)->get_type()->get_true_type();
         if ((*m_iter)->get_value() != NULL) {
           print_const_value(
               out,
@@ -1068,7 +1068,7 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(
     }
 
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = (*m_iter)->get_type()->get_true_type();
+      const t_type* t = (*m_iter)->get_type()->get_true_type();
       out << indent() << kFieldPrefix << (*m_iter)->get_name() << " = ";
       if (type_can_be_null(t)) {
         // out << "[" << (*m_iter)->get_name() << " retain_stub];" << endl;
@@ -1101,7 +1101,7 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(
   //   out << "- (void) dealloc" << endl;
   //   scope_up(out);
   //   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-  //     t_type* t = (*m_iter)->get_type()->get_true_type();
+  //     const t_type* t = (*m_iter)->get_type()->get_true_type();
   //     if (type_can_be_null(t)) {
   //       indent(out) << "[" << kFieldPrefix << (*m_iter)->get_name() << "
   //       release_stub];" << endl;
@@ -1409,7 +1409,7 @@ void t_cocoa_generator::generate_cocoa_struct_field_accessor_implementations(
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
-    t_type* type = field->get_type()->get_true_type();
+    const t_type* type = field->get_type()->get_true_type();
     const std::string field_name = field->get_name();
     const std::string getter_selector = get_cocoa_property_name(field);
     std::string cap_name = getter_selector;
@@ -1503,7 +1503,7 @@ void t_cocoa_generator::generate_cocoa_struct_makeImmutable(
        f_iter != fields.end();
        ++f_iter) {
     t_field* field = (*f_iter);
-    t_type* ttype = field->get_type();
+    const t_type* ttype = field->get_type();
     string field_name = kFieldPrefix + field->get_name();
     if (ttype->is_typedef()) {
       ttype = ttype->get_true_type();
@@ -1589,7 +1589,7 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = (*f_iter);
-    t_type* ttype = field->get_type();
+    const t_type* ttype = field->get_type();
     string field_name = kFieldPrefix + field->get_name();
     string ret_equals = "ret[@\"" + field->get_name() + "\"] = ";
     if (ttype->is_typedef()) {
@@ -1676,7 +1676,7 @@ void t_cocoa_generator::generate_cocoa_struct_mutableCopyWithZone(
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = (*f_iter);
-    t_type* ttype = field->get_type();
+    const t_type* ttype = field->get_type();
     string field_name = kFieldPrefix + field->get_name();
     if (ttype->is_typedef()) {
       ttype = ttype->get_true_type();
@@ -2279,7 +2279,7 @@ void t_cocoa_generator::generate_deserialize_field(
     ofstream& out,
     t_field* tfield,
     string fieldName) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw std::runtime_error(
@@ -2360,7 +2360,7 @@ void t_cocoa_generator::generate_deserialize_struct(
  */
 void t_cocoa_generator::generate_deserialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string fieldName) {
   string size = tmp("_size");
   indent(out) << "int " << size << ";" << endl;
@@ -2424,7 +2424,7 @@ void t_cocoa_generator::generate_deserialize_container(
  * suitable for putting into a container, if necessary.  Basically,
  * wrap scaler primitives in NSNumber objects.
  */
-string t_cocoa_generator::containerize(t_type* ttype, string fieldName) {
+string t_cocoa_generator::containerize(const t_type* ttype, string fieldName) {
   // FIXME - optimize here to avoid autorelease pool?
   ttype = ttype->get_true_type();
   if (ttype->is_enum()) {
@@ -2464,8 +2464,8 @@ void t_cocoa_generator::generate_deserialize_map_element(
     string fieldName) {
   string key = tmp("_key");
   string val = tmp("_val");
-  t_type* keyType = tmap->get_key_type();
-  t_type* valType = tmap->get_val_type();
+  const t_type* keyType = tmap->get_key_type();
+  const t_type* valType = tmap->get_val_type();
   t_field fkey(keyType, key);
   t_field fval(valType, val);
 
@@ -2499,7 +2499,7 @@ void t_cocoa_generator::generate_deserialize_set_element(
     t_set* tset,
     string fieldName) {
   string elem = tmp("_elem");
-  t_type* type = tset->get_elem_type();
+  const t_type* type = tset->get_elem_type();
   t_field felem(type, elem);
 
   generate_deserialize_field(out, &felem, elem);
@@ -2524,7 +2524,7 @@ void t_cocoa_generator::generate_deserialize_list_element(
     t_list* tlist,
     string fieldName) {
   string elem = tmp("_elem");
-  t_type* type = tlist->get_elem_type();
+  const t_type* type = tlist->get_elem_type();
   t_field felem(type, elem);
 
   generate_deserialize_field(out, &felem, elem);
@@ -2550,7 +2550,7 @@ void t_cocoa_generator::generate_serialize_field(
     ofstream& out,
     t_field* tfield,
     string fieldName) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -2635,7 +2635,7 @@ void t_cocoa_generator::generate_serialize_struct(
  */
 void t_cocoa_generator::generate_serialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string fieldName) {
   scope_up(out);
 
@@ -2706,7 +2706,7 @@ void t_cocoa_generator::generate_serialize_container(
  * primitive type, if necessary.
  */
 string t_cocoa_generator::decontainerize(t_field* tfield, string fieldName) {
-  t_type* ttype = tfield->get_type()->get_true_type();
+  const t_type* ttype = tfield->get_type()->get_true_type();
   if (ttype->is_enum()) {
     return "[" + fieldName + " intValue]";
   } else if (ttype->is_base_type()) {
@@ -2784,7 +2784,7 @@ void t_cocoa_generator::generate_serialize_list_element(
  * @param class_ref Do we want a Class reference istead of a type reference?
  * @return Java type name, i.e. HashMap<Key,Value>
  */
-string t_cocoa_generator::type_name(t_type* ttype, bool class_ref) {
+string t_cocoa_generator::type_name(const t_type* ttype, bool class_ref) {
   if (ttype->is_typedef() || ttype->is_enum()) {
     const t_program* program = ttype->get_program();
     return program ? (program->get_namespace("cocoa") + ttype->get_name())
@@ -2855,7 +2855,7 @@ string t_cocoa_generator::base_type_name(t_base_type* type) {
 void t_cocoa_generator::print_const_value(
     std::ofstream& out,
     std::string name,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value,
     bool defval,
     bool is_property) {
@@ -2886,7 +2886,7 @@ void t_cocoa_generator::print_const_value(
       out << name << " = [[" << type_name(type, true) << " alloc] init];"
           << endl;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = NULL;
+      const t_type* field_type = NULL;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -2904,8 +2904,8 @@ void t_cocoa_generator::print_const_value(
     }
     out << endl;
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     if (defval)
@@ -2926,7 +2926,7 @@ void t_cocoa_generator::print_const_value(
     }
     out << endl;
   } else if (type->is_list()) {
-    t_type* etype = ((t_list*)type)->get_elem_type();
+    const t_type* etype = ((t_list*)type)->get_elem_type();
     const vector<t_const_value*>& val = value->get_list();
     vector<t_const_value*>::const_iterator v_iter;
     if (defval)
@@ -2945,7 +2945,7 @@ void t_cocoa_generator::print_const_value(
     }
     out << endl;
   } else if (type->is_set()) {
-    t_type* etype = ((t_set*)type)->get_elem_type();
+    const t_type* etype = ((t_set*)type)->get_elem_type();
     const vector<t_const_value*>& val = value->get_list();
     vector<t_const_value*>::const_iterator v_iter;
     if (defval)
@@ -2969,7 +2969,7 @@ void t_cocoa_generator::print_const_value(
 
 string t_cocoa_generator::render_const_value(
     ofstream& out,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value,
     bool containerize_it) {
   type = type->get_true_type();
@@ -3025,7 +3025,7 @@ ORIGINAL
  * Spit out code that evaluates to the specified constant value.
  */
 string t_cocoa_generator::render_const_value(string name,
-                                             t_type* type,
+                                             const t_type* type,
                                              t_const_value* value,
                                              bool containerize_it) {
   type = type->get_true_type();
@@ -3072,7 +3072,7 @@ string t_cocoa_generator::render_const_value(string name,
       // FIXME The generated code does not match with initWithXXX
       //       initializer and causes compile error.
       //       Try: test/DebugProtoTest.thrift and test/SmallTest.thrift
-      t_type* field_type = NULL;
+      const t_type* field_type = NULL;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -3092,8 +3092,8 @@ string t_cocoa_generator::render_const_value(string name,
     render << "]";
   } else if (type->is_map()) {
     render << "[[NSDictionary alloc] initWithObjectsAndKeys: ";
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     const map<t_const_value*, t_const_value*>& val = value->get_map();
     map<t_const_value*, t_const_value*>::const_iterator v_iter;
     bool first = true;
@@ -3201,7 +3201,7 @@ string t_cocoa_generator::declare_property(t_field* tfield) {
  * @return String of rendered function definition
  */
 string t_cocoa_generator::function_signature(t_function* tfunction) {
-  t_type* ttype = tfunction->get_returntype();
+  const t_type* ttype = tfunction->get_returntype();
   std::string result = "(" + type_name(ttype) + ") " + tfunction->get_name() +
       argument_list(tfunction->get_paramlist());
   return result;
@@ -3234,7 +3234,7 @@ string t_cocoa_generator::argument_list(t_struct* tstruct) {
 /**
  * Converts the parse type to an Objective-C enum string for the given type.
  */
-string t_cocoa_generator::type_to_enum(t_type* type) {
+string t_cocoa_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -3278,7 +3278,7 @@ string t_cocoa_generator::type_to_enum(t_type* type) {
 /**
  * Returns a format string specifier for the supplied parse type.
  */
-string t_cocoa_generator::format_string_for_type(t_type* type) {
+string t_cocoa_generator::format_string_for_type(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {

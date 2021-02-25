@@ -361,7 +361,7 @@ class mstch_rust_program : public mstch_program {
   }
   mstch::node rust_has_nonstandard_types() {
     bool has_nonstandard_types = false;
-    foreach_type([&](t_type* type) {
+    foreach_type([&](const t_type* type) {
       if (has_nonstandard_type_annotation(type)) {
         has_nonstandard_types = true;
       }
@@ -381,7 +381,7 @@ class mstch_rust_program : public mstch_program {
       }
     };
     std::set<const t_type*, rust_type_less> nonstandard_types;
-    foreach_type([&](t_type* type) {
+    foreach_type([&](const t_type* type) {
       if (has_nonstandard_type_annotation(type)) {
         nonstandard_types.insert(type);
       }
@@ -562,7 +562,7 @@ class mstch_rust_function : public mstch_function {
     // only those exceptions that map uniquely to a variant.
 
     const auto& exceptions = function_->get_xceptions()->fields();
-    std::map<t_type*, unsigned> type_count;
+    std::map<const t_type*, unsigned> type_count;
     for (const auto* x : exceptions) {
       type_count[x->get_type()] += 1;
     }

@@ -114,7 +114,7 @@ class t_go_generator : public t_concat_generator {
   void generate_service(t_service* tservice) override;
 
   std::string render_const_value(
-      t_type* type,
+      const t_type* type,
       const t_const_value* value,
       const string& name,
       bool is_optional = false);
@@ -221,7 +221,7 @@ class t_go_generator : public t_concat_generator {
 
   void generate_deserialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       bool pointer_field,
       bool declare,
       std::string prefix = "");
@@ -257,7 +257,7 @@ class t_go_generator : public t_concat_generator {
 
   void generate_serialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       bool pointer_field,
       std::string prefix = "");
 
@@ -305,7 +305,7 @@ class t_go_generator : public t_concat_generator {
       t_field* tfield,
       const string& name,
       bool optional_field);
-  std::string type_name(t_type* ttype);
+  std::string type_name(const t_type* ttype);
   std::string function_signature(
       t_function* tfunction,
       std::string prefix = "");
@@ -314,14 +314,14 @@ class t_go_generator : public t_concat_generator {
       std::string prefix = "",
       bool useContext = false);
   std::string argument_list(t_struct* tstruct);
-  std::string type_to_enum(t_type* ttype);
-  std::string type_to_go_type(t_type* ttype);
+  std::string type_to_enum(const t_type* ttype);
+  std::string type_to_go_type(const t_type* ttype);
   std::string type_to_go_type_with_opt(
-      t_type* ttype,
+      const t_type* ttype,
       bool optional_field,
       bool from_typedef = false);
-  std::string type_to_go_key_type(t_type* ttype);
-  std::string type_to_spec_args(t_type* ttype);
+  std::string type_to_go_key_type(const t_type* ttype);
+  std::string type_to_spec_args(const t_type* ttype);
 
   static std::string get_real_go_module(const t_program* program) {
     if (!package_flag.empty()) {
@@ -375,7 +375,7 @@ class t_go_generator : public t_concat_generator {
   static std::string variable_name_to_go_name(const std::string& value);
   static bool is_pointer_field(t_field* tfield, bool in_container = false);
   static bool omit_initialization(t_field* tfield);
-  static bool type_need_reference(t_type* type);
+  static bool type_need_reference(const t_type* type);
 };
 
 // returns true if field initialization can be omitted since it has
@@ -385,7 +385,7 @@ bool t_go_generator::omit_initialization(t_field* tfield) {
   if (!value) {
     return true;
   }
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
 
@@ -420,7 +420,7 @@ bool t_go_generator::omit_initialization(t_field* tfield) {
 }
 
 // Returns true if the type need a reference if used as optional without default
-bool t_go_generator::type_need_reference(t_type* type) {
+bool t_go_generator::type_need_reference(const t_type* type) {
   type = type->get_true_type();
   if (type->is_map() || type->is_set() || type->is_list() ||
       type->is_struct() || type->is_xception() || type->is_binary()) {
@@ -437,7 +437,7 @@ bool t_go_generator::is_pointer_field(
   if (tfield->has_annotation("cpp.ref")) {
     return true;
   }
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
   // Structs in containers are pointers
   if (type->is_struct() || type->is_xception()) {
     return true;
@@ -939,7 +939,7 @@ void t_go_generator::close_generator() {
 void t_go_generator::generate_typedef(t_typedef* ttypedef) {
   generate_go_docstring(f_types_, ttypedef);
   string new_type_name(publicize(ttypedef->get_symbolic()));
-  t_type* tbasetype(ttypedef->get_type());
+  const t_type* tbasetype(ttypedef->get_type());
   string base_type(type_to_go_type_with_opt(tbasetype, false, true));
 
   if (base_type == new_type_name) {
@@ -1078,7 +1078,7 @@ void t_go_generator::generate_enum(t_enum* tenum) {
  * Generate a constant value
  */
 void t_go_generator::generate_const(t_const* tconst) {
-  t_type* type = tconst->get_type();
+  const t_type* type = tconst->get_type();
   string name = publicize(tconst->get_name());
   t_const_value* value = tconst->get_value();
 
@@ -1101,7 +1101,7 @@ void t_go_generator::generate_const(t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_go_generator::render_const_value(
-    t_type* type,
+    const t_type* type,
     const t_const_value* value,
     const string& name,
     bool is_optional) {
@@ -1181,7 +1181,7 @@ string t_go_generator::render_const_value(
     }
 
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       bool is_field_optional = false;
       string field_name;
 
@@ -1210,8 +1210,8 @@ string t_go_generator::render_const_value(
     out << indent() << "}";
 
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     out << "map[" << type_to_go_key_type(ktype) << "]" << type_to_go_type(vtype)
         << "{" << endl;
@@ -1228,7 +1228,7 @@ string t_go_generator::render_const_value(
     indent_down();
     out << indent() << "}";
   } else if (type->is_list()) {
-    t_type* etype = ((t_list*)type)->get_elem_type();
+    const t_type* etype = ((t_list*)type)->get_elem_type();
     const vector<t_const_value*>& val = value->get_list();
     out << "[]" << type_to_go_type(etype) << "{" << endl;
     indent_up();
@@ -1243,7 +1243,7 @@ string t_go_generator::render_const_value(
     indent_down();
     out << indent() << "}";
   } else if (type->is_set()) {
-    t_type* etype = ((t_set*)type)->get_elem_type();
+    const t_type* etype = ((t_set*)type)->get_elem_type();
     const vector<t_const_value*>& val = value->get_list();
     out << "[]" << type_to_go_key_type(etype) << "{" << endl;
     indent_up();
@@ -1311,10 +1311,10 @@ void t_go_generator::generate_go_struct_initializer(
   for (vector<t_field*>::const_iterator m_iter = members.begin();
        m_iter != members.end();
        ++m_iter) {
-    t_type* ttype = (*m_iter)->get_type()->get_true_type();
+    const t_type* ttype = (*m_iter)->get_type()->get_true_type();
     bool pointer_field = is_pointer_field(*m_iter);
-    bool struct_field =
-        ttype->is_struct() && !(dynamic_cast<t_struct*>(ttype)->is_union());
+    bool struct_field = ttype->is_struct() &&
+        !(dynamic_cast<const t_struct*>(ttype)->is_union());
     string publicized_name;
     string module;
     if (auto&& program = ttype->get_program()) {
@@ -1430,7 +1430,7 @@ void t_go_generator::generate_go_struct_definition(
         }
       }
 
-      t_type* fieldType = (*m_iter)->get_type();
+      const t_type* fieldType = (*m_iter)->get_type();
       string goType =
           type_to_go_type_with_opt(fieldType, is_pointer_field(*m_iter));
       string gotag;
@@ -1479,7 +1479,7 @@ void t_go_generator::generate_go_struct_definition(
     string publicized_name;
     const t_const_value* def_value;
     get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
-    t_type* fieldType = (*m_iter)->get_type();
+    const t_type* fieldType = (*m_iter)->get_type();
     string goType = type_to_go_type_with_opt(fieldType, false);
     string def_var_name = tstruct_name + "_" + publicized_name + "_DEFAULT";
     if ((*m_iter)->get_req() == t_field::e_req::optional ||
@@ -1592,7 +1592,7 @@ void t_go_generator::generate_isset_helpers(
       out << indent() << "func (p *" << tstruct_name << ") IsSet" << field_name
           << "() bool {" << endl;
       indent_up();
-      t_type* ttype = (*f_iter)->get_type()->get_true_type();
+      const t_type* ttype = (*f_iter)->get_type()->get_true_type();
       bool is_byteslice = ttype->is_base_type() && ttype->is_binary();
       bool compare_to_nil_only = ttype->is_set() || ttype->is_list() ||
           ttype->is_map() || (is_byteslice && !(*f_iter)->get_value());
@@ -2756,8 +2756,8 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
 
     for (std::vector<t_field*>::size_type i = 0; i < num_args; ++i) {
       int flagArg = i + 1;
-      t_type* the_type(args[i]->get_type());
-      t_type* the_type2(the_type->get_true_type());
+      const t_type* the_type(args[i]->get_type());
+      const t_type* the_type2(the_type->get_true_type());
 
       if (the_type2->is_enum()) {
         f_remote << indent() << "tmp" << i << ", err := (strconv.Atoi(flag.Arg("
@@ -3355,8 +3355,8 @@ void t_go_generator::generate_deserialize_field(
     bool in_container_value) {
   (void)inclass;
   (void)coerceData;
-  t_type* orig_type = tfield->get_type();
-  t_type* type = orig_type->get_true_type();
+  const t_type* orig_type = tfield->get_type();
+  const t_type* type = orig_type->get_true_type();
   string name(prefix + publicize(tfield->get_name()));
 
   if (type->is_void()) {
@@ -3506,11 +3506,11 @@ void t_go_generator::generate_deserialize_struct(
  */
 void t_go_generator::generate_deserialize_container(
     ofstream& out,
-    t_type* orig_type,
+    const t_type* orig_type,
     bool pointer_field,
     bool declare,
     string prefix) {
-  t_type* ttype = orig_type->get_true_type();
+  const t_type* ttype = orig_type->get_true_type();
   string eq(" = ");
 
   if (declare) {
@@ -3664,7 +3664,7 @@ void t_go_generator::generate_serialize_field(
     t_field* tfield,
     string prefix,
     bool inkey) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
   string name(prefix + publicize(tfield->get_name()));
 
   // Do nothing for void types
@@ -3774,7 +3774,7 @@ void t_go_generator::generate_serialize_struct(
 
 void t_go_generator::generate_serialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     bool pointer_field,
     string prefix) {
   if (pointer_field) {
@@ -4005,7 +4005,7 @@ string t_go_generator::render_field_initial_value(
     t_field* tfield,
     const string& name,
     bool optional_field) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
 
   if (optional_field) {
     // The caller will make a second pass for optional fields,
@@ -4052,7 +4052,7 @@ string t_go_generator::function_signature_if(
     signature += args.length() > 0 ? ", " : "";
   }
   signature += args + ") (";
-  t_type* ret = tfunction->get_returntype();
+  const t_type* ret = tfunction->get_returntype();
 
   if (!ret->is_void()) {
     signature += "_r " + type_to_go_type(ret) + ", ";
@@ -4086,7 +4086,7 @@ string t_go_generator::argument_list(t_struct* tstruct) {
   return result;
 }
 
-string t_go_generator::type_name(t_type* ttype) {
+string t_go_generator::type_name(const t_type* ttype) {
   const t_program* program = ttype->get_program();
 
   if (program != nullptr && program != program_) {
@@ -4100,7 +4100,7 @@ string t_go_generator::type_name(t_type* ttype) {
 /**
  * Converts the parse type to a go tyoe
  */
-string t_go_generator::type_to_enum(t_type* type) {
+string t_go_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -4163,8 +4163,8 @@ string strip_type_pointer(string tname) {
  * Converts the parse type to a go map type, will throw an exception if it will
  * not produce a valid go map type.
  */
-string t_go_generator::type_to_go_key_type(t_type* type) {
-  t_type* resolved_type = type;
+string t_go_generator::type_to_go_key_type(const t_type* type) {
+  const t_type* resolved_type = type;
 
   while (resolved_type->is_typedef()) {
     resolved_type = ((t_typedef*)resolved_type)->get_type()->get_true_type();
@@ -4187,7 +4187,7 @@ string t_go_generator::type_to_go_key_type(t_type* type) {
 /**
  * Converts the parse type to a go type
  */
-string t_go_generator::type_to_go_type(t_type* type) {
+string t_go_generator::type_to_go_type(const t_type* type) {
   return type_to_go_type_with_opt(type, false);
 }
 
@@ -4196,7 +4196,7 @@ string t_go_generator::type_to_go_type(t_type* type) {
  * associated with the type is T_OPTIONAL.
  */
 string t_go_generator::type_to_go_type_with_opt(
-    t_type* type,
+    const t_type* type,
     bool optional_field,
     bool from_typedef) {
   string maybe_pointer(optional_field ? "*" : "");
@@ -4272,7 +4272,7 @@ string t_go_generator::type_to_go_type_with_opt(
 }
 
 /** See the comment inside generate_go_struct_definition for what this is. */
-string t_go_generator::type_to_spec_args(t_type* ttype) {
+string t_go_generator::type_to_spec_args(const t_type* ttype) {
   while (ttype->is_typedef()) {
     ttype = ((t_typedef*)ttype)->get_type();
   }

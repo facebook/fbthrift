@@ -70,7 +70,7 @@ class t_html_generator : public t_concat_generator {
   void generate_xception(t_struct* txception) override;
 
   void print_doc(t_node* tdoc);
-  int print_type(t_type* ttype);
+  int print_type(const t_type* ttype);
   void print_const_value(const t_const_value* tvalue);
 
   std::ofstream f_out_;
@@ -357,7 +357,7 @@ void t_html_generator::print_doc(t_node* tdoc) {
 /**
  * Prints out the provided type in HTML
  */
-int t_html_generator::print_type(t_type* ttype) {
+int t_html_generator::print_type(const t_type* ttype) {
   int len = 0;
   f_out_ << "<code>";
   if (ttype->is_container()) {

@@ -64,13 +64,13 @@ class t_json_generator : public t_concat_generator {
   void generate_service(t_service* tservice) override;
   void generate_xception(t_struct* txception) override;
 
-  void print_type(t_type* ttype);
+  void print_type(const t_type* ttype);
   void print_const_value(const t_const_value* tvalue);
   void print_const_key(t_const_value* tvalue);
   void print_lineno(int lineno);
-  string type_to_string(t_type* type);
-  string type_to_spec_args(t_type* ttype);
-  string type_name(t_type* ttype);
+  string type_to_string(const t_type* type);
+  string type_to_spec_args(const t_type* ttype);
+  string type_name(const t_type* ttype);
 
   bool should_resolve_to_true_type(const t_type* ttype);
 
@@ -216,7 +216,7 @@ void t_json_generator::generate_program() {
 /**
  * Converts the parse type to a string
  */
-string t_json_generator::type_to_string(t_type* type) {
+string t_json_generator::type_to_string(const t_type* type) {
   if (should_resolve_to_true_type(type)) {
     type = type->get_true_type();
   }
@@ -273,7 +273,7 @@ string t_json_generator::type_to_string(t_type* type) {
  *              | tuple_spec  // (for lists and sets)
  *              | { "key_type" : tuple_spec, "val_type" : tuple_spec}  // (maps)
  */
-string t_json_generator::type_to_spec_args(t_type* ttype) {
+string t_json_generator::type_to_spec_args(const t_type* ttype) {
   if (should_resolve_to_true_type(ttype)) {
     ttype = ttype->get_true_type();
   }
@@ -317,7 +317,7 @@ string t_json_generator::type_to_spec_args(t_type* ttype) {
  * Return the type name, based on the namespace and the module (when
  * applicable).
  */
-string t_json_generator::type_name(t_type* ttype) {
+string t_json_generator::type_name(const t_type* ttype) {
   const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
     const string& json_namespace = program->get_namespace("json");
@@ -330,7 +330,7 @@ string t_json_generator::type_name(t_type* ttype) {
 /**
  * Prints out the provided type spec
  */
-void t_json_generator::print_type(t_type* ttype) {
+void t_json_generator::print_type(const t_type* ttype) {
   indent(f_out_) << "\"type_enum\" : \"" << type_to_string(ttype) << "\","
                  << endl;
   indent(f_out_) << "\"spec_args\" : " << type_to_spec_args(ttype);

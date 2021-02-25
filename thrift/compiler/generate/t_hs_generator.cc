@@ -86,7 +86,7 @@ class t_hs_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  string render_const_value(t_type* type, const t_const_value* value);
+  string render_const_value(const t_type* type, const t_const_value* value);
 
   /**
    * Struct generation code
@@ -135,8 +135,10 @@ class t_hs_generator : public t_oop_generator {
       t_struct* tstruct,
       string name = "");
 
-  void
-  generate_deserialize_container(ofstream& out, t_type* ttype, string arg = "");
+  void generate_deserialize_container(
+      ofstream& out,
+      const t_type* ttype,
+      string arg = "");
 
   void generate_deserialize_set_element(ofstream& out, t_set* tset);
 
@@ -145,9 +147,11 @@ class t_hs_generator : public t_oop_generator {
       t_list* tlist,
       string prefix = "");
 
-  void generate_deserialize_type(ofstream& out, t_type* type, string arg = "");
+  void
+  generate_deserialize_type(ofstream& out, const t_type* type, string arg = "");
 
-  void generate_serialize_type(ofstream& out, t_type* type, string name = "");
+  void
+  generate_serialize_type(ofstream& out, const t_type* type, string name = "");
 
   void generate_serialize_struct(
       ofstream& out,
@@ -156,7 +160,7 @@ class t_hs_generator : public t_oop_generator {
 
   void generate_serialize_container(
       ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       string prefix = "");
 
   void generate_serialize_map_element(
@@ -178,11 +182,13 @@ class t_hs_generator : public t_oop_generator {
   string hs_language_pragma();
   string hs_imports();
 
-  string qualified_type_name(t_type* ttype, string function_prefix = "");
+  string qualified_type_name(const t_type* ttype, string function_prefix = "");
 
-  string unqualified_type_name(t_type* ttype, string function_prefix = "");
+  string unqualified_type_name(
+      const t_type* ttype,
+      string function_prefix = "");
 
-  string type_name_qualifier(t_type* ttype);
+  string type_name_qualifier(const t_type* ttype);
 
   string field_name(string tname, string fname);
 
@@ -192,15 +198,15 @@ class t_hs_generator : public t_oop_generator {
       bool io = false,
       bool method = false);
 
-  string type_to_enum(t_type* ttype);
+  string type_to_enum(const t_type* ttype);
 
-  string type_to_default(t_type* ttype);
+  string type_to_default(const t_type* ttype);
 
-  string render_hs_type(t_type* type, bool needs_parens);
+  string render_hs_type(const t_type* type, bool needs_parens);
 
-  string type_to_constructor(t_type* ttype);
+  string type_to_constructor(const t_type* ttype);
 
-  string render_hs_type_for_function_name(t_type* type);
+  string render_hs_type_for_function_name(const t_type* type);
 
   string module_part(const string& qualified_name);
   string name_part(const string& qualified_name);
@@ -483,7 +489,7 @@ void t_hs_generator::generate_enum(t_enum* tenum) {
  * Generate a constant value
  */
 void t_hs_generator::generate_const(t_const* tconst) {
-  t_type* type = tconst->get_type();
+  const t_type* type = tconst->get_type();
   string name = decapitalize(tconst->get_name());
 
   t_const_value* value = tconst->get_value();
@@ -499,7 +505,7 @@ void t_hs_generator::generate_const(t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_hs_generator::render_const_value(
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   if (value == nullptr)
     return type_to_default(type);
@@ -592,8 +598,8 @@ string t_hs_generator::render_const_value(
     out << "}";
 
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
 
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
@@ -611,8 +617,8 @@ string t_hs_generator::render_const_value(
     out << "])";
 
   } else if (type->is_list() || type->is_set()) {
-    t_type* etype = type->is_list() ? ((t_list*)type)->get_elem_type()
-                                    : ((t_set*)type)->get_elem_type();
+    const t_type* etype = type->is_list() ? ((t_list*)type)->get_elem_type()
+                                          : ((t_set*)type)->get_elem_type();
 
     const vector<t_const_value*>& val = value->get_list();
     vector<t_const_value*>::const_iterator v_iter;
@@ -1119,7 +1125,7 @@ void t_hs_generator::generate_hs_typemap(ofstream& out, t_struct* tstruct) {
       out << ",";
     }
 
-    t_type* type = f_iter->get_type()->get_true_type();
+    const t_type* type = f_iter->get_type()->get_true_type();
     int32_t key = f_iter->get_key();
     out << "(\"" << mname << "\",(" << key << "," << type_to_enum(type) << "))";
     first = false;
@@ -1149,7 +1155,7 @@ void t_hs_generator::generate_hs_default(ofstream& out, t_struct* tstruct) {
       out << "," << nl;
     }
 
-    t_type* type = f_iter->get_type()->get_true_type();
+    const t_type* type = f_iter->get_type()->get_true_type();
     const t_const_value* value = f_iter->get_value();
     indent(out) << field_name(name, mname) << " = ";
     if (f_iter->get_req() == t_field::e_req::optional ||
@@ -1456,7 +1462,7 @@ static bool isIntegralType(t_base_type::t_base tbase) {
   }
 }
 
-string t_hs_generator::render_hs_type_for_function_name(t_type* type) {
+string t_hs_generator::render_hs_type_for_function_name(const t_type* type) {
   string type_str = render_hs_type(type, false);
   int found = -1;
 
@@ -1590,7 +1596,7 @@ void t_hs_generator::generate_service_fuzzer(t_service* tservice) {
   // Generate data generators for each data type used in any service method
   f_service_fuzzer_ << nl << "-- Random data generation" << nl;
 
-  map<string, t_type*> used_types;
+  map<string, const t_type*> used_types;
   for (f_iter = functions.begin(); f_iter != functions_end; ++f_iter) {
     const vector<t_field*>& fields = (*f_iter)->get_paramlist()->get_members();
     vector<t_field*>::const_iterator fld_iter;
@@ -1852,7 +1858,7 @@ void t_hs_generator::generate_deserialize_field(
     t_field* tfield,
     string prefix) {
   (void)prefix;
-  t_type* type = tfield->get_type();
+  const t_type* type = tfield->get_type();
   generate_deserialize_type(out, type, prefix);
 }
 
@@ -1861,7 +1867,7 @@ void t_hs_generator::generate_deserialize_field(
  */
 void t_hs_generator::generate_deserialize_type(
     ofstream& out,
-    t_type* type,
+    const t_type* type,
     string arg) {
   type = type->get_true_type();
   string val = tmp("_val");
@@ -1916,7 +1922,7 @@ void t_hs_generator::generate_deserialize_struct(
  */
 void t_hs_generator::generate_deserialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string arg) {
   string val = tmp("_v");
   // Declare variables, read header
@@ -1953,7 +1959,7 @@ void t_hs_generator::generate_deserialize_container(
  */
 void t_hs_generator::generate_serialize_type(
     ofstream& out,
-    t_type* type,
+    const t_type* type,
     string name) {
   type = type->get_true_type();
   // Do nothing for void types
@@ -2006,14 +2012,14 @@ void t_hs_generator::generate_serialize_struct(
 
 void t_hs_generator::generate_serialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string prefix) {
   string k = tmp("_k");
   string v = tmp("_v");
 
   if (ttype->is_map()) {
-    t_type* ktype = ((t_map*)ttype)->get_key_type();
-    t_type* vtype = ((t_map*)ttype)->get_val_type();
+    const t_type* ktype = ((t_map*)ttype)->get_key_type();
+    const t_type* vtype = ((t_map*)ttype)->get_val_type();
     out << "Types.TMap " << type_to_enum(ktype) << " " << type_to_enum(vtype);
     out << " $ map (\\(" << k << "," << v << ") -> (";
     generate_serialize_type(out, ktype, k);
@@ -2063,19 +2069,19 @@ string t_hs_generator::function_type(
 }
 
 string t_hs_generator::qualified_type_name(
-    t_type* ttype,
+    const t_type* ttype,
     string function_prefix) {
   return type_name_qualifier(ttype) +
       unqualified_type_name(ttype, function_prefix);
 }
 
 string t_hs_generator::unqualified_type_name(
-    t_type* ttype,
+    const t_type* ttype,
     string function_prefix) {
   return function_prefix + capitalize(ttype->get_name());
 }
 
-string t_hs_generator::type_name_qualifier(t_type* ttype) {
+string t_hs_generator::type_name_qualifier(const t_type* ttype) {
   const t_program* program = ttype->get_program();
 
   if (ttype->is_service()) {
@@ -2138,7 +2144,7 @@ string t_hs_generator::get_module_prefix(const t_program* program) const {
 /**
  * Converts the parse type to a Protocol.t_type enum
  */
-string t_hs_generator::type_to_enum(t_type* type) {
+string t_hs_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -2192,7 +2198,7 @@ string t_hs_generator::type_to_enum(t_type* type) {
 /**
  * Converts the parse type to a default value
  */
-string t_hs_generator::type_to_default(t_type* type) {
+string t_hs_generator::type_to_default(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -2239,7 +2245,7 @@ string t_hs_generator::type_to_default(t_type* type) {
 /**
  * Converts the parse type to an haskell type
  */
-string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
+string t_hs_generator::render_hs_type(const t_type* type, bool needs_parens) {
   type = type->get_true_type();
   string type_repr;
 
@@ -2281,17 +2287,17 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
     return qualified_type_name((t_struct*)type);
 
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     type_repr = "Map.HashMap " + render_hs_type(ktype, true) + " " +
         render_hs_type(vtype, true);
 
   } else if (type->is_set()) {
-    t_type* etype = ((t_set*)type)->get_elem_type();
+    const t_type* etype = ((t_set*)type)->get_elem_type();
     type_repr = "Set.HashSet " + render_hs_type(etype, true);
 
   } else if (type->is_list()) {
-    t_type* etype = ((t_list*)type)->get_elem_type();
+    const t_type* etype = ((t_list*)type)->get_elem_type();
     string inner_type = render_hs_type(etype, true);
     if (use_list_)
       type_repr = "[" + inner_type + "]";
@@ -2309,7 +2315,7 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
 /**
  * Converts the parse type to a haskell constructor
  */
-string t_hs_generator::type_to_constructor(t_type* type) {
+string t_hs_generator::type_to_constructor(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {

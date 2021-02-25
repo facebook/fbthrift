@@ -307,7 +307,7 @@ void t_java_generator::generate_consts(std::vector<t_const*> consts) {
 void t_java_generator::print_const_value(
     std::ostream& out,
     string name,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value,
     bool in_static,
     bool defval) {
@@ -335,7 +335,7 @@ void t_java_generator::print_const_value(
       indent_up();
     }
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -362,8 +362,8 @@ void t_java_generator::print_const_value(
       indent(out) << "static {" << endl;
       indent_up();
     }
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -382,7 +382,7 @@ void t_java_generator::print_const_value(
       indent(out) << "static {" << endl;
       indent_up();
     }
-    t_type* etype;
+    const t_type* etype;
     if (type->is_list()) {
       etype = ((t_list*)type)->get_elem_type();
     } else {
@@ -408,7 +408,7 @@ void t_java_generator::print_const_value(
 string t_java_generator::render_const_value(
     ostream& out,
     string /* unused */,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream render;
@@ -1137,7 +1137,7 @@ void t_java_generator::generate_java_constructor_using_builder(
   indent(out) << "public Builder() {" << endl;
   if (!useDefaultConstructor) {
     for (m_iter = fields.begin(); m_iter != fields.end(); ++m_iter) {
-      t_type* t = (*m_iter)->get_type()->get_true_type();
+      const t_type* t = (*m_iter)->get_type()->get_true_type();
       if ((*m_iter)->get_value() != nullptr) {
         print_const_value(
             indent(out),
@@ -1337,7 +1337,7 @@ void t_java_generator::generate_java_struct_definition(
     indent(out) << "public " << tstruct->get_name() << "() {" << endl;
     indent_up();
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = (*m_iter)->get_type()->get_true_type();
+      const t_type* t = (*m_iter)->get_type()->get_true_type();
       if ((*m_iter)->get_value() != nullptr) {
         print_const_value(
             out,
@@ -1395,7 +1395,7 @@ void t_java_generator::generate_java_struct_definition(
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_field* field = (*m_iter);
     std::string field_name = field->get_name();
-    t_type* type = field->get_type();
+    const t_type* type = field->get_type();
 
     bool can_be_null = type_can_be_null(type);
 
@@ -1453,7 +1453,7 @@ void t_java_generator::construct_constant_fields(
     t_struct* tstruct) {
   auto& members = tstruct->get_members();
   for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    const t_type* t = (*m_iter)->get_type()->get_true_type();
     if ((*m_iter)->get_value() != nullptr) {
       print_const_value(
           out,
@@ -1494,7 +1494,7 @@ void t_java_generator::generate_java_struct_equality(
   for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     out << endl;
 
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    const t_type* t = (*m_iter)->get_type()->get_true_type();
     // Most existing Thrift code does not use isset or optional/required,
     // so we treat "default" fields as required.
     bool is_optional = (*m_iter)->get_req() == t_field::e_req::optional;
@@ -1618,7 +1618,7 @@ void t_java_generator::generate_java_struct_reader(
   if (generate_immutable_structs_) {
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       string tmp_name = "tmp_" + (*f_iter)->get_name();
-      t_type* field_type = (*f_iter)->get_type();
+      const t_type* field_type = (*f_iter)->get_type();
       indent(out) << type_name(field_type) << " " << tmp_name;
       if (type_can_be_null(field_type)) {
         out << " = null";
@@ -1887,7 +1887,7 @@ void t_java_generator::generate_java_struct_result_writer(
 
 void t_java_generator::generate_reflection_getters(
     ostringstream& out,
-    t_type* type,
+    const t_type* type,
     string field_name,
     string cap_name) {
   indent(out) << "case " << upcase_string(field_name) << ":" << endl;
@@ -1909,7 +1909,7 @@ void t_java_generator::generate_reflection_getters(
 
 void t_java_generator::generate_reflection_setters(
     ostringstream& out,
-    t_type* type,
+    const t_type* type,
     string field_name,
     string cap_name) {
   indent(out) << "case " << upcase_string(field_name) << ":" << endl;
@@ -1937,7 +1937,7 @@ void t_java_generator::generate_generic_field_getters_setters(
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
-    t_type* type = field->get_type()->get_true_type();
+    const t_type* type = field->get_type()->get_true_type();
     const std::string& field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
 
@@ -1997,7 +1997,7 @@ void t_java_generator::generate_generic_field_getters_setters(
 std::string t_java_generator::get_simple_getter_name(t_field* field) {
   const std::string& field_name = field->get_name();
   std::string cap_name = get_cap_name(field_name);
-  t_type* type = field->get_type()->get_true_type();
+  const t_type* type = field->get_type()->get_true_type();
 
   if (type->is_base_type() &&
       ((t_base_type*)type)->get_base() == t_base_type::TYPE_BOOL) {
@@ -2021,7 +2021,7 @@ void t_java_generator::generate_java_bean_boilerplate(
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
-    t_type* type = field->get_type()->get_true_type();
+    const t_type* type = field->get_type()->get_true_type();
     std::string field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
 
@@ -2152,7 +2152,7 @@ void t_java_generator::generate_java_struct_tostring(
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       t_field* field = (*f_iter);
       string fname = field->get_name();
-      t_type* ftype = field->get_type()->get_true_type();
+      const t_type* ftype = field->get_type()->get_true_type();
 
       if (tstruct->is_union()) {
         indent(out) << "// Only print this field if it is the set field"
@@ -2298,7 +2298,7 @@ void t_java_generator::generate_java_meta_data_map(
  * Returns a string with the java representation of the given thrift type
  * (e.g. for the type struct it returns "TType.STRUCT")
  */
-std::string t_java_generator::get_java_type_string(t_type* type) {
+std::string t_java_generator::get_java_type_string(const t_type* type) {
   if (type->is_list()) {
     return "TType.LIST";
   } else if (type->is_map()) {
@@ -2346,7 +2346,7 @@ std::string t_java_generator::get_java_type_string(t_type* type) {
 
 void t_java_generator::generate_field_value_meta_data(
     std::ofstream& out,
-    t_type* type) {
+    const t_type* type) {
   type = type->get_true_type();
   out << endl;
   indent_up();
@@ -2357,16 +2357,16 @@ void t_java_generator::generate_field_value_meta_data(
   } else if (type->is_container()) {
     if (type->is_list()) {
       indent(out) << "new ListMetaData(TType.LIST, ";
-      t_type* elem_type = ((t_list*)type)->get_elem_type();
+      const t_type* elem_type = ((t_list*)type)->get_elem_type();
       generate_field_value_meta_data(out, elem_type);
     } else if (type->is_set()) {
       indent(out) << "new SetMetaData(TType.SET, ";
-      t_type* elem_type = ((t_set*)type)->get_elem_type();
+      const t_type* elem_type = ((t_set*)type)->get_elem_type();
       generate_field_value_meta_data(out, elem_type);
     } else { // map
       indent(out) << "new MapMetaData(TType.MAP, ";
-      t_type* key_type = ((t_map*)type)->get_key_type();
-      t_type* val_type = ((t_map*)type)->get_val_type();
+      const t_type* key_type = ((t_map*)type)->get_key_type();
+      const t_type* val_type = ((t_map*)type)->get_val_type();
       generate_field_value_meta_data(out, key_type);
       out << ", ";
       generate_field_value_meta_data(out, val_type);
@@ -2772,7 +2772,7 @@ void t_java_generator::generate_service_async_client(t_service* tservice) {
       continue;
     }
     string funname = (*f_iter)->get_name();
-    t_type* ret_type = (*f_iter)->get_returntype();
+    const t_type* ret_type = (*f_iter)->get_returntype();
     t_struct* arg_struct = (*f_iter)->get_paramlist();
     string funclassname = funname + "_call";
     const vector<t_field*>& fields = arg_struct->get_members();
@@ -3242,7 +3242,7 @@ void t_java_generator::generate_deserialize_field(
     ofstream& out,
     t_field* tfield,
     string prefix) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw std::runtime_error(
@@ -3331,7 +3331,7 @@ void t_java_generator::generate_deserialize_struct(
  */
 void t_java_generator::generate_deserialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string prefix) {
   scope_up(out);
 
@@ -3474,7 +3474,7 @@ void t_java_generator::generate_serialize_field(
     ofstream& out,
     t_field* tfield,
     string prefix) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -3565,7 +3565,7 @@ void t_java_generator::generate_serialize_struct(
  */
 void t_java_generator::generate_serialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string prefix) {
   scope_up(out);
 
@@ -3666,7 +3666,7 @@ void t_java_generator::generate_serialize_list_element(
  * @return Java type name, i.e. HashMap<Key,Value>
  */
 string t_java_generator::type_name(
-    t_type* ttype,
+    const t_type* ttype,
     bool in_container,
     bool in_init,
     bool skip_generic) {
@@ -3727,7 +3727,9 @@ string t_java_generator::type_name(
  * @param tbase The base type
  * @param container Is it going in a Java container?
  */
-string t_java_generator::base_type_name(t_base_type* type, bool in_container) {
+string t_java_generator::base_type_name(
+    const t_base_type* type,
+    bool in_container) {
   t_base_type::t_base tbase = type->get_base();
   bool boxedPrimitive = in_container || generate_boxed_primitive;
 
@@ -3768,7 +3770,7 @@ string t_java_generator::declare_field(t_field* tfield, bool init) {
   // TODO(mcslee): do we ever need to initialize the field?
   string result = type_name(tfield->get_type()) + " " + tfield->get_name();
   if (init) {
-    t_type* ttype = tfield->get_type()->get_true_type();
+    const t_type* ttype = tfield->get_type()->get_true_type();
     if (ttype->is_base_type() && tfield->get_value() != nullptr) {
       ofstream dummy;
       result += " = " +
@@ -3821,7 +3823,7 @@ string t_java_generator::declare_field(t_field* tfield, bool init) {
 string t_java_generator::function_signature(
     t_function* tfunction,
     string prefix) {
-  t_type* ttype = tfunction->get_returntype();
+  const t_type* ttype = tfunction->get_returntype();
   std::string result = type_name(ttype) + " " + prefix + tfunction->get_name() +
       "(" + argument_list(tfunction->get_paramlist()) + ") throws ";
   t_struct* xs = tfunction->get_xceptions();
@@ -3926,7 +3928,7 @@ string t_java_generator::async_argument_list(
 /**
  * Converts the parse type to a C++ enum string for the given type.
  */
-string t_java_generator::type_to_enum(t_type* type) {
+string t_java_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -4069,7 +4071,7 @@ void t_java_generator::generate_isset_set(ofstream& out, t_field* field) {
   }
 }
 
-std::string t_java_generator::get_enum_class_name(t_type* type) {
+std::string t_java_generator::get_enum_class_name(const t_type* type) {
   string package = "";
   const t_program* program = type->get_program();
   if (program != nullptr && program != program_) {
@@ -4117,7 +4119,9 @@ void t_java_generator::generate_field_name_constants(
   }
 }
 
-bool t_java_generator::is_comparable(t_type* type, vector<t_type*>* enclosing) {
+bool t_java_generator::is_comparable(
+    const t_type* type,
+    vector<const t_type*>* enclosing) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -4125,7 +4129,7 @@ bool t_java_generator::is_comparable(t_type* type, vector<t_type*>* enclosing) {
   } else if (type->is_enum()) {
     return true;
   } else if (type->is_struct()) {
-    vector<t_type*> enclosing2;
+    vector<const t_type*> enclosing2;
     enclosing = enclosing ? enclosing : &enclosing2;
     for (auto iter = enclosing->begin(); iter != enclosing->end(); iter++) {
       if (*iter == type) {
@@ -4159,7 +4163,7 @@ bool t_java_generator::is_comparable(t_type* type, vector<t_type*>* enclosing) {
 
 bool t_java_generator::struct_has_all_comparable_fields(
     t_struct* tstruct,
-    vector<t_type*>* enclosing) {
+    vector<const t_type*>* enclosing) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
@@ -4171,7 +4175,7 @@ bool t_java_generator::struct_has_all_comparable_fields(
   return true;
 }
 
-bool t_java_generator::type_has_naked_binary(t_type* type) {
+bool t_java_generator::type_has_naked_binary(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {

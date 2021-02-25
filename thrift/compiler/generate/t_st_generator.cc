@@ -69,7 +69,7 @@ class t_st_generator : public t_oop_generator {
   void generate_class_side_definition();
   void generate_force_consts();
 
-  std::string render_const_value(t_type* type, t_const_value* value);
+  std::string render_const_value(const t_type* type, t_const_value* value);
 
   /**
    * Struct generation code
@@ -98,8 +98,8 @@ class t_st_generator : public t_oop_generator {
   std::string set_writer(t_set* tset, std::string name);
   std::string struct_writer(t_struct* tstruct, std::string fname);
 
-  std::string write_val(t_type* t, std::string fname);
-  std::string read_val(t_type* t);
+  std::string write_val(const t_type* t, std::string fname);
+  std::string read_val(const t_type* t);
 
   /**
    * Helper rendering functions
@@ -138,14 +138,14 @@ class t_st_generator : public t_oop_generator {
   std::string prefix(std::string name);
   std::string declare_field(t_field* tfield);
   std::string sanitize(std::string s);
-  std::string type_name(t_type* ttype);
+  std::string type_name(const t_type* ttype);
 
   std::string function_signature(t_function* tfunction);
   std::string argument_list(t_struct* tstruct);
   std::string function_types_comment(t_function* fn);
 
-  std::string type_to_enum(t_type* ttype);
-  std::string a_type(t_type* type);
+  std::string type_to_enum(const t_type* ttype);
+  std::string a_type(const t_type* type);
   bool is_vowel(char c);
   std::string temp_name();
   std::string generated_category();
@@ -368,7 +368,7 @@ void t_st_generator::generate_enum(t_enum* tenum) {
  * Generate a constant value
  */
 void t_st_generator::generate_const(t_const* tconst) {
-  t_type* type = tconst->get_type();
+  const t_type* type = tconst->get_type();
   string name = tconst->get_name();
   t_const_value* value = tconst->get_value();
 
@@ -382,7 +382,9 @@ void t_st_generator::generate_const(t_const* tconst) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
+string t_st_generator::render_const_value(
+    const t_type* type,
+    t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream out;
   if (type->is_base_type()) {
@@ -425,7 +427,7 @@ string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
 
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -444,8 +446,8 @@ string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
 
     indent_down();
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     out << "(Dictionary new" << endl;
     indent_up();
     indent_up();
@@ -462,7 +464,7 @@ string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
     indent_down();
     indent_down();
   } else if (type->is_list() || type->is_set()) {
-    t_type* etype;
+    const t_type* etype;
     if (type->is_list()) {
       etype = ((t_list*)type)->get_elem_type();
     } else {
@@ -555,7 +557,7 @@ bool t_st_generator::is_vowel(char c) {
   return false;
 }
 
-string t_st_generator::a_type(t_type* type) {
+string t_st_generator::a_type(const t_type* type) {
   string prefix;
 
   if (is_vowel(type_name(type)[0]))
@@ -832,7 +834,7 @@ string t_st_generator::struct_reader(t_struct* tstruct, string clsName = "") {
   return out.str();
 }
 
-string t_st_generator::write_val(t_type* t, string fname) {
+string t_st_generator::write_val(const t_type* t, string fname) {
   t = t->get_true_type();
 
   if (t->is_base_type()) {
@@ -865,7 +867,7 @@ string t_st_generator::write_val(t_type* t, string fname) {
   }
 }
 
-string t_st_generator::read_val(t_type* t) {
+string t_st_generator::read_val(const t_type* t) {
   t = t->get_true_type();
 
   if (t->is_base_type()) {
@@ -1075,7 +1077,7 @@ string t_st_generator::argument_list(t_struct* tstruct) {
   return result;
 }
 
-string t_st_generator::type_name(t_type* ttype) {
+string t_st_generator::type_name(const t_type* ttype) {
   string prefix = "";
   const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
@@ -1093,7 +1095,7 @@ string t_st_generator::type_name(t_type* ttype) {
 }
 
 /* Convert t_type to Smalltalk type code */
-string t_st_generator::type_to_enum(t_type* type) {
+string t_st_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {

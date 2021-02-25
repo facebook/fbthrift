@@ -1548,9 +1548,12 @@ class mstch_cpp2_program : public mstch_program {
           continue;
         }
 
-        auto add_dependency = [&](t_type* type) {
+        auto add_dependency = [&](const t_type* type) {
           if (type->is_struct()) {
-            auto* strct = dynamic_cast<t_struct*>(type);
+            // TODO(afuller): Remove const cast, once the return type also has
+            // const elements.
+            auto* strct =
+                const_cast<t_struct*>(dynamic_cast<const t_struct*>(type));
             // We're only interested in types defined in the current program.
             if (strct->get_program() == program) {
               deps.emplace_back(strct);
@@ -1560,7 +1563,7 @@ class mstch_cpp2_program : public mstch_program {
 
         auto t = f->get_type()->get_true_type();
         if (t->is_map()) {
-          auto* map = dynamic_cast<t_map*>(t);
+          const auto* map = dynamic_cast<const t_map*>(t);
           add_dependency(map->get_key_type());
           add_dependency(map->get_val_type());
         } else {

@@ -300,7 +300,10 @@ class parsing_driver {
    * validation and inference, except the "runtime" is the code generator
    * runtime. Shit. I've been had.
    */
-  void validate_const_rec(std::string name, t_type* type, t_const_value* value);
+  void validate_const_rec(
+      std::string name,
+      const t_type* type,
+      t_const_value* value);
 
   /**
    * Check the type of the parsed const information against its declared type

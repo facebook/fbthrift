@@ -76,7 +76,7 @@ std::shared_ptr<mstch_base> const_value_generator::generate(
     ELEMENT_POSITION pos,
     int32_t index,
     t_const const* current_const,
-    std::pair<t_type*, t_type*> const& expected_types) const {
+    std::pair<const t_type*, const t_type*> const& expected_types) const {
   return std::make_shared<mstch_const_value_key_mapped_pair>(
       value_pair, current_const, expected_types, generators, cache, pos, index);
 }
@@ -434,7 +434,7 @@ mstch::node mstch_const_value::string_value() {
 
 mstch::node mstch_const_value::list_elems() {
   if (type_ == cv::CV_LIST) {
-    t_type* expected_type = nullptr;
+    const t_type* expected_type = nullptr;
     if (expected_type_) {
       if (expected_type_->is_list()) {
         expected_type =
@@ -452,7 +452,7 @@ mstch::node mstch_const_value::list_elems() {
 
 mstch::node mstch_const_value::map_elems() {
   if (type_ == cv::CV_MAP) {
-    std::pair<t_type*, t_type*> expected_types;
+    std::pair<const t_type*, const t_type*> expected_types;
     if (expected_type_ && expected_type_->is_map()) {
       const auto* m = dynamic_cast<const t_map*>(expected_type_);
       expected_types = {m->get_key_type(), m->get_val_type()};

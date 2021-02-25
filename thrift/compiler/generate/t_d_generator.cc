@@ -134,7 +134,7 @@ class t_d_generator : public t_oop_generator {
     vector<t_const*>::iterator c_iter;
     for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
       string name = (*c_iter)->get_name();
-      t_type* type = (*c_iter)->get_type();
+      const t_type* type = (*c_iter)->get_type();
       indent(f_consts) << "immutable(" << render_type_name(type) << ") " << name
                        << ";" << endl;
     }
@@ -149,7 +149,7 @@ class t_d_generator : public t_oop_generator {
       } else {
         f_consts << endl;
       }
-      t_type* type = (*c_iter)->get_type();
+      const t_type* type = (*c_iter)->get_type();
       indent(f_consts) << (*c_iter)->get_name() << " = ";
       if (!is_immutable_type(type)) {
         f_consts << "cast(immutable(" << render_type_name(type) << ")) ";
@@ -248,7 +248,7 @@ class t_d_generator : public t_oop_generator {
 
     // Collect all the exception types service methods can throw so we can
     // emit the necessary aliases later.
-    set<t_type*> exception_types;
+    set<const t_type*> exception_types;
 
     // Print the method signatures.
     vector<t_function*> functions = tservice->get_functions();
@@ -270,7 +270,7 @@ class t_d_generator : public t_oop_generator {
     // Alias the exception types into the current scope.
     if (!exception_types.empty())
       f_service << endl;
-    set<t_type*>::const_iterator et_iter;
+    set<const t_type*>::const_iterator et_iter;
     for (et_iter = exception_types.begin(); et_iter != exception_types.end();
          ++et_iter) {
       indent(f_service) << "alias "
@@ -558,7 +558,7 @@ class t_d_generator : public t_oop_generator {
    * single expression; for complex types, immediately called delegate
    * literals are used to achieve this.
    */
-  string render_const_value(t_type* type, const t_const_value* value) {
+  string render_const_value(const t_type* type, const t_const_value* value) {
     // Resolve any typedefs.
     type = type->get_true_type();
 
@@ -613,7 +613,7 @@ class t_d_generator : public t_oop_generator {
             value->get_map();
         vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
         for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-          t_type* field_type = nullptr;
+          const t_type* field_type = nullptr;
           for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
             if ((*f_iter)->get_name() == v_iter->first->get_string()) {
               field_type = (*f_iter)->get_type();
@@ -629,8 +629,8 @@ class t_d_generator : public t_oop_generator {
                       << ");" << endl;
         }
       } else if (type->is_map()) {
-        t_type* ktype = ((t_map*)type)->get_key_type();
-        t_type* vtype = ((t_map*)type)->get_val_type();
+        const t_type* ktype = ((t_map*)type)->get_key_type();
+        const t_type* vtype = ((t_map*)type)->get_val_type();
         const vector<pair<t_const_value*, t_const_value*>>& val =
             value->get_map();
         vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
@@ -644,7 +644,7 @@ class t_d_generator : public t_oop_generator {
           out << key << "] = " << val << ";" << endl;
         }
       } else if (type->is_list()) {
-        t_type* etype = ((t_list*)type)->get_elem_type();
+        const t_type* etype = ((t_list*)type)->get_elem_type();
         const vector<t_const_value*>& val = value->get_list();
         vector<t_const_value*>::const_iterator v_iter;
         for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -652,7 +652,7 @@ class t_d_generator : public t_oop_generator {
           indent(out) << "v ~= " << val << ";" << endl;
         }
       } else if (type->is_set()) {
-        t_type* etype = ((t_set*)type)->get_elem_type();
+        const t_type* etype = ((t_set*)type)->get_elem_type();
         const vector<t_const_value*>& val = value->get_list();
         vector<t_const_value*>::const_iterator v_iter;
         for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -724,7 +724,7 @@ class t_d_generator : public t_oop_generator {
         return tcontainer->get_cpp_name();
       } else if (ttype->is_map()) {
         t_map* tmap = (t_map*)ttype;
-        t_type* ktype = tmap->get_key_type();
+        const t_type* ktype = tmap->get_key_type();
 
         string name = render_type_name(tmap->get_val_type()) + "[";
         if (!is_immutable_type(ktype)) {
@@ -800,8 +800,8 @@ class t_d_generator : public t_oop_generator {
    * a value of that type is implicitly castable to immutable(type), and it is
    * allowed for AA keys without an immutable() qualifier.
    */
-  bool is_immutable_type(t_type* type) const {
-    t_type* ttype = type->get_true_type();
+  bool is_immutable_type(const t_type* type) const {
+    const t_type* ttype = type->get_true_type();
     return ttype->is_base_type() || ttype->is_enum();
   }
 

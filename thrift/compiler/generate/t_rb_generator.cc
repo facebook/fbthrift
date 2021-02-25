@@ -68,7 +68,9 @@ class t_rb_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, const t_const_value* value);
+  std::string render_const_value(
+      const t_type* type,
+      const t_const_value* value);
 
   /**
    * Struct generation code
@@ -89,7 +91,7 @@ class t_rb_generator : public t_oop_generator {
   void generate_field_defns(std::ofstream& out, t_struct* tstruct);
   void generate_field_data(
       std::ofstream& out,
-      t_type* field_type,
+      const t_type* field_type,
       const std::string& field_name = "",
       const t_const_value* field_value = nullptr,
       bool optional = false);
@@ -121,7 +123,7 @@ class t_rb_generator : public t_oop_generator {
 
   void generate_deserialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_deserialize_set_element(
@@ -151,7 +153,7 @@ class t_rb_generator : public t_oop_generator {
 
   void generate_serialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_serialize_map_element(
@@ -179,13 +181,13 @@ class t_rb_generator : public t_oop_generator {
   std::string rb_autogen_comment();
   std::string render_includes();
   std::string declare_field(t_field* tfield);
-  std::string type_name(t_type* ttype);
-  std::string full_type_name(t_type* ttype);
+  std::string type_name(const t_type* ttype);
+  std::string full_type_name(const t_type* ttype);
   std::string function_signature(
       t_function* tfunction,
       std::string prefix = "");
   std::string argument_list(t_struct* tstruct);
-  std::string type_to_enum(t_type* ttype);
+  std::string type_to_enum(const t_type* ttype);
 
   std::vector<std::string> ruby_modules(const t_program* p) {
     std::string ns = p->get_namespace("rb");
@@ -357,7 +359,7 @@ void t_rb_generator::generate_enum(t_enum* tenum) {
  * Generate a constant value
  */
 void t_rb_generator::generate_const(t_const* tconst) {
-  t_type* type = tconst->get_type();
+  const t_type* type = tconst->get_type();
   string name = tconst->get_name();
   t_const_value* value = tconst->get_value();
 
@@ -373,7 +375,7 @@ void t_rb_generator::generate_const(t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_rb_generator::render_const_value(
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream out;
@@ -415,7 +417,7 @@ string t_rb_generator::render_const_value(
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -435,8 +437,8 @@ string t_rb_generator::render_const_value(
     indent_down();
     indent(out) << "})";
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     out << "{" << endl;
     indent_up();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
@@ -451,7 +453,7 @@ string t_rb_generator::render_const_value(
     indent_down();
     indent(out) << "}";
   } else if (type->is_list() || type->is_set()) {
-    t_type* etype;
+    const t_type* etype;
     if (type->is_list()) {
       etype = ((t_list*)type)->get_elem_type();
     } else {
@@ -618,7 +620,7 @@ void t_rb_generator::generate_field_defns(
 
 void t_rb_generator::generate_field_data(
     std::ofstream& out,
-    t_type* field_type,
+    const t_type* field_type,
     const std::string& field_name,
     const t_const_value* field_value,
     bool optional) {
@@ -1043,7 +1045,7 @@ string t_rb_generator::argument_list(t_struct* tstruct) {
   return result;
 }
 
-string t_rb_generator::type_name(t_type* ttype) {
+string t_rb_generator::type_name(const t_type* ttype) {
   string prefix = "";
 
   string name = ttype->get_name();
@@ -1054,7 +1056,7 @@ string t_rb_generator::type_name(t_type* ttype) {
   return prefix + name;
 }
 
-string t_rb_generator::full_type_name(t_type* ttype) {
+string t_rb_generator::full_type_name(const t_type* ttype) {
   string prefix = "";
   vector<std::string> modules = ruby_modules(ttype->get_program());
   for (vector<std::string>::iterator m_iter = modules.begin();
@@ -1068,7 +1070,7 @@ string t_rb_generator::full_type_name(t_type* ttype) {
 /**
  * Converts the parse type to a Ruby tyoe
  */
-string t_rb_generator::type_to_enum(t_type* type) {
+string t_rb_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {

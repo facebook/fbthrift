@@ -67,18 +67,18 @@ static void fill_mutators(mutator_list& ms) {
   // add more mutators here ...
 }
 
-static t_type* resolve_type(t_type* type) {
+static const t_type* resolve_type(const t_type* type) {
   while (type->is_typedef()) {
-    type = dynamic_cast<t_typedef*>(type)->get_type();
+    type = dynamic_cast<const t_typedef*>(type)->get_type();
   }
   return type;
 }
 
 static void match_type_with_const_value(
     t_program* program,
-    t_type* long_type,
+    const t_type* long_type,
     t_const_value* value) {
-  t_type* type = resolve_type(long_type);
+  const t_type* type = resolve_type(long_type);
   value->set_ttype(type);
   if (type->is_list()) {
     auto* elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();

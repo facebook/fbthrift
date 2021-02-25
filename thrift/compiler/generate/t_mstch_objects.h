@@ -92,8 +92,9 @@ class const_value_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0,
       t_const const* current_const = nullptr,
-      std::pair<t_type*, t_type*> const& expected_types =
-          std::pair<t_type*, t_type*>(nullptr, nullptr)) const;
+      std::pair<const t_type*, const t_type*> const& expected_types = {
+          nullptr,
+          nullptr}) const;
 };
 
 class type_generator {
@@ -686,7 +687,7 @@ class mstch_const_value_key_mapped_pair : public mstch_base {
   mstch_const_value_key_mapped_pair(
       std::pair<t_const_value*, t_const_value*> const& pair_values,
       t_const const* current_const,
-      std::pair<t_type*, t_type*> const& expected_types,
+      std::pair<const t_type*, const t_type*> const& expected_types,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
@@ -710,7 +711,7 @@ class mstch_const_value_key_mapped_pair : public mstch_base {
  protected:
   std::pair<t_const_value*, t_const_value*> const pair_;
   t_const const* current_const_;
-  std::pair<t_type*, t_type*> const expected_types_;
+  std::pair<const t_type*, const t_type*> const expected_types_;
   int32_t index_;
 };
 

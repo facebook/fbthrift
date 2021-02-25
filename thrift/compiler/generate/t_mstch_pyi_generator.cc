@@ -80,9 +80,9 @@ class t_mstch_pyi_generator : public t_mstch_generator {
 
  private:
   void load_container_type(
-      vector<t_type*>& container_types,
+      vector<const t_type*>& container_types,
       std::set<string>& visited_names,
-      t_type* type) const;
+      const t_type* type) const;
 };
 
 mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
@@ -267,8 +267,8 @@ mstch::array t_mstch_pyi_generator::get_return_types(const t_program& program) {
 void t_mstch_pyi_generator::add_container_types(
     const t_program& program,
     mstch::map& results) {
-  vector<t_type*> container_types;
-  vector<t_type*> move_container_types;
+  vector<const t_type*> container_types;
+  vector<const t_type*> move_container_types;
   std::set<string> visited_names;
 
   for (const auto service : program.get_services()) {
@@ -310,9 +310,9 @@ void t_mstch_pyi_generator::add_container_types(
 }
 
 void t_mstch_pyi_generator::load_container_type(
-    vector<t_type*>& container_types,
+    vector<const t_type*>& container_types,
     std::set<string>& visited_names,
-    t_type* type) const {
+    const t_type* type) const {
   if (!type->is_container()) {
     return;
   }

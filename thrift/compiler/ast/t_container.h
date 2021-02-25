@@ -32,11 +32,11 @@ class t_container : public t_type {
     has_cpp_name_ = true;
   }
 
-  bool has_cpp_name() {
+  bool has_cpp_name() const {
     return has_cpp_name_;
   }
 
-  std::string get_cpp_name() {
+  const std::string& get_cpp_name() const {
     return cpp_name_;
   }
 

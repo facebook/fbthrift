@@ -66,7 +66,9 @@ class t_perl_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, const t_const_value* value);
+  std::string render_const_value(
+      const t_type* type,
+      const t_const_value* value);
 
   /**
    * Structs!
@@ -109,7 +111,7 @@ class t_perl_generator : public t_oop_generator {
 
   void generate_deserialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_deserialize_set_element(
@@ -139,7 +141,7 @@ class t_perl_generator : public t_oop_generator {
 
   void generate_serialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_serialize_map_element(
@@ -169,7 +171,7 @@ class t_perl_generator : public t_oop_generator {
       t_function* tfunction,
       std::string prefix = "");
   std::string argument_list(t_struct* tstruct);
-  std::string type_to_enum(t_type* ttype);
+  std::string type_to_enum(const t_type* ttype);
 
   std::string autogen_comment() override {
     return "#\n"
@@ -334,7 +336,7 @@ void t_perl_generator::generate_enum(t_enum* tenum) {
  * Generate a constant value
  */
 void t_perl_generator::generate_const(t_const* tconst) {
-  t_type* type = tconst->get_type();
+  const t_type* type = tconst->get_type();
   string name = tconst->get_name();
   t_const_value* value = tconst->get_value();
 
@@ -349,7 +351,7 @@ void t_perl_generator::generate_const(t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_perl_generator::render_const_value(
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   std::ostringstream out;
 
@@ -394,7 +396,7 @@ string t_perl_generator::render_const_value(
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -414,8 +416,8 @@ string t_perl_generator::render_const_value(
 
     out << "})";
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     out << "{" << endl;
 
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
@@ -429,7 +431,7 @@ string t_perl_generator::render_const_value(
 
     out << "}";
   } else if (type->is_list() || type->is_set()) {
-    t_type* etype;
+    const t_type* etype;
     if (type->is_list()) {
       etype = ((t_list*)type)->get_elem_type();
     } else {
@@ -503,7 +505,7 @@ void t_perl_generator::generate_perl_struct_definition(
     out << perl_namespace(tstruct->get_program()) << tstruct->get_name()
         << "->mk_accessors( qw( ";
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = (*m_iter)->get_type()->get_true_type();
+      const t_type* t = (*m_iter)->get_type()->get_true_type();
       if (!t->is_xception()) {
         out << (*m_iter)->get_name() << " ";
       }
@@ -523,7 +525,7 @@ void t_perl_generator::generate_perl_struct_definition(
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string dval = "undef";
-    t_type* t = (*m_iter)->get_type()->get_true_type();
+    const t_type* t = (*m_iter)->get_type()->get_true_type();
     if ((*m_iter)->get_value() != nullptr &&
         !(t->is_struct() || t->is_xception())) {
       dval = render_const_value((*m_iter)->get_type(), (*m_iter)->get_value());
@@ -535,7 +537,7 @@ void t_perl_generator::generate_perl_struct_definition(
   // Generate constructor from array
   if (members.size() > 0) {
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = (*m_iter)->get_type()->get_true_type();
+      const t_type* t = (*m_iter)->get_type()->get_true_type();
       if ((*m_iter)->get_value() != nullptr &&
           (t->is_struct() || t->is_xception())) {
         indent(out) << "$self->{" << (*m_iter)->get_name()
@@ -1250,7 +1252,7 @@ void t_perl_generator::generate_deserialize_field(
     t_field* tfield,
     string prefix,
     bool /*inclass*/) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw std::runtime_error(
@@ -1337,7 +1339,7 @@ void t_perl_generator::generate_deserialize_struct(
 
 void t_perl_generator::generate_deserialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string prefix) {
   scope_up(out);
 
@@ -1465,7 +1467,7 @@ void t_perl_generator::generate_serialize_field(
     ofstream& out,
     t_field* tfield,
     string prefix) {
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -1555,7 +1557,7 @@ void t_perl_generator::generate_serialize_struct(
  */
 void t_perl_generator::generate_serialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string prefix) {
   scope_up(out);
 
@@ -1661,7 +1663,7 @@ void t_perl_generator::generate_serialize_list_element(
 string t_perl_generator::declare_field(t_field* tfield, bool init, bool obj) {
   string result = "my $" + tfield->get_name();
   if (init) {
-    t_type* type = tfield->get_type()->get_true_type();
+    const t_type* type = tfield->get_type()->get_true_type();
     if (type->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
@@ -1752,7 +1754,7 @@ string t_perl_generator::argument_list(t_struct* tstruct) {
 /**
  * Converts the parse type to a C++ enum string for the given type.
  */
-string t_perl_generator ::type_to_enum(t_type* type) {
+string t_perl_generator ::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {

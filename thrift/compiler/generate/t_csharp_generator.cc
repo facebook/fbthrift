@@ -57,7 +57,7 @@ class t_csharp_generator : public t_oop_generator {
   bool print_const_value(
       std::ofstream& out,
       std::string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value,
       bool in_static,
       bool defval = false,
@@ -65,7 +65,7 @@ class t_csharp_generator : public t_oop_generator {
   std::string render_const_value(
       std::ofstream& out,
       std::string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value);
   void print_const_constructor(
       std::ofstream& out,
@@ -73,7 +73,7 @@ class t_csharp_generator : public t_oop_generator {
   void print_const_def_value(
       std::ofstream& out,
       std::string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value);
 
   void generate_csharp_struct(t_struct* tstruct, bool is_exception);
@@ -107,7 +107,7 @@ class t_csharp_generator : public t_oop_generator {
       std::string prefix = "");
   void generate_deserialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
   void generate_deserialize_set_element(
       std::ofstream& out,
@@ -131,7 +131,7 @@ class t_csharp_generator : public t_oop_generator {
       std::string prefix = "");
   void generate_serialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
   void generate_serialize_map_element(
       std::ofstream& out,
@@ -153,18 +153,20 @@ class t_csharp_generator : public t_oop_generator {
   std::string csharp_type_usings();
   std::string csharp_thrift_usings();
 
-  std::string
-  type_name(t_type* ttype, bool in_countainer = false, bool in_init = false);
+  std::string type_name(
+      const t_type* ttype,
+      bool in_countainer = false,
+      bool in_init = false);
   std::string base_type_name(t_base_type* tbase, bool in_container = false);
   std::string declare_field(t_field* tfield, bool init = false);
   std::string function_signature(
       t_function* tfunction,
       std::string prefix = "");
   std::string argument_list(t_struct* tstruct);
-  std::string type_to_enum(t_type* ttype);
+  std::string type_to_enum(const t_type* ttype);
   std::string prop_name(t_field* tfield);
 
-  bool type_can_be_null(t_type* ttype) {
+  bool type_can_be_null(const t_type* ttype) {
     while (ttype->is_typedef()) {
       ttype = ((t_typedef*)ttype)->get_type();
     }
@@ -295,7 +297,7 @@ void t_csharp_generator::generate_consts(std::vector<t_const*> consts) {
 void t_csharp_generator::print_const_def_value(
     std::ofstream& out,
     string name,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   if (type->is_struct() || type->is_xception()) {
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
@@ -303,7 +305,7 @@ void t_csharp_generator::print_const_def_value(
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -319,8 +321,8 @@ void t_csharp_generator::print_const_def_value(
                   << ";" << endl;
     }
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
@@ -330,7 +332,7 @@ void t_csharp_generator::print_const_def_value(
                   << " = " << val << ";" << endl;
     }
   } else if (type->is_list() || type->is_set()) {
-    t_type* etype;
+    const t_type* etype;
     if (type->is_list()) {
       etype = ((t_list*)type)->get_elem_type();
     } else {
@@ -354,7 +356,7 @@ void t_csharp_generator::print_const_constructor(
   vector<t_const*>::iterator c_iter;
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
     string name = (*c_iter)->get_name();
-    t_type* type = (*c_iter)->get_type();
+    const t_type* type = (*c_iter)->get_type();
     t_const_value* value = (*c_iter)->get_value();
 
     print_const_def_value(out, name, type, value);
@@ -367,7 +369,7 @@ void t_csharp_generator::print_const_constructor(
 bool t_csharp_generator::print_const_value(
     std::ofstream& out,
     string name,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value,
     bool in_static,
     bool defval,
@@ -403,7 +405,7 @@ bool t_csharp_generator::print_const_value(
 std::string t_csharp_generator::render_const_value(
     ofstream& out,
     string /* unused */,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   std::ostringstream render;
 
@@ -525,7 +527,7 @@ void t_csharp_generator::generate_csharp_struct_definition(
   indent(out) << "public " << tstruct->get_name() << "() {" << endl;
   indent_up();
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type();
+    const t_type* t = (*m_iter)->get_type();
     while (t->is_typedef()) {
       t = ((t_typedef*)t)->get_type();
     }
@@ -760,7 +762,7 @@ void t_csharp_generator::generate_csharp_struct_tostring(
       indent(out) << "sb.Append(\"," << (*f_iter)->get_name() << ": \");"
                   << endl;
     }
-    t_type* ttype = (*f_iter)->get_type();
+    const t_type* ttype = (*f_iter)->get_type();
     if (ttype->is_xception() || ttype->is_struct()) {
       indent(out) << "sb.Append(this." << (*f_iter)->get_name()
                   << "== null ? \"<null>\" : "
@@ -1229,7 +1231,7 @@ void t_csharp_generator::generate_deserialize_field(
     ofstream& out,
     t_field* tfield,
     string prefix) {
-  t_type* type = tfield->get_type();
+  const t_type* type = tfield->get_type();
   while (type->is_typedef()) {
     type = ((t_typedef*)type)->get_type();
   }
@@ -1312,7 +1314,7 @@ void t_csharp_generator::generate_deserialize_struct(
 
 void t_csharp_generator::generate_deserialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string prefix) {
   scope_up(out);
 
@@ -1414,7 +1416,7 @@ void t_csharp_generator::generate_serialize_field(
     ofstream& out,
     t_field* tfield,
     string prefix) {
-  t_type* type = tfield->get_type();
+  const t_type* type = tfield->get_type();
   while (type->is_typedef()) {
     type = ((t_typedef*)type)->get_type();
   }
@@ -1494,7 +1496,7 @@ void t_csharp_generator::generate_serialize_struct(
 
 void t_csharp_generator::generate_serialize_container(
     ofstream& out,
-    t_type* ttype,
+    const t_type* ttype,
     string prefix) {
   scope_up(out);
 
@@ -1603,7 +1605,7 @@ std::string t_csharp_generator::prop_name(t_field* tfield) {
 }
 
 string t_csharp_generator::type_name(
-    t_type* ttype,
+    const t_type* ttype,
     bool in_container,
     bool /* in_init */) {
   while (ttype->is_typedef()) {
@@ -1668,7 +1670,7 @@ string t_csharp_generator::base_type_name(
 string t_csharp_generator::declare_field(t_field* tfield, bool init) {
   string result = type_name(tfield->get_type()) + " " + tfield->get_name();
   if (init) {
-    t_type* ttype = tfield->get_type();
+    const t_type* ttype = tfield->get_type();
     while (ttype->is_typedef()) {
       ttype = ((t_typedef*)ttype)->get_type();
     }
@@ -1716,7 +1718,7 @@ string t_csharp_generator::declare_field(t_field* tfield, bool init) {
 string t_csharp_generator::function_signature(
     t_function* tfunction,
     string prefix) {
-  t_type* ttype = tfunction->get_returntype();
+  const t_type* ttype = tfunction->get_returntype();
   return type_name(ttype) + " " + prefix + tfunction->get_name() + "(" +
       argument_list(tfunction->get_paramlist()) + ")";
 }
@@ -1737,7 +1739,7 @@ string t_csharp_generator::argument_list(t_struct* tstruct) {
   return result;
 }
 
-string t_csharp_generator::type_to_enum(t_type* type) {
+string t_csharp_generator::type_to_enum(const t_type* type) {
   while (type->is_typedef()) {
     type = ((t_typedef*)type)->get_type();
   }

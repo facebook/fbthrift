@@ -45,7 +45,7 @@ class t_field : public t_named {
    * @param type - A field based on thrift types
    * @param name - The symbolic name of the field
    */
-  t_field(t_type* type, std::string name) : t_named(name), type_(type) {}
+  t_field(const t_type* type, std::string name) : t_named(name), type_(type) {}
 
   /**
    * Constructor for t_field
@@ -54,15 +54,13 @@ class t_field : public t_named {
    * @param name - The symbolic name of the field
    * @param key  - The numeric identifier of the field
    */
-  t_field(t_type* type, std::string name, int32_t key)
+  t_field(const t_type* type, std::string name, int32_t key)
       : t_named(name), type_(type), key_(key) {}
 
   t_field(const t_field&) = delete;
   t_field& operator=(const t_field&) = delete;
   t_field(t_field&&) = delete;
   t_field& operator=(t_field&&) = delete;
-
-  ~t_field() {}
 
   /**
    * Determines if the field is required in the thrift object
@@ -90,14 +88,14 @@ class t_field : public t_named {
     req_ = req;
   }
 
-  void set_next(t_field* field) {
+  void set_next(const t_field* field) {
     next_ = field;
   }
 
   /**
    * t_field getters
    */
-  t_type* get_type() const {
+  const t_type* get_type() const {
     return type_;
   }
 
@@ -113,7 +111,7 @@ class t_field : public t_named {
     return value_.get();
   }
 
-  t_field* get_next() const {
+  const t_field* get_next() const {
     return next_;
   }
 
@@ -126,7 +124,7 @@ class t_field : public t_named {
    * never be cloned. This method exists to grand-father specific uses in the
    * target language generators. Do NOT add any new usage of this method.
    */
-  std::unique_ptr<t_field> clone_DO_NOT_USE() {
+  std::unique_ptr<t_field> clone_DO_NOT_USE() const {
     auto clone = std::make_unique<t_field>(type_, name_, key_);
 
     if (!!value_) {
@@ -140,10 +138,10 @@ class t_field : public t_named {
   }
 
  private:
-  t_type* type_;
+  const t_type* type_;
   int32_t key_{0};
   std::unique_ptr<t_const_value> value_{nullptr};
-  t_field* next_{nullptr};
+  const t_field* next_{nullptr};
 
   e_req req_{e_req::opt_in_req_out};
 };

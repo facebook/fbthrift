@@ -52,7 +52,7 @@ class t_const_value {
     CV_LIST
   };
 
-  t_const_value() {}
+  t_const_value() = default;
 
   explicit t_const_value(int64_t val) {
     set_integer(val);
@@ -207,11 +207,11 @@ class t_const_value {
     return owner_;
   }
 
-  void set_ttype(t_type* type) {
+  void set_ttype(const t_type* type) {
     type_ = type;
   }
 
-  t_type* get_ttype() const {
+  const t_type* get_ttype() const {
     return type_;
   }
 
@@ -256,7 +256,7 @@ class t_const_value {
 
   t_const_value_type valType_ = CV_BOOL;
   t_const* owner_ = nullptr;
-  t_type* type_ = nullptr;
+  const t_type* type_ = nullptr;
 
   bool is_enum_ = false;
   t_enum const* tenum_ = nullptr;

@@ -429,7 +429,7 @@ bool base_annotation_validator::visit(t_field* tfield) {
 }
 
 void structured_annotations_uniqueness_validator::validate_annotations(
-    t_annotated* tannotated,
+    const t_annotated* tannotated,
     const std::string& tannotated_name) {
   std::unordered_set<std::string> full_names;
   std::string name;

@@ -64,8 +64,8 @@ class t_android_generator : public t_java_generator {
   }
 
   bool is_comparable(
-      t_type* /*type*/,
-      std::vector<t_type*>* /*enclosing*/ = nullptr) override {
+      const t_type* /*type*/,
+      std::vector<const t_type*>* /*enclosing*/ = nullptr) override {
     return false;
   }
 };

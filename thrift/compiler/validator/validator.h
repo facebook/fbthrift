@@ -229,7 +229,7 @@ class base_annotation_validator : virtual public validator {
 
  protected:
   virtual void validate_annotations(
-      t_annotated* tannotated,
+      const t_annotated* tannotated,
       const std::string& tannotated_name) = 0;
 };
 
@@ -237,7 +237,7 @@ class structured_annotations_uniqueness_validator
     : virtual public base_annotation_validator {
  protected:
   void validate_annotations(
-      t_annotated* tannotated,
+      const t_annotated* tannotated,
       const std::string& tannotated_name) override;
 };
 

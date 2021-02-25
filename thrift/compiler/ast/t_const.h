@@ -48,7 +48,7 @@ class t_const : public t_named {
    */
   t_const(
       t_program* program,
-      t_type* type,
+      const t_type* type,
       std::string name,
       std::unique_ptr<t_const_value> value)
       : t_named(std::move(name)),
@@ -68,7 +68,7 @@ class t_const : public t_named {
     return program_;
   }
 
-  t_type* get_type() const {
+  const t_type* get_type() const {
     return type_;
   }
 
@@ -78,7 +78,7 @@ class t_const : public t_named {
 
  private:
   t_program* program_;
-  t_type* type_;
+  const t_type* type_;
   std::unique_ptr<t_const_value> value_;
 };
 

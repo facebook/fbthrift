@@ -72,7 +72,7 @@ class t_android_lite_generator : public t_java_generator {
   string java_struct_imports() override;
   const string& get_package_dir() override;
   string type_name(
-      t_type* ttype,
+      const t_type* ttype,
       bool in_container = false,
       bool in_init = false,
       bool skip_generic = false) override;
@@ -80,14 +80,14 @@ class t_android_lite_generator : public t_java_generator {
   void print_const_value(
       std::ostream& out,
       std::string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value,
       bool in_static,
       bool defval = false) override;
   string render_const_value(
       ostream& out,
       string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value) override;
 
   void output_case_statement(t_struct* tstruct);
@@ -124,7 +124,7 @@ class t_android_lite_generator : public t_java_generator {
       stringstream& stream);
 
   void output_write(
-      t_type* type,
+      const t_type* type,
       const string value,
       int depth,
       bool needs_cast,
@@ -149,7 +149,7 @@ class t_android_lite_generator : public t_java_generator {
 
   const string logger_name();
   const string enum_name();
-  void record_type_use(t_type* ttype);
+  void record_type_use(const t_type* ttype);
 
  private:
   string package_name_;
@@ -366,7 +366,7 @@ void t_android_lite_generator::write_enum_file() {
   out_enum.close();
 }
 
-void t_android_lite_generator::record_type_use(t_type* ttype) {
+void t_android_lite_generator::record_type_use(const t_type* ttype) {
   if (ttype->is_set()) {
     used_types_.insert("java.util.Set");
     record_type_use(((t_set*)ttype)->get_elem_type());
@@ -409,7 +409,7 @@ string t_android_lite_generator::package_header() {
 }
 
 string t_android_lite_generator::type_name(
-    t_type* ttype,
+    const t_type* ttype,
     bool in_container,
     bool in_init,
     bool skip_generic) {
@@ -464,7 +464,7 @@ void t_android_lite_generator::output_write(
     int depth,
     bool needs_cast,
     stringstream& stream) {
-  t_type* inner_type = tlist->get_elem_type();
+  const t_type* inner_type = tlist->get_elem_type();
   string inner_type_name = type_name(inner_type);
   string java_name = type_name(tlist);
   string tmp_var = temp_variable("var", depth);
@@ -497,8 +497,8 @@ void t_android_lite_generator::output_write(
     int depth,
     bool needs_cast,
     stringstream& stream) {
-  t_type* key_type = ((t_map*)tmap)->get_key_type();
-  t_type* val_type = ((t_map*)tmap)->get_val_type();
+  const t_type* key_type = ((t_map*)tmap)->get_key_type();
+  const t_type* val_type = ((t_map*)tmap)->get_val_type();
   string java_name = type_name(tmap);
   string tmp_var = temp_variable("var", depth);
 
@@ -549,7 +549,7 @@ void t_android_lite_generator::output_write(
     int depth,
     bool needs_cast,
     stringstream& stream) {
-  t_type* inner_type = ((t_set*)tset)->get_elem_type();
+  const t_type* inner_type = ((t_set*)tset)->get_elem_type();
   string inner_type_name = type_name(inner_type);
   string java_name = type_name(tset);
   string tmp_var = temp_variable("var", depth);
@@ -592,7 +592,7 @@ void t_android_lite_generator::output_write(
 }
 
 void t_android_lite_generator::output_write(
-    t_type* ttype,
+    const t_type* ttype,
     const string value,
     int depth,
     bool needs_cast,
@@ -818,7 +818,7 @@ void t_android_lite_generator::generate_consts(vector<t_const*> tconsts) {
 string t_android_lite_generator::render_const_value(
     ostream& out,
     string name,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   // Everything can be handled by the call to super except enums
   if (!type->is_enum()) {
@@ -832,7 +832,7 @@ string t_android_lite_generator::render_const_value(
 void t_android_lite_generator::print_const_value(
     ostream& out,
     string name,
-    t_type* type,
+    const t_type* type,
     const t_const_value* value,
     bool in_static,
     bool defval) {
@@ -868,7 +868,7 @@ void t_android_lite_generator::print_const_value(
     const vector<pair<t_const_value*, t_const_value*>>& vals = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
     for (v_iter = vals.cbegin(); v_iter != vals.cend(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       for (f_iter = fields.cbegin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();

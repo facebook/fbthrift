@@ -80,14 +80,14 @@ class t_java_generator : public t_oop_generator {
   virtual void print_const_value(
       std::ostream& out,
       std::string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value,
       bool in_static,
       bool defval = false);
   virtual std::string render_const_value(
       std::ostream& out,
       std::string name,
-      t_type* type,
+      const t_type* type,
       const t_const_value* value);
 
   /**
@@ -121,16 +121,16 @@ class t_java_generator : public t_oop_generator {
   void generate_java_struct_writer(std::ofstream& out, t_struct* tstruct);
   void generate_java_struct_tostring(std::ofstream& out, t_struct* tstruct);
   void generate_java_meta_data_map(std::ofstream& out, t_struct* tstruct);
-  void generate_field_value_meta_data(std::ofstream& out, t_type* type);
-  std::string get_java_type_string(t_type* type);
+  void generate_field_value_meta_data(std::ofstream& out, const t_type* type);
+  std::string get_java_type_string(const t_type* type);
   void generate_reflection_setters(
       std::ostringstream& out,
-      t_type* type,
+      const t_type* type,
       std::string field_name,
       std::string cap_name);
   void generate_reflection_getters(
       std::ostringstream& out,
-      t_type* type,
+      const t_type* type,
       std::string field_name,
       std::string cap_name);
   void generate_generic_field_getters_setters(
@@ -192,7 +192,7 @@ class t_java_generator : public t_oop_generator {
 
   void generate_deserialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_deserialize_set_element(
@@ -222,7 +222,7 @@ class t_java_generator : public t_oop_generator {
 
   void generate_serialize_container(
       std::ofstream& out,
-      t_type* ttype,
+      const t_type* ttype,
       std::string prefix = "");
 
   void generate_serialize_map_element(
@@ -252,13 +252,13 @@ class t_java_generator : public t_oop_generator {
       std::string contents);
 
   virtual bool is_comparable(
-      t_type* type,
-      std::vector<t_type*>* enclosing = nullptr);
+      const t_type* type,
+      std::vector<const t_type*>* enclosing = nullptr);
   bool struct_has_all_comparable_fields(
       t_struct* tstruct,
-      std::vector<t_type*>* enclosing);
+      std::vector<const t_type*>* enclosing);
 
-  bool type_has_naked_binary(t_type* type);
+  bool type_has_naked_binary(const t_type* type);
   bool struct_has_naked_binary_fields(t_struct* tstruct);
 
   virtual bool has_bit_vector(t_struct* tstruct);
@@ -281,11 +281,13 @@ class t_java_generator : public t_oop_generator {
       StructGenParams params);
 
   virtual std::string type_name(
-      t_type* ttype,
+      const t_type* ttype,
       bool in_container = false,
       bool in_init = false,
       bool skip_generic = false);
-  std::string base_type_name(t_base_type* tbase, bool in_container = false);
+  std::string base_type_name(
+      const t_base_type* tbase,
+      bool in_container = false);
   std::string declare_field(t_field* tfield, bool init = false);
   std::string function_signature(
       t_function* tfunction,
@@ -306,8 +308,8 @@ class t_java_generator : public t_oop_generator {
       t_struct* tstruct,
       std::string result_handler_symbol,
       bool include_types = false);
-  std::string type_to_enum(t_type* ttype);
-  std::string get_enum_class_name(t_type* type);
+  std::string type_to_enum(const t_type* ttype);
+  std::string get_enum_class_name(const t_type* type);
   void generate_struct_desc(std::ofstream& out, t_struct* tstruct);
   void generate_field_descs(std::ofstream& out, t_struct* tstruct);
   void generate_field_name_constants(std::ofstream& out, t_struct* tstruct);
@@ -316,7 +318,7 @@ class t_java_generator : public t_oop_generator {
     return package_dir_;
   }
 
-  bool type_can_be_null(t_type* ttype) {
+  bool type_can_be_null(const t_type* ttype) {
     ttype = ttype->get_true_type();
 
     return generate_boxed_primitive || ttype->is_container() ||

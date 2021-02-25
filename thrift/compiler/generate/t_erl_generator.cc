@@ -69,7 +69,9 @@ class t_erl_generator : public t_concat_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, const t_const_value* value);
+  std::string render_const_value(
+      const t_type* type,
+      const t_const_value* value);
 
   /**
    * Struct generation code
@@ -101,16 +103,16 @@ class t_erl_generator : public t_concat_generator {
   std::string erl_imports();
   std::string render_includes();
   std::string declare_field(t_field* tfield);
-  std::string type_name(t_type* ttype);
+  std::string type_name(const t_type* ttype);
 
   std::string function_signature(
       t_function* tfunction,
       std::string prefix = "");
 
   std::string argument_list(t_struct* tstruct);
-  std::string type_to_enum(t_type* ttype);
-  std::string generate_type_term(t_type* ttype, bool expand_structs);
-  std::string type_module(t_type* ttype);
+  std::string type_to_enum(const t_type* ttype);
+  std::string generate_type_term(const t_type* ttype, bool expand_structs);
+  std::string type_module(const t_type* ttype);
 
   std::string capitalize(std::string in) {
     in[0] = toupper(in[0]);
@@ -304,7 +306,7 @@ void t_erl_generator::generate_enum(t_enum* tenum) {
  * Generate a constant value
  */
 void t_erl_generator::generate_const(t_const* tconst) {
-  t_type* type = tconst->get_type();
+  const t_type* type = tconst->get_type();
   string name = capitalize(tconst->get_name());
   t_const_value* value = tconst->get_value();
 
@@ -319,7 +321,7 @@ void t_erl_generator::generate_const(t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_erl_generator::render_const_value(
-    t_type* type,
+    const t_type* type,
     const t_const_value* value) {
   type = type->get_true_type();
   std::ostringstream out;
@@ -366,7 +368,7 @@ string t_erl_generator::render_const_value(
 
     bool first = true;
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
-      t_type* field_type = nullptr;
+      const t_type* field_type = nullptr;
       for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
         if ((*f_iter)->get_name() == v_iter->first->get_string()) {
           field_type = (*f_iter)->get_type();
@@ -391,8 +393,8 @@ string t_erl_generator::render_const_value(
     indent(out) << "}";
 
   } else if (type->is_map()) {
-    t_type* ktype = ((t_map*)type)->get_key_type();
-    t_type* vtype = ((t_map*)type)->get_val_type();
+    const t_type* ktype = ((t_map*)type)->get_key_type();
+    const t_type* vtype = ((t_map*)type)->get_val_type();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
 
@@ -410,7 +412,7 @@ string t_erl_generator::render_const_value(
     out << "])";
 
   } else if (type->is_set()) {
-    t_type* etype;
+    const t_type* etype;
     etype = ((t_set*)type)->get_elem_type();
 
     bool first = true;
@@ -428,7 +430,7 @@ string t_erl_generator::render_const_value(
     out << "])";
 
   } else if (type->is_list()) {
-    t_type* etype;
+    const t_type* etype;
     etype = ((t_list*)type)->get_elem_type();
     out << "[";
 
@@ -719,7 +721,7 @@ void t_erl_generator::generate_function_info(
  */
 string t_erl_generator::declare_field(t_field* tfield) { // TODO
   string result = "@" + tfield->get_name();
-  t_type* type = tfield->get_type()->get_true_type();
+  const t_type* type = tfield->get_type()->get_true_type();
   if (tfield->get_value() != nullptr) {
     result += " = " + render_const_value(type, tfield->get_value());
   } else {
@@ -799,7 +801,7 @@ string t_erl_generator::argument_list(t_struct* tstruct) {
   return result;
 }
 
-string t_erl_generator::type_name(t_type* ttype) {
+string t_erl_generator::type_name(const t_type* ttype) {
   string prefix = "";
   string name = ttype->get_name();
 
@@ -813,7 +815,7 @@ string t_erl_generator::type_name(t_type* ttype) {
 /**
  * Converts the parse type to a Erlang "type" (macro for int constants)
  */
-string t_erl_generator::type_to_enum(t_type* type) {
+string t_erl_generator::type_to_enum(const t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
@@ -858,7 +860,7 @@ string t_erl_generator::type_to_enum(t_type* type) {
  * Generate an Erlang term which represents a thrift type
  */
 std::string t_erl_generator::generate_type_term(
-    t_type* type,
+    const t_type* type,
     bool expand_structs) {
   type = type->get_true_type();
 
@@ -917,19 +919,19 @@ std::string t_erl_generator::generate_type_term(
     }
   } else if (type->is_map()) {
     // {map, KeyType, ValType}
-    t_type* key_type = ((t_map*)type)->get_key_type();
-    t_type* val_type = ((t_map*)type)->get_val_type();
+    const t_type* key_type = ((t_map*)type)->get_key_type();
+    const t_type* val_type = ((t_map*)type)->get_val_type();
 
     return "{map, " + generate_type_term(key_type, false) + ", " +
         generate_type_term(val_type, false) + "}";
 
   } else if (type->is_set()) {
-    t_type* elem_type = ((t_set*)type)->get_elem_type();
+    const t_type* elem_type = ((t_set*)type)->get_elem_type();
 
     return "{set, " + generate_type_term(elem_type, false) + "}";
 
   } else if (type->is_list()) {
-    t_type* elem_type = ((t_list*)type)->get_elem_type();
+    const t_type* elem_type = ((t_list*)type)->get_elem_type();
 
     return "{list, " + generate_type_term(elem_type, false) + "}";
   }
@@ -937,7 +939,7 @@ std::string t_erl_generator::generate_type_term(
   throw std::runtime_error("INVALID TYPE IN type_to_enum: " + type->get_name());
 }
 
-std::string t_erl_generator::type_module(t_type* ttype) {
+std::string t_erl_generator::type_module(const t_type* ttype) {
   return uncapitalize(ttype->get_program()->get_name()) + "_types";
 }
 
