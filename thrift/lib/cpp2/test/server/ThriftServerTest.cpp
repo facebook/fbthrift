@@ -2330,11 +2330,11 @@ TEST(ThriftServer, SocketQueueTimeout) {
   checkSocketQueueTimeout(kDefaultTimeout);
 }
 
-TEST(ThriftServer, setMaxReuqestsToOne) {
-  ScopedServerInterfaceThread server(
+TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
+  ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(), "::1", 0, [](auto&& server) {
         server.setMaxRequests(1);
       });
-  auto client = server.newClient<TestServiceAsyncClient>();
+  auto client = makeClient(runner, nullptr);
   EXPECT_EQ(client->semifuture_sendResponse(42).get(), "test42");
 }
