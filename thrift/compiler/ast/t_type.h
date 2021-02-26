@@ -73,10 +73,6 @@ class t_type : public t_named {
   static constexpr size_t kTypeBits = 5;
   static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
 
-  // TODO(saintlou): temporary definition while working on T84798809,
-  // where we will rename the above UUPER_CASE enums to snake_case
-  using TypeValue = type;
-
   /**
    * t_type abstract methods
    */
