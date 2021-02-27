@@ -621,14 +621,17 @@ class InOrderTest
       TestRequestCallback::onResponse(std::move(state));
     }
 
-    void requestReceived(ResponseChannelRequest::UniquePtr req) {
+    void requestReceived(ResponseChannelRequest::UniquePtr rcr) {
+      auto req = dynamic_cast<HeaderServerChannel::HeaderRequest*>(rcr.get());
       c_->request_++;
       c_->requestBytes_ += req->getBuf()->computeChainDataLength();
       if (c_->firstbuf_) {
         req->sendReply(req->extractBuf());
-        c_->firstbuf_->sendReply(c_->firstbuf_->extractBuf());
+        auto firstbuf = dynamic_cast<HeaderServerChannel::HeaderRequest*>(
+            c_->firstbuf_.get());
+        c_->firstbuf_->sendReply(firstbuf->extractBuf());
       } else {
-        c_->firstbuf_ = std::move(req);
+        c_->firstbuf_ = std::move(rcr);
       }
     }
 

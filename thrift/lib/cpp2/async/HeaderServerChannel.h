@@ -169,7 +169,15 @@ class HeaderServerChannel : public ServerChannel,
       return samplingStatus_;
     }
 
+    folly::IOBuf* getBuf() {
+      return buf_.get();
+    }
+    std::unique_ptr<folly::IOBuf> extractBuf() {
+      return std::move(buf_);
+    }
+
    private:
+    std::unique_ptr<folly::IOBuf> buf_;
     HeaderServerChannel* channel_;
     std::unique_ptr<apache::thrift::transport::THeader> header_;
     std::unique_ptr<apache::thrift::transport::THeader> timeoutHeader_;
