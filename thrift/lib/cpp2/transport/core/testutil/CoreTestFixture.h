@@ -21,6 +21,7 @@
 #include <folly/Function.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/EventBaseLocal.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeThreadManager.h>
@@ -31,6 +32,8 @@
 
 namespace apache {
 namespace thrift {
+
+class Cpp2Worker;
 
 class CoreTestFixture : public testing::Test {
  public:
@@ -67,6 +70,8 @@ class CoreTestFixture : public testing::Test {
       folly::IOBuf* buf,
       TApplicationException* tae);
 
+  std::unique_ptr<Cpp2ConnContext> newCpp2ConnContext();
+
  protected:
   apache::thrift::server::ServerConfigsMock serverConfigs_;
   testing::StrictMock<testutil::testservice::TestServiceMock> service_;
@@ -74,6 +79,7 @@ class CoreTestFixture : public testing::Test {
   ThriftProcessor processor_;
   folly::EventBase eventBase_;
   std::shared_ptr<FakeChannel> channel_;
+  std::shared_ptr<Cpp2Worker> worker_;
 };
 
 } // namespace thrift

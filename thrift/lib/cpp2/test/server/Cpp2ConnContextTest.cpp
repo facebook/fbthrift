@@ -17,6 +17,7 @@
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
 using namespace ::testing;
 using namespace apache::thrift;
@@ -31,7 +32,10 @@ std::pair<int, int> createSocketPair() {
 } // namespace
 
 TEST(Cpp2ConnContextTest, pid_and_uid_start_uninitialized) {
-  Cpp2ConnContext ctx;
+  folly::EventBase evb;
+  auto worker = Cpp2Worker::createDummy(&evb);
+  Cpp2ConnContext ctx(
+      nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, worker.get());
   EXPECT_EQ(folly::none, ctx.getPeerEffectiveCreds());
 }
 
@@ -42,7 +46,9 @@ TEST(Cpp2ConnContextTest, getPeerCredentials) {
       folly::AsyncSocket::newSocket(&evb, folly::NetworkSocket{sockets.first});
   auto socket2 =
       folly::AsyncSocket::newSocket(&evb, folly::NetworkSocket{sockets.second});
-  Cpp2ConnContext ctx(/*address=*/nullptr, /*transport=*/socket1.get());
+  auto worker = Cpp2Worker::createDummy(&evb);
+  Cpp2ConnContext ctx(
+      nullptr, socket1.get(), nullptr, nullptr, nullptr, nullptr, worker.get());
   auto creds = ctx.getPeerEffectiveCreds().value();
   EXPECT_EQ(getpid(), creds.pid);
   EXPECT_EQ(geteuid(), creds.uid);

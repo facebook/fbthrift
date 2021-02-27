@@ -89,6 +89,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       peerAddress_ = *address;
     }
     if (transport) {
+      // require worker to be passed when wrapping a real connection
+      DCHECK(worker != nullptr);
       transport->getLocalAddress(&localAddress_);
       auto cert = transport->getPeerCertificate();
       if (cert) {

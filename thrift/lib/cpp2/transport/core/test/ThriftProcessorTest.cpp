@@ -41,7 +41,8 @@ TEST_F(CoreTestFixture, SumTwoNumbers) {
     folly::IOBufQueue request;
     serializeSumTwoNumbers(x, y, false, &request, &metadata);
     auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
-    processor_.onThriftRequest(std::move(metadata), request.move(), channel);
+    processor_.onThriftRequest(
+        std::move(metadata), request.move(), channel, newCpp2ConnContext());
   });
 
   // Receive Response and compare result
@@ -55,7 +56,7 @@ TEST_F(CoreTestFixture, BadName) {
     auto payload = folly::IOBuf::copyBuffer("dummy payload");
     auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
     processor_.onThriftRequest(
-        std::move(metadata), std::move(payload), channel);
+        std::move(metadata), std::move(payload), channel, newCpp2ConnContext());
   });
 
   TApplicationException tae;
@@ -70,7 +71,7 @@ TEST_F(CoreTestFixture, BadPayload) {
     auto payload = folly::IOBuf::copyBuffer("bad payload");
     auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
     processor_.onThriftRequest(
-        std::move(metadata), std::move(payload), channel);
+        std::move(metadata), std::move(payload), channel, newCpp2ConnContext());
   });
 
   TApplicationException tae;
@@ -87,7 +88,8 @@ TEST_F(CoreTestFixture, BadMetadata) {
 
     metadata.kind_ref().reset(); // make sure there is an error
 
-    processor_.onThriftRequest(std::move(metadata), request.move(), channel);
+    processor_.onThriftRequest(
+        std::move(metadata), request.move(), channel, newCpp2ConnContext());
   });
 
   TApplicationException tae;

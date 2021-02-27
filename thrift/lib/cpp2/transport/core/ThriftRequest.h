@@ -514,15 +514,7 @@ class ThriftRequest final : public ThriftRequestCore {
       std::shared_ptr<ThriftChannelIf> channel,
       RequestRpcMetadata&& metadata,
       std::unique_ptr<Cpp2ConnContext> connContext)
-      : ThriftRequestCore(
-            serverConfigs,
-            std::move(metadata),
-            [&]() -> Cpp2ConnContext& {
-              if (!connContext) {
-                connContext = std::make_unique<Cpp2ConnContext>();
-              }
-              return *connContext;
-            }()),
+      : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
         channel_(std::move(channel)),
         connContext_(std::move(connContext)) {
     serverConfigs_.incActiveRequests();

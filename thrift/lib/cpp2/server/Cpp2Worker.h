@@ -79,10 +79,8 @@ class Cpp2Worker : public wangle::Acceptor,
     return worker;
   }
 
-  static std::shared_ptr<Cpp2Worker> createDummy(
-      ThriftServer* server,
-      folly::EventBase* eventBase) {
-    std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(server, {}));
+  static std::shared_ptr<Cpp2Worker> createDummy(folly::EventBase* eventBase) {
+    std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(nullptr, {}));
     worker->Acceptor::init(nullptr, eventBase);
     return worker;
   }
@@ -155,11 +153,15 @@ class Cpp2Worker : public wangle::Acceptor,
   Cpp2Worker(
       ThriftServer* server,
       DoNotUse /* ignored, never call constructor directly */)
-      : Acceptor(server->getServerSocketConfig()),
+      : Acceptor(
+            server ? server->getServerSocketConfig()
+                   : wangle::ServerSocketConfig()),
         wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
         server_(server),
         activeRequests_(0) {
-    setGracefulShutdownTimeout(server->workersJoinTimeout_);
+    if (server) {
+      setGracefulShutdownTimeout(server->workersJoinTimeout_);
+    }
   }
 
   void construct(

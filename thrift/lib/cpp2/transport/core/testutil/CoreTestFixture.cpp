@@ -20,6 +20,7 @@
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
 namespace apache {
 namespace thrift {
@@ -33,10 +34,16 @@ CoreTestFixture::CoreTestFixture()
   processor_.setThreadManager(threadManager_.get());
   processor_.setCpp2Processor(service_.getProcessor());
   channel_ = std::make_shared<FakeChannel>(&eventBase_);
+  worker_ = Cpp2Worker::createDummy(&eventBase_);
 }
 
 CoreTestFixture::~CoreTestFixture() {
   threadManager_->join();
+}
+
+std::unique_ptr<Cpp2ConnContext> CoreTestFixture::newCpp2ConnContext() {
+  return std::make_unique<Cpp2ConnContext>(
+      nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, worker_.get());
 }
 
 void CoreTestFixture::runInEventBaseThread(folly::Function<void()> test) {
