@@ -15,7 +15,7 @@
  */
 
 use crate::binary_type::CopyFromBuf;
-use crate::bufext::{BufExt, BufMutExt};
+use crate::bufext::{BufExt, BufMutExt, DeserializeSource};
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
@@ -28,7 +28,7 @@ use crate::Result;
 use bufsize::SizeCounter;
 use bytes::{Bytes, BytesMut};
 use ghost::phantom;
-use std::{convert::TryFrom, io::Cursor};
+use std::convert::TryFrom;
 
 const COMPACT_PROTOCOL_VERSION: u8 = 0x02;
 const PROTOCOL_ID: u8 = 0x82;
@@ -819,12 +819,13 @@ where
 }
 
 /// Deserialize a Thrift blob using the compact protocol.
-pub fn deserialize<T, B>(b: B) -> Result<T>
+pub fn deserialize<T, B, C>(b: B) -> Result<T>
 where
-    B: AsRef<[u8]>,
-    for<'a> T: Deserialize<CompactProtocolDeserializer<Cursor<&'a [u8]>>>,
+    B: Into<DeserializeSource<C>>,
+    C: BufExt,
+    T: Deserialize<CompactProtocolDeserializer<C>>,
 {
-    let b = b.as_ref();
-    let mut deser = CompactProtocolDeserializer::new(Cursor::new(b));
+    let source: DeserializeSource<C> = b.into();
+    let mut deser = CompactProtocolDeserializer::new(source.0);
     Ok(T::read(&mut deser)?)
 }

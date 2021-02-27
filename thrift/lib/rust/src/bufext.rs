@@ -118,6 +118,49 @@ impl BufMutExt for SizeCounter {
         self.size()
     }
 }
+// new type so we can impl From for Bytes vs other things that are AsRef<[u8]>
+// Not implemented for AsRef<[u8]> as Bytes implements that
+pub struct DeserializeSource<B: BufExt>(pub(crate) B);
+
+// These types will use a copying cursor
+macro_rules! impl_deser_as_ref_u8 {
+    ( $($t:ty),* ) => {
+        $(
+            impl<'a> From<&'a $t> for DeserializeSource<Cursor<&'a [u8]>> {
+                fn from(from: &'a $t) -> Self {
+                    let data: &[u8] = from.as_ref();
+                    Self(Cursor::new(data))
+                }
+            }
+        )*
+    }
+}
+
+impl_deser_as_ref_u8!([u8], Vec<u8>);
+
+// These types take ownership without copying
+// Have to explicitly do the Into types as well due to no upstream From<&Bytes> for Bytes.
+macro_rules! impl_deser_into_bytes {
+    ( $($t:ty),* ) => {
+        $(
+            impl From<$t> for DeserializeSource<Cursor<Bytes>> {
+                fn from(from: $t) -> Self {
+                    Self(Cursor::new(from.into()))
+                }
+            }
+        )*
+    }
+}
+
+impl_deser_into_bytes!(Bytes, Vec<u8>);
+
+// Special case for &Bytes that is not covered in upstream crates From defs
+impl From<&Bytes> for DeserializeSource<Cursor<Bytes>> {
+    fn from(from: &Bytes) -> Self {
+        // ok to clone Bytes, it just increments ref count
+        Self(Cursor::new(from.clone()))
+    }
+}
 
 #[cfg(test)]
 mod test {
