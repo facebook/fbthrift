@@ -69,12 +69,6 @@ class t_field : public t_named {
     required = 0,
     optional = 1,
     opt_in_req_out = 2,
-
-    // TODO(saintlou) the values below are just temporary for backward
-    // compatibility whhile working on T84798809
-    T_REQUIRED = 0,
-    T_OPTIONAL = 1,
-    T_OPT_IN_REQ_OUT = 2,
   };
 
   /**
