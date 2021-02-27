@@ -77,13 +77,6 @@ class ResponseChannelRequest {
   using UniquePtr =
       std::unique_ptr<ResponseChannelRequest, RequestsRegistry::Deleter>;
 
-  folly::IOBuf* getBuf() {
-    return buf_.get();
-  }
-  std::unique_ptr<folly::IOBuf> extractBuf() {
-    return std::move(buf_);
-  }
-
   virtual bool isActive() const = 0;
 
   virtual void cancel() = 0;
@@ -180,7 +173,6 @@ class ResponseChannelRequest {
   }
 
  protected:
-  std::unique_ptr<folly::IOBuf> buf_;
   std::shared_ptr<apache::thrift::AdmissionController> admissionController_;
   bool startedProcessing_{false};
   std::chrono::steady_clock::time_point creationTimestamps_;
