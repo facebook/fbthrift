@@ -40,6 +40,7 @@ Cpp2Channel::Cpp2Channel(
     const std::shared_ptr<folly::AsyncTransport>& transport,
     std::unique_ptr<FramingHandler> framingHandler)
     : transport_(transport),
+      evb_(transport->getEventBase()),
       recvCallback_(nullptr),
       eofInvoked_(false),
       outputBufferingHandler_(
@@ -90,17 +91,19 @@ void Cpp2Channel::destroy() {
 }
 
 void Cpp2Channel::attachEventBase(EventBase* eventBase) {
+  evb_ = eventBase;
   transportHandler_->attachEventBase(eventBase);
 }
 
 void Cpp2Channel::detachEventBase() {
   getEventBase()->dcheckIsInEventBaseThread();
+  evb_ = nullptr;
   outputBufferingHandler_->cleanUp();
   transportHandler_->detachEventBase();
 }
 
 EventBase* Cpp2Channel::getEventBase() {
-  return transport_->getEventBase();
+  return evb_;
 }
 
 void Cpp2Channel::read(
