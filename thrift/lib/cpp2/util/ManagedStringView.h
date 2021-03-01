@@ -18,8 +18,10 @@
 
 #include <variant>
 
+#include <folly/Conv.h>
 #include <folly/Overload.h>
 #include <folly/Range.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache::thrift {
 // A view into a string that may or may not be stored inline.
@@ -28,6 +30,7 @@ class ManagedStringView {
   using Storage = std::variant<std::string, folly::StringPiece>;
 
  public:
+  ManagedStringView() : ManagedStringView("") {}
   /* implicit */ ManagedStringView(
       folly::StringPiece str,
       bool isTemporary = true)
@@ -67,7 +70,108 @@ class ManagedStringView {
         [](const std::string& str) { return folly::StringPiece(str); });
   }
 
- private:
+  friend bool operator==(const ManagedStringView& a, folly::StringPiece b) {
+    return a.view() == b;
+  }
+  friend bool operator==(folly::StringPiece b, const ManagedStringView& a) {
+    return a.view() == b;
+  }
+  friend bool operator==(
+      const ManagedStringView& a,
+      const ManagedStringView& b) {
+    return a.view() == b.view();
+  }
+  friend bool operator!=(const ManagedStringView& a, folly::StringPiece b) {
+    return a.view() != b;
+  }
+  friend bool operator!=(folly::StringPiece b, const ManagedStringView& a) {
+    return a.view() != b;
+  }
+  friend bool operator!=(
+      const ManagedStringView& a,
+      const ManagedStringView& b) {
+    return a.view() != b.view();
+  }
+  friend bool operator<(const ManagedStringView& a, folly::StringPiece b) {
+    return a.view() < b;
+  }
+  friend bool operator<(folly::StringPiece b, const ManagedStringView& a) {
+    return a.view() > b;
+  }
+  friend bool operator<(
+      const ManagedStringView& a,
+      const ManagedStringView& b) {
+    return a.view() < b.view();
+  }
+
+ protected:
   Storage str_;
 };
+
+// Separate adaptor to work with FieldRef without making the main type
+// convertible to everything.
+class ManagedStringViewWithConversions : public ManagedStringView {
+ public:
+  using value_type = char;
+  explicit ManagedStringViewWithConversions(ManagedStringView self)
+      : ManagedStringView(std::move(self)) {}
+  /* implicit */ ManagedStringViewWithConversions(folly::StringPiece str)
+      : ManagedStringView(str) {}
+  /* implicit */ ManagedStringViewWithConversions(const std::string& str)
+      : ManagedStringView(str) {}
+  /* implicit */ ManagedStringViewWithConversions(std::string&& str)
+      : ManagedStringView(std::move(str)) {}
+  /* implicit */ ManagedStringViewWithConversions(const char* str)
+      : ManagedStringView(str) {}
+  ManagedStringViewWithConversions() = default;
+
+  /* implicit */ operator folly::StringPiece() const {
+    return view();
+  }
+  void clear() {
+    *this = ManagedStringViewWithConversions("");
+  }
+  void reserve(size_t n) {
+    folly::variant_match(
+        str_,
+        [](folly::StringPiece) {
+          folly::throw_exception<std::runtime_error>("Can't reserve in view");
+        },
+        [=](std::string& str) { str.reserve(n); });
+  }
+  void append(const char* data, size_t n) {
+    folly::variant_match(
+        str_,
+        [](folly::StringPiece) {
+          folly::throw_exception<std::runtime_error>("Can't append to view");
+        },
+        [=](std::string& str) { str.append(data, n); });
+  }
+  ManagedStringView& operator+=(folly::StringPiece in) {
+    folly::variant_match(
+        str_,
+        [](folly::StringPiece) {
+          folly::throw_exception<std::runtime_error>("Can't append to view");
+        },
+        [=](std::string& str) { str.append(in.data(), in.size()); });
+    return *this;
+  }
+  ManagedStringView& operator+=(unsigned char in) {
+    folly::variant_match(
+        str_,
+        [](folly::StringPiece) {
+          folly::throw_exception<std::runtime_error>("Can't append to view");
+        },
+        [=](std::string& str) { str += in; });
+    return *this;
+  }
+};
+
+inline folly::Expected<folly::StringPiece, folly::ConversionCode> parseTo(
+    folly::StringPiece in,
+    ManagedStringViewWithConversions& out) noexcept {
+  out = ManagedStringViewWithConversions(in);
+  return folly::StringPiece{in.end(), in.end()};
+}
+
 } // namespace apache::thrift

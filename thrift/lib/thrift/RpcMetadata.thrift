@@ -22,6 +22,7 @@ namespace py.asyncio thrift.lib.thrift.asyncio.RpcMetadata
 namespace py3 thrift.lib.thrift
 namespace go thrift.lib.thrift.RpcMetadata
 
+cpp_include "thrift/lib/cpp2/util/ManagedStringView.h"
 cpp_include "thrift/lib/thrift/RpcMetadata_extra.h"
 
 enum ProtocolId {
@@ -87,10 +88,15 @@ struct NegotiationParameters {
   2: optional bool useStopTLS;
 }
 
+// String type optimized for generated code
+typedef string (
+  cpp.type = "ManagedStringViewWithConversions",
+) ManagedStringViewField
+
 struct InteractionCreate {
   // Must be > 0
   1: i64 interactionId;
-  2: string interactionName;
+  2: ManagedStringViewField interactionName;
 }
 struct InteractionTerminate {
   1: i64 interactionId;
@@ -105,7 +111,7 @@ struct RequestRpcMetadata {
   // The name of the RPC function.  It is assigned in generated client
   // code and passed all the way to the ThriftProcessor object on the
   // server.
-  2: optional string name;
+  2: optional ManagedStringViewField name;
   // The kind of RPC.  It is assigned in generated client code and
   // passed all the way to the ThriftProcessor object on the server.
   3: optional RpcKind kind;

@@ -43,7 +43,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
   RequestRpcMetadata metadata;
   metadata.protocol_ref() = protocolId;
   metadata.kind_ref() = kind;
-  metadata.name_ref() = std::move(methodName).str();
+  metadata.name_ref() = ManagedStringViewWithConversions(std::move(methodName));
   if (rpcOptions.getTimeout() > std::chrono::milliseconds::zero()) {
     metadata.clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
   } else if (defaultChannelTimeout > std::chrono::milliseconds::zero()) {

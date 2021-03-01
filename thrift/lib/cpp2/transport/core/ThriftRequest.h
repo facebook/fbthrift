@@ -109,7 +109,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
 
     if (auto methodName = metadata.name_ref()) {
-      reqContext_.setMethodName(std::move(*methodName));
+      reqContext_.setMethodName(std::move(*methodName).str());
     }
 
     if (auto* observer = serverConfigs_.getObserver()) {

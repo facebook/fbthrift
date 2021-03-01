@@ -485,7 +485,7 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
       RequestClientCallback::Ptr cb,
       InflightGuardT g,
       uint16_t protocolId,
-      std::string methodName,
+      ManagedStringView&& methodName,
       size_t requestSerializedSize,
       size_t requestWireSize)
       : cb_(std::move(cb)),
@@ -509,7 +509,7 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
       if (!payload.exception().with_exception<rocket::RocketException>(
               [&](auto& ex) {
                 response = decodeResponseError(
-                    std::move(ex), protocolId_, methodName_);
+                    std::move(ex), protocolId_, methodName_.view());
               })) {
         cb_.release()->onResponseError(std::move(payload.exception()));
         return;
@@ -531,7 +531,7 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
               response->metadata,
               response->payload,
               protocolId_,
-              methodName_)) {
+              methodName_.view())) {
         cb_.release()->onResponseError(std::move(error));
         return;
       }
@@ -557,7 +557,7 @@ class RocketClientChannel::SingleRequestSingleResponseCallback final
   RequestClientCallback::Ptr cb_;
   InflightGuardT g_;
   const uint16_t protocolId_;
-  std::string methodName_;
+  ManagedStringView methodName_;
   const size_t requestSerializedSize_;
   const size_t requestWireSize_;
 };

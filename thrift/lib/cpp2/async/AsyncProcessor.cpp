@@ -269,7 +269,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
     concurrency::ThreadManager* tm,
     RpcKind kind,
     ServerInterface* si,
-    const char* interaction) {
+    folly::StringPiece interaction) {
   if (!validateRpcKind(req, kind)) {
     return false;
   }
@@ -277,13 +277,12 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
   bool interactionMetadataValid;
   if (auto interactionId = ctx->getInteractionId()) {
     if (auto interactionCreate = ctx->getInteractionCreate()) {
-      if (!interaction ||
-          *interactionCreate->interactionName_ref() != interaction) {
+      if (*interactionCreate->interactionName_ref() != interaction) {
         interactionMetadataValid = false;
       } else if (!createInteraction(
                      req,
                      interactionId,
-                     std::move(*interactionCreate->interactionName_ref()),
+                     std::move(*interactionCreate->interactionName_ref()).str(),
                      *ctx,
                      tm,
                      *eb,
@@ -301,7 +300,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
         interactionMetadataValid = true;
       }
     } else {
-      interactionMetadataValid = !!interaction;
+      interactionMetadataValid = !interaction.empty();
     }
 
     if (interactionMetadataValid && !tm) {
@@ -319,7 +318,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
       }
     }
   } else {
-    interactionMetadataValid = !interaction;
+    interactionMetadataValid = interaction.empty();
   }
   if (!interactionMetadataValid) {
     req->sendErrorWrapped(

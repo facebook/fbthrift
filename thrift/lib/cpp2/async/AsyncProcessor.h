@@ -227,7 +227,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       concurrency::ThreadManager* tm,
       RpcKind kind,
       ServerInterface* si,
-      const char* interaction = nullptr);
+      folly::StringPiece interaction = "");
 
   template <typename ChildType>
   static void processInThread(
