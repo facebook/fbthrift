@@ -22,6 +22,25 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+enum class t_error_kind {
+  transient = 0, // The associated RPC may succeed if retried.
+  stateful, // Server state must be change for the associated RPC to have
+            // any chance of succeeding.
+  permanent, // The associated RPC can never succeed, and should not be retried.
+};
+
+enum class t_error_blame {
+  server = 0, // The error was the fault of the server.
+  client, // The error was the fault of the client's request.
+};
+
+enum class t_error_safety {
+  unknown = 0, // It is unknown if the associated RPC failed completely or not.
+  safe, // It is guarneteed the associated RPC failed completely, and no
+        // significant server state changed while trying to process the
+        // RPC.
+};
+
 /**
  * A thrift exception.
  *
@@ -36,11 +55,39 @@ class t_exception : public t_struct {
     return true;
   }
 
+  t_error_kind kind() const {
+    return kind_;
+  }
+  void set_kind(t_error_kind kind) {
+    kind_ = kind;
+  }
+
+  t_error_blame blame() const {
+    return blame_;
+  }
+  void set_blame(t_error_blame blame) {
+    blame_ = blame;
+  }
+
+  t_error_safety safety() const {
+    return safety_;
+  }
+  void set_safety(t_error_safety safety) {
+    safety_ = safety;
+  }
+
  private:
+  t_error_kind kind_{};
+  t_error_blame blame_{};
+  t_error_safety safety_{};
+
   friend class t_struct;
   t_exception* clone_DO_NOT_USE() const override {
     auto clone = std::make_unique<t_exception>(program_, name_);
     cloneStruct(clone.get());
+    clone->kind_ = kind_;
+    clone->blame_ = blame_;
+    clone->safety_ = safety_;
     return clone.release();
   }
 };

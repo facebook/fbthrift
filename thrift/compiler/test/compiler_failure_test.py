@@ -85,17 +85,17 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] 'idempotent' is an experimental feature.\n",
+            "[FAILURE:foo.thrift:2] 'idempotency' is an experimental feature.\n",
         )
         ret, out, err = self.run_thrift(
-            "--allow-experimental-features", "idempotent", "--strict", "foo.thrift"
+            "--allow-experimental-features", "idempotency", "--strict", "foo.thrift"
         )
         self.assertEqual(ret, 0, err)
         # TODO(afuller): Figure out why this is outputing twice. (Are we parsing twice?)
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] 'idempotent' is an experimental feature.\n"
-            "[WARNING:foo.thrift:2] 'idempotent' is an experimental feature.\n",
+            "[WARNING:foo.thrift:2] 'idempotency' is an experimental feature.\n"
+            "[WARNING:foo.thrift:2] 'idempotency' is an experimental feature.\n",
         )
 
     def test_readonly_requires_experimental(self):
@@ -113,10 +113,10 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:2] 'readonly' is an experimental feature.\n",
+            "[FAILURE:foo.thrift:2] 'idempotency' is an experimental feature.\n",
         )
         ret, out, err = self.run_thrift(
-            "--allow-experimental-features", "idempotent,readonly", "foo.thrift"
+            "--allow-experimental-features", "idempotency", "foo.thrift"
         )
         self.assertEqual(ret, 0, err)
 

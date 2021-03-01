@@ -152,6 +152,12 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "oneway"             { return apache::thrift::compiler::yy::parser::make_tok_oneway();               }
 "idempotent"         { return apache::thrift::compiler::yy::parser::make_tok_idempotent();           }
 "readonly"           { return apache::thrift::compiler::yy::parser::make_tok_readonly();             }
+"safe"               { return apache::thrift::compiler::yy::parser::make_tok_safe();                 }
+"transient"          { return apache::thrift::compiler::yy::parser::make_tok_transient();            }
+"stateful"           { return apache::thrift::compiler::yy::parser::make_tok_stateful();             }
+"permanent"          { return apache::thrift::compiler::yy::parser::make_tok_permanent();            }
+"server"             { return apache::thrift::compiler::yy::parser::make_tok_server();               }
+"client"             { return apache::thrift::compiler::yy::parser::make_tok_client();               }
 "typedef"            { return apache::thrift::compiler::yy::parser::make_tok_typedef();              }
 "struct"             { return apache::thrift::compiler::yy::parser::make_tok_struct();               }
 "union"              { return apache::thrift::compiler::yy::parser::make_tok_union();                }

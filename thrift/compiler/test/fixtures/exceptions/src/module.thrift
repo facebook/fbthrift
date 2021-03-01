@@ -16,15 +16,15 @@
 
 namespace java.swift test.fixtures.exceptions
 
-exception Banal {
+safe permanent client exception Banal {
 }
-exception Fiery {
+transient server exception Fiery {
   1: required string message;
 } (message = "message")
-exception Serious {
+safe stateful exception Serious {
   1: optional string sonnet;
 } (message = "sonnet")
-exception ComplexFieldNames {
+client exception ComplexFieldNames {
   1: string error_message;
   2: string internal_error_message;
 } (message = "internal_error_message")

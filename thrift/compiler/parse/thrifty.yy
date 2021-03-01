@@ -175,11 +175,21 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %token tok_sink
 
 /**
- * Function modifiers
+ * Function qualifiers
  */
 %token tok_oneway
 %token tok_idempotent
 %token tok_readonly
+
+/**
+ * Exception qualifiers
+ */
+%token tok_safe
+%token tok_transient
+%token tok_stateful
+%token tok_permanent
+%token tok_server
+%token tok_client
 
 /**
  * Thrift language keywords
@@ -257,6 +267,10 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 %type<t_struct*>        Struct
 %type<t_union*>         Union
+
+%type<t_error_kind>     ErrorKind
+%type<t_error_blame>    ErrorBlame
+%type<t_error_safety>   ErrorSafety
 %type<t_exception*>     Xception
 
 %type<t_service*>       Service
@@ -309,22 +323,48 @@ Identifier:
     {
       $$ = $1;
     }
-| tok_sink /* Allow the keyword 'sink' in identifiers. */
+/* context sensitive keywords that should be allowed in identifiers. */
+| tok_sink
     {
       $$ = "sink";
     }
-| tok_oneway /* Allow the keyword 'oneway' in identifiers. */
+| tok_oneway
     {
       $$ = "oneway";
     }
-| tok_readonly /* Allow the keyword 'readonly' in identifiers. */
+| tok_readonly
     {
       $$ = "readonly";
     }
-| tok_idempotent /* Allow the keyword 'idempotent' in identifiers. */
+| tok_idempotent
     {
       $$ = "idempotent";
     }
+| tok_safe
+    {
+      $$ = "safe";
+    }
+| tok_transient
+    {
+      $$ = "transient";
+    }
+| tok_stateful
+    {
+      $$ = "stateful";
+    }
+| tok_permanent
+    {
+      $$ = "permanent";
+    }
+| tok_server
+    {
+      $$ = "server";
+    }
+| tok_client
+    {
+      $$ = "client";
+    }
+
 
 CaptureDocText:
     {
@@ -880,7 +920,8 @@ Union:
     }
 
 Xception:
-  StructuredAnnotations tok_xception
+  // TODO(afuller): Either make the qualifiers order agnostic or produce a better error message.
+  StructuredAnnotations ErrorSafety ErrorKind ErrorBlame tok_xception
     {
       driver.start_node(LineType::Xception);
     }
@@ -889,7 +930,10 @@ Xception:
       driver.debug("Xception => StructuredAnnotations tok_xception "
         "Identifier { FieldList } TypeAnnotations");
       $$ = new t_exception(driver.program);
-      driver.finish_node($$, LineType::Xception, $4, own($6), own($8), own($1));
+      $$->set_safety($2);
+      $$->set_kind($3);
+      $$->set_blame($4);
+      driver.finish_node($$, LineType::Xception, $7, own($9), own($11), own($1));
 
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
@@ -910,17 +954,69 @@ Xception:
         const auto* field = $$->get_field_by_name(v);
         if (field == nullptr) {
           driver.failure("member specified as exception 'message' should be a valid"
-                         " struct member, '%s' in '%s' is not", v.c_str(), $4.c_str());
+                         " struct member, '%s' in '%s' is not", v.c_str(), $7.c_str());
         }
 
         if (!field->get_type()->is_string_or_binary()) {
           driver.failure("member specified as exception 'message' should be of type "
-                         "STRING, '%s' in '%s' is not", v.c_str(), $4.c_str());
+                         "STRING, '%s' in '%s' is not", v.c_str(), $7.c_str());
         }
       }
 
       y_field_val = -1;
     }
+
+ErrorSafety:
+  tok_safe
+    {
+      driver.require_experimental_feature("error-classification");
+      $$ = t_error_safety::safe;
+    }
+|
+    {
+      $$ = {};
+    }
+
+ErrorKind:
+  tok_transient
+    {
+      driver.require_experimental_feature("error-classification");
+      $$ = t_error_kind::transient;
+    }
+|
+  tok_stateful
+    {
+      driver.require_experimental_feature("error-classification");
+      $$ = t_error_kind::stateful;
+    }
+|
+  tok_permanent
+    {
+      driver.require_experimental_feature("error-classification");
+      $$ = t_error_kind::permanent;
+    }
+|
+    {
+      $$ = {};
+    }
+
+ErrorBlame:
+  tok_client
+    {
+      driver.require_experimental_feature("error-classification");
+      $$ = t_error_blame::client;
+    }
+|
+  tok_server
+    {
+      driver.require_experimental_feature("error-classification");
+      $$ = t_error_blame::server;
+    }
+|
+    {
+      $$ = {};
+    }
+
 
 Service:
   StructuredAnnotations tok_service
@@ -1096,19 +1192,18 @@ FunctionQualifier:
     }
 | tok_idempotent
     {
-      driver.require_experimental_feature("idempotent");
+      driver.require_experimental_feature("idempotency");
       $$ = t_function_qualifier::idempotent;
     }
 | tok_readonly
     {
-      driver.require_experimental_feature("readonly");
+      driver.require_experimental_feature("idempotency");
       $$ = t_function_qualifier::read_only;
     }
 |
     {
       $$ = t_function_qualifier::none;
     }
-
 
 Throws:
   tok_throws "(" FieldList ")"
