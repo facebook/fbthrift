@@ -15,8 +15,25 @@ public class PubSubStreamingServiceReactiveClient
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient;
 
+  private static final TField _returnstream_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)(0 + 1));
+  private static final TField _returnstream_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)(1 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstream_EXCEPTION_READERS;
+  private static final TField _streamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)(0 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _streamthrows_EXCEPTION_READERS;
+  private static final TField _boththrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)(0 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _boththrows_EXCEPTION_READERS;
+  private static final TField _responseandstreamthrows_FOO_FIELD_DESC = new TField("foo", TType.I32, (short)(0 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _responseandstreamthrows_EXCEPTION_READERS;
+  private static final TField _returnstreamFast_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)(0 + 1));
+  private static final TField _returnstreamFast_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)(1 + 1));
+  private static final java.util.Map<Short, com.facebook.swift.transport.payload.Reader> _returnstreamFast_EXCEPTION_READERS;
 
   static {
+    _returnstream_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _streamthrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _boththrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _responseandstreamthrows_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    _returnstreamFast_EXCEPTION_READERS = java.util.Collections.emptyMap();
   }
 
   public PubSubStreamingServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.swift.transport.client.RpcClient> _rpcClient) {
@@ -28,29 +45,344 @@ public class PubSubStreamingServiceReactiveClient
   @java.lang.Override
   public void close() {}
 
+  private com.facebook.swift.transport.payload.Writer _createreturnstreamWriter(final int i32From, final int i32To) {
+    return oprot -> {
+      try {
+        {
+          oprot.writeFieldBegin(_returnstream_I32_FROM_FIELD_DESC);
+
+          int _iter0 = i32From;
+
+          oprot.writeI32(i32From);
+          oprot.writeFieldEnd();
+        }
+
+        {
+          oprot.writeFieldBegin(_returnstream_I32_TO_FIELD_DESC);
+
+          int _iter0 = i32To;
+
+          oprot.writeI32(i32To);
+          oprot.writeFieldEnd();
+        }
+
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _returnstream_READER =
+    oprot -> {
+              try {
+                int _r = oprot.readI32();
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("returnstream")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<Integer> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createreturnstreamWriter(i32From, i32To),
+                    _returnstream_READER,
+                    _returnstream_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestStreamingResponse(_crp, rpcOptions)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+      });
+  }
+
   @java.lang.Override
   public reactor.core.publisher.Flux<Integer> returnstream(final int i32From, final int i32To) {
-    throw new UnsupportedOperationException();
+    return returnstream(i32From, i32To,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createstreamthrowsWriter(final int foo) {
+    return oprot -> {
+      try {
+        {
+          oprot.writeFieldBegin(_streamthrows_FOO_FIELD_DESC);
+
+          int _iter0 = foo;
+
+          oprot.writeI32(foo);
+          oprot.writeFieldEnd();
+        }
+
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _streamthrows_READER =
+    oprot -> {
+              try {
+                int _r = oprot.readI32();
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> streamthrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("streamthrows")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<Integer> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createstreamthrowsWriter(foo),
+                    _streamthrows_READER,
+                    _streamthrows_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestStreamingResponse(_crp, rpcOptions)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+      });
   }
 
   @java.lang.Override
   public reactor.core.publisher.Flux<Integer> streamthrows(final int foo) {
-    throw new UnsupportedOperationException();
+    return streamthrows(foo,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createboththrowsWriter(final int foo) {
+    return oprot -> {
+      try {
+        {
+          oprot.writeFieldBegin(_boththrows_FOO_FIELD_DESC);
+
+          int _iter0 = foo;
+
+          oprot.writeI32(foo);
+          oprot.writeFieldEnd();
+        }
+
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _boththrows_READER =
+    oprot -> {
+              try {
+                int _r = oprot.readI32();
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> boththrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("boththrows")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<Integer> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createboththrowsWriter(foo),
+                    _boththrows_READER,
+                    _boththrows_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestStreamingResponse(_crp, rpcOptions)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+      });
   }
 
   @java.lang.Override
   public reactor.core.publisher.Flux<Integer> boththrows(final int foo) {
-    throw new UnsupportedOperationException();
+    return boththrows(foo,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createresponseandstreamthrowsWriter(final int foo) {
+    return oprot -> {
+      try {
+        {
+          oprot.writeFieldBegin(_responseandstreamthrows_FOO_FIELD_DESC);
+
+          int _iter0 = foo;
+
+          oprot.writeI32(foo);
+          oprot.writeFieldEnd();
+        }
+
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _responseandstreamthrows_READER =
+    oprot -> {
+              try {
+                int _r = oprot.readI32();
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+    private static final com.facebook.swift.transport.payload.Reader _responseandstreamthrows_FIRST_READER =
+    oprot -> {
+              try {
+                int _r = oprot.readI32();
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("responseandstreamthrows")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<Integer> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createresponseandstreamthrowsWriter(foo),
+                    _responseandstreamthrows_READER,
+                    _responseandstreamthrows_FIRST_READER,
+                    _responseandstreamthrows_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestStreamingResponse(_crp, rpcOptions)
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Integer,Integer>)_p.getData()));
+      });
   }
 
   @java.lang.Override
   public reactor.core.publisher.Flux<com.facebook.swift.transport.model.StreamResponse<Integer,Integer>> responseandstreamthrows(final int foo) {
-    throw new UnsupportedOperationException();
+    return responseandstreamthrows(foo,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.swift.transport.payload.Writer _createreturnstreamFastWriter(final int i32From, final int i32To) {
+    return oprot -> {
+      try {
+        {
+          oprot.writeFieldBegin(_returnstreamFast_I32_FROM_FIELD_DESC);
+
+          int _iter0 = i32From;
+
+          oprot.writeI32(i32From);
+          oprot.writeFieldEnd();
+        }
+
+        {
+          oprot.writeFieldBegin(_returnstreamFast_I32_TO_FIELD_DESC);
+
+          int _iter0 = i32To;
+
+          oprot.writeI32(i32To);
+          oprot.writeFieldEnd();
+        }
+
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.swift.transport.payload.Reader _returnstreamFast_READER =
+    oprot -> {
+              try {
+                int _r = oprot.readI32();
+                return _r;
+
+
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+  @java.lang.Override
+  public reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMapMany(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("returnstreamFast")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                .setOtherMetadata(Collections.emptyMap())
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.swift.transport.payload.ClientRequestPayload<Integer> _crp =
+                com.facebook.swift.transport.payload.ClientRequestPayload.create(
+                    _createreturnstreamFastWriter(i32From, i32To),
+                    _returnstreamFast_READER,
+                    _returnstreamFast_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestStreamingResponse(_crp, rpcOptions)
+                .filter((_p) -> ((com.facebook.swift.transport.model.StreamResponse)_p.getData()).isSetData())
+                .map(_p -> ((com.facebook.swift.transport.model.StreamResponse<Void, Integer>)_p.getData()).getData());
+      });
   }
 
   @java.lang.Override
   public reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To) {
-    throw new UnsupportedOperationException();
+    return returnstreamFast(i32From, i32To,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
 

@@ -67,7 +67,7 @@ public class DbMixedStackArgumentsReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key) {
+  public reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -86,9 +86,14 @@ public class DbMixedStackArgumentsReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<byte[]> getDataByKey0(final String key) {
+    return getDataByKey0(key,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _creategetDataByKey1Writer(final String key) {
@@ -124,7 +129,7 @@ public class DbMixedStackArgumentsReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key) {
+  public reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -143,9 +148,14 @@ public class DbMixedStackArgumentsReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key) {
+    return getDataByKey1(key,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
 

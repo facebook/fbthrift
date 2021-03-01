@@ -53,7 +53,7 @@ public class MyRootReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> doRoot() {
+  public reactor.core.publisher.Mono<Void> doRoot( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -72,9 +72,14 @@ public class MyRootReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> doRoot() {
+    return doRoot( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
 

@@ -71,7 +71,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> ping() {
+  public reactor.core.publisher.Mono<Void> ping( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -90,9 +90,14 @@ public class MyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> ping() {
+    return ping( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _creategetRandomDataWriter() {
@@ -119,7 +124,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<String> getRandomData() {
+  public reactor.core.publisher.Mono<String> getRandomData( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -138,9 +143,14 @@ public class MyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<String> getRandomData() {
+    return getRandomData( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createhasDataByIdWriter(final long id) {
@@ -176,7 +186,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Boolean> hasDataById(final long id) {
+  public reactor.core.publisher.Mono<Boolean> hasDataById(final long id,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -195,9 +205,14 @@ public class MyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Boolean> hasDataById(final long id) {
+    return hasDataById(id,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _creategetDataByIdWriter(final long id) {
@@ -233,7 +248,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<String> getDataById(final long id) {
+  public reactor.core.publisher.Mono<String> getDataById(final long id,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -252,9 +267,14 @@ public class MyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<String> getDataById(final long id) {
+    return getDataById(id,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createputDataByIdWriter(final long id, final String data) {
@@ -298,7 +318,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
+  public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -317,9 +337,14 @@ public class MyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> putDataById(final long id, final String data) {
+    return putDataById(id, data,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createlobDataByIdWriter(final long id, final String data) {
@@ -363,7 +388,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data) {
+  public reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data,  final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -382,9 +407,14 @@ public class MyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data) {
+    return lobDataById(id, data,  com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createdoNothingWriter() {
@@ -410,7 +440,7 @@ public class MyServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> doNothing() {
+  public reactor.core.publisher.Mono<Void> doNothing( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -429,9 +459,14 @@ public class MyServiceReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> doNothing() {
+    return doNothing( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
 

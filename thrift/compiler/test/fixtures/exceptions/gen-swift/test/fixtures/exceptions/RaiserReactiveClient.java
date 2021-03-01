@@ -59,7 +59,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> doBland() {
+  public reactor.core.publisher.Mono<Void> doBland( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -78,9 +78,14 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> doBland() {
+    return doBland( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createdoRaiseWriter() {
@@ -106,7 +111,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> doRaise() {
+  public reactor.core.publisher.Mono<Void> doRaise( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -125,9 +130,14 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> doRaise() {
+    return doRaise( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createget200Writer() {
@@ -154,7 +164,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<String> get200() {
+  public reactor.core.publisher.Mono<String> get200( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -173,9 +183,14 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<String> get200() {
+    return get200( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createget500Writer() {
@@ -202,7 +217,7 @@ public class RaiserReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<String> get500() {
+  public reactor.core.publisher.Mono<String> get500( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -221,9 +236,14 @@ public class RaiserReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<String> get500() {
+    return get500( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
 

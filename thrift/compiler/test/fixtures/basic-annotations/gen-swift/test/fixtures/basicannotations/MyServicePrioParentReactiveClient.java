@@ -55,7 +55,7 @@ public class MyServicePrioParentReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> ping() {
+  public reactor.core.publisher.Mono<Void> ping( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -74,9 +74,14 @@ public class MyServicePrioParentReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> ping() {
+    return ping( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
   private com.facebook.swift.transport.payload.Writer _createpongWriter() {
@@ -102,7 +107,7 @@ public class MyServicePrioParentReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Void> pong() {
+  public reactor.core.publisher.Mono<Void> pong( final com.facebook.swift.transport.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -121,9 +126,14 @@ public class MyServicePrioParentReactiveClient
                     java.util.Collections.emptyMap());
 
             return _rpc
-                .singleRequestSingleResponse(_crp, com.facebook.swift.transport.client.RpcOptions.EMPTY)
+                .singleRequestSingleResponse(_crp, rpcOptions)
                 .map(_p -> _p.getData());
       });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> pong() {
+    return pong( com.facebook.swift.transport.client.RpcOptions.EMPTY);
   }
 
 
